@@ -1,0 +1,19 @@
+
+//=================================================================================	
+Abilities
+//=================================================================================	
+
+The ability mapping is as following:
+
+Q = "Ability1"
+W = "Ability2"
+E = "Ability3"
+D = "Ability4"
+F = "Ability5"
+R = "Ability6"
+
+If you add an pasive ability and it is not showing on on the HUD, you have to level
+it up with scripts
+
+* If an ability have "LinkedSpecialBonus" on the npc script, the override have to use it as well,
+otherwise, the ability will not work as intended

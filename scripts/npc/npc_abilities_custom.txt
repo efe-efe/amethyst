@@ -1,0 +1,704 @@
+// Dota Heroes File
+"DOTAAbilities"
+{
+	"Version"		"1"
+	
+	//=================================================================================================================
+	// Slark Ex-Pounce
+	//=================================================================================================================
+	
+	"slark_ex_pounce"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"slark_pounce"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"FightRecapLevel"				"1"
+		"MaxLevel"						"1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"	
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"pounce_distance"		"700"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"pounce_speed"			"933.33"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"pounce_acceleration"	"7000.0"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"pounce_radius"			"95"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"pounce_damage"			"20"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"leash_duration"		"4.0"
+			}
+			"07"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"leash_radius"			"325"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Sven: Ex-Storm Bolt
+	//=================================================================================================================
+	"sven_ex_storm_bolt"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"sven_storm_bolt"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"FightRecapLevel"				"1"
+		"MaxLevel"						"1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"600"
+		"AbilityCastPoint"				"0.3"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"13.0"
+
+		// Damage.
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage"					"20"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"50"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"bolt_speed"			"1000"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"bolt_stun_duration"	"1.0"
+			}
+			"03"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"bolt_aoe"			"255"
+			}
+			"04"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"vision_radius"		"225"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Sven: Ex-Warcry
+	//=================================================================================================================
+	"sven_ex_warcry"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"sven_warcry"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"10"
+		"AbilityDuration"				"5"
+	
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"warcry_armor"		"10"		
+			}
+			"02"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"warcry_movespeed"	"16"
+			}
+			"03"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"warcry_radius"		"900"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Slark: Dark Pact
+	//=================================================================================================================
+	"slark_dark_pact_override" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"
+		//"BaseClass" 					"ability_lua"							
+		"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
+		"MaxLevel" 						"1"
+		"AbilityTextureName"    		"slark_dark_pact"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+
+		// "ScriptFile"					"abilities/slark_dark_pact/slark_dark_pact_lua.lua"	
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.001"
+		
+		// Stats
+		//-------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		"AbilityCooldown"				"8"
+
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"radius"			"325"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"max_damage"		"100"
+			}
+		}
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		
+		"OnSpellStart"
+		{
+
+			"RunScript"
+			{
+				"ScriptFile"    "abilities/slark_dark_pact/slark_dark_pact_lua.lua"
+				"Function"		"PrintMe"
+			}
+			"ApplyModifier"
+			{
+				"ModifierName"		"area_damage"
+				"Target"			"CASTER"
+			}
+		}
+
+		"Modifiers"
+		{
+			"area_damage"
+			{
+				
+				"Passive"  				"0" //Don't Auto apply this modifier when the spell is learned
+				
+				"IsBuff"				"0" //Display as a green modifier
+				"IsDebuff"				"0" //Display as a green modifier
+				"IsHidden"				"0" //Show in the UI  
+				
+				"Duration"						"1.2"
+				"ThinkInterval"					"0.1"
+				//16 pulses in total
+
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Target"		"CASTER"
+						"Damage"		"1"
+						"Type"			"DAMAGE_TYPE_MAGICAL"
+					}
+
+					"ActOnTargets"
+					{
+						"Target"
+						{
+							"Center"			"TARGET"
+							"Radius"			"%radius"
+							"Teams"				"DOTA_UNIT_TARGET_TEAM_ENEMY"
+							"Types"				"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+							"Flags"				"DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+						}
+						
+						"Action"
+						{
+							"Damage"
+							{
+								"Target"		"TARGET"
+								"Damage"		"3"
+								"Type"			"DAMAGE_TYPE_MAGICAL"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Slark: Basic Attack
+	//=================================================================================================================
+	"slark_basic_attack" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"    		"slark_essence_shift"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+			{
+				"01"
+				{
+					"var_type"					"FIELD_FLOAT"
+					"mana_gain"					"0.05"
+				}
+				"02"
+				{
+					"var_type"					"FIELD_FLOAT"
+					"attackspeed_increase"		"10.0"
+				}
+				"03"
+				{
+					"var_type"					"FIELD_FLOAT"
+					"attackspeed_decrease"		"-5.0"
+				}
+				"04"
+				{
+					"var_type"					"FIELD_INTEGER"
+					"damage_increase"			"1"
+				}
+				"05"
+				{
+					"var_type"					"FIELD_INTEGER"
+					"damage_decrease"			"-1"
+				}
+		}
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		"Modifiers"
+		{ 
+			"on_attack_modifier"
+			{
+				"Passive"  				"1" //Auto apply this modifier when the spell is learned
+				"IsBuff"				"1" //Display as a green modifier
+				"IsHidden"				"1" //Show in the UI
+				
+				// Modifier Events
+				//--------------------------------------------------------------------------------
+
+				"OnAttackLanded"
+				{
+					"RunScript"
+					{
+						"ScriptFile"    "modifiers/mana_on_attack.lua"
+						"Function"		"ManaOnAttack"
+					}
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_buffs"
+						"Target"		"CASTER"
+					} 
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_debuffs"
+						"Target"		"TARGET"
+					} 
+				} 
+			}
+
+			"modifier_buffs"
+			{
+				"Passive"  				"0" //Don't Auto apply this modifier when the spell is learned
+				"Duration" 				"3"
+				
+				"IsBuff"				"1" //Display as a green modifier
+				"IsHidden"				"0" //Show in the UI  
+				
+				"Attributes" 			"MODIFIER_ATTRIBUTE_MULTIPLE"
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attackspeed_increase"
+					"MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE"		"%damage_increase"
+				}
+			}
+
+			"modifier_debuffs"
+			{
+				"Passive"  				"0" //Don't Auto apply this modifier when the spell is learned
+				"Duration" 				"3"
+				"IsBuff"				"0"
+				"IsDebuff"				"1" //Display as a red modifier
+				"IsHidden"				"0" //Show in the UI  
+				
+				"Attributes" 			"MODIFIER_ATTRIBUTE_MULTIPLE"
+
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attackspeed_decrease"
+					"MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE"		"%damage_decrease"
+				}
+			}
+			
+		}
+	}
+
+	//=================================================================================================================
+	// Weaver: The swarm wrapper
+	//=================================================================================================================
+	"wrapper_weaver_the_swarm" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"	
+		"MaxLevel" 						"1"
+		"AbilityTextureName"    		"weaver_the_swarm"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+
+		//If changed, change ability on the override
+		//-------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"10"
+		"AbilityManaCost"				"0"
+		"AbilityCastPoint"				"0.3"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"mana_gain"			"0.07"	//If changed, change ability on the override
+			}
+		}
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"    "abilities/weaver_the_swarm/wrapper.lua"
+				"Function"		"RunTheSwarm"
+			}
+
+			"RunScript"
+			{
+				"ScriptFile"    "modifiers/general/gain_mana.lua"
+				"Function"		"GainMana"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Weaver: Ex - The Swarm
+	//=================================================================================================================
+	"weaver_ex_the_swarm"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"weaver_the_swarm"
+		"MaxLevel" 						"1"													// unique ID number for this ability.  Do not change this once established or it will invalidate collected stats.
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"10"
+		"AbilityManaCost"				"25"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityModifierSupportValue"	"0.2"	// Primarily about the damage
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"damage"			"3"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"attack_rate"		"1.0"
+			}
+			"03"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"count"				"6"
+			}
+			"04"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"armor_reduction"	"1"
+				"LinkedSpecialBonus"	"special_bonus_unique_weaver_3"
+			}
+			"05"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"8"
+			}
+			"06"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"destroy_attacks"	"8"
+			}
+			"07"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"radius"			"100"
+			}
+			"08"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"speed"				"600"
+			}
+			"09"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"spawn_radius"		"300"
+			}
+		}
+		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
+	}
+
+	//=================================================================================================================
+	// Weaver: Sukuchi wrapper
+	//=================================================================================================================
+	"wrapper_weaver_shukuchi" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"				
+		"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
+		"MaxLevel" 						"1"
+		"AbilityTextureName"    		"weaver_shukuchi"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		
+		// Stats
+		//-------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		"AbilityCooldown"				"12"
+
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"radius"			"175"	//If changed, change ability on the override
+			}
+
+			"02"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"mana_gain"			"0.05"
+			}
+		}
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"    "abilities/weaver_shukuchi/wrapper.lua"
+				"Function"		"RunShukuchi"
+			}
+			
+			"ApplyModifier"
+			{
+				"ModifierName"		"check_collision_modifier"
+				"Target"			"CASTER"
+			}
+		}
+
+		"Modifiers"
+		{
+			"check_collision_modifier"
+			{
+				"IsHidden"		"1"
+				"Duration"		"1.5"
+				
+				"EffectAttachType"	"follow_origin"
+				
+				"Aura"			"gain_mana_modifier"
+				"Aura_Radius"	"%radius"
+				"Aura_Teams"	"DOTA_UNIT_TARGET_TEAM_ENEMY"
+				"Aura_Types"	"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP | DOTA_UNIT_TARGET_MECHANICAL"
+			}
+			
+			"gain_mana_modifier"
+			{
+				"OnCreated"
+				{
+					"RunScript"
+					{
+						"ScriptFile"    "modifiers/general/gain_mana.lua"
+						"Function"		"GainMana"
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Ability: Weaver Blink
+	//=================================================================================================================
+	"weaver_blink"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"antimage_blink"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"12"
+		
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Special	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"blink_range"			"700"
+				"LinkedSpecialBonus"	"special_bonus_unique_antimage_3"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"min_blink_range"		"200"
+			}
+		}
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
+	}
+
+
+	//=================================================================================================================
+	// Weaver: Basic Attack Mana Regen
+	//=================================================================================================================
+	"weaver_basic_attack_2" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+			{
+				"01"
+				{
+					"var_type"					"FIELD_FLOAT"
+					"mana_gain"					"0.04"
+				}
+		}
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		"Modifiers"
+		{ 
+			"on_attack_modifier"
+			{
+				"Passive"  				"1" //Auto apply this modifier when the spell is learned
+				"IsBuff"				"1" //Display as a green modifier
+				"IsHidden"				"1" //Show in the UI
+				
+				// Modifier Events
+				//--------------------------------------------------------------------------------
+
+				"OnAttackLanded"
+				{
+					"RunScript"
+					{
+						"ScriptFile"    "modifiers/mana_on_attack.lua"
+						"Function"		"ManaOnAttack"
+					}
+				} 
+			}			
+		}
+	}
+}
