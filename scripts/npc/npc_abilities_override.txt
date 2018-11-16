@@ -141,7 +141,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"100"		
+		"AbilityManaCost"				"0"		
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -169,35 +169,6 @@
 				"movement_speed_override_duration"	"40"
 			}
 		} 
-
-		// Data Driven
-    	//-------------------------------------------------------------------------------------
-		"OnSpellStart"
-		{
-			"ApplyModifier"
-			{
-				"Target"       "CASTER"
-				"ModifierName" "increase_movement_speed_modifier"
-			}
-		}
-
-		"Modifiers"
-		{
-			"increase_movement_speed_modifier"
-			{
-				"Passive"		"0"
-				"Duration"		"4"
-
-				"isBuff"		"1"
-				"isPurgable"	"0"
-				"isHidden"		"1"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT" "%bonus_movement_speed_override"
-				}
-			}
-		}
 	}
 
 	//=================================================================================================================
@@ -518,7 +489,6 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"MaxLevel"						"1"
-		"AbilityCastPoint"				"0.3"
 
 		"AbilityCooldown"				"0"
 		"AbilityManaCost"				"100"

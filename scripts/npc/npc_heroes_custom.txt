@@ -20,9 +20,10 @@
 		"Ability3"					""										// E Spell
 		"Ability4"					""										// D Spell
 		"Ability5"					""										// F Spell
-		"Ability4"					""										// R Spell
-		"Ability7"					"slark_shadow_dance"					// No HK Spell
+		"Ability6"					"wrapper_shadow_dance"					// R Spell
+		"Ability7"					""										// No HK Spell
 		"Ability8"					"slark_basic_attack"					// No HK Spell
+		"Ability23"					"slark_shadow_dance"					// No HK Spell
 		
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -117,14 +118,16 @@
 		
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityLayout"				"8"
+		"AbilityLayout"					"8"
 		"Ability1"						"weaver_blink"							// Q Spell								
 		"Ability2"						"wrapper_weaver_shukuchi"				// W Spell
 		"Ability3"						"wrapper_weaver_the_swarm"				// E Spell
 		"Ability4"						"weaver_ex_the_swarm"					// D Spell
 		//"Ability5"					"EX_spell_2"							// F Spell
-		//"Ability6"					"ultimate_spell"						// R Spell
+		"Ability6"						"weaver_time_lapse"				// R Spell
 		"Ability7"						""										// No HK Spell
+		"Ability8"						"weaver_geminate_attack"				// No HK Spell
+		//"Ability20"						""									// No HK Spell
 		"Ability21"						"weaver_the_swarm"						// No HK Spell
 		"Ability22"						"weaver_shukuchi"						// No HK Spell
 		"Ability23"						"weaver_basic_attack_2"					// No HK Spell
@@ -136,8 +139,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"8"										// Damage range min.
-		"AttackDamageMax"			"8"										// Damage range max.	
+		"AttackDamageMin"			"7"										// Damage range min.
+		"AttackDamageMax"			"7"										// Damage range max.	
 		"AttackRate"				"1.0"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.5"
 		

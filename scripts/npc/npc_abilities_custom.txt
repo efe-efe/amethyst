@@ -4,71 +4,6 @@
 	"Version"		"1"
 	
 	//=================================================================================================================
-	// Slark Ex-Pounce
-	//=================================================================================================================
-	
-	"slark_ex_pounce"
-	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass"						"slark_pounce"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"FightRecapLevel"				"1"
-		"MaxLevel"						"1"
-
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"8.0"
-
-		// Cost	
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"25"	
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"pounce_distance"		"700"
-			}
-			"02"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"pounce_speed"			"933.33"
-			}
-			"03"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"pounce_acceleration"	"7000.0"
-			}
-			"04"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"pounce_radius"			"95"
-			}
-			"05"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"pounce_damage"			"20"
-			}
-			"06"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"leash_duration"		"4.0"
-			}
-			"07"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"leash_radius"			"325"
-			}
-		}
-	}
-
-	//=================================================================================================================
 	// Sven: Ex-Storm Bolt
 	//=================================================================================================================
 	"sven_ex_storm_bolt"
@@ -174,32 +109,26 @@
 	}
 
 	//=================================================================================================================
-	// Slark: Dark Pact
+	// Slark: Shadow Dance
 	//=================================================================================================================
-	"slark_dark_pact_override" 
+	"wrapper_shadow_dance" 
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass" 					"ability_datadriven"
-		//"BaseClass" 					"ability_lua"							
-		"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
+		"BaseClass" 					"ability_datadriven"	
 		"MaxLevel" 						"1"
-		"AbilityTextureName"    		"slark_dark_pact"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityTextureName"    		"slark_shadow_dance"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
 
-		// "ScriptFile"					"abilities/slark_dark_pact/slark_dark_pact_lua.lua"	
-		
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.001"
-		
-		// Stats
+		//If changed, change ability on the override
 		//-------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
-		"AbilityCooldown"				"8"
-
+		"AbilityCooldown"				"0"
+		
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"100"	
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -207,13 +136,18 @@
 		{
 			"01"
 			{
-				"var_type"			"FIELD_INTEGER"
-				"radius"			"325"
+				"var_type"						"FIELD_INTEGER"
+				"movement_speed_gain"			"55"
 			}
 			"02"
 			{
-				"var_type"			"FIELD_INTEGER"
-				"max_damage"		"100"
+				"var_type"						"FIELD_INTEGER"
+				"hp_regen_gain"					"13"
+			}
+			"03"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"duration"						"4.0"	//If changed, change ability on the override
 			}
 		}
 
@@ -222,68 +156,105 @@
 		
 		"OnSpellStart"
 		{
-
-			"RunScript"
-			{
-				"ScriptFile"    "abilities/slark_dark_pact/slark_dark_pact_lua.lua"
-				"Function"		"PrintMe"
-			}
 			"ApplyModifier"
 			{
-				"ModifierName"		"area_damage"
-				"Target"			"CASTER"
+				"ModifierName"	"modifier_buffs"
+				"Target"		"CASTER"
+			}
+			"RunScript"
+			{
+				"ScriptFile"    "abilities/slark_shadow_dance/wrapper.lua"
+				"Function"		"RunShadowDance"
 			}
 		}
 
 		"Modifiers"
-		{
-			"area_damage"
+		{ 
+			"modifier_buffs"
 			{
-				
 				"Passive"  				"0" //Don't Auto apply this modifier when the spell is learned
+				"Duration" 				"%duration"
 				
-				"IsBuff"				"0" //Display as a green modifier
-				"IsDebuff"				"0" //Display as a green modifier
+				"IsBuff"				"1" //Display as a green modifier
 				"IsHidden"				"0" //Show in the UI  
 				
-				"Duration"						"1.2"
-				"ThinkInterval"					"0.1"
-				//16 pulses in total
+				"Attributes" 			"MODIFIER_ATTRIBUTE_MULTIPLE"
 
-				"OnIntervalThink"
+				"Properties"
 				{
-					"Damage"
-					{
-						"Target"		"CASTER"
-						"Damage"		"1"
-						"Type"			"DAMAGE_TYPE_MAGICAL"
-					}
-
-					"ActOnTargets"
-					{
-						"Target"
-						{
-							"Center"			"TARGET"
-							"Radius"			"%radius"
-							"Teams"				"DOTA_UNIT_TARGET_TEAM_ENEMY"
-							"Types"				"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
-							"Flags"				"DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
-						}
-						
-						"Action"
-						{
-							"Damage"
-							{
-								"Target"		"TARGET"
-								"Damage"		"3"
-								"Type"			"DAMAGE_TYPE_MAGICAL"
-							}
-						}
-					}
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_CONSTANT"	"%movement_speed_gain"
+					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"		"%hp_regen_gain"
 				}
 			}
 		}
 	}
+
+	//=================================================================================================================
+	// Slark Ex-Pounce
+	//=================================================================================================================
+	
+	"slark_ex_pounce"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"slark_pounce"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"FightRecapLevel"				"1"
+		"MaxLevel"						"1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost	
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"	
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"pounce_distance"		"700"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"pounce_speed"			"933.33"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"pounce_acceleration"	"7000.0"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"pounce_radius"			"95"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"pounce_damage"			"20"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"leash_duration"		"4.0"
+			}
+			"07"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"leash_radius"			"325"
+			}
+		}
+	}
+
+
 
 	//=================================================================================================================
 	// Slark: Basic Attack
@@ -425,7 +396,7 @@
 		{
 			"01"
 			{
-				"var_type"			"FIELD_INTEGER"
+				"var_type"			"FIELD_FLOAT"
 				"mana_gain"			"0.07"	//If changed, change ability on the override
 			}
 		}
@@ -437,14 +408,14 @@
 		{
 			"RunScript"
 			{
-				"ScriptFile"    "abilities/weaver_the_swarm/wrapper.lua"
-				"Function"		"RunTheSwarm"
+				"ScriptFile"    "modifiers/general/gain_mana.lua"
+				"Function"		"GainMana"
 			}
 
 			"RunScript"
 			{
-				"ScriptFile"    "modifiers/general/gain_mana.lua"
-				"Function"		"GainMana"
+				"ScriptFile"    "abilities/weaver_the_swarm/wrapper.lua"
+				"Function"		"RunTheSwarm"
 			}
 		}
 	}
@@ -699,6 +670,58 @@
 					}
 				} 
 			}			
+		}
+	}
+
+	//=================================================================================================================
+	// Weaver: Wrapper time lapse
+	//=================================================================================================================
+	"wrapper_weaver_time_lapse" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"	
+		"MaxLevel" 						"1"
+		"AbilityTextureName"    		"weaver_time_lapse"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_MOVEMENT | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"		
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO"
+		"AbilityUnitTargetFlags"		"DOTA_UNIT_TARGET_FLAG_NOT_CREEP_HERO"
+		"AbilityCastRange"				"1000"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
+
+		"AbilityCooldown"				"0"
+		"AbilityManaCost"				"100"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"-1.0"
+			}
+		}
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"    "abilities/weaver_time_lapse/wrapper.lua"
+				"Function"		"RunTimeLapse"
+			}
+
+			"RunScript"
+			{
+				"ScriptFile"    "modifiers/general/gain_mana.lua"
+				"Function"		"GainMana"
+			}
 		}
 	}
 }
