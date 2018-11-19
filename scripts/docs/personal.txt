@@ -17,3 +17,5 @@ it up with scripts
 
 * If an ability have "LinkedSpecialBonus" on the npc script, the override have to use it as well,
 otherwise, the ability will not work as intended
+
+* Cant use "%AbilityCastRange" as a "FixedDistance" on a "LinearProjectile"

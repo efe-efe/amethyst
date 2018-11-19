@@ -17,11 +17,11 @@
 		"AbilityLayout"				"8"
 		"Ability1"					"slark_dark_pact"						// Q Spell 
 		"Ability2"					"slark_pounce"							// W Spell
-		"Ability3"					""										// E Spell
+		"Ability3"					"slark_obscure_dive"					// E Spell
 		"Ability4"					""										// D Spell
 		"Ability5"					""										// F Spell
 		"Ability6"					"wrapper_shadow_dance"					// R Spell
-		"Ability7"					""										// No HK Spell
+		"Ability7"					"slark_inner_madness"					// No HK Spell
 		"Ability8"					"slark_basic_attack"					// No HK Spell
 		"Ability23"					"slark_shadow_dance"					// No HK Spell
 		
@@ -70,10 +70,13 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"				"8"
+		"Ability1"					"sven_storm_bolt_override"
+		"Ability2"					""
+		"Ability3"					"sven_warcry"
 		"Ability4"					"sven_ex_storm_bolt"					// Ability 4
 		"Ability5"					"sven_ex_warcry"						// Ability 5
-		"Ability7"					""										// No HK Spell
-		"Ability8"					"mana_on_attack"						// No HK Spell
+		"Ability8"					"sven_basic_attack2"						// No HK Spell
+		"Ability23"					"sven_basic_attack"						// No HK Spell
 		
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -107,6 +110,7 @@
 		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
 
 	}
+
 	//=================================================================================================================
 	// HERO: Weaver
 	//=================================================================================================================
@@ -143,6 +147,7 @@
 		"AttackDamageMax"			"7"										// Damage range max.	
 		"AttackRate"				"1.0"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.5"
+		"AttackRange"				"500"
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
@@ -165,4 +170,12 @@
 		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
 
 	}
+
+	"npc_dota_hero_venomancer"
+	{
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"Ability1"						"customability_superpoison"				// Q Spell	
+	}
 }
+

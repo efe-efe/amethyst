@@ -1,0 +1,109 @@
+
+"customability_superpoison"
+{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"                             "ability_datadriven"
+		"AbilityTextureName"                    "venomancer_venomous_gale"
+		"AbilityBehavior"                       "DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastAnimation"                  "ACT_DOTA_ATTACK"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"                              "700"
+		"AbilityCastPoint"                              "0.0 0.0 0.0 0.0"
+
+		// Time        
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"                               "22.0 22.0 22.0 22.0"
+		
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"                               "0"
+
+		"OnSpellStart"
+		{
+			"LinearProjectile"
+			{
+				"Target"                        "POINT"
+				"EffectName"                    "particles/units/heroes/hero_venomancer/venomancer_venomous_gale.vpcf"
+				"MoveSpeed"                     "%speed"
+				"StartRadius"                   "%radius"
+				"EndRadius"                     "%radius"
+				"TargetTeams"                   "DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+				"TargetTypes"                   "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
+				"TargetFlags"                   "DOTA_UNIT_TARGET_FLAG_NONE"
+				"HasFrontalCone"                "0"
+				"ProvidesVision"                "1"
+				"VisionRadius"                  "400"
+			}
+			"FireSound"
+			{
+				"EffectName"                    "Hero_Venomancer.VenomousGale"
+			}
+		}
+		
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"                       "false"
+
+			"ApplyModifier"
+			{
+				"ModifierName"                  "modifier_superpoison"
+				"Duration"                      "%duration"
+				"Target"                        "TARGET"
+			}
+
+			"FireSound"
+			{
+				"EffectName"                    "Hero_Venomancer.VenomousGaleImpact"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_superpoison"
+			{
+				"IsDebuff"              		"0"
+
+				"AttachEffect"
+				{
+					"EffectName"            "particles/units/heroes/hero_venomancer/venomancer_gale_poison_debuff.vpcf"
+					"EffectAttachType"      "follow_origin"
+					"Target"                "TARGET"
+				}
+						
+				"Duration"      				"%duration"
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_PERCENTAGE" "%attack_bonus"
+				}
+			}
+		}
+		
+		// Special     
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"                              "FIELD_FLOAT"
+				"duration"                              "2.0"
+			}
+			"02"
+			{
+				"var_type"                              "FIELD_INTEGER"
+				"attack_bonus"                  		"900"
+			}
+			"03"
+			{
+				"var_type"                              "FIELD_INTEGER"
+				"radius"                                "125 125 125 125"
+			}
+			"04"
+			{
+				"var_type"                              "FIELD_INTEGER"
+				"speed"                                 "1200 1200 1200 1200"
+			}
+		}
+	}

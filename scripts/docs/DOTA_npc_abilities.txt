@@ -16261,12 +16261,12 @@
 			"01"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"delay"			"0.25"
+				"delay"					"0.25"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"tooltip_attack"			"1"
+				"tooltip_attack"		"1"
 				"LinkedSpecialBonus"	"special_bonus_unique_weaver_5"
 			}
 		}		

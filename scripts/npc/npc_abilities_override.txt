@@ -97,7 +97,6 @@
 		}
 	}
 	
-	
 	//=================================================================================================================
 	// Slark: Essence Shift
 	//=================================================================================================================
@@ -313,10 +312,20 @@
 		{
 			"01"
 			{
-				"var_type"			"FIELD_INTEGER"
-				"gods_strength_damage"		"15"		
+				"var_type"					"FIELD_INTEGER"
+				"gods_strength_damage"		"150"		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"gods_strength_bonus_str"	"0"		
+				"LinkedSpecialBonus"		"special_bonus_unique_sven_2"
 			}
 		}
+		8=100
+		22=x
+
+		x= 22*100/8
 	}
 
 	//=================================================================================================================
@@ -439,17 +448,6 @@
 			{
 				"var_type"				"FIELD_FLOAT"
 				"duration"				"1.5"
-			}
-		}
-		
-		// Data Driven
-    	//-------------------------------------------------------------------------------------
-		"OnSpellStart"
-		{
-			"RunScript"
-			{
-				"ScriptFile"    "abilities/slark_dark_pact/slark_dark_pact_lua.lua"
-				"Function"		"PrintMe"
 			}
 		}
 	}

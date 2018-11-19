@@ -2,7 +2,180 @@
 "DOTAAbilities"
 {
 	"Version"		"1"
+
+	//=================================================================================================================
+	// Sven: Storm Bolt Override
+	//=================================================================================================================
+	"sven_storm_bolt_override"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"MaxLevel"						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityTextureName"			"sven_storm_bolt"
+		"AOERadius"						"%bolt_aoe"
 	
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1000"
+		"AbilityCastPoint"				"0.3"
+	
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"13.0"
+	
+		// Damage.
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage"					"30"
+	
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+	
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bolt_speed"				"1300"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"bolt_slow_duration"		"2.0"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bolt_aoe"					"170"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"vision_radius"				"170"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bolt_slow_percentage"		"-50"
+			}
+		}
+	
+		"precache"
+		{
+			"particle"			"particles/units/heroes/hero_venomancer/venomancer_gale_poison_debuff.vpcf"
+			"particle"			"particles/base_attacks/ranged_tower_bad_linear.vpcf"
+		}
+
+		"OnSpellStart"
+		{
+			"LinearProjectile"
+			{
+				"Target"                        "POINT"
+				"EffectName"                    "particles/base_attacks/ranged_tower_bad_linear.vpcf"
+				"MoveSpeed"                     "%bolt_speed"
+				"StartRadius"                   "%vision_radius"
+				"EndRadius"                     "%vision_radius"
+				"TargetTeams"                   "DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+				"TargetTypes"                   "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
+				"TargetFlags"                   "DOTA_UNIT_TARGET_FLAG_NONE"
+				"HasFrontalCone"                "0"
+				"ProvidesVision"                "1"
+				"VisionRadius"                  "%vision_radius"
+			}
+	
+			"FireSound"
+			{
+				"EffectName"		"Hero_Sven.StormBolt"
+				"Target"			"CASTER"
+			}
+		}
+		
+		"OnProjectileFinish"
+		{
+			"FireSound"
+			{
+				"EffectName"		"Hero_Sven.StormBoltImpact"
+				"Target"			"POINT"
+			}
+
+			"FireEffect"
+			{
+				"EffectName"			"particles/units/heroes/hero_sven/sven_storm_bolt_projectile_explosion.vpcf"
+				"EffectAttachType"		"attach_hitloc"
+				"Target"				"POINT"
+				"ControlPointEntities"
+				{
+					"TARGET"	"attach_hitloc"
+					"TARGET"	"attach_hitloc"
+					"TARGET"	"attach_hitloc"
+					"TARGET"	"attach_hitloc"	//CP3 has a child explosion origin
+				}
+			}
+
+			"ActOnTargets"
+			{
+				"Target"
+				{
+					"Center" "POINT"
+	                "Radius" "%bolt_aoe"
+	                "Teams" "DOTA_UNIT_TARGET_TEAM_ENEMY" 
+	                "Types" "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+				}
+	
+				"Action"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_MAGICAL"
+						"Damage"		"30"
+					}
+	
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_storm_bolt_datadriven"
+						"Target"		"TARGET"
+					}
+				}
+			}
+		}
+		
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"                       "false"
+
+			"FireSound"
+			{
+				"EffectName"                    "Hero_Sven.StormBoltImpact"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_storm_bolt_datadriven"
+			{
+				"Duration"				"%bolt_slow_duration"
+				"IsDebuff"				"1"
+				"IsPurgable" 			"1"
+	
+				"EffectName"			"particles/generic_gameplay/rune_haste_sparks.vpcf"
+				"EffectAttachType"		"follow_overhead"
+	
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%bolt_slow_percentage"
+				}
+			}
+		}
+	}
+
 	//=================================================================================================================
 	// Sven: Ex-Storm Bolt
 	//=================================================================================================================
@@ -104,6 +277,146 @@
 			{
 				"var_type"			"FIELD_INTEGER"
 				"warcry_radius"		"900"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Sven: Basic Attack
+	//=================================================================================================================
+	"sven_basic_attack" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+			{
+				"01"
+				{
+					"var_type"					"FIELD_FLOAT"
+					"mana_gain"					"0.05"
+				}
+		}
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		"Modifiers"
+		{ 
+			"on_attack_modifier"
+			{
+				"Passive"  				"1" //Auto apply this modifier when the spell is learned
+				"IsBuff"				"1" //Display as a green modifier
+				"IsHidden"				"1" //Show in the UI
+				
+				// Modifier Events
+				//--------------------------------------------------------------------------------
+
+				"OnAttackLanded"
+				{
+					"RunScript"
+					{
+						"ScriptFile"    "modifiers/mana_on_attack.lua"
+						"Function"		"ManaOnAttack"
+					}
+				} 
+			}			
+		}
+	}
+
+	//=================================================================================================================
+	// Sven: Basic Attack Two
+	//=================================================================================================================
+	"sven_basic_attack2" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"    		"sven_great_cleave"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityCooldown"				"7.0"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"crit_multiplier"				"290"
+			}
+			"02"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"great_cleave_radius"			"300.0"
+			}
+			"03"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"great_cleave_damage"			"120"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_skeletonking.vsndevts"
+		}
+
+		"Modifiers"
+		{
+			"modifier_great_cleave_datadriven"
+			{
+				"Passive"	"1"
+				"IsHidden"	"1"
+	
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE"	"%crit_multiplier"
+				}
+	
+				"OnAttackLanded"
+				{	
+					"FireEffect"
+					{
+						"EffectName"			"particles/units/heroes/hero_bounty_hunter/bounty_hunter_jinda_slow.vpcf"
+						"EffectAttachType"		"attach_hitloc"
+						"Target"				"TARGET"
+					}
+	
+					"FireSound"
+					{
+						"EffectName"			"Hero_SkeletonKing.CriticalStrike"
+						"Target"				"TARGET"
+					}
+	
+					"RunScript"
+					{
+						"ScriptFile"			"abilities/sven_great_cleave/sven_great_cleave.lua"	
+						"Function"				"GreatCleave"
+					}
+				}
+			}
+
+			"modifier_actual_cleave_datadriven"
+			{
+				"Passive"	"1"
+				"IsHidden"	"1"
+	
+				"OnAttackLanded"
+				{
+					"CleaveAttack"
+					{
+						"CleavePercent"		"%great_cleave_damage"
+						"CleaveRadius"		"%great_cleave_radius"
+						"CleaveEffect"		"particles/units/heroes/hero_sven/sven_spell_great_cleave.vpcf"
+					}
+				}
 			}
 		}
 	}
@@ -254,8 +567,6 @@
 		}
 	}
 
-
-
 	//=================================================================================================================
 	// Slark: Basic Attack
 	//=================================================================================================================
@@ -366,6 +677,246 @@
 				}
 			}
 			
+		}
+	}
+
+	//=================================================================================================================
+	// Slark: Inner Madness (R spell)
+	//=================================================================================================================
+	"slark_inner_madness" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"    		"skeleton_king_vampiric_aura"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"15.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"lifesteal"					"50"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"lifesteal_duration"		"4.0"
+			}
+		}
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_huskar.vsndevts"
+			"particle"  "particles/units/heroes/hero_huskar/huskar_inner_vitality.vpcf"
+			"particle"	"particles/units/heroes/hero_huskar/huskar_inner_vitality_cast.vpcf"
+		}
+	
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		"OnSpellStart"
+		{
+			"FireEffect"
+			{
+				"EffectName"        "particles/units/heroes/hero_huskar/huskar_inner_vitality_cast.vpcf"
+				"EffectAttachType"  "follow_origin"
+				"Target"            "CASTER"
+	
+				"ControlPointEntities"
+				{
+					"CASTER"	"attach_origin"
+					"CASTER"	"attach_origin"
+				}
+			}
+
+			"FireSound"
+			{
+				"EffectName"	"Hero_Huskar.Inner_Vitality"
+				"Target"		"TARGET"
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"	"modifier_life_steal"
+				"Target"		"CASTER"
+			} 
+		}
+
+		"Modifiers"
+		{ 
+			"modifier_life_steal"
+			{
+				"Duration"		"%lifesteal_duration"
+				"Passive"		"1"
+				"IsBuff"		"1"
+				"IsPurgable"	"1"
+		    	"IsHidden"		"0"
+
+		    	"OnDealDamage"
+				{
+					"Lifesteal"
+					{
+						"Target" 				"ATTACKER"
+						"LifestealPercent"		"%lifesteal"
+					}
+				}
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Slark: Obscure Dive  (E spell)
+	//=================================================================================================================
+	
+	"slark_obscure_dive"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"				"ability_datadriven"
+		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityTextureName"	"mirana_leap"
+		"AbilityCastAnimation"	"ACT_DOTA_CAST_ABILITY_4"
+		"AbilityUnitDamageType"	"DAMAGE_TYPE_PHYSICAL"
+	
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"			"soundevents/game_sounds_heroes/game_sounds_mirana.vsndevts"
+		}
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.0"
+	
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+		"AbilityDuration"				"10.0"
+	
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+	
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"leap_distance"			"400"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"leap_speed"			"1000.0"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"leap_acceleration"		"3500.0"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"leap_radius"			"150"
+			}
+		}
+	
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"	"Ability.Leap"
+				"Target"		"CASTER"
+			}
+			
+			"RunScript"
+			{
+				"ScriptFile"	"abilities/slark_obscure_dive/slark_obscure_dive.lua"
+				"Function"		"Leap"
+			}
+	
+			"ApplyMotionController"
+			// For this: gfycat.com/BraveHideousGiantschnauzer -> check: bit.ly/1KWulqA
+			{
+			    "Target" 						"CASTER"
+			    "ScriptFile"    				"abilities/slark_obscure_dive/slark_obscure_dive.lua"
+			    "HorizontalControlFunction" 	"LeapHorizonal"        
+			}
+
+			"ActOnTargets"
+			{
+				"Target"
+	            {
+	                "Center" 			"CASTER"
+	                "Radius" 			"%leap_radius"
+	                "Teams"				"DOTA_UNIT_TARGET_TEAM_ENEMY"
+					"Types"				"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+					"Flags"				"DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+	            }
+	
+	            "Action"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Damage"		"12"
+						"Type"			"DAMAGE_TYPE_PHYSICAL"
+					}
+				}
+			}
+
+			"ApplyModifier"
+			{
+				"ModifierName"		"modifier_leap_datadriven"
+				"Target"			"CASTER"
+			}
+		}
+	
+		"Modifiers"
+		{
+			"modifier_leap_datadriven"
+			{
+				"Duration"		"1.0"
+
+				"OnCreated"
+				{
+					"AttachEffect"
+					{
+						"EffectName"		"particles/units/heroes/hero_slark/slark_shadow_dance.vpcf"
+						"EffectAttachType" 	"follow_origin"
+						
+						"Target" "CASTER"
+
+						"ControlPointEntities"
+						{
+							"TARGET" "follow_origin"
+							"TARGET" "follow_origin"
+							"TARGET" "follow_origin"
+							"TARGET" "follow_origin"
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -561,8 +1112,6 @@
 				"IsHidden"		"1"
 				"Duration"		"1.5"
 				
-				"EffectAttachType"	"follow_origin"
-				
 				"Aura"			"gain_mana_modifier"
 				"Aura_Radius"	"%radius"
 				"Aura_Teams"	"DOTA_UNIT_TARGET_TEAM_ENEMY"
@@ -724,4 +1273,150 @@
 			}
 		}
 	}
+
+
+
+
+
+
+
+	"customability_superpoison"
+{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"                             "ability_datadriven"
+		"AbilityTextureName"                    "venomancer_venomous_gale"
+		"AbilityBehavior"                       "DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastAnimation"                  "ACT_DOTA_ATTACK"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"                              "700"
+		"AbilityCastPoint"                              "0.0 0.0 0.0 0.0"
+
+		// Time        
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"                               "22.0 22.0 22.0 22.0"
+		
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"                               "0"
+
+		"precache"
+		{
+			"particle"  "particles/units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
+		}
+
+		"OnSpellStart"
+		{
+			"LinearProjectile"
+			{
+				"Target"                        "POINT"
+				"EffectName"                    "particles/units/heroes/hero_venomancer/venomancer_venomous_gale.vpcf"
+				"MoveSpeed"                     "%speed"
+				"StartRadius"                   "%radius"
+				"EndRadius"                     "%radius"
+				"TargetTeams"                   "DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+				"TargetTypes"                   "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
+				"TargetFlags"                   "DOTA_UNIT_TARGET_FLAG_NONE"
+				"HasFrontalCone"                "0"
+				"ProvidesVision"                "1"
+				"VisionRadius"                  "400"
+			}
+			"FireSound"
+			{
+				"EffectName"                    "Hero_Venomancer.VenomousGale"
+			}
+
+			"AttachEffect"
+			{
+				"EffectName"                    "particles/units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
+				"EffectAttachType" 				"follow_origin"
+						
+				"Target" "POINT"
+
+				"ControlPointEntities"
+				{
+					"TARGET" "follow_origin"
+					"TARGET" "follow_origin"
+					"TARGET" "follow_origin"
+					"TARGET" "follow_origin"
+				}
+			}
+		}
+		
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"                       "false"
+
+			"ApplyModifier"
+			{
+				"ModifierName"                  "modifier_superpoison"
+				"Duration"                      "%duration"
+				"Target"                        "TARGET"
+			}
+
+			"FireSound"
+			{
+				"EffectName"                    "Hero_Venomancer.VenomousGaleImpact"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_superpoison"
+			{
+				"IsDebuff"              		"0"
+
+				"AttachEffect"
+				{
+					"EffectName"            "particles/units/heroes/hero_venomancer/venomancer_gale_poison_debuff.vpcf"
+					"EffectAttachType"      "follow_origin"
+					"Target"                "TARGET"
+				}
+						
+				"Duration"      				"%duration"
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_PERCENTAGE" "%attack_bonus"
+				}
+			}
+		}
+		
+		// Special     
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"                              "FIELD_FLOAT"
+				"duration"                              "2.0"
+			}
+			"02"
+			{
+				"var_type"                              "FIELD_INTEGER"
+				"attack_bonus"                  		"900"
+			}
+			"03"
+			{
+				"var_type"                              "FIELD_INTEGER"
+				"radius"                                "125 125 125 125"
+			}
+			"04"
+			{
+				"var_type"                              "FIELD_INTEGER"
+				"speed"                                 "1200 1200 1200 1200"
+			}
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+

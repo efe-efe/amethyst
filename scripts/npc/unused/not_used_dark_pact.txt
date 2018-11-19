@@ -50,12 +50,6 @@
 		
 		"OnSpellStart"
 		{
-
-			"RunScript"
-			{
-				"ScriptFile"    "abilities/slark_dark_pact/slark_dark_pact_lua.lua"
-				"Function"		"PrintMe"
-			}
 			"ApplyModifier"
 			{
 				"ModifierName"		"area_damage"
