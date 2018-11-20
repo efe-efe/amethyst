@@ -14,15 +14,16 @@
 		
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityLayout"				"8"
+		"AbilityLayout"				"9"
 		"Ability1"					"slark_dark_pact"						// Q Spell 
 		"Ability2"					"slark_pounce"							// W Spell
 		"Ability3"					"slark_obscure_dive"					// E Spell
-		"Ability4"					""										// D Spell
-		"Ability5"					""										// F Spell
+		"Ability4"					"slark_unfair_contract"					// D Spell
+		"Ability5"					"doom_bringer_empty1"					// F Spell
 		"Ability6"					"wrapper_shadow_dance"					// R Spell
 		"Ability7"					"slark_inner_madness"					// No HK Spell
 		"Ability8"					"slark_basic_attack"					// No HK Spell
+		"Ability9"					"doom_bringer_empty2"					// No HK Spell
 		"Ability23"					"slark_shadow_dance"					// No HK Spell
 		
 		// Armor

@@ -1,5 +1,5 @@
-function RunTimeLapse()
-    local weaver = Entities:FindByClassname(nil, "npc_dota_hero_weaver")
+function RunTimeLapse( keys )
+    local weaver = keys.caster
     if weaver then
         local timeLapse = weaver:FindAbilityByName("weaver_time_lapse")
         if timeLapse:IsFullyCastable() then

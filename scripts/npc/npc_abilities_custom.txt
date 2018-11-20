@@ -17,7 +17,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityTextureName"			"sven_storm_bolt"
-		"AOERadius"						"%bolt_aoe"
+		"AOERadius"						"%projectile_aoe"
 	
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -43,18 +43,18 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bolt_speed"				"1300"
+				"projectile_speed"			"1300"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"bolt_slow_duration"		"2.0"
+				"slow_duration"				"2.0"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bolt_aoe"					"170"
-			}
+				"projectile_aoe"			"170"
+			}	
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
@@ -63,14 +63,18 @@
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"bolt_slow_percentage"		"-50"
+				"slow_percentage"			"-50"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.05"
 			}
 		}
 	
 		"precache"
 		{
-			"particle"			"particles/units/heroes/hero_venomancer/venomancer_gale_poison_debuff.vpcf"
-			"particle"			"particles/base_attacks/ranged_tower_bad_linear.vpcf"
+			"particle"			"particles/mod_units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
 		}
 
 		"OnSpellStart"
@@ -78,11 +82,10 @@
 			"LinearProjectile"
 			{
 				"Target"                        "POINT"
-				"EffectName"                    "particles/base_attacks/ranged_tower_bad_linear.vpcf"
-				"MoveSpeed"                     "%bolt_speed"
+				"EffectName"					"particles/mod_units/heroes/hero_sven/sven_spell_storm_bolt.vpcf"
+				"MoveSpeed"                     "%projectile_speed"
 				"StartRadius"                   "%vision_radius"
 				"EndRadius"                     "%vision_radius"
-				"TargetTeams"                   "DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 				"TargetTypes"                   "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
 				"TargetFlags"                   "DOTA_UNIT_TARGET_FLAG_NONE"
 				"HasFrontalCone"                "0"
@@ -105,26 +108,12 @@
 				"Target"			"POINT"
 			}
 
-			"FireEffect"
-			{
-				"EffectName"			"particles/units/heroes/hero_sven/sven_storm_bolt_projectile_explosion.vpcf"
-				"EffectAttachType"		"attach_hitloc"
-				"Target"				"POINT"
-				"ControlPointEntities"
-				{
-					"TARGET"	"attach_hitloc"
-					"TARGET"	"attach_hitloc"
-					"TARGET"	"attach_hitloc"
-					"TARGET"	"attach_hitloc"	//CP3 has a child explosion origin
-				}
-			}
-
 			"ActOnTargets"
 			{
 				"Target"
 				{
 					"Center" "POINT"
-	                "Radius" "%bolt_aoe"
+	                "Radius" "%projectile_aoe"
 	                "Teams" "DOTA_UNIT_TARGET_TEAM_ENEMY" 
 	                "Types" "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
 				}
@@ -135,13 +124,19 @@
 					{
 						"Target"		"TARGET"
 						"Type"			"DAMAGE_TYPE_MAGICAL"
-						"Damage"		"30"
+						"Damage"		"%AbilityDamage"
 					}
 	
 					"ApplyModifier"
 					{
 						"ModifierName"	"modifier_storm_bolt_datadriven"
 						"Target"		"TARGET"
+					}
+					
+					"RunScript"
+					{
+						"ScriptFile"    "modifiers/general/gain_mana.lua"
+						"Function"		"GainMana"
 					}
 				}
 			}
@@ -161,7 +156,7 @@
 		{
 			"modifier_storm_bolt_datadriven"
 			{
-				"Duration"				"%bolt_slow_duration"
+				"Duration"				"%slow_duration"
 				"IsDebuff"				"1"
 				"IsPurgable" 			"1"
 	
@@ -170,7 +165,7 @@
 	
 				"Properties"
 				{
-					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%bolt_slow_percentage"
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"	"%slow_percentage"
 				}
 			}
 		}
@@ -277,6 +272,220 @@
 			{
 				"var_type"			"FIELD_INTEGER"
 				"warcry_radius"		"900"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Slark: Unfair contract
+	//=================================================================================================================
+	"slark_unfair_contract"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_datadriven"
+		"MaxLevel"						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityTextureName"			"chaos_knight_chaos_bolt"
+		"AOERadius"						"%bolt_aoe"
+	
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1100"
+		"AbilityCastPoint"				"0.3"
+	
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"6.0"
+	
+		// Damage.
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage"					"6"
+	
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+	
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"900"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"5.0"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_aoe"			"170"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"vision_radius"				"170"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_second"			"2"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"heal_per_second"			"2"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.05"
+			}
+			"08"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"on_hit_heal"				"4"
+			}
+		}
+	
+		"precache"
+		{
+			"particle"	"particles/mod_units/heroes/hero_chaos_knight/chaos_knight_chaos_bolt.vpcf"
+			"particle"	"particles/status_fx/status_effect_poison_viper.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bristleback.vsndevts"
+		}
+
+		"OnSpellStart"
+		{
+			"LinearProjectile"
+			{
+				"Target"                        "POINT"
+				"EffectName"					"particles/mod_units/heroes/hero_chaos_knight/chaos_knight_chaos_bolt.vpcf"
+				"MoveSpeed"                     "%projectile_speed"
+				"StartRadius"                   "%vision_radius"
+				"EndRadius"                     "%vision_radius"
+				"TargetTypes"                   "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
+				"TargetFlags"                   "DOTA_UNIT_TARGET_FLAG_NONE"
+				"HasFrontalCone"                "0"
+				"ProvidesVision"                "1"
+				"VisionRadius"                  "%vision_radius"
+			}
+	
+			"FireSound"
+			{
+				"EffectName"		"Hero_Bristleback.ViscousGoo.Cast"
+				"Target"			"CASTER"
+			}
+		}
+		
+		"OnProjectileFinish"
+		{
+			"FireSound"
+			{
+				"EffectName"		"Hero_Bristleback.ViscousGoo.Target"
+				"Target"			"POINT"
+			}
+
+			"ActOnTargets"
+			{
+				"Target"
+				{
+					"Center" "POINT"
+	                "Radius" "%projectile_aoe"
+	                "Teams" "DOTA_UNIT_TARGET_TEAM_ENEMY" 
+	                "Types" "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+				}
+	
+				"Action"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_MAGICAL"
+						"Damage"		"%AbilityDamage"
+					}
+
+					"Heal"
+					{
+						"Target"		"CASTER"
+						"HealAmount"	"%on_hit_heal"
+					}
+	
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_unfair_contract_debuff"
+						"Target"		"TARGET"
+					}
+
+					"ApplyModifier"
+					{
+						"ModifierName"	"modifier_unfair_contract_buff"
+						"Target"		"CASTER"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"    "modifiers/general/gain_mana.lua"
+						"Function"		"GainMana"
+					}
+				}
+			}
+		}
+		
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"                       "false"
+
+			"FireSound"
+			{
+				"EffectName"                    "Hero_Sven.StormBoltImpact"
+			}
+		}
+
+		"Modifiers"
+		{
+			"modifier_unfair_contract_debuff"
+			{
+				"Duration"				"%duration"
+				"IsDebuff"				"1"
+				"IsPurgable" 			"1"
+
+				"StatusEffectName"		"particles/status_fx/status_effect_poison_viper.vpcf"
+				"StatusEffectPriority"	"15"
+	
+				"ThinkInterval"	"1.0"
+				"OnIntervalThink"
+				{
+					"Damage"
+					{
+						"Target"		"TARGET"
+						"Type"			"DAMAGE_TYPE_MAGICAL"
+						"Damage"		"%damage_per_second"
+					}
+				}
+			}
+			"modifier_unfair_contract_buff"
+			{
+				"Duration"				"%duration"
+				"IsDebuff"				"0"
+				"IsPurgable" 			"1"
+
+				"ThinkInterval"	"1.0"
+				"OnIntervalThink"
+				{
+					"Heal"
+					{
+						"Target"		"TARGET"
+						"HealAmount"	"%heal_per_second"
+					}
+				}
 			}
 		}
 	}
@@ -791,7 +1000,7 @@
 		"BaseClass"				"ability_datadriven"
 		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
 		"AbilityTextureName"	"mirana_leap"
-		"AbilityCastAnimation"	"ACT_DOTA_CAST_ABILITY_4"
+		"AbilityCastAnimation"	"ACT_DOTA_CAST_ABILITY_1"
 		"AbilityUnitDamageType"	"DAMAGE_TYPE_PHYSICAL"
 	
 		// Precache
@@ -804,7 +1013,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.0"
+		"AbilityCastPoint"				"0.1"
 	
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -822,7 +1031,7 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"leap_distance"			"400"
+				"leap_distance"			"450"
 			}
 			"02"
 			{
@@ -838,6 +1047,17 @@
 			{
 				"var_type"				"FIELD_INTEGER"
 				"leap_radius"			"150"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"12"
+			}
+			
+			"06"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"mana_gain"				"0.04"
 			}
 		}
 	
@@ -863,38 +1083,22 @@
 			    "HorizontalControlFunction" 	"LeapHorizonal"        
 			}
 
-			"ActOnTargets"
-			{
-				"Target"
-	            {
-	                "Center" 			"CASTER"
-	                "Radius" 			"%leap_radius"
-	                "Teams"				"DOTA_UNIT_TARGET_TEAM_ENEMY"
-					"Types"				"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
-					"Flags"				"DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
-	            }
-	
-	            "Action"
-				{
-					"Damage"
-					{
-						"Target"		"TARGET"
-						"Damage"		"12"
-						"Type"			"DAMAGE_TYPE_PHYSICAL"
-					}
-				}
-			}
-
 			"ApplyModifier"
 			{
-				"ModifierName"		"modifier_leap_datadriven"
+				"ModifierName"		"modifier_graphics"
+				"Target"			"CASTER"
+			}
+			
+			"ApplyModifier"
+			{
+				"ModifierName"		"check_collision_modifier"
 				"Target"			"CASTER"
 			}
 		}
 	
 		"Modifiers"
 		{
-			"modifier_leap_datadriven"
+			"modifier_graphics"
 			{
 				"Duration"		"1.0"
 
@@ -914,6 +1118,36 @@
 							"TARGET" "follow_origin"
 							"TARGET" "follow_origin"
 						}
+					}
+				}
+			}
+
+			"check_collision_modifier"
+			{
+				"IsHidden"		"1"
+				"Duration"		"1.0"
+				
+				"Aura"			"on_collision_modifier"
+				"Aura_Radius"	"%leap_radius"
+				"Aura_Teams"	"DOTA_UNIT_TARGET_TEAM_ENEMY"
+				"Aura_Types"	"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP | DOTA_UNIT_TARGET_MECHANICAL"
+			}
+			
+			"on_collision_modifier"
+			{
+				"OnCreated"
+				{
+					"Damage"
+					{
+						"Target"	"TARGET"
+						"Type"		"DAMAGE_TYPE_PHYSICAL"
+						"Damage"	"%damage"
+					}
+
+					"RunScript"
+					{
+						"ScriptFile"    "modifiers/general/gain_mana.lua"
+						"Function"		"GainMana"
 					}
 				}
 			}
@@ -1174,7 +1408,6 @@
 		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
 	}
 
-
 	//=================================================================================================================
 	// Weaver: Basic Attack Mana Regen
 	//=================================================================================================================
@@ -1273,6 +1506,10 @@
 			}
 		}
 	}
+
+
+
+
 
 
 

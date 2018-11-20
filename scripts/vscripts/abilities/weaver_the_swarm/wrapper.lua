@@ -1,5 +1,5 @@
-function RunTheSwarm()
-    local weaver = Entities:FindByClassname(nil, "npc_dota_hero_weaver")
+function RunTheSwarm( keys )
+    local weaver =  keys.caster
     if weaver then
         local theSwarm = weaver:FindAbilityByName("weaver_the_swarm")
         if theSwarm:IsFullyCastable() then

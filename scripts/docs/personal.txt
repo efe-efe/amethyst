@@ -19,3 +19,23 @@ it up with scripts
 otherwise, the ability will not work as intended
 
 * Cant use "%AbilityCastRange" as a "FixedDistance" on a "LinearProjectile"
+
+
+//=================================================================================	
+To use a "TrackedProjectile" as a "LinearProjectile"
+//=================================================================================
+
+First: Copy the intended particle to use on the "dota 2 beta\content\dota_addons\dotarite2\particles\mod_units\" directory
+
+    * Its important to use a name different from "units" (on the example is used "mod_units")
+
+Second: Open the particle on the Valve's Particle Editor
+    
+    * On this process, the .vpcf_c files will be created on the "dota 2 beta\game\dota_addons\dotarite2\particles\mod_units\"
+    directory.
+
+Third: With the particle selected, select the category "Base Properties" (on the left menu)  and:
+    a) Remove the Operator "C_OP_MaxVelocity"
+    b) Remove the Force "C_OP_AttractToControlPoint"
+    c) Add the Initializer "Velocity set from control point" (With the (+) button on the left menu next to "initializers")
+    d) Set the control point on the Initializer created on "1"

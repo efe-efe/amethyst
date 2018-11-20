@@ -1,5 +1,5 @@
-function RunShadowDance()
-    local slark = Entities:FindByClassname(nil, "npc_dota_hero_slark")
+function RunShadowDance( keys )
+    local slark = keys.caster
     if slark then
         local shadowDance = slark:FindAbilityByName("slark_shadow_dance")
         if shadowDance:IsFullyCastable() then

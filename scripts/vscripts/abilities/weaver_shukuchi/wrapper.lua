@@ -1,5 +1,5 @@
-function RunShukuchi()
-    local weaver = Entities:FindByClassname(nil, "npc_dota_hero_weaver")
+function RunShukuchi( keys )
+    local weaver = keys.caster
     if weaver then
         local shukuchi = weaver:FindAbilityByName("weaver_shukuchi")
         if shukuchi:IsFullyCastable() then
