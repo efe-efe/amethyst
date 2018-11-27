@@ -6,4 +6,8 @@ function RunTimeLapse( keys )
             weaver:CastAbilityImmediately(timeLapse, weaver:GetPlayerOwnerID())
         end
     end
+    Timers:CreateTimer( 2, function()
+            weaver:SetMana(0.0)
+        end
+    )
 end

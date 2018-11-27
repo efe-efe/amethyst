@@ -39,3 +39,23 @@ Third: With the particle selected, select the category "Base Properties" (on the
     b) Remove the Force "C_OP_AttractToControlPoint"
     c) Add the Initializer "Velocity set from control point" (With the (+) button on the left menu next to "initializers")
     d) Set the control point on the Initializer created on "1"
+
+//=================================================================================	
+About "IsServer()"
+//=================================================================================
+    IsServer() is only required inside ability_lua scripts and lua modifiers. It's used to prevent running into problems with client-server difference (because the clients know less things than the server). In datadriven RunScripts, the lua functions only execute on the server.
+
+//=================================================================================	
+To print a table
+//=================================================================================
+
+    This example worked fine for me
+
+    function healthBufferModifier:OnHealReceived( params )
+        if IsServer() then
+            DebugPrint("-----------------------Heal received")
+            PrintTable(params)
+            DebugPrintTable(params)
+        end
+        
+    end

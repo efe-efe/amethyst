@@ -276,6 +276,147 @@
 		}
 	}
 
+
+	//=================================================================================================================
+	// Sven: Basic Attack
+	//=================================================================================================================
+	"sven_basic_attack" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+			{
+				"01"
+				{
+					"var_type"					"FIELD_FLOAT"
+					"mana_gain"					"0.05"
+				}
+		}
+
+		// Data Driven
+    	//-------------------------------------------------------------------------------------
+		"Modifiers"
+		{ 
+			"on_attack_modifier"
+			{
+				"Passive"  				"1" //Auto apply this modifier when the spell is learned
+				"IsBuff"				"1" //Display as a green modifier
+				"IsHidden"				"1" //Show in the UI
+				
+				// Modifier Events
+				//--------------------------------------------------------------------------------
+
+				"OnAttackLanded"
+				{
+					"RunScript"
+					{
+						"ScriptFile"    "modifiers/mana_on_attack.lua"
+						"Function"		"ManaOnAttack"
+					}
+				} 
+			}			
+		}
+	}
+
+	//=================================================================================================================
+	// Sven: Basic Attack Two
+	//=================================================================================================================
+	"sven_basic_attack2" 
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass" 					"ability_datadriven"
+		"AbilityTextureName"    		"sven_great_cleave"
+		"MaxLevel" 						"1"
+		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityCooldown"				"7.0"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"crit_multiplier"				"290"
+			}
+			"02"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"great_cleave_radius"			"300.0"
+			}
+			"03"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"great_cleave_damage"			"120"
+			}
+		}
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_skeletonking.vsndevts"
+		}
+
+		"Modifiers"
+		{
+			"modifier_great_cleave_datadriven"
+			{
+				"Passive"	"1"
+				"IsHidden"	"1"
+	
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE"	"%crit_multiplier"
+				}
+	
+				"OnAttackLanded"
+				{	
+					"FireEffect"
+					{
+						"EffectName"			"particles/units/heroes/hero_bounty_hunter/bounty_hunter_jinda_slow.vpcf"
+						"EffectAttachType"		"attach_hitloc"
+						"Target"				"TARGET"
+					}
+	
+					"FireSound"
+					{
+						"EffectName"			"Hero_SkeletonKing.CriticalStrike"
+						"Target"				"TARGET"
+					}
+	
+					"RunScript"
+					{
+						"ScriptFile"			"abilities/sven_great_cleave/sven_great_cleave.lua"	
+						"Function"				"GreatCleave"
+					}
+				}
+			}
+
+			"modifier_actual_cleave_datadriven"
+			{
+				"Passive"	"1"
+				"IsHidden"	"1"
+	
+				"OnAttackLanded"
+				{
+					"CleaveAttack"
+					{
+						"CleavePercent"		"%great_cleave_damage"
+						"CleaveRadius"		"%great_cleave_radius"
+						"CleaveEffect"		"particles/units/heroes/hero_sven/sven_spell_great_cleave.vpcf"
+					}
+				}
+			}
+		}
+	}
+
 	//=================================================================================================================
 	// Slark: Unfair contract
 	//=================================================================================================================
@@ -489,147 +630,7 @@
 			}
 		}
 	}
-
-	//=================================================================================================================
-	// Sven: Basic Attack
-	//=================================================================================================================
-	"sven_basic_attack" 
-	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass" 					"ability_datadriven"
-		"MaxLevel" 						"1"
-		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_PASSIVE"
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-			{
-				"01"
-				{
-					"var_type"					"FIELD_FLOAT"
-					"mana_gain"					"0.05"
-				}
-		}
-
-		// Data Driven
-    	//-------------------------------------------------------------------------------------
-		"Modifiers"
-		{ 
-			"on_attack_modifier"
-			{
-				"Passive"  				"1" //Auto apply this modifier when the spell is learned
-				"IsBuff"				"1" //Display as a green modifier
-				"IsHidden"				"1" //Show in the UI
-				
-				// Modifier Events
-				//--------------------------------------------------------------------------------
-
-				"OnAttackLanded"
-				{
-					"RunScript"
-					{
-						"ScriptFile"    "modifiers/mana_on_attack.lua"
-						"Function"		"ManaOnAttack"
-					}
-				} 
-			}			
-		}
-	}
-
-	//=================================================================================================================
-	// Sven: Basic Attack Two
-	//=================================================================================================================
-	"sven_basic_attack2" 
-	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass" 					"ability_datadriven"
-		"AbilityTextureName"    		"sven_great_cleave"
-		"MaxLevel" 						"1"
-		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"AbilityCooldown"				"7.0"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
-		
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"						"FIELD_INTEGER"
-				"crit_multiplier"				"290"
-			}
-			"02"
-			{
-				"var_type"						"FIELD_INTEGER"
-				"great_cleave_radius"			"300.0"
-			}
-			"03"
-			{
-				"var_type"						"FIELD_INTEGER"
-				"great_cleave_damage"			"120"
-			}
-		}
-
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_skeletonking.vsndevts"
-		}
-
-		"Modifiers"
-		{
-			"modifier_great_cleave_datadriven"
-			{
-				"Passive"	"1"
-				"IsHidden"	"1"
 	
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_PREATTACK_CRITICALSTRIKE"	"%crit_multiplier"
-				}
-	
-				"OnAttackLanded"
-				{	
-					"FireEffect"
-					{
-						"EffectName"			"particles/units/heroes/hero_bounty_hunter/bounty_hunter_jinda_slow.vpcf"
-						"EffectAttachType"		"attach_hitloc"
-						"Target"				"TARGET"
-					}
-	
-					"FireSound"
-					{
-						"EffectName"			"Hero_SkeletonKing.CriticalStrike"
-						"Target"				"TARGET"
-					}
-	
-					"RunScript"
-					{
-						"ScriptFile"			"abilities/sven_great_cleave/sven_great_cleave.lua"	
-						"Function"				"GreatCleave"
-					}
-				}
-			}
-
-			"modifier_actual_cleave_datadriven"
-			{
-				"Passive"	"1"
-				"IsHidden"	"1"
-	
-				"OnAttackLanded"
-				{
-					"CleaveAttack"
-					{
-						"CleavePercent"		"%great_cleave_damage"
-						"CleaveRadius"		"%great_cleave_radius"
-						"CleaveEffect"		"particles/units/heroes/hero_sven/sven_spell_great_cleave.vpcf"
-					}
-				}
-			}
-		}
-	}
-
 	//=================================================================================================================
 	// Slark: Shadow Dance
 	//=================================================================================================================
@@ -1373,9 +1374,10 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass"						"antimage_blink"
+		"BaseClass"						"ability_datadriven"
 		"MaxLevel" 						"1"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -1405,8 +1407,46 @@
 				"min_blink_range"		"200"
 			}
 		}
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
+
+		"precache"
+		{
+			"soundfile"		"soundevents/game_sounds_heroes/game_sounds_queenofpain.vsndevts"
+			"particle"		"particles/units/heroes/hero_antimage/antimage_blink_end.vpcf"
+			"particle"		"particles/units/heroes/hero_antimage/antimage_blink_start.vpcf"
+		}
+
+		
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"ScriptFile"	"abilities/weaver_blink/weaver_blink.lua"
+				"Function"		"Blink"
+				"Target"		"POINT"
+			}
+	
+			"FireSound"
+			{
+				"EffectName"	"Hero_QueenOfPain.Blink_out"
+				"Target"		"CASTER"
+			}
+	
+			"FireSound"
+			{
+				"EffectName"	"Hero_QueenOfPain.Blink_in"
+				"Target"		"CASTER"
+			}
+	
+			"AttachEffect"
+			{
+				"EffectName"		"particles/units/heroes/hero_antimage/antimage_blink_end.vpcf"
+				"Target"			"CASTER"
+				"EffectAttachType"	"follow_origin"
+			}
+		}
 	}
+
+		
 
 	//=================================================================================================================
 	// Weaver: Basic Attack Mana Regen
