@@ -124,12 +124,13 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"8"
-		"Ability1"						"weaver_blink"							// Q Spell								
+		"Ability1"						"weaver_basic_attack_override"			// Q Spell								
 		"Ability2"						"wrapper_weaver_shukuchi"				// W Spell
 		"Ability3"						"wrapper_weaver_the_swarm"				// E Spell
 		"Ability4"						"weaver_ex_the_swarm"					// D Spell
-		//"Ability5"					"EX_spell_2"							// F Spell
-		"Ability6"						"weaver_time_lapse"				// R Spell
+		"Ability5"						"weaver_blink"							// F Spell
+		//"Ability5"						"weaver_basic_attack_override2"			// F Spell
+		"Ability6"						"weaver_time_lapse"						// R Spell
 		"Ability7"						""										// No HK Spell
 		"Ability8"						"weaver_geminate_attack"				// No HK Spell
 		//"Ability20"						""									// No HK Spell

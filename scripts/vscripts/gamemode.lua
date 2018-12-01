@@ -33,5 +33,9 @@ GameRules:SetGoldTickTime( GOLD_TICK_TIME )
   -- All of these events can potentially be fired by the game, though only the uncommented ones have had
   -- Functions supplied for them.  If you are interested in the other events, you can uncomment the
   -- ListenToGameEvent line and add a function to handle the event
-  
-ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnHeroInGame'), GameMode)
+ 
+    ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnHeroInGame'), GameMode)
+
+-- Useful Lua Modifiers
+LinkLuaModifier( "modifier_charges", "modifiers/general/modifier_charges.lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_health_buffer", "modifiers/general/modifier_health_buffer.lua", LUA_MODIFIER_MOTION_NONE )

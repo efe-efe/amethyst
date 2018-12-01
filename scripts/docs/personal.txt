@@ -37,7 +37,7 @@ Second: Open the particle on the Valve's Particle Editor
 Third: With the particle selected, select the category "Base Properties" (on the left menu)  and:
     a) Remove the Operator "C_OP_MaxVelocity"
     b) Remove the Force "C_OP_AttractToControlPoint"
-    c) Add the Initializer "Velocity set from control point" (With the (+) button on the left menu next to "initializers")
+    c) With the (+) button on the left menu next to "initializers", add the Initializer "Velocity set from control point" 
     d) Set the control point on the Initializer created on "1"
 
 //=================================================================================	
@@ -49,13 +49,35 @@ About "IsServer()"
 To print a table
 //=================================================================================
 
-    This example worked fine for me
+For some reason, DebugPrintTable doesn't works. Use PrintTable instead
 
-    function healthBufferModifier:OnHealReceived( params )
-        if IsServer() then
-            DebugPrint("-----------------------Heal received")
-            PrintTable(params)
-            DebugPrintTable(params)
-        end
-        
-    end
+
+//=================================================================================	
+On setting MaxHealth
+//=================================================================================
+
+    When using "npc:SetMaxHealth(int value)", the "MaxHealth" of a npc turns into "value", and the "RemainingHealth" remains the same. For example, lets say we have a npc called "NPC_TEST" with the next stats:
+
+        MaxHealth = 100
+        RemainingHealth = 50
+
+    If we apply "NPC_TEST:SetMaxHealth(80)", the result should be:
+
+        MaxHealth = 80
+        RemainingHealth = 50
+
+    Its very important to keep in mind that on every stat change, the "npc:SetMaxHealth(int value)" is automatically reaplied with "value = BaseMaxHealth + HealthProvidedByStats", so your "MaxHealth" can be overriden. "BaseMaxHealth" is the ammount of health that all the heroes starts with, and "HealthProvidedByStats" is the ammount of health provided by stats, meaning strength (str).
+
+    In this particular addon, the stats are not used, meaning that they starts at 0 and never change. So there is no override on the MaxHealth after calculations, because ther is no calculations.
+
+    What i have tested and didn't work:
+
+        * Setting base max health and max health together
+        * Setting base max health alone
+        * Setting max health alone
+
+//=================================================================================	
+Projectiles and flags
+//=================================================================================
+
+    Flags can be used to make projectiles hit or ignore units overriden the default behavior. For example you can hit invisible units.

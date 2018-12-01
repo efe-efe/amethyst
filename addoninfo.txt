@@ -1,21 +1,14 @@
 "AddonInfo"
 {
   "TeamCount" "10"
-  "maps"      "template_map playground"
+  "maps"      "dotarite_map"
   "IsPlayable"  "1"
-  "template_map"
+  "dotarite_map"
   {
-          "MaxPlayers"                    "10"
+          "MaxPlayers"                    "6"
   }
-  "playground"
-  {
-          "MaxPlayers"                    "10"
-  }
-//  "desert_duo"
-//  {
-//          "MaxPlayers"                    "10"
-//  }
-//  "forest_solo"
+  
+//  "another_map"
 //  {
 //          "MaxPlayers"                    "10"
 //  }
