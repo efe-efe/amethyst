@@ -1,70 +1,59 @@
 modifier_charges = class({})
 
-if IsServer() then
-    function modifier_charges:Update()
-        if self:GetDuration() == -1 then
-            self:SetDuration(self.kv.replenish_time, true)
-            self:StartIntervalThink(self.kv.replenish_time)
-        end
+function modifier_basic_attack:OnCreated( kv )
+    --Initializers
+    self.ability = self:GetAbility()
+    self.max_charges = self.ability:GetSpecialValueFor("max_charges")
+    self.start_charges = self.ability:GetSpecialValueFor("start_charges")
+    self.replenish_time = self.ability:GetSpecialValueFor("replenish_time")
+    self.mana_gain = self.ability:GetSpecialValueFor("mana_gain")
+    
+    self:SetStackCount(self.max_charges)
+end
 
-        if self:GetStackCount() == 0 then
-            self:GetAbility():StartCooldown(self:GetRemainingTime())
-        end
-    end
+function modifier_charges:OnAbilityExecuted( kv )
+    if kv.unit == self:GetParent() then
 
-    function modifier_charges:OnCreated(kv)
-        self:SetStackCount(kv.start_count or kv.max_count)
-        self.kv = kv
+        local executed_ability = kv.ability
+        local charges = self:GetStackCount() 
 
-        if kv.start_count and kv.start_count ~= kv.max_count then
-            self:Update()
-        end
-    end
+        if executed_ability == self:GetAbility() then
 
-    function modifier_charges:DeclareFunctions()
-        local funcs = {
-            MODIFIER_EVENT_ON_ABILITY_EXECUTED
-        }
-
-        return funcs
-    end
-
-    function modifier_charges:OnAbilityExecuted(params)
-        if params.unit == self:GetParent() then
-            local ability = params.ability
-
-            if params.ability == self:GetAbility() then
-                self:DecrementStackCount()
-                self:Update()
+            if self.max_charges == charges then
+                self:SetDuration(self.replenish_time, true)
+                Timers:CreateTimer(self.replenish_time, function()
+                        self:SetStackCount(self.max_charges)
+                    end
+                )
             end
-        end
-
-        return 0
-    end
-
-    function modifier_charges:OnIntervalThink()
-        local stacks = self:GetStackCount()
-
-        if stacks < self.kv.max_count then
-            self:SetDuration(self.kv.replenish_time, true)
-            self:IncrementStackCount()
-
-            if stacks == self.kv.max_count - 1 then
-                self:SetDuration(-1, true)
-                self:StartIntervalThink(-1)
+            self:DecrementStackCount()
+            
+            if self:GetStackCount() == 0 then
+                self:GetAbility():StartCooldown(self:GetRemainingTime())
             end
+            
         end
     end
+    return 0
 end
 
-function modifier_charges:DestroyOnExpire()
+--- Misc 
+function modifier_basic_attack:DestroyOnExpire()
     return false
 end
 
-function modifier_charges:IsPurgable()
+function modifier_basic_attack:IsPurgable()
     return false
 end
 
-function modifier_charges:RemoveOnDeath()
+function modifier_basic_attack:RemoveOnDeath()
     return false
 end
+
+function modifier_basic_attack:DeclareFunctions()
+    local funcs = {
+        MODIFIER_EVENT_ON_ABILITY_EXECUTED
+    }
+    return funcs
+end
+

@@ -1,0 +1,143 @@
+________________________________________________________________________________
+--------------------------------------------------------------------------------
+	DOTARITE
+________________________________________________________________________________
+--------------------------------------------------------------------------------
+
+1. Introduction
+----------------
+
+Two teams confront each other to obtain the victory on an ability, strategy and action based game. No farm, no items and no respawn are some of the core elements on this map. The original idea is taken from Battlerite, a game you can play for free on steam.
+
+2. Concepts
+----------------
+
+	* Heroe: the heroe is the main character used by the players to fight with and against. Heroes have a set of attributes, basic attacks, abilities and rites to fight on the battles.
+
+	* Abilities: abilities are the personal weapon set that every hero has. Each hero have 3 basic abilities, one ultimate and two ex-abilities.
+	
+	* Basic abilities: basic abilities are abilities that doesn't costs mana, so can be used every time that the cooldown is off.
+	
+	* Ex-abilities: ex-abilities uses some fraction of the mana. They are improved versions of basic abilities. Sometimes ex-abilities are little changes on the abilities they are based on, but they can also be a complete new ability, however, an ex-ability always put the cd on the basic abilitiy they are based on.
+
+	* Ultimates: ultimates are abilities that consumes the entire base mana pool. Are stronger than ex and basic abilities.	
+
+	* Rites: rites are upgrades to heroe abilities. The rites are chosen before the match starts, and supports the playstyle of each player. Rites can contribute too on the specifics strategies a player/team can have against the enemy team based on their players playstyle and their heroes.
+
+3. Design
+----------------
+
+3.1. Heroes:
+
+	Heroes are the same heroes used in a normal Dota 2 game
+
+	* Every Heroe have 6 abilities. 3 normal abilities (Q, W, E), 2 ex-abilities (D, F) and 1 ultimate (R).
+	* Heroes have no status points (STR, AGI and INT = 0). That is to prevent they from having the perks.
+	* Heroes does not have status gain per level.
+	* Heroes starts at level 25
+	* Heroes gain mana through the usage of abilities and right-clicks.
+	** Heroes starts with all the abilities at max level, but with the talents not picked.
+	** Abilities, Ex-abilites and Ultimates have only one point to level up.
+	* The Talents of the Heroe are what we know as Rites.
+	* Every hero has a mana pool of 100. There are some Rites that increases the mana cap to 125.
+	* The heroes that perform a right click, gain an amount of mana. That can be achieved by giving every hero a non-droppable item that gives this  ability. Or giving a passive ability not showed on the GUI
+	
+	(**) = Desirable feature, but not blocking. 
+	
+3.2. Rites:
+
+	* The first three sets of rites upgrades the basic abilities (and the ex-ability related) and the fourth upgrades the ultimate. 
+		However thats the usual case, but there are some cases that a rite can upgrade a non-ability side of a heroe, like movement 
+		speed or mana regeneration, but this is recomended to be avoided.
+	* The rites can be talents, items or levels on the skill. What to really use as rites is yet to be chosen.
+
+	3.2.1. Talents as Rites
+
+	Rites are the Talents that every heroe have on a normal Dota 2 game
+	
+	* There are 8 Rites per heroe.
+	* The rites are divided in sets of 2, so every heroe have 4 sets of rites. The players must chose 1 rite of every set of 2, to complete 4 rites chosen in total.
+	
+	Drawbacks: 
+		* A player can't chose more than one rite for the same ability
+		* A player can't chose two rites from the same level on the tree.
+		* The limit is 8 rites in total.
+	
+	3.2.2. Items as Rites
+	
+	Rites are the items that every heroe can buy on a normal Dota 2 game
+	
+	* Rites are items that costs 1 mana each. 
+	* Players starts with 5 mana so they can pick between 5 Rites.
+	
+	Drawbacks: 
+		* There is no certainty that every player can have his own store, so there is the posibilty that every hero have the same set of rites.
+		* There is no way (yet) to restrict the set of items that can be bought by a player, so a player could chose all the rites for the same spell. 
+	
+	3.2.3. Skill points as Rites
+	
+	Rites are levels on the skills.
+
+	* Each hero starts with 5 skill points available (Level 6 heroes). 
+
+	Drawbacks:
+		* Skill points could not change the skills as wanted if it only allows number changes.
+		* There is no limit of Skill points per skill
+		* Rites are learnt in an specific order. So, to reach a specific rite you have to pick 
+		all the rites before it.
+		* Rites must be related to one skill at least (meaning you can't have rites like 'gain 20 ms')
+
+3.3. Abilities:
+
+	Abilities are the usual abilities that the heroes have in Dota 2. They are divided in three types:
+	Normal abilities (Q, W, E), 2 ex-abilities (D, F) and ultimates (R).
+	
+	* Normal abilities doesn't costs mana. And have low cooldowns (meaning less than 20 seconds)
+	* Ex-abilities costs 25 or 50 mana. 
+	* Ex-abilities are based on a normal ability, meaning that they share the cooldown. If the ex-ability have more cd than the normal ability, the cd that the ability will have is based on the version used, ex or normal.
+	* Ex-abilities can be improved versions of the ability they are based on, or a complete new ability.
+	* Ultimates consumes 100 mana. Usually are stronger than ex and normal abilities.
+
+
+3.4. Phases
+
+The flow of the game is divided in diferent phases, one after the other. The start criteria of a phase is the end criteria of the previous one
+
+a. Select team phase
+	On this phase each player choses a team to start the battle.
+	End criteria: 
+		* Every player has chosen his/her team
+		* The Timeout time has expired, so the players that haven't chosen team are put in a team randomly
+
+b. Select heroe phase
+	On this phase each player choses what hero they want to use to fight.
+	End criteria:
+		* Every player has chosen his/her heroe
+		* The Timeout time has expired, so the players that haven't chosen team are given a random heroe. (*)
+
+c. Rites selection
+	On this phase each player choses the rites they want to use on the battle. 
+(*) That random heroe could turn into a recomended heroe given the actual team composition.
+
+3.5. Mana Gain
+
+The heroes gain mana through two sources: 
+
+	a. Landing an attacks
+	b. Landing or casting certain skills
+
+
+A. To complete
+----------------
+
+	- Number of players per team
+	- Number of rounds per match
+
+B. Design problems
+
+----------------
+	
+	Abilities:
+		- CD should be shared between an abilitie and his ex-version
+		- Ex-abilities must be benefited from the rites that affects the main ability they are based on.
+		- Almost all dota abilities are targeted (including right-clicks)

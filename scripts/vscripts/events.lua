@@ -24,11 +24,11 @@ function GameMode:OnHeroInGame(keys)
     end)
 
     -- Set aditional heroe variables
-    hero.fixedMaxHealth = maxHealth -- Original max health (before variations)
+    --hero.fixedMaxHealth = maxHealth -- Original max health (before variations)
 
     -- Add "on damage reicived" modifier (to control the max health)
    
-    hero:AddNewModifier( hero,  nil, "modifier_health_buffer", { } )
+    --hero:AddNewModifier( hero,  nil, "modifier_health_buffer", { } )
     -- hero:AddAbility("healthBuffer")
     
     -- Level up 1 point to all spells
