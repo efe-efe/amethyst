@@ -746,6 +746,83 @@
 	}
 
 	//=================================================================================================================
+	// Slark: Basic Attack
+	//=================================================================================================================
+	"slark_basic_attack" 
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/slark/slark_basic_attack/slark_basic_attack"
+
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"MaxLevel"						"1"
+		"AbilityTextureName"			"slark_essence_shift"
+		"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AOERadius"						"%hitbox"
+	
+		"precache"
+		{
+			"particle"	"particles/mod_units/heroes/hero_weaver/weaver_base_attack.vpcf"
+		}
+
+		// Ability Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.0"
+
+		// Animation
+		"AnimationPlaybackRate"			"3.0"
+	
+		// Ability Resource
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
+		"AbilityManaCost"				"0"
+	
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"70"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.05"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"max_stacks"				"5"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				//"stacks_duration"			"10.0"
+				"stacks_duration"			"4.0"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				//"attackspeed_variation"		"50.0"
+				"attackspeed_variation"		"18.0"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_variation"			"1"
+			}
+		}
+	}
+
+
+	//=================================================================================================================
 	// Slark: Unfair contract
 	//=================================================================================================================
 	"slark_unfair_contract"
@@ -1101,119 +1178,6 @@
 	}
 
 	//=================================================================================================================
-	// Slark: Basic Attack
-	//=================================================================================================================
-	"slark_basic_attack" 
-	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass" 					"ability_datadriven"
-		"AbilityTextureName"    		"slark_essence_shift"
-		"MaxLevel" 						"1"
-		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-			{
-				"01"
-				{
-					"var_type"					"FIELD_FLOAT"
-					"mana_gain"					"0.05"
-				}
-				"02"
-				{
-					"var_type"					"FIELD_FLOAT"
-					"attackspeed_increase"		"10.0"
-				}
-				"03"
-				{
-					"var_type"					"FIELD_FLOAT"
-					"attackspeed_decrease"		"-5.0"
-				}
-				"04"
-				{
-					"var_type"					"FIELD_INTEGER"
-					"damage_increase"			"1"
-				}
-				"05"
-				{
-					"var_type"					"FIELD_INTEGER"
-					"damage_decrease"			"-1"
-				}
-		}
-
-		// Data Driven
-    	//-------------------------------------------------------------------------------------
-		"Modifiers"
-		{ 
-			"on_attack_modifier"
-			{
-				"Passive"  				"1" //Auto apply this modifier when the spell is learned
-				"IsBuff"				"1" //Display as a green modifier
-				"IsHidden"				"1" //Show in the UI
-				
-				// Modifier Events
-				//--------------------------------------------------------------------------------
-
-				"OnAttackLanded"
-				{
-					"RunScript"
-					{
-						"ScriptFile"    "modules/mana_module.lua"
-						"Function"		"GainMana"
-					}
-					"ApplyModifier"
-					{
-						"ModifierName"	"modifier_buffs"
-						"Target"		"CASTER"
-					} 
-					"ApplyModifier"
-					{
-						"ModifierName"	"modifier_debuffs"
-						"Target"		"TARGET"
-					} 
-				} 
-			}
-
-			"modifier_buffs"
-			{
-				"Passive"  				"0" //Don't Auto apply this modifier when the spell is learned
-				"Duration" 				"3"
-				
-				"IsBuff"				"1" //Display as a green modifier
-				"IsHidden"				"0" //Show in the UI  
-				
-				"Attributes" 			"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attackspeed_increase"
-					"MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE"		"%damage_increase"
-				}
-			}
-
-			"modifier_debuffs"
-			{
-				"Passive"  				"0" //Don't Auto apply this modifier when the spell is learned
-				"Duration" 				"3"
-				"IsBuff"				"0"
-				"IsDebuff"				"1" //Display as a red modifier
-				"IsHidden"				"0" //Show in the UI  
-				
-				"Attributes" 			"MODIFIER_ATTRIBUTE_MULTIPLE"
-
-				"Properties"
-				{
-					"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attackspeed_decrease"
-					"MODIFIER_PROPERTY_BASEATTACK_BONUSDAMAGE"		"%damage_decrease"
-				}
-			}
-			
-		}
-	}
-
-	//=================================================================================================================
 	// Slark: Inner Madness (R spell)
 	//=================================================================================================================
 	"slark_inner_madness" 
@@ -1481,199 +1445,12 @@
 	}
 
 	//=================================================================================================================
-	// Weaver: Overriden basic attack
+	// Weaver: Basic attack
 	//=================================================================================================================
-	
-	"weaver_basic_attack_override"
-	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass"						"ability_datadriven"
-		"MaxLevel"						"1"
-		"AbilityTextureName"			"weaver_geminate_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AOERadius"						"%hitbox"
-	
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.01"
-	
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"0.0"
-	
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
-	
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1000"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"50"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"mana_gain"					"0.05"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"range"						"700"
-			}
-			"05"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"max_charges"				"3"
-			}
-			"06"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"start_charges"				"3"
-			}
-			"07"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"replenish_time"			"0.9"
-			}
-		}
-
-		// DataDriven
-		//-------------------------------------------------------------------------------------------------------------
-		
-		"precache"
-		{
-			"particle"			"particles/mod_units/heroes/hero_weaver/weaver_base_attack.vpcf"
-		}
-
-		"OnSpellStart"
-		{
-			"LinearProjectile"
-			{
-				"Target"                        "POINT"
-				"EffectName"					"particles/mod_units/heroes/hero_weaver/weaver_base_attack.vpcf"
-				"MoveSpeed"                     "%projectile_speed"
-				"StartRadius"                   "%hitbox"
-				"EndRadius"                     "%hitbox"
-				"TargetTypes"                   "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
-				"TargetFlags"                   "DOTA_UNIT_TARGET_FLAG_NONE"
-				"HasFrontalCone"                "0"
-				"ProvidesVision"                "0"
-				"VisionRadius"                  "0"
-				"FixedDistance"					"%range"
-			}
-	
-			"FireSound"
-			{
-				"EffectName"		"Hero_Weaver.Attack"
-				"Target"			"CASTER"
-			}
-
-			"ApplyModifier"
-			{
-				"ModifierName"		"modifier_charges"
-				"Target"			"CASTER"
-			}
-		}
-		
-		"OnProjectileHitUnit"
-		{
-			"DeleteOnHit"                       "1"
-
-			"ActOnTargets"
-			{
-				"Target"
-				{
-					"Center" "TARGET"
-	                "Radius" "%hitbox"
-	                "Teams" "DOTA_UNIT_TARGET_TEAM_ENEMY" 
-	                "Types" "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
-				}
-	
-				"Action"
-				{
-					"RunScript"
-					{
-						"ScriptFile"	"modules/perform_module.lua"
-						"Function"		"PerformRange"
-					}
-				}
-			}
-		}
-		
-		"OnProjectileFinish"
-		{
-			"FireSound"
-			{
-				"EffectName"		"Hero_Weaver.ProjectileImpact"
-				"Target"			"POINT"
-			}
-		}
-
-		"Modifiers"
-		{
-			"on_attack_modifier"
-			{
-				"Passive"  				"1" //Auto apply this modifier when the spell is learned
-				"IsBuff"				"1" //Display as a green modifier
-				"IsHidden"				"1" //Show in the UI
-				
-				// Modifier Events
-				//--------------------------------------------------------------------------------
-
-				"OnAttackLanded"
-				{
-					"RunScript"
-					{
-						"ScriptFile"    	"modules/mana_module.lua"
-						"Function"			"GainMana"
-					}
-					"FireSound"
-					{
-						"EffectName"		"Hero_Weaver.ProjectileImpact"
-						"Target"			"TARGET"
-					}
-				} 
-			}
-
-			"modifier_charges"
-			{
-				"Passive"  				"1" //Auto apply this modifier when the spell is learned
-				"IsBuff"				"1" //Display as a green modifier
-				"IsHidden"				"1" //Show in the UI
-
-				"OnCreated"
-				{
-					"RunScript"
-					{
-						"ScriptFile"    "modules/charges_module.lua"
-						"Function"		"AppendCharges"
-					}
-				}
-			}
-		}
-	}
-
-	//=================================================================================================================
-	// Weaver: Overriden basic attack
-	//=================================================================================================================
-	"basic_attack"
+	"weaver_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/weaver/basic_attack/basic_attack"
+		"ScriptFile"					"abilities/weaver/weaver_basic_attack/weaver_basic_attack"
 
 		// General
 		//-------------------------------------------------------------------------------------------------------------
@@ -1693,8 +1470,11 @@
 		// Ability Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.01"
-	
+		"AbilityCastPoint"				"0.1"
+
+		// Animation
+		"AnimationPlaybackRate"			"2.0"
+		
 		// Ability Resource
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"0.0"
@@ -1707,7 +1487,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"projectile_speed"			"1000.0"
+				"projectile_speed"			"1200.0"
 			}
 			"02"
 			{
@@ -1716,25 +1496,20 @@
 			}
 			"03"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"range"						"700"
-			}
-			"04"
-			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.05"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"max_charges"				"3"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"start_charges"				"3"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"replenish_time"			"0.9"
@@ -1743,25 +1518,29 @@
 	}
 
 	//=================================================================================================================
-	// Weaver: The swarm wrapper
+	// Weaver: the_swarm_lua
 	//=================================================================================================================
-	"wrapper_weaver_the_swarm" 
+	"the_swarm_lua" 
 	{
+		"BaseClass" 					"ability_lua"	
+		"ScriptFile"					"abilities/weaver/the_swarm/the_swarm_lua.lua"
+		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass" 					"ability_datadriven"	
 		"MaxLevel" 						"1"
 		"AbilityTextureName"    		"weaver_the_swarm"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
 
 		//If changed, change ability on the override
 		//-------------------------------------------------------------------------------------
-		"AbilityCastRange"				"1200"
+		"AbilityCastRange"				"1700"
 		"AbilityCooldown"				"10"
 		"AbilityManaCost"				"0"
-		"AbilityCastPoint"				"0.3"
+		"AbilityCastPoint"				"0.2"
+		"AnimationPlaybackRate"			"1.4"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -1772,23 +1551,10 @@
 				"var_type"			"FIELD_FLOAT"
 				"mana_gain"			"0.07"	//If changed, change ability on the override
 			}
-		}
-
-		// Data Driven
-    	//-------------------------------------------------------------------------------------
-		
-		"OnSpellStart"
-		{
-			"RunScript"
+			"02"
 			{
-				"ScriptFile"    "modules/mana_module.lua"
-				"Function"		"GainMana"
-			}
-
-			"RunScript"
-			{
-				"ScriptFile"    "abilities/weaver/the_swarm/wrapper.lua"
-				"Function"		"RunTheSwarm"
+				"var_type"			"FIELD_FLOAT"
+				"damage"			"20"	//If changed, change ability on the override
 			}
 		}
 	}
@@ -2082,13 +1848,14 @@
 	}
 
 	//=================================================================================================================
-	// Weaver: Wrapper time lapse
+	// Weaver: time_lapse_lua
 	//=================================================================================================================
-	"wrapper_weaver_time_lapse" 
-	{
+	"time_lapse_lua" 
+	{		
+		"BaseClass" 					"ability_lua"	
+		"ScriptFile"					"abilities/weaver/time_lapse/time_lapse_lua.lua"
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass" 					"ability_datadriven"	
 		"MaxLevel" 						"1"
 		"AbilityTextureName"    		"weaver_time_lapse"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
@@ -2113,36 +1880,18 @@
 				"mana_gain"					"-1.0"
 			}
 		}
-
-		// Data Driven
-    	//-------------------------------------------------------------------------------------
-		
-		"OnSpellStart"
-		{
-			"RunScript"
-			{
-				"ScriptFile"    "abilities/weaver/time_lapse/wrapper.lua"
-				"Function"		"RunTimeLapse"
-			}
-
-			"RunScript"
-			{
-				"ScriptFile"    "modules/mana_module.lua"
-				"Function"		"GainMana"
-			}
-		}
 	}
 
 	//=================================================================================================================
 	// Drow: basic attack override
 	//=================================================================================================================
 	
-	"drow_ranger_basic_attack_override"
+	"drow_basic_attack"
 	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/drow_ranger/drow_basic_attack/drow_basic_attack.lua"
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass"						"ability_datadriven"
-		"MaxLevel"						"1"
 		"AbilityTextureName"			"drow_ranger_frost_arrows"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
@@ -2150,6 +1899,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AOERadius"						"%hitbox"
 		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -2172,7 +1922,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1000"
+				"projectile_speed"			"1400"
 			}
 			"02"
 			{
@@ -2181,108 +1931,132 @@
 			}
 			"03"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"range"					    "800"
-			}
-			"04"
-			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.07"
 			}
 		}
+	}
 
-		// DataDriven
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//=================================================================================================================
+	// Centaur Warrunner: Stampede (Lua version)
+	//=================================================================================================================
+	"centaur_warrunner_stampede_lua"
+	{
+		// Ability Technical Aspect
+		// base script folder	: scripts/vscripts
+		// base texture folder	: resource/flash3/images/spellicons
 		//-------------------------------------------------------------------------------------------------------------
-		
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/centaur_warrunner_stampede_lua/centaur_warrunner_stampede_lua"
+		"AbilityTextureName"			"centaur_warrunner_stampede_lua"
+		"FightRecapLevel"				"2"
+		"MaxLevel"						"3"
 		"precache"
 		{
-			"particle"          "particles/mod_units/heroes/hero_drow/drow_base_attack.vpcf"
-		}
-
-		"OnSpellStart"
-		{
-			"LinearProjectile"
-			{
-				"Target"                        "POINT"
-				"EffectName"					"particles/mod_units/heroes/hero_drow/drow_base_attack.vpcf"
-				"MoveSpeed"                     "%projectile_speed"
-				"StartRadius"                   "%hitbox"
-				"EndRadius"                     "%hitbox"
-				"TargetTypes"                   "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP"
-				"TargetFlags"                   "DOTA_UNIT_TARGET_FLAG_NONE"
-				"HasFrontalCone"                "0"
-				"ProvidesVision"                "0"
-				"VisionRadius"                  "0"
-				"FixedDistance"					"%range"
-			}
-
-			"FireSound"
-			{
-				"EffectName"		"Hero_DrowRanger.Attack"
-				"Target"			"CASTER"
-			}
-
-			"RunScript"
-			{
-				"ScriptFile"		"modules/perform_module.lua"
-				"Function"			"InitRangeAttack"
-			}
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_centaur.vsndevts"
+			"particle"	"particles/units/heroes/hero_centaur/centaur_stampede.vpcf"
+			"particle"	"particles/units/heroes/hero_centaur/centaur_stampede_cast.vpcf"
+			"particle"	"particles/units/heroes/hero_centaur/centaur_stampede_overhead.vpcf"
 		}
 		
-		"OnProjectileHitUnit"
+		// Ability General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+
+		// Ability Casting
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Ability Resource
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"90 75 60"
+		"AbilityManaCost"				"100"
+
+		// Damage
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
 		{
-			"DeleteOnHit"                       "1"
-
-			"ActOnTargets"
+			"01"
 			{
-				"Target"
-				{
-					"Center" "TARGET"
-					"Radius" "%hitbox"
-					"Teams" "DOTA_UNIT_TARGET_TEAM_ENEMY" 
-					"Types" "DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
-				}
-
-				"Action"
-				{
-					//Here goes the actions activated when the attack hits a target
-					//but WE DON'T KNOW IF IT MISSES OR NOT
-					"RunScript"
-					{
-						"ScriptFile"	"modules/perform_module.lua"
-						"Function"		"PerformAttack"
-					}
-				}
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"4.0"
 			}
-		}
-		
-		//"OnProjectileFinish" { "FireSound" { } }
-
-		"Modifiers"
-		{
-			"on_attack_modifier"
+			"02"
 			{
-				"Passive"  				"1" //Auto apply this modifier when the spell is learned
-				"IsBuff"				"1" //Display as a green modifier
-				"IsHidden"				"1" //Show in the UI
-				
-				// Modifier Events
-				//--------------------------------------------------------------------------------
-
-				"OnAttackLanded"
-				{	//Here goes the actions activated when the attack hits a target and don't misses
-					"RunScript"
-					{
-						"ScriptFile"    "modules/mana_module.lua"
-						"Function"		"GainMana"
-					}
-
-					"FireSound"
-					{
-						"EffectName"		"Hero_DrowRanger.ProjectileImpact"
-						"Target"			"TARGET"
-					}
-				} 
+				"var_type"			"FIELD_INTEGER"
+				"base_damage"		"0"
+			}
+			"03"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"strength_damage"	"1.0 2.0 3.0"
+			}
+			"04"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"slow_duration"		"1.8"
+			}
+			"05"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"radius"			"105"
+			}
+			"06"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"slow_movement_speed"			"100"
+			}
+			"07"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"cooldown_scepter"			"90 75 60"
+			}
+			"08"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"damage_reduction"	"40"
+			}
+			"09"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"damage_reduction_tooltip_scepter"	"40"
 			}
 		}
 	}

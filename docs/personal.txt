@@ -101,3 +101,11 @@ Attack speed
 The method "Base_NPC:GetAttackSpeed()" should return the attack speed of a unit in seconds, meaning that the return value is the time it takes for the unit from the begining to the end of the attack. On the other side, the method "Base_NPC:GetAttacksPerSecond()" should return the number of attacks a unit can perform in one second. 
 
 In reality, the first one is broken, and returns the same value than the second (attacks per second). So, you have to use the next simple formula: "AttackSpeed = ( 1 / AttacksPerSecond )"
+
+
+//=================================================================================	
+Lua abilities
+//=================================================================================
+
+    * The ability name on the "DataDriven" text file, and the name on the "lua_ability" script file has to be equals.
+    * As the names has to be equal, is usual to use "heroname_abilityname" naming, to avoid conflics when two abilities has the same name for different heroes. Anyway, if you want to keep shorter names, you have to be sure that every ability has an unique name.

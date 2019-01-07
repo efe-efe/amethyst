@@ -1,15 +1,10 @@
 "AddonInfo"
 {
-  "TeamCount" "10"
-  "maps"      "dotarite_map"
+  "TeamCount" "2"
+  "maps"      "rite_map"
   "IsPlayable"  "1"
-  "dotarite_map"
+  "rite_map"
   {
           "MaxPlayers"                    "6"
   }
-  
-//  "another_map"
-//  {
-//          "MaxPlayers"                    "10"
-//  }
 }

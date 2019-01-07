@@ -334,12 +334,17 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"MaxLevel"						"1"
 
+		// Ability General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"					"DOTA_ABILITY_BEHAVIOR_HIDDEN"
+
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.3"
-		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.7"
+		"AbilityCastRange"				"1700"
 		"AbilityCooldown"				"10"
 		"AbilityManaCost"				"0"
+		"AnimationPlaybackRate" 		"0.8"
 
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
@@ -373,12 +378,12 @@
 			"05"
 			{
 				"var_type"			"FIELD_FLOAT"
-				"duration"			"8"
+				"duration"			"3"
 			}
 			"06"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"destroy_attacks"	"8"
+				"destroy_attacks"	"1000"
 			}
 			"07"
 			{
@@ -388,7 +393,7 @@
 			"08"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"speed"				"700"
+				"speed"				"1300"
 			}
 			"09"
 			{
@@ -481,11 +486,88 @@
 	//=================================================================================================================
 	"weaver_time_lapse"
 	{
+		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"MaxLevel"						"1"
-
+		
+		// Ability General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"					"DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityCooldown"				"0"
-		"AbilityManaCost"				"100"
+		"AbilityManaCost"				"0"
+	}
+
+	
+	//=================================================================================================================
+	// Ability: Drow Ranger Wave of Silence
+	//=================================================================================================================
+	"drow_ranger_wave_of_silence"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1300"
+		"AbilityCastPoint"				"0.2"
+		"AnimationPlaybackRate" 		"0.8"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"wave_speed"		"2000.0"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"wave_range_tooltip"	"900"
+				"LinkedSpecialBonus"	"special_bonus_unique_drow_ranger_2"
+			}
+			"03"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"wave_width"		"100"
+			}
+			"04"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"silence_duration"	"3"
+				"LinkedSpecialBonus"	"special_bonus_unique_drow_ranger_4"
+			}
+			"05"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"knockback_distance_max"	"350"
+				"LinkedSpecialBonus"	"special_bonus_unique_drow_ranger_2"
+			}
+			"06"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"knockback_duration"		"0.5"
+			}
+			"07"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"knockback_height"		"0"
+			}
+		}
+		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_2"
 	}
 }

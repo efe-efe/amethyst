@@ -30,6 +30,9 @@ function GameMode:OnHeroInGame(keys)
    
     --hero:AddNewModifier( hero,  nil, "modifier_health_buffer", { } )
     -- hero:AddAbility("healthBuffer")
+
+    
+    hero:AddNewModifier( hero,  nil, "modifier_disable_right_click", { } )
     
     -- Level up 1 point to all spells
     for i = 0, 23 do

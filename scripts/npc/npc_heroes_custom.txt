@@ -15,16 +15,15 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"				"9"
-		"Ability1"					"slark_basic_attack_override"			// Q Spell
-		//"Ability1"					"slark_dark_pact"						// Q Spell 
+		"Ability1"					"slark_basic_attack"			// Q Spell
 		"Ability2"					"slark_pounce"							// W Spell
 		"Ability3"					"slark_obscure_dive"					// E Spell
 		"Ability4"					"slark_unfair_contract"					// D Spell
-		"Ability5"					"doom_bringer_empty1"					// F Spell
+		"Ability5"					"slark_dark_pact"						// Q Spell
 		"Ability6"					"wrapper_shadow_dance"					// R Spell
 		"Ability7"					"slark_inner_madness"					// No HK Spell
 		//"Ability8"					"slark_basic_attack"					// No HK Spell
-		"Ability9"					"doom_bringer_empty2"					// No HK Spell
+		"Ability9"					"centaur_warrunner_stampede_lua"					// No HK Spell
 		"Ability23"					"slark_shadow_dance"					// No HK Spell
 		
 		// Armor
@@ -38,10 +37,12 @@
 		"AttackDamageMax"			"8"										// Damage range max.		
 		"AttackRate"				"0.6"									// Speed of attack.
 		"AttackAnimationPoint"		"0.5"
+		"AttackRange"				"180"
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"400"
+		"MovementSpeed"				"450"
+		"MovementTurnRate"			"2.0"
 
 		// Attributes
 		//-------------------------------------------------------------------------------------------------------------
@@ -95,7 +96,8 @@
 
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"400"
+		"MovementSpeed"				"450"
+		"MovementTurnRate"			"2.0"
 		
 		// Attributes
 		//-------------------------------------------------------------------------------------------------------------
@@ -127,21 +129,19 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"8"
-		"Ability1"						"basic_attack"								// Q Spell		
-		"Ability2"						"wrapper_weaver_shukuchi"					// W Spell
-		"Ability3"						""		// E Spell	
-		"Ability4"						""			// Q Spell								
-		//"Ability3"						"wrapper_weaver_the_swarm"				// E Spell
-		//"Ability4"						"weaver_ex_the_swarm"					// D Spell
-		//"Ability5"						"weaver_blink"							// F Spell
-		//"Ability5"						"weaver_basic_attack_override2"			// F Spell
-		//"Ability6"						"weaver_time_lapse"						// R Spell
+		"Ability1"						"weaver_basic_attack"								// Q Spell		
+		"Ability2"						"wrapper_weaver_shukuchi"					// W Spell	
+		"Ability3"						"the_swarm_lua"				// E Spell
+		"Ability4"						"weaver_ex_the_swarm"					// D Spell
+		"Ability5"						"weaver_blink"							// F Spell
+		"Ability6"						"time_lapse_lua"				// R Spell
+		"Ability7"						"doom_bringer_empty1"					// No HK Spell
+		"Ability8"						"doom_bringer_empty2"					// No HK Spell
 		//"Ability7"						""										// No HK Spell
 		//"Ability8"						"weaver_geminate_attack"				// No HK Spell
-		//"Ability20"						""									// No HK Spell
-		//"Ability21"						"weaver_the_swarm"						// No HK Spell
+		"Ability21"						"weaver_the_swarm"						// No HK Spell
 		"Ability22"						"weaver_shukuchi"						// No HK Spell
-		//"Ability23"						"weaver_basic_attack_2"					// No HK Spell
+		"Ability23"						"weaver_time_lapse"						// R Spell
 		
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -154,11 +154,12 @@
 		"AttackDamageMax"			"7"										// Damage range max.	
 		"AttackRate"				"1.0"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.0"
-		"AttackRange"				"500"
+		"AttackRange"				"800"
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"400"
+		"MovementSpeed"				"450"
+		"MovementTurnRate"			"2.0"
 		
 		// Attributes
 		//-------------------------------------------------------------------------------------------------------------
@@ -190,9 +191,9 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"8"
-		"Ability1"						"drow_ranger_basic_attack_override"		// Q Spell								
+		"Ability1"						"drow_basic_attack"						// Q Spell								
 		"Ability2"						"wrapper_weaver_shukuchi"				// W Spell
-		"Ability3"						"wrapper_weaver_the_swarm"				// E Spell
+		"Ability3"						"drow_ranger_wave_of_silence"				// E Spell
 		"Ability4"						"weaver_ex_the_swarm"					// D Spell
 		"Ability5"						"weaver_blink"							// F Spell
 		//"Ability5"						"weaver_basic_attack_override2"			// F Spell
@@ -215,11 +216,12 @@
 		"AttackDamageMax"			"15"									// Damage range max.	
 		"AttackRate"				"0.3"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.0"
-		"AttackRange"				"500"
+		"AttackRange"				"1000"
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"400"
+		"MovementSpeed"				"450"
+		"MovementTurnRate"			"2.0"
 		
 		// Attributes
 		//-------------------------------------------------------------------------------------------------------------

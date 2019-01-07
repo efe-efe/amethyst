@@ -41,7 +41,6 @@ LinkLuaModifier( "modifier_charges", "modifiers/general/modifier_charges.lua", L
 LinkLuaModifier( "modifier_health_buffer", "modifiers/general/modifier_health_buffer.lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_stack", "modifiers/general/modifier_stack.lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_set_attack_range", "modifiers/general/modifier_set_attack_range.lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_mana_on_attack", "modifiers/general/modifier_mana_on_attack.lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
 
--- Slark
-LinkLuaModifier( "modifier_basic_attack", "modifiers/slark/modifier_basic_attack.lua", LUA_MODIFIER_MOTION_NONE ) 
-LinkLuaModifier( "modifier_basic_attack_debuff", "modifiers/slark/modifier_basic_attack_debuff.lua", LUA_MODIFIER_MOTION_NONE ) 

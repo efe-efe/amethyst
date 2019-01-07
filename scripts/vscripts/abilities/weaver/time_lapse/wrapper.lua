@@ -1,11 +1,15 @@
 function RunTimeLapse( keys )
-    local weaver = keys.caster
-    if weaver then
-        local timeLapse = weaver:FindAbilityByName("weaver_time_lapse")
+    local caster = keys.caster
+    local ability = keys.ability
+    local mana_cost = ability:GetManaCost(-1)
+
+    if caster then
+        local timeLapse = caster:FindAbilityByName("weaver_time_lapse")
+
         if timeLapse:IsFullyCastable() then
-            weaver:CastAbilityImmediately(timeLapse, weaver:GetPlayerOwnerID())
-            Timers:CreateTimer(.01, function()
-                weaver:SetMana(0)
+            caster:CastAbilityImmediately(timeLapse, caster:GetPlayerOwnerID())
+            Timers:CreateTimer(0.1, function()
+                caster:GiveMana(-mana_cost)
             end)
         end
     end   

@@ -126,6 +126,15 @@ The heroes gain mana through two sources:
 	a. Landing an attacks
 	b. Landing or casting certain skills
 
+4. Technical details
+----------------
+
+4.1. Attacks
+
+All the attacks performed by heroes are abilities with small differences between meele and ranged heroes:
+
+	a. Ranged: The attack is a "LinearProjectile" that on hit performs an attack.
+	a. Meele: The attack is a "LinearProjectile" that on hit performs an attack. The range on this one is very short (equal to the unit original attack range).
 
 A. To complete
 ----------------
