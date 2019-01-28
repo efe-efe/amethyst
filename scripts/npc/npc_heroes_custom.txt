@@ -130,7 +130,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"8"
 		"Ability1"						"weaver_basic_attack"								// Q Spell		
-		"Ability2"						"wrapper_weaver_shukuchi"					// W Spell	
+		"Ability2"						"weaver_shukuchi_lua"					// W Spell	
 		"Ability3"						"the_swarm_lua"				// E Spell
 		"Ability4"						"weaver_ex_the_swarm"					// D Spell
 		"Ability5"						"weaver_blink"							// F Spell
@@ -140,7 +140,7 @@
 		//"Ability7"						""										// No HK Spell
 		//"Ability8"						"weaver_geminate_attack"				// No HK Spell
 		"Ability21"						"weaver_the_swarm"						// No HK Spell
-		"Ability22"						"weaver_shukuchi"						// No HK Spell
+		//"Ability22"						"weaver_shukuchi"						// No HK Spell
 		"Ability23"						"weaver_time_lapse"						// R Spell
 		
 		// Armor

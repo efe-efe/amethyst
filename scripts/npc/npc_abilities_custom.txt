@@ -4,8 +4,11 @@
 	"Version"		"1"
 
 	//=================================================================================================================
-	// Sven: Basic Attack
+	// 	Sven
 	//=================================================================================================================
+
+
+	// Sven: Basic Attack
 	"sven_basic_attack_override" 
 	{
 		// General
@@ -155,9 +158,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Sven: Storm Bolt Override
-	//=================================================================================================================
 	"sven_storm_bolt_override"
 	{
 		// General
@@ -323,9 +324,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Sven: Ex-Storm Bolt
-	//=================================================================================================================
 	"sven_ex_storm_bolt"
 	{
 		// General
@@ -383,9 +382,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Sven: Ex-Warcry
-	//=================================================================================================================
 	"sven_ex_warcry"
 	{
 		// General
@@ -429,9 +426,7 @@
 	}
 
 
-	//=================================================================================================================
 	// Sven: Basic Attack
-	//=================================================================================================================
 	"sven_basic_attack" 
 	{
 		// General
@@ -476,9 +471,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Sven: Basic Attack Two
-	//=================================================================================================================
 	"sven_basic_attack2" 
 	{
 		// General
@@ -569,9 +562,13 @@
 		}
 	}
 
+
 	//=================================================================================================================
+	// 	Slark
+	//=================================================================================================================
+
+
 	// Slark: Basic Attack
-	//=================================================================================================================
 	"slark_basic_attack_override" 
 	{
 		// General
@@ -745,9 +742,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Slark: Basic Attack
-	//=================================================================================================================
 	"slark_basic_attack" 
 	{
 		"BaseClass"						"ability_lua"
@@ -821,10 +816,7 @@
 		}
 	}
 
-
-	//=================================================================================================================
 	// Slark: Unfair contract
-	//=================================================================================================================
 	"slark_unfair_contract"
 	{
 		// General
@@ -1031,9 +1023,7 @@
 		}
 	}
 	
-	//=================================================================================================================
 	// Slark: Shadow Dance
-	//=================================================================================================================
 	"wrapper_shadow_dance" 
 	{
 		// General
@@ -1112,10 +1102,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Slark Ex-Pounce
-	//=================================================================================================================
-	
 	"slark_ex_pounce"
 	{
 		// General
@@ -1177,9 +1164,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Slark: Inner Madness (R spell)
-	//=================================================================================================================
 	"slark_inner_madness" 
 	{
 		// General
@@ -1277,10 +1262,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Slark: Obscure Dive  (E spell)
-	//=================================================================================================================
-	
 	"slark_obscure_dive"
 	{
 		// General
@@ -1444,9 +1426,13 @@
 		}
 	}
 
+
 	//=================================================================================================================
+	// 	Weaver
+	//=================================================================================================================
+	
+
 	// Weaver: Basic attack
-	//=================================================================================================================
 	"weaver_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -1517,9 +1503,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Weaver: the_swarm_lua
-	//=================================================================================================================
 	"the_swarm_lua" 
 	{
 		"BaseClass" 					"ability_lua"	
@@ -1559,9 +1543,7 @@
 		}
 	}
 
-	//=================================================================================================================
 	// Weaver: Ex - The Swarm
-	//=================================================================================================================
 	"weaver_ex_the_swarm"
 	{
 		// General
@@ -1637,27 +1619,34 @@
 		"AbilityCastAnimation"		"ACT_DOTA_CAST_ABILITY_1"
 	}
 
-	//=================================================================================================================
-	// Weaver: Sukuchi wrapper
-	//=================================================================================================================
-	"wrapper_weaver_shukuchi" 
+	// Weaver: Shukuchi Lua
+	"weaver_shukuchi_lua"
 	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/weaver/weaver_shukuchi_lua/weaver_shukuchi_lua"
+
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass" 					"ability_datadriven"				
+		"MaxLevel"						"1"
+		"AbilityTextureName"			"weaver_shukuchi"
 		"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
-		"MaxLevel" 						"1"
-		"AbilityTextureName"    		"weaver_shukuchi"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		
+			
 		// Stats
 		//-------------------------------------------------------------------------------------
 		"AbilityManaCost"				"0"
 		"AbilityCooldown"				"12"
 
-
+		"precache"
+		{
+			"soundfile"	"sounds/weapons/hero/weaver/shukuchi.vsnd"
+			"particle"	"particles/units/heroes/hero_weaver/weaver_shukuchi.vpcf"
+			"particle"	"particles/units/heroes/hero_weaver/weaver_shukuchi_damage.vpcf"
+		}
+		
+	
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
@@ -1665,64 +1654,32 @@
 			"01"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"radius"			"175"	//If changed, change ability on the override
+				"radius"			"175"
 			}
-
 			"02"
 			{
 				"var_type"			"FIELD_FLOAT"
 				"mana_gain"			"0.05"
 			}
-		}
-
-		// Data Driven
-    	//-------------------------------------------------------------------------------------
-		
-		"OnSpellStart"
-		{
-			"RunScript"
+			"03"
 			{
-				"ScriptFile"    "abilities/weaver/shukuchi/wrapper.lua"
-				"Function"		"RunShukuchi"
+				"var_type"			"FIELD_FLOAT"
+				"fade_time"			"0.25"
 			}
-			
-			"ApplyModifier"
+			"04"
 			{
-				"ModifierName"		"check_collision_modifier"
-				"Target"			"CASTER"
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"1.5"
 			}
-		}
-
-		"Modifiers"
-		{
-			"check_collision_modifier"
+			"05"
 			{
-				"IsHidden"		"1"
-				"Duration"		"1.5"
-				
-				"Aura"			"gain_mana_modifier"
-				"Aura_Radius"	"%radius"
-				"Aura_Teams"	"DOTA_UNIT_TARGET_TEAM_ENEMY"
-				"Aura_Types"	"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_CREEP | DOTA_UNIT_TARGET_MECHANICAL"
-			}
-			
-			"gain_mana_modifier"
-			{
-				"OnCreated"
-				{
-					"RunScript"
-					{
-						"ScriptFile"    "modules/mana_module.lua"
-						"Function"		"GainMana"
-					}
-				}
+				"var_type"			"FIELD_INTEGER"
+				"damage"			"12"
 			}
 		}
 	}
 
-	//=================================================================================================================
-	// Ability: Weaver Blink
-	//=================================================================================================================
+	// Weaver: Weaver Blink
 	"weaver_blink"
 	{
 		// General
@@ -1800,56 +1757,7 @@
 		}
 	}
 
-	//=================================================================================================================
-	// Weaver: Basic Attack Mana Regen
-	//=================================================================================================================
-	"weaver_basic_attack_2" 
-	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"BaseClass" 					"ability_datadriven"
-		"MaxLevel" 						"1"
-		"AbilityBehavior"   			"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_PASSIVE"
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-			{
-				"01"
-				{
-					"var_type"					"FIELD_FLOAT"
-					"mana_gain"					"0.04"
-				}
-		}
-
-		// Data Driven
-    	//-------------------------------------------------------------------------------------
-		"Modifiers"
-		{ 
-			"on_attack_modifier"
-			{
-				"Passive"  				"1" //Auto apply this modifier when the spell is learned
-				"IsBuff"				"1" //Display as a green modifier
-				"IsHidden"				"1" //Show in the UI
-				
-				// Modifier Events
-				//--------------------------------------------------------------------------------
-
-				"OnAttackLanded"
-				{
-					"RunScript"
-					{
-						"ScriptFile"    "modules/mana_module.lua"
-						"Function"		"GainMana"
-					}
-				} 
-			}			
-		}
-	}
-
-	//=================================================================================================================
 	// Weaver: time_lapse_lua
-	//=================================================================================================================
 	"time_lapse_lua" 
 	{		
 		"BaseClass" 					"ability_lua"	
@@ -1882,10 +1790,13 @@
 		}
 	}
 
+
 	//=================================================================================================================
-	// Drow: basic attack override
+	// Drow
 	//=================================================================================================================
 	
+
+	// Drow: basic attack override
 	"drow_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -1937,128 +1848,43 @@
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 	//=================================================================================================================
-	// Centaur Warrunner: Stampede (Lua version)
+	// Misc: Orb
 	//=================================================================================================================
-	"centaur_warrunner_stampede_lua"
+	
+	"orb_on_death_lua"
 	{
-		// Ability Technical Aspect
-		// base script folder	: scripts/vscripts
-		// base texture folder	: resource/flash3/images/spellicons
-		//-------------------------------------------------------------------------------------------------------------
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/centaur_warrunner_stampede_lua/centaur_warrunner_stampede_lua"
-		"AbilityTextureName"			"centaur_warrunner_stampede_lua"
-		"FightRecapLevel"				"2"
-		"MaxLevel"						"3"
+		"ScriptFile"					"abilities/misc/orb_on_death/orb_on_death_lua.lua"
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"drow_ranger_frost_arrows"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+
+
 		"precache"
 		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_centaur.vsndevts"
-			"particle"	"particles/units/heroes/hero_centaur/centaur_stampede.vpcf"
-			"particle"	"particles/units/heroes/hero_centaur/centaur_stampede_cast.vpcf"
-			"particle"	"particles/units/heroes/hero_centaur/centaur_stampede_overhead.vpcf"
+			"soundfile"	"sounds/weapons/hero/magnataur/reverse_polarity_cast.vsnd"
+			"soundfile"	"sounds/items/dota_item_arcane_boots.vsnd"
+			"particle"	"particles/items_fx/arcane_boots_recipient.vpcf"
+			"particle"	"particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf"
 		}
-		
-		// Ability General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"SpellDispellableType"			"SPELL_DISPELLABLE_NO"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 
-		// Ability Casting
+		// Time		
 		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
 
-		// Ability Resource
+		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"90 75 60"
-		"AbilityManaCost"				"100"
-
-		// Damage
-		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"duration"			"4.0"
-			}
-			"02"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"base_damage"		"0"
-			}
-			"03"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"strength_damage"	"1.0 2.0 3.0"
-			}
-			"04"
-			{
-				"var_type"			"FIELD_FLOAT"
-				"slow_duration"		"1.8"
-			}
-			"05"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"radius"			"105"
-			}
-			"06"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"slow_movement_speed"			"100"
-			}
-			"07"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"cooldown_scepter"			"90 75 60"
-			}
-			"08"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"damage_reduction"	"40"
-			}
-			"09"
-			{
-				"var_type"			"FIELD_INTEGER"
-				"damage_reduction_tooltip_scepter"	"40"
-			}
-		}
 	}
-
 }

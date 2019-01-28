@@ -1,2 +1,0 @@
-shukuchi_lua = class ({})
-
