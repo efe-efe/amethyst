@@ -1,0 +1,251 @@
+// Dota Heroes File
+// NOTE: This is not for creating new heroes, this is for taking a currently existing hero as a template and overriding
+// the specified key-value combinations.  Use override_hero <hero_to_override> for this.
+"DOTAHeroes"
+{
+	//=================================================================================================================
+	// HERO: Slark
+	//=================================================================================================================
+	"dotarite_npc_dota_hero_slark"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_slark"					// Hero to override
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"				"9"
+		"Ability1"					"slark_basic_attack"			// Q Spell
+		"Ability2"					"slark_pounce"							// W Spell
+		"Ability3"					"slark_obscure_dive"					// E Spell
+		"Ability4"					"slark_unfair_contract"					// D Spell
+		"Ability5"					"slark_dark_pact"						// Q Spell
+		"Ability6"					"wrapper_shadow_dance"					// R Spell
+		"Ability7"					"slark_inner_madness"					// No HK Spell
+		//"Ability8"					"slark_basic_attack"					// No HK Spell
+		"Ability9"					"centaur_warrunner_stampede_lua"					// No HK Spell
+		"Ability23"					"slark_shadow_dance"					// No HK Spell
+		
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										// Physical protection.
+		"MagicalResistance"			"0"										// Magical protection.
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"8"										// Damage range min.
+		"AttackDamageMax"			"8"										// Damage range max.		
+		"AttackRate"				"0.6"									// Speed of attack.
+		"AttackAnimationPoint"		"0.5"
+		"AttackRange"				"180"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"450"
+		"MovementTurnRate"			"2.0"
+
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										// Base strength
+		"AttributeStrengthGain"		"0"										// Strength bonus per level.
+		"AttributeBaseIntelligence"	"0"										// Base intelligence
+		"AttributeIntelligenceGain"	"0"										// Intelligence bonus per level.
+		"AttributeBaseAgility"		"0"										// Base agility
+		"AttributeAgilityGain"		"0"										// Agility bonus per level.
+
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230"									// Base health.
+		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
+		"StatusMana"				"100"									// Base mana.
+		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
+
+	}
+
+	//=================================================================================================================
+	// HERO: Sven
+	//=================================================================================================================
+	"dotarite_npc_dota_hero_sven"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_sven"					// Hero to override
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"				"8"
+		"Ability1"					"sven_basic_attack_override"
+		"Ability2"					"sven_storm_bolt_override"
+		"Ability3"					"sven_warcry"
+		"Ability4"					"sven_ex_storm_bolt"					// Ability 4
+		"Ability5"					"sven_ex_warcry"						// Ability 5
+		"Ability8"					"sven_basic_attack2"						// No HK Spell
+		"Ability23"					"sven_basic_attack"						// No HK Spell
+		
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										// Physical protection.
+		"MagicalResistance"			"0"										// Magical protection.
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"8"										// Damage range min.
+		"AttackDamageMax"			"8"										// Damage range max.	
+		"AttackRate"				"0.4"									// Speed of attack.
+		"AttackAnimationPoint"		"0.4"
+
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"450"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										// Base strength
+		"AttributeStrengthGain"		"0"										// Strength bonus per level.
+		"AttributeBaseIntelligence"	"0"										// Base intelligence
+		"AttributeIntelligenceGain"	"0"										// Intelligence bonus per level.
+		"AttributeBaseAgility"		"0"										// Base agility
+		"AttributeAgilityGain"		"0"										// Agility bonus per level.
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"250"									// Base health.
+		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
+		"StatusMana"				"100"									// Base mana.
+		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
+
+	}
+
+	//=================================================================================================================
+	// HERO: Weaver
+	//=================================================================================================================
+	"dotarite_npc_dota_hero_weaver"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_weaver"					// Hero to override
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"8"
+		"Ability1"						"weaver_basic_attack"								// Q Spell		
+		"Ability2"						"weaver_shukuchi_lua"					// W Spell	
+		"Ability3"						"the_swarm_lua"				// E Spell
+		"Ability4"						"weaver_ex_the_swarm"					// D Spell
+		"Ability5"						"weaver_blink"							// F Spell
+		"Ability6"						"time_lapse_lua"				// R Spell
+		"Ability7"						"doom_bringer_empty1"					// No HK Spell
+		"Ability8"						"doom_bringer_empty2"					// No HK Spell
+		//"Ability7"						""										// No HK Spell
+		//"Ability8"						"weaver_geminate_attack"				// No HK Spell
+		"Ability21"						"weaver_the_swarm"						// No HK Spell
+		//"Ability22"						"weaver_shukuchi"						// No HK Spell
+		"Ability23"						"weaver_time_lapse"						// R Spell
+		
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										// Physical protection.
+		"MagicalResistance"			"0"										// Magical protection.
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"7"										// Damage range min.
+		"AttackDamageMax"			"7"										// Damage range max.	
+		"AttackRate"				"1.0"									// Speed of attack.	
+		"AttackAnimationPoint"		"0.0"
+		"AttackRange"				"800"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"450"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										// Base strength
+		"AttributeStrengthGain"		"0"										// Strength bonus per level.
+		"AttributeBaseIntelligence"	"0"										// Base intelligence
+		"AttributeIntelligenceGain"	"0"										// Intelligence bonus per level.
+		"AttributeBaseAgility"		"0"										// Base agility
+		"AttributeAgilityGain"		"0"										// Agility bonus per level.
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230" //CAN VARY!						// Base health.
+		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
+		"StatusMana"				"100"									// Base mana.
+		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
+
+	}
+
+	//=================================================================================================================
+	// HERO: Drow Ranger
+	//=================================================================================================================
+	"dotarite_npc_dota_hero_drow_ranger"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_drow_ranger"			// Hero to override
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"8"
+		"Ability1"						"drow_basic_attack"						// Q Spell								
+		"Ability2"						"wrapper_weaver_shukuchi"				// W Spell
+		"Ability3"						"drow_ranger_wave_of_silence"				// E Spell
+		"Ability4"						"weaver_ex_the_swarm"					// D Spell
+		"Ability5"						"weaver_blink"							// F Spell
+		//"Ability5"						"weaver_basic_attack_override2"			// F Spell
+		"Ability6"						"weaver_time_lapse"						// R Spell
+		"Ability7"						""										// No HK Spell
+		//"Ability8"						"weaver_geminate_attack"				// No HK Spell
+		//"Ability20"						""									// No HK Spell
+		"Ability21"						"weaver_the_swarm"						// No HK Spell
+		"Ability22"						"weaver_shukuchi"						// No HK Spell
+		//"Ability23"						"weaver_basic_attack_2"					// No HK Spell
+		
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										// Physical protection.
+		"MagicalResistance"			"0"										// Magical protection.
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"15"									// Damage range min.
+		"AttackDamageMax"			"15"									// Damage range max.	
+		"AttackRate"				"0.3"									// Speed of attack.	
+		"AttackAnimationPoint"		"0.0"
+		"AttackRange"				"1000"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"450"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										// Base strength
+		"AttributeStrengthGain"		"0"										// Strength bonus per level.
+		"AttributeBaseIntelligence"	"0"										// Base intelligence
+		"AttributeIntelligenceGain"	"0"										// Intelligence bonus per level.
+		"AttributeBaseAgility"		"0"										// Base agility
+		"AttributeAgilityGain"		"0"										// Agility bonus per level.
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230" //CAN VARY!						// Base health.
+		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
+		"StatusMana"				"100"									// Base mana.
+		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
+
+	}
+
+	"npc_dota_hero_venomancer"
+	{
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"Ability1"						"customability_superpoison"				// Q Spell	
+	}
+}
+

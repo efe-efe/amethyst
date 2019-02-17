@@ -36,8 +36,8 @@ Second: Open the particle on the Valve's Particle Editor
 Third: With the particle selected:
     
     a) On the menu of the left, select the category "Base Properties" 
-        a.a) Remove the Operator "C_OP_MaxVelocity"
-        a.b) Remove the Force "C_OP_AttractToControlPoint"
+        a.a) Remove the OPERATOR "C_OP_MaxVelocity"
+        a.b) Remove the FORCE "C_OP_AttractToControlPoint"
     b) Again, on the menu of the left, click the (+) button next to "initializers", add the Initializer "Velocity set from control point" 
     c) Select the initializer you just have created
     d) Set the "control point number" field to "1"
