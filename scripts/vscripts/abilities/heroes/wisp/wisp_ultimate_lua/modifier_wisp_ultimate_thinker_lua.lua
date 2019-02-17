@@ -15,6 +15,7 @@ function modifier_wisp_ultimate_thinker_lua:OnCreated( kv )
         self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
         self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
         self.max_range = self:GetAbility():GetSpecialValueFor("range")
+        self.damage_bonus =  self:GetAbility():GetSpecialValueFor("damage_bonus")
 
         -- Start Interval
         self:StartIntervalThink( self.delay_time )
@@ -48,15 +49,23 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
             false -- bool, can grow cache
         )
 
-        local damageTable = {
-		    -- victim = target,
-            attacker = self:GetCaster(),
-            damage = self.damage,
-            damage_type = DAMAGE_TYPE_MAGICAL,
-            ability = self:GetAbility() --Optional.
-        }
+        for _,enemy in pairs(enemies) do
+            local wisp_debuff = enemy:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
+            local final_damage = self.damage
 
-		for _,enemy in pairs(enemies) do
+            -- If have the debuff, adds extra attack and extends debuff duration
+            if wisp_debuff ~= nil then
+                final_damage = self.damage_bonus + self.damage
+            end
+
+            local damageTable = {
+                -- victim = target,
+                attacker = self:GetCaster(),
+                damage = final_damage,
+                damage_type = DAMAGE_TYPE_MAGICAL,
+                ability = self:GetAbility() --Optional.
+            }
+
             -- damage
             damageTable.victim = enemy
             ApplyDamage(damageTable)

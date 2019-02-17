@@ -13,14 +13,14 @@ function wisp_mobility_lua:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
-	local old_origin = caster:GetOrigin()
+	local origin = caster:GetOrigin()
 
 	-- load data
 	local max_range = self:GetSpecialValueFor("range")
 	local back_duration = self:GetSpecialValueFor("back_duration")
 
 	-- determine target position
-	local direction = (point - old_origin)
+	local direction = (point - origin)
 	if direction:Length2D() > max_range then
 		direction = direction:Normalized() * max_range
 	end
@@ -31,7 +31,7 @@ function wisp_mobility_lua:OnSpellStart()
         self, --hAbility
         "modifier_wisp_mobility_thinker_lua", --modifierName
         { duration = back_duration }, --paramTable
-        old_origin, --vOrigin
+        origin, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
 	)
@@ -46,10 +46,10 @@ function wisp_mobility_lua:OnSpellStart()
     )
 
 	-- teleport
-	FindClearSpaceForUnit( caster, old_origin + direction, true )
+	FindClearSpaceForUnit( caster, origin + direction, true )
 
 	-- Play effects
-    self:PlayEffects( old_origin, direction )
+    self:PlayEffects( origin, direction )
 	
 	-- Put the back ability on the mobility slot
 	caster:SwapAbilities( 
@@ -60,17 +60,22 @@ function wisp_mobility_lua:OnSpellStart()
 	)
 	
 	-- register position
-	local extraData = {}
-	extraData.time = GameRules:GetGameTime()
-	extraData.modifier = modifier
-	extraData.caster = caster
-	self.origins[old_origin] = extraData
+	self.origins[caster] = {
+		modifier = modifier,
+		position = origin,
+	}
 
+	--share data
+	local wisp_mobility_back = caster:FindAbilityByName( "wisp_mobility_back_lua" )
+	wisp_mobility_back.origins = self.origins
+
+	--[[
 	Timers:CreateTimer(back_duration - 0.1, function()
-		if self.origins[old_origin] ~=nil then
-			self:RemoveOrigin(old_origin)
+		if self.origins[origin] ~=nil then
+			self:RemoveOrigin(origin)
 		end
 	end)
+	]]--
 end
 
 function wisp_mobility_lua:RemoveOrigin( origin )
@@ -82,16 +87,6 @@ function wisp_mobility_lua:RemoveOrigin( origin )
 	end
 	if self.origins[origin] ~= nil then
 		self.origins[origin] = nil
-	end
-end
-
---------------------------------------------------------------------------------
--- Ability Events
-function wisp_mobility_lua:OnUpgrade()
-	if not self.wisp_mobility_back then
-		-- init data share
-		self.wisp_mobility_back = self:GetCaster():FindAbilityByName( "wisp_mobility_back_lua" )
-		self.wisp_mobility_back.origins = self.origins
 	end
 end
 
@@ -125,30 +120,30 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function wisp_mobility_back_lua:OnSpellStart()
+	-- load data
+	local caster = self:GetCaster()
 
 	-- Put the back ability on the mobility slot
-	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_wisp_mobility_lua", self:GetCaster() )
+	local modifier = caster:FindModifierByNameAndCaster( "modifier_wisp_mobility_lua", self:GetCaster() )
 	if modifier~=nil then
-		modifier:Destroy()
+		if not modifier:IsNull() then
+			modifier:Destroy()
+		end
 	end
 	
 	-- get origin from the caster
-	local origin = false
-	for k,v in pairs(self.origins) do
-		if self.origins[k].caster == self:GetCaster() then
-			origin = k
-			break
-		end
-	end
+	local origin = self.origins[caster]
 	
 	if not origin then return end
 
 	-- teletransport
-	FindClearSpaceForUnit( self:GetCaster(), origin, true )
+	FindClearSpaceForUnit( caster, origin.position, true )
 
-	-- destroy the oldest
-	self.origins[origin].modifier:Destroy()
-	self.origins[origin] = nil
+	-- destroy the origin
+	if not self.origins[caster].modifier:IsNull() then
+		self.origins[caster].modifier:Destroy()
+	end
+	self.origins[caster] = nil
 
 	self:PlayEffects()
 end

@@ -67,7 +67,7 @@ function wisp_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation, ex
 	
 	-- load variables
 	local caster = self:GetCaster()
-	local wisp_debuff = hTarget:FindModifierByNameAndCaster( "modifier_wisp_debuff_lua", caster )
+	local wisp_debuff = hTarget:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
 	local modifier_attack_bonus = nil
 
 	-- If have the debuff, adds extra attack and extends debuff duration

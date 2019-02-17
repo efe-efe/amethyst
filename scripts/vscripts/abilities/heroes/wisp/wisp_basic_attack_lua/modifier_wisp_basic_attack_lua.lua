@@ -3,11 +3,11 @@ modifier_wisp_basic_attack_lua = class({})
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_wisp_basic_attack_lua:IsHidden()
-	return false
+	return true
 end
 
 function modifier_wisp_basic_attack_lua:IsDebuff()
-	return true
+	return false
 end
 
 function modifier_wisp_basic_attack_lua:IsPurgable()

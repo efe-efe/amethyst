@@ -20,9 +20,9 @@ function Precache( context )
 	PrecacheResource( "particle", "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf", context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf", context )
 	
-	----Wisp debuff
+	----Wisp Guardian Essence modifier
 	PrecacheResource( "particle", "particles/econ/items/antimage/antimage_weapon_tustakuri/antimage_blade_tustakuri_generic_a.vpcf", context )
-	
+
 	-------------------------------
     -- Models
 	-------------------------------
