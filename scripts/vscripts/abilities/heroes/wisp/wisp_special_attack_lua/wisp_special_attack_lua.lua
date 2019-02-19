@@ -1,6 +1,7 @@
 wisp_special_attack_lua = class({})
 LinkLuaModifier( "modifier_wisp_special_attack_thinker_lua", "abilities/heroes/wisp/wisp_special_attack_lua/modifier_wisp_special_attack_thinker_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_wisp_guardian_essence_lua", "abilities/heroes/wisp/wisp_shared_modifiers/modifier_wisp_guardian_essence_lua/modifier_wisp_guardian_essence_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 

@@ -31,18 +31,7 @@ function modifier_wisp_guardian_essence_lua:OnDestroy( kv )
 	end
 end
 
---[[
---------------------------------------------------------------------------------
-
-function modifier_wisp_guardian_essence_lua:GetEffectName()
-	return "particles/econ/items/centaur/battle_dress_of_the_proven/centaur_proven_axe_edge_a.vpcf"
-end
-
-function modifier_wisp_guardian_essence_lua:GetEffectAttachType()
-	return PATTACH_OVERHEAD_FOLLOW
-end
-]]--
-
+--Visuals
 --------------------------------------------------------------------------------
 
 function modifier_wisp_guardian_essence_lua:PlayEffects()
@@ -61,4 +50,8 @@ end
 function modifier_wisp_guardian_essence_lua:StopEffects()
 	ParticleManager:DestroyParticle( self.effect_cast, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+end
+
+function modifier_wisp_guardian_essence_lua:GetTexture()
+	return "wisp_overcharge"
 end

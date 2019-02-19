@@ -59,6 +59,14 @@ function modifier_wisp_ex_special_attack_thinker_lua:OnIntervalThink()
                 "modifier_generic_stunned_lua", -- modifier name
                 { duration = self.disable_duration } -- kv
             )
+            
+            -- apply guardian essence
+            enemy:AddNewModifier(
+                self:GetCaster(), -- player source
+                self:GetAbility(), -- ability source
+                "modifier_wisp_guardian_essence_lua", -- modifier name
+                {}
+            )
 		end
 
         -- effects

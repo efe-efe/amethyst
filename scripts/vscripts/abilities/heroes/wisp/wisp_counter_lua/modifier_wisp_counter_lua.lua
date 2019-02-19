@@ -46,7 +46,7 @@ function modifier_wisp_counter_lua:GetModifierIncomingDamage_Percentage( params 
     if IsServer() then
 		local parent = self:GetParent()
 		local attacker = params.attacker
-        DebugPrint("Damage Received")
+
         parent:AddNewModifier(
             parent, -- player source
             self:GetAbility(), -- ability source
@@ -59,7 +59,6 @@ function modifier_wisp_counter_lua:GetModifierIncomingDamage_Percentage( params 
 		return -100
 	end
 end
-
 
 -- Status Effects
 function modifier_wisp_counter_lua:CheckState()

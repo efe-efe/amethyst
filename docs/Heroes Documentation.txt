@@ -1,0 +1,38 @@
+-----
+Heroes and spells definition
+-----
+
+Wisp:
+
+* Basic attack (Q)
+
+    Wisp throws a projectile that deals damage on impact. If the target is affected by "Guardian essence", deals extra damage and adds duration to the "Guardian esscence" debuff.
+
+* Second attack (W)
+
+    Wisp throws a projectile that deals damage on impact. Applies "Guardian essence" on the objective. If the objective is already affected by "Guardian essence", deals extra damage. 
+
+* Counter (E)
+
+    Wisp turns into a state tha makes him invulnerable and unable to act during a short period of time. During that period, if Wisp recives any damage, the state is broken and Wisps gains extra movement speed and regeneration per second.
+
+* Special attack (D)
+
+    Wisps channels an aoe attack that deals damages and applies "Fading slow" and "Guardian essence" under the target. If the target is already affected by "Guardian essence", deals extra damage.
+
+* Mobility (F)
+
+    Wisps teletransports to a target position. Wisp have the option to cast this spell again to go back to the original position during a short period of time.
+
+* Ultimate (R)
+
+    Wisps teletransports to a target position, dealing damage in aoe when he arrives to the new position. If the enemy is affected by "Guardian essence", deals extra damage.
+
+* Ex ability 1 (W - Second attack)
+
+    Wisps throws a projectile that applies "Guardian essence" to the target, and creates a link between Wisp an the target. While the link is active, the target is silenced and Wisp recives "Fading Slow". If the distance between Wisp and his target is long enough, the link will be cut.
+
+* Ex ability 2 (D - Special attack)
+
+    Wisp instantly deals damage, stuns and applies "Guardian essence" to the enemies on an aoe arround him.
+

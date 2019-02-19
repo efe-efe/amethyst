@@ -1,39 +1,39 @@
-modifier_wisp_ex_second_attack_visuals_lua = class({})
+modifier_wisp_ex_second_attack_ally_visuals_lua = class({})
 
 --------------------------------------------------------------------------------
-function modifier_wisp_ex_second_attack_visuals_lua:IsDebuff()
-	return true
-end
-
-function modifier_wisp_ex_second_attack_visuals_lua:IsHidden()
+function modifier_wisp_ex_second_attack_ally_visuals_lua:IsDebuff()
 	return false
 end
 
-function modifier_wisp_ex_second_attack_visuals_lua:IsPurgable()
+function modifier_wisp_ex_second_attack_ally_visuals_lua:IsHidden()
+	return true
+end
+
+function modifier_wisp_ex_second_attack_ally_visuals_lua:IsPurgable()
 	return false
 end
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_wisp_ex_second_attack_visuals_lua:OnCreated( kv )
+function modifier_wisp_ex_second_attack_ally_visuals_lua:OnCreated( kv )
 	if IsServer() then
 		-- logic
 		self:PlayEffects( self:GetParent() )
 	end
 end
 
-function modifier_wisp_ex_second_attack_visuals_lua:OnRefresh( kv )
+function modifier_wisp_ex_second_attack_ally_visuals_lua:OnRefresh( kv )
 	
 end
 
-function modifier_wisp_ex_second_attack_visuals_lua:OnDestroy( kv )
+function modifier_wisp_ex_second_attack_ally_visuals_lua:OnDestroy( kv )
 	if IsServer() then
 		self:StopEffects()
 	end
 end
 
-function modifier_wisp_ex_second_attack_visuals_lua:PlayEffects( hTarget )
+function modifier_wisp_ex_second_attack_ally_visuals_lua:PlayEffects( hTarget )
 	-- Get Resources
-	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_tether.vpcf"
+	local particle_cast = "particles/econ/items/wisp/wisp_tether_ti7.vpcf"
 
 	self.effect_cast = ParticleManager:CreateParticle( 
 		particle_cast,
@@ -64,7 +64,7 @@ function modifier_wisp_ex_second_attack_visuals_lua:PlayEffects( hTarget )
 
 end
 
-function modifier_wisp_ex_second_attack_visuals_lua:StopEffects()
+function modifier_wisp_ex_second_attack_ally_visuals_lua:StopEffects()
 	ParticleManager:DestroyParticle( self.effect_cast, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )
 end

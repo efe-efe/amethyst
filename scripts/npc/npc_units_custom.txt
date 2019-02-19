@@ -19,7 +19,7 @@
 
 		// Abilities
 		//----------------------------------------------------------------
-		"Ability1"					"orb_on_death_lua"			// Ability 1
+		"Ability1"					"middle_orb_base_lua"			// Ability 1
 		"Ability2"					""			// Ability 2
 		"Ability3"					""			// Ability 3
 		"Ability4"					""			// Ability 4

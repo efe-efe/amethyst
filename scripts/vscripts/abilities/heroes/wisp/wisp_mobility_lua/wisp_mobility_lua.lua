@@ -68,14 +68,6 @@ function wisp_mobility_lua:OnSpellStart()
 	--share data
 	local wisp_mobility_back = caster:FindAbilityByName( "wisp_mobility_back_lua" )
 	wisp_mobility_back.origins = self.origins
-
-	--[[
-	Timers:CreateTimer(back_duration - 0.1, function()
-		if self.origins[origin] ~=nil then
-			self:RemoveOrigin(origin)
-		end
-	end)
-	]]--
 end
 
 function wisp_mobility_lua:RemoveOrigin( origin )

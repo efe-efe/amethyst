@@ -1,5 +1,7 @@
 wisp_ex_second_attack_lua = class({})
 LinkLuaModifier( "modifier_wisp_ex_second_attack_lua", "abilities/heroes/wisp/wisp_ex_second_attack_lua/modifier_wisp_ex_second_attack_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_wisp_ex_second_attack_ally_lua", "abilities/heroes/wisp/wisp_ex_second_attack_lua/modifier_wisp_ex_second_attack_ally_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_wisp_guardian_essence_lua", "abilities/heroes/wisp/wisp_shared_modifiers/modifier_wisp_guardian_essence_lua/modifier_wisp_guardian_essence_lua", LUA_MODIFIER_MOTION_NONE )
 
 
 -- This function is used to change between abilities and ex abilities
@@ -34,9 +36,9 @@ function wisp_ex_second_attack_lua:OnSpellStart()
 		Ability = self,
 		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 128),
 		
-		bDeleteOnHit = true,
+		bDeleteOnHit = false,
 		
-		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY,
+		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_BOTH,
 		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
 		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
 		
@@ -72,21 +74,49 @@ end
 function wisp_ex_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
 		local caster =  self:GetCaster()
-		local damage = {
-			victim = hTarget,
-			attacker = caster,
-			damage = self.damage,
-			damage_type = DAMAGE_TYPE_MAGICAL,
-		}
 
-		ApplyDamage( damage )
+		--Ignore self
+		if hTarget == caster then
+			return false
+		end
 
-        hTarget:AddNewModifier(
-            caster, -- player source
-            self, -- ability source
-            "modifier_wisp_ex_second_attack_lua", -- modifier name
-            { duration = self.debuff_duration }
-        )
+		--Different behaviours for allys and enemies
+		if hTarget:GetTeamNumber() == caster:GetTeamNumber() then
+			--Link and speed
+			hTarget:AddNewModifier(
+				caster, -- player source
+				self, -- ability source
+				"modifier_wisp_ex_second_attack_ally_lua", -- modifier name
+				{ duration = self.debuff_duration }
+			)
+
+		else	
+	
+			local damage = {
+				victim = hTarget,
+				attacker = caster,
+				damage = self.damage,
+				damage_type = DAMAGE_TYPE_MAGICAL,
+			}
+
+			ApplyDamage( damage )
+
+			--Link and silence
+			hTarget:AddNewModifier(
+				caster, -- player source
+				self, -- ability source
+				"modifier_wisp_ex_second_attack_lua", -- modifier name
+				{ duration = self.debuff_duration }
+			)
+
+			-- apply guardian essence
+			hTarget:AddNewModifier(
+				caster, -- player source
+				self, -- ability source
+				"modifier_wisp_guardian_essence_lua", -- modifier name
+				{}
+			)
+		end
 
 		-- Effects
 		self:PlayEffects2(hTarget)

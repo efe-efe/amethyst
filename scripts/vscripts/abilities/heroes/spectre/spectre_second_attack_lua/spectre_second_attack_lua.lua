@@ -1,21 +1,14 @@
-wisp_second_attack_lua = class ({})
-LinkLuaModifier( "modifier_wisp_guardian_essence_lua", "abilities/heroes/wisp/wisp_shared_modifiers/modifier_wisp_guardian_essence_lua/modifier_wisp_guardian_essence_lua", LUA_MODIFIER_MOTION_NONE )
-
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function wisp_second_attack_lua:GetRelatedName()
-    return "wisp_ex_second_attack_lua"
-end
+spectre_second_attack_lua = class({})
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_second_attack_lua:OnSpellStart()
+function spectre_second_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
 	
 	-- load data
-	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_guardian.vpcf"
+	local projectile_name = "particles/mod_units/heroes/hero_bane/bane_projectile.vpcf"
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
@@ -23,12 +16,9 @@ function wisp_second_attack_lua:OnSpellStart()
     local projectile_vision = 0
 	self.damage = self:GetSpecialValueFor("damage")
 	self.mana_gain = self:GetSpecialValueFor("mana_gain")
-	self.damage_bonus = self:GetSpecialValueFor("damage_bonus")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	-- logic
-
-	self:PlayEffects3()
 
 	local info = {
 		Source = caster,
@@ -62,42 +52,23 @@ function wisp_second_attack_lua:OnSpellStart()
 	
 	ProjectileManager:CreateLinearProjectile(info)
 	self:PlayEffects()
-
-	-- Put CD on the ex version of the ability
-	local ex_version = caster:FindAbilityByName("wisp_ex_second_attack_lua")
-	ex_version:StartCooldown(self:GetCooldown(0))
 end
 
 --------------------------------------------------------------------------------
 -- Projectile
-function wisp_second_attack_lua:OnProjectileHit( hTarget, vLocation )
+function spectre_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
 		local caster =  self:GetCaster()
-		local final_damage = self.damage
-		local guardian_essence = hTarget:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
-
-		-- If have the debuff, adds extra damage
-		if guardian_essence ~= nil then
-			final_damage = self.damage_bonus + final_damage
-		end
 		
 		local damage = {
 			victim = hTarget,
 			attacker = caster,
-			damage = final_damage,
+			damage = self.damage,
 			damage_type = DAMAGE_TYPE_MAGICAL,
 		}
 
 		ApplyDamage( damage )
 
-		-- apply guardian essence
-        hTarget:AddNewModifier(
-            caster, -- player source
-            self, -- ability source
-			"modifier_wisp_guardian_essence_lua", -- modifier name
-			{}
-		)
-		
 		-- Give Mana
 		local mana_gain_final = caster:GetMaxMana() * self.mana_gain
 		caster:GiveMana(mana_gain_final)
@@ -109,20 +80,7 @@ function wisp_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 	return true
 end
 
-function wisp_second_attack_lua:PlayEffects()
-	-- Get Resources
-	local sound_cast = "Hero_Wisp.TeleportOut"
-	local particle_cast = "particles/econ/items/wisp/wisp_guardian_explosion_ti7.vpcf"
-
-	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster()  )
-
-	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
-function wisp_second_attack_lua:PlayEffects2(hTarget)
+function spectre_second_attack_lua:PlayEffects2(hTarget)
 	-- Get Resources
 	local sound_cast = "Hero_Wisp.Spirits.Target"
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_guardian_explosion.vpcf"
@@ -135,9 +93,9 @@ function wisp_second_attack_lua:PlayEffects2(hTarget)
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-function wisp_second_attack_lua:PlayEffects3()
+function spectre_second_attack_lua:PlayEffects()
 	-- Get Resources
-	local particle_cast = "particles/econ/items/wisp/wisp_relocate_marker_ti7_out_embers.vpcf"
+	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
 
 	-- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )

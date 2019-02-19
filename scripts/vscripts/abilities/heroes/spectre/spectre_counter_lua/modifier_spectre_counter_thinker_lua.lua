@@ -1,22 +1,18 @@
-modifier_wisp_ultimate_thinker_lua = class({})
+modifier_spectre_counter_thinker_lua = class({})
 
 --------------------------------------------------------------------------------
-
-function modifier_wisp_ultimate_thinker_lua:IsHidden()
+function modifier_spectre_counter_thinker_lua:IsHidden()
 	return true
 end
 
 --------------------------------------------------------------------------------
-
-function modifier_wisp_ultimate_thinker_lua:OnCreated( kv )
+-- Initializer
+function modifier_spectre_counter_thinker_lua:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
         self.damage = self:GetAbility():GetSpecialValueFor( "damage" )
-        self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
         self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
-        self.max_range = self:GetAbility():GetSpecialValueFor("range")
-        self.damage_bonus =  self:GetAbility():GetSpecialValueFor("damage_bonus")
-
+        
         -- Start Interval
         self:StartIntervalThink( self.delay_time )
 
@@ -26,20 +22,12 @@ end
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
+function modifier_spectre_counter_thinker_lua:OnIntervalThink()
     if IsServer() then
-        -- determine target position
-        local point = self:GetParent():GetOrigin()
-        local caster = self:GetCaster()
-        local old_origin = caster:GetOrigin()
-
-        -- teleport
-        FindClearSpaceForUnit( caster, point , true )
-
         -- find enemies
         local enemies = FindUnitsInRadius( 
             self:GetParent():GetTeamNumber(), -- int, your team number
-            point, -- point, center point
+            self:GetParent():GetOrigin(), -- point, center point
             nil, -- handle, cacheUnit. (not known)
             self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
             DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
@@ -50,28 +38,20 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
         )
 
         local damageTable = {
-            -- victim = target,
+		    -- victim = target,
             attacker = self:GetCaster(),
-            --damage = self.damage,
+            damage = self.damage,
             damage_type = DAMAGE_TYPE_MAGICAL,
             ability = self:GetAbility() --Optional.
         }
-        
+
         for _,enemy in pairs(enemies) do
-            local guardian_essence = enemy:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
-            local final_damage = self.damage
-
-            -- If have the guardian essences, adds extra damage
-            if guardian_essence ~= nil then
-                final_damage = self.damage_bonus + final_damage
-            end
-
             -- damage
             damageTable.victim = enemy
-            damageTable.damage = final_damage
             ApplyDamage(damageTable)
-		end
-
+            self:PlayEffects3(enemy)
+        end
+        
 		self:PlayEffects2()
 
 	    self:Destroy()
@@ -79,11 +59,11 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
 end
 
 --------------------------------------------------------------------------------
-
-function modifier_wisp_ultimate_thinker_lua:PlayEffects()
+-- Effects
+function modifier_spectre_counter_thinker_lua:PlayEffects()
 	-- Get Resources
-	local particle_cast = "particles/econ/items/earthshaker/earthshaker_totem_ti6/earthshaker_totem_ti6_cast_glyph.vpcf"
-	local sound_cast = "Hero_Wisp.TeleportOut"
+	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
+	local sound_cast = "Hero_Spectre.DaggerCast.ti7"
 
     local effect_cast = ParticleManager:CreateParticle( 
         particle_cast, 
@@ -91,8 +71,13 @@ function modifier_wisp_ultimate_thinker_lua:PlayEffects()
         self:GetCaster()
     )
 
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
+    local origin = Vector(
+        self:GetParent():GetOrigin().x,
+        self:GetParent():GetOrigin().y,
+        self:GetParent():GetOrigin().z + 64
+    )
+
+    ParticleManager:SetParticleControl( effect_cast, 0, origin )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 
     EmitSoundOn( 
@@ -101,33 +86,48 @@ function modifier_wisp_ultimate_thinker_lua:PlayEffects()
     )
 end
 
-function modifier_wisp_ultimate_thinker_lua:PlayEffects2()
+function modifier_spectre_counter_thinker_lua:PlayEffects2()
     -- Get Resources
     local sound_cast = "Ability.LightStrikeArray"
+	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_impact.vpcf"
     
+    local origin = Vector(
+        self:GetParent():GetOrigin().x,
+        self:GetParent():GetOrigin().y,
+        self:GetParent():GetOrigin().z + 64
+    )
+
     -- particles 1
-    local particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_explode_ti5.vpcf"
     local effect_cast = ParticleManager:CreateParticle( 
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
         )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 0, origin)
     ParticleManager:ReleaseParticleIndex( effect_cast )
- 
+
     -- particles 2
-    local particle_cast2 = "particles/econ/items/zeus/arcana_chariot/zeus_arcana_thundergods_wrath_start_bolt_parent.vpcf"
+			
+    local particle_cast2 = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
+    
     local effect_cast2 = ParticleManager:CreateParticle( 
             particle_cast2, 
             PATTACH_WORLDORIGIN, 
             nil 
         )
-    ParticleManager:SetParticleControl( effect_cast2, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 1, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 2, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 5, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast2, 0, origin )
     ParticleManager:ReleaseParticleIndex( effect_cast2 )
+
 
     EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
 end
+
+--disperssion enemy
+function modifier_spectre_counter_thinker_lua:PlayEffects3(enemy)
+	local particle_cast = "particles/units/heroes/hero_spectre/spectre_dispersion.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, enemy )
+
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+
+end
+

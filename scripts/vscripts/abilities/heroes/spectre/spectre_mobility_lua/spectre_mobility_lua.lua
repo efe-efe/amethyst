@@ -1,0 +1,1 @@
+spectre_mobility_lua = class({})

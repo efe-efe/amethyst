@@ -2,6 +2,13 @@ wisp_ultimate_lua = class({})
 LinkLuaModifier( "modifier_wisp_ultimate_thinker_lua", "abilities/heroes/wisp/wisp_ultimate_lua/modifier_wisp_ultimate_thinker_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_wisp_ultimate_lua", "abilities/heroes/wisp/wisp_ultimate_lua/modifier_wisp_ultimate_lua", LUA_MODIFIER_MOTION_NONE )
 
+-- This function is used to change between abilities and ex abilities
+--------------------------------------------------------------------------------
+function wisp_ultimate_lua:GetRelatedName()
+    return "wisp_ex_ultimate_lua"
+end
+
+
 function wisp_ultimate_lua:GetAOERadius()
 	return self:GetSpecialValueFor( "radius" )
 end

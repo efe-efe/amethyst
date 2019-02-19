@@ -1,6 +1,14 @@
 wisp_ex_special_attack_lua = class({})
 LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_wisp_ex_special_attack_thinker_lua", "abilities/heroes/wisp/wisp_ex_special_attack_lua/modifier_wisp_ex_special_attack_thinker_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_wisp_guardian_essence_lua", "abilities/heroes/wisp/wisp_shared_modifiers/modifier_wisp_guardian_essence_lua/modifier_wisp_guardian_essence_lua", LUA_MODIFIER_MOTION_NONE )
+
+
+-- This function is used to change between abilities and ex abilities
+--------------------------------------------------------------------------------
+function wisp_ex_special_attack_lua:GetRelatedName()
+    return "wisp_special_attack_lua"
+end
 
 --------------------------------------------------------------------------------
 
@@ -29,12 +37,6 @@ function wisp_ex_special_attack_lua:OnSpellStart()
     local non_ex_version = caster:FindAbilityByName("wisp_special_attack_lua")
 	non_ex_version:StartCooldown(self:GetCooldown(0))
     self:PlayEffects()
-end
-
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function wisp_ex_special_attack_lua:GetRelatedName()
-    return "wisp_special_attack_lua"
 end
 
 --------------------------------------------------------------------------------

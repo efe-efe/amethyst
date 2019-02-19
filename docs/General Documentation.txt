@@ -31,7 +31,7 @@ Two teams confront each other to obtain the victory on an ability, strategy and 
 
 	Heroes are the same heroes used in a normal Dota 2 game
 
-	* Every Heroe have 6 abilities. 3 normal abilities (Q, W, E), 2 ex-abilities (D, F) and 1 ultimate (R).
+	* Every Heroe have 8 abilities. 5 normal abilities (Q, W, E, D, F), 2 ex-abilities (Keys matches the non-ex version) and 1 ultimate (R).
 	* Heroes have no status points (STR, AGI and INT = 0). That is to prevent they from having the perks.
 	* Heroes does not have status gain per level.
 	* Heroes starts at level 25
@@ -79,9 +79,9 @@ Two teams confront each other to obtain the victory on an ability, strategy and 
 	Rites are levels on the skills.
 
 	* Each hero starts with 5 skill points available (Level 6 heroes). 
+	* Skill points could change the skills in many ways with the KVs, not only numbers refining, but complete behaviour change (using the special values as true false integers).
 
 	Drawbacks:
-		* Skill points could not change the skills as wanted if it only allows number changes.
 		* There is no limit of Skill points per skill
 		* Rites are learnt in an specific order. So, to reach a specific rite you have to pick 
 		all the rites before it.
@@ -143,10 +143,3 @@ A. To complete
 	- Number of rounds per match
 
 B. Design problems
-
-----------------
-	
-	Abilities:
-		- CD should be shared between an abilitie and his ex-version
-		- Ex-abilities must be benefited from the rites that affects the main ability they are based on.
-		- Almost all dota abilities are targeted (including right-clicks)

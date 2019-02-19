@@ -1,34 +1,34 @@
-modifier_orb_on_death_lua = class ({})
+modifier_middle_orb_base_lua = class ({})
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_orb_on_death_lua:IsHidden()
+function modifier_middle_orb_base_lua:IsHidden()
 	return false
 end
 
-function modifier_orb_on_death_lua:IsDebuff()
+function modifier_middle_orb_base_lua:IsDebuff()
 	return false
 end
 
-function modifier_orb_on_death_lua:IsPurgable()
+function modifier_middle_orb_base_lua:IsPurgable()
 	return false
 end
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_orb_on_death_lua:DeclareFunctions()
+function modifier_middle_orb_base_lua:DeclareFunctions()
 	local funcs = {
 		MODIFIER_EVENT_ON_DEATH,
 	}
 	return funcs
 end
 
-function modifier_orb_on_death_lua:OnCreated( kv )
+function modifier_middle_orb_base_lua:OnCreated( kv )
 	--Get values
 	self.mana = self:GetAbility():GetSpecialValueFor( "mana" )
 	self.heal = self:GetAbility():GetSpecialValueFor( "heal" )
 end
 
-function modifier_orb_on_death_lua:OnDeath(params)
+function modifier_middle_orb_base_lua:OnDeath(params)
 	if IsServer() then
 		-- filter
 		local pass = false
@@ -69,7 +69,7 @@ function modifier_orb_on_death_lua:OnDeath(params)
 end
 
 --------------------------------------------------------------------------------
-function modifier_orb_on_death_lua:PlayEffects()
+function modifier_middle_orb_base_lua:PlayEffects()
 	-- Get Resources
 	local particle_cast = "particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf"
 	local particle_cast2 = "particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf"
@@ -89,7 +89,7 @@ function modifier_orb_on_death_lua:PlayEffects()
 end
 
 --------------------------------------------------------------------------------
-function modifier_orb_on_death_lua:PlayEffects2( recipient )
+function modifier_middle_orb_base_lua:PlayEffects2( recipient )
 	-- Get Resources
 	local particle_cast = "particles/items_fx/arcane_boots_recipient.vpcf"
 	local sound_cast = "DOTA_Item.ArcaneBoots.Activate"
@@ -106,7 +106,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Status Effects
-function modifier_orb_on_death_lua:CheckState()
+function modifier_middle_orb_base_lua:CheckState()
 	local state = {
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
