@@ -112,10 +112,7 @@
 
 		"precache"
 		{
-			"particle"	"particles/mod_units/heroes/hero_chaos_knight/chaos_knight_chaos_bolt.vpcf"
 			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_guardian.vpcf"
-			"particle"	"particles/mod_units/heroes/hero_dark_willow/dark_willow_shadow_attack.vpcf"
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_lina.vsndevts"
 		}
 
 		// Special
@@ -194,7 +191,6 @@
 
 		"precache"
 		{
-			"particle"	"particles/mod_units/heroes/hero_chaos_knight/chaos_knight_chaos_bolt.vpcf"
 			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_guardian.vpcf"
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_lina.vsndevts"
 		}
@@ -703,7 +699,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"300"
+		"AbilityCastRange"				"250"
 		"AbilityCastPoint"				"0.2"
 		"AnimationPlaybackRate" 		"2.0"
 
@@ -738,7 +734,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"130"
+				"projectile_range"			"150"
 			}
 			"04"
 			{
@@ -759,6 +755,11 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_amount"				"12"
+			}
+			"08"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_bonus"				"10"
 			}
 		}
 	}
@@ -781,7 +782,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"300"
+		"AbilityCastRange"				"250"
 		"AbilityCastPoint"				"0.2"
 		"AnimationPlaybackRate" 		"2.0"
 
@@ -810,7 +811,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"130"
+				"projectile_range"			"150"
 			}
 			"04"
 			{
@@ -866,9 +867,11 @@
 		"AbilityManaCost"				"0"
 
 		// Precache
-
+		//-------------------------------------------------------------------------------------------------------------
 		"precache"
 		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
 		}
 
 		// Special
@@ -936,6 +939,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
 		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
 		}
 
 		// Special
@@ -955,7 +959,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"delay_time"				"0.3"
+				"delay_time"				"0.4"
 			}
 			"04"
 			{
@@ -965,7 +969,7 @@
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"200"
+				"radius"					"180"
 			}
 		}
 	}
@@ -1039,7 +1043,7 @@
 			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage"					"20"
+				"damage"					"12"
 			}
 			"07"
 			{
@@ -1073,15 +1077,90 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_desolate"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.3"
+		"AbilityCastPoint"				"0.1"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"particle" "particles/econ/generic/generic_aoe_shockwave_1/generic_aoe_shockwave_1_a.vpcf"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"range"						"900"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.3"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"150"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"16"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.06"
+			}
+		}
+	}
+	
+	"spectre_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ultimate_lua/spectre_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"spectre_haunt"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.6"
+		"AnimationPlaybackRate" 		"0.4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"7.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -1096,7 +1175,7 @@
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
-		{
+		{   //All the SpecialValues are needed but can vary
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
@@ -1104,14 +1183,26 @@
 			}
 			"02"
 			{
-				"var_type"				"FIELD_INTEGER"
-				"range"					"1200"
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"2150"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1500"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"70"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"20"
 			}
 		}
 	}
-
-
-
 
 
 
@@ -1172,10 +1263,10 @@
 	// Misc: Orb
 	//=================================================================================================================
 	
-	"orb_on_death_lua"
+	"middle_orb_base_lua"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/units/orb_on_death/orb_on_death_lua.lua"
+		"ScriptFile"					"abilities/units/middle_orb/middle_orb_base_lua/middle_orb_base_lua"
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"drow_ranger_frost_arrows"

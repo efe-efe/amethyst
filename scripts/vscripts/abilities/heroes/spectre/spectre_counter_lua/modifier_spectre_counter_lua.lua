@@ -15,7 +15,7 @@ end
 function modifier_spectre_counter_lua:OnDestroy( kv )
     if IsServer() then
         -- effects
-        self:StopEffects()
+		self:StopEffects()
     end
 end
 
@@ -90,26 +90,50 @@ function modifier_spectre_counter_lua:GetModifierMoveSpeedBonus_Percentage()
 end
 
 
--- Graphics & Animations
-function modifier_spectre_counter_lua:GetEffectName()
-	return "particles/econ/items/spectre/spectre_transversant_soul/spectre_transversant_spectral_dagger_path_owner.vpcf"
-end
-
-function modifier_spectre_counter_lua:GetEffectAttachType()
-	return PATTACH_ABSORIGIN_FOLLOW
-end
-
--- Graphics & Animations
 function modifier_spectre_counter_lua:PlayEffects()
-	local particle_cast = "particles/econ/events/ti6/radiance_owner_ti6.vpcf"
+	local sound_cast = "Hero_Spectre.HauntCast"
 
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+	local particle_cast = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rop.vpcf"
+	local particle_cast2 = "particles/econ/events/ti6/radiance_owner_ti6.vpcf"
+
+	self.effect_cast = ParticleManager:CreateParticle( 
+		particle_cast, 
+		PATTACH_CUSTOMORIGIN, 
+		self:GetParent()
+	)
+
+	ParticleManager:SetParticleControlEnt( 
+		self.effect_cast, 
+		0, 
+		self:GetParent(), 
+		PATTACH_POINT_FOLLOW, 
+		"attach_hitloc", 
+		self:GetParent():GetOrigin(), 
+		true 
+	)
+	ParticleManager:SetParticleControlEnt( 
+		self.effect_cast, 
+		3, 
+		self:GetParent(), 
+		PATTACH_POINT_FOLLOW, 
+		"attach_hitloc", 
+		self:GetParent():GetOrigin(), 
+		true 
+	)
+
+
+
+	self.effect_cast2 = ParticleManager:CreateParticle( particle_cast2, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+	ParticleManager:SetParticleControl( self.effect_cast2, 0, self:GetParent():GetOrigin() )
+
+	EmitSoundOn( sound_cast, self:GetParent() )
 end
 
-
--- Graphics & Animations
 function modifier_spectre_counter_lua:StopEffects()
 	ParticleManager:DestroyParticle( self.effect_cast, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+
+	ParticleManager:DestroyParticle( self.effect_cast2, false )
+	ParticleManager:ReleaseParticleIndex( self.effect_cast2 )
 end
 

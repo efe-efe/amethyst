@@ -1,8 +1,8 @@
-spectre_second_attack_lua = class({})
+spectre_ultimate_lua = class({})
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function spectre_second_attack_lua:OnSpellStart()
+function spectre_ultimate_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -56,7 +56,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Projectile
-function spectre_second_attack_lua:OnProjectileHit( hTarget, vLocation )
+function spectre_ultimate_lua:OnProjectileHit( hTarget, vLocation )
 	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
 		local caster =  self:GetCaster()
 		
@@ -81,7 +81,7 @@ function spectre_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 end
 
 --Impact
-function spectre_second_attack_lua:PlayEffects2(hTarget)
+function spectre_ultimate_lua:PlayEffects2(hTarget)
 	-- Get Resources
     local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
@@ -95,7 +95,7 @@ function spectre_second_attack_lua:PlayEffects2(hTarget)
 end
 
 --cast
-function spectre_second_attack_lua:PlayEffects()
+function spectre_ultimate_lua:PlayEffects()
 	-- Get Resources
 	local sound_cast = "Hero_Nevermore.Raze_Flames"
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"

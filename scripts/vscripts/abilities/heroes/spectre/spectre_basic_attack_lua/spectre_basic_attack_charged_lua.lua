@@ -1,5 +1,6 @@
 spectre_basic_attack_charged_lua = class({})
 
+LinkLuaModifier( "modifier_spectre_basic_attack_charged_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_basic_attack_charged_timer", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_timer", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
@@ -89,6 +90,9 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
     --Adds the timer that swaps the abilities
 	caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_timer", {duration = self:GetCooldown(0)})
 
+	--Adds the damage bonus modifier
+	self.modifier_attack_bonus = caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_lua", {})
+
 	self:PlayEffectsOnCast()
 end
 
@@ -96,14 +100,21 @@ end
 --------------------------------------------------------------------------------
 -- Projectile
 function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
-    if hTarget==nil then 
-	    self:PlayEffectsMiss()
-        return 
-    end
 	
 	-- load variables
 	local caster = self:GetCaster()
 
+	if hTarget==nil then 
+		--Remove the extra attack
+		if self.modifier_attack_bonus ~= nil then
+			if not self.modifier_attack_bonus:IsNull() then
+			self.modifier_attack_bonus:Destroy()
+			end
+		end
+	    self:PlayEffectsMiss()
+        return 
+    end
+	
 	-- perform the actual attack
 	caster:PerformAttack(
 		hTarget, -- handle hTarget 
@@ -123,7 +134,13 @@ function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vL
 	hTarget:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
 	hTarget:AddNewModifier(caster, self , "modifier_spectre_desolate_lua", { duration = self.debuff_duration})
     caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-    
+	
+	--Remove the extra attack
+	if self.modifier_attack_bonus ~= nil then
+		if not self.modifier_attack_bonus:IsNull() then
+		self.modifier_attack_bonus:Destroy()
+		end
+	end
     return true
 end
 
@@ -170,7 +187,7 @@ end
 --Desolate effects
 -------------------------
 function spectre_basic_attack_charged_lua:PlayEffects2(hTarget)
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
+	local particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
 
     -- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, hTarget )

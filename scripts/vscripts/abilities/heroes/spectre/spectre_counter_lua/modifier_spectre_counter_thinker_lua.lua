@@ -15,7 +15,6 @@ function modifier_spectre_counter_thinker_lua:OnCreated( kv )
         
         -- Start Interval
         self:StartIntervalThink( self.delay_time )
-
         self:PlayEffects()
     end
 end
@@ -62,9 +61,8 @@ end
 -- Effects
 function modifier_spectre_counter_thinker_lua:PlayEffects()
 	-- Get Resources
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
-	local sound_cast = "Hero_Spectre.DaggerCast.ti7"
-
+	local particle_cast = "particles/units/heroes/hero_phoenix/phoenix_fire_spirit_ground.vpcf"
+	local sound_cast = "Hero_ShadowDemon.Soul_Catcher"
     local effect_cast = ParticleManager:CreateParticle( 
         particle_cast, 
         PATTACH_WORLDORIGIN, 
@@ -78,23 +76,20 @@ function modifier_spectre_counter_thinker_lua:PlayEffects()
     )
 
     ParticleManager:SetParticleControl( effect_cast, 0, origin )
+    ParticleManager:SetParticleControl( effect_cast, 2, origin )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 
-    EmitSoundOn( 
-        sound_cast, 
-        self:GetCaster() 
-    )
+    EmitSoundOn( sound_cast,  self:GetCaster())
 end
 
 function modifier_spectre_counter_thinker_lua:PlayEffects2()
     -- Get Resources
-    local sound_cast = "Ability.LightStrikeArray"
-	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_impact.vpcf"
+	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
     
     local origin = Vector(
         self:GetParent():GetOrigin().x,
         self:GetParent():GetOrigin().y,
-        self:GetParent():GetOrigin().z + 64
+        self:GetParent():GetOrigin().z + 100
     )
 
     -- particles 1
@@ -117,14 +112,11 @@ function modifier_spectre_counter_thinker_lua:PlayEffects2()
         )
     ParticleManager:SetParticleControl( effect_cast2, 0, origin )
     ParticleManager:ReleaseParticleIndex( effect_cast2 )
-
-
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
 end
 
 --disperssion enemy
 function modifier_spectre_counter_thinker_lua:PlayEffects3(enemy)
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_dispersion.vpcf"
+	local particle_cast = "particles/econ/items/spectre/spectre_weapon_diffusal/spectre_desolate_diffusal.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, enemy )
 
     ParticleManager:ReleaseParticleIndex( effect_cast )

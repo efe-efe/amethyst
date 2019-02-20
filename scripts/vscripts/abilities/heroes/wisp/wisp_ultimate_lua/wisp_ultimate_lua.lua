@@ -41,7 +41,7 @@ function wisp_ultimate_lua:OnSpellStart()
         caster, --hCaster
         self, --hAbility
         "modifier_wisp_ultimate_thinker_lua", --modifierName
-        { old_origin =  old_origin }, --paramTable
+        { }, --paramTable
         old_origin + direction, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker

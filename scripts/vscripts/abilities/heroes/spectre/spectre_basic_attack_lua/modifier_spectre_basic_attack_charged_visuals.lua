@@ -37,17 +37,27 @@ end
 function modifier_spectre_basic_attack_charged_visuals:PlayEffects()
     if IsServer() then
         -- Get Resources
-        local particle_cast = "particles/units/heroes/hero_magnataur/magnataur_empower.vpcf"
+
+        local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_base_attack_c.vpcf"
         local origin = self:GetParent():GetOrigin()
         self.effect_cast = ParticleManager:CreateParticle( 
             particle_cast, 
             PATTACH_CUSTOMORIGIN, 
-            nil
+            self:GetParent()
         )
 
         ParticleManager:SetParticleControlEnt( 
             self.effect_cast, 
             0, 
+            self:GetParent(), 
+            PATTACH_POINT_FOLLOW, 
+            "attach_attack1", 
+            origin, 
+            true 
+        )
+        ParticleManager:SetParticleControlEnt( 
+            self.effect_cast, 
+            3, 
             self:GetParent(), 
             PATTACH_POINT_FOLLOW, 
             "attach_attack1", 

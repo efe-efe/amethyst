@@ -76,9 +76,9 @@
 		"Ability3"						"spectre_counter_lua"
 		"Ability4"						"spectre_special_attack_lua"
 		"Ability5"						"spectre_mobility_lua"
-		"Ability6"						"spectre_spectral_dagger"             // Q Spell	
+		"Ability6"						"spectre_ultimate_lua"             // Q Spell	
 		"Ability7"						"spectre_basic_attack_lua"             // Q Spell	
-		
+
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
 		"ArmorPhysical"				"0"										// Physical protection.
@@ -86,8 +86,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"10"									// Damage range min.
-		"AttackDamageMax"			"10"									// Damage range max.	
+		"AttackDamageMin"			"8"									// Damage range min.
+		"AttackDamageMax"			"8"									// Damage range max.	
 		"AttackRate"				"0.2"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.0"
 		"AttackRange"				"0"

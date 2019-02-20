@@ -29,7 +29,7 @@ function modifier_spectre_special_attack_thinker_lua:OnIntervalThink()
     local start_pos = self:GetParent():GetOrigin()
     local path_vector = self.direction * self.distance
 	local end_pos = start_pos + path_vector
-	local path_radius = 200
+	local path_radius = 100
     
     local allies = FindUnitsInLine(
 		caster:GetTeamNumber(),

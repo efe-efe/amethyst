@@ -1,20 +1,20 @@
-modifier_wisp_ultimate_thinker_lua = class({})
+modifier_spectre_mobility_thinker_lua = class({})
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ultimate_thinker_lua:IsHidden()
+function modifier_spectre_mobility_thinker_lua:IsHidden()
 	return true
 end
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ultimate_thinker_lua:OnCreated( kv )
+function modifier_spectre_mobility_thinker_lua:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
         self.damage = self:GetAbility():GetSpecialValueFor( "damage" )
         self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
         self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
-        self.damage_bonus =  self:GetAbility():GetSpecialValueFor("damage_bonus")
+        self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")
 
         -- Start Interval
         self:StartIntervalThink( self.delay_time )
@@ -25,7 +25,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
+function modifier_spectre_mobility_thinker_lua:OnIntervalThink()
     if IsServer() then
         -- determine target position
         local point = self:GetParent():GetOrigin()
@@ -51,25 +51,24 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
         local damageTable = {
             -- victim = target,
             attacker = self:GetCaster(),
-            --damage = self.damage,
-            damage_type = DAMAGE_TYPE_MAGICAL,
+            damage = self.damage,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
             ability = self:GetAbility() --Optional.
         }
         
         for _,enemy in pairs(enemies) do
-            local guardian_essence = enemy:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
-            local final_damage = self.damage
-
-            -- If have the guardian essences, adds extra damage
-            if guardian_essence ~= nil then
-                final_damage = self.damage_bonus + final_damage
-            end
-
             -- damage
             damageTable.victim = enemy
-            damageTable.damage = final_damage
             ApplyDamage(damageTable)
-		end
+            self:PlayEffects3(enemy)
+        end
+        
+        -- if at least 1 enemy
+        if #enemies > 0 then
+            -- Give Mana
+            local mana_gain_final = self:GetCaster():GetMaxMana() * self.mana_gain
+            self:GetCaster():GiveMana(mana_gain_final)    
+        end
 
 		self:PlayEffects2()
 
@@ -78,11 +77,11 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
 end
 
 --------------------------------------------------------------------------------
-
-function modifier_wisp_ultimate_thinker_lua:PlayEffects()
+--Cast
+function modifier_spectre_mobility_thinker_lua:PlayEffects()
 	-- Get Resources
-	local particle_cast = "particles/econ/items/earthshaker/earthshaker_totem_ti6/earthshaker_totem_ti6_cast_glyph.vpcf"
-	local sound_cast = "Hero_Wisp.TeleportOut"
+	local particle_cast = "particles/econ/items/legion/legion_overwhelming_odds_ti7/legion_commander_odds_ti7_proj_ground.vpcf"
+	local sound_cast = "Hero_Spectre.HauntCast"
 
     local effect_cast = ParticleManager:CreateParticle( 
         particle_cast, 
@@ -99,34 +98,42 @@ function modifier_wisp_ultimate_thinker_lua:PlayEffects()
         self:GetCaster() 
     )
 end
-
-function modifier_wisp_ultimate_thinker_lua:PlayEffects2()
+--Arrive
+function modifier_spectre_mobility_thinker_lua:PlayEffects2()
     -- Get Resources
-    local sound_cast = "Ability.LightStrikeArray"
+    local sound_cast = "Hero_Spectre.Haunt"
     
     -- particles 1
-    local particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_explode_ti5.vpcf"
+    local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
     local effect_cast = ParticleManager:CreateParticle( 
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
         )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
- 
+
     -- particles 2
-    local particle_cast2 = "particles/econ/items/zeus/arcana_chariot/zeus_arcana_thundergods_wrath_start_bolt_parent.vpcf"
+
+    -- particles/mod_units/heroes/hero_sven/sven_spell_great_cleave.vpcf
+    local particle_cast2 = "particles/econ/items/disruptor/disruptor_resistive_pinfold/disruptor_kf_aoe_discharge.vpcf"
     local effect_cast2 = ParticleManager:CreateParticle( 
             particle_cast2, 
-            PATTACH_WORLDORIGIN, 
-            nil 
+            PATTACH_ABSORIGIN_FOLLOW, 
+            self:GetCaster()
         )
-    ParticleManager:SetParticleControl( effect_cast2, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 1, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 2, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 5, self:GetParent():GetOrigin() )
+    --ParticleManager:SetParticleControl( effect_cast2, 0, self:GetCaster():GetOrigin() )
+    --ParticleManager:SetParticleControl( effect_cast2, 3, self:GetCaster():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast2 )
+    
+end
 
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+
+function modifier_spectre_mobility_thinker_lua:PlayEffects3( hTarget )
+	-- Get Resources
+	local sound_cast = "Hero_Spectre.Attack"
+
+	-- Create Sound
+    EmitSoundOn( sound_cast, hTarget )
 end
