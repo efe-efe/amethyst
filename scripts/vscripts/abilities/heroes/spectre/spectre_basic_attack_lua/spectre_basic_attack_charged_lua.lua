@@ -5,10 +5,9 @@ LinkLuaModifier( "modifier_spectre_basic_attack_charged_timer", "abilities/heroe
 LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Weapon charged
---------------------------------------------------------------------------------
-
+function spectre_basic_attack_charged_lua:GetAOERadius()
+	return self:GetSpecialValueFor( "hitbox" )
+end
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_basic_attack_charged_lua:OnSpellStart()
@@ -24,7 +23,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox") + 50
+	local projectile_end_radius = self:GetSpecialValueFor("hitbox") + 10
 	local projectile_vision = 0
     local projectile_name = ""
 
@@ -132,7 +131,7 @@ function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vL
     self:GetCaster():Heal( self.heal_amount, self )
     
 	hTarget:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
-	hTarget:AddNewModifier(caster, self , "modifier_spectre_desolate_lua", { duration = self.debuff_duration})
+	hTarget:AddNewModifier(caster, self , "modifier_spectre_desolate_lua", {})
     caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 	
 	--Remove the extra attack

@@ -62,7 +62,7 @@
 	//=================================================================================================================
 	// HERO: Spectre
 	//=================================================================================================================
-	"npc_dota_hero_spectre"
+	"npc_dota_hero_spectre_lua"
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
@@ -78,6 +78,10 @@
 		"Ability5"						"spectre_mobility_lua"
 		"Ability6"						"spectre_ultimate_lua"             // Q Spell	
 		"Ability7"						"spectre_basic_attack_lua"             // Q Spell	
+		"Ability8"						"spectre_ex_ultimate_lua"             // Q Spell
+		"Ability9"						"spectre_ex_second_attack_lua"             // Q Spell
+		"Ability10"						"spectre_ex_mobility_lua"             // Q Spell
+		
 
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------

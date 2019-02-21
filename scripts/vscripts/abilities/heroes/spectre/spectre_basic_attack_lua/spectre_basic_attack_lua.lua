@@ -1,6 +1,10 @@
 spectre_basic_attack_lua = class ({})
 LinkLuaModifier( "modifier_spectre_basic_attack_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_lua", LUA_MODIFIER_MOTION_NONE )
 
+function spectre_basic_attack_lua:GetAOERadius()
+	return self:GetSpecialValueFor( "hitbox" )
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_basic_attack_lua:OnSpellStart()
@@ -14,7 +18,7 @@ function spectre_basic_attack_lua:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox") + 50
+	local projectile_end_radius = self:GetSpecialValueFor("hitbox") + 10
 	local projectile_vision = 0
     local projectile_name = ""
 	self.heal_amount = self:GetSpecialValueFor("heal_amount")

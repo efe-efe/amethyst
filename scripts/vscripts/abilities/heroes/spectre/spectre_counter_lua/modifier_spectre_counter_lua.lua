@@ -5,7 +5,7 @@ LinkLuaModifier( "modifier_spectre_counter_thinker_lua", "abilities/heroes/spect
 -- Initializations
 function modifier_spectre_counter_lua:OnCreated( kv )
     if IsServer() then
-        self.speed_debuff = -self:GetAbility():GetSpecialValueFor("speed_debuff")
+        self.speed_debuff = self:GetAbility():GetSpecialValueFor("speed_debuff")
         self:PlayEffects()
     end
 end
@@ -77,7 +77,7 @@ end
 -- Modifier Effects
 function modifier_spectre_counter_lua:DeclareFunctions()
 	local funcs = {
-		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
+		MODIFIER_PROPERTY_MOVESPEED_BASE_OVERRIDE,
 		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
 		MODIFIER_EVENT_ON_ABILITY_EXECUTED,
 	}
@@ -85,7 +85,7 @@ function modifier_spectre_counter_lua:DeclareFunctions()
 	return funcs
 end
 
-function modifier_spectre_counter_lua:GetModifierMoveSpeedBonus_Percentage()
+function modifier_spectre_counter_lua:GetModifierMoveSpeedOverride()
     return self.speed_debuff
 end
 

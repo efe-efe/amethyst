@@ -699,7 +699,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"250"
+		"AbilityCastRange"				"150"
 		"AbilityCastPoint"				"0.2"
 		"AnimationPlaybackRate" 		"2.0"
 
@@ -739,7 +739,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"60"
+				"hitbox"					"100"
 			}
 			"05"
 			{
@@ -782,7 +782,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"250"
+		"AbilityCastRange"				"150"
 		"AbilityCastPoint"				"0.2"
 		"AnimationPlaybackRate" 		"2.0"
 
@@ -816,7 +816,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"60"
+				"hitbox"					"100"
 			}
 			"05"
 			{
@@ -881,7 +881,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
 			}
 			"02"
 			{
@@ -907,6 +907,83 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"20"
+			}
+		}
+	}
+
+	"spectre_ex_second_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ex_second_attack_lua/spectre_ex_second_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"spectre_ex_second_attack_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.2"
+		"AnimationPlaybackRate" 		"1.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"7.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"particle" "particles/econ/items/invoker/invoker_apex/invoker_apex_wex_eye_b.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"1800"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1300"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"70"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"10"
+			}
+			
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"debuff_duration"			"3.5"
 			}
 		}
 	}
@@ -954,7 +1031,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"speed_debuff"				"30"
+				"speed_debuff"				"300"
 			}
 			"03"
 			{
@@ -1096,7 +1173,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
 		{
-			"particle" "particles/econ/generic/generic_aoe_shockwave_1/generic_aoe_shockwave_1_a.vpcf"
 		}
 
 		// Special
@@ -1106,7 +1182,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
 			}
 			"02"
 			{
@@ -1132,6 +1208,69 @@
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.06"
+			}
+		}
+	}
+	
+	"spectre_ex_mobility_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ex_mobility_lua/spectre_ex_mobility_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"spectre_ex_mobility_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET  | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDuration"				"2.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"speed_debuff"				"300"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.4"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"15"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"180"
 			}
 		}
 	}
@@ -1164,7 +1303,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
+		"AbilityManaCost"				"100"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -1179,7 +1318,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
 			}
 			"02"
 			{
@@ -1199,29 +1338,67 @@
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage"					"20"
+				"damage"					"18"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"illusion_duration"			"5.0"
 			}
 		}
 	}
 
+	"spectre_ex_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ex_ultimate_lua/spectre_ex_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"spectre_reality"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"MaxLevel"						"1"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
 
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
 
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"range"						"1200"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"200"
+			}
+		}
+	}
 
 
 
