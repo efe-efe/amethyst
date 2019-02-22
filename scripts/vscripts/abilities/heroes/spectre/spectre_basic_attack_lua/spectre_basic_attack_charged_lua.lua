@@ -14,8 +14,6 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
-	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
 
 	-- load data
 	self.debuff_duration = self:GetSpecialValueFor("debuff_duration")
