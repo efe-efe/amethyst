@@ -944,8 +944,8 @@
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
-		{
-			"particle" "particles/econ/items/invoker/invoker_apex/invoker_apex_wex_eye_b.vpcf"
+		{	
+			"particle" "particles/mod_units/heroes/hero_dark_willow/dark_willow_base_attack.vpcf"
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
 		}
@@ -1100,12 +1100,12 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1700"
+				"projectile_speed"			"1800"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"2000"
+				"projectile_range"			"1500"
 			}
 			"04"
 			{
@@ -1132,15 +1132,15 @@
 				"var_type"					"FIELD_FLOAT"
 				"buff_duration"				"2.0"
 			}
-			"9"
+			"09"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"path_duration"				"4.0" //Change particle if change this number
+				"path_duration"				"2.0" //Change particle if change this number
 			}
 			"10"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"speed_buff"				"60" //Also debuff
+				"speed_buff"				"80" //Also debuff
 			}
 		}
 	}
@@ -1220,13 +1220,14 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_ex_mobility_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET  | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDuration"				"2.0"
+		"AbilityDuration"				"1.8"
+		"AbilityCastPoint"				"0.2"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -1254,23 +1255,23 @@
 			}
 			"02"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"speed_debuff"				"300"
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.4"
 			}
 			"03"
 			{
-				"var_type"					"FIELD_FLOAT"
-				"delay_time"				"0.4"
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_second"					"5"
 			}
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage"					"15"
+				"radius"					"180"
 			}
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"180"
+				"speed_buff"				"30"
 			}
 		}
 	}

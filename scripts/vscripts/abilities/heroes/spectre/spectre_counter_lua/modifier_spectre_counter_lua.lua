@@ -33,33 +33,36 @@ function modifier_spectre_counter_lua:GetModifierIncomingDamage_Percentage( para
 		local parent = self:GetParent()
 		local attacker = params.attacker
 
-		--create the thinker
-		CreateModifierThinker(
-			parent, --hCaster
-			self:GetAbility(), --hAbility
-			"modifier_spectre_counter_thinker_lua", --modifierName
-			{}, --paramTable
-			attacker:GetOrigin(), --vOrigin
-			parent:GetTeamNumber(), --nTeamNumber
-			false --bPhantomBlocker
-		)
+        if params.damage_type ~= DAMAGE_TYPE_PURE then
+			--create the thinker
+			CreateModifierThinker(
+				parent, --hCaster
+				self:GetAbility(), --hAbility
+				"modifier_spectre_counter_thinker_lua", --modifierName
+				{}, --paramTable
+				attacker:GetOrigin(), --vOrigin
+				parent:GetTeamNumber(), --nTeamNumber
+				false --bPhantomBlocker
+			)
 
-		-- find and destroy the timer modifier from the basic attack
-		local basic_attack_timer = parent:FindModifierByNameAndCaster( 
-			"modifier_spectre_basic_attack_charged_timer", parent 
-		)
-	
-		if basic_attack_timer~=nil then
-			if not basic_attack_timer:IsNull() then
-				basic_attack_timer:Destroy()
+			-- find and destroy the timer modifier from the basic attack
+			local basic_attack_timer = parent:FindModifierByNameAndCaster( 
+				"modifier_spectre_basic_attack_charged_timer", parent 
+			)
+		
+			if basic_attack_timer~=nil then
+				if not basic_attack_timer:IsNull() then
+					basic_attack_timer:Destroy()
+				end
 			end
-		end
 
-		--remove cooldown from basic attack charged
-		local basic_attack_charged = parent:FindAbilityByName("spectre_basic_attack_charged_lua")
-		basic_attack_charged:EndCooldown()
-
-		return -100
+			--remove cooldown from basic attack charged
+			local basic_attack_charged = parent:FindAbilityByName("spectre_basic_attack_charged_lua")
+			basic_attack_charged:EndCooldown()
+			
+			return -100
+        end
+        return 0
 	end
 end
 
@@ -94,7 +97,7 @@ function modifier_spectre_counter_lua:PlayEffects()
 	local sound_cast = "Hero_Spectre.HauntCast"
 
 	local particle_cast = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rop.vpcf"
-	local particle_cast2 = "particles/econ/events/ti6/radiance_owner_ti6.vpcf"
+	local particle_cast2 = "particles/customgames/capturepoints/cp_wood.vpcf"
 
 	self.effect_cast = ParticleManager:CreateParticle( 
 		particle_cast, 

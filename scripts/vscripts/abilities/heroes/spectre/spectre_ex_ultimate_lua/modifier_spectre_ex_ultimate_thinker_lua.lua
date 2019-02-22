@@ -34,7 +34,7 @@ end
 
 function modifier_spectre_ex_ultimate_thinker_lua:PlayEffects()
     -- Get Resources
-    local sound_cast = "Ability.LightStrikeArray"
+    local sound_cast = "Hero_Spectre.Reality"
 
     local particle_cast = "particles/econ/items/outworld_devourer/od_shards_exile_gold/od_shards_exile_prison_end_gold.vpcf"
     local effect_cast = ParticleManager:CreateParticle( 
@@ -44,6 +44,8 @@ function modifier_spectre_ex_ultimate_thinker_lua:PlayEffects()
         )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
+
+    EmitSoundOn( sound_cast, self:GetParent() )
 end
 
 

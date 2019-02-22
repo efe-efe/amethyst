@@ -45,18 +45,19 @@ end
 function modifier_wisp_counter_lua:GetModifierIncomingDamage_Percentage( params )
     if IsServer() then
 		local parent = self:GetParent()
-		local attacker = params.attacker
-
-        parent:AddNewModifier(
-            parent, -- player source
-            self:GetAbility(), -- ability source
-            "modifier_wisp_counter_buffs_lua", -- modifier name
-            { duration = self.buff_duration } -- kv
-        )
-
-        self:Destroy()
-
-		return -100
+        local attacker = params.attacker
+        
+        if params.damage_type ~= DAMAGE_TYPE_PURE then
+            parent:AddNewModifier(
+                parent, -- player source
+                self:GetAbility(), -- ability source
+                "modifier_wisp_counter_buffs_lua", -- modifier name
+                { duration = self.buff_duration } -- kv
+            )
+            self:Destroy()
+            return -100
+        end
+        return 0
 	end
 end
 

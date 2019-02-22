@@ -16,7 +16,7 @@ function spectre_ex_second_attack_lua:OnSpellStart()
 	local point = self:GetCursorPosition()
 	
 	-- load data
-	local projectile_name = "particles/mod_units/heroes/hero_bane/bane_projectile.vpcf"
+	local projectile_name = "particles/mod_units/heroes/hero_dark_willow/dark_willow_base_attack.vpcf"
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
@@ -59,7 +59,10 @@ function spectre_ex_second_attack_lua:OnSpellStart()
 	}
 	
 	ProjectileManager:CreateLinearProjectile(info)
-	self:PlayEffects()
+
+	-- Put CD on the non ex version of the ability
+	local non_ex_version = caster:FindAbilityByName("spectre_second_attack_lua")
+	non_ex_version:StartCooldown(self:GetCooldown(0))
 end
 
 --------------------------------------------------------------------------------
@@ -94,14 +97,14 @@ function spectre_ex_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 		)
 		
 		-- Effects
-		self:PlayEffects2(hTarget)
+		self:PlayEffects(hTarget)
 	end
 
 	return true
 end
 
 --Impact
-function spectre_ex_second_attack_lua:PlayEffects2(hTarget)
+function spectre_ex_second_attack_lua:PlayEffects(hTarget)
 	-- Get Resources
     local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
@@ -112,19 +115,6 @@ function spectre_ex_second_attack_lua:PlayEffects2(hTarget)
 	-- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
---cast
-function spectre_ex_second_attack_lua:PlayEffects()
-	-- Get Resources
-	local sound_cast = "Hero_Nevermore.Raze_Flames"
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
-
-	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-
-	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
 

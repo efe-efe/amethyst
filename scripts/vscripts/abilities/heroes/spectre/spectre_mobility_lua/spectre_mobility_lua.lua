@@ -46,4 +46,8 @@ function spectre_mobility_lua:OnSpellStart()
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
     )
+
+    -- Put CD on the ex version of the ability
+    local ex_version = caster:FindAbilityByName("spectre_ex_mobility_lua")
+    ex_version:StartCooldown(self:GetCooldown(0))
 end

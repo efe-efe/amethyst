@@ -73,7 +73,7 @@ end
 
 -- Graphics & Animations
 function modifier_wisp_counter_buffs_lua:GetEffectName()
-	return "particles/items_fx/healing_flask.vpcf"
+	return "particles/econ/courier/courier_polycount_01/courier_trail_polycount_01.vpcf"
 end
 
 function modifier_wisp_counter_buffs_lua:GetEffectAttachType()

@@ -13,44 +13,47 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_ultimate_illusion_lua:OnCreated( kv )
-    -- references
-    -- find enemies
-    local enemies = FindUnitsInRadius( 
-        self:GetParent():GetTeamNumber(), -- int, your team number
-        self:GetParent():GetOrigin(), -- point, center point
-        nil, -- handle, cacheUnit. (not known)
-        300, -- float, radius. or use FIND_UNITS_EVERYWHERE
-        DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
-        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-        0, -- int, flag filter
-        FIND_CLOSEST, -- int, order filter
-        false -- bool, can grow cache
-    )
+    if IsServer() then
+        -- references
+        local origin  = self:GetParent():GetOrigin()
 
-    -- find and destroy visual modifier
-	local disable_attack_modifier = self:GetParent():FindModifierByNameAndCaster( 
-		"modifier_disable_right_click", self:GetParent() 
-	)
+        -- find enemies
+        local enemies = FindUnitsInRadius( 
+            self:GetParent():GetTeamNumber(), -- int, your team number
+            origin, -- point, center point
+            nil, -- handle, cacheUnit. (not known)
+            300, -- float, radius. or use FIND_UNITS_EVERYWHERE
+            DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
+            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+            0, -- int, flag filter
+            FIND_CLOSEST, -- int, order filter
+            false -- bool, can grow cache
+        )
 
-    if disable_attack_modifier~=nil then
-		if not disable_attack_modifier:IsNull() then
-            disable_attack_modifier:Destroy()
-		end
-	end
-    
-    if enemies[1]:IsRealHero() then
+        -- find and destroy visual modifier
+        local disable_attack_modifier = self:GetParent():FindModifierByNameAndCaster( 
+            "modifier_disable_right_click", self:GetParent() 
+        )
 
-        local order = 
-        {
-            UnitIndex = self:GetParent(),
-            OrderType = DOTA_UNIT_ORDER_ATTACK_MOVE,
-            TargetIndex = enemies[1]
-        }
+        if disable_attack_modifier~=nil then
+            if not disable_attack_modifier:IsNull() then
+                disable_attack_modifier:Destroy()
+            end
+        end
+        
+        if enemies[1]:IsRealHero() then
 
-        ExecuteOrderFromTable(order)
-        self:GetParent():SetForceAttackTarget(enemies[1])
+            local order = 
+            {
+                UnitIndex = self:GetParent(),
+                OrderType = DOTA_UNIT_ORDER_ATTACK_MOVE,
+                TargetIndex = enemies[1]
+            }
+
+            ExecuteOrderFromTable(order)
+            self:GetParent():SetForceAttackTarget(enemies[1])
+        end
     end
-    
 end
 
 function modifier_spectre_ultimate_illusion_lua:OnDestroy( kv )
