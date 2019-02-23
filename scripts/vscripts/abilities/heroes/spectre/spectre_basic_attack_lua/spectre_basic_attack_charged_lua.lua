@@ -15,6 +15,10 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
 
+	--Attack speed (To put on cooldown the non charged version)
+	local attacks_per_second = caster:GetAttacksPerSecond()
+	local attack_speed = ( 1 / attacks_per_second )
+
 	-- load data
 	self.debuff_duration = self:GetSpecialValueFor("debuff_duration")
 	self.heal_amount = self:GetSpecialValueFor("heal_amount")

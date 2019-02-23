@@ -57,11 +57,11 @@ function wisp_basic_attack_lua:OnSpellStart()
         iVisionTeamNumber = caster:GetTeamNumber(),
         
         ExtraData = {
-			
 		}
 	}
 	
 	ProjectileManager:CreateLinearProjectile(info)
+	
 	self:StartCooldown(attack_speed)
 	self:PlayEffects()
 end

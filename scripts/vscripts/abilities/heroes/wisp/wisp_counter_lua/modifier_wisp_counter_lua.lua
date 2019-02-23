@@ -47,6 +47,8 @@ function modifier_wisp_counter_lua:GetModifierIncomingDamage_Percentage( params 
 		local parent = self:GetParent()
         local attacker = params.attacker
         
+        PrintTable(params)
+
         if params.damage_type ~= DAMAGE_TYPE_PURE then
             parent:AddNewModifier(
                 parent, -- player source

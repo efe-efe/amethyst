@@ -60,7 +60,7 @@ end
 function modifier_skywrath_mage_basic_attack_charged_visuals_lua:PlayEffects2()
     if IsServer() then
         -- Get Resources
-        local particle_cast = "particles/econ/items/wisp/wisp_overcharge_ti7.vpcf"
+        local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_overcharge_c.vpcf"
         local origin = self:GetParent():GetOrigin()
         
         self.effect_cast = ParticleManager:CreateParticle( 

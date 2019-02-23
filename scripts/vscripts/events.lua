@@ -148,7 +148,22 @@ function GameMode:OnEntityHurt(keys)
     end
 
     local particle_cast = "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, entVictim )
+    local effect_cast = ParticleManager:CreateParticle( 
+      particle_cast, 
+      PATTACH_CUSTOMORIGIN, 
+      nil
+    )
+
+    ParticleManager:SetParticleControlEnt( 
+      effect_cast, 
+      0, 
+      entVictim, 
+      PATTACH_POINT_FOLLOW, 
+      "attach_hitloc", 
+      entVictim:GetOrigin(), 
+      true 
+    );
+    
     ParticleManager:ReleaseParticleIndex( effect_cast )
   end
 

@@ -24,7 +24,7 @@ function skywrath_mage_basic_attack_lua:OnSpellStart()
 	local info = {
 		Source = caster,
 		Ability = self,
-		vSpawnOrigin = origin,
+		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 256),
 		
 		bDeleteOnHit = true,
 		
@@ -85,7 +85,7 @@ end
 
 function skywrath_mage_basic_attack_lua:PlayEffects()
 	-- Get Resources
-	local sound_cast = "Hero_Wisp.Attack"
+	local sound_cast = "Hero_SkywrathMage.Attack"
 
 	-- Create Sound
 	EmitSoundOn( sound_cast, self:GetCaster() )
@@ -93,7 +93,7 @@ end
 
 function skywrath_mage_basic_attack_lua:PlayEffects2(hTarget)
 	-- Get Resources
-	local sound_cast = "Hero_Wisp.ProjectileImpact"
+	local sound_cast = "Hero_SkywrathMage.ProjectileImpact"
 
 	-- Create Sound
 	EmitSoundOn( sound_cast, hTarget )

@@ -132,11 +132,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
 		"Ability1"						"skywrath_mage_basic_attack_charged_lua"	// Q Spell	
-		"Ability2"						"wisp_second_attack_lua"             // Q Spell
-		"Ability3"						"wisp_counter_lua"							
+		"Ability2"						"skywrath_mage_second_attack_lua"             // Q Spell
+		"Ability3"						"skywrath_mage_special_attack_lua"							
 		"Ability4"						"wisp_special_attack_lua"
-		"Ability5"						"wisp_mobility_lua"					
-		"Ability6"						"wisp_ultimate_lua"
+		"Ability5"						"skywrath_mage_mystic_flare"					
+		"Ability6"						"skywrath_mage_ancient_seal"
 		"Ability7"						"skywrath_mage_basic_attack_lua"					
 		"Ability8"						"wisp_ex_special_attack_lua"					
 		"Ability9"						"wisp_ex_second_attack_lua"
@@ -151,7 +151,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AttackDamageMin"			"10"									// Damage range min.
 		"AttackDamageMax"			"10"									// Damage range max.	
-		"AttackRate"				"0.5"									// Speed of attack.	
+		"AttackRate"				"0.6"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.0"
 		"AttackRange"				"0"
 		
@@ -173,8 +173,8 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"StatusHealth"				"230" //CAN VARY!						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
-		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
+		//"StatusMana"				"100"									// Base mana.
+		"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
 	}
 }

@@ -1,5 +1,6 @@
 skywrath_mage_basic_attack_charged_lua = class({})
 LinkLuaModifier( "modifier_skywrath_mage_basic_attack_charged_timer_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_charged_timer_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -7,6 +8,8 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
+	
+	--Attack speed (To put on cooldown the non charged version)
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
 
@@ -15,6 +18,8 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
+	self.debuff_duration = self:GetSpecialValueFor("debuff_duration")
+
     local projectile_vision = 0
 	local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt.vpcf"
 	
@@ -25,7 +30,7 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 	local info = {
 		Source = caster,
 		Ability = self,
-		vSpawnOrigin = origin,
+		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 200),
 		
 		bDeleteOnHit = true,
 		
@@ -72,7 +77,6 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 	local visual_effect = caster:FindModifierByNameAndCaster( 
 		"modifier_skywrath_mage_basic_attack_charged_visuals_lua", caster 
 	)
-
 	if visual_effect~=nil then
 		if not visual_effect:IsNull() then
 			visual_effect:Destroy()
@@ -106,7 +110,13 @@ function skywrath_mage_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarg
 		false -- bool bNeverMiss
 	)
 
+	--Silence enemy
+	hTarget:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
+
+	-- Graphics
 	self:PlayEffects2(hTarget)	
+	
+	-- Gain mana
 	caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 
 	return true
@@ -114,7 +124,7 @@ end
 
 function skywrath_mage_basic_attack_charged_lua:PlayEffects()
 	-- Get Resources
-	local sound_cast = "Hero_Wisp.Attack"
+	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Cast"
 
 	-- Create Sound
 	EmitSoundOn( sound_cast, self:GetCaster() )
@@ -122,7 +132,7 @@ end
 
 function skywrath_mage_basic_attack_charged_lua:PlayEffects2(hTarget)
 	-- Get Resources
-	local sound_cast = "Hero_Wisp.ProjectileImpact"
+	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Impact"
 
 	-- Create Sound
 	EmitSoundOn( sound_cast, hTarget )
