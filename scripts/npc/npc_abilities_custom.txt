@@ -242,7 +242,7 @@
 			"08"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"max_range"					"1050"
+				"max_range"					"1200"
 			}
 			"09"
 			{
@@ -252,7 +252,7 @@
 			"10"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"speed_buff"				"80"
+				"speed_buff"				"60"
 			}
 		}
 	}
@@ -979,11 +979,15 @@
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"10"
 			}
-			
 			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"debuff_duration"			"3.5"
+				"debuff_duration"			"5.0"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"vision_radius"				"200.0"
 			}
 		}
 	}
@@ -1476,6 +1480,11 @@
 				"var_type"					"FIELD_FLOAT"
 				"debuff_duration"			"2.0"
 			}
+			"07"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_bonus"				"7"
+			}
 		}
 	}
 	
@@ -1563,7 +1572,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"1500"
-		"AbilityCastPoint"				"0.4"
+		"AbilityCastPoint"				"0.3"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -1597,7 +1606,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"delay_time"				"0.5"
+				"delay_time"				"0.3"
 			}
 			"04"
 			{
@@ -1621,7 +1630,70 @@
 			}
 		}
 	}
-	
+
+	"skywrath_mage_counter_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/skywrath_mage/skywrath_mage_counter_lua/skywrath_mage_counter_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"skywrath_mage_counter_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastAnimation"			"ACT_DOTA_TELEPORT"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDuration"				"2.0"
+		"AbilityCastPoint"				"0.1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"heal_amount"						"12"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"15"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"knockback_distance"		"350.0"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"knockback_radius"			"260.0"
+			}
+		}
+	}
+
 	"skywrath_mage_special_attack_lua"
 	{
 		"BaseClass"						"ability_lua"
@@ -1677,6 +1749,111 @@
 		}
 	}
 
+	"skywrath_mage_mobility_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/skywrath_mage/skywrath_mage_mobility_lua/skywrath_mage_mobility_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"skywrath_mage_mobility_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"MaxLevel"						"1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+		"AbilityCastAnimation"			"ACT_DOTA_TELEPORT_END"
+		"AnimationPlaybackRate" 		"1.2"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"10.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_enchantress.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"range"					"1200"
+			}
+		}
+	}
+
+	"skywrath_mage_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/skywrath_mage/skywrath_mage_ultimate_lua/skywrath_mage_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"skywrath_mage_mystic_flare"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"MaxLevel"						"1"
+		"AOERadius"						"%radius"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1250"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCastAnimation"			"ACT_DOTA_VICTORY"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"10.0"
+		"AbilityChannelTime"			"5.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"100"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"190"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"5.0"
+			}
+		}
+	}
 
 
 
@@ -1701,6 +1878,200 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=================================================================================================================
+	// Earth Spirit: Rolling Boulder (Lua version)
+	//=================================================================================================================
+	"earth_spirit_rolling_boulder_lua"
+	{
+		// Ability Technical Aspect
+		// base script folder	: scripts/vscripts
+		// base texture folder	: resource/flash3/images/spellicons
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"lua_abilities/earth_spirit_rolling_boulder_lua/earth_spirit_rolling_boulder_lua"
+		"AbilityTextureName"			"earth_spirit_rolling_boulder_lua"
+		"FightRecapLevel"				"1"
+		"MaxLevel"						"4"
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_earth_spirit.vsndevts"
+			"particle"	"particles/units/heroes/hero_earth_spirit/espirit_rollingboulder.vpcf"
+			"particle"	"particles/econ/items/earth_spirit/earth_spirit_ti6_boulder/espirit_ti6_rollingboulder.vpcf"
+		}
+		
+		// Ability General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+
+		// Ability Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"3000"
+		"AbilityCastPoint"				"0.01"
+
+		// Ability Resource
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"16.0 12.0 8.0 4.0"
+		"AbilityManaCost"				"50"
+
+		// Damage
+		//-------------------------------------------------------------------------------------------------------------
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"150"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"speed"					"800"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"rock_speed"			"1600"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"distance"				"800.0"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"rock_distance"			"1600.0"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"delay"					"0.6"
+			}
+			"07"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"100"
+			}
+			"08"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"move_slow"				"80"
+			}
+			"09"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"slow_duration"			"0.8 1.2 1.6 2.0"
+			}
+		}
+	}
+
+
+	"earth_spirit_stone_remnant_lua"
+		{
+			// Ability Technical Aspect
+			// base script folder	: scripts/vscripts
+			// base texture folder	: resource/flash3/images/spellicons
+			//-------------------------------------------------------------------------------------------------------------
+			"BaseClass"						"ability_lua"
+			"ScriptFile"					"lua_abilities/earth_spirit_stone_remnant_lua/earth_spirit_stone_remnant_lua"
+			"AbilityTextureName"			"earth_spirit_stone_remnant_lua"
+			"FightRecapLevel"				"1"
+			"MaxLevel"						"1"
+			"precache"
+			{
+				"soundfile"	"soundevents/game_sounds_heroes/game_sounds_earth_spirit.vsndevts"
+				"particle"	"particles/units/heroes/hero_earth_spirit/espirit_stoneremnant.vpcf"
+				"particle"	"particles/econ/items/earth_spirit/earth_spirit_vanquishingdemons_summons/espirit_stoneremnant_vanquishingdemons.vpcf"
+			}
+			
+			// Ability General
+			//-------------------------------------------------------------------------------------------------------------
+			"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
+			"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+
+			// Ability Casting
+			//-------------------------------------------------------------------------------------------------------------
+			"AbilityCastRange"				"1100"
+			"AbilityCastPoint"				"0"
+
+			// Ability Resource
+			//-------------------------------------------------------------------------------------------------------------
+			//"AbilityCooldown"				"0"
+			"AbilityCooldown"				"30"
+			"AbilityManaCost"				"0"
+
+			// Damage
+			//-------------------------------------------------------------------------------------------------------------
+
+			// Special
+			//-------------------------------------------------------------------------------------------------------------
+			"AbilitySpecial"
+			{
+				"01"
+				{
+					"var_type"				"FIELD_INTEGER"
+					"max_charges"				"6"
+				}
+				"02"
+				{
+					"var_type"				"FIELD_FLOAT"
+					"charge_restore_time"				"30.0"
+				}
+				"03"
+				{
+					"var_type"				"FIELD_FLOAT"
+					"duration"				"120.0"
+				}
+			}
+		}
 
 
 

@@ -30,19 +30,18 @@ function modifier_spectre_ultimate_illusion_lua:OnCreated( kv )
             false -- bool, can grow cache
         )
 
-        -- find and destroy visual modifier
+        -- find and destroy the disable attack modifier
         local disable_attack_modifier = self:GetParent():FindModifierByNameAndCaster( 
             "modifier_disable_right_click", self:GetParent() 
         )
-
         if disable_attack_modifier~=nil then
             if not disable_attack_modifier:IsNull() then
                 disable_attack_modifier:Destroy()
             end
         end
         
+        -- Attack the closests
         if enemies[1]:IsRealHero() then
-
             local order = 
             {
                 UnitIndex = self:GetParent(),

@@ -1,6 +1,7 @@
 skywrath_mage_basic_attack_charged_lua = class({})
 LinkLuaModifier( "modifier_skywrath_mage_basic_attack_charged_timer_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_charged_timer_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_skywrath_mage_basic_attack_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -95,8 +96,24 @@ end
 function skywrath_mage_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
 	if hTarget==nil then return end
 	
+	-- Blocked
+	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
+	if is_blocker ~= nil then
+		if not is_blocker:IsNull() then
+			return true
+		end
+	end
+
 	-- load variables
 	local caster = self:GetCaster()
+
+	-- Add damage
+	modifier_attack_bonus = caster:AddNewModifier(
+		caster, 
+		self , 
+		"modifier_skywrath_mage_basic_attack_lua", 
+		{}
+	)
 
 	-- perform the actual attack
 	caster:PerformAttack(
@@ -113,11 +130,19 @@ function skywrath_mage_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarg
 	--Silence enemy
 	hTarget:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
 
+	-- Gain mana
+	caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+
+	--Remove the extra attack
+	if modifier_attack_bonus ~= nil then
+		if not modifier_attack_bonus:IsNull() then
+			modifier_attack_bonus:Destroy()
+		end
+	end
+
 	-- Graphics
 	self:PlayEffects2(hTarget)	
 	
-	-- Gain mana
-	caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 
 	return true
 end

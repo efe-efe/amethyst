@@ -117,7 +117,7 @@ function modifier_spectre_mobility_thinker_lua:PlayEffects2()
     -- particles 2
 
     -- particles/mod_units/heroes/hero_sven/sven_spell_great_cleave.vpcf
-    local particle_cast2 = "particles/econ/items/disruptor/disruptor_resistive_pinfold/disruptor_kf_aoe_discharge.vpcf"
+    local particle_cast2 = "particles/sweep_generic/sweep_3.vpcf"
     local effect_cast2 = ParticleManager:CreateParticle( 
             particle_cast2, 
             PATTACH_ABSORIGIN_FOLLOW, 

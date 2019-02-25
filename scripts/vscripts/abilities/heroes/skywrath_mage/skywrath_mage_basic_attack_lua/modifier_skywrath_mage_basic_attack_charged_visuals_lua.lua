@@ -50,7 +50,7 @@ end
 
 
 function modifier_skywrath_mage_basic_attack_charged_visuals_lua:GetEffectName()
-	return "particles/econ/courier/courier_polycount_01/courier_trail_polycount_01.vpcf"
+	return "particles/econ/items/dark_willow/dark_willow_ti8_immortal_head/dw_crimson_ti8_immortal_ambient_embers_b.vpcf"
 end
 
 function modifier_skywrath_mage_basic_attack_charged_visuals_lua:GetEffectAttachType()

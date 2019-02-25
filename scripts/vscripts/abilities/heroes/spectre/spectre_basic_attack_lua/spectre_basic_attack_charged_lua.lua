@@ -114,7 +114,19 @@ function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vL
 		end
 	    self:PlayEffectsMiss()
         return 
-    end
+	end
+	
+	-- Blocked
+	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
+	if is_blocker ~= nil then
+		if not is_blocker:IsNull() then
+			return true
+		end
+	end
+
+	-- Slowed
+
+	-- Hasted
 	
 	-- perform the actual attack
 	caster:PerformAttack(
@@ -151,7 +163,7 @@ end
 -- Self glow on cast
 -------------------------
 function spectre_basic_attack_charged_lua:PlayEffectsOnCast()
-	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_glow.vpcf"
+	local particle_cast = ""
 
     -- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
@@ -192,5 +204,11 @@ function spectre_basic_attack_charged_lua:PlayEffects2(hTarget)
 
     -- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, hTarget )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_glow.vpcf"
+
+    -- Create Particles
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end

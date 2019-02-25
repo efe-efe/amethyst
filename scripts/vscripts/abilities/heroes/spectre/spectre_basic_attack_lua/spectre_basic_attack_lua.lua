@@ -67,7 +67,15 @@ function spectre_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation,
     if hTarget==nil then 
 	    self:PlayEffectsMiss()
         return 
-    end
+	end
+	
+	-- Blocked
+	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
+	if is_blocker ~= nil then
+		if not is_blocker:IsNull() then
+			return true
+		end
+	end
 	
 	-- load variables
 	local caster = self:GetCaster()

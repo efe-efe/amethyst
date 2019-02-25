@@ -10,7 +10,7 @@ function modifier_wisp_ex_second_attack_visuals_lua:IsHidden()
 end
 
 function modifier_wisp_ex_second_attack_visuals_lua:IsPurgable()
-	return false
+	return true
 end
 --------------------------------------------------------------------------------
 -- Initializations

@@ -1,6 +1,6 @@
 modifier_wisp_ex_second_attack_ally_lua = class({})
 LinkLuaModifier( "modifier_wisp_ex_second_attack_ally_visuals_lua", "abilities/heroes/wisp/wisp_ex_second_attack_lua/modifier_wisp_ex_second_attack_ally_visuals_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_wisp_ex_seccond_attack_ally_speed_buff_lua", "abilities/heroes/wisp/wisp_ex_second_attack_lua/modifier_wisp_ex_seccond_attack_ally_speed_buff_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_wisp_ex_second_attack_ally_speed_buff_lua", "abilities/heroes/wisp/wisp_ex_second_attack_lua/modifier_wisp_ex_second_attack_ally_speed_buff_lua", LUA_MODIFIER_MOTION_NONE )
 
 
 --------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ function modifier_wisp_ex_second_attack_ally_lua:OnCreated( kv )
         self.speed_buff = self.hTarget:AddNewModifier(
             caster, -- player source
             ability, -- ability source
-            "modifier_wisp_ex_seccond_attack_ally_speed_buff_lua", -- modifier name
+            "modifier_wisp_ex_second_attack_ally_speed_buff_lua", -- modifier name
             { duration = self.buff_duration }
         )
 
@@ -54,7 +54,7 @@ function modifier_wisp_ex_second_attack_ally_lua:OnCreated( kv )
         self.speed_buff_caster = caster:AddNewModifier(
             caster, -- player source
             ability, -- ability source
-            "modifier_wisp_ex_seccond_attack_ally_speed_buff_lua", -- modifier name
+            "modifier_wisp_ex_second_attack_ally_speed_buff_lua", -- modifier name
             { duration = self.buff_duration }
         )
         

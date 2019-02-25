@@ -5,7 +5,8 @@ LinkLuaModifier( "modifier_spectre_counter_thinker_lua", "abilities/heroes/spect
 -- Initializations
 function modifier_spectre_counter_lua:OnCreated( kv )
     if IsServer() then
-        self.speed_debuff = self:GetAbility():GetSpecialValueFor("speed_debuff")
+		self.speed_debuff = self:GetAbility():GetSpecialValueFor("speed_debuff")
+		self:StartIntervalThink(0.05)
         self:PlayEffects()
     end
 end
@@ -27,6 +28,18 @@ function modifier_spectre_counter_lua:OnAbilityExecuted( params )
 	end
 end
 
+-----------------------------------
+-- Interval Effects
+function modifier_spectre_counter_lua:OnIntervalThink()
+		-- Strong Dispel
+		local RemovePositiveBuffs = false
+		local RemoveDebuffs = true
+		local BuffsCreatedThisFrameOnly = false
+		local RemoveStuns = true
+		local RemoveExceptions = false
+
+		self:GetCaster():Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
+end
 
 function modifier_spectre_counter_lua:GetModifierIncomingDamage_Percentage( params )
     if IsServer() then
@@ -83,6 +96,7 @@ function modifier_spectre_counter_lua:DeclareFunctions()
 		MODIFIER_PROPERTY_MOVESPEED_BASE_OVERRIDE,
 		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
 		MODIFIER_EVENT_ON_ABILITY_EXECUTED,
+		MODIFIER_PROPERTY_STATUS_RESISTANCE,
 	}
 
 	return funcs
@@ -90,6 +104,10 @@ end
 
 function modifier_spectre_counter_lua:GetModifierMoveSpeedOverride()
     return self.speed_debuff
+end
+
+function modifier_spectre_counter_lua:GetModifierStatusResistance()
+	return -80
 end
 
 

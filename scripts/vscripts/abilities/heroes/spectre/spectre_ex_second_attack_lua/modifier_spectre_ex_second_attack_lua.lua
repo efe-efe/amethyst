@@ -18,7 +18,21 @@ end
 -- Initializations
 function modifier_spectre_ex_second_attack_lua:OnCreated( kv )
 	if IsServer() then
+		self.vision_radius = self:GetAbility():GetSpecialValueFor("vision_radius")
+
+		self:StartIntervalThink( 0.1 )
 	end
+end
+
+--------------------------------------------------------------------------------
+-- Interval Effects
+function modifier_spectre_ex_second_attack_lua:OnIntervalThink()
+	AddFOWViewer(
+		self:GetParent():GetTeamNumber(), 
+		self:GetParent():GetOrigin(),
+		self.vision_radius, 
+		0.1,
+		false)
 end
 
 --------------------------------------------------------------------------------

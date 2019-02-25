@@ -18,18 +18,13 @@ function wisp_basic_attack_lua:OnSpellStart()
 	end
 	
 	-- load data
-	
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_vision = 0
-	
+	self.projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	self.modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
-	
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-
-	-- logic
+	self.projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local info = {
 		Source = caster,
@@ -37,16 +32,16 @@ function wisp_basic_attack_lua:OnSpellStart()
 		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 128),
 		
 		bDeleteOnHit = true,
-		
+
 		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY,
 		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
 		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
 		
 		EffectName = projectile_name,
-		fDistance = projectile_distance,
+		fDistance = projectile_distance, -- Max Distance
 		fStartRadius = projectile_start_radius,
 		fEndRadius =projectile_end_radius,
-		vVelocity = projectile_direction * projectile_speed,
+		vVelocity = self.projectile_direction * self.projectile_speed,
 
 		bHasFrontalCone = false,
 		bReplaceExisting = false,
@@ -66,11 +61,18 @@ function wisp_basic_attack_lua:OnSpellStart()
 	self:PlayEffects()
 end
 
-
 --------------------------------------------------------------------------------
 -- Projectile
 function wisp_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
 	if hTarget==nil then return end
+
+	-- Blocked
+	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
+	if is_blocker ~= nil then
+		if not is_blocker:IsNull() then
+			return true
+		end
+	end
 	
 	-- load variables
 	local caster = self:GetCaster()

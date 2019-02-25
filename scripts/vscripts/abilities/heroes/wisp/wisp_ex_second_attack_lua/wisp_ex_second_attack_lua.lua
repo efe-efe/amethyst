@@ -2,6 +2,7 @@ wisp_ex_second_attack_lua = class({})
 LinkLuaModifier( "modifier_wisp_ex_second_attack_lua", "abilities/heroes/wisp/wisp_ex_second_attack_lua/modifier_wisp_ex_second_attack_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_wisp_ex_second_attack_ally_lua", "abilities/heroes/wisp/wisp_ex_second_attack_lua/modifier_wisp_ex_second_attack_ally_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_wisp_guardian_essence_lua", "abilities/heroes/wisp/wisp_shared_modifiers/modifier_wisp_guardian_essence_lua/modifier_wisp_guardian_essence_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_wisp_ex_second_attack_movement_lua", "abilities/heroes/wisp/wisp_ex_second_attack_lua/modifier_wisp_ex_second_attack_movement_lua", LUA_MODIFIER_MOTION_HORIZONTAL )
 
 
 -- This function is used to change between abilities and ex abilities
@@ -73,6 +74,15 @@ end
 -- Projectile
 function wisp_ex_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
+		
+		-- Blocked
+		local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
+		if is_blocker ~= nil then
+			if not is_blocker:IsNull() then
+				return true
+			end
+		end
+
 		local caster =  self:GetCaster()
 
 		--Ignore self
@@ -80,7 +90,7 @@ function wisp_ex_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 			return false
 		end
 
-		--Different behaviours for allys and enemies
+		--If target is ally
 		if hTarget:GetTeamNumber() == caster:GetTeamNumber() then
 			--Link and speed
 			hTarget:AddNewModifier(
@@ -89,7 +99,23 @@ function wisp_ex_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 				"modifier_wisp_ex_second_attack_ally_lua", -- modifier name
 				{ duration = self.debuff_duration }
 			)
+			--- Movement
+			local difference = vLocation - caster:GetOrigin()
+			local distance = difference:Length2D()
+			local x = vLocation.x - caster:GetOrigin().x
+			local y = vLocation.y - caster:GetOrigin().y
+			caster:AddNewModifier(
+				caster,
+				self,
+				"modifier_wisp_ex_second_attack_movement_lua",
+				{
+					r = distance,
+					x = x,
+					y = y,
+				}
+			)
 
+		-- If target is enemy
 		else	
 	
 			local damage = {

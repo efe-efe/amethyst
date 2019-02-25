@@ -62,6 +62,14 @@ end
 function skywrath_mage_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
 	if hTarget==nil then return end
 	
+	-- Blocked
+	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
+	if is_blocker ~= nil then
+		if not is_blocker:IsNull() then
+			return true
+		end
+	end
+	
 	-- load variables
 	local caster = self:GetCaster()
 

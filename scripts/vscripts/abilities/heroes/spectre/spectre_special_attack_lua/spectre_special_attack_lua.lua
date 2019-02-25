@@ -73,10 +73,12 @@ function spectre_special_attack_lua:OnSpellStart()
 	)
 end
 
+--Cant be blocked!
 --------------------------------------------------------------------------------
 -- Projectile
 function spectre_special_attack_lua:OnProjectileHit( hTarget, vLocation )
 	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
+
 		local caster =  self:GetCaster()
 		
 		local damage = {

@@ -7,15 +7,16 @@ LinkLuaModifier( "modifier_spectre_special_attack_debuff_lua", "abilities/heroes
 function modifier_spectre_special_attack_thinker_lua:OnCreated( kv )
 	if IsServer() then
         --load data
-        self.distance = self:GetAbility():GetSpecialValueFor("projectile_range")
+        self.max_distance = self:GetAbility():GetSpecialValueFor("projectile_range")
         self.buff_duration = self:GetAbility():GetSpecialValueFor("buff_duration")
         self.debuff_duration = self:GetAbility():GetSpecialValueFor("debuff_duration")
-        
+
         ----local variables
         local caster = self:GetCaster()
         local point = self:GetAbility():GetCursorPosition()
         local origin = caster:GetOrigin()
         self.direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+        self.distance = 0.0
         
         self:StartIntervalThink( 0.1 )
     end
@@ -25,6 +26,12 @@ end
 -- Interval Effects
 function modifier_spectre_special_attack_thinker_lua:OnIntervalThink()
 
+    self.distance = self.distance + (self.max_distance/10)
+
+    if self.distance > self.max_distance then
+        self.distance = self.max_distance
+    end
+    
     local caster = self:GetCaster()
     local start_pos = self:GetParent():GetOrigin()
     local path_vector = self.direction * self.distance

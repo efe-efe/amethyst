@@ -1,16 +1,23 @@
-modifier_skywrath_mage_special_attack_thinker_lua = class({})
+modifier_skywrath_mage_ultimate_thinker_lua = class({})
+
+
+
+
+
+
+
 LinkLuaModifier( "modifier_skywrath_mage_special_attack_movement_lua", "abilities/heroes/skywrath_mage/skywrath_mage_special_attack_lua/modifier_skywrath_mage_special_attack_movement_lua", LUA_MODIFIER_MOTION_HORIZONTAL )
 
 
 --------------------------------------------------------------------------------
 
-function modifier_skywrath_mage_special_attack_thinker_lua:IsHidden()
+function modifier_skywrath_mage_ultimate_thinker_lua:IsHidden()
 	return true
 end
 
 --------------------------------------------------------------------------------
 
-function modifier_skywrath_mage_special_attack_thinker_lua:OnCreated( kv )
+function modifier_skywrath_mage_ultimate_thinker_lua:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
 
@@ -21,14 +28,14 @@ function modifier_skywrath_mage_special_attack_thinker_lua:OnCreated( kv )
     end
 end
 
-function modifier_skywrath_mage_special_attack_thinker_lua:OnDestroy()
+function modifier_skywrath_mage_ultimate_thinker_lua:OnDestroy()
 	if IsServer() then
 		UTIL_Remove( self:GetParent() )
 	end
 end
 
 --------------------------------------------------------------------------------
-function modifier_skywrath_mage_special_attack_thinker_lua:OnIntervalThink()
+function modifier_skywrath_mage_ultimate_thinker_lua:OnIntervalThink()
     local thinker = self:GetParent()
     local thinker_origin = thinker:GetOrigin()
 
@@ -63,7 +70,7 @@ function modifier_skywrath_mage_special_attack_thinker_lua:OnIntervalThink()
     end
 end
 
-function modifier_skywrath_mage_special_attack_thinker_lua:PlayEffects()
+function modifier_skywrath_mage_ultimate_thinker_lua:PlayEffects()
     -- Get Resources
     local sound_cast = "Hero_Omniknight.GuardianAngel"
 	local particle_cast = "particles/units/heroes/hero_skywrath_mage/skywrath_mage_mystic_flare_ambient.vpcf"

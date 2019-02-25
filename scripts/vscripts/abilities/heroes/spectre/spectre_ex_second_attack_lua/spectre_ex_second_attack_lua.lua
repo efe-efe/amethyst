@@ -69,7 +69,16 @@ end
 -- Projectile
 function spectre_ex_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
-		local caster =  self:GetCaster()
+			
+	-- Blocked
+	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
+	if is_blocker ~= nil then
+		if not is_blocker:IsNull() then
+			return true
+		end
+	end
+	
+	local caster =  self:GetCaster()
 		
 		local damage = {
 			victim = hTarget,

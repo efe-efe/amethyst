@@ -13,6 +13,8 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
 		"Ability1"						"wisp_basic_attack_lua"             // Q Spell	
+		//"Ability2"						"earth_spirit_stone_remnant_lua"
+		//"Ability3"						"earth_spirit_rolling_boulder_lua"             // Q Spell	
 		"Ability2"						"wisp_second_attack_lua"             // Q Spell
 		"Ability3"						"wisp_counter_lua"							
 		"Ability4"						"wisp_special_attack_lua"
@@ -22,6 +24,11 @@
 		"Ability8"						"wisp_ex_special_attack_lua"					
 		"Ability9"						"wisp_ex_second_attack_lua"
 		"Ability10"						"wisp_ex_ultimate_lua"							
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"1200"
+		"VisionNighttimeRange"		"1200"
 		
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -82,6 +89,10 @@
 		"Ability9"						"spectre_ex_second_attack_lua"             // Q Spell
 		"Ability10"						"spectre_ex_mobility_lua"             // Q Spell
 		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"1200"
+		"VisionNighttimeRange"		"1200"
 
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -133,14 +144,19 @@
 		"AbilityLayout"					"9"
 		"Ability1"						"skywrath_mage_basic_attack_charged_lua"	// Q Spell	
 		"Ability2"						"skywrath_mage_second_attack_lua"             // Q Spell
-		"Ability3"						"skywrath_mage_special_attack_lua"							
-		"Ability4"						"wisp_special_attack_lua"
-		"Ability5"						"skywrath_mage_mystic_flare"					
-		"Ability6"						"skywrath_mage_ancient_seal"
+		"Ability3"						"skywrath_mage_counter_lua"
+		"Ability4"						"skywrath_mage_special_attack_lua"							
+		"Ability5"						"skywrath_mage_mobility_lua"					
+		"Ability6"						"skywrath_mage_ultimate_lua"
 		"Ability7"						"skywrath_mage_basic_attack_lua"					
-		"Ability8"						"wisp_ex_special_attack_lua"					
-		"Ability9"						"wisp_ex_second_attack_lua"
+		"Ability8"						"skywrath_mage_mystic_flare"					
+		"Ability9"						"skywrath_mage_ancient_seal"
 		"Ability10"						"wisp_ex_ultimate_lua"							
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"1200"
+		"VisionNighttimeRange"		"1200"
 		
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
@@ -149,8 +165,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"10"									// Damage range min.
-		"AttackDamageMax"			"10"									// Damage range max.	
+		"AttackDamageMin"			"15"									// Damage range min.
+		"AttackDamageMax"			"15"									// Damage range max.	
 		"AttackRate"				"0.6"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.0"
 		"AttackRange"				"0"

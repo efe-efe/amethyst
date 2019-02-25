@@ -30,6 +30,7 @@ end
 function modifier_wisp_counter_lua:OnCreated( kv )
     if IsServer() then
         self.buff_duration = self:GetAbility():GetSpecialValueFor("buff_duration")
+        -- Can't move
         self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
     end
 end
@@ -38,6 +39,7 @@ end
 -- On destroy
 function modifier_wisp_counter_lua:OnDestroy( kv )
     if IsServer() then
+    -- Can move again
         self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
     end
 end
@@ -46,9 +48,8 @@ function modifier_wisp_counter_lua:GetModifierIncomingDamage_Percentage( params 
     if IsServer() then
 		local parent = self:GetParent()
         local attacker = params.attacker
-        
-        PrintTable(params)
 
+        -- Pure damage doesnt trigger the counter
         if params.damage_type ~= DAMAGE_TYPE_PURE then
             parent:AddNewModifier(
                 parent, -- player source
