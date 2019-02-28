@@ -45,7 +45,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"480"
+		"MovementSpeed"				"420"
 		"MovementTurnRate"			"2.0"
 		
 		// Attributes
@@ -105,11 +105,11 @@
 		"AttackDamageMax"			"8"									// Damage range max.	
 		"AttackRate"				"0.2"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.0"
-		"AttackRange"				"0"
+		"AttackRange"				"80"
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"480"
+		"MovementSpeed"				"440"
 		"MovementTurnRate"			"2.0"
 		
 		// Attributes
@@ -149,9 +149,9 @@
 		"Ability5"						"skywrath_mage_mobility_lua"					
 		"Ability6"						"skywrath_mage_ultimate_lua"
 		"Ability7"						"skywrath_mage_basic_attack_lua"					
-		"Ability8"						"skywrath_mage_mystic_flare"					
-		"Ability9"						"skywrath_mage_ancient_seal"
-		"Ability10"						"wisp_ex_ultimate_lua"							
+		"Ability8"						"skywrath_mage_ex_ultimate_lua"	
+		"Ability9"						"skywrath_mage_ex_basic_attack_lua"
+		"Ability10"						"skywrath_mage_ex_second_attack_lua"
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -173,7 +173,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"480"
+		"MovementSpeed"				"420"
 		"MovementTurnRate"			"2.0"
 		
 		// Attributes
@@ -189,8 +189,8 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"StatusHealth"				"230" //CAN VARY!						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
-		//"StatusMana"				"100"									// Base mana.
-		"StatusMana"				"1000"
+		"StatusMana"				"100"									// Base mana.
+		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
 	}
 }

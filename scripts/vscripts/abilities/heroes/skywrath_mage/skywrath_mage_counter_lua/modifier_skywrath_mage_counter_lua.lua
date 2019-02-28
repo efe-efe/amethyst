@@ -138,13 +138,16 @@ function modifier_skywrath_mage_counter_lua:CheckState()
 	return state
 end
 
+--------------------------------------------------------------------------------
+-- Graphics & Sounds
 
+--On casted
 function modifier_skywrath_mage_counter_lua:PlayEffects()
 	-- Get Resources
 	local particle_cast = "particles/units/heroes/hero_silencer/silencer_last_word_status.vpcf"
     local sound_cast = "Hero_SkywrathMage.AncientSeal.Target"
 
-    -- Sound
+    -- Create Sound
     EmitSoundOn(sound_cast, self:GetCaster())
 
     -- Create Particles
@@ -159,9 +162,14 @@ function modifier_skywrath_mage_counter_lua:StopEffects()
     end
 end
 
+-- On activated
 function modifier_skywrath_mage_counter_lua:PlayEffects2()
     -- Get Resources
 	local particle_cast = "particles/units/heroes/hero_skywrath_mage/skywrath_mage_mystic_flare_ambient.vpcf"
+    local sound_cast = "Hero_SkywrathMage.ConcussiveShot.Target"
+    
+    -- Create Sound
+    EmitSoundOn(sound_cast, self:GetCaster())
     
     -- particles 1
     local effect_cast = ParticleManager:CreateParticle( 
@@ -170,7 +178,7 @@ function modifier_skywrath_mage_counter_lua:PlayEffects2()
             nil 
         )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.knockback_radius, 0.4 , 1 ) )
+    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.knockback_radius, 0.4 , 0 ) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 
 end

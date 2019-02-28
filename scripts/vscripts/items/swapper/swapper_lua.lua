@@ -16,12 +16,14 @@ function item_swapper:OnToggle()
                 if ability:GetSpecialValueFor("ex_ability") == 1 then -- Normal abilities with ex version
                     if abilities[ability] == nil then
                         abilities[ability] = ability:GetAbilityName()
-                        caster:SwapAbilities( 
-                            ability:GetAbilityName(),
-                            ability:GetRelatedName(),
-                            false,
-                            true
-                        )
+                        if ability:GetAbilityName() ~= ability:GetRelatedName() then
+                            caster:SwapAbilities( 
+                                ability:GetAbilityName(),
+                                ability:GetRelatedName(),
+                                false,
+                                true
+                            )
+                        end
                     end
                 end
             end
@@ -36,12 +38,14 @@ function item_swapper:OnToggle()
                 if ability:GetSpecialValueFor("ex_ability") == 2 then -- Normal abilities with ex version
                     if abilities[ability] == nil then
                         abilities[ability] = ability:GetAbilityName()
-                        caster:SwapAbilities( 
-                            ability:GetAbilityName(),
-                            ability:GetRelatedName(),
-                            false,
-                            true
-                        )
+                        if ability:GetAbilityName() ~= ability:GetRelatedName() then
+                            caster:SwapAbilities( 
+                                ability:GetAbilityName(),
+                                ability:GetRelatedName(),
+                                false,
+                                true
+                            )
+                        end
                     end
                 end
             end

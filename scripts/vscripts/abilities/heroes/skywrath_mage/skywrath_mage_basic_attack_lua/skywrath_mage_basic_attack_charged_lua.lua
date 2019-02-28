@@ -2,6 +2,33 @@ skywrath_mage_basic_attack_charged_lua = class({})
 LinkLuaModifier( "modifier_skywrath_mage_basic_attack_charged_timer_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_charged_timer_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_skywrath_mage_basic_attack_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_skywrath_mage_basic_attack_charged_visuals_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_charged_visuals_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", LUA_MODIFIER_MOTION_NONE )
+
+-- This function is used to change between abilities and ex abilities
+--------------------------------------------------------------------------------
+function skywrath_mage_basic_attack_charged_lua:GetRelatedName()	
+	local caster = self:GetCaster()
+	local ability_name = ""
+
+    -- find and destroy visual modifier
+	local basic_attack_timer = caster:FindModifierByNameAndCaster( 
+		"modifier_skywrath_mage_basic_attack_charged_timer_lua", caster 
+    )
+
+    if basic_attack_timer~=nil then
+        if not basic_attack_timer:IsNull() then
+            ability_name = "skywrath_mage_basic_attack_charged_lua"
+        else
+            ability_name = "skywrath_mage_ex_basic_attack_lua"
+        end
+    else
+        ability_name = "skywrath_mage_ex_basic_attack_lua"
+    end
+
+    return ability_name
+end
+
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -22,7 +49,7 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 	self.debuff_duration = self:GetSpecialValueFor("debuff_duration")
 
     local projectile_vision = 0
-	local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt.vpcf"
+	local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_concussive_shot.vpcf"
 	
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
@@ -129,9 +156,7 @@ function skywrath_mage_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarg
 
 	--Silence enemy
 	hTarget:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
-
-	-- Gain mana
-	caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+	hTarget:AddNewModifier(caster, self , "modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", { duration = self.debuff_duration})
 
 	--Remove the extra attack
 	if modifier_attack_bonus ~= nil then
@@ -149,7 +174,7 @@ end
 
 function skywrath_mage_basic_attack_charged_lua:PlayEffects()
 	-- Get Resources
-	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Cast"
+	local sound_cast = "Hero_SkywrathMage.ConcussiveShot.Cast"
 
 	-- Create Sound
 	EmitSoundOn( sound_cast, self:GetCaster() )
@@ -157,8 +182,20 @@ end
 
 function skywrath_mage_basic_attack_charged_lua:PlayEffects2(hTarget)
 	-- Get Resources
-	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Impact"
+	local sound_cast = "Hero_SkywrathMage.ConcussiveShot.Target"
 
 	-- Create Sound
 	EmitSoundOn( sound_cast, hTarget )
 end
+
+-- Add mana on attack modifier and visuals. Only first time upgraded
+function skywrath_mage_basic_attack_charged_lua:OnUpgrade()
+	if self:GetLevel()==1 then
+		local caster = self:GetCaster()
+		-- Visuals
+		caster:AddNewModifier(caster,self,"modifier_skywrath_mage_basic_attack_charged_visuals_lua", {} )
+		-- Gain mana
+		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+	end
+end
+

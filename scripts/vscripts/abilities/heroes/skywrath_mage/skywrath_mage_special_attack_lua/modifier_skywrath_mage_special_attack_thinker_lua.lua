@@ -75,7 +75,7 @@ function modifier_skywrath_mage_special_attack_thinker_lua:PlayEffects()
             nil 
         )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, self:GetDuration(), 1 ) )
+    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, self:GetDuration(), 10 ) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 
 	-- buff particle

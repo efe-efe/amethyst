@@ -1,5 +1,29 @@
 skywrath_mage_basic_attack_lua = class({})
 
+-- This function is used to change between abilities and ex abilities
+--------------------------------------------------------------------------------
+function skywrath_mage_basic_attack_lua:GetRelatedName()
+	local caster = self:GetCaster()
+	local ability_name = ""
+
+    -- find and destroy visual modifier
+	local basic_attack_timer = caster:FindModifierByNameAndCaster( 
+		"modifier_skywrath_mage_basic_attack_charged_timer_lua", caster 
+    )
+
+    if basic_attack_timer~=nil then
+        if not basic_attack_timer:IsNull() then
+            ability_name = "skywrath_mage_ex_basic_attack_lua"
+        else
+            ability_name = "skywrath_mage_basic_attack_lua"
+        end
+    else
+        ability_name = "skywrath_mage_basic_attack_lua"
+    end
+
+    return ability_name
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function skywrath_mage_basic_attack_lua:OnSpellStart()
@@ -85,9 +109,8 @@ function skywrath_mage_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLoc
 		false -- bool bNeverMiss
 	)
 
-	self:PlayEffects2(hTarget)	
-	caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-
+	self:PlayEffects2(hTarget)
+	
 	return true
 end
 

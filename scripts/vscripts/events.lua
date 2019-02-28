@@ -50,7 +50,6 @@ function GameMode:OnEntityKilled( keys )
 
   if isMiddleOrb == 1 then
     MiddleOrb:CreateMiddleOrb(30.0)
-    MiddleOrb:DestroyMiddleOrbTimers()
   end
 
   if killedUnit:IsRealHero() then

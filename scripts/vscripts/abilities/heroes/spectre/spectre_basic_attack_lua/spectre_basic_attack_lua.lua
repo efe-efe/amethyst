@@ -10,7 +10,7 @@ end
 function spectre_basic_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
+	self.point = self:GetCursorPosition()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
 
@@ -23,7 +23,7 @@ function spectre_basic_attack_lua:OnSpellStart()
     local projectile_name = ""
 	self.heal_amount = self:GetSpecialValueFor("heal_amount")
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
 
 	-- logic
 
@@ -102,7 +102,6 @@ function spectre_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation,
 	)
 
 	self:PlayEffects(hTarget)	
-    caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 	
 	--Remove the extra attack
 	if modifier_attack_bonus ~= nil then
@@ -119,9 +118,14 @@ end
 function spectre_basic_attack_lua:PlayEffects(hTarget)
 	-- Get Resources
 	local sound_cast = "Hero_Spectre.Attack"
-
 	-- Create Sound
 	EmitSoundOn( sound_cast, self:GetCaster() )
+
+	-- Create Particles
+	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, self:GetCaster() )
+	ParticleManager:SetParticleControl( effect_cast, 0, self.point)
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 function spectre_basic_attack_lua:PlayEffectsMiss()
@@ -130,6 +134,12 @@ function spectre_basic_attack_lua:PlayEffectsMiss()
 
 	-- Create Sound
 	EmitSoundOn( sound_cast, self:GetCaster() )
+	
+	-- Create Particles
+	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, self:GetCaster() )
+	ParticleManager:SetParticleControl( effect_cast, 0, self.point)
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 function spectre_basic_attack_lua:PlayEffects2()

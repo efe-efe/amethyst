@@ -3,7 +3,7 @@ LinkLuaModifier( "modifier_skywrath_mage_special_attack_thinker_lua", "abilities
 LinkLuaModifier( "modifier_generic_projectile_blocker_lua", "abilities/generic/modifier_generic_projectile_blocker_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
-
+-- Set the aoe indicator
 function skywrath_mage_special_attack_lua:GetAOERadius()
 	return self:GetSpecialValueFor( "radius" )
 end

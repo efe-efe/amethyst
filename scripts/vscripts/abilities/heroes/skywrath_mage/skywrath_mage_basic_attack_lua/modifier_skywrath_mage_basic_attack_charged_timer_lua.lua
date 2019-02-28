@@ -19,19 +19,31 @@ end
 ---- Destroyer
 function modifier_skywrath_mage_basic_attack_charged_timer_lua:OnDestroy( kv )
     if IsServer() then
-        self:GetParent():AddNewModifier(
-            self:GetParent(),
+        local caster = self:GetParent()
+        caster:AddNewModifier(
+            caster,
             self:GetAbility(), 
             "modifier_skywrath_mage_basic_attack_charged_visuals_lua", 
             {}
         )
 
-        -- Put the charged ability on the basic attack slot
-        self:GetParent():SwapAbilities( 
-            "skywrath_mage_basic_attack_lua",
-            self:GetAbility():GetAbilityName(),
-            false,
-            true
-        )
-	end
+        if caster:FindAbilityByName("skywrath_mage_basic_attack_lua"):IsHidden() == true then
+            -- Put the charged ability on the basic attack slot
+            caster:SwapAbilities( 
+                "skywrath_mage_basic_attack_lua",
+                self:GetAbility():GetAbilityName(),
+                false,
+                true
+            )
+            caster:FindAbilityByName("skywrath_mage_basic_attack_charged_lua"):SetHidden(true)
+        else
+            -- Put the charged ability on the basic attack slot
+            caster:SwapAbilities( 
+                "skywrath_mage_basic_attack_lua",
+                self:GetAbility():GetAbilityName(),
+                false,
+                true
+            )
+        end
+    end
 end

@@ -39,14 +39,14 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 		-- logic
 		if pass then
 			local killer = params.attacker
-			local orbOrigin = self:GetCaster()
+			local orb_origin = self:GetCaster():GetOrigin()
 			
 			self:PlayEffects()
 
-			-- Find Units in Radius
+			-- Find units from the killer team
 			local killer_team = FindUnitsInRadius(
 				killer:GetTeamNumber(),	-- int, your team number
-				orbOrigin:GetOrigin(),	-- point, center point
+				orb_origin,	-- point, center point
 				nil,	-- handle, cacheUnit. (not known)
 				FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
 				DOTA_UNIT_TARGET_TEAM_FRIENDLY,	-- int, team filter
@@ -56,6 +56,7 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 				false	-- bool, can grow cache
 			)
 
+				-- Heal and Mana
 			for _,ally in pairs(killer_team) do
 				-- Give Mana
 				ally:GiveMana(self.mana)	
@@ -64,6 +65,19 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 				self:PlayEffects2(ally)
 				--ally:SetCustomHealthLabel("asd", 50, 50, 50)	
 			end
+
+			-- Find orb timers
+			local orb_timers = FindUnitsInRadius(
+				self:GetParent():GetTeamNumber(),	-- int, your team number
+				orb_origin,	-- point, center point
+				nil,	-- handle, cacheUnit. (not known)
+				FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
+				DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
+				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+				0,	-- int, flag filter
+				0,	-- int, order filter
+				false	-- bool, can grow cache
+			)
 		end
 	end
 end

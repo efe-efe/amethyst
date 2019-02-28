@@ -99,7 +99,6 @@ function wisp_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation, ex
 	)
 
 	self:PlayEffects2(hTarget)	
-	caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 
 	--Remove the extra attack
 	if modifier_attack_bonus ~= nil then
@@ -125,4 +124,13 @@ function wisp_basic_attack_lua:PlayEffects2(hTarget)
 
 	-- Create Sound
 	EmitSoundOn( sound_cast, hTarget )
+end
+
+-- Add mana on attack modifier. Only first time upgraded
+function wisp_basic_attack_lua:OnUpgrade()
+	if self:GetLevel()==1 then
+		local caster = self:GetCaster()
+		-- Gain mana
+		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+	end
 end

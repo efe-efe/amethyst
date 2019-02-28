@@ -69,34 +69,36 @@ function modifier_skywrath_mage_second_attack_thinker_lua:OnIntervalThink()
 end
 
 --------------------------------------------------------------------------------
+-- Graphics & Sounds
 
+-- On casted
 function modifier_skywrath_mage_second_attack_thinker_lua:PlayEffects()
 	-- Get Resources
-	local particle_cast = "particles/econ/events/darkmoon_2017/darkmoon_calldown_marker_ring.vpcf"
+	local particle_cast_a = "particles/econ/events/darkmoon_2017/darkmoon_calldown_marker_ring.vpcf"
 	local sound_cast = "Hero_Omniknight.Purification.Wingfall.Layer"
 
-    self.effect_cast = ParticleManager:CreateParticle( 
-        particle_cast, 
+    local effect_cast_a = ParticleManager:CreateParticle( 
+        particle_cast_a, 
         PATTACH_WORLDORIGIN, 
         nil
     )
 
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    
+    ParticleManager:SetParticleControl( effect_cast_a, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast_a, 1, Vector( self.radius, 1, 1 ) )
+    ParticleManager:SetParticleControl( effect_cast_a, 2, Vector( 1, 1, 1 ) )
+    ParticleManager:ReleaseParticleIndex( effect_cast_a )
 
+	local particle_cast_b = "particles/econ/items/effigies/status_fx_effigies/base_statue_destruction_gold_lvl2_e.vpcf"
 
-	local particle_cast2 = "particles/econ/items/effigies/status_fx_effigies/base_statue_destruction_gold_lvl2_e.vpcf"
-
-    local effect_cast2 = ParticleManager:CreateParticle( 
-        particle_cast2, 
+    local effect_cast_b = ParticleManager:CreateParticle( 
+        particle_cast_b, 
         PATTACH_WORLDORIGIN, 
         self:GetCaster()
     )
 
-    ParticleManager:SetParticleControl( effect_cast2, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast2 )
+    ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast_b, 1, Vector( self.radius, 1, 1 ) )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
 
     EmitSoundOn( 
         sound_cast, 
@@ -104,6 +106,7 @@ function modifier_skywrath_mage_second_attack_thinker_lua:PlayEffects()
     )
 end
 
+-- On arrival
 function modifier_skywrath_mage_second_attack_thinker_lua:PlayEffects2()
     -- Get Resources
     local sound_cast = "Hero_Omniknight.GuardianAngel"

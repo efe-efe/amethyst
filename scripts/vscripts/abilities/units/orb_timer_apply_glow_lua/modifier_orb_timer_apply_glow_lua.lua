@@ -12,16 +12,16 @@ end
 function modifier_orb_timer_apply_glow_lua:IsPurgable()
 	return false
 end
-
--- Graphics & Animations
-function modifier_orb_timer_apply_glow_lua:GetEffectName()
-	--return "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf"
-	--return "particles/base_attacks/ranged_badguy_persistent_glow_green.vpcf"
-	return "particles/units/heroes/hero_wisp/wisp_overcharge_c.vpcf"
+--------------------------------------------------------------------------------
+-- Initialize
+function modifier_orb_timer_apply_glow_lua:OnCreated( kv )
+	self:PlayEffects()
 end
 
-function modifier_orb_timer_apply_glow_lua:GetEffectAttachType()
-	return PATTACH_ABSORIGIN_FOLLOW
+--------------------------------------------------------------------------------
+-- Destroyer
+function modifier_orb_timer_apply_glow_lua:OnDestroy( kv )
+	self:StopEffects()
 end
 
 --------------------------------------------------------------------------------
@@ -37,3 +37,15 @@ function modifier_orb_timer_apply_glow_lua:CheckState()
 	return state
 end
 
+function modifier_orb_timer_apply_glow_lua:PlayEffects()
+	local particle_cast = "particles/dev/new_heroes/new_hero_aoe_ring_embers.vpcf"
+
+	-- Create Particles
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(20, 1, 1) )
+end
+
+function modifier_orb_timer_apply_glow_lua:StopEffects()
+	ParticleManager:DestroyParticle( self.effect_cast, false )
+	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+end

@@ -2,6 +2,7 @@ spectre_basic_attack_charged_lua = class({})
 
 LinkLuaModifier( "modifier_spectre_basic_attack_charged_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_basic_attack_charged_timer", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_timer", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_spectre_basic_attack_charged_visuals", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_visuals", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
 
@@ -13,7 +14,7 @@ end
 function spectre_basic_attack_charged_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
+	self.point = self:GetCursorPosition()
 
 	--Attack speed (To put on cooldown the non charged version)
 	local attacks_per_second = caster:GetAttacksPerSecond()
@@ -29,7 +30,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	local projectile_vision = 0
     local projectile_name = ""
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
 
 	-- logic
 
@@ -146,7 +147,6 @@ function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vL
     
 	hTarget:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
 	hTarget:AddNewModifier(caster, self , "modifier_spectre_desolate_lua", {})
-    caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 	
 	--Remove the extra attack
 	if self.modifier_attack_bonus ~= nil then
@@ -192,9 +192,14 @@ end
 function spectre_basic_attack_charged_lua:PlayEffectsMiss()
 	-- Get Resources
 	local sound_cast = "Hero_Spectre.PreAttack"
-
 	-- Create Sound
 	EmitSoundOn( sound_cast, self:GetCaster() )
+
+	-- Create Particles
+	local particle_cast = "particles/econ/items/spectre/spectre_weapon_diffusal/spectre_desolate_diffusal.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, self:GetCaster() )
+	ParticleManager:SetParticleControl( effect_cast, 0, self.point)
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 --Desolate effects
@@ -211,4 +216,17 @@ function spectre_basic_attack_charged_lua:PlayEffects2(hTarget)
     -- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+
+-- Add mana on attack modifier and visuals. Only first time upgraded
+function spectre_basic_attack_charged_lua:OnUpgrade()
+	if self:GetLevel()==1 then
+		local caster = self:GetCaster()
+		
+		--Visuals
+		caster:AddNewModifier( caster, self, "modifier_spectre_basic_attack_charged_visuals", {} )
+		-- Gain mana
+		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+	end
 end

@@ -254,6 +254,11 @@
 				"var_type"					"FIELD_INTEGER"
 				"speed_buff"				"60"
 			}
+			"11"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"attack_speed_bonus"     	"50"
+			}
 		}
 	}
 
@@ -699,8 +704,8 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"150"
-		"AbilityCastPoint"				"0.2"
+		"AbilityCastRange"				"180"
+		"AbilityCastPoint"				"0.1"
 		"AnimationPlaybackRate" 		"2.0"
 
 		// Time		
@@ -739,7 +744,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"100"
+				"hitbox"					"130"
 			}
 			"05"
 			{
@@ -782,8 +787,8 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"150"
-		"AbilityCastPoint"				"0.2"
+		"AbilityCastRange"				"180"
+		"AbilityCastPoint"				"0.1"
 		"AnimationPlaybackRate" 		"2.0"
 
 		// Time		
@@ -816,7 +821,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"100"
+				"hitbox"					"130"
 			}
 			"05"
 			{
@@ -939,7 +944,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
+		"AbilityManaCost"				"25"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -1417,7 +1422,7 @@
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"skywrath_mage_basic_attack_charged_lua"
+		"AbilityTextureName"			"skywrath_mage_concussive_shot"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
@@ -1453,7 +1458,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
 			}
 			"02"
 			{
@@ -1495,7 +1500,7 @@
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"skywrath_mage_arcane_bolt"
+		"AbilityTextureName"			"skywrath_mage_basic_attack_lua"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
@@ -1525,7 +1530,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
 			}
 			"02"
 			{
@@ -1554,6 +1559,50 @@
 			}
 		}
 	}
+	
+	"skywrath_mage_ex_basic_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/skywrath_mage/skywrath_mage_ex_basic_attack_lua/skywrath_mage_ex_basic_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"skywrath_mage_ancient_seal"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.9"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_enchantress.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+			}
+		}
+	}
+
 
 	"skywrath_mage_second_attack_lua"
 	{
@@ -1596,7 +1645,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
 			}
 			"02"
 			{
@@ -1630,6 +1679,86 @@
 			}
 		}
 	}
+
+	"skywrath_mage_ex_second_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/skywrath_mage/skywrath_mage_ex_second_attack_lua/skywrath_mage_ex_second_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"skywrath_mage_arcane_bolt"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.35"
+		"AnimationPlaybackRate" 		"2.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"6.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_omniknight.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"800"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1800"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"150"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"speed_buff"				"50"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"heal_damage"				"40"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"buff_duration"					"2.0"
+			}
+		}
+	}
+
 
 	"skywrath_mage_counter_lua"
 	{
@@ -1806,22 +1935,21 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"skywrath_mage_mystic_flare"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_CHANNELLED"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"MaxLevel"						"1"
 		"AOERadius"						"%radius"
-
+	
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"1250"
-		"AbilityCastPoint"				"0.2"
-		"AbilityCastAnimation"			"ACT_DOTA_VICTORY"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"10.0"
-		"AbilityChannelTime"			"5.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -1840,26 +1968,86 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"190"
+				"radius"					"280"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"5.0"
+				"duration"					"2.5"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"think_interval"			"0.2"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_heal_per_think"		"3"
 			}
 		}
 	}
 
+	"skywrath_mage_ex_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/skywrath_mage/skywrath_mage_ex_ultimate_lua/skywrath_mage_ex_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"skywrath_mage_ex_ultimate_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"MaxLevel"						"1"
+	
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"2000"
+		"AbilityCastPoint"				"0.1"		
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"15.0"
 
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
 
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
 
-
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"2.5"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_block"				"26"
+			}
+		}
+	}
 
 
 

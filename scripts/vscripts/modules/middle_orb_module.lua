@@ -21,11 +21,11 @@ function MiddleOrb:CreateMiddleOrb( spawnTime )
     local visualTimerTime = spawnTime/6
 
     --Create the visual timers
-    --self:CreateMiddleOrbTimer(visualTimerTime, orb_timer1)
-    --self:CreateMiddleOrbTimer(visualTimerTime, orb_timer2)
-    --self:CreateMiddleOrbTimer(visualTimerTime, orb_timer3)
-    --self:CreateMiddleOrbTimer(visualTimerTime, orb_timer4)
-    --self:CreateMiddleOrbTimer(visualTimerTime, orb_timer5)
+    self:CreateMiddleOrbTimer(visualTimerTime, orb_timer1)
+    self:CreateMiddleOrbTimer(visualTimerTime*2, orb_timer2)
+    self:CreateMiddleOrbTimer(visualTimerTime*3, orb_timer3)
+    self:CreateMiddleOrbTimer(visualTimerTime*4, orb_timer4)
+    self:CreateMiddleOrbTimer(visualTimerTime*5, orb_timer5)
 
 	Timers:CreateTimer(spawnTime,
         function()
@@ -63,15 +63,11 @@ function MiddleOrb:CreateMiddleOrbTimer(time, location)
                 "npc_dota_creature_middle_orb_timer", --szUnitName
                 location, --vLocation
                 true, --bFindClearSpace
-                7, --hNPCOwner
-                7, --hUnitOwner
+                nil, --hNPCOwner
+                nil, --hUnitOwner
                 7
             )
             middle_orb_timer:SetOrigin(location)
         end
     )
-end
-
-function MiddleOrb:DestroyMiddleOrbTimers()
-   return 0
 end
