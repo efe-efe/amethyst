@@ -141,8 +141,7 @@ function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vL
 		false -- bool bNeverMiss
 	)
 
-	self:PlayEffects()	
-	self:PlayEffects2(hTarget)
+	self:PlayEffects(hTarget)
     self:GetCaster():Heal( self.heal_amount, self )
     
 	hTarget:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
@@ -151,7 +150,7 @@ function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vL
 	--Remove the extra attack
 	if self.modifier_attack_bonus ~= nil then
 		if not self.modifier_attack_bonus:IsNull() then
-		self.modifier_attack_bonus:Destroy()
+			self.modifier_attack_bonus:Destroy()
 		end
 	end
     return true
@@ -163,36 +162,39 @@ end
 -- Self glow on cast
 -------------------------
 function spectre_basic_attack_charged_lua:PlayEffectsOnCast()
-	local particle_cast = ""
-
     -- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
--- Self glow on heal
+-- Hit attack effects
 -------------------------
-function spectre_basic_attack_charged_lua:PlayEffects()
-	-- Get Resources
-	local sound_cast = "Hero_Spectre.Desolate"
-	
-	-- Heal Particles
-	local particle_cast = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
+function spectre_basic_attack_charged_lua:PlayEffects(hTarget)
+	-- Create Sound
+	local sound_cast = "Hero_BountyHunter.Jinada"
+	EmitSoundOn( sound_cast, self:GetCaster() )
+
+	-- Load Particles
+	local particle_cast_a = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
+	local particle_cast_b = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
+	local particle_cast_c = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_glow.vpcf"
 
     -- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-
-	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_POINT, hTarget )
+	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	
+	-- Release Particles
+	ParticleManager:ReleaseParticleIndex( effect_cast_a )
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	ParticleManager:ReleaseParticleIndex( effect_cast_c )
 end
 	
---Miss attack sound
+--Miss attack effects
 -------------------------
 function spectre_basic_attack_charged_lua:PlayEffectsMiss()
-	-- Get Resources
-	local sound_cast = "Hero_Spectre.PreAttack"
 	-- Create Sound
+	local sound_cast = "Hero_Spectre.PreAttack"
 	EmitSoundOn( sound_cast, self:GetCaster() )
 
 	-- Create Particles
@@ -201,23 +203,6 @@ function spectre_basic_attack_charged_lua:PlayEffectsMiss()
 	ParticleManager:SetParticleControl( effect_cast, 0, self.point)
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
---Desolate effects
--------------------------
-function spectre_basic_attack_charged_lua:PlayEffects2(hTarget)
-	local particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
-
-    -- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, hTarget )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-
-	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_glow.vpcf"
-
-    -- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
 
 -- Add mana on attack modifier and visuals. Only first time upgraded
 function spectre_basic_attack_charged_lua:OnUpgrade()

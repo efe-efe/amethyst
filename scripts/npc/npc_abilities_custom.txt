@@ -704,7 +704,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"180"
+		"AbilityCastRange"				"190"
 		"AbilityCastPoint"				"0.1"
 		"AnimationPlaybackRate" 		"2.0"
 
@@ -720,6 +720,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
 		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"
 		}
 
 		// Special
@@ -787,7 +788,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"180"
+		"AbilityCastRange"				"190"
 		"AbilityCastPoint"				"0.1"
 		"AnimationPlaybackRate" 		"2.0"
 
@@ -825,15 +826,10 @@
 			}
 			"05"
 			{
-				"var_type"					"FIELD_FLOAT"
-				"mana_gain"					"0.07"
-			}
-			"06"
-			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"2"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_amount"				"6"
@@ -1409,6 +1405,91 @@
 			}
 		}
 	}
+
+	"spectre_basic_attack_test_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_basic_attack_test_lua/spectre_basic_attack_test_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"spectre_basic_attack_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AOERadius"						"%hitbox"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"190"
+		"AbilityCastPoint"				"0.1"
+		"AnimationPlaybackRate" 		"2.0"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"1500"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"150"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"130"
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	//=================================================================================================================
 	// Skywrath Mage
