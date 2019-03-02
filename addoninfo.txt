@@ -1,9 +1,9 @@
 "AddonInfo"
 {
   "TeamCount" "2"
-  "maps"      "rite_map"
+  "maps"      "mad_moon_map"
   "IsPlayable"  "1"
-  "rite_map"
+  "mad_moon_map"
   {
           "MaxPlayers"                    "6"
   }
