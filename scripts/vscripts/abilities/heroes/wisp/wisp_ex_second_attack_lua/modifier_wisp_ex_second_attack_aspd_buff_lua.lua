@@ -10,7 +10,7 @@ function modifier_wisp_ex_second_attack_aspd_buff_lua:IsHidden()
 end
 
 function modifier_wisp_ex_second_attack_aspd_buff_lua:IsPurgable()
-	return false
+	return true
 end
 
 --------------------------------------------------------------------------------

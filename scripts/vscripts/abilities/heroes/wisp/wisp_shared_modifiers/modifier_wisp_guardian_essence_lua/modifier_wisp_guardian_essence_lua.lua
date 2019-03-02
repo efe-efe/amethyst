@@ -11,7 +11,7 @@ function modifier_wisp_guardian_essence_lua:IsHidden()
 end
 
 function modifier_wisp_guardian_essence_lua:IsPurgable()
-	return false
+	return true
 end
 
 --------------------------------------------------------------------------------

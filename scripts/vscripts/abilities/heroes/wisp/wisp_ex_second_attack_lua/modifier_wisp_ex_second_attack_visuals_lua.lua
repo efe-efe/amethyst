@@ -6,7 +6,7 @@ function modifier_wisp_ex_second_attack_visuals_lua:IsDebuff()
 end
 
 function modifier_wisp_ex_second_attack_visuals_lua:IsHidden()
-	return false
+	return true
 end
 
 function modifier_wisp_ex_second_attack_visuals_lua:IsPurgable()

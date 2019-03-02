@@ -6,7 +6,7 @@ function modifier_wisp_ultimate_lua:IsDebuff()
 end
 
 function modifier_wisp_ultimate_lua:IsHidden()
-	return false
+	return true
 end
 
 function modifier_wisp_ultimate_lua:IsPurgable()

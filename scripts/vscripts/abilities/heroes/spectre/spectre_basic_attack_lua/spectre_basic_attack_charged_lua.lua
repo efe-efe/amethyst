@@ -1,8 +1,8 @@
 spectre_basic_attack_charged_lua = class({})
 
 LinkLuaModifier( "modifier_spectre_basic_attack_charged_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_spectre_basic_attack_charged_timer", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_timer", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_spectre_basic_attack_charged_visuals", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_visuals", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_spectre_basic_attack_charged_timer_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_timer_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_spectre_basic_attack_charged_visuals_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_visuals_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
 
@@ -80,7 +80,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	
 	-- find and destroy visual modifier
 	local visual_effect = caster:FindModifierByNameAndCaster( 
-		"modifier_spectre_basic_attack_charged_visuals", caster 
+		"modifier_spectre_basic_attack_charged_visuals_lua", caster 
 	)
 
 	if visual_effect~=nil then
@@ -90,7 +90,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	end
 
     --Adds the timer that swaps the abilities
-	caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_timer", {duration = self:GetCooldown(0)})
+	caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_timer_lua", {duration = self:GetCooldown(0)})
 
 	--Adds the damage bonus modifier
 	self.modifier_attack_bonus = caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_lua", {})
@@ -210,7 +210,7 @@ function spectre_basic_attack_charged_lua:OnUpgrade()
 		local caster = self:GetCaster()
 		
 		--Visuals
-		caster:AddNewModifier( caster, self, "modifier_spectre_basic_attack_charged_visuals", {} )
+		caster:AddNewModifier( caster, self, "modifier_spectre_basic_attack_charged_visuals_lua", {} )
 		-- Gain mana
 		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 	end

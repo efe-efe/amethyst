@@ -3,7 +3,7 @@ modifier_wisp_ex_second_attack_movement_lua = class({})
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_wisp_ex_second_attack_movement_lua:IsHidden()
-	return false
+	return true
 end
 
 function modifier_wisp_ex_second_attack_movement_lua:IsDebuff()

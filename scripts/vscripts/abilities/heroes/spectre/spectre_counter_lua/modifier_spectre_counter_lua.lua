@@ -60,7 +60,7 @@ function modifier_spectre_counter_lua:GetModifierIncomingDamage_Percentage( para
 
 			-- find and destroy the timer modifier from the basic attack
 			local basic_attack_timer = parent:FindModifierByNameAndCaster( 
-				"modifier_spectre_basic_attack_charged_timer", parent 
+				"modifier_spectre_basic_attack_charged_timer_lua", parent 
 			)
 		
 			if basic_attack_timer~=nil then

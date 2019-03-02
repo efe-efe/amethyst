@@ -13,6 +13,7 @@ end
 function modifier_skywrath_mage_ex_second_attack_debuff_lua:IsPurgable()
 	return true
 end
+
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_skywrath_mage_ex_second_attack_debuff_lua:OnCreated( kv )

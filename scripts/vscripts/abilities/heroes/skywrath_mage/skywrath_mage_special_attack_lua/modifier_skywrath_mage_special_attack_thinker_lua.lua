@@ -1,15 +1,15 @@
 modifier_skywrath_mage_special_attack_thinker_lua = class({})
 LinkLuaModifier( "modifier_skywrath_mage_special_attack_movement_lua", "abilities/heroes/skywrath_mage/skywrath_mage_special_attack_lua/modifier_skywrath_mage_special_attack_movement_lua", LUA_MODIFIER_MOTION_HORIZONTAL )
 
-
+--Clasifications
 --------------------------------------------------------------------------------
 
 function modifier_skywrath_mage_special_attack_thinker_lua:IsHidden()
 	return true
 end
 
+--Initializer
 --------------------------------------------------------------------------------
-
 function modifier_skywrath_mage_special_attack_thinker_lua:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
@@ -27,6 +27,7 @@ function modifier_skywrath_mage_special_attack_thinker_lua:OnDestroy()
 	end
 end
 
+--On think
 --------------------------------------------------------------------------------
 function modifier_skywrath_mage_special_attack_thinker_lua:OnIntervalThink()
     local thinker = self:GetParent()

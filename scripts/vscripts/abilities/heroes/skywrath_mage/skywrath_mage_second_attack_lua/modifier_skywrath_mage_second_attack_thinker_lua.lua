@@ -1,15 +1,14 @@
 modifier_skywrath_mage_second_attack_thinker_lua = class({})
 LinkLuaModifier( "modifier_skywrath_mage_second_attack_reducer_lua", "abilities/heroes/skywrath_mage/skywrath_mage_second_attack_lua/modifier_skywrath_mage_second_attack_reducer_lua", LUA_MODIFIER_MOTION_NONE )
 
-
+--Clasifications
 --------------------------------------------------------------------------------
-
 function modifier_skywrath_mage_second_attack_thinker_lua:IsHidden()
 	return true
 end
 
+-- Initializer
 --------------------------------------------------------------------------------
-
 function modifier_skywrath_mage_second_attack_thinker_lua:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
@@ -27,8 +26,8 @@ function modifier_skywrath_mage_second_attack_thinker_lua:OnCreated( kv )
     end
 end
 
+-- On Think
 --------------------------------------------------------------------------------
-
 function modifier_skywrath_mage_second_attack_thinker_lua:OnIntervalThink()
     if IsServer() then
         -- find enemies

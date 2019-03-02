@@ -6,7 +6,7 @@ function modifier_spectre_mobility_lua:IsDebuff()
 end
 
 function modifier_spectre_mobility_lua:IsHidden()
-	return false
+	return true
 end
 
 function modifier_spectre_mobility_lua:IsPurgable()

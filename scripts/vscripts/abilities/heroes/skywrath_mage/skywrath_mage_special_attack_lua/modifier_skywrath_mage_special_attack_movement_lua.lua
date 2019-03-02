@@ -3,7 +3,7 @@ modifier_skywrath_mage_special_attack_movement_lua = class({})
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_skywrath_mage_special_attack_movement_lua:IsHidden()
-	return false
+	return true
 end
 
 function modifier_skywrath_mage_special_attack_movement_lua:IsDebuff()

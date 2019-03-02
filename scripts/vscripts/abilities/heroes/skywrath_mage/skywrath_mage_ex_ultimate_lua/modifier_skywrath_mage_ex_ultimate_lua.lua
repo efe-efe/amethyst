@@ -1,6 +1,20 @@
 modifier_skywrath_mage_ex_ultimate_lua = class({})
 
 --------------------------------------------------------------------------------
+-- Classifications
+function modifier_skywrath_mage_ex_ultimate_lua:IsHidden()
+	return false
+end
+
+function modifier_skywrath_mage_ex_ultimate_lua:IsDebuff()
+	return false
+end
+
+function modifier_skywrath_mage_ex_ultimate_lua:IsPurgable()
+	return true
+end
+
+--------------------------------------------------------------------------------
 -- Initializations
 function modifier_skywrath_mage_ex_ultimate_lua:OnCreated( kv )
     if IsServer() then

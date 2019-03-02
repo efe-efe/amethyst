@@ -1,22 +1,22 @@
-modifier_spectre_basic_attack_charged_visuals = class({})
+modifier_spectre_basic_attack_charged_visuals_lua = class({})
 
 --------------------------------------------------------------------------------
 
-function modifier_spectre_basic_attack_charged_visuals:IsDebuff()
+function modifier_spectre_basic_attack_charged_visuals_lua:IsDebuff()
 	return false
 end
 
-function modifier_spectre_basic_attack_charged_visuals:IsHidden()
-	return true
+function modifier_spectre_basic_attack_charged_visuals_lua:IsHidden()
+	return false
 end
 
-function modifier_spectre_basic_attack_charged_visuals:IsPurgable()
+function modifier_spectre_basic_attack_charged_visuals_lua:IsPurgable()
 	return false
 end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_spectre_basic_attack_charged_visuals:OnCreated( kv )
+function modifier_spectre_basic_attack_charged_visuals_lua:OnCreated( kv )
     if IsServer() then
         -- effects
         self:PlayEffects()
@@ -25,7 +25,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Destroyer
-function modifier_spectre_basic_attack_charged_visuals:OnDestroy( kv )
+function modifier_spectre_basic_attack_charged_visuals_lua:OnDestroy( kv )
     if IsServer() then
         -- effects
         self:StopEffects()
@@ -34,7 +34,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Visuals
-function modifier_spectre_basic_attack_charged_visuals:PlayEffects()
+function modifier_spectre_basic_attack_charged_visuals_lua:PlayEffects()
     if IsServer() then
         -- Get Resources
 
@@ -68,7 +68,7 @@ function modifier_spectre_basic_attack_charged_visuals:PlayEffects()
 end
 
 
-function modifier_spectre_basic_attack_charged_visuals:StopEffects()
+function modifier_spectre_basic_attack_charged_visuals_lua:StopEffects()
 	ParticleManager:DestroyParticle( self.effect_cast, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )
 end

@@ -2,7 +2,7 @@ modifier_spectre_ex_mobility_lua = class({})
 
 --- Misc 
 function modifier_spectre_ex_mobility_lua:IsHidden()
-    return false
+    return true
 end
 
 function modifier_spectre_ex_mobility_lua:IsPurgable()
