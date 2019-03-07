@@ -10,7 +10,7 @@
 	{
 		// General
 		//----------------------------------------------------------------
-		"Model"						"models/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_sphere.vmdl"	// Model.
+		"Model"						"models/heroes/oracle/crystal_ball.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"
 		"SoundSet"					"n_creep_Ranged"
 		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"

@@ -62,6 +62,7 @@ function modifier_generic_charges:OnAbilityFullyCast( params )
 		self:CalculateCharge()
 	end
 end
+
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_generic_charges:OnIntervalThink()

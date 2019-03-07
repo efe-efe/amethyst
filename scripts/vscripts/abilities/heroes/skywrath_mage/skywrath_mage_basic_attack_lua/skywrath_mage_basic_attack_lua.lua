@@ -30,103 +30,112 @@ function skywrath_mage_basic_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
+	local ability = self
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
-	
+
 	-- load data
-	
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
+    local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_vision = 0
-    local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack.vpcf"
+	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
-	-- logic
+	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
+	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
 
-	local info = {
-		Source = caster,
-		Ability = self,
-		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 256),
-		
-		bDeleteOnHit = true,
-		
-		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY,
-		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
-		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
-		
+	local projectile = {
 		EffectName = projectile_name,
+		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
-		fEndRadius =projectile_end_radius,
+		fEndRadius = projectile_end_radius,
+		Source = caster,
+		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-
-		bHasFrontalCone = false,
-		bReplaceExisting = false,
-		fExpireTime = GameRules:GetGameTime() + 10.0,
-		
-		bProvidesVision = false,
-		iVisionRadius = projectile_vision,
-        iVisionTeamNumber = caster:GetTeamNumber(),
-        
-        ExtraData = {
+		UnitBehavior = PROJECTILES_NOTHING,
+		bMultipleHits = true,
+		bIgnoreSource = true,
+		TreeBehavior = PROJECTILES_NOTHING,
+		bCutTrees = true,
+		bTreeFullCollision = false,
+		WallBehavior = PROJECTILES_DESTROY,
+		GroundBehavior = PROJECTILES_NOTHING,
+		fGroundOffset = 80,
+		nChangeMax = 1,
+		bRecreateOnChange = true,
+		bZCheck = false,
+		bGroundLock = true,
+		bProvidesVision = true,
+		iVisionRadius = 200,
+		iVisionTeamNumber = caster:GetTeam(),
+		bFlyingVision = false,
+		fVisionTickTime = .1,
+		fVisionLingerDuration = 1,
+		draw = false,
+		fRehitDelay = 1.0,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
+		OnUnitHit = function(_self, unit) 
 			
-		}
-	}
-	
-	ProjectileManager:CreateLinearProjectile(info)
-	self:StartCooldown(attack_speed)
-	self:PlayEffects()
-end
+			-- Blocked
+			--------------------
+			local is_slower = unit:FindModifierByName("modifier_generic_projectile_blocker_lua")
+			if is_slower ~= nil then
+				if not is_slower:IsNull() then
+					_self.SetVelocity(0, projectile_direction * projectile_speed * 0.15)
+					return
+				end
+			end
 
+			-- Hit
+			--------------------
+			-- perform the actual attack
+			caster:PerformAttack(
+				unit, -- handle hTarget 
+				true, -- bool bUseCastAttackOrb, 
+				true, -- bool bProcessProcs,
+				true, -- bool bSkipCooldown
+				false, -- bool bIgnoreInvis
+				false, -- bool bUseProjectile
+				false, -- bool bFakeAttack
+				false -- bool bNeverMiss
+			)
+
+			self:PlayEffects_b(_self:GetPosition())
+			_self.Destroy()
+		end,
+		OnFinish = function(_self, pos)
+			self:PlayEffects_b(pos)
+		end,
+	}
+
+	self:StartCooldown(attack_speed)
+	self:PlayEffects_a()
+
+	-- Cast projectile
+	Projectiles:CreateProjectile(projectile)
+end
 
 --------------------------------------------------------------------------------
--- Projectile
-function skywrath_mage_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
-	if hTarget==nil then return end
-	
-	-- Blocked
-	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
-	if is_blocker ~= nil then
-		if not is_blocker:IsNull() then
-			return true
-		end
-	end
-	
-	-- load variables
-	local caster = self:GetCaster()
-
-	-- perform the actual attack
-	caster:PerformAttack(
-		hTarget, -- handle hTarget 
-		true, -- bool bUseCastAttackOrb, 
-		true, -- bool bProcessProcs,
-		true, -- bool bSkipCooldown
-		false, -- bool bIgnoreInvis
-		false, -- bool bUseProjectile
-		false, -- bool bFakeAttack
-		false -- bool bNeverMiss
-	)
-
-	self:PlayEffects2(hTarget)
-	
-	return true
-end
-
-function skywrath_mage_basic_attack_lua:PlayEffects()
-	-- Get Resources
-	local sound_cast = "Hero_SkywrathMage.Attack"
-
+-- Graphics & sounds
+function skywrath_mage_basic_attack_lua:PlayEffects_a()
 	-- Create Sound
+	local sound_cast = "Hero_SkywrathMage.Attack"
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
-function skywrath_mage_basic_attack_lua:PlayEffects2(hTarget)
-	-- Get Resources
-	local sound_cast = "Hero_SkywrathMage.ProjectileImpact"
-
+function skywrath_mage_basic_attack_lua:PlayEffects_b( pos )
+	local caster = self:GetCaster()
+	
 	-- Create Sound
-	EmitSoundOn( sound_cast, hTarget )
+	local sound_cast = "Hero_SkywrathMage.ProjectileImpact"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+
+	-- Cast Particle
+	local particle_cast = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack_explosion.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+	ParticleManager:SetParticleControl( effect_cast, 3, pos )
 end
 

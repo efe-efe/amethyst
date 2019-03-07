@@ -20,133 +20,159 @@ function skywrath_mage_ex_second_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
-	
+	local ability = self
+
 	-- load data
-	
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
+    local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_vision = 0
-    local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt.vpcf"
+	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-    self.buff_duration = self:GetSpecialValueFor("buff_duration")
-    self.heal_damage = self:GetSpecialValueFor("heal_damage")
-    
-	-- logic
-
-	local info = {
-		Source = caster,
-		Ability = self,
-		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 256),
-		
-		bDeleteOnHit = true,
-		
-		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_BOTH,
-		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
-		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
-		
-		EffectName = projectile_name,
-		fDistance = projectile_distance,
-		fStartRadius = 0,
-		fEndRadius = projectile_end_radius,
-		vVelocity = projectile_direction * projectile_speed,
-
-		bHasFrontalCone = false,
-		bReplaceExisting = false,
-		fExpireTime = GameRules:GetGameTime() + 10.0,
-		
-		bProvidesVision = false,
-		iVisionRadius = projectile_vision,
-        iVisionTeamNumber = caster:GetTeamNumber(),
-        
-        ExtraData = {
-			
-		}
-	}
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
-	ProjectileManager:CreateLinearProjectile(info)
-	self:PlayEffects()
-end
+	local buff_duration = self:GetSpecialValueFor("buff_duration")
+    local heal_damage = self:GetSpecialValueFor("heal_damage")
 
+	local projectile = {
+		EffectName = projectile_name,
+		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80) + caster:GetForwardVector() * 100,
+		fDistance = projectile_distance,
+		fStartRadius = 70,
+		fEndRadius = projectile_end_radius,
+		Source = caster,
+		fExpireTime = 8.0,
+		vVelocity = projectile_direction * projectile_speed,
+		UnitBehavior = PROJECTILES_NOTHING,
+		bIgnoreSource = false,
+		TreeBehavior = PROJECTILES_NOTHING,
+		bCutTrees = true,
+		bTreeFullCollision = false,
+		WallBehavior = PROJECTILES_DESTROY,
+		GroundBehavior = PROJECTILES_NOTHING,
+		fGroundOffset = 80,
+		nChangeMax = 1,
+		bRecreateOnChange = true,
+		bZCheck = false,
+		bGroundLock = true,
+		bProvidesVision = true,
+		iVisionRadius = 200,
+		iVisionTeamNumber = caster:GetTeam(),
+		bFlyingVision = false,
+		fVisionTickTime = .1,
+		fVisionLingerDuration = 1,
+		draw = false,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" end,
+		OnUnitHit = function(_self, unit)
+			-- Hit
+			--------------------
+			--If target is ally
+			if unit:GetTeamNumber() == caster:GetTeamNumber() then
+				--speed
+				unit:AddNewModifier(
+					caster, -- player source
+					ability, -- ability source
+					"modifier_skywrath_mage_ex_second_attack_buff_lua", -- modifier name
+					{ duration = buff_duration }
+				)
+	
+				--Heal
+				unit:Heal(heal_damage, caster)
+	
+				self:PlayEffects_c(unit, _self:GetPosition())
+			-- If target is enemy
+			else	
+
+				-- Blocked
+				--------------------
+				local is_slower = unit:FindModifierByName("modifier_generic_projectile_blocker_lua")
+				if is_slower ~= nil then
+					if not is_slower:IsNull() then
+						_self.SetVelocity(0, projectile_direction * projectile_speed * 0.15)
+						return
+					end
+				end
+				
+				local damage = {
+					victim = unit,
+					attacker = caster,
+					damage = heal_damage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+				}
+		
+				ApplyDamage( damage )
+		
+				--slow
+				unit:AddNewModifier(
+					caster, -- player source
+					ability, -- ability source
+					"modifier_skywrath_mage_ex_second_attack_debuff_lua", -- modifier name
+					{ duration = buff_duration }
+				)
+
+				self:PlayEffects_b(_self:GetPosition())
+			end
+			_self.Destroy()
+		end,
+		OnFinish = function(_self, pos)
+			self:PlayEffects_b(pos)
+		end,
+	}
+
+	self:PlayEffects_a()
+
+	-- Put CD on the non ex version of the ability
+	local non_ex_version = caster:FindAbilityByName("skywrath_mage_second_attack_lua")
+	non_ex_version:StartCooldown(self:GetCooldown(0))
+
+	-- Cast projectile
+	Projectiles:CreateProjectile(projectile)
+end
 
 --------------------------------------------------------------------------------
--- Projectile
-function skywrath_mage_ex_second_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
-	if hTarget==nil then return end
-
-	-- load variables
-	local caster = self:GetCaster()
-
-	-- Blocked
-	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
-	if is_blocker ~= nil then
-		if not is_blocker:IsNull() then
-			return true
-		end
-	end
-
-	--If target is ally
-    if hTarget:GetTeamNumber() == caster:GetTeamNumber() then
-        --speed
-        hTarget:AddNewModifier(
-            caster, -- player source
-            self, -- ability source
-            "modifier_skywrath_mage_ex_second_attack_buff_lua", -- modifier name
-            { duration = self.buff_duration }
-        )
-
-        --Heal
-        hTarget:Heal(self.heal_damage, caster)
-
-		self:PlayEffects2(hTarget)
-    -- If target is enemy
-    else	
-
-        local damage = {
-            victim = hTarget,
-            attacker = caster,
-            damage = self.heal_damage,
-            damage_type = DAMAGE_TYPE_MAGICAL,
-        }
-
-        ApplyDamage( damage )
-
-        --slow
-        hTarget:AddNewModifier(
-            caster, -- player source
-            self, -- ability source
-            "modifier_skywrath_mage_ex_second_attack_debuff_lua", -- modifier name
-			{ duration = self.buff_duration }
-        )
-		self:PlayEffects3(hTarget)
-    end
-
-	return true
-end
-
-function skywrath_mage_ex_second_attack_lua:PlayEffects()
-	-- Get Resources
-	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Cast"
-
+-- Graphics & sounds
+function skywrath_mage_ex_second_attack_lua:PlayEffects_a()
 	-- Create Sound
+	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Cast"
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
-function skywrath_mage_ex_second_attack_lua:PlayEffects2(hTarget)
-	-- Get Resources
-	local sound_cast = "Hero_Omniknight.GuardianAngel"
-
+function skywrath_mage_ex_second_attack_lua:PlayEffects_b( pos )
+	local caster = self:GetCaster()
+	
 	-- Create Sound
-	EmitSoundOn( sound_cast, hTarget )
+	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Impact"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+
+	-- Cast Particles
+	local particle_cast_a = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt_hit.vpcf"
+	local particle_cast_b = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt_launch.vpcf"
+
+	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN, caster )
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN, caster )
+
+	ParticleManager:SetParticleControl( effect_cast_a, 0, pos )
+	ParticleManager:SetParticleControl( effect_cast_a, 3, pos )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, pos )
+	ParticleManager:SetParticleControl( effect_cast_b, 9, pos )
+
+	ParticleManager:ReleaseParticleIndex( effect_cast_a )
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
 
-function skywrath_mage_ex_second_attack_lua:PlayEffects3(hTarget)
-	-- Get Resources
-	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Impact"
-
+function skywrath_mage_ex_second_attack_lua:PlayEffects_c( hTarget, pos )
 	-- Create Sound
+	local sound_cast = "Hero_Omniknight.GuardianAngel"
 	EmitSoundOn( sound_cast, hTarget )
+
+	-- Cast Particles
+	local particle_cast = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt_launch.vpcf"
+	
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+	ParticleManager:SetParticleControl( effect_cast, 9, pos )
+
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 

@@ -1,2 +1,0 @@
-Effects:
-- remnant doesn't have model

@@ -14,6 +14,7 @@ end
 -- LOAD LIBRARIES
 --============================================================================================
 require('libraries/timers') -- This library allow for easily delayed/timed actions
+require('libraries/projectiles') -- This library allow for easily delayed/timed actions
 require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('settings') -- settings.lua is where resides many different properties for Dotarite.
 require('modules/middle_orb_module')

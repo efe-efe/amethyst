@@ -27,7 +27,7 @@ function skywrath_mage_special_attack_lua:OnSpellStart()
         caster:GetTeamNumber() -- iTeamNumber
     )
 
-    bubble:SetHullRadius(radius - 40.0)
+    bubble:SetHullRadius(radius)
     bubble:AddNewModifier(
         caster,
         self,

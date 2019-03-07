@@ -43,6 +43,8 @@ function modifier_orb_timer_apply_glow_lua:PlayEffects()
 	-- Create Particles
 	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
 	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(20, 1, 1) )
+	ParticleManager:SetParticleControl( self.effect_cast, 15, Vector(148, 0, 59) )
+
 end
 
 function modifier_orb_timer_apply_glow_lua:StopEffects()
