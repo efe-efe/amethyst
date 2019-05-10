@@ -52,7 +52,7 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
             -- victim = target,
             attacker = self:GetCaster(),
             --damage = self.damage,
-            damage_type = DAMAGE_TYPE_MAGICAL,
+            damage_type = DAMAGE_TYPE_PURE,
             ability = self:GetAbility() --Optional.
         }
         

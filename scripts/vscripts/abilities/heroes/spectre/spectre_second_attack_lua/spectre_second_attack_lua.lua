@@ -12,56 +12,110 @@ function spectre_second_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
-	
+	local ability = self
+
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_bane/bane_projectile.vpcf"
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-    local projectile_vision = 0
-	self.damage = self:GetSpecialValueFor("damage")
-	self.mana_gain = self:GetSpecialValueFor("mana_gain")
+	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-
-	-- logic
-
-	local info = {
-		Source = caster,
-		Ability = self,
-		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 54),
-		
-		bDeleteOnHit = true,
-		
-		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY,
-		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
-		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
-		
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	
+	local damage = self:GetSpecialValueFor("damage")
+	local mana_gain = self:GetSpecialValueFor("mana_gain")
+	local damage_bonus = self:GetSpecialValueFor("damage_bonus")
+	
+	local projectile = {
 		EffectName = projectile_name,
+		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
-		fEndRadius =projectile_end_radius,
+		fEndRadius = projectile_end_radius,
+		Source = caster,
+		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-
-		bHasFrontalCone = false,
-		bReplaceExisting = false,
-		fExpireTime = GameRules:GetGameTime() + 10.0,
-		
-		bProvidesVision = false,
-		iVisionRadius = projectile_vision,
-        iVisionTeamNumber = caster:GetTeamNumber(),
-        
-        ExtraData = {
+		UnitBehavior = PROJECTILES_NOTHING,
+		bMultipleHits = true,
+		bIgnoreSource = true,
+		TreeBehavior = PROJECTILES_NOTHING,
+		bCutTrees = true,
+		bTreeFullCollision = false,
+		WallBehavior = PROJECTILES_DESTROY,
+		GroundBehavior = PROJECTILES_NOTHING,
+		fGroundOffset = 80,
+		nChangeMax = 1,
+		bRecreateOnChange = true,
+		bZCheck = false,
+		bGroundLock = true,
+		bProvidesVision = true,
+		iVisionRadius = 200,
+		iVisionTeamNumber = caster:GetTeam(),
+		bFlyingVision = false,
+		fVisionTickTime = .1,
+		fVisionLingerDuration = 1,
+		draw = false,
+		fRehitDelay = 1.0,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
+		OnUnitHit = function(_self, unit) 
 			
-		}
+			-- Blocked
+			--------------------
+			local is_slower = unit:FindModifierByName("modifier_generic_projectile_blocker_lua")
+			if is_slower ~= nil then
+				if not is_slower:IsNull() then
+					_self.SetVelocity(0, projectile_direction * projectile_speed * 0.15)
+					return
+				end
+			end
+			
+			-- Hit
+			--------------------
+			local final_damage = damage
+			local guardian_essence = unit:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
+
+			-- If have the debuff, adds extra damage
+			if guardian_essence ~= nil then
+				final_damage = damage_bonus + final_damage
+			end
+			
+			local damage = {
+				victim = unit,
+				attacker = caster,
+				damage = final_damage,
+				damage_type = DAMAGE_TYPE_MAGICAL,
+			}
+
+			ApplyDamage( damage )
+
+			-- apply guardian essence
+			unit:AddNewModifier(
+				caster, -- player source
+				ability, -- ability source
+				"modifier_wisp_guardian_essence_lua", -- modifier name
+				{}
+			)
+			
+			-- Give Mana
+			local mana_gain_final = caster:GetMaxMana() * mana_gain
+			caster:GiveMana(mana_gain_final)
+
+			self:PlayEffects_b(_self:GetPosition())
+			_self.Destroy()
+		end,
+		OnFinish = function(_self, pos)
+			self:PlayEffects_b(pos)
+		end,
 	}
-	
-	ProjectileManager:CreateLinearProjectile(info)
-	self:PlayEffects()
+
+	self:PlayEffects_a()
 
 	-- Put CD on the ex version of the ability
 	local ex_version = caster:FindAbilityByName("spectre_ex_second_attack_lua")
 	ex_version:StartCooldown(self:GetCooldown(0))
+
+	-- Cast projectile
+	Projectiles:CreateProjectile(projectile)
 end
 
 --------------------------------------------------------------------------------
@@ -99,22 +153,11 @@ function spectre_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 	return true
 end
 
---Impact
-function spectre_second_attack_lua:PlayEffects2(hTarget)
-	-- Get Resources
-    local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
+--------------------------------------------------------------------------------
+-- Graphics & sounds
 
-	-- Create Sound
-	EmitSoundOn( sound_cast, hTarget )
-
-	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
---cast
-function spectre_second_attack_lua:PlayEffects()
+-- Cast
+function spectre_second_attack_lua:PlayEffects_a()
 	-- Get Resources
 	local sound_cast = "Hero_Nevermore.Raze_Flames"
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
@@ -125,4 +168,28 @@ function spectre_second_attack_lua:PlayEffects()
 
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
+
+-- Impact
+function spectre_second_attack_lua:PlayEffects_b( pos )
+	local caster = self:GetCaster()
+
+	-- Create Sound
+    local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+
+	-- Create Particles
+	local particle_cast_a = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
+	local particle_cast_b = "particles/mod_units/heroes/hero_bane/bane_projectile_explosion.vpcf"
+	
+	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN, caster )
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN, caster )
+	
+	ParticleManager:SetParticleControl( effect_cast_a, 0, pos )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, pos )
+
+	ParticleManager:ReleaseParticleIndex( effect_cast_a )
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+end
+
+
 

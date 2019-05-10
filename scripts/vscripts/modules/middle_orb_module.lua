@@ -30,7 +30,9 @@ function MiddleOrb:CreateMiddleOrb( spawnTime )
     )
 
     middle_orb:Attribute_SetIntValue("middle_orb", 1)
+    middle_orb:SetGravity(0)
     middle_orb:SetOrigin(orb_position)
+    
 
     -- Orb Spawn Effects
     local particle_cast_a = "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf"

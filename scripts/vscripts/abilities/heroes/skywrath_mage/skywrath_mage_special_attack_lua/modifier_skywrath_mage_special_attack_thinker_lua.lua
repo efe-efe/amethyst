@@ -32,6 +32,8 @@ end
 function modifier_skywrath_mage_special_attack_thinker_lua:OnIntervalThink()
     local thinker = self:GetParent()
     local thinker_origin = thinker:GetOrigin()
+    
+    local ent = Entities:FindAllInSphere(thinker_origin, self.radius)
 
     local enemies = FindUnitsInRadius( 
         thinker:GetTeamNumber(), -- int, your team number

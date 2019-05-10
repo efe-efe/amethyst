@@ -11,20 +11,22 @@ function wisp_basic_attack_lua:OnSpellStart()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
 	local ex_ultimate_modifier = caster:FindModifierByNameAndCaster( "modifier_wisp_ex_ultimate_lua", caster )
-	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_base_attack.vpcf"
 
-	-- If have the ex-ultimate, change the visuals
-	if ex_ultimate_modifier ~= nil then
-		projectile_name="particles/mod_units/heroes/hero_batrider/batrider_base_attack.vpcf"
-	end
+
 	-- load data
+	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_base_attack.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local projectile_speed = 400--self:GetSpecialValueFor("projectile_speed")
 
+	-- If have the ex-ultimate, change the visuals
+	if ex_ultimate_modifier ~= nil then
+		projectile_name="particles/mod_units/heroes/hero_batrider/batrider_base_attack.vpcf"
+	end
+	
 	local projectile = {
 		EffectName = projectile_name,
 		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
@@ -42,7 +44,7 @@ function wisp_basic_attack_lua:OnSpellStart()
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
+		fGroundOffset = 0,
 		nChangeMax = 1,
 		bRecreateOnChange = true,
 		bZCheck = false,
@@ -53,12 +55,20 @@ function wisp_basic_attack_lua:OnSpellStart()
 		bFlyingVision = false,
 		fVisionTickTime = .1,
 		fVisionLingerDuration = 1,
-		draw = false,
+		draw = true,
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
-		OnUnitHit = function(_self, unit) 
+		OnUnitHit = function(_self, unit)
+			DebugPrint("Hello") 
+			--[[local special_behavior = unit:FindModifierByName("modifier_generic_projectile_special_behavior_lua")
+			if special_behavior ~= nil then
+				if not special_behavior:IsNull() then
+					DebugPrint("Special")
+					return
+				end
+			end]]
 			
-			-- Blocked
+			--Blocked
 			--------------------
 			local is_slower = unit:FindModifierByName("modifier_generic_projectile_blocker_lua")
 			if is_slower ~= nil then
@@ -107,11 +117,12 @@ function wisp_basic_attack_lua:OnSpellStart()
 		end,
 	}
 
-	self:StartCooldown(attack_speed)
+	--self:StartCooldown(attack_speed)
 	self:PlayEffects_a()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+
 end
 
 --------------------------------------------------------------------------------

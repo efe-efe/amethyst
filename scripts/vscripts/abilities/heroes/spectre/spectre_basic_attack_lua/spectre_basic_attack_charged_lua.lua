@@ -102,7 +102,6 @@ end
 --------------------------------------------------------------------------------
 -- Projectile
 function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
-	
 	-- load variables
 	local caster = self:GetCaster()
 

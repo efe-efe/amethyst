@@ -48,7 +48,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1500"
+				"projectile_speed"			"1900"
 			}
 			"03"
 			{
@@ -137,7 +137,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"70"
+				"hitbox"					"80"
 			}
 			"05"
 			{
@@ -276,7 +276,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDuration"				"2.0"
+		"AbilityDuration"				"1.5"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -315,8 +315,8 @@
 			}
 			"04"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"buff_duration"				"5"
+				"var_type"					"FIELD_FLOAT"
+				"buff_duration"				"2.5"
 			}
 		}
 	}
@@ -1349,7 +1349,7 @@
 			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"illusion_duration"			"5.0"
+				"illusion_duration"			"3.0"
 			}
 		}
 	}
@@ -1517,7 +1517,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1500"
+				"projectile_speed"			"1900"
 			}
 			"03"
 			{
@@ -1589,7 +1589,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1500"
+				"projectile_speed"			"1900"
 			}
 			"03"
 			{
@@ -1828,7 +1828,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDuration"				"2.0"
+		"AbilityDuration"				"1.5"
 		"AbilityCastPoint"				"0.1"
 
 		// Time		
@@ -1857,7 +1857,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"heal_amount"						"12"
+				"heal_amount"						"20"
 			}
 			"03"
 			{
@@ -1922,12 +1922,13 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"250"
+				//"radius"					"150"
+				"radius"					"400"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"4.0"
+				"duration"					"10.0"
 			}
 		}
 	}
@@ -2104,7 +2105,95 @@
 	}
 
 
+	//=================================================================================================================
+	// Omniknight
+	//=================================================================================================================
+	
+	"omniknight_basic_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/omniknight/omniknight_basic_attack_lua/omniknight_basic_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"spectre_basic_attack_charged_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
 
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"190"
+		"AbilityCastPoint"				"0.01"
+		"AnimationPlaybackRate" 		"2.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_omniknight.vsndevts"
+			"particle"	"particles/base_attacks/test_projectile_explosion.vpcf"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"3000"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"150"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"130"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.07"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"debuff_duration"			"2.0"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"heal_amount"				"12"
+			}
+			"08"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_bonus"				"10"
+			}
+		}
+	}
+	
 
 
 

@@ -1,6 +1,7 @@
 skywrath_mage_special_attack_lua = class({})
 LinkLuaModifier( "modifier_skywrath_mage_special_attack_thinker_lua", "abilities/heroes/skywrath_mage/skywrath_mage_special_attack_lua/modifier_skywrath_mage_special_attack_thinker_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_projectile_blocker_lua", "abilities/generic/modifier_generic_projectile_blocker_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_projectile_special_behavior_lua", "abilities/generic/modifier_generic_projectile_special_behavior_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Set the aoe indicator
@@ -20,9 +21,9 @@ function skywrath_mage_special_attack_lua:OnSpellStart()
     
     local bubble = CreateUnitByName( 
         "npc_dota_creature_skywrath_mage_bubble", -- szUnitName
-        point, -- vLocation,
-        true, -- bFindClearSpace,
-        nil, -- hNPCOwner,
+        Vector(point.x, point.y, 0), -- vLocation,
+        false, -- bFindClearSpace,
+        caster, -- hNPCOwner,
         nil, -- hUnitOwner,
         caster:GetTeamNumber() -- iTeamNumber
     )
@@ -31,10 +32,17 @@ function skywrath_mage_special_attack_lua:OnSpellStart()
     bubble:AddNewModifier(
         caster,
         self,
+        "modifier_generic_projectile_special_behavior_lua",
+        { duration = duration }
+    )
+    bubble:AddNewModifier(
+        caster,
+        self,
         "modifier_generic_projectile_blocker_lua",
         { duration = duration }
     )
-    
+    --bubble:SetSize(Vector(point.x, point.y, 0), Vector(point.x, point.y, 0))	
+
     CreateModifierThinker(
         caster, --hCaster
         self, --hAbility

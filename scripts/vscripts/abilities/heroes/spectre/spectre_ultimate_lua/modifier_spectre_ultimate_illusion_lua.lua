@@ -42,14 +42,6 @@ function modifier_spectre_ultimate_illusion_lua:OnCreated( kv )
         
         -- Attack the closests
         if enemies[1]:IsRealHero() then
-            local order = 
-            {
-                UnitIndex = self:GetParent(),
-                OrderType = DOTA_UNIT_ORDER_ATTACK_MOVE,
-                TargetIndex = enemies[1]
-            }
-
-            ExecuteOrderFromTable(order)
             self:GetParent():SetForceAttackTarget(enemies[1])
         end
     end

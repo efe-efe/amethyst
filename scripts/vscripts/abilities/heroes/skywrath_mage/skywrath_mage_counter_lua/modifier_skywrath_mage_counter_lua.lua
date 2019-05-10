@@ -48,8 +48,18 @@ end
 -- On destroy
 function modifier_skywrath_mage_counter_lua:OnDestroy( kv )
     if IsServer() then
-        -- Can move again
+        --Can move again
         self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
+        
+        --Quits the animation
+        local order = 
+        {
+            OrderType = DOTA_UNIT_ORDER_STOP,
+            UnitIndex = self:GetParent():entindex()
+        }
+        ExecuteOrderFromTable(order)
+
+        --Remove effects
         self:StopEffects()
     end
 end
