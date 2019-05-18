@@ -62,17 +62,6 @@ function wisp_ex_second_attack_lua:OnSpellStart()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit ~= caster end,		
 		OnUnitHit = function(_self, unit) 
-			
-			-- Blocked
-			--------------------
-			local is_slower = unit:FindModifierByName("modifier_generic_projectile_blocker_lua")
-			if is_slower ~= nil then
-				if not is_slower:IsNull() then
-					_self.SetVelocity(0, projectile_direction * projectile_speed * 0.15)
-					return
-				end
-			end
-			
 			-- Hit
 			--------------------
 			--If target is ally

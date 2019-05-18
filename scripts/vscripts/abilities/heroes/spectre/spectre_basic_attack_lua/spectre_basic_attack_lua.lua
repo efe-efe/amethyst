@@ -13,7 +13,8 @@ function spectre_basic_attack_lua:OnSpellStart()
 	local point = self:GetCursorPosition()
 	local ability = self
 	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
+	--local attack_speed = ( 1 / attacks_per_second )
+	local attack_speed = 0.2
 
 	-- load data
     local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack.vpcf"
@@ -53,21 +54,10 @@ function spectre_basic_attack_lua:OnSpellStart()
 		bFlyingVision = false,
 		fVisionTickTime = .1,
 		fVisionLingerDuration = 1,
-		draw = true,
+		draw = false,
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-
-			-- Blocked
-			--------------------
-			local is_slower = unit:FindModifierByName("modifier_generic_projectile_blocker_lua")
-			if is_slower ~= nil then
-				if not is_slower:IsNull() then
-					_self.Destroy()
-					return
-				end
-			end
-
 			-- Hit
 			--------------------
 

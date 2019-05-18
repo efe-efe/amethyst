@@ -126,6 +126,7 @@ function Projectiles:CreateProjectile(projectile)
     end
 
     -- Create projectile ID with the particle
+    -------------------------------
     projectile.id = ParticleManager:CreateParticle(projectile.EffectName, PATTACH_CUSTOMORIGIN, nil)
     ParticleManager:SetParticleAlwaysSimulate(projectile.id)
 
@@ -140,13 +141,6 @@ function Projectiles:CreateProjectile(projectile)
         else
             ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.vel * 30)
         end
-        --[[elseif projectile.GroundBehavior == PROJECTILES_BOUNCE then
-        local future = projectile.pos + projectile.vel
-        local ground = GetGroundPosition(projectile.pos, projectile.Source) + Vector(0,0,projectile.fGroundOffset)
-        if ground.z > future.z then
-        local normal = Projectiles:CalcNormal(ground, projectile.Source)
-        ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, ((-2 * projectile.vel:Dot(normal) * normal) + projectile.vel) * 30)
-        end]]
     else
         ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.vel * 30)
     end
@@ -156,15 +150,19 @@ function Projectiles:CreateProjectile(projectile)
     function projectile:GetCreationTime()
         return projectile.spawnTime
     end
+
     function projectile:GetDistanceTraveled()
         return projectile.distanceTraveled
     end
+
     function projectile:GetPosition()
         return projectile.pos
     end
+
     function projectile:GetVelocity()
         return projectile.vel * 30
     end
+
     function projectile:SetVelocity(newVel, newPos)
         if projectile.changes > 0 then
             projectile.changes = projectile.changes - 1
@@ -196,14 +194,15 @@ function Projectiles:CreateProjectile(projectile)
         useGameTime = true,
         callback = function()
             local curTime = GameRules:GetGameTime()
-            local vel = projectile.vel
             local pos = projectile.pos
 
             if projectile.bGroundLock then
                 pos.z = GetGroundPosition(pos, projectile.Source).z + projectile.fGroundOffset
             end
 
-            -- checks
+
+            
+            -- Checks expiration
             if curTime > projectile.spawnTime + projectile.fExpireTime or projectile.distanceTraveled > projectile.fDistance then
                 ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
                 if projectile.OnFinish then
@@ -215,22 +214,17 @@ function Projectiles:CreateProjectile(projectile)
                 return
             end
             
-            -- update values
+            -- Update values
             local radius = projectile.radius
-            local rad2 = radius * radius
+            local radiusSq = radius * radius
+            local vel = projectile.vel
             
-            -- debug draw
+            -- Debug draw
             if projectile.draw then
-                local alpha = 1
-                local color = Vector(200,0,0)
-                if type(projectile.draw) == "table" then
-                    alpha = projectile.draw.alpha or alpha
-                    color = projectile.draw.color or color
-                end
-                DebugDrawSphere(pos, color, alpha, radius, true, .01)
+                Projectiles:DebugDraw(projectile, pos, radius)
             end
 
-            -- frame and sub-frame collision checks
+            -- Frame and sub-frame collision checks
             local subpos = pos
             local velLength = vel:Length()
             local tot = math.max(1, math.ceil(velLength / 32)) -- lookahead number
@@ -281,16 +275,17 @@ function Projectiles:CreateProjectile(projectile)
                     local origin = entity:GetAbsOrigin()
                     local nozorg = Vector(origin.x, origin.y, 0)
                     local nozpos = Vector(subpos.x, subpos.y, 0)
-                    local nozCheck = VectorDistanceSq(nozpos, nozorg) <= rad2
+                    local nozCheck = VectorDistanceSq(nozpos, nozorg) <= radiusSq
 
                     local zCheck = true
                     if projectile.bZCheck then
                         zCheck = subpos.z >= origin.z + zOffset and subpos.z <= origin.z + height
                     end
 
+                    -- ON HIT AN ENTITY
                     if IsValidEntity(entity) and entity.GetUnitName and entity:IsAlive() and (not projectile.bIgnoreSource or (projectile.bIgnoreSource and entity ~= projectile.Source)) --[[and nozCheck]] and zCheck then
                         
-                        --VectorDistanceSq(nozpos, origin) <= rad2 and subpos.z >= orgz + zOffset and subpos.z <= orgz + height then
+                        --VectorDistanceSq(nozpos, origin) <= radiusSq and subpos.z >= orgz + zOffset and subpos.z <= orgz + height then
                         local time = projectile.rehit[entity:entindex()]
                         if time==nil or curTime > time then
                             local status, test = pcall(projectile.UnitTest, projectile, entity)
@@ -298,28 +293,38 @@ function Projectiles:CreateProjectile(projectile)
                             if not status then
                                 print('[PROJECTILES] Projectile UnitTest Failure!: ' .. test)
                             elseif test then
-                                local status, action = pcall(projectile.OnUnitHit, projectile, entity)
-                                if not status then
-                                    print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
-                                end
-
-                                if projectile.UnitBehavior == PROJECTILES_DESTROY then
-                                    ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
-                                    if projectile.OnFinish then
-                                        local status, out = pcall(projectile.OnFinish, projectile, subpos)
-                                        if not status then
-                                            print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                                local is_slower = entity:FindModifierByName("modifier_generic_projectile_blocker_lua")
+                                if is_slower ~= nil then
+                                    if not is_slower:IsNull() then
+                                        if projectile.bIsSlowable == true then
+                                            projectile:SetVelocity(projectile.vVelocity * 0.15)
                                         end
                                     end
-                                    return
-                                elseif projectile.UnitBehavior == PROJECTILES_BOUNCE then
-                                -- bounce math
-                                end
-
-                                if projectile.bMultipleHits then
-                                    projectile.rehit[entity:entindex()] = curTime + projectile.fRehitDelay
                                 else
-                                    projectile.rehit[entity:entindex()] = curTime + 10000
+
+                                    local status, action = pcall(projectile.OnUnitHit, projectile, entity)
+                                    if not status then
+                                        print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
+                                    end
+
+                                    if projectile.UnitBehavior == PROJECTILES_DESTROY then
+                                        ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
+                                        if projectile.OnFinish then
+                                            local status, out = pcall(projectile.OnFinish, projectile, subpos)
+                                            if not status then
+                                                print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                                            end
+                                        end
+                                        return
+                                    elseif projectile.UnitBehavior == PROJECTILES_BOUNCE then
+                                    -- bounce math
+                                    end
+
+                                    if projectile.bMultipleHits then
+                                        projectile.rehit[entity:entindex()] = curTime + projectile.fRehitDelay
+                                    else
+                                        projectile.rehit[entity:entindex()] = curTime + 10000
+                                    end
                                 end
                             end
                         end
@@ -330,8 +335,6 @@ function Projectiles:CreateProjectile(projectile)
                 local ground = GetGroundPosition(subpos, projectile.Source) + Vector(0,0,projectile.fGroundOffset)
                 --print(tostring(ground.z) .. ' -- ' .. tostring(pos.z))
                 local groundConnect = ground.z > projectile.prevPos.z -- ground
-                
-                print("ground.z = " .. ground.z .. "| pos.z = " .. pos.z)
 
                 if navConnect then
                     if projectile.bCutTrees or projectile.TreeBehavior ~= PROJECTILES_NOTHING then
@@ -392,77 +395,76 @@ function Projectiles:CreateProjectile(projectile)
                         end
                         return
                         elseif projectile.WallBehavior == PROJECTILES_BOUNCE and projectile.changes > 0 and curTime >= projectile.changeTime then
-                        -- bounce calculation
-                        --local normal = Projectiles:CalcNormal(ground, projectile.Source)
-                        --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(255,255,255), true, 1)
-                        -- remove z
-                        normal.z = 0
-                        normal = normal:Normalized()
-                        --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(0,255,0), true, 1)
-                        projectile:SetVelocity(((-2 * vel:Dot(normal) * normal) + vel) * 30, subpos)
-                        break
+                            -- bounce calculation
+                            --local normal = Projectiles:CalcNormal(ground, projectile.Source)
+                            --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(255,255,255), true, 1)
+                            -- remove z
+                            normal.z = 0
+                            normal = normal:Normalized()
+                            --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(0,255,0), true, 1)
+                            projectile:SetVelocity(((-2 * vel:Dot(normal) * normal) + vel) * 30, subpos)
+                            break
                         end
-                    end
+                    end 
                 end
                 if projectile.GroundBehavior ~= PROJECTILES_NOTHING and groundConnect then
                     --print('groundConnect')
                     if projectile.GroundBehavior == PROJECTILES_DESTROY then
-                    ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
-                    local status, action = pcall(projectile.OnGroundHit, projectile, ground)
-                    if not status then
-                        print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
-                    end
-
-                    if projectile.OnFinish then
-                        local status, out = pcall(projectile.OnFinish, projectile, subpos)
-                        if not status then
-                        print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
-                        end
-                    end
-                    return
-                    elseif projectile.GroundBehavior == PROJECTILES_BOUNCE and projectile.changes > 0 and curTime >= projectile.changeTime then
-                    -- bounce calculation
-                    local status, action = pcall(projectile.OnGroundHit, projectile, ground)
-                    if not status then
-                        print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
-                    end
-
-                    local normal = Projectiles:CalcNormal(ground, projectile.Source)
-                    projectile:SetVelocity(((-2 * vel:Dot(normal) * normal) + vel) * 30, subpos)
-                    --entity:SetPhysicsVelocity(((-2 * newVelocity:Dot(normal) * normal) + newVelocity) * self.multiplier * 30)
-                    break
-
-                    elseif projectile.GroundBehavior == PROJECTILES_FOLLOW and projectile.changes > 0 and curTime >= projectile.changeTime then
-                    -- follow calculation
-                    
-                    local slope = Projectiles:CalcSlope(ground, projectile.Source, vel)
-                    local dir = vel:Normalized()
-                    --projectile.fGroundOffset = projectile.fGroundOffset - 10
-                    --print('follow ' .. slope:Dot(vel:Normalized()) .. ' -- ' .. projectile.changes)
-                    if dir.z < slope.z and slope:Dot(dir) < 1 then
+                        ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
                         local status, action = pcall(projectile.OnGroundHit, projectile, ground)
                         if not status then
-                        print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
+                            print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
                         end
+
+                        if projectile.OnFinish then
+                            local status, out = pcall(projectile.OnFinish, projectile, subpos)
+                            if not status then
+                            print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                            end
+                        end
+                        return
+                    elseif projectile.GroundBehavior == PROJECTILES_BOUNCE and projectile.changes > 0 and curTime >= projectile.changeTime then
+                        -- bounce calculation
+                        local status, action = pcall(projectile.OnGroundHit, projectile, ground)
+                        if not status then
+                            print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
+                        end
+
+                        local normal = Projectiles:CalcNormal(ground, projectile.Source)
+                        projectile:SetVelocity(((-2 * vel:Dot(normal) * normal) + vel) * 30, subpos)
+                        --entity:SetPhysicsVelocity(((-2 * newVelocity:Dot(normal) * normal) + newVelocity) * self.multiplier * 30)
+                        break
+                    elseif projectile.GroundBehavior == PROJECTILES_FOLLOW and projectile.changes > 0 and curTime >= projectile.changeTime then
+                        -- follow calculation
+                        
+                        local slope = Projectiles:CalcSlope(ground, projectile.Source, vel)
+                        local dir = vel:Normalized()
                         --projectile.fGroundOffset = projectile.fGroundOffset - 10
-                        --print('follow under')
-                        projectile:SetVelocity(velLength * 30 * slope, subpos)
-                    end
-                    break
+                        --print('follow ' .. slope:Dot(vel:Normalized()) .. ' -- ' .. projectile.changes)
+                        if dir.z < slope.z and slope:Dot(dir) < 1 then
+                            local status, action = pcall(projectile.OnGroundHit, projectile, ground)
+                            if not status then
+                                print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
+                            end
+                            --projectile.fGroundOffset = projectile.fGroundOffset - 10
+                            --print('follow under')
+                            projectile:SetVelocity(velLength * 30 * slope, subpos)
+                        end
+                        break
                     end
                 end
                 --DebugDrawCircle(subpos, Vector(200,200,200), 100, 10, true, .01)
                 subpos = pos + vel * (div * index)
 
                 if projectile.distanceTraveled + (subpos-pos):Length() > projectile.fDistance then
-                ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
-                if projectile.OnFinish then
-                    local status, out = pcall(projectile.OnFinish, projectile, subpos)
-                    if not status then
-                    print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                    ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
+                    if projectile.OnFinish then
+                        local status, out = pcall(projectile.OnFinish, projectile, subpos)
+                        if not status then
+                            print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                        end
                     end
-                end
-                return
+                    return
                 end
 
                 if projectile.bGroundLock then
@@ -495,6 +497,7 @@ function Projectiles:SetDefaults(projectile)
     -- Movement
     projectile.vVelocity = projectile.vVelocity or Vector(0,0,0)
     projectile.fDistance = projectile.fDistance or 1000
+    if projectile.bIsSlowable == nil then projectile.bIsSlowable = true end
 
     -- Radius
     projectile.fStartRadius =       projectile.fStartRadius or 100
@@ -610,4 +613,46 @@ function Projectiles:ApplyControlPoints(projectile, position)
     end
 end
 
+function Projectiles:DebugDraw(projectile, position, radius)
+    -- Defaults
+    local alpha = 1
+    local color = Vector(200,0,0)
+    
+    -- Not defaults
+    if type(projectile.draw) == "table" then
+        alpha = projectile.draw.alpha or alpha
+        color = projectile.draw.color or color
+    end
+
+    --Draw
+    DebugDrawSphere(position, color, alpha, radius, true, .01)
+end
+
+function Projectiles:HitUnitHandler()
+    local status, action = pcall(projectile.OnUnitHit, projectile, entity)
+    if not status then
+        print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
+    end
+
+    if projectile.UnitBehavior == PROJECTILES_DESTROY then
+        ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
+        if projectile.OnFinish then
+            local status, out = pcall(projectile.OnFinish, projectile, subpos)
+            if not status then
+                print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+            end
+        end
+        return
+    elseif projectile.UnitBehavior == PROJECTILES_BOUNCE then
+    -- bounce math
+    end
+
+    if projectile.bMultipleHits then
+        projectile.rehit[entity:entindex()] = curTime + projectile.fRehitDelay
+    else
+        projectile.rehit[entity:entindex()] = curTime + 10000
+    end
+end
+
+-- Initialize
 if not Projectiles.timers then Projectiles:start() end

@@ -81,17 +81,6 @@ function skywrath_mage_ex_second_attack_lua:OnSpellStart()
 				self:PlayEffects_c(unit, _self:GetPosition())
 			-- If target is enemy
 			else	
-
-				-- Blocked
-				--------------------
-				local is_slower = unit:FindModifierByName("modifier_generic_projectile_blocker_lua")
-				if is_slower ~= nil then
-					if not is_slower:IsNull() then
-						_self.SetVelocity(0, projectile_direction * projectile_speed * 0.15)
-						return
-					end
-				end
-				
 				local damage = {
 					victim = unit,
 					attacker = caster,

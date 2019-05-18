@@ -58,26 +58,9 @@ function spectre_second_attack_lua:OnSpellStart()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			
-			-- Blocked
-			--------------------
-			local is_slower = unit:FindModifierByName("modifier_generic_projectile_blocker_lua")
-			if is_slower ~= nil then
-				if not is_slower:IsNull() then
-					_self.SetVelocity(0, projectile_direction * projectile_speed * 0.15)
-					return
-				end
-			end
-			
 			-- Hit
 			--------------------
 			local final_damage = damage
-			local guardian_essence = unit:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
-
-			-- If have the debuff, adds extra damage
-			if guardian_essence ~= nil then
-				final_damage = damage_bonus + final_damage
-			end
 			
 			local damage = {
 				victim = unit,
@@ -88,14 +71,6 @@ function spectre_second_attack_lua:OnSpellStart()
 
 			ApplyDamage( damage )
 
-			-- apply guardian essence
-			unit:AddNewModifier(
-				caster, -- player source
-				ability, -- ability source
-				"modifier_wisp_guardian_essence_lua", -- modifier name
-				{}
-			)
-			
 			-- Give Mana
 			local mana_gain_final = caster:GetMaxMana() * mana_gain
 			caster:GiveMana(mana_gain_final)
@@ -116,41 +91,6 @@ function spectre_second_attack_lua:OnSpellStart()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-end
-
---------------------------------------------------------------------------------
--- Projectile
-function spectre_second_attack_lua:OnProjectileHit( hTarget, vLocation )
-	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
-					
-		-- Blocked
-		local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
-		if is_blocker ~= nil then
-			if not is_blocker:IsNull() then
-				return true
-			end
-		end
-		
-		local caster =  self:GetCaster()
-		
-		local damage = {
-			victim = hTarget,
-			attacker = caster,
-			damage = self.damage,
-			damage_type = DAMAGE_TYPE_MAGICAL,
-		}
-
-		ApplyDamage( damage )
-
-		-- Give Mana
-		local mana_gain_final = caster:GetMaxMana() * self.mana_gain
-		caster:GiveMana(mana_gain_final)
-		
-		-- Effects
-		self:PlayEffects2(hTarget)
-	end
-
-	return true
 end
 
 --------------------------------------------------------------------------------

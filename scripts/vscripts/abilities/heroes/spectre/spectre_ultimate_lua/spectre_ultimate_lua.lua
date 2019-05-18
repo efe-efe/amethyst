@@ -26,51 +26,45 @@ function spectre_ultimate_lua:OnSpellStart()
 	self.illusion_duration = self:GetSpecialValueFor("illusion_duration")
 
 	-- logic
-
-	local info = {
-		Source = caster,
-		Ability = self,
-		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 128),
-		
-		bDeleteOnHit = true,
-		
-		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY,
-		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
-		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
-		
+	local projectile = {
 		EffectName = projectile_name,
+		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
-		fEndRadius =projectile_end_radius,
+		fEndRadius = projectile_end_radius,
+		Source = caster,
+		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-
-		bHasFrontalCone = false,
-		bReplaceExisting = false,
-		fExpireTime = GameRules:GetGameTime() + 10.0,
-		
+		UnitBehavior = PROJECTILES_NOTHING,
+		bMultipleHits = true,
+		bIgnoreSource = true,
+		TreeBehavior = PROJECTILES_NOTHING,
+		bCutTrees = true,
+		bTreeFullCollision = false,
+		WallBehavior = PROJECTILES_DESTROY,
+		GroundBehavior = PROJECTILES_NOTHING,
+		fGroundOffset = 80,
+		nChangeMax = 1,
+		bRecreateOnChange = true,
+		bZCheck = false,
+		bGroundLock = true,
 		bProvidesVision = true,
-		iVisionRadius = projectile_vision,
-        iVisionTeamNumber = caster:GetTeamNumber(),
-        
-        ExtraData = {
+		iVisionRadius = 200,
+		iVisionTeamNumber = caster:GetTeam(),
+		bFlyingVision = false,
+		fVisionTickTime = .1,
+		fVisionLingerDuration = 1,
+		draw = false,
+		fRehitDelay = 1.0,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
+		OnUnitHit = function(_self, unit)
+			-- Hit
+			--------------------
 			
-		}
-	}
-	
-	ProjectileManager:CreateLinearProjectile(info)
-	self:PlayEffects()
-end
-
---------------------------------------------------------------------------------
--- Projectile
-function spectre_ultimate_lua:OnProjectileHit( hTarget, vLocation )
-	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
-		
-		if IsServer() then
 			local caster =  self:GetCaster()
 			
 			local damage = {
-				victim = hTarget,
+				victim = unit,
 				attacker = caster,
 				damage = self.damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
@@ -82,7 +76,7 @@ function spectre_ultimate_lua:OnProjectileHit( hTarget, vLocation )
 			local modifyIllusion = function ( illusion )
 
 				-- set facing
-				illusion:SetForwardVector( hTarget:GetForwardVector() )
+				illusion:SetForwardVector( unit:GetForwardVector() )
 
 				-- clean item slots
 				for slot=0,5 do
@@ -107,9 +101,9 @@ function spectre_ultimate_lua:OnProjectileHit( hTarget, vLocation )
 			
 			--ilusion position
 			local illusion_origin = Vector(
-				hTarget:GetOrigin().x - 100,
-				hTarget:GetOrigin().y,
-				hTarget:GetOrigin().z
+				unit:GetOrigin().x - 100,
+				unit:GetOrigin().y,
+				unit:GetOrigin().z
 			)
 
 			--Create unit (illusion)
@@ -124,29 +118,24 @@ function spectre_ultimate_lua:OnProjectileHit( hTarget, vLocation )
 			)
 
 			-- Effects
-			self:PlayEffects2(hTarget)
-		end
-	end
+			self:PlayEffects_b(_self:GetPosition())
+			_self.Destroy()
+		end,
+		OnFinish = function(_self, pos)
+			self:PlayEffects_b(pos)
+		end,
+	}
 
-	return true
+	self:PlayEffects_a()
+
+	-- Cast projectile
+	Projectiles:CreateProjectile(projectile)
 end
-
---Impact
-function spectre_ultimate_lua:PlayEffects2(hTarget)
-	-- Get Resources
-    local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
-
-	-- Create Sound
-	EmitSoundOn( sound_cast, hTarget )
-
-	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
+--------------------------------------------------------------------------------
+-- Graphics & sounds
 
 --cast
-function spectre_ultimate_lua:PlayEffects()
+function spectre_ultimate_lua:PlayEffects_a()
 	-- Get Resources
 	local sound_cast = "Hero_Spectre.DaggerCast.ti7"
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
@@ -158,3 +147,16 @@ function spectre_ultimate_lua:PlayEffects()
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
+--Impact
+function spectre_ultimate_lua:PlayEffects_b(pos)
+	local caster = self:GetCaster()
+	-- Cast Sound
+    local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+
+	-- Cast Particles 
+	local particle_cast = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
