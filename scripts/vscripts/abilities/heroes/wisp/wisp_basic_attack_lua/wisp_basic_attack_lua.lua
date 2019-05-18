@@ -20,7 +20,7 @@ function wisp_basic_attack_lua:OnSpellStart()
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-	local projectile_speed = 400--self:GetSpecialValueFor("projectile_speed")
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	-- If have the ex-ultimate, change the visuals
 	if ex_ultimate_modifier ~= nil then
@@ -44,7 +44,7 @@ function wisp_basic_attack_lua:OnSpellStart()
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
+		fGroundOffset = 80,
 		nChangeMax = 1,
 		bRecreateOnChange = true,
 		bZCheck = false,
@@ -59,7 +59,6 @@ function wisp_basic_attack_lua:OnSpellStart()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
-			DebugPrint("Hello") 
 			--[[local special_behavior = unit:FindModifierByName("modifier_generic_projectile_special_behavior_lua")
 			if special_behavior ~= nil then
 				if not special_behavior:IsNull() then

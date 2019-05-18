@@ -1922,13 +1922,12 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				//"radius"					"150"
-				"radius"					"400"
+				"radius"					"150"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"10.0"
+				"duration"					"4.0"
 			}
 		}
 	}
@@ -2194,8 +2193,58 @@
 		}
 	}
 	
+	//=================================================================================================================
+	// Builder
+	//=================================================================================================================
+	
+	"builder_check_area_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/builder/builder_check_area_lua/builder_check_area_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"skywrath_mage_second_attack_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"MaxLevel"						"1"
+		"AOERadius"						"%radius"
 
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"9999"
+		"AbilityCastPoint"				"0.0"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
 
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"300"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.0"
+			}
+		}
+	}
 
 
 

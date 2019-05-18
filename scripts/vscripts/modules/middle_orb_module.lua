@@ -26,7 +26,7 @@ function MiddleOrb:CreateMiddleOrb( spawnTime )
         true, --bFindClearSpace
         nil, --hNPCOwner
         nil, --hUnitOwner
-        7
+        DOTA_TEAM_NOTEAM
     )
 
     middle_orb:Attribute_SetIntValue("middle_orb", 1)
