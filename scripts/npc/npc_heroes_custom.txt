@@ -16,12 +16,12 @@
 		"Ability2"						"wisp_second_attack_lua"             // Q Spell
 		"Ability3"						"wisp_counter_lua"							
 		"Ability4"						"wisp_special_attack_lua"
-		"Ability5"						"wisp_mobility_lua"					
+		"Ability5"						"wisp_ex_ultimate_lua"					
 		"Ability6"						"wisp_ultimate_lua"
-		"Ability7"						"wisp_mobility_back_lua"					
-		"Ability8"						"wisp_ex_special_attack_lua"					
-		"Ability9"						"wisp_ex_second_attack_lua"
-		"Ability10"						"wisp_ex_ultimate_lua"							
+		"Ability7"						"wisp_ex_special_attack_lua"					
+		"Ability8"						"wisp_ex_second_attack_lua"
+		"Ability9"						"wisp_mobility_lua"							
+		"Ability10"						"wisp_mobility_back_lua"					
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -76,17 +76,16 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		//"Ability1"						"spectre_basic_attack_test_lua"
 		"Ability1"						"spectre_basic_attack_charged_lua"
 		"Ability2"						"spectre_second_attack_lua"
 		"Ability3"						"spectre_counter_lua"
 		"Ability4"						"spectre_special_attack_lua"
-		"Ability5"						"spectre_mobility_lua"
+		"Ability5"						"spectre_ex_ultimate_lua"
 		"Ability6"						"spectre_ultimate_lua"             // Q Spell	
-		"Ability7"						"spectre_basic_attack_lua"             // Q Spell	
-		"Ability8"						"spectre_ex_ultimate_lua"             // Q Spell
-		"Ability9"						"spectre_ex_second_attack_lua"             // Q Spell
-		"Ability10"						"spectre_ex_mobility_lua"             // Q Spell
+		"Ability7"						"spectre_ex_second_attack_lua"             // Q Spell
+		"Ability8"						"spectre_ex_mobility_lua"             // Q Spell
+		"Ability9"						"spectre_mobility_lua"             // Q Spell
+		"Ability10"						"spectre_basic_attack_lua"             // Q Spell	
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -145,12 +144,12 @@
 		"Ability2"						"skywrath_mage_second_attack_lua"             // Q Spell
 		"Ability3"						"skywrath_mage_counter_lua"
 		"Ability4"						"skywrath_mage_special_attack_lua"							
-		"Ability5"						"skywrath_mage_mobility_lua"					
+		"Ability5"						"skywrath_mage_ex_ultimate_lua"					
 		"Ability6"						"skywrath_mage_ultimate_lua"
-		"Ability7"						"skywrath_mage_basic_attack_lua"					
-		"Ability8"						"skywrath_mage_ex_ultimate_lua"	
-		"Ability9"						"skywrath_mage_ex_basic_attack_lua"
-		"Ability10"						"skywrath_mage_ex_second_attack_lua"
+		"Ability7"						"skywrath_mage_ex_basic_attack_lua"	
+		"Ability8"						"skywrath_mage_ex_second_attack_lua"
+		"Ability9"						"skywrath_mage_mobility_lua"
+		"Ability10"						"skywrath_mage_basic_attack_lua"					
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------

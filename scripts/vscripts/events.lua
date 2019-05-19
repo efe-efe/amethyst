@@ -15,9 +15,6 @@ function GameMode:OnHeroInGame(keys)
         -- Disable right click
         hero:AddNewModifier( hero,  nil, "modifier_disable_right_click", { } )
     
-        --Give swapper
-        hero:AddItemByName("item_swapper")
-
         -- Level up 1 point to all spells
         for i = 0, 23 do
             local ability = hero:GetAbilityByIndex(i)

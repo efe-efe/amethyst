@@ -32,12 +32,6 @@ function wisp_special_attack_lua:OnSpellStart()
     self:PlayEffects()
 end
 
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function wisp_special_attack_lua:GetRelatedName()
-    return "wisp_ex_special_attack_lua"
-end
-
 --------------------------------------------------------------------------------
 
 function wisp_special_attack_lua:PlayEffects()

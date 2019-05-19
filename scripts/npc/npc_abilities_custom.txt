@@ -43,34 +43,29 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"1900"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1900"
+				"projectile_range"			"1500"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1500"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"70"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.07"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"2"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"modifier_duration_bonus"	"0.8"
@@ -122,34 +117,29 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"2150"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"2150"
+				"projectile_range"			"1500"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1500"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"80"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.1"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"20"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"6"
@@ -165,7 +155,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_tether"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -202,59 +192,54 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"1700"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1700"
+				"projectile_range"			"1000"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1000"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"100"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"damage"					"20"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"debuff_duration"			"5.0"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"fading_slow"				"60"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"speed_recover"				"10"
 			}
-			"08"
+			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"max_range"					"1200"
 			}
-			"09"
+			"08"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"buff_duration"				"3.0"
 			}
-			"10"
+			"09"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"speed_buff"				"60"
 			}
-			"11"
+			"10"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"attack_speed_bonus"     	"50"
@@ -301,19 +286,14 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"heal_regen"				"13"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"heal_regen"				"13"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"movement_speed"			"600"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"buff_duration"				"2.5"
@@ -365,45 +345,40 @@
 		{
 			"01"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
 				"var_type"				"FIELD_INTEGER"
 				"radius"				"180"
 			}
-			"03"
+			"02"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"delay_time"			"0.5"
 			}
-			"04"
+			"03"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"disable_duration"		"5.0"
 			}
-			"05"
+			"04"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"damage"				"30"
 			}
-			"06"
+			"05"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"mana_gain"				"0.15"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"fading_slow"				"100"
 			}
-			"08"
+			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"speed_recover"				"20"
 			}
-			"09"
+			"08"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"6"
@@ -419,7 +394,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_ex_special_attack_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -453,25 +428,20 @@
 		{
 			"01"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
 				"var_type"				"FIELD_INTEGER"
 				"radius"				"180"
 			}
-			"03"
+			"02"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"delay_time"			"0.1"
 			}
-			"04"
+			"03"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"disable_duration"		"1.5"
 			}
-			"05"
+			"04"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"damage"				"30"
@@ -514,15 +484,10 @@
 		{
 			"01"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
 				"var_type"				"FIELD_INTEGER"
 				"range"					"1200"
 			}
-			"03"
+			"02"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"back_duration"			"4.0"
@@ -544,17 +509,6 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.3"
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
-			}
-		}
 	}
 
 	"wisp_ultimate_lua"
@@ -591,34 +545,29 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"radius"					"350"	
 			}
-			"03"
+			"02"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"delay_time"			"0.7"
 			}
-			"04"
+			"03"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"disable_duration"		"1.2"
 			}
-			"05"
+			"04"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"damage"				"45"
 			}
-			"06"
+			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"range"					"1500"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"15"
@@ -635,7 +584,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_ex_ultimate_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -661,19 +610,14 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+				"damage_reduction"			"50"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_reduction"			"50"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"8"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"duration"					"2.0"
@@ -730,39 +674,34 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"3000"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"3000"
+				"projectile_range"			"150"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"130"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.07"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"debuff_duration"			"2.0"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_amount"				"12"
 			}
-			"08"
+			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"10"
@@ -807,29 +746,24 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"3000"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"3000"
+				"projectile_range"			"150"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
+				"hitbox"					"130"
 			}
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"130"
-			}
-			"05"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"2"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_amount"				"6"
@@ -882,29 +816,24 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"2150"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"2150"
+				"projectile_range"			"1500"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1500"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"70"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.1"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"20"
@@ -920,7 +849,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_ex_second_attack_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -958,34 +887,29 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"1800"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1800"
+				"projectile_range"			"1300"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1300"
+				"hitbox"					"70"
 			}
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"70"
-			}
-			"05"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"damage"					"10"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"debuff_duration"			"5.0"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"vision_radius"				"200.0"
@@ -1031,24 +955,19 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"speed_debuff"				"300"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"delay_time"				"0.4"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"15"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"radius"					"180"
@@ -1100,49 +1019,44 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"2300"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"2300"
+				"projectile_range"			"1700"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1700"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"100"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.1"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"12"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"debuff_duration"			"2.0"
 			}
-			"08"
+			"07"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"buff_duration"				"2.0"
 			}
-			"09"
+			"08"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"path_duration"				"2.0" //Change particle if change this number
 			}
-			"10"
+			"09"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"speed_buff"				"90" //Also debuff
@@ -1187,29 +1101,24 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"range"						"900"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"delay_time"				"0.3"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"radius"					"150"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"16"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.06"
@@ -1225,7 +1134,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_ex_mobility_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
@@ -1255,25 +1164,20 @@
 		{
 			"01"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
 				"var_type"					"FIELD_FLOAT"
 				"delay_time"				"0.4"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_per_second"					"5"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"radius"					"180"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"speed_buff"				"30"
@@ -1324,29 +1228,24 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"2500"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"2500"
+				"projectile_range"			"1800"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1800"
+				"hitbox"					"70"
 			}
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"70"
-			}
-			"05"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"damage"					"18"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"illusion_duration"			"3.0"
@@ -1362,7 +1261,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_reality"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"MaxLevel"						"1"
 		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
 		
@@ -1391,14 +1290,9 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"range"						"1200"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"radius"					"200"
@@ -1443,19 +1337,14 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"1500"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1500"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"projectile_range"			"150"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"130"
@@ -1512,34 +1401,29 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"1900"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1900"
+				"projectile_range"			"1250"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1250"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"100"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.07"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"debuff_duration"			"2.0"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"7"
@@ -1584,29 +1468,24 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"1900"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1900"
+				"projectile_range"			"1250"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1250"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"100"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.07"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"2"
@@ -1622,7 +1501,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"skywrath_mage_ancient_seal"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
 		"MaxLevel"						"1"
 
@@ -1643,17 +1522,6 @@
 		"precache"
 		{
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_enchantress.vsndevts"
-		}
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
-			}
 		}
 	}
 
@@ -1699,34 +1567,29 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"radius"					"120"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"delay_time"				"0.3"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal"						"17"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.06"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"cooldown_reduction"		"1.5"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"max_charges"				"3"
@@ -1742,7 +1605,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"skywrath_mage_arcane_bolt"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -1778,34 +1641,29 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"1000"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1000"
+				"projectile_range"			"1800"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1800"
+				"hitbox"					"120"
 			}
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"120"
+				"speed_buff"				"80"
 			}
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"speed_buff"				"80"
-			}
-			"06"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"heal_damage"				"40"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"buff_duration"					"2.0"
@@ -1852,24 +1710,19 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"heal_amount"						"20"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"heal_amount"						"20"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"damage"					"15"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"knockback_distance"		"350.0"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"knockback_radius"			"260.0"
@@ -1917,14 +1770,9 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"radius"					"150"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"duration"					"4.0"
@@ -1969,11 +1817,6 @@
 		"AbilitySpecial"
 		{
 			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"range"					"1200"
@@ -2022,24 +1865,19 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"1"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"radius"					"280"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"duration"					"2.5"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"think_interval"			"0.2"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_heal_per_think"		"3"
@@ -2055,7 +1893,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"skywrath_mage_ex_ultimate_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -2087,15 +1925,10 @@
 		{
 			"01"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"2"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
 				"var_type"					"FIELD_FLOAT"
 				"duration"					"2.5"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_block"				"26"
@@ -2153,39 +1986,34 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
+				"projectile_speed"			"3000"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"3000"
+				"projectile_range"			"150"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"130"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.07"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"debuff_duration"			"2.0"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_amount"				"12"
 			}
-			"08"
+			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"10"
@@ -2231,14 +2059,9 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"ex_ability"				"0"	//0 for none, 1 for basic, 2 for ex		
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"radius"					"300"
 			}
-			"03"
+			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"delay_time"				"0.0"

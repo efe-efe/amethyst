@@ -1,0 +1,5 @@
+Abilities can be in any order execpt for the following:
+    "Mobility abilities" = 4
+    "Ex ability one" = 7
+    "Ex ability two" = 8
+    "Ex ability three" = 9

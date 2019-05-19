@@ -5,12 +5,6 @@ function spectre_ex_ultimate_lua:GetAOERadius()
 	return self:GetSpecialValueFor( "radius" )
 end
 
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function spectre_ex_ultimate_lua:GetRelatedName()
-    return "spectre_ultimate_lua"
-end
-
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_ex_ultimate_lua:OnSpellStart()

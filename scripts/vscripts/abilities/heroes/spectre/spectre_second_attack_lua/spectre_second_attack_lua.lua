@@ -1,11 +1,5 @@
 spectre_second_attack_lua = class({})
 
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function spectre_second_attack_lua:GetRelatedName()
-    return "spectre_ex_second_attack_lua"
-end
-
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_second_attack_lua:OnSpellStart()

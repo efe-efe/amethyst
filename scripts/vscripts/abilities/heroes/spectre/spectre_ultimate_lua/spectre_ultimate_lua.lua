@@ -1,12 +1,6 @@
 spectre_ultimate_lua = class({})
 LinkLuaModifier( "modifier_spectre_ultimate_illusion_lua", "abilities/heroes/spectre/spectre_ultimate_lua/modifier_spectre_ultimate_illusion_lua", LUA_MODIFIER_MOTION_NONE )
 
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function spectre_ultimate_lua:GetRelatedName()
-    return "spectre_ex_ultimate_lua"
-end
-
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_ultimate_lua:OnSpellStart()

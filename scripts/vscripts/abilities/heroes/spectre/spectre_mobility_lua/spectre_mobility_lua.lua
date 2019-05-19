@@ -2,13 +2,6 @@ spectre_mobility_lua = class({})
 LinkLuaModifier( "modifier_spectre_mobility_thinker_lua", "abilities/heroes/spectre/spectre_mobility_lua/modifier_spectre_mobility_thinker_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_mobility_lua", "abilities/heroes/spectre/spectre_mobility_lua/modifier_spectre_mobility_lua", LUA_MODIFIER_MOTION_NONE )
 
-
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function spectre_mobility_lua:GetRelatedName()
-    return "spectre_ex_mobility_lua"
-end
-
 function spectre_mobility_lua:GetAOERadius()
 	return self:GetSpecialValueFor( "radius" )
 end

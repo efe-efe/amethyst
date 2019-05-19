@@ -2,12 +2,6 @@ spectre_ex_second_attack_lua = class({})
 LinkLuaModifier( "modifier_spectre_ex_second_attack_lua", "abilities/heroes/spectre/spectre_ex_second_attack_lua/modifier_spectre_ex_second_attack_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
 
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function spectre_ex_second_attack_lua:GetRelatedName()
-    return "spectre_second_attack_lua"
-end
-
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_ex_second_attack_lua:OnSpellStart()

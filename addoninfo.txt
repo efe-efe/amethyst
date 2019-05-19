@@ -1,10 +1,32 @@
 "AddonInfo"
 {
-  "TeamCount" "2"
-  "maps"      "mad_moon_map"
-  "IsPlayable"  "1"
-  "mad_moon_map"
-  {
-          "MaxPlayers"                    "6"
-  }
+    "TeamCount" "2"
+    "maps"      "mad_moon_map"
+    "IsPlayable"  "1"
+    "mad_moon_map"
+    {
+        "MaxPlayers"                    "6"
+    }
+    
+    "Default_Keys"
+    {
+        "01"
+        {
+            "Key"       "SPACE"
+            "Command"   "-CustomGameExecuteAbility1"
+            "Name"      "Execute mobility ability"
+        }
+        "02"
+        {
+            "Key"       "1"
+            "Command"   "-CustomGameExecuteAbility2"
+            "Name"      "Execute ex ability one"
+        }
+        "03"
+        {
+            "Key"       "2"
+            "Command"   "-CustomGameExecuteAbility3"
+            "Name"      "Execute ex ability two"
+        }
+    }
 }

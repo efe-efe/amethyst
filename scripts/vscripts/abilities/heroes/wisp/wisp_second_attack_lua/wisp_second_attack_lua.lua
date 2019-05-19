@@ -1,13 +1,6 @@
 wisp_second_attack_lua = class ({})
 LinkLuaModifier( "modifier_wisp_guardian_essence_lua", "abilities/heroes/wisp/wisp_shared_modifiers/modifier_wisp_guardian_essence_lua/modifier_wisp_guardian_essence_lua", LUA_MODIFIER_MOTION_NONE )
 
--- This function is used to change between abilities and ex abilities
---------------------------------------------------------------------------------
-function wisp_second_attack_lua:GetRelatedName()
-    return "wisp_ex_second_attack_lua"
-end
-
-
 --------------------------------------------------------------------------------
 -- Ability Start
 function wisp_second_attack_lua:OnSpellStart()

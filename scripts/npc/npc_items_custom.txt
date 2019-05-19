@@ -1,35 +1,3 @@
 "DOTAAbilities"
 {
-    "item_swapper"
-    {
-        "ID"                            "1251" // anything above 1250 should be safe to use.
-        "BaseClass"                     "item_lua"
-        "ScriptFile"                    "items/swapper/swapper_lua"
-
-        // General
-		//-------------------------------------------------------------------------------------------------------------
-        "AbilityTextureName"            "item_swapper"
-        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_TOGGLE | DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE | DOTA_ABILITY_BEHAVIOR_IGNORE_CHANNEL | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_CHANNEL"
-
-        // Casting
-        //-------------------------------------------------------------------------------------------------------------       
-        "AbilityCastRange"              "0"
-        "AbilityCastPoint"              "0.0"
-        "AbilityCooldown"               "0.0"
-        "AbilityManaCost"               "0"
-
-        // Item Info
-        //-------------------------------------------------------------------------------------------------------------       
-        "ItemCost"                      "0"
-        "ItemShopTags"                  ""
-        "ItemQuality"                   "rare"
-        "ItemAliases"                   ""
-        "ItemPurchasable"               "0"
-		"ItemDroppable"					"0"
-		"ItemShareability"				"ITEM_NOT_SHAREABLE"
-		"ItemSellable"					"0"
-		"ItemKillable"					"1"
-		"ItemDisassembleRule"			"DOTA_ITEM_DISASSEMBLE_NEVER"
-    }
-
 }
