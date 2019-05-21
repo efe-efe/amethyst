@@ -53,21 +53,18 @@ function spectre_ultimate_lua:OnSpellStart()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
-			-- Hit
-			--------------------
-			
 			local caster =  self:GetCaster()
 			
+			-- Damage
 			local damage = {
 				victim = unit,
 				attacker = _self.Source,
 				damage = self.damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
-
 			ApplyDamage( damage )
 			
-			--callback
+			-- Callback
 			local modifyIllusion = function ( illusion )
 
 				-- set facing
@@ -121,11 +118,6 @@ function spectre_ultimate_lua:OnSpellStart()
 		end,
 	}
 
-	self:PlayEffects_a()
-
-	-- Cast projectile
-	Projectiles:CreateProjectile(projectile)
-
 	--THIS IS ONLY FOR VISUALS
 	local info = { 
 		Source = caster, 
@@ -146,11 +138,13 @@ function spectre_ultimate_lua:OnSpellStart()
  
 		bHasFrontalCone = false, 
 		bReplaceExisting = false, 
-		fExpireTime = GameRules:GetGameTime() + 10.0, 
+		fExpireTime = GameRules:GetGameTime() + 8.0, 
 		 
 		bProvidesVision = false, 
 	} 
 	 
+	self:PlayEffects_a()
+	Projectiles:CreateProjectile(projectile)
 	ProjectileManager:CreateLinearProjectile(info) 
 end
 --------------------------------------------------------------------------------

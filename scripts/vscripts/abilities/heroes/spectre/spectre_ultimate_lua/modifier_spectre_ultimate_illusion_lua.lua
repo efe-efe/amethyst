@@ -15,11 +15,12 @@ end
 function modifier_spectre_ultimate_illusion_lua:OnCreated( kv )
     if IsServer() then
         -- references
-        local origin  = self:GetParent():GetOrigin()
+        local parent = self:GetParent()
+        local origin  = parent:GetOrigin()
 
         -- find enemies
         local enemies = FindUnitsInRadius( 
-            self:GetParent():GetTeamNumber(), -- int, your team number
+            parent:GetTeamNumber(), -- int, your team number
             origin, -- point, center point
             nil, -- handle, cacheUnit. (not known)
             300, -- float, radius. or use FIND_UNITS_EVERYWHERE
@@ -30,19 +31,12 @@ function modifier_spectre_ultimate_illusion_lua:OnCreated( kv )
             false -- bool, can grow cache
         )
 
-        -- find and destroy the disable attack modifier
-        local disable_attack_modifier = self:GetParent():FindModifierByNameAndCaster( 
-            "modifier_disable_right_click", self:GetParent() 
-        )
-        if disable_attack_modifier~=nil then
-            if not disable_attack_modifier:IsNull() then
-                disable_attack_modifier:Destroy()
-            end
-        end
+        -- Destroy the disable attack modifier
+        SafeDestroyModifier("modifier_disable_right_click", parent, parent)
         
         -- Attack the closests
         if enemies[1]:IsRealHero() then
-            self:GetParent():SetForceAttackTarget(enemies[1])
+            parent:SetForceAttackTarget(enemies[1])
         end
     end
 end

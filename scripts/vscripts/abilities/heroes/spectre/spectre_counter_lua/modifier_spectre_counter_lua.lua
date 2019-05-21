@@ -55,16 +55,8 @@ function modifier_spectre_counter_lua:GetModifierIncomingDamage_Percentage( para
 		local attacker = params.attacker
 
         if params.damage_type ~= DAMAGE_TYPE_PURE then
-			-- find and destroy the timer modifier from the basic attack
-			local basic_attack_timer = parent:FindModifierByNameAndCaster( 
-				"modifier_spectre_basic_attack_charged_timer_lua", parent 
-			)
-		
-			if basic_attack_timer~=nil then
-				if not basic_attack_timer:IsNull() then
-					basic_attack_timer:Destroy()
-				end
-			end
+			-- Destroy the timer modifier from the basic attack
+			SafeDestroyModifier("modifier_spectre_basic_attack_charged_timer_lua", parent, parent)
 
 			--remove cooldown from basic attack charged
 			local basic_attack_charged = parent:FindAbilityByName("spectre_basic_attack_charged_lua")

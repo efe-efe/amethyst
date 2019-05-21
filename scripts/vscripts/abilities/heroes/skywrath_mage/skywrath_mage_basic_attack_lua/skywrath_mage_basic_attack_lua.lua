@@ -4,28 +4,32 @@ LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/mo
 --------------------------------------------------------------------------------
 -- Ability Start
 function skywrath_mage_basic_attack_lua:OnSpellStart()
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 	local point = self:GetCursorPosition()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
+	
+	-- Projectile data
+	local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack.vpcf"
+	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
+	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
+	local projectile_distance = self:GetSpecialValueFor("projectile_range")
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
+	-- Extra data
+	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
+	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
+
+	-- Animation and pseudo cast point
 	self:Animate(point)
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
 
 	Timers:CreateTimer(cast_point, function()	-- Cast projectile
 		local origin = caster:GetOrigin()
 
-		-- load data
-		local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack.vpcf"
-		local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-		local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-		local projectile_distance = self:GetSpecialValueFor("projectile_range")
 		local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-		local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-
-		local debuff_duration = self:GetSpecialValueFor("debuff_duration")
-		local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
 
 		local projectile = {
 			EffectName = projectile_name,

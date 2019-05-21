@@ -116,12 +116,7 @@ function wisp_mobility_back_lua:OnSpellStart()
 	local caster = self:GetCaster()
 
 	-- Put the back ability on the mobility slot
-	local modifier = caster:FindModifierByNameAndCaster( "modifier_wisp_mobility_lua", self:GetCaster() )
-	if modifier~=nil then
-		if not modifier:IsNull() then
-			modifier:Destroy()
-		end
-	end
+	SafeDestroyModifier("modifier_wisp_mobility_lua", caster, caster)
 	
 	-- get origin from the caster
 	local origin = self.origins[caster]

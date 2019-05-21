@@ -20,6 +20,7 @@ function modifier_wisp_counter_buffs_lua:DeclareFunctions()
 	local funcs = {
         MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
         MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT,
+		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
 	}
 
 	return funcs
@@ -54,6 +55,10 @@ end
 
 function modifier_wisp_counter_buffs_lua:GetModifierConstantHealthRegen()
     return self.heal_regen
+end
+
+function modifier_wisp_counter_buffs_lua:GetModifierIncomingDamage_Percentage( params )
+	return -80
 end
 
 function modifier_wisp_counter_buffs_lua:PlayEffects()

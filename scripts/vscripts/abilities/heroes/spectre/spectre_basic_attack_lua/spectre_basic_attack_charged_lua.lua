@@ -122,15 +122,8 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 		true
 	)
 	
-	-- find and destroy visual modifier
-	local visual_effect = caster:FindModifierByNameAndCaster( 
-		"modifier_spectre_basic_attack_charged_visuals_lua", caster 
-	)
-	if visual_effect~=nil then
-		if not visual_effect:IsNull() then
-			visual_effect:Destroy()
-		end
-	end
+	--Destroy visual modifier
+	SafeDestroyModifier("modifier_spectre_basic_attack_charged_visuals_lua", caster, caster)
 
     --Adds the timer that swaps the abilities
 	caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_timer_lua", {duration = self:GetCooldown(0)})

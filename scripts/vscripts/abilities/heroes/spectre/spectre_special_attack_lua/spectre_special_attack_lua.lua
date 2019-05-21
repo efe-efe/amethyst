@@ -14,27 +14,32 @@ LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/mo
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_special_attack_lua:OnSpellStart()
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local cast_point = self:GetCastPoint()
 	local path_duration = self:GetSpecialValueFor("path_duration")
+
+	-- Projectile data
+	local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf" 
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local projectile_distance = self:GetSpecialValueFor("projectile_range")
+	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
+	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
+	local projectile_vision = 500
+	-- Extra data
 	self.damage = self:GetSpecialValueFor("damage")
 	self.mana_gain = self:GetSpecialValueFor("mana_gain")
 	self.debuff_duration = self:GetSpecialValueFor("debuff_duration")
 
-
+	-- Animation and pseudo cast point
 	self:Animate(point)
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	
+	-- After cast point
 	Timers:CreateTimer(cast_point, function()	-- Cast projectile
 		local origin = caster:GetOrigin()
 		
-		-- load data (projectile)
-		local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf" 
-		local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-		local projectile_distance = self:GetSpecialValueFor("projectile_range")
-		local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-		local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-		local projectile_vision = 500
 		local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 		
 		-- logic
@@ -116,11 +121,6 @@ function spectre_special_attack_lua:OnSpellStart()
 			false --bPhantomBlocker
 		)
 	
-
-
-		self:PlayEffects_a()
-		Projectiles:CreateProjectile(projectile)
-
 		--THIS IS ONLY FOR VISUALS
 		local info = { 
 			Source = caster, 
@@ -141,11 +141,13 @@ function spectre_special_attack_lua:OnSpellStart()
 	 
 			bHasFrontalCone = false, 
 			bReplaceExisting = false, 
-			fExpireTime = GameRules:GetGameTime() + 10.0, 
+			fExpireTime = GameRules:GetGameTime() + 8.0, 
 			 
 			bProvidesVision = false, 
 		} 
-		 
+
+		self:PlayEffects_a()
+		Projectiles:CreateProjectile(projectile)
 		ProjectileManager:CreateLinearProjectile(info) 
 	end)
 end

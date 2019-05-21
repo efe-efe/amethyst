@@ -1,6 +1,7 @@
 -- Generated from template
 
 require('util/util')
+require('util/modifiers')
 require('gamemode')
 
 function Precache( context )

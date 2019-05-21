@@ -9,6 +9,7 @@ LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/mo
 --------------------------------------------------------------------------------
 -- Ability Start
 function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
+	-- Initialize bariables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 	local point = self:GetCursorPosition()
@@ -16,22 +17,25 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 	local attack_speed = ( 1 / attacks_per_second )
 	local non_charged_version = caster:FindAbilityByName("skywrath_mage_basic_attack_lua")
 	
+	-- Projectile data
+	local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_concussive_shot.vpcf"
+	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
+	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
+	local projectile_distance = self:GetSpecialValueFor("projectile_range")
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	
+	-- Extra data
+	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
+	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
+	
+	-- Animation and pseudo cast point
 	self:Animate(point)
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
 
 	Timers:CreateTimer(cast_point, function()	-- Cast projectile
 		local origin = caster:GetOrigin()
 	
-		-- load data
-		local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_concussive_shot.vpcf"
-		local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-		local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-		local projectile_distance = self:GetSpecialValueFor("projectile_range")
-		local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
 		local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-		local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	
-		local debuff_duration = self:GetSpecialValueFor("debuff_duration")
 	
 		local projectile = {
 			EffectName = projectile_name,
@@ -68,15 +72,15 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 				-- Hit
 				--------------------
 				-- Add damage
-				modifier_attack_bonus = caster:AddNewModifier(
-					caster, 
+				modifier_attack_bonus = _self.Source:AddNewModifier(
+					_self.Source, 
 					self , 
 					"modifier_skywrath_mage_basic_attack_lua", 
 					{}
 				)
 	
 				-- perform the actual attack
-				caster:PerformAttack(
+				_self.Source:PerformAttack(
 					unit, -- handle hTarget 
 					true, -- bool bUseCastAttackOrb, 
 					true, -- bool bProcessProcs,
@@ -88,8 +92,8 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 				)
 	
 				--Silence enemy
-				unit:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = debuff_duration})
-				unit:AddNewModifier(caster, self , "modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", { duration = debuff_duration})
+				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = debuff_duration})
+				unit:AddNewModifier(_self.Source, self , "modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", { duration = debuff_duration})
 	
 				--Remove the extra attack
 				if modifier_attack_bonus ~= nil then
@@ -97,7 +101,6 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 						modifier_attack_bonus:Destroy()
 					end
 				end
-	
 	
 				self:PlayEffects_b(_self:GetPosition())
 				_self.Destroy()
@@ -116,17 +119,9 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 		)
 		--Adds the timer that swaps the abilities
 		caster:AddNewModifier(caster, self , "modifier_skywrath_mage_basic_attack_charged_timer_lua", {duration = self:GetCooldown(0)})
-
-		-- find and destroy visual modifier
-		local visual_effect = caster:FindModifierByNameAndCaster( 
-			"modifier_skywrath_mage_basic_attack_charged_visuals_lua", caster 
-		)
-		if visual_effect~=nil then
-			if not visual_effect:IsNull() then
-				visual_effect:Destroy()
-			end
-		end
-	
+		
+		-- Destroy visual modifier
+		SafeDestroyModifier("modifier_skywrath_mage_basic_attack_charged_visuals_lua", caster, caster)
 
 		self:PlayEffects_a()
 		Projectiles:CreateProjectile(projectile)	
