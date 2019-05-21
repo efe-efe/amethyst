@@ -23,49 +23,93 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	-- load data
 	self.debuff_duration = self:GetSpecialValueFor("debuff_duration")
 	self.heal_amount = self:GetSpecialValueFor("heal_amount")
+
+	local projectile_name = ""
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox") + 10
 	local projectile_vision = 0
-    local projectile_name = ""
 
 	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
 
-	-- logic
-
-	local info = {
-		Source = caster,
-		Ability = self,
-		vSpawnOrigin = origin,
-		
-		bDeleteOnHit = true,
-		
-		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY,
-		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
-		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
-		
+	--logic
+	local projectile = {
 		EffectName = projectile_name,
+		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
-		fEndRadius =projectile_end_radius,
+		fEndRadius = projectile_end_radius,
+		Source = caster,
+		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-
-		bHasFrontalCone = true,
-		bReplaceExisting = false,
-		fExpireTime = GameRules:GetGameTime() + 10.0,
+		UnitBehavior = PROJECTILES_NOTHING,
+		bMultipleHits = true,
+		bIgnoreSource = true,
+		TreeBehavior = PROJECTILES_NOTHING,
+		bCutTrees = true,
+		bTreeFullCollision = false,
+		WallBehavior = PROJECTILES_DESTROY,
+		GroundBehavior = PROJECTILES_NOTHING,
+		fGroundOffset = 0,
+		nChangeMax = 1,
+		bRecreateOnChange = true,
+		bZCheck = false,
+		bGroundLock = true,
+		bProvidesVision = true,
+		iVisionRadius = 200,
+		iVisionTeamNumber = caster:GetTeam(),
+		bFlyingVision = false,
+		fVisionTickTime = .1,
+		fVisionLingerDuration = 1,
+		draw = false,
+		fRehitDelay = 1.0,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		OnUnitHit = function(_self, unit) 
+			--Adds the damage bonus modifier
+			self.modifier_attack_bonus = caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_lua", {})
 		
-		bProvidesVision = false,
-		iVisionRadius = projectile_vision,
-        iVisionTeamNumber = caster:GetTeamNumber(),
-        
-        ExtraData = {
+			-- Hit
+			--------------------
+			-- perform the actual attack
+			_self.Source:PerformAttack(
+				unit, -- handle hTarget 
+				true, -- bool bUseCastAttackOrb, 
+				true, -- bool bProcessProcs,
+				true, -- bool bSkipCooldown
+				false, -- bool bIgnoreInvis
+				false, -- bool bUseProjectile
+				false, -- bool bFakeAttack
+				false -- bool bNeverMiss
+			)
+
+			self:PlayEffects(unit)
+			_self.Source:Heal( self.heal_amount, self )
+
+			unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
+			unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", {})
+
+			--Remove the extra attack
+			if self.modifier_attack_bonus ~= nil then
+				if not self.modifier_attack_bonus:IsNull() then
+					self.modifier_attack_bonus:Destroy()
+				end
+			end
+			_self.Destroy()
+		end,
+		OnFinish = function(_self, pos)
 			
-		}
+			--Remove the extra attack
+			if self.modifier_attack_bonus ~= nil then
+				if not self.modifier_attack_bonus:IsNull() then
+					self.modifier_attack_bonus:Destroy()
+				end
+			end
+			self:PlayEffectsMiss()
+			--self:PlayEffects_a(pos)
+		end,
 	}
-	
-    ProjectileManager:CreateLinearProjectile(info)
-    
+
     --Identify the non charged version, and puts it on cooldown
     local non_charged_version = caster:FindAbilityByName("spectre_basic_attack_lua")
     non_charged_version:StartCooldown(attack_speed)
@@ -82,7 +126,6 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	local visual_effect = caster:FindModifierByNameAndCaster( 
 		"modifier_spectre_basic_attack_charged_visuals_lua", caster 
 	)
-
 	if visual_effect~=nil then
 		if not visual_effect:IsNull() then
 			visual_effect:Destroy()
@@ -92,67 +135,10 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
     --Adds the timer that swaps the abilities
 	caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_timer_lua", {duration = self:GetCooldown(0)})
 
-	--Adds the damage bonus modifier
-	self.modifier_attack_bonus = caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_lua", {})
-
 	self:PlayEffectsOnCast()
-end
 
-
---------------------------------------------------------------------------------
--- Projectile
-function spectre_basic_attack_charged_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
-	-- load variables
-	local caster = self:GetCaster()
-
-	if hTarget==nil then 
-		--Remove the extra attack
-		if self.modifier_attack_bonus ~= nil then
-			if not self.modifier_attack_bonus:IsNull() then
-			self.modifier_attack_bonus:Destroy()
-			end
-		end
-	    self:PlayEffectsMiss()
-        return 
-	end
-	
-	-- Blocked
-	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
-	if is_blocker ~= nil then
-		if not is_blocker:IsNull() then
-			return true
-		end
-	end
-
-	-- Slowed
-
-	-- Hasted
-	
-	-- perform the actual attack
-	caster:PerformAttack(
-		hTarget, -- handle hTarget 
-		true, -- bool bUseCastAttackOrb, 
-		true, -- bool bProcessProcs,
-		true, -- bool bSkipCooldown
-		false, -- bool bIgnoreInvis
-		false, -- bool bUseProjectile
-		false, -- bool bFakeAttack
-		false -- bool bNeverMiss
-	)
-
-	self:PlayEffects(hTarget)
-    self:GetCaster():Heal( self.heal_amount, self )
-    
-	hTarget:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
-	hTarget:AddNewModifier(caster, self , "modifier_spectre_desolate_lua", {})
-	
-	--Remove the extra attack
-	if self.modifier_attack_bonus ~= nil then
-		if not self.modifier_attack_bonus:IsNull() then
-			self.modifier_attack_bonus:Destroy()
-		end
-	end
-    return true
+	-- Cast projectile
+	Projectiles:CreateProjectile(projectile)
 end
 
 --------------------------------------------------------------------------------

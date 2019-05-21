@@ -21,42 +21,81 @@ function spectre_ex_second_attack_lua:OnSpellStart()
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	-- logic
-
-	local info = {
-		Source = caster,
-		Ability = self,
-		vSpawnOrigin = Vector(origin.x, origin.y, origin.z + 54),
-		
-		bDeleteOnHit = true,
-		
-		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY,
-		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE,
-		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
-		
+	local projectile = {
 		EffectName = projectile_name,
+		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
-		fEndRadius =projectile_end_radius,
+		fEndRadius = projectile_end_radius,
+		Source = caster,
+		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
+		UnitBehavior = PROJECTILES_NOTHING,
+		bMultipleHits = true,
+		bIgnoreSource = true,
+		TreeBehavior = PROJECTILES_NOTHING,
+		bCutTrees = true,
+		bTreeFullCollision = false,
+		WallBehavior = PROJECTILES_DESTROY,
+		GroundBehavior = PROJECTILES_NOTHING,
+		fGroundOffset = 80,
+		nChangeMax = 1,
+		bRecreateOnChange = true,
+		bZCheck = false,
+		bGroundLock = true,
+		bProvidesVision = true,
+		iVisionRadius = 200,
+		iVisionTeamNumber = caster:GetTeam(),
+		bFlyingVision = false,
+		fVisionTickTime = .1,
+		fVisionLingerDuration = 1,
+		draw = false,
+		fRehitDelay = 1.0,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		OnUnitHit = function(_self, unit) 
+			-- Hit
+			--------------------
+			local damage = {
+				victim = unit,
+				attacker = _self.Source,
+				damage = self.damage,
+				damage_type = DAMAGE_TYPE_MAGICAL,
+			}
 
-		bHasFrontalCone = false,
-		bReplaceExisting = false,
-		fExpireTime = GameRules:GetGameTime() + 10.0,
-		
-		bProvidesVision = false,
-		iVisionRadius = projectile_vision,
-        iVisionTeamNumber = caster:GetTeamNumber(),
-        
-        ExtraData = {
+			ApplyDamage( damage )
+
+			--Blind
+			unit:AddNewModifier(
+				_self.Source, 
+				self, 
+				"modifier_spectre_ex_second_attack_lua", 
+				{ duration = self.debuff_duration }
+			)
+
+			--Desolate
+			unit:AddNewModifier(
+				_self.Source, 
+				self, 
+				"modifier_spectre_desolate_lua", 
+				{ }
+			)
 			
-		}
+			-- Effects
+			self:PlayEffects(unit)
+
+			_self.Destroy()
+		end,
+		OnFinish = function(_self, pos)
+			--self:PlayEffects(pos)
+		end,
 	}
-	
-	ProjectileManager:CreateLinearProjectile(info)
 
 	-- Put CD on the non ex version of the ability
 	local non_ex_version = caster:FindAbilityByName("spectre_second_attack_lua")
 	non_ex_version:StartCooldown(self:GetCooldown(0))
+
+	-- Cast projectile
+	Projectiles:CreateProjectile(projectile)
 end
 
 --------------------------------------------------------------------------------
@@ -64,14 +103,6 @@ end
 function spectre_ex_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
 			
-	-- Blocked
-	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
-	if is_blocker ~= nil then
-		if not is_blocker:IsNull() then
-			return true
-		end
-	end
-	
 	local caster =  self:GetCaster()
 		
 		local damage = {

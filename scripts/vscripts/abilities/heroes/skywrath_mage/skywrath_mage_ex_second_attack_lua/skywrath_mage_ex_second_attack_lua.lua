@@ -49,6 +49,7 @@ function skywrath_mage_ex_second_attack_lua:OnSpellStart()
 		bZCheck = false,
 		bGroundLock = true,
 		bProvidesVision = true,
+		bisReflectableByAllies = false,
 		iVisionRadius = 200,
 		iVisionTeamNumber = caster:GetTeam(),
 		bFlyingVision = false,
@@ -60,24 +61,24 @@ function skywrath_mage_ex_second_attack_lua:OnSpellStart()
 			-- Hit
 			--------------------
 			--If target is ally
-			if unit:GetTeamNumber() == caster:GetTeamNumber() then
+			if unit:GetTeamNumber() == _self.Source:GetTeamNumber() then
 				--speed
 				unit:AddNewModifier(
-					caster, -- player source
+					_self.Source, -- player source
 					ability, -- ability source
 					"modifier_skywrath_mage_ex_second_attack_buff_lua", -- modifier name
 					{ duration = buff_duration }
 				)
 	
 				--Heal
-				unit:Heal(heal_damage, caster)
+				unit:Heal(heal_damage, _self.Source)
 	
 				self:PlayEffects_c(unit, _self:GetPosition())
 			-- If target is enemy
 			else	
 				local damage = {
 					victim = unit,
-					attacker = caster,
+					attacker = _self.Source,
 					damage = heal_damage,
 					damage_type = DAMAGE_TYPE_MAGICAL,
 				}
@@ -86,7 +87,7 @@ function skywrath_mage_ex_second_attack_lua:OnSpellStart()
 		
 				--slow
 				unit:AddNewModifier(
-					caster, -- player source
+					_self.Source, -- player source
 					ability, -- ability source
 					"modifier_skywrath_mage_ex_second_attack_debuff_lua", -- modifier name
 					{ duration = buff_duration }

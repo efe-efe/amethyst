@@ -13,11 +13,11 @@ function spectre_basic_attack_lua:OnSpellStart()
 	local point = self:GetCursorPosition()
 	local ability = self
 	local attacks_per_second = caster:GetAttacksPerSecond()
-	--local attack_speed = ( 1 / attacks_per_second )
-	local attack_speed = 0.2
+	local attack_speed = ( 1 / attacks_per_second )
+	--local attack_speed = 0.2
 
 	-- load data
-    local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack.vpcf"
+    local projectile_name = ""
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
@@ -56,7 +56,7 @@ function spectre_basic_attack_lua:OnSpellStart()
 		fVisionLingerDuration = 1,
 		draw = false,
 		fRehitDelay = 1.0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
 			-- Hit
 			--------------------
@@ -102,58 +102,6 @@ function spectre_basic_attack_lua:OnSpellStart()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-end
-
---------------------------------------------------------------------------------
--- Projectile
-function spectre_basic_attack_lua:OnProjectileHit_ExtraData( hTarget, vLocation, extraData )
-    if hTarget==nil then 
-	    self:PlayEffectsMiss()
-        return 
-	end
-	
-	-- Blocked
-	local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
-	if is_blocker ~= nil then
-		if not is_blocker:IsNull() then
-			return true
-		end
-	end
-	
-	-- load variables
-	local caster = self:GetCaster()
-	local desolate = hTarget:FindModifierByNameAndCaster( "modifier_spectre_desolate_lua", caster )
-	local modifier_attack_bonus = nil
-
-	-- If have the debuff, adds extra attack and extends debuff duration
-	if desolate ~= nil then
-		modifier_attack_bonus = caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_lua", {})
-		caster:Heal( self.heal_amount, self )
-		self:PlayEffects2()
-	end
-
-	-- perform the actual attack
-	caster:PerformAttack(
-		hTarget, -- handle hTarget 
-		true, -- bool bUseCastAttackOrb, 
-		true, -- bool bProcessProcs,
-		true, -- bool bSkipCooldown
-		false, -- bool bIgnoreInvis
-		false, -- bool bUseProjectile
-		false, -- bool bFakeAttack
-		false -- bool bNeverMiss
-	)
-
-	self:PlayEffects(hTarget)	
-	
-	--Remove the extra attack
-	if modifier_attack_bonus ~= nil then
-		if not modifier_attack_bonus:IsNull() then
-			modifier_attack_bonus:Destroy()
-		end
-	end
-
-	return true
 end
 
 --------------------------------------------------------------------------------

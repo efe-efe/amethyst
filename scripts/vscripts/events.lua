@@ -122,8 +122,6 @@ function GameMode:OnConnectFull(keys)
         self.team_b_total_units = 0
     end
 
-    DebugPrint("PlayerResource:GetTeam(playerID)" .. PlayerResource:GetTeam(playerID))
-
     if PlayerResource:GetTeam(playerID) == 5 then
         self.team_a_actual_units = self.team_a_actual_units + 1
         self.team_a_total_units = self.team_a_total_units + 1
@@ -171,19 +169,19 @@ function GameMode:OnEntityHurt(keys)
 
         local particle_cast = "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf"
         local effect_cast = ParticleManager:CreateParticle( 
-        particle_cast, 
-        PATTACH_CUSTOMORIGIN, 
-        nil
+            particle_cast, 
+            PATTACH_CUSTOMORIGIN, 
+            nil
         )
 
         ParticleManager:SetParticleControlEnt( 
-        effect_cast, 
-        0, 
-        entVictim, 
-        PATTACH_POINT_FOLLOW, 
-        "attach_hitloc", 
-        entVictim:GetOrigin(), 
-        true 
+            effect_cast, 
+            0, 
+            entVictim, 
+            PATTACH_POINT_FOLLOW, 
+            "attach_hitloc", 
+            entVictim:GetOrigin(), 
+            true 
         );
         
         ParticleManager:ReleaseParticleIndex( effect_cast )

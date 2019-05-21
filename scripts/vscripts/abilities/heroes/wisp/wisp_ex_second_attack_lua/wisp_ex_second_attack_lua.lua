@@ -53,27 +53,27 @@ function wisp_ex_second_attack_lua:OnSpellStart()
 		fVisionLingerDuration = 1,
 		draw = false,
 		fRehitDelay = 1.0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit ~= caster end,		
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit ~= _self.Source end,		
 		OnUnitHit = function(_self, unit) 
 			-- Hit
 			--------------------
 			--If target is ally
-			if unit:GetTeamNumber() == caster:GetTeamNumber() then
+			if unit:GetTeamNumber() == _self.Source:GetTeamNumber() then
 				--Link and speed
 				unit:AddNewModifier(
-					caster, -- player source
+					_self.Source, -- player source
 					ability, -- ability source
 					"modifier_wisp_ex_second_attack_ally_lua", -- modifier name
 					{ duration = debuff_duration }
 				)
 				--- Movement
 				local vLocation = _self:GetPosition()
-				local difference = vLocation - caster:GetOrigin()
+				local difference = vLocation - _self.Source:GetOrigin()
 				local distance = difference:Length2D()
-				local x = vLocation.x - caster:GetOrigin().x
-				local y = vLocation.y - caster:GetOrigin().y
-				caster:AddNewModifier(
-					caster,
+				local x = vLocation.x - _self.Source:GetOrigin().x
+				local y = vLocation.y - _self.Source:GetOrigin().y
+				_self.Source:AddNewModifier(
+					_self.Source,
 					ability,
 					"modifier_wisp_ex_second_attack_movement_lua",
 					{
@@ -87,7 +87,7 @@ function wisp_ex_second_attack_lua:OnSpellStart()
 			else	
 				local damage = {
 					victim = unit,
-					attacker = caster,
+					attacker = _self.Source,
 					damage = damage,
 					damage_type = DAMAGE_TYPE_MAGICAL,
 				}
@@ -96,7 +96,7 @@ function wisp_ex_second_attack_lua:OnSpellStart()
 
 				--Link and silence
 				unit:AddNewModifier(
-					caster, -- player source
+					_self.Source, -- player source
 					ability, -- ability source
 					"modifier_wisp_ex_second_attack_lua", -- modifier name
 					{ duration = debuff_duration }
@@ -104,7 +104,7 @@ function wisp_ex_second_attack_lua:OnSpellStart()
 
 				-- apply guardian essence
 				unit:AddNewModifier(
-					caster, -- player source
+					_self.Source, -- player source
 					ability, -- ability source
 					"modifier_wisp_guardian_essence_lua", -- modifier name
 					{}
@@ -199,7 +199,7 @@ function wisp_ex_second_attack_lua:OnProjectileHit( hTarget, vLocation )
 	if hTarget ~= nil and ( not hTarget:IsInvulnerable() ) and ( not hTarget:TriggerSpellAbsorb( self ) ) then
 		
 		-- Blocked
-		local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_blocker_lua")
+		local is_blocker = hTarget:FindModifierByName("modifier_generic_projectile_slower_lua")
 		if is_blocker ~= nil then
 			if not is_blocker:IsNull() then
 				return true

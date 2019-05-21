@@ -66,7 +66,7 @@ function modifier_skywrath_mage_ultimate_thinker_lua:OnIntervalThink()
             victim = enemy,
             attacker = caster,
             damage = self.damage_heal_per_think,
-            damage_type = DAMAGE_TYPE_MAGICAL,
+            damage_type = DAMAGE_TYPE_PURE,
         }
 
         ApplyDamage( damage )

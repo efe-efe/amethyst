@@ -60,7 +60,7 @@ end
 function modifier_skywrath_mage_ex_ultimate_lua:PlayEffects()
     -- Get Resources
 	local particle_cast = "particles/items_fx/courier_shield.vpcf"
-    local sound_cast = "Hero_SkywrathMage.ConcussiveShot.Cast"
+    local sound_cast = "Hero_Disruptor.KineticField"
     -- Create Sound
     EmitSoundOn(sound_cast, self:GetCaster())
     

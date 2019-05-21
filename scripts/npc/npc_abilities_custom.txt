@@ -192,17 +192,17 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1700"
+				"projectile_speed"			"2000"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1000"
+				"projectile_range"			"1300"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"100"
+				"hitbox"					"80"
 			}
 			"04"
 			{
@@ -212,7 +212,7 @@
 			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"debuff_duration"			"5.0"
+				"debuff_duration"			"3.0"
 			}
 			"06"
 			{
@@ -227,7 +227,7 @@
 			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"max_range"					"1200"
+				"max_range"					"1500"
 			}
 			"08"
 			{
@@ -704,7 +704,7 @@
 			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_bonus"				"10"
+				"damage_bonus"				"8"
 			}
 		}
 	}
@@ -1356,7 +1356,6 @@
 	//=================================================================================================================
 	// Skywrath Mage
 	//=================================================================================================================
-	
 
 	"skywrath_mage_basic_attack_charged_lua"
 	{
@@ -1525,7 +1524,6 @@
 		}
 	}
 
-
 	"skywrath_mage_second_attack_lua"
 	{
 		"BaseClass"						"ability_lua"
@@ -1671,7 +1669,6 @@
 		}
 	}
 
-
 	"skywrath_mage_counter_lua"
 	{
 		"BaseClass"						"ability_lua"
@@ -1770,7 +1767,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"150"
+				"radius"					"200"
 			}
 			"02"
 			{
@@ -1917,6 +1914,8 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
 		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_disruptor.vsndevts"
+
 		}
 
 		// Special
@@ -1926,7 +1925,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"2.5"
+				"duration"					"3.5"
 			}
 			"02"
 			{
@@ -1937,90 +1936,11 @@
 	}
 
 
-	//=================================================================================================================
-	// Omniknight
-	//=================================================================================================================
-	
-	"omniknight_basic_attack_lua"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/omniknight/omniknight_basic_attack_lua/omniknight_basic_attack_lua"
-		
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"spectre_basic_attack_charged_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
-		"MaxLevel"						"1"
 
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"190"
-		"AbilityCastPoint"				"0.01"
-		"AnimationPlaybackRate" 		"2.0"
 
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"8.0"
 
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
-		
-		// Precache
-		//-------------------------------------------------------------------------------------------------------------
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_omniknight.vsndevts"
-			"particle"	"particles/base_attacks/test_projectile_explosion.vpcf"
-		}
 
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{   //All the SpecialValues are needed but can vary
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"3000"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"130"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"mana_gain"					"0.07"
-			}
-			"05"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"debuff_duration"			"2.0"
-			}
-			"06"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"heal_amount"				"12"
-			}
-			"07"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"damage_bonus"				"10"
-			}
-		}
-	}
-	
+
 	//=================================================================================================================
 	// Builder
 	//=================================================================================================================

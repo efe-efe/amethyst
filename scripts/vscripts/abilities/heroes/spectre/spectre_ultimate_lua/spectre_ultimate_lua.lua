@@ -7,6 +7,7 @@ function spectre_ultimate_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
+	local name = caster:GetUnitName()
 	
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_transversant_spectral_dagger.vpcf"
@@ -50,7 +51,7 @@ function spectre_ultimate_lua:OnSpellStart()
 		fVisionLingerDuration = 1,
 		draw = false,
 		fRehitDelay = 1.0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
 			-- Hit
 			--------------------
@@ -59,7 +60,7 @@ function spectre_ultimate_lua:OnSpellStart()
 			
 			local damage = {
 				victim = unit,
-				attacker = caster,
+				attacker = _self.Source,
 				damage = self.damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
@@ -81,12 +82,12 @@ function spectre_ultimate_lua:OnSpellStart()
 
 				-- make illusion
 				illusion:MakeIllusion()
-				illusion:SetOwner( caster )
-				illusion:SetPlayerID( caster:GetPlayerID() )
+				illusion:SetOwner( _self.Source )
+				illusion:SetPlayerID( _self.Source:GetPlayerID() )
 
 				--Add illusion modifier
 				illusion:AddNewModifier(
-					caster,
+					_self.Source,
 					self,
 					"modifier_spectre_ultimate_illusion_lua",
 					{ duration = self.illusion_duration }
@@ -102,12 +103,12 @@ function spectre_ultimate_lua:OnSpellStart()
 
 			--Create unit (illusion)
 			local illusion = CreateUnitByNameAsync(
-				caster:GetUnitName(), -- szUnitName
+				name, -- szUnitName
 				illusion_origin, -- vLocation,
 				false, -- bFindClearSpace,
-				caster, -- hNPCOwner,
+				_self.Source, -- hNPCOwner,
 				nil, -- hUnitOwner,
-				caster:GetTeamNumber(), -- iTeamNumber
+				_self.Source:GetTeamNumber(), -- iTeamNumber
 				modifyIllusion
 			)
 

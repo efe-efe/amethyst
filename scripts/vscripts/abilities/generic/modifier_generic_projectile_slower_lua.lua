@@ -1,7 +1,7 @@
-modifier_generic_projectile_blocker_lua = class({})
+modifier_generic_projectile_slower_lua = class({})
 
 
-function modifier_generic_projectile_blocker_lua:OnDestroy( kv )
+function modifier_generic_projectile_slower_lua:OnDestroy( kv )
     if IsServer() then
 		if self:GetParent() ~= nil then
             self:GetParent():ForceKill( false )
@@ -12,7 +12,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Status Effects
-function modifier_generic_projectile_blocker_lua:CheckState()
+function modifier_generic_projectile_slower_lua:CheckState()
 	local state = {
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 		[MODIFIER_STATE_NO_HEALTH_BAR] = true,

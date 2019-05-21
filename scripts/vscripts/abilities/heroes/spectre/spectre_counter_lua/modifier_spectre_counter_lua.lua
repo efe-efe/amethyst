@@ -1,10 +1,18 @@
 modifier_spectre_counter_lua = class({})
-LinkLuaModifier( "modifier_spectre_counter_thinker_lua", "abilities/heroes/spectre/spectre_counter_lua/modifier_spectre_counter_thinker_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_projectile_reflector_lua", "abilities/generic/modifier_generic_projectile_reflector_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_counter_lua:OnCreated( kv )
-    if IsServer() then
+	if IsServer() then
+		-- Add modifier
+		self:GetParent():AddNewModifier(
+			self:GetParent(),
+			self:GetAbility(),
+			"modifier_generic_projectile_reflector_lua",
+			{ duration = self:GetAbility():GetDuration() }
+		)
+
 		self.speed_debuff = self:GetAbility():GetSpecialValueFor("speed_debuff")
 		self:StartIntervalThink(0.05)
         self:PlayEffects()
@@ -47,17 +55,6 @@ function modifier_spectre_counter_lua:GetModifierIncomingDamage_Percentage( para
 		local attacker = params.attacker
 
         if params.damage_type ~= DAMAGE_TYPE_PURE then
-			--create the thinker
-			CreateModifierThinker(
-				parent, --hCaster
-				self:GetAbility(), --hAbility
-				"modifier_spectre_counter_thinker_lua", --modifierName
-				{}, --paramTable
-				attacker:GetOrigin(), --vOrigin
-				parent:GetTeamNumber(), --nTeamNumber
-				false --bPhantomBlocker
-			)
-
 			-- find and destroy the timer modifier from the basic attack
 			local basic_attack_timer = parent:FindModifierByNameAndCaster( 
 				"modifier_spectre_basic_attack_charged_timer_lua", parent 

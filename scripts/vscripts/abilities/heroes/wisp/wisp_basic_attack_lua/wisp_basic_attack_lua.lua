@@ -10,8 +10,8 @@ function wisp_basic_attack_lua:OnSpellStart()
 	local ability = self
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
+	--local attack_speed = 0.3
 	local ex_ultimate_modifier = caster:FindModifierByNameAndCaster( "modifier_wisp_ex_ultimate_lua", caster )
-
 
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_base_attack.vpcf"
@@ -55,9 +55,9 @@ function wisp_basic_attack_lua:OnSpellStart()
 		bFlyingVision = false,
 		fVisionTickTime = .1,
 		fVisionLingerDuration = 1,
-		draw = true,
+		draw = false,
 		fRehitDelay = 1.0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= caster:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
 			-- Hit
 			--------------------
@@ -70,7 +70,7 @@ function wisp_basic_attack_lua:OnSpellStart()
 				guardian_essence:SetDuration(new_duration, true)
 				modifier_attack_bonus = caster:AddNewModifier(caster, ability , "modifier_wisp_basic_attack_lua", {})
 			end
-
+			
 			-- perform the actual attack
 			caster:PerformAttack(
 				unit, -- handle hTarget 
