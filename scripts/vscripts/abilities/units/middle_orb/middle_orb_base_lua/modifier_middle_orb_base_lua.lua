@@ -118,6 +118,8 @@ function modifier_middle_orb_base_lua:OnCreated( kv )
 			"modifier_middle_orb_exiled_lua",
 			{ wait = 25.0 }
 		)
+		
+		self:StartIntervalThink(0.05)
 	end
 end
 
@@ -182,24 +184,43 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 	end
 end
 
+-----------------------------------
+-- Interval Effects
+function modifier_middle_orb_base_lua:OnIntervalThink()
+	-- Strong Dispel
+	local RemovePositiveBuffs = false
+	local RemoveDebuffs = true
+	local BuffsCreatedThisFrameOnly = false
+	local RemoveStuns = true
+	local RemoveExceptions = false
+
+	self:GetCaster():Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
+end
+
 --------------------------------------------------------------------------------
 function modifier_middle_orb_base_lua:PlayEffects()
-	-- Get Resources
-	local particle_cast = "particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf"
-	local particle_cast2 = "particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf"
+	local parent = self:GetParent()
+	local origin = parent:GetOrigin()
+	-- Cast sound
 	local sound_cast = "Hero_Magnataur.ReversePolarity.Cast"
+	EmitSoundOn( sound_cast, parent )
 
-	-- Get Data
+	-- Cast particles
+	local particle_cast_a = "particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf"
+	local particle_cast_b = "particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf"
 
-	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-	-- Create Particle
-	local effect_cast2 = ParticleManager:CreateParticle( particle_cast2, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-	ParticleManager:ReleaseParticleIndex( effect_cast2 )
+	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, parent )
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, parent )
+	
+	ParticleManager:SetParticleControl( effect_cast_a, 0, origin )
+	ParticleManager:SetParticleControl( effect_cast_a, 2, Vector(255, 80, 230) )
 
-	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetParent() )
+    ParticleManager:SetParticleControl( effect_cast_b, 0, origin)
+    ParticleManager:SetParticleControl( effect_cast_b, 5, origin)
+
+	ParticleManager:ReleaseParticleIndex( effect_cast_a )
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+
 end
 
 --------------------------------------------------------------------------------

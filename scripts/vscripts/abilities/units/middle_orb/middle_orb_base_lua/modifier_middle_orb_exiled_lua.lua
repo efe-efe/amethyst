@@ -31,9 +31,8 @@ function modifier_middle_orb_exiled_lua:OnDestroy( kv )
         local parent = self:GetParent()
         local origin = parent:GetOrigin()
 
-        parent:RemoveNoDraw()
         parent:SetOrigin(Vector(origin.x, origin.y, 256))
-
+        parent:RemoveNoDraw()
 	end
 end
 

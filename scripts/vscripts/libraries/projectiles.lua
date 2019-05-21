@@ -281,7 +281,7 @@ function Projectiles:CreateProjectile(projectile)
                                             reflectedProjectile.bIgnoreSource = true;
                                             reflectedProjectile.nChangeMax = projectile.nChangeMax - 1;
                                             reflectedProjectile.iVisionTeamNumber = entity:GetTeam();
-                                            reflectedProjectile.vVelocity = -projectile.vVelocity,
+                                            reflectedProjectile.vVelocity = -projectile.actualVelocity * 30,
                                             
                                             projectile:Destroy();
                                             

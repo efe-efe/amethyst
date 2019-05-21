@@ -36,7 +36,7 @@ function spectre_basic_attack_lua:OnSpellStart()
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,
-		bMultipleHits = true,
+		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
 		bCutTrees = true,

@@ -1,9 +1,9 @@
-skywrath_mage_basic_attack_lua = class({})
+sniper_basic_attack_lua = class({})
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function skywrath_mage_basic_attack_lua:OnSpellStart()
+function sniper_basic_attack_lua:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
@@ -76,43 +76,21 @@ function skywrath_mage_basic_attack_lua:OnSpellStart()
 					false -- bool bNeverMiss
 				)
 
-				self:PlayEffects_b(_self:GetPosition())
+				--self:PlayEffects_b(_self:GetPosition())
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
-				self:PlayEffects_b(pos)
+				--self:PlayEffects_b(pos)
 			end,
 		}
 		
-		self:PlayEffects_a()
+		--self:PlayEffects_a()
 		Projectiles:CreateProjectile(projectile)
 		self:StartCooldown(attack_speed)
 	end)
 end
 
---------------------------------------------------------------------------------
--- Graphics & sounds
-function skywrath_mage_basic_attack_lua:PlayEffects_a()
-	-- Create Sound
-	local sound_cast = "Hero_SkywrathMage.Attack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
-end
-
-function skywrath_mage_basic_attack_lua:PlayEffects_b( pos )
-	local caster = self:GetCaster()
-	
-	-- Create Sound
-	local sound_cast = "Hero_SkywrathMage.ProjectileImpact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
-
-	-- Cast Particle
-	local particle_cast = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-end
-
-function skywrath_mage_basic_attack_lua:Animate(point)
+function sniper_basic_attack_lua:Animate(point)
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local angles = caster:GetAngles()
@@ -122,3 +100,4 @@ function skywrath_mage_basic_attack_lua:Animate(point)
 	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
 	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=2.5})
 end
+--particles/econ/attack/attack_modifier_ti9.vpcf
