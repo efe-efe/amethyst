@@ -171,7 +171,7 @@ function Projectiles:CreateProjectile(projectile)
             
             -- Checks expiration
             if curTime > projectile.spawnTime + projectile.fExpireTime or projectile.distanceTraveled > projectile.fDistance then
-                ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
+                --ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
                 if projectile.OnFinish then
                     local status, out = pcall(projectile.OnFinish, projectile, actualPosition)
                     if not status then
@@ -266,8 +266,8 @@ function Projectiles:CreateProjectile(projectile)
                                 if is_slower ~= nil then
                                     if not is_slower:IsNull() then
                                         if projectile.bIsSlowable == true then
-                                            projectile:SetVelocity(projectile.vVelocity * 0.15)
-
+                                            local slow_percent = entity:GetAttackAnimationPoint()
+                                            projectile:SetVelocity(projectile.vVelocity * (1 - slow_percent))
                                         end
                                     end
                                 elseif is_reflector ~= nil then

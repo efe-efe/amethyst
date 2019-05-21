@@ -22,7 +22,7 @@ function spectre_ultimate_lua:OnSpellStart()
 
 	-- logic
 	local projectile = {
-		EffectName = projectile_name,
+		EffectName = "" --[[projectile_name]],
 		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
@@ -125,6 +125,33 @@ function spectre_ultimate_lua:OnSpellStart()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+
+	--THIS IS ONLY FOR VISUALS
+	local info = { 
+		Source = caster, 
+		Ability = self, 
+		vSpawnOrigin = origin, 
+		 
+		bDeleteOnHit = false, 
+		 
+		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY, 
+		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE, 
+		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+		 
+		EffectName = projectile_name, 
+		fDistance = projectile_distance, 
+		fStartRadius = projectile_start_radius, 
+		fEndRadius =projectile_end_radius, 
+		vVelocity = projectile_direction * projectile_speed, 
+ 
+		bHasFrontalCone = false, 
+		bReplaceExisting = false, 
+		fExpireTime = GameRules:GetGameTime() + 10.0, 
+		 
+		bProvidesVision = false, 
+	} 
+	 
+	ProjectileManager:CreateLinearProjectile(info) 
 end
 --------------------------------------------------------------------------------
 -- Graphics & sounds

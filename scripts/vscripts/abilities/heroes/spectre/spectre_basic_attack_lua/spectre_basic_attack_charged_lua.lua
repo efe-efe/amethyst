@@ -83,7 +83,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 				false -- bool bNeverMiss
 			)
 
-			self:PlayEffects(unit)
+			self:PlayEffects_a(unit)
 			_self.Source:Heal( self.heal_amount, self )
 
 			unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = self.debuff_duration})
@@ -105,7 +105,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 					self.modifier_attack_bonus:Destroy()
 				end
 			end
-			self:PlayEffectsMiss()
+			self:PlayEffects_b()
 			--self:PlayEffects_a(pos)
 		end,
 	}
@@ -139,6 +139,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+	self:Animate(self.point)
 end
 
 --------------------------------------------------------------------------------
@@ -154,21 +155,25 @@ end
 
 -- Hit attack effects
 -------------------------
-function spectre_basic_attack_charged_lua:PlayEffects(hTarget)
+function spectre_basic_attack_charged_lua:PlayEffects_a(hTarget)
+	local caster = self:GetCaster()
 	-- Create Sound
 	local sound_cast = "Hero_BountyHunter.Jinada"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn( sound_cast, caster )
 
 	-- Load Particles
 	local particle_cast_a = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
 	local particle_cast_b = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
-	local particle_cast_c = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_glow.vpcf"
+	local particle_cast_c = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
 
     -- Create Particles
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, caster )
 	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_POINT, hTarget )
-	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, caster )
 	
+	-- Set control points
+	ParticleManager:SetParticleControl( effect_cast_c, 2, caster:GetOrigin())
+
 	-- Release Particles
 	ParticleManager:ReleaseParticleIndex( effect_cast_a )
 	ParticleManager:ReleaseParticleIndex( effect_cast_b )
@@ -177,15 +182,16 @@ end
 	
 --Miss attack effects
 -------------------------
-function spectre_basic_attack_charged_lua:PlayEffectsMiss()
+function spectre_basic_attack_charged_lua:PlayEffects_b()
+	local caster = self:GetCaster()
 	-- Create Sound
 	local sound_cast = "Hero_Spectre.PreAttack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn( sound_cast, caster )
 
 	-- Create Particles
-	local particle_cast = "particles/econ/items/spectre/spectre_weapon_diffusal/spectre_desolate_diffusal.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 0, self.point)
+	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
+	ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
@@ -199,4 +205,15 @@ function spectre_basic_attack_charged_lua:OnUpgrade()
 		-- Gain mana
 		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 	end
+end
+
+function spectre_basic_attack_charged_lua:Animate(point)
+	local caster = self:GetCaster()
+	local origin = caster:GetOrigin()
+	local angles = caster:GetAngles()
+
+	local direction = (point - origin)
+	local directionAsAngle = VectorToAngles(direction)
+	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=2.5})
 end

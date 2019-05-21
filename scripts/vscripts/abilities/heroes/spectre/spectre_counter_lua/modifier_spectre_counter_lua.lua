@@ -15,7 +15,7 @@ function modifier_spectre_counter_lua:OnCreated( kv )
 
 		self.speed_debuff = self:GetAbility():GetSpecialValueFor("speed_debuff")
 		self:StartIntervalThink(0.05)
-        self:PlayEffects()
+        self:PlayEffects_a()
     end
 end
 
@@ -70,6 +70,7 @@ function modifier_spectre_counter_lua:GetModifierIncomingDamage_Percentage( para
 			local basic_attack_charged = parent:FindAbilityByName("spectre_basic_attack_charged_lua")
 			basic_attack_charged:EndCooldown()
 			
+			self:PlayEffects_b()
 			return -100
         end
         return 0
@@ -108,7 +109,7 @@ function modifier_spectre_counter_lua:GetModifierStatusResistance()
 end
 
 
-function modifier_spectre_counter_lua:PlayEffects()
+function modifier_spectre_counter_lua:PlayEffects_a()
 	local sound_cast = "Hero_Spectre.HauntCast"
 
 	local particle_cast = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rop.vpcf"
@@ -153,5 +154,10 @@ function modifier_spectre_counter_lua:StopEffects()
 
 	ParticleManager:DestroyParticle( self.effect_cast2, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast2 )
+end
+
+function modifier_spectre_counter_lua:PlayEffects_b()
+	local sound_cast = "Item.LotusOrb.Activate"
+	EmitSoundOn( sound_cast, self:GetParent() )
 end
 

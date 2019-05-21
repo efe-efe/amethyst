@@ -102,6 +102,7 @@ function spectre_basic_attack_lua:OnSpellStart()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+	self:Animate(point)
 end
 
 --------------------------------------------------------------------------------
@@ -145,4 +146,15 @@ function spectre_basic_attack_lua:PlayEffects_c()
     -- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+function spectre_basic_attack_lua:Animate(point)
+	local caster = self:GetCaster()
+	local origin = caster:GetOrigin()
+	local angles = caster:GetAngles()
+
+	local direction = (point - origin)
+	local directionAsAngle = VectorToAngles(direction)
+	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.5})
 end
