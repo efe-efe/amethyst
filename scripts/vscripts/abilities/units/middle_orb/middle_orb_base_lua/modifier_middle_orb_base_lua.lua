@@ -168,8 +168,6 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 				--ally:SetCustomHealthLabel("asd", 50, 50, 50)	
 			end
 
-			PrintTable(self.middle_orb_timer_a)
-
 			-- Destroy all timers
 			self.middle_orb_timer_a:ForceKill( false )
 			self.middle_orb_timer_b:ForceKill( false )
@@ -179,6 +177,7 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 
 			-- Graphics & sounds
 			self:PlayEffects()
+			caster:AddNoDraw()
 		end
 	end
 end

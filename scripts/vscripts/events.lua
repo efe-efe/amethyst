@@ -43,7 +43,7 @@ function GameMode:OnEntityKilled( keys )
     
     -- Put code here to handle when an entity gets killed
     if isMiddleOrb == 1 then
-        MiddleOrb:CreateMiddleOrb(30.0)
+        MiddleOrb:CreateMiddleOrb()
     end
 
     if killedUnit:IsRealHero() then
@@ -72,7 +72,7 @@ end
 function GameMode:OnGameInProgress()
 	DebugPrint("[RITE] The game has officially begun")
 
-	MiddleOrb:CreateMiddleOrb(30.0)
+	MiddleOrb:CreateMiddleOrb()
 end
 
 -- The overall game state has changed

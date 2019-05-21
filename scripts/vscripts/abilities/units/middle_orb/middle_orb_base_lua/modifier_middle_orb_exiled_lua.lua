@@ -28,7 +28,12 @@ end
 -- Destroyer
 function modifier_middle_orb_exiled_lua:OnDestroy( kv )
 	if IsServer() then
-		self:GetParent():RemoveNoDraw()
+        local parent = self:GetParent()
+        local origin = parent:GetOrigin()
+
+        parent:RemoveNoDraw()
+        parent:SetOrigin(Vector(origin.x, origin.y, 256))
+
 	end
 end
 

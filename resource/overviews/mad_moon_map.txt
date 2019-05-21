@@ -1,0 +1,8 @@
+mad_moon_map
+{
+	material materials/overviews/mad_moon_map.vmat
+	pos_x -6144
+	pos_y 6944
+	scale 12.063
+}
+

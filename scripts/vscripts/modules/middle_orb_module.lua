@@ -6,19 +6,11 @@ if MiddleOrb == nil then
     _G.MiddleOrb = class({})
 end
 
-function MiddleOrb:CreateMiddleOrb( spawnTime )
+function MiddleOrb:CreateMiddleOrb( )
     DebugPrint("[RITE] Creating Middle Orb")
 
 	local orb_spawn = Entities:FindByName(nil, "orb_spawn")
     local orb_position = orb_spawn:GetOrigin()
-
-	local orb_timer1 = Entities:FindByName(nil, "orb_timer1"):GetOrigin()
-	local orb_timer2 = Entities:FindByName(nil, "orb_timer2"):GetOrigin()
-	local orb_timer3 = Entities:FindByName(nil, "orb_timer3"):GetOrigin()
-	local orb_timer4 = Entities:FindByName(nil, "orb_timer4"):GetOrigin()
-	local orb_timer5 = Entities:FindByName(nil, "orb_timer5"):GetOrigin()
-
-    local visualTimerTime = spawnTime/6
 
     local middle_orb = CreateUnitByName(
         "npc_dota_creature_middle_orb", --szUnitName
@@ -28,11 +20,7 @@ function MiddleOrb:CreateMiddleOrb( spawnTime )
         nil, --hUnitOwner
         DOTA_TEAM_NOTEAM
     )
-
     middle_orb:Attribute_SetIntValue("middle_orb", 1)
-    middle_orb:SetGravity(0)
-    middle_orb:SetOrigin(orb_position)
-    
 
     -- Orb Spawn Effects
     local particle_cast_a = "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf"

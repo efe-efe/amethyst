@@ -38,6 +38,7 @@ function GameMode:InitGameMode()
     GameRules:SetGoldTickTime( GOLD_TICK_TIME )
     GameRules:SetStartingGold( STARTING_GOLD )
     GameRules:SetCustomGameSetupAutoLaunchDelay( AUTO_LAUNCH_DELAY )
+    GameRules:GetGameModeEntity():SetDamageFilter( Dynamic_Wrap( GameMode, "DamageFilter" ), self )
     DebugPrint('[RITE] GameRules set')
 
     -------------------------------
@@ -57,6 +58,13 @@ function GameMode:InitGameMode()
     LinkLuaModifier( "modifier_set_attack_range", "modifiers/general/modifier_set_attack_range.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_mana_on_attack", "modifiers/general/modifier_mana_on_attack.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
+end
+
+function GameMode:DamageFilter(keys)
+    for k,v in pairs(keys) do
+        --print(k,v)
+    end
+    return true
 end
 
 --============================================================================================
