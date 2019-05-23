@@ -39,4 +39,10 @@ function wisp_ultimate_lua:OnSpellStart()
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
     )
+
+    self:PlayEffects()
+end
+
+function wisp_ultimate_lua:PlayEffects()
+    EmitGlobalSound("wisp_death")
 end

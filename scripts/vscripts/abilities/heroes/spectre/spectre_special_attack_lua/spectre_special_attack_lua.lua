@@ -143,7 +143,7 @@ function spectre_special_attack_lua:OnSpellStart()
 			bReplaceExisting = false, 
 			fExpireTime = GameRules:GetGameTime() + 8.0, 
 			 
-			bProvidesVision = false, 
+			bProvidesVision = true, 
 		} 
 
 		self:PlayEffects_a()

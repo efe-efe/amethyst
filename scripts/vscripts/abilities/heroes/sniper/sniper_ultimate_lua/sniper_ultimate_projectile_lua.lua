@@ -1,7 +1,8 @@
-sniper_second_attack_projectile_lua = class({})
-LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
+sniper_ultimate_projectile_lua = class({})
+LinkLuaModifier( "modifier_sniper_ultimate_thinker_lua", "abilities/heroes/sniper/sniper_ultimate_lua/modifier_sniper_ultimate_thinker_lua", LUA_MODIFIER_MOTION_NONE )
 
-function sniper_second_attack_projectile_lua:OnSpellStart()
+
+function sniper_ultimate_projectile_lua:OnSpellStart()
 	-- Initialize variables
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -76,12 +77,33 @@ function sniper_second_attack_projectile_lua:OnSpellStart()
 			end
 	
 			ApplyDamage( damage )
-			-- Stun
-			unit:AddNewModifier(_self.Source, self , "modifier_generic_stunned_lua", { duration = stun_duration})
-	
+			
+			-- Effect thinker
+			CreateModifierThinker(
+				_self.Source, --hCaster
+				self, --hAbility
+				"modifier_sniper_ultimate_thinker_lua", --modifierName
+				{ duration = duration }, --paramTable
+				_self.actualPosition, --vOrigin
+				_self.Source:GetTeamNumber(), --nTeamNumber
+				false --bPhantomBlocker
+			)
+
 			self:PlayEffects_c(unit, _self.actualPosition)
+			_self.Destroy()
 		end,
-		OnFinish = function(_self, pos)
+        OnFinish = function(_self, pos)
+            -- Effect thinker
+            CreateModifierThinker(
+                _self.Source, --hCaster
+                self, --hAbility
+                "modifier_sniper_ultimate_thinker_lua", --modifierName
+                { duration = duration }, --paramTable
+                pos, --vOrigin
+                _self.Source:GetTeamNumber(), --nTeamNumber
+                false --bPhantomBlocker
+            )
+
 			self:PlayEffects_b(pos)
 		end,
 	}
@@ -95,14 +117,14 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function sniper_second_attack_projectile_lua:PlayEffects_a()
+function sniper_ultimate_projectile_lua:PlayEffects_a()
 	-- Cast Sound
 	local sound_cast = "Ability.Assassinate"
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
 -- On hit wall 
-function sniper_second_attack_projectile_lua:PlayEffects_b( pos )
+function sniper_ultimate_projectile_lua:PlayEffects_b( pos )
 	local caster = self:GetCaster()
 	
 	-- Cast Sound
@@ -120,7 +142,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function sniper_second_attack_projectile_lua:PlayEffects_c( hTarget, pos )
+function sniper_ultimate_projectile_lua:PlayEffects_c( hTarget, pos )
 	local caster = self:GetCaster()
 	-- Cast Sound
 	local sound_cast = "Hero_Sniper.AssassinateDamage"

@@ -1,2 +1,6 @@
 embers:
 aoe
+
+
+Keyword: owner
+    Effectos que se aplican al jugador objetivo como estados (thirst, spectral dagger)

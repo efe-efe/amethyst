@@ -1,7 +1,7 @@
-sniper_second_attack_projectile_lua = class({})
-LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
+sniper_ex_second_attack_lua = class({})
+LinkLuaModifier( "modifier_generic_rooted_lua", "abilities/generic/modifier_generic_rooted_lua", LUA_MODIFIER_MOTION_NONE )
 
-function sniper_second_attack_projectile_lua:OnSpellStart()
+function sniper_ex_second_attack_lua:OnSpellStart()
 	-- Initialize variables
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -17,9 +17,7 @@ function sniper_second_attack_projectile_lua:OnSpellStart()
 
 	-- Extra data
 	local damage = self:GetSpecialValueFor("damage")
-	local stun_duration = self:GetSpecialValueFor("stun_duration")
-	local mana_gain = self:GetSpecialValueFor("mana_gain")
-	local reduction_per_hit = self:GetSpecialValueFor("reduction_per_hit")
+	local root_duration = self:GetSpecialValueFor("root_duration")
 	local mana_gain = self:GetSpecialValueFor("mana_gain")
 
 	local projectile = {
@@ -54,30 +52,17 @@ function sniper_second_attack_projectile_lua:OnSpellStart()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
-			-- Count targets
-			local counter = 0
-			for k, v in pairs(_self.rehit) do
-				counter = counter + 1
-			end
-			local final_damage = damage * (1 - (counter * reduction_per_hit))
-			
 			-- Damage
 			local damage = {
 				victim = unit,
 				attacker = _self.Source,
-				damage = final_damage,
+				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}			
-			
-			-- Give Mana
-			if counter < 1 then
-				local mana_gain_final = _self.Source:GetMaxMana() * mana_gain
-				_self.Source:GiveMana(mana_gain_final)
-			end
-	
+
 			ApplyDamage( damage )
 			-- Stun
-			unit:AddNewModifier(_self.Source, self , "modifier_generic_stunned_lua", { duration = stun_duration})
+			unit:AddNewModifier(_self.Source, self , "modifier_generic_rooted_lua", { duration = root_duration})
 	
 			self:PlayEffects_c(unit, _self.actualPosition)
 		end,
@@ -86,23 +71,27 @@ function sniper_second_attack_projectile_lua:OnSpellStart()
 		end,
 	}
 
-	self:PlayEffects_a()
+	
+	-- Put CD on the non ex version of the ability
+	local non_ex_version = caster:FindAbilityByName("sniper_second_attack_lua")
+	non_ex_version:StartCooldown(self:GetCooldown(0))
+
 	-- Cast projectile
     Projectiles:CreateProjectile(projectile)
-    SafeDestroyModifier("modifier_sniper_second_attack_timer_lua", caster, caster)
+	self:PlayEffects_a()
 end
 
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function sniper_second_attack_projectile_lua:PlayEffects_a()
+function sniper_ex_second_attack_lua:PlayEffects_a()
 	-- Cast Sound
 	local sound_cast = "Ability.Assassinate"
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
 -- On hit wall 
-function sniper_second_attack_projectile_lua:PlayEffects_b( pos )
+function sniper_ex_second_attack_lua:PlayEffects_b( pos )
 	local caster = self:GetCaster()
 	
 	-- Cast Sound
@@ -120,7 +109,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function sniper_second_attack_projectile_lua:PlayEffects_c( hTarget, pos )
+function sniper_ex_second_attack_lua:PlayEffects_c( hTarget, pos )
 	local caster = self:GetCaster()
 	-- Cast Sound
 	local sound_cast = "Hero_Sniper.AssassinateDamage"

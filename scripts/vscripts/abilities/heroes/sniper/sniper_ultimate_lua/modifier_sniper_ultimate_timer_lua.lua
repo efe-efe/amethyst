@@ -1,6 +1,6 @@
-modifier_sniper_second_attack_timer_lua = class({})
+modifier_sniper_ultimate_timer_lua = class({})
 
-function modifier_sniper_second_attack_timer_lua:OnCreated()
+function modifier_sniper_ultimate_timer_lua:OnCreated()
     if IsServer() then
         local parent = self:GetParent()
 
@@ -15,36 +15,23 @@ function modifier_sniper_second_attack_timer_lua:OnCreated()
     end
 end
 
-function modifier_sniper_second_attack_timer_lua:OnDestroy()
+function modifier_sniper_ultimate_timer_lua:OnDestroy()
     if IsServer() then
         local parent = self:GetParent()
 
-        if self:GetRemainingTime() > 0.05 then
-            parent:SwapAbilities( 
-                "sniper_second_attack_projectile_lua",
-                "sniper_second_attack_lua",
-                false,
-                true
-            )
-        else
-            parent:SwapAbilities( 
-                "sniper_second_attack_projectile_lua",
-                "sniper_second_attack_lua",
-                false,
-                true
-            )
-
-            self:PlayEffects()
-        end
+        parent:SwapAbilities( 
+            "sniper_ultimate_projectile_lua",
+            "sniper_ultimate_lua",
+            false,
+            true
+        )
+        self:PlayEffects()
+        
     end
 end
 
-function modifier_sniper_second_attack_timer_lua:PlayEffects()
+function modifier_sniper_ultimate_timer_lua:PlayEffects()
     local origin = self:GetParent():GetOrigin()
-
-    -- Cast Sound
-    local sound_cast = "sniper_snip_anger_03"
-    EmitSoundOn(sound_cast, self:GetParent())
 
     -- Cast Particlres
     local particle_cast_a = "particles/mod_units/heroes/hero_sniper/techies_base_attack_smokeburst.vpcf"
@@ -97,6 +84,5 @@ function modifier_sniper_second_attack_timer_lua:PlayEffects()
     ParticleManager:ReleaseParticleIndex( effect_cast_b )
 
 end
-
 
 

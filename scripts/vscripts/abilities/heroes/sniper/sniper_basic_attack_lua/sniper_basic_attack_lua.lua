@@ -1,5 +1,12 @@
 sniper_basic_attack_lua = class({})
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_sniper_basic_attack_charges_lua", "abilities/heroes/sniper/sniper_basic_attack_lua/modifier_sniper_basic_attack_charges_lua", LUA_MODIFIER_MOTION_NONE )
+
+--------------------------------------------------------------------------------
+--Passive Modifier
+function sniper_basic_attack_lua:GetIntrinsicModifierName()
+	return "modifier_sniper_basic_attack_charges_lua"
+end
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -12,15 +19,11 @@ function sniper_basic_attack_lua:OnSpellStart()
 	local attack_speed = ( 1 / attacks_per_second )
 	
 	-- Projectile data
-	local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack.vpcf"
+	local projectile_name = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-
-	-- Extra data
-	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
-	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
 
 	-- Animation and pseudo cast point
 	self:Animate(point)
@@ -76,15 +79,15 @@ function sniper_basic_attack_lua:OnSpellStart()
 					false -- bool bNeverMiss
 				)
 
-				--self:PlayEffects_b(_self:GetPosition())
+				self:PlayEffects_b(_self:GetPosition())
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
-				--self:PlayEffects_b(pos)
+				self:PlayEffects_b(pos)
 			end,
 		}
 		
-		--self:PlayEffects_a()
+		self:PlayEffects_a()
 		Projectiles:CreateProjectile(projectile)
 		self:StartCooldown(attack_speed)
 	end)
@@ -100,4 +103,27 @@ function sniper_basic_attack_lua:Animate(point)
 	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
 	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=2.5})
 end
---particles/econ/attack/attack_modifier_ti9.vpcf
+
+function sniper_basic_attack_lua:PlayEffects_a()
+	-- Cast Sound
+	local sound_cast = "Hero_Sniper.attack"	-- Create Sound
+	EmitSoundOn( sound_cast, self:GetCaster() )
+end
+
+
+-- On hit wall 
+function sniper_basic_attack_lua:PlayEffects_b( pos )
+	local caster = self:GetCaster()
+	
+	-- Cast Sound
+	local sound_cast = "Hero_Sniper.ProjectileImpact"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+
+	-- Cast Particle
+	local particle_cast = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack_explosion.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
+	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+

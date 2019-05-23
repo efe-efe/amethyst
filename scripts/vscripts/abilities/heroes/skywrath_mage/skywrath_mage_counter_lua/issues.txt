@@ -1,3 +1,0 @@
-- Animation is not ended when activated counter
-    * posible solution: create a new ability only to play the animation.
-    

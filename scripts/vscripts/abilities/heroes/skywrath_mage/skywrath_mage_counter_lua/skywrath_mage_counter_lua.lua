@@ -1,5 +1,4 @@
 skywrath_mage_counter_lua = class({})
-
 LinkLuaModifier( "modifier_skywrath_mage_counter_lua", "abilities/heroes/skywrath_mage/skywrath_mage_counter_lua/modifier_skywrath_mage_counter_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------

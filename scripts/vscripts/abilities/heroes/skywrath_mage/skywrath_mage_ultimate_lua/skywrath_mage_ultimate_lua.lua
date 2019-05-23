@@ -31,4 +31,6 @@ function skywrath_mage_ultimate_lua:PlayEffects()
     local sound_cast = "Hero_SkywrathMage.MysticFlare.Cast"
 
     EmitSoundOn(sound_cast, self:GetCaster())
+    
+	EmitGlobalSound("skywrath_mage_drag_mystic_flare_01")
 end

@@ -1,7 +1,8 @@
 Abilities can be in any order execpt for the following:
-    "Mobility abilities" = 4
+    "Mobility abilities" = 9
     "Ex ability one" = 7
     "Ex ability two" = 8
-    "Ex ability three" = 9
+    "Ex ability three" = 4
 
-Units used to slow, sets the slow percentage on the "AttackAnimationPoint" parameter
+-- Units used to slow, sets the slow percentage on the "AttackAnimationPoint" parameter
+-- When setting a mobility ability (LUA_MOTION_BOTH/HORIZONTAL/VERTICAL) you have to restart the client, otherwise it will not recognize the modifier functions

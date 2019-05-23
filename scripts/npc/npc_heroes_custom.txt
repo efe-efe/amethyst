@@ -207,7 +207,14 @@
 		"Ability1"						"sniper_basic_attack_lua"
 		"Ability2"						"sniper_second_attack_lua"
 		"Ability3"						"sniper_counter_lua"
+		"Ability4"						"sniper_special_attack_lua"
+		"Ability5"						"sniper_ex_ultimate_lua"
+		"Ability6"						"sniper_ultimate_lua"
+		"Ability7"						"sniper_ex_second_attack_lua"
+		"Ability8"						"sniper_ex_mobility_lua"
+		"Ability9"						"sniper_mobility_lua"
 		"Ability10"						"sniper_second_attack_projectile_lua"
+		"Ability11"						"sniper_ultimate_projectile_lua"
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -221,9 +228,9 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"9"										// Damage range min.
-		"AttackDamageMax"			"9"										// Damage range max.	
-		"AttackRate"				"0.2"									// Speed of attack.	
+		"AttackDamageMin"			"12"										// Damage range min.
+		"AttackDamageMax"			"12"										// Damage range max.	
+		"AttackRate"				"0.1"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.3"
 		"AttackRange"				"80"
 		

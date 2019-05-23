@@ -161,6 +161,7 @@ function spectre_ultimate_lua:PlayEffects_a()
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 
 	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitGlobalSound("spectre_spec_ability_haunt_01")
 end
 
 --Impact
@@ -171,7 +172,7 @@ function spectre_ultimate_lua:PlayEffects_b(pos)
 	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
 
 	-- Cast Particles 
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
+	local particle_cast = "particles/econ/items/death_prophet/death_prophet_ti9/death_prophet_silence_ti9_ground_smoke.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
