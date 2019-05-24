@@ -127,3 +127,13 @@ function sniper_basic_attack_lua:PlayEffects_b( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
+
+-- Add mana on attack modifier. Only first time upgraded
+function sniper_basic_attack_lua:OnUpgrade()
+	if self:GetLevel()==1 then
+		local caster = self:GetCaster()
+		-- Gain mana
+		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+	end
+end
+

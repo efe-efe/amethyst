@@ -55,7 +55,11 @@ function modifier_sniper_ex_mobility_thinker_lua:OnIntervalThink()
             )
         end
         
-		self:PlayEffects()
+        self:PlayEffects()
+        -- Cast Sound
+        local sound_cast = "Hero_Disruptor.ThunderStrike.Thunderator"
+        EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+
 	else
         -- Find enemies
         local enemies = FindUnitsInRadius( 
@@ -75,7 +79,7 @@ function modifier_sniper_ex_mobility_thinker_lua:OnIntervalThink()
                 caster, -- player source
                 self, -- ability source
                 "modifier_sniper_ex_mobility_lua", -- modifier name
-                { duration = duration = self.slow_linger } -- kv
+                { duration = self.slow_linger } -- kv
             )
         end
         self:PlayEffects()
@@ -85,6 +89,10 @@ end
 
 -- TODO: Mejorar esto
 function modifier_sniper_ex_mobility_thinker_lua:PlayEffects()
+
+  
+    -- Cast Particles
+
     local particle_cast_a = "particles/econ/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_thunder_strike_bolt_rope.vpcf"
     local particle_cast_b = "particles/econ/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_thunder_strike_bolt.vpcf"
     

@@ -2454,6 +2454,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
 		{
+			"soundfile" 				"soundevents/game_sounds_heroes/game_sounds_disruptor.vsndevts"
 		}
 
 		// Special
