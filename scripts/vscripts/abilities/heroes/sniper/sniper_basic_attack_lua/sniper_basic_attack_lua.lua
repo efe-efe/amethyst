@@ -38,7 +38,7 @@ function sniper_basic_attack_lua:OnSpellStart()
 		-- Projectile
 		local projectile = {
 			EffectName = projectile_name,
-			vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+			vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
 			fDistance = projectile_distance,
 			fStartRadius = projectile_start_radius,
 			fEndRadius = projectile_end_radius,
@@ -101,7 +101,7 @@ function sniper_basic_attack_lua:Animate(point)
 	local direction = (point - origin)
 	local directionAsAngle = VectorToAngles(direction)
 	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=2.5})
+	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_RUN, translate="aggressive", rate=2.0})
 end
 
 function sniper_basic_attack_lua:PlayEffects_a()

@@ -11,14 +11,18 @@ function spectre_basic_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
+
+	local offset = 10
+	local direction_normalized = (point - origin):Normalized()
+	local initial_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
+
 	local ability = self
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
-	--local attack_speed = 0.2
 
 	-- load data
     local projectile_name = ""
-	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
+	local projectile_start_radius = 50
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -28,7 +32,7 @@ function spectre_basic_attack_lua:OnSpellStart()
 
 	local projectile = {
 		EffectName = projectile_name,
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+		vSpawnOrigin = initial_position + Vector(0,0,80),
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
 		fEndRadius = projectile_end_radius,

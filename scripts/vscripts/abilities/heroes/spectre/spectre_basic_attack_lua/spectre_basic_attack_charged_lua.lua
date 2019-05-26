@@ -14,9 +14,12 @@ end
 function spectre_basic_attack_charged_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	self.point = self:GetCursorPosition()
+	local point = self:GetCursorPosition()
 
-	--Attack speed (To put on cooldown the non charged version)
+	local offset = 10
+	local direction_normalized = (point - origin):Normalized()
+	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
+
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
 
@@ -31,12 +34,12 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox") + 10
 	local projectile_vision = 0
 
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	--logic
 	local projectile = {
 		EffectName = projectile_name,
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+		vSpawnOrigin = final_position + Vector(0,0,80),
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
 		fEndRadius = projectile_end_radius,
@@ -132,7 +135,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-	self:Animate(self.point)
+	self:Animate(point)
 end
 
 --------------------------------------------------------------------------------
