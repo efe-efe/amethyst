@@ -64,7 +64,7 @@ end
 function modifier_phantom_assassin_counter_lua:PlayEffects_b()
 		-- Get Resources
         local sound_cast = "Hero_PhantomAssassin.Blur.Break"
-        local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_disk_end.vpcf"
+		local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_event_glitch.vpcf"
         
         -- Create Sound
         EmitSoundOn( sound_cast, self:GetCaster()  )

@@ -273,9 +273,11 @@
 		"Ability1"						"phantom_assassin_basic_attack_lua"
 		"Ability2"						"phantom_assassin_second_attack_lua"
 		"Ability3"						"phantom_assassin_counter_lua"
-		"Ability4"						"phantom_assassin_second_attack_lua"
+		"Ability4"						"phantom_assassin_special_attack_lua"
 		"Ability5"						"phantom_assassin_second_attack_lua"
-		"Ability6"						"phantom_assassin_second_attack_lua"
+		"Ability6"						"phantom_assassin_ex_ultimate_lua"
+		"Ability7"						"phantom_assassin_ultimate_lua"
+		"Ability8"						"phantom_assassin_ex_special_attack_lua"
 		"Ability9"						"phantom_assassin_mobility_lua"
 
 		//Vision
@@ -299,7 +301,7 @@
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
 		"MovementSpeed"				"440"
-		"MovementTurnRate"			"0.9"
+		"MovementTurnRate"			"0.95"
 		
 		// Attributes
 		//-------------------------------------------------------------------------------------------------------------

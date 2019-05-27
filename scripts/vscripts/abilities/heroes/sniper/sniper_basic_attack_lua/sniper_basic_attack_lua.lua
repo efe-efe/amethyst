@@ -11,6 +11,7 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function sniper_basic_attack_lua:OnSpellStart()
+	self:SetActivated(false)
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
@@ -30,7 +31,8 @@ function sniper_basic_attack_lua:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
 
 	Timers:CreateTimer(cast_point, function()
-
+		self:StartCooldown(attack_speed)
+		self:SetActivated(true)
 		-- Dinamyc data
 		local origin = caster:GetOrigin()
 		local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -89,7 +91,6 @@ function sniper_basic_attack_lua:OnSpellStart()
 		
 		self:PlayEffects_a()
 		Projectiles:CreateProjectile(projectile)
-		self:StartCooldown(attack_speed)
 	end)
 end
 
@@ -106,7 +107,7 @@ end
 
 function sniper_basic_attack_lua:PlayEffects_a()
 	-- Cast Sound
-	local sound_cast = "Hero_Sniper.attack"	-- Create Sound
+	local sound_cast = "Hero_Sniper.MKG_attack"	-- Create Sound
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 

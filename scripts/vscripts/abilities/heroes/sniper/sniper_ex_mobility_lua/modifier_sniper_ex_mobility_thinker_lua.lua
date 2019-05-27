@@ -12,7 +12,7 @@ function modifier_sniper_ex_mobility_thinker_lua:OnCreated()
         self.knockback_radius = self:GetAbility():GetSpecialValueFor("radius")
         self.damage = self:GetAbility():GetSpecialValueFor("damage")
         self.slow_linger = self:GetAbility():GetSpecialValueFor("slow_linger")
-
+        self.initial_damage = self:GetAbility():GetSpecialValueFor("initial_damage")
         -- Start Interval
         self:StartIntervalThink( delay )  
     end
@@ -53,6 +53,15 @@ function modifier_sniper_ex_mobility_thinker_lua:OnIntervalThink()
                 "modifier_sniper_ex_mobility_lua", -- modifier name
                 { duration = self.slow_linger } -- kv
             )
+            
+            local damage = {
+                victim = enemy,
+                attacker = caster,
+                damage = self.initial_damage,
+                damage_type = DAMAGE_TYPE_PURE,
+            }
+    
+            ApplyDamage( damage )
         end
         
         self:PlayEffects()
@@ -81,6 +90,15 @@ function modifier_sniper_ex_mobility_thinker_lua:OnIntervalThink()
                 "modifier_sniper_ex_mobility_lua", -- modifier name
                 { duration = self.slow_linger } -- kv
             )
+
+            local damage = {
+                victim = enemy,
+                attacker = caster,
+                damage = self.damage,
+                damage_type = DAMAGE_TYPE_PURE,
+            }
+    
+            ApplyDamage( damage )
         end
         self:PlayEffects()
 

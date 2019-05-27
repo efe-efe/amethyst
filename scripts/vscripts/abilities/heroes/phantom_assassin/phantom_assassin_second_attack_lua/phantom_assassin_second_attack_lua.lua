@@ -16,13 +16,14 @@ function phantom_assassin_second_attack_lua:OnSpellStart()
 	local offset = 20
 	local damage = self:GetSpecialValueFor("damage")
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
+	local mana_gain = self:GetSpecialValueFor("mana_gain")
 
 	-- load data
     local projectile_name = ""
 	local projectile_start_radius = 50
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local projectile_speed = 9999
 	
 	-- Animation and pseudo cast point
 	self:Animate(point)
@@ -82,6 +83,10 @@ function phantom_assassin_second_attack_lua:OnSpellStart()
 				
 				SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
 
+				-- Give Mana
+				local mana_gain_final = caster:GetMaxMana() * mana_gain
+				caster:GiveMana(mana_gain_final)
+
 				self:PlayEffects_b(unit)
 				_self.Destroy()
 			end,
@@ -126,10 +131,12 @@ function phantom_assassin_second_attack_lua:PlayEffects_b( hTarget )
     local pos = hTarget:GetOrigin()
 
 		-- Create Sound
-	local sound_cast = "Hero_PhantomAssassin.CoupDeGrace"
-	EmitSoundOn( sound_cast, hTarget )
-
-	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop.vpcf"
+	local sound_cast_a = "Hero_PhantomAssassin.Arcana_Layer"
+	EmitSoundOn( sound_cast_a, hTarget )
+	local sound_cast_b = "Hero_PhantomAssassin.Attack"
+	EmitSoundOnLocationWithCaster( pos, sound_cast_b, caster )
+	
+	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_r.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, hTarget )
     ParticleManager:SetParticleControl( effect_cast, 1, pos )
     ParticleManager:SetParticleControlForward( effect_cast, 1, (self:GetCaster():GetOrigin()-hTarget:GetOrigin()):Normalized() )
@@ -145,5 +152,5 @@ function phantom_assassin_second_attack_lua:Animate(point)
 	local directionAsAngle = VectorToAngles(direction)
 	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
 	caster:SetForwardVector(direction:Normalized())
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_SPAWN_STATUE, rate=2.0})
+	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_SPAWN, rate=2.0})
 end

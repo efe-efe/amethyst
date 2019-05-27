@@ -14,9 +14,10 @@ end
 -- Initializations
 function modifier_generic_fading_slow_lua:OnCreated( kv )
     if IsServer() then
-        self:StartIntervalThink( 0.5 )
+        local duration = self:GetDuration()
         self.fading_slow = -self:GetAbility():GetSpecialValueFor("fading_slow")
-        self.speed_recover = self:GetAbility():GetSpecialValueFor("speed_recover")
+        self.speed_per_tick = self.fading_slow / duration
+        self:StartIntervalThink( 0.5 )
     end
 
 end
@@ -24,7 +25,8 @@ end
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_generic_fading_slow_lua:OnIntervalThink()
-    local new_fading_slow = self.fading_slow + self.speed_recover
+    local new_fading_slow = self.fading_slow - self.speed_per_tick / 2
+
     if new_fading_slow > 0 then
         self.fading_slow = 0
         return

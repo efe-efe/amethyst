@@ -219,11 +219,6 @@
 				"var_type"					"FIELD_INTEGER"
 				"fading_slow"				"60"
 			}
-			"06"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"speed_recover"				"10"
-			}
 			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
@@ -374,11 +369,6 @@
 				"fading_slow"				"100"
 			}
 			"07"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"speed_recover"				"20"
-			}
-			"08"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"6"
@@ -649,7 +639,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"190"
-		"AbilityCastPoint"				"0.01"
+		"AbilityCastPoint"				"0.1"
 		"AnimationPlaybackRate" 		"2.0"
 
 		// Time		
@@ -674,34 +664,29 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"3000"
+				"projectile_range"			"150"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"130"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.07"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"debuff_duration"			"2.0"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_amount"				"12"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"8"
@@ -728,7 +713,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"190"
-		"AbilityCastPoint"				"0.01"
+		"AbilityCastPoint"				"0.1"
 		"AnimationPlaybackRate" 		"2.0"
 
 		// Time		
@@ -746,24 +731,19 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"3000"
+				"projectile_range"			"150"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
+				"hitbox"					"130"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"130"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"2"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_amount"				"6"
@@ -1106,7 +1086,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"delay_time"				"0.3"
+				"delay_time"				"0.2"
 			}
 			"03"
 			{
@@ -1228,7 +1208,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"2500"
+				"projectile_speed"			"2800"
 			}
 			"02"
 			{
@@ -1299,59 +1279,6 @@
 			}
 		}
 	}
-
-	"spectre_basic_attack_test_lua"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_basic_attack_test_lua/spectre_basic_attack_test_lua"
-		
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"spectre_basic_attack_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AOERadius"						"%hitbox"
-		"MaxLevel"						"1"
-
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"190"
-		"AbilityCastPoint"				"0.1"
-		"AnimationPlaybackRate" 		"2.0"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
-
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"0.0"
-
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{   //All the SpecialValues are needed but can vary
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1500"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"130"
-			}
-		}
-	}
-
 
 	//=================================================================================================================
 	// Skywrath Mage
@@ -2486,6 +2413,11 @@
 				"var_type"					"FIELD_FLOAT"
 				"slow_linger"				"1.0"
 			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"initial_damage"			"8"
+			}
 		}
 	}
 
@@ -2725,19 +2657,14 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"3000"
+				"projectile_range"			"150"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"130"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.06"
@@ -2789,41 +2716,35 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"3000"
+				"projectile_range"			"150"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"hitbox"					"130"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"mana_gain"					"0.07"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_amount"				"12"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_per_stack"			"3"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage"					"9"
 			}
 		}
 	}
-
 
 	"phantom_assassin_counter_lua"
 	{
@@ -2852,6 +2773,152 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
 		{
+		}
+	}
+
+	"phantom_assassin_special_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom_assassin/phantom_assassin_special_attack_lua/phantom_assassin_special_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phantom_assassin_stifling_dagger"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.1"
+		"AnimationPlaybackRate" 		"2.0"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{ 
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"1900"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1200"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"80"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.07"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"fading_slow"				"100"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"9"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"slow_duration"				"2.5"
+			}
+		}
+	}
+
+	"phantom_assassin_ex_special_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom_assassin/phantom_assassin_ex_special_attack_lua/phantom_assassin_ex_special_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phantom_assassin_ex_special_attack_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.3"
+		"AnimationPlaybackRate" 		"1.2"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{ 
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"1900"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1200"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"80"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"sleep_duration"			"2.5"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"12"
+			}
 		}
 	}
 
@@ -2903,10 +2970,116 @@
 			"03"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"buff_duration"			"2.0"
+				"buff_duration"			"1.3"
 			}
 		}
 	}
+
+	"phantom_assassin_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom_assassin/phantom_assassin_ultimate_lua/phantom_assassin_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phantom_assassin_coup_de_grace"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"MaxLevel"						"1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.6"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
+		"AnimationPlaybackRate" 		"0.7"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"100"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"range"					"1500"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"30"
+			}
+		}
+	}
+
+
+	"phantom_assassin_ex_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom_assassin/phantom_assassin_ex_ultimate_lua/phantom_assassin_ex_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phantom_assassin_coup_de_grace"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_POINT"
+		"MaxLevel"						"1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.0"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"distance"					"300"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"12"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"fading_slow"			"100"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"slow_duration"			"2.0"
+			}
+		}
+	}
+	
 
 	//=================================================================================================================
 	// Builder
