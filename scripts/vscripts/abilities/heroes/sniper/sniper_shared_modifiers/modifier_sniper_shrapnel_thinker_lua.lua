@@ -11,7 +11,7 @@ function modifier_sniper_shrapnel_thinker_lua:OnCreated()
 
         self.knockback_radius = self:GetAbility():GetSpecialValueFor("radius")
         self.knockback_distance = self:GetAbility():GetSpecialValueFor("knockback_distance")
-        self.damage = self:GetAbility():GetSpecialValueFor("damage")
+        self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
         self.slow_linger = self:GetAbility():GetSpecialValueFor("slow_linger")
         
 
@@ -56,7 +56,7 @@ function modifier_sniper_shrapnel_thinker_lua:OnIntervalThink()
             local damage = {
                 victim = enemy,
                 attacker = caster,
-                damage = self.damage,
+                damage = self.damage_per_second,
                 damage_type = DAMAGE_TYPE_PURE,
             }
 

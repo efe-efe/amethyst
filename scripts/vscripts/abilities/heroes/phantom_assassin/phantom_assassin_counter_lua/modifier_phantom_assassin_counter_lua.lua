@@ -47,29 +47,24 @@ end
 
 
 function modifier_phantom_assassin_counter_lua:PlayEffects_a()
-	-- Get Resources
-	local sound_cast = "Hero_PhantomAssassin.Blur"
-	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_event_glitch.vpcf"
-    
 	-- Create Sound
+	local sound_cast = "Hero_PhantomAssassin.Blur"
     EmitSoundOn( sound_cast, self:GetCaster()  )
 
-    -- Create Particles
+	-- Create Particles
+	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_event_glitch.vpcf"
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, self:GetCaster() )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
-
 end
 
 function modifier_phantom_assassin_counter_lua:PlayEffects_b()
-		-- Get Resources
-        local sound_cast = "Hero_PhantomAssassin.Blur.Break"
-		local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_event_glitch.vpcf"
-        
         -- Create Sound
+        local sound_cast = "Hero_PhantomAssassin.Blur.Break"
         EmitSoundOn( sound_cast, self:GetCaster()  )
     
-        -- Create Particles
+		-- Create Particles
+		local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_event_glitch.vpcf"
         local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
         ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
         ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )

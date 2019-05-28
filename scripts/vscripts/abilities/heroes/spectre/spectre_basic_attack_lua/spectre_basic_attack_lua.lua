@@ -76,13 +76,12 @@ function spectre_basic_attack_lua:OnSpellStart()
 			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 			OnUnitHit = function(_self, unit) 
 				local desolate = unit:FindModifierByNameAndCaster( "modifier_spectre_desolate_lua", caster )
-				local modifier_attack_bonus = nil
 			
 				-- If have the debuff, adds extra attack and extends debuff duration
 				if desolate ~= nil then
-					modifier_attack_bonus = caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_lua", {})
+					caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_lua", {})
 					caster:Heal( heal_amount, self )
-					self:PlayEffects_c()
+					self:PlayEffects_d()
 				end
 			
 				-- perform the actual attack
@@ -96,19 +95,17 @@ function spectre_basic_attack_lua:OnSpellStart()
 					false, -- bool bFakeAttack
 					false -- bool bNeverMiss
 				)
-			
-				--Remove the extra attack
-				if modifier_attack_bonus ~= nil then
-					if not modifier_attack_bonus:IsNull() then
-						modifier_attack_bonus:Destroy()
-					end
-				end
 
-				self:PlayEffects_b(_self:GetPosition())
+				self:PlayEffects_b(unit)
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
+				if next(_self.rehit) == nil then
+					self:PlayEffects_c(pos)
+				end
 				self:PlayEffects_a(pos)
+				--Remove the extra attack
+				SafeDestroyModifier("modifier_spectre_basic_attack_lua", caster, caster)
 			end,
 		}
 		-- Cast projectile
@@ -117,16 +114,11 @@ function spectre_basic_attack_lua:OnSpellStart()
 end
 
 --------------------------------------------------------------------------------
--- Effects
+-- Graphics & sounds
 
--- On Miss
+-- On Projectile finish
 function spectre_basic_attack_lua:PlayEffects_a( pos )
 	local caster = self:GetCaster()
-
-	-- Create Sound
-	local sound_cast = "Hero_Spectre.PreAttack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
-	
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
@@ -136,23 +128,21 @@ function spectre_basic_attack_lua:PlayEffects_a( pos )
 end
 
 -- On hit enemy
-function spectre_basic_attack_lua:PlayEffects_b( pos )
-	local caster = self:GetCaster()
-
+function spectre_basic_attack_lua:PlayEffects_b( hTarget )
 	-- Create Sound
 	local sound_cast = "Hero_Spectre.Attack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOn( sound_cast, hTarget )
+end
 
-	-- Create Particles
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos)
-	ParticleManager:SetParticleControlForward( effect_cast, 0, (caster:GetOrigin()-pos):Normalized() * -1 )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+-- On Projectile miss
+function spectre_basic_attack_lua:PlayEffects_c( pos )
+	-- Create Sound
+	local sound_cast = "Hero_Spectre.PreAttack"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 end
 
 -- On self when lifestealing
-function spectre_basic_attack_lua:PlayEffects_c()
+function spectre_basic_attack_lua:PlayEffects_d()
 	-- Heal Particles
 	local particle_cast = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
 

@@ -95,8 +95,6 @@ function phantom_assassin_special_attack_lua:OnSpellStart()
 					"modifier_generic_fading_slow_lua", -- modifier name
 					{ duration = slow_duration } -- kv
 				)
-
-				self:PlayEffects_a(_self:GetPosition())
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
@@ -105,10 +103,8 @@ function phantom_assassin_special_attack_lua:OnSpellStart()
 		}
 
 		self:PlayEffects_b()
-
 		-- Cast projectile
 		Projectiles:CreateProjectile(projectile)
-
 		
 		-- Put CD on the alternate of the ability
 		local alternate_version = caster:FindAbilityByName("phantom_assassin_ex_special_attack_lua")
@@ -121,13 +117,11 @@ end
 --------------------------------------------------------------------------------
 -- Effects
 
--- On Miss
+-- On Projectile Finish
 function phantom_assassin_special_attack_lua:PlayEffects_a( pos )
-	local caster = self:GetCaster()
-
 	-- Create Sound
 	local sound_cast = "Hero_PhantomAssassin.Dagger.Target"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 	
 	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger_explosion.vpcf"
@@ -137,11 +131,9 @@ function phantom_assassin_special_attack_lua:PlayEffects_a( pos )
 end
 
 function phantom_assassin_special_attack_lua:PlayEffects_b( )
-	local caster = self:GetCaster()
-
 	-- Create Sound
 	local sound_cast = "Hero_PhantomAssassin.Dagger.Cast"
-	EmitSoundOn( sound_cast, caster )
+	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
 function phantom_assassin_special_attack_lua:Animate(point)

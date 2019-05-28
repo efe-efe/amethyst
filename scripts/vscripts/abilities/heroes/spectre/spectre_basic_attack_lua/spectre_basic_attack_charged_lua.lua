@@ -77,10 +77,8 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 			OnUnitHit = function(_self, unit) 
 				--Adds the damage bonus modifier
-				self.modifier_attack_bonus = caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_lua", {})
+				caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_lua", {})
 			
-				-- Hit
-				--------------------
 				-- perform the actual attack
 				_self.Source:PerformAttack(
 					unit, -- handle hTarget 
@@ -92,37 +90,27 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 					false, -- bool bFakeAttack
 					false -- bool bNeverMiss
 				)
-
-				self:PlayEffects_a(unit)
+				
 				_self.Source:Heal( heal_amount, self )
 
 				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = debuff_duration})
 				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", {})
 
-				--Remove the extra attack
-				if self.modifier_attack_bonus ~= nil then
-					if not self.modifier_attack_bonus:IsNull() then
-						self.modifier_attack_bonus:Destroy()
-					end
-				end
+				self:PlayEffects_b(unit)
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
-				
-				--Remove the extra attack
-				if self.modifier_attack_bonus ~= nil then
-					if not self.modifier_attack_bonus:IsNull() then
-						self.modifier_attack_bonus:Destroy()
-					end
+				if next(_self.rehit) == nil then
+					self:PlayEffects_c(pos)
 				end
-				self:PlayEffects_b()
-				--self:PlayEffects_a(pos)
+				SafeDestroyModifier("modifier_spectre_basic_attack_charged_lua", caster, caster)
+				self:PlayEffects_a(pos)
 			end,
 		}
 
-		--Identify the non charged version, and puts it on cooldown
-		local non_charged_version = caster:FindAbilityByName("spectre_basic_attack_lua")
-		non_charged_version:StartCooldown(attack_speed)
+		--Identify the alternate version, and puts it on cooldown
+		local alternate_version = caster:FindAbilityByName("spectre_basic_attack_lua")
+		alternate_version:StartCooldown(attack_speed)
 
 		-- Put the non charged ability on the basic attack slot
 		caster:SwapAbilities( 
@@ -138,65 +126,13 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 		--Adds the timer that swaps the abilities
 		caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_timer_lua", {duration = self:GetCooldown(0)})
 
-		self:PlayEffectsOnCast()
-
 		-- Cast projectile
 		Projectiles:CreateProjectile(projectile)
 	end)
 end
 
 --------------------------------------------------------------------------------
--- Effects
-
--- Self glow on cast
--------------------------
-function spectre_basic_attack_charged_lua:PlayEffectsOnCast()
-    -- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
--- Hit attack effects
--------------------------
-function spectre_basic_attack_charged_lua:PlayEffects_a(hTarget)
-	local caster = self:GetCaster()
-	-- Create Sound
-	local sound_cast = "Hero_BountyHunter.Jinada"
-	EmitSoundOn( sound_cast, caster )
-
-	-- Load Particles
-	local particle_cast_a = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
-	local particle_cast_b = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
-	local particle_cast_c = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
-
-    -- Create Particles
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, caster )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_POINT, hTarget )
-	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, caster )
-	
-	-- Set control points
-	ParticleManager:SetParticleControl( effect_cast_c, 2, caster:GetOrigin())
-
-	-- Release Particles
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
-	ParticleManager:ReleaseParticleIndex( effect_cast_c )
-end
-	
---Miss attack effects
--------------------------
-function spectre_basic_attack_charged_lua:PlayEffects_b()
-	local caster = self:GetCaster()
-	-- Create Sound
-	local sound_cast = "Hero_Spectre.PreAttack"
-	EmitSoundOn( sound_cast, caster )
-
-	-- Create Particles
-	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-	ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
+-- Misc
 
 -- Add mana on attack modifier and visuals. Only first time upgraded
 function spectre_basic_attack_charged_lua:OnUpgrade()
@@ -208,6 +144,45 @@ function spectre_basic_attack_charged_lua:OnUpgrade()
 		-- Gain mana
 		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 	end
+end
+
+--------------------------------------------------------------------------------
+-- Graphics & sounds
+
+-- On Projectile Finish
+function spectre_basic_attack_charged_lua:PlayEffects_a()
+	local caster = self:GetCaster()
+	-- Create Particles
+	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
+	ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+-- On Projectile hit enemy
+-------------------------
+function spectre_basic_attack_charged_lua:PlayEffects_b(hTarget)
+	-- Create Sound
+	local sound_cast = "Hero_BountyHunter.Jinada"
+	EmitSoundOn( sound_cast, hTarget )
+   
+	-- Create Particles
+	local particle_cast_a = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
+	local particle_cast_b = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
+
+	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_POINT, hTarget )
+	
+	ParticleManager:ReleaseParticleIndex( effect_cast_a )
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+end
+	
+-- On Projectile Miss
+-------------------------
+function spectre_basic_attack_charged_lua:PlayEffects_c(pos)
+	-- Create Sound
+	local sound_cast = "Hero_Spectre.PreAttack"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 end
 
 function spectre_basic_attack_charged_lua:Animate(point)

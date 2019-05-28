@@ -105,7 +105,6 @@ function spectre_special_attack_lua:OnSpellStart()
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
-				--self:PlayEffects_b(pos)
 			end,
 		}
 	
@@ -152,20 +151,21 @@ function spectre_special_attack_lua:OnSpellStart()
 	end)
 end
 
+--------------------------------------------------------------------------------
+-- Graphics & sounds
+
+-- On Ability start
 function spectre_special_attack_lua:PlayEffects_a()
-	-- Get Resources
-	local sound_cast = "Hero_Spectre.DaggerCast"
 	-- Create Sound
+	local sound_cast = "Hero_Spectre.DaggerCast"
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
+-- On Projectile hit an enemy
 function spectre_special_attack_lua:PlayEffects_b(hTarget)
-	-- Get Resources
-	local sound_cast = "Hero_Spectre.DaggerImpact"
 	-- Create Sound
+	local sound_cast = "Hero_Spectre.DaggerImpact"
 	EmitSoundOn( sound_cast, self:GetCaster() )
-
-	-- Create Particles
 end
 
 function spectre_special_attack_lua:Animate(point)

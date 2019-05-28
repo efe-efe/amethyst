@@ -577,8 +577,8 @@ function Projectiles:InitialSetup(projectile)
 
     -- Initial setup
     projectile.rehit =              {}
-    projectile.actualPosition =                projectile.vSpawnOrigin
-    projectile.actualVelocity =                projectile.vVelocity / 30
+    projectile.actualPosition =     projectile.vSpawnOrigin
+    projectile.actualVelocity =     projectile.vVelocity / 30
     projectile.prevVel =            projectile.actualVelocity
     projectile.prevPos =            projectile.vSpawnOrigin
     projectile.radius =             projectile.fStartRadius

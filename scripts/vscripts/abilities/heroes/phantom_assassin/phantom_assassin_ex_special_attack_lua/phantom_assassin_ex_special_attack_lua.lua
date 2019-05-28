@@ -11,7 +11,6 @@ end
 function phantom_assassin_ex_special_attack_lua:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 	local sleep_duration = self:GetSpecialValueFor("sleep_duration")
@@ -74,7 +73,6 @@ function phantom_assassin_ex_special_attack_lua:OnSpellStart()
 				{ duration = sleep_duration } -- kv
 			)
 
-			self:PlayEffects_a(_self:GetPosition())
 			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
@@ -95,13 +93,11 @@ end
 --------------------------------------------------------------------------------
 -- Effects
 
--- On Miss
+-- On Projectile finish
 function phantom_assassin_ex_special_attack_lua:PlayEffects_a( pos )
-	local caster = self:GetCaster()
-
 	-- Create Sound
 	local sound_cast = "Hero_PhantomAssassin.Dagger.Target"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 	
 	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger_explosion.vpcf"
@@ -110,11 +106,9 @@ function phantom_assassin_ex_special_attack_lua:PlayEffects_a( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-
+-- On ability start
 function phantom_assassin_ex_special_attack_lua:PlayEffects_b( )
-	local caster = self:GetCaster()
-
 	-- Create Sound
 	local sound_cast = "Hero_PhantomAssassin.Dagger.Cast"
-	EmitSoundOn( sound_cast, caster )
+	EmitSoundOn( sound_cast, self:GetCaster() )
 end

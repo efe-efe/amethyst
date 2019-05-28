@@ -9,9 +9,7 @@ function phantom_assassin_ultimate_lua:OnAbilityPhaseStart()
 end
 
 function phantom_assassin_ultimate_lua:OnAbilityPhaseInterrupted()
-	ParticleManager:DestroyParticle( self.effect_cast_a, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast_a )
-
+	self:StopEffects_a()
 	return true -- if success
 end
 
@@ -99,6 +97,7 @@ function phantom_assassin_ultimate_lua:OnSpellStart()
 	Projectiles:CreateProjectile(projectile)
 end
 
+-- On ability initially cast
 function phantom_assassin_ultimate_lua:PlayEffects_a()
 	local point = self:GetCursorPosition()
 	local origin = self:GetCaster():GetOrigin()
@@ -118,11 +117,17 @@ function phantom_assassin_ultimate_lua:PlayEffects_a()
 
     ParticleManager:SetParticleControl( self.effect_cast_a, 0, target )
 	ParticleManager:SetParticleControl( effect_cast_b, 3, target )
-	
+
 	ParticleManager:ReleaseParticleIndex( effect_cast_b )
-	
 end
 
+function phantom_assassin_ultimate_lua:StopEffects_a()
+	ParticleManager:DestroyParticle( self.effect_cast_a, false )
+	ParticleManager:ReleaseParticleIndex( self.effect_cast_a )
+end
+
+
+-- On projectile finish
 function phantom_assassin_ultimate_lua:PlayEffects_b(pos)
 	-- Cast Sound
     local sound_cast_a = "Hero_PhantomAssassin.Strike.End"
@@ -137,15 +142,14 @@ function phantom_assassin_ultimate_lua:PlayEffects_b(pos)
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
+-- On Projectile hit an enemy
 function phantom_assassin_ultimate_lua:PlayEffects_c(hTarget)
 	-- Cast Sound
     local sound_cast = "Hero_PhantomAssassin.Spatter"
     local sound_cast_b = "Hero_PhantomAssassin.CoupDeGrace"
 
-    EmitSoundOnLocationWithCaster(hTarget:GetOrigin(), sound_cast, self:GetCaster())
-    EmitSoundOnLocationWithCaster(hTarget:GetOrigin(), sound_cast_b, self:GetCaster())
-
-
+    EmitSoundOn(sound_cast, hTarget:GetOrigin())
+    EmitSoundOn(sound_cast, hTarget:GetOrigin())
 
     -- Cast Particles
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_impact_dagger_arcana.vpcf"
@@ -155,7 +159,7 @@ function phantom_assassin_ultimate_lua:PlayEffects_c(hTarget)
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-
+-- On spell start
 function phantom_assassin_ultimate_lua:PlayEffects_d()
     -- Cast Particles
     local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf"
@@ -164,5 +168,4 @@ function phantom_assassin_ultimate_lua:PlayEffects_d()
 
 	ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
-	
 end

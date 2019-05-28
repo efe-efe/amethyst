@@ -90,10 +90,13 @@ function phantom_assassin_basic_attack_lua:OnSpellStart()
 					{} -- kv
 				)
 
-				self:PlayEffects_b(_self:GetPosition())
+				self:PlayEffects_b(unit)
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
+				if next(_self.rehit) == nil then
+					self:PlayEffects_c(pos)
+				end
 				self:PlayEffects_a(pos)
 			end,
 		}
@@ -104,9 +107,20 @@ function phantom_assassin_basic_attack_lua:OnSpellStart()
 end
 
 --------------------------------------------------------------------------------
--- Effects
+-- Misc
+-- Add mana on attack modifier. Only first time upgraded
+function phantom_assassin_basic_attack_lua:OnUpgrade()
+	if self:GetLevel()==1 then
+		local caster = self:GetCaster()
+		-- Gain mana
+		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+	end
+end
 
--- On Miss
+--------------------------------------------------------------------------------
+-- Graphics & sounds
+
+-- On Projectile Finish
 function phantom_assassin_basic_attack_lua:PlayEffects_a( pos )
 	local caster = self:GetCaster()
 	local offset = 40
@@ -114,10 +128,6 @@ function phantom_assassin_basic_attack_lua:PlayEffects_a( pos )
 	local direction_normalized = (pos - origin):Normalized()
 	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
 
-	-- Create Sound
-	local sound_cast = "Hero_PhantomAssassin.PreAttack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
-	
 	-- Create Particles
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_blinkb.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
@@ -125,23 +135,16 @@ function phantom_assassin_basic_attack_lua:PlayEffects_a( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
--- On hit enemy
-function phantom_assassin_basic_attack_lua:PlayEffects_b( pos )
-	local caster = self:GetCaster()
-	local offset = 40
-	local origin = caster:GetOrigin()
-	local direction_normalized = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
-
-	-- Create Sound
+-- On Projectile Hit enemy
+function phantom_assassin_basic_attack_lua:PlayEffects_b( hTarget )
 	local sound_cast = "Hero_PhantomAssassin.Attack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
-	
-	-- Create Particles
-	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_blinkb.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	EmitSoundOn( sound_cast, hTarget )
+end
+
+-- On Projectile miss
+function phantom_assassin_basic_attack_lua:PlayEffects_c( pos )
+	local sound_cast = "Hero_PhantomAssassin.PreAttack"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 end
 
 function phantom_assassin_basic_attack_lua:Animate(point)
@@ -156,11 +159,3 @@ function phantom_assassin_basic_attack_lua:Animate(point)
 	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_SPAWN, rate=2.0})
 end
 
--- Add mana on attack modifier. Only first time upgraded
-function phantom_assassin_basic_attack_lua:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
-end

@@ -81,7 +81,6 @@ function sniper_basic_attack_lua:OnSpellStart()
 					false -- bool bNeverMiss
 				)
 
-				self:PlayEffects_b(_self:GetPosition())
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
@@ -92,6 +91,44 @@ function sniper_basic_attack_lua:OnSpellStart()
 		self:PlayEffects_a()
 		Projectiles:CreateProjectile(projectile)
 	end)
+end
+
+--------------------------------------------------------------------------------
+-- Misc
+-- Add mana on attack modifier. Only first time upgraded
+function sniper_basic_attack_lua:OnUpgrade()
+	if self:GetLevel()==1 then
+		local caster = self:GetCaster()
+		-- Gain mana
+		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+	end
+end
+
+--------------------------------------------------------------------------------
+-- Graphics & sounds
+
+-- On ability start
+function sniper_basic_attack_lua:PlayEffects_a()
+	-- Create Sound
+	local sound_cast = "Hero_Sniper.MKG_attack"	
+	EmitSoundOn( sound_cast, self:GetCaster() )
+end
+
+
+-- On Projectile finish
+function sniper_basic_attack_lua:PlayEffects_b( pos )
+	local caster = self:GetCaster()
+	
+	-- Create Sound
+	local sound_cast = "Hero_Sniper.ProjectileImpact"
+	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+
+	-- Create Particle
+	local particle_cast = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack_explosion.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
+	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 function sniper_basic_attack_lua:Animate(point)
@@ -105,36 +142,5 @@ function sniper_basic_attack_lua:Animate(point)
 	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_RUN, translate="aggressive", rate=2.0})
 end
 
-function sniper_basic_attack_lua:PlayEffects_a()
-	-- Cast Sound
-	local sound_cast = "Hero_Sniper.MKG_attack"	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster() )
-end
 
-
--- On hit wall 
-function sniper_basic_attack_lua:PlayEffects_b( pos )
-	local caster = self:GetCaster()
-	
-	-- Cast Sound
-	local sound_cast = "Hero_Sniper.ProjectileImpact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
-
-	-- Cast Particle
-	local particle_cast = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
-
--- Add mana on attack modifier. Only first time upgraded
-function sniper_basic_attack_lua:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
-end
 

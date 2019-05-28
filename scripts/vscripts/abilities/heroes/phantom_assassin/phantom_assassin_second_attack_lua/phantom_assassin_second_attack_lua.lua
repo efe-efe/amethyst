@@ -87,13 +87,15 @@ function phantom_assassin_second_attack_lua:OnSpellStart()
 				local mana_gain_final = caster:GetMaxMana() * mana_gain
 				caster:GiveMana(mana_gain_final)
 
-				self:PlayEffects_b(unit)
+				self:PlayEffects_a(unit)
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
-				SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
+				if next(_self.rehit) == nil then
+					self:PlayEffects_b(pos)
+				end
 
-				self:PlayEffects_a(pos)
+				SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
 			end,
 		}
 		-- Cast projectile
@@ -105,42 +107,62 @@ end
 --------------------------------------------------------------------------------
 -- Effects
 
--- On Miss
-function phantom_assassin_second_attack_lua:PlayEffects_a( pos )
+-- On Projectile Hit enemy
+function phantom_assassin_second_attack_lua:PlayEffects_a( hTarget )
+	-- Create Sound
+	local sound_cast_a = "Hero_PhantomAssassin.Arcana_Layer"
+	local sound_cast_b = "Hero_PhantomAssassin.Attack"
+
+	EmitSoundOn( sound_cast_a, hTarget )
+	EmitSoundOn( sound_cast_b, hTarget )
+
+	-- Create Particles
 	local caster = self:GetCaster()
-	local offset = 40
+	local offset = 100
 	local origin = caster:GetOrigin()
-	local direction_normalized = (pos - origin):Normalized()
+	local direction_normalized = (hTarget:GetOrigin() - origin):Normalized()
 	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
+
+	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_r.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
+    ParticleManager:SetParticleControl( effect_cast, 1, final_position )
+    ParticleManager:SetParticleControlForward( effect_cast, 1, (origin - final_position):Normalized() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+-- On Projectile Miss
+function phantom_assassin_second_attack_lua:PlayEffects_b(pos)
+	local caster = self:GetCaster()
 
 	-- Create Sound
 	local sound_cast = "Hero_PhantomAssassin.PreAttack"
 	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
-	
+
 	-- Create Particles
-	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_r.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-    ParticleManager:SetParticleControl( effect_cast, 1, pos )
-    ParticleManager:SetParticleControlForward( effect_cast, 1, (self:GetCaster():GetOrigin()-pos):Normalized() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
+	local offset = 100
+	local origin = caster:GetOrigin()
+	local direction_normalized = (pos - origin):Normalized()
+	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
 
--- On hit enemy
-function phantom_assassin_second_attack_lua:PlayEffects_b( hTarget )
-    local caster = self:GetCaster()
-    local pos = hTarget:GetOrigin()
+	local particle_cast_a = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_a.vpcf"
+	local particle_cast_b = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_b.vpcf"
+	local particle_cast_c = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_c.vpcf"
 
-		-- Create Sound
-	local sound_cast_a = "Hero_PhantomAssassin.Arcana_Layer"
-	EmitSoundOn( sound_cast_a, hTarget )
-	local sound_cast_b = "Hero_PhantomAssassin.Attack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast_b, caster )
-	
-	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_r.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, hTarget )
-    ParticleManager:SetParticleControl( effect_cast, 1, pos )
-    ParticleManager:SetParticleControlForward( effect_cast, 1, (self:GetCaster():GetOrigin()-hTarget:GetOrigin()):Normalized() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_POINT, caster )
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_POINT, caster )
+	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_POINT, caster )
+
+	ParticleManager:SetParticleControl( effect_cast_a, 1, final_position )
+	ParticleManager:SetParticleControl( effect_cast_b, 1, final_position )
+	ParticleManager:SetParticleControl( effect_cast_c, 1, final_position )
+
+	ParticleManager:SetParticleControlForward( effect_cast_a, 1, (origin - final_position):Normalized() )
+	ParticleManager:SetParticleControlForward( effect_cast_b, 1, (origin - final_position):Normalized() )
+	ParticleManager:SetParticleControlForward( effect_cast_c, 1, (origin - final_position):Normalized() )
+
+	ParticleManager:ReleaseParticleIndex( effect_cast_a )
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	ParticleManager:ReleaseParticleIndex( effect_cast_c )
 end
 
 function phantom_assassin_second_attack_lua:Animate(point)
