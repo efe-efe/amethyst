@@ -28,5 +28,11 @@
             "Command"   "-CustomGameExecuteAbility3"
             "Name"      "Execute ex ability two"
         }
+        "04"
+        {
+            "Key"       "Q"
+            "Command"   "-CustomGameExecuteAbility4"
+            "Name"      "Execute basic attack"
+        }
     }
 }

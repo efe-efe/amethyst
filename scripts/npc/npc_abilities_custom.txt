@@ -1449,7 +1449,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"skywrath_mage_second_attack_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"MaxLevel"						"1"
@@ -2658,6 +2658,50 @@
 		}
 	}
 
+	"phantom_assassin_ex_basic_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom_assassin/phantom_assassin_ex_basic_attack_lua/phantom_assassin_ex_basic_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phantom_assassin_ex_basic_attack_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.2"
+		"AnimationPlaybackRate"			"1.5"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"2.0"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"heal"						"5"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"charges"					"5"
+			}
+		}
+	}
+
 	"phantom_assassin_second_attack_lua"
 	{
 		"BaseClass"						"ability_lua"
@@ -3013,7 +3057,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phantom_assassin_ex_ultimate_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"MaxLevel"						"1"
 		
 		// Casting
@@ -3061,50 +3105,6 @@
 		}
 	}
 
-	"phantom_assassin_ex_basic_attack_lua"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom_assassin/phantom_assassin_ex_basic_attack_lua/phantom_assassin_ex_basic_attack_lua"
-		
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"phantom_assassin_ex_basic_attack_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"MaxLevel"						"1"
-
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.2"
-		"AnimationPlaybackRate"			"1.5"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
-
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"25"
-
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"2.0"
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"heal"						"5"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"charges"					"5"
-			}
-		}
-	}
-	
 
 	//=================================================================================================================
 	// Builder

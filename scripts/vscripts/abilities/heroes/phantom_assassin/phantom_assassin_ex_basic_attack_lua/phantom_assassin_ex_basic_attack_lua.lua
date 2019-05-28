@@ -11,4 +11,18 @@ function phantom_assassin_ex_basic_attack_lua:OnSpellStart()
         "modifier_phantom_assassin_ex_basic_attack_lua",
         {}
     )
+
+    self:PlayEffects()
 end
+
+
+function phantom_assassin_ex_basic_attack_lua:PlayEffects()
+    local caster = self:GetCaster()
+
+    -- Create Particles
+    local particle_cast = "particles/units/heroes/hero_demonartist/demonartist_spiritwalk_buff_start_rope.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
+	ParticleManager:SetParticleControl( effect_cast, 3, caster:GetOrigin() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+

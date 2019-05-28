@@ -28,6 +28,26 @@ function modifier_phantom_assassin_ex_basic_attack_lua:OnCreated( kv )
 
 
 		self:SetStackCount(charges)
+
+
+		local particle_cast = "particles/units/heroes/hero_skeletonking/wraith_king_reincarnate_slow_debuff.vpcf"
+        local origin = self:GetParent():GetOrigin()
+        
+        self.effect_cast = ParticleManager:CreateParticle( 
+            particle_cast, 
+            PATTACH_CUSTOMORIGIN, 
+            nil
+        )
+
+        ParticleManager:SetParticleControlEnt( 
+            self.effect_cast, 
+            0, 
+            self:GetParent(), 
+            PATTACH_POINT_FOLLOW, 
+            "attach_attack1", 
+            origin + Vector( 0, 0, 96 ), 
+            true 
+        )
 	end
 end
 
@@ -43,7 +63,10 @@ function modifier_phantom_assassin_ex_basic_attack_lua:OnRefresh( kv )
 end
 
 function modifier_phantom_assassin_ex_basic_attack_lua:OnDestroy( kv )
-
+	if IsServer() then
+		ParticleManager:DestroyParticle( self.effect_cast, false )
+		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	end
 end
 --------------------------------------------------------------------------------
 -- Modifier Effects
