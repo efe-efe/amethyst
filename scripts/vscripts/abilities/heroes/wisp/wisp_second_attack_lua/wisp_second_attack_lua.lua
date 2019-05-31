@@ -94,7 +94,7 @@ function wisp_second_attack_lua:OnSpellStart()
 
 	self:PlayEffects_a()
 
-	-- Put CD on the ex version of the ability
+	-- Put CD on the alternate version of the ability
 	local ex_version = caster:FindAbilityByName("wisp_ex_second_attack_lua")
 	ex_version:StartCooldown(self:GetCooldown(0))
 

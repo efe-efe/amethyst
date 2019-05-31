@@ -1,4 +1,5 @@
 modifier_phantom_assassin_counter_lua = class({})
+LinkLuaModifier( "modifier_phantom_assassin_counter_buff_lua", "abilities/heroes/phantom_assassin/phantom_assassin_counter_lua/modifier_phantom_assassin_counter_buff_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 function modifier_phantom_assassin_counter_lua:IsDebuff()
@@ -28,6 +29,17 @@ end
 function modifier_phantom_assassin_counter_lua:OnDestroy( kv )
 	if IsServer() then
 		self:GetParent():RemoveNoDraw()
+
+		-- Add speed buff
+        local speed_duration = self:GetAbility():GetSpecialValueFor( "speed_duration" )
+
+		self:GetParent():AddNewModifier(
+			self:GetParent(),
+			self:GetAbility(),
+			"modifier_phantom_assassin_counter_buff_lua",
+			{ duration = speed_duration }
+		)
+
 		self:PlayEffects_b()
 	end
 end

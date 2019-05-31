@@ -148,8 +148,8 @@ function phantom_assassin_ultimate_lua:PlayEffects_c(hTarget)
     local sound_cast = "Hero_PhantomAssassin.Spatter"
     local sound_cast_b = "Hero_PhantomAssassin.CoupDeGrace"
 
-    EmitSoundOn(sound_cast, hTarget:GetOrigin())
-    EmitSoundOn(sound_cast, hTarget:GetOrigin())
+    EmitSoundOn(sound_cast, hTarget)
+    EmitSoundOn(sound_cast, hTarget)
 
     -- Cast Particles
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_impact_dagger_arcana.vpcf"

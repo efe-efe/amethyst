@@ -1,5 +1,12 @@
 phantom_assassin_counter_lua = class({})
 LinkLuaModifier( "modifier_phantom_assassin_counter_lua", "abilities/heroes/phantom_assassin/phantom_assassin_counter_lua/modifier_phantom_assassin_counter_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_charges", "abilities/generic/modifier_generic_charges", LUA_MODIFIER_MOTION_NONE )
+
+--------------------------------------------------------------------------------
+-- Passive Modifier
+function phantom_assassin_counter_lua:GetIntrinsicModifierName()
+	return "modifier_generic_charges"
+end
 
 --------------------------------------------------------------------------------
 -- Ability Start

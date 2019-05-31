@@ -90,6 +90,18 @@ function phantom_assassin_basic_attack_lua:OnSpellStart()
 					{} -- kv
 				)
 
+				-- Reduce the cd of the second attack by 1
+				local second_attack = caster:FindAbilityByName("phantom_assassin_second_attack_lua")
+				local second_attack_cd = second_attack:GetCooldownTimeRemaining()
+				local new_cd = second_attack_cd - 1.0
+
+				if (new_cd) < 0 then 
+					second_attack:EndCooldown()
+				else
+					second_attack:EndCooldown()
+					second_attack:StartCooldown(new_cd)
+				end
+
 				self:PlayEffects_b(unit)
 				_self.Destroy()
 			end,

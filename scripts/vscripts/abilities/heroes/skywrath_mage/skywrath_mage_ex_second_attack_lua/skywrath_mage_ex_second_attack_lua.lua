@@ -104,9 +104,9 @@ function skywrath_mage_ex_second_attack_lua:OnSpellStart()
 
 	self:PlayEffects_a()
 
-	-- Put CD on the non ex version of the ability
-	local non_ex_version = caster:FindAbilityByName("skywrath_mage_second_attack_lua")
-	non_ex_version:StartCooldown(self:GetCooldown(0))
+	-- Put CD on the alternate version of the ability
+	local alternate_version = caster:FindAbilityByName("skywrath_mage_second_attack_lua")
+	alternate_version:StartCooldown(self:GetCooldown(0))
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)

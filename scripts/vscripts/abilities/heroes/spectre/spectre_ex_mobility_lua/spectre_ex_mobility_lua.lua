@@ -10,8 +10,8 @@ function spectre_ex_mobility_lua:OnSpellStart()
 
     caster:AddNewModifier(caster, self, "modifier_spectre_ex_mobility_lua", { duration = duration })
 
-    -- Put CD on the non ex version of the ability
-    local non_ex_version = caster:FindAbilityByName("spectre_mobility_lua")
-    non_ex_version:StartCooldown(self:GetCooldown(0))
+    -- Put CD on the alternate version of the ability
+    local alternate_version = caster:FindAbilityByName("spectre_mobility_lua")
+    alternate_version:StartCooldown(self:GetCooldown(0))
 end
 

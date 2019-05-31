@@ -26,9 +26,9 @@ function wisp_ex_special_attack_lua:OnSpellStart()
         false --bPhantomBlocker
     )
 
-    -- Put CD on the non ex version of the ability
-    local non_ex_version = caster:FindAbilityByName("wisp_special_attack_lua")
-	non_ex_version:StartCooldown(self:GetCooldown(0))
+    -- Put CD on the alternate version of the ability
+    local alternate_version = caster:FindAbilityByName("wisp_special_attack_lua")
+	alternate_version:StartCooldown(self:GetCooldown(0))
     self:PlayEffects()
 end
 

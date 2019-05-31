@@ -31,8 +31,38 @@
         "04"
         {
             "Key"       "Q"
-            "Command"   "-CustomGameExecuteAbility4"
+            "Command"   "-CustomGameExecuteAbilityQ"
             "Name"      "Execute basic attack"
+        }
+        "05"
+        {
+            "Key"       "W"
+            "Command"   "-CustomGameExecuteAbilityW"
+            "Name"      "Execute second attack"
+        }
+        "06"
+        {
+            "Key"       "E"
+            "Command"   "-CustomGameExecuteAbilityE"
+            "Name"      "Execute counter"
+        }
+        "07"
+        {
+            "Key"       "D"
+            "Command"   "-CustomGameExecuteAbilityD"
+            "Name"      "Execute special attack"
+        }
+        "08"
+        {
+            "Key"       "F"
+            "Command"   "-CustomGameExecuteAbilityF"
+            "Name"      "Execute ex ultimate"
+        }
+        "09"
+        {
+            "Key"       "R"
+            "Command"   "-CustomGameExecuteAbilityR"
+            "Name"      "Execute ultimate attack"
         }
     }
 }

@@ -95,22 +95,19 @@ function sniper_ex_mobility_lua:OnSpellStart()
     }
 
     Projectiles:CreateProjectile(projectile)
-    self:PlayEffects( point )
+    self:PlayEffects_a( point )
     
-    -- Put CD on the non ex version of the ability
-	local non_ex_version = caster:FindAbilityByName("sniper_mobility_lua")
-	non_ex_version:StartCooldown(self:GetCooldown(0))
+    -- Put CD on the alternate version of the ability
+	local alternate_version = caster:FindAbilityByName("sniper_mobility_lua")
+	alternate_version:StartCooldown(self:GetCooldown(0))
 
 end
 
 --------------------------------------------------------------------------------
-function sniper_ex_mobility_lua:PlayEffects( point )
+function sniper_ex_mobility_lua:PlayEffects_a( point )
 	-- Cast Sound
 	local sound_cast = "Hero_Sniper.ShrapnelShoot"
     EmitSoundOn( sound_cast, self:GetCaster() )
-    
-    
-
 end
 
 -- On hit wall 

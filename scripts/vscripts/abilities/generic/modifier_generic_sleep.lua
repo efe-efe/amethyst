@@ -36,7 +36,10 @@ end
 
 function modifier_generic_sleep:OnTakeDamage( params )
 	if not IsServer() then return end
-	self:Destroy()
+		-- filter
+		if params.unit==self:GetParent() then
+			self:Destroy()
+		end
 end
 --------------------------------------------------------------------------------
 

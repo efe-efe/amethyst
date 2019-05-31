@@ -32,9 +32,11 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 	self:Animate(point)
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
 
-	Timers:CreateTimer(cast_point, function()	-- Cast projectile
+	Timers:CreateTimer(cast_point, function()	
+		self:StartCooldown(attack_speed)
+
+		-- Dynamic data
 		local origin = caster:GetOrigin()
-	
 		local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	
 		local projectile = {
@@ -72,12 +74,7 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 				-- Hit
 				--------------------
 				-- Add damage
-				modifier_attack_bonus = _self.Source:AddNewModifier(
-					_self.Source, 
-					self , 
-					"modifier_skywrath_mage_basic_attack_lua", 
-					{}
-				)
+				_self.Source:AddNewModifier(_self.Source, self, "modifier_skywrath_mage_basic_attack_lua", {})
 	
 				-- perform the actual attack
 				_self.Source:PerformAttack(
@@ -95,24 +92,19 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = debuff_duration})
 				unit:AddNewModifier(_self.Source, self , "modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", { duration = debuff_duration})
 	
-				--Remove the extra attack
-				if modifier_attack_bonus ~= nil then
-					if not modifier_attack_bonus:IsNull() then
-						modifier_attack_bonus:Destroy()
-					end
-				end
-	
 				self:PlayEffects_b(_self:GetPosition())
 				_self.Destroy()
 			end,
 			OnFinish = function(_self, pos)
+				--Remove the extra attack
+				SafeDestroyModifier("modifier_skywrath_mage_basic_attack_lua", _self.Source, _self.Source)
 				self:PlayEffects_b(pos)
 			end,
 		}
 	
 		-- Put the non charged ability on the basic attack slot
 		caster:SwapAbilities( 
-			self:GetAbilityName(),
+			"skywrath_mage_basic_attack_charged_lua",
 			"skywrath_mage_basic_attack_lua",
 			false,
 			true
@@ -125,7 +117,6 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 
 		self:PlayEffects_a()
 		Projectiles:CreateProjectile(projectile)	
-		self:StartCooldown(attack_speed)
 		non_charged_version:StartCooldown(attack_speed)
 	end)
 end
