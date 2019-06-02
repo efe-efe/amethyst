@@ -122,6 +122,10 @@ function phantom_assassin_ultimate_lua:PlayEffects_a()
 end
 
 function phantom_assassin_ultimate_lua:StopEffects_a()
+	-- stop effects 
+	local sound_cast = "phantom_assassin_phass_cast_02"
+	StopGlobalSound( sound_cast )
+
 	ParticleManager:DestroyParticle( self.effect_cast_a, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast_a )
 end

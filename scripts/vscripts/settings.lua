@@ -6,6 +6,9 @@ ALLOW_SAME_HERO_SELECTION = true        -- Should we let people select the same 
 PRE_GAME_TIME = 0.0                     -- How long after people select their heroes should the horn blow and the game start?
 
 FIXED_RESPAWN_TIME = 3.0
+if Convars:GetInt('test_mode') == 0 then
+    ENABLE_HERO_RESPAWN = false         -- Should the heroes automatically respawn on a timer or stay dead until manually respawned
+end
 
 GOLD_PER_TICK = 0                       -- How much gold should players get per tick?
 GOLD_TICK_TIME = 0                      -- How long should we wait in seconds between gold ticks?

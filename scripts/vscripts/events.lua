@@ -56,7 +56,55 @@ function GameMode:OnEntityKilled( keys )
     
         DebugPrint("Actual units on Team A " .. self.team_a_actual_units)
         DebugPrint("Actual units on Team B " .. self.team_b_actual_units)
+
+        print(Convars:GetInt('test_mode'))
+        if Convars:GetInt('test_mode') == 0 then
+            if self.team_a_actual_units <= 0 then
+                print("Team B wins the round")
+
+                local heroes = FindUnitsInRadius(
+                    0,	-- int, your team number
+                    Vector(0,0,0),	-- point, center point
+                    nil,	-- handle, cacheUnit. (not known)
+                    FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
+                    DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
+                    DOTA_UNIT_TARGET_HERO,	-- int, type filter
+                    DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
+                    0,	-- int, order filter
+                    false	-- bool, can grow cache
+                )
+
+                for _,heroe in pairs(heroes) do
+                    heroe:SetRespawnsDisabled(false)
+                    heroe:RespawnHero(false, false)
+                    heroe:SetRespawnsDisabled(true)
+                end
+                
+            elseif self.team_b_actual_units <= 0 then
+                print("Team A wins the round")
+                local heroes = FindUnitsInRadius(
+                    0,	-- int, your team number
+                    Vector(0,0,0),	-- point, center point
+                    nil,	-- handle, cacheUnit. (not known)
+                    FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
+                    DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
+                    DOTA_UNIT_TARGET_HERO,	-- int, type filter
+                    DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
+                    0,	-- int, order filter
+                    false	-- bool, can grow cache
+                )
+
+                for _,heroe in pairs(heroes) do
+                    PrintTable(heroe)
+                    heroe:SetRespawnsDisabled(false)
+                    heroe:RespawnHero(false, false)
+                    heroe:SetRespawnsDisabled(true)
+                end
+            end
+        end
     end
+
+
 end
 
 -- Called whenever an ability begins its PhaseStart phase, but before it is actually cast

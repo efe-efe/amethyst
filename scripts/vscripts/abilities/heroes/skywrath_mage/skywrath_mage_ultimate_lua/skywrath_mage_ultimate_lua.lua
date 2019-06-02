@@ -27,6 +27,14 @@ function skywrath_mage_ultimate_lua:OnSpellStart()
     self:PlayEffects()
 end
 
+
+function skywrath_mage_ultimate_lua:OnAbilityPhaseInterrupted()	
+    -- stop effects 
+	local sound_cast = "skywrath_mage_drag_mystic_flare_01"
+	StopGlobalSound( sound_cast )
+	return true -- if success
+end
+
 function skywrath_mage_ultimate_lua:PlayEffects()
     local sound_cast = "Hero_SkywrathMage.MysticFlare.Cast"
 

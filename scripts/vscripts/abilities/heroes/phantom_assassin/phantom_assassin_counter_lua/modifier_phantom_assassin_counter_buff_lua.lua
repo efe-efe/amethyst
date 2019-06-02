@@ -38,7 +38,7 @@ end
 
 --Graphics & Animations
 function modifier_phantom_assassin_counter_buff_lua:GetEffectName()
-	return "particles/items3_fx/silver_edge_slow.vpcf"
+	return "particles/econ/items/axe/ti9_jungle_axe/ti9_jungle_axe_culling_blade_sprint.vpcf"
 end
 
 function modifier_phantom_assassin_counter_buff_lua:GetEffectAttachType()

@@ -8,6 +8,16 @@ function sniper_ultimate_lua:OnAbilityPhaseStart()
 	return true -- if success
 end
 
+
+function sniper_ultimate_lua:OnAbilityPhaseInterrupted()	
+    -- stop effects 
+	local sound_cast = "sniper_snip_ability_assass_02"
+	StopGlobalSound( sound_cast )
+	return true -- if success
+end
+
+
+
 function sniper_ultimate_lua:OnSpellStart()
     local caster = self:GetCaster()
     local attack_time = 3.5

@@ -24,9 +24,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
 		"AbilityCastPoint"				"0.0"
-		"AnimationPlaybackRate" 		"2.0"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -2211,7 +2209,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AOERadius"						"%hitbox"
+		"AOERadius"						"%radius"
 		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
 		"MaxLevel"						"1"
 
@@ -2811,7 +2809,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"3.5"
+		"AbilityCooldown"				"4.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -2824,7 +2822,7 @@
 			"01"
 			{ 
 				"var_type"				"FIELD_INTEGER"
-				"movement_speed"		"580"
+				"movement_speed"		"600"
 			}
 			"02"
 			{ 
@@ -2938,7 +2936,7 @@
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"9.0"
+		"AbilityCooldown"				"4.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -2971,7 +2969,7 @@
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage"					"12"
+				"damage"					"9"
 			}
 			"06"
 			{
@@ -3122,6 +3120,528 @@
 		}
 	}
 
+	//=================================================================================================================
+	// Axe
+	//=================================================================================================================
+		
+	"axe_basic_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_basic_attack_lua/axe_basic_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_counter_helix"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"150"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"130"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.06"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
+			}
+		}
+	}
+
+	"axe_second_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_second_attack_lua/axe_second_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_battle_hunger"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AOERadius"						"%hitbox"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1300"
+		"AnimationPlaybackRate" 		"1.1"
+		"AbilityCastPoint"				"0.5"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"7.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_earthshaker.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"3.0"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"fading_slow"				"80"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"150"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_second"			"8"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"mana_gain"					"0.06"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"speed_bonus"				"10"
+			}
+		}
+	}
+	
+	"axe_ex_second_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_ex_second_attack_lua/axe_ex_second_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_ex_second_attack_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastAnimation"			"ACT_DOTA_OVERRIDE_ABILITY_2"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.2"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_sven.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_reduction"			"50"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"5.0"
+			}
+		}
+	}
+
+	"axe_counter_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_counter_lua/axe_counter_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_counter_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDuration"				"1.5"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_clinkz.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"movement_speed"			"670"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"buff_duration"				"3.0"
+			}
+		}
+	}
+
+	"axe_special_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_special_attack_lua/axe_special_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_berserkers_call"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_OVERRIDE_ABILITY_1"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AnimationPlaybackRate" 		"1.5"
+		"AbilityCastPoint"				"0.2"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"4.5"
+			}
+			"02"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"speed_buff"		"20"
+			}
+		}
+	}
+
+	"axe_mobility_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_mobility_lua/axe_mobility_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_mobility_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"MaxLevel"						"1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
+		"AnimationPlaybackRate" 		"1.0"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_earthshaker.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"range"						"1000"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"250"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"9"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"slow_duration"							"2.0"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"fading_slow"				"80"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.06"
+			}
+		}
+	}
+
+	"axe_ex_mobility_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_ex_mobility_lua/axe_ex_mobility_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_ex_mobility_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"MaxLevel"						"1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
+		"AnimationPlaybackRate" 		"1.0"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"10.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_earthshaker.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"range"						"1000"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"250"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"12"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"sleep_duration"			"3.0"
+			}
+		}
+	}
+
+	"axe_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_ultimate_lua/axe_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_culling_blade"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AOERadius"						"%radius"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"250"
+		"AnimationPlaybackRate" 		"1.0"
+		"AbilityCastPoint"				"0.5"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.1"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"100"
+		
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{ 
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"35"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"treshold"					"65"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"100"
+			}
+			"04"
+			{ 
+				"var_type"					"FIELD_INTEGER"
+				"movement_speed"			"600"
+			}
+			"05"
+			{ 
+				"var_type"					"FIELD_FLOAT"
+				"speed_duration"			"2.0"
+			}
+		}
+	}
+
+	"axe_ex_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/axe/axe_ex_ultimate_lua/axe_ex_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"axe_ex_ultimate_lua"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_ATTACK"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastAnimation"			"ACT_DOTA_TELEPORT_END"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4"
+		"AnimationPlaybackRate" 		"1.3"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_earthshaker.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"250"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"10"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"knockback_distance"		"300"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"stun_duration"				"0.5"
+			}
+		}
+	}
 
 
 	//=================================================================================================================

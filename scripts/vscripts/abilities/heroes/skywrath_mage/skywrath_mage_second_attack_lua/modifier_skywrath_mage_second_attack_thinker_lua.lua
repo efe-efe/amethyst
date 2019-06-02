@@ -72,37 +72,29 @@ end
 
 -- On casted
 function modifier_skywrath_mage_second_attack_thinker_lua:PlayEffects()
-	-- Get Resources
-	local particle_cast_a = "particles/econ/events/darkmoon_2017/darkmoon_calldown_marker_ring.vpcf"
+    local caster = self:GetCaster()
+    
+	-- Create sound
 	local sound_cast = "Hero_Omniknight.Purification.Wingfall.Layer"
+    EmitSoundOn( sound_cast, caster )
+    
+    -- Create particles
+    local particle_cast_a = "particles/econ/events/darkmoon_2017/darkmoon_calldown_marker_ring.vpcf"
+	local particle_cast_b = "particles/econ/items/effigies/status_fx_effigies/base_statue_destruction_gold_lvl2_e.vpcf"
 
-    local effect_cast_a = ParticleManager:CreateParticle( 
-        particle_cast_a, 
-        PATTACH_WORLDORIGIN, 
-        nil
-    )
-
+    local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, nil )
+    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, caster)
+    
     ParticleManager:SetParticleControl( effect_cast_a, 0, self:GetParent():GetOrigin() )
     ParticleManager:SetParticleControl( effect_cast_a, 1, Vector( self.radius, 1, 1 ) )
     ParticleManager:SetParticleControl( effect_cast_a, 2, Vector( 1, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast_a )
-
-	local particle_cast_b = "particles/econ/items/effigies/status_fx_effigies/base_statue_destruction_gold_lvl2_e.vpcf"
-
-    local effect_cast_b = ParticleManager:CreateParticle( 
-        particle_cast_b, 
-        PATTACH_WORLDORIGIN, 
-        self:GetCaster()
-    )
-
+    
     ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetParent():GetOrigin() )
     ParticleManager:SetParticleControl( effect_cast_b, 1, Vector( self.radius, 1, 1 ) )
+
+    ParticleManager:ReleaseParticleIndex( effect_cast_a )
     ParticleManager:ReleaseParticleIndex( effect_cast_b )
 
-    EmitSoundOn( 
-        sound_cast, 
-        self:GetCaster() 
-    )
 end
 
 -- On arrival
