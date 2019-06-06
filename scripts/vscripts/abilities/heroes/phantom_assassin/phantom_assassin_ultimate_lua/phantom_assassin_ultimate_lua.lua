@@ -20,6 +20,7 @@ function phantom_assassin_ultimate_lua:OnSpellStart()
     local point = self:GetCursorPosition()
     local max_range = self:GetSpecialValueFor("range")
     local damage = self:GetSpecialValueFor("damage")
+    local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 
 
     -- determine target position
@@ -68,14 +69,18 @@ function phantom_assassin_ultimate_lua:OnSpellStart()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			local damage = {
+
+			local stacks = SafeGetModifierStacks("modifier_phantom_assassin_strike_stack_lua", caster, caster)
+			local final_damage = damage + ( stacks * damage_per_stack )
+
+			local damage_table = {
 				victim = unit,
-				attacker = caster,
-				damage = damage,
+				attacker = _self.Source,
+				damage = final_damage,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-
-            ApplyDamage( damage )
+			
+            ApplyDamage( damage_table )
             self:PlayEffects_c(unit)
 
 		end,
@@ -90,6 +95,7 @@ function phantom_assassin_ultimate_lua:OnSpellStart()
 			ParticleManager:DestroyParticle( self.effect_cast_a, false )
 			ParticleManager:ReleaseParticleIndex( self.effect_cast_a )
 			
+			SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
 		end,
 	}
 	self:PlayEffects_d()

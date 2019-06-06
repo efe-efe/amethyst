@@ -13,13 +13,11 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_generic_fading_slow_lua:OnCreated( kv )
-    if IsServer() then
-        local duration = self:GetDuration()
-        self.fading_slow = -self:GetAbility():GetSpecialValueFor("fading_slow")
-        self.speed_per_tick = self.fading_slow / duration
-        self:StartIntervalThink( 0.5 )
-    end
+    self.duration = self:GetDuration()
+    self.fading_slow = -self:GetAbility():GetSpecialValueFor("fading_slow")
+    self.speed_per_tick = self.fading_slow / self.duration
 
+    self:StartIntervalThink( 0.5 )
 end
 
 --------------------------------------------------------------------------------

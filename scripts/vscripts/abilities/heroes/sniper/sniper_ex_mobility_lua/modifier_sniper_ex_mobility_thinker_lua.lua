@@ -20,8 +20,6 @@ end
 
 function modifier_sniper_ex_mobility_thinker_lua:OnDestroy()
     if IsServer() then
-		ParticleManager:DestroyParticle( self.effect_cast_a, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast_a )    
 		UTIL_Remove( self:GetParent() )
 	end
 end
@@ -105,25 +103,15 @@ function modifier_sniper_ex_mobility_thinker_lua:OnIntervalThink()
     end
 end
 
--- TODO: Mejorar esto
 function modifier_sniper_ex_mobility_thinker_lua:PlayEffects()
-
-  
     -- Cast Particles
-
-    local particle_cast_a = "particles/econ/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_thunder_strike_bolt_rope.vpcf"
-    local particle_cast_b = "particles/econ/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_thunder_strike_bolt.vpcf"
+    local particle_cast = "particles/econ/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_thunder_strike_bolt.vpcf"
     
-    self.effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, nil )
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 
-    ParticleManager:SetParticleControl( self.effect_cast_a, 0, self.thinker_origin )
-    ParticleManager:SetParticleControl( self.effect_cast_a, 1, Vector(self.knockback_radius,0,0))
-    ParticleManager:SetParticleControl( self.effect_cast_a, 2, self.thinker_origin )
-
-    ParticleManager:SetParticleControl( effect_cast_b, 0, self.thinker_origin )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )    
-
+    ParticleManager:SetParticleControl( effect_cast, 0, self.thinker_origin )
+    ParticleManager:SetParticleControl( effect_cast, 2, self.thinker_origin )
+    ParticleManager:ReleaseParticleIndex( effect_cast )    
 end
 
 

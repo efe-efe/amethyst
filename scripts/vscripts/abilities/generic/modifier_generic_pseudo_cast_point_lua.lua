@@ -2,6 +2,10 @@ modifier_generic_pseudo_cast_point_lua = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
+function modifier_generic_pseudo_cast_point_lua:IsHidden()
+	return true
+end
+
 function modifier_generic_pseudo_cast_point_lua:IsDebuff()
 	return true
 end

@@ -2,7 +2,11 @@ modifier_spectre_ex_mobility_lua = class({})
 
 --- Misc 
 function modifier_spectre_ex_mobility_lua:IsHidden()
-    return true
+    return false
+end
+
+function modifier_spectre_ex_mobility_lua:IsDebuff()
+	return false
 end
 
 function modifier_spectre_ex_mobility_lua:IsPurgable()
@@ -13,9 +17,11 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_ex_mobility_lua:OnCreated( kv )
+    self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
+    self.damage_done = 0
+
     --Initializers
     if IsServer() then
-        self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
         self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
         self.radius = 250
 
@@ -48,7 +54,7 @@ function modifier_spectre_ex_mobility_lua:OnIntervalThink()
             damage = self.damage_per_second,
             damage_type = DAMAGE_TYPE_PURE,
         }
-
+        self.damage_done = self.damage_done + self.damage_per_second
         self:PlayEffects3(enemy)
         ApplyDamage( damage )
     end
@@ -58,6 +64,7 @@ end
 -- Destroyer
 function modifier_spectre_ex_mobility_lua:OnDestroy( kv )
     if IsServer() then
+        self:GetParent():Heal( self.damage_done, self:GetParent() )
         self:StopEffects()
     end
 end
@@ -85,7 +92,6 @@ end
 function modifier_spectre_ex_mobility_lua:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff
 end
-
 
 -- Graphics & Animations
 function modifier_spectre_ex_mobility_lua:PlayEffects( )

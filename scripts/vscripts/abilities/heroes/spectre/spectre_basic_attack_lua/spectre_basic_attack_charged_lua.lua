@@ -2,7 +2,6 @@ spectre_basic_attack_charged_lua = class({})
 
 LinkLuaModifier( "modifier_spectre_basic_attack_charged_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_basic_attack_charged_timer_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_timer_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_spectre_basic_attack_charged_visuals_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_charged_visuals_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
@@ -10,6 +9,7 @@ LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/mo
 function spectre_basic_attack_charged_lua:GetAOERadius()
 	return self:GetSpecialValueFor( "hitbox" )
 end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_basic_attack_charged_lua:OnSpellStart()
@@ -26,10 +26,11 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 	local projectile_start_radius = 50
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_speed = 9999
+	local projectile_speed = 2000
 
 	-- Extra data
-	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
+	local desolate_duration = self:GetSpecialValueFor("desolate_duration")
+	local silence_duration = self:GetSpecialValueFor("silence_duration")
 	local heal_amount = self:GetSpecialValueFor("heal_amount")
 
 	-- Animation and pseudo cast point
@@ -40,13 +41,13 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 		-- Dinamyc data
         local origin = caster:GetOrigin()
 		local direction_normalized = (point - origin):Normalized()
-		local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
+		local initial_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
 		local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 		--logic
 		local projectile = {
 			EffectName = projectile_name,
-			vSpawnOrigin = final_position + Vector(0,0,80),
+			vSpawnOrigin = initial_position + Vector(0,0,80),
 			fDistance = projectile_distance,
 			fStartRadius = projectile_start_radius,
 			fEndRadius = projectile_end_radius,
@@ -93,8 +94,9 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 				
 				_self.Source:Heal( heal_amount, self )
 
-				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = debuff_duration})
-				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", {})
+				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = silence_duration})
+				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", {duration = desolate_duration})
+				SafeDestroyModifier("modifier_spectre_basic_attack_charged_lua", caster, caster)
 
 				self:PlayEffects_b(unit)
 				_self.Destroy()
@@ -107,25 +109,14 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 				self:PlayEffects_a(pos)
 			end,
 		}
-
+		self:StopEffects_d()
+		
 		--Identify the alternate version, and puts it on cooldown
 		local alternate_version = caster:FindAbilityByName("spectre_basic_attack_lua")
 		alternate_version:StartCooldown(attack_speed)
 
-		-- Put the non charged ability on the basic attack slot
-		caster:SwapAbilities( 
-			self:GetAbilityName(),
-			"spectre_basic_attack_lua",
-			false,
-			true
-		)
-		
-		--Destroy visual modifier
-		SafeDestroyModifier("modifier_spectre_basic_attack_charged_visuals_lua", caster, caster)
-
 		--Adds the timer that swaps the abilities
 		caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_charged_timer_lua", {duration = self:GetCooldown(0)})
-
 		-- Cast projectile
 		Projectiles:CreateProjectile(projectile)
 	end)
@@ -138,11 +129,10 @@ end
 function spectre_basic_attack_charged_lua:OnUpgrade()
 	if self:GetLevel()==1 then
 		local caster = self:GetCaster()
-		
-		--Visuals
-		caster:AddNewModifier( caster, self, "modifier_spectre_basic_attack_charged_visuals_lua", {} )
 		-- Gain mana
 		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
+		-- Visuals
+		self:PlayEffects_d()
 	end
 end
 
@@ -185,6 +175,48 @@ function spectre_basic_attack_charged_lua:PlayEffects_c(pos)
 	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 end
 
+
+--------------------------------------------------------------------------------
+-- Visuals
+function spectre_basic_attack_charged_lua:PlayEffects_d()
+	-- Get Resources
+
+	local caster = self:GetCaster()
+
+	local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_base_attack_c.vpcf"
+	local origin = caster:GetOrigin()
+	self.effect_cast = ParticleManager:CreateParticle( 
+		particle_cast, 
+		PATTACH_CUSTOMORIGIN, 
+		caster
+	)
+
+	ParticleManager:SetParticleControlEnt( 
+		self.effect_cast, 
+		0, 
+		caster, 
+		PATTACH_POINT_FOLLOW, 
+		"attach_attack1", 
+		origin, 
+		true 
+	)
+	ParticleManager:SetParticleControlEnt( 
+		self.effect_cast, 
+		3, 
+		caster, 
+		PATTACH_POINT_FOLLOW, 
+		"attach_attack1", 
+		origin, 
+		true 
+	)
+end
+
+function spectre_basic_attack_charged_lua:StopEffects_d()
+	ParticleManager:DestroyParticle( self.effect_cast, false )
+	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+end
+
+
 function spectre_basic_attack_charged_lua:Animate(point)
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -195,3 +227,4 @@ function spectre_basic_attack_charged_lua:Animate(point)
 	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
 	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=2.5})
 end
+

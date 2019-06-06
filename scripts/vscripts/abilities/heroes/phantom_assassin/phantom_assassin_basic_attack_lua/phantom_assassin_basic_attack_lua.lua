@@ -23,7 +23,7 @@ function phantom_assassin_basic_attack_lua:OnSpellStart()
 	local projectile_start_radius = 50
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_speed = 9999
+	local projectile_speed = 2000
 	
 	-- Animation and pseudo cast point
 	self:Animate(point)
@@ -70,6 +70,14 @@ function phantom_assassin_basic_attack_lua:OnSpellStart()
 			fRehitDelay = 1.0,
 			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 			OnUnitHit = function(_self, unit) 
+				-- Count targets
+				local counter = 0
+				for k, v in pairs(_self.rehit) do
+					counter = counter + 1
+				end
+
+				if counter > 0 then return end
+
 				-- perform the actual attack
 				caster:PerformAttack(
 					unit, -- handle hTarget 

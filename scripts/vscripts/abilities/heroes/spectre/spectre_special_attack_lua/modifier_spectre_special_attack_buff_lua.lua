@@ -16,9 +16,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_special_attack_buff_lua:OnCreated( kv )
-    if IsServer() then
-        self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
-    end
+	self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
 end
 
 --------------------------------------------------------------------------------

@@ -1,18 +1,18 @@
-modifier_axe_ex_ultimate_movement_lua = class({})
+modifier_axe_ex_second_attack_movement_lua = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_axe_ex_ultimate_movement_lua:IsHidden()
+function modifier_axe_ex_second_attack_movement_lua:IsHidden()
 	return true
 end
 
-function modifier_axe_ex_ultimate_movement_lua:IsPurgable()
+function modifier_axe_ex_second_attack_movement_lua:IsPurgable()
 	return false
 end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_axe_ex_ultimate_movement_lua:OnCreated( kv )
+function modifier_axe_ex_second_attack_movement_lua:OnCreated( kv )
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -44,10 +44,10 @@ function modifier_axe_ex_ultimate_movement_lua:OnCreated( kv )
 	end
 end
 
-function modifier_axe_ex_ultimate_movement_lua:OnRefresh( kv )
+function modifier_axe_ex_second_attack_movement_lua:OnRefresh( kv )
 end
 
-function modifier_axe_ex_ultimate_movement_lua:OnDestroy( kv )
+function modifier_axe_ex_second_attack_movement_lua:OnDestroy( kv )
 	if IsServer() then
 		self:GetParent():InterruptMotionControllers( true )
 	end
@@ -55,7 +55,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Motion effects
-function modifier_axe_ex_ultimate_movement_lua:SyncTime( iDir, dt )
+function modifier_axe_ex_second_attack_movement_lua:SyncTime( iDir, dt )
 	-- check if already synced
 	if self.motionTick[1]==self.motionTick[2] then
 		self.motionTick[0] = self.motionTick[0] + 1
@@ -71,7 +71,7 @@ function modifier_axe_ex_ultimate_movement_lua:SyncTime( iDir, dt )
 	end
 end
 
-function modifier_axe_ex_ultimate_movement_lua:UpdateHorizontalMotion( me, dt )
+function modifier_axe_ex_second_attack_movement_lua:UpdateHorizontalMotion( me, dt )
 	self:SyncTime(1, dt)
 	local parent = self:GetParent()
 	
@@ -82,13 +82,13 @@ function modifier_axe_ex_ultimate_movement_lua:UpdateHorizontalMotion( me, dt )
 	parent:SetOrigin( self.origin + target )
 end
 
-function modifier_axe_ex_ultimate_movement_lua:OnHorizontalMotionInterrupted()
+function modifier_axe_ex_second_attack_movement_lua:OnHorizontalMotionInterrupted()
 	if IsServer() then
 		self:Destroy()
 	end
 end
 
-function modifier_axe_ex_ultimate_movement_lua:UpdateVerticalMotion( me, dt )
+function modifier_axe_ex_second_attack_movement_lua:UpdateVerticalMotion( me, dt )
 	self:SyncTime(2, dt)
 	local parent = self:GetParent()
 
@@ -99,7 +99,7 @@ function modifier_axe_ex_ultimate_movement_lua:UpdateVerticalMotion( me, dt )
 	parent:SetOrigin( Vector( parent:GetOrigin().x, parent:GetOrigin().y, self.origin.z+target ) )
 end
 
-function modifier_axe_ex_ultimate_movement_lua:OnVerticalMotionInterrupted()
+function modifier_axe_ex_second_attack_movement_lua:OnVerticalMotionInterrupted()
 	if IsServer() then
 		self:Destroy()
 	end
@@ -107,7 +107,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_axe_ex_ultimate_movement_lua:DeclareFunctions()
+function modifier_axe_ex_second_attack_movement_lua:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
 	}
@@ -116,7 +116,7 @@ function modifier_axe_ex_ultimate_movement_lua:DeclareFunctions()
 end
 
 -- Status Effects
-function modifier_axe_ex_ultimate_movement_lua:CheckState()
+function modifier_axe_ex_second_attack_movement_lua:CheckState()
 	local state = {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
@@ -125,6 +125,6 @@ function modifier_axe_ex_ultimate_movement_lua:CheckState()
 	return state
 end
 
-function modifier_axe_ex_ultimate_movement_lua:GetOverrideAnimation()
+function modifier_axe_ex_second_attack_movement_lua:GetOverrideAnimation()
 	return ACT_DOTA_FLAIL
 end

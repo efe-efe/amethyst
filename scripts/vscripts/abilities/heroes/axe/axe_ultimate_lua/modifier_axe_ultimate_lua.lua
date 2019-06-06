@@ -18,7 +18,7 @@ end
 -- Modifier Effects
 function modifier_axe_ultimate_lua:DeclareFunctions()
 	local funcs = {
-        MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
+		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 	}
 
 	return funcs
@@ -27,12 +27,10 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_axe_ultimate_lua:OnCreated( kv )
-    if IsServer() then
 		self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
-    end
 end
 
-function modifier_axe_ultimate_lua:GetModifierMoveSpeed_Absolute()
+function modifier_axe_ultimate_lua:GetModifierMoveSpeedBonus_Percentage()
     return self.movement_speed
 end
 

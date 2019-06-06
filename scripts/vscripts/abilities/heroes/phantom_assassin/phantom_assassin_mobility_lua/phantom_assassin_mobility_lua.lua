@@ -34,6 +34,11 @@ function phantom_assassin_mobility_lua:OnSpellStart()
         {duration = buff_duration}
     )
 
+    local special_attack = caster:FindAbilityByName("phantom_assassin_special_attack_lua")
+    local ex_special_attack = caster:FindAbilityByName("phantom_assassin_ex_special_attack_lua")
+    special_attack:EndCooldown()
+    ex_special_attack:EndCooldown()
+
     --Effects
     self:PlayEffects_b()
 end

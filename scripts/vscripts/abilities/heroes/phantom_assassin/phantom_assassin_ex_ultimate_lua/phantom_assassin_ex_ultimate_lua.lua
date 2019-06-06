@@ -35,7 +35,7 @@ function phantom_assassin_ex_ultimate_lua:OnSpellStart()
 	local projectile_start_radius = 0
 	local projectile_end_radius = 200
 	local projectile_distance = distance
-	local projectile_speed = speed
+	local projectile_speed = speed + 200
 	
     -- Dinamyc data
     local origin = caster:GetOrigin()
@@ -73,10 +73,19 @@ function phantom_assassin_ex_ultimate_lua:OnSpellStart()
         bFlyingVision = false,
         fVisionTickTime = .1,
         fVisionLingerDuration = 1,
-        draw = false,
+        draw = true,
         fRehitDelay = 1.0,
         UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
         OnUnitHit = function(_self, unit) 
+            
+            -- Count targets
+            local counter = 0
+            for k, v in pairs(_self.rehit) do
+                counter = counter + 1
+            end
+
+            if counter > 0 then return end
+            
             local damage_table = {
                 victim = unit,
                 attacker = _self.Source,
@@ -94,11 +103,10 @@ function phantom_assassin_ex_ultimate_lua:OnSpellStart()
                 { duration = slow_duration } -- kv
             )
 
-            self:PlayEffects_c(unit:GetOrigin())
+            self:PlayEffects_c(unit)
             _self.Destroy()
         end,
         OnFinish = function(_self, pos)
-
             self:PlayEffects_b(pos)
         end,
     }
@@ -107,13 +115,17 @@ function phantom_assassin_ex_ultimate_lua:OnSpellStart()
     Projectiles:CreateProjectile(projectile)
 end
 
+--------------------------------------------------------------------------------
+-- Graphics & sounds
+
+-- On Spell start
 function phantom_assassin_ex_ultimate_lua:PlayEffects_a()
     -- Cast Sound
     local sound_cast = "Hero_PhantomAssassin.Strike.End"
     EmitSoundOn(sound_cast, self:GetCaster())
 end
 
--- On Miss
+-- On Projectile Finish
 function phantom_assassin_ex_ultimate_lua:PlayEffects_b( pos )
 	local caster = self:GetCaster()
 	local offset = 120
@@ -129,22 +141,9 @@ function phantom_assassin_ex_ultimate_lua:PlayEffects_b( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
--- On Miss
-function phantom_assassin_ex_ultimate_lua:PlayEffects_c( pos )
-	local caster = self:GetCaster()
-	local offset = 120
-	local origin = caster:GetOrigin()
-	local direction_normal = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction_normal.x * offset, direction_normal.y * offset, 0)
-	
+-- On Projectile Hit enemy
+function phantom_assassin_ex_ultimate_lua:PlayEffects_c( hTarget )
     -- Cast Sound
     local sound_cast = "Hero_PhantomAssassin.Attack"
-    EmitSoundOnLocationWithCaster(pos, sound_cast, self:GetCaster())
-
-	-- Create Particles
-	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_crit_blur.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-    ParticleManager:SetParticleControl( effect_cast, 1, final_position )
-    ParticleManager:SetParticleControlForward( effect_cast, 1, caster:GetForwardVector() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+    EmitSoundOn(sound_cast, hTarget)
 end

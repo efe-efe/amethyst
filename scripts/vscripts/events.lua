@@ -4,36 +4,55 @@
 --[[Called when player first spawn into the game, or if the player's hero is replaced with a new hero for any reason]]
 function GameMode:OnHeroInGame(keys)
     local npc = EntIndexToHScript(keys.entindex)
-
-    if npc:IsRealHero() and npc.bFirstSpawnedPG == nil then
-        npc.bFirstSpawnedPG = true
-        local hero = npc
-
-        -- Set mana as 0
-        Timers:CreateTimer(.01, function() hero:SetMana(0) end)
+    Timers:CreateTimer(.2, function()
+        if not npc:IsNull() and npc:IsRealHero() and npc.bFirstSpawnedPG == nil then
+            npc.bFirstSpawnedPG = true
+            local hero = npc
+            
+            -- Disable right click
+            hero:AddNewModifier( hero,  nil, "modifier_disable_right_click", { } )
         
-        -- Disable right click
-        hero:AddNewModifier( hero,  nil, "modifier_disable_right_click", { } )
-    
-        -- Level up 1 point to all spells
-        for i = 0, 23 do
-            local ability = hero:GetAbilityByIndex(i)
-            if ability then
-                if ability:GetAbilityType() ~= 2 then -- To not level up the talents
-                    ability:SetLevel(1)
+            -- Level up 1 point to all spells
+            for i = 0, 23 do
+                local ability = hero:GetAbilityByIndex(i)
+                if ability then
+                    if ability:GetAbilityType() ~= 2 then -- To not level up the talents
+                        ability:SetLevel(1)
+                    end
                 end
             end
         end
 
-    end
+        if npc:IsRealHero() and npc:IsHero() and npc:IsConsideredHero() then
+            -- Set mana as 0
+            npc:SetMana(0)
+            local team = npc:GetTeamNumber()
+            -- Initialization
+            if self.team_state == nil then
+                self.team_state = {}
+            end
+            
+            if self.team_state[team] == nil then
+                self.team_state[team] = {
+                    alive = 0,
+                    loses = 0,
+                    players = {}
+                }
+            end
+            
+            self.team_state[team].alive = self.team_state[team].alive + 1
+            self.team_state[team].players[npc:GetPlayerOwnerID()] = npc:GetPlayerOwner()
+
+            print("Team " .. team .. " heroes = " ..self.team_state[team].alive)
+        end
+    end)
 end
 
 -- An entity died
 function GameMode:OnEntityKilled( keys )
     -- The Killed
-    local killedUnit = EntIndexToHScript( keys.entindex_killed )
-    local isMiddleOrb = killedUnit:Attribute_GetIntValue("middle_orb", 0)
-    local totalHeroes = PlayerResource:GetPlayerCount()
+    local killed = EntIndexToHScript( keys.entindex_killed )
+    local isMiddleOrb = killed:Attribute_GetIntValue("middle_orb", 0)
 
     -- The Killer
     local killerEntity = nil
@@ -46,59 +65,38 @@ function GameMode:OnEntityKilled( keys )
         MiddleOrb:CreateMiddleOrb()
     end
 
-    if killedUnit:IsRealHero() then
-        if killedUnit:GetTeamNumber() == 2 then
-            self.team_a_actual_units = self.team_a_actual_units - 1
-        end
-        if killedUnit:GetTeamNumber() == 3 then
-            self.team_b_actual_units = self.team_b_actual_units - 1
-        end
-    
-        DebugPrint("Actual units on Team A " .. self.team_a_actual_units)
-        DebugPrint("Actual units on Team B " .. self.team_b_actual_units)
+    if killed:IsRealHero() then
+        if Convars:GetInt('test_mode') == 0 then -- should be 0
+            if killed:IsHero() then
+                local team = killed:GetTeamNumber()
+                self.team_state[team].alive = self.team_state[team].alive - 1
 
-        print(Convars:GetInt('test_mode'))
-        if Convars:GetInt('test_mode') == 0 then
-            if self.team_a_actual_units <= 0 then
-                print("Team B wins the round")
+                if self.team_state[team].alive <= 0 then
+                    self.team_state[team].loses = self.team_state[team].loses + 1
+                    print("Team " .. team .. " loses his round number " .. self.team_state[team].loses)
+                    
+                    local shouldEnd = false
 
-                local heroes = FindUnitsInRadius(
-                    0,	-- int, your team number
-                    Vector(0,0,0),	-- point, center point
-                    nil,	-- handle, cacheUnit. (not known)
-                    FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
-                    DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
-                    DOTA_UNIT_TARGET_HERO,	-- int, type filter
-                    DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
-                    0,	-- int, order filter
-                    false	-- bool, can grow cache
-                )
+                    if self.team_state[team].loses >= 3 then
+                        shouldEnd = true
+                    end
+                    
+                    Timers:CreateTimer(3.0, function()
+                        for _,it_team in pairs(self.team_state) do
+                            
+                            if (_ ~= team) and shouldEnd == true then 
+                                self:EndGame(_) 
+                            end
 
-                for _,heroe in pairs(heroes) do
-                    heroe:SetRespawnsDisabled(false)
-                    heroe:RespawnHero(false, false)
-                    heroe:SetRespawnsDisabled(true)
-                end
-                
-            elseif self.team_b_actual_units <= 0 then
-                print("Team A wins the round")
-                local heroes = FindUnitsInRadius(
-                    0,	-- int, your team number
-                    Vector(0,0,0),	-- point, center point
-                    nil,	-- handle, cacheUnit. (not known)
-                    FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
-                    DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
-                    DOTA_UNIT_TARGET_HERO,	-- int, type filter
-                    DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
-                    0,	-- int, order filter
-                    false	-- bool, can grow cache
-                )
-
-                for _,heroe in pairs(heroes) do
-                    PrintTable(heroe)
-                    heroe:SetRespawnsDisabled(false)
-                    heroe:RespawnHero(false, false)
-                    heroe:SetRespawnsDisabled(true)
+                            it_team.alive = 0
+                            for _,player in pairs(it_team.players) do
+                                local heroe = player:GetAssignedHero()
+                                heroe:SetRespawnsDisabled(false)
+                                heroe:RespawnHero(false, false)
+                                heroe:SetRespawnsDisabled(true)
+                            end
+                        end
+                    end)
                 end
             end
         end
@@ -109,9 +107,6 @@ end
 
 -- Called whenever an ability begins its PhaseStart phase, but before it is actually cast
 function GameMode:OnAbilityCastBegins(keys)
-    DebugPrint('[BAREBONES] OnAbilityCastBegins')
-    DebugPrintTable(keys)
-
     local player = PlayerResource:GetPlayer(keys.PlayerID)
     local abilityName = keys.abilityname
 end
@@ -148,40 +143,12 @@ function GameMode:OnConnectFull(keys)
     if GameMode._reentrantCheck then
         return
     end
-
     GameMode:CaptureGameMode()
-
-    local entIndex = keys.index + 1
-
-    -- The Player entity of the joining user
-    local ply = EntIndexToHScript(entIndex)
-    -- The Player ID of the joining player
-    local playerID = ply:GetPlayerID()
-    local userID = keys.userid
-            
-    -- Initialization
-    if not self.team_a_actual_units then
-        self.team_a_actual_units = 0
-        self.team_a_total_units = 0
-    end
-
-    if not self.team_b_actual_units then
-        self.team_b_actual_units = 0
-        self.team_b_total_units = 0
-    end
-
-    if PlayerResource:GetTeam(playerID) == 5 then
-        self.team_a_actual_units = self.team_a_actual_units + 1
-        self.team_a_total_units = self.team_a_total_units + 1
-    end
-    if PlayerResource:GetTeam(playerID) == 6 then
-        self.team_b_actual_units = self.team_b_actual_units + 1
-        self.team_b_total_units = self.team_b_total_units + 1
-    end
     
-    DebugPrint("Total units on team A " .. self.team_a_total_units)
-    DebugPrint("Total units on team B " .. self.team_b_total_units)
-
+   
+    local ply = EntIndexToHScript(keys.index + 1)  -- The Player entity of the joining user
+    local playerID = ply:GetPlayerID() -- The Player ID of the joining player
+    local userID = keys.userid
 end
 
 --Used to initialize before everyone loads in
@@ -234,4 +201,8 @@ function GameMode:OnEntityHurt(keys)
         
         ParticleManager:ReleaseParticleIndex( effect_cast )
     end
+end
+
+function GameMode:EndGame( victoryTeam )
+	GameRules:SetGameWinner( victoryTeam )
 end

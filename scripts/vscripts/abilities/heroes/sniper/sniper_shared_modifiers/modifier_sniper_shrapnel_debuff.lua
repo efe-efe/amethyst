@@ -18,9 +18,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_sniper_shrapnel_debuff:OnCreated( kv )
-    if IsServer() then
-        self.slow = -self:GetAbility():GetSpecialValueFor("slow")
-    end
+	self.slow = -self:GetAbility():GetSpecialValueFor("slow")
 end
 
 --------------------------------------------------------------------------------

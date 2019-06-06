@@ -25,7 +25,7 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	-- Extra data
-	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
+	local silence_duration = self:GetSpecialValueFor("silence_duration")
 	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
 	
 	-- Animation and pseudo cast point
@@ -89,8 +89,8 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 				)
 	
 				--Silence enemy
-				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = debuff_duration})
-				unit:AddNewModifier(_self.Source, self , "modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", { duration = debuff_duration})
+				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = silence_duration})
+				unit:AddNewModifier(_self.Source, self , "modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", { duration = silence_duration})
 	
 				self:PlayEffects_b(_self:GetPosition())
 				_self.Destroy()

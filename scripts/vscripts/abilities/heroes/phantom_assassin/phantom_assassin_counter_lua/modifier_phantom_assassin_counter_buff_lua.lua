@@ -18,7 +18,7 @@ end
 -- Modifier Effects
 function modifier_phantom_assassin_counter_buff_lua:DeclareFunctions()
 	local funcs = {
-        MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
+		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 	}
 
 	return funcs
@@ -27,12 +27,10 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_phantom_assassin_counter_buff_lua:OnCreated( kv )
-    if IsServer() then
 		self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
-    end
 end
 
-function modifier_phantom_assassin_counter_buff_lua:GetModifierMoveSpeed_Absolute()
+function modifier_phantom_assassin_counter_buff_lua:GetModifierMoveSpeedBonus_Percentage()
     return self.movement_speed
 end
 

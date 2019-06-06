@@ -3,9 +3,7 @@ modifier_sniper_ex_mobility_lua = class({})
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_sniper_ex_mobility_lua:OnCreated( kv )
-    if IsServer() then
-        self.speed_buff = -100 --self:GetAbility():GetSpecialValueFor("speed_buff")
-    end
+	self.speed_buff = -100 --self:GetAbility():GetSpecialValueFor("speed_buff")
 end
 
 --------------------------------------------------------------------------------

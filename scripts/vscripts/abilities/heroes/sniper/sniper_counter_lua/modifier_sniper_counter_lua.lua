@@ -17,9 +17,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_sniper_counter_lua:OnCreated( kv )
-    if IsServer() then
 		self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
-    end
 end
 
 --------------------------------------------------------------------------------

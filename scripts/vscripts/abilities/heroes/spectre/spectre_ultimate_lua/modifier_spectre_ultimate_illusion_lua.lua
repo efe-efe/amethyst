@@ -77,11 +77,11 @@ end
 
 
 function modifier_spectre_ultimate_illusion_lua:GetModifierPreAttack_BonusDamage()
-	return -8
+	return -7
 end 
 
 function modifier_spectre_ultimate_illusion_lua:GetModifierBaseAttackTimeConstant()
-    return 0.4
+    return 0.6
 end
 
 function modifier_spectre_ultimate_illusion_lua:GetModifierMoveSpeed_Absolute()

@@ -4,6 +4,7 @@ LinkLuaModifier( "modifier_generic_projectile_reflector_lua", "abilities/generic
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_counter_lua:OnCreated( kv )
+	self.speed_debuff = self:GetAbility():GetSpecialValueFor("speed_debuff")
 	if IsServer() then
 		-- Add modifier
 		self:GetParent():AddNewModifier(
@@ -13,7 +14,6 @@ function modifier_spectre_counter_lua:OnCreated( kv )
 			{ duration = self:GetAbility():GetDuration() }
 		)
 
-		self.speed_debuff = self:GetAbility():GetSpecialValueFor("speed_debuff")
 		self:StartIntervalThink(0.05)
         self:PlayEffects_a()
     end
@@ -151,5 +151,15 @@ end
 function modifier_spectre_counter_lua:PlayEffects_b()
 	local sound_cast = "Item.LotusOrb.Activate"
 	EmitSoundOn( sound_cast, self:GetParent() )
+
+	local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start.vpcf"
+	
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+	ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin())
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
+-- Graphics & Animations
+function modifier_spectre_counter_lua:GetStatusEffectName()
+	return "particles/status_fx/status_effect_guardian_angel.vpcf"
+end

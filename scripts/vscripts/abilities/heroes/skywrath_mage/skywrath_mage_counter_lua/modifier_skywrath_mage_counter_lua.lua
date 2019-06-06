@@ -191,3 +191,8 @@ function modifier_skywrath_mage_counter_lua:PlayEffects2()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 
 end
+
+-- Graphics & Animations
+function modifier_skywrath_mage_counter_lua:GetStatusEffectName()
+	return "particles/status_fx/status_effect_guardian_angel.vpcf"
+end

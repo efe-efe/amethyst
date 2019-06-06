@@ -24,6 +24,7 @@ function modifier_phantom_assassin_strike_stack_lua:OnCreated( kv )
 	-- references
 	if IsServer() then
 		self:SetStackCount(1)
+		self:PlayEffects()
 	end
 end
 
@@ -33,13 +34,15 @@ function modifier_phantom_assassin_strike_stack_lua:OnRefresh( kv )
 
 	if IsServer() then
 		if self:GetStackCount()<max_stack then
+			self:StopEffects()
 			self:IncrementStackCount()
+			self:PlayEffects()
 		end
 	end
 end
 
 function modifier_phantom_assassin_strike_stack_lua:OnDestroy( kv )
-
+	self:StopEffects()
 end
 
 --------------------------------------------------------------------------------
@@ -55,3 +58,19 @@ end
 function modifier_phantom_assassin_strike_stack_lua:GetTexture()
 	return "phantom_assassin_basic_attack_lua"
 end
+
+-- Graphics & Animations
+function modifier_phantom_assassin_strike_stack_lua:PlayEffects( second )
+    local particle_cast = "particles/units/heroes/hero_abaddon/abaddon_curse_counter_stack.vpcf"
+
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_OVERHEAD_FOLLOW, self:GetParent() )
+    ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(0, self:GetStackCount(), 0) )
+end
+
+function modifier_phantom_assassin_strike_stack_lua:StopEffects()
+	if self.effect_cast ~= nil then
+		ParticleManager:DestroyParticle( self.effect_cast, false )
+		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	end
+end
+

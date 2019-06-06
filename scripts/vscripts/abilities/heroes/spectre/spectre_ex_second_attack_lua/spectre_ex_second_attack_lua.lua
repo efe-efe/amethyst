@@ -77,7 +77,7 @@ function spectre_ex_second_attack_lua:OnSpellStart()
 				_self.Source, 
 				self, 
 				"modifier_spectre_desolate_lua", 
-				{ }
+				{ duration = self.debuff_duration }
 			)
 			
 			-- Effects

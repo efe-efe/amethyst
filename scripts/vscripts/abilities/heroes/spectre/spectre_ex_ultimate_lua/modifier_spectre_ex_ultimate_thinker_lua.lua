@@ -5,6 +5,7 @@ function modifier_spectre_ex_ultimate_thinker_lua:OnCreated( kv )
     if IsServer() then
         local radius = self:GetAbility():GetSpecialValueFor( "radius" )
         local point = self:GetParent():GetOrigin()
+        local desolate_duration = self:GetAbility():GetSpecialValueFor("desolate_duration")
 
         FindClearSpaceForUnit( self:GetCaster(), point , true )
 
@@ -22,7 +23,7 @@ function modifier_spectre_ex_ultimate_thinker_lua:OnCreated( kv )
         )
 
         for _,enemy in pairs(enemies) do
-            enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_spectre_desolate_lua", {})
+            enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_spectre_desolate_lua", { duration = desolate_duration })
         end
         
         self:PlayEffects()

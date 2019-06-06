@@ -24,7 +24,7 @@ function spectre_basic_attack_lua:OnSpellStart()
 	local projectile_start_radius = 50
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_speed = 9999
+	local projectile_speed = 2000
 
 	-- Extra data
 	local heal_amount = self:GetSpecialValueFor("heal_amount")
@@ -40,12 +40,12 @@ function spectre_basic_attack_lua:OnSpellStart()
 		-- Dinamyc data
         local origin = caster:GetOrigin()
 		local direction_normalized = (point - origin):Normalized()
-		local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
+		local initial_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
 		local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	
 		local projectile = {
 			EffectName = projectile_name,
-			vSpawnOrigin = final_position + Vector(0,0,80),
+			vSpawnOrigin = initial_position + Vector(0,0,80),
 			fDistance = projectile_distance,
 			fStartRadius = projectile_start_radius,
 			fEndRadius = projectile_end_radius,
@@ -75,6 +75,14 @@ function spectre_basic_attack_lua:OnSpellStart()
 			fRehitDelay = 1.0,
 			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 			OnUnitHit = function(_self, unit) 
+				-- Count targets
+				local counter = 0
+				for k, v in pairs(_self.rehit) do
+					counter = counter + 1
+				end
+
+				if counter > 0 then return end
+
 				local desolate = unit:FindModifierByNameAndCaster( "modifier_spectre_desolate_lua", caster )
 			
 				-- If have the debuff, adds extra attack and extends debuff duration
@@ -95,6 +103,7 @@ function spectre_basic_attack_lua:OnSpellStart()
 					false, -- bool bFakeAttack
 					false -- bool bNeverMiss
 				)
+				SafeDestroyModifier("modifier_spectre_basic_attack_lua", caster, caster)
 
 				self:PlayEffects_b(unit)
 				_self.Destroy()
