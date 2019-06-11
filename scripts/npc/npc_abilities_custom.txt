@@ -1052,7 +1052,7 @@
 			"08"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"path_duration"				"2.0" //Change particle if change this number
+				"path_duration"				"3.0" //Change particle if change this number
 			}
 			"09"
 			{
@@ -2902,25 +2902,20 @@
 			}
 			"04"
 			{
-				"var_type"					"FIELD_FLOAT"
-				"mana_gain"					"0.07"
+				"var_type"					"FIELD_INTEGER"
+				"fading_slow"				"80"
 			}
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"fading_slow"				"80"
-			}
-			"06"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"damage"					"9"
 			}
-			"07"
+			"06"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"slow_duration"				"1.0"
 			}
-			"08"
+			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"quick_cast"				"1"
@@ -3828,28 +3823,38 @@
 		{
 			"01"
 			{
-				"var_type"				"FIELD_FLOAT"
-				"duration"				"2.0"
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1600"
 			}
 			"02"
 			{
-				"var_type"				"FIELD_INTEGER"
-				"radius"				"80"
-			}	
-			"03"	
+				"var_type"				"FIELD_FLOAT"
+				"duration"				"2.0"
+			}
+			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"damage"				"30"
+				"hitbox"				"70"
+			}	
+			"04"	
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"10"
 			}
-			"04"
+			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"bounce_range"			"300"
 			}
-			"05"
+			"06"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"silence_duration"		"2.0"
+			}
+			"07"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"quick_cast"			"1"
 			}
 		}
 	}
@@ -3882,7 +3887,7 @@
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"25"
+		"AbilityManaCost"				"50"
 
 		// Precache
 
@@ -3981,7 +3986,7 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"range"					"1200"
+				"range"					"800"
 			}
 			"02"
 			{
@@ -4028,6 +4033,66 @@
 		}
 	}
 
+	"tinker_ultimate_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/tinker/tinker_ultimate_lua/tinker_ultimate_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"tinker_ultimate_lua"
+		"MaxLevel"						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+
+		// Ability Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"1.5"
+		"AbilityCastAnimation"			"ACT_DOTA_TINKER_REARM2"
+		"AnimationPlaybackRate"			"1.2"
+
+		// Ability Resource
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
+		"AbilityManaCost"				"100"
+		
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"duration"				"9.0"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"speed_buff"			"8"
+			}
+		}
+	}
+
+	"tinker_ultimate_special_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/tinker/tinker_ultimate_lua/tinker_ultimate_special_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"tinker_ultimate_special_attack_lua"
+		"MaxLevel"						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+
+		// Ability Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.7"
+
+		// Ability Resource
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
+		"AbilityManaCost"				"0"
+	}
+
 	"tinker_ex_ultimate_lua"
 	{
 		"BaseClass"						"ability_lua"
@@ -4066,42 +4131,47 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"radius"				"100"
+				"radius"				"200"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"collision_radius"		"50 50 50 50"
+				"hitbox"				"80"
 			}
 			"03"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"splash_radius"			"100"
-			}
-			"04"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"duration"				"6.0"
 			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"projectile_speed"		"500"
+			}
 			"05"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"speed"					"1000"
+				"machines_per_sec"		"6"
 			}
 			"06"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"machines_per_sec"		"10"
+				"projectile_distance"	"2200"
 			}
 			"07"
 			{
-				"var_type"				"FIELD_INTEGER"
-				"distance"				"1800"
+				"var_type"				"FIELD_FLOAT"
+				"buff_duration"			"1.0"
 			}
 			"08"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"distance_scepter"		"1800"
+				"damage"				"7"
+			}
+			"09"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"speed_buff"			"30"
 			}
 		}
 	}

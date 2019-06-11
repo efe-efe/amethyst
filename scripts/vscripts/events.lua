@@ -23,7 +23,7 @@ function GameMode:OnHeroInGame(keys)
             end
         end
 
-        if npc:IsRealHero() and npc:IsHero() and npc:IsConsideredHero() then
+        if not npc:IsNull() and npc:IsRealHero() and npc:IsHero() and npc:IsConsideredHero() then
             -- Set mana as 0
             npc:SetMana(0)
             local team = npc:GetTeamNumber()
@@ -86,6 +86,7 @@ function GameMode:OnEntityKilled( keys )
                             
                             if (_ ~= team) and shouldEnd == true then 
                                 self:EndGame(_) 
+                                break
                             end
 
                             it_team.alive = 0

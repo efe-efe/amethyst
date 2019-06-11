@@ -1,9 +1,9 @@
-tinker_special_attack_lua = class({})
+tinker_ultimate_special_attack_lua = class({})
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Channeling
-function tinker_special_attack_lua:OnSpellStart(  )
+function tinker_ultimate_special_attack_lua:OnSpellStart(  )
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 
@@ -19,7 +19,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Effects
-function tinker_special_attack_lua:PlayEffects()
+function tinker_ultimate_special_attack_lua:PlayEffects()
 	-- Get Resources
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_rearm.vpcf"
 	local sound_cast = "Hero_Tinker.RearmStart"
@@ -31,7 +31,7 @@ function tinker_special_attack_lua:PlayEffects()
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
-function tinker_special_attack_lua:OnEndPseudoCastPoint()
+function tinker_ultimate_special_attack_lua:OnEndPseudoCastPoint()
 	local caster = self:GetCaster()
 
 	-- find all refreshable abilities
@@ -51,7 +51,7 @@ function tinker_special_attack_lua:OnEndPseudoCastPoint()
 	-- effects
 end
 
-function tinker_special_attack_lua:Animate()
+function tinker_ultimate_special_attack_lua:Animate()
 	local cast_point = self:GetCastPoint()
 	StartAnimation(self:GetCaster(), {
 		duration = cast_point, 

@@ -12,61 +12,66 @@ function tinker_second_attack_lua:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
 	self.point = self:GetCursorPosition()
-	local cast_point = self:GetCastPoint()
-	-- load data
 	self.radius = self:GetSpecialValueFor("radius")
-	local damage = self:GetSpecialValueFor("damage")	
-	local targets = 3
-	local projectile_name = "particles/units/heroes/hero_tinker/tinker_missile.vpcf"
-	local projectile_speed = 1000--self:GetSpecialValueFor("speed")
+	local cast_point = self:GetCastPoint()
 
 	-- Animation and pseudo cast point
 	self:Animate(self.point)
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point })
-	-- After cast point
-	Timers:CreateTimer(cast_point, function()
-		-- find enemies
-		local enemies = FindUnitsInRadius(
-			caster:GetTeamNumber(),	-- int, your team number
-			self.point,	-- point, center point
-			nil,	-- handle, cacheUnit. (not known)
-			self.radius,	-- float, radius. or use FIND_UNITS_EVERYWHERE
-			DOTA_UNIT_TARGET_TEAM_ENEMY,	-- int, team filter
-			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-			0,	-- int, flag filter
-			FIND_CLOSEST,	-- int, order filter
-			false	-- bool, can grow cache
-		)
-
-		-- create projectile for each enemy
-		local info = {
-			Source = caster,
-			-- Target = target,
-			Ability = self,
-			EffectName = projectile_name,
-			iMoveSpeed = projectile_speed,
-			bDodgeable = true,
-			flExpireTime = GameRules:GetGameTime() + 1.8, 
-			ExtraData = {
-				damage = damage,
-			}
-		}
-		for i=1,math.min(targets,#enemies) do
-			info.Target = enemies[i]
-			ProjectileManager:CreateTrackingProjectile( info )
-		end
-
-		-- effects
-		if #enemies<1 then
-			self:PlayEffects2()
-		else
-			local sound_cast = "Hero_Tinker.Heat-Seeking_Missile"
-			EmitSoundOn( sound_cast, caster )
-		end
-		
-		self:PlayEffects()
-	end)
 end
+
+
+function tinker_second_attack_lua:OnEndPseudoCastPoint()
+	local caster = self:GetCaster()
+
+	-- load data
+	local damage = self:GetSpecialValueFor("damage")	
+	local targets = 3
+	local projectile_name = "particles/units/heroes/hero_tinker/tinker_missile.vpcf"
+	local projectile_speed = 1000--self:GetSpecialValueFor("speed")
+	
+	-- find enemies
+	local enemies = FindUnitsInRadius(
+		caster:GetTeamNumber(),	-- int, your team number
+		self.point,	-- point, center point
+		nil,	-- handle, cacheUnit. (not known)
+		self.radius,	-- float, radius. or use FIND_UNITS_EVERYWHERE
+		DOTA_UNIT_TARGET_TEAM_ENEMY,	-- int, team filter
+		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+		0,	-- int, flag filter
+		FIND_CLOSEST,	-- int, order filter
+		false	-- bool, can grow cache
+	)
+
+	-- create projectile for each enemy
+	local info = {
+		Source = caster,
+		-- Target = target,
+		Ability = self,
+		EffectName = projectile_name,
+		iMoveSpeed = projectile_speed,
+		bDodgeable = true,
+		flExpireTime = GameRules:GetGameTime() + 1.8, 
+		ExtraData = {
+			damage = damage,
+		}
+	}
+	for i=1,math.min(targets,#enemies) do
+		info.Target = enemies[i]
+		ProjectileManager:CreateTrackingProjectile( info )
+	end
+
+	-- effects
+	if #enemies<1 then
+		self:PlayEffects2()
+	else
+		local sound_cast = "Hero_Tinker.Heat-Seeking_Missile"
+		EmitSoundOn( sound_cast, caster )
+	end
+	
+	self:PlayEffects()
+end
+
 --------------------------------------------------------------------------------
 -- Projectile
 function tinker_second_attack_lua:OnProjectileHit_ExtraData( target, location, extraData )

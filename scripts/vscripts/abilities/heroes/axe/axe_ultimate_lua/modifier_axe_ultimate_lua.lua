@@ -37,7 +37,7 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & Animations
 function modifier_axe_ultimate_lua:GetEffectName()
-	return "particles/units/heroes/hero_axe/axe_cullingblade_sprint.vpcf"
+	return "particles/econ/items/axe/ti9_jungle_axe/ti9_jungle_axe_culling_blade_sprint.vpcf"
 end
 
 function modifier_axe_ultimate_lua:GetEffectAttachType()

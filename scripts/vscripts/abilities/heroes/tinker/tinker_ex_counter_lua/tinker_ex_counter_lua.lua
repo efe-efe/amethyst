@@ -72,6 +72,10 @@ function tinker_ex_counter_lua:OnSpellStart()
 	self:PlayEffects_a()
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+	    
+	-- Put CD on the alternate of the ability
+	local alternate_version = caster:FindAbilityByName("tinker_counter_lua")
+	alternate_version:StartCooldown(self:GetCooldown(0))
 end
 
 --------------------------------------------------------------------------------

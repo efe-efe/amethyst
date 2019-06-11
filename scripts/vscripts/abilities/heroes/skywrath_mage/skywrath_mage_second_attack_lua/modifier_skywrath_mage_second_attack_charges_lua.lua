@@ -63,6 +63,8 @@ function modifier_skywrath_mage_second_attack_charges_lua:OnAbilityFullyCast( pa
 			return
 		end
 
+		--if self:GetParent():IsSilenced() then return end
+
 		local loop = true
 		while loop do
 			-- find modifier

@@ -401,10 +401,11 @@
 		"Ability3"						"tinker_counter_lua"							
 		"Ability4"						"tinker_special_attack_lua"
 		"Ability5"						"tinker_ex_ultimate_lua"					
-		"Ability6"						"wisp_ultimate_lua"
+		"Ability6"						"tinker_ultimate_lua"
 		"Ability7"						"tinker_ex_counter_lua"					
 		"Ability8"						"tinker_ex_mobility_lua"
-		"Ability9"						"tinker_mobility_lua"							
+		"Ability9"						"tinker_mobility_lua"	
+		"Ability10"						"tinker_ultimate_special_attack_lua"	
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------

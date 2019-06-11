@@ -80,7 +80,7 @@ function modifier_phantom_assassin_ex_basic_attack_lua:DeclareFunctions()
 end
 
 function modifier_phantom_assassin_ex_basic_attack_lua:OnAbilityFullyCast(params)
-    if params.ability==self:GetParent():FindAbilityByName("phantom_assassin_basic_attack_lua") then
+    if params.ability==self:GetParent():FindAbilityByName("phantom_assassin_basic_attack_lua") or params.ability==self:GetParent():FindAbilityByName("phantom_assassin_special_attack_lua") then
         self:DecrementStackCount()
 
         if self:GetStackCount()<=0 then

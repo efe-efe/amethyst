@@ -73,7 +73,7 @@ function phantom_assassin_ex_ultimate_lua:OnSpellStart()
         bFlyingVision = false,
         fVisionTickTime = .1,
         fVisionLingerDuration = 1,
-        draw = true,
+        draw = false,
         fRehitDelay = 1.0,
         UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
         OnUnitHit = function(_self, unit) 

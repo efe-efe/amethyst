@@ -42,3 +42,7 @@ end
 function modifier_phantom_assassin_counter_buff_lua:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
+
+function modifier_phantom_assassin_counter_buff_lua:GetStatusEffectName()
+	return "particles/status_fx/status_effect_phantom_assassin_active_blur.vpcf"
+end

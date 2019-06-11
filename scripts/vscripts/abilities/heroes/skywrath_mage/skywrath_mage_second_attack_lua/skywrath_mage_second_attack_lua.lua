@@ -15,25 +15,26 @@ end
 function skywrath_mage_second_attack_lua:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
+    self.point = self:GetCursorPosition()
 	local cast_point = self:GetCastPoint()
 
     -- Animation and pseudo cast point
-	self:Animate(point)
+	self:Animate(self.point)
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+end
 
-	Timers:CreateTimer(cast_point, function()
-        CreateModifierThinker(
-            caster, --hCaster
-            self, --hAbility
-            "modifier_skywrath_mage_second_attack_thinker_lua", --modifierName
-            {}, --paramTable
-            point, --vOrigin
-            caster:GetTeamNumber(), --nTeamNumber
-            false --bPhantomBlocker
-        )
-    end)
-    
+function skywrath_mage_second_attack_lua:OnEndPseudoCastPoint()
+	local caster = self:GetCaster()
+
+	CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_skywrath_mage_second_attack_thinker_lua", --modifierName
+		{}, --paramTable
+		self.point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
 end
 
 --------------------------------------------------------------------------------
