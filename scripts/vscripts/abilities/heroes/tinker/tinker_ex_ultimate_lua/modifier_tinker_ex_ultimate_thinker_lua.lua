@@ -62,6 +62,7 @@ end
 function modifier_tinker_ex_ultimate_thinker_lua:OnIntervalThink()
 	-- generate spawn point
 	local damage = self:GetAbility():GetSpecialValueFor( "damage" ) -- special value
+	local caster = self:GetCaster()
 	-- generate Data
 	local projectile_name = "particles/econ/items/tinker/tinker_motm_rollermaw/tinker_rollermaw.vpcf"
 	local projectile_speed = self:GetAbility():GetSpecialValueFor( "projectile_speed" ) -- special value
@@ -77,7 +78,7 @@ function modifier_tinker_ex_ultimate_thinker_lua:OnIntervalThink()
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
 		fEndRadius = projectile_start_radius,
-		Source = self:GetCaster(),
+		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = self.projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,
@@ -95,7 +96,7 @@ function modifier_tinker_ex_ultimate_thinker_lua:OnIntervalThink()
 		bGroundLock = true,
 		bProvidesVision = true,
 		iVisionRadius = 50,
-		iVisionTeamNumber = self:GetCaster():GetTeam(),
+		iVisionTeamNumber = caster:GetTeam(),
 		bFlyingVision = false,
 		fVisionTickTime = .1,
 		fVisionLingerDuration = 1,
@@ -105,7 +106,7 @@ function modifier_tinker_ex_ultimate_thinker_lua:OnIntervalThink()
 		OnUnitHit = function(_self, unit) 
 			local damage = {
 				victim = unit,
-				attacker = self:GetCaster(),
+				attacker = _self.Source,
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}

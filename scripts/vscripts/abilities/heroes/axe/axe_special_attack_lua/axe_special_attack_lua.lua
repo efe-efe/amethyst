@@ -25,8 +25,9 @@ function axe_special_attack_lua:OnSpellStart()
 	local point = caster:GetOrigin()
 
 	-- load data
-	local radius = 300--self:GetSpecialValueFor("radius")
-	local duration = 2.5--self:GetSpecialValueFor("duration")
+	local radius = self:GetSpecialValueFor("radius")
+	local duration = self:GetSpecialValueFor("duration")
+	local mana_gain = self:GetSpecialValueFor("mana_gain")
 
 	-- find units caught
 	local enemies = FindUnitsInRadius(
@@ -63,6 +64,10 @@ function axe_special_attack_lua:OnSpellStart()
 	if #enemies>0 then
 		local sound_cast = "Hero_Axe.Berserkers_Call"
 		EmitSoundOn( sound_cast, self:GetCaster() )
+
+		-- Give Mana
+		local mana_gain_final = self:GetCaster():GetMaxMana() * mana_gain
+		self:GetCaster():GiveMana(mana_gain_final)    
 	end
 	self:PlayEffects()
 end

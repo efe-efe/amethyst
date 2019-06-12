@@ -151,6 +151,7 @@ function tinker_counter_lua:OnEndPseudoCastPoint()
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
 	local damage = self:GetSpecialValueFor("damage")
+	local mana_gain = self:GetSpecialValueFor("mana_gain")
 
 	-- Projectile data
 	local projectile_name = ""
@@ -214,6 +215,10 @@ function tinker_counter_lua:OnEndPseudoCastPoint()
 				"modifier_generic_pre_silence_lua", -- modifier name
 				{ duration = duration } -- kv
 			)
+
+			-- Give Mana
+			local mana_gain_final = _self.Source:GetMaxMana() * mana_gain
+			_self.Source:GiveMana(mana_gain_final)
 
 			-- get targets
 			local targets = {}

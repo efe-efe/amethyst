@@ -62,8 +62,8 @@ function axe_second_attack_lua:OnSpellStart()
 		-- if at least 1 enemy
 		if #enemies > 0 then
 			-- Give Mana
-			local mana_gain_final = self:GetCaster():GetMaxMana() * mana_gain
-			self:GetCaster():GiveMana(mana_gain_final)    
+			local mana_gain_final = caster:GetMaxMana() * mana_gain
+			caster:GiveMana(mana_gain_final)    
 		end
 
 

@@ -1,8 +1,9 @@
 modifier_axe_special_attack_buff_lua = class({})
 
 function modifier_axe_special_attack_buff_lua:OnCreated()
+    self.aspd_per_stack = self:GetAbility():GetSpecialValueFor( "aspd_per_stack" )
+
     if IsServer() then
-        self.aspd_per_stack = 20
 
         local think_interval = 0.3--self:GetAbility():GetSpecialValueFor( "think_interval" )
         -- Start Interval
@@ -54,10 +55,8 @@ end
 --------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_axe_special_attack_buff_lua:GetModifierAttackSpeedBonus_Constant()
-    if IsServer() then
-        if self.aspd_per_stack == nil then return 0 end
-        return self:GetStackCount() * self.aspd_per_stack + 60
-    end
+    if self.aspd_per_stack == nil then return 0 end
+    return self:GetStackCount() * self.aspd_per_stack + 60
 end
 
 

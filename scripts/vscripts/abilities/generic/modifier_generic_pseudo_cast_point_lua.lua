@@ -15,7 +15,7 @@ function modifier_generic_pseudo_cast_point_lua:IsStunDebuff()
 end
 
 function modifier_generic_pseudo_cast_point_lua:IsPurgable()
-	return true
+	return false
 end
 
 
@@ -36,22 +36,34 @@ end
 
 function modifier_generic_pseudo_cast_point_lua:OnDestroy(params)
 	local ability = self:GetAbility()
-	--Destroyed before it duration ends
-	if self:GetRemainingTime() >= 0.05 then
-		if ability.OnStopPseudoCastPoint ~= nil then
-			ability:OnStopPseudoCastPoint()
+
+	if IsServer() then
+		local modifier = self:GetParent():FindModifierByName( "modifier_generic_pre_silence_lua" )
+		
+		-- Safe destroying
+		if modifier~=nil then
+			if not modifier:IsNull() then
+				if ability.OnStopPseudoCastPoint ~= nil then
+					ability:OnStopPseudoCastPoint()
+				end
+				return
+			end
 		end
-		if IsServer() then
+
+		--Destroyed before it duration ends
+		if self:GetRemainingTime() >= 0.05 then
+			if ability.OnStopPseudoCastPoint ~= nil then
+				ability:OnStopPseudoCastPoint()
+			end
 			GameRules.EndAnimation(self:GetParent())
 			ability:EndCooldown()
-		end
-	else
-		if ability.OnEndPseudoCastPoint ~= nil then
-			if IsServer() then
+		else
+			if ability.OnEndPseudoCastPoint ~= nil then
 				ability:OnEndPseudoCastPoint()
 			end
 		end
 	end
+	
 end
 
 --------------------------------------------------------------------------------

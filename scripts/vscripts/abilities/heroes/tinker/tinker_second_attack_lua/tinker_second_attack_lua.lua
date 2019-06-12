@@ -1,6 +1,7 @@
 
 tinker_second_attack_lua = class({})
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_tinker_second_attack_lua", "abilities/heroes/tinker/tinker_second_attack_lua/modifier_tinker_second_attack_lua", LUA_MODIFIER_MOTION_NONE )
 
 function tinker_second_attack_lua:GetAOERadius()
 	return self:GetSpecialValueFor( "radius" )
@@ -75,18 +76,38 @@ end
 --------------------------------------------------------------------------------
 -- Projectile
 function tinker_second_attack_lua:OnProjectileHit_ExtraData( target, location, extraData )
+	local mana_gain = self:GetSpecialValueFor("mana_gain")
+	local stacks_duration = self:GetSpecialValueFor("stacks_duration")
+	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
+	local caster = self:GetCaster()
+
 	if target ~=nil then
 		if target:TriggerSpellAbsorb( self ) then return end
 	end
+
+	local stacks = SafeGetModifierStacks("modifier_tinker_second_attack_lua", target, caster)
+
 	-- Apply damage
 	local damage = {
 		victim = target,
-		attacker = self:GetCaster(),
-		damage = extraData.damage,
+		attacker = caster,
+		damage = extraData.damage + (damage_per_stack * stacks),
 		damage_type = DAMAGE_TYPE_MAGICAL,
 		ability = self
 	}
 	ApplyDamage( damage )
+
+	target:AddNewModifier(
+		caster,
+		self,
+		"modifier_tinker_second_attack_lua",
+		{ duration = stacks_duration }
+	)
+	
+	-- Give Mana
+	local mana_gain_final = caster:GetMaxMana() * mana_gain
+	caster:GiveMana(mana_gain_final)    
+
 
 	-- effects
 	self:PlayEffects1( target )
