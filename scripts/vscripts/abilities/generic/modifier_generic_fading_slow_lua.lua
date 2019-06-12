@@ -1,7 +1,7 @@
 modifier_generic_fading_slow_lua = class({})
 
+-- Clasifications
 --------------------------------------------------------------------------------
-
 function modifier_generic_fading_slow_lua:IsDebuff()
 	return true
 end
@@ -47,6 +47,7 @@ function modifier_generic_fading_slow_lua:GetModifierMoveSpeedBonus_Percentage()
 end
 
 --------------------------------------------------------------------------------
+--Graphics
 
 function modifier_generic_fading_slow_lua:GetEffectName()
 	return "particles/generic_gameplay/rune_haste.vpcf"
@@ -56,4 +57,6 @@ function modifier_generic_fading_slow_lua:GetEffectAttachType()
 	return PATTACH_OVERHEAD_FOLLOW
 end
 
---------------------------------------------------------------------------------
+function modifier_generic_fading_slow_lua:GetTexture()
+	return "modifier_generic_fading_slow_lua"
+end

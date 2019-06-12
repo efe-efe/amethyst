@@ -1,5 +1,5 @@
 modifier_axe_ex_mobility_movement_lua = class({})
-LinkLuaModifier( "modifier_generic_sleep", "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_sleep_lua", "abilities/generic/modifier_generic_sleep_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -88,7 +88,7 @@ function modifier_axe_ex_mobility_movement_lua:OnDestroy( kv )
 			enemy:AddNewModifier(
 				caster,
 				self:GetAbility(),
-				"modifier_generic_sleep",
+				"modifier_generic_sleep_lua",
 				{ duration = self.sleep_duration }
 			)
         end

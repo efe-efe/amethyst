@@ -54,6 +54,7 @@ function modifier_phantom_assassin_strike_stack_lua:DeclareFunctions()
 	return funcs
 end
 
+--------------------------------------------------------------------------------
 --Graphics
 function modifier_phantom_assassin_strike_stack_lua:GetTexture()
 	return "phantom_assassin_basic_attack_lua"
@@ -73,4 +74,5 @@ function modifier_phantom_assassin_strike_stack_lua:StopEffects()
 		ParticleManager:ReleaseParticleIndex( self.effect_cast )
 	end
 end
+
 

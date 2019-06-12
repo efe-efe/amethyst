@@ -1,6 +1,6 @@
 
 phantom_assassin_ex_special_attack_lua = class({})
-LinkLuaModifier( "modifier_generic_sleep", "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_sleep_lua", "abilities/generic/modifier_generic_sleep_lua", LUA_MODIFIER_MOTION_NONE )
 
 function phantom_assassin_ex_special_attack_lua:GetAOERadius()
 	return self:GetSpecialValueFor( "hitbox" )
@@ -69,7 +69,7 @@ function phantom_assassin_ex_special_attack_lua:OnSpellStart()
 			unit:AddNewModifier(
 				caster, -- player source
 				self, -- ability source
-				"modifier_generic_sleep", -- modifier name
+				"modifier_generic_sleep_lua", -- modifier name
 				{ duration = sleep_duration } -- kv
 			)
 

@@ -38,33 +38,33 @@ function axe_second_attack_lua:OnSpellStart()
 
     -- Print units
     for _,enemy in pairs(enemies) do
-			enemy:AddNewModifier(
-				caster,
-				self,
-				"modifier_axe_second_attack_debuff_lua",
-				{ duration = duration }
-			)
-			enemy:AddNewModifier(
-				caster,
-				self,
-				"modifier_generic_fading_slow_lua",
-				{ duration = duration }
-			)
+		enemy:AddNewModifier(
+			caster,
+			self,
+			"modifier_axe_second_attack_debuff_lua",
+			{ duration = duration }
+		)
+		enemy:AddNewModifier(
+			caster,
+			self,
+			"modifier_generic_fading_slow_lua",
+			{ duration = duration }
+		)
 
-			caster:AddNewModifier(
-				caster, -- player source
-				self, -- ability source
-				"modifier_axe_second_attack_buff_lua", -- modifier name
-				{ duration = duration } -- kv
-			)
-		end
+		caster:AddNewModifier(
+			caster, -- player source
+			self, -- ability source
+			"modifier_axe_second_attack_buff_lua", -- modifier name
+			{ duration = duration } -- kv
+		)
+	end
 				
-		-- if at least 1 enemy
-		if #enemies > 0 then
-			-- Give Mana
-			local mana_gain_final = caster:GetMaxMana() * mana_gain
-			caster:GiveMana(mana_gain_final)    
-		end
+	-- if at least 1 enemy
+	if #enemies > 0 then
+		-- Give Mana
+		local mana_gain_final = caster:GetMaxMana() * mana_gain
+		caster:GiveMana(mana_gain_final)    
+	end
 
 
 	self:PlayEffects()
