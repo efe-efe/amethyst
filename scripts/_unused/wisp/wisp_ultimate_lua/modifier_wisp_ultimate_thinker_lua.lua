@@ -1,14 +1,13 @@
 modifier_wisp_ultimate_thinker_lua = class({})
-LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
--- Classifications
+
 function modifier_wisp_ultimate_thinker_lua:IsHidden()
 	return true
 end
 
 --------------------------------------------------------------------------------
--- Initializer
+
 function modifier_wisp_ultimate_thinker_lua:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
@@ -16,11 +15,6 @@ function modifier_wisp_ultimate_thinker_lua:OnCreated( kv )
         self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
         self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
         self.damage_bonus =  self:GetAbility():GetSpecialValueFor("damage_bonus")
-
-        --
-
-            self.stun_duration =  self:GetAbility():GetSpecialValueFor("stun_duration")
-        --
 
         -- Start Interval
         self:StartIntervalThink( self.delay_time )
@@ -38,14 +32,8 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
         local caster = self:GetCaster()
         local old_origin = caster:GetOrigin()
 
-        local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link_lua", caster )
-
         -- teleport
         FindClearSpaceForUnit( caster, point , true )
-        
-        if linked_unit ~= nil then
-            FindClearSpaceForUnit( linked_unit, point , true )
-        end
 
         -- find enemies
         local enemies = FindUnitsInRadius( 
@@ -81,13 +69,6 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
             damageTable.victim = enemy
             damageTable.damage = final_damage
             ApplyDamage(damageTable)
-
-            enemy:AddNewModifier(
-                caster,
-                self:GetAbility(),
-                "modifier_generic_stunned_lua",
-                { duration = self.stun_duration }
-            )
 		end
 
 		self:PlayEffects2()

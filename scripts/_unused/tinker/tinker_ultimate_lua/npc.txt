@@ -1,0 +1,38 @@
+"tinker_ultimate_lua" 
+{ 
+    "BaseClass"						"ability_lua" 
+    "ScriptFile"					"abilities/heroes/tinker/tinker_ultimate_lua/tinker_ultimate_lua" 
+        
+    // General 
+    //------------------------------------------------------------------------------------------------------------- 
+    "AbilityTextureName"			"tinker_ultimate_lua" 
+    "MaxLevel"						"1" 
+    "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET" 
+
+    // Ability Casting 
+    //------------------------------------------------------------------------------------------------------------- 
+    "AbilityCastPoint"				"1.5" 
+    "AbilityCastAnimation"			"ACT_DOTA_TINKER_REARM2" 
+    "AnimationPlaybackRate"			"1.2" 
+
+    // Ability Resource 
+    //------------------------------------------------------------------------------------------------------------- 
+    "AbilityCooldown"				"0.0" 
+    "AbilityManaCost"				"100" 
+        
+    // Special 
+    //------------------------------------------------------------------------------------------------------------- 
+    "AbilitySpecial" 
+    { 
+        "01" 
+        { 
+            "var_type"				"FIELD_FLOAT" 
+            "duration"				"8.0" 
+        } 
+        "02" 
+        { 
+            "var_type"				"FIELD_INTEGER" 
+            "speed_buff"			"8" 
+        } 
+    } 
+} 

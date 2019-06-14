@@ -22,8 +22,6 @@ end
 
 function phantom_assassin_second_attack_lua:OnEndPseudoCastPoint()
 	local caster = self:GetCaster()
-	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
 	local offset = 20
 
 	-- load data
@@ -38,7 +36,6 @@ function phantom_assassin_second_attack_lua:OnEndPseudoCastPoint()
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 	local mana_gain = self:GetSpecialValueFor("mana_gain")
 
-	self:StartCooldown(attack_speed)
 	self:SetActivated(true)
 	
 	-- Dinamyc data

@@ -108,7 +108,6 @@ function tinker_second_attack_lua:OnProjectileHit_ExtraData( target, location, e
 	local mana_gain_final = caster:GetMaxMana() * mana_gain
 	caster:GiveMana(mana_gain_final)    
 
-
 	-- effects
 	self:PlayEffects1( target )
 end

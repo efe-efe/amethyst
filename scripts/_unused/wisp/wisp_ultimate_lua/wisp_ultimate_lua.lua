@@ -15,7 +15,6 @@ function wisp_ultimate_lua:OnSpellStart()
     local delay_time = self:GetSpecialValueFor( "delay_time" )
     local old_origin = caster:GetOrigin()
     local max_range = self:GetSpecialValueFor("range")
-    local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link_lua", caster )
 
     local direction = ( point - old_origin)
     if direction:Length2D() > max_range then
@@ -30,15 +29,6 @@ function wisp_ultimate_lua:OnSpellStart()
 		{ duration = delay_time }
 	)
 
-    if linked_unit ~= nil then
-        linked_unit:AddNewModifier(
-            caster,
-            self,
-            "modifier_wisp_ultimate_lua",
-            { duration = delay_time }
-        )
-    end
-    
     -- Effect thinker
     CreateModifierThinker(
         caster, --hCaster

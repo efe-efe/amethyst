@@ -1,23 +1,23 @@
-modifier_tinker_ex_ultimate_thinker_lua = class({})
-LinkLuaModifier( "modifier_tinker_ex_ultimate_buff_lua", "abilities/heroes/tinker/tinker_ex_ultimate_lua/modifier_tinker_ex_ultimate_buff_lua", LUA_MODIFIER_MOTION_NONE )
+modifier_tinker_ex_second_attack_thinker_lua = class({})
+LinkLuaModifier( "modifier_tinker_ex_second_attack_buff_lua", "abilities/heroes/tinker/tinker_ex_second_attack_lua/modifier_tinker_ex_second_attack_buff_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_tinker_ex_ultimate_thinker_lua:IsHidden()
+function modifier_tinker_ex_second_attack_thinker_lua:IsHidden()
 	return true
 end
 
-function modifier_tinker_ex_ultimate_thinker_lua:IsDebuff()
+function modifier_tinker_ex_second_attack_thinker_lua:IsDebuff()
 	return false
 end
 
-function modifier_tinker_ex_ultimate_thinker_lua:IsPurgable()
+function modifier_tinker_ex_second_attack_thinker_lua:IsPurgable()
 	return false
 end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_tinker_ex_ultimate_thinker_lua:OnCreated( kv )
+function modifier_tinker_ex_second_attack_thinker_lua:OnCreated( kv )
 	if IsServer() then
 		-- references
 		local point = self:GetParent():GetOrigin()
@@ -43,11 +43,11 @@ function modifier_tinker_ex_ultimate_thinker_lua:OnCreated( kv )
 	end
 end
 
-function modifier_tinker_ex_ultimate_thinker_lua:OnRefresh( kv )
+function modifier_tinker_ex_second_attack_thinker_lua:OnRefresh( kv )
 	
 end
 
-function modifier_tinker_ex_ultimate_thinker_lua:OnDestroy( kv )
+function modifier_tinker_ex_second_attack_thinker_lua:OnDestroy( kv )
 	if IsServer() then
 		-- effects
 		local sound_cast = "Hero_Tinker.March_of_the_Machines"
@@ -59,7 +59,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Interval Effects
-function modifier_tinker_ex_ultimate_thinker_lua:OnIntervalThink()
+function modifier_tinker_ex_second_attack_thinker_lua:OnIntervalThink()
 	-- generate spawn point
 	local damage = self:GetAbility():GetSpecialValueFor( "damage" ) -- special value
 	local caster = self:GetCaster()
@@ -139,14 +139,14 @@ function modifier_tinker_ex_ultimate_thinker_lua:OnIntervalThink()
             ally:AddNewModifier(
                 self:GetCaster(), 
                 self:GetAbility(), 
-                "modifier_tinker_ex_ultimate_buff_lua", 
+                "modifier_tinker_ex_second_attack_buff_lua", 
                 {duration =  self.buff_duration}
             )
         end
     end
 end
 
-function modifier_tinker_ex_ultimate_thinker_lua:PlayEffects(pos)
+function modifier_tinker_ex_second_attack_thinker_lua:PlayEffects(pos)
 	local particle_cast = "particles/econ/items/tinker/tinker_motm_rollermaw/tinker_machine_destroy.vpcf"
 
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )

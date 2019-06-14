@@ -3,9 +3,15 @@ modifier_axe_special_attack_debuff_lua = class({})
 function modifier_axe_special_attack_debuff_lua:OnCreated()
     if IsServer() then
 
-        local think_interval = 0.3--self:GetAbility():GetSpecialValueFor( "think_interval" )
+        --local attacks_per_second = self:GetParent():GetAttacksPerSecond()
+        --local attack_speed = ( 1 / attacks_per_second )
+        --local ability = self:GetParent():GetAbilityByIndex(0)
+        --local cast_point = ability:GetCastPoint()
+
+        --local think_interval = 0.3--self:GetAbility():GetSpecialValueFor( "think_interval" )
         -- Start Interval
-        self:StartIntervalThink( think_interval )   
+        self:StartIntervalThink( 0.1 )   
+        self:OnIntervalThink()
     end
 end
 
@@ -27,9 +33,11 @@ function modifier_axe_special_attack_debuff_lua:OnIntervalThink()
     local caster = self:GetCaster()
     local ability = parent:GetAbilityByIndex(0)
 
-    parent:CastAbilityOnPosition(caster:GetOrigin(), ability, parent:GetPlayerOwnerID())
+    if ability:IsFullyCastable() and not parent:IsSilenced() then
+        parent:CastAbilityOnPosition(caster:GetOrigin(), ability, parent:GetPlayerOwnerID())
+    end
     parent:MoveToPosition(caster:GetOrigin())
-   
+
 end
 
 

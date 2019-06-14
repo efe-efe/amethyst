@@ -24,7 +24,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.0"
+		"AbilityCastPoint"				"0.3"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -253,7 +253,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_spirits_in"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET  | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
@@ -569,6 +569,11 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_bonus"				"15"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"stun_duration"				"2.0"
 			}
 			
 		}
@@ -924,7 +929,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_dispersion"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET  | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
@@ -2816,7 +2821,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phantom_assassin_blur"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET  | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"MaxLevel"						"1"
 		
 		// Casting
@@ -2848,7 +2853,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"max_charges"				"2"
+				"max_charges"				"3"
 			}
 		}
 	}
@@ -3209,8 +3214,8 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"1300"
-		"AnimationPlaybackRate" 		"1.1"
-		"AbilityCastPoint"				"0.5"
+		"AnimationPlaybackRate" 		"1.3"
+		"AbilityCastPoint"				"0.4"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -3247,7 +3252,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_per_second"			"7"
+				"damage_per_second"			"8"
 			}
 			"05"
 			{
@@ -3691,7 +3696,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.25"
+		"AbilityCastPoint"				"0.15"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -3800,12 +3805,96 @@
 			"07"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"stacks_duration"			"4.5"
+				"stacks_duration"			"7.0"
 			}
 			"08"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"damage_per_stack"			"3"
+			}
+		}
+	}
+	
+	"tinker_ex_second_attack_lua"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/tinker/tinker_ex_second_attack_lua/tinker_ex_second_attack_lua"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"tinker_march_of_the_machines"
+		"MaxLevel"						"1"
+		
+		// Ability General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+
+		// Ability Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1500"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
+
+		// Ability Resource
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"10.0"
+		"AbilityManaCost"				"25"
+
+		// Damage
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage"					"10"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"200"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"hitbox"				"80"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"duration"				"6.0"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"projectile_speed"		"500"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"machines_per_sec"		"6"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"projectile_distance"	"2200"
+			}
+			"07"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"buff_duration"			"1.0"
+			}
+			"08"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"5"
+			}
+			"09"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"speed_buff"			"30"
 			}
 		}
 	}
@@ -3825,7 +3914,6 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PURE"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 
@@ -3980,7 +4068,7 @@
 
 		// Ability Resource
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"8.0"
+		"AbilityCooldown"				"10.0"
 		"AbilityManaCost"				"0"
 	}
 
@@ -4025,43 +4113,6 @@
 			}
 		}
 	}
-	
-	"tinker_ex_mobility_lua"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/tinker/tinker_ex_mobility_lua/tinker_ex_mobility_lua"
-		
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"tinker_ex_mobility_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
-		"MaxLevel"						"1"
-		
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"2.0"
-		"AbilityCastAnimation"			"ACT_DOTA_TELEPORT"
-		"AnimationPlaybackRate" 		"1.2"
-		
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"8.0"
-
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"50"
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"range"					"4000"
-			}
-		}
-	}
 
 	"tinker_ultimate_lua"
 	{
@@ -4072,55 +4123,64 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"tinker_ultimate_lua"
 		"MaxLevel"						"1"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+
+		// Ability General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 
 		// Ability Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"1.5"
-		"AbilityCastAnimation"			"ACT_DOTA_TINKER_REARM2"
-		"AnimationPlaybackRate"			"1.2"
+		"AbilityCastPoint"				"0.5"
+		"AbilityCastRange"				"1500"
 
 		// Ability Resource
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"0.0"
-		"AbilityManaCost"				"100"
-		
+		"AbilityCooldown"				"12"
+		"AbilityManaCost"				"50"
+
+		// Damage
+		//-------------------------------------------------------------------------------------------------------------
+
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
 		{
 			"01"
 			{
-				"var_type"				"FIELD_FLOAT"
-				"duration"				"8.0"
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1600"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"speed_buff"			"8"
+				"hitbox"				"70"
+			}	
+			"03"	
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage"				"30"
+			}
+			"04"	
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage_bonus"			"20"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"quick_cast"			"1"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"debuff_duration"			"7.0"
 			}
 		}
-	}
-
-	"tinker_ultimate_special_attack_lua"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/tinker/tinker_ultimate_lua/tinker_ultimate_special_attack_lua"
-		
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"tinker_ultimate_special_attack_lua"
-		"MaxLevel"						"1"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
-
-		// Ability Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.7"
-
-		// Ability Resource
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"0.0"
-		"AbilityManaCost"				"0"
 	}
 
 	"tinker_ex_ultimate_lua"
@@ -4130,31 +4190,19 @@
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"tinker_march_of_the_machines"
+		"AbilityTextureName"			"tinker_ex_ultimate_lua"
 		"MaxLevel"						"1"
-		
-		// Ability General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityType"					"DOTA_ABILITY_TYPE_BASIC"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 
 		// Ability Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"1500"
-		"AbilityCastPoint"				"0.3"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
+		"AbilityCastPoint"				"1.2"
 
 		// Ability Resource
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
-
-		// Damage
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"10"
-
+		
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
@@ -4162,47 +4210,12 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"radius"				"200"
+				"mana_gain"				"50"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"hitbox"				"80"
-			}
-			"03"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"duration"				"6.0"
-			}
-			"04"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"projectile_speed"		"500"
-			}
-			"05"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"machines_per_sec"		"6"
-			}
-			"06"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"projectile_distance"	"2200"
-			}
-			"07"
-			{
-				"var_type"				"FIELD_FLOAT"
-				"buff_duration"			"1.0"
-			}
-			"08"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"damage"				"7"
-			}
-			"09"
-			{
-				"var_type"				"FIELD_INTEGER"
-				"speed_buff"			"30"
+				"life_loss"				"25"
 			}
 		}
 	}
@@ -4259,19 +4272,6 @@
 			}
 		}
 	}
-
-	
-
-
-
-
-
-
-
-
-
-
-
 
 
 

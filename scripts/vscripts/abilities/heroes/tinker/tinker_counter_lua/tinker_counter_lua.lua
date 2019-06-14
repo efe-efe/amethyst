@@ -113,6 +113,15 @@ function tinker_counter_lua:Refract( source, targets, jumps )
 				return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() and unit ~= targets[jumps]
 			end,
 			OnUnitHit = function(_self, unit) 
+
+				-- Count targets
+				local counter = 0
+				for k, v in pairs(_self.rehit) do
+					counter = counter + 1
+				end
+
+				if counter > 0 then return end
+
 				-- precache damage
 				local damage = {
 					victim = unit,
@@ -198,6 +207,14 @@ function tinker_counter_lua:OnEndPseudoCastPoint()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
+			-- Count targets
+			local counter = 0
+			for k, v in pairs(_self.rehit) do
+				counter = counter + 1
+			end
+
+			if counter > 0 then return end
+			
 			-- precache damage
 			local damage = {
 				victim = unit,

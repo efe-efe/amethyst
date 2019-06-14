@@ -77,7 +77,7 @@ function GameMode:OnEntityKilled( keys )
                     
                     local shouldEnd = false
 
-                    if self.team_state[team].loses >= 3 then
+                    if self.team_state[team].loses >= 5 then
                         shouldEnd = true
                     end
                     

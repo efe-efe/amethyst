@@ -35,9 +35,9 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"11"									// Damage range min.
-		"AttackDamageMax"			"11"									// Damage range max.	
-		"AttackRate"				"0.3"									// Speed of attack.	
+		"AttackDamageMin"			"10"									// Damage range min.
+		"AttackDamageMax"			"10"									// Damage range max.	
+		"AttackRate"				"0.2"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.0"
 		"AttackRange"				"900"
 		
@@ -57,7 +57,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"230" //CAN VARY!						// Base health.
+		"StatusHealth"				"210" //CAN VARY!						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"
@@ -385,7 +385,7 @@
 	}
 
    //=================================================================================================================
-	// HERO: Wisp
+	// HERO: Tinker
 	//=================================================================================================================
 	"npc_dota_hero_tinker_lua"
 	{
@@ -402,10 +402,9 @@
 		"Ability4"						"tinker_special_attack_lua"
 		"Ability5"						"tinker_ex_ultimate_lua"					
 		"Ability6"						"tinker_ultimate_lua"
-		"Ability7"						"tinker_ex_counter_lua"					
-		"Ability8"						"tinker_ex_mobility_lua"
-		"Ability9"						"tinker_mobility_lua"	
-		"Ability10"						"tinker_ultimate_special_attack_lua"	
+		"Ability7"						"tinker_ex_second_attack_lua"					
+		"Ability8"						"tinker_ex_counter_lua"
+		"Ability9"						"tinker_mobility_lua"		
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -421,7 +420,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AttackDamageMin"			"13"									// Damage range min.
 		"AttackDamageMax"			"13"									// Damage range max.	
-		"AttackRate"				"0.3"									// Speed of attack.	
+		"AttackRate"				"0.4"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.0"
 		"AttackRange"				"900"
 		

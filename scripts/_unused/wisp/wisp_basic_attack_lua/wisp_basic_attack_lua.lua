@@ -1,47 +1,32 @@
 wisp_basic_attack_lua = class ({})
 LinkLuaModifier( "modifier_wisp_basic_attack_lua", "abilities/heroes/wisp/wisp_basic_attack_lua/modifier_wisp_basic_attack_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_wisp_basic_attack_link_lua", "abilities/heroes/wisp/wisp_basic_attack_lua/modifier_wisp_basic_attack_link_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_wisp_basic_attack_link_negative_lua", "abilities/heroes/wisp/wisp_basic_attack_lua/modifier_wisp_basic_attack_link_negative_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function wisp_basic_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	self.point = self:GetCursorPosition()
-
-	-- Animation and pseudo cast point
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
-end
-
-function wisp_basic_attack_lua:OnEndPseudoCastPoint()
-	local caster = self:GetCaster()
+	local origin = caster:GetOrigin()
+	local point = self:GetCursorPosition()
+	local ability = self
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
+	--local attack_speed = 0.3
 	local ex_ultimate_modifier = caster:FindModifierByNameAndCaster( "modifier_wisp_ex_ultimate_lua", caster )
 
-	-- Projectile Data
+	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_base_attack.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	-- If have the ex-ultimate, change the visuals
 	if ex_ultimate_modifier ~= nil then
 		projectile_name="particles/mod_units/heroes/hero_batrider/batrider_base_attack.vpcf"
 	end
-
-	-- Dinamyc data
-	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
-
-	-- Extra data
-	local link_duration = 6.0--self:GetSpecialValueFor("link_duration")
-	local heal = 8--self:GetSpecialValueFor("heal")
-
+	
 	local projectile = {
 		EffectName = projectile_name,
 		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
@@ -72,42 +57,40 @@ function wisp_basic_attack_lua:OnEndPseudoCastPoint()
 		fVisionLingerDuration = 1,
 		draw = false,
 		fRehitDelay = 1.0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
-			-- ENEMIES
-			if unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() then
+			-- Hit
+			--------------------
+			local guardian_essence = unit:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
+			local modifier_attack_bonus = nil
 
-				_self.Source:AddNewModifier(
-					unit,
-					self,
-					"modifier_wisp_basic_attack_link_negative_lua",
-					{ duration = link_duration }
-				)
+			-- If have the debuff, adds extra attack and extends debuff duration
+			if guardian_essence ~= nil then
+				local new_duration = guardian_essence:GetRemainingTime() + modifier_duration_bonus
+				guardian_essence:SetDuration(new_duration, true)
+				modifier_attack_bonus = caster:AddNewModifier(caster, ability , "modifier_wisp_basic_attack_lua", {})
+			end
+			
+			-- perform the actual attack
+			caster:PerformAttack(
+				unit, -- handle hTarget 
+				true, -- bool bUseCastAttackOrb, 
+				true, -- bool bProcessProcs,
+				true, -- bool bSkipCooldown
+				false, -- bool bIgnoreInvis
+				false, -- bool bUseProjectile
+				false, -- bool bFakeAttack
+				false -- bool bNeverMiss
+			)
 
-				-- perform the actual attack
-				caster:PerformAttack(
-					unit, -- handle hTarget 
-					true, -- bool bUseCastAttackOrb, 
-					true, -- bool bProcessProcs,
-					true, -- bool bSkipCooldown
-					false, -- bool bIgnoreInvis
-					false, -- bool bUseProjectile
-					false, -- bool bFakeAttack
-					false -- bool bNeverMiss
-				)
-				self:PlayEffects_b(_self:GetPosition())
+			--Remove the extra attack
+			if modifier_attack_bonus ~= nil then
+				if not modifier_attack_bonus:IsNull() then
+					modifier_attack_bonus:Destroy()
+				end
 			end
-			-- ALLIES
-			if unit:GetTeamNumber() == _self.Source:GetTeamNumber() then
-				_self.Source:AddNewModifier(
-					unit,
-					self,
-					"modifier_wisp_basic_attack_link_lua",
-					{ duration = link_duration }
-				)
-				unit:Heal( heal, self )
-				self:PlayEffects_b(_self:GetPosition())
-			end
+
+			self:PlayEffects_b(_self:GetPosition())
 			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
@@ -120,6 +103,7 @@ function wisp_basic_attack_lua:OnEndPseudoCastPoint()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+
 end
 
 --------------------------------------------------------------------------------
@@ -150,9 +134,6 @@ function wisp_basic_attack_lua:PlayEffects_b( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-
---------------------------------------------------------------------------------
--- Misc
 -- Add mana on attack modifier. Only first time upgraded
 function wisp_basic_attack_lua:OnUpgrade()
 	if self:GetLevel()==1 then
