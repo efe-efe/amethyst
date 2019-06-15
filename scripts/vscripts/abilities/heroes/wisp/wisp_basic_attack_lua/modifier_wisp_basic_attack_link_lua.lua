@@ -4,23 +4,68 @@ LinkLuaModifier( "modifier_wisp_basic_attack_lua", "abilities/heroes/wisp/wisp_b
 function modifier_wisp_basic_attack_link_lua:OnCreated()
     local wisp = self:GetParent()
     local ally = self:GetCaster()
+    self.max_range = 1800--self:GetAbility():GetSpecialValueFor("max_range")
 
     if IsServer() then
-        ally:AddNewModifier(
+        self.modifier = ally:AddNewModifier(
             wisp,
             self:GetAbility(),
             "modifier_wisp_basic_attack_lua",
             { duration = self:GetDuration() }
         )
     end
+    
+    self:StartIntervalThink(0.1)
+    self:PlayEffects(self:GetParent())
+end
 
+function modifier_wisp_basic_attack_link_lua:OnRefresh()
+    self:OnDestroy()
+
+    local wisp = self:GetParent()
+    local ally = self:GetCaster()
+
+    if IsServer() then
+        self.modifier = ally:AddNewModifier(
+            wisp,
+            self:GetAbility(),
+            "modifier_wisp_basic_attack_lua",
+            { duration = self:GetDuration() }
+        )
+    end
+    
+    self:StartIntervalThink(0.1)
     self:PlayEffects(self:GetParent())
 end
 
 function modifier_wisp_basic_attack_link_lua:OnDestroy()
-    self:StopEffects()
+    if IsServer() then
+        if self.modifier ~= nil then
+            if not self.modifier:IsNull() then
+                self.modifier:Destroy()
+            end
+            self:StopEffects()
+        end
+    end
 end
 
+--------------------------------------------------------------------------------
+-- Interval Effects
+function modifier_wisp_basic_attack_link_lua:OnIntervalThink()
+    if IsServer() then
+        local target_origin = self:GetCaster():GetOrigin()
+        local caster_origin = self:GetParent():GetOrigin()
+        local direction = (caster_origin - target_origin)
+        local distance = direction:Length2D()
+
+        if distance > self.max_range then
+            self:Destroy()
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Graphics & Sounds
 function modifier_wisp_basic_attack_link_lua:PlayEffects( hTarget )
     -- Get Resources
     if IsServer() then
@@ -54,7 +99,6 @@ function modifier_wisp_basic_attack_link_lua:PlayEffects( hTarget )
         );
     end
 end
-
 
 function modifier_wisp_basic_attack_link_lua:StopEffects()
     if IsServer() then

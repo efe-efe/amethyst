@@ -1,6 +1,8 @@
-embers:
-aoe
+Keyword: embers
+Uso: Explosiones pequeñas
 
+Keyword: aoe
+Uso: Meele atacks
 
 Keyword: owner
-    Effectos que se aplican al jugador objetivo como estados (thirst, spectral dagger)
+Uso: Estados (thirst, spectral dagger)

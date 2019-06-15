@@ -4,13 +4,21 @@ ________________________________________________________________________________
 ________________________________________________________________________________
 --------------------------------------------------------------------------------
 
+0. Motivation
+------------------------------------------------
+
+	In comparisson to DOTA 2:
+		* There are technical skill gap that is high, but not as high or at least as visible as i would like to watch. When im watching competitive DOTA, the most enjoyable player to watch, at least for me, is the 4th position. Heroes like Earth spirit, Rubick or Shaker, and i would love to see more of that, every game, every second. 
+		* A very good player not always wins against a not so good player.
+		* A very good support player get one shot killed by a mediocre core player.
+
 1. Introduction
-----------------
+------------------------------------------------
 
 Two teams confront each other to obtain the victory on an ability, strategy and action based game. No farm, no items and no respawn are some of the core elements on this map. The original idea is taken from Battlerite, a game you can play for free on steam.
 
 2. Concepts
-----------------
+------------------------------------------------
 
 	* Heroe: the heroe is the main character used by the players to fight with and against. Heroes have a set of attributes, basic attacks, abilities and rites to fight on the battles.
 
@@ -25,7 +33,7 @@ Two teams confront each other to obtain the victory on an ability, strategy and 
 	* Rites: rites are upgrades to heroe abilities. The rites are chosen before the match starts, and supports the playstyle of each player. Rites can contribute too on the specifics strategies a player/team can have against the enemy team based on their players playstyle and their heroes.
 
 3. Design
-----------------
+------------------------------------------------
 
 3.1. Heroes:
 
@@ -127,7 +135,7 @@ The heroes gain mana through two sources:
 	b. Landing or casting certain skills
 
 4. Technical details
-----------------
+------------------------------------------------
 
 4.1. Attacks
 
@@ -137,7 +145,7 @@ All the attacks performed by heroes are abilities with small differences between
 	a. Meele: The attack is a "LinearProjectile" that on hit performs an attack. The range on this one is very short (equal to the unit original attack range).
 
 A. To complete
-----------------
+------------------------------------------------
 
 	- Number of players per team
 	- Number of rounds per match

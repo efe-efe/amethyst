@@ -14,10 +14,24 @@ function modifier_wisp_basic_attack_link_negative_lua:IsPurgable()
 	return false
 end
 
+function modifier_wisp_basic_attack_link_negative_lua:RemoveOnDeath()
+    return true
+end
+
+
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_wisp_basic_attack_link_negative_lua:OnCreated()
+    self.max_range = 1800--self:GetAbility():GetSpecialValueFor("max_range")
     self:PlayEffects(self:GetParent())
+    self:StartIntervalThink(0.1)
+end
+
+function modifier_wisp_basic_attack_link_negative_lua:OnRefresh()
+    self:OnDestroy()
+
+    self:PlayEffects(self:GetParent())
+    self:StartIntervalThink(0.1)
 end
 
 --------------------------------------------------------------------------------
@@ -59,6 +73,23 @@ function modifier_wisp_basic_attack_link_negative_lua:GetModifierIncomingDamage_
     end
 end
 
+--------------------------------------------------------------------------------
+-- Interval Effects
+function modifier_wisp_basic_attack_link_negative_lua:OnIntervalThink()
+    if IsServer() then
+        local target_origin = self:GetCaster():GetOrigin()
+        local caster_origin = self:GetParent():GetOrigin()
+        local direction = (caster_origin - target_origin)
+        local distance = direction:Length2D()
+
+        if distance > self.max_range then
+            self:Destroy()
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Graphics & Sounds
 function modifier_wisp_basic_attack_link_negative_lua:PlayEffects( hTarget )
     -- Get Resources
     if IsServer() then
@@ -94,7 +125,6 @@ function modifier_wisp_basic_attack_link_negative_lua:PlayEffects( hTarget )
 
     end
 end
-
 
 function modifier_wisp_basic_attack_link_negative_lua:StopEffects()
     if IsServer() then
