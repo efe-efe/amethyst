@@ -1,8 +1,0 @@
-Keyword: embers
-Uso: Explosiones pequeñas
-
-Keyword: aoe
-Uso: Meele atacks
-
-Keyword: owner
-Uso: Estados (thirst, spectral dagger)

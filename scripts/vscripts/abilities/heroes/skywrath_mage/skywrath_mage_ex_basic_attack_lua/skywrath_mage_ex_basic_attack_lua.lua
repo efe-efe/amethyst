@@ -4,12 +4,6 @@ skywrath_mage_ex_basic_attack_lua = class({})
 -- Ability Start
 function skywrath_mage_ex_basic_attack_lua:OnSpellStart()
     local caster = self:GetCaster()
-
-    -- Delete timer for the basic attack
-    SafeDestroyModifier("modifier_skywrath_mage_basic_attack_charged_timer_lua", caster, caster)
-
-    local basic_attack_charged = caster:FindAbilityByName("skywrath_mage_basic_attack_charged_lua")
-    basic_attack_charged:EndCooldown()
     self:PlayEffects()
 end
 

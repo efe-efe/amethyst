@@ -51,7 +51,7 @@ function tinker_ultimate_lua:OnEndPseudoCastPoint()
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, -80 )):Normalized()
+	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, origin.z )):Normalized()
 
 	-- Projectile
 	local projectile = {
@@ -147,7 +147,7 @@ function tinker_ultimate_lua:PlayEffects_a( source, target )
 	if source:ScriptLookupAttachment( "attach_attack2" )~=0 then attach = "attach_attack2" end
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
-		9,
+		0,
 		source,
 		PATTACH_POINT_FOLLOW,
 		attach,
@@ -186,7 +186,7 @@ function tinker_ultimate_lua:PlayEffects_b( source, point )
 	if source:ScriptLookupAttachment( "attach_attack2" )~=0 then attach = "attach_attack2" end
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
-		9,
+		0,
 		source,
 		PATTACH_POINT_FOLLOW,
 		attach,

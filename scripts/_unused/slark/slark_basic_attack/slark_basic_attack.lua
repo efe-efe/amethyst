@@ -78,7 +78,7 @@ function slark_basic_attack:OnProjectileHit_ExtraData( hTarget, vLocation, extra
 		false, -- bool bIgnoreInvis
 		false, -- bool bUseProjectile
 		false, -- bool bFakeAttack
-		false -- bool bNeverMiss
+		true -- bool bNeverMiss
 	)
 
 	return true

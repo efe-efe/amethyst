@@ -12,13 +12,13 @@ if GameMode == nil then
 end
 
 --============================================================================================
--- LOAD LIBRARIES
+-- LOAD RESOURCES
 --============================================================================================
 require('libraries/timers') -- This library allow for easily delayed/timed actions
 require('libraries/projectiles') -- This library allow for easily delayed/timed actions
 require('libraries/animations') -- This library allows starting customized animations on units from lua
-require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('settings') -- settings.lua is where resides many different properties for Dotarite.
+require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('modules/middle_orb_module')
 
 --============================================================================================
@@ -39,9 +39,10 @@ function GameMode:InitGameMode()
     GameRules:SetGoldTickTime( GOLD_TICK_TIME )
     GameRules:SetStartingGold( STARTING_GOLD )
     GameRules:SetCustomGameSetupAutoLaunchDelay( AUTO_LAUNCH_DELAY )
-    GameRules:GetGameModeEntity():SetDamageFilter( Dynamic_Wrap( GameMode, "DamageFilter" ), self )
+	GameRules:SetStrategyTime( 0.0 )
+	GameRules:SetShowcaseTime( 0.0 )
     DebugPrint('[RITE] GameRules set')
-
+    
     -------------------------------
     -- Setup Event Hooks
     -------------------------------
@@ -50,6 +51,7 @@ function GameMode:InitGameMode()
     ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), GameMode)
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(GameMode, 'OnGameRulesStateChange'), GameMode)
     ListenToGameEvent('entity_hurt', Dynamic_Wrap(GameMode, 'OnEntityHurt'), GameMode)
+    DebugPrint('[RITE] Event hooks set')
 
     -------------------------------
     -- Link Useful Lua Modifiers
@@ -59,13 +61,11 @@ function GameMode:InitGameMode()
     LinkLuaModifier( "modifier_set_attack_range", "modifiers/general/modifier_set_attack_range.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_mana_on_attack", "modifiers/general/modifier_mana_on_attack.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
-end
+    DebugPrint('[RITE] Useful modifiers linked')
 
-function GameMode:DamageFilter(keys)
-    for k,v in pairs(keys) do
-        --print(k,v)
-    end
-    return true
+    -------------------------------
+    -- Setup Middle Orb
+    -------------------------------
 end
 
 --============================================================================================
@@ -82,6 +82,6 @@ function GameMode:CaptureGameMode()
         mode:SetFixedRespawnTime( FIXED_RESPAWN_TIME ) 
 
         mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
-        self:OnFirstPlayerLoaded()
     end 
 end
+

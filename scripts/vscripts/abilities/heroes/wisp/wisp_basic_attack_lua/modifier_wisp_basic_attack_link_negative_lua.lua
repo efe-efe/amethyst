@@ -22,7 +22,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_wisp_basic_attack_link_negative_lua:OnCreated()
-    self.max_range = 1800--self:GetAbility():GetSpecialValueFor("max_range")
+    self.max_range = 1500--self:GetAbility():GetSpecialValueFor("max_range")
     self:PlayEffects(self:GetParent())
     self:StartIntervalThink(0.1)
 end

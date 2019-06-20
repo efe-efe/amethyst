@@ -26,6 +26,13 @@ function modifier_generic_pseudo_cast_point_lua:DeclareFunctions()
     return funcs
 end
 
+function modifier_generic_pseudo_cast_point_lua:OnCreated(params)
+	local ability = self:GetAbility()
+	if IsServer() then
+		ability:EndCooldown()
+	end
+end
+
 function modifier_generic_pseudo_cast_point_lua:OnOrder(params)
 	if params.unit==self:GetParent() then
 		if params.order_type == 10 then
@@ -56,10 +63,13 @@ function modifier_generic_pseudo_cast_point_lua:OnDestroy(params)
 				ability:OnStopPseudoCastPoint()
 			end
 			GameRules.EndAnimation(self:GetParent())
-			ability:EndCooldown()
 		else
 			if ability.OnEndPseudoCastPoint ~= nil then
 				ability:OnEndPseudoCastPoint()
+				ability:StartCooldown(ability:GetCooldown(0))
+				if ability.OnRemovePseudoCastPoint ~= nil then
+					ability:OnRemovePseudoCastPoint()
+				end
 			end
 		end
 	end

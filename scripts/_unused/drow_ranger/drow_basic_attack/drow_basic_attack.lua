@@ -76,7 +76,7 @@ function drow_basic_attack:OnProjectileHit_ExtraData( hTarget, vLocation, extraD
 		false, -- bool bIgnoreInvis
 		false, -- bool bUseProjectile
 		false, -- bool bFakeAttack
-		false -- bool bNeverMiss
+		true -- bool bNeverMiss
 	)
 
 	return true

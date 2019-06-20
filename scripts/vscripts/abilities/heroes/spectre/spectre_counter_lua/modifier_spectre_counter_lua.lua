@@ -28,7 +28,6 @@ function modifier_spectre_counter_lua:OnDestroy( kv )
     end
 end
 
-
 function modifier_spectre_counter_lua:OnAbilityExecuted( params )
 	if IsServer() then
 		if params.unit~=self:GetParent() then return end
@@ -55,12 +54,11 @@ function modifier_spectre_counter_lua:GetModifierIncomingDamage_Percentage( para
 		local attacker = params.attacker
 
         if params.damage_type ~= DAMAGE_TYPE_PURE then
-			-- Destroy the timer modifier from the basic attack
-			SafeDestroyModifier("modifier_spectre_basic_attack_charged_timer_lua", parent, parent)
-
-			--remove cooldown from basic attack charged
-			local basic_attack_charged = parent:FindAbilityByName("spectre_basic_attack_charged_lua")
-			basic_attack_charged:EndCooldown()
+			local modifier = parent:FindModifierByName("modifier_spectre_basic_attack_lua")
+			
+			modifier:IncrementStackCount()
+			modifier:StartIntervalThink(-1)
+			modifier:CalculateCharge()
 			
 			self:PlayEffects_b()
 			return -100
@@ -100,7 +98,6 @@ function modifier_spectre_counter_lua:GetModifierStatusResistance()
 	return -80
 end
 
-
 function modifier_spectre_counter_lua:PlayEffects_a()
 	local sound_cast = "Hero_Spectre.HauntCast"
 
@@ -131,8 +128,6 @@ function modifier_spectre_counter_lua:PlayEffects_a()
 		self:GetParent():GetOrigin(), 
 		true 
 	)
-
-
 
 	self.effect_cast2 = ParticleManager:CreateParticle( particle_cast2, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
 	ParticleManager:SetParticleControl( self.effect_cast2, 0, self:GetParent():GetOrigin() )

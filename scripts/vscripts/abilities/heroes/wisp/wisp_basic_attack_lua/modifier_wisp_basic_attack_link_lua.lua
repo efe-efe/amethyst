@@ -4,7 +4,7 @@ LinkLuaModifier( "modifier_wisp_basic_attack_lua", "abilities/heroes/wisp/wisp_b
 function modifier_wisp_basic_attack_link_lua:OnCreated()
     local wisp = self:GetParent()
     local ally = self:GetCaster()
-    self.max_range = 1800--self:GetAbility():GetSpecialValueFor("max_range")
+    self.max_range = 1500--self:GetAbility():GetSpecialValueFor("max_range")
 
     if IsServer() then
         self.modifier = ally:AddNewModifier(

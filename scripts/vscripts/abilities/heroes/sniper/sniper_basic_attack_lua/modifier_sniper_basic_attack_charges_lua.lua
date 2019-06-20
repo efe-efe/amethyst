@@ -30,37 +30,35 @@ function modifier_sniper_basic_attack_charges_lua:OnCreated( kv )
     --Initializers
     if IsServer() then
         
-        self.ability = self:GetAbility()
-        self.max_charges = self.ability:GetSpecialValueFor("max_charges")
-        self.start_charges = self.ability:GetSpecialValueFor("start_charges")
-        self.replenish_time = self.ability:GetSpecialValueFor("replenish_time")
-        local caster = self.ability:GetCaster()
+        self.max_charges = self:GetAbility():GetSpecialValueFor("max_charges")
+        self.replenish_time = self:GetAbility():GetSpecialValueFor("replenish_time")
 
         self:SetStackCount(self.max_charges)
     end
 end
 
-function modifier_sniper_basic_attack_charges_lua:OnAbilityExecuted( kv )
-    if kv.unit == self:GetParent() then
+--------------------------------------------------------------------------------
+-- Interval Effects
+function modifier_sniper_basic_attack_charges_lua:OnIntervalThink()
+	self:SetStackCount(self.max_charges)
+	self:StartIntervalThink(-1)
+end
 
-        local ability = kv.ability
-        local charges = self:GetStackCount() 
+function modifier_sniper_basic_attack_charges_lua:CalculateCharge()
+	if self:GetStackCount()>=self.max_charges then
+		-- stop charging
+		self:SetDuration( -1, false )
+		self:StartIntervalThink( -1 )
+	else
+		-- if not charging
+		if self:GetRemainingTime() <= 0.05 then
+			self:StartIntervalThink( self.replenish_time )
+			self:SetDuration( self.replenish_time, true )
+		end
 
-        if ability == self.ability then
-
-            if self.max_charges == charges then
-                self:SetDuration(self.replenish_time, true)
-                Timers:CreateTimer(self.replenish_time, function()
-                    self:SetStackCount(self.max_charges)
-                end)
-            end
-            self:DecrementStackCount()
-            
-            if self:GetStackCount() == 0 then
-                self.ability:StartCooldown(self:GetRemainingTime())
-            end
-            
-        end
-    end
-    return 0
+		-- set on cooldown if no charges
+		if self:GetStackCount()==0 then
+			self:GetAbility():StartCooldown( self:GetRemainingTime() )
+		end
+	end
 end

@@ -26,7 +26,7 @@ function axe_mobility_lua:OnSpellStart()
             x = x,
             y = y,
             r = difference,
-            speed = 2000,
+            speed = 2300,
         } -- kv
     )
 

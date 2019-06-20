@@ -18,13 +18,6 @@ function skywrath_mage_mobility_lua:OnSpellStart()
     -- teleport
     FindClearSpaceForUnit( caster, point , true )
 
-    -- Delete timer for the basic attack
-    SafeDestroyModifier("modifier_skywrath_mage_basic_attack_charged_timer_lua", caster, caster)
-
-    --remove cooldown from basic attack charged
-    local basic_attack_charged = caster:FindAbilityByName("skywrath_mage_basic_attack_charged_lua")
-    basic_attack_charged:EndCooldown()
-
     --Effects
     self:PlayEffects()
 end

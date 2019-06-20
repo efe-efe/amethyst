@@ -18,7 +18,7 @@ function phantom_assassin_special_attack_lua:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point })
 end
 
 function phantom_assassin_special_attack_lua:OnEndPseudoCastPoint()

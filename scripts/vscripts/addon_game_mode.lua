@@ -1,4 +1,6 @@
--- Generated from template
+--============================================================================================
+-- REQUIERE NECESARY FILES
+--============================================================================================
 
 require('util/util')
 require('util/modifiers')
@@ -11,7 +13,6 @@ function Precache( context )
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_oracle.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_silencer.vsndevts", context)
-
 	
 	-------------------------------
     -- Particles
@@ -32,7 +33,9 @@ function Precache( context )
 	PrecacheResource("model", "particles/heroes/viper/viper.vmdl", context)
 end
 
--- Create the game mode when we activate
+--============================================================================================
+-- INITIALIZE GAME MODE
+--============================================================================================
 function Activate()
 	GameRules.GameMode = GameMode()
 	GameRules.GameMode:InitGameMode()

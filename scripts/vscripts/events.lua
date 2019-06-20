@@ -1,13 +1,55 @@
 
+--============================================================================================
+-- GAME PHASES
+--============================================================================================
+function GameMode:OnGameRulesStateChange(keys)
+    if GameMode._reentrantCheck then
+        return
+    end
 
+    local newState = GameRules:State_Get()
+    
+    -------------------------------
+    -- Setup Rules
+    -------------------------------
+    if newState == DOTA_GAMERULES_STATE_PRE_GAME then
+        CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
+    -------------------------------
+    -- Setup Rules
+    -------------------------------
+    elseif newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+        GameMode:OnGameInProgress()
+    end
+end
 
---[[Called when player first spawn into the game, or if the player's hero is replaced with a new hero for any reason]]
+--============================================================================================
+-- HERO SPAWNS
+--============================================================================================
 function GameMode:OnHeroInGame(keys)
     local npc = EntIndexToHScript(keys.entindex)
-    Timers:CreateTimer(.2, function()
-        if not npc:IsNull() and npc:IsRealHero() and npc.bFirstSpawnedPG == nil then
-            npc.bFirstSpawnedPG = true
-            local hero = npc
+
+    -------------------------------
+    -- Timer to prevent illusions from passing
+    -------------------------------
+    Timers:CreateTimer(.05, function()
+        
+        -------------------------------
+        -- Filter unwanted units
+        -------------------------------
+
+        if npc:IsNull() then return end
+        if not npc:IsRealHero() then return end
+        
+        -------------------------------
+        -- Initialize variables
+        -------------------------------
+        local hero = npc
+
+        -------------------------------
+        -- First time spawning
+        -------------------------------
+        if hero.bFirstSpawnedPG == nil then
+            hero.bFirstSpawnedPG = true
             
             -- Disable right click
             hero:AddNewModifier( hero,  nil, "modifier_disable_right_click", { } )
@@ -23,32 +65,35 @@ function GameMode:OnHeroInGame(keys)
             end
         end
 
-        if not npc:IsNull() and npc:IsRealHero() and npc:IsHero() and npc:IsConsideredHero() then
-            -- Set mana as 0
-            npc:SetMana(0)
-            local team = npc:GetTeamNumber()
-            -- Initialization
-            if self.team_state == nil then
-                self.team_state = {}
-            end
-            
-            if self.team_state[team] == nil then
-                self.team_state[team] = {
-                    alive = 0,
-                    loses = 0,
-                    players = {}
-                }
-            end
-            
-            self.team_state[team].alive = self.team_state[team].alive + 1
-            self.team_state[team].players[npc:GetPlayerOwnerID()] = npc:GetPlayerOwner()
+        -------------------------------
+        -- Always
+        -------------------------------
+        self.lock_round = false
+        hero:SetMana(0)
+        local team = hero:GetTeamNumber()
+        local playerID = hero:GetPlayerOwnerID()
+        local playerOwner = hero:GetPlayerOwner()
 
-            print("Team " .. team .. " heroes = " ..self.team_state[team].alive)
+        -- Initialization
+        if self.teams[team] == nil then
+            self.teams[team] = {
+                alive_heroes = 0,
+                wins = 0,
+                looser = false,
+                players = {}
+            }
         end
+        
+        self.teams[team].alive_heroes = self.teams[team].alive_heroes + 1
+        self.teams[team].players[playerID] = playerOwner
+
+        print("Team " .. team .. " heroes = " ..self.teams[team].alive_heroes)
     end)
 end
 
--- An entity died
+--============================================================================================
+-- ENTITY DIED
+--============================================================================================
 function GameMode:OnEntityKilled( keys )
     -- The Killed
     local killed = EntIndexToHScript( keys.entindex_killed )
@@ -60,50 +105,94 @@ function GameMode:OnEntityKilled( keys )
         killerEntity = EntIndexToHScript( keys.entindex_attacker )
     end
     
-    -- Put code here to handle when an entity gets killed
+    -- Recreate orb
     if isMiddleOrb == 1 then
-        MiddleOrb:CreateMiddleOrb()
+        MiddleOrb:Create()
     end
 
-    if killed:IsRealHero() then
-        if Convars:GetInt('test_mode') == 0 then -- should be 0
-            if killed:IsHero() then
-                local team = killed:GetTeamNumber()
-                self.team_state[team].alive = self.team_state[team].alive - 1
+    -- Manage game state
+    if killed:IsRealHero() and Convars:GetInt('test_mode') == 0 then
+        print("DIED = " .. killed:GetName() .. " | self.lock_round is = " .. string.format("%s", self.lock_round))
 
-                if self.team_state[team].alive <= 0 then
-                    self.team_state[team].loses = self.team_state[team].loses + 1
-                    print("Team " .. team .. " loses his round number " .. self.team_state[team].loses)
-                    
-                    local shouldEnd = false
+        local team = killed:GetTeamNumber()
+        local not_loosers = 0
+        local shouldEnd = false
+        local winner = nil
+        local winner_id = nil
 
-                    if self.team_state[team].loses >= 5 then
+        -- If the killed unit's team have no more heroes
+        if not self.lock_round then
+            self.teams[team].alive_heroes = self.teams[team].alive_heroes - 1
+
+            -- One team Has Lost
+            if self.teams[team].alive_heroes <= 0 then
+
+                -- Set the victory state
+                self.teams[team].looser = true
+                print("Team " .. team .. " loses this round")
+                                
+                -- Find if a team have won
+                for _,it_team in pairs(self.teams) do
+                    if not it_team.looser then 
+                        winner = it_team
+                        winner_id = _
+                        not_loosers = not_loosers + 1
+                    end
+                end
+
+                -- If there are only 1 not looser, lock the round
+                print("not_loosers = " .. not_loosers)
+                if not_loosers == 1 then
+                    self.lock_round = true
+
+                    winner.wins = winner.wins + 1
+                    if winner.wins >= self.ROUNDS_TO_WIN then
                         shouldEnd = true
                     end
-                    
-                    Timers:CreateTimer(3.0, function()
-                        for _,it_team in pairs(self.team_state) do
-                            
-                            if (_ ~= team) and shouldEnd == true then 
-                                self:EndGame(_) 
-                                break
-                            end
 
-                            it_team.alive = 0
-                            for _,player in pairs(it_team.players) do
-                                local heroe = player:GetAssignedHero()
-                                heroe:SetRespawnsDisabled(false)
-                                heroe:RespawnHero(false, false)
-                                heroe:SetRespawnsDisabled(true)
-                            end
-                        end
-                    end)
+                    local broadcast_win_round_event =
+                    {
+                        team_id = winner_id,
+                        team_wins = winner.wins,
+                        --[[killer_id = event.killer_userid,
+                        kills_remaining = nKillsRemaining,
+                        victory = 0,
+                        close_to_victory = 0,
+                        very_close_to_victory = 0,]]
+                    }
+                
+                    CustomGameEventManager:Send_ServerToAllClients( "win_round_event", broadcast_win_round_event )
+
                 end
+                
+                Timers:CreateTimer(3.0, function()
+                    for _,it_team in pairs(self.teams) do
+                        
+                        if (_ ~= team) and shouldEnd == true then 
+                            self:EndGame(_) 
+                            break
+                        end
+
+                        for _,player in pairs(it_team.players) do
+                            local heroe = player:GetAssignedHero()
+                            heroe:Kill(nil, heroe)	
+                        end
+                        
+                        it_team.alive_heroes = 0
+                        it_team.looser = false
+
+                        for _,player in pairs(it_team.players) do
+                            local heroe = player:GetAssignedHero()
+                            heroe:SetRespawnsDisabled(false)
+                            heroe:RespawnHero(false, false)
+                            heroe:SetRespawnsDisabled(true)
+                        end
+                    end
+                end)
+
             end
         end
     end
-
-
 end
 
 -- Called whenever an ability begins its PhaseStart phase, but before it is actually cast
@@ -112,32 +201,25 @@ function GameMode:OnAbilityCastBegins(keys)
     local abilityName = keys.abilityname
 end
 
---Called once and only once when the game completely begins (0:00 on the clock).
+--============================================================================================
+-- GAME OFFICIALY BEGINS (00:00)
+--============================================================================================
 function GameMode:OnGameInProgress()
 	DebugPrint("[RITE] The game has officially begun")
+    
+    -------------------------------
+    -- Core Variables
+    -------------------------------
+	self.allSpawned = false
+    self.lock_round = false
+    self.teams = {}
+    self.ROUNDS_TO_WIN = 5
 
-	MiddleOrb:CreateMiddleOrb()
+    CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
+
+    MiddleOrb:Create()
 end
 
--- The overall game state has changed
-function GameMode:OnGameRulesStateChange(keys)
-    if GameMode._reentrantCheck then
-        return
-    end
-
-    local newState = GameRules:State_Get()
-    if newState == DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD then
-        self.bSeenWaitForPlayers = true
-    elseif newState == DOTA_GAMERULES_STATE_INIT then
-        --Timers:RemoveTimer("alljointimer")
-    elseif newState == DOTA_GAMERULES_STATE_HERO_SELECTION then
-        GameMode:PostLoadPrecache()
-        GameMode:OnAllPlayersLoaded()
-
-    elseif newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-        GameMode:OnGameInProgress()
-    end
-end
 
 -- This function is called once when a player fully connects ("Ready" during Loading)
 function GameMode:OnConnectFull(keys)
@@ -150,20 +232,6 @@ function GameMode:OnConnectFull(keys)
     local ply = EntIndexToHScript(keys.index + 1)  -- The Player entity of the joining user
     local playerID = ply:GetPlayerID() -- The Player ID of the joining player
     local userID = keys.userid
-end
-
---Used to initialize before everyone loads in
-function GameMode:OnFirstPlayerLoaded()
-    DebugPrint("[RITE] First Player has loaded")
-end
-
---Called right as the hero selection time begins.
-function GameMode:OnAllPlayersLoaded()
-    DebugPrint("[RITE] All Players have loaded into the game")
-end
-
-function GameMode:PostLoadPrecache()
-    DebugPrint("[RITE] Performing Post-Load precache")    
 end
 
 -- An entity somewhere has been hurt.  This event fires very often with many units so don't do too many expensive

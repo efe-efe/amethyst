@@ -1,9 +1,9 @@
-wisp_counter_lua = class({})
-LinkLuaModifier( "modifier_wisp_counter_lua", "abilities/heroes/wisp/wisp_counter_lua/modifier_wisp_counter_lua", LUA_MODIFIER_MOTION_NONE )
+wisp_counter = class({})
+LinkLuaModifier( "modifier_wisp_counter", "abilities/heroes/wisp/wisp_counter/modifier_wisp_counter", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_counter_lua:OnSpellStart()
+function wisp_counter:OnSpellStart()
     
     --load data
     local caster = self:GetCaster()
@@ -12,7 +12,7 @@ function wisp_counter_lua:OnSpellStart()
     caster:AddNewModifier(
 		caster, -- player source
 		self, -- ability source
-		"modifier_wisp_counter_lua", -- modifier name
+		"modifier_wisp_counter", -- modifier name
 		{ duration = duration } -- kv
     )
 
@@ -20,7 +20,7 @@ function wisp_counter_lua:OnSpellStart()
 
 end
 
-function wisp_counter_lua:PlayEffects()
+function wisp_counter:PlayEffects()
 	-- Get Resources
 	local sound_cast = "Hero_Wisp.Relocate"
 	local particle_cast = "particles/econ/items/wisp/wisp_relocate_teleport_ti7.vpcf"

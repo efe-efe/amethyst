@@ -170,6 +170,6 @@ function spectre_special_attack_lua:Animate(point)
 	local direction = (point - origin)
 	local directionAsAngle = VectorToAngles(direction)
 	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=0.7})
 end
 

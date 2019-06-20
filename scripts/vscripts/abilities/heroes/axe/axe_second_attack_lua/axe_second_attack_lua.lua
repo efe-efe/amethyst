@@ -76,18 +76,20 @@ function axe_second_attack_lua:PlayEffects()
     EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Create Particles
-	local particle_cast_a_b = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
-	local particle_cast_c = "particles/econ/events/darkmoon_2017/darkmoon_calldown_marker_ring.vpcf"
+	local particle_cast_a = "particles/econ/items/axe/axe_cinder/axe_cinder_battle_hunger_cast.vpcf"
+	local particle_cast_b = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
 	
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a_b, PATTACH_WORLDORIGIN, self:GetCaster() )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_a_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_WORLDORIGIN, nil )
+	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, self:GetCaster() )
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, self:GetCaster() )
 	
-	ParticleManager:SetParticleControl( effect_cast_a, 0, self.point )
+	ParticleManager:SetParticleControl( effect_cast_a, 0, Vector(self.point.x, self.point.y, self.point.z + 128) )
+	
 	ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetCaster():GetOrigin() )
+	ParticleManager:SetParticleControl( effect_cast_b, 2, Vector(50,0,0))
+	
 	ParticleManager:SetParticleControl( effect_cast_c, 0, self.point )
-	ParticleManager:SetParticleControl( effect_cast_c, 1, Vector( self.radius, 1, 1 ) )
-	ParticleManager:SetParticleControl( effect_cast_c, 2, Vector( 1, 1, 1 ) )
+	ParticleManager:SetParticleControl( effect_cast_c, 2, Vector( self.radius, 1, 1 ) )
 
 	ParticleManager:ReleaseParticleIndex( effect_cast_a )
 	ParticleManager:ReleaseParticleIndex( effect_cast_b )

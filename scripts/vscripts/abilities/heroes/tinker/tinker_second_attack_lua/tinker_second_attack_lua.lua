@@ -51,7 +51,7 @@ function tinker_second_attack_lua:OnEndPseudoCastPoint()
 		Ability = self,
 		EffectName = projectile_name,
 		iMoveSpeed = projectile_speed,
-		bDodgeable = true,
+		bDodgeable = false,
 		flExpireTime = GameRules:GetGameTime() + 1.8, 
 		ExtraData = {
 			damage = damage,
@@ -64,7 +64,7 @@ function tinker_second_attack_lua:OnEndPseudoCastPoint()
 
 	-- effects
 	if #enemies<1 then
-		self:PlayEffects2()
+		self:PlayEffects_b()
 	else
 		local sound_cast = "Hero_Tinker.Heat-Seeking_Missile"
 		EmitSoundOn( sound_cast, caster )
@@ -80,36 +80,36 @@ function tinker_second_attack_lua:OnProjectileHit_ExtraData( target, location, e
 	local stacks_duration = self:GetSpecialValueFor("stacks_duration")
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 	local caster = self:GetCaster()
+	local stacks = 0
 
 	if target ~=nil then
 		if target:TriggerSpellAbsorb( self ) then return end
-	end
-
-	local stacks = SafeGetModifierStacks("modifier_tinker_second_attack_lua", target, caster)
-
-	-- Apply damage
-	local damage = {
-		victim = target,
-		attacker = caster,
-		damage = extraData.damage + (damage_per_stack * stacks),
-		damage_type = DAMAGE_TYPE_MAGICAL,
-		ability = self
-	}
-	ApplyDamage( damage )
-
-	target:AddNewModifier(
-		caster,
-		self,
-		"modifier_tinker_second_attack_lua",
-		{ duration = stacks_duration }
-	)
+		stacks = SafeGetModifierStacks("modifier_tinker_second_attack_lua", target, caster)
 	
-	-- Give Mana
-	local mana_gain_final = caster:GetMaxMana() * mana_gain
-	caster:GiveMana(mana_gain_final)    
+		-- Apply damage
+		local damage = {
+			victim = target,
+			attacker = caster,
+			damage = extraData.damage + (damage_per_stack * stacks),
+			damage_type = DAMAGE_TYPE_MAGICAL,
+			ability = self
+		}
+		ApplyDamage( damage )
 
-	-- effects
-	self:PlayEffects1( target )
+		target:AddNewModifier(
+			caster,
+			self,
+			"modifier_tinker_second_attack_lua",
+			{ duration = stacks_duration }
+		)
+		
+		-- Give Mana
+		local mana_gain_final = caster:GetMaxMana() * mana_gain
+		caster:GiveMana(mana_gain_final)    
+
+		-- effects
+		self:PlayEffects_a( target )
+	end
 end
 
 function tinker_second_attack_lua:PlayEffects()
@@ -126,7 +126,7 @@ function tinker_second_attack_lua:PlayEffects()
 end
 --------------------------------------------------------------------------------
 -- Effects
-function tinker_second_attack_lua:PlayEffects1( target )
+function tinker_second_attack_lua:PlayEffects_a( target )
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_missle_explosion.vpcf"
 	local sound_cast = "Hero_Tinker.Heat-Seeking_Missile.Impact"
 
@@ -136,7 +136,7 @@ function tinker_second_attack_lua:PlayEffects1( target )
 	EmitSoundOn( sound_cast, target )
 end
 
-function tinker_second_attack_lua:PlayEffects2()
+function tinker_second_attack_lua:PlayEffects_b()
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_missile_dud.vpcf"
 	local sound_cast = "Hero_Tinker.Heat-Seeking_Missile_Dud"
 

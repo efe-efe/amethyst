@@ -1,0 +1,21 @@
+//=================================================================================	
+Coding
+//=================================================================================
+
+From barebones:
+	- Use Health and damage filters to set health offset
+
+//=================================================================================	
+Particles
+//=================================================================================
+
+Use the "Keyword" on the particle manager to find the particles related to the "Use"
+
+    Keyword: embers
+    Use: Small explosions
+
+    Keyword: aoe
+    Use: Meele atacks
+
+    Keyword: owner
+    Use: States (thirst, spectral dagger)

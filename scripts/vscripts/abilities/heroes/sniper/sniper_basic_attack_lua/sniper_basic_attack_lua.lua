@@ -13,19 +13,23 @@ end
 function sniper_basic_attack_lua:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
+	local cast_point = caster:GetAttackAnimationPoint()
 	self.point = self:GetCursorPosition()
+
 	self:SetActivated(false)
 	
 	-- Animation and pseudo cast point
 	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	caster:AddNewModifier(
+		caster,
+		self,
+		"modifier_generic_pseudo_cast_point_lua",
+		{ duration = cast_point }
+	)
 end
 
 function sniper_basic_attack_lua:OnEndPseudoCastPoint()
 	local caster = self:GetCaster()
-	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
 
 	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack.vpcf"
@@ -33,8 +37,8 @@ function sniper_basic_attack_lua:OnEndPseudoCastPoint()
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local modifier = caster:FindModifierByName("modifier_sniper_basic_attack_charges_lua")
 
-	self:StartCooldown(attack_speed)
 	self:SetActivated(true)
 
 	-- Dinamyc data
@@ -82,7 +86,7 @@ function sniper_basic_attack_lua:OnEndPseudoCastPoint()
 				false, -- bool bIgnoreInvis
 				false, -- bool bUseProjectile
 				false, -- bool bFakeAttack
-				false -- bool bNeverMiss
+				true -- bool bNeverMiss
 			)
 
 			_self.Destroy()
@@ -91,6 +95,9 @@ function sniper_basic_attack_lua:OnEndPseudoCastPoint()
 			self:PlayEffects_b(pos)
 		end,
 	}
+
+	modifier:DecrementStackCount()
+	modifier:CalculateCharge()
 	
 	self:PlayEffects_a()
 	Projectiles:CreateProjectile(projectile)

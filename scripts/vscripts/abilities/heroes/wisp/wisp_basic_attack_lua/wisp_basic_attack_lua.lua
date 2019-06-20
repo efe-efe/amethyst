@@ -8,11 +8,16 @@ LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/mo
 -- Ability Start
 function wisp_basic_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
+	local cast_point = caster:GetAttackAnimationPoint()
 	self.point = self:GetCursorPosition()
 
 	-- Animation and pseudo cast point
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	caster:AddNewModifier(
+		caster,
+		self,
+		"modifier_generic_pseudo_cast_point_lua",
+		{ duration = cast_point }
+	)
 end
 
 function wisp_basic_attack_lua:OnEndPseudoCastPoint()
@@ -93,7 +98,7 @@ function wisp_basic_attack_lua:OnEndPseudoCastPoint()
 					false, -- bool bIgnoreInvis
 					false, -- bool bUseProjectile
 					false, -- bool bFakeAttack
-					false -- bool bNeverMiss
+					true -- bool bNeverMiss
 				)
 				self:PlayEffects_b(_self:GetPosition())
 			end
@@ -105,7 +110,7 @@ function wisp_basic_attack_lua:OnEndPseudoCastPoint()
 					"modifier_wisp_basic_attack_link_lua",
 					{ duration = link_duration }
 				)
-				unit:Heal( heal, self )
+				unit:Heal( heal, _self.Source )
 				self:PlayEffects_b(_self:GetPosition())
 			end
 			_self.Destroy()

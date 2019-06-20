@@ -11,20 +11,22 @@ end
 function phantom_assassin_basic_attack_lua:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
+	local cast_point = caster:GetAttackAnimationPoint()
 	self.point = self:GetCursorPosition()
 	
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
 	self:SetActivated(false)
 
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point_lua", 
+		{ duration = cast_point }
+	)
 end
 
 function phantom_assassin_basic_attack_lua:OnEndPseudoCastPoint()
 	local caster = self:GetCaster()
-	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
 	local offset = 20
 
 	-- Projectile data
@@ -34,8 +36,10 @@ function phantom_assassin_basic_attack_lua:OnEndPseudoCastPoint()
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_speed = 2000
 
+	local attacks_per_second = caster:GetAttacksPerSecond()
+	local attack_speed = ( 1 / attacks_per_second )
+
 	-- Extra data
-	self:StartCooldown(attack_speed)
 	self:SetActivated(true)
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
@@ -92,7 +96,7 @@ function phantom_assassin_basic_attack_lua:OnEndPseudoCastPoint()
 				false, -- bool bIgnoreInvis
 				false, -- bool bUseProjectile
 				false, -- bool bFakeAttack
-				false -- bool bNeverMiss
+				true -- bool bNeverMiss
 			)
 
 			-- Add modifier
@@ -127,6 +131,8 @@ function phantom_assassin_basic_attack_lua:OnEndPseudoCastPoint()
 	}
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+	self:Animate(self.point)
+	self:StartCooldown(attack_speed)
 end
 
 function phantom_assassin_basic_attack_lua:OnStopPseudoCastPoint()
@@ -183,6 +189,6 @@ function phantom_assassin_basic_attack_lua:Animate(point)
 	local directionAsAngle = VectorToAngles(direction)
 	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
 	caster:SetForwardVector(direction:Normalized())
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_SPAWN, rate=2.0})
+	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_SPAWN, rate=1.8})
 end
 

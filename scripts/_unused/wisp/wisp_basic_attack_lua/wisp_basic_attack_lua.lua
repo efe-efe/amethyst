@@ -80,7 +80,7 @@ function wisp_basic_attack_lua:OnSpellStart()
 				false, -- bool bIgnoreInvis
 				false, -- bool bUseProjectile
 				false, -- bool bFakeAttack
-				false -- bool bNeverMiss
+				true -- bool bNeverMiss
 			)
 
 			--Remove the extra attack

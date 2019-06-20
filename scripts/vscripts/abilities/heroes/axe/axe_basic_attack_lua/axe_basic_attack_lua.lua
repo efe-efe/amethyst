@@ -7,7 +7,7 @@ function axe_basic_attack_lua:OnSpellStart()
 	self:SetActivated(false)
 	-- Initialize variables
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
+	local cast_point = caster:GetAttackAnimationPoint()
 	-- Animation and pseudo cast point
 	self:Animate()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
@@ -70,7 +70,7 @@ function axe_basic_attack_lua:OnEndPseudoCastPoint()
 				false, -- bool bIgnoreInvis
 				false, -- bool bUseProjectile
 				false, -- bool bFakeAttack
-				false -- bool bNeverMiss
+				true -- bool bNeverMiss
 			)
 			
 			self:PlayEffects_a(unit)
