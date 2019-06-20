@@ -11,7 +11,7 @@ function wisp_basic_attack_lua:OnSpellStart()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
 	--local attack_speed = 0.3
-	local ex_ultimate_modifier = caster:FindModifierByNameAndCaster( "modifier_wisp_ex_ultimate_lua", caster )
+	local ex_ultimate_modifier = caster:FindModifierByNameAndCaster( "modifier_wisp_ex_ultimate", caster )
 
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_base_attack.vpcf"

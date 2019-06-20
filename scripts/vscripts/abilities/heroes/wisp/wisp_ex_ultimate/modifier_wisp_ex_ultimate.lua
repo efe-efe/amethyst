@@ -1,8 +1,8 @@
-modifier_wisp_ex_ultimate_lua = class({})
+modifier_wisp_ex_ultimate = class({})
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_wisp_ex_ultimate_lua:DeclareFunctions()
+function modifier_wisp_ex_ultimate:DeclareFunctions()
 	local funcs = {
         MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
         MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
@@ -13,12 +13,11 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_wisp_ex_ultimate_lua:OnCreated( kv )
+function modifier_wisp_ex_ultimate:OnCreated( kv )
+    self.damage_reduction = self:GetAbility():GetSpecialValueFor("damage_reduction")
+    self.damage_bonus = self:GetAbility():GetSpecialValueFor("damage_bonus")
+    
     if IsServer() then
-        -- load data
-        self.damage_reduction = self:GetAbility():GetSpecialValueFor("damage_reduction")
-        self.damage_bonus = self:GetAbility():GetSpecialValueFor("damage_bonus")
-
         -- effects
         local sound_cast = "Hero_Wisp.Overcharge"
 
@@ -30,7 +29,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Destructor
-function modifier_wisp_ex_ultimate_lua:OnDestroy( kv )
+function modifier_wisp_ex_ultimate:OnDestroy( kv )
     if IsServer() then
         -- load data
 
@@ -41,21 +40,17 @@ function modifier_wisp_ex_ultimate_lua:OnDestroy( kv )
 end
 
 
-function modifier_wisp_ex_ultimate_lua:GetModifierIncomingDamage_Percentage( params )
-    if IsServer() then
-		return -self.damage_reduction
-	end
+function modifier_wisp_ex_ultimate:GetModifierIncomingDamage_Percentage( params )
+    return -self.damage_reduction
 end
 
-function modifier_wisp_ex_ultimate_lua:GetModifierPreAttack_BonusDamage()
-    if IsServer() then
-        return self.damage_bonus
-    end
+function modifier_wisp_ex_ultimate:GetModifierPreAttack_BonusDamage()
+    return self.damage_bonus
 end
 
 --------------------------------------------------------------------------------
 -- Visuals
-function modifier_wisp_ex_ultimate_lua:PlayEffects()
+function modifier_wisp_ex_ultimate:PlayEffects()
     if IsServer() then
         -- Get Resources
         local particle_cast = "particles/econ/items/wisp/wisp_overcharge_ti7.vpcf"
@@ -79,7 +74,7 @@ function modifier_wisp_ex_ultimate_lua:PlayEffects()
     end
 end
 
-function modifier_wisp_ex_ultimate_lua:StopEffects()
+function modifier_wisp_ex_ultimate:StopEffects()
     if IsServer() then
         ParticleManager:DestroyParticle( self.effect_cast, false )
         ParticleManager:ReleaseParticleIndex( self.effect_cast )

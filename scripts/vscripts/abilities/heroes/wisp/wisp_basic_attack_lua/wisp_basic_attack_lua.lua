@@ -24,7 +24,6 @@ function wisp_basic_attack_lua:OnEndPseudoCastPoint()
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
-	local ex_ultimate_modifier = caster:FindModifierByNameAndCaster( "modifier_wisp_ex_ultimate_lua", caster )
 
 	-- Projectile Data
 	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_base_attack.vpcf"
@@ -33,11 +32,6 @@ function wisp_basic_attack_lua:OnEndPseudoCastPoint()
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local modifier_duration_bonus = self:GetSpecialValueFor("modifier_duration_bonus")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-
-	-- If have the ex-ultimate, change the visuals
-	if ex_ultimate_modifier ~= nil then
-		projectile_name="particles/mod_units/heroes/hero_batrider/batrider_base_attack.vpcf"
-	end
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()

@@ -544,14 +544,14 @@
 		}
 	}
 
-	"wisp_ex_ultimate_lua"
+	"wisp_ex_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/wisp/wisp_ex_ultimate_lua/wisp_ex_ultimate_lua"
+		"ScriptFile"					"abilities/heroes/wisp/wisp_ex_ultimate/wisp_ex_ultimate"
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"wisp_ex_ultimate_lua"
+		"AbilityTextureName"			"wisp_ex_ultimate"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -578,17 +578,17 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_reduction"			"50"
+				"damage_reduction"			"40"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_bonus"				"8"
+				"damage_bonus"				"5"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"2.0"
+				"duration"					"4.0"
 			}
 		}
 	}
