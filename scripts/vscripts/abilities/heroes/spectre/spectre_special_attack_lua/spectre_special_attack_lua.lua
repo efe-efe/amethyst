@@ -1,5 +1,4 @@
 spectre_special_attack_lua = class({})
-
 LinkLuaModifier( "modifier_spectre_special_attack_debuff_lua", "abilities/heroes/spectre/spectre_special_attack_lua/modifier_spectre_special_attack_debuff_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_special_attack_thinker_lua", "abilities/heroes/spectre/spectre_special_attack_lua/modifier_spectre_special_attack_thinker_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
@@ -11,7 +10,7 @@ function spectre_special_attack_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	self.point = self:GetCursorPosition()
 	local cast_point = self:GetCastPoint()
-
+	
 	-- Animation and pseudo cast point
 	self:Animate(self.point)
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
@@ -109,7 +108,12 @@ function spectre_special_attack_lua:OnEndPseudoCastPoint()
 		caster, -- player source
 		self, -- ability source
 		"modifier_spectre_special_attack_thinker_lua", -- modifier name
-		{ duration = path_duration }, -- kv
+		{ 
+			duration = path_duration,
+			x = self.point.x,
+			y = self.point.y,
+			z = self.point.z
+	 	}, -- kv
 		origin,
 		caster:GetTeamNumber(),
 		false --bPhantomBlocker

@@ -12,7 +12,6 @@ function modifier_wisp_special_attack_thinker_lua:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
         self.damage = self:GetAbility():GetSpecialValueFor( "damage" )
-        self.damage_bonus = self:GetAbility():GetSpecialValueFor( "damage_bonus" )
         self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
         self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
         self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")
@@ -46,30 +45,15 @@ function modifier_wisp_special_attack_thinker_lua:OnIntervalThink()
             attacker = self:GetCaster(),
             --damage = self.damage,
             damage_type = DAMAGE_TYPE_PURE,
-            ability = self:GetAbility() --Optional.
+            ability = self:GetAbility(), --Optional.
+            damage = self.damage
         }
 
         for _,enemy in pairs(enemies) do
-            local final_damage = self.damage
-            local guardian_essence = enemy:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
-
-            -- If have the guardian essence, adds extra damage
-            if guardian_essence ~= nil then
-                final_damage = self.damage_bonus + final_damage
-            end
 
             -- damage
             damageTable.victim = enemy
-            damageTable.damage = final_damage
             ApplyDamage(damageTable)
-
-            -- apply guardian essence
-            enemy:AddNewModifier(
-                self:GetCaster(), -- player source
-                self:GetAbility(), -- ability source
-                "modifier_wisp_guardian_essence_lua", -- modifier name
-                {}
-            )
 
             -- slow
             enemy:AddNewModifier( 
@@ -78,7 +62,6 @@ function modifier_wisp_special_attack_thinker_lua:OnIntervalThink()
                 "modifier_generic_fading_slow_lua", -- modifier name
                 { duration = self.disable_duration } -- kv
             )
-
 
         end
         

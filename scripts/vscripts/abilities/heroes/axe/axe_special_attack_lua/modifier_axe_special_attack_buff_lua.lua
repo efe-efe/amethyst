@@ -1,5 +1,7 @@
 modifier_axe_special_attack_buff_lua = class({})
 
+--------------------------------------------------------------------------------
+-- Initializer
 function modifier_axe_special_attack_buff_lua:OnCreated()
     self.aspd_per_stack = self:GetAbility():GetSpecialValueFor( "aspd_per_stack" )
 
@@ -11,6 +13,8 @@ function modifier_axe_special_attack_buff_lua:OnCreated()
     end
 end
 
+--------------------------------------------------------------------------------
+-- Destructor
 function modifier_axe_special_attack_buff_lua:OnDestroy()
     if IsServer() then
         --Quits the animation

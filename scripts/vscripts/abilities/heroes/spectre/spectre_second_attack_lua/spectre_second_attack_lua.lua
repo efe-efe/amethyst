@@ -1,25 +1,44 @@
 spectre_second_attack_lua = class({})
+LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_second_attack_lua:OnSpellStart()
+	-- Initialize variables
 	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
-	local ability = self
+	self.point = self:GetCursorPosition()
+	local cast_point = self:GetCastPoint()
+	
+	-- Animation and pseudo cast point
+	self:Animate(self.point)
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point_lua", 
+		{ duration = cast_point }
+	)
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function spectre_second_attack_lua:OnEndPseudoCastPoint()
+	local caster = self:GetCaster()
 
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_bane/bane_projectile.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	local damage = self:GetSpecialValueFor("damage")
 	local mana_gain = self:GetSpecialValueFor("mana_gain")
 	local damage_bonus = self:GetSpecialValueFor("damage_bonus")
 	
+	-- Dynamic data
+	local origin = caster:GetOrigin()
+	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+
 	local projectile = {
 		EffectName = projectile_name,
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
@@ -124,6 +143,19 @@ function spectre_second_attack_lua:PlayEffects_b( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast_a )
 	ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
+
+
+function spectre_second_attack_lua:Animate(point)
+	local caster = self:GetCaster()
+	local origin = caster:GetOrigin()
+	local angles = caster:GetAngles()
+
+	local direction = (point - origin)
+	local directionAsAngle = VectorToAngles(direction)
+	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=0.25})
+end
+
 
 
 

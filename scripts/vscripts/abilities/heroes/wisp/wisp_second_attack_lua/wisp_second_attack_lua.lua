@@ -1,5 +1,4 @@
 wisp_second_attack_lua = class ({})
-LinkLuaModifier( "modifier_wisp_guardian_essence_lua", "abilities/heroes/wisp/wisp_shared_modifiers/modifier_wisp_guardian_essence_lua/modifier_wisp_guardian_essence_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -53,32 +52,15 @@ function wisp_second_attack_lua:OnSpellStart()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			-- Hit
-			--------------------
-			local final_damage = damage
-			local guardian_essence = unit:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
 
-			-- If have the debuff, adds extra damage
-			if guardian_essence ~= nil then
-				final_damage = damage_bonus + final_damage
-			end
-			
 			local damage = {
 				victim = unit,
 				attacker = caster,
-				damage = final_damage,
+				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
 			ApplyDamage( damage )
-
-			-- apply guardian essence
-			unit:AddNewModifier(
-				caster, -- player source
-				ability, -- ability source
-				"modifier_wisp_guardian_essence_lua", -- modifier name
-				{}
-			)
 			
 			-- Give Mana
 			local mana_gain_final = caster:GetMaxMana() * mana_gain

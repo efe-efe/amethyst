@@ -16,16 +16,6 @@ function modifier_skywrath_mage_counter_lua:IsPurgable()
 end
 
 --------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_skywrath_mage_counter_lua:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
-	}
-
-	return funcs
-end
-
---------------------------------------------------------------------------------
 -- Initializations
 function modifier_skywrath_mage_counter_lua:OnCreated( kv )
     if IsServer() then
@@ -61,6 +51,17 @@ function modifier_skywrath_mage_counter_lua:OnDestroy( kv )
         --Remove effects
         self:StopEffects()
     end
+end
+
+
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_skywrath_mage_counter_lua:DeclareFunctions()
+	local funcs = {
+		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
+	}
+
+	return funcs
 end
 
 function modifier_skywrath_mage_counter_lua:GetModifierIncomingDamage_Percentage( params )

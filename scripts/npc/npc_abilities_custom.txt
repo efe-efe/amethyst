@@ -258,7 +258,7 @@
 			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"heal"					"10"
+				"heal"					"15"
 			}
 		}
 	}
@@ -593,7 +593,6 @@
 		}
 	}
 
-
 	//=================================================================================================================
 	// Spectre
 	//=================================================================================================================
@@ -694,7 +693,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_second_attack_lua"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -705,8 +704,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"1.0"
-		"AnimationPlaybackRate" 		"0.25"
+		"AbilityCastPoint"				"0.8"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -751,7 +749,7 @@
 			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage"					"30"
+				"damage"					"27"
 			}
 		}
 	}
@@ -1233,10 +1231,10 @@
 	// Skywrath Mage
 	//=================================================================================================================
 
-	"sky_basic_attack_lua"
+	"sky_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/skywrath_mage/sky_basic_attack_lua/sky_basic_attack_lua"
+		"ScriptFile"					"abilities/heroes/skywrath_mage/sky_basic_attack/sky_basic_attack"
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
@@ -1311,10 +1309,10 @@
 		}
 	}
 	
-	"skywrath_mage_ex_basic_attack_lua"
+	"sky_ex_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/skywrath_mage/skywrath_mage_ex_basic_attack_lua/skywrath_mage_ex_basic_attack_lua"
+		"ScriptFile"					"abilities/heroes/skywrath_mage/sky_ex_basic_attack/sky_ex_basic_attack"
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
@@ -2971,7 +2969,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"damage"				"12"
+				"damage"				"30"
 			}
 			"03"
 			{
@@ -3730,7 +3728,7 @@
 			"08"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"damage"				"5"
+				"damage"				"6"
 			}
 			"09"
 			{
@@ -4037,7 +4035,7 @@
 
 		// Ability Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"1.2"
+		"AbilityCastPoint"				"0.8"
 
 		// Ability Resource
 		//-------------------------------------------------------------------------------------------------------------
@@ -4062,17 +4060,17 @@
 	}
 
 	//=================================================================================================================
-	// Troll Warlord
+	// Phoenix
 	//=================================================================================================================
 		
-	"troll_basic_attack"
+	"phoenix_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/troll/troll_basic_attack/troll_basic_attack"
+		"ScriptFile"					"abilities/heroes/phoenix/phoenix_basic_attack/phoenix_basic_attack"
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"troll_basic_attack"
+		"AbilityTextureName"			"phoenix_basic_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
@@ -4081,64 +4079,19 @@
 		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
-		// Casting
+		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"0.35"
+		"AbilityCooldown"				"0.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityManaCost"				"0"
-
-		// Special
+		
+		// Precache
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{   //All the SpecialValues are needed but can vary
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"hitbox"					"120"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"mana_gain"					"0.06"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
-			}
+		"precache"
+		{
 		}
-	}
-		
-	"troll_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/troll/troll_second_attack/troll_second_attack"
-		
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"troll_warlord_berserkers_rage"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
-		"MaxLevel"						"1"
-
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"0.35"
-
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -4152,7 +4105,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1300"
+				"projectile_range"			"1250"
 			}
 			"03"
 			{
@@ -4172,30 +4125,126 @@
 		}
 	}
 
-	"troll_ultimate"
+	"phoenix_second_attack"
 	{
-		
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/troll/troll_ultimate/troll_ultimate"
+		"ScriptFile"					"abilities/heroes/phoenix/phoenix_second_attack/phoenix_second_attack"
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"troll_warlord_battle_trance"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_4"
+		"AbilityTextureName"			"phoenix_fire_spirits"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AOERadius"						"%radius"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
-
+		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.15"
-
+		"AbilityCastPoint"				"0.3"
+		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"0.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"100"
+		"AbilityManaCost"				"0"
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"1900"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1700"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"80"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.07"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"radius"					"150"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"heal_per_second"			"4"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"damage_per_second"			"5"
+			}
+			"08"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"duration"					"2.0"
+			}
+			"09"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
+			}
+			"10"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"max_charges"				"3"
+			}
+			"11"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"replenish_time"			"9.0"
+			}
+		}
+	}
+
+	"phoenix_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phoenix/phoenix_mobility/phoenix_mobility"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phoenix_icarus_dive"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"MaxLevel"						"1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+		"AnimationPlaybackRate" 		"1.2"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -4204,45 +4253,590 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"attack_speed_bonus"	"80"
+				"range"					"800"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
+			}
+		}
+	}
+
+	//=================================================================================================================
+	// Shadow Fiend
+	//=================================================================================================================
+		
+	"nevermore_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_basic_attack/nevermore_basic_attack"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_necromastery"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"1900"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1700"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"80"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.07"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_stack"			"1"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"max_stacks"				"10"
+			}
+			"08"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"4.0"
+			}
+		}
+	}
+
+	"nevermore_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_second_attack/nevermore_second_attack"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_shadowraze1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"MaxLevel"						"1"
+		"AOERadius"						"%radius"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastAnimation"			"ACT_DOTA_RAZE_2"
+		"AbilityCastRange"				"1500"
+		"AbilityCastPoint"				"0.4"
+		"AnimationPlaybackRate"			"1.4"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"7.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"150"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"14"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_stack"			"3"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.05"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"stack_duration"			"4.0"
+			}
+		}
+	}
+
+	"nevermore_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_counter/nevermore_counter"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_dark_lord"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastAnimation"			"ACT_DOTA_TELEPORT"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDuration"				"1.5"
+		"AbilityCastPoint"				"0.1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"armor"						"5"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"15"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"movement_speed"			"50"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"3.0"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"armor_duration"			"6.0"
+			}
+		}
+	}
+
+	"nevermore_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_special_attack/nevermore_special_attack"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"MaxLevel"						"1"
+		"AOERadius"						"%radius"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.7"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"2200"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1700"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"80"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"120"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"25"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"mana_gain"					"0.07"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
+			}
+		}
+	}
+
+	"nevermore_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_mobility/nevermore_mobility"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"MaxLevel"						"1"
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastAnimation"			"ACT_DOTA_RAZE_1"
+		"AnimationPlaybackRate"			"1.1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"max_range"				"1300"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_move_speed"		"10 20 30 40"
+				"damage"				"12"
 			}
 			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"bonus_armor"			"6"
+				"fading_slow"			"100"
 			}
 			"04"
-			{	
-				"var_type"				"FIELD_INTEGER"
-				"bonus_range"			"350"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"slow_duration"			"2.0"
 			}
 			"05"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"base_attack_time"		"1.50"
+				"mana_gain"				"0.06"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"soul_duration"			"4.0"
 			}
 			"07"
 			{
-				"var_type"				"FIELD_INTEGER"
-				"bash_chance"			"10"
+				"var_type"				"FIELD_FLOAT"
+				"slow_duration"			"2.0"
 			}
 			"08"
 			{
-				"var_type"				"FIELD_FLOAT"
-				"bash_duration"			"0.8 1.2 1.6 2.0"
-			}
-			"09"
-			{
 				"var_type"				"FIELD_INTEGER"
-				"bash_damage"			"20 30 40 50"
+				"quick_cast"			"1"
 			}
 		}
 	}
+
+	"nevermore_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_ultimate/nevermore_ultimate"
+				
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_requiem"
+		"MaxLevel"						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"1000"
+		"AbilityCastPoint"				"1.2"
+		"AnimationPlaybackRate"			"1.2"
+		"AbilityDuration"				"5.0"
+
+		// Resource
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"0"
+		"AbilityManaCost"				"100"
+
+		// Damage
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage"					"30"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"requiem_radius"				"1000"		
+			}
+			"02"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"requiem_reduction_ms"			"-25"
+			}
+			"03"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"requiem_slow_duration"			"5.0"
+			}
+			"04"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"requiem_soul_conversion"		"2"
+			}
+			"05"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"requiem_line_width_start"		"125"
+			}
+			"06"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"requiem_line_width_end"		"120"
+			}
+			"07"
+			{
+				"var_type"						"FIELD_INTEGER"
+				"requiem_line_speed"			"700"
+			}
+		}
+	}
+
+	"nevermore_ex_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_ex_ultimate/nevermore_ex_ultimate"
+				
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_ex_ultimate"
+		"MaxLevel"						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.4"
+		"AnimationPlaybackRate"			"1.3"
+		"AbilityCastAnimation"			"ACT_DOTA_RAZE_2"
+
+		// Resource
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"12"
+		"AbilityManaCost"				"25"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"			"FIELD_INTEGER"
+				"heal_per_soul"		"4"
+			}
+		}
+	}
+
+	"nevermore_ex_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_ex_special_attack/nevermore_ex_special_attack"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_ex_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.3"
+		"AnimationPlaybackRate"			"2.7"
+		"AbilityCastAnimation"			"ACT_DOTA_VICTORY"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"7.0"
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"armor"						"4"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"armor_duration"			"6.0"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"charges"					"4"
+			}
+		}
+	}
+
+	"nevermore_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_ex_second_attack/nevermore_ex_second_attack"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"nevermore_ex_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"MaxLevel"						"1"
+		"AOERadius"						"%radius"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastAnimation"			"ACT_DOTA_RAZE_2"
+		"AbilityCastRange"				"1500"
+		"AbilityCastPoint"				"0.4"
+		"AnimationPlaybackRate"			"1.4"
+		
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"7.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"120"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage"					"30"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"	
+				"souls"						"6"
+			}
+		}
+	}
+	
 
 	//=================================================================================================================
 	// Builder

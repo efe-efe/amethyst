@@ -1,6 +1,12 @@
 modifier_wisp_basic_attack_link_lua = class({})
 LinkLuaModifier( "modifier_wisp_basic_attack_lua", "abilities/heroes/wisp/wisp_basic_attack_lua/modifier_wisp_basic_attack_lua", LUA_MODIFIER_MOTION_NONE )
 
+--------------------------------------------------------------------------------
+-- Classifications
+function modifier_wisp_basic_attack_link_lua:IsHidden()
+    return true
+end
+
 function modifier_wisp_basic_attack_link_lua:OnCreated()
     local wisp = self:GetParent()
     local ally = self:GetCaster()

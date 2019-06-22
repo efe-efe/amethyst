@@ -120,6 +120,9 @@ function modifier_sniper_mobility_lua:CheckState()
 	local state = {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
+		[MODIFIER_STATE_INVULNERABLE] = true,
+		[MODIFIER_STATE_OUT_OF_GAME] = true,
+		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
 
 	return state

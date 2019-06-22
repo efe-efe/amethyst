@@ -1,25 +1,25 @@
-modifier_sky_basic_attack_lua = class({})
+modifier_sky_basic_attack = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_sky_basic_attack_lua:IsHidden()
+function modifier_sky_basic_attack:IsHidden()
 	return false
 end
 
-function modifier_sky_basic_attack_lua:IsDebuff()
+function modifier_sky_basic_attack:IsDebuff()
 	return false
 end
 
-function modifier_sky_basic_attack_lua:IsPurgable()
+function modifier_sky_basic_attack:IsPurgable()
 	return true
 end
 
-function modifier_sky_basic_attack_lua:DestroyOnExpire()
+function modifier_sky_basic_attack:DestroyOnExpire()
 	return false
 end
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_sky_basic_attack_lua:OnCreated( kv )
+function modifier_sky_basic_attack:OnCreated( kv )
     -- load data
     self.damage_bonus = self:GetAbility():GetSpecialValueFor("damage_bonus")
     self.charge_cooldown = self:GetAbility():GetSpecialValueFor("charge_cooldown")
@@ -32,13 +32,13 @@ function modifier_sky_basic_attack_lua:OnCreated( kv )
     end
 end
 
-function modifier_sky_basic_attack_lua:OnAbilityFullyCast( params )
+function modifier_sky_basic_attack:OnAbilityFullyCast( params )
 	if IsServer() then
 		if params.unit ~= self:GetParent() then
 			return
         end
         if params.ability == self:GetParent():FindAbilityByName("skywrath_mage_mobility_lua") or
-            params.ability == self:GetParent():FindAbilityByName("skywrath_mage_ex_basic_attack_lua")
+            params.ability == self:GetParent():FindAbilityByName("sky_ex_basic_attack")
         then
             self:IncrementStackCount()
 	        self:StartIntervalThink(-1)
@@ -50,13 +50,13 @@ end
 
 --------------------------------------------------------------------------------
 -- Interval Effects
-function modifier_sky_basic_attack_lua:OnIntervalThink()
+function modifier_sky_basic_attack:OnIntervalThink()
 	self:IncrementStackCount()
 	self:StartIntervalThink(-1)
 	self:CalculateCharge()
 end
 
-function modifier_sky_basic_attack_lua:CalculateCharge()
+function modifier_sky_basic_attack:CalculateCharge()
 	if self:GetStackCount() == self.max_charges then
 		-- stop charging
 		self:SetDuration( -1, false )
@@ -83,7 +83,7 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & Animations
 
-function modifier_sky_basic_attack_lua:PlayEffects_a()
+function modifier_sky_basic_attack:PlayEffects_a()
 	-- Get Resources
 	local sound_cast = "Hero_Wisp.Spirits.Destroy"
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
@@ -97,7 +97,7 @@ function modifier_sky_basic_attack_lua:PlayEffects_a()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-function modifier_sky_basic_attack_lua:PlayEffects_b()
+function modifier_sky_basic_attack:PlayEffects_b()
     if IsServer() then
         -- Get Resources
         local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_overcharge_c.vpcf"
@@ -106,7 +106,7 @@ function modifier_sky_basic_attack_lua:PlayEffects_b()
         self.effect_cast = ParticleManager:CreateParticle( 
             particle_cast, 
             PATTACH_CUSTOMORIGIN, 
-            nil
+            self:GetParent()
         )
 
         ParticleManager:SetParticleControlEnt( 
@@ -121,24 +121,24 @@ function modifier_sky_basic_attack_lua:PlayEffects_b()
     end
 end
 
-function modifier_sky_basic_attack_lua:StopEffects_b()
+function modifier_sky_basic_attack:StopEffects_b()
     if IsServer() then
         ParticleManager:DestroyParticle( self.effect_cast, false )
         ParticleManager:ReleaseParticleIndex( self.effect_cast )
     end
 end
 
-function modifier_sky_basic_attack_lua:GetEffectName()
+function modifier_sky_basic_attack:GetEffectName()
 	return "particles/econ/items/dark_willow/dark_willow_ti8_immortal_head/dw_crimson_ti8_immortal_ambient_embers_b.vpcf"
 end
 
-function modifier_sky_basic_attack_lua:GetEffectAttachType()
+function modifier_sky_basic_attack:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_sky_basic_attack_lua:DeclareFunctions()
+function modifier_sky_basic_attack:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
         MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
@@ -147,7 +147,7 @@ function modifier_sky_basic_attack_lua:DeclareFunctions()
 	return funcs
 end
 
-function modifier_sky_basic_attack_lua:GetModifierPreAttack_BonusDamage()
+function modifier_sky_basic_attack:GetModifierPreAttack_BonusDamage()
     if self:GetStackCount() == 0 then return 0 end
     return self.damage_bonus
 end

@@ -65,21 +65,13 @@ function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
             attacker = self:GetCaster(),
             --damage = self.damage,
             damage_type = DAMAGE_TYPE_PURE,
-            ability = self:GetAbility() --Optional.
+            ability = self:GetAbility(), --Optional.
+            damage = self.damage
         }
         
         for _,enemy in pairs(enemies) do
-            local guardian_essence = enemy:FindModifierByNameAndCaster( "modifier_wisp_guardian_essence_lua", caster )
-            local final_damage = self.damage
-
-            -- If have the guardian essences, adds extra damage
-            if guardian_essence ~= nil then
-                final_damage = self.damage_bonus + final_damage
-            end
-
             -- damage
             damageTable.victim = enemy
-            damageTable.damage = final_damage
             ApplyDamage(damageTable)
 
             enemy:AddNewModifier(

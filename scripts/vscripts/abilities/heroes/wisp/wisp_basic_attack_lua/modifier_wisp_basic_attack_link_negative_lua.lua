@@ -1,9 +1,9 @@
 modifier_wisp_basic_attack_link_negative_lua = class({})
 
-
+--------------------------------------------------------------------------------
 -- Classifications
 function modifier_wisp_basic_attack_link_negative_lua:IsHidden()
-	return false
+	return true
 end
 
 function modifier_wisp_basic_attack_link_negative_lua:IsDebuff()
@@ -17,7 +17,6 @@ end
 function modifier_wisp_basic_attack_link_negative_lua:RemoveOnDeath()
     return true
 end
-
 
 --------------------------------------------------------------------------------
 -- Initializer

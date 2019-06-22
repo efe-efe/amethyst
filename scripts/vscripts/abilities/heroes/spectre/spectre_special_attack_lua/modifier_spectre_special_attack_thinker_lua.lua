@@ -5,20 +5,16 @@ LinkLuaModifier( "modifier_spectre_special_attack_debuff_lua", "abilities/heroes
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_special_attack_thinker_lua:OnCreated( kv )
-	if IsServer() then
-        --load data
-        self.max_distance = self:GetAbility():GetSpecialValueFor("projectile_range")
-        self.buff_duration = self:GetAbility():GetSpecialValueFor("buff_duration")
-        self.debuff_duration = self:GetAbility():GetSpecialValueFor("debuff_duration")
+    --load data
+    self.max_distance = self:GetAbility():GetSpecialValueFor("projectile_range")
+    self.buff_duration = self:GetAbility():GetSpecialValueFor("buff_duration")
+    self.debuff_duration = self:GetAbility():GetSpecialValueFor("debuff_duration")
+    self.distance = 0.0
+    self.point = Vector(kv.x, kv.y, kv.z)
 
-        ----local variables
-        local caster = self:GetCaster()
-        local point = self:GetAbility():GetCursorPosition()
-        local origin = caster:GetOrigin()
-        self.direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-        self.distance = 0.0
-        
+	if IsServer() then
         self:StartIntervalThink( 0.1 )
+        ----local variables
     end
 end
 
@@ -31,13 +27,18 @@ function modifier_spectre_special_attack_thinker_lua:OnIntervalThink()
     if self.distance > self.max_distance then
         self.distance = self.max_distance
     end
-    
+    	
     local caster = self:GetCaster()
     local start_pos = self:GetParent():GetOrigin()
-    local path_vector = self.direction * self.distance
+    local direction = Vector( self.point.x - start_pos.x, self.point.y - start_pos.y, 0 ):Normalized()
+    local path_vector = direction * self.distance
 	local end_pos = start_pos + path_vector
 	local path_radius = 100
     
+    -- DEBUG
+    --self:PlayEffects(start_pos)
+    --self:PlayEffects(end_pos)
+
     local allies = FindUnitsInLine(
 		caster:GetTeamNumber(),
 		start_pos,
@@ -80,4 +81,12 @@ function modifier_spectre_special_attack_thinker_lua:OnIntervalThink()
         )
     end
     
+end
+
+function modifier_spectre_special_attack_thinker_lua:PlayEffects(pos)
+	-- Get Resources
+	local particle_cast = "particles/econ/items/wisp/wisp_relocate_teleport_ti7.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
 end

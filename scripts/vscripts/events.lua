@@ -141,7 +141,6 @@ function GameMode:OnEntityKilled( keys )
                 end
 
                 -- If there are only 1 not looser, lock the round
-                print("not_loosers = " .. not_loosers)
                 if not_loosers == 1 then
                     self.lock_round = true
 
@@ -162,10 +161,10 @@ function GameMode:OnEntityKilled( keys )
                     }
                 
                     CustomGameEventManager:Send_ServerToAllClients( "win_round_event", broadcast_win_round_event )
-
                 end
                 
                 Timers:CreateTimer(3.0, function()
+                    MiddleOrb:Destroy()
                     for _,it_team in pairs(self.teams) do
                         
                         if (_ ~= team) and shouldEnd == true then 

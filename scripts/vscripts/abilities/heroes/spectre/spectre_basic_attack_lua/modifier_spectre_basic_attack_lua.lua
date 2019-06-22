@@ -41,7 +41,7 @@ function modifier_spectre_basic_attack_lua:OnAbilityFullyCast( params )
 			return
         end
         if params.ability == self:GetParent():FindAbilityByName("skywrath_mage_mobility_lua") or
-            params.ability == self:GetParent():FindAbilityByName("skywrath_mage_ex_basic_attack_lua")
+            params.ability == self:GetParent():FindAbilityByName("sky_ex_basic_attack")
         then
             self:IncrementStackCount()
 	        self:StartIntervalThink(-1)
