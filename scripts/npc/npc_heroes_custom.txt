@@ -12,16 +12,16 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"wisp_basic_attack_lua"             // Q Spell	
-		"Ability2"						"wisp_second_attack_lua"             // Q Spell
+		"Ability1"						"wisp_basic_attack"             // Q Spell	
+		"Ability2"						"wisp_second_attack"             // Q Spell
 		"Ability3"						"wisp_counter"							
-		"Ability4"						"wisp_special_attack_lua"
+		"Ability4"						"wisp_special_attack"
 		"Ability5"						"wisp_ex_ultimate"					
-		"Ability6"						"wisp_ultimate_lua"
+		"Ability6"						"wisp_ultimate"
 		"Ability7"						"wisp_ex_counter"					
 		"Ability8"						"wisp_ex_special_attack"
-		"Ability9"						"wisp_mobility_lua"							
-		"Ability10"						"wisp_mobility_back_lua"					
+		"Ability9"						"wisp_mobility"							
+		"Ability10"						"wisp_mobility_back"					
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"420"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"2.0"
 		
 		// Attributes
@@ -76,15 +76,15 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"spectre_basic_attack_lua"
-		"Ability2"						"spectre_second_attack_lua"
+		"Ability1"						"spectre_basic_attack"
+		"Ability2"						"spectre_second_attack"
 		"Ability3"						"spectre_counter_lua"
-		"Ability4"						"spectre_special_attack_lua"
-		"Ability5"						"spectre_ex_ultimate_lua"
-		"Ability6"						"spectre_ultimate_lua"             // Q Spell	
-		"Ability7"						"spectre_ex_second_attack_lua"             // Q Spell
-		"Ability8"						"spectre_ex_mobility_lua"             // Q Spell
-		"Ability9"						"spectre_mobility_lua"             // Q Spell
+		"Ability4"						"spectre_special_attack"
+		"Ability5"						"spectre_ex_ultimate"
+		"Ability6"						"spectre_ultimate"             // Q Spell	
+		"Ability7"						"spectre_ex_second_attack"             // Q Spell
+		"Ability8"						"spectre_ex_mobility"             // Q Spell
+		"Ability9"						"spectre_mobility"             // Q Spell
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -106,7 +106,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"430"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"1.0"
 		
 		// Attributes
@@ -141,13 +141,13 @@
 		"AbilityLayout"					"9"
 		"Ability1"						"sky_basic_attack"	// Q Spell	
 		"Ability2"						"sky_second_attack"             // Q Spell
-		"Ability3"						"skywrath_mage_counter_lua"
-		"Ability4"						"skywrath_mage_special_attack_lua"							
-		"Ability5"						"skywrath_mage_ex_ultimate_lua"					
-		"Ability6"						"skywrath_mage_ultimate_lua"
+		"Ability3"						"sky_counter"
+		"Ability4"						"sky_special_attack"							
+		"Ability5"						"sky_ex_ultimate"					
+		"Ability6"						"sky_ultimate"
 		"Ability7"						"sky_ex_basic_attack"	
-		"Ability8"						"skywrath_mage_ex_second_attack_lua"
-		"Ability9"						"skywrath_mage_mobility_lua"				
+		"Ability8"						"sky_ex_second_attack"
+		"Ability9"						"sky_mobility"				
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -168,7 +168,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"420"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"2.0"
 		
 		// Attributes
@@ -201,17 +201,17 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"sniper_basic_attack_lua"
-		"Ability2"						"sniper_second_attack_lua"
-		"Ability3"						"sniper_counter_lua"
-		"Ability4"						"sniper_special_attack_lua"
-		"Ability5"						"sniper_ex_ultimate_lua"
-		"Ability6"						"sniper_ultimate_lua"
-		"Ability7"						"sniper_ex_second_attack_lua"
-		"Ability8"						"sniper_ex_mobility_lua"
-		"Ability9"						"sniper_mobility_lua"
-		"Ability10"						"sniper_second_attack_projectile_lua"
-		"Ability11"						"sniper_ultimate_projectile_lua"
+		"Ability1"						"sniper_basic_attack"
+		"Ability2"						"sniper_second_attack"
+		"Ability3"						"sniper_counter"
+		"Ability4"						"sniper_special_attack"
+		"Ability5"						"sniper_ex_ultimate"
+		"Ability6"						"sniper_ultimate"
+		"Ability7"						"sniper_ex_second_attack"
+		"Ability8"						"sniper_ex_mobility"
+		"Ability9"						"sniper_mobility"
+		"Ability10"						"sniper_second_attack_projectile"
+		"Ability11"						"sniper_ultimate_projectile"
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -228,12 +228,12 @@
 		"AttackDamageMin"			"10"										// Damage range min.
 		"AttackDamageMax"			"10"										// Damage range max.	
 		"AttackRate"				"0.0"									// Speed of attack.	
-		"AttackAnimationPoint"		"0.25"	
+		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"420"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"2.0"
 		
 		// Attributes
@@ -266,15 +266,15 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"phantom_assassin_basic_attack_lua"
-		"Ability2"						"phantom_assassin_second_attack_lua"
-		"Ability3"						"phantom_assassin_counter_lua"
-		"Ability4"						"phantom_assassin_special_attack_lua"
-		"Ability5"						"phantom_assassin_ex_ultimate_lua"
-		"Ability6"						"phantom_assassin_ultimate_lua"
-		"Ability7"						"phantom_assassin_ex_basic_attack_lua"
-		"Ability8"						"phantom_assassin_ex_special_attack_lua"
-		"Ability9"						"phantom_assassin_mobility_lua"
+		"Ability1"						"phantom_basic_attack"
+		"Ability2"						"phantom_second_attack"
+		"Ability3"						"phantom_counter"
+		"Ability4"						"phantom_special_attack"
+		"Ability5"						"phantom_ex_ultimate"
+		"Ability6"						"phantom_ultimate"
+		"Ability7"						"phantom_ex_basic_attack"
+		"Ability8"						"phantom_ex_special_attack"
+		"Ability9"						"phantom_mobility"
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -296,7 +296,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"430"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"0.95"
 		
 		// Attributes
@@ -329,15 +329,15 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"axe_basic_attack_lua"
-		"Ability2"						"axe_second_attack_lua"
-		"Ability3"						"axe_counter_lua"
-		"Ability4"						"axe_special_attack_lua"
-		"Ability5"						"axe_ex_ultimate_lua"
-		"Ability6"						"axe_ultimate_lua"
-		"Ability7"						"axe_ex_second_attack_lua"
-		"Ability8"						"axe_ex_mobility_lua"
-		"Ability9"						"axe_mobility_lua"
+		"Ability1"						"axe_basic_attack"
+		"Ability2"						"axe_second_attack"
+		"Ability3"						"axe_counter"
+		"Ability4"						"axe_special_attack"
+		"Ability5"						"axe_ex_ultimate"
+		"Ability6"						"axe_ultimate"
+		"Ability7"						"axe_ex_second_attack"
+		"Ability8"						"axe_ex_mobility"
+		"Ability9"						"axe_mobility"
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -359,7 +359,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"430"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"0.95"
 		
 		// Attributes
@@ -393,14 +393,14 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
 		"Ability1"						"tinker_basic_attack"             // Q Spell	
-		"Ability2"						"tinker_second_attack_lua"             // Q Spell
-		"Ability3"						"tinker_counter_lua"							
-		"Ability4"						"tinker_special_attack_lua"
-		"Ability5"						"tinker_ex_ultimate_lua"					
-		"Ability6"						"tinker_ultimate_lua"
-		"Ability7"						"tinker_ex_second_attack_lua"					
-		"Ability8"						"tinker_ex_counter_lua"
-		"Ability9"						"tinker_mobility_lua"		
+		"Ability2"						"tinker_second_attack"             // Q Spell
+		"Ability3"						"tinker_counter"							
+		"Ability4"						"tinker_special_attack"
+		"Ability5"						"tinker_ex_ultimate"					
+		"Ability6"						"tinker_ultimate"
+		"Ability7"						"tinker_ex_second_attack"					
+		"Ability8"						"tinker_ex_counter"
+		"Ability9"						"tinker_mobility"		
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -422,7 +422,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"420"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"2.0"
 		
 		// Attributes
@@ -457,13 +457,14 @@
 		"AbilityLayout"					"9"
 		"Ability1"						"phoenix_basic_attack"
 		"Ability2"						"phoenix_second_attack"
-		"Ability3"						"spectre_counter_lua"
-		"Ability4"						"spectre_special_attack_lua"
-		"Ability5"						"spectre_ex_ultimate_lua"
-		"Ability6"						"spectre_ultimate_lua"             // Q Spell	
-		"Ability7"						"spectre_ex_second_attack_lua"             // Q Spell
-		"Ability8"						"spectre_ex_mobility_lua"             // Q Spell
+		"Ability3"						"phoenix_counter"
+		"Ability4"						"phoenix_special_attack"
+		"Ability5"						"phoenix_ex_ultimate"
+		"Ability6"						"phoenix_ultimate"             // Q Spell	
+		"Ability7"						"spectre_ex_second_attack"             // Q Spell
+		"Ability8"						"nevermore_second_attack"             // Q Spell
 		"Ability9"						"phoenix_mobility"             // Q Spell
+		"Ability10"						"phoenix_mobility_stop"
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -485,7 +486,7 @@
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"430"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"0.95"
 		
 		// Attributes
@@ -543,12 +544,12 @@
 		"AttackDamageMin"			"8"										// Damage range min.
 		"AttackDamageMax"			"8"										// Damage range max.	
 		"AttackRate"				"0.4"									// Speed of attack.	
-		"AttackAnimationPoint"		"0.35"	
+		"AttackAnimationPoint"		"0.3"	
 		"AttackRange"				"80"
 		
 		// Movement
 		//-------------------------------------------------------------------------------------------------------------
-		"MovementSpeed"				"420"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"0.9"
 		
 		// Attributes

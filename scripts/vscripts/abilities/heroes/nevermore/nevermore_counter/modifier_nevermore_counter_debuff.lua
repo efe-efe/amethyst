@@ -25,12 +25,16 @@ function modifier_nevermore_counter_debuff:OnCreated( kv )
 
 	if IsServer() then
 		--Add stack
-		self:GetCaster():AddNewModifier(
-			self:GetCaster(),
-			self:GetCaster():FindAbilityByName("nevermore_basic_attack"),
-			"modifier_nevermore_souls",
-			{ duration = 4.0 }
-		)
+		local basic_attack = self:GetCaster():FindAbilityByName("nevermore_basic_attack")
+		
+		if self:GetParent():IsRealHero() then 
+			self:GetCaster():AddNewModifier(
+				self:GetCaster(),
+				basic_attack,
+				"modifier_nevermore_souls",
+				{ duration = basic_attack:GetSpecialValueFor("duration") }
+			)
+		end
 	end
 end
 

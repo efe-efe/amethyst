@@ -16,10 +16,10 @@ function nevermore_second_attack:OnSpellStart()
 	local point = self:GetCursorPosition()
 	
 	local radius = self:GetSpecialValueFor("radius")
-	local damage = self:GetSpecialValueFor("damage")
+	local damage = self:GetAbilityDamage()
 	local damage_per_stack = self:GetSpecialValueFor("damage")
 	local stack_duration = self:GetSpecialValueFor("stack_duration")
-	local mana_gain = self:GetSpecialValueFor("mana_gain")
+	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
 
 	-- get affected enemies
 	local enemies = FindUnitsInRadius(

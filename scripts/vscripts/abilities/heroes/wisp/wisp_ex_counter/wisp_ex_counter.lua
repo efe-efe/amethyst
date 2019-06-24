@@ -14,7 +14,7 @@ function wisp_ex_counter:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
 	local point = caster:GetOrigin()
-    local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link_lua", caster )
+    local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link", caster )
 
     
     if linked_unit ~= nil then

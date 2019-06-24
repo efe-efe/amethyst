@@ -1,0 +1,74 @@
+"addon"
+{
+	"PointsToWin"									"+{d:points_to_win} more"
+	"PointsToWin_CloseToVictory"					"+{d:points_to_win} more"
+	"PointsToWin_VeryCloseToVictory"				"+{d:points_to_win} more!"
+	"PointsToWin_Victory"							"Victory!"
+
+	"InstructionsTitle"								"AMETHYST"
+	"InstructionsObjective"							"OBJECTIVE"
+	"InstructionsObjectiveText"						"Win rounds by killing all the enemy heroes. Be the first to earn the goal number rounds, and you will be victorious."
+	"InstructionsHowToPlay"							"HOW TO PLAY"
+	"InstructionsLines"								"-Kill all the enemy heroes.<br>
+													-Heroes don't have mana nor heal regeneration. Gain mana by hiting spells.<br>
+													-Destroy the middle Amethyst orb to gain extra mana and hp for you and your team.<br>
+													-Use keys [Q,W,E,R,D,F] to use basic abilities. Press [Spacebar] to use your mobility spell. Press [1, 2] to use EX-Spells, wich are improved versions of your basic spells.<br>
+													-Using an EX-Spell will put the EX-Spell and the related ability on cooldown."
+
+	"Chest"											"ITEM"
+	"ItemWillSpawn"									"IS ABOUT TO BE DELIVERED!"
+	"ItemHasSpawned"								"IS ON ITS WAY!"
+
+	"RecentScore"									"+{d:score}"
+
+	"Unassigned"      								"Unassigned Team"
+	"Spectator"       								"Spectator Team"
+	"Neutrals"        								"Neutral Team"
+	"NoTeam"          								"No Team"
+
+	"DOTA_GoodGuys"   								"Teal Tiger"
+	"DOTA_BadGuys"    								"Yellow Monkey"
+	"DOTA_Custom1"    								"Pink Dragon"
+	"DOTA_Custom2"    								"Orange Dog"
+	"DOTA_Custom3"    								"Blue Rooster"
+	"DOTA_Custom4"    								"Green Ram"
+	"DOTA_Custom5"    								"Brown Rat"
+	"DOTA_Custom6"    								"Cyan Boar"
+	"DOTA_Custom7"    								"Olive Snake"
+	"DOTA_Custom8"    								"Purple Horse"
+	
+	"OverthrowHeroPickup"							"{s:hero_id}"
+	"OverthrowTextPickup"							"HAS PICKED UP"
+	"OverthrowItemPickup"							"{s:item_id}!"
+
+	"Remaining"										"REMAINING"
+
+	"Overtime"										"OVERTIME!"
+	"OvertimeInstructions"							"SCORE TO WIN"
+
+	"KillMessageHero"								"{s:hero_id}"
+	"KillMessageText"								"HAS KILLED THE LEADER"
+	"KillMessageBounty"								"FOR 500 BONUS GOLD!"
+	
+	"addonname"										"Amethyst"
+	"overthrow_game_info_header_objective"			"Objective:"
+	"overthrow_brief_description"					"Win rounds by killing all the enemy heroes. Be the first to earn the goal number rounds, and you will be victorious. "
+	"overthrow_game_info_header_how_to_play"		"How To Play:"
+	"overthrow_game_info_throne"					"Destroy the middle <span class='purple'>Amethyst</span> to gain mana and life for you and your entire team. Kill all the <span class='yellow'>enemy heroes</span> to win a <span class='yellow'>round</span>."
+	"overthrow_game_info_coins"						"Heroes don't have  <span class='yellow'>mana nor heal regeneration</span>. Gain mana by hiting spells <span class='yellow'>spells</span>."
+	"overthrow_game_info_items"						"Use keys <span class='treasure'>[Q,W,E,R,D,F]</span> to use basic abilities. Press <span class='yellow'>[Spacebar]</span> to use your mobility spell. Press <span class='treasure'>[1, 2]</span> to use <span class='items'>EX-Spells</span>, wich are improved versions of your basic spells."
+	"overthrow_game_info_tips_header"				"Tips:"
+	"overthrow_game_info_tip01"						"Using an EX-Spell will put the EX-Spell and the related ability on cooldown."
+	"overthrow_game_info_tip02"						"Normal abilities doesn't costs mana"
+	"overthrow_game_info_tip03"						"Ultimate have no cooldown."
+	"overthrow_game_info_tip04"						"Most of the ultimates costs 100 mana."
+
+	"npc_dota_hero_silencer_notification"			"Silencer"
+	"npc_dota_hero_necrolyte_notification"			"Necrophos"
+	"npc_dota_hero_zuus_notification"				"Zeus"
+	"npc_dota_hero_riki_notification"				"Riki"
+	"npc_dota_hero_bounty_hunter_notification"		"Bounty Hunter"
+	"npc_dota_hero_broodmother_notification"		"Broodmother"
+	"npc_dota_hero_pudge_notification"				"Pudge"
+}
+

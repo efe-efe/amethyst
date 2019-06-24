@@ -20,5 +20,5 @@ end
 
 --Graphics
 function modifier_sky_second_attack_reducer:GetTexture()
-	return "skywrath_mage_second_attack_stack_lua"
+	return "sky_second_attack_stack"
 end

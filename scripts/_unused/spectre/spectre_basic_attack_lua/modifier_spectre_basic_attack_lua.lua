@@ -1,34 +1,34 @@
-modifier_spectre_basic_attack_lua = class({})
+modifier_spectre_basic_attack = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_spectre_basic_attack_lua:IsHidden()
+function modifier_spectre_basic_attack:IsHidden()
 	return true
 end
 
-function modifier_spectre_basic_attack_lua:IsDebuff()
+function modifier_spectre_basic_attack:IsDebuff()
 	return false
 end
 
-function modifier_spectre_basic_attack_lua:IsPurgable()
+function modifier_spectre_basic_attack:IsPurgable()
 	return false
 end
 
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_spectre_basic_attack_lua:OnCreated( kv )
+function modifier_spectre_basic_attack:OnCreated( kv )
     -- load data
     self.damage_bonus = self:GetAbility():GetSpecialValueFor("damage_bonus")
 end
 
-function modifier_spectre_basic_attack_lua:GetModifierPreAttack_BonusDamage()
+function modifier_spectre_basic_attack:GetModifierPreAttack_BonusDamage()
     return self.damage_bonus
 end
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_spectre_basic_attack_lua:DeclareFunctions()
+function modifier_spectre_basic_attack:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
 	}

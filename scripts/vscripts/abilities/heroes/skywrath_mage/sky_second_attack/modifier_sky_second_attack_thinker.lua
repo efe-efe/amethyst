@@ -14,7 +14,7 @@ function modifier_sky_second_attack_thinker:OnCreated( kv )
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
         self.heal = self:GetAbility():GetSpecialValueFor( "heal" )
         self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
-        self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")
+        self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")/100
         self.cooldown_reduction = self:GetAbility():GetSpecialValueFor("cooldown_reduction")
         
         local caster = self:GetCaster()

@@ -10,7 +10,7 @@ function phoenix_mobility:OnSpellStart()
 	local forwardDir = caster:GetForwardVector()
 	local rightDir = caster:GetRightVector()
 
-	local dashLength	= 2000
+	local dashLength	= 1700
 	local dashWidth		= 500
 	local ellipseCenter	= origin + forwardDir * ( dashLength / 2 )
 
@@ -23,6 +23,14 @@ function phoenix_mobility:OnSpellStart()
         { duration = dashDuration }
     )
     
+	-- Swap abilities back to be able to stop
+	caster:SwapAbilities( 
+		"phoenix_mobility",
+		"phoenix_mobility_stop",
+		false,
+		true
+	)
+
 	caster:SetContextThink( DoUniqueString("updateIcarusDive"), function ( )
 
 		local elapsedTime = GameRules:GetGameTime() - startTime
@@ -49,6 +57,7 @@ function phoenix_mobility:OnSpellStart()
 	end, 0 )
 
 	self:PlayEffects()
+
 end
 
 

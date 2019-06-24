@@ -1,9 +1,9 @@
-wisp_second_attack_lua = class ({})
+wisp_second_attack = class ({})
 LinkLuaModifier( "modifier_wisp_guardian_essence_lua", "abilities/heroes/wisp/wisp_shared_modifiers/modifier_wisp_guardian_essence_lua/modifier_wisp_guardian_essence_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_second_attack_lua:OnSpellStart()
+function wisp_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -18,7 +18,7 @@ function wisp_second_attack_lua:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	local damage = self:GetSpecialValueFor("damage")
-	local mana_gain = self:GetSpecialValueFor("mana_gain")
+	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
 	local damage_bonus = self:GetSpecialValueFor("damage_bonus")
 	
 	local projectile = {
@@ -104,7 +104,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function wisp_second_attack_lua:PlayEffects_a()
+function wisp_second_attack:PlayEffects_a()
 	-- Create Sound
 	local sound_cast = "Hero_Wisp.TeleportOut"
 	EmitSoundOn( sound_cast, self:GetCaster()  )
@@ -121,7 +121,7 @@ function wisp_second_attack_lua:PlayEffects_a()
 end
 
 
-function wisp_second_attack_lua:PlayEffects_b( pos )
+function wisp_second_attack:PlayEffects_b( pos )
 	local caster = self:GetCaster()
 	
 	-- Create Sound

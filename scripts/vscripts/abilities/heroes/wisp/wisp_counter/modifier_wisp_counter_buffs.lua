@@ -29,9 +29,10 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_wisp_counter_buffs:OnCreated( kv )
+	self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
+	self.heal_regen = self:GetAbility():GetSpecialValueFor( "heal_regen" )
+	
     if IsServer() then
-        self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
-        self.heal_regen = self:GetAbility():GetSpecialValueFor( "heal_regen" )
 
 		-- Strong Dispel
 		local RemovePositiveBuffs = false

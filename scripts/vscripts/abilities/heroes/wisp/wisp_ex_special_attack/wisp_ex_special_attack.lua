@@ -14,7 +14,7 @@ function wisp_ex_special_attack:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
 	local point = caster:GetOrigin()
-    local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link_negative_lua", caster )
+    local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link_negative", caster )
 
     
     if linked_unit ~= nil then
@@ -47,7 +47,7 @@ function wisp_ex_special_attack:OnSpellStart()
     end
 
     -- Put CD on the alternate version of the ability
-    local alternate_version = caster:FindAbilityByName("wisp_special_attack_lua")
+    local alternate_version = caster:FindAbilityByName("wisp_special_attack")
 	alternate_version:StartCooldown(self:GetCooldown(0))
     self:PlayEffects()
 end

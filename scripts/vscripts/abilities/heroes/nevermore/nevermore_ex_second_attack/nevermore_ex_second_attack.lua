@@ -15,7 +15,7 @@ function nevermore_ex_second_attack:OnSpellStart()
 	local point = self:GetCursorPosition()
 	
 	local radius = self:GetSpecialValueFor("radius")
-	local damage = self:GetSpecialValueFor("damage")
+	local damage = self:GetAbilityDamage()
 	local souls = self:GetSpecialValueFor("souls")
 
 	-- get affected enemies
@@ -45,14 +45,17 @@ function nevermore_ex_second_attack:OnSpellStart()
 	end
 
 	if #enemies > 0 then
-		for i=0, souls - 1 do
-			caster:AddNewModifier(
-				caster,
-                caster:FindAbilityByName("nevermore_basic_attack"),
-				"modifier_nevermore_souls",
-				{ duration = 4.0 }
-			)
-			self:PlayEffects_b(enemies[1])
+
+		if enemies[1]:IsRealHero() then 
+			for i=0, souls - 1 do
+				caster:AddNewModifier(
+					caster,
+					caster:FindAbilityByName("nevermore_basic_attack"),
+					"modifier_nevermore_souls",
+					{ duration = 4.0 }
+				)
+				self:PlayEffects_b(enemies[1])
+			end
 		end
 	end
 

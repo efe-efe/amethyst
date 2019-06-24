@@ -2,7 +2,8 @@ modifier_generic_projectile_special_behavior_lua = class({})
 
 
 function modifier_generic_projectile_special_behavior_lua:OnDestroy( kv )
-    if IsServer() then
+	if IsServer() then
+		self:GetParent():Kill(nil, nil)
 	end
 end
 

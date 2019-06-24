@@ -39,10 +39,7 @@ function nevermore_special_attack:OnEndPseudoCastPoint()
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local mana_gain = self:GetSpecialValueFor("mana_gain")
-
-	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
+	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
@@ -105,7 +102,6 @@ function nevermore_special_attack:OnEndPseudoCastPoint()
 	
 	self:PlayEffects_a()
 	Projectiles:CreateProjectile(projectile)
-	self:StartCooldown(attack_speed)
 
 	-- Put CD on the alternate of the ability
 	local alternate_version = caster:FindAbilityByName("nevermore_ex_special_attack")
@@ -139,9 +135,9 @@ function nevermore_special_attack:PlayEffects_b( pos )
 end
 
 function nevermore_special_attack:TornadoLogic( hSource, hTarget )
-	local damage = self:GetSpecialValueFor("damage")
-	local duration = 3.0 -- self:GetSpecialValueFor("duration")
-
+	local damage = self:GetAbilityDamage()
+	local duration = self:GetSpecialValueFor("lift_duration")
+	local basic_attack = self:GetCaster():FindAbilityByName("nevermore_basic_attack")
 	-- Apply damage
 	local damageTable = {
 		victim = hTarget,
@@ -151,20 +147,22 @@ function nevermore_special_attack:TornadoLogic( hSource, hTarget )
 		ability = self,
 	}
 	ApplyDamage( damageTable )
+	
+	if not hTarget:IsRealHero() then return end
 
 	--Add stack
 	hSource:AddNewModifier(
 		hSource,
-		self:GetCaster():FindAbilityByName("nevermore_basic_attack"),
+		basic_attack,
 		"modifier_nevermore_souls",
-		{ duration = 5.0 }
+		{ duration = basic_attack:GetSpecialValueFor("duration") }
 	)
 	--Add stack
-	caster:AddNewModifier(
+	hSource:AddNewModifier(
 		hSource,
-		self:GetCaster():FindAbilityByName("nevermore_basic_attack"),
+		basic_attack,
 		"modifier_nevermore_souls",
-		{ duration = 5.0 }
+		{ duration = basic_attack:GetSpecialValueFor("duration") }
 	)
 
 	hTarget:AddNewModifier(

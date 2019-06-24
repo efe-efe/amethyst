@@ -3,20 +3,18 @@ LinkLuaModifier( "modifier_sniper_shrapnel_debuff", "abilities/heroes/sniper/sni
 
 function modifier_sniper_shrapnel_thinker_lua:OnCreated()
     if IsServer() then
-        local thinker = self:GetParent()
-        local delay = self:GetAbility():GetSpecialValueFor("delay")
-        self.thinker_origin = thinker:GetOrigin()
+        self.thinker_origin = self:GetParent():GetOrigin()
         self.think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
 
-        self.knockback_radius = self:GetAbility():GetSpecialValueFor("radius")
-        self.knockback_distance = self:GetAbility():GetSpecialValueFor("knockback_distance")
-        self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
+        self.damage_per_think = self:GetAbility():GetSpecialValueFor("damage_per_think")
         self.slow_linger = self:GetAbility():GetSpecialValueFor("slow_linger")
-        
 
         -- Start Interval
-        self:StartIntervalThink( delay )  
+        AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.radius, self.duration, false )
+		self:PlayEffects()
+        self:StartIntervalThink( self.think_interval )  
     end
 end
 
@@ -30,45 +28,37 @@ end
 
 --------------------------------------------------------------------------------
 function modifier_sniper_shrapnel_thinker_lua:OnIntervalThink()
-    if not self.start then
-		self.start = true
-		self:StartIntervalThink( self.think_interval )
-		AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.knockback_radius, self.duration, false )
-		-- effects
-		self:PlayEffects()
-	else
-        local caster = self:GetCaster()
+    local caster = self:GetCaster()
 
-        -- Find enemies
-        local enemies = FindUnitsInRadius( 
-            caster:GetTeamNumber(), -- int, your team number
-            self.thinker_origin, -- point, center point
-            nil, -- handle, cacheUnit. (not known)
-            self.knockback_radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-            DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-            0, -- int, flag filter
-            0, -- int, order filter
-            false -- bool, can grow cache
+    -- Find enemies
+    local enemies = FindUnitsInRadius( 
+        caster:GetTeamNumber(), -- int, your team number
+        self.thinker_origin, -- point, center point
+        nil, -- handle, cacheUnit. (not known)
+        self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
+        DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+        0, -- int, flag filter
+        0, -- int, order filter
+        false -- bool, can grow cache
+    )
+
+    for _,enemy in pairs(enemies) do
+        local damage = {
+            victim = enemy,
+            attacker = caster,
+            damage = self.damage_per_think,
+            damage_type = DAMAGE_TYPE_PURE,
+        }
+
+        ApplyDamage( damage )
+        
+        enemy:AddNewModifier(
+            caster,
+            self:GetAbility(),
+            "modifier_sniper_shrapnel_debuff",
+            {duration = self.slow_linger}
         )
-
-        for _,enemy in pairs(enemies) do
-            local damage = {
-                victim = enemy,
-                attacker = caster,
-                damage = self.damage_per_second,
-                damage_type = DAMAGE_TYPE_PURE,
-            }
-
-            ApplyDamage( damage )
-            
-            enemy:AddNewModifier(
-                caster,
-                self:GetAbility(),
-                "modifier_sniper_shrapnel_debuff",
-                {duration = self.slow_linger}
-            )
-        end
     end
 end
 
@@ -78,6 +68,6 @@ function modifier_sniper_shrapnel_thinker_lua:PlayEffects()
     self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     
     ParticleManager:SetParticleControl( self.effect_cast, 0, self.thinker_origin )
-    ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(self.knockback_radius,0,0))
+    ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(self.radius,0,0))
     ParticleManager:SetParticleControl( self.effect_cast, 2, self.thinker_origin )
 end

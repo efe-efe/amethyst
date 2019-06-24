@@ -262,6 +262,7 @@ function Projectiles:CreateProjectile(projectile)
                                 -- If hits a slower or bouncer unit
                                 local is_slower = entity:FindModifierByName("modifier_generic_projectile_slower_lua")
                                 local is_reflector = entity:FindModifierByName("modifier_generic_projectile_reflector_lua")
+                                local is_enemy_blocker = entity:FindModifierByName("modifier_generic_projectile_enemy_blocker_lua")
 
                                 if is_slower ~= nil then
                                     if not is_slower:IsNull() then
@@ -295,6 +296,19 @@ function Projectiles:CreateProjectile(projectile)
                                             ApplyDamage( damage )
 
                                             Projectiles:CreateProjectile( reflectedProjectile )
+                                            return
+                                        end
+                                    end
+                                elseif is_enemy_blocker ~= nil then
+                                    if not is_enemy_blocker:IsNull() then
+                                        if projectile.Source:GetTeamNumber() ~= entity:GetTeamNumber() then
+                                            ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
+                                            if projectile.OnFinish then
+                                                local status, out = pcall(projectile.OnFinish, projectile, subpos)
+                                                if not status then
+                                                    print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                                                end
+                                            end
                                             return
                                         end
                                     end

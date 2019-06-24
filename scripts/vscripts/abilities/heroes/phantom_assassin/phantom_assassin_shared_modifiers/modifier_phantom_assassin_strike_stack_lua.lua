@@ -57,7 +57,7 @@ end
 --------------------------------------------------------------------------------
 --Graphics
 function modifier_phantom_assassin_strike_stack_lua:GetTexture()
-	return "phantom_assassin_basic_attack_lua"
+	return "phantom_basic_attack"
 end
 
 -- Graphics & Animations

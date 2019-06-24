@@ -49,7 +49,7 @@ function tinker_ex_mobility_lua:OnSpellStart()
     --self:PlayEffects_b()
 
     -- Put CD on the alternate of the ability
-	local alternate_version = caster:FindAbilityByName("tinker_mobility_lua")
+	local alternate_version = caster:FindAbilityByName("tinker_mobility")
 	alternate_version:StartCooldown(self:GetCooldown(0))
 end
 

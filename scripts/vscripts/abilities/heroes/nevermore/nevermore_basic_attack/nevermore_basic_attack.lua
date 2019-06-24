@@ -152,7 +152,7 @@ function nevermore_basic_attack:OnUpgrade()
 end
 
 function nevermore_basic_attack:Animate()
-	StartAnimation(self:GetCaster(), {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.5})
+	StartAnimation(self:GetCaster(), {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.6})
 end
 
 function nevermore_basic_attack:Rotate(point)

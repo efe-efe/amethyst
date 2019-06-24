@@ -1,14 +1,14 @@
-wisp_ultimate_lua = class({})
-LinkLuaModifier( "modifier_wisp_ultimate_thinker_lua", "abilities/heroes/wisp/wisp_ultimate_lua/modifier_wisp_ultimate_thinker_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_wisp_ultimate_lua", "abilities/heroes/wisp/wisp_ultimate_lua/modifier_wisp_ultimate_lua", LUA_MODIFIER_MOTION_NONE )
+wisp_ultimate = class({})
+LinkLuaModifier( "modifier_wisp_ultimate_thinker", "abilities/heroes/wisp/wisp_ultimate/modifier_wisp_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_wisp_ultimate", "abilities/heroes/wisp/wisp_ultimate/modifier_wisp_ultimate", LUA_MODIFIER_MOTION_NONE )
 
-function wisp_ultimate_lua:GetAOERadius()
+function wisp_ultimate:GetAOERadius()
 	return self:GetSpecialValueFor( "radius" )
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_ultimate_lua:OnSpellStart()
+function wisp_ultimate:OnSpellStart()
     -- unit identifier
 	local caster = self:GetCaster()
     local point = self:GetCursorPosition()
@@ -25,7 +25,7 @@ function wisp_ultimate_lua:OnSpellStart()
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_wisp_ultimate_lua",
+		"modifier_wisp_ultimate",
 		{ duration = delay_time }
 	)
 
@@ -33,7 +33,7 @@ function wisp_ultimate_lua:OnSpellStart()
     CreateModifierThinker(
         caster, --hCaster
         self, --hAbility
-        "modifier_wisp_ultimate_thinker_lua", --modifierName
+        "modifier_wisp_ultimate_thinker", --modifierName
         { }, --paramTable
         old_origin + direction, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
@@ -43,6 +43,6 @@ function wisp_ultimate_lua:OnSpellStart()
     self:PlayEffects()
 end
 
-function wisp_ultimate_lua:PlayEffects()
+function wisp_ultimate:PlayEffects()
     EmitGlobalSound("wisp_death")
 end

@@ -4,6 +4,12 @@ LinkLuaModifier( "modifier_phoenix_second_attack_thinker", "abilities/heroes/pho
 LinkLuaModifier( "modifier_phoenix_special_attack_charges", "abilities/heroes/phoenix/phoenix_second_attack/modifier_phoenix_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
+-- Set AOE indicator
+function phoenix_second_attack:GetAOERadius()
+	return self:GetSpecialValueFor( "radius" )
+end
+
+--------------------------------------------------------------------------------
 --Passive Modifier
 function phoenix_second_attack:GetIntrinsicModifierName()
 	return "modifier_phoenix_special_attack_charges"
@@ -96,15 +102,18 @@ function phoenix_second_attack:OnEndPseudoCastPoint()
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)
 
-			CreateModifierThinker(
-				_self.Source, --hCaster
-				self, --hAbility
-				"modifier_phoenix_second_attack_thinker", --modifierName
-				{}, --paramTable
-				pos, --vOrigin
-				_self.Source:GetTeamNumber(), --nTeamNumber
-				false --bPhantomBlocker
-			)
+			if next(_self.rehit) == nil then			
+				CreateModifierThinker(
+					_self.Source, --hCaster
+					self, --hAbility
+					"modifier_phoenix_second_attack_thinker", --modifierName
+					{}, --paramTable
+					pos, --vOrigin
+					_self.Source:GetTeamNumber(), --nTeamNumber
+					false --bPhantomBlocker
+				)
+			end
+
 		end,
 	}
 
@@ -146,7 +155,7 @@ function phoenix_second_attack:PlayEffects_b( pos )
 end
 
 function phoenix_second_attack:Animate()
-	StartAnimation(self:GetCaster(), {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.5})
+	StartAnimation(self:GetCaster(), {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.5})
 end
 
 function phoenix_second_attack:Rotate(point)

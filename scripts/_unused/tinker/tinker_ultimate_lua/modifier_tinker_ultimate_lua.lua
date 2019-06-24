@@ -1,29 +1,29 @@
-modifier_tinker_ultimate_lua = class({})
+modifier_tinker_ultimate = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_tinker_ultimate_lua:IsHidden()
+function modifier_tinker_ultimate:IsHidden()
 	return false
 end
 
-function modifier_tinker_ultimate_lua:IsDebuff()
+function modifier_tinker_ultimate:IsDebuff()
 	return false
 end
 
-function modifier_tinker_ultimate_lua:IsPurgable()
+function modifier_tinker_ultimate:IsPurgable()
 	return false
 end
 
 
-function modifier_tinker_ultimate_lua:OnCreated()
+function modifier_tinker_ultimate:OnCreated()
 	self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
 end
 
 
-function modifier_tinker_ultimate_lua:OnDestroy()
+function modifier_tinker_ultimate:OnDestroy()
 	if IsServer() then
 		self:GetParent():SwapAbilities( 
-			"tinker_special_attack_lua",
+			"tinker_special_attack",
 			"tinker_ultimate_special_attack_lua",
 			true,
 			false
@@ -34,7 +34,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_tinker_ultimate_lua:DeclareFunctions()
+function modifier_tinker_ultimate:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 	}
@@ -42,12 +42,12 @@ function modifier_tinker_ultimate_lua:DeclareFunctions()
 	return funcs
 end
 
-function modifier_tinker_ultimate_lua:GetModifierMoveSpeedBonus_Percentage()
+function modifier_tinker_ultimate:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff
 end
 
 -- Graphics & Animations
-function modifier_tinker_ultimate_lua:GetStatusEffectName()
+function modifier_tinker_ultimate:GetStatusEffectName()
 	return "particles/status_fx/status_effect_repel.vpcf"
 end
 

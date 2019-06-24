@@ -1,14 +1,14 @@
-spectre_basic_attack_lua = class ({})
-LinkLuaModifier( "modifier_spectre_basic_attack_lua", "abilities/heroes/spectre/spectre_basic_attack_lua/modifier_spectre_basic_attack_lua", LUA_MODIFIER_MOTION_NONE )
+spectre_basic_attack = class ({})
+LinkLuaModifier( "modifier_spectre_basic_attack", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
-function spectre_basic_attack_lua:GetAOERadius()
+function spectre_basic_attack:GetAOERadius()
 	return self:GetSpecialValueFor( "hitbox" )
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function spectre_basic_attack_lua:OnSpellStart()
+function spectre_basic_attack:OnSpellStart()
 
 	-- Initialize variables
 	local caster = self:GetCaster()
@@ -22,7 +22,7 @@ function spectre_basic_attack_lua:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = attack_speed })
 end
 
-function spectre_basic_attack_lua:OnEndPseudoCastPoint()
+function spectre_basic_attack:OnEndPseudoCastPoint()
 	local caster = self:GetCaster()
 	local offset = 10
 
@@ -88,7 +88,7 @@ function spectre_basic_attack_lua:OnEndPseudoCastPoint()
 		
 			-- If have the debuff, adds extra attack and extends debuff duration
 			if desolate ~= nil then
-				caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack_lua", {})
+				caster:AddNewModifier(caster, self , "modifier_spectre_basic_attack", {})
 				caster:Heal( heal_amount, _self.Source )
 				self:PlayEffects_d()
 			end
@@ -104,7 +104,7 @@ function spectre_basic_attack_lua:OnEndPseudoCastPoint()
 				false, -- bool bFakeAttack
 				true -- bool bNeverMiss
 			)
-			SafeDestroyModifier("modifier_spectre_basic_attack_lua", caster, caster)
+			SafeDestroyModifier("modifier_spectre_basic_attack", caster, caster)
 
 			self:PlayEffects_b(unit)
 			_self.Destroy()
@@ -115,14 +115,14 @@ function spectre_basic_attack_lua:OnEndPseudoCastPoint()
 			end
 			self:PlayEffects_a(pos)
 			--Remove the extra attack
-			SafeDestroyModifier("modifier_spectre_basic_attack_lua", caster, caster)
+			SafeDestroyModifier("modifier_spectre_basic_attack", caster, caster)
 		end,
 	}
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
 end
 
-function spectre_basic_attack_lua:OnStopPseudoCastPoint()
+function spectre_basic_attack:OnStopPseudoCastPoint()
 	self:SetActivated(true)
 end
 
@@ -131,7 +131,7 @@ end
 -- Graphics & sounds
 
 -- On Projectile finish
-function spectre_basic_attack_lua:PlayEffects_a( pos )
+function spectre_basic_attack:PlayEffects_a( pos )
 	local caster = self:GetCaster()
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
@@ -142,21 +142,21 @@ function spectre_basic_attack_lua:PlayEffects_a( pos )
 end
 
 -- On hit enemy
-function spectre_basic_attack_lua:PlayEffects_b( hTarget )
+function spectre_basic_attack:PlayEffects_b( hTarget )
 	-- Create Sound
 	local sound_cast = "Hero_Spectre.Attack"
 	EmitSoundOn( sound_cast, hTarget )
 end
 
 -- On Projectile miss
-function spectre_basic_attack_lua:PlayEffects_c( pos )
+function spectre_basic_attack:PlayEffects_c( pos )
 	-- Create Sound
 	local sound_cast = "Hero_Spectre.PreAttack"
 	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 end
 
 -- On self when lifestealing
-function spectre_basic_attack_lua:PlayEffects_d()
+function spectre_basic_attack:PlayEffects_d()
 	-- Heal Particles
 	local particle_cast = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
 
@@ -165,7 +165,7 @@ function spectre_basic_attack_lua:PlayEffects_d()
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-function spectre_basic_attack_lua:Animate(point)
+function spectre_basic_attack:Animate(point)
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local angles = caster:GetAngles()

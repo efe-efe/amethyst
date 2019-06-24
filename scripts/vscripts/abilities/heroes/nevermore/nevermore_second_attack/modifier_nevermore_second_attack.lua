@@ -28,7 +28,8 @@ end
 function modifier_nevermore_second_attack:OnRefresh()
     if IsServer() then
 	    self:IncrementStackCount()
-        -- Start Interval
+		-- Start Interval
+		self:PlayEffects(self:GetStackCount())
     end
 end
 
@@ -38,4 +39,16 @@ function modifier_nevermore_second_attack:OnStackCountChanged( old )
 			self:Destroy()
 		end
 	end
+end
+
+function modifier_nevermore_second_attack:PlayEffects(number)
+	local particle_cast = "particles/econ/items/shadow_fiend/sf_fire_arcana/sf_fire_arcana_shadowraze_double.vpcf"
+	if number == 3 then
+		particle_cast = "particles/econ/items/shadow_fiend/sf_fire_arcana/sf_fire_arcana_shadowraze_triple.vpcf"
+	end
+
+	-- create particle
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+	ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end

@@ -1,11 +1,11 @@
-"tinker_ultimate_lua" 
+"tinker_ultimate" 
 { 
     "BaseClass"						"ability_lua" 
-    "ScriptFile"					"abilities/heroes/tinker/tinker_ultimate_lua/tinker_ultimate_lua" 
+    "ScriptFile"					"abilities/heroes/tinker/tinker_ultimate/tinker_ultimate" 
         
     // General 
     //------------------------------------------------------------------------------------------------------------- 
-    "AbilityTextureName"			"tinker_ultimate_lua" 
+    "AbilityTextureName"			"tinker_ultimate" 
     "MaxLevel"						"1" 
     "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET" 
 

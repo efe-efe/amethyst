@@ -1,14 +1,14 @@
-modifier_wisp_ultimate_thinker_lua = class({})
+modifier_wisp_ultimate_thinker = class({})
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ultimate_thinker_lua:IsHidden()
+function modifier_wisp_ultimate_thinker:IsHidden()
 	return true
 end
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ultimate_thinker_lua:OnCreated( kv )
+function modifier_wisp_ultimate_thinker:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
         self.damage = self:GetAbility():GetSpecialValueFor( "damage" )
@@ -25,7 +25,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ultimate_thinker_lua:OnIntervalThink()
+function modifier_wisp_ultimate_thinker:OnIntervalThink()
     if IsServer() then
         -- determine target position
         local point = self:GetParent():GetOrigin()
@@ -79,7 +79,7 @@ end
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ultimate_thinker_lua:PlayEffects()
+function modifier_wisp_ultimate_thinker:PlayEffects()
 	-- Get Resources
 	local particle_cast = "particles/econ/items/earthshaker/earthshaker_totem_ti6/earthshaker_totem_ti6_cast_glyph.vpcf"
 	local sound_cast = "Hero_Wisp.TeleportOut"
@@ -100,7 +100,7 @@ function modifier_wisp_ultimate_thinker_lua:PlayEffects()
     )
 end
 
-function modifier_wisp_ultimate_thinker_lua:PlayEffects2()
+function modifier_wisp_ultimate_thinker:PlayEffects2()
     -- Get Resources
     local sound_cast = "Ability.LightStrikeArray"
     

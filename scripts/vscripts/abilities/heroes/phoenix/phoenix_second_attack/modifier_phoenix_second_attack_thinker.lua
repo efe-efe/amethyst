@@ -14,7 +14,7 @@ function modifier_phoenix_second_attack_thinker:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
-        self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")
+        self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")/100
         
         local caster = self:GetCaster()
 

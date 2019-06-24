@@ -16,14 +16,11 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_ultimate:OnSpellStart()
-	-- get references
-	local soul_per_line = self:GetSpecialValueFor("requiem_soul_conversion")
-
 	-- get number of souls
 	local lines = 6
 	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )
 	if modifier~=nil then
-		lines = lines + math.floor(modifier:GetStackCount() / soul_per_line)  * 3
+		lines = lines + modifier:GetStackCount() * 3
 		modifier:Destroy()
 	end
 
@@ -35,17 +32,16 @@ end
 --------------------------------------------------------------------------------
 -- Helper
 function nevermore_ultimate:Explode( lines )
-	-- get references
-	self.damage = 5--self:GetAbilityDamage()
-	self.duration = self:GetSpecialValueFor("requiem_slow_duration")
+	self.duration = self:GetSpecialValueFor("slow_duration")
+	self.damage = self:GetSpecialValueFor("damage_per_soul")
 
 	-- get projectile
 	local projectile_name = "particles/mod_units/heroes/hero_nevermore/nevermore_base_attack.vpcf"
-	local line_length = self:GetSpecialValueFor("requiem_radius")
-	local width_start = self:GetSpecialValueFor("requiem_line_width_start")
-	local width_end = self:GetSpecialValueFor("requiem_line_width_end")
-	local line_speed = self:GetSpecialValueFor("requiem_line_speed")
-
+	local line_length = self:GetSpecialValueFor("radius")
+	local width_start = self:GetSpecialValueFor("line_width_start")
+	local width_end = self:GetSpecialValueFor("line_width_end")
+	local line_speed = self:GetSpecialValueFor("line_speed")
+	
 	-- create linear projectile
 	local initial_angle_deg = self:GetCaster():GetAnglesAsVector().y
 	local delta_angle = 360/lines

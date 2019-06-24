@@ -27,6 +27,7 @@ function modifier_phoenix_second_attack_buff:OnCreated()
 		self:SetStackCount(1)
 		self:StartIntervalThink( 1.0 )
 		self:OnIntervalThink()
+		self:PlayEffects(self:GetParent())
 	end
 end
 
@@ -43,10 +44,40 @@ function modifier_phoenix_second_attack_buff:OnRefresh()
 	end
 end
 
+--------------------------------------------------------------------------------
+-- Destroyer
+function modifier_phoenix_second_attack_buff:OnDestroy()
+	if IsServer() then
+		self:StopEffects()
+	end
+end
+
+
 -- On Think
 --------------------------------------------------------------------------------
 function modifier_phoenix_second_attack_buff:OnIntervalThink()
 	if IsServer() then
-		self:GetParent():Heal(self.heal_per_second +  2 * self:GetStackCount(), self:GetCaster())
+		self:GetParent():Heal(self.heal_per_second + 1 * self:GetStackCount() - 1, self:GetCaster())
 	end
+end
+
+function modifier_phoenix_second_attack_buff:PlayEffects( hTarget )
+	-- get resources
+	local particle_cast = "particles/units/heroes/hero_warlock/warlock_shadow_word_buff.vpcf"
+
+	-- create particle
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	ParticleManager:SetParticleControl( self.effect_cast, 0, hTarget:GetOrigin() )
+end
+
+
+function modifier_phoenix_second_attack_buff:StopEffects( )
+	ParticleManager:DestroyParticle( self.effect_cast, false )
+	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+end
+
+--------------------------------------------------------------------------------
+--Graphics
+function modifier_phoenix_second_attack_buff:GetTexture()
+	return "modifier_phoenix_second_attack"
 end

@@ -6,7 +6,7 @@ LinkLuaModifier( "modifier_wisp_ex_ultimate", "abilities/heroes/wisp/wisp_ex_ult
 function wisp_ex_ultimate:OnSpellStart()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
-    local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link_lua", caster )
+    local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link", caster )
 
     caster:AddNewModifier(
         caster, -- player source

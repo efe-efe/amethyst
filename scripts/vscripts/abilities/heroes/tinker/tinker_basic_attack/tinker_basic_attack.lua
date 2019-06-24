@@ -30,6 +30,9 @@ function tinker_basic_attack:OnEndPseudoCastPoint()
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
+	-- Extra data
+	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
+	
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
 	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, -80 )):Normalized()
@@ -82,9 +85,9 @@ function tinker_basic_attack:OnEndPseudoCastPoint()
 			)
 
 			-- Reduce the cd of the special attack by 1
-			local special_attack = caster:FindAbilityByName("tinker_special_attack_lua")
+			local special_attack = caster:FindAbilityByName("tinker_special_attack")
 			local special_attack_cd = special_attack:GetCooldownTimeRemaining()
-			local new_cd = special_attack_cd - 1.0
+			local new_cd = special_attack_cd - cooldown_reduction
 
 			if (new_cd) < 0 then 
 				special_attack:EndCooldown()

@@ -1,11 +1,6 @@
 phoenix_basic_attack = class({})
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
-
---------------------------------------------------------------------------------
---Passive Modifier
-function phoenix_basic_attack:GetIntrinsicModifierName()
-	return "modifier_phoenix_basic_attack"
-end
+LinkLuaModifier( "modifier_phoenix_basic_attack", "abilities/heroes/phoenix/phoenix_basic_attack/modifier_phoenix_basic_attack", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -33,6 +28,9 @@ function phoenix_basic_attack:OnEndPseudoCastPoint()
 
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
+
+	-- Extra data
+	local duration = 3.0--self:GetSpecialValueFor("duration")
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
@@ -81,6 +79,13 @@ function phoenix_basic_attack:OnEndPseudoCastPoint()
 				false, -- bool bUseProjectile
 				false, -- bool bFakeAttack
 				true -- bool bNeverMiss
+			)
+
+			unit:AddNewModifier(
+				_self.Source,
+				self,
+				"modifier_phoenix_basic_attack",
+				{ duration = duration }
 			)
 
 			self:PlayEffects_b(_self:GetPosition())

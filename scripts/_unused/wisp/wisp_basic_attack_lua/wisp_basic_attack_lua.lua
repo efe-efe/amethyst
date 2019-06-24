@@ -1,9 +1,9 @@
-wisp_basic_attack_lua = class ({})
-LinkLuaModifier( "modifier_wisp_basic_attack_lua", "abilities/heroes/wisp/wisp_basic_attack_lua/modifier_wisp_basic_attack_lua", LUA_MODIFIER_MOTION_NONE )
+wisp_basic_attack = class ({})
+LinkLuaModifier( "modifier_wisp_basic_attack", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_basic_attack_lua:OnSpellStart()
+function wisp_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -68,7 +68,7 @@ function wisp_basic_attack_lua:OnSpellStart()
 			if guardian_essence ~= nil then
 				local new_duration = guardian_essence:GetRemainingTime() + modifier_duration_bonus
 				guardian_essence:SetDuration(new_duration, true)
-				modifier_attack_bonus = caster:AddNewModifier(caster, ability , "modifier_wisp_basic_attack_lua", {})
+				modifier_attack_bonus = caster:AddNewModifier(caster, ability , "modifier_wisp_basic_attack", {})
 			end
 			
 			-- perform the actual attack
@@ -108,7 +108,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function wisp_basic_attack_lua:PlayEffects_a()
+function wisp_basic_attack:PlayEffects_a()
 	-- Get Resources
 	local sound_cast = "Hero_Wisp.Attack"
 
@@ -117,7 +117,7 @@ function wisp_basic_attack_lua:PlayEffects_a()
 end
 
 -- On hit wall 
-function wisp_basic_attack_lua:PlayEffects_b( pos )
+function wisp_basic_attack:PlayEffects_b( pos )
 	local caster = self:GetCaster()
 	
 	-- Cast Sound
@@ -135,7 +135,7 @@ function wisp_basic_attack_lua:PlayEffects_b( pos )
 end
 
 -- Add mana on attack modifier. Only first time upgraded
-function wisp_basic_attack_lua:OnUpgrade()
+function wisp_basic_attack:OnUpgrade()
 	if self:GetLevel()==1 then
 		local caster = self:GetCaster()
 		-- Gain mana

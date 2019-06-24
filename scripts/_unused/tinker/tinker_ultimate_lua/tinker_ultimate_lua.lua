@@ -1,33 +1,33 @@
-tinker_ultimate_lua = class({})
-LinkLuaModifier( "modifier_tinker_ultimate_lua", "abilities/heroes/tinker/tinker_ultimate_lua/modifier_tinker_ultimate_lua", LUA_MODIFIER_MOTION_NONE )
+tinker_ultimate = class({})
+LinkLuaModifier( "modifier_tinker_ultimate", "abilities/heroes/tinker/tinker_ultimate/modifier_tinker_ultimate", LUA_MODIFIER_MOTION_NONE )
 
-function tinker_ultimate_lua:OnAbilityPhaseStart()
+function tinker_ultimate:OnAbilityPhaseStart()
 	-- play effects
 	local sound_cast = "tinker_tink_laugh_04"
 	EmitGlobalSound( sound_cast )
 	return true -- if success
 end
 
-function tinker_ultimate_lua:OnAbilityPhaseInterrupted()	
+function tinker_ultimate:OnAbilityPhaseInterrupted()	
     -- stop effects 
 	local sound_cast = "tinker_tink_happy_01"
 	StopGlobalSound( sound_cast )
 	return true -- if success
 end
 
-function tinker_ultimate_lua:OnSpellStart()
+function tinker_ultimate:OnSpellStart()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
 
     caster:AddNewModifier(
         caster,
         self,
-        "modifier_tinker_ultimate_lua",
+        "modifier_tinker_ultimate",
         { duration = duration }
     )
 
     caster:SwapAbilities( 
-        "tinker_special_attack_lua",
+        "tinker_special_attack",
         "tinker_ultimate_special_attack_lua",
         false,
         true
@@ -38,7 +38,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Effects
-function tinker_ultimate_lua:PlayEffects()
+function tinker_ultimate:PlayEffects()
 	-- Get Resources
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_rearm.vpcf"
 	local sound_cast = "Hero_Tinker.RearmStart"

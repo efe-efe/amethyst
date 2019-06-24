@@ -173,18 +173,19 @@ function GameMode:OnEntityKilled( keys )
                         end
 
                         for _,player in pairs(it_team.players) do
-                            local heroe = player:GetAssignedHero()
-                            heroe:Kill(nil, heroe)	
+                            local hero = player:GetAssignedHero()
+                            hero:Kill(nil, hero)	
                         end
                         
                         it_team.alive_heroes = 0
                         it_team.looser = false
 
                         for _,player in pairs(it_team.players) do
-                            local heroe = player:GetAssignedHero()
-                            heroe:SetRespawnsDisabled(false)
-                            heroe:RespawnHero(false, false)
-                            heroe:SetRespawnsDisabled(true)
+                            local hero = player:GetAssignedHero()
+                            hero:SetRespawnsDisabled(false)
+                            hero:RespawnHero(false, false)
+                            hero:SetRespawnsDisabled(true)
+                            hero:Heal(hero:GetMaxHealth(), hero)
                         end
                     end
                 end)

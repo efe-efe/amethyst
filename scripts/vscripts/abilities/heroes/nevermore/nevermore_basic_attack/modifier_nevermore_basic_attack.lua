@@ -35,6 +35,7 @@ function modifier_nevermore_basic_attack:OnAttackLanded( params )
 	if IsServer() then
 		if params.attacker~=self:GetParent() then return end
 		if params.attacker:GetTeamNumber()==params.target:GetTeamNumber() then return end
+		if not params.target:IsRealHero() then return end
 
 	    self:GetParent():AddNewModifier(
             self:GetParent(),

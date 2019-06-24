@@ -8,14 +8,15 @@ function nevermore_mobility:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local point = self:GetCursorPosition()
+	local damage = self:GetAbilityDamage()
     local max_range = self:GetSpecialValueFor("max_range")
     local min_range = max_range - 400
-	local damage = self:GetSpecialValueFor( "damage" )
-    local soul_duration = self:GetSpecialValueFor( "soul_duration" )
-    local slow_duration = self:GetSpecialValueFor( "slow_duration" )
-    local mana_gain = self:GetSpecialValueFor( "mana_gain" )
+    local slow_duration = self:GetSpecialValueFor("slow_duration")
+    local mana_gain = self:GetSpecialValueFor("mana_gain")/100
+    
     local speed = 1800
     local direction = (point - origin):Normalized()
+	local basic_attack = caster:FindAbilityByName("nevermore_basic_attack")
 
     -- determine target position
     local difference = (point - origin):Length2D()
@@ -65,7 +66,7 @@ function nevermore_mobility:OnSpellStart()
         fExpireTime = 8.0,
         vVelocity = projectile_direction * projectile_speed,
         UnitBehavior = PROJECTILES_NOTHING,
-        bMultipleHits = true,
+        bMultipleHits = false,
         bIgnoreSource = true,
         TreeBehavior = PROJECTILES_NOTHING,
         bCutTrees = true,
@@ -103,20 +104,22 @@ function nevermore_mobility:OnSpellStart()
             }
 
             ApplyDamage( damage_table )
-            
-            _self.Source:AddNewModifier(
-                _self.Source,
-                _self.Source:FindAbilityByName("nevermore_basic_attack"),
-                "modifier_nevermore_souls",
-                { duration = soul_duration }
-            )
-            
-            _self.Source:AddNewModifier(
-                _self.Source,
-                _self.Source:FindAbilityByName("nevermore_basic_attack"),
-                "modifier_nevermore_souls",
-                { duration = soul_duration }
-            )
+
+            if unit:IsRealHero() then 
+                _self.Source:AddNewModifier(
+                    _self.Source,
+                    basic_attack,
+                    "modifier_nevermore_souls",
+                    { duration = basic_attack:GetSpecialValueFor("duration") }
+                )
+                
+                _self.Source:AddNewModifier(
+                    _self.Source,
+                    basic_attack,
+                    "modifier_nevermore_souls",
+                    { duration = basic_attack:GetSpecialValueFor("duration") }
+                )
+            end
 
             -- Add modifier
             unit:AddNewModifier(

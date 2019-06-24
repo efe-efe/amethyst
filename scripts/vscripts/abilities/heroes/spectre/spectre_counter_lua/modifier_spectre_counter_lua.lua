@@ -54,7 +54,7 @@ function modifier_spectre_counter_lua:GetModifierIncomingDamage_Percentage( para
 		local attacker = params.attacker
 
         if params.damage_type ~= DAMAGE_TYPE_PURE then
-			local modifier = parent:FindModifierByName("modifier_spectre_basic_attack_lua")
+			local modifier = parent:FindModifierByName("modifier_spectre_basic_attack")
 			
 			modifier:IncrementStackCount()
 			modifier:StartIntervalThink(-1)

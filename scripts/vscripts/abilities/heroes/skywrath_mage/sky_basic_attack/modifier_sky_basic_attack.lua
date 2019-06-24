@@ -37,7 +37,7 @@ function modifier_sky_basic_attack:OnAbilityFullyCast( params )
 		if params.unit ~= self:GetParent() then
 			return
         end
-        if params.ability == self:GetParent():FindAbilityByName("skywrath_mage_mobility_lua") or
+        if params.ability == self:GetParent():FindAbilityByName("sky_mobility") or
             params.ability == self:GetParent():FindAbilityByName("sky_ex_basic_attack")
         then
             self:IncrementStackCount()

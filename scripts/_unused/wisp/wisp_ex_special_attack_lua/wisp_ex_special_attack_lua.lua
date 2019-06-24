@@ -27,7 +27,7 @@ function wisp_ex_special_attack:OnSpellStart()
     )
 
     -- Put CD on the alternate version of the ability
-    local alternate_version = caster:FindAbilityByName("wisp_special_attack_lua")
+    local alternate_version = caster:FindAbilityByName("wisp_special_attack")
 	alternate_version:StartCooldown(self:GetCooldown(0))
     self:PlayEffects()
 end
