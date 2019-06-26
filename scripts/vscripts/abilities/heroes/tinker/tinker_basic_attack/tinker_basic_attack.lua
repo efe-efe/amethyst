@@ -50,7 +50,7 @@ function tinker_basic_attack:OnEndPseudoCastPoint()
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -95,8 +95,6 @@ function tinker_basic_attack:OnEndPseudoCastPoint()
 				special_attack:EndCooldown()
 				special_attack:StartCooldown(new_cd)
 			end
-
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)

@@ -129,7 +129,6 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 			else
 				self:PlayEffects_e(unit)
 			end
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			if next(_self.rehit) == nil then

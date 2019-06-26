@@ -7,7 +7,7 @@ LinkLuaModifier( "modifier_phoenix_ex_ultimate_visuals", "abilities/heroes/phoen
 function phoenix_ex_ultimate:OnSpellStart()
     --load data
     local caster = self:GetCaster()
-    local duration = 4.0--self:GetSpecialValueFor("duration")
+    local duration = self:GetSpecialValueFor("duration")
     
     caster:AddNewModifier(
         caster,

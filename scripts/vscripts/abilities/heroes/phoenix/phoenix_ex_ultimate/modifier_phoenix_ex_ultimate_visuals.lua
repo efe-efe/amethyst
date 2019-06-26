@@ -13,7 +13,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_phoenix_ex_ultimate_visuals:OnCreated()
-    self.range = 2000--self:GetAbility():GetSpecialValueFor("range")
+    self.range = 1300   --self:GetAbility():GetSpecialValueFor("range")
 
     if IsServer() then
         local parent = self:GetParent()

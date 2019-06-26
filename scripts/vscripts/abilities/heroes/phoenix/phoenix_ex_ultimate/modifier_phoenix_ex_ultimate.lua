@@ -2,7 +2,7 @@ modifier_phoenix_ex_ultimate = class({})
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_phoenix_ex_ultimate:IsDebuff()
-	return true
+	return false
 end
 
 function modifier_phoenix_ex_ultimate:IsStunDebuff()
@@ -16,14 +16,16 @@ end
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_phoenix_ex_ultimate:OnCreated()
-    self.range = 2000--self:GetAbility():GetSpecialValueFor("range")
-    self.movement_speed = 560
-    self.radius = 150
-    self.heal_per_think = 3
-    self.damage_per_think = 3
+    self.range = self:GetAbility():GetSpecialValueFor("range")
+    self.movement_speed = self:GetAbility():GetSpecialValueFor("movement_speed")
+    self.radius = 120
+    self.heal_per_think = self:GetAbility():GetSpecialValueFor("heal_per_think")
+    self.self_heal_per_think = self:GetAbility():GetSpecialValueFor("self_heal_per_think")
+    self.damage_per_think = self:GetAbility():GetSpecialValueFor("damage_per_think")
+    local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
 
     if IsServer() then
-        self:StartIntervalThink(0.2)
+        self:StartIntervalThink(think_interval)
     end
 end
 
@@ -49,7 +51,11 @@ function modifier_phoenix_ex_ultimate:OnIntervalThink()
 
     for _,unit in pairs(units) do
         if unit:GetTeamNumber() == self:GetCaster():GetTeamNumber() then
-            unit:Heal(self.heal_per_think, unit)
+            if unit == self:GetCaster() then
+                unit:Heal(self.self_heal_per_think, unit)
+            else
+                unit:Heal(self.heal_per_think, unit)
+            end
         else
             local damage = {
                 victim = unit,
@@ -80,6 +86,7 @@ end
 function modifier_phoenix_ex_ultimate:DeclareFunctions()
 	local funcs = {
         MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
+        MODIFIER_PROPERTY_TURN_RATE_PERCENTAGE,
 	}
 
 	return funcs
@@ -87,4 +94,8 @@ end
 
 function modifier_phoenix_ex_ultimate:GetModifierMoveSpeed_Absolute()
     return self.movement_speed
+end
+
+function modifier_phoenix_ex_ultimate:GetModifierTurnRate_Percentage()
+    return -300
 end

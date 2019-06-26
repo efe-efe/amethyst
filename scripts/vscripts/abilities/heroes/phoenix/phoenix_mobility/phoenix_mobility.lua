@@ -10,9 +10,9 @@ function phoenix_mobility:OnSpellStart()
 	local forwardDir = caster:GetForwardVector()
 	local rightDir = caster:GetRightVector()
 
-	local dashLength	= 1700
+	local range	= self:GetSpecialValueFor("range")
 	local dashWidth		= 500
-	local ellipseCenter	= origin + forwardDir * ( dashLength / 2 )
+	local ellipseCenter	= origin + forwardDir * ( range / 2 )
 
 	local startTime = GameRules:GetGameTime()
 
@@ -44,7 +44,7 @@ function phoenix_mobility:OnSpellStart()
 		-- Calculate potision
 		local theta = -2 * math.pi * progress
 		local x =  math.sin( theta ) * dashWidth * 0.5
-		local y = -math.cos( theta ) * dashLength * 0.5
+		local y = -math.cos( theta ) * range * 0.5
 
 		local pos = ellipseCenter + rightDir * x + forwardDir * y
 		local yaw = angles.y + 90 + progress * -360  

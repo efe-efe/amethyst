@@ -478,6 +478,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_ultimate"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -689,7 +690,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.9"
+		"AbilityCastPoint"				"0.7"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -701,7 +702,7 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"27"
+		"AbilityDamage"					"23"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -770,7 +771,7 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"10"
+		"AbilityDamage"					"15"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -1092,6 +1093,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_haunt"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -1390,11 +1392,6 @@
 				"var_type"					"FIELD_INTEGER"
 				"max_charges"				"3"
 			}
-			"07"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
-			}
 		}
 	}
 
@@ -1642,6 +1639,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"skywrath_mage_mystic_flare"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -2347,6 +2345,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"sniper_take_aim"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"AOERadius"						"%hitbox"
@@ -2619,7 +2618,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_per_stack"			"6"
+				"damage_per_stack"			"5"
 			}
 			"05"
 			{
@@ -2866,6 +2865,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phantom_assassin_coup_de_grace"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"MaxLevel"						"1"
 		
@@ -2913,6 +2913,9 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phantom_ex_ultimate"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"MaxLevel"						"1"
 
 		// Time		
@@ -2921,7 +2924,11 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"				"30"
+		"AbilityDamage"					"30"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -3386,6 +3393,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"axe_culling_blade"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -3590,7 +3598,13 @@
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityDamage"				"30"
-
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_techies.vsndevts"
+		}
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
@@ -3738,7 +3752,6 @@
 		// Ability Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.3"
-		"AbilityCastRange"				"1500"
 
 		// Ability Resource
 		//-------------------------------------------------------------------------------------------------------------
@@ -3756,7 +3769,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1600"
+				"projectile_range"			"1300"
 			}
 			"02"
 			{
@@ -3935,6 +3948,7 @@
 
 		// Ability General
 		//-------------------------------------------------------------------------------------------------------------
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
@@ -4087,6 +4101,16 @@
 				"var_type"					"FIELD_INTEGER"
 				"quick_cast"				"1"
 			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hp_per_second"				"2"
+			}
+			"07"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"2.0"
+			}
 		}
 	}
 
@@ -4155,28 +4179,90 @@
 			}
 			"06"
 			{
-				"var_type"					"FIELD_FLOAT"
-				"heal_per_second"			"2"
+				"var_type"					"FIELD_INTEGER"
+				"hp_per_second"				"2"
 			}
 			"07"
 			{
-				"var_type"					"FIELD_FLOAT"
-				"damage_per_second"			"2"
+				"var_type"					"FIELD_INTEGER"
+				"attack_speed_per_stack"	"30"
 			}
 			"08"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"duration"					"5.0"
+				"duration"					"4.0"
 			}
 			"09"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"max_charges"				"4"
+				"max_charges"				"3"
 			}
 			"10"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"replenish_time"			"14.0"
+			}
+			"11"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"stack_bonus"				"1"
+			}
+		}
+	}
+
+	"phoenix_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phoenix/phoenix_counter/phoenix_counter"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phoenix_counter"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_5"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.2"
+		"AnimationPlaybackRate"			"1.5"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"9.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+
+		// Damage
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage"					"12"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"radius"					"250"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"2.5"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"extra_radius"				"120"
 			}
 		}
 	}
@@ -4188,7 +4274,7 @@
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"phoenix_icarus_dive"
+		"AbilityTextureName"			"phoenix_special_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"MaxLevel"						"1"
 		
@@ -4212,66 +4298,33 @@
 		{
 			"01"
 			{
+				"var_type"				"FIELD_FLOAT"
+				"thinker_duration"		"4.0"
+			}
+			"02"
+			{
 				"var_type"				"FIELD_INTEGER"
-				"range"					"800"
+				"radius"				"300"
 			}
-			"02"
+			"03"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
+				"var_type"				"FIELD_INTEGER"
+				"damage_per_think"		"2"
 			}
-		}
-	}
-
-	"phoenix_counter"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phoenix/phoenix_counter/phoenix_counter"
-		
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"phoenix_counter"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_5"
-		"MaxLevel"						"1"
-
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.1"
-		"AnimationPlaybackRate"			"1.5"
-
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"9.0"
-
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
-
-		// Precache
-		//-------------------------------------------------------------------------------------------------------------
-		"precache"
-		{
-		}
-
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
+			"04"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"radius"					"250"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"duration"					"5.0"
+				"var_type"				"FIELD_INTEGER"
+				"heal_per_think"		"1"
 			}
 			"05"
 			{
-				"var_type"					"FIELD_FLOAT"
-				"armor_duration"			"6.0"
+				"var_type"				"FIELD_FLOAT"
+				"think_interval"		"0.5"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
 			}
 		}
 	}
@@ -4308,9 +4361,24 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"range"					"800"
+				"range"					"1700"
 			}
 			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage_per_second"		"2"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"fire_duration"			"5.0"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"fire_radius"			"250"
+			}
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"quick_cast"				"1"
@@ -4351,6 +4419,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phoenix_supernova"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_DONT_RESUME_ATTACK"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -4378,41 +4447,38 @@
 			"01"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"aura_radius"		"1300"
+				"radius"			"500"
 			}
 			"02"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"damage_per_sec"	"60 90 120"
+				"damage_per_think"	"7"
 			}
 			
 			"03"
 			{
 				"var_type"			"FIELD_FLOAT"
-				"stun_duration"		"2.0 2.5 3.0"
-				"LinkedSpecialBonus"	"special_bonus_unique_phoenix_2"
+				"root_duration"		"5.0"
 			}
 			"04"
 			{
-				"var_type"			"FIELD_INTEGER"
-				"max_hero_attacks"	"5 8 11"
-				"LinkedSpecialBonus"	"special_bonus_unique_phoenix_1"
+				"var_type"			"FIELD_FLOAT"
+				"duration"			"4.0"
 			}
 			"05"
 			{
-				"var_type"			"FIELD_INTEGER"
-				"max_hero_attacks_scepter"	"7 10 13"
-				"LinkedSpecialBonus"	"special_bonus_unique_phoenix_1"
+				"var_type"			"FIELD_FLOAT"
+				"think_interval"	"0.5"
 			}
 			"06"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"tooltip_duration"	"6"
+				"mana_gain"			"50"
 			}
 			"07"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"cast_range_tooltip_scepter"	"500"
+				"heal"				"100"
 			}
 		}
 	}
@@ -4449,7 +4515,166 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
 		{
+			"01"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"duration"				"3.0"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"range"					"1300"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"movement_speed"		"500"
+			}
+			"04"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"heal_per_think"		"2"
+			}
+			"05"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"self_heal_per_think"	"1"
+			}
+			"06"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"damage_per_think"		"2"
+			}
+			"07"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"think_interval"		"0.2"
+			}
+		}
+	}
 
+	"phoenix_ex_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phoenix/phoenix_ex_counter/phoenix_ex_counter"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phoenix_ex_counter"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_5"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+		"AnimationPlaybackRate"			"1.5"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"10.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"max_radius"				"500"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"instances"					"9"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_per_think"			"4"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"root_duration_per_think"	"0.3"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"think_interval"			"0.5"
+			}
+		}
+	}
+
+	"phoenix_ex_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phoenix/phoenix_ex_special_attack/phoenix_ex_special_attack"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"phoenix_ex_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AOERadius"						"%hitbox"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"MaxLevel"						"1"
+
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.4"
+		"AnimationPlaybackRate" 		"0.7"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"8.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"25"
+
+		// Damage
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityDamage"					"40"
+
+		// Precache
+		"precache"
+		{
+			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_guardian.vpcf"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{   //All the SpecialValues are needed but can vary
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_speed"			"2150"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"projectile_range"			"1500"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"hitbox"					"80"
+			}
 		}
 	}
 
@@ -4529,7 +4754,7 @@
 			"08"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"6.0"
+				"duration"					"7.0"
 			}
 		}
 	}
@@ -4639,7 +4864,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"armor"						"5"
+				"armor"						"7"
 			}
 			"02"
 			{
@@ -4809,6 +5034,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"nevermore_requiem"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"MaxLevel"						"1"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"

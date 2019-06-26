@@ -21,8 +21,10 @@ end
 --------------------------------------------------------------------------------
 -- Initialization
 function modifier_phoenix_second_attack_debuff:OnCreated()
-    self.damage_per_second = self:GetAbility():GetSpecialValueFor( "damage_per_second" )
-
+    self.stack_bonus = self:GetAbility():GetSpecialValueFor( "stack_bonus" )
+	self.attack_speed_per_stack = -self:GetAbility():GetSpecialValueFor("attack_speed_per_stack")
+	self.hp_per_second = self:GetAbility():GetSpecialValueFor( "hp_per_second" )
+	
 	if IsServer() then
 		self:SetStackCount(1)
 		self:StartIntervalThink( 1.0 )
@@ -35,7 +37,9 @@ end
 -- Initialization
 function modifier_phoenix_second_attack_debuff:OnRefresh()
 
-    self.damage_per_second = self:GetAbility():GetSpecialValueFor( "damage_per_second" )
+    self.hp_per_second = self:GetAbility():GetSpecialValueFor( "hp_per_second" )
+    self.stack_bonus = self:GetAbility():GetSpecialValueFor( "stack_bonus" )
+	self.attack_speed_per_stack = -self:GetAbility():GetSpecialValueFor("attack_speed_per_stack")
 	
 	if IsServer() then
 		self:IncrementStackCount()
@@ -67,7 +71,7 @@ function modifier_phoenix_second_attack_debuff:OnIntervalThink()
 		local damage = {
 			victim = self:GetParent(),
 			attacker = self:GetCaster(),
-			damage = self.damage_per_second + 1 * self:GetStackCount() - 1,
+			damage = self.hp_per_second + self.stack_bonus * self:GetStackCount() - 1,
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 
@@ -92,6 +96,18 @@ function modifier_phoenix_second_attack_debuff:StopEffects( )
 	end
 end
 
+--------------------------------------------------------------------------------
+function modifier_phoenix_second_attack_debuff:DeclareFunctions()
+	local funcs = {
+		MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT,
+	}
+	return funcs
+end
+
+-- Modifier Effects
+function modifier_phoenix_second_attack_debuff:GetModifierAttackSpeedBonus_Constant()
+	return self.attack_speed_per_stack * self:GetStackCount()
+end
 
 --------------------------------------------------------------------------------
 --Graphics

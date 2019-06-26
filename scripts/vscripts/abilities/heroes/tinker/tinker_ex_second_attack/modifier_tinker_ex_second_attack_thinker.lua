@@ -81,7 +81,7 @@ function modifier_tinker_ex_second_attack_thinker:OnIntervalThink()
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = self.projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -112,7 +112,6 @@ function modifier_tinker_ex_second_attack_thinker:OnIntervalThink()
 			}
 
 			ApplyDamage( damage )
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects(pos)

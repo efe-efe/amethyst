@@ -4,13 +4,15 @@ LinkLuaModifier( "modifier_phoenix_ultimate", "abilities/heroes/phoenix/phoenix_
 function phoenix_ultimate:OnSpellStart()
     local caster = self:GetCaster()
     local base_health = caster:GetHealth()
+    local duration = self:GetSpecialValueFor("duration")
 
+    SafeDestroyModifier("modifier_phoenix_mobility_movement", caster, caster)
     caster:AddNewModifier(
         caster,
         self,
         "modifier_phoenix_ultimate",
         { 
-            duration = 4.0,
+            duration = duration,
             base_health = base_health
         }
     )

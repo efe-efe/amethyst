@@ -33,7 +33,7 @@ function sniper_ex_mobility:OnSpellStart()
         Source = caster,
         fExpireTime = 8.0,
         vVelocity = projectile_direction * projectile_speed,
-        UnitBehavior = PROJECTILES_NOTHING,
+        UnitBehavior = PROJECTILES_DESTROY,
         bMultipleHits = true,
         bIgnoreSource = true,
         TreeBehavior = PROJECTILES_NOTHING,
@@ -64,20 +64,6 @@ function sniper_ex_mobility:OnSpellStart()
                 damage_type = DAMAGE_TYPE_MAGICAL,
             }
             ApplyDamage( damage )
-            self:PlayEffects_b(_self:GetPosition())
-
-            -- Effect thinker
-            CreateModifierThinker(
-                _self.Source, --hCaster
-                self, --hAbility
-                "modifier_sniper_ex_mobility_thinker", --modifierName
-                { duration = duration }, --paramTable
-                _self.actualPosition, --vOrigin
-                _self.Source:GetTeamNumber(), --nTeamNumber
-                false --bPhantomBlocker
-            )
-
-            _self.Destroy()
         end,
         OnFinish = function(_self, pos)
             -- Effect thinker

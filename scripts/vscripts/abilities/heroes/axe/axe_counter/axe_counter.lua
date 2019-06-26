@@ -16,7 +16,6 @@ function axe_counter:OnSpellStart()
     )
 
     self:PlayEffects()
-
 end
 
 function axe_counter:PlayEffects()

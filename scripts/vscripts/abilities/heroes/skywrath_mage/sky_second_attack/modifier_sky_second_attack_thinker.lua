@@ -80,7 +80,7 @@ function modifier_sky_second_attack_thinker:PlayEffects()
     EmitSoundOn( sound_cast, caster )
     
     -- Create particles
-    local particle_cast_a = "particles/econ/events/darkmoon_2017/darkmoon_calldown_marker_ring.vpcf"
+    local particle_cast_a = "particles/econ/generic/generic_aoe_explosion_sphere_1/generic_aoe_explosion_sphere_1.vpcf"
 	local particle_cast_b = "particles/econ/items/effigies/status_fx_effigies/base_statue_destruction_gold_lvl2_e.vpcf"
 
     local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, nil )

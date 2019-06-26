@@ -1,14 +1,14 @@
-wisp_second_attack = class ({})
+phoenix_ex_special_attack = class({})
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_second_attack:OnSpellStart()
+function phoenix_ex_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
 
 	-- load data
-	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_guardian.vpcf"
+	local projectile_name = "particles/mod_units/heroes/hero_phoenix/phoenix_fire_spirit_launch.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
@@ -16,18 +16,17 @@ function wisp_second_attack:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	local damage = self:GetAbilityDamage()
-	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
 	
 	local projectile = {
 		EffectName = projectile_name,
-		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
+		vSpawnOrigin = origin + Vector(0, 0, 80),
 		fDistance = projectile_distance,
 		fStartRadius = projectile_start_radius,
 		fEndRadius = projectile_end_radius,
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
+		UnitBehavior = PROJECTILES_NOTHING,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -59,10 +58,9 @@ function wisp_second_attack:OnSpellStart()
 			}
 
 			ApplyDamage( damage )
-			
-			-- Give Mana
-			local mana_gain_final = caster:GetMaxMana() * mana_gain
-			caster:GiveMana(mana_gain_final)
+
+			self:PlayEffects_b(_self:GetPosition())
+			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)
@@ -71,39 +69,33 @@ function wisp_second_attack:OnSpellStart()
 
 	self:PlayEffects_a()
 	-- Cast projectile
-	Projectiles:CreateProjectile(projectile)
+    Projectiles:CreateProjectile(projectile)
+
+    -- Put CD on the alternate of the ability
+	local alternate_version = caster:FindAbilityByName("phoenix_special_attack")
+	alternate_version:StartCooldown(self:GetCooldown(0))
 end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function wisp_second_attack:PlayEffects_a()
+function phoenix_ex_special_attack:PlayEffects_a()
 	-- Create Sound
-	local sound_cast = "Hero_Wisp.TeleportOut"
-	EmitSoundOn( sound_cast, self:GetCaster()  )
-
-	-- Create Particles
-	local particle_cast_a = "particles/econ/items/wisp/wisp_relocate_marker_ti7_out_embers.vpcf"
-	local particle_cast_b = "particles/econ/items/wisp/wisp_guardian_explosion_ti7.vpcf"
-
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	local sound_cast = "Hero_Phoenix.Attack"
+	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
 
-function wisp_second_attack:PlayEffects_b( pos )
+function phoenix_ex_special_attack:PlayEffects_b( pos )
 	local caster = self:GetCaster()
 	
 	-- Create Sound
-	local sound_cast = "Hero_Wisp.Spirits.Target"
+	local sound_cast = "Hero_Phoenix.ProjectileImpact"
 	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
 
 	-- Create Particles
-	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_guardian_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+	local particle_cast = "particles/econ/items/bristleback/ti7_head_nasal_goo/bristleback_ti7_crimson_nasal_goo_impact_fire.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast, 1, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 

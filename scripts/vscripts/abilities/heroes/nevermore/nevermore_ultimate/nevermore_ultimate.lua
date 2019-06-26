@@ -26,7 +26,6 @@ function nevermore_ultimate:OnSpellStart()
 
 	-- explode
 	self:Explode( lines )
-
 end
 
 --------------------------------------------------------------------------------
@@ -45,7 +44,7 @@ function nevermore_ultimate:Explode( lines )
 	-- create linear projectile
 	local initial_angle_deg = self:GetCaster():GetAnglesAsVector().y
 	local delta_angle = 360/lines
-	for i=0,lines-1 do
+	for i=0, lines-1 do
 		-- Determine velocity
 		local facing_angle_deg = initial_angle_deg + delta_angle * i
 		if facing_angle_deg>360 then facing_angle_deg = facing_angle_deg - 360 end

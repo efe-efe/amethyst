@@ -74,7 +74,6 @@ function axe_basic_attack:OnEndPseudoCastPoint()
 			)
 			
 			self:PlayEffects_a(unit)
-			_self.Destroy()
 		end,
 	}
 

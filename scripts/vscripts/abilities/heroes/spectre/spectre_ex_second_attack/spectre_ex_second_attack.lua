@@ -30,7 +30,7 @@ function spectre_ex_second_attack:OnSpellStart()
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -79,14 +79,9 @@ function spectre_ex_second_attack:OnSpellStart()
 				"modifier_spectre_desolate_lua", 
 				{ duration = self.debuff_duration }
 			)
-			
-			-- Effects
-			self:PlayEffects(unit)
-
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
-			--self:PlayEffects(pos)
+			self:PlayEffects(pos)
 		end,
 	}
 
@@ -100,16 +95,17 @@ end
 
 
 --Impact
-function spectre_ex_second_attack:PlayEffects(hTarget)
+function spectre_ex_second_attack:PlayEffects(pos)
 	-- Get Resources
     local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
 
 	-- Create Sound
-	EmitSoundOn( sound_cast, hTarget )
+	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 

@@ -28,7 +28,6 @@ function phantom_ex_ultimate:OnSpellStart()
 
     -- Initialize variables
 	local offset = 100
-	local damage = self:GetSpecialValueFor("damage")
 
 	-- load data
     local projectile_name = ""
@@ -77,24 +76,15 @@ function phantom_ex_ultimate:OnSpellStart()
         fRehitDelay = 1.0,
         UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
         OnUnitHit = function(_self, unit) 
-            
-            -- Count targets
-            local counter = 0
-            for k, v in pairs(_self.rehit) do
-                counter = counter + 1
-            end
-
-            if counter > 0 then return end
-            
             local damage_table = {
                 victim = unit,
                 attacker = _self.Source,
                 damage = damage,
-                damage_type = DAMAGE_TYPE_MAGICAL,
+                damage_type = DAMAGE_TYPE_PHYSICAL,
             }
 
             ApplyDamage( damage_table )
-            
+
             -- Add modifier
             unit:AddNewModifier(
                 caster, -- player source
@@ -104,7 +94,6 @@ function phantom_ex_ultimate:OnSpellStart()
             )
 
             self:PlayEffects_c(unit)
-            _self.Destroy()
         end,
         OnFinish = function(_self, pos)
             self:PlayEffects_b(pos)

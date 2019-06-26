@@ -20,10 +20,12 @@ end
 function modifier_phoenix_ultimate:OnCreated( kv )
 	-- references
 	self.model = "models/heroes/phoenix/phoenix_egg.vmdl"
-	self.radius = 500--self:GetAbility():GetSpecialValueFor("radius")
-	self.damage_per_think = 7--self:GetAbility():GetSpecialValueFor("damage_per_think")
-	self.root_duration = 5.0 --self:GetAbility():GetSpecialValueFor("root_duration")
-	self.mana_gain = 0.25--self:GetAbility():GetSpecialValueFor("mana_gain")/100
+	self.radius = self:GetAbility():GetSpecialValueFor("radius")
+	self.damage_per_think = self:GetAbility():GetSpecialValueFor("damage_per_think")
+	self.root_duration = self:GetAbility():GetSpecialValueFor("root_duration")
+	self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")/100
+	self.heal = self:GetAbility():GetSpecialValueFor("heal")
+	local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
 
 	if IsServer() then
 		self.base_health = kv.base_health
@@ -35,7 +37,7 @@ function modifier_phoenix_ultimate:OnCreated( kv )
 		self:GetParent():Heal(self:GetParent():GetMaxHealth(), self:GetParent())
 
 		self:OnIntervalThink()
-		self:StartIntervalThink(0.5)
+		self:StartIntervalThink(think_interval)
 	end
 end
 
@@ -92,7 +94,7 @@ function modifier_phoenix_ultimate:OnDestroy( kv )
 				)
 		   end
 
-		   self:GetParent():SetHealth(self.base_health + 100)
+		   self:GetParent():SetHealth(self.base_health + self.heal)
 
 			-- Gives mana
 			local mana_gain_final = self:GetParent():GetMaxMana() * self.mana_gain
@@ -126,6 +128,7 @@ function modifier_phoenix_ultimate:CheckState()
 	local state = {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
+		[MODIFIER_STATE_NO_HEALTH_BAR] = true,
 	}
 
 	return state

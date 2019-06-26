@@ -30,7 +30,7 @@ function phoenix_basic_attack:OnEndPseudoCastPoint()
 	local attack_speed = ( 1 / attacks_per_second )
 
 	-- Extra data
-	local duration = 3.0--self:GetSpecialValueFor("duration")
+	local duration = self:GetSpecialValueFor("duration")
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()

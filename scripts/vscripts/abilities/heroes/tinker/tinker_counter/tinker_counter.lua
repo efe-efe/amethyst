@@ -206,15 +206,14 @@ function tinker_counter:OnEndPseudoCastPoint()
 		draw = false,
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
-		OnUnitHit = function(_self, unit) 
+		OnUnitHit = function(_self, unit)
 			-- Count targets
 			local counter = 0
 			for k, v in pairs(_self.rehit) do
 				counter = counter + 1
 			end
 
-			if counter > 0 then return end
-			
+			if counter > 0 and stacks <= 0 then return end
 			-- precache damage
 			local damage = {
 				victim = unit,
@@ -243,7 +242,7 @@ function tinker_counter:OnEndPseudoCastPoint()
 			self:Refract( _self.Source, targets, 1 )
 
 			self:PlayEffects_a(_self.Source, unit)
-			_self.Destroy()
+			_self:Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(_self.Source, pos)

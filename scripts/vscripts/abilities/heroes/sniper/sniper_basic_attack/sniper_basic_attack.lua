@@ -55,7 +55,7 @@ function sniper_basic_attack:OnEndPseudoCastPoint()
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -88,8 +88,6 @@ function sniper_basic_attack:OnEndPseudoCastPoint()
 				false, -- bool bFakeAttack
 				true -- bool bNeverMiss
 			)
-
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)

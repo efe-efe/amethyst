@@ -47,7 +47,7 @@ function spectre_second_attack:OnEndPseudoCastPoint()
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -70,25 +70,18 @@ function spectre_second_attack:OnEndPseudoCastPoint()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			-- Hit
-			--------------------
-			local final_damage = damage
-			
-			local damage = {
+			local damage_table = {
 				victim = unit,
 				attacker = caster,
-				damage = final_damage,
+				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
-			ApplyDamage( damage )
+			ApplyDamage( damage_table )
 
 			-- Give Mana
 			local mana_gain_final = caster:GetMaxMana() * mana_gain
 			caster:GiveMana(mana_gain_final)
-
-			self:PlayEffects_b(_self:GetPosition())
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)

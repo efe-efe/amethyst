@@ -461,8 +461,8 @@
 		"Ability4"						"phoenix_special_attack"
 		"Ability5"						"phoenix_ex_ultimate"
 		"Ability6"						"phoenix_ultimate"             // Q Spell	
-		"Ability7"						"spectre_ex_second_attack"             // Q Spell
-		"Ability8"						"nevermore_second_attack"             // Q Spell
+		"Ability7"						"phoenix_ex_counter"             // Q Spell
+		"Ability8"						"phoenix_ex_special_attack"             // Q Spell
 		"Ability9"						"phoenix_mobility"             // Q Spell
 		"Ability10"						"phoenix_mobility_stop"
 		

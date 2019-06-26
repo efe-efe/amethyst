@@ -3,7 +3,9 @@ LinkLuaModifier( "modifier_phoenix_special_attack_thinker", "abilities/heroes/ph
 LinkLuaModifier( "modifier_phoenix_special_attack_movement", "abilities/heroes/phoenix/phoenix_special_attack/modifier_phoenix_special_attack_movement", LUA_MODIFIER_MOTION_NONE )
 
 function phoenix_special_attack:OnSpellStart()
-    local caster = self:GetCaster()
+	local caster = self:GetCaster()
+	local thinker_duration = self:GetSpecialValueFor("thinker_duration")
+	local radius = self:GetSpecialValueFor("radius")
 	local dashDuration	= 0.9
 
 	local origin = caster:GetAbsOrigin()
@@ -11,9 +13,9 @@ function phoenix_special_attack:OnSpellStart()
 	local forwardDir = caster:GetForwardVector()
 	local rightDir = caster:GetRightVector()
 
-	local dashLength	= 600
-	local dashWidth		= 600
-	local ellipseCenter	= origin + forwardDir * ( dashLength / 2 )
+	local dashLength	= radius * 2
+	local dashWidth		= radius * 2
+	local ellipseCenter	= origin + forwardDir * radius
 
 	local startTime = GameRules:GetGameTime()
 
@@ -55,11 +57,16 @@ function phoenix_special_attack:OnSpellStart()
 		caster, --hCaster
 		self, --hAbility
 		"modifier_phoenix_special_attack_thinker", --modifierName
-		{ duration = 4.0, radius = dashWidth/2 }, --paramTable
+		{ duration = thinker_duration }, --paramTable
 		ellipseCenter, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
 	)
+	SafeDestroyModifier("modifier_phoenix_mobility_movement", caster, caster)
+
+	-- Put CD on the alternate of the ability
+	local alternate_version = caster:FindAbilityByName("phoenix_ex_special_attack")
+	alternate_version:StartCooldown(self:GetCooldown(0))
 end
 
 

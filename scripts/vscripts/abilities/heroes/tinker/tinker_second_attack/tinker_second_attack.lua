@@ -2,6 +2,7 @@
 tinker_second_attack = class({})
 LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_tinker_second_attack", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_tinker_second_attack_thinker", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
 
 function tinker_second_attack:GetAOERadius()
 	return self:GetSpecialValueFor( "radius" )
@@ -21,56 +22,26 @@ function tinker_second_attack:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point })
 end
 
-
 function tinker_second_attack:OnEndPseudoCastPoint()
 	local caster = self:GetCaster()
+	local direction = (self.point - caster:GetOrigin()):Normalized()
+	local duration = 0.8
 
-	-- load data
-	local damage = self:GetAbilityDamage()	
-	local targets = 3
-	local projectile_name = "particles/units/heroes/hero_tinker/tinker_missile.vpcf"
-	local projectile_speed = 1000--self:GetSpecialValueFor("speed")
-	
-	-- find enemies
-	local enemies = FindUnitsInRadius(
-		caster:GetTeamNumber(),	-- int, your team number
-		self.point,	-- point, center point
-		nil,	-- handle, cacheUnit. (not known)
-		self.radius,	-- float, radius. or use FIND_UNITS_EVERYWHERE
-		DOTA_UNIT_TARGET_TEAM_ENEMY,	-- int, team filter
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-		0,	-- int, flag filter
-		FIND_CLOSEST,	-- int, order filter
-		false	-- bool, can grow cache
+	CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_tinker_second_attack_thinker", --modifierName
+		{
+			duration = duration,
+			x = direction.x,
+			y = direction.y,
+			z = direction.z
+
+		}, --paramTable
+		caster:GetOrigin(), --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
 	)
-
-	-- create projectile for each enemy
-	local info = {
-		Source = caster,
-		-- Target = target,
-		Ability = self,
-		EffectName = projectile_name,
-		iMoveSpeed = projectile_speed,
-		bDodgeable = false,
-		flExpireTime = GameRules:GetGameTime() + 1.8, 
-		ExtraData = {
-			damage = damage,
-		}
-	}
-	for i=1,math.min(targets,#enemies) do
-		info.Target = enemies[i]
-		ProjectileManager:CreateTrackingProjectile( info )
-	end
-
-	-- effects
-	if #enemies<1 then
-		self:PlayEffects_b()
-	else
-		local sound_cast = "Hero_Tinker.Heat-Seeking_Missile"
-		EmitSoundOn( sound_cast, caster )
-	end
-	
-	self:PlayEffects()
 end
 
 --------------------------------------------------------------------------------
@@ -108,25 +79,13 @@ function tinker_second_attack:OnProjectileHit_ExtraData( target, location, extra
 		caster:GiveMana(mana_gain_final)    
 
 		-- effects
-		self:PlayEffects_a( target )
+		self:PlayEffects( target )
 	end
 end
 
-function tinker_second_attack:PlayEffects()
-
-    local particle_cast = "particles/econ/events/darkmoon_2017/darkmoon_calldown_marker_ring.vpcf"
-	
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	
-	ParticleManager:SetParticleControl( effect_cast, 0, self.point )
-	ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-	ParticleManager:SetParticleControl( effect_cast, 2, Vector( 1, 1, 1 ) )
-
-    ParticleManager:ReleaseParticleIndex( effect_cast )
-end
 --------------------------------------------------------------------------------
 -- Effects
-function tinker_second_attack:PlayEffects_a( target )
+function tinker_second_attack:PlayEffects( target )
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_missle_explosion.vpcf"
 	local sound_cast = "Hero_Tinker.Heat-Seeking_Missile.Impact"
 
@@ -134,23 +93,6 @@ function tinker_second_attack:PlayEffects_a( target )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 
 	EmitSoundOn( sound_cast, target )
-end
-
-function tinker_second_attack:PlayEffects_b()
-	local particle_cast = "particles/units/heroes/hero_tinker/tinker_missile_dud.vpcf"
-	local sound_cast = "Hero_Tinker.Heat-Seeking_Missile_Dud"
-
-	local attach = "attach_attack1"
-	if self:GetCaster():ScriptLookupAttachment( "attach_attack3" )~=0 then attach = "attach_attack3" end
-	local point = self:GetCaster():GetAttachmentOrigin( self:GetCaster():ScriptLookupAttachment( attach ) )
-
-	-- play particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 0, point )
-	ParticleManager:SetParticleControlForward( effect_cast, 0, self:GetCaster():GetForwardVector() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-
-	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
 function tinker_second_attack:Animate(point)

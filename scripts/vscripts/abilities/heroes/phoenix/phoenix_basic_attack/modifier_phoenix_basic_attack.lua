@@ -21,28 +21,16 @@ end
 --------------------------------------------------------------------------------
 -- Initialization
 function modifier_phoenix_basic_attack:OnCreated()
-    self.damage_per_second = 1--self:GetAbility():GetSpecialValueFor( "damage_per_second" )
-    self.max_stacks = 3 --self:GetAbility():GetSpecialValueFor( "max_stacks" )
+    self.hp_per_second = self:GetAbility():GetSpecialValueFor( "hp_per_second" )
+	self.radius = 350
 
 	if IsServer() then
-		self:SetStackCount(1)
 		self:StartIntervalThink( 1.0 )
+		self:OnIntervalThink()
 		self:PlayEffects(self:GetParent())
 	end
 end
 
---------------------------------------------------------------------------------
--- Initialization
-function modifier_phoenix_basic_attack:OnRefresh()
-    self.damage_per_second = 1--self:GetAbility():GetSpecialValueFor( "damage_per_second" )
-    self.max_stacks = 3 --self:GetAbility():GetSpecialValueFor( "max_stacks" )
-
-	if IsServer() then
-		self:IncrementStackCount()
-		self:StartIntervalThink( 1.0 )
-		self:OnIntervalThink()
-	end
-end
 
 --------------------------------------------------------------------------------
 -- Destroyer
@@ -52,29 +40,43 @@ function modifier_phoenix_basic_attack:OnDestroy()
 	end
 end
 
-function modifier_phoenix_basic_attack:OnStackCountChanged( old )
-	if IsServer() then
-		if self:GetStackCount()<1 then
-			self:Destroy()
-        end
-		if self:GetStackCount()>self.max_stacks then
-			self:SetStackCount(self.max_stacks)
-		end
-	end
-end
-
 -- On Think
 --------------------------------------------------------------------------------
 function modifier_phoenix_basic_attack:OnIntervalThink()
 	if IsServer() then
+		local particle_cast = "particles/econ/events/darkmoon_2017/darkmoon_generic_aoe.vpcf"
+		local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+		ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
+		ParticleManager:SetParticleControl( effect_cast, 1, Vector(self.radius, 1, 1) )
+		ParticleManager:SetParticleControl( effect_cast, 2, Vector(1, 1, 1) )
+		ParticleManager:SetParticleControl( effect_cast, 3, Vector(255, 255, 255) )
+		ParticleManager:SetParticleControl( effect_cast, 4, Vector(255, 250, 1) )
+		ParticleManager:ReleaseParticleIndex( effect_cast )
+
 		local damage = {
 			victim = self:GetParent(),
 			attacker = self:GetCaster(),
-			damage = self.damage_per_second * self:GetStackCount(),
+			damage = self.hp_per_second,
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 
 		ApplyDamage( damage )
+
+		local units = FindUnitsInRadius( 
+			self:GetCaster():GetTeamNumber(), -- int, your team number
+			self:GetCaster():GetOrigin(), -- point, center point
+			nil, -- handle, cacheUnit. (not known)
+			self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
+			DOTA_UNIT_TARGET_TEAM_FRIENDLY, -- int, team filter
+			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+			0, -- int, flag filter
+			0, -- int, order filter
+			false -- bool, can grow cache
+	   )
+	
+	   for _,unit in pairs(units) do
+			unit:Heal(self.hp_per_second, self:GetCaster())
+	   end
 	end
 end
 
@@ -89,7 +91,9 @@ end
 
 
 function modifier_phoenix_basic_attack:StopEffects( )
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	if self.effect_cast ~= nil then
+		ParticleManager:DestroyParticle( self.effect_cast, false )
+		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	end
 end
 

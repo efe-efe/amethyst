@@ -30,7 +30,7 @@ function spectre_ultimate:OnSpellStart()
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -53,24 +53,16 @@ function spectre_ultimate:OnSpellStart()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
-			-- Count targets
-			local counter = 0
-			for k, v in pairs(_self.rehit) do
-				counter = counter + 1
-			end
-
-			if counter > 0 then return end
-
 			local caster =  self:GetCaster()
 			
 			-- Damage
-			local damage = {
+			local damage_table = {
 				victim = unit,
 				attacker = _self.Source,
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
-			ApplyDamage( damage )
+			ApplyDamage( damage_table )
 			
 			-- Callback
 			local modifyIllusion = function ( illusion )
@@ -115,10 +107,6 @@ function spectre_ultimate:OnSpellStart()
 				_self.Source:GetTeamNumber(), -- iTeamNumber
 				modifyIllusion
 			)
-
-			-- Effects
-			self:PlayEffects_b(_self:GetPosition())
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)

@@ -21,7 +21,8 @@ end
 --------------------------------------------------------------------------------
 -- Initialization
 function modifier_phoenix_second_attack_buff:OnCreated()
-    self.heal_per_second = self:GetAbility():GetSpecialValueFor( "heal_per_second" )
+    self.hp_per_second = self:GetAbility():GetSpecialValueFor( "hp_per_second" )
+    self.stack_bonus = self:GetAbility():GetSpecialValueFor( "stack_bonus" )
 
 	if IsServer() then
 		self:SetStackCount(1)
@@ -35,7 +36,8 @@ end
 -- Initialization
 function modifier_phoenix_second_attack_buff:OnRefresh()
 
-    self.heal_per_second = self:GetAbility():GetSpecialValueFor( "heal_per_second" )
+    self.hp_per_second = self:GetAbility():GetSpecialValueFor( "hp_per_second" )
+    self.stack_bonus = self:GetAbility():GetSpecialValueFor( "stack_bonus" )
 	
 	if IsServer() then
 		self:IncrementStackCount()
@@ -57,7 +59,7 @@ end
 --------------------------------------------------------------------------------
 function modifier_phoenix_second_attack_buff:OnIntervalThink()
 	if IsServer() then
-		self:GetParent():Heal(self.heal_per_second + 1 * self:GetStackCount() - 1, self:GetCaster())
+		self:GetParent():Heal(self.hp_per_second + self.stack_bonus * self:GetStackCount() - 1, self:GetCaster())
 	end
 end
 

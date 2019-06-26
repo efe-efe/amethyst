@@ -60,7 +60,7 @@ function nevermore_basic_attack:OnEndPseudoCastPoint()
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -83,14 +83,6 @@ function nevermore_basic_attack:OnEndPseudoCastPoint()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			-- Count targets
-			local counter = 0
-			for k, v in pairs(_self.rehit) do
-				counter = counter + 1
-			end
-
-			if counter > 0 then return end
-
 			-- perform the actual attack
 			_self.Source:PerformAttack(
 				unit, -- handle hTarget 
@@ -102,9 +94,6 @@ function nevermore_basic_attack:OnEndPseudoCastPoint()
 				false, -- bool bFakeAttack
 				true -- bool bNeverMiss
 			)
-
-			self:PlayEffects_b(_self:GetPosition())
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)
