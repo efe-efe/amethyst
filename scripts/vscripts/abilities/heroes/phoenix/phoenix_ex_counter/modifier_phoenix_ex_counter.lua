@@ -17,7 +17,7 @@ end
 function modifier_phoenix_ex_counter:OnCreated()
     self.max_radius = self:GetAbility():GetSpecialValueFor("max_radius")
     self.damage_per_think = self:GetAbility():GetSpecialValueFor("damage_per_think")
-    self.root_duration_per_think = self:GetAbility():GetSpecialValueFor("damage_per_think")
+    self.root_duration_per_think = self:GetAbility():GetSpecialValueFor("root_duration_per_think")
     local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
     self.instances = self:GetAbility():GetSpecialValueFor("instances")
     
@@ -67,7 +67,7 @@ function modifier_phoenix_ex_counter:OnIntervalThink()
                 self:GetParent(),
                 self:GetAbility(),
                 "modifier_phoenix_ex_counter_mark",
-                { duration = self:GetDuration() }
+                { duration = self.root_duration_per_think * self.counter }
             )
 
             enemy:AddNewModifier(

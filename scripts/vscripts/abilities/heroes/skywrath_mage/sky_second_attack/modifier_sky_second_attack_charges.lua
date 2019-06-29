@@ -69,7 +69,6 @@ function modifier_sky_second_attack_charges:CalculateCharge()
 		if self:GetRemainingTime() <= 0.05 then
 			-- start charging
 			local charge_time = self:GetAbility():GetCooldown( -1 ) - self.cooldowns[self:GetParent()][self:GetStackCount() + 1]
-			print(charge_time)
 			self:StartIntervalThink( charge_time )
 			self:SetDuration( charge_time, true )
 		end

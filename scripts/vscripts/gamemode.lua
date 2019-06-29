@@ -19,6 +19,7 @@ require('libraries/projectiles') -- This library allow for easily delayed/timed 
 require('libraries/animations') -- This library allows starting customized animations on units from lua
 require('settings') -- settings.lua is where resides many different properties for Dotarite.
 require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
+require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('modules/middle_orb_module')
 
 --============================================================================================
@@ -40,9 +41,13 @@ function GameMode:InitGameMode()
     GameRules:SetStartingGold( STARTING_GOLD )
     GameRules:SetCustomGameSetupAutoLaunchDelay( AUTO_LAUNCH_DELAY )
 	GameRules:SetStrategyTime( 0.0 )
-	GameRules:SetShowcaseTime( 0.0 )
+    GameRules:SetShowcaseTime( 0.0 )
+    if USE_CUSTOM_HERO_GOLD_BOUNTY then
+		GameRules:SetUseBaseGoldBountyOnHeroes(false)
+	end
     DebugPrint('[RITE] GameRules set')
     
+
     -------------------------------
     -- Setup Event Hooks
     -------------------------------
@@ -52,6 +57,14 @@ function GameMode:InitGameMode()
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(GameMode, 'OnGameRulesStateChange'), GameMode)
     ListenToGameEvent('entity_hurt', Dynamic_Wrap(GameMode, 'OnEntityHurt'), GameMode)
     DebugPrint('[RITE] Event hooks set')
+
+    -------------------------------
+    -- Setup Filters
+    -------------------------------
+	local mode = GameRules:GetGameModeEntity()
+	mode:SetModifyGoldFilter(Dynamic_Wrap(GameMode, 'GoldFilter'), GameMode)
+    mode:SetHealingFilter(Dynamic_Wrap(GameMode, 'HealingFilter'), GameMode)
+	mode:SetDamageFilter(Dynamic_Wrap(GameMode, "DamageFilter"), GameMode)
 
     -------------------------------
     -- Link Useful Lua Modifiers
@@ -84,4 +97,3 @@ function GameMode:CaptureGameMode()
         mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
     end 
 end
-

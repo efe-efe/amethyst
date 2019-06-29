@@ -5,7 +5,6 @@
 	//=================================================================================================================
 	// Wisp
 	//=================================================================================================================
-	
 	"wisp_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -120,12 +119,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityDamage"					"20"
 
-		// Precache
-		"precache"
-		{
-			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_guardian.vpcf"
-		}
-
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
@@ -182,7 +175,6 @@
 		"precache"
 		{
 			"particle"	"particles/items_fx/healing_flask.vpcf"
-			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_guardian.vpcf"
 		}
 
 		// Special
@@ -239,7 +231,6 @@
 		{
 			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_relocate_marker_ti7_endpoint_ring_core.vpcf"
 			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_relocate_marker_ti7_endpoint_core_flare.vpcf"
-			"particle" "particles/units/heroes/hero_lina/lina_spell_laguna_blade_impact_sparks.vpcf"
 			"particle" "particles/units/heroes/hero_chen/chen_holy_persuasion_a.vpcf"
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_omniknight.vsndevts"
 		}
@@ -302,8 +293,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
 		{
-			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_relocate_marker_ti7_endpoint_ring_core.vpcf"
-			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_relocate_marker_ti7_endpoint_core_flare.vpcf"
 			"particle" "particles/units/heroes/hero_chen/chen_divine_favor.vpcf"
 			"particle" "particles/units/heroes/hero_lina/lina_spell_laguna_blade_impact_sparks.vpcf"
 		}
@@ -374,11 +363,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
 		{
-			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_relocate_marker_ti7_endpoint_ring_core.vpcf"
-			"particle"	"particles/mod_units/heroes/hero_wisp/wisp_relocate_marker_ti7_endpoint_core_flare.vpcf"
-			"particle" "particles/units/heroes/hero_lina/lina_spell_laguna_blade_impact_sparks.vpcf"
-			"particle" "particles/units/heroes/hero_chen/chen_holy_persuasion_a.vpcf"
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_lina.vsndevts"
 		}
 
 		// Special
@@ -582,7 +566,6 @@
 	//=================================================================================================================
 	// Spectre
 	//=================================================================================================================
-	
 	"spectre_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -1213,7 +1196,6 @@
 	//=================================================================================================================
 	// Skywrath Mage
 	//=================================================================================================================
-
 	"sky_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -2463,7 +2445,6 @@
 	//=================================================================================================================
 	// Phantom Assasin
 	//=================================================================================================================
-	
 	"phantom_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -2955,7 +2936,6 @@
 	//=================================================================================================================
 	// Axe
 	//=================================================================================================================
-		
 	"axe_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -3503,7 +3483,6 @@
 	//=================================================================================================================
 	// Tinker
 	//=================================================================================================================
-		
 	"tinker_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -4014,7 +3993,7 @@
 
 		// Ability Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.8"
+		"AbilityCastPoint"				"0.4"
 
 		// Ability Resource
 		//-------------------------------------------------------------------------------------------------------------
@@ -4033,7 +4012,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"life_loss"				"25"
+				"life_loss"				"10"
 			}
 		}
 	}
@@ -4041,7 +4020,6 @@
 	//=================================================================================================================
 	// Phoenix
 	//=================================================================================================================
-		
 	"phoenix_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -4155,12 +4133,12 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1900"
+				"projectile_speed"			"1700"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1700"
+				"projectile_range"			"1500"
 			}
 			"03"
 			{
@@ -4185,12 +4163,12 @@
 			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"attack_speed_per_stack"	"30"
+				"attack_speed_per_stack"	"25"
 			}
 			"08"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"duration"					"4.0"
+				"duration"					"3.0"
 			}
 			"09"
 			{
@@ -4200,7 +4178,7 @@
 			"10"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"replenish_time"			"14.0"
+				"replenish_time"			"13.0"
 			}
 			"11"
 			{
@@ -4286,7 +4264,7 @@
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"8.0"
+		"AbilityCooldown"				"10.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -4452,7 +4430,7 @@
 			"02"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"damage_per_think"	"7"
+				"damage_per_think"	"14"
 			}
 			
 			"03"
@@ -4468,7 +4446,7 @@
 			"05"
 			{
 				"var_type"			"FIELD_FLOAT"
-				"think_interval"	"0.5"
+				"think_interval"	"1.0"
 			}
 			"06"
 			{
@@ -4478,7 +4456,7 @@
 			"07"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"heal"				"100"
+				"heal"				"50"
 			}
 		}
 	}
@@ -4606,7 +4584,7 @@
 			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"root_duration_per_think"	"0.3"
+				"root_duration_per_think"	"0.4"
 			}
 			"05"
 			{
@@ -4681,7 +4659,6 @@
 	//=================================================================================================================
 	// Shadow Fiend
 	//=================================================================================================================
-		
 	"nevermore_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -4901,7 +4878,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.7"
+		"AbilityCastPoint"				"0.6"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -5234,7 +5211,6 @@
 			}
 		}
 	}
-	
 
 	//=================================================================================================================
 	// Builder

@@ -26,7 +26,6 @@ function modifier_phoenix_basic_attack:OnCreated()
 
 	if IsServer() then
 		self:StartIntervalThink( 1.0 )
-		self:OnIntervalThink()
 		self:PlayEffects(self:GetParent())
 	end
 end

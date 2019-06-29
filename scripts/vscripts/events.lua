@@ -1,4 +1,3 @@
-
 --============================================================================================
 -- GAME PHASES
 --============================================================================================
@@ -31,7 +30,7 @@ function GameMode:OnHeroInGame(keys)
     -------------------------------
     -- Timer to prevent illusions from passing
     -------------------------------
-    Timers:CreateTimer(.05, function()
+    Timers:CreateTimer(0.5, function()
         
         -------------------------------
         -- Filter unwanted units
@@ -41,22 +40,17 @@ function GameMode:OnHeroInGame(keys)
         if not npc:IsRealHero() then return end
         
         -------------------------------
-        -- Initialize variables
-        -------------------------------
-        local hero = npc
-
-        -------------------------------
         -- First time spawning
         -------------------------------
-        if hero.bFirstSpawnedPG == nil then
-            hero.bFirstSpawnedPG = true
-            
+        if npc.bFirstSpawnedPG == nil then
+            npc.bFirstSpawnedPG = true
+
             -- Disable right click
-            hero:AddNewModifier( hero,  nil, "modifier_disable_right_click", { } )
+            npc:AddNewModifier( npc,  nil, "modifier_disable_right_click", { } )
         
             -- Level up 1 point to all spells
             for i = 0, 23 do
-                local ability = hero:GetAbilityByIndex(i)
+                local ability = npc:GetAbilityByIndex(i)
                 if ability then
                     if ability:GetAbilityType() ~= 2 then -- To not level up the talents
                         ability:SetLevel(1)
@@ -69,10 +63,15 @@ function GameMode:OnHeroInGame(keys)
         -- Always
         -------------------------------
         self.lock_round = false
-        hero:SetMana(0)
-        local team = hero:GetTeamNumber()
-        local playerID = hero:GetPlayerOwnerID()
-        local playerOwner = hero:GetPlayerOwner()
+        npc:SetMana(0)
+        npc:SetHealth(npc:GetMaxHealth())
+        npc.iTreshold = 40
+        local health_bar = "(" .. npc.iTreshold .. "/" .. self.iMaxTreshold ..")"
+        npc:SetCustomHealthLabel(health_bar, 255, 255, 255)
+        
+        local team = npc:GetTeamNumber()
+        local playerID = npc:GetPlayerOwnerID()
+        local playerOwner = npc:GetPlayerOwner()
 
         -- Initialization
         if self.teams[team] == nil then
@@ -185,7 +184,6 @@ function GameMode:OnEntityKilled( keys )
                             hero:SetRespawnsDisabled(false)
                             hero:RespawnHero(false, false)
                             hero:SetRespawnsDisabled(true)
-                            hero:Heal(hero:GetMaxHealth(), hero)
                         end
                     end
                 end)
@@ -214,8 +212,12 @@ function GameMode:OnGameInProgress()
     self.lock_round = false
     self.teams = {}
     self.ROUNDS_TO_WIN = 5
+    self.iMaxTreshold = 40
 
     CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
+
+    GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
+    GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
 
     MiddleOrb:Create()
 end

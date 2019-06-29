@@ -72,8 +72,6 @@ function sky_second_attack:OnRemovePseudoCastPoint()
 
 	charges:DecrementStackCount()
 	charges:CalculateCharge()
-
-	print("OnRemoveCastPoint")
 end
 
 --------------------------------------------------------------------------------

@@ -49,6 +49,9 @@ function tinker_ex_ultimate:OnEndPseudoCastPoint()
     ApplyDamage( damage )
 
 	local sound_cast = "DOTA_Item.SoulRing.Activate"
+	
+	SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, caster, mana_gain, nil )
+
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
@@ -58,6 +61,6 @@ function tinker_ex_ultimate:Animate()
 		duration = cast_point, 
 		activity = ACT_DOTA_TELEPORT_END, 
 		translate = "bot", 
-		rate = 0.6
+		rate = 1.0
 	})
 end

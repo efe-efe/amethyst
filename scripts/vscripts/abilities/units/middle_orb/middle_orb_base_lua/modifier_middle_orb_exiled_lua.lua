@@ -21,6 +21,7 @@ function modifier_middle_orb_exiled_lua:OnCreated( kv )
         local wait = kv.wait
         self:GetParent():AddNoDraw()
         self:StartIntervalThink( wait )
+        GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> will spawn in <b>30</b> seconds", 0, 0)
     end
 end
 
@@ -33,6 +34,7 @@ function modifier_middle_orb_exiled_lua:OnDestroy( kv )
 
         parent:SetOrigin(Vector(origin.x, origin.y, 256))
         parent:RemoveNoDraw()
+        GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> has spawned", 0, 0)
 	end
 end
 

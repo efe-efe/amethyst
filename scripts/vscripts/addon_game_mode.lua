@@ -4,6 +4,7 @@
 
 require('util/util')
 require('util/modifiers')
+require('util/health')
 require('gamemode')
 
 function Precache( context )

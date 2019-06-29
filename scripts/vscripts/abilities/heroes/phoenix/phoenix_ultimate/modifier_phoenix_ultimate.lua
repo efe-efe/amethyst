@@ -30,11 +30,18 @@ function modifier_phoenix_ultimate:OnCreated( kv )
 	if IsServer() then
 		self.base_health = kv.base_health
 
+		local RemovePositiveBuffs = false
+		local RemoveDebuffs = true
+		local BuffsCreatedThisFrameOnly = false
+		local RemoveStuns = true
+		local RemoveExceptions = false
+		self:GetCaster():Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
+
 		-- play effects
         self:PlayEffects_b()
         self:PlayEffects_a()
 
-		self:GetParent():Heal(self:GetParent():GetMaxHealth(), self:GetParent())
+		self:GetParent():SetHealth(self:GetParent():GetMaxHealth())
 
 		self:OnIntervalThink()
 		self:StartIntervalThink(think_interval)
@@ -94,9 +101,9 @@ function modifier_phoenix_ultimate:OnDestroy( kv )
 				)
 		   end
 
-		   self:GetParent():SetHealth(self.base_health + self.heal)
-
-			-- Gives mana
+		   PseudoHeal(self.base_health, self.heal, self:GetParent())
+		
+		   -- Gives mana
 			local mana_gain_final = self:GetParent():GetMaxMana() * self.mana_gain
 			self:GetParent():GiveMana(mana_gain_final)
 		end
@@ -115,7 +122,7 @@ function modifier_phoenix_ultimate:DeclareFunctions()
 end
 
 function modifier_phoenix_ultimate:GetModifierExtraHealthBonus()
-    return -130
+    return -140
 end
 
 function modifier_phoenix_ultimate:GetModifierModelChange()
