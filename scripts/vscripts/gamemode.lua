@@ -3,6 +3,8 @@ RITE_VERSION = "1.00"
 RITE_DEBUG_SPEW = true -- Complete Debug?
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 
+_G.nCOUNTDOWNTIMER = 120
+
 --============================================================================================
 -- INSTANTIATE GAME MODE
 --============================================================================================
@@ -20,7 +22,6 @@ require('libraries/animations') -- This library allows starting customized anima
 require('settings') -- settings.lua is where resides many different properties for Dotarite.
 require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.
-require('modules/middle_orb_module')
 
 --============================================================================================
 -- INITIAL GAME SETUP
@@ -29,7 +30,7 @@ function GameMode:InitGameMode()
     if GameMode._reentrantCheck then
         return
     end
-
+      
     -------------------------------
     -- Setup Rules
     -------------------------------
@@ -61,7 +62,7 @@ function GameMode:InitGameMode()
     -------------------------------
     -- Setup Filters
     -------------------------------
-	local mode = GameRules:GetGameModeEntity()
+    local mode = GameRules:GetGameModeEntity()
 	mode:SetModifyGoldFilter(Dynamic_Wrap(GameMode, 'GoldFilter'), GameMode)
     mode:SetHealingFilter(Dynamic_Wrap(GameMode, 'HealingFilter'), GameMode)
 	mode:SetDamageFilter(Dynamic_Wrap(GameMode, "DamageFilter"), GameMode)
@@ -74,11 +75,9 @@ function GameMode:InitGameMode()
     LinkLuaModifier( "modifier_set_attack_range", "modifiers/general/modifier_set_attack_range.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_mana_on_attack", "modifiers/general/modifier_mana_on_attack.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier( "modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
+    
     DebugPrint('[RITE] Useful modifiers linked')
-
-    -------------------------------
-    -- Setup Middle Orb
-    -------------------------------
 end
 
 --============================================================================================
@@ -88,12 +87,51 @@ mode = nil
 function GameMode:CaptureGameMode()
     if mode == nil then
         -------------------------------
+        -- Core Variables
+        -------------------------------
+        self.countdownEnabled = false
+        self.lock_round = false
+        self.teams = {}
+        self.teams[DOTA_TEAM_GOODGUYS] = {
+            alive_heroes = 0,
+            wins = 0,
+            looser = false,
+            players = {}
+        }
+        self.teams[DOTA_TEAM_BADGUYS] = {
+            alive_heroes = 0,
+            wins = 0,
+            looser = false,
+            players = {}
+        }
+        self.ROUNDS_TO_WIN = 3
+        self.iMaxTreshold = 40
+
+        -------------------------------
         -- Set GameMode parameters
         -------------------------------
         mode = GameRules:GetGameModeEntity()
         mode:SetBuybackEnabled( BUYBACK_ENABLED )
         mode:SetFixedRespawnTime( FIXED_RESPAWN_TIME ) 
-
         mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
+
     end 
+end
+
+---------------------------------------------------------------------------
+-- Update player labels and the scoreboard
+---------------------------------------------------------------------------
+function GameMode:OnThink()
+	if GameRules:IsGamePaused() == true then
+        return 1
+    end
+    
+	if self.countdownEnabled == true then
+        CountdownTimer()
+        if nCOUNTDOWNTIMER <= 0 then
+            self.countdownEnabled = false
+            self:CreateDeathZone()
+        end
+    end
+	return 1
 end

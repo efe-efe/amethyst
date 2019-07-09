@@ -62,7 +62,6 @@ function GameMode:OnHeroInGame(keys)
         -------------------------------
         -- Always
         -------------------------------
-        self.lock_round = false
         npc:SetMana(0)
         npc:SetHealth(npc:GetMaxHealth())
         npc.iTreshold = 40
@@ -72,21 +71,9 @@ function GameMode:OnHeroInGame(keys)
         local team = npc:GetTeamNumber()
         local playerID = npc:GetPlayerOwnerID()
         local playerOwner = npc:GetPlayerOwner()
-
-        -- Initialization
-        if self.teams[team] == nil then
-            self.teams[team] = {
-                alive_heroes = 0,
-                wins = 0,
-                looser = false,
-                players = {}
-            }
-        end
-        
+      
         self.teams[team].alive_heroes = self.teams[team].alive_heroes + 1
         self.teams[team].players[playerID] = playerOwner
-
-        print("Team " .. team .. " heroes = " ..self.teams[team].alive_heroes)
     end)
 end
 
@@ -106,97 +93,38 @@ function GameMode:OnEntityKilled( keys )
     
     -- Recreate orb
     if isMiddleOrb == 1 then
-        MiddleOrb:Create()
+        self:CreateMiddleOrb()
     end
 
     -- Manage game state
     if killed:IsRealHero() and Convars:GetInt('test_mode') == 0 then
-        print("DIED = " .. killed:GetName() .. " | self.lock_round is = " .. string.format("%s", self.lock_round))
+        local killed_team = killed:GetTeamNumber()
 
-        local team = killed:GetTeamNumber()
-        local not_loosers = 0
-        local shouldEnd = false
-        local winner = nil
-        local winner_id = nil
-
-        -- If the killed unit's team have no more heroes
         if not self.lock_round then
-            self.teams[team].alive_heroes = self.teams[team].alive_heroes - 1
+            self.teams[killed_team].alive_heroes = self.teams[killed_team].alive_heroes - 1
 
-            -- One team Has Lost
-            if self.teams[team].alive_heroes <= 0 then
+            -- If the killed unit's team have no more heroes
+            if self.teams[killed_team].alive_heroes <= 0 then
 
                 -- Set the victory state
-                self.teams[team].looser = true
-                print("Team " .. team .. " loses this round")
-                                
-                -- Find if a team have won
-                for _,it_team in pairs(self.teams) do
-                    if not it_team.looser then 
-                        winner = it_team
-                        winner_id = _
-                        not_loosers = not_loosers + 1
-                    end
-                end
-
-                -- If there are only 1 not looser, lock the round
-                if not_loosers == 1 then
-                    self.lock_round = true
-
+                self.teams[killed_team].looser = true
+                print("Team " .. killed_team .. " loses this round")
+                
+                local winner = self:FindWinner()
+                if winner ~= false then 
                     winner.wins = winner.wins + 1
-                    if winner.wins >= self.ROUNDS_TO_WIN then
-                        shouldEnd = true
-                    end
 
-                    local broadcast_win_round_event =
-                    {
-                        team_id = winner_id,
-                        team_wins = winner.wins,
-                        --[[killer_id = event.killer_userid,
-                        kills_remaining = nKillsRemaining,
-                        victory = 0,
-                        close_to_victory = 0,
-                        very_close_to_victory = 0,]]
-                    }
-                
-                    CustomGameEventManager:Send_ServerToAllClients( "win_round_event", broadcast_win_round_event )
+                    --Update score
+                    CustomGameEventManager:Send_ServerToAllClients( "update_score", { 
+                        dire = self.teams[DOTA_TEAM_BADGUYS].wins,
+                        radiant = self.teams[DOTA_TEAM_GOODGUYS].wins,
+                    })
+
+                    self:EndRound(3.0)
                 end
-                
-                Timers:CreateTimer(3.0, function()
-                    MiddleOrb:Destroy()
-                    for _,it_team in pairs(self.teams) do
-                        
-                        if (_ ~= team) and shouldEnd == true then 
-                            self:EndGame(_) 
-                            break
-                        end
-
-                        for _,player in pairs(it_team.players) do
-                            local hero = player:GetAssignedHero()
-                            hero:Kill(nil, hero)	
-                        end
-                        
-                        it_team.alive_heroes = 0
-                        it_team.looser = false
-
-                        for _,player in pairs(it_team.players) do
-                            local hero = player:GetAssignedHero()
-                            hero:SetRespawnsDisabled(false)
-                            hero:RespawnHero(false, false)
-                            hero:SetRespawnsDisabled(true)
-                        end
-                    end
-                end)
-
             end
         end
     end
-end
-
--- Called whenever an ability begins its PhaseStart phase, but before it is actually cast
-function GameMode:OnAbilityCastBegins(keys)
-    local player = PlayerResource:GetPlayer(keys.PlayerID)
-    local abilityName = keys.abilityname
 end
 
 --============================================================================================
@@ -204,40 +132,31 @@ end
 --============================================================================================
 function GameMode:OnGameInProgress()
 	DebugPrint("[RITE] The game has officially begun")
-    
-    -------------------------------
-    -- Core Variables
-    -------------------------------
-	self.allSpawned = false
-    self.lock_round = false
-    self.teams = {}
-    self.ROUNDS_TO_WIN = 5
-    self.iMaxTreshold = 40
+
+    self.countdownEnabled = true
+    GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 ) 
 
     CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
 
     GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
     GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
-
-    MiddleOrb:Create()
+    
+    self:CreateMiddleOrb()
 end
 
-
--- This function is called once when a player fully connects ("Ready" during Loading)
+--============================================================================================
+-- AT LEAST ONE PLAYERS IS FULLY CONNECTED
+--============================================================================================
 function GameMode:OnConnectFull(keys)
     if GameMode._reentrantCheck then
         return
     end
     GameMode:CaptureGameMode()
-    
-   
-    local ply = EntIndexToHScript(keys.index + 1)  -- The Player entity of the joining user
-    local playerID = ply:GetPlayerID() -- The Player ID of the joining player
-    local userID = keys.userid
 end
 
--- An entity somewhere has been hurt.  This event fires very often with many units so don't do too many expensive
--- operations here
+--============================================================================================
+-- UNIT HAS BEEN DAMAGED
+--============================================================================================
 function GameMode:OnEntityHurt(keys)
     --DebugPrintTable(keys)
 
@@ -273,7 +192,142 @@ function GameMode:OnEntityHurt(keys)
         ParticleManager:ReleaseParticleIndex( effect_cast )
     end
 end
+	
+--============================================================================================
+-- HELPERS
+--============================================================================================
+function GameMode:FindWinner()
+    local teams_with_alive_players = 0
+    local winner = nil
 
+    for _,it_team in pairs(self.teams) do
+        if not it_team.looser then 
+            winner = it_team
+            teams_with_alive_players = teams_with_alive_players + 1
+        end
+    end
+
+    -- If there are only 1 not looser, lock the round
+    if teams_with_alive_players == 1 then
+        self.lock_round = true
+        return winner
+    else
+        return false
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Restart Round
+--------------------------------------------------------------------------------
+function GameMode:EndRound( delay )
+    Timers:CreateTimer(delay, function()
+        self:DestroyMiddleOrb()
+        self:DestroyDeathZone()
+
+        for _,it_team in pairs(self.teams) do
+            
+            if it_team.wins >= self.ROUNDS_TO_WIN then
+                self:EndGame(_) 
+                break
+            end
+
+            for _,player in pairs(it_team.players) do
+                local hero = player:GetAssignedHero()
+                hero:Kill(nil, hero)	
+            end
+            
+            it_team.alive_heroes = 0
+            it_team.looser = false
+
+            for _,player in pairs(it_team.players) do
+                local hero = player:GetAssignedHero()
+                hero:SetRespawnsDisabled(false)
+                hero:RespawnHero(false, false)
+                hero:SetRespawnsDisabled(true)
+            end
+        end
+        self.countdownEnabled = true
+        self.lock_round = false
+        nCOUNTDOWNTIMER = 120
+    end)
+end
+
+--------------------------------------------------------------------------------
+-- Death zone spawner
+--------------------------------------------------------------------------------
+function GameMode:CreateDeathZone()
+    DebugPrint("[RITE] Creating Death Zone")
+    local orb_spawn = Entities:FindByName(nil, "orb_spawn")
+    local orb_position = orb_spawn:GetOrigin()
+
+    self.modifier_death_zone = CreateModifierThinker(
+        nil, --hCaster
+        nil, --hAbility
+        "modifier_death_zone", --modifierName
+        {}, --paramTable
+        orb_position, --vOrigin
+        DOTA_TEAM_NOTEAM, --nTeamNumber
+        false --bPhantomBlocker
+	)
+end
+
+--------------------------------------------------------------------------------
+-- Death zone spawner
+--------------------------------------------------------------------------------
+function GameMode:DestroyDeathZone()
+    DebugPrint("[RITE] Destroying Death Zone")
+    -- Safe destroying
+    if self.modifier_death_zone~=nil then
+        if not self.modifier_death_zone:IsNull() then
+            self.modifier_death_zone:Destroy()
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Middle Orb spawner
+--------------------------------------------------------------------------------
+function GameMode:CreateMiddleOrb()
+    DebugPrint("[RITE] Creating Middle Orb")
+
+	local orb_spawn = Entities:FindByName(nil, "orb_spawn")
+    local orb_position = orb_spawn:GetOrigin()
+
+    self.middle_orb_instance = CreateUnitByName(
+        "npc_dota_creature_middle_orb", --szUnitName
+        orb_position, --vLocation
+        true, --bFindClearSpace
+        nil, --hNPCOwner
+        nil, --hUnitOwner
+        DOTA_TEAM_NOTEAM
+    )
+    self.middle_orb_instance:Attribute_SetIntValue("middle_orb", 1)
+
+    -- Orb Spawn Effects
+    local particle_cast_a = "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf"
+    local particle_cast_b = "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf"
+    
+    local sound_cast = "Hero_Oracle.FortunesEnd.Target"
+    local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, middle_orb )
+    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, middle_orb )
+    
+    ParticleManager:ReleaseParticleIndex( effect_cast_a )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    EmitSoundOn( sound_cast, middle_orb )
+end
+
+--------------------------------------------------------------------------------
+-- Middle Orb Destroyer
+--------------------------------------------------------------------------------
+function GameMode:DestroyMiddleOrb()
+    if self.middle_orb_instance ~= nil then
+        self.middle_orb_instance:Kill(nil, self.middle_orb_instance)
+    end
+end
+
+--------------------------------------------------------------------------------
+-- End Game
+--------------------------------------------------------------------------------
 function GameMode:EndGame( victoryTeam )
 	GameRules:SetGameWinner( victoryTeam )
 end

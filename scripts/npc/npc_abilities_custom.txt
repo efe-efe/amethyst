@@ -3202,7 +3202,7 @@
 			"01"
 			{
 				"var_type"			"FIELD_FLOAT"
-				"duration"			"1.8"
+				"duration"			"1.5"
 			}
 			"02"
 			{
@@ -3294,7 +3294,7 @@
 			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"fading_slow"				"80"
+				"fading_slow"				"50"
 			}
 			"06"
 			{
