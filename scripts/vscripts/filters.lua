@@ -39,7 +39,7 @@ end
 -- Healing Filter, can be used to modify how much hp regen and healing a unit is gaining
 -- Triggers every time a unit gains health
 function GameMode:HealingFilter(keys)
-	PrintTable(keys)
+	--PrintTable(keys)
 
 	local healing_target_index = keys.entindex_target_const
 	local heal_amount = math.floor(keys.heal) -- heal amount of the ability or health restored with hp regen during server tick

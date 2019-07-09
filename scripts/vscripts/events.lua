@@ -11,12 +11,7 @@ function GameMode:OnGameRulesStateChange(keys)
     -------------------------------
     -- Setup Rules
     -------------------------------
-    if newState == DOTA_GAMERULES_STATE_PRE_GAME then
-        CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
-    -------------------------------
-    -- Setup Rules
-    -------------------------------
-    elseif newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+    if newState == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
         GameMode:OnGameInProgress()
     end
 end
@@ -137,6 +132,10 @@ function GameMode:OnGameInProgress()
     GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 ) 
 
     CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
+    CustomGameEventManager:Send_ServerToAllClients( "update_score", { 
+        dire = 0,
+        radiant = 0,
+    })
 
     GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
     GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
@@ -200,9 +199,9 @@ function GameMode:FindWinner()
     local teams_with_alive_players = 0
     local winner = nil
 
-    for _,it_team in pairs(self.teams) do
-        if not it_team.looser then 
-            winner = it_team
+    for _,actual_team in pairs(self.teams) do
+        if not actual_team.looser then 
+            winner = actual_team
             teams_with_alive_players = teams_with_alive_players + 1
         end
     end
@@ -224,22 +223,22 @@ function GameMode:EndRound( delay )
         self:DestroyMiddleOrb()
         self:DestroyDeathZone()
 
-        for _,it_team in pairs(self.teams) do
+        for _,actual_team in pairs(self.teams) do
             
-            if it_team.wins >= self.ROUNDS_TO_WIN then
+            if actual_team.wins >= self.ROUNDS_TO_WIN then
                 self:EndGame(_) 
                 break
             end
 
-            for _,player in pairs(it_team.players) do
+            for _,player in pairs(actual_team.players) do
                 local hero = player:GetAssignedHero()
                 hero:Kill(nil, hero)	
             end
             
-            it_team.alive_heroes = 0
-            it_team.looser = false
+            actual_team.alive_heroes = 0
+            actual_team.looser = false
 
-            for _,player in pairs(it_team.players) do
+            for _,player in pairs(actual_team.players) do
                 local hero = player:GetAssignedHero()
                 hero:SetRespawnsDisabled(false)
                 hero:RespawnHero(false, false)
