@@ -52,6 +52,7 @@ function GameMode:InitGameMode()
     -------------------------------
     -- Setup Event Hooks
     -------------------------------
+    ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap(GameMode, "OnItemPickUp"), GameMode )
     ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnHeroInGame'), GameMode)
     ListenToGameEvent('entity_killed', Dynamic_Wrap(GameMode, 'OnEntityKilled'), GameMode)
     ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), GameMode)
@@ -76,7 +77,8 @@ function GameMode:InitGameMode()
     LinkLuaModifier( "modifier_mana_on_attack", "modifiers/general/modifier_mana_on_attack.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
-    
+    LinkLuaModifier( "modifier_middle_orb_exiled", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", LUA_MODIFIER_MOTION_NONE )
+
     DebugPrint('[RITE] Useful modifiers linked')
 end
 
@@ -106,6 +108,8 @@ function GameMode:CaptureGameMode()
         }
         self.ROUNDS_TO_WIN = 3
         self.iMaxTreshold = 40
+        self.ORBS_SPAWN_TIME = 25.0
+        self.MIDDLE_ORB_SPAWN_TIME = 30.0
 
         -------------------------------
         -- Set GameMode parameters
@@ -114,7 +118,6 @@ function GameMode:CaptureGameMode()
         mode:SetBuybackEnabled( BUYBACK_ENABLED )
         mode:SetFixedRespawnTime( FIXED_RESPAWN_TIME ) 
         mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
-
     end 
 end
 

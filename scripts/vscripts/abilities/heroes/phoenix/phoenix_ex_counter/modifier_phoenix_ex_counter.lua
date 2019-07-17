@@ -67,7 +67,7 @@ function modifier_phoenix_ex_counter:OnIntervalThink()
                 self:GetParent(),
                 self:GetAbility(),
                 "modifier_phoenix_ex_counter_mark",
-                { duration = self.root_duration_per_think * self.counter }
+                { duration = self.root_duration_per_think * self.instances }
             )
 
             enemy:AddNewModifier(

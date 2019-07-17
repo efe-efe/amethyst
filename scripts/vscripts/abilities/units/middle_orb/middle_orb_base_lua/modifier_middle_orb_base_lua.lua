@@ -1,5 +1,4 @@
 modifier_middle_orb_base_lua = class ({})
-LinkLuaModifier( "modifier_middle_orb_exiled_lua", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -19,18 +18,33 @@ end
 -- Initializer
 function modifier_middle_orb_base_lua:OnCreated( kv )
 	if IsServer() then
-		--Hide
-		self:GetParent():AddNewModifier(
-			self:GetParent(),
-			self:GetAbility(),
-			"modifier_middle_orb_exiled_lua",
-			{ wait = 30.0 }
-		)
-
 		--Get values
 		self.mana = self:GetAbility():GetSpecialValueFor( "mana" )
 		self.heal = self:GetAbility():GetSpecialValueFor( "heal" )
 
+		--[[self.orb_timers_ent = {}
+		self.orb_timers_ent[1] = Entities:FindByName(nil, "orb_timer1")
+		self.orb_timers_ent[2] = Entities:FindByName(nil, "orb_timer2")
+		self.orb_timers_ent[3] = Entities:FindByName(nil, "orb_timer3")
+		self.orb_timers_ent[4] = Entities:FindByName(nil, "orb_timer4")
+		self.orb_timers_ent[5] = Entities:FindByName(nil, "orb_timer5")
+		self.counter = 0.0
+		
+		for _,orb_timer_ent in pairs(self.orb_timers_ent) do
+			self.counter = self.counter + 5.0
+			local orb_origin = orb_timer_ent:GetOrigin()
+
+			self.orb_timers_ent[_].unit = CreateUnitByName(
+				"npc_dota_creature_middle_orb_timer", --szUnitName
+				orb_origin, --vLocation
+				true, --bFindClearSpace
+				nil, --hNPCOwner
+				nil, --hUnitOwner
+				DOTA_TEAM_NOTEAM
+			)
+		end]]--
+
+		--[[
 		local orb_timer1 = Entities:FindByName(nil, "orb_timer1"):GetOrigin()
 		local orb_timer2 = Entities:FindByName(nil, "orb_timer2"):GetOrigin()
 		local orb_timer3 = Entities:FindByName(nil, "orb_timer3"):GetOrigin()
@@ -50,7 +64,7 @@ function modifier_middle_orb_base_lua:OnCreated( kv )
 		self.middle_orb_timer_a:AddNewModifier(
 			self:GetParent(),
 			self:GetAbility(),
-			"modifier_middle_orb_exiled_lua",
+			"modifier_middle_orb_exiled",
 			{ wait = 5.0 }
 		)
 
@@ -67,7 +81,7 @@ function modifier_middle_orb_base_lua:OnCreated( kv )
 		self.middle_orb_timer_b:AddNewModifier(
 			self:GetParent(),
 			self:GetAbility(),
-			"modifier_middle_orb_exiled_lua",
+			"modifier_middle_orb_exiled",
 			{ wait = 10.0 }
 		)
 		
@@ -83,7 +97,7 @@ function modifier_middle_orb_base_lua:OnCreated( kv )
 		self.middle_orb_timer_c:AddNewModifier(
 			self:GetParent(),
 			self:GetAbility(),
-			"modifier_middle_orb_exiled_lua",
+			"modifier_middle_orb_exiled",
 			{ wait = 15.0 }
 		)
 		
@@ -99,7 +113,7 @@ function modifier_middle_orb_base_lua:OnCreated( kv )
 		self.middle_orb_timer_d:AddNewModifier(
 			self:GetParent(),
 			self:GetAbility(),
-			"modifier_middle_orb_exiled_lua",
+			"modifier_middle_orb_exiled",
 			{ wait = 20.0 }
 		)
 		
@@ -115,10 +129,10 @@ function modifier_middle_orb_base_lua:OnCreated( kv )
 		self.middle_orb_timer_e:AddNewModifier(
 			self:GetParent(),
 			self:GetAbility(),
-			"modifier_middle_orb_exiled_lua",
+			"modifier_middle_orb_exiled",
 			{ wait = 25.0 }
 		)
-		
+		]]
 		self:StartIntervalThink(0.05)
 	end
 end
@@ -168,16 +182,16 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 				SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, ally, self.mana, nil )
 
 				self:PlayEffects_b(ally)
-				--ally:SetCustomHealthLabel("asd", 50, 50, 50)	
 			end
 
 			-- Destroy all timers
-			self.middle_orb_timer_a:ForceKill( false )
-			self.middle_orb_timer_b:ForceKill( false )
-			self.middle_orb_timer_c:ForceKill( false )
-			self.middle_orb_timer_d:ForceKill( false )
-			self.middle_orb_timer_e:ForceKill( false )
-
+			--[[
+				self.middle_orb_timer_a:ForceKill( false )
+				self.middle_orb_timer_b:ForceKill( false )
+				self.middle_orb_timer_c:ForceKill( false )
+				self.middle_orb_timer_d:ForceKill( false )
+				self.middle_orb_timer_e:ForceKill( false )
+			]]
 			-- Graphics & sounds
 			self:PlayEffects()
 			caster:AddNoDraw()

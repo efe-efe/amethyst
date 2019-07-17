@@ -4574,22 +4574,22 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"instances"					"9"
+				"instances"					"5"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_per_think"			"4"
+				"damage_per_think"			"8"
 			}
 			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"root_duration_per_think"	"0.4"
+				"root_duration_per_think"	"1.0"
 			}
 			"05"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"think_interval"			"0.5"
+				"think_interval"			"1.0"
 			}
 		}
 	}
@@ -4935,7 +4935,7 @@
 			"07"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"lift_duration"				"3.0"
+				"lift_duration"				"2.5"
 			}
 		}
 	}

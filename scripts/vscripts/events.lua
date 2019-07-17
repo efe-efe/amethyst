@@ -88,7 +88,7 @@ function GameMode:OnEntityKilled( keys )
     
     -- Recreate orb
     if isMiddleOrb == 1 then
-        self:CreateMiddleOrb()
+        self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
     end
 
     -- Manage game state
@@ -120,6 +120,22 @@ function GameMode:OnEntityKilled( keys )
             end
         end
     end
+
+    -- Remove dead non-hero units from selection -> bugged ability/cast bar
+	if killed:IsIllusion() or (killed:IsControllableByAnyPlayer() and (not killed:IsRealHero()) and (not killed:IsCourier()) and (not killed:IsClone())) and (not killed:IsTempestDouble()) then
+		local player = killed:GetPlayerOwner()
+		local playerID
+		if player == nil then
+			playerID = killed:GetPlayerOwnerID()
+		else
+			playerID = player:GetPlayerID()
+		end
+		
+		if Selection then
+			-- Without Selection library this will return an error
+			PlayerResource:RemoveFromSelection(playerID, killed)
+		end
+	end
 end
 
 --============================================================================================
@@ -140,7 +156,36 @@ function GameMode:OnGameInProgress()
     GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
     GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
     
-    self:CreateMiddleOrb()
+    
+    self.health_orbs_ent = Entities:FindAllByName("health_orb")
+    self.mana_orbs_ent = Entities:FindAllByName("mana_orb")
+    self.middle_orb_ent = Entities:FindByName(nil, "orb_spawn")
+    self.orbs = {}
+
+    self:CreateAllOrbs()
+    self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
+end
+
+--------------------------------------------------------------------------------
+-- Event: OnItemPickUp
+--------------------------------------------------------------------------------
+function GameMode:OnItemPickUp( event )
+	local item = EntIndexToHScript( event.ItemEntityIndex )
+	local owner = EntIndexToHScript( event.HeroEntityIndex )
+	if event.itemname == "item_health_orb" or event.itemname == "item_mana_orb" then
+        
+        local name 
+        if event.itemname == "item_health_orb" then
+            name = "health"
+        elseif event.itemname == "item_mana_orb" then
+            name = "mana" 
+        end
+
+        self:CreateOrb(self.orbs[event.ItemEntityIndex].pos, name, self.ORBS_SPAWN_TIME)
+
+        UTIL_Remove( item ) -- otherwise it pollutes the player inventory
+
+	end
 end
 
 --============================================================================================
@@ -222,6 +267,10 @@ function GameMode:EndRound( delay )
     Timers:CreateTimer(delay, function()
         self:DestroyMiddleOrb()
         self:DestroyDeathZone()
+        self:DestroyAllOrbs()
+        
+        self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
+        self:CreateAllOrbs()
 
         for _,actual_team in pairs(self.teams) do
             
@@ -256,8 +305,7 @@ end
 --------------------------------------------------------------------------------
 function GameMode:CreateDeathZone()
     DebugPrint("[RITE] Creating Death Zone")
-    local orb_spawn = Entities:FindByName(nil, "orb_spawn")
-    local orb_position = orb_spawn:GetOrigin()
+    local orb_position = self.middle_orb_ent:GetOrigin()
 
     self.modifier_death_zone = CreateModifierThinker(
         nil, --hCaster
@@ -286,11 +334,10 @@ end
 --------------------------------------------------------------------------------
 -- Middle Orb spawner
 --------------------------------------------------------------------------------
-function GameMode:CreateMiddleOrb()
+function GameMode:CreateMiddleOrb( delay )
     DebugPrint("[RITE] Creating Middle Orb")
 
-	local orb_spawn = Entities:FindByName(nil, "orb_spawn")
-    local orb_position = orb_spawn:GetOrigin()
+    local orb_position = self.middle_orb_ent:GetOrigin()
 
     self.middle_orb_instance = CreateUnitByName(
         "npc_dota_creature_middle_orb", --szUnitName
@@ -301,18 +348,32 @@ function GameMode:CreateMiddleOrb()
         DOTA_TEAM_NOTEAM
     )
     self.middle_orb_instance:Attribute_SetIntValue("middle_orb", 1)
+    self.middle_orb_instance:AddNewModifier(
+        self.middle_orb_instance,
+        nil,
+        "modifier_middle_orb_exiled",
+        {}
+    )
 
-    -- Orb Spawn Effects
-    local particle_cast_a = "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf"
-    local particle_cast_b = "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf"
-    
-    local sound_cast = "Hero_Oracle.FortunesEnd.Target"
-    local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, middle_orb )
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, middle_orb )
-    
-    ParticleManager:ReleaseParticleIndex( effect_cast_a )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
-    EmitSoundOn( sound_cast, middle_orb )
+    GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> will spawn in <b>" .. delay .. "</b> seconds", 0, 0)
+    self.middle_orb_instance:SetContextThink("SpawnMiddleOrb", function()
+        GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> has spawned", 0, 0)
+        SafeDestroyModifier("modifier_middle_orb_exiled", self.middle_orb_instance, self.middle_orb_instance)
+
+        -- Orb Spawn Effects
+        local particle_cast_a = "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf"
+        local particle_cast_b = "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf"
+        
+        local sound_cast = "Hero_Oracle.FortunesEnd.Target"
+        local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
+        local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
+        
+        ParticleManager:ReleaseParticleIndex( effect_cast_a )
+        ParticleManager:ReleaseParticleIndex( effect_cast_b )
+        EmitSoundOn( sound_cast, self.middle_orb_instance )
+    end, delay)
+
+
 end
 
 --------------------------------------------------------------------------------
@@ -320,8 +381,64 @@ end
 --------------------------------------------------------------------------------
 function GameMode:DestroyMiddleOrb()
     if self.middle_orb_instance ~= nil then
-        self.middle_orb_instance:Kill(nil, self.middle_orb_instance)
+        UTIL_Remove(self.middle_orb_instance)
     end
+end
+
+--------------------------------------------------------------------------------
+--Health and mana orbs spawner
+--------------------------------------------------------------------------------
+function GameMode:CreateAllOrbs()
+    for _,health_orb_ent in pairs(self.health_orbs_ent) do
+        self:CreateOrb(health_orb_ent:GetOrigin(), "health", self.ORBS_SPAWN_TIME)
+    end
+
+    for _,mana_orb_ent in pairs(self.mana_orbs_ent) do
+        self:CreateOrb(mana_orb_ent:GetOrigin(), "mana", self.ORBS_SPAWN_TIME)
+    end
+end
+
+--------------------------------------------------------------------------------
+--Health and mana orbs destroyer
+--------------------------------------------------------------------------------
+function GameMode:DestroyAllOrbs()
+    for _,orb in pairs(self.orbs) do
+        UTIL_Remove( orb.item ) -- otherwise it pollutes the player inventory
+        if orb.drop ~= nil and not orb.drop:IsNull() then
+            UTIL_Remove( orb.drop )
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Middle Orb spawner
+--------------------------------------------------------------------------------
+function GameMode:CreateOrb( pos, type, delay )
+    local name = "item_" .. type .. "_orb"
+
+    local particle_cast = ""
+    if type == "health" then
+        particle_cast = "particles/generic_gameplay/rune_regeneration.vpcf"
+    else
+        particle_cast = "particles/generic_gameplay/rune_doubledamage.vpcf"
+    end
+
+    local item = CreateItem( name, nil, nil )
+    item:LaunchLootInitialHeight( false, 0, 50, 0.5, pos )
+    
+    local item_index = item:GetEntityIndex()
+
+    self.orbs[item_index] = {}
+    self.orbs[item_index].item = item
+    self.orbs[item_index].drop = nil
+    self.orbs[item_index].pos = pos
+
+    item:SetContextThink("SpawnItem", function() 
+        local drop = CreateItemOnPositionForLaunch( pos, item )
+        ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, drop )
+
+        self.orbs[item_index].drop = drop
+    end, delay)
 end
 
 --------------------------------------------------------------------------------
