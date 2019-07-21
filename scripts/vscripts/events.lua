@@ -88,6 +88,7 @@ function GameMode:OnEntityKilled( keys )
     
     -- Recreate orb
     if isMiddleOrb == 1 then
+        self:DestroyAllTimers()
         self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
     end
 
@@ -161,6 +162,13 @@ function GameMode:OnGameInProgress()
     self.mana_orbs_ent = Entities:FindAllByName("mana_orb")
     self.middle_orb_ent = Entities:FindByName(nil, "orb_spawn")
     self.orbs = {}
+    self.orb_timers_ent = {}
+    self.orb_timers_ent[1] = Entities:FindByName(nil, "orb_timer1")
+    self.orb_timers_ent[2] = Entities:FindByName(nil, "orb_timer2")
+    self.orb_timers_ent[3] = Entities:FindByName(nil, "orb_timer3")
+    self.orb_timers_ent[4] = Entities:FindByName(nil, "orb_timer4")
+    self.orb_timers_ent[5] = Entities:FindByName(nil, "orb_timer5")
+    self.orb_timers = {}
 
     self:CreateAllOrbs()
     self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
@@ -355,6 +363,29 @@ function GameMode:CreateMiddleOrb( delay )
         {}
     )
 
+    
+    local counter = 0.0
+    local counter_sum = self.MIDDLE_ORB_SPAWN_TIME / 5
+    
+    for _,orb_timer_ent in pairs(self.orb_timers_ent) do
+        counter = counter + counter_sum
+        local timer_origin = orb_timer_ent:GetOrigin()
+        local name = "SpawnTimer_" .. _ 
+        self.middle_orb_instance:SetContextThink( name , function()
+            self.orb_timers[_] = CreateUnitByName(
+                "npc_dota_creature_middle_orb_timer", --szUnitName
+                timer_origin, --vLocation
+                true, --bFindClearSpace
+                nil, --hNPCOwner
+                nil, --hUnitOwner
+                DOTA_TEAM_NOTEAM
+            )
+            
+            local particle_cast = "particles/mod_units/units/middle_orb/rune_arcane.vpcf"
+            ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.orb_timers[_] )
+        end, counter)
+    end
+
     GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> will spawn in <b>" .. delay .. "</b> seconds", 0, 0)
     self.middle_orb_instance:SetContextThink("SpawnMiddleOrb", function()
         GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> has spawned", 0, 0)
@@ -363,11 +394,13 @@ function GameMode:CreateMiddleOrb( delay )
         -- Orb Spawn Effects
         local particle_cast_a = "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf"
         local particle_cast_b = "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf"
-        
+        local particle_cast_c = "particles/generic_gameplay/rune_arcane.vpcf"
+
         local sound_cast = "Hero_Oracle.FortunesEnd.Target"
         local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
         local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
-        
+        ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
+
         ParticleManager:ReleaseParticleIndex( effect_cast_a )
         ParticleManager:ReleaseParticleIndex( effect_cast_b )
         EmitSoundOn( sound_cast, self.middle_orb_instance )
@@ -382,6 +415,7 @@ end
 function GameMode:DestroyMiddleOrb()
     if self.middle_orb_instance ~= nil then
         UTIL_Remove(self.middle_orb_instance)
+        self:DestroyAllTimers()
     end
 end
 
@@ -407,6 +441,12 @@ function GameMode:DestroyAllOrbs()
         if orb.drop ~= nil and not orb.drop:IsNull() then
             UTIL_Remove( orb.drop )
         end
+    end
+end
+
+function GameMode:DestroyAllTimers()
+    for _,timer in pairs(self.orb_timers) do
+        UTIL_Remove( timer )
     end
 end
 

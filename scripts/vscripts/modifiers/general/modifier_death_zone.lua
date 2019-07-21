@@ -9,8 +9,8 @@ end
 --Initializer
 --------------------------------------------------------------------------------
 function modifier_death_zone:OnCreated( kv )
-    self.radius = 5500--self:GetAbility():GetSpecialValueFor( "radius" )
-    self.min_radius = 450
+    self.radius = 5000--self:GetAbility():GetSpecialValueFor( "radius" )
+    self.min_radius = 400
 
     if IsServer() then
         -- Start Interval

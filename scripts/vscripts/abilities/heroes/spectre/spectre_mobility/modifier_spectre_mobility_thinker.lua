@@ -80,23 +80,8 @@ end
 --Cast
 function modifier_spectre_mobility_thinker:PlayEffects()
 	-- Get Resources
-	local particle_cast = "particles/econ/items/legion/legion_overwhelming_odds_ti7/legion_commander_odds_ti7_proj_ground.vpcf"
 	local sound_cast = "Hero_Spectre.HauntCast"
-
-    local effect_cast = ParticleManager:CreateParticle( 
-        particle_cast, 
-        PATTACH_WORLDORIGIN, 
-        self:GetCaster()
-    )
-
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
-
-    EmitSoundOn( 
-        sound_cast, 
-        self:GetCaster() 
-    )
+    EmitSoundOn( sound_cast, self:GetCaster() )
 end
 --Arrive
 function modifier_spectre_mobility_thinker:PlayEffects2()
@@ -126,6 +111,12 @@ function modifier_spectre_mobility_thinker:PlayEffects2()
     --ParticleManager:SetParticleControl( effect_cast2, 0, self:GetCaster():GetOrigin() )
     --ParticleManager:SetParticleControl( effect_cast2, 3, self:GetCaster():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast2 )
+
+    
+	local particle_cast_c = "particles/econ/items/dark_willow/dark_willow_ti8_immortal_head/dw_crimson_ti8_immortal_cursed_crownmarker.vpcf"
+	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl( effect_cast_c, 2, Vector(self.radius, 1, 1))
+	ParticleManager:ReleaseParticleIndex( effect_cast_c )
     
 end
 

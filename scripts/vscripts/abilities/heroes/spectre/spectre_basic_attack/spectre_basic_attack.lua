@@ -57,6 +57,7 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 	local desolate_duration = self:GetSpecialValueFor("desolate_duration")
 	local silence_duration = self:GetSpecialValueFor("silence_duration")
 	local heal_amount = self:GetSpecialValueFor("heal_amount")
+	local damage_bonus_charged = self:GetSpecialValueFor("damage_bonus_charged")
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
@@ -97,7 +98,6 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			
 			-- Count targets
 			local counter = 0
 			for k, v in pairs(_self.rehit) do
@@ -125,6 +125,15 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", { duration = self.desolate_duration })
 				_self.Source:Heal( self.heal_charged, _self.Source )
 
+				local damage = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = damage_bonus_charged,
+					damage_type = DAMAGE_TYPE_PHYSICAL,
+				}
+		
+				ApplyDamage( damage )
+
 				self:PlayEffects_b(unit)
 			else
 				self:PlayEffects_e(unit)
@@ -135,9 +144,9 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 				self:PlayEffects_c(pos)
 			end
 			if stacks > 0 then
-				self:PlayEffects_a(pos)
+				self:PlayEffects_a(pos, _self.radius)
 			else
-				self:PlayEffects_d(pos)
+				self:PlayEffects_d(pos, _self.radius)
 			end
 		end,
 	}
@@ -165,14 +174,20 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 
--- On Projectile Finish
-function spectre_basic_attack:PlayEffects_a()
+-- On Projectile Finish (CHARGED)
+function spectre_basic_attack:PlayEffects_a(pos, radius)
 	local caster = self:GetCaster()
 	-- Create Particles
 	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
 	ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
 	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+	local particle_cast_b = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, pos)
+	ParticleManager:SetParticleControl( effect_cast_b, 2, Vector(radius, 1, 1))
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
 
 -- On Projectile hit enemy
@@ -202,7 +217,8 @@ function spectre_basic_attack:PlayEffects_c(pos)
 end
 
 -- On Projectile finish (NON CHARGED)
-function spectre_basic_attack:PlayEffects_d( pos )
+function spectre_basic_attack:PlayEffects_d( pos, radius )
+	
 	local caster = self:GetCaster()
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
@@ -210,6 +226,14 @@ function spectre_basic_attack:PlayEffects_d( pos )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos)
 	ParticleManager:SetParticleControlForward( effect_cast, 0, (caster:GetOrigin()-pos):Normalized() * -1 )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+	local particle_cast_b = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, pos)
+	ParticleManager:SetParticleControl( effect_cast_b, 2, Vector(radius, 1, 1))
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	
+
 end
 
 

@@ -1,5 +1,3 @@
--- Primary Dotarite script
-RITE_VERSION = "1.00"
 RITE_DEBUG_SPEW = true -- Complete Debug?
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 

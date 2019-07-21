@@ -33,6 +33,7 @@ function sky_basic_attack:OnEndPseudoCastPoint()
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local damage_bonus_charged = self:GetSpecialValueFor("damage_bonus")
 
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
@@ -97,6 +98,16 @@ function sky_basic_attack:OnEndPseudoCastPoint()
 				--Silence enemy
 				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = self.silence_duration})
 				self:PlayEffects_b(_self:GetPosition())
+
+				local damage = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = damage_bonus_charged,
+					damage_type = DAMAGE_TYPE_PHYSICAL,
+				}
+		
+				ApplyDamage( damage )
+
 			else
 				self:PlayEffects_d(_self:GetPosition())
 			end
