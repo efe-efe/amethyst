@@ -2,25 +2,25 @@ wisp_basic_attack = class ({})
 LinkLuaModifier( "modifier_wisp_basic_attack", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_wisp_basic_attack_link", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack_link", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_wisp_basic_attack_link_negative", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack_link_negative", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function wisp_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-	self.point = self:GetCursorPosition()
+	self:SetActivated(false)
 
 	-- Animation and pseudo cast point
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_generic_pseudo_cast_point_lua",
+		"modifier_generic_pseudo_cast_point",
 		{ duration = cast_point }
 	)
 end
 
-function wisp_basic_attack:OnEndPseudoCastPoint()
+function wisp_basic_attack:OnEndPseudoCastPoint( pos )
+	self:SetActivated(true)
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
@@ -35,7 +35,7 @@ function wisp_basic_attack:OnEndPseudoCastPoint()
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	-- Extra data
 	local link_duration = self:GetSpecialValueFor("link_duration")
@@ -117,6 +117,10 @@ function wisp_basic_attack:OnEndPseudoCastPoint()
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+end
+
+function wisp_basic_attack:OnStopPseudoCastPoint()
+	self:SetActivated(true)
 end
 
 --------------------------------------------------------------------------------

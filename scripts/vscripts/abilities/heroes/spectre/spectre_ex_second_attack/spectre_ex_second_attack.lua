@@ -5,9 +5,28 @@ LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spec
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_ex_second_attack:OnSpellStart()
+	-- Initialize variables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.0})
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point", 
+		{ 
+			duration = cast_point,
+			can_walk = 0
+		}
+	)
+end
+
+--------------------------------------------------------------------------------
+-- End casting
+function spectre_ex_second_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
 	
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_dark_willow/dark_willow_base_attack.vpcf"
@@ -18,7 +37,7 @@ function spectre_ex_second_attack:OnSpellStart()
     local projectile_vision = 0
 	local damage = self:GetAbilityDamage()
 	self.debuff_duration = self:GetSpecialValueFor("debuff_duration")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	-- logic
 	local projectile = {

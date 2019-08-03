@@ -1,16 +1,17 @@
 axe_basic_attack = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function axe_basic_attack:OnSpellStart()
+
 	self:SetActivated(false)
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
+
 	-- Animation and pseudo cast point
 	self:Animate()
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
 end
 
 function axe_basic_attack:OnEndPseudoCastPoint()

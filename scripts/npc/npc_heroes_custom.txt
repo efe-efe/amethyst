@@ -12,10 +12,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"wisp_basic_attack"             // Q Spell	
-		"Ability2"						"wisp_second_attack"             // Q Spell
-		"Ability3"						"wisp_counter"							
-		"Ability4"						"wisp_special_attack"
+		"Ability1"						"wisp_counter"             // Q Spell	
+		"Ability2"						"wisp_basic_attack"             // Q Spell
+		"Ability3"						"wisp_special_attack"							
+		"Ability4"						"wisp_second_attack"
 		"Ability5"						"wisp_ex_ultimate"					
 		"Ability6"						"wisp_ultimate"
 		"Ability7"						"wisp_ex_counter"					
@@ -76,10 +76,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"spectre_basic_attack"
-		"Ability2"						"spectre_second_attack"
-		"Ability3"						"spectre_counter_lua"
-		"Ability4"						"spectre_special_attack"
+		"Ability1"						"spectre_counter_lua"
+		"Ability2"						"spectre_basic_attack"
+		"Ability3"						"spectre_special_attack"
+		"Ability4"						"spectre_second_attack"
 		"Ability5"						"spectre_ex_ultimate"
 		"Ability6"						"spectre_ultimate"             // Q Spell	
 		"Ability7"						"spectre_ex_second_attack"             // Q Spell
@@ -139,10 +139,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"sky_basic_attack"	// Q Spell	
-		"Ability2"						"sky_second_attack"             // Q Spell
-		"Ability3"						"sky_counter"
-		"Ability4"						"sky_special_attack"							
+		"Ability1"						"sky_counter"	// Q Spell	
+		"Ability2"						"sky_basic_attack"             // Q Spell
+		"Ability3"						"sky_special_attack"
+		"Ability4"						"sky_second_attack"							
 		"Ability5"						"sky_ex_ultimate"					
 		"Ability6"						"sky_ultimate"
 		"Ability7"						"sky_ex_basic_attack"	
@@ -201,16 +201,15 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"sniper_basic_attack"
-		"Ability2"						"sniper_second_attack"
-		"Ability3"						"sniper_counter"
-		"Ability4"						"sniper_special_attack"
+		"Ability1"						"sniper_counter"
+		"Ability2"						"sniper_basic_attack"
+		"Ability3"						"sniper_special_attack"
+		"Ability4"						"sniper_second_attack"
 		"Ability5"						"sniper_ex_ultimate"
 		"Ability6"						"sniper_ultimate"
 		"Ability7"						"sniper_ex_second_attack"
 		"Ability8"						"sniper_ex_mobility"
 		"Ability9"						"sniper_mobility"
-		"Ability10"						"sniper_second_attack_projectile"
 		"Ability11"						"sniper_ultimate_projectile"
 
 		//Vision
@@ -266,10 +265,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"phantom_basic_attack"
-		"Ability2"						"phantom_second_attack"
-		"Ability3"						"phantom_counter"
-		"Ability4"						"phantom_special_attack"
+		"Ability1"						"phantom_counter"
+		"Ability2"						"phantom_basic_attack"
+		"Ability3"						"phantom_special_attack"
+		"Ability4"						"phantom_second_attack"
 		"Ability5"						"phantom_ex_ultimate"
 		"Ability6"						"phantom_ultimate"
 		"Ability7"						"phantom_ex_basic_attack"
@@ -288,8 +287,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"10"										// Damage range min.
-		"AttackDamageMax"			"10"										// Damage range max.	
+		"AttackDamageMin"			"9"										// Damage range min.
+		"AttackDamageMax"			"9"										// Damage range max.	
 		"AttackRate"				"0.3"									// Speed of attack.
 		"AttackAnimationPoint"		"0.1"	
 		"AttackRange"				"80"
@@ -329,10 +328,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"axe_basic_attack"
-		"Ability2"						"axe_second_attack"
-		"Ability3"						"axe_counter"
-		"Ability4"						"axe_special_attack"
+		"Ability1"						"axe_counter"
+		"Ability2"						"axe_basic_attack"
+		"Ability3"						"axe_special_attack"
+		"Ability4"						"axe_second_attack"
 		"Ability5"						"axe_ex_ultimate"
 		"Ability6"						"axe_ultimate"
 		"Ability7"						"axe_ex_second_attack"
@@ -392,10 +391,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"tinker_basic_attack"             // Q Spell	
-		"Ability2"						"tinker_second_attack"             // Q Spell
-		"Ability3"						"tinker_counter"							
-		"Ability4"						"tinker_special_attack"
+		"Ability1"						"tinker_counter"             // Q Spell	
+		"Ability2"						"tinker_basic_attack"             // Q Spell
+		"Ability3"						"tinker_special_attack"							
+		"Ability4"						"tinker_second_attack"
 		"Ability5"						"tinker_ex_ultimate"					
 		"Ability6"						"tinker_ultimate"
 		"Ability7"						"tinker_ex_second_attack"					
@@ -455,10 +454,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"phoenix_basic_attack"
-		"Ability2"						"phoenix_second_attack"
-		"Ability3"						"phoenix_counter"
-		"Ability4"						"phoenix_special_attack"
+		"Ability1"						"phoenix_counter"
+		"Ability2"						"phoenix_basic_attack"
+		"Ability3"						"phoenix_special_attack"
+		"Ability4"						"phoenix_second_attack"
 		"Ability5"						"phoenix_ex_ultimate"
 		"Ability6"						"phoenix_ultimate"             // Q Spell	
 		"Ability7"						"phoenix_ex_counter"             // Q Spell
@@ -519,10 +518,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"nevermore_basic_attack"             // Q Spell	
-		"Ability2"						"nevermore_second_attack"             // Q Spell
-		"Ability3"						"nevermore_counter"							
-		"Ability4"						"nevermore_special_attack"
+		"Ability1"						"nevermore_counter"             // Q Spell	
+		"Ability2"						"nevermore_basic_attack"             // Q Spell
+		"Ability3"						"nevermore_special_attack"							
+		"Ability4"						"nevermore_second_attack"
 		"Ability5"						"nevermore_ex_ultimate"					
 		"Ability6"						"nevermore_ultimate"
 		"Ability7"						"nevermore_ex_special_attack"					
@@ -541,8 +540,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"8"										// Damage range min.
-		"AttackDamageMax"			"8"										// Damage range max.	
+		"AttackDamageMin"			"12"										// Damage range min.
+		"AttackDamageMax"			"12"										// Damage range max.	
 		"AttackRate"				"0.4"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.3"	
 		"AttackRange"				"80"

@@ -4,7 +4,6 @@ LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_ge
 LinkLuaModifier( "modifier_skywrath_mage_basic_attack_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_skywrath_mage_basic_attack_charged_visuals_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_charged_visuals_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", "abilities/heroes/skywrath_mage/skywrath_mage_basic_attack_lua/modifier_skywrath_mage_basic_attack_charged_debuff_visuals_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -17,7 +16,7 @@ function skywrath_mage_basic_attack_charged_lua:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
 end
 
 function skywrath_mage_basic_attack_charged_lua:OnEndPseudoCastPoint()

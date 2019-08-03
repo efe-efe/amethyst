@@ -1,12 +1,30 @@
 sniper_ultimate_projectile = class({})
 LinkLuaModifier( "modifier_sniper_ultimate_thinker", "abilities/heroes/sniper/sniper_ultimate/modifier_sniper_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
 
-
+--------------------------------------------------------------------------------
+-- Ability Start
 function sniper_ultimate_projectile:OnSpellStart()
+	-- Initialize variables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=0.4})
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point", 
+		{ 
+			duration = cast_point,
+			can_walk = 1
+		}
+	)
+end
+
+function sniper_ultimate_projectile:OnEndPseudoCastPoint( pos )
 	-- Initialize variables
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
 	local ability = caster:FindAbilityByName("sniper_ultimate")
 
 	-- Projectile data
@@ -14,7 +32,7 @@ function sniper_ultimate_projectile:OnSpellStart()
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	-- Extra data

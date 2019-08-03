@@ -1,5 +1,4 @@
 tinker_ex_ultimate = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Channeling
@@ -12,9 +11,14 @@ function tinker_ex_ultimate:OnSpellStart(  )
 	StopSoundOn( sound_cast, self:GetCaster() )
 	
 	-- Animation and pseudo cast point
-	self:Animate()
+	StartAnimation(self:GetCaster(), {
+		duration = cast_point, 
+		activity = ACT_DOTA_TELEPORT_END, 
+		translate = "bot", 
+		rate = 1.0
+	})
 	self:PlayEffects()
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point, no_target = 1 })
 end
 
 --------------------------------------------------------------------------------
@@ -55,12 +59,3 @@ function tinker_ex_ultimate:OnEndPseudoCastPoint()
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
-function tinker_ex_ultimate:Animate()
-	local cast_point = self:GetCastPoint()
-	StartAnimation(self:GetCaster(), {
-		duration = cast_point, 
-		activity = ACT_DOTA_TELEPORT_END, 
-		translate = "bot", 
-		rate = 1.0
-	})
-end

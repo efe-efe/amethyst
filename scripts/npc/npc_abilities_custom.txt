@@ -13,12 +13,11 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_spirits"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Casting
@@ -93,19 +92,16 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_overcharge"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.4"
-		"AnimationPlaybackRate" 		"0.7"
+		"AbilityCastPoint"				"1.0"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -117,7 +113,7 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"20"
+		"AbilityDamage"					"30"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -673,7 +669,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.7"
+		"AbilityCastPoint"				"1.0"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -685,7 +681,7 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"23"
+		"AbilityDamage"					"30"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -730,17 +726,15 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_ex_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
 		"AbilityCastPoint"				"0.2"
 		"AnimationPlaybackRate" 		"1.0"
 
@@ -1077,23 +1071,20 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_haunt"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
 		"AbilityCastPoint"				"0.6"
-		"AnimationPlaybackRate" 		"0.4"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"7.0"
+		"AbilityCooldown"				"0.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -1801,7 +1792,7 @@
 			}
 		}
 	}
-
+	
 	"sniper_second_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -1810,17 +1801,17 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"sniper_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
-		"AnimationPlaybackRate" 		"1.0"
-		"AbilityCastPoint"				"1.2"
+		"AbilityCastPoint"				"1.6"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -1834,57 +1825,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityDamage"					"38"
 
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"stun_duration"				"0.5"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"mana_gain"					"14"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"reduction_per_hit"			"35"
-			}
-		}
-	}
-	
-	"sniper_second_attack_projectile"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack/sniper_second_attack_projectile"
-		
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"sniper_second_attack_projectile"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
-		"MaxLevel"						"1"
-
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.1"
-
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"0.0"
-
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"0"
-		
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
 		"precache"
@@ -1913,6 +1853,21 @@
 			}
 			"04"
 			{
+				"var_type"					"FIELD_FLOAT"
+				"stun_duration"				"0.5"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"mana_gain"					"14"
+			}
+			"06"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"reduction_per_hit"			"35"
+			}
+			"07"
+			{
 				"var_type"					"FIELD_INTEGER"
 				"quick_cast"				"1"
 			}
@@ -1926,7 +1881,7 @@
 		
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityTextureName"			"sniper_second_attack_projectile"
+		"AbilityTextureName"			"sniper_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -2258,18 +2213,15 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"sniper_headshot"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
-		"AnimationPlaybackRate" 		"0.6"
 		"AbilityCastPoint"				"0.3"
 
 		// Time		
@@ -2337,8 +2289,8 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AnimationPlaybackRate" 		"1.0"
-		"AbilityCastPoint"				"0.5"
+		"AnimationPlaybackRate" 		"1.5"
+		"AbilityCastPoint"				"0.6"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -2369,7 +2321,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"3.5"
+				"duration"					"1.5"
 			}
 		}
 	}
@@ -2382,7 +2334,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"sniper_assassinate"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IMMEDIATE" 
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -2393,11 +2345,11 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.1"
+		"AbilityCastPoint"				"0.35"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"0.3"
+		"AbilityCooldown"				"0.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -2453,7 +2405,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phantom_basic_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -2464,6 +2416,11 @@
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"0.0"
+
+		// Casting		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+		"AbilityCastRange" 				"100"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -2476,7 +2433,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
+				"projectile_range"			"100"
 			}
 			"02"
 			{
@@ -2486,7 +2443,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"mana_gain"					"6"
+				"mana_gain"					"5"
 			}
 			"04"
 			{
@@ -2517,8 +2474,6 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.2"
-		"AnimationPlaybackRate"			"1.5"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -2564,6 +2519,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.2"
+		"AbilityCastRange" 				"100"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -2584,7 +2540,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"150"
+				"projectile_range"			"100"
 			}
 			"02"
 			{
@@ -2674,6 +2630,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.1"
+		"AbilityCastRange" 				"1200"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -2695,7 +2652,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1400"
+				"projectile_range"			"1200"
 			}
 			"03"
 			{
@@ -2728,19 +2685,17 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phantom_ex_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
+		"AbilityCastRange"				"1200"
 		"AbilityCastPoint"				"0.3"
-		"AnimationPlaybackRate" 		"1.2"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -2766,7 +2721,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1400"
+				"projectile_range"			"1200"
 			}
 			"03"
 			{
@@ -2794,7 +2749,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phantom_assassin_phantom_strike"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"MaxLevel"						"1"
 		
 		// Casting
@@ -2828,7 +2783,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"buff_duration"				"1.5"
+				"buff_duration"				"1.3"
 			}
 			"04"
 			{
@@ -2847,15 +2802,14 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"phantom_assassin_coup_de_grace"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"MaxLevel"						"1"
 		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.6"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_3"
-		"AnimationPlaybackRate" 		"0.7"
-		
+		"AbilityCastRange"				"1400"
+
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"0.0"
@@ -2875,12 +2829,17 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"range"					"1500"
+				"range"					"1400"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_INTEGER"
 				"damage_per_stack"		"10"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"quick_cast"			"1"
 			}
 		}
 	}
@@ -3561,7 +3520,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.5"
+		"AbilityCastPoint"				"0.3"
 		"AnimationPlaybackRate"			"0.7"
 		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
 		"AbilityCastRange"				"2500"
@@ -3791,7 +3750,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"tinker_ex_counter"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -4667,7 +4626,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"nevermore_necromastery"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_ATTACK | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -4678,6 +4637,11 @@
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCooldown"				"0.0"
+		"AbilityCastPoint"				"0.3" //CANT SET IT DINAMICALLY :((
+		
+		// Casting
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange" 				"1200"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -4701,7 +4665,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1700"
+				"projectile_range"			"1200"
 			}
 			"03"
 			{
@@ -4726,12 +4690,12 @@
 			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"max_stacks"				"10"
+				"max_stacks"				"5"
 			}
 			"08"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"7.0"
+				"duration"					"5.0"
 			}
 		}
 	}
@@ -4744,7 +4708,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"nevermore_shadowraze1"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
@@ -4753,14 +4717,12 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastAnimation"			"ACT_DOTA_RAZE_2"
 		"AbilityCastRange"				"1500"
-		"AbilityCastPoint"				"0.4"
-		"AnimationPlaybackRate"			"1.4"
+		"AbilityCastPoint"				"0.6"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"7.0"
+		"AbilityCooldown"				"9.0"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -4768,7 +4730,7 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"14"
+		"AbilityDamage"					"10"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -4793,12 +4755,17 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"mana_gain"					"5"
+				"mana_gain"					"7"
 			}
 			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"stack_duration"			"4.0"
+			}
+			"05"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"quick_cast"				"1"
 			}
 		}
 	}
@@ -4879,6 +4846,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.6"
+		"AbilityCastRange" 				"1700"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -4890,7 +4858,7 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"20"
+		"AbilityDamage"					"15"
 
 		// Precache
 		//-------------------------------------------------------------------------------------------------------------
@@ -4948,7 +4916,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"nevermore_mobility"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"MaxLevel"						"1"
@@ -4956,8 +4924,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.3"
-		"AbilityCastAnimation"			"ACT_DOTA_RAZE_1"
-		"AnimationPlaybackRate"			"1.1"
+		"AbilityCastRange"				"1300"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -5013,7 +4980,7 @@
 		"AbilityTextureName"			"nevermore_requiem"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"MaxLevel"						"1"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"SpellDispellableType"			"SPELL_DISPELLABLE_YES"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -5082,7 +5049,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"nevermore_ex_ultimate"
 		"MaxLevel"						"1"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 
 
@@ -5104,7 +5071,7 @@
 			"01"
 			{
 				"var_type"			"FIELD_INTEGER"
-				"heal_per_soul"		"3"
+				"heal_per_soul"		"6"
 			}
 		}
 	}
@@ -5117,14 +5084,12 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"nevermore_ex_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.3"
-		"AnimationPlaybackRate"			"2.7"
-		"AbilityCastAnimation"			"ACT_DOTA_VICTORY"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -5164,7 +5129,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"nevermore_ex_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"MaxLevel"						"1"
@@ -5172,10 +5137,8 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastAnimation"			"ACT_DOTA_RAZE_2"
 		"AbilityCastRange"				"1500"
-		"AbilityCastPoint"				"0.4"
-		"AnimationPlaybackRate"			"1.4"
+		"AbilityCastPoint"				"0.6"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -5202,12 +5165,17 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"120"
+				"radius"					"150"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"	
 				"souls"						"6"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_INTEGER"	
+				"quick_cast"				"1"
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 
 tinker_second_attack = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_tinker_second_attack", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_tinker_second_attack_thinker", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
 
@@ -13,18 +12,17 @@ end
 function tinker_second_attack:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
-	self.point = self:GetCursorPosition()
 	self.radius = self:GetSpecialValueFor("radius")
 	local cast_point = self:GetCastPoint()
 
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point })
+	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_VICTORY, rate=1.0})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point })
 end
 
-function tinker_second_attack:OnEndPseudoCastPoint()
+function tinker_second_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
-	local direction = (self.point - caster:GetOrigin()):Normalized()
+	local direction = (pos - caster:GetOrigin()):Normalized()
 	local duration = 0.8
 
 	CreateModifierThinker(
@@ -93,16 +91,5 @@ function tinker_second_attack:PlayEffects( target )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 
 	EmitSoundOn( sound_cast, target )
-end
-
-function tinker_second_attack:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_VICTORY, rate=1.0})
 end
 

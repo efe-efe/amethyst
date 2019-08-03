@@ -1,5 +1,4 @@
 skywrath_mage_basic_attack_lua = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -11,7 +10,7 @@ function skywrath_mage_basic_attack_lua:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
 end
 
 

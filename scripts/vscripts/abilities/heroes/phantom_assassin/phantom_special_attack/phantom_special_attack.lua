@@ -1,7 +1,6 @@
 
 phantom_special_attack = class({})
 LinkLuaModifier( "modifier_phantom_assassin_strike_stack_lua", "abilities/heroes/phantom_assassin/phantom_assassin_shared_modifiers/modifier_phantom_assassin_strike_stack_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
 
 function phantom_special_attack:GetAOERadius()
@@ -14,14 +13,13 @@ function phantom_special_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-	self.point = self:GetCursorPosition()
 	
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point })
+	StartAnimation(caster, { duration=0.4, activity=ACT_DOTA_SPAWN, rate=2.0 })
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point })
 end
 
-function phantom_special_attack:OnEndPseudoCastPoint()
+function phantom_special_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -36,7 +34,7 @@ function phantom_special_attack:OnEndPseudoCastPoint()
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -135,16 +133,4 @@ function phantom_special_attack:PlayEffects_b( )
 	-- Create Sound
 	local sound_cast = "Hero_PhantomAssassin.Dagger.Cast"
 	EmitSoundOn( sound_cast, self:GetCaster() )
-end
-
-function phantom_special_attack:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	caster:SetForwardVector(direction:Normalized())
-	StartAnimation(caster, { duration=1.0, activity=ACT_DOTA_SPAWN, rate=2.0 })
 end

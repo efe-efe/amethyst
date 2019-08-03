@@ -76,7 +76,9 @@ function GameMode:InitGameMode()
     LinkLuaModifier( "modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier( "modifier_middle_orb_exiled", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", LUA_MODIFIER_MOTION_NONE )
-
+    LinkLuaModifier( "modifier_generic_pseudo_cast_point", "abilities/base/modifier_generic_pseudo_cast_point", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier( "modifier_generic_movement", "abilities/base/modifier_generic_movement", LUA_MODIFIER_MOTION_NONE )
+    
     DebugPrint('[RITE] Useful modifiers linked')
 end
 
@@ -108,6 +110,7 @@ function GameMode:CaptureGameMode()
         self.iMaxTreshold = 40
         self.ORBS_SPAWN_TIME = 25.0
         self.MIDDLE_ORB_SPAWN_TIME = 30.0
+        self.mouse_positions = {}
 
         -------------------------------
         -- Set GameMode parameters
@@ -116,7 +119,43 @@ function GameMode:CaptureGameMode()
         mode:SetBuybackEnabled( BUYBACK_ENABLED )
         mode:SetFixedRespawnTime( FIXED_RESPAWN_TIME ) 
         mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
+
+        -------------------------------
+        -- Link Client/Server Events
+        -------------------------------
+        --local this = self -- Grab a reference to self
+        CustomGameEventManager:RegisterListener('updateMousePosition', function(eventSourceIndex, args)
+            local mouse_position = Vector(args.x, args.y, args.z)
+            self:UpdateMousePosition(mouse_position, args.playerID)
+        end)
+
+        CustomGameEventManager:RegisterListener('moveUnit', function(eventSourceIndex, args)
+            local direction = args.direction
+            local unit = EntIndexToHScript(args.entityIndex)
+
+            --Not initialized yet
+            if unit.direction == nil then return end
+
+            if args.direction == "right" then unit.direction.x = unit.direction.x + 1 end
+            if args.direction == "left" then unit.direction.x = unit.direction.x - 1 end
+            if args.direction == "up" then unit.direction.y = unit.direction.y + 1 end
+            if args.direction == "down" then unit.direction.y = unit.direction.y - 1 end
+        end)
+
+        CustomGameEventManager:RegisterListener('stopUnit', function(eventSourceIndex, args)
+            local direction = args.direction
+            local unit = EntIndexToHScript(args.entityIndex)
+
+            if args.direction == "right" then unit.direction.x = unit.direction.x - 1 end
+            if args.direction == "left" then unit.direction.x = unit.direction.x + 1 end
+            if args.direction == "up" then unit.direction.y = unit.direction.y - 1 end
+            if args.direction == "down" then unit.direction.y = unit.direction.y + 1 end
+        end)
     end 
+end
+
+function GameMode:UpdateMousePosition(pos, playerID)
+    self.mouse_positions[playerID] = pos
 end
 
 ---------------------------------------------------------------------------
@@ -127,7 +166,7 @@ function GameMode:OnThink()
         return 1
     end
     
-	if self.countdownEnabled == true then
+    if self.countdownEnabled == true then
         CountdownTimer()
         if nCOUNTDOWNTIMER <= 0 then
             self.countdownEnabled = false

@@ -1,27 +1,28 @@
 spectre_second_attack = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_second_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
-	self.point = self:GetCursorPosition()
 	local cast_point = self:GetCastPoint()
 	
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=0.25})
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point_lua", 
-		{ duration = cast_point }
+		"modifier_generic_pseudo_cast_point", 
+		{ 
+			duration = cast_point,
+			can_walk = 0
+		}
 	)
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function spectre_second_attack:OnEndPseudoCastPoint()
+function spectre_second_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 
 	-- load data
@@ -36,7 +37,7 @@ function spectre_second_attack:OnEndPseudoCastPoint()
 	
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -134,18 +135,6 @@ function spectre_second_attack:PlayEffects_b( pos )
 
 	ParticleManager:ReleaseParticleIndex( effect_cast_a )
 	ParticleManager:ReleaseParticleIndex( effect_cast_b )
-end
-
-
-function spectre_second_attack:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=0.25})
 end
 
 

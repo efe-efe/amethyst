@@ -1,5 +1,4 @@
 tinker_counter = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_pre_silence_lua", "abilities/generic/modifier_generic_pre_silence_lua", LUA_MODIFIER_MOTION_NONE )
 
 function tinker_counter:GetAOERadius()
@@ -21,12 +20,11 @@ end
 function tinker_counter:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
-    self.point = self:GetCursorPosition()
 	local cast_point = self:GetCastPoint()
 
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_TELEPORT_END, translate="bot", rate=1.0})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
 end
 
 function tinker_counter:Refract( source, targets, jumps )
@@ -155,7 +153,7 @@ function tinker_counter:Refract( source, targets, jumps )
 end
 
 
-function tinker_counter:OnEndPseudoCastPoint()
+function tinker_counter:OnEndPseudoCastPoint( pos )
 	-- load data
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
@@ -171,7 +169,7 @@ function tinker_counter:OnEndPseudoCastPoint()
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, -80 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, -80 )):Normalized()
 
 	-- Projectile
 	local projectile = {
@@ -322,15 +320,3 @@ function tinker_counter:PlayEffects_b( source, point )
 	EmitSoundOn( sound_cast, source )
 	EmitSoundOnLocationWithCaster( point, sound_target, source )
 end
-
-function tinker_counter:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_TELEPORT_END, translate="bot", rate=1.0})
-end
-

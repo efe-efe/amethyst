@@ -1,5 +1,4 @@
 troll_second_attack = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -24,7 +23,7 @@ function troll_second_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self , 
-		"modifier_generic_pseudo_cast_point_lua", 
+		"modifier_generic_pseudo_cast_point", 
 		{ duration = attack_speed }
 	)
 end

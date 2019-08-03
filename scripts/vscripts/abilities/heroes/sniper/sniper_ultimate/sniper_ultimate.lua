@@ -16,19 +16,10 @@ function sniper_ultimate:OnAbilityPhaseInterrupted()
 	return true -- if success
 end
 
-
-
 function sniper_ultimate:OnSpellStart()
     local caster = self:GetCaster()
     local attack_time = self:GetSpecialValueFor("duration")
     
-    caster:SwapAbilities( 
-        "sniper_ultimate_projectile",
-        "sniper_ultimate",
-        true,
-        false
-    )
-
     caster:AddNewModifier(
         caster, -- player source
 		self, -- ability source

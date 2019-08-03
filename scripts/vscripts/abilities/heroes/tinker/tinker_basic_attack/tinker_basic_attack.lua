@@ -1,5 +1,4 @@
 tinker_basic_attack = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -8,19 +7,17 @@ function tinker_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
 
-	self.point = self:GetCursorPosition()
-
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
+	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_ATTACK, rate=1.5})
 	caster:AddNewModifier(
 		caster, 
 		self , 
-		"modifier_generic_pseudo_cast_point_lua", 
+		"modifier_generic_pseudo_cast_point", 
 		{ duration = cast_point }
 	)
 end
 
-function tinker_basic_attack:OnEndPseudoCastPoint()
+function tinker_basic_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -35,7 +32,7 @@ function tinker_basic_attack:OnEndPseudoCastPoint()
 	
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, -80 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, -80 )):Normalized()
 
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
@@ -126,17 +123,6 @@ function tinker_basic_attack:PlayEffects_b( pos )
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-end
-
-function tinker_basic_attack:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_ATTACK, rate=1.5})
 end
 
 --------------------------------------------------------------------------------

@@ -1,5 +1,4 @@
 phoenix_second_attack = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_phoenix_second_attack_thinker", "abilities/heroes/phoenix/phoenix_second_attack/modifier_phoenix_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_phoenix_special_attack_charges", "abilities/heroes/phoenix/phoenix_second_attack/modifier_phoenix_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
 
@@ -21,15 +20,13 @@ function phoenix_second_attack:OnSpellStart()
 	-- Initialize bariables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-	self.point = self:GetCursorPosition()
 
 	-- Animation and pseudo cast point
-	self:Animate()
-	self:Rotate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.5})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
 end
 
-function phoenix_second_attack:OnEndPseudoCastPoint()
+function phoenix_second_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -41,13 +38,13 @@ function phoenix_second_attack:OnEndPseudoCastPoint()
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	local modifier = caster:FindModifierByName("modifier_phoenix_special_attack_charges")
 
 
     -- determine target position
-    local difference = (self.point - origin):Length2D()
+    local difference = (pos - origin):Length2D()
 	if difference > max_distance then
         difference = max_distance
 	end

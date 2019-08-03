@@ -1,7 +1,6 @@
 sky_second_attack = class({})
 LinkLuaModifier( "modifier_sky_second_attack_thinker", "abilities/heroes/skywrath_mage/sky_second_attack/modifier_sky_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_sky_second_attack_charges", "abilities/heroes/skywrath_mage/sky_second_attack/modifier_sky_second_attack_charges", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 
 -- Set AOE indicator
@@ -15,15 +14,14 @@ end
 function sky_second_attack:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
-    self.point = self:GetCursorPosition()
 	local cast_point = self:GetCastPoint()
 
     -- Animation and pseudo cast point
-	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.1})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
 end
 
-function sky_second_attack:OnEndPseudoCastPoint()
+function sky_second_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 
 	CreateModifierThinker(
@@ -31,7 +29,7 @@ function sky_second_attack:OnEndPseudoCastPoint()
 		self, --hAbility
 		"modifier_sky_second_attack_thinker", --modifierName
 		{}, --paramTable
-		self.point, --vOrigin
+		pos, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
 	)
@@ -78,15 +76,4 @@ end
 -- Passive Modifier
 function sky_second_attack:GetIntrinsicModifierName()
 	return "modifier_sky_second_attack_charges"
-end
-
-function sky_second_attack:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.1})
 end

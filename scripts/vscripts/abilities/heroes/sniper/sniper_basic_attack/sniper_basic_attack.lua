@@ -1,5 +1,4 @@
 sniper_basic_attack = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_sniper_basic_attack_charges", "abilities/heroes/sniper/sniper_basic_attack/modifier_sniper_basic_attack_charges", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
@@ -14,21 +13,20 @@ function sniper_basic_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-	self.point = self:GetCursorPosition()
 
 	self:SetActivated(false)
 	
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
+	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_RUN, translate="aggressive", rate=2.0})
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_generic_pseudo_cast_point_lua",
+		"modifier_generic_pseudo_cast_point",
 		{ duration = cast_point }
 	)
 end
 
-function sniper_basic_attack:OnEndPseudoCastPoint()
+function sniper_basic_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -43,7 +41,7 @@ function sniper_basic_attack:OnEndPseudoCastPoint()
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	-- Projectile
 	local projectile = {
@@ -151,7 +149,6 @@ function sniper_basic_attack:Animate(point)
 	local direction = (point - origin)
 	local directionAsAngle = VectorToAngles(direction)
 	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_RUN, translate="aggressive", rate=2.0})
 end
 
 

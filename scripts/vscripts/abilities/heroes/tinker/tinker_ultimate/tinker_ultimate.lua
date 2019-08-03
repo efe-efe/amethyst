@@ -1,5 +1,4 @@
 tinker_ultimate = class({})
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_tinker_ultimate", "abilities/heroes/tinker/tinker_ultimate/modifier_tinker_ultimate", LUA_MODIFIER_MOTION_NONE )
 
 function tinker_ultimate:GetAOERadius()
@@ -7,33 +6,22 @@ function tinker_ultimate:GetAOERadius()
 end
 
 --------------------------------------------------------------------------------
--- Ability Phase Start
-function tinker_ultimate:OnAbilityPhaseStart()
-	-- play effects
-	local sound_cast = "tinker_tink_laugh_04"
-	EmitGlobalSound( sound_cast )
-	return true -- if success
-end
-
---------------------------------------------------------------------------------
 -- Ability Start
 function tinker_ultimate:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
-    self.point = self:GetCursorPosition()
 	local cast_point = self:GetCastPoint()
 
+	-- play effects
+	local sound_cast = "tinker_tink_laugh_04"
+	EmitGlobalSound( sound_cast )
+
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	StartAnimation(caster, { duration=1.0, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0 })
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
 end
 
-function tinker_ultimate:OnStopPseudoCastPoint()
-	-- Give Mana
-	self:GetCaster():GiveMana(self:GetManaCost(-1))    
-end
-
-function tinker_ultimate:OnEndPseudoCastPoint()
+function tinker_ultimate:OnEndPseudoCastPoint( pos )
 	-- load data
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
@@ -50,7 +38,7 @@ function tinker_ultimate:OnEndPseudoCastPoint()
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, origin.z )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, origin.z )):Normalized()
 
 	-- Projectile
 	local projectile = {
@@ -199,15 +187,3 @@ function tinker_ultimate:PlayEffects_b( source, point )
 	EmitSoundOn( sound_cast, source )
 	EmitSoundOnLocationWithCaster( point, sound_target, source )
 end
-
-function tinker_ultimate:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_TELEPORT_END, translate="bot", rate=1.0})
-end
-

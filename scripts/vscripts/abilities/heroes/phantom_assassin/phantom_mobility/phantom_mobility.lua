@@ -1,31 +1,39 @@
 phantom_mobility = class({})
 LinkLuaModifier( "modifier_phantom_mobility", "abilities/heroes/phantom_assassin/phantom_mobility/modifier_phantom_mobility", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_mobility:OnAbilityPhaseStart()
-	-- play effects
+--------------------------------------------------------------------------------
+-- Ability Start
+function phantom_mobility:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
 	self:PlayEffects_a()
 
-	return true -- if success
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.5})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+        duration = cast_point,
+        no_target = 1
+	})
 end
 
-function phantom_mobility:OnSpellStart()
+function phantom_mobility:OnEndPseudoCastPoint( pos )
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-    local point = self:GetCursorPosition()
     local max_range = self:GetSpecialValueFor("max_range")
     local buff_duration = self:GetSpecialValueFor("buff_duration")
 
 
     -- determine target position
-    local difference = point - origin
+    local difference = pos - origin
 
     if difference:Length2D() > max_range then
-        point = origin + (point - origin):Normalized() * max_range
+        pos = origin + (pos - origin):Normalized() * max_range
     end
 
     -- teleport
-    FindClearSpaceForUnit( caster, point , true )
+    FindClearSpaceForUnit( caster, pos , true )
 
     caster:AddNewModifier(
         caster,

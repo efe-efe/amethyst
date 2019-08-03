@@ -51,7 +51,7 @@ function modifier_phantom_counter:CheckState()
 		[MODIFIER_STATE_INVULNERABLE] = true,
 		[MODIFIER_STATE_OUT_OF_GAME] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
-		[MODIFIER_STATE_COMMAND_RESTRICTED] = true,
+		[MODIFIER_STATE_SILENCED] = true,
 	}
 
 	return state

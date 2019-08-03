@@ -8,11 +8,30 @@ function sniper_ex_ultimate:OnAbilityPhaseStart()
 	return true -- if success
 end
 
+--------------------------------------------------------------------------------
+-- Ability Start
 function sniper_ex_ultimate:OnSpellStart()
+	-- Initialize variables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=0.4})
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point", 
+		{ 
+			duration = cast_point,
+			can_walk = 0
+		}
+	)
+end
+
+function sniper_ex_ultimate:OnEndPseudoCastPoint( pos )
     -- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-    local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
     local knockback_distance = self:GetSpecialValueFor("knockback_distance")
     local damage = self:GetSpecialValueFor("damage_per_bullet")
@@ -23,7 +42,7 @@ function sniper_ex_ultimate:OnSpellStart()
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-    local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+    local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
     local a_x = projectile_direction.x
     local a_y = projectile_direction.y

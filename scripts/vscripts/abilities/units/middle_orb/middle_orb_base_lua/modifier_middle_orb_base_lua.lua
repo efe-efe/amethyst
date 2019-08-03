@@ -21,118 +21,6 @@ function modifier_middle_orb_base_lua:OnCreated( kv )
 		--Get values
 		self.mana = self:GetAbility():GetSpecialValueFor( "mana" )
 		self.heal = self:GetAbility():GetSpecialValueFor( "heal" )
-
-		--[[self.orb_timers_ent = {}
-		self.orb_timers_ent[1] = Entities:FindByName(nil, "orb_timer1")
-		self.orb_timers_ent[2] = Entities:FindByName(nil, "orb_timer2")
-		self.orb_timers_ent[3] = Entities:FindByName(nil, "orb_timer3")
-		self.orb_timers_ent[4] = Entities:FindByName(nil, "orb_timer4")
-		self.orb_timers_ent[5] = Entities:FindByName(nil, "orb_timer5")
-		self.counter = 0.0
-		
-		for _,orb_timer_ent in pairs(self.orb_timers_ent) do
-			self.counter = self.counter + 5.0
-			local orb_origin = orb_timer_ent:GetOrigin()
-
-			self.orb_timers_ent[_].unit = CreateUnitByName(
-				"npc_dota_creature_middle_orb_timer", --szUnitName
-				orb_origin, --vLocation
-				true, --bFindClearSpace
-				nil, --hNPCOwner
-				nil, --hUnitOwner
-				DOTA_TEAM_NOTEAM
-			)
-		end]]--
-
-		--[[
-		local orb_timer1 = Entities:FindByName(nil, "orb_timer1"):GetOrigin()
-		local orb_timer2 = Entities:FindByName(nil, "orb_timer2"):GetOrigin()
-		local orb_timer3 = Entities:FindByName(nil, "orb_timer3"):GetOrigin()
-		local orb_timer4 = Entities:FindByName(nil, "orb_timer4"):GetOrigin()
-		local orb_timer5 = Entities:FindByName(nil, "orb_timer5"):GetOrigin()
-
-		--Creating Orbs
-		self.middle_orb_timer_a = CreateUnitByName(
-			"npc_dota_creature_middle_orb_timer", --szUnitName
-			orb_timer1, --vLocation
-			true, --bFindClearSpace
-			nil, --hNPCOwner
-			nil, --hUnitOwner
-			7
-		)
-		self.middle_orb_timer_a:SetOrigin(orb_timer1)
-		self.middle_orb_timer_a:AddNewModifier(
-			self:GetParent(),
-			self:GetAbility(),
-			"modifier_middle_orb_exiled",
-			{ wait = 5.0 }
-		)
-
-		
-		self.middle_orb_timer_b = CreateUnitByName(
-			"npc_dota_creature_middle_orb_timer", --szUnitName
-			orb_timer2, --vLocation
-			true, --bFindClearSpace
-			nil, --hNPCOwner
-			nil, --hUnitOwner
-			7
-		)
-		self.middle_orb_timer_b:SetOrigin(orb_timer2)
-		self.middle_orb_timer_b:AddNewModifier(
-			self:GetParent(),
-			self:GetAbility(),
-			"modifier_middle_orb_exiled",
-			{ wait = 10.0 }
-		)
-		
-		self.middle_orb_timer_c = CreateUnitByName(
-			"npc_dota_creature_middle_orb_timer", --szUnitName
-			orb_timer3, --vLocation
-			true, --bFindClearSpace
-			nil, --hNPCOwner
-			nil, --hUnitOwner
-			7
-		)
-		self.middle_orb_timer_c:SetOrigin(orb_timer3)
-		self.middle_orb_timer_c:AddNewModifier(
-			self:GetParent(),
-			self:GetAbility(),
-			"modifier_middle_orb_exiled",
-			{ wait = 15.0 }
-		)
-		
-		self.middle_orb_timer_d = CreateUnitByName(
-			"npc_dota_creature_middle_orb_timer", --szUnitName
-			orb_timer4, --vLocation
-			true, --bFindClearSpace
-			nil, --hNPCOwner
-			nil, --hUnitOwner
-			7
-		)
-		self.middle_orb_timer_d:SetOrigin(orb_timer4)
-		self.middle_orb_timer_d:AddNewModifier(
-			self:GetParent(),
-			self:GetAbility(),
-			"modifier_middle_orb_exiled",
-			{ wait = 20.0 }
-		)
-		
-		self.middle_orb_timer_e = CreateUnitByName(
-			"npc_dota_creature_middle_orb_timer", --szUnitName
-			orb_timer5, --vLocation
-			true, --bFindClearSpace
-			nil, --hNPCOwner
-			nil, --hUnitOwner
-			7
-		)
-		self.middle_orb_timer_e:SetOrigin(orb_timer5)
-		self.middle_orb_timer_e:AddNewModifier(
-			self:GetParent(),
-			self:GetAbility(),
-			"modifier_middle_orb_exiled",
-			{ wait = 25.0 }
-		)
-		]]
 		self:StartIntervalThink(0.05)
 	end
 end
@@ -184,14 +72,6 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 				self:PlayEffects_b(ally)
 			end
 
-			-- Destroy all timers
-			--[[
-				self.middle_orb_timer_a:ForceKill( false )
-				self.middle_orb_timer_b:ForceKill( false )
-				self.middle_orb_timer_c:ForceKill( false )
-				self.middle_orb_timer_d:ForceKill( false )
-				self.middle_orb_timer_e:ForceKill( false )
-			]]
 			-- Graphics & sounds
 			self:PlayEffects()
 			caster:AddNoDraw()
@@ -259,6 +139,7 @@ end
 function modifier_middle_orb_base_lua:CheckState()
 	local state = {
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
+        [MODIFIER_STATE_UNSELECTABLE] = true,
 	}
 
 	return state

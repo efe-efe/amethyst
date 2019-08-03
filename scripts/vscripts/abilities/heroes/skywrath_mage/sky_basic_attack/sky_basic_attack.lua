@@ -1,6 +1,5 @@
 sky_basic_attack = class({})
 LinkLuaModifier( "modifier_sky_basic_attack", "abilities/heroes/skywrath_mage/sky_basic_attack/modifier_sky_basic_attack", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
@@ -15,17 +14,19 @@ function sky_basic_attack:OnSpellStart()
 	-- Initialize bariables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-	self.point = self:GetCursorPosition()
+	self:SetActivated(false)
+
 	--self.charges = caster:FindModifierByName("modifier_sky_basic_attack"):GetStackCount()
     self.silence_duration = self:GetSpecialValueFor("silence_duration")
 
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point})
+	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.5})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
 end
 
-function sky_basic_attack:OnEndPseudoCastPoint()
+function sky_basic_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
+	self:SetActivated(true)
 
 	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_concussive_shot.vpcf"
@@ -46,7 +47,7 @@ function sky_basic_attack:OnEndPseudoCastPoint()
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -136,6 +137,10 @@ function sky_basic_attack:OnEndPseudoCastPoint()
 	self:StartCooldown(attack_speed)
 end
 
+
+function sky_basic_attack:OnStopPseudoCastPoint()
+	self:SetActivated(true)
+end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 
@@ -202,15 +207,4 @@ function sky_basic_attack:OnUpgrade()
 		-- Gain mana
 		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
 	end
-end
-
-function sky_basic_attack:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.5})
 end

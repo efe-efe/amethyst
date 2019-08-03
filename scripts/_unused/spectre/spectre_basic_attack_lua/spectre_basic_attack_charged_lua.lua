@@ -4,7 +4,6 @@ LinkLuaModifier( "modifier_spectre_basic_attack_charged_lua", "abilities/heroes/
 LinkLuaModifier( "modifier_spectre_basic_attack_charged_timer_lua", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack_charged_timer_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 function spectre_basic_attack_charged_lua:GetAOERadius()
 	return self:GetSpecialValueFor( "hitbox" )
@@ -22,7 +21,7 @@ function spectre_basic_attack_charged_lua:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = attack_speed })
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = attack_speed })
 end
 
 function spectre_basic_attack_charged_lua:OnEndPseudoCastPoint()

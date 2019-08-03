@@ -1,17 +1,6 @@
 nevermore_special_attack = class({})
 LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_nevermore_special_attack_movement", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack_movement", LUA_MODIFIER_MOTION_VERTICAL )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
-
---------------------------------------------------------------------------------
--- Ability Start
-function nevermore_special_attack:OnSpellStart()
-	-- unit identifier
-	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
-
-
-end
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -19,18 +8,19 @@ function nevermore_special_attack:OnSpellStart()
 	-- Initialize bariables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-	self.point = self:GetCursorPosition()
 
     EmitSoundOn("Hero_Nevermore.PreAttack", caster)
 
 	-- Animation and pseudo cast point
-	self:Animate()
-	self:Rotate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = cast_point })
+	StartAnimation(caster, {duration=0.7, activity=ACT_DOTA_RAZE_1, rate=0.8})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		can_walk = 0,
+	})
 end
 
 
-function nevermore_special_attack:OnEndPseudoCastPoint()
+function nevermore_special_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -43,7 +33,7 @@ function nevermore_special_attack:OnEndPseudoCastPoint()
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -82,9 +72,6 @@ function nevermore_special_attack:OnEndPseudoCastPoint()
 			caster:GiveMana(mana_gain_final)
 
 			self:TornadoLogic( _self.Source, unit )
-			
-			--Effects
-			self:PlayEffects_b(_self:GetPosition())
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)
@@ -118,9 +105,9 @@ function nevermore_special_attack:PlayEffects_b( pos )
 	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
 
 	-- Cast Particle
-	local particle_cast = "particles/econ/items/shadow_fiend/sf_desolation/sf_base_attack_desolation_explosion.vpcf"
+	local particle_cast = "particles/econ/items/lanaya/lanaya_epit_trap/templar_assassin_epit_trap_explode.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
@@ -162,18 +149,4 @@ function nevermore_special_attack:TornadoLogic( hSource, hTarget )
 		"modifier_nevermore_special_attack_movement",
 		{ duration = duration }
 	)
-end
-
-function nevermore_special_attack:Animate()
-	StartAnimation(self:GetCaster(), {duration=2.0, activity=ACT_DOTA_RAZE_1, rate=0.8})
-end
-
-function nevermore_special_attack:Rotate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
 end

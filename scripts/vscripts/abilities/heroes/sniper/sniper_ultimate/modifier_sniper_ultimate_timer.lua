@@ -2,32 +2,26 @@ modifier_sniper_ultimate_timer = class({})
 
 function modifier_sniper_ultimate_timer:OnCreated()
     if IsServer() then
-        local parent = self:GetParent()
-
-        --Quits the animation
-        local order = 
-        {
-            OrderType = DOTA_UNIT_ORDER_STOP,
-            UnitIndex = parent:entindex()
-        }
-
-        ExecuteOrderFromTable(order)
+        -- Can't move
+        self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
+        self:StartIntervalThink( 0.375 )
     end
 end
 
 function modifier_sniper_ultimate_timer:OnDestroy()
     if IsServer() then
-        local parent = self:GetParent()
-
-        parent:SwapAbilities( 
-            "sniper_ultimate_projectile",
-            "sniper_ultimate",
-            false,
-            true
-        )
+        --Can move again
+        self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
         self:PlayEffects()
         
     end
+end
+
+function modifier_sniper_ultimate_timer:OnIntervalThink()
+    local caster = self:GetCaster()
+    local ability = caster:FindAbilityByName("sniper_ultimate_projectile")
+    
+    caster:CastAbilityOnPosition(Vector(0,0,0), ability, caster:GetPlayerID())
 end
 
 function modifier_sniper_ultimate_timer:PlayEffects()

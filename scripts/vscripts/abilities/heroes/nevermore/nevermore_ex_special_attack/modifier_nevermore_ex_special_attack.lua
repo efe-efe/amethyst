@@ -78,10 +78,6 @@ function modifier_nevermore_ex_special_attack:GetModifierProcAttack_BonusDamage_
 end
 
 -- Graphics & Animations
-function modifier_nevermore_ex_special_attack:GetEffectName()
-	return "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger_path_owner.vpcf"
-end
-
-function modifier_nevermore_ex_special_attack:GetEffectAttachType()
-	return PATTACH_ABSORIGIN_FOLLOW
+function modifier_nevermore_ex_special_attack:GetStatusEffectName()
+	return "particles/status_fx/status_effect_avatar.vpcf"
 end

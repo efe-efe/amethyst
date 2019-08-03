@@ -40,9 +40,17 @@ function GameMode:OnHeroInGame(keys)
         if npc.bFirstSpawnedPG == nil then
             npc.bFirstSpawnedPG = true
 
-            -- Disable right click
+            npc.direction = {}
+            npc.direction.x = 0
+            npc.direction.y = 0
+            npc.direction.z = 0
+
+            self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)
+
+            -- Basic modifiers
             npc:AddNewModifier( npc,  nil, "modifier_disable_right_click", { } )
-        
+            npc:AddNewModifier( npc,  nil, "modifier_generic_movement", { } )
+
             -- Level up 1 point to all spells
             for i = 0, 23 do
                 local ability = npc:GetAbilityByIndex(i)

@@ -1,6 +1,5 @@
 phantom_basic_attack = class({})
 LinkLuaModifier( "modifier_phantom_assassin_strike_stack_lua", "abilities/heroes/phantom_assassin/phantom_assassin_shared_modifiers/modifier_phantom_assassin_strike_stack_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 function phantom_basic_attack:GetAOERadius()
 	return self:GetSpecialValueFor( "hitbox" )
@@ -12,20 +11,15 @@ function phantom_basic_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-	self.point = self:GetCursorPosition()
+	StartAnimation(caster, {duration = 0.4, activity=ACT_DOTA_SPAWN, rate=1.8})
 	
-	-- Animation and pseudo cast point
-	self:SetActivated(false)
-
-	caster:AddNewModifier(
-		caster, 
-		self, 
-		"modifier_generic_pseudo_cast_point_lua", 
-		{ duration = cast_point }
-	)
+	caster:AddNewModifier( caster, self, "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		movement_speed = 90,
+	})
 end
 
-function phantom_basic_attack:OnEndPseudoCastPoint()
+function phantom_basic_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 	local offset = 20
 
@@ -42,12 +36,11 @@ function phantom_basic_attack:OnEndPseudoCastPoint()
 	-- Extra data
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
 
-	self:SetActivated(true)
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local direction_normalized = (self.point - origin):Normalized()
+	local direction_normalized = (pos - origin):Normalized()
 	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -126,12 +119,7 @@ function phantom_basic_attack:OnEndPseudoCastPoint()
 	}
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-	self:Animate(self.point)
 	self:StartCooldown(attack_speed)
-end
-
-function phantom_basic_attack:OnStopPseudoCastPoint()
-	self:SetActivated(true)
 end
 
 --------------------------------------------------------------------------------
@@ -160,6 +148,7 @@ function phantom_basic_attack:PlayEffects_a( pos )
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_blinkb.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
+	ParticleManager:SetParticleControlForward(effect_cast, 0, direction_normalized)	
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
@@ -173,17 +162,5 @@ end
 function phantom_basic_attack:PlayEffects_c( pos )
 	local sound_cast = "Hero_PhantomAssassin.PreAttack"
 	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
-end
-
-function phantom_basic_attack:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-	caster:SetForwardVector(direction:Normalized())
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_SPAWN, rate=1.8})
 end
 

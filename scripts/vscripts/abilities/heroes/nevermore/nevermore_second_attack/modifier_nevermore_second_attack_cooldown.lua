@@ -19,7 +19,6 @@ end
 function modifier_nevermore_second_attack_cooldown:OnCreated()
     if IsServer() then
 	    self:SetStackCount(1)
-        -- Start Interval
     end
 end
 
@@ -27,8 +26,10 @@ end
 -- Refresh
 function modifier_nevermore_second_attack_cooldown:OnRefresh()
     if IsServer() then
-	    self:IncrementStackCount()
-        -- Start Interval
+		self:IncrementStackCount()
+		if self:GetStackCount() > 1 then
+			self:PlayEffects(self:GetStackCount())
+		end
     end
 end
 
@@ -49,4 +50,17 @@ function modifier_nevermore_second_attack_cooldown:OnStackCountChanged( old )
 			self:Destroy()
 		end
 	end
+end
+
+
+function modifier_nevermore_second_attack_cooldown:PlayEffects(number)
+	local particle_cast = "particles/econ/items/shadow_fiend/sf_fire_arcana/sf_fire_arcana_shadowraze_double.vpcf"
+	if number == 3 then
+		particle_cast = "particles/econ/items/shadow_fiend/sf_fire_arcana/sf_fire_arcana_shadowraze_triple.vpcf"
+	end
+
+	-- create particle
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+	ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end

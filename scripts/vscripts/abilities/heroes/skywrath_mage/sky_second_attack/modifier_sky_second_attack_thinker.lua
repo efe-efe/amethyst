@@ -86,11 +86,11 @@ function modifier_sky_second_attack_thinker:PlayEffects()
     local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, nil )
     local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, caster)
     
-    ParticleManager:SetParticleControl( effect_cast_a, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast_a, 0, self:GetParent():GetOrigin() + Vector(0,0, 96))
     ParticleManager:SetParticleControl( effect_cast_a, 1, Vector( self.radius, 1, 1 ) )
     ParticleManager:SetParticleControl( effect_cast_a, 2, Vector( 1, 1, 1 ) )
     
-    ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetParent():GetOrigin() + Vector(0,0, 96))
     ParticleManager:SetParticleControl( effect_cast_b, 1, Vector( self.radius, 1, 1 ) )
 
     ParticleManager:ReleaseParticleIndex( effect_cast_a )
@@ -110,7 +110,7 @@ function modifier_sky_second_attack_thinker:PlayEffects2()
             PATTACH_WORLDORIGIN, 
             nil 
         )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() + Vector(0,0, 96))
     ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 
@@ -123,7 +123,7 @@ function modifier_sky_second_attack_thinker:PlayEffects2()
             PATTACH_WORLDORIGIN, 
             nil 
         )
-    ParticleManager:SetParticleControl( effect_cast2, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast2, 0, self:GetParent():GetOrigin() + Vector(0,0, 96) )
     ParticleManager:SetParticleControl( effect_cast2, 1, Vector( self.radius, 1, 1 ) )
     ParticleManager:ReleaseParticleIndex( effect_cast2 )
 

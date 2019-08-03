@@ -1,37 +1,44 @@
 phantom_ultimate = class({})
 
-function phantom_ultimate:OnAbilityPhaseStart()
+function phantom_ultimate:OnSpellStart()
 	-- play effects
 	self:PlayEffects_a()
+	local cast_point = self:GetCastPoint()
+	local caster = self:GetCaster()
 
-	return true -- if success
+	StartAnimation(caster, { duration=1.0, activity=ACT_DOTA_CAST_ABILITY_3, rate=0.7 })
+
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point", 
+		{ duration = cast_point, can_walk = 0}
+	)
 end
 
-function phantom_ultimate:OnAbilityPhaseInterrupted()
+function phantom_ultimate:OnStopPseudoCastPoint()
 	self:StopEffects_a()
-	return true -- if success
 end
 
-function phantom_ultimate:OnSpellStart()
+function phantom_ultimate:OnEndPseudoCastPoint( pos )
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-    local point = self:GetCursorPosition()
     local max_range = self:GetSpecialValueFor("range")
     local damage = self:GetAbilityDamage()
     local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 
 
     -- determine target position
-    local difference = point - origin
-    local target =  origin + (point - origin):Normalized() * max_range
+    local difference = pos - origin
+    local target =  origin + (pos - origin):Normalized() * max_range
 
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_luna/luna_base_attack.vpcf"
 	local projectile_start_radius = 70
 	local projectile_end_radius = 100
 	local projectile_distance = max_range
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 	local projectile_speed = 6000
 
 	local projectile = {
@@ -104,10 +111,7 @@ end
 
 -- On ability initially cast
 function phantom_ultimate:PlayEffects_a()
-	local point = self:GetCursorPosition()
-	local origin = self:GetCaster():GetOrigin()
-    local max_range = self:GetSpecialValueFor("range")
-	local target =  origin + (point - origin):Normalized() * max_range
+	local target = self:GetCaster():GetOrigin() + self:GetCaster():GetForwardVector() * 100
 
 	-- Cast Sound
     local sound_cast = "phantom_assassin_phass_cast_02"

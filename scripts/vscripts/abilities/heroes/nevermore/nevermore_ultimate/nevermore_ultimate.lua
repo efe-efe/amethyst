@@ -3,24 +3,35 @@ LinkLuaModifier( "modifier_nevermore_ultimate_scepter", "lua_abilities/nevermore
 LinkLuaModifier( "modifier_nevermore_ultimate", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate", LUA_MODIFIER_MOTION_NONE )
 
 
---------------------------------------------------------------------------------
--- Ability Phase Start
-function nevermore_ultimate:OnAbilityPhaseStart()
-	self:PlayEffects1()
-	return true -- if success
-end
-function nevermore_ultimate:OnAbilityPhaseInterrupted()
+function nevermore_ultimate:OnStopPseudoCastPoint()
 	self:StopEffects1( false )
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_ultimate:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	self:PlayEffects1()
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=2.0, activity=ACT_DOTA_CAST_ABILITY_6, rate=1.2})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		can_walk = 0,
+		no_target = 1
+	})
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function nevermore_ultimate:OnEndPseudoCastPoint()
 	-- get number of souls
 	local lines = 6
 	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )
 	if modifier~=nil then
-		lines = lines + modifier:GetStackCount() * 3
+		lines = lines + modifier:GetStackCount() * 6
 		modifier:Destroy()
 	end
 

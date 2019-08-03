@@ -1,18 +1,30 @@
 nevermore_ex_second_attack = class({})
 LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
 
--- Set AOE indicator
 --------------------------------------------------------------------------------
-function nevermore_ex_second_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+-- Ability Start
+function nevermore_ex_second_attack:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	local radius = self:GetSpecialValueFor("radius")
+	self.point = self:GetCursorPosition() -- Only to get the z 
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.7, activity=ACT_DOTA_RAZE_2, rate=1.1})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		movement_speed = 10,
+		aoe = 1,
+		radius = radius
+	})
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function nevermore_ex_second_attack:OnSpellStart()
+function nevermore_ex_second_attack:OnEndPseudoCastPoint( pos )
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
 	
 	local radius = self:GetSpecialValueFor("radius")
 	local damage = self:GetAbilityDamage()
@@ -21,7 +33,7 @@ function nevermore_ex_second_attack:OnSpellStart()
 	-- get affected enemies
 	local enemies = FindUnitsInRadius(
 		caster:GetTeamNumber(),
-		point,
+		pos,
 		nil,
 		radius,
 		DOTA_UNIT_TARGET_TEAM_ENEMY,
@@ -60,7 +72,7 @@ function nevermore_ex_second_attack:OnSpellStart()
 	end
 
 	-- Effects
-	self:PlayEffects( point, radius )    
+	self:PlayEffects( pos, radius )    
     -- Put CD on the alternate of the ability
 	local alternate_version = caster:FindAbilityByName("nevermore_second_attack")
 	alternate_version:StartCooldown(self:GetCooldown(0))
@@ -69,6 +81,7 @@ end
 
 function nevermore_ex_second_attack:PlayEffects( position, radius )
 	local caster = self:GetCaster()
+	local new_position = Vector(position.x, position.y, self.point.z)
 	
 	-- get resources
 	local particle_cast = "particles/econ/items/shadow_fiend/sf_fire_arcana/sf_fire_arcana_shadowraze.vpcf"
@@ -76,12 +89,12 @@ function nevermore_ex_second_attack:PlayEffects( position, radius )
 
 	-- create particle
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, position )
+	ParticleManager:SetParticleControl( effect_cast, 0, new_position )
 	ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 1, 1 ) )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 	
 	-- create sound
-	EmitSoundOnLocationWithCaster( position, sound_cast, caster )
+	EmitSoundOnLocationWithCaster( new_position, sound_cast, caster )
 end
 
 function nevermore_ex_second_attack:PlayEffects_b( target )

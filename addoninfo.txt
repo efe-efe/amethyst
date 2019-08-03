@@ -42,26 +42,62 @@
         }
         "06"
         {
+            "Key"       "W"
+            "Command"   "+CustomGameExecuteAbilityW"
+            "Name"      "Execute second attack"
+        }
+        "07"
+        {
             "Key"       "E"
             "Command"   "-CustomGameExecuteAbilityE"
             "Name"      "Execute counter"
         }
-        "07"
+        "08"
         {
             "Key"       "D"
-            "Command"   "-CustomGameExecuteAbilityD"
+            "Command"   "CustomGameExecuteAbilityD"
             "Name"      "Execute special attack"
         }
-        "08"
+        "09"
+        {
+            "Key"       "D"
+            "Command"   "+CustomGameExecuteAbilityD"
+            "Name"      "Execute special attack"
+        }
+        "10"
         {
             "Key"       "F"
             "Command"   "-CustomGameExecuteAbilityF"
             "Name"      "Execute ex ultimate"
         }
-        "09"
+        "11"
         {
             "Key"       "R"
             "Command"   "-CustomGameExecuteAbilityR"
+            "Name"      "Execute ultimate attack"
+        }
+        "12"
+        {
+            "Key"       "A"
+            "Command"   "-CustomGameExecuteAbilityA"
+            "Name"      "Execute ultimate attack"
+        }
+        "13"
+        {
+            "Key"       "A"
+            "Command"   "+CustomGameExecuteAbilityA"
+            "Name"      "Execute ultimate attack"
+        }
+        "14"
+        {
+            "Key"       "S"
+            "Command"   "-CustomGameExecuteAbilityS"
+            "Name"      "Execute ultimate attack"
+        }
+        "15"
+        {
+            "Key"       "S"
+            "Command"   "+CustomGameExecuteAbilityS"
             "Name"      "Execute ultimate attack"
         }
     }

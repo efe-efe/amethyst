@@ -1,8 +1,25 @@
 nevermore_ex_ultimate = class({})
 
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_ex_ultimate:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.7, activity=ACT_DOTA_RAZE_2, rate=1.3})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		movement_speed = 10,
+		no_target = 1
+	})
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function nevermore_ex_ultimate:OnEndPseudoCastPoint()
 	-- get references
 	local caster = self:GetCaster()
 	local heal_per_soul = self:GetSpecialValueFor("heal_per_soul")

@@ -3,7 +3,6 @@ LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spec
 LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
 
 LinkLuaModifier( "modifier_spectre_basic_attack", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 --------------------------------------------------------------------------------
 --Passive Modifier
 function spectre_basic_attack:GetIntrinsicModifierName()
@@ -31,7 +30,7 @@ function spectre_basic_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point_lua",
+		"modifier_generic_pseudo_cast_point",
 		{ duration = cast_point }
 	)
 end

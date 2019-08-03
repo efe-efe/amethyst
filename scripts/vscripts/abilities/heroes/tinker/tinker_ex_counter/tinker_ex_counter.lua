@@ -1,19 +1,34 @@
 tinker_ex_counter = class({})
 LinkLuaModifier( "modifier_tinker_ex_counter", "abilities/heroes/tinker/tinker_ex_counter/modifier_tinker_ex_counter", LUA_MODIFIER_MOTION_NONE )
 
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function tinker_ex_counter:OnSpellStart()
+	-- unit identifier
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_TELEPORT_END, translate="bot", rate=1.0})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		can_walk = 0 
+	})
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function tinker_ex_counter:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
 
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_oracle/oracle_base_attack.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	local damage = self:GetAbilityDamage()

@@ -4,10 +4,25 @@ LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier
 LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
 
+--------------------------------------------------------------------------------
+-- Ability Start
 function nevermore_mobility:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_RAZE_1, rate=1.1})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		can_walk = 0,
+	})
+end
+
+
+function nevermore_mobility:OnEndPseudoCastPoint( pos )
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-    local point = self:GetCursorPosition()
 	local damage = self:GetAbilityDamage()
     local max_range = self:GetSpecialValueFor("max_range")
     local min_range = max_range - 400
@@ -15,11 +30,11 @@ function nevermore_mobility:OnSpellStart()
     local mana_gain = self:GetSpecialValueFor("mana_gain")/100
     
     local speed = 1800
-    local direction = (point - origin):Normalized()
+    local direction = (pos - origin):Normalized()
 	local basic_attack = caster:FindAbilityByName("nevermore_basic_attack")
 
     -- determine target position
-    local difference = (point - origin):Length2D()
+    local difference = (pos - origin):Length2D()
 
     if difference > max_range then
         difference = tonumber(max_range)
@@ -29,8 +44,8 @@ function nevermore_mobility:OnSpellStart()
         end
     end
 
-    local x = point.x - origin.x
-    local y = point.y - origin.y
+    local x = pos.x - origin.x
+    local y = pos.y - origin.y
 
     caster:AddNewModifier(
         caster, -- player source

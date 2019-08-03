@@ -1,20 +1,29 @@
 nevermore_second_attack = class({})
-LinkLuaModifier( "modifier_nevermore_second_attack", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_nevermore_second_attack_cooldown", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_cooldown", LUA_MODIFIER_MOTION_NONE )
-
--- Set AOE indicator
---------------------------------------------------------------------------------
-function nevermore_second_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
-end
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_second_attack:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	local radius = self:GetSpecialValueFor("radius")
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.7, activity=ACT_DOTA_RAZE_2, rate=1.1})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		movement_speed = 10,
+		aoe = 1,
+		radius = radius
+	})
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function nevermore_second_attack:OnEndPseudoCastPoint( pos )
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
-	
 	local radius = self:GetSpecialValueFor("radius")
 	local damage = self:GetAbilityDamage()
 	local damage_per_stack = self:GetSpecialValueFor("damage")
@@ -24,7 +33,7 @@ function nevermore_second_attack:OnSpellStart()
 	-- get affected enemies
 	local enemies = FindUnitsInRadius(
 		caster:GetTeamNumber(),
-		point,
+		pos,
 		nil,
 		radius,
 		DOTA_UNIT_TARGET_TEAM_ENEMY,
@@ -52,14 +61,6 @@ function nevermore_second_attack:OnSpellStart()
 			ability = this,
 		}
 		ApplyDamage( damageTable )
-
-		--Add stack
-		enemy:AddNewModifier(
-			caster,
-			self,
-			"modifier_nevermore_second_attack",
-			{ duration = stack_duration }
-		)
 	end
 
 	if #enemies > 0 then
@@ -88,7 +89,7 @@ function nevermore_second_attack:OnSpellStart()
 	end
 
 	-- Effects
-	self:PlayEffects( point, radius )
+	self:PlayEffects( pos, radius )
     
     -- Put CD on the alternate of the ability
 	local alternate_version = caster:FindAbilityByName("nevermore_ex_second_attack")

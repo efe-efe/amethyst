@@ -1,6 +1,5 @@
 spectre_basic_attack = class ({})
 LinkLuaModifier( "modifier_spectre_basic_attack", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_pseudo_cast_point_lua", "abilities/generic/modifier_generic_pseudo_cast_point_lua", LUA_MODIFIER_MOTION_NONE )
 
 function spectre_basic_attack:GetAOERadius()
 	return self:GetSpecialValueFor( "hitbox" )
@@ -19,7 +18,7 @@ function spectre_basic_attack:OnSpellStart()
 	-- Animation and pseudo cast point
 	self:SetActivated(false)
 	self:Animate(self.point)
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point_lua", { duration = attack_speed })
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = attack_speed })
 end
 
 function spectre_basic_attack:OnEndPseudoCastPoint()
