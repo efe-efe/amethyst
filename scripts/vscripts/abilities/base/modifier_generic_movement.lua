@@ -3,7 +3,7 @@ modifier_generic_movement = class({})
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_generic_movement:IsHidden()
-	return false
+	return true
 end
 
 function modifier_generic_movement:IsDebuff()
@@ -35,15 +35,14 @@ end
 -- Interval Effects
 function modifier_generic_movement:OnIntervalThink()
 	local parent = self:GetParent()
-
+	local max_diff_z = 60
+	local debug_radius = 40
+	local debug_radius_mini = 10
+	
 	------------------------
-	-- Items pickup
+	-- Pickup items
 	------------------------
-	local items = Entities:FindAllByClassnameWithin("dota_item_drop", parent:GetOrigin(), parent:GetHullRadius() * 2.5)
-
-	for _,item in pairs(items) do
-		parent:PickupDroppedItem(item)
-	end
+	self:ItemsPickup(parent)
 
 	local current_animation_modifier = parent:FindModifierByName("modifier_animation")
 	local current_animation = "not_walking"
@@ -59,7 +58,12 @@ function modifier_generic_movement:OnIntervalThink()
 	------------------------
 	-- Disable conditions
 	------------------------
-	if parent:IsStunned() or parent:IsCommandRestricted() or not parent:IsAlive() then
+	if 	parent:IsStunned() or 
+		parent:IsCommandRestricted() or 
+		not parent:IsAlive() or 
+		parent:IsRooted() or
+		parent:IsNightmared()
+	then
 		if current_animation == "walking" then
 			GameRules.EndAnimation(parent)
 		end
@@ -68,13 +72,11 @@ function modifier_generic_movement:OnIntervalThink()
 
 	local speed = parent:GetIdealSpeed() / 100
 	local origin = parent:GetAbsOrigin()
-	local direction = Vector(parent.direction.x, parent.direction.y, parent:GetForwardVector().z)
-	local future_position = origin + direction * speed 
-	local future_z = GetGroundPosition(future_position, parent).z
-
-	local test_position = origin + direction * 70 
-	local future_z_test = GetGroundPosition(test_position, parent).z
-
+	local direction = Vector(
+		parent.direction.x, 
+		parent.direction.y, 
+		parent:GetForwardVector().z
+	)
 	------------------------
 	-- If Moving
 	------------------------
@@ -84,11 +86,51 @@ function modifier_generic_movement:OnIntervalThink()
 			speed = speed * 0.75
 		end
 
-		local target = origin + direction * speed
-		target.z = future_z
+		-- Future position (if pass the z test)
+		local future_position = origin + direction * speed 
+		local future_z = GetGroundPosition(future_position, parent).z	-- To detect height differences
+		future_position.z = future_z
+	
+		-- Test position, where to test the z
+		local test_position = origin + direction * speed * 7 
+		local test_z = GetGroundPosition(test_position, parent).z
+		--test_position.z = test_z
 
-		if math.abs(future_z_test - origin.z) < 50 then
-			parent:SetAbsOrigin(target)
+		-- Test position, where to test the z
+		local test_position_a = test_position + debug_radius * Vector(1, 0, 0)
+		local test_z_a = GetGroundPosition(test_position_a, parent).z
+		--test_position_a.z = test_z_a -- Not necesary, only for debug
+
+		local test_position_b = test_position + debug_radius * Vector(-1, 0, 0)
+		local test_z_b = GetGroundPosition(test_position_b, parent).z
+		--test_position_b.z = test_z_b -- Not necesary, only for debug
+
+		local test_position_c = test_position + debug_radius * Vector(0, 1, 0)
+		local test_z_c = GetGroundPosition(test_position_c, parent).z
+		--test_position_c.z = test_z_c -- Not necesary, only for debug
+
+		local test_position_d = test_position + debug_radius * Vector(0, -1, 0)
+		local test_z_d = GetGroundPosition(test_position_d, parent).z
+		--test_position_d.z = test_z_d -- Not necesary, only for debug
+
+		--DebugDrawCircle(future_position, Vector(255,0,0), 5, debug_radius, false, 0.01)
+		--DebugDrawCircle(test_position, Vector(0,255,0), 5, debug_radius, false, 0.01)
+		--DebugDrawCircle(test_position_a, Vector(0,0,255), 5, debug_radius_mini, false, 0.01)
+		--DebugDrawCircle(test_position_b, Vector(0,0,250), 5, debug_radius_mini, false, 0.01)
+		--DebugDrawCircle(test_position_c, Vector(0,0,250), 5, debug_radius_mini, false, 0.01)
+		--DebugDrawCircle(test_position_d, Vector(0,0,250), 5, debug_radius_mini, false, 0.01)
+
+		if parent:HasModifier("modifier_spectre_special_attack_buff") then
+			parent:SetAbsOrigin(future_position)
+		else
+			if 	math.abs(test_z - origin.z) < max_diff_z and
+				math.abs(test_z_a - origin.z) < max_diff_z and
+				math.abs(test_z_b - origin.z) < max_diff_z and
+				math.abs(test_z_c - origin.z) < max_diff_z and
+				math.abs(test_z_d - origin.z) < max_diff_z
+			then
+				parent:SetAbsOrigin(future_position)
+			end
 		end
 
 		-- If not casting
@@ -102,7 +144,22 @@ function modifier_generic_movement:OnIntervalThink()
 		if current_animation_modifier == nil then
 			self.frame = self.frame + 0.01
 			if self.frame >= 0.1 then
-				StartAnimation(parent, {duration=100, activity=ACT_DOTA_RUN, rate=1.0, base=1})
+				if speed > 5 then 
+					StartAnimation(parent, {
+						duration=100,
+						translate="haste",
+						activity=ACT_DOTA_RUN, 
+						rate=1.3, 
+						base=1}
+					)
+				else
+					StartAnimation(parent, {
+						duration=100, 
+						activity=ACT_DOTA_RUN, 
+						rate=1.0, 
+						base=1}
+					)
+				end
 			end
 		end
 	------------------------
@@ -116,3 +173,26 @@ function modifier_generic_movement:OnIntervalThink()
 		end
 	end
 end
+
+--------------------------------------------------------------------------------
+-- Helpers
+
+
+function modifier_generic_movement:ItemsPickup( hUnit )
+	local drop_items = Entities:FindAllByClassnameWithin("dota_item_drop", hUnit:GetOrigin(), hUnit:GetHullRadius() * 2.5)
+	for _,drop_item in pairs(drop_items) do
+		
+		local item = drop_item:GetContainedItem()
+		local owner = item:GetPurchaser()
+		
+		--Only pickup items owned by teammates
+		if owner ~= nil then
+			if owner:GetTeam() == hUnit:GetTeam() then
+				hUnit:PickupDroppedItem(drop_item)
+			end
+		else
+			hUnit:PickupDroppedItem(drop_item)
+		end
+	end
+end
+

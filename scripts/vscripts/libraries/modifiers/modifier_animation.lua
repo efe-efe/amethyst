@@ -415,8 +415,7 @@ function modifier_animation:GetAttributes()
 end
 
 function modifier_animation:IsHidden()
-    --return true
-    return false
+    return true
 end
 
 function modifier_animation:IsDebuff() 

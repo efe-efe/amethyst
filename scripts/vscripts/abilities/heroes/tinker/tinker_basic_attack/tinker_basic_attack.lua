@@ -8,12 +8,15 @@ function tinker_basic_attack:OnSpellStart()
 	local cast_point = caster:GetAttackAnimationPoint()
 
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_ATTACK, rate=1.5})
+	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_ATTACK, rate=1.5})
 	caster:AddNewModifier(
 		caster, 
 		self , 
 		"modifier_generic_pseudo_cast_point", 
-		{ duration = cast_point }
+		{ 
+			duration = cast_point,
+			movement_speed = 50 
+		}
 	)
 end
 

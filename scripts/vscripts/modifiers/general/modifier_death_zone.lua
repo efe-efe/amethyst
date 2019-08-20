@@ -71,6 +71,7 @@ function modifier_death_zone:OnIntervalThink()
                 attacker = unit,
             }
             ApplyDamage( damage_table )
+            self:PlayEffects_b(unit)
         end
     end
 
@@ -89,4 +90,16 @@ function modifier_death_zone:PlayEffects()
     ParticleManager:SetParticleControl( effect_cast, 2, Vector( self.radius, self.radius , self.radius ) )
     ParticleManager:SetParticleControl( effect_cast, 4, self:GetParent():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+function modifier_death_zone:PlayEffects_b( hTarget )
+    local particle_cast = "particles/econ/items/lion/fish_stick_retro/fish_stick_spell_fish_retro_b.vpcf"
+
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+
+--TODO
+    local particle_cast_b = "particles/econ/items/zeus/arcana_chariot/zeus_tgw_screen_damage.vpcf"
+    local effect_cast_b = ParticleManager:CreateParticleForPlayer(particle_cast_b, PATTACH_EYES_FOLLOW, hTarget, hTarget:GetPlayerOwner())
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end

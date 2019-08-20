@@ -10,10 +10,9 @@ function phantom_mobility:OnSpellStart()
 	self:PlayEffects_a()
 
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.5})
+	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.5})
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
-        duration = cast_point,
-        no_target = 1
+        duration = cast_point
 	})
 end
 

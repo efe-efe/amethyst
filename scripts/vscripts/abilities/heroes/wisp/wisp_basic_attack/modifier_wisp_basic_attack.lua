@@ -9,7 +9,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_wisp_basic_attack:OnCreated()
-    self.heal_reflect = self:GetAbility():GetSpecialValueFor("heal_reflect")
+    self.heal_share = self:GetAbility():GetSpecialValueFor("heal_share")
 end
 
 --------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ function modifier_wisp_basic_attack:OnHealthGained(params)
             return 
         end
 
-        local heal = params.gain * self.heal_reflect/100
+        local heal = params.gain * self.heal_share/100
         self:GetCaster():Heal(heal, self:GetAbility())
 
         --return true

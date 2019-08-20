@@ -25,14 +25,11 @@ end
 
 function modifier_generic_pre_silence_lua:OnDestroy()
     if IsServer() then
-        self:StopEffects_a()
-    end
-end
+        local silence_duration = self:GetAbility():GetSpecialValueFor("silence_duration")
 
-function modifier_generic_pre_silence_lua:OnOrder( params ) 
-    if params.unit==self:GetParent() then
-        if params.order_type == 5 or params.order_type == 6 or params.order_type == 7 or params.order_type == 8 or params.order_type == 9 then
-            local silence_duration = self:GetAbility():GetSpecialValueFor("silence_duration")
+        self:StopEffects_a()
+        if self:GetRemainingTime() > 0.05 then
+            self:PlayEffects_b()
 
             self:GetParent():AddNewModifier(
                 self:GetCaster(),
@@ -40,13 +37,9 @@ function modifier_generic_pre_silence_lua:OnOrder( params )
                 "modifier_generic_silenced_lua",
                 { duration = silence_duration }
             )
-
-            self:PlayEffects_b()
-            self:StopEffects_a()
         end
     end
 end
-
 
 function modifier_generic_pre_silence_lua:PlayEffects_a()
     -- Create Sounds

@@ -33,4 +33,3 @@ function modifier_phantom_mobility:DeclareFunctions()
 	}
 	return funcs
 end
-

@@ -3,8 +3,8 @@ LinkLuaModifier( "modifier_wisp_special_attack_thinker", "abilities/heroes/wisp/
 LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
-function wisp_special_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+function wisp_special_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("wisp_ex_special_attack")
 end
 
 --------------------------------------------------------------------------------

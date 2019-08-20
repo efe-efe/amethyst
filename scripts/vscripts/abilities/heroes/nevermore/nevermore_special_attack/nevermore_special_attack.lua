@@ -2,6 +2,10 @@ nevermore_special_attack = class({})
 LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_nevermore_special_attack_movement", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack_movement", LUA_MODIFIER_MOTION_VERTICAL )
 
+function nevermore_special_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("nevermore_ex_special_attack")
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_special_attack:OnSpellStart()
@@ -12,7 +16,7 @@ function nevermore_special_attack:OnSpellStart()
     EmitSoundOn("Hero_Nevermore.PreAttack", caster)
 
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.7, activity=ACT_DOTA_RAZE_1, rate=0.8})
+	StartAnimation(caster, {duration=0.7, activity=ACT_DOTA_RAZE_1, rate=1.0})
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,

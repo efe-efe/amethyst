@@ -1,5 +1,9 @@
 spectre_second_attack = class({})
 
+function spectre_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("spectre_ex_second_attack")
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_second_attack:OnSpellStart()
@@ -7,8 +11,15 @@ function spectre_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 	
+	self:PlayEffects_a()
+	
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=0.25})
+	StartAnimation(caster, {
+		duration = cast_point + 0.1, 
+		activity = ACT_DOTA_CAST_ABILITY_1, 
+		rate = 0.25
+	})
+
 	caster:AddNewModifier(
 		caster, 
 		self, 
@@ -22,7 +33,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function spectre_second_attack:OnEndPseudoCastPoint( pos )
+function spectre_second_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 
 	-- load data
@@ -37,37 +48,35 @@ function spectre_second_attack:OnEndPseudoCastPoint( pos )
 	
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
-		EffectName = projectile_name,
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
-		fDistance = projectile_distance,
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
-		Source = caster,
-		fExpireTime = 8.0,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		bMultipleHits = true,
-		bIgnoreSource = true,
-		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
-		bTreeFullCollision = false,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
-		nChangeMax = 1,
-		bRecreateOnChange = true,
-		bZCheck = false,
-		bGroundLock = true,
-		bProvidesVision = true,
-		iVisionRadius = 200,
-		iVisionTeamNumber = caster:GetTeam(),
-		bFlyingVision = false,
-		fVisionTickTime = .1,
+		EffectName = 			projectile_name,
+		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0,0,80),
+		fDistance = 			projectile_distance,
+		fStartRadius = 			projectile_start_radius,
+		fEndRadius = 			projectile_end_radius,
+		Source = 				caster,
+		vVelocity = 			projectile_direction * projectile_speed,
+		UnitBehavior = 			PROJECTILES_DESTROY,
+		WallBehavior = 			PROJECTILES_DESTROY,
+		TreeBehavior = 			PROJECTILES_NOTHING,
+		GroundBehavior = 		PROJECTILES_NOTHING,
+		bMultipleHits = 		true,
+		bIgnoreSource = 		true,
+		bCutTrees = 			true,
+		bTreeFullCollision = 	false,
+		fGroundOffset = 		80,
+		nChangeMax = 			1,
+		bRecreateOnChange = 	true,
+		bZCheck = 				false,
+		bGroundLock = 			true,
+		bProvidesVision = 		true,
+		iVisionRadius = 		200,
+		iVisionTeamNumber = 	caster:GetTeam(),
+		bFlyingVision = 		false,
+		fVisionTickTime = 		.1,
 		fVisionLingerDuration = 1,
-		draw = false,
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
@@ -88,8 +97,7 @@ function spectre_second_attack:OnEndPseudoCastPoint( pos )
 			self:PlayEffects_b(pos)
 		end,
 	}
-
-	self:PlayEffects_a()
+	EmitSoundOn( "Hero_Nevermore.Raze_Flames", self:GetCaster() )
 
 	-- Put CD on the alternate version of the ability
 	local ex_version = caster:FindAbilityByName("spectre_ex_second_attack")
@@ -97,6 +105,8 @@ function spectre_second_attack:OnEndPseudoCastPoint( pos )
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+
+	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_CAST_ABILITY_1, rate=2.0})
 end
 
 --------------------------------------------------------------------------------
@@ -104,15 +114,16 @@ end
 
 -- Cast
 function spectre_second_attack:PlayEffects_a()
+	EmitSoundOn( "Hero_Spectre.Haunt", self:GetCaster())
 	-- Get Resources
-	local sound_cast = "Hero_Nevermore.Raze_Flames"
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
+	local particle_cast = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rope.vpcf"
 
 	-- Create Particles
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:SetParticleControl( effect_cast, 15, Vector(128, 32, 108) )
+	ParticleManager:SetParticleControl( effect_cast, 16, Vector(1, 0, 0) )
 
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 -- Impact

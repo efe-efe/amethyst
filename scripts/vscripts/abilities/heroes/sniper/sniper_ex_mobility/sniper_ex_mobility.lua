@@ -1,16 +1,37 @@
 sniper_ex_mobility = class({})
 LinkLuaModifier( "modifier_sniper_ex_mobility_thinker", "abilities/heroes/sniper/sniper_ex_mobility/modifier_sniper_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Set the aoe indicator
-function sniper_ex_mobility:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+function sniper_ex_mobility:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("sniper_mobility")
 end
 
+--------------------------------------------------------------------------------
+-- Ability Start
 function sniper_ex_mobility:OnSpellStart()
+	-- Initialize variables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+    local radius = self:GetSpecialValueFor("radius")
+
+    EmitGlobalSound( "Ability.AssassinateLoad")
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point", 
+		{ 
+			duration = cast_point,
+            movement_speed = 50,
+            radius = radius, 
+		}
+	)
+end
+
+function sniper_ex_mobility:OnEndPseudoCastPoint( pos )
     -- Initialize variables
 	local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
     local damage = self:GetSpecialValueFor("damage")
 	local duration = self:GetSpecialValueFor( "duration" )
@@ -19,9 +40,9 @@ function sniper_ex_mobility:OnSpellStart()
 	local projectile_name = "particles/mod_units/heroes/hero_sniper/techies_base_attack.vpcf"
 	local projectile_start_radius = 80--self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = 80--self:GetSpecialValueFor("hitbox")
-	local projectile_distance = (origin - point):Length2D()
+	local projectile_distance = (origin - pos):Length2D()
 	local projectile_speed = 1700--self:GetSpecialValueFor("projectile_speed")
-    local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, -100 )):Normalized()
+    local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, -100 )):Normalized()
 
     -- Projectile
     local projectile = {
@@ -65,14 +86,14 @@ function sniper_ex_mobility:OnSpellStart()
             }
             ApplyDamage( damage )
         end,
-        OnFinish = function(_self, pos)
+        OnFinish = function(_self, mPos)
             -- Effect thinker
             CreateModifierThinker(
                 _self.Source, --hCaster
                 self, --hAbility
                 "modifier_sniper_ex_mobility_thinker", --modifierName
                 { duration = duration }, --paramTable
-                pos, --vOrigin
+                mPos, --vOrigin
                 _self.Source:GetTeamNumber(), --nTeamNumber
                 false --bPhantomBlocker
             )
@@ -81,7 +102,7 @@ function sniper_ex_mobility:OnSpellStart()
     }
 
     Projectiles:CreateProjectile(projectile)
-    self:PlayEffects_a( point )
+    self:PlayEffects_a( pos )
     
     -- Put CD on the alternate version of the ability
 	local alternate_version = caster:FindAbilityByName("sniper_mobility")

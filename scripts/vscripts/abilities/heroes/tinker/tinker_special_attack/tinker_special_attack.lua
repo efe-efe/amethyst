@@ -10,32 +10,22 @@ function tinker_special_attack:OnSpellStart(  )
 	local sound_cast = "Hero_Tinker.Rearm"
 	StopSoundOn( sound_cast, self:GetCaster() )
 	
-	-- Animation and pseudo cast point
 	StartAnimation(self:GetCaster(), {
-		duration = cast_point, 
+		duration = cast_point + 0.1, 
 		activity = ACT_DOTA_TELEPORT_END, 
 		translate = "bot", 
-		rate = 0.6
+		rate = 0.8
 	})
+
 	self:PlayEffects()
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point, no_target = 1 })
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		no_target = 1,
+		movement_speed = 80
+	})
 end
 
---------------------------------------------------------------------------------
--- Effects
-function tinker_special_attack:PlayEffects()
-	-- Get Resources
-	local particle_cast = "particles/units/heroes/hero_tinker/tinker_rearm.vpcf"
-	local sound_cast = "Hero_Tinker.RearmStart"
-
-	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-
-	EmitSoundOn( sound_cast, self:GetCaster() )
-end
-
-function tinker_special_attack:OnEndPseudoCastPoint()
+function tinker_special_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 
 	-- find all refreshable abilities
@@ -54,3 +44,18 @@ function tinker_special_attack:OnEndPseudoCastPoint()
 	EmitSoundOn( sound_cast, self:GetCaster() )
 	-- effects
 end
+
+--------------------------------------------------------------------------------
+-- Effects
+function tinker_special_attack:PlayEffects()
+	-- Get Resources
+	local particle_cast = "particles/units/heroes/hero_tinker/tinker_rearm.vpcf"
+	local sound_cast = "Hero_Tinker.RearmStart"
+
+	-- Create Particle
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+	EmitSoundOn( sound_cast, self:GetCaster() )
+end
+

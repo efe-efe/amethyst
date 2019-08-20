@@ -19,7 +19,6 @@ function nevermore_mobility:OnSpellStart()
 	})
 end
 
-
 function nevermore_mobility:OnEndPseudoCastPoint( pos )
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()

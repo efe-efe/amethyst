@@ -17,6 +17,7 @@ end
 function modifier_sky_basic_attack:DestroyOnExpire()
 	return false
 end
+
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_sky_basic_attack:OnCreated( kv )
@@ -32,22 +33,6 @@ function modifier_sky_basic_attack:OnCreated( kv )
     end
 end
 
-function modifier_sky_basic_attack:OnAbilityFullyCast( params )
-	if IsServer() then
-		if params.unit ~= self:GetParent() then
-			return
-        end
-        if params.ability == self:GetParent():FindAbilityByName("sky_mobility") or
-            params.ability == self:GetParent():FindAbilityByName("sky_ex_basic_attack")
-        then
-            self:IncrementStackCount()
-	        self:StartIntervalThink(-1)
-            self:CalculateCharge()
-            return
-        end
-	end
-end
-
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_sky_basic_attack:OnIntervalThink()
@@ -56,6 +41,8 @@ function modifier_sky_basic_attack:OnIntervalThink()
 	self:CalculateCharge()
 end
 
+--------------------------------------------------------------------------------
+-- Helpers
 function modifier_sky_basic_attack:CalculateCharge()
 	if self:GetStackCount() == self.max_charges then
 		-- stop charging
@@ -80,9 +67,41 @@ function modifier_sky_basic_attack:CalculateCharge()
 	end
 end
 
+
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_sky_basic_attack:DeclareFunctions()
+	local funcs = {
+		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
+        MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
+	}
+
+	return funcs
+end
+
+function modifier_sky_basic_attack:OnAbilityFullyCast( params )
+	if IsServer() then
+		if params.unit ~= self:GetParent() then
+			return
+        end
+        if params.ability == self:GetParent():FindAbilityByName("sky_mobility") or
+            params.ability == self:GetParent():FindAbilityByName("sky_ex_basic_attack")
+        then
+            self:IncrementStackCount()
+	        self:StartIntervalThink(-1)
+            self:CalculateCharge()
+            return
+        end
+	end
+end
+
+function modifier_sky_basic_attack:GetModifierPreAttack_BonusDamage()
+    if self:GetStackCount() == 0 then return 0 end
+    return self.damage_bonus
+end
+
 --------------------------------------------------------------------------------
 -- Graphics & Animations
-
 function modifier_sky_basic_attack:PlayEffects_a()
 	-- Get Resources
 	local sound_cast = "Hero_Wisp.Spirits.Destroy"
@@ -134,20 +153,4 @@ end
 
 function modifier_sky_basic_attack:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
-end
-
---------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_sky_basic_attack:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
-        MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
-	}
-
-	return funcs
-end
-
-function modifier_sky_basic_attack:GetModifierPreAttack_BonusDamage()
-    if self:GetStackCount() == 0 then return 0 end
-    return self.damage_bonus
 end

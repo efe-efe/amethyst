@@ -1,9 +1,5 @@
 phantom_second_attack = class({})
 
-function phantom_second_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "hitbox" )
-end
-
 --------------------------------------------------------------------------------
 -- Ability Start
 function phantom_second_attack:OnSpellStart()
@@ -85,6 +81,7 @@ function phantom_second_attack:OnEndPseudoCastPoint( pos )
 
 			ApplyDamage( damage_table )
 			
+			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
 			SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
 
 			-- Give Mana

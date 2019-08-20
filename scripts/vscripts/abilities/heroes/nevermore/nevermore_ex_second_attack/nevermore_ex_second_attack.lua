@@ -1,6 +1,10 @@
 nevermore_ex_second_attack = class({})
 LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
 
+function nevermore_ex_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("nevermore_second_attack")
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_ex_second_attack:OnSpellStart()
@@ -15,7 +19,6 @@ function nevermore_ex_second_attack:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
-		aoe = 1,
 		radius = radius
 	})
 end

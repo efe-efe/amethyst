@@ -15,7 +15,7 @@ if Projectiles == nil then
     Projectiles.__index = Projectiles
 end
 
--- On start
+-- Generate the thinkers
 function Projectiles:start()
     Projectiles = self
 
@@ -27,6 +27,7 @@ function Projectiles:start()
     end
 end
 
+-- On think
 function Projectiles:Think()
     if GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
         return
@@ -106,45 +107,38 @@ function Projectiles:CreateProjectile(projectile)
     Projectiles:CreateParticle(projectile); -- Create visuals
 
     if projectile.GroundBehavior == PROJECTILES_FOLLOW then
-        local future = projectile.actualPosition + projectile.actualVelocity
-        local ground = GetGroundPosition(projectile.actualPosition, projectile.Source) + Vector(0,0,projectile.fGroundOffset)
+        local future = projectile.currentPosition + projectile.currentVelocity
+        local ground = GetGroundPosition(projectile.currentPosition, projectile.Source) + Vector(0,0,projectile.fGroundOffset)
         if ground.z > future.z then
-            local slope = Projectiles:CalcSlope(ground, projectile.Source, projectile.actualVelocity)
-            ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.actualVelocity:Length() * slope * 30)
+            local slope = Projectiles:CalcSlope(ground, projectile.Source, projectile.currentVelocity)
+            ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.currentVelocity:Length() * slope * 30)
         else
-            ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.actualVelocity * 30)
+            ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.currentVelocity * 30)
         end
     else
-        ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.actualVelocity * 30)
+        ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.currentVelocity * 30)
     end
 
-    -- Dynamic function asingment
     -------------------------------
-    function projectile:GetCreationTime()
-        return projectile.spawnTime
-    end
+    -- Getters asingment
+    -------------------------------
+    function projectile:GetCreationTime() return        projectile.spawnTime end
+    function projectile:GetDistanceTraveled() return    projectile.distanceTraveled end
+    function projectile:GetPosition() return            projectile.currentPosition end
+    function projectile:GetVelocity() return            projectile.currentVelocity * 30 end
 
-    function projectile:GetDistanceTraveled()
-        return projectile.distanceTraveled
-    end
-
-    function projectile:GetPosition()
-        return projectile.actualPosition
-    end
-
-    function projectile:GetVelocity()
-        return projectile.actualVelocity * 30
-    end
-
+    -------------------------------
+    -- Exposed methods
+    -------------------------------
     function projectile:SetVelocity(newVel, newPos)
         if projectile.changes > 0 then
             projectile.changes = projectile.changes - 1
-            projectile.actualVelocity = newVel / 30
+            projectile.currentVelocity = newVel / 30
             projectile.changeTime = GameRules:GetGameTime() + projectile.fChangeDelay
 
             if projectile.bRecreateOnChange then
                 ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
-                Projectiles:CreateParticle(projectile, newPos or projectile.actualPosition)
+                Projectiles:CreateParticle(projectile, newPos or projectile.currentPosition)
             end
             
             ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, newVel)
@@ -163,17 +157,18 @@ function Projectiles:CreateProjectile(projectile)
         useGameTime = true,
         callback = function()
             local curTime = GameRules:GetGameTime()
-            local actualPosition = projectile.actualPosition
 
-            if projectile.bGroundLock then
-                actualPosition.z = GetGroundPosition(actualPosition, projectile.Source).z + projectile.fGroundOffset
+            -- Refresh position
+            local currentPosition = projectile.currentPosition
+            if projectile.bGroundLock then  -- Stick to the ground
+                currentPosition.z = GetGroundPosition(currentPosition, projectile.Source).z + projectile.fGroundOffset
             end
             
             -- Checks expiration
             if curTime > projectile.spawnTime + projectile.fExpireTime or projectile.distanceTraveled > projectile.fDistance then
                 --ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
                 if projectile.OnFinish then
-                    local status, out = pcall(projectile.OnFinish, projectile, actualPosition)
+                    local status, out = pcall(projectile.OnFinish, projectile, currentPosition)
                     if not status then
                         print('[PROJECTILES] Collision UnitTest Failure!: ' .. out)
                     end
@@ -184,22 +179,22 @@ function Projectiles:CreateProjectile(projectile)
             -- Update values
             local radius = projectile.radius
             local radiusSq = radius * radius
-            local actualVelocity = projectile.actualVelocity
+            local currentVelocity = projectile.currentVelocity
             
             -- Debug draw
             if projectile.draw then
-                Projectiles:DebugDraw(projectile, actualPosition, radius)
+                Projectiles:DebugDraw(projectile, currentPosition, radius)
             end
 
             -- Frame and sub-frame collision checks
-            local subpos = actualPosition
-            local velLength = actualVelocity:Length()
+            local subpos = currentPosition
+            local velLength = currentVelocity:Length()
             local tot = math.max(1, math.ceil(velLength / 32)) -- lookahead number
             local div = 1 / tot
 
             -- unit detection prep
-            local framehalf = actualPosition + (actualVelocity * div * (tot-1))/2
-            local framerad = (framehalf - actualPosition):Length() + radius
+            local framehalf = currentPosition + (currentVelocity * div * (tot-1))/2
+            local framerad = (framehalf - currentPosition):Length() + radius
 
             -- Unit detection
             local ents = nil
@@ -248,7 +243,17 @@ function Projectiles:CreateProjectile(projectile)
                     end
 
                     -- ON HIT AN ENTITY
-                    if IsValidEntity(entity) and entity.GetUnitName and entity:IsAlive() and (not projectile.bIgnoreSource or (projectile.bIgnoreSource and entity ~= projectile.Source)) --[[and nozCheck]] and zCheck then
+                    if  IsValidEntity(entity) and 
+                        entity.GetUnitName and 
+                        entity:IsAlive() and 
+                        (not projectile.bIgnoreSource or 
+                            (projectile.bIgnoreSource and 
+                                entity ~= projectile.Source
+                            )
+                        ) --[[and 
+                        nozCheck]] and 
+                        zCheck 
+                    then
                         
                         --VectorDistanceSq(nozpos, origin) <= radiusSq and subpos.z >= orgz + zOffset and subpos.z <= orgz + height then
                         local time = projectile.rehit[entity:entindex()]
@@ -277,12 +282,12 @@ function Projectiles:CreateProjectile(projectile)
 
                                             local reflectedProjectile = projectile;
 
-                                            reflectedProjectile.vSpawnOrigin = projectile.actualPosition;
+                                            reflectedProjectile.vSpawnOrigin = projectile.currentPosition;
                                             reflectedProjectile.Source = entity;
                                             reflectedProjectile.bIgnoreSource = true;
                                             reflectedProjectile.nChangeMax = projectile.nChangeMax - 1;
                                             reflectedProjectile.iVisionTeamNumber = entity:GetTeam();
-                                            reflectedProjectile.vVelocity = -projectile.actualVelocity * 30,
+                                            reflectedProjectile.vVelocity = -projectile.currentVelocity * 30,
                                             
                                             projectile:Destroy();
                                             
@@ -346,7 +351,7 @@ function Projectiles:CreateProjectile(projectile)
                 -- ON HIT AN TREE
                 local navConnect = not GridNav:IsTraversable(subpos) or GridNav:IsBlocked(subpos) -- GNV connect
                 local ground = GetGroundPosition(subpos, projectile.Source) + Vector(0,0,projectile.fGroundOffset)
-                --print(tostring(ground.z) .. ' -- ' .. tostring(actualPosition.z))
+                --print(tostring(ground.z) .. ' -- ' .. tostring(currentPosition.z))
                 local groundConnect = ground.z > projectile.prevPos.z -- ground
 
                 if navConnect then
@@ -359,7 +364,7 @@ function Projectiles:CreateProjectile(projectile)
                         
                         for i=1,#ents do
                         local tree = ents[i]
-                        if not projectile.bZCheck or (actualPosition.z < ground.z + 280 + radius - projectile.fGroundOffset and actualPosition.z + radius + projectile.fGroundOffset > ground.z) then
+                        if not projectile.bZCheck or (currentPosition.z < ground.z + 280 + radius - projectile.fGroundOffset and currentPosition.z + radius + projectile.fGroundOffset > ground.z) then
                             if projectile.bCutTrees then
                             tree:CutDown(projectile.Source:GetTeamNumber())
                             navConnect = not GridNav:IsTraversable(subpos) or GridNav:IsBlocked(subpos)
@@ -417,7 +422,7 @@ function Projectiles:CreateProjectile(projectile)
                             normal.z = 0
                             normal = normal:Normalized()
                             --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(0,255,0), true, 1)
-                            projectile:SetVelocity(((-2 * actualVelocity:Dot(normal) * normal) + actualVelocity) * 30, subpos)
+                            projectile:SetVelocity(((-2 * currentVelocity:Dot(normal) * normal) + currentVelocity) * 30, subpos)
                             break
                         end
                     end 
@@ -448,16 +453,16 @@ function Projectiles:CreateProjectile(projectile)
                         end
 
                         local normal = Projectiles:CalcNormal(ground, projectile.Source)
-                        projectile:SetVelocity(((-2 * actualVelocity:Dot(normal) * normal) + actualVelocity) * 30, subpos)
+                        projectile:SetVelocity(((-2 * currentVelocity:Dot(normal) * normal) + currentVelocity) * 30, subpos)
                         --entity:SetPhysicsVelocity(((-2 * newVelocity:Dot(normal) * normal) + newVelocity) * self.multiplier * 30)
                         break
                     elseif projectile.GroundBehavior == PROJECTILES_FOLLOW and projectile.changes > 0 and curTime >= projectile.changeTime then
                         -- follow calculation
                         
-                        local slope = Projectiles:CalcSlope(ground, projectile.Source, actualVelocity)
-                        local dir = actualVelocity:Normalized()
+                        local slope = Projectiles:CalcSlope(ground, projectile.Source, currentVelocity)
+                        local dir = currentVelocity:Normalized()
                         --projectile.fGroundOffset = projectile.fGroundOffset - 10
-                        --print('follow ' .. slope:Dot(actualVelocity:Normalized()) .. ' -- ' .. projectile.changes)
+                        --print('follow ' .. slope:Dot(currentVelocity:Normalized()) .. ' -- ' .. projectile.changes)
                         if dir.z < slope.z and slope:Dot(dir) < 1 then
                             local status, action = pcall(projectile.OnGroundHit, projectile, ground)
                             if not status then
@@ -471,9 +476,9 @@ function Projectiles:CreateProjectile(projectile)
                     end
                 end
                 --DebugDrawCircle(subpos, Vector(200,200,200), 100, 10, true, .01)
-                subpos = actualPosition + actualVelocity * (div * index)
+                subpos = currentPosition + currentVelocity * (div * index)
 
-                if projectile.distanceTraveled + (subpos-actualPosition):Length() > projectile.fDistance then
+                if projectile.distanceTraveled + (subpos-currentPosition):Length() > projectile.fDistance then
                     ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
                     if projectile.OnFinish then
                         local status, out = pcall(projectile.OnFinish, projectile, subpos)
@@ -495,9 +500,9 @@ function Projectiles:CreateProjectile(projectile)
             end
 
             projectile.radius = radius + projectile.radiusStep
-            projectile.prevPos = projectile.actualPosition
+            projectile.prevPos = projectile.currentPosition
             projectile.distanceTraveled = projectile.distanceTraveled + velLength
-            projectile.actualPosition = actualPosition + actualVelocity
+            projectile.currentPosition = currentPosition + currentVelocity
 
             return curTime
         end
@@ -510,6 +515,8 @@ function Projectiles:InitialSetup(projectile)
     -- Movement
     projectile.vVelocity = projectile.vVelocity or Vector(0,0,0)
     projectile.fDistance = projectile.fDistance or 1000
+
+    -- Special behaviors
     if projectile.bIsSlowable == nil then projectile.bIsSlowable = true end
     if projectile.bIsReflectable == nil then projectile.bIsReflectable = true end
     if projectile.bisReflectableByAllies == nil then projectile.bisReflectableByAllies = true end
@@ -541,7 +548,7 @@ function Projectiles:InitialSetup(projectile)
     if projectile.bZCheck == nil then projectile.bZCheck = true end
     if projectile.bCutTrees == nil then projectile.bCutTrees = false end
     if projectile.bDestroyImmediate == nil then projectile.bDestroyImmediate = true end
-    projectile.fExpireTime = projectile.fExpireTime or 10
+    projectile.fExpireTime = projectile.fExpireTime or 8.0
 
     -- Changes
     if projectile.bRecreateOnChange == nil then projectile.bRecreateOnChange = true end
@@ -591,9 +598,9 @@ function Projectiles:InitialSetup(projectile)
 
     -- Initial setup
     projectile.rehit =              {}
-    projectile.actualPosition =     projectile.vSpawnOrigin
-    projectile.actualVelocity =     projectile.vVelocity / 30
-    projectile.prevVel =            projectile.actualVelocity
+    projectile.currentPosition =     projectile.vSpawnOrigin
+    projectile.currentVelocity =     projectile.vVelocity / 30
+    projectile.prevVel =            projectile.currentVelocity
     projectile.prevPos =            projectile.vSpawnOrigin
     projectile.radius =             projectile.fStartRadius
     projectile.changes =            projectile.nChangeMax
@@ -606,7 +613,7 @@ function Projectiles:InitialSetup(projectile)
     if projectile.fRadiusStep then
         projectile.radiusStep = projectile.fRadiusStep / 30
     else
-        projectile.radiusStep = (projectile.fEndRadius - projectile.fStartRadius) / (projectile.fDistance / projectile.actualVelocity:Length())
+        projectile.radiusStep = (projectile.fEndRadius - projectile.fStartRadius) / (projectile.fDistance / projectile.currentVelocity:Length())
     end
 end
 
@@ -635,7 +642,7 @@ function Projectiles:CreateParticle(projectile, position)
         local attachPoint = v.attachPoint
         local origin
         if position ~= nil then
-            origin = v.origin or position + projectile.actualVelocity
+            origin = v.origin or position + projectile.currentVelocity
         else
             origin = v.origin or projectile.vSpawnOrigin
         end
@@ -643,13 +650,13 @@ function Projectiles:CreateParticle(projectile, position)
     end
 
     if position ~= nil then
-        ParticleManager:SetParticleControl(projectile.id, projectile.iPositionCP, position + projectile.actualVelocity)
+        ParticleManager:SetParticleControl(projectile.id, projectile.iPositionCP, position + projectile.currentVelocity)
     else
         ParticleManager:SetParticleControl(projectile.id, projectile.iPositionCP, projectile.vSpawnOrigin)
     end
 
     if projectile.ControlPointForwards[1] == nil and projectile.ControlPointOrientations[1] == nil then
-        ParticleManager:SetParticleControlForward(projectile.id, projectile.iPositionCP, projectile.actualVelocity:Normalized())
+        ParticleManager:SetParticleControlForward(projectile.id, projectile.iPositionCP, projectile.currentVelocity:Normalized())
     end
 end
 
@@ -670,7 +677,7 @@ end
 
 function Projectiles:ProvideVision(projectile)
     if projectile.currentFrame == projectile.visionTick then
-        AddFOWViewer(projectile.iVisionTeamNumber, projectile.actualPosition, projectile.iVisionRadius, projectile.fVisionLingerDuration, not projectile.bFlyingVision)
+        AddFOWViewer(projectile.iVisionTeamNumber, projectile.currentPosition, projectile.iVisionRadius, projectile.fVisionLingerDuration, not projectile.bFlyingVision)
         projectile.currentFrame = 0
     else
         projectile.currentFrame = projectile.currentFrame + 1

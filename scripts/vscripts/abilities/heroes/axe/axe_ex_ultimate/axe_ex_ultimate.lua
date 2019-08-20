@@ -1,7 +1,24 @@
 axe_ex_ultimate = class({})
 LinkLuaModifier( "modifier_axe_ex_ultimate", "abilities/heroes/axe/axe_ex_ultimate/modifier_axe_ex_ultimate", LUA_MODIFIER_MOTION_NONE )
 
+--------------------------------------------------------------------------------
+-- Ability Start
 function axe_ex_ultimate:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.4, activity=ACT_DOTA_OVERRIDE_ABILITY_2, rate=1.5})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		can_walk = 0,
+		no_target = 1,
+	})
+end
+
+--------------------------------------------------------------------------------
+function axe_ex_ultimate:OnEndPseudoCastPoint()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
 

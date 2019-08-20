@@ -1,6 +1,5 @@
 modifier_nevermore_counter = class({})
-LinkLuaModifier( "modifier_nevermore_counter_thinker", "abilities/heroes/nevermore/nevermore_counter/modifier_nevermore_counter_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_counter_buff", "abilities/heroes/nevermore/nevermore_counter/modifier_nevermore_counter_buff", LUA_MODIFIER_MOTION_NONE )
+--LinkLuaModifier( "modifier_nevermore_counter_thinker", "abilities/heroes/nevermore/nevermore_counter/modifier_nevermore_counter_thinker", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -64,6 +63,7 @@ function modifier_nevermore_counter:CheckState()
 	local state = {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
+		[MODIFIER_STATE_SILENCED] = true,
 	}
 
 	return state
@@ -89,7 +89,7 @@ function modifier_nevermore_counter:GetModifierIncomingDamage_Percentage( params
             end)
 
 
-            CreateModifierThinker(
+            --[[CreateModifierThinker(
                 caster, --hCaster
                 self:GetAbility(), --hAbility
                 "modifier_nevermore_counter_thinker", --modifierName
@@ -97,14 +97,10 @@ function modifier_nevermore_counter:GetModifierIncomingDamage_Percentage( params
                 caster:GetOrigin(), --vOrigin
                 caster:GetTeamNumber(), --nTeamNumber
                 false --bPhantomBlocker
-            )
+            )]]
 
-            caster:AddNewModifier(
-                caster,
-                self:GetAbility(),
-                "modifier_nevermore_counter_buff",
-                { duration = self.duration }
-            )
+            local ability = caster:FindAbilityByName("nevermore_counter_mobility")
+            caster:CastAbilityOnPosition(Vector(0,0,0), ability, caster:GetPlayerID())
 
             -- End
             self:PlayEffects()
@@ -124,11 +120,26 @@ end
 
 function modifier_nevermore_counter:PlayEffects()
     local caster = self:GetParent()
-
     -- Create sounds
     local sound_cast = "Hero_Nevermore.RequiemOfSouls"
     EmitSoundOn(sound_cast, caster)
 
+	-- create particle
+	local particle_cast = "particles/econ/events/ti9/blink_dagger_ti9_start_lvl2.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+    
+    -- create particle
+	local particle_cast_b = "particles/econ/events/ti9/phase_boots_ti9_body_magic.vpcf"
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, caster:GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+
+    
+end
+
+--[[
     -- Create particle
     local particle_cast = "particles/units/heroes/hero_terrorblade/terrorblade_scepter.vpcf"
 
@@ -139,5 +150,4 @@ function modifier_nevermore_counter:PlayEffects()
     ParticleManager:SetParticleControl(effect_cast, 15, Vector(244,50,50)) 
     ParticleManager:SetParticleControl(effect_cast, 16, Vector(1,0,0)) 
 	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
+]]

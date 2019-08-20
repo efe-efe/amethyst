@@ -16,7 +16,7 @@ function sniper_ex_ultimate:OnSpellStart()
 	local cast_point = self:GetCastPoint()
 	
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=0.4})
+	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_ATTACK, rate=0.4})
 	caster:AddNewModifier(
 		caster, 
 		self, 

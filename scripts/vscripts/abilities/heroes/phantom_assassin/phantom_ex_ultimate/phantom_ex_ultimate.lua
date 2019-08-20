@@ -2,10 +2,26 @@ phantom_ex_ultimate = class({})
 LinkLuaModifier( "modifier_phantom_ex_ultimate_movement", "abilities/heroes/phantom_assassin/phantom_ex_ultimate/modifier_phantom_ex_ultimate_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
 LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
 
+--------------------------------------------------------------------------------
+-- Ability Start
 function phantom_ex_ultimate:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+    local cast_point = self:GetCastPoint()
+    self.radius = 200
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+        duration = cast_point,
+        can_walk = 0,
+        radius = self.radius
+	})
+end
+
+function phantom_ex_ultimate:OnEndPseudoCastPoint( point )
     local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
-	local distance = self:GetSpecialValueFor( "distance" )
+	local distance = self:GetSpecialValueFor( "range" )
 	local damage = self:GetAbilityDamage()
     local direction = caster:GetForwardVector()
     local speed = 1700
@@ -32,7 +48,7 @@ function phantom_ex_ultimate:OnSpellStart()
 	-- load data
     local projectile_name = ""
 	local projectile_start_radius = 0
-	local projectile_end_radius = 200
+	local projectile_end_radius = self.radius
 	local projectile_distance = distance
 	local projectile_speed = speed + 200
 	

@@ -2,8 +2,8 @@
 phantom_ex_special_attack = class({})
 LinkLuaModifier( "modifier_generic_sleep_lua", "abilities/generic/modifier_generic_sleep_lua", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_ex_special_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "hitbox" )
+function phantom_ex_special_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("phantom_special_attack")
 end
 
 --------------------------------------------------------------------------------

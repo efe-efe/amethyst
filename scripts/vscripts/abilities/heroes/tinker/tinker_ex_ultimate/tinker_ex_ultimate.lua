@@ -12,7 +12,7 @@ function tinker_ex_ultimate:OnSpellStart(  )
 	
 	-- Animation and pseudo cast point
 	StartAnimation(self:GetCaster(), {
-		duration = cast_point, 
+		duration = cast_point + 0.1, 
 		activity = ACT_DOTA_TELEPORT_END, 
 		translate = "bot", 
 		rate = 1.0

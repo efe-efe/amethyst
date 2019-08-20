@@ -2,14 +2,11 @@ wisp_ex_counter = class({})
 LinkLuaModifier( "modifier_wisp_ex_counter_thinker", "abilities/heroes/wisp/wisp_ex_counter/modifier_wisp_ex_counter_thinker", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_wisp_ex_counter_movement", "abilities/heroes/wisp/wisp_ex_counter/modifier_wisp_ex_counter_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
 
---------------------------------------------------------------------------------
-
-function wisp_ex_counter:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+function wisp_ex_counter:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("wisp_counter")
 end
 
 --------------------------------------------------------------------------------
-
 function wisp_ex_counter:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()

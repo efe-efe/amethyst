@@ -1,21 +1,30 @@
 sniper_special_attack = class({})
 LinkLuaModifier( "modifier_sniper_shrapnel_thinker_lua", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_thinker_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_sniper_special_attack_charges", "abilities/heroes/sniper/sniper_special_attack/modifier_sniper_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_charges_one", "abilities/generic/charges/modifier_generic_charges_one", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Passive Modifier
 function sniper_special_attack:GetIntrinsicModifierName()
-	return "modifier_sniper_special_attack_charges"
-end
---------------------------------------------------------------------------------
--- Set the aoe indicator
-function sniper_special_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+	return "modifier_generic_charges_one"
 end
 
 function sniper_special_attack:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	local radius = self:GetSpecialValueFor("radius")
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		movement_speed = 10,
+		radius = radius
+	})
+end
+
+function sniper_special_attack:OnEndPseudoCastPoint( pos )
     local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
 	local duration = self:GetSpecialValueFor( "duration" )
 
     -- Effect thinker
@@ -24,13 +33,13 @@ function sniper_special_attack:OnSpellStart()
         self, --hAbility
         "modifier_sniper_shrapnel_thinker_lua", --modifierName
         { duration = duration }, --paramTable
-        point, --vOrigin
+        pos, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
     )
 
 	-- effects
-	self:PlayEffects( point )
+	self:PlayEffects( pos )
 end
 
 --------------------------------------------------------------------------------

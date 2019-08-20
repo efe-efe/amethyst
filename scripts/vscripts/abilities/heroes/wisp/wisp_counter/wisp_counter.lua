@@ -1,6 +1,10 @@
 wisp_counter = class({})
 LinkLuaModifier( "modifier_wisp_counter", "abilities/heroes/wisp/wisp_counter/modifier_wisp_counter", LUA_MODIFIER_MOTION_NONE )
 
+function wisp_counter:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("wisp_ex_counter")
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function wisp_counter:OnSpellStart()

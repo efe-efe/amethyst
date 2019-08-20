@@ -86,7 +86,9 @@ function phantom_ultimate:OnEndPseudoCastPoint( pos )
 				damage_type = DAMAGE_TYPE_PURE,
 			}
 			
-            ApplyDamage( damage_table )
+			ApplyDamage( damage_table )
+			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
+
             self:PlayEffects_c(unit)
 
 		end,

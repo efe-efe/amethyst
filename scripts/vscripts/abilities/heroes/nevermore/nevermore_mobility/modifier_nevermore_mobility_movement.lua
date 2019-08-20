@@ -20,7 +20,6 @@ function modifier_nevermore_mobility_movement:OnCreated( kv )
 		self.speed = kv.speed -- special value
 		self.origin = self:GetParent():GetOrigin()
 		self.scratched = false
-		self.disabled = true
 
 		StartAnimation(self:GetParent(), {
 			duration=1.0, 
@@ -67,10 +66,6 @@ function modifier_nevermore_mobility_movement:UpdateHorizontalMotion( me, dt )
 		self.scratched = true
 	end
 
-	if distance > self.distance/2 then
-		self.disabled = true
-	end
-
 	-- set position
 	local target = pos + self.direction * (self.speed*dt)
 
@@ -97,7 +92,7 @@ end
 -- Status Effects
 function modifier_nevermore_mobility_movement:CheckState()
 	local state = {
-        [MODIFIER_STATE_COMMAND_RESTRICTED] = self.disabled,
+        [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
 		[MODIFIER_STATE_INVULNERABLE] = true,
 		[MODIFIER_STATE_OUT_OF_GAME] = true,

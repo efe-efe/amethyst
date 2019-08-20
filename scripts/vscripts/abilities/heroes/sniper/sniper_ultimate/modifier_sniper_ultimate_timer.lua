@@ -3,18 +3,25 @@ modifier_sniper_ultimate_timer = class({})
 function modifier_sniper_ultimate_timer:OnCreated()
     if IsServer() then
         -- Can't move
-        self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
-        self:StartIntervalThink( 0.375 )
+        self:OnIntervalThink()
+        self:StartIntervalThink( 0.45 )
     end
 end
 
 function modifier_sniper_ultimate_timer:OnDestroy()
     if IsServer() then
         --Can move again
-        self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
         self:PlayEffects()
-        
     end
+end
+
+-- Status Effects
+function modifier_sniper_ultimate_timer:CheckState()
+	local state = {
+		[MODIFIER_STATE_SILENCED] = true,
+	}
+
+	return state
 end
 
 function modifier_sniper_ultimate_timer:OnIntervalThink()

@@ -2,6 +2,10 @@ spectre_ex_second_attack = class({})
 LinkLuaModifier( "modifier_spectre_ex_second_attack", "abilities/heroes/spectre/spectre_ex_second_attack/modifier_spectre_ex_second_attack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
 
+function spectre_ex_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("spectre_second_attack")
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_ex_second_attack:OnSpellStart()
@@ -24,7 +28,7 @@ end
 
 --------------------------------------------------------------------------------
 -- End casting
-function spectre_ex_second_attack:OnEndPseudoCastPoint( pos )
+function spectre_ex_second_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	
@@ -37,7 +41,7 @@ function spectre_ex_second_attack:OnEndPseudoCastPoint( pos )
     local projectile_vision = 0
 	local damage = self:GetAbilityDamage()
 	self.debuff_duration = self:GetSpecialValueFor("debuff_duration")
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	-- logic
 	local projectile = {

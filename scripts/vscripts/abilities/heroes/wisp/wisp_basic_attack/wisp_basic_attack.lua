@@ -15,11 +15,14 @@ function wisp_basic_attack:OnSpellStart()
 		caster,
 		self,
 		"modifier_generic_pseudo_cast_point",
-		{ duration = cast_point }
+		{
+			duration = cast_point,
+			movement_speed = 50, 
+		}
 	)
 end
 
-function wisp_basic_attack:OnEndPseudoCastPoint( pos )
+function wisp_basic_attack:OnEndPseudoCastPoint( point )
 	self:SetActivated(true)
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
@@ -35,7 +38,7 @@ function wisp_basic_attack:OnEndPseudoCastPoint( pos )
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	-- Extra data
 	local link_duration = self:GetSpecialValueFor("link_duration")
@@ -75,13 +78,14 @@ function wisp_basic_attack:OnEndPseudoCastPoint( pos )
 		OnUnitHit = function(_self, unit)
 			-- ENEMIES
 			if unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() then
-
+				--[[
 				_self.Source:AddNewModifier(
 					unit,
 					self,
 					"modifier_wisp_basic_attack_link_negative",
 					{ duration = link_duration }
 				)
+				]]
 
 				-- perform the actual attack
 				caster:PerformAttack(
@@ -104,8 +108,8 @@ function wisp_basic_attack:OnEndPseudoCastPoint( pos )
 					"modifier_wisp_basic_attack_link",
 					{ duration = link_duration }
 				)
-				unit:Heal( heal, _self.Source )
 			end
+			_self.Source:Heal( heal, _self.Source )
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)

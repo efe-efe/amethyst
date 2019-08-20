@@ -1,6 +1,10 @@
 sniper_second_attack = class({})
 LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
 
+function sniper_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("sniper_ex_second_attack")
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function sniper_second_attack:OnSpellStart()
@@ -100,7 +104,7 @@ function sniper_second_attack:OnEndPseudoCastPoint( pos )
 			-- Stun
 			unit:AddNewModifier(_self.Source, self , "modifier_generic_stunned_lua", { duration = stun_duration})
 	
-			self:PlayEffects_c(unit, _self.actualPosition)
+			self:PlayEffects_c(unit, _self.currentPosition)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)
@@ -111,7 +115,7 @@ function sniper_second_attack:OnEndPseudoCastPoint( pos )
 	-- Cast projectile
     Projectiles:CreateProjectile(projectile)
 	SafeDestroyModifier("modifier_sniper_second_attack_timer", caster, caster)
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.2})
+	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_ATTACK, rate=1.2})
 
 	-- Put CD on the alternate version of the ability
 	local ex_version = caster:FindAbilityByName("sniper_ex_second_attack")

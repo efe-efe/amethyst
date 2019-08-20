@@ -2,17 +2,36 @@ sniper_mobility = class({})
 LinkLuaModifier( "modifier_sniper_mobility_thinker", "abilities/heroes/sniper/sniper_mobility/modifier_sniper_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_sniper_shrapnel_thinker_lua", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_thinker_lua", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Set the aoe indicator
-function sniper_mobility:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+function sniper_mobility:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("sniper_ex_mobility")
 end
 
+--------------------------------------------------------------------------------
+-- Ability Start
 function sniper_mobility:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	local radius = self:GetSpecialValueFor("radius")
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_CAST_ABILITY_1, rate=2.0})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		movement_speed = 10,
+	})
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function sniper_mobility:OnEndPseudoCastPoint( pos )
     local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
     local duration = self:GetSpecialValueFor( "duration" )
     local shrapnel = caster:FindAbilityByName("sniper_special_attack")
+
+    local direction = (caster:GetOrigin() - pos):Normalized()
+    local thinker_origin = caster:GetOrigin() + direction * 150
+
 
     -- Effect thinker
     CreateModifierThinker(
@@ -20,7 +39,7 @@ function sniper_mobility:OnSpellStart()
         self, --hAbility
         "modifier_sniper_mobility_thinker", --modifierName
         { }, --paramTable
-        point, --vOrigin
+        thinker_origin, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
     )
@@ -32,7 +51,7 @@ function sniper_mobility:OnSpellStart()
         shrapnel, --hAbility
         "modifier_sniper_shrapnel_thinker_lua", --modifierName
         { duration = shrapnel:GetSpecialValueFor("duration") }, --paramTable
-        point, --vOrigin
+        thinker_origin, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
     )

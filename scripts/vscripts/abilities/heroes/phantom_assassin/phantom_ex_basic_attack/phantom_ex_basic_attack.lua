@@ -1,6 +1,10 @@
 phantom_ex_basic_attack = class({})
 LinkLuaModifier("modifier_phantom_ex_basic_attack", "abilities/heroes/phantom_assassin/phantom_ex_basic_attack/modifier_phantom_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
+function phantom_ex_basic_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("phantom_basic_attack")
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function phantom_ex_basic_attack:OnSpellStart()

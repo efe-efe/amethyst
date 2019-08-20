@@ -3,12 +3,10 @@ LinkLuaModifier( "modifier_wisp_ex_special_attack_thinker", "abilities/heroes/wi
 LinkLuaModifier( "modifier_wisp_ex_special_attack_movement", "abilities/heroes/wisp/wisp_ex_special_attack/modifier_wisp_ex_special_attack_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
 
 --------------------------------------------------------------------------------
-
-function wisp_ex_special_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+function wisp_ex_special_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("wisp_special_attack")
 end
 
---------------------------------------------------------------------------------
 
 function wisp_ex_special_attack:OnSpellStart()
 	-- unit identifier

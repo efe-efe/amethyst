@@ -19,3 +19,6 @@ Use the "Keyword" on the particle manager to find the particles related to the "
 
     Keyword: owner
     Use: States (thirst, spectral dagger)
+
+    keyword: swipe
+    Use: Cleaves, meele atack effects

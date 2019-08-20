@@ -1,8 +1,8 @@
 tinker_ex_second_attack = class({})
 LinkLuaModifier( "modifier_tinker_ex_second_attack_thinker", "abilities/heroes/tinker/tinker_ex_second_attack/modifier_tinker_ex_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
 
-function tinker_ex_second_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+function tinker_ex_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("tinker_second_attack")
 end
 
 --------------------------------------------------------------------------------
@@ -10,7 +10,23 @@ end
 function tinker_ex_second_attack:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local cast_point = self:GetCastPoint()
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=cast_point + 0.1, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		movement_speed = 10,
+		radius = self:GetSpecialValueFor("radius")
+	})
+end
+
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function tinker_ex_second_attack:OnEndPseudoCastPoint( point )
+	-- unit identifier
+	local caster = self:GetCaster()
 
 	-- create thinker
 	CreateModifierThinker(

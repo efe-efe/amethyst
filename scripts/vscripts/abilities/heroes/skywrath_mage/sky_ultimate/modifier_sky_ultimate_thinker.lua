@@ -66,10 +66,22 @@ function modifier_sky_ultimate_thinker:OnIntervalThink()
             victim = enemy,
             attacker = caster,
             damage = self.damage_heal_per_think,
-            damage_type = DAMAGE_TYPE_PURE,
+            damage_type = DAMAGE_TYPE_MAGICAL,
         }
 
         ApplyDamage( damage )
+
+        if enemy:HasModifier("modifier_generic_silenced_lua") then
+            enemy:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { 
+                duration = self:GetRemainingTime()
+            })
+        end
+
+        if enemy:HasModifier("modifier_sky_basic_attack_debuff") then
+            enemy:AddNewModifier(caster, self , "modifier_sky_basic_attack_debuff", { 
+                duration = self:GetRemainingTime()
+            })
+        end
     end
 
     --Heal allies

@@ -3,18 +3,16 @@ axe_basic_attack = class({})
 --------------------------------------------------------------------------------
 -- Ability Start
 function axe_basic_attack:OnSpellStart()
-
-	self:SetActivated(false)
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
 
 	-- Animation and pseudo cast point
-	self:Animate()
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
+	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point, no_target = 1})
 end
 
-function axe_basic_attack:OnEndPseudoCastPoint()
+function axe_basic_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
@@ -28,7 +26,7 @@ function axe_basic_attack:OnEndPseudoCastPoint()
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( 0, 0, 0 )):Normalized()
+	local projectile_direction =  (point - origin):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -37,7 +35,7 @@ function axe_basic_attack:OnEndPseudoCastPoint()
 		fStartRadius = projectile_start_radius,
 		fEndRadius = projectile_end_radius,
 		Source = caster,
-		fExpireTime = 8.0,
+		fExpireTime = 0.1,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,
 		bMultipleHits = false,
@@ -82,11 +80,6 @@ function axe_basic_attack:OnEndPseudoCastPoint()
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
 	self:StartCooldown(attack_speed)
-	self:SetActivated(true)
-end
-
-function axe_basic_attack:OnStopPseudoCastPoint()
-	self:SetActivated(true)
 end
 
 --------------------------------------------------------------------------------
@@ -123,9 +116,3 @@ function axe_basic_attack:PlayEffects_b( )
 	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
-function axe_basic_attack:Animate()
-	StartAnimation(self:GetCaster(), {duration=1.0, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0})
-end
-
- 

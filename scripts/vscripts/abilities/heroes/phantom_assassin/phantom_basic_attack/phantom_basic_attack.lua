@@ -1,8 +1,8 @@
 phantom_basic_attack = class({})
 LinkLuaModifier( "modifier_phantom_assassin_strike_stack_lua", "abilities/heroes/phantom_assassin/phantom_assassin_shared_modifiers/modifier_phantom_assassin_strike_stack_lua", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_basic_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "hitbox" )
+function phantom_basic_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("phantom_ex_basic_attack")
 end
 
 --------------------------------------------------------------------------------

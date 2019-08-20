@@ -1,5 +1,17 @@
 modifier_generic_projectile_reflector_lua = class({})
 
+--------------------------------------------------------------------------------
+-- Classifications
+function modifier_generic_projectile_reflector_lua:IsHidden()
+	return false
+end
+
+--------------------------------------------------------------------------------
+-- Initializer
+function modifier_generic_projectile_reflector_lua:OnCreated()
+end
+
+
 function modifier_generic_projectile_reflector_lua:DeclareFunctions()
     local funcs = {
         MODIFIER_PROPERTY_REFLECT_SPELL, --Lotus Orb trigger.

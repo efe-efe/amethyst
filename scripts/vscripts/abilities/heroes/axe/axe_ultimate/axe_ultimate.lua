@@ -1,21 +1,27 @@
 axe_ultimate = class({})
 LinkLuaModifier( "modifier_axe_ultimate", "abilities/heroes/axe/axe_ultimate/modifier_axe_ultimate", LUA_MODIFIER_MOTION_NONE )
 
-function axe_ultimate:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
-end
-
-function axe_ultimate:OnAbilityPhaseStart()
-	-- play effects
-	self:PlayEffects_b()
-
-	return true -- if success
-end
-
+--------------------------------------------------------------------------------
+-- Ability Start
 function axe_ultimate:OnSpellStart()
+	self:PlayEffects_b()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	self.radius = self:GetSpecialValueFor("radius")
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.6, activity=ACT_DOTA_CAST_ABILITY_4, rate=1.0})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		can_walk = 0,
+		radius = self.radius
+	})
+end
+
+--------------------------------------------------------------------------------
+function axe_ultimate:OnEndPseudoCastPoint( pos )
     local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
-	local radius = self:GetSpecialValueFor("radius")
 	local damage = self:GetAbilityDamage()
 	local treshold = self:GetSpecialValueFor("treshold")
 	local speed_duration = self:GetSpecialValueFor("speed_duration")
@@ -23,9 +29,9 @@ function axe_ultimate:OnSpellStart()
     
     local enemies = FindUnitsInRadius( 
         caster:GetTeamNumber(), -- int, your team number
-        point, -- point, center point
+        pos, -- point, center point
         nil, -- handle, cacheUnit. (not known)
-        radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
+        self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
         DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
         0, -- int, flag filter
@@ -98,9 +104,8 @@ end
 
 
 
-function axe_ultimate:OnAbilityPhaseInterrupted()	
+function axe_ultimate:OnStopPseudoCastPoint()
 	StopGlobalSound( "axe_axe_ability_cullingblade_01" )
-	return true -- if success
 end
 
 function axe_ultimate:PlayEffects_b()

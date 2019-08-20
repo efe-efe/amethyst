@@ -2,16 +2,30 @@ spectre_mobility = class({})
 LinkLuaModifier( "modifier_spectre_mobility_thinker", "abilities/heroes/spectre/spectre_mobility/modifier_spectre_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_mobility", "abilities/heroes/spectre/spectre_mobility/modifier_spectre_mobility", LUA_MODIFIER_MOTION_NONE )
 
-function spectre_mobility:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+function spectre_mobility:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("spectre_ex_mobility")
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_mobility:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	local radius = self:GetSpecialValueFor("radius")
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_ATTACK, rate=1.0})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+        radius = radius
+	})
+end
+
+--------------------------------------------------------------------------------
+function spectre_mobility:OnEndPseudoCastPoint( point )
     -- unit identifier
 	local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
     local delay_time = self:GetSpecialValueFor( "delay_time" )
     local old_origin = caster:GetOrigin()
     local max_range = self:GetSpecialValueFor("range")

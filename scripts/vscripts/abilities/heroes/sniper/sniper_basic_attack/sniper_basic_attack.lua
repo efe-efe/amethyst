@@ -14,8 +14,6 @@ function sniper_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
 
-	self:SetActivated(false)
-	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_RUN, translate="aggressive", rate=2.0})
 	caster:AddNewModifier(

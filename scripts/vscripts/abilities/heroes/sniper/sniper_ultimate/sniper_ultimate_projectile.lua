@@ -7,16 +7,18 @@ function sniper_ultimate_projectile:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
+	local radius = self:GetSpecialValueFor("hitbox")
 	
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=0.4})
+	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_ATTACK, rate=0.4})
 	caster:AddNewModifier(
 		caster, 
 		self, 
 		"modifier_generic_pseudo_cast_point", 
 		{ 
 			duration = cast_point,
-			can_walk = 1
+			can_walk = 0,
+			radius = radius
 		}
 	)
 end
@@ -94,12 +96,12 @@ function sniper_ultimate_projectile:OnEndPseudoCastPoint( pos )
 				self, --hAbility
 				"modifier_sniper_ultimate_thinker", --modifierName
 				{ duration = duration }, --paramTable
-				_self.actualPosition, --vOrigin
+				_self.currentPosition, --vOrigin
 				_self.Source:GetTeamNumber(), --nTeamNumber
 				false --bPhantomBlocker
 			)
 
-			self:PlayEffects_c(unit, _self.actualPosition)
+			self:PlayEffects_c(unit, _self.currentPosition)
 			_self.Destroy()
 		end,
         OnFinish = function(_self, pos)

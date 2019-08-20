@@ -2,18 +2,40 @@ sky_ex_second_attack = class({})
 LinkLuaModifier( "modifier_sky_ex_second_attack_buff", "abilities/heroes/skywrath_mage/sky_ex_second_attack/modifier_sky_ex_second_attack_buff", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_sky_ex_second_attack_debuff", "abilities/heroes/skywrath_mage/sky_ex_second_attack/modifier_sky_ex_second_attack_debuff", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Set the AOE indicator
-function sky_ex_second_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "hitbox" )
+function sky_ex_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("sky_second_attack")
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function sky_ex_second_attack:OnSpellStart()
+	-- unit identifier
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+
+    -- Animation and pseudo cast point
+	StartAnimation(caster, {
+		duration = cast_point + 0.1, 
+		activity = ACT_DOTA_ATTACK, 
+		rate = 2.0
+	})
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point", 
+		{ 
+			duration = cast_point,
+			radius = self:GetSpecialValueFor( "hitbox" ),
+			movement_speed = 10,
+		}
+	)
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function sky_ex_second_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
 
 	-- load data
     local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt.vpcf"

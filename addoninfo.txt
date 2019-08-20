@@ -1,104 +1,105 @@
 "AddonInfo"
 {
-    "TeamCount" "2"
-    "maps"      "mad_moon_map"
+    "maps"      "mad_moon_map free_for_all"
     "IsPlayable"  "1"
     "mad_moon_map"
     {
         "MaxPlayers"                    "6"
+        "TeamCount" "2"
     }
     
+    "free_for_all"
+    {
+        "MaxPlayers"                    "4"
+        "TeamCount"                     "4"
+    }
+
     "Default_Keys"
     {
         "01"
         {
             "Key"       "SPACE"
             "Command"   "-CustomGameExecuteAbility1"
-            "Name"      "Execute mobility ability"
         }
         "02"
         {
             "Key"       "1"
             "Command"   "-CustomGameExecuteAbility2"
-            "Name"      "Execute ex ability one"
         }
         "03"
         {
             "Key"       "2"
             "Command"   "-CustomGameExecuteAbility3"
-            "Name"      "Execute ex ability two"
         }
         "04"
         {
             "Key"       "Q"
             "Command"   "-CustomGameExecuteAbilityQ"
-            "Name"      "Execute basic attack"
         }
         "05"
         {
             "Key"       "W"
             "Command"   "-CustomGameExecuteAbilityW"
-            "Name"      "Execute second attack"
         }
         "06"
         {
             "Key"       "W"
             "Command"   "+CustomGameExecuteAbilityW"
-            "Name"      "Execute second attack"
         }
         "07"
         {
             "Key"       "E"
             "Command"   "-CustomGameExecuteAbilityE"
-            "Name"      "Execute counter"
         }
         "08"
         {
             "Key"       "D"
             "Command"   "CustomGameExecuteAbilityD"
-            "Name"      "Execute special attack"
         }
         "09"
         {
             "Key"       "D"
             "Command"   "+CustomGameExecuteAbilityD"
-            "Name"      "Execute special attack"
         }
         "10"
         {
             "Key"       "F"
             "Command"   "-CustomGameExecuteAbilityF"
-            "Name"      "Execute ex ultimate"
         }
         "11"
         {
             "Key"       "R"
             "Command"   "-CustomGameExecuteAbilityR"
-            "Name"      "Execute ultimate attack"
         }
         "12"
         {
             "Key"       "A"
             "Command"   "-CustomGameExecuteAbilityA"
-            "Name"      "Execute ultimate attack"
         }
         "13"
         {
             "Key"       "A"
             "Command"   "+CustomGameExecuteAbilityA"
-            "Name"      "Execute ultimate attack"
         }
         "14"
         {
             "Key"       "S"
             "Command"   "-CustomGameExecuteAbilityS"
-            "Name"      "Execute ultimate attack"
         }
         "15"
         {
             "Key"       "S"
             "Command"   "+CustomGameExecuteAbilityS"
-            "Name"      "Execute ultimate attack"
+        }
+        "16"
+        {
+            "Key"       "SHIFT"
+            "Command"   "-CustomGameShift"
+        }
+        "17"
+        {
+            "Key"       "SHIFT"
+            "Command"   "+CustomGameShift"
         }
     }
 }

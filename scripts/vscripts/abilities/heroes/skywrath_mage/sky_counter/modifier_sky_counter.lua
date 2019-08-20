@@ -24,7 +24,7 @@ function modifier_sky_counter:OnCreated( kv )
         self.knockback_radius = self:GetAbility():GetSpecialValueFor("knockback_radius")
         self.damage = self:GetAbility():GetAbilityDamage()
         self.knockback_distance = self:GetAbility():GetSpecialValueFor("knockback_distance")
-
+	
         -- Can't move
         self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
 
@@ -143,6 +143,7 @@ function modifier_sky_counter:CheckState()
 	local state = {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
+		[MODIFIER_STATE_SILENCED] = true,
 	}
 
 	return state

@@ -3,12 +3,8 @@ modifier_axe_special_attack_debuff = class({})
 function modifier_axe_special_attack_debuff:OnCreated()
     if IsServer() then
 
-        --local attacks_per_second = self:GetParent():GetAttacksPerSecond()
-        --local attack_speed = ( 1 / attacks_per_second )
-        --local ability = self:GetParent():GetAbilityByIndex(0)
-        --local cast_point = ability:GetCastPoint()
+        self.ability = self:GetParent():GetAbilityByIndex(1)
 
-        --local think_interval = 0.3--self:GetAbility():GetSpecialValueFor( "think_interval" )
         -- Start Interval
         self:StartIntervalThink( 0.1 )   
         self:OnIntervalThink()
@@ -24,6 +20,8 @@ function modifier_axe_special_attack_debuff:OnDestroy()
             UnitIndex = self:GetParent():entindex()
         }
         ExecuteOrderFromTable(order)
+
+        self.ability.force_position = nil
     end
 end
 
@@ -31,13 +29,12 @@ end
 function modifier_axe_special_attack_debuff:OnIntervalThink()
     local parent = self:GetParent()
     local caster = self:GetCaster()
-    local ability = parent:GetAbilityByIndex(0)
 
-    if ability:IsFullyCastable() and not parent:IsSilenced() then
-        parent:CastAbilityOnPosition(caster:GetOrigin(), ability, parent:GetPlayerOwnerID())
+    if self.ability:IsFullyCastable() and not parent:IsSilenced() and not self.ability:IsInAbilityPhase() then
+        self.ability.force_position = caster:GetOrigin()
+        parent:CastAbilityOnPosition(caster:GetOrigin(), self.ability, parent:GetPlayerOwnerID())
     end
     parent:MoveToPosition(caster:GetOrigin())
-
 end
 
 

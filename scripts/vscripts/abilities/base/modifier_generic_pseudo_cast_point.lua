@@ -26,41 +26,25 @@ function modifier_generic_pseudo_cast_point:OnCreated(params)
 	self.movement_speed = params.movement_speed
 	self.show_all = params.show_all
 	self.no_target = params.no_target
-	self.aoe = params.aoe
 	self.radius = params.radius
+	self.min_range = params.min_range
+	self.disable_all = params.disable_all
 	self.range = self.ability:GetCastRange(Vector(0,0,0), nil)
 	self.initialized = false
 	self.point = Vector(0,0,0)
 	
 	if IsServer() then
-
-		if self.can_walk == 0 then
-			local order = 
-			{
-				OrderType = DOTA_UNIT_ORDER_STOP,
-				UnitIndex = self:GetParent():entindex()
-			}
-			ExecuteOrderFromTable(order)
-		end
-
-		self.ability:EndCooldown()
-		self.ability:SetInAbilityPhase( true )
-		self.ability:SetActivated( false )
-		self:GetParent():GiveMana(self.ability:GetManaCost(-1))    
-
+		self:StartCast()
 		self:StartIntervalThink( 0.01 )
 	end
 end
-
 
 --------------------------------------------------------------------------------
 -- When refreshed
 function modifier_generic_pseudo_cast_point:OnRefresh(params)
 	-- Stop previous Ability first
-	self.ability:SetInAbilityPhase( false )
-	self.ability:SetActivated(true)
-	if self.ability.OnStopPseudoCastPoint ~= nil then
-		self.ability:OnStopPseudoCastPoint()
+	if IsServer() then
+		self:StopCast()
 	end
 
 	self.ability = self:GetAbility()
@@ -68,14 +52,57 @@ function modifier_generic_pseudo_cast_point:OnRefresh(params)
 	self.movement_speed = params.movement_speed
 	self.show_all = params.show_all
 	self.no_target = params.no_target
-	self.aoe = params.aoe
 	self.radius = params.radius
+	self.min_range = params.min_range
 	self.range = self.ability:GetCastRange(Vector(0,0,0), nil)
 	self.initialized = false
+	self.disable_all = params.disable_all
 	self.point = Vector(0,0,0)
+
 
 	if IsServer() then
 		self:StopEffects()
+		self:StartCast()
+		self:StartIntervalThink( 0.01 )
+	end
+end
+
+function modifier_generic_pseudo_cast_point:SwapActiveSpells( mode )
+	local boolean_mode
+
+	if mode == "disable" then
+		boolean_mode = false
+	elseif mode == "enable" then
+		boolean_mode = true
+	end
+
+	if IsServer() then
+		for i = 0, 12 do
+			local ability = self:GetParent():GetAbilityByIndex(i)
+			if ability then
+				if ability:GetAbilityType() ~= 2 then -- To not level up the talents
+					if ability ~= self:GetAbility() then
+						ability:SetActivated( boolean_mode )
+					end
+				end
+			end
+		end
+	end
+end
+
+function modifier_generic_pseudo_cast_point:StartCast()
+	if IsServer() then
+
+		local modifier = self:GetParent():FindModifierByName("modifier_generic_pre_silence_lua")
+		
+		-- Safe destroying CHECKEAR 
+		if modifier ~= nil then
+			if not modifier:IsNull() then
+				modifier:Destroy()
+				self:Destroy()
+				return
+			end
+		end
 
 		if self.can_walk == 0 then
 			local order = 
@@ -89,11 +116,25 @@ function modifier_generic_pseudo_cast_point:OnRefresh(params)
 		self.ability:EndCooldown()
 		self.ability:SetInAbilityPhase( true )
 		self.ability:SetActivated(false)
-		self:GetParent():GiveMana(self.ability:GetManaCost(-1))    
-
-		self:StartIntervalThink( 0.01 )
+		self:GetParent():GiveMana(self.ability:GetManaCost(-1)) 
+				
+		if self.disable_all ~= 0 then
+			self:SwapActiveSpells( "disable" )
+		end
 	end
 end
+
+function modifier_generic_pseudo_cast_point:StopCast()
+	if IsServer() then
+		self.ability:SetActivated(true)
+		self.ability:SetInAbilityPhase( false )
+		self:SwapActiveSpells( "enable" )
+		if self.ability.OnStopPseudoCastPoint ~= nil then
+			self.ability:OnStopPseudoCastPoint()
+		end
+	end
+end
+
 
 --------------------------------------------------------------------------------
 -- On Orders
@@ -129,36 +170,41 @@ function modifier_generic_pseudo_cast_point:OnDestroy(params)
 	if IsServer() then
 		self:StopEffects()
 
-		local modifier = self:GetParent():FindModifierByName( "modifier_generic_pre_silence_lua" )
-		
-		-- Safe destroying
-		if modifier~=nil then
-			if not modifier:IsNull() then
-				if ability.OnStopPseudoCastPoint ~= nil then
-					ability:OnStopPseudoCastPoint()
-					ability:SetInAbilityPhase( false )
-					ability:SetActivated(true)
-				end
-				return
-			end
-		end
-
 		--Destroyed before it duration ends
 		if self:GetRemainingTime() >= 0.05 then
-			if ability.OnStopPseudoCastPoint ~= nil then
-				ability:OnStopPseudoCastPoint()
-			end
 			GameRules.EndAnimation(self:GetParent())
-			ability:SetInAbilityPhase( false )
-			ability:SetActivated(true)
+			self:StopCast()
 		else
 			if ability.OnEndPseudoCastPoint ~= nil then
-				ability:StartCooldown(ability:GetCooldown(0))
-				ability:PayManaCost()
-				ability:SetInAbilityPhase( false )
-				ability:SetActivated(true)
+				local modifier = nil 
 
-				ability:OnEndPseudoCastPoint( self.point )
+				if ability:GetIntrinsicModifierName() == "modifier_generic_charges_one" then
+					modifier = ability:GetCaster():FindModifierByName("modifier_generic_charges_one")
+				elseif ability:GetIntrinsicModifierName() == "modifier_generic_charges_two" then
+					modifier = ability:GetCaster():FindModifierByName("modifier_generic_charges_two")
+				end
+
+				if modifier ~= nil then
+					if modifier.OnSpellCast ~= nil then
+						modifier:OnSpellCast()
+					else
+						print("[PSEUDO CAST POINT ERROR] Charges don't have OnSpellCast funcion")
+					end
+				else
+					ability:StartCooldown(ability:GetCooldown(0))
+				end
+
+				ability:PayManaCost()
+
+				ability:SetInAbilityPhase( false )
+				ability:SetActivated( true )
+				self:SwapActiveSpells( "enable" )
+
+				if ability.force_position ~= nil then
+					ability:OnEndPseudoCastPoint( ability.force_position )
+				else
+					ability:OnEndPseudoCastPoint( self.point )
+				end
 
 				if ability.OnRemovePseudoCastPoint ~= nil then
 					ability:OnRemovePseudoCastPoint()
@@ -181,9 +227,14 @@ function modifier_generic_pseudo_cast_point:OnIntervalThink()
 	
 	if self.range > 0 then
 		if distance > self.range then
-			self.point = origin + Vector(direction.x * self.range, direction.y * self.range, 0)
-			self.point.z = GetGroundPosition(self.point, self:GetParent()).z
+			self.point = origin + direction * self.range
 		end
+		if self.min_range ~= nil then
+			if distance < self.min_range then
+				self.point = origin + direction * self.min_range
+			end
+		end 
+		self.point.z = GetGroundPosition(self.point, self:GetParent()).z
 	end
 
 	if self.no_target ~= 1 then
@@ -191,9 +242,7 @@ function modifier_generic_pseudo_cast_point:OnIntervalThink()
 			self:PlayEffects()
 			self.initialized = true
 		end
-		if self.aoe == 1 then
-			--DebugDrawCircle(Vector(point.x, point.y,128), Vector(255,0,0), 0, self.radius, true, 0.01)
-			--ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, Vector(point.x, point.y, 128))	-- line origin
+		if self.radius ~= nil then
 			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, Vector(self.point.x, self.point.y, 128))	-- line origin
 			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, Vector(self.point.x, self.point.y, 128))	-- line origin
 		end
@@ -241,13 +290,13 @@ function modifier_generic_pseudo_cast_point:PlayEffects()
 	local origin = self:GetParent():GetOrigin() + Vector( 0, 0, 96 )
 
 	if self.show_all == 1 then
-		if self.aoe == 1 then
+		if self.radius ~= nil then
 			self.effect_cast_aoe = ParticleManager:CreateParticle( particle_cast_aoe, PATTACH_WORLDORIGIN, self:GetParent())
 			ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0)) -- aoe
 		end
 		self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 	else
-		if self.aoe == 1 then
+		if self.radius ~= nil then
 			self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer( 
 				particle_cast_aoe, 
 				PATTACH_WORLDORIGIN, 

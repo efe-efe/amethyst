@@ -44,6 +44,7 @@ function GameMode:OnHeroInGame(keys)
             npc.direction.x = 0
             npc.direction.y = 0
             npc.direction.z = 0
+            npc.first_move = false
 
             self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)
 
@@ -59,6 +60,21 @@ function GameMode:OnHeroInGame(keys)
                         ability:SetLevel(1)
                     end
                 end
+            end
+
+            -- Initialize team if not initialized yet
+            if self.teams[npc:GetTeamNumber()] == nil then
+                self.teams[npc:GetTeamNumber()] = {
+                    alive_heroes = 0,
+                    wins = 0,
+                    looser = false,
+                    players = {},
+                    teamId = npc:GetTeamNumber()
+                }
+
+                --Update GUI
+                local score = { winnerId = npc:GetTeamNumber(), wins = 0 }
+                CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
             end
         end
 
@@ -105,6 +121,14 @@ function GameMode:OnEntityKilled( keys )
         local killed_team = killed:GetTeamNumber()
 
         if not self.lock_round then
+            -- CREATE DEATH ORB
+            local current_mana = killed:GetMana()
+            local mana_given = NearestValue({ 25, 50, 75, 100 }, current_mana)
+            local death_orb_ent = self:CreateOrb(killed:GetOrigin(), "death", 0.0, (mana_given/100) + 0.25 )
+            
+            self.orbs[death_orb_ent].item:SetCurrentCharges(mana_given)
+            self.orbs[death_orb_ent].item:SetPurchaser(killed)
+
             self.teams[killed_team].alive_heroes = self.teams[killed_team].alive_heroes - 1
 
             -- If the killed unit's team have no more heroes
@@ -118,11 +142,10 @@ function GameMode:OnEntityKilled( keys )
                 if winner ~= false then 
                     winner.wins = winner.wins + 1
 
+                    local score = { winnerId = winner.teamId, wins = winner.wins }
+
                     --Update score
-                    CustomGameEventManager:Send_ServerToAllClients( "update_score", { 
-                        dire = self.teams[DOTA_TEAM_BADGUYS].wins,
-                        radiant = self.teams[DOTA_TEAM_GOODGUYS].wins,
-                    })
+                    CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
 
                     self:EndRound(3.0)
                 end
@@ -157,10 +180,6 @@ function GameMode:OnGameInProgress()
     GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 ) 
 
     CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
-    CustomGameEventManager:Send_ServerToAllClients( "update_score", { 
-        dire = 0,
-        radiant = 0,
-    })
 
     GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
     GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
@@ -187,21 +206,25 @@ end
 --------------------------------------------------------------------------------
 function GameMode:OnItemPickUp( event )
 	local item = EntIndexToHScript( event.ItemEntityIndex )
-	local owner = EntIndexToHScript( event.HeroEntityIndex )
-	if event.itemname == "item_health_orb" or event.itemname == "item_mana_orb" then
-        
-        local name 
-        if event.itemname == "item_health_orb" then
-            name = "health"
-        elseif event.itemname == "item_mana_orb" then
-            name = "mana" 
+    local owner = EntIndexToHScript( event.HeroEntityIndex )
+    
+    if  event.itemname == "item_health_orb" or 
+        event.itemname == "item_mana_orb" or 
+        event.itemname == "item_death_orb" 
+    then
+        if event.itemname == "item_health_orb" or event.itemname == "item_mana_orb" then
+            local name 
+            if event.itemname == "item_health_orb" then
+                name = "health"
+            elseif event.itemname == "item_mana_orb" then
+                name = "mana" 
+            end
+
+            self:CreateOrb(self.orbs[event.ItemEntityIndex].pos, name, self.ORBS_SPAWN_TIME)
         end
 
-        self:CreateOrb(self.orbs[event.ItemEntityIndex].pos, name, self.ORBS_SPAWN_TIME)
-
         UTIL_Remove( item ) -- otherwise it pollutes the player inventory
-
-	end
+    end
 end
 
 --============================================================================================
@@ -321,6 +344,8 @@ end
 --------------------------------------------------------------------------------
 function GameMode:CreateDeathZone()
     DebugPrint("[RITE] Creating Death Zone")
+        
+    if self.middle_orb_ent == nil then return end
     local orb_position = self.middle_orb_ent:GetOrigin()
 
     self.modifier_death_zone = CreateModifierThinker(
@@ -335,7 +360,7 @@ function GameMode:CreateDeathZone()
 end
 
 --------------------------------------------------------------------------------
--- Death zone spawner
+-- Death zone destroyer
 --------------------------------------------------------------------------------
 function GameMode:DestroyDeathZone()
     DebugPrint("[RITE] Destroying Death Zone")
@@ -352,7 +377,8 @@ end
 --------------------------------------------------------------------------------
 function GameMode:CreateMiddleOrb( delay )
     DebugPrint("[RITE] Creating Middle Orb")
-
+    
+    if self.middle_orb_ent == nil then return end
     local orb_position = self.middle_orb_ent:GetOrigin()
 
     self.middle_orb_instance = CreateUnitByName(
@@ -461,14 +487,16 @@ end
 --------------------------------------------------------------------------------
 -- Middle Orb spawner
 --------------------------------------------------------------------------------
-function GameMode:CreateOrb( pos, type, delay )
+function GameMode:CreateOrb( pos, type, delay, scale )
     local name = "item_" .. type .. "_orb"
 
     local particle_cast = ""
     if type == "health" then
         particle_cast = "particles/generic_gameplay/rune_regeneration.vpcf"
-    else
+    elseif type == "mana" then
         particle_cast = "particles/generic_gameplay/rune_doubledamage.vpcf"
+    elseif type == "death" then
+        particle_cast = "particles/generic_gameplay/rune_haste.vpcf"
     end
 
     local item = CreateItem( name, nil, nil )
@@ -484,9 +512,15 @@ function GameMode:CreateOrb( pos, type, delay )
     item:SetContextThink("SpawnItem", function() 
         local drop = CreateItemOnPositionForLaunch( pos, item )
         ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, drop )
+        
+        if scale ~= nil then
+            drop:SetModelScale( scale )	
+        end
 
         self.orbs[item_index].drop = drop
     end, delay)
+
+    return item_index
 end
 
 --------------------------------------------------------------------------------

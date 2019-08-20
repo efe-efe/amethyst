@@ -13,8 +13,8 @@ function modifier_wisp_basic_attack_link:OnCreated()
     self.max_range = self:GetAbility():GetSpecialValueFor("projectile_range")
 
     if IsServer() then
-        self.modifier = ally:AddNewModifier(
-            wisp,
+        self.modifier = wisp:AddNewModifier(
+            ally,
             self:GetAbility(),
             "modifier_wisp_basic_attack",
             { duration = self:GetDuration() }

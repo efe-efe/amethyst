@@ -68,4 +68,39 @@
 		"ItemKillable"					"0"
 		"ItemCastOnPickup"				"1"
 	}
+
+	//=================================================================================================================
+	// Death Orb
+	//=================================================================================================================
+	"item_death_orb"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"BaseClass"                     "item_lua"
+		"ID"                            "1253"
+		"AbilityTextureName"			"item_mini_haste"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"Model"							"models/props_items/bloodstone.vmdl"
+		"ScriptFile"                    "items/item_death_orb/item_death_orb.lua"
+
+		// Stats
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.0"
+        "AbilityCooldown"               "0.0"
+        "AbilityManaCost"               "0"
+		
+		// Item Info
+		//-------------------------------------------------------------------------------------------------------------
+		"ItemCost"						"99999"
+		"ItemPurchasable"				"0"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemStackable"					"1"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemPermanent"					"0"
+		"ItemInitialCharges"			"0"
+		"ItemKillable"					"0"
+		"ItemCastOnPickup"				"1"
+	}
 }

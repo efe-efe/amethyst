@@ -3,29 +3,34 @@ LinkLuaModifier( "modifier_axe_special_attack_debuff", "abilities/heroes/axe/axe
 LinkLuaModifier( "modifier_axe_special_attack_buff", "abilities/heroes/axe/axe_special_attack/modifier_axe_special_attack_buff", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
--- Ability Phase Start
-function axe_special_attack:OnAbilityPhaseInterrupted()
-	-- stop effects 
-	local sound_cast = "Hero_Axe.BerserkersCall.Item.Shoutmask"
-	StopSoundOn( sound_cast, self:GetCaster() )
-end
-function axe_special_attack:OnAbilityPhaseStart()
-	-- play effects 
+-- Ability Start
+function axe_special_attack:OnSpellStart()
+
 	local sound_cast = "Hero_Axe.BerserkersCall.Item.Shoutmask"
 	EmitSoundOn( sound_cast, self:GetCaster() )
 
-	return true -- if success
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	self.radius = self:GetSpecialValueFor("radius")
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.4, activity=ACT_DOTA_OVERRIDE_ABILITY_1, rate=1.5})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		can_walk = 0,
+		no_target = 1,
+	})
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function axe_special_attack:OnSpellStart()
+function axe_special_attack:OnEndPseudoCastPoint()
 	-- unit identifier
 	local caster = self:GetCaster()
 	local point = caster:GetOrigin()
 
 	-- load data
-	local radius = self:GetSpecialValueFor("radius")
 	local duration = self:GetSpecialValueFor("duration")
 	local buff_linger = self:GetSpecialValueFor("buff_linger")
 	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
@@ -35,7 +40,7 @@ function axe_special_attack:OnSpellStart()
 		caster:GetTeamNumber(),	-- int, your team number
 		point,	-- point, center point
 		nil,	-- handle, cacheUnit. (not known)
-		radius,	-- float, radius. or use FIND_UNITS_EVERYWHERE
+		self.radius,	-- float, radius. or use FIND_UNITS_EVERYWHERE
 		DOTA_UNIT_TARGET_TEAM_ENEMY,	-- int, team filter
 		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
 		DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,	-- int, flag filter
@@ -45,12 +50,15 @@ function axe_special_attack:OnSpellStart()
 
 	-- call
 	for _,enemy in pairs(enemies) do
-		enemy:AddNewModifier(
-			caster, -- player source
-			self, -- ability source
-			"modifier_axe_special_attack_debuff", -- modifier name
-			{ duration = duration } -- kv
-		)
+
+		if enemy:GetAbilityByIndex(1) ~= nil then
+			enemy:AddNewModifier(
+				caster, -- player source
+				self, -- ability source
+				"modifier_axe_special_attack_debuff", -- modifier name
+				{ duration = duration } -- kv
+			)
+		end
 	end
 
 	-- self buff
@@ -73,6 +81,12 @@ function axe_special_attack:OnSpellStart()
 	self:PlayEffects()
 end
 
+
+function axe_special_attack:OnStopPseudoCastPoint()
+	local sound_cast = "Hero_Axe.BerserkersCall.Item.Shoutmask"
+	StopSoundOn( sound_cast, self:GetCaster() )
+end
+
 --------------------------------------------------------------------------------
 function axe_special_attack:PlayEffects()
 	-- Create Sound 
@@ -80,7 +94,7 @@ function axe_special_attack:PlayEffects()
 	EmitSoundOn( sound_cast, self:GetCaster() )
 
 	-- Create Particle
-	local particle_cast = "particles/units/heroes/hero_axe/axe_beserkers_call_owner.vpcf"
+	local particle_cast = "particles/econ/items/axe/axe_ti9_immortal/axe_ti9_beserkers_call_owner.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
@@ -92,4 +106,13 @@ function axe_special_attack:PlayEffects()
 		true -- unknown, true
 	)
 	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+
+	-- Create Particles
+	local particle_cast_b = "particles/econ/items/axe/axe_ti9_immortal/axe_ti9_call.vpcf"
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	
+	ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetCaster():GetOrigin() )
+	ParticleManager:SetParticleControl( effect_cast_b, 2, Vector(self.radius, self.radius, self.radius))
+	ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end

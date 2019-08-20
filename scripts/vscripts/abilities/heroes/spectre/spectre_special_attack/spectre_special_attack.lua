@@ -18,7 +18,7 @@ function spectre_special_attack:OnSpellStart()
 end
 
 
-function spectre_special_attack:OnEndPseudoCastPoint( pos )
+function spectre_special_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -37,7 +37,7 @@ function spectre_special_attack:OnEndPseudoCastPoint( pos )
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	
 	-- logic
 	local projectile = {
@@ -111,9 +111,9 @@ function spectre_special_attack:OnEndPseudoCastPoint( pos )
 		"modifier_spectre_special_attack_thinker", -- modifier name
 		{ 
 			duration = path_duration,
-			x = pos.x,
-			y = pos.y,
-			z = pos.z
+			x = point.x,
+			y = point.y,
+			z = point.z
 	 	}, -- kv
 		origin,
 		caster:GetTeamNumber(),

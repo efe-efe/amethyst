@@ -102,7 +102,7 @@ function modifier_spectre_counter_lua:PlayEffects_a()
 	local sound_cast = "Hero_Spectre.HauntCast"
 
 	local particle_cast = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rop.vpcf"
-	local particle_cast2 = "particles/customgames/capturepoints/cp_wood.vpcf"
+	local particle_cast_b = "particles/items3_fx/lotus_orb_shield.vpcf"
 
 	self.effect_cast = ParticleManager:CreateParticle( 
 		particle_cast, 
@@ -129,9 +129,7 @@ function modifier_spectre_counter_lua:PlayEffects_a()
 		true 
 	)
 
-	self.effect_cast2 = ParticleManager:CreateParticle( particle_cast2, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-	ParticleManager:SetParticleControl( self.effect_cast2, 0, self:GetParent():GetOrigin() )
-
+	self.effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
 	EmitSoundOn( sound_cast, self:GetParent() )
 end
 
@@ -139,8 +137,8 @@ function modifier_spectre_counter_lua:StopEffects()
 	ParticleManager:DestroyParticle( self.effect_cast, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )
 
-	ParticleManager:DestroyParticle( self.effect_cast2, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast2 )
+	ParticleManager:DestroyParticle( self.effect_cast_b, false )
+	ParticleManager:ReleaseParticleIndex( self.effect_cast_b )
 end
 
 function modifier_spectre_counter_lua:PlayEffects_b()

@@ -56,7 +56,7 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 				nil,	-- handle, cacheUnit. (not known)
 				FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
 				DOTA_UNIT_TARGET_TEAM_FRIENDLY,	-- int, team filter
-				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+				DOTA_UNIT_TARGET_HERO,	-- int, type filter
 				DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
 				0,	-- int, order filter
 				false	-- bool, can grow cache

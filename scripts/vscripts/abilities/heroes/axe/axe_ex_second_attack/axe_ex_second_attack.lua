@@ -2,7 +2,43 @@ axe_ex_second_attack = class({})
 LinkLuaModifier( "modifier_axe_ex_second_attack_movement", "abilities/heroes/axe/axe_ex_second_attack/modifier_axe_ex_second_attack_movement", LUA_MODIFIER_MOTION_BOTH )
 LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
 
+
+function axe_ex_second_attack:IsHidden()
+    return true
+end
+
+function axe_ex_second_attack:IsHiddenAbilityCastable()
+    return true
+end
+
+function axe_ex_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("axe_second_attack")
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
 function axe_ex_second_attack:OnSpellStart()
+    if self:IsHiddenAbilityCastable()	then
+        print("IsHiddenAbilityCastable")
+    else
+        print("NOT IsHiddenAbilityCastable")
+    end
+
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.4, activity=ACT_DOTA_TELEPORT_END, rate=1.3})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		can_walk = 0,
+		no_target = 1
+	})
+end
+
+--------------------------------------------------------------------------------
+function axe_ex_second_attack:OnEndPseudoCastPoint( pos )
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local radius = self:GetSpecialValueFor("radius")

@@ -3,8 +3,8 @@ tinker_second_attack = class({})
 LinkLuaModifier( "modifier_tinker_second_attack", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_tinker_second_attack_thinker", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
 
-function tinker_second_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+function tinker_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("tinker_ex_second_attack")
 end
 
 --------------------------------------------------------------------------------
@@ -40,6 +40,10 @@ function tinker_second_attack:OnEndPseudoCastPoint( pos )
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
 	)
+
+	-- Put CD on the alternate of the ability
+	local alternate_version = caster:FindAbilityByName("tinker_ex_second_attack")
+	alternate_version:StartCooldown(self:GetCooldown(0))
 end
 
 --------------------------------------------------------------------------------

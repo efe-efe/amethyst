@@ -3,8 +3,8 @@ phantom_special_attack = class({})
 LinkLuaModifier( "modifier_phantom_assassin_strike_stack_lua", "abilities/heroes/phantom_assassin/phantom_assassin_shared_modifiers/modifier_phantom_assassin_strike_stack_lua", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_special_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "hitbox" )
+function phantom_special_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("phantom_ex_special_attack")
 end
 
 --------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ function phantom_special_attack:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point })
 end
 
-function phantom_special_attack:OnEndPseudoCastPoint( pos )
+function phantom_special_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -31,10 +31,11 @@ function phantom_special_attack:OnEndPseudoCastPoint( pos )
 
 	-- Extra data
 	local slow_duration = self:GetSpecialValueFor("slow_duration")
+	local crit_multiplier = self:GetSpecialValueFor("crit_multiplier")
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -68,17 +69,17 @@ function phantom_special_attack:OnEndPseudoCastPoint( pos )
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			-- perform the actual attack
-			caster:PerformAttack(
-				unit, -- handle hTarget 
-				true, -- bool bUseCastAttackOrb, 
-				true, -- bool bProcessProcs,
-				true, -- bool bSkipCooldown
-				false, -- bool bIgnoreInvis
-				false, -- bool bUseProjectile
-				false, -- bool bFakeAttack
-				true -- bool bNeverMiss
-			)
+
+			local damage = caster:GetAttackDamage() * crit_multiplier
+
+			local damage_table = {
+				victim = unit,
+				attacker = caster,
+				damage = damage,
+				damage_type = DAMAGE_TYPE_PHYSICAL,
+			}
+			ApplyDamage( damage_table )
+			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, damage, nil )
 
 			if unit:IsRealHero() and _self.Source == caster then 
 				-- Add modifier

@@ -4,31 +4,49 @@ LinkLuaModifier( "modifier_generic_projectile_slower_lua", "abilities/generic/mo
 LinkLuaModifier( "modifier_generic_projectile_special_behavior_lua", "abilities/generic/modifier_generic_projectile_special_behavior_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
--- Set the aoe indicator
-function sky_special_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+-- Ability Start
+function sky_special_attack:OnSpellStart()
+	-- Initialize variables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+    self.radius =  self:GetSpecialValueFor( "radius" )
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, { 
+        duration = cast_point + 0.1, 
+        activity = ACT_DOTA_CAST_ABILITY_2, 
+        rate = 1.2
+    })
+	caster:AddNewModifier(
+        caster, 
+        self,
+        "modifier_generic_pseudo_cast_point", 
+        {
+            duration = cast_point,
+            radius = self.radius,
+            movement_speed = 10,
+        }
+    )
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_special_attack:OnSpellStart()
+function sky_special_attack:OnEndPseudoCastPoint( point )
 
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
     local duration = self:GetSpecialValueFor( "duration" )
-	local radius =  self:GetSpecialValueFor( "radius" )
     
     local bubble = CreateUnitByName( 
         "npc_dota_creature_skywrath_mage_bubble", -- szUnitName
-        Vector(point.x, point.y, 0), -- vLocation,
+        point, -- vLocation,
         false, -- bFindClearSpace,
         caster, -- hNPCOwner,
         nil, -- hUnitOwner,
         caster:GetTeamNumber() -- iTeamNumber
     )
 
-    bubble:SetHullRadius(radius)
+    bubble:SetHullRadius(self.radius)
     bubble:AddNewModifier(
         caster,
         self,

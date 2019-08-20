@@ -1,8 +1,8 @@
 tinker_counter = class({})
 LinkLuaModifier( "modifier_generic_pre_silence_lua", "abilities/generic/modifier_generic_pre_silence_lua", LUA_MODIFIER_MOTION_NONE )
 
-function tinker_counter:GetAOERadius()
-	return self:GetSpecialValueFor( "hitbox" )
+function tinker_counter:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("tinker_ex_counter")
 end
 
 --------------------------------------------------------------------------------
@@ -24,7 +24,10 @@ function tinker_counter:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_TELEPORT_END, translate="bot", rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		movement_speed = 10,
+	})
 end
 
 function tinker_counter:Refract( source, targets, jumps )
@@ -153,7 +156,7 @@ function tinker_counter:Refract( source, targets, jumps )
 end
 
 
-function tinker_counter:OnEndPseudoCastPoint( pos )
+function tinker_counter:OnEndPseudoCastPoint( point )
 	-- load data
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
@@ -169,7 +172,7 @@ function tinker_counter:OnEndPseudoCastPoint( pos )
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, -80 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, -80 )):Normalized()
 
 	-- Projectile
 	local projectile = {

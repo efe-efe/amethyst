@@ -1,16 +1,22 @@
 spectre_basic_attack = class({})
-LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
+-- [ Linking ]
+	LinkLuaModifier( 
+		"modifier_spectre_desolate_lua", 
+		"abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", 
+		LUA_MODIFIER_MOTION_NONE 
+	)
 
-LinkLuaModifier( "modifier_spectre_basic_attack", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack", LUA_MODIFIER_MOTION_NONE )
+	LinkLuaModifier( 
+		"modifier_spectre_basic_attack", 
+		"abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack", 
+		LUA_MODIFIER_MOTION_NONE 
+	)
+
+-- [ Overides ]
 --------------------------------------------------------------------------------
 --Passive Modifier
 function spectre_basic_attack:GetIntrinsicModifierName()
 	return "modifier_spectre_basic_attack"
-end
-
-function spectre_basic_attack:GetAOERadius()
-	return self:GetSpecialValueFor( "hitbox" )
 end
 
 --------------------------------------------------------------------------------
@@ -18,24 +24,29 @@ end
 function spectre_basic_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
-	local cast_point = caster:GetAttackAnimationPoint()
+	local cast_point = self:GetCastPoint()
 	self.silence_duration = self:GetSpecialValueFor("silence_duration")
 	self.desolate_duration = self:GetSpecialValueFor("desolate_duration")
     self.heal_charged = self:GetSpecialValueFor("heal_charged")
 	
-	self.point = self:GetCursorPosition()
-
 	-- Animation and pseudo cast point
-	self:Animate(self.point)
+	StartAnimation(caster, {
+		duration = cast_point + 0.2, 
+		activity = ACT_DOTA_ATTACK, 
+		rate = 1.1
+	})
 	caster:AddNewModifier(
 		caster, 
 		self, 
 		"modifier_generic_pseudo_cast_point",
-		{ duration = cast_point }
+		{ 
+			duration = cast_point,
+			movement_speed = 50 
+		}
 	)
 end
 
-function spectre_basic_attack:OnEndPseudoCastPoint()
+function spectre_basic_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 	local offset = 10
 
@@ -43,8 +54,8 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 	local projectile_name = ""
 	local projectile_start_radius = 50
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_distance = 130
-	local projectile_speed = 2000
+	local projectile_distance = self:GetSpecialValueFor("projectile_range")
+	local projectile_speed = 3000
 
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
@@ -60,9 +71,9 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local direction_normalized = (self.point - origin):Normalized()
+	local direction_normalized = (point - origin):Normalized()
 	local initial_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
-	local projectile_direction = (Vector( self.point.x-origin.x, self.point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	--logic
 	local projectile = {
@@ -143,9 +154,9 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 				self:PlayEffects_c(pos)
 			end
 			if stacks > 0 then
-				self:PlayEffects_a(pos, _self.radius)
+				self:PlayEffects_a(pos)
 			else
-				self:PlayEffects_d(pos, _self.radius)
+				self:PlayEffects_d(pos)
 			end
 		end,
 	}
@@ -157,10 +168,8 @@ function spectre_basic_attack:OnEndPseudoCastPoint()
 	self:StartCooldown(attack_speed)
 end
 
-
 --------------------------------------------------------------------------------
 -- Misc
-
 -- Add mana on attack modifier and visuals. Only first time upgraded
 function spectre_basic_attack:OnUpgrade()
 	if self:GetLevel()==1 then
@@ -174,18 +183,21 @@ end
 -- Graphics & sounds
 
 -- On Projectile Finish (CHARGED)
-function spectre_basic_attack:PlayEffects_a(pos, radius)
+function spectre_basic_attack:PlayEffects_a(pos)
 	local caster = self:GetCaster()
+	local offset = 50
+	local new_position = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * offset
+
 	-- Create Particles
 	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
 	ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 
-	local particle_cast_b = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
+	local particle_cast_b = "particles/units/heroes/hero_nyx_assassin/nyx_assassin_vendetta_swipe.vpcf"
 	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast_b, 0, pos)
-	ParticleManager:SetParticleControl( effect_cast_b, 2, Vector(radius, 1, 1))
+	ParticleManager:SetParticleControl( effect_cast_b, 0, new_position)
+	ParticleManager:SetParticleControlForward( effect_cast_b, 0, (pos - caster:GetOrigin()):Normalized())
 	ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
 
@@ -216,25 +228,25 @@ function spectre_basic_attack:PlayEffects_c(pos)
 end
 
 -- On Projectile finish (NON CHARGED)
-function spectre_basic_attack:PlayEffects_d( pos, radius )
+function spectre_basic_attack:PlayEffects_d( pos )
 	
 	local caster = self:GetCaster()
+	local offset = 50
+	local new_position = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * offset
+
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos)
-	ParticleManager:SetParticleControlForward( effect_cast, 0, (caster:GetOrigin()-pos):Normalized() * -1 )
+	ParticleManager:SetParticleControlForward( effect_cast, 0, (pos - caster:GetOrigin() ):Normalized())
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 
-	local particle_cast_b = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
+	local particle_cast_b = "particles/units/heroes/hero_nyx_assassin/nyx_assassin_vendetta_swipe.vpcf"
 	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast_b, 0, pos)
-	ParticleManager:SetParticleControl( effect_cast_b, 2, Vector(radius, 1, 1))
+	ParticleManager:SetParticleControl( effect_cast_b, 0, new_position)
+	ParticleManager:SetParticleControlForward( effect_cast_b, 0, (pos - caster:GetOrigin()):Normalized())
 	ParticleManager:ReleaseParticleIndex( effect_cast_b )
-	
-
 end
-
 
 -- On Projectile hit enemy (NON CHARGED)
 function spectre_basic_attack:PlayEffects_e( hTarget )
@@ -242,16 +254,3 @@ function spectre_basic_attack:PlayEffects_e( hTarget )
 	local sound_cast = "Hero_Spectre.Attack"
 	EmitSoundOn( sound_cast, hTarget )
 end
-
-function spectre_basic_attack:Animate(point)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local angles = caster:GetAngles()
-
-	local direction = (point - origin)
-	local directionAsAngle = VectorToAngles(direction)
-	caster:SetAngles(angles.x, directionAsAngle.y, angles.z)
-
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_ATTACK, rate=1.0})
-end
-

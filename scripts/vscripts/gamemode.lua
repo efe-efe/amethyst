@@ -1,7 +1,7 @@
 RITE_DEBUG_SPEW = true -- Complete Debug?
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 
-_G.nCOUNTDOWNTIMER = 120
+_G.nCOUNTDOWNTIMER = 90
 
 --============================================================================================
 -- INSTANTIATE GAME MODE
@@ -29,57 +29,106 @@ function GameMode:InitGameMode()
         return
     end
       
-    -------------------------------
-    -- Setup Rules
-    -------------------------------
-    GameRules:SetHeroRespawnEnabled( ENABLE_HERO_RESPAWN )
-    GameRules:SetSameHeroSelectionEnabled( ALLOW_SAME_HERO_SELECTION )
-    GameRules:SetPreGameTime( PRE_GAME_TIME)
-    GameRules:SetGoldPerTick( GOLD_PER_TICK )
-    GameRules:SetGoldTickTime( GOLD_TICK_TIME )
-    GameRules:SetStartingGold( STARTING_GOLD )
-    GameRules:SetCustomGameSetupAutoLaunchDelay( AUTO_LAUNCH_DELAY )
-	GameRules:SetStrategyTime( 0.0 )
-    GameRules:SetShowcaseTime( 0.0 )
-    if USE_CUSTOM_HERO_GOLD_BOUNTY then
-		GameRules:SetUseBaseGoldBountyOnHeroes(false)
-	end
-    DebugPrint('[RITE] GameRules set')
+    --[Setup Rules]
+        GameRules:SetHeroRespawnEnabled( ENABLE_HERO_RESPAWN )
+        GameRules:SetSameHeroSelectionEnabled( ALLOW_SAME_HERO_SELECTION )
+        GameRules:SetPreGameTime( PRE_GAME_TIME)
+        GameRules:SetGoldPerTick( GOLD_PER_TICK )
+        GameRules:SetGoldTickTime( GOLD_TICK_TIME )
+        GameRules:SetStartingGold( STARTING_GOLD )
+        GameRules:SetCustomGameSetupAutoLaunchDelay( AUTO_LAUNCH_DELAY )
+        GameRules:SetStrategyTime( 0.0 )
+        GameRules:SetShowcaseTime( 0.0 )
+        if USE_CUSTOM_HERO_GOLD_BOUNTY then
+            GameRules:SetUseBaseGoldBountyOnHeroes(false)
+        end
+        if GetMapName() == "mad_moon_map" then
+            GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 3 )
+            GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 3 )
+        elseif GetMapName() == "free_for_all" then
+            GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
+            GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
+            GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 1 )
+            GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_2, 1 )
+        end
+        DebugPrint('[RITE] GameRules set')
     
 
-    -------------------------------
-    -- Setup Event Hooks
-    -------------------------------
-    ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap(GameMode, "OnItemPickUp"), GameMode )
-    ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnHeroInGame'), GameMode)
-    ListenToGameEvent('entity_killed', Dynamic_Wrap(GameMode, 'OnEntityKilled'), GameMode)
-    ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), GameMode)
-    ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(GameMode, 'OnGameRulesStateChange'), GameMode)
-    ListenToGameEvent('entity_hurt', Dynamic_Wrap(GameMode, 'OnEntityHurt'), GameMode)
-    DebugPrint('[RITE] Event hooks set')
+    --[Setup Event Hooks]
+        ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap(GameMode, "OnItemPickUp"), GameMode )
+        ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnHeroInGame'), GameMode)
+        ListenToGameEvent('entity_killed', Dynamic_Wrap(GameMode, 'OnEntityKilled'), GameMode)
+        ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), GameMode)
+        ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(GameMode, 'OnGameRulesStateChange'), GameMode)
+        ListenToGameEvent('entity_hurt', Dynamic_Wrap(GameMode, 'OnEntityHurt'), GameMode)
+        DebugPrint('[RITE] Event hooks set')
 
-    -------------------------------
-    -- Setup Filters
-    -------------------------------
-    local mode = GameRules:GetGameModeEntity()
-	mode:SetModifyGoldFilter(Dynamic_Wrap(GameMode, 'GoldFilter'), GameMode)
-    mode:SetHealingFilter(Dynamic_Wrap(GameMode, 'HealingFilter'), GameMode)
-	mode:SetDamageFilter(Dynamic_Wrap(GameMode, "DamageFilter"), GameMode)
+    --[Setup Filters]
+        local mode = GameRules:GetGameModeEntity()
+        mode:SetModifyGoldFilter(Dynamic_Wrap(GameMode, 'GoldFilter'), GameMode)
+        mode:SetHealingFilter(Dynamic_Wrap(GameMode, 'HealingFilter'), GameMode)
+        mode:SetDamageFilter(Dynamic_Wrap(GameMode, "DamageFilter"), GameMode)
 
-    -------------------------------
-    -- Link Useful Lua Modifiers
-    -------------------------------
-    LinkLuaModifier( "modifier_charges", "modifiers/general/modifier_charges.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier( "modifier_stack", "modifiers/general/modifier_stack.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier( "modifier_set_attack_range", "modifiers/general/modifier_set_attack_range.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier( "modifier_mana_on_attack", "modifiers/general/modifier_mana_on_attack.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier( "modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier( "modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier( "modifier_middle_orb_exiled", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier( "modifier_generic_pseudo_cast_point", "abilities/base/modifier_generic_pseudo_cast_point", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier( "modifier_generic_movement", "abilities/base/modifier_generic_movement", LUA_MODIFIER_MOTION_NONE )
-    
-    DebugPrint('[RITE] Useful modifiers linked')
+    --[Link Useful Lua Modifiers]
+        LinkLuaModifier( 
+            "modifier_charges", 
+            "modifiers/general/modifier_charges.lua", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_stack", 
+            "modifiers/general/modifier_stack.lua", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_set_attack_range", 
+            "modifiers/general/modifier_set_attack_range.lua", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_mana_on_attack", 
+            "modifiers/general/modifier_mana_on_attack.lua", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_disable_right_click", 
+            "modifiers/general/modifier_disable_right_click.lua", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_death_zone", 
+            "modifiers/general/modifier_death_zone.lua", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_middle_orb_exiled", 
+            "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_generic_pseudo_cast_point", 
+            "abilities/base/modifier_generic_pseudo_cast_point", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_generic_movement", 
+            "abilities/base/modifier_generic_movement", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_generic_silenced_lua", 
+            "abilities/generic/modifier_generic_silenced_lua", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        LinkLuaModifier( 
+            "modifier_generic_projectile_reflector_lua", 
+            "abilities/generic/modifier_generic_projectile_reflector_lua", 
+            LUA_MODIFIER_MOTION_NONE 
+        )
+        DebugPrint('[RITE] Useful modifiers linked')
+
+
+
 end
 
 --============================================================================================
@@ -94,18 +143,6 @@ function GameMode:CaptureGameMode()
         self.countdownEnabled = false
         self.lock_round = false
         self.teams = {}
-        self.teams[DOTA_TEAM_GOODGUYS] = {
-            alive_heroes = 0,
-            wins = 0,
-            looser = false,
-            players = {}
-        }
-        self.teams[DOTA_TEAM_BADGUYS] = {
-            alive_heroes = 0,
-            wins = 0,
-            looser = false,
-            players = {}
-        }
         self.ROUNDS_TO_WIN = 3
         self.iMaxTreshold = 40
         self.ORBS_SPAWN_TIME = 25.0
@@ -123,7 +160,56 @@ function GameMode:CaptureGameMode()
         -------------------------------
         -- Link Client/Server Events
         -------------------------------
-        --local this = self -- Grab a reference to self
+        
+        CustomGameEventManager:RegisterListener('execute_ability', function(eventSourceIndex, args)
+            local caster = EntIndexToHScript(args.entityIndex)
+            local ability = EntIndexToHScript(args.abilityIndex)
+
+            if caster.bFirstSpawnedPG ~= true then return end
+
+            if  ability:IsCooldownReady() and
+                ability:IsActivated() and
+                ability:IsOwnersManaEnough() and
+                not ability:IsInAbilityPhase() and
+                not caster:IsSilenced() and
+                not caster:IsCommandRestricted()
+            then
+                caster:CastAbilityOnPosition(Vector(0,0,0), ability, caster:GetPlayerID())
+            end
+        end)
+
+        CustomGameEventManager:RegisterListener('swap_abilities', function(eventSourceIndex, args)
+            local caster = EntIndexToHScript(args.entityIndex)
+            local mode = args.mode
+
+            for i = 0, 6 do
+                local ability = caster:GetAbilityByIndex(i)
+                if ability then
+                    if ability:GetAbilityType() ~= 2 then -- ignore talents
+                        if ability.GetAlternateVersion ~= nil then
+                            local alternate_version =  ability:GetAlternateVersion()
+                            if mode == "press" then
+                                caster:SwapAbilities( 
+                                    ability:GetAbilityName(),
+                                    alternate_version:GetAbilityName(),
+                                    false,
+                                    true
+                                )
+                            elseif mode == "release" then
+                                caster:SwapAbilities( 
+                                    alternate_version:GetAbilityName(),
+                                    ability:GetAbilityName(),
+                                    true,
+                                    false
+                                )
+                            end
+                        end
+                    end
+                end
+            end
+
+        end)
+
         CustomGameEventManager:RegisterListener('updateMousePosition', function(eventSourceIndex, args)
             local mouse_position = Vector(args.x, args.y, args.z)
             self:UpdateMousePosition(mouse_position, args.playerID)
@@ -134,7 +220,12 @@ function GameMode:CaptureGameMode()
             local unit = EntIndexToHScript(args.entityIndex)
 
             --Not initialized yet
+            if unit == nil then return end
             if unit.direction == nil then return end
+
+            if unit.first_move == false then 
+                unit.first_move = true --To prevent releasing before pressing
+            end
 
             if args.direction == "right" then unit.direction.x = unit.direction.x + 1 end
             if args.direction == "left" then unit.direction.x = unit.direction.x - 1 end
@@ -145,6 +236,11 @@ function GameMode:CaptureGameMode()
         CustomGameEventManager:RegisterListener('stopUnit', function(eventSourceIndex, args)
             local direction = args.direction
             local unit = EntIndexToHScript(args.entityIndex)
+            
+            --Not initialized yet
+            if unit == nil then return end
+            if unit.direction == nil then return end
+            if unit.first_move == false then return end
 
             if args.direction == "right" then unit.direction.x = unit.direction.x - 1 end
             if args.direction == "left" then unit.direction.x = unit.direction.x + 1 end

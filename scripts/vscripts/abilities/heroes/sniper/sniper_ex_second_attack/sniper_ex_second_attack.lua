@@ -1,18 +1,44 @@
 sniper_ex_second_attack = class({})
 LinkLuaModifier( "modifier_generic_rooted_lua", "abilities/generic/modifier_generic_rooted_lua", LUA_MODIFIER_MOTION_NONE )
 
+function sniper_ex_second_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("sniper_second_attack")
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
 function sniper_ex_second_attack:OnSpellStart()
+	-- Initialize variables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	
+    EmitGlobalSound( "Ability.AssassinateLoad")
+
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_ATTACK, rate=0.8})
+	caster:AddNewModifier(
+		caster, 
+		self, 
+		"modifier_generic_pseudo_cast_point", 
+		{ 
+			duration = cast_point,
+			can_walk = 0,
+			show_all = 1
+		}
+	)
+end
+
+function sniper_ex_second_attack:OnEndPseudoCastPoint( pos )
 	-- Initialize variables
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
 
 	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf"
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	-- Extra data
@@ -64,7 +90,7 @@ function sniper_ex_second_attack:OnSpellStart()
 			-- Stun
 			unit:AddNewModifier(_self.Source, self , "modifier_generic_rooted_lua", { duration = root_duration})
 	
-			self:PlayEffects_c(unit, _self.actualPosition)
+			self:PlayEffects_c(unit, _self.currentPosition)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)

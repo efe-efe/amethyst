@@ -103,6 +103,7 @@ function modifier_nevermore_special_attack_movement:CheckState()
 		[MODIFIER_STATE_INVULNERABLE] = true,
 		[MODIFIER_STATE_OUT_OF_GAME] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
+		[MODIFIER_STATE_SILENCED] = true,
 	}
 
 	return state

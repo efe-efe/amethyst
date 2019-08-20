@@ -1,6 +1,10 @@
 nevermore_ex_special_attack = class({})
 LinkLuaModifier("modifier_nevermore_ex_special_attack", "abilities/heroes/nevermore/nevermore_ex_special_attack/modifier_nevermore_ex_special_attack", LUA_MODIFIER_MOTION_NONE)
 
+function nevermore_ex_special_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("nevermore_special_attack")
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_ex_special_attack:OnSpellStart()

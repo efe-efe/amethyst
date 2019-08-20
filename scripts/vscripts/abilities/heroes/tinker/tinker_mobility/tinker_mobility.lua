@@ -1,17 +1,23 @@
 tinker_mobility = class({})
-
-function tinker_mobility:OnAbilityPhaseStart()
-	-- play effects
+--------------------------------------------------------------------------------
+-- Ability Start
+function tinker_mobility:OnSpellStart()
+	-- Initialize bariables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
 	self:PlayEffects_a()
 
-	return true -- if success
+	-- Animation and pseudo cast point
+	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.2})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+        duration = cast_point
+	})
 end
 
-function tinker_mobility:OnSpellStart()
+function tinker_mobility:OnEndPseudoCastPoint( point )
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-    local point = self:GetCursorPosition()
     local max_range = self:GetSpecialValueFor("range")
 
 

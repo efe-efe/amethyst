@@ -1,7 +1,20 @@
 sniper_counter = class({})
 LinkLuaModifier( "modifier_sniper_counter", "abilities/heroes/sniper/sniper_counter/modifier_sniper_counter", LUA_MODIFIER_MOTION_NONE )
+--------------------------------------------------------------------------------
+-- Ability Start
+function sniper_counter:OnSpellStart()
+	-- Initialize variables
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+	
+	-- Animation and pseudo cast point
+	StartAnimation(caster, { duration=0.3, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5 })
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point, movement_speed = 100 })
+end
 
-function sniper_counter:OnSpellStart() 
+
+--------------------------------------------------------------------------------
+function sniper_counter:OnEndPseudoCastPoint( point ) 
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
     self:PlayEffects()

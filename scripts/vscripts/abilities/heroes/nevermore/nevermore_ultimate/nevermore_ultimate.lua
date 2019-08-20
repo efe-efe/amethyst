@@ -113,7 +113,7 @@ function nevermore_ultimate:Explode( lines )
                     { duration = self.duration }
                 )
 
-                self:PlayEffects_b(_self.actualPosition)
+                self:PlayEffects_b(_self.currentPosition)
             end,
             OnFinish = function(_self, pos)
                self:PlayEffects_b(pos)

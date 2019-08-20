@@ -41,7 +41,6 @@ end
 function modifier_generic_charges:OnDestroy( kv )
 
 end
-
 --------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_generic_charges:DeclareFunctions()
@@ -63,7 +62,7 @@ function modifier_generic_charges:OnAbilityFullyCast( params )
 	end
 end
 
---------------------------------------------------------------------------------
+------------------------------------------------------------
 -- Interval Effects
 function modifier_generic_charges:OnIntervalThink()
 	self:IncrementStackCount()

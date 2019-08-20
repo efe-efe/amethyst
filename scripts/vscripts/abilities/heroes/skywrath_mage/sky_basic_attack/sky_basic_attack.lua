@@ -1,6 +1,10 @@
 sky_basic_attack = class({})
 LinkLuaModifier( "modifier_sky_basic_attack", "abilities/heroes/skywrath_mage/sky_basic_attack/modifier_sky_basic_attack", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_sky_basic_attack_debuff", "abilities/heroes/skywrath_mage/sky_basic_attack/modifier_sky_basic_attack_debuff", LUA_MODIFIER_MOTION_NONE )
+
+function sky_basic_attack:GetAlternateVersion()
+    return self:GetCaster():FindAbilityByName("sky_ex_basic_attack")
+end
 
 --------------------------------------------------------------------------------
 --Passive Modifier
@@ -98,6 +102,7 @@ function sky_basic_attack:OnEndPseudoCastPoint( pos )
 			if stacks > 0 then
 				--Silence enemy
 				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = self.silence_duration})
+				unit:AddNewModifier(_self.Source, self , "modifier_sky_basic_attack_debuff", { duration = self.silence_duration})
 				self:PlayEffects_b(_self:GetPosition())
 
 				local damage = {
