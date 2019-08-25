@@ -17,6 +17,37 @@ function GameMode:OnGameRulesStateChange(keys)
 end
 
 --============================================================================================
+-- GAME OFFICIALY BEGINS (00:00)
+--============================================================================================
+function GameMode:OnGameInProgress()
+	DebugPrint("[RITE] The game has officially begun")
+
+    self.countdownEnabled = true
+    GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 ) 
+
+    CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
+
+    GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
+    GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
+    
+    
+    self.health_orbs_ent = Entities:FindAllByName("health_orb")
+    self.mana_orbs_ent = Entities:FindAllByName("mana_orb")
+    self.middle_orb_ent = Entities:FindByName(nil, "orb_spawn")
+    self.orbs = {}
+    self.orb_timers_ent = {}
+    self.orb_timers_ent[1] = Entities:FindByName(nil, "orb_timer1")
+    self.orb_timers_ent[2] = Entities:FindByName(nil, "orb_timer2")
+    self.orb_timers_ent[3] = Entities:FindByName(nil, "orb_timer3")
+    self.orb_timers_ent[4] = Entities:FindByName(nil, "orb_timer4")
+    self.orb_timers_ent[5] = Entities:FindByName(nil, "orb_timer5")
+    self.orb_timers = {}
+
+    self:CreateAllOrbs()
+    self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
+end
+
+--============================================================================================
 -- HERO SPAWNS
 --============================================================================================
 function GameMode:OnHeroInGame(keys)
@@ -168,37 +199,6 @@ function GameMode:OnEntityKilled( keys )
 			PlayerResource:RemoveFromSelection(playerID, killed)
 		end
 	end
-end
-
---============================================================================================
--- GAME OFFICIALY BEGINS (00:00)
---============================================================================================
-function GameMode:OnGameInProgress()
-	DebugPrint("[RITE] The game has officially begun")
-
-    self.countdownEnabled = true
-    GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 ) 
-
-    CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
-
-    GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
-    GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
-    
-    
-    self.health_orbs_ent = Entities:FindAllByName("health_orb")
-    self.mana_orbs_ent = Entities:FindAllByName("mana_orb")
-    self.middle_orb_ent = Entities:FindByName(nil, "orb_spawn")
-    self.orbs = {}
-    self.orb_timers_ent = {}
-    self.orb_timers_ent[1] = Entities:FindByName(nil, "orb_timer1")
-    self.orb_timers_ent[2] = Entities:FindByName(nil, "orb_timer2")
-    self.orb_timers_ent[3] = Entities:FindByName(nil, "orb_timer3")
-    self.orb_timers_ent[4] = Entities:FindByName(nil, "orb_timer4")
-    self.orb_timers_ent[5] = Entities:FindByName(nil, "orb_timer5")
-    self.orb_timers = {}
-
-    self:CreateAllOrbs()
-    self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
 end
 
 --------------------------------------------------------------------------------

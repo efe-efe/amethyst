@@ -28,10 +28,10 @@ end
 -- Ability Start
 function nevermore_ultimate:OnEndPseudoCastPoint()
 	-- get number of souls
-	local lines = 6
+	local lines = 5
 	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )
 	if modifier~=nil then
-		lines = lines + modifier:GetStackCount() * 6
+		lines = lines + modifier:GetStackCount()
 		modifier:Destroy()
 	end
 

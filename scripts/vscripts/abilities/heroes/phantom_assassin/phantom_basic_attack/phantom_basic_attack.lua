@@ -11,7 +11,11 @@ function phantom_basic_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-	StartAnimation(caster, {duration = 0.4, activity=ACT_DOTA_SPAWN, rate=1.8})
+	StartAnimation(caster, {
+		duration = 0.4, 
+		activity=ACT_DOTA_SPAWN, 
+		rate=1.8
+	})
 	
 	caster:AddNewModifier( caster, self, "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
@@ -19,7 +23,7 @@ function phantom_basic_attack:OnSpellStart()
 	})
 end
 
-function phantom_basic_attack:OnEndPseudoCastPoint( pos )
+function phantom_basic_attack:OnEndPseudoCastPoint( point )
 	local caster = self:GetCaster()
 	local offset = 20
 
@@ -38,9 +42,9 @@ function phantom_basic_attack:OnEndPseudoCastPoint( pos )
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local direction_normalized = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local direction = (point - origin):Normalized()
+	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -141,14 +145,14 @@ function phantom_basic_attack:PlayEffects_a( pos )
 	local caster = self:GetCaster()
 	local offset = 40
 	local origin = caster:GetOrigin()
-	local direction_normalized = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
+	local direction = (pos - origin):Normalized()
+	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
 	-- Create Particles
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_blinkb.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
-	ParticleManager:SetParticleControlForward(effect_cast, 0, direction_normalized)	
+	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 

@@ -14,14 +14,21 @@ function phantom_ex_special_attack:OnSpellStart()
 	local cast_point = self:GetCastPoint()
 	
 	-- Animation and pseudo cast point
-	StartAnimation(caster, { duration=0.5, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.2 })
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point, can_walk = 0 })
+	StartAnimation(caster, {
+		duration = cast_point + 0.1, 
+		activity = ACT_DOTA_CAST_ABILITY_3, 
+		rate = 1.2 
+	})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		can_walk = 0 
+	})
 end
 
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function phantom_ex_special_attack:OnEndPseudoCastPoint( pos )
+function phantom_ex_special_attack:OnEndPseudoCastPoint( point )
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -34,7 +41,7 @@ function phantom_ex_special_attack:OnEndPseudoCastPoint( pos )
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,

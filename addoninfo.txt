@@ -101,5 +101,15 @@
             "Key"       "SHIFT"
             "Command"   "+CustomGameShift"
         }
+        "17"
+        {
+            "Key"       "C"
+            "Command"   "-CustomGameC"
+        }
+        "18"
+        {
+            "Key"       "C"
+            "Command"   "+CustomGameC"
+        }
     }
 }

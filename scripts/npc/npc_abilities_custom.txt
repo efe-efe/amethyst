@@ -2682,7 +2682,7 @@
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"1200"
+		"AbilityCastRange"				"1400"
 		"AbilityCastPoint"				"0.3"
 
 		// Time		
@@ -2709,7 +2709,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1200"
+				"projectile_range"			"1400"
 			}
 			"03"
 			{
@@ -5066,7 +5066,7 @@
 			"08"
 			{
 				"var_type"						"FIELD_INTEGER"
-				"damage_per_soul"				"2"
+				"damage_per_soul"				"8"
 			}
 		}
 	}
@@ -5368,7 +5368,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"2.0"
+				"duration"					"3.0"
 			}
 		}
 	}
@@ -5482,7 +5482,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"speed_buff_pct"			"80"
+				"speed_buff_pct"			"85"
 			}
 		}
 

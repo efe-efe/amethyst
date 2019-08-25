@@ -17,7 +17,7 @@
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.0"
+		"AbilityCastPoint"				"0.1"
         "AbilityCooldown"               "0.0"
         "AbilityManaCost"               "0"
 		
@@ -51,7 +51,7 @@
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.0"
+		"AbilityCastPoint"				"0.1"
         "AbilityCooldown"               "0.0"
         "AbilityManaCost"               "0"
 		
@@ -86,7 +86,7 @@
 		// Stats
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.0"
+		"AbilityCastPoint"				"0.1"
         "AbilityCooldown"               "0.0"
         "AbilityManaCost"               "0"
 		

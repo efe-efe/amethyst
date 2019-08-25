@@ -6,4 +6,6 @@ function item_health_orb:OnSpellStart()
 
     caster:Heal( heal, caster )
     PseudoHeal(caster:GetHealth(), heal, caster)
+
+    EmitSoundOn("DOTA_Item.FaerieSpark.Activate", caster)
 end

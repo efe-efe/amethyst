@@ -25,15 +25,15 @@ end
 function juggernaut_counter:OnEndPseudoCastPoint( point )
     --load data
     local caster = self:GetCaster()
-	local duration = 0.3--self:GetDuration()
-
+    local duration = 0.8--self:GetDuration()
+    
     caster:AddNewModifier(
 		caster, -- player source
 		self, -- ability source
 		"modifier_juggernaut_counter", -- modifier name
 		{ 
             duration = duration, 
-            movement_speed = 80
+            movement_speed = 20
         } -- kv
     )
 end

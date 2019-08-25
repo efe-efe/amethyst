@@ -172,7 +172,8 @@ function GameMode:CaptureGameMode()
                 ability:IsOwnersManaEnough() and
                 not ability:IsInAbilityPhase() and
                 not caster:IsSilenced() and
-                not caster:IsCommandRestricted()
+                not caster:IsCommandRestricted() and
+                not caster:IsNightmared()
             then
                 caster:CastAbilityOnPosition(Vector(0,0,0), ability, caster:GetPlayerID())
             end

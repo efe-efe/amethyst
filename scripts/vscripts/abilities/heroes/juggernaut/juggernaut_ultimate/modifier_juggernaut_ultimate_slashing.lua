@@ -43,9 +43,8 @@ end
 --------------------------------------------------------------------------------
 -- Destroyer
 function modifier_juggernaut_ultimate_slashing:OnDestroy( kv )
-    GameRules:EndAnimation(self:GetParent())
     if IsServer() then
-        
+        GameRules:EndAnimation(self:GetParent())
     end
 end
 

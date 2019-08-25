@@ -14,7 +14,7 @@ end
 -- Initializations
 function modifier_nevermore_special_attack_movement:OnCreated( kv )
 	if IsServer() then
-        -- references
+		-- references
 		self.distance = 600
 		self.direction = Vector(0,0,1):Normalized()
 		self.speed = 800
@@ -23,6 +23,18 @@ function modifier_nevermore_special_attack_movement:OnCreated( kv )
 		self.elapsedTime = 0
 
 		self:PlayEffects()
+
+		--Attepmt to repair the instant stop bug
+		local order = 
+		{
+			OrderType = DOTA_UNIT_ORDER_STOP,
+			UnitIndex = self:GetParent():entindex()
+		}
+		ExecuteOrderFromTable(order)
+
+		if self:GetParent():HasModifier("modifier_generic_pseudo_cast_point") then
+			SafeDestroyModifier("modifier_generic_pseudo_cast_point", self:GetParent(), self:GetParent())
+		end
 
 		if self:ApplyVerticalMotionController() == false then
 			self:Destroy()
@@ -35,7 +47,6 @@ end
 
 function modifier_nevermore_special_attack_movement:OnDestroy( kv )
 	if IsServer() then
-		
 		--Quits the animation
 		local order = 
 		{

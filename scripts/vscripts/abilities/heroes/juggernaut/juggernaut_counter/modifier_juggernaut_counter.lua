@@ -24,7 +24,8 @@ function modifier_juggernaut_counter:OnCreated( params )
         self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
 
         --Effects
-        self:PlayEffects()
+        self:PlayEffectsActivateTick()
+        self:PlayEffectsSpin()
 
 		self:GetParent():AddNewModifier(
 			self:GetParent(),
@@ -58,7 +59,9 @@ function modifier_juggernaut_counter:OnDestroy( kv )
         ExecuteOrderFromTable(order)
 
         --Remove effects
+        self:PlayEffectsActivateTick()
         self:StopEffects()
+        GameRules.EndAnimation(self:GetParent())
     end
 end
 
@@ -130,23 +133,22 @@ end
 -- Graphics & Sounds
 
 --On casted
-function modifier_juggernaut_counter:PlayEffects()
+function modifier_juggernaut_counter:PlayEffectsSpin()
 	-- Get Resources
     local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_blade_fury_disk.vpcf"
-	local particle_cast_b = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_omni_slash_tgt_bonus.vpcf"
-    
-    local sound_cast = "Hero_Juggernaut.Attack"
-
-    -- Create Sound
-    EmitSoundOn(sound_cast, self:GetCaster())
-
-    -- Create Particles
     self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    local effect_cast = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-
     ParticleManager:SetParticleControl( self.effect_cast, 5, Vector( 100, 1, 1 ) )
+end
+
+
+function modifier_juggernaut_counter:PlayEffectsActivateTick()
+    -- Get Resources
+    EmitSoundOn("Hero_Juggernaut.Attack", self:GetCaster())
+	local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_omni_slash_tgt_bonus.vpcf"
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
 
 
 function modifier_juggernaut_counter:StopEffects()
@@ -160,11 +162,9 @@ end
 function modifier_juggernaut_counter:PlayEffects_b()
     -- Get Resources
 	local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger_sphere.vpcf"
-
-    local sound_cast = "Hero_Juggernaut.BladeDance"
     
     -- Create Sound
-    EmitSoundOn(sound_cast, self:GetCaster())
+    EmitSoundOn( "Hero_Juggernaut.BladeDance" , self:GetCaster())
     
     -- particles 1
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
