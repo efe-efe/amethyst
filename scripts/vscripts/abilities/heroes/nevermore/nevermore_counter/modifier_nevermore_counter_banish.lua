@@ -22,7 +22,6 @@ function modifier_nevermore_counter_banish:CheckState()
 		[MODIFIER_STATE_INVULNERABLE] = true,
 		[MODIFIER_STATE_OUT_OF_GAME] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
-		[MODIFIER_STATE_SILENCED] = true,
 	}
 
 	return state

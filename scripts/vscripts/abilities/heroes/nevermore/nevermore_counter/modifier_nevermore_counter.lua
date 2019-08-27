@@ -63,7 +63,6 @@ function modifier_nevermore_counter:CheckState()
 	local state = {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
-		[MODIFIER_STATE_SILENCED] = true,
 	}
 
 	return state

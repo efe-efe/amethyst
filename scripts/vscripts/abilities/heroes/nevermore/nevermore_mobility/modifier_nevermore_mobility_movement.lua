@@ -43,7 +43,7 @@ function modifier_nevermore_mobility_movement:OnDestroy( kv )
 		--Quits the animation
 		local order = 
 		{
-			OrderType = DOTA_UNIT_ORDER_STOP,
+			OrderType = DOTA_UNIT_ORDER_HOLD_POSITION,
 			UnitIndex = self:GetParent():entindex()
 		}
 		ExecuteOrderFromTable(order)

@@ -35,7 +35,7 @@ function nevermore_counter_mobility:OnEndPseudoCastPoint( pos )
     local damage = self.counter_ability:GetAbilityDamage()
     
     local max_range = self.counter_ability:GetSpecialValueFor("max_range")
-    local min_range = max_range - 400
+    local min_range = max_range/3
 
     local slow_duration = self.counter_ability:GetSpecialValueFor("slow_duration")
     local mana_gain = self.counter_ability:GetSpecialValueFor("mana_gain")/100
@@ -79,7 +79,7 @@ function nevermore_counter_mobility:OnEndPseudoCastPoint( pos )
     local projectile_name = ""
 	local projectile_start_radius = 150
 	local projectile_end_radius = 150
-	local projectile_distance = distance
+	local projectile_distance = difference
 	local projectile_speed = speed
     local projectile_direction = direction
 	

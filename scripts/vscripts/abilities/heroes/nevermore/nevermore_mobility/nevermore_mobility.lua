@@ -12,7 +12,7 @@ function nevermore_mobility:OnSpellStart()
 	local cast_point = self:GetCastPoint()
 
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_RAZE_1, rate=1.1})
+	StartAnimation(caster, {duration= cast_point + 0.1, activity=ACT_DOTA_RAZE_1, rate=1.1})
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,
@@ -24,7 +24,7 @@ function nevermore_mobility:OnEndPseudoCastPoint( pos )
     local origin = caster:GetOrigin()
 	local damage = self:GetAbilityDamage()
     local max_range = self:GetSpecialValueFor("max_range")
-    local min_range = max_range - 400
+    local min_range = max_range/3
     local slow_duration = self:GetSpecialValueFor("slow_duration")
     local mana_gain = self:GetSpecialValueFor("mana_gain")/100
     
@@ -66,7 +66,7 @@ function nevermore_mobility:OnEndPseudoCastPoint( pos )
     local projectile_name = ""
 	local projectile_start_radius = 150
 	local projectile_end_radius = 150
-	local projectile_distance = distance
+	local projectile_distance = difference
 	local projectile_speed = speed
     local projectile_direction = direction
 	

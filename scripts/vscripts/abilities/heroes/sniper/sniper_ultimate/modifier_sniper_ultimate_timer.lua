@@ -18,7 +18,7 @@ end
 -- Status Effects
 function modifier_sniper_ultimate_timer:CheckState()
 	local state = {
-		[MODIFIER_STATE_SILENCED] = true,
+        [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
 	}
 
 	return state
