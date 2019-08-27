@@ -8,7 +8,7 @@ LinkLuaModifier( "modifier_nevermore_counter_banish", "abilities/heroes/nevermor
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_counter_mobility:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
     local caster = self:GetCaster()
     
 	self.counter_ability = caster:FindAbilityByName("nevermore_counter")

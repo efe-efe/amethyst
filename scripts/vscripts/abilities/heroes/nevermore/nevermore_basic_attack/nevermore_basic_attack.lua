@@ -10,7 +10,7 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_basic_attack:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
 	

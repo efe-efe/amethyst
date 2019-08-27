@@ -7,7 +7,7 @@ LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_mobility:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 

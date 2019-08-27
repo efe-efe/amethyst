@@ -2987,7 +2987,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"150"
+				"radius"					"200"
 			}
 			"04"
 			{
@@ -3006,8 +3006,8 @@
 			}
 			"07"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.6"
 			}
 		}
 	}
@@ -3195,7 +3195,7 @@
 		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.1"
+		"AbilityCastPoint"				"0.3"
 		"AbilityCastRange"				"1000"
 		
 		// Time		
@@ -3265,7 +3265,7 @@
 		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.1"
+		"AbilityCastPoint"				"0.3"
 		"AbilityCastRange"				"1000"
 		
 		// Time		

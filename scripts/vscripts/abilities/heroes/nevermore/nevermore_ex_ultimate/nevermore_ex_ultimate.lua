@@ -4,7 +4,7 @@ nevermore_ex_ultimate = class({})
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_ex_ultimate:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 

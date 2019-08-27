@@ -4,7 +4,7 @@ LinkLuaModifier( "modifier_juggernaut_mobility", "abilities/heroes/juggernaut/ju
 --------------------------------------------------------------------------------
 -- Ability Start
 function juggernaut_mobility:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 

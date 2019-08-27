@@ -41,6 +41,11 @@ function modifier_axe_mobility_movement:OnCreated( kv )
 		self.motionTick[2] = 0
 
 		self:PlayEffects_b()
+		StartAnimation(self:GetParent(), {
+			duration = 1.0, 
+			activity = ACT_DOTA_CAST_ABILITY_4, 
+			rate = 1.0
+		})
 
 		-- apply motion controller
 		if self:ApplyVerticalMotionController() == false then 
@@ -102,6 +107,14 @@ function modifier_axe_mobility_movement:OnDestroy( kv )
 		end
 
 		self:StopEffects_b()
+
+		--Quits the animation
+		local order = 
+		{
+			OrderType = DOTA_UNIT_ORDER_HOLD_POSITION,
+			UnitIndex = self:GetParent():entindex()
+		}
+		ExecuteOrderFromTable(order)
 	end
 end
 
@@ -159,14 +172,22 @@ end
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_axe_mobility_movement:DeclareFunctions()
+--[[function modifier_axe_mobility_movement:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
 	}
 
 	return funcs
 end
+]]
 
+--[[
+function modifier_axe_mobility_movement:GetOverrideAnimation()
+	return ACT_DOTA_FLAIL
+end
+]]
+
+--------------------------------------------------------------------------------
 -- Status Effects
 function modifier_axe_mobility_movement:CheckState()
 	local state = {
@@ -179,12 +200,6 @@ function modifier_axe_mobility_movement:CheckState()
 
 	return state
 end
-
---[[
-function modifier_axe_mobility_movement:GetOverrideAnimation()
-	return ACT_DOTA_FLAIL
-end
-]]
 
 function modifier_axe_mobility_movement:PlayEffects_a()
 	if IsServer() then

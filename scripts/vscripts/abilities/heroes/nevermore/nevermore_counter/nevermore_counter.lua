@@ -4,7 +4,7 @@ LinkLuaModifier( "modifier_nevermore_counter", "abilities/heroes/nevermore/never
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_counter:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 

@@ -47,6 +47,7 @@ function modifier_nevermore_mobility_movement:OnDestroy( kv )
 			UnitIndex = self:GetParent():entindex()
 		}
 		ExecuteOrderFromTable(order)
+		
 		self:GetParent():InterruptMotionControllers( true )
 	end
 end

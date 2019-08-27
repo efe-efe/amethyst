@@ -18,6 +18,18 @@ function modifier_generic_pseudo_cast_point:IsPurgable()
 	return false
 end
 
+-- INPUTS
+--[[
+
+	can_walk = Is the unit able to walk while casting?
+	movement_speed = At what speed should the unit be able to move while casting
+	show_all = Should the particles show to all players?
+	no_target = Does the ability has a target position?
+	radius = Spell radius
+	min_range = Minimum cast range
+	disable_all = Should the ability disable all the spells?
+]]
+
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_generic_pseudo_cast_point:OnCreated(params)
@@ -253,20 +265,27 @@ function modifier_generic_pseudo_cast_point:OnIntervalThink()
 		self.point.z = GetGroundPosition(self.point, self.parent).z
 	end
 
+	-- Initialize particles
+	if self.initialized == false then
+		self:PlayEffects()
+	end
+
+	-- Update particiles
 	if self.no_target ~= 1 then
-		if self.initialized == false then
-			self:PlayEffects()
-			self.initialized = true
-		end
-		if self.radius ~= nil then
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, Vector(self.point.x, self.point.y, 128))	-- line origin
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, Vector(self.point.x, self.point.y, 128))	-- line origin
-		end
 		ParticleManager:SetParticleControl( self.effect_cast, 7, Vector(self.point.x, self.point.y, 128)) -- aoe
 		ParticleManager:SetParticleControl( self.effect_cast, 0, origin)	-- line origin
 		ParticleManager:SetParticleControl( self.effect_cast, 2, origin)	-- line end
 	end
-	
+	if self.radius ~= nil then
+		if self.no_target == 1 then
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, self.parent:GetOrigin())	-- line origin
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, self.parent:GetOrigin())	-- line origin
+		else
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, Vector(self.point.x, self.point.y, 128))	-- line origin
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, Vector(self.point.x, self.point.y, 128))	-- line origin
+		end
+	end
+
 	--local angles = VectorToAngles(self.point)
 	--local parent_angles = self.parent:GetAngles()
 	--self.parent:SetAngles(parent_angles.x, angles.y, parent_angles.z)
@@ -306,32 +325,27 @@ end
 function modifier_generic_pseudo_cast_point:PlayEffects()
 	local particle_cast = "particles/mod_units/range_finder_tower_aoe.vpcf"
 	local particle_cast_aoe = "particles/ui_mouseactions/range_finder_aoe.vpcf"
-
-	local origin = self.parent:GetOrigin() + Vector( 0, 0, 96 )
+	local parent_owner = self.parent:GetPlayerOwner()
 
 	if self.show_all == 1 then
+		if self.no_target ~= 1 then
+			self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent)
+		end
 		if self.radius ~= nil then
 			self.effect_cast_aoe = ParticleManager:CreateParticle( particle_cast_aoe, PATTACH_WORLDORIGIN, self.parent)
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0)) -- aoe
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
 		end
-		self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent)
 	else
-		if self.radius ~= nil then
-			self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer( 
-				particle_cast_aoe, 
-				PATTACH_WORLDORIGIN, 
-				self.parent,
-				self.parent:GetPlayerOwner()
-			)
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0)) -- aoe
+		if self.no_target ~= 1 then
+			self.effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast, PATTACH_WORLDORIGIN, self.parent, parent_owner )
 		end
-		self.effect_cast = ParticleManager:CreateParticleForPlayer(
-			particle_cast, 
-			PATTACH_WORLDORIGIN, 
-			self.parent, 
-			self.parent:GetPlayerOwner()
-		)
+		if self.radius ~= nil then
+			self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer( particle_cast_aoe, PATTACH_WORLDORIGIN, self.parent, parent_owner )
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
+		end
 	end
+
+	self.initialized = true
 end
 
 function modifier_generic_pseudo_cast_point:StopEffects()

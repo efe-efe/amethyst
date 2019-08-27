@@ -7,7 +7,7 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_ex_ultimate:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 	local radius = self:GetSpecialValueFor("radius")

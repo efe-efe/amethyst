@@ -33,7 +33,7 @@ function modifier_sky_second_attack_thinker:OnIntervalThink()
     if IsServer() then
         -- find enemies
         local alies = FindUnitsInRadius( 
-            self:GetParent():GetTeamNumber(), -- int, your team number
+            self:GetCaster():GetTeamNumber(), -- int, your team number
             self:GetParent():GetOrigin(), -- point, center point
             nil, -- handle, cacheUnit. (not known)
             self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE

@@ -18,22 +18,18 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function axe_ex_second_attack:OnSpellStart()
-    if self:IsHiddenAbilityCastable()	then
-        print("IsHiddenAbilityCastable")
-    else
-        print("NOT IsHiddenAbilityCastable")
-    end
-
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-	
+	self.radius = self:GetSpecialValueFor("radius")
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.4, activity=ACT_DOTA_TELEPORT_END, rate=1.3})
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point,
 		can_walk = 0,
-		no_target = 1
+        no_target = 1,
+        radius= self.radius,
+        show_all = 1,
 	})
 end
 
@@ -41,7 +37,6 @@ end
 function axe_ex_second_attack:OnEndPseudoCastPoint( pos )
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-    local radius = self:GetSpecialValueFor("radius")
     local knockback_distance = self:GetSpecialValueFor("knockback_distance")
     local damage = self:GetAbilityDamage()
     local stun_duration = self:GetSpecialValueFor("stun_duration")
@@ -51,7 +46,7 @@ function axe_ex_second_attack:OnEndPseudoCastPoint( pos )
         caster:GetTeamNumber(), -- int, your team number
         origin, -- point, center point
         nil, -- handle, cacheUnit. (not known)
-        radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
+        self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
         DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
         0, -- int, flag filter

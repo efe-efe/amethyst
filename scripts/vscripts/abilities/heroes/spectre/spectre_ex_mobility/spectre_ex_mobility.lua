@@ -8,7 +8,7 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function spectre_ex_mobility:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 

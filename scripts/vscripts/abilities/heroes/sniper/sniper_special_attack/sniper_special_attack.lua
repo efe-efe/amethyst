@@ -9,7 +9,7 @@ function sniper_special_attack:GetIntrinsicModifierName()
 end
 
 function sniper_special_attack:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 	local radius = self:GetSpecialValueFor("radius")

@@ -9,7 +9,7 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function sniper_mobility:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 	local radius = self:GetSpecialValueFor("radius")

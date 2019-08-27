@@ -9,17 +9,23 @@ function axe_special_attack:OnSpellStart()
 	local sound_cast = "Hero_Axe.BerserkersCall.Item.Shoutmask"
 	EmitSoundOn( sound_cast, self:GetCaster() )
 
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 	self.radius = self:GetSpecialValueFor("radius")
 
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.4, activity=ACT_DOTA_OVERRIDE_ABILITY_1, rate=1.5})
+	StartAnimation(caster, {
+		duration = cast_point + 0.1, 
+		activity = ACT_DOTA_OVERRIDE_ABILITY_1, 
+		rate = 1.5
+	})
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,
 		no_target = 1,
+		radius = self.radius,
+		show_all = 1,
 	})
 end
 

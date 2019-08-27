@@ -4,7 +4,7 @@ LinkLuaModifier( "modifier_axe_ex_ultimate", "abilities/heroes/axe/axe_ex_ultima
 --------------------------------------------------------------------------------
 -- Ability Start
 function axe_ex_ultimate:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 

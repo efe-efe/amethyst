@@ -16,25 +16,24 @@ end
 --------------------------------------------------------------------------------
 -- Ability Start
 function axe_ex_mobility:OnSpellStart()
-    if self:IsHiddenAbilityCastable()	then
-        print("IsHiddenAbilityCastable")
-    else
-        print("NOT IsHiddenAbilityCastable")
-    end
-    
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
     local radius = self:GetSpecialValueFor( "radius" )
     local max_range = self:GetSpecialValueFor("range")
 
 	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_CAST_ABILITY_4, rate=1.0})
+	StartAnimation(caster, {
+        duration = cast_point + 0.1, 
+        activity = ACT_DOTA_ATTACK, 
+        rate = 1.1
+    })
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
-        can_walk = 0,
+		movement_speed = 10,
         radius = radius,
-        min_range = max_range/2
+        min_range = max_range/2,
+        show_all = 1,
 	})
 end
 

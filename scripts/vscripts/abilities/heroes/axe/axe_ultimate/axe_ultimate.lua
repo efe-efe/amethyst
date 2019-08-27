@@ -5,7 +5,7 @@ LinkLuaModifier( "modifier_axe_ultimate", "abilities/heroes/axe/axe_ultimate/mod
 -- Ability Start
 function axe_ultimate:OnSpellStart()
 	self:PlayEffects_b()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 	self.radius = self:GetSpecialValueFor("radius")

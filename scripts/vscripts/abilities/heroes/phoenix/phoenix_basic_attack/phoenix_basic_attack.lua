@@ -4,7 +4,7 @@ LinkLuaModifier( "modifier_phoenix_basic_attack", "abilities/heroes/phoenix/phoe
 --------------------------------------------------------------------------------
 -- Ability Start
 function phoenix_basic_attack:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
 	self:SetActivated(false)

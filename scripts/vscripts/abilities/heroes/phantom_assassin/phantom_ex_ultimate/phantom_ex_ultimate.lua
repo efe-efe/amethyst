@@ -5,7 +5,7 @@ LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier
 --------------------------------------------------------------------------------
 -- Ability Start
 function phantom_ex_ultimate:OnSpellStart()
-	-- Initialize bariables
+	-- Initialize variables
 	local caster = self:GetCaster()
     local cast_point = self:GetCastPoint()
     self.radius = 200

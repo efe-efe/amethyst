@@ -125,6 +125,16 @@ function GameMode:InitGameMode()
             "abilities/generic/modifier_generic_projectile_reflector_lua", 
             LUA_MODIFIER_MOTION_NONE 
         )
+        LinkLuaModifier( 
+            "modifier_generic_fading_slow_lua", 
+            "abilities/generic/modifier_generic_fading_slow_lua", 
+            LUA_MODIFIER_MOTION_NONE
+        )
+        LinkLuaModifier( 
+            "modifier_thinker_indicator", 
+            "abilities/base/modifier_thinker_indicator", 
+            LUA_MODIFIER_MOTION_NONE
+        )
         DebugPrint('[RITE] Useful modifiers linked')
 
 
