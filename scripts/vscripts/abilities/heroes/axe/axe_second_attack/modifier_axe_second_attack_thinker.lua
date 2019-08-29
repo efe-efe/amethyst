@@ -45,20 +45,20 @@ function modifier_axe_second_attack_thinker:OnIntervalThink()
         for _,enemy in pairs(enemies) do
             enemy:AddNewModifier(
                 caster,
-                self,
+                self:GetAbility(),
                 "modifier_axe_second_attack_debuff",
                 { duration = self.duration }
             )
             enemy:AddNewModifier(
                 caster,
-                self,
+                self:GetAbility(),
                 "modifier_generic_fading_slow_lua",
                 { duration = self.duration }
             )
 
             caster:AddNewModifier(
                 caster, -- player source
-                self, -- ability source
+                self:GetAbility(), -- ability source
                 "modifier_axe_second_attack_buff", -- modifier name
                 { duration = self.duration } -- kv
             )

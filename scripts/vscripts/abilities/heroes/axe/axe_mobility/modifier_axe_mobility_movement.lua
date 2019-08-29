@@ -15,6 +15,7 @@ end
 -- Initializations
 function modifier_axe_mobility_movement:OnCreated( kv )
 	if IsServer() then
+		--self.aumentado = false
 
 		self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
 		self.damage = self:GetAbility():GetAbilityDamage()
@@ -28,10 +29,10 @@ function modifier_axe_mobility_movement:OnCreated( kv )
 		self.origin = self:GetParent():GetOrigin()
 
 		self.duration = self.distance/self.speed
-		self.peak = 100
+		self.peak = 150
 		self.gravity = -self.peak/(self.duration*self.duration*0.125)
 		self.hVelocity = self.speed
-		self.vVelocity = (-0.5)*self.gravity*self.duration
+		self.vVelocity = (-0.5) * self.gravity * self.duration
 
 		-- sync
 		self.elapsedTime = 0
@@ -44,7 +45,7 @@ function modifier_axe_mobility_movement:OnCreated( kv )
 		StartAnimation(self:GetParent(), {
 			duration = 1.0, 
 			activity = ACT_DOTA_CAST_ABILITY_4, 
-			rate = 1.0
+			rate = 0.7
 		})
 
 		-- apply motion controller
@@ -130,6 +131,11 @@ function modifier_axe_mobility_movement:SyncTime( iDir, dt )
 	-- sync time
 	self.motionTick[iDir] = self.motionTick[0]
 	
+	--[[if self.aumentado == false and self.elapsedTime > self.duration/2 then
+		self.hVelocity = self.hVelocity * 2
+		self.aumentado = true
+	end]]
+
 	-- end motion
 	if self.elapsedTime > self.duration and self.motionTick[1]==self.motionTick[2] then
 		self:Destroy()
@@ -141,8 +147,8 @@ function modifier_axe_mobility_movement:UpdateHorizontalMotion( me, dt )
 	local parent = self:GetParent()
 	
 	-- set position
-	local target = self.direction*self.hVelocity*self.elapsedTime
-
+	local target = self.direction * self.hVelocity * self.elapsedTime
+	
 	-- change position
 	parent:SetOrigin( self.origin + target )
 end

@@ -29,7 +29,6 @@ function axe_second_attack:OnSpellStart()
 		duration = cast_point,
 		can_walk = 0,
 		radius = self.radius,
-		show_all = 1,
 	})
 end
 

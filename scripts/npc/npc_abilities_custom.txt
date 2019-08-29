@@ -3195,7 +3195,7 @@
 		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.3"
+		"AbilityCastPoint"				"0.2"
 		"AbilityCastRange"				"1000"
 		
 		// Time		
@@ -3227,24 +3227,19 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"radius"					"200"
 			}
-			"04"
+			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"slow_duration"							"2.0"
 			}
-			"05"
+			"04"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"fading_slow"				"50"
 			}
-			"06"
+			"05"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"mana_gain"					"6"

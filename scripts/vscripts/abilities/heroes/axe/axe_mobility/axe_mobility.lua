@@ -11,7 +11,7 @@ function axe_mobility:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-    local radius = self:GetSpecialValueFor( "radius" )
+    self.radius = self:GetSpecialValueFor( "radius" )
     local max_range = self:GetSpecialValueFor("range")
 
 	-- Animation and pseudo cast point
@@ -23,9 +23,8 @@ function axe_mobility:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
 		movement_speed = 10,
-        radius = radius,
+        radius = self.radius,
         min_range = max_range/2,
-        show_all = 1,
 	})
 end
 
@@ -36,6 +35,7 @@ function axe_mobility:OnEndPseudoCastPoint( point )
 
     local x = point.x - caster:GetOrigin().x
     local y = point.y - caster:GetOrigin().y
+    local speed = 1300
 
     caster:AddNewModifier(
         caster, -- player source
@@ -45,9 +45,24 @@ function axe_mobility:OnEndPseudoCastPoint( point )
             x = x,
             y = y,
             r = difference,
-            speed = 2300,
+            speed = speed,
         } -- kv
     )
+
+    CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			thinker = "",
+			show_all = 1,
+			radius = self.radius,
+			delay_time = difference/speed,
+		}, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
 
     self:PlayEffects()
 

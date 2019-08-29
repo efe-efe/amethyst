@@ -117,7 +117,9 @@ function modifier_juggernaut_ultimate_slashing:CheckState()
 	local state = {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
-		[MODIFIER_STATE_SILENCED] = true,
+        [MODIFIER_STATE_INVULNERABLE] = true,
+		[MODIFIER_STATE_OUT_OF_GAME] = true,
+		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
 
 	return state

@@ -18,7 +18,7 @@ LinkLuaModifier(
 --------------------------------------------------------------------------------
 -- Ability Start
 function juggernaut_ultimate:OnSpellStart()
-	-- Initialize variables
+	-- Initialize bariables
 	local caster = self:GetCaster()
     local cast_point = self:GetCastPoint()
 

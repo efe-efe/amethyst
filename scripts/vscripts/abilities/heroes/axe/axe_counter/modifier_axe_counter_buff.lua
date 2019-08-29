@@ -31,13 +31,6 @@ function modifier_axe_counter_buff:OnCreated( kv )
 	self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
 
     if IsServer() then
-		-- Strong Dispel
-		local RemovePositiveBuffs = false
-		local RemoveDebuffs = true
-		local BuffsCreatedThisFrameOnly = false
-		local RemoveStuns = true
-		local RemoveExceptions = false
-
 		self:PlayEffects()
 		self:StartIntervalThink(0.05)
     end

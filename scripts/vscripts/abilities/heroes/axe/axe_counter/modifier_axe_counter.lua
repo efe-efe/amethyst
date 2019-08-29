@@ -49,6 +49,8 @@ function modifier_axe_counter:GetModifierIncomingDamage_Percentage( params )
 		local parent = self:GetParent()
         local attacker = params.attacker
 
+        PrintTable(params)
+
         -- Pure damage doesnt trigger the counter
         if params.damage_type ~= DAMAGE_TYPE_PURE then
             parent:AddNewModifier(
