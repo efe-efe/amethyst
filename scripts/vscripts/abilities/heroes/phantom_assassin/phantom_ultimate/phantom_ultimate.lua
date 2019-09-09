@@ -2,25 +2,29 @@ phantom_ultimate = class({})
 
 function phantom_ultimate:OnSpellStart()
 	-- play effects
-	self:PlayEffects_a()
 	local cast_point = self:GetCastPoint()
 	local caster = self:GetCaster()
 
-	StartAnimation(caster, { duration=1.0, activity=ACT_DOTA_CAST_ABILITY_3, rate=0.7 })
+	StartAnimation(caster, { 
+		duration = cast_point + 0.1, 
+		activity = ACT_DOTA_CAST_ABILITY_3, 
+		rate = 0.7 
+	})
 
 	caster:AddNewModifier(
 		caster, 
 		self, 
 		"modifier_generic_pseudo_cast_point", 
-		{ duration = cast_point, can_walk = 0}
+		{
+			duration = cast_point, 
+			can_walk = 0,
+			fixed_range = 1,
+			show_all = 1
+		}
 	)
 end
 
-function phantom_ultimate:OnStopPseudoCastPoint()
-	self:StopEffects_a()
-end
-
-function phantom_ultimate:OnEndPseudoCastPoint( pos )
+function phantom_ultimate:OnEndPseudoCastPoint( point )
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
@@ -28,17 +32,12 @@ function phantom_ultimate:OnEndPseudoCastPoint( pos )
     local damage = self:GetAbilityDamage()
     local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 
-
-    -- determine target position
-    local difference = pos - origin
-    local target =  origin + (pos - origin):Normalized() * max_range
-
 	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_luna/luna_base_attack.vpcf"
 	local projectile_start_radius = 70
 	local projectile_end_radius = 100
 	local projectile_distance = max_range
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	local projectile_speed = 6000
 
 	local projectile = {
@@ -95,14 +94,11 @@ function phantom_ultimate:OnEndPseudoCastPoint( pos )
         OnFinish = function(_self, pos)
             
             -- teleport
-            FindClearSpaceForUnit( caster, target , true )
+            FindClearSpaceForUnit( caster, pos , true )
 
             --Effects
 			self:PlayEffects_b(pos)
 
-			ParticleManager:DestroyParticle( self.effect_cast_a, false )
-			ParticleManager:ReleaseParticleIndex( self.effect_cast_a )
-			
 			SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
 		end,
 	}
@@ -110,37 +106,6 @@ function phantom_ultimate:OnEndPseudoCastPoint( pos )
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
 end
-
--- On ability initially cast
-function phantom_ultimate:PlayEffects_a()
-	local target = self:GetCaster():GetOrigin() + self:GetCaster():GetForwardVector() * 100
-
-	-- Cast Sound
-    local sound_cast = "phantom_assassin_phass_cast_02"
-    EmitGlobalSound(sound_cast)
-    
-    -- Cast Particles
-    local particle_cast_a = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_gravemarker.vpcf"
-	local particle_cast_b = "particles/econ/items/mirana/mirana_starstorm_bow/mirana_starstorm_starfall_c.vpcf"
-
-	self.effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, nil )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
-
-    ParticleManager:SetParticleControl( self.effect_cast_a, 0, target )
-	ParticleManager:SetParticleControl( effect_cast_b, 3, target )
-
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
-end
-
-function phantom_ultimate:StopEffects_a()
-	-- stop effects 
-	local sound_cast = "phantom_assassin_phass_cast_02"
-	StopGlobalSound( sound_cast )
-
-	ParticleManager:DestroyParticle( self.effect_cast_a, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast_a )
-end
-
 
 -- On projectile finish
 function phantom_ultimate:PlayEffects_b(pos)

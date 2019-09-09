@@ -9,6 +9,8 @@ function modifier_thinker_indicator:OnCreated( kv )
         self.show_all = kv.show_all
         self.radius = kv.radius
         self.delay_time = kv.delay_time
+        local thinker_duration = kv.thinker_duration
+
         self.caster = self:GetCaster()
         self.origin = self:GetParent():GetOrigin()
         self.effects_cast_aoe = {}
@@ -17,7 +19,7 @@ function modifier_thinker_indicator:OnCreated( kv )
             self.caster, --hCaster
             self:GetAbility(), --hAbility
             thinker, --modifierName
-            {}, --paramTable
+            { duration = thinker_duration }, --paramTable
             self.origin, --vOrigin
             self.caster:GetTeamNumber(), --nTeamNumber
             false --bPhantomBlocker
@@ -54,11 +56,11 @@ function modifier_thinker_indicator:PlayEffects()
     
     if self.show_all == 1 then
         for _,actual_team in pairs(GameMode.teams) do
+            effect_cast = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self.caster, _ )
             self.effects_cast_aoe[_] = ParticleManager:CreateParticleForTeam( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, _ )
 
             ParticleManager:SetParticleControl( self.effects_cast_aoe[_], 0, self.origin)	-- line origin
             ParticleManager:SetParticleControl( self.effects_cast_aoe[_], 1, Vector(self.radius, 1,1))
-            effect_cast = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self.caster, _ )
 
             if self.caster:GetTeam() == _ then
                 ParticleManager:SetParticleControl( self.effects_cast_aoe[_], 15, Vector(70, 70, 250))
@@ -71,6 +73,9 @@ function modifier_thinker_indicator:PlayEffects()
             ParticleManager:ReleaseParticleIndex( effect_cast )
         end
     else
+
+        local parent_owner = self.caster:GetPlayerOwner()
+
         effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast, PATTACH_WORLDORIGIN, self.caster, parent_owner )
         self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, parent_owner )
 

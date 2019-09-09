@@ -2,14 +2,8 @@ modifier_axe_second_attack_thinker = class({})
 LinkLuaModifier( "modifier_axe_second_attack_debuff", "abilities/heroes/axe/axe_second_attack/modifier_axe_second_attack_debuff", LUA_MODIFIER_MOTION_HORIZONTAL )
 LinkLuaModifier( "modifier_axe_second_attack_buff", "abilities/heroes/axe/axe_second_attack/modifier_axe_second_attack_buff", LUA_MODIFIER_MOTION_HORIZONTAL )
 
---Clasifications
 --------------------------------------------------------------------------------
-function modifier_axe_second_attack_thinker:IsHidden()
-	return true
-end
-
 -- Initializer
---------------------------------------------------------------------------------
 function modifier_axe_second_attack_thinker:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
@@ -22,8 +16,8 @@ function modifier_axe_second_attack_thinker:OnCreated( kv )
     end
 end
 
--- On Think
 --------------------------------------------------------------------------------
+-- On Think
 function modifier_axe_second_attack_thinker:OnIntervalThink()
     if IsServer() then
         local thinker_origin = self:GetParent():GetOrigin()

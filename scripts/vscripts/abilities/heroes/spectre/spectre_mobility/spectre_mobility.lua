@@ -12,13 +12,13 @@ function spectre_mobility:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-	local radius = self:GetSpecialValueFor("radius")
+	self.radius = self:GetSpecialValueFor("radius")
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_ATTACK, rate=1.0})
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
-        radius = radius
+        radius = self.radius
 	})
 end
 
@@ -27,13 +27,6 @@ function spectre_mobility:OnEndPseudoCastPoint( point )
     -- unit identifier
 	local caster = self:GetCaster()
     local delay_time = self:GetSpecialValueFor( "delay_time" )
-    local old_origin = caster:GetOrigin()
-    local max_range = self:GetSpecialValueFor("range")
-
-    local direction = ( point - old_origin)
-    if direction:Length2D() > max_range then
-        direction = direction:Normalized() * max_range
-    end
 
     -- Disappear spectre modifier
 	caster:AddNewModifier(
@@ -43,16 +36,21 @@ function spectre_mobility:OnEndPseudoCastPoint( point )
 		{ duration = delay_time }
 	)
 
-    -- Effect thinker
     CreateModifierThinker(
-        caster, --hCaster
-        self, --hAbility
-        "modifier_spectre_mobility_thinker", --modifierName
-        { }, --paramTable
-        old_origin + direction, --vOrigin
-        caster:GetTeamNumber(), --nTeamNumber
-        false --bPhantomBlocker
+		caster, --hCaster
+		self, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			thinker = "modifier_spectre_mobility_thinker",
+			radius = self.radius,
+            delay_time = delay_time,
+            show_all = 0
+		}, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
     )
+    
     -- Put CD on the alternate version of the ability
     local ex_version = caster:FindAbilityByName("spectre_ex_mobility")
     ex_version:StartCooldown(self:GetCooldown(0))

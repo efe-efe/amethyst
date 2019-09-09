@@ -42,6 +42,8 @@ function modifier_generic_pseudo_cast_point:OnCreated(params)
 	self.radius = params.radius
 	self.min_range = params.min_range
 	self.disable_all = params.disable_all
+	self.placeholder = params.placeholder
+	self.fixed_range = params.fixed_range
 	self.range = self.ability:GetCastRange(Vector(0,0,0), nil)
 	self.initialized = false
 	self.point = Vector(0,0,0)
@@ -68,6 +70,8 @@ function modifier_generic_pseudo_cast_point:OnRefresh(params)
 	self.no_target = params.no_target
 	self.radius = params.radius
 	self.min_range = params.min_range
+	self.placeholder = params.placeholder
+	self.fixed_range = params.fixed_range
 	self.range = self.ability:GetCastRange(Vector(0,0,0), nil)
 	self.initialized = false
 	self.disable_all = params.disable_all
@@ -253,7 +257,10 @@ function modifier_generic_pseudo_cast_point:OnIntervalThink()
 	local origin = self.parent:GetOrigin() + Vector( 0, 0, 96 )
 	local distance = (self.point - origin):Length2D()
 	
-	if self.range > 0 then
+
+	if self.fixed_range == 1 then
+		self.point = origin + direction * self.range
+	elseif self.range > 0 then
 		if distance > self.range then
 			self.point = origin + direction * self.range
 		end
@@ -266,25 +273,16 @@ function modifier_generic_pseudo_cast_point:OnIntervalThink()
 	end
 
 	-- Initialize particles
-	if self.initialized == false then
-		self:PlayEffects()
+	
+	if self.placeholder ~= 0 then
+		if self.initialized == false then
+			self:PlayEffects()
+		end
+
+		-- Update particiles
+		self:UpdateEffects(origin)
 	end
 
-	-- Update particiles
-	if self.no_target ~= 1 then
-		ParticleManager:SetParticleControl( self.effect_cast, 7, Vector(self.point.x, self.point.y, 128)) -- aoe
-		ParticleManager:SetParticleControl( self.effect_cast, 0, origin)	-- line origin
-		ParticleManager:SetParticleControl( self.effect_cast, 2, origin)	-- line end
-	end
-	if self.radius ~= nil then
-		if self.no_target == 1 then
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, self.parent:GetOrigin())	-- line origin
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, self.parent:GetOrigin())	-- line origin
-		else
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, Vector(self.point.x, self.point.y, 128))	-- line origin
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, Vector(self.point.x, self.point.y, 128))	-- line origin
-		end
-	end
 
 	--local angles = VectorToAngles(self.point)
 	--local parent_angles = self.parent:GetAngles()
@@ -357,5 +355,23 @@ function modifier_generic_pseudo_cast_point:StopEffects()
 	if self.effect_cast_aoe ~= nil then
 		ParticleManager:DestroyParticle( self.effect_cast_aoe, false ) 
 		ParticleManager:ReleaseParticleIndex( self.effect_cast_aoe )
+	end
+end
+
+
+function modifier_generic_pseudo_cast_point:UpdateEffects(origin)
+	if self.no_target ~= 1 then
+		ParticleManager:SetParticleControl( self.effect_cast, 7, Vector(self.point.x, self.point.y, 128)) -- aoe
+		ParticleManager:SetParticleControl( self.effect_cast, 0, origin)	-- line origin
+		ParticleManager:SetParticleControl( self.effect_cast, 2, origin)	-- line end
+	end
+	if self.radius ~= nil then
+		if self.no_target == 1 then
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, self.parent:GetOrigin())	-- line origin
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, self.parent:GetOrigin())	-- line origin
+		else
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, Vector(self.point.x, self.point.y, 128))	-- line origin
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, Vector(self.point.x, self.point.y, 128))	-- line origin
+		end
 	end
 end

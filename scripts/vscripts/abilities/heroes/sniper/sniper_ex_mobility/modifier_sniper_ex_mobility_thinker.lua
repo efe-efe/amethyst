@@ -17,36 +17,20 @@ function modifier_sniper_ex_mobility_thinker:OnCreated()
         -- Create Sound
         local sound_cast = "Hero_Disruptor.ThunderStrike.Thunderator"
         EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
-        
-        local enemies = FindUnitsInRadius( 
-            self:GetCaster():GetTeamNumber(), -- int, your team number
-            self.thinker_origin, -- point, center point
-            nil, -- handle, cacheUnit. (not known)
-            self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-            DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-            0, -- int, flag filter
-            0, -- int, order filter
-            false -- bool, can grow cache
-        )
 
-        for _,enemy in pairs(enemies) do
-            enemy:AddNewModifier(
-                caster, -- player source
-                self, -- ability source
-                "modifier_sniper_ex_mobility", -- modifier name
-                { duration = self.slow_linger } -- kv
-            )
-            
-            local damage = {
-                victim = enemy,
-                attacker = self:GetCaster(),
-                damage = self.base_damage,
-                damage_type = DAMAGE_TYPE_PURE,
-            }
-    
-            ApplyDamage( damage )
-        end
+        CreateModifierThinker(
+            self:GetCaster(), --hCaster
+            self:GetAbility(), --hAbility
+            "modifier_thinker_indicator", --modifierName
+            { 
+                show_all = 1,
+                radius = self.radius,
+                delay_time = self.duration,
+            }, --paramTable
+            self.thinker_origin, --vOrigin
+            self:GetCaster():GetTeamNumber(), --nTeamNumber
+            false --bPhantomBlocker
+        )
 
         self:OnIntervalThink()
         self:StartIntervalThink( self.think_interval )

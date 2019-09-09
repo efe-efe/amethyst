@@ -11,10 +11,11 @@ function modifier_sniper_shrapnel_thinker_lua:OnCreated()
         self.damage_per_think = self:GetAbility():GetSpecialValueFor("damage_per_think")
         self.slow_linger = self:GetAbility():GetSpecialValueFor("slow_linger")
 
-        -- Start Interval
-        AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.radius, self.duration, false )
-		self:PlayEffects()
-        self:StartIntervalThink( self.think_interval )  
+        self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
+
+        self.initialized = false
+
+        self:StartIntervalThink( self.delay_time )  
     end
 end
 
@@ -29,6 +30,30 @@ end
 --------------------------------------------------------------------------------
 function modifier_sniper_shrapnel_thinker_lua:OnIntervalThink()
     local caster = self:GetCaster()
+
+    if self.initialized == false then
+        -- Start Interval
+        AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.radius, self.duration, false )
+        self:PlayEffects()
+        self.initialized = true
+
+        CreateModifierThinker(
+            caster, --hCaster
+            self:GetAbility(), --hAbility
+            "modifier_thinker_indicator", --modifierName
+            { 
+                show_all = 1,
+                radius = self.radius,
+                delay_time = self.duration,
+            }, --paramTable
+            self.thinker_origin, --vOrigin
+            caster:GetTeamNumber(), --nTeamNumber
+            false --bPhantomBlocker
+        )
+    
+
+        self:StartIntervalThink( self.think_interval )  
+    end
 
     -- Find enemies
     local enemies = FindUnitsInRadius( 

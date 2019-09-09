@@ -27,6 +27,7 @@ function sky_ex_second_attack:OnSpellStart()
 			duration = cast_point,
 			radius = self:GetSpecialValueFor( "hitbox" ),
 			movement_speed = 10,
+			fixed_range = 1;
 		}
 	)
 end
@@ -53,7 +54,7 @@ function sky_ex_second_attack:OnEndPseudoCastPoint( point )
 		EffectName = projectile_name,
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80) + caster:GetForwardVector() * 100,
 		fDistance = projectile_distance,
-		fStartRadius = 70,
+		fStartRadius = 50,
 		fEndRadius = projectile_end_radius,
 		Source = caster,
 		fExpireTime = 8.0,

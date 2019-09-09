@@ -18,19 +18,20 @@ function sky_basic_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-	self:SetActivated(false)
 
 	--self.charges = caster:FindModifierByName("modifier_sky_basic_attack"):GetStackCount()
     self.silence_duration = self:GetSpecialValueFor("silence_duration")
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.5})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point,
+		placeholder = 0,
+	})
 end
 
 function sky_basic_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
-	self:SetActivated(true)
 
 	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_concussive_shot.vpcf"
@@ -142,10 +143,6 @@ function sky_basic_attack:OnEndPseudoCastPoint( pos )
 	self:StartCooldown(attack_speed)
 end
 
-
-function sky_basic_attack:OnStopPseudoCastPoint()
-	self:SetActivated(true)
-end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 

@@ -661,17 +661,15 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"1800"
+		"AbilityCastRange"				"1600"
 		"AbilityCastPoint"				"1.0"
 
 		// Time		
@@ -706,7 +704,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1800"
+				"projectile_range"			"1600"
 			}
 			"03"
 			{
@@ -717,11 +715,6 @@
 			{
 				"var_type"					"FIELD_INTEGER"
 				"mana_gain"					"9"
-			}
-			"05"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
 			}
 		}
 	}
@@ -870,17 +863,16 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"spectre_spectral_dagger"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AOERadius"						"%hitbox"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.5"
-		"AbilityCastRange"				"1700"
+		"AbilityCastRange"				"1500"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -913,7 +905,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1700"
+				"projectile_range"			"1500"
 			}
 			"03"
 			{
@@ -944,11 +936,6 @@
 			{
 				"var_type"					"FIELD_FLOAT"
 				"speed_buff"				"35" //Also debuff
-			}
-			"09"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
 			}
 		}
 	}
@@ -1080,7 +1067,6 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AOERadius"						"%hitbox"
 		"MaxLevel"						"1"
 
 		// Casting
@@ -1123,11 +1109,6 @@
 			{
 				"var_type"					"FIELD_FLOAT"
 				"illusion_duration"			"3.0"
-			}
-			"05"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
 			}
 		}
 	}
@@ -1172,8 +1153,8 @@
 			}
 			"03"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.8"
 			}
 			"04"
 			{
@@ -1801,7 +1782,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"1.6"
-		"AbilityCastRange"				"1800"
+		"AbilityCastRange"				"1600"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -1834,7 +1815,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1800"
+				"projectile_range"			"1600"
 			}
 			"03"
 			{
@@ -1876,13 +1857,11 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"1700"
+		"AbilityCastRange"				"1600"
 		"AbilityCastPoint"				"0.4"
 
 		// Time		
@@ -1916,7 +1895,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1700"
+				"projectile_range"			"1600"
 			}
 			"03"
 			{
@@ -2053,8 +2032,8 @@
 			}
 			"09"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.5"
 			}
 		}
 	}
@@ -3196,7 +3175,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.2"
-		"AbilityCastRange"				"1000"
+		"AbilityCastRange"				"1400"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -3222,7 +3201,7 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"range"						"1000"
+				"range"						"1400"
 			}
 			"02"
 			{
@@ -3678,6 +3657,7 @@
 		// Ability Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"1300"
 
 		// Ability Resource
 		//-------------------------------------------------------------------------------------------------------------
@@ -3720,11 +3700,6 @@
 			"06"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"quick_cast"			"1"
-			}
-			"07"
-			{
-				"var_type"				"FIELD_INTEGER"
 				"mana_gain"				"7"
 			}
 		}
@@ -3742,15 +3717,12 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"0"
+		"AbilityCastRange"				"1300"
 		"AbilityCastPoint"				"0.4"
-		"AnimationPlaybackRate" 		"0.7"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -4699,7 +4671,6 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"MaxLevel"						"1"
-		"AOERadius"						"%radius"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
@@ -4717,12 +4688,6 @@
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityDamage"					"12"
-
-		// Precache
-		//-------------------------------------------------------------------------------------------------------------
-		"precache"
-		{
-		}
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -4750,8 +4715,8 @@
 			}
 			"05"
 			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.5"
 			}
 		}
 	}
@@ -4866,12 +4831,11 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"MaxLevel"						"1"
-		"AOERadius"						"%radius"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.6"
-		"AbilityCastRange" 				"1700"
+		"AbilityCastRange" 				"1300"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -4903,7 +4867,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1700"
+				"projectile_range"			"1300"
 			}
 			"03"
 			{
@@ -5513,12 +5477,12 @@
 			"01"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"8.0"
+				"duration"					"5.0"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"heal_per_second"			"5"
+				"heal_per_second"			"8"
 			}
 			"03"
 			{

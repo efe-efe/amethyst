@@ -26,7 +26,8 @@ function spectre_second_attack:OnSpellStart()
 		"modifier_generic_pseudo_cast_point", 
 		{ 
 			duration = cast_point,
-			can_walk = 0
+			can_walk = 0,
+			fixed_range = 1,
 		}
 	)
 end

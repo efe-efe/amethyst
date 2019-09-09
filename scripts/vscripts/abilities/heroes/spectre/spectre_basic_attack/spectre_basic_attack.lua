@@ -41,7 +41,8 @@ function spectre_basic_attack:OnSpellStart()
 		"modifier_generic_pseudo_cast_point",
 		{ 
 			duration = cast_point,
-			movement_speed = 50 
+			movement_speed = 50,
+			placeholder = 0,
 		}
 	)
 end

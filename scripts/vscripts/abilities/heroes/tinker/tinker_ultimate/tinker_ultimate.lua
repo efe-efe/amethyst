@@ -20,7 +20,8 @@ function tinker_ultimate:OnSpellStart()
 	StartAnimation(caster, { duration=1.0, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0 })
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point,
-		movement_speed = 10
+		movement_speed = 10,
+		fixed_range = 1
 	})
 end
 

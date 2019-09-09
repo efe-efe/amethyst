@@ -51,7 +51,14 @@ function modifier_juggernaut_ex_second_attack:OnAbilityFullyCast( params )
 			return
 		end
 
-		-- Apply dispell after debuffs and stuns are applied
+		if 	params.ability:GetName() == "item_death_orb" or
+			params.ability:GetName() == "item_mana_orb" or
+			params.ability:GetName() == "item_health_orb"
+		then
+			return
+		end
+
+		-- Wait to be read on basic attack before destroying
 		Timers:CreateTimer(params.ability:GetCastPoint() + 0.1, function()
 			self:Destroy()
 		end)

@@ -15,7 +15,8 @@ function phantom_ex_ultimate:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
         duration = cast_point,
         can_walk = 0,
-        radius = self.radius
+        radius = self.radius,
+		fixed_range= 1
 	})
 end
 

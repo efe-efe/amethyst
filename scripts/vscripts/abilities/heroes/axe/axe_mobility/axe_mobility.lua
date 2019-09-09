@@ -35,7 +35,7 @@ function axe_mobility:OnEndPseudoCastPoint( point )
 
     local x = point.x - caster:GetOrigin().x
     local y = point.y - caster:GetOrigin().y
-    local speed = 1300
+    local speed = 1800
 
     caster:AddNewModifier(
         caster, -- player source

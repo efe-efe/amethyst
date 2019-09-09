@@ -66,6 +66,7 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 			for _,ally in pairs(killer_team) do
 				-- Give Mana
 				PseudoHeal(ally:GetHealth(), self.heal, ally)
+				ally:GiveMana(self.mana)
 
 				SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, ally, self.mana, nil )
 

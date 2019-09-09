@@ -15,8 +15,6 @@ end
 -- Initializations
 function modifier_axe_mobility_movement:OnCreated( kv )
 	if IsServer() then
-		--self.aumentado = false
-
 		self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
 		self.damage = self:GetAbility():GetAbilityDamage()
 		self.slow_duration = self:GetAbility():GetSpecialValueFor( "slow_duration" )
@@ -131,11 +129,6 @@ function modifier_axe_mobility_movement:SyncTime( iDir, dt )
 	-- sync time
 	self.motionTick[iDir] = self.motionTick[0]
 	
-	--[[if self.aumentado == false and self.elapsedTime > self.duration/2 then
-		self.hVelocity = self.hVelocity * 2
-		self.aumentado = true
-	end]]
-
 	-- end motion
 	if self.elapsedTime > self.duration and self.motionTick[1]==self.motionTick[2] then
 		self:Destroy()

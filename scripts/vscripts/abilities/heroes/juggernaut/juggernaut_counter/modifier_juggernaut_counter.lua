@@ -24,8 +24,8 @@ function modifier_juggernaut_counter:OnCreated( params )
         self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
 
         --Effects
-        self:PlayEffectsActivateTick()
-        self:PlayEffectsSpin()
+        --self:PlayEffectsActivateTick()
+        --self:PlayEffectsSpin()
 
 		self:GetParent():AddNewModifier(
 			self:GetParent(),
@@ -35,11 +35,19 @@ function modifier_juggernaut_counter:OnCreated( params )
 		)
 
         -- Animation and pseudo cast point
+
+        StartAnimation(self:GetParent(), { 
+            duration = self:GetDuration() + 0.1, 
+            activity = ACT_DOTA_SPAWN, 
+            rate = 0.1
+        })
+
+        --[[
         StartAnimation(self:GetParent(), { 
             duration = self:GetDuration() + 0.1, 
             activity = ACT_DOTA_OVERRIDE_ABILITY_1, 
             rate = 1.5
-        })
+        })]]
     end
 end
 
@@ -60,7 +68,7 @@ function modifier_juggernaut_counter:OnDestroy( kv )
 
         --Remove effects
         self:PlayEffectsActivateTick()
-        self:StopEffects()
+        --self:StopEffects()
         GameRules.EndAnimation(self:GetParent())
     end
 end
@@ -123,7 +131,7 @@ end
 function modifier_juggernaut_counter:CheckState()
 	local state = {
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
-		[MODIFIER_STATE_SILENCED] = true,
+        [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
 	}
 
 	return state

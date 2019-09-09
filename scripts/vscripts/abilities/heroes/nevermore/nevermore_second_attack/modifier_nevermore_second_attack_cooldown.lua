@@ -38,7 +38,7 @@ end
 function modifier_nevermore_second_attack_cooldown:OnDestroy()
 	if IsServer() then
 		local ability = self:GetParent():FindAbilityByName("nevermore_second_attack")
-		ability:StartCooldown(ability:GetCooldown(0) + 1.0 * self:GetStackCount())
+		ability:StartCooldown(ability:GetCooldown(0))
     end
 end
 

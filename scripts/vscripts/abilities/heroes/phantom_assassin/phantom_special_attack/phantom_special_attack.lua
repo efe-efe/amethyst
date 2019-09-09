@@ -21,7 +21,8 @@ function phantom_special_attack:OnSpellStart()
 		rate = 2.0 
 	})
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
-		duration = cast_point 
+		duration = cast_point,
+		fixed_range= 1
 	})
 end
 

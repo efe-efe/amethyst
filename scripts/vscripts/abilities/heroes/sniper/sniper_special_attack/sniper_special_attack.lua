@@ -12,34 +12,40 @@ function sniper_special_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-	local radius = self:GetSpecialValueFor("radius")
+	self.radius = self:GetSpecialValueFor("radius")
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
-		radius = radius
+		radius = self.radius
 	})
 end
 
-function sniper_special_attack:OnEndPseudoCastPoint( pos )
+function sniper_special_attack:OnEndPseudoCastPoint( point )
     local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor( "duration" )
+	local delay_time = self:GetSpecialValueFor( "delay_time" )
 
-    -- Effect thinker
-    CreateModifierThinker(
-        caster, --hCaster
-        self, --hAbility
-        "modifier_sniper_shrapnel_thinker_lua", --modifierName
-        { duration = duration }, --paramTable
-        pos, --vOrigin
-        caster:GetTeamNumber(), --nTeamNumber
-        false --bPhantomBlocker
-    )
+	CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			thinker = "modifier_sniper_shrapnel_thinker_lua",
+			show_all = 1,
+			radius = self.radius,
+			delay_time = delay_time,
+			thinker_duration = duration,
+		}, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
 
 	-- effects
-	self:PlayEffects( pos )
+	self:PlayEffects( point )
 end
 
 --------------------------------------------------------------------------------

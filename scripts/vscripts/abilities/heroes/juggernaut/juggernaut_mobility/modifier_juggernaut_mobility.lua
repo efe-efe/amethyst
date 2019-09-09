@@ -74,21 +74,11 @@ function modifier_juggernaut_mobility:OnDestroy( kv )
     end
 end
 
-
-function modifier_juggernaut_mobility:OnAbilityExecuted( params )
-	if IsServer() then
-		if params.unit~=self:GetParent() then return end
-		self:Destroy()
-	end
-end
-
-
 --------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_juggernaut_mobility:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-		MODIFIER_EVENT_ON_ABILITY_EXECUTED,
 		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 	}
 

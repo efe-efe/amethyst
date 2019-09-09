@@ -7,6 +7,7 @@ function sky_ultimate:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
+	self.radius = self:GetSpecialValueFor( "radius" )
 
     -- Animation and pseudo cast point
 	StartAnimation(caster, {
@@ -20,8 +21,9 @@ function sky_ultimate:OnSpellStart()
 		"modifier_generic_pseudo_cast_point", 
 		{ 
 			duration = cast_point,
-            radius = self:GetSpecialValueFor( "radius" ),
-            movement_speed = 10,
+            radius = self.radius,
+			movement_speed = 10,
+			show_all = 1,
 		}
 	)
 end
@@ -32,15 +34,21 @@ function sky_ultimate:OnEndPseudoCastPoint( point )
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
 
-    CreateModifierThinker(
-        caster, --hCaster
-        self, --hAbility
-        "modifier_sky_ultimate_thinker", --modifierName
-        {duration = duration}, --paramTable
-        point, --vOrigin
-        caster:GetTeamNumber(), --nTeamNumber
-        false --bPhantomBlocker
-    )
+	CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			thinker = "modifier_sky_ultimate_thinker",
+			show_all = 1,
+			radius = self.radius,
+			delay_time = duration,
+			thinker_duration = duration,
+		}, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
 
     self:PlayEffects()
 end

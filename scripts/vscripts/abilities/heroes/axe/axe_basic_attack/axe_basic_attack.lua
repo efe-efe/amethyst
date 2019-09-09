@@ -9,7 +9,11 @@ function axe_basic_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point, no_target = 1})
+	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+		duration = cast_point, 
+		no_target = 1,
+		placeholder = 0,
+	})
 end
 
 function axe_basic_attack:OnEndPseudoCastPoint( point )

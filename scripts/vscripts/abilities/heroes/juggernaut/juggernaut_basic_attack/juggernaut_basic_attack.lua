@@ -16,6 +16,7 @@ function juggernaut_basic_attack:OnSpellStart()
 	caster:AddNewModifier( caster, self, "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
 		movement_speed = 90,
+		placeholder = 0,
 	})
 end
 

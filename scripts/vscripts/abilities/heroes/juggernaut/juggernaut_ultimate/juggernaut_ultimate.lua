@@ -46,6 +46,7 @@ function juggernaut_ultimate:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
         duration = cast_point,
         can_walk = 0,
+        fixed_range = 1,
 	})
 end
 

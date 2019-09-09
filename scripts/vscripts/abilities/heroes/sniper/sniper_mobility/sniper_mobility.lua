@@ -12,7 +12,7 @@ function sniper_mobility:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-	local radius = self:GetSpecialValueFor("radius")
+	self.radius = self:GetSpecialValueFor("radius")
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_CAST_ABILITY_1, rate=2.0})
@@ -24,12 +24,12 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sniper_mobility:OnEndPseudoCastPoint( pos )
+function sniper_mobility:OnEndPseudoCastPoint( point )
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor( "duration" )
     local shrapnel = caster:FindAbilityByName("sniper_special_attack")
 
-    local direction = (caster:GetOrigin() - pos):Normalized()
+    local direction = (caster:GetOrigin() - point):Normalized()
     local thinker_origin = caster:GetOrigin() + direction * 150
 
 
@@ -44,18 +44,22 @@ function sniper_mobility:OnEndPseudoCastPoint( pos )
         false --bPhantomBlocker
     )
 
-    
-    -- Effect thinker
-    CreateModifierThinker(
-        caster, --hCaster
-        shrapnel, --hAbility
-        "modifier_sniper_shrapnel_thinker_lua", --modifierName
-        { duration = shrapnel:GetSpecialValueFor("duration") }, --paramTable
-        thinker_origin, --vOrigin
-        caster:GetTeamNumber(), --nTeamNumber
-        false --bPhantomBlocker
-    )
-    
+	CreateModifierThinker(
+		caster, --hCaster
+		shrapnel, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			thinker = "modifier_sniper_shrapnel_thinker_lua",
+			show_all = 1,
+			radius = self.radius,
+			delay_time = shrapnel:GetSpecialValueFor( "delay_time" ),
+			thinker_duration = shrapnel:GetSpecialValueFor( "duration" ),
+		}, --paramTable
+		thinker_origin, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
+
     self:PlayEffects()    
     -- Put CD on the alternate version of the ability
 	local ex_version = caster:FindAbilityByName("sniper_ex_mobility")

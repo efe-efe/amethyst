@@ -20,7 +20,10 @@ function sniper_basic_attack:OnSpellStart()
 		caster,
 		self,
 		"modifier_generic_pseudo_cast_point",
-		{ duration = cast_point }
+		{ 
+			duration = cast_point,
+			placeholder = 0,
+		}
 	)
 end
 

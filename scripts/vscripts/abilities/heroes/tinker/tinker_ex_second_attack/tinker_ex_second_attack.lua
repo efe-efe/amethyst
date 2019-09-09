@@ -17,7 +17,8 @@ function tinker_ex_second_attack:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 
 		movement_speed = 10,
-		radius = self:GetSpecialValueFor("radius")
+		radius = self:GetSpecialValueFor("radius"),
+		fixed_range = 1,
 	})
 end
 

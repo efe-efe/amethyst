@@ -23,7 +23,8 @@ function sniper_second_attack:OnSpellStart()
 		{ 
 			duration = cast_point,
 			can_walk = 0,
-			show_all = 1
+			show_all = 1,
+			fixed_range= 1,
 		}
 	)
 end

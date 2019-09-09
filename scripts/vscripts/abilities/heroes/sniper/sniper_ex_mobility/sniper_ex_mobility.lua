@@ -29,7 +29,7 @@ function sniper_ex_mobility:OnSpellStart()
 	)
 end
 
-function sniper_ex_mobility:OnEndPseudoCastPoint( pos )
+function sniper_ex_mobility:OnEndPseudoCastPoint( point )
     -- Initialize variables
 	local caster = self:GetCaster()
     local origin = caster:GetOrigin()
@@ -40,9 +40,9 @@ function sniper_ex_mobility:OnEndPseudoCastPoint( pos )
 	local projectile_name = "particles/mod_units/heroes/hero_sniper/techies_base_attack.vpcf"
 	local projectile_start_radius = 80--self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = 80--self:GetSpecialValueFor("hitbox")
-	local projectile_distance = (origin - pos):Length2D()
+	local projectile_distance = (origin - point):Length2D()
 	local projectile_speed = 1700--self:GetSpecialValueFor("projectile_speed")
-    local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, -100 )):Normalized()
+    local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, -100 )):Normalized()
 
     -- Projectile
     local projectile = {
@@ -86,14 +86,14 @@ function sniper_ex_mobility:OnEndPseudoCastPoint( pos )
             }
             ApplyDamage( damage )
         end,
-        OnFinish = function(_self, mPos)
+        OnFinish = function(_self, pos)
             -- Effect thinker
             CreateModifierThinker(
                 _self.Source, --hCaster
                 self, --hAbility
                 "modifier_sniper_ex_mobility_thinker", --modifierName
                 { duration = duration }, --paramTable
-                mPos, --vOrigin
+                pos, --vOrigin
                 _self.Source:GetTeamNumber(), --nTeamNumber
                 false --bPhantomBlocker
             )
