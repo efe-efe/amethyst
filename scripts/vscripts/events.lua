@@ -331,6 +331,10 @@ function GameMode:EndRound( delay )
                 hero:SetRespawnsDisabled(false)
                 hero:RespawnHero(false, false)
                 hero:SetRespawnsDisabled(true)
+                PlayerResource:SetCameraTarget(hero:GetPlayerID(), hero)
+                Timers:CreateTimer(0.5, function()	
+                    PlayerResource:SetCameraTarget(hero:GetPlayerID(), nil)
+                end)
             end
         end
         self.countdownEnabled = true
