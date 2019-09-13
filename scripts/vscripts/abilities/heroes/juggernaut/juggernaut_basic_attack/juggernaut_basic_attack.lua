@@ -33,7 +33,6 @@ function juggernaut_basic_attack:OnEndPseudoCastPoint( point )
 	
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
 	local stun_duration = caster:FindAbilityByName("juggernaut_ex_second_attack"):GetSpecialValueFor("stun_duration")
-
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
 

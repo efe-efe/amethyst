@@ -84,6 +84,7 @@ function modifier_tinker_ex_second_attack_thinker:OnIntervalThink()
 		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
+        bIsReflectable = false,
 		TreeBehavior = PROJECTILES_NOTHING,
 		bCutTrees = true,
 		bTreeFullCollision = false,

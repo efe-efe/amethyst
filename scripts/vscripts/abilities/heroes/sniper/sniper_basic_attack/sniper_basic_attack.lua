@@ -23,6 +23,7 @@ function sniper_basic_attack:OnSpellStart()
 		{ 
 			duration = cast_point,
 			placeholder = 0,
+			movement_speed = 50,
 		}
 	)
 end

@@ -1,7 +1,7 @@
 RITE_DEBUG_SPEW = true -- Complete Debug?
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 
-_G.nCOUNTDOWNTIMER = 90
+_G.nCOUNTDOWNTIMER = 0
 
 --============================================================================================
 -- INSTANTIATE GAME MODE
@@ -135,6 +135,17 @@ function GameMode:InitGameMode()
             "abilities/base/modifier_thinker_indicator", 
             LUA_MODIFIER_MOTION_NONE
         )
+        LinkLuaModifier( 
+            "modifier_counter", 
+            "abilities/base/modifier_counter", 
+            LUA_MODIFIER_MOTION_NONE
+        )
+        LinkLuaModifier( 
+            "modifier_generic_stunned_lua", 
+            "abilities/generic/modifier_generic_stunned_lua", 
+            LUA_MODIFIER_MOTION_NONE
+        )
+        
         DebugPrint('[RITE] Useful modifiers linked')
 
 
@@ -166,6 +177,7 @@ function GameMode:CaptureGameMode()
         mode:SetBuybackEnabled( BUYBACK_ENABLED )
         mode:SetFixedRespawnTime( FIXED_RESPAWN_TIME ) 
         mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
+        mode:SetCameraDistanceOverride( CAMERA_DISTANCE_OVERRIDE )
 
         -------------------------------
         -- Link Client/Server Events

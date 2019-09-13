@@ -5,6 +5,8 @@ ALLOW_SAME_HERO_SELECTION = true        -- Should we let people select the same 
 
 PRE_GAME_TIME = 0.0                     -- How long after people select their heroes should the horn blow and the game start?
 
+CAMERA_DISTANCE_OVERRIDE = 1350           -- How far out should we allow the camera to go?  Use -1 for the default (1134) while still allowing for panorama camera distance changes
+
 USE_CUSTOM_HERO_GOLD_BOUNTY = true			-- Should the gold for hero kills be modified (true) or same as in default Dota (false)?
 DISABLE_ALL_GOLD_FROM_HERO_KILLS = true	-- Should we remove gold gain from hero kills? USE_CUSTOM_HERO_GOLD_BOUNTY needs to be true.
 

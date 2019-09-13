@@ -9,13 +9,14 @@ end
 --Initializer
 --------------------------------------------------------------------------------
 function modifier_death_zone:OnCreated( kv )
+    self.max_radius = 5000
     self.radius = 5000--self:GetAbility():GetSpecialValueFor( "radius" )
     self.min_radius = 400
 
     if IsServer() then
         -- Start Interval
         GameRules:SendCustomMessage("The <b><font color='blue'>Death zone</font></b> has initiated, don't get close to the edges!", 0, 0)
-        self:StartIntervalThink(1.0)      
+        self:StartIntervalThink(0.5)      
     end
 end
 
@@ -75,10 +76,27 @@ function modifier_death_zone:OnIntervalThink()
         end
     end
 
-    local new_radius = self.radius - 150
+
+    for i = self.radius, self.max_radius, 100 do
+        self:PlayAoe(i)
+    end
+
+
+    local new_radius = self.radius - 75
     if new_radius > self.min_radius then
         self.radius = new_radius
     end
+end
+
+
+function modifier_death_zone:PlayAoe(radius)
+	local particle_cast = "particles/units/heroes/hero_dark_willow/dark_willow_wisp_aoe_ring.vpcf"
+    
+    -- particles 1
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 1 , 1 ) )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 function modifier_death_zone:PlayEffects()

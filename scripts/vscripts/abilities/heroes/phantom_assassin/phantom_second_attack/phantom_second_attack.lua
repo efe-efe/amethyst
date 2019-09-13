@@ -81,6 +81,13 @@ function phantom_second_attack:OnEndPseudoCastPoint( pos )
 
 			ApplyDamage( damage_table )
 			
+			if stacks == 3 then
+				local mobility = caster:FindAbilityByName("phantom_mobility")
+				local new_cd = mobility:GetCooldownTimeRemaining()/2
+				mobility:EndCooldown()
+				mobility:StartCooldown(new_cd)
+			end
+
 			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
 			SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
 

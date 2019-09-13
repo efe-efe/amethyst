@@ -1,21 +1,38 @@
 axe_counter = class({})
-LinkLuaModifier( "modifier_axe_counter", "abilities/heroes/axe/axe_counter/modifier_axe_counter", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_axe_counter_buff", "abilities/heroes/axe/axe_counter/modifier_axe_counter_buff", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function axe_counter:OnSpellStart()
-    --load data
     local caster = self:GetCaster()
 	local duration = self:GetDuration()
 
     caster:AddNewModifier(
 		caster, -- player source
 		self, -- ability source
-		"modifier_axe_counter", -- modifier name
-		{ duration = duration } -- kv
+        "modifier_counter", 
+		{ 
+            can_walk = 0,
+            duration = duration, 
+            destroy_on_trigger = 1,
+            mobility = 1,
+            ultimate = 1,
+            ex_two = 1,
+        } -- kv
     )
-
     self:PlayEffects()
+end
+
+function axe_counter:OnTrigger( params ) 
+    local caster = self:GetCaster()
+    local buff_duration = self:GetSpecialValueFor("buff_duration")
+
+    caster:AddNewModifier(
+        caster, -- player source
+        self, -- ability source
+        "modifier_axe_counter_buff", -- modifier name
+        { duration = buff_duration } -- kv
+    )
 end
 
 function axe_counter:PlayEffects()

@@ -90,6 +90,19 @@ function modifier_sky_counter_movement:DeclareFunctions()
 	return funcs
 end
 
+--------------------------------------------------------------------------------
+-- Status Effects
+function modifier_sky_counter_movement:CheckState()
+	local state = {
+        [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
+	}
+
+	return state
+end
+
+
+--------------------------------------------------------------------------------
+-- Graphics & animations
 function modifier_sky_counter_movement:GetOverrideAnimation()
 	return ACT_DOTA_FLAIL
 end

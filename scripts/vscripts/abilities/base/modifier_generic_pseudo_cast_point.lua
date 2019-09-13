@@ -153,34 +153,6 @@ function modifier_generic_pseudo_cast_point:StopCast()
 	end
 end
 
-
---------------------------------------------------------------------------------
--- On Orders
-function modifier_generic_pseudo_cast_point:OnOrder(params)
-	if params.unit==self.parent then
-		if 	params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION or
-			params.order_type == DOTA_UNIT_ORDER_CAST_POSITION or
-			params.order_type == DOTA_UNIT_ORDER_CAST_TARGET or
-			params.order_type == DOTA_UNIT_ORDER_CAST_TARGET_TREE or
-			params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET or
-			params.order_type == DOTA_UNIT_ORDER_CAST_TOGGLE
-		then
-			self:Destroy()
-		end
-
-		if self.can_walk == 0 then
-			if	params.order_type == DOTA_UNIT_ORDER_MOVE_TO_POSITION or
-				params.order_type == DOTA_UNIT_ORDER_MOVE_TO_TARGET or
-				params.order_type == DOTA_UNIT_ORDER_ATTACK_MOVE or
-				params.order_type == DOTA_UNIT_ORDER_ATTACK_TARGET
-			then
-				print("destroying")
-				self:Destroy()
-			end
-		end
-	end
-end
-
 --------------------------------------------------------------------------------
 -- Destroyer
 function modifier_generic_pseudo_cast_point:OnDestroy(params)
@@ -297,25 +269,50 @@ end
 function modifier_generic_pseudo_cast_point:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-		MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
 		MODIFIER_EVENT_ON_ORDER,
 	}
 
 	return funcs
 end
 
-function modifier_generic_pseudo_cast_point:GetModifierMoveSpeed_Absolute()
-	if self.can_walk == 0 then
-		return 1
+function modifier_generic_pseudo_cast_point:GetModifierMoveSpeedBonus_Percentage()
+	if self.movement_speed ~= nil then
+		return - (100 - self.movement_speed)
 	end
 end
 
-function modifier_generic_pseudo_cast_point:GetModifierMoveSpeedBonus_Percentage()
-	if self.can_walk == 0 then
-		return -100
-	elseif  self.movement_speed ~= nil then
-		return - (100 - self.movement_speed)
+function modifier_generic_pseudo_cast_point:OnOrder(params)
+	if params.unit==self.parent then
+		if 	params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION or
+			params.order_type == DOTA_UNIT_ORDER_CAST_POSITION or
+			params.order_type == DOTA_UNIT_ORDER_CAST_TARGET or
+			params.order_type == DOTA_UNIT_ORDER_CAST_TARGET_TREE or
+			params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET or
+			params.order_type == DOTA_UNIT_ORDER_CAST_TOGGLE
+		then
+			self:Destroy()
+		end
+
+		if self.can_walk == 0 then
+			if	params.order_type == DOTA_UNIT_ORDER_MOVE_TO_POSITION or
+				params.order_type == DOTA_UNIT_ORDER_MOVE_TO_TARGET or
+				params.order_type == DOTA_UNIT_ORDER_ATTACK_MOVE or
+				params.order_type == DOTA_UNIT_ORDER_ATTACK_TARGET
+			then
+				print("destroying")
+				self:Destroy()
+			end
+		end
 	end
+end
+--------------------------------------------------------------------------------
+-- Status Effects
+function modifier_generic_pseudo_cast_point:CheckState()
+    if self.can_walk == 0 then
+        return { [MODIFIER_STATE_ROOTED] = true }
+    else
+        return {}
+    end
 end
 
 --------------------------------------------------------------------------------
