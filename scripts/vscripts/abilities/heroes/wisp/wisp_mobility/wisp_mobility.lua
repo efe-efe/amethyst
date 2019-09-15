@@ -10,20 +10,31 @@ wisp_mobility.origins = {}
 --------------------------------------------------------------------------------
 -- Ability Start
 function wisp_mobility:OnSpellStart()
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+
+	-- Animation and pseudo cast point
+	caster:AddNewModifier(
+		caster,
+		self,
+		"modifier_generic_pseudo_cast_point",
+		{ 
+			duration = cast_point, 
+			can_walk = 0,
+		}
+	)
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function wisp_mobility:OnEndPseudoCastPoint( point )
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 
 	-- load data
 	local max_range = self:GetSpecialValueFor("range")
 	local back_duration = self:GetSpecialValueFor("back_duration")
-
-	-- determine target position
-	local direction = (point - origin)
-	if direction:Length2D() > max_range then
-		direction = direction:Normalized() * max_range
-	end
 
 	--create visual thinker
 	local thinker = CreateModifierThinker(
@@ -46,10 +57,11 @@ function wisp_mobility:OnSpellStart()
     )
 
 	-- teleport
-	FindClearSpaceForUnit( caster, origin + direction, true )
+	FindClearSpaceForUnit( caster, point, true )
 
 	-- Play effects
-    self:PlayEffects( origin, direction )
+    self:PlayEffectsOrigin()
+    self:PlayEffectsArrival( point )
 	
 	-- Put the back ability on the mobility slot
 	caster:SwapAbilities( 
@@ -83,32 +95,30 @@ function wisp_mobility:RemoveOrigin( origin )
 end
 
 --------------------------------------------------------------------------------
-function wisp_mobility:PlayEffects( origin, direction )
-	-- Get Resources
-	local particle_cast_a = "particles/mod_units/heroes/hero_wisp/wisp_relocate_teleport.vpcf"
-	local sound_cast = "Hero_Wisp.TeleportIn"
-
+-- Graphics & Sounds
+function wisp_mobility:PlayEffectsOrigin()
 	-- Create Sound
-	local particle_cast_b = "particles/econ/items/wisp/wisp_relocate_teleport_ti7.vpcf"
+	EmitSoundOn( "Hero_Wisp.TeleportIn", self:GetCaster()  )
+	
+	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_relocate_teleport.vpcf"
 
 	-- At original position
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast_a, 0, origin )
-	ParticleManager:SetParticleControlForward( effect_cast_a, 0, direction:Normalized() )
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-    EmitSoundOn( sound_cast, self:GetCaster()  )
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+function wisp_mobility:PlayEffectsArrival( point )
+	local particle_cast = "particles/econ/items/wisp/wisp_relocate_teleport_ti7.vpcf"
 
 	-- At arrival position
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetCaster():GetOrigin() )
-	ParticleManager:SetParticleControlForward( effect_cast_b, 0, direction:Normalized() )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
+	ParticleManager:SetParticleControl( effect_cast, 0, point )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 --------------------------------------------------------------------------------
 -- Sub-ability
 --------------------------------------------------------------------------------
-
 --------------------------------------------------------------------------------
 -- Ability Start
 function wisp_mobility_back:OnSpellStart()
@@ -132,13 +142,5 @@ function wisp_mobility_back:OnSpellStart()
 	end
 	self.origins[caster] = nil
 
-	self:PlayEffects()
-end
-
---------------------------------------------------------------------------------
-function wisp_mobility_back:PlayEffects( origin )
-	-- Get Resources
-	local sound_cast = "Hero_Wisp.TeleportOut"
-
-    EmitSoundOn( sound_cast, self:GetCaster()  )
+    EmitSoundOn( "Hero_Wisp.TeleportOut", self:GetCaster()  )
 end

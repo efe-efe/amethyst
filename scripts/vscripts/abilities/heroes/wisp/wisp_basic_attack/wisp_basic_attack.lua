@@ -8,7 +8,6 @@ LinkLuaModifier( "modifier_wisp_basic_attack_link_negative", "abilities/heroes/w
 function wisp_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-	self:SetActivated(false)
 
 	-- Animation and pseudo cast point
 	caster:AddNewModifier(
@@ -17,13 +16,13 @@ function wisp_basic_attack:OnSpellStart()
 		"modifier_generic_pseudo_cast_point",
 		{
 			duration = cast_point,
-			movement_speed = 50, 
+			movement_speed = 50,
+			placeholder = 0,
 		}
 	)
 end
 
 function wisp_basic_attack:OnEndPseudoCastPoint( point )
-	self:SetActivated(true)
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
@@ -78,14 +77,12 @@ function wisp_basic_attack:OnEndPseudoCastPoint( point )
 		OnUnitHit = function(_self, unit)
 			-- ENEMIES
 			if unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() then
-				--[[
 				_self.Source:AddNewModifier(
 					unit,
 					self,
 					"modifier_wisp_basic_attack_link_negative",
 					{ duration = link_duration }
 				)
-				]]
 
 				-- perform the actual attack
 				caster:PerformAttack(
@@ -108,7 +105,14 @@ function wisp_basic_attack:OnEndPseudoCastPoint( point )
 					"modifier_wisp_basic_attack_link",
 					{ duration = link_duration }
 				)
+
+				if _self.Source == caster then
+					if caster:GetMaxHealth() == caster:GetHealth() then
+						unit:Heal(heal/2, _self.Source )
+					end
+				end
 			end
+			
 			_self.Source:Heal( heal, _self.Source )
 		end,
 		OnFinish = function(_self, pos)
@@ -121,10 +125,6 @@ function wisp_basic_attack:OnEndPseudoCastPoint( point )
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-end
-
-function wisp_basic_attack:OnStopPseudoCastPoint()
-	self:SetActivated(true)
 end
 
 --------------------------------------------------------------------------------

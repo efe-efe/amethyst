@@ -5,7 +5,8 @@ modifier_wisp_ex_ultimate = class({})
 function modifier_wisp_ex_ultimate:DeclareFunctions()
 	local funcs = {
         MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
-        MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
+		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
+		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 	}
 
 	return funcs
@@ -15,7 +16,7 @@ end
 -- Initializations
 function modifier_wisp_ex_ultimate:OnCreated( kv )
     self.damage_reduction = self:GetAbility():GetSpecialValueFor("damage_reduction")
-    self.damage_bonus = self:GetAbility():GetSpecialValueFor("damage_bonus")
+    self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
     
     if IsServer() then
         -- effects
@@ -44,9 +45,14 @@ function modifier_wisp_ex_ultimate:GetModifierIncomingDamage_Percentage( params 
     return -self.damage_reduction
 end
 
-function modifier_wisp_ex_ultimate:GetModifierPreAttack_BonusDamage()
-    return self.damage_bonus
+function modifier_wisp_ex_ultimate:GetModifierMoveSpeedBonus_Percentage()
+    return self.speed_buff_pct
 end
+
+function modifier_wisp_ex_ultimate:GetModifierIgnoreMovespeedLimit( params )
+    return 1
+end
+
 
 --------------------------------------------------------------------------------
 -- Visuals

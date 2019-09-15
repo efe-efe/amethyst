@@ -94,7 +94,7 @@ end
 -- Status Effects
 function modifier_sky_counter_movement:CheckState()
 	local state = {
-        [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
+        [MODIFIER_STATE_ROOTED] = true,
 	}
 
 	return state

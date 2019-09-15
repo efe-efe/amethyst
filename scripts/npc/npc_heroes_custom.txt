@@ -20,8 +20,10 @@
 		"Ability6"						"wisp_ultimate"
 		"Ability7"						"wisp_mobility"	
 		"Ability8"						"wisp_ex_counter"					
-		"Ability9"						"wisp_ex_special_attack"						
-		"Ability10"						"wisp_mobility_back"					
+		"Ability9"						"wisp_ex_special_attack"			
+		"Ability10"						"mount"								
+		"Ability11"						"charge"		
+		"Ability12"						"wisp_mobility_back"					
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -84,7 +86,9 @@
 		"Ability6"						"spectre_ultimate"           
 		"Ability7"						"spectre_mobility"            
 		"Ability8"						"spectre_ex_second_attack"       
-		"Ability9"						"spectre_ex_mobility"
+		"Ability9"						"spectre_ex_mobility"	
+		"Ability10"						"mount"						
+		"Ability11"						"charge"	
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -147,7 +151,9 @@
 		"Ability6"						"sky_ultimate"
 		"Ability7"						"sky_mobility"	
 		"Ability8"						"sky_ex_basic_attack"	
-		"Ability9"						"sky_ex_second_attack"			
+		"Ability9"						"sky_ex_second_attack"	
+		"Ability10"						"mount"					
+		"Ability11"						"charge"			
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -209,8 +215,10 @@
 		"Ability6"						"sniper_ultimate"
 		"Ability7"						"sniper_mobility"
 		"Ability8"						"sniper_ex_second_attack"
-		"Ability9"						"sniper_ex_mobility"
-		"Ability10"						"sniper_ultimate_projectile"
+		"Ability9"						"sniper_ex_mobility"	
+		"Ability10"						"mount"							
+		"Ability11"						"charge"
+		"Ability12"						"sniper_ultimate_projectile"
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -273,7 +281,9 @@
 		"Ability6"						"phantom_ultimate"
 		"Ability7"						"phantom_mobility"
 		"Ability8"						"phantom_ex_basic_attack"
-		"Ability9"						"phantom_ex_special_attack"
+		"Ability9"						"phantom_ex_special_attack"	
+		"Ability10"						"mount"							
+		"Ability11"						"charge"
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -336,7 +346,9 @@
 		"Ability6"						"axe_ultimate"
 		"Ability7"						"axe_mobility"
 		"Ability8"						"axe_ex_second_attack"
-		"Ability9"						"axe_ex_mobility"
+		"Ability9"						"axe_ex_mobility"	
+		"Ability10"						"mount"						
+		"Ability11"						"charge"	
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -399,7 +411,9 @@
 		"Ability6"						"tinker_ultimate"
 		"Ability7"						"tinker_mobility"					
 		"Ability8"						"tinker_ex_counter"	
-		"Ability9"						"tinker_ex_second_attack"	
+		"Ability9"						"tinker_ex_second_attack"		
+		"Ability10"						"mount"					
+		"Ability11"						"charge"		
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -462,8 +476,10 @@
 		"Ability6"						"phoenix_ultimate"             
 		"Ability7"						"phoenix_mobility"                    	
 		"Ability8"						"phoenix_ex_counter"             
-		"Ability9"						"phoenix_ex_special_attack"      
-		"Ability10"						"phoenix_mobility_stop"
+		"Ability9"						"phoenix_ex_special_attack" 	
+		"Ability10"						"mount"			    				
+		"Ability11"						"charge"
+		"Ability12"						"phoenix_mobility_stop"
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -526,8 +542,10 @@
 		"Ability6"						"nevermore_ultimate"
 		"Ability7"						"nevermore_mobility"	
 		"Ability8"						"nevermore_ex_special_attack"					
-		"Ability9"						"nevermore_ex_second_attack"
-		"Ability10"						"nevermore_counter_mobility"
+		"Ability9"						"nevermore_ex_second_attack"	
+		"Ability10"						"mount"							
+		"Ability11"						"charge"
+		"Ability12"						"nevermore_counter_mobility"
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -655,7 +673,9 @@
 		"Ability6"						"juggernaut_ultimate"           
 		"Ability7"						"juggernaut_mobility"            
 		"Ability8"						"juggernaut_ex_special_attack"       
-		"Ability9"						"juggernaut_ex_second_attack"
+		"Ability9"						"juggernaut_ex_second_attack"	
+		"Ability10"						"mount"					
+		"Ability11"						"charge"		
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------

@@ -36,13 +36,12 @@ function GameMode:OnGameInProgress()
     self.middle_orb_ent = Entities:FindByName(nil, "orb_spawn")
     self.orbs = {}
     self.orb_timers_ent = {}
-    self.orb_timers_ent[1] = Entities:FindByName(nil, "orb_timer1")
-    self.orb_timers_ent[2] = Entities:FindByName(nil, "orb_timer2")
-    self.orb_timers_ent[3] = Entities:FindByName(nil, "orb_timer3")
-    self.orb_timers_ent[4] = Entities:FindByName(nil, "orb_timer4")
-    self.orb_timers_ent[5] = Entities:FindByName(nil, "orb_timer5")
-    self.orb_timers = {}
 
+    for i = 1, 5 do
+        local orb_name = "orb_timer" .. tostring(i)
+        self.orb_timers_ent[i] = Entities:FindByName(nil, orb_name)
+    end
+    self.orb_timers = {}
     self:CreateAllOrbs()
     self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
 end
@@ -57,14 +56,19 @@ function GameMode:OnHeroInGame(keys)
     -- Timer to prevent illusions from passing
     -------------------------------
     Timers:CreateTimer(0.5, function()
-        
         -------------------------------
         -- Filter unwanted units
         -------------------------------
-
         if npc:IsNull() then return end
         if not npc:IsRealHero() then return end
-        
+
+        -------------------------------
+        -- Initialize variables
+        -------------------------------
+        local team = npc:GetTeamNumber()
+        local playerID = npc:GetPlayerOwnerID()
+        local playerOwner = npc:GetPlayerOwner()
+
         -------------------------------
         -- First time spawning
         -------------------------------
@@ -94,19 +98,22 @@ function GameMode:OnHeroInGame(keys)
             end
 
             -- Initialize team if not initialized yet
-            if self.teams[npc:GetTeamNumber()] == nil then
-                self.teams[npc:GetTeamNumber()] = {
-                    alive_heroes = 0,
+            if self.teams[team] == nil then
+                self.teams[team] = {
                     wins = 0,
                     looser = false,
                     players = {},
-                    teamId = npc:GetTeamNumber()
+                    heroes = {},
+                    teamId = team,
                 }
-
+                
                 --Update GUI
-                local score = { winnerId = npc:GetTeamNumber(), wins = 0 }
+                local score = { winnerId = team, wins = 0 }
                 CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
             end
+
+            self.teams[team].players[playerID] = playerOwner
+            self.teams[team].heroes[keys.entindex] = npc -- Save the heroe, in case the player is not connected
         end
 
         -------------------------------
@@ -117,13 +124,6 @@ function GameMode:OnHeroInGame(keys)
         npc.iTreshold = 40
         local health_bar = "(" .. npc.iTreshold .. "/" .. self.iMaxTreshold ..")"
         npc:SetCustomHealthLabel(health_bar, 255, 255, 255)
-        
-        local team = npc:GetTeamNumber()
-        local playerID = npc:GetPlayerOwnerID()
-        local playerOwner = npc:GetPlayerOwner()
-      
-        self.teams[team].alive_heroes = self.teams[team].alive_heroes + 1
-        self.teams[team].players[playerID] = playerOwner
     end)
 end
 
@@ -147,24 +147,12 @@ function GameMode:OnEntityKilled( keys )
         self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
     end
 
-    -- Manage game state
     if killed:IsRealHero() and Convars:GetInt('test_mode') == 0 then
         local killed_team = killed:GetTeamNumber()
 
         if not self.lock_round then
-            -- CREATE DEATH ORB
-            local current_mana = killed:GetMana()
-            local mana_given = NearestValue({ 25, 50, 75, 100 }, current_mana)
-            local death_orb_ent = self:CreateOrb(killed:GetOrigin(), "death", 0.0, (mana_given/100) + 0.25 )
-            
-            self.orbs[death_orb_ent].item:SetCurrentCharges(mana_given)
-            self.orbs[death_orb_ent].item:SetPurchaser(killed)
-
-            self.teams[killed_team].alive_heroes = self.teams[killed_team].alive_heroes - 1
-
-            -- If the killed unit's team have no more heroes
-            if self.teams[killed_team].alive_heroes <= 0 then
-
+            self:CreateDeathOrb(killed)
+            if self:GetAliveHeroes(killed_team) <= 0 then
                 -- Set the victory state
                 self.teams[killed_team].looser = true
                 print("Team " .. killed_team .. " loses this round")
@@ -183,6 +171,8 @@ function GameMode:OnEntityKilled( keys )
             end
         end
     end
+
+    self:UpdateCameras()
 
     -- Remove dead non-hero units from selection -> bugged ability/cast bar
 	if killed:IsIllusion() or (killed:IsControllableByAnyPlayer() and (not killed:IsRealHero()) and (not killed:IsCourier()) and (not killed:IsClone())) and (not killed:IsTempestDouble()) then
@@ -283,9 +273,9 @@ function GameMode:FindWinner()
     local teams_with_alive_players = 0
     local winner = nil
 
-    for _,actual_team in pairs(self.teams) do
-        if not actual_team.looser then 
-            winner = actual_team
+    for teamNumber, team in pairs(self.teams) do
+        if not team.looser then 
+            winner = team
             teams_with_alive_players = teams_with_alive_players + 1
         end
     end
@@ -296,6 +286,65 @@ function GameMode:FindWinner()
         return winner
     else
         return false
+    end
+end
+
+function GameMode:FindNextAliveAlly( team )
+    for heroIndex, hero in pairs(self.teams[team].heroes) do
+        if hero:IsAlive() then
+            return hero
+        end
+    end
+
+    return nil
+end
+
+function GameMode:FindNextAliveHero()
+    for teamNumber, team in pairs(self.teams) do
+        for heroIndex, hero in pairs(team.heroes) do
+            if hero:IsAlive() then
+                return hero
+            end
+        end
+    end
+
+    return nil
+end
+
+function GameMode:GetAliveHeroes( team )
+    local alive_heroes = 0
+    
+    for heroIndex, hero in pairs(self.teams[team].heroes) do
+        if hero:IsAlive() then
+            alive_heroes = alive_heroes + 1
+        end
+    end
+
+    return alive_heroes
+end
+
+function GameMode:UpdateCameras()
+    for teamNumber, team in pairs(self.teams) do
+        for heroIndex, hero in pairs(team.heroes) do
+            if not hero:IsAlive() then
+                local alive_ally = self:FindNextAliveAlly( teamNumber )
+
+                if alive_ally ~= nil then
+                    PlayerResource:SetCameraTarget(hero:GetPlayerID(), alive_ally)
+                else 
+                    local alive_hero = self:FindNextAliveHero()
+                    if alive_hero ~= nil then
+                        PlayerResource:SetCameraTarget(hero:GetPlayerID(), alive_hero)
+                        alive_hero:AddNewModifier(
+                            hero,
+                            nil,
+                            "modifier_generic_provides_vision",
+                            {}
+                        )
+                    end
+                end
+            end
+        end
     end
 end
 
@@ -318,16 +367,13 @@ function GameMode:EndRound( delay )
                 break
             end
 
-            for _,player in pairs(actual_team.players) do
-                local hero = player:GetAssignedHero()
+            for heroIndex, hero in pairs(actual_team.heroes) do
                 hero:Kill(nil, hero)	
             end
             
-            actual_team.alive_heroes = 0
             actual_team.looser = false
 
-            for _,player in pairs(actual_team.players) do
-                local hero = player:GetAssignedHero()
+            for heroIndex, hero in pairs(actual_team.heroes) do
                 hero:SetRespawnsDisabled(false)
                 hero:RespawnHero(false, false)
                 hero:SetRespawnsDisabled(true)
@@ -360,7 +406,9 @@ function GameMode:CreateDeathZone()
         orb_position, --vOrigin
         DOTA_TEAM_NOTEAM, --nTeamNumber
         false --bPhantomBlocker
-	)
+    )
+    
+    PrintTable(self.modifier_death_zone)
 end
 
 --------------------------------------------------------------------------------
@@ -369,7 +417,7 @@ end
 function GameMode:DestroyDeathZone()
     DebugPrint("[RITE] Destroying Death Zone")
     -- Safe destroying
-    if self.modifier_death_zone~=nil then
+    if self.modifier_death_zone ~= nil then
         if not self.modifier_death_zone:IsNull() then
             self.modifier_death_zone:Destroy()
         end
@@ -486,6 +534,16 @@ function GameMode:DestroyAllTimers()
     for _,timer in pairs(self.orb_timers) do
         UTIL_Remove( timer )
     end
+end
+
+function GameMode:CreateDeathOrb( hero )
+    -- CREATE DEATH ORB
+    local current_mana = hero:GetMana()
+    local mana_given = NearestValue({ 25, 50, 75, 100 }, current_mana)
+    local death_orb_ent = self:CreateOrb(hero:GetOrigin(), "death", 0.0, (mana_given/100) + 0.25 )
+
+    self.orbs[death_orb_ent].item:SetCurrentCharges(mana_given)
+    self.orbs[death_orb_ent].item:SetPurchaser(hero)
 end
 
 --------------------------------------------------------------------------------

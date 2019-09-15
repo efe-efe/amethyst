@@ -59,7 +59,7 @@ function sky_ex_second_attack:OnEndPseudoCastPoint( point )
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bIgnoreSource = false,
 		TreeBehavior = PROJECTILES_NOTHING,
 		bCutTrees = true,
@@ -115,10 +115,7 @@ function sky_ex_second_attack:OnEndPseudoCastPoint( point )
 					"modifier_sky_ex_second_attack_debuff", -- modifier name
 					{ duration = buff_duration }
 				)
-
-				self:PlayEffects_b(_self:GetPosition())
 			end
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)

@@ -7,22 +7,49 @@ function wisp_special_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("wisp_ex_special_attack")
 end
 
+
 --------------------------------------------------------------------------------
+-- Ability Start
 function wisp_special_attack:OnSpellStart()
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+    self.radius = self:GetSpecialValueFor( "radius" )
+
+	-- Animation and pseudo cast point
+	caster:AddNewModifier(
+		caster,
+		self,
+		"modifier_generic_pseudo_cast_point",
+		{ 
+			duration = cast_point, 
+            movement_speed = 50,
+            radius = self.radius,
+		}
+	)
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function wisp_special_attack:OnEndPseudoCastPoint( point )
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+    local delay_time = self:GetSpecialValueFor( "delay_time" )
 
     CreateModifierThinker(
-        caster, --hCaster
-        self, --hAbility
-        "modifier_wisp_special_attack_thinker", --modifierName
-        {}, --paramTable
-        point, --vOrigin
-        caster:GetTeamNumber(), --nTeamNumber
-        false --bPhantomBlocker
+		caster, --hCaster
+		self, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			thinker = "modifier_wisp_special_attack_thinker",
+			show_all = 1,
+			radius = self.radius,
+			delay_time = delay_time,
+		}, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
     )
-    
+
     -- Put CD on the alternate version of the ability
     local ex_version = caster:FindAbilityByName("wisp_ex_special_attack")
 	ex_version:StartCooldown(self:GetCooldown(0))

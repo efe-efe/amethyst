@@ -5,17 +5,36 @@ LinkLuaModifier( "modifier_wisp_ex_counter_movement", "abilities/heroes/wisp/wis
 function wisp_ex_counter:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("wisp_counter")
 end
+--------------------------------------------------------------------------------
+-- Ability Start
+function wisp_ex_counter:OnSpellStart()
+	local caster = self:GetCaster()
+	local cast_point = self:GetCastPoint()
+
+	-- Animation and pseudo cast point
+	caster:AddNewModifier(
+		caster,
+		self,
+		"modifier_generic_pseudo_cast_point",
+		{ 
+			duration = cast_point, 
+            can_walk = 0,
+            no_target = 1,
+		}
+	)
+end
 
 --------------------------------------------------------------------------------
-function wisp_ex_counter:OnSpellStart()
+-- Ability Start
+function wisp_ex_counter:OnEndPseudoCastPoint()
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = caster:GetOrigin()
     local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link", caster )
 
+    local delay_time = self:GetSpecialValueFor("delay_time")
+    local radius = self:GetSpecialValueFor("radius")
     
     if linked_unit ~= nil then
-
         --- Movement
         local difference = linked_unit:GetOrigin() - caster:GetOrigin()
         local distance = difference:Length2D()
@@ -35,9 +54,13 @@ function wisp_ex_counter:OnSpellStart()
         CreateModifierThinker(
             caster, --hCaster
             self, --hAbility
-            "modifier_wisp_ex_counter_thinker", --modifierName
-            {}, --paramTable
-            point, --vOrigin
+            "modifier_thinker_indicator", --modifierName
+            { 
+                thinker = "modifier_wisp_ex_counter_thinker",
+                radius = radius,
+                delay_time = delay_time,
+            }, --paramTable
+            caster:GetOrigin(), --vOrigin
             caster:GetTeamNumber(), --nTeamNumber
             false --bPhantomBlocker
         )

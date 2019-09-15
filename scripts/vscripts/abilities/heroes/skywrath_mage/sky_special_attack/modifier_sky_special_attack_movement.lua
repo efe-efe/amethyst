@@ -81,6 +81,16 @@ function modifier_sky_special_attack_movement:OnHorizontalMotionInterrupted()
 end
 
 --------------------------------------------------------------------------------
+-- Status Effects
+function modifier_sky_special_attack_movement:CheckState()
+	local state = {
+        [MODIFIER_STATE_ROOTED] = true,
+	}
+
+	return state
+end
+
+--------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_sky_special_attack_movement:DeclareFunctions()
 	local funcs = {

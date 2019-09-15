@@ -26,8 +26,10 @@ function modifier_wisp_ex_counter_movement:OnCreated( kv )
         -- references
 		self.distance = kv.r
 		self.direction = Vector(kv.x,kv.y,0):Normalized()
-		self.speed = 1800 -- special value
+		self.speed = 1500 -- special value
 		self.origin = self:GetParent():GetOrigin()
+		self.radius = self:GetAbility():GetSpecialValueFor("radius")
+		self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
 
 		-- apply motion controller
 		if self:ApplyHorizontalMotionController() == false then
@@ -53,18 +55,23 @@ end
 
 function modifier_wisp_ex_counter_movement:OnDestroy( kv )
 	if IsServer() then
+		local caster = self:GetCaster()
+		caster:InterruptMotionControllers( true )
 		
-		local origin = self:GetParent():GetOrigin()
-		self:GetParent():InterruptMotionControllers( true )
-        CreateModifierThinker(
-            self:GetParent(), --hCaster
+		CreateModifierThinker(
+            caster, --hCaster
             self:GetAbility(), --hAbility
-            "modifier_wisp_ex_counter_thinker", --modifierName
-            {}, --paramTable
-            origin,--vOrigin
-            self:GetParent():GetTeamNumber(), --nTeamNumber
+            "modifier_thinker_indicator", --modifierName
+            { 
+                thinker = "modifier_wisp_ex_counter_thinker",
+                show_all = 1,
+                radius = self.radius,
+                delay_time = self.delay_time,
+            }, --paramTable
+            caster:GetOrigin(), --vOrigin
+            caster:GetTeamNumber(), --nTeamNumber
             false --bPhantomBlocker
-        )
+		)
 	end
 end
 
@@ -90,4 +97,18 @@ function modifier_wisp_ex_counter_movement:OnHorizontalMotionInterrupted()
 	if IsServer() then
 		self:Destroy()
 	end
+end
+
+--------------------------------------------------------------------------------
+-- Status Effects
+function modifier_wisp_ex_counter_movement:CheckState()
+	local state = {
+        [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
+        [MODIFIER_STATE_NO_HEALTH_BAR] = true,
+		[MODIFIER_STATE_INVULNERABLE] = true,
+		[MODIFIER_STATE_OUT_OF_GAME] = true,
+		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
+	}
+
+	return state
 end

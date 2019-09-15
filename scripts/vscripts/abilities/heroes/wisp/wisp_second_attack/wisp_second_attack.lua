@@ -4,17 +4,20 @@ wisp_second_attack = class ({})
 -- Ability Start
 function wisp_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local cast_point = caster:GetAttackAnimationPoint()
+	local cast_point = self:GetCastPoint()
 
 	-- Animation and pseudo cast point
 	caster:AddNewModifier(
 		caster,
 		self,
 		"modifier_generic_pseudo_cast_point",
-		{ duration = cast_point, can_walk = 0}
+		{ 
+			duration = cast_point, 
+			can_walk = 0,
+			fixed_range = 1,
+		}
 	)
 end
-
 
 --------------------------------------------------------------------------------
 -- Ability Start

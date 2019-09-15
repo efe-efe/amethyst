@@ -6,21 +6,35 @@ function wisp_ultimate:GetAOERadius()
 	return self:GetSpecialValueFor( "radius" )
 end
 
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function wisp_ultimate:OnSpellStart()
+	local caster = self:GetCaster()
+    local cast_point = self:GetCastPoint()
+    self.radius = self:GetSpecialValueFor("radius")
+
+	-- Animation and pseudo cast point
+	caster:AddNewModifier(
+		caster,
+		self,
+		"modifier_generic_pseudo_cast_point",
+		{ 
+			duration = cast_point, 
+            can_walk = 0,
+            radius = self.radius,
+		}
+	)
+end
+
+--------------------------------------------------------------------------------
+-- Ability Start
+function wisp_ultimate:OnEndPseudoCastPoint( point )
     -- unit identifier
 	local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
     local delay_time = self:GetSpecialValueFor( "delay_time" )
-    local old_origin = caster:GetOrigin()
     local max_range = self:GetSpecialValueFor("range")
     local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link", caster )
-
-    local direction = ( point - old_origin)
-    if direction:Length2D() > max_range then
-        direction = direction:Normalized() * max_range
-    end
 
     -- Dissapear wisp modifier
 	caster:AddNewModifier(
@@ -39,15 +53,19 @@ function wisp_ultimate:OnSpellStart()
         )
     end
     
-    -- Effect thinker
     CreateModifierThinker(
-        caster, --hCaster
-        self, --hAbility
-        "modifier_wisp_ultimate_thinker", --modifierName
-        { }, --paramTable
-        old_origin + direction, --vOrigin
-        caster:GetTeamNumber(), --nTeamNumber
-        false --bPhantomBlocker
+		caster, --hCaster
+		self, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			thinker = "modifier_wisp_ultimate_thinker",
+			show_all = 1,
+			radius = self.radius,
+			delay_time = delay_time,
+		}, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
     )
 
     self:PlayEffects()

@@ -44,6 +44,7 @@ function modifier_generic_pseudo_cast_point:OnCreated(params)
 	self.disable_all = params.disable_all
 	self.placeholder = params.placeholder
 	self.fixed_range = params.fixed_range
+	self.cancel_on_damage = params.cancel_on_damage
 	self.range = self.ability:GetCastRange(Vector(0,0,0), nil)
 	self.initialized = false
 	self.point = Vector(0,0,0)
@@ -72,6 +73,7 @@ function modifier_generic_pseudo_cast_point:OnRefresh(params)
 	self.min_range = params.min_range
 	self.placeholder = params.placeholder
 	self.fixed_range = params.fixed_range
+	self.cancel_on_damage = params.cancel_on_damage
 	self.range = self.ability:GetCastRange(Vector(0,0,0), nil)
 	self.initialized = false
 	self.disable_all = params.disable_all
@@ -111,17 +113,6 @@ end
 function modifier_generic_pseudo_cast_point:StartCast()
 	if IsServer() then
 
-		local modifier = self.parent:FindModifierByName("modifier_generic_pre_silence_lua")
-		
-		-- Safe destroying CHECKEAR 
-		if modifier ~= nil then
-			if not modifier:IsNull() then
-				modifier:Destroy()
-				self:Destroy()
-				return
-			end
-		end
-
 		if self.can_walk == 0 then
 			local order = 
 			{
@@ -136,6 +127,17 @@ function modifier_generic_pseudo_cast_point:StartCast()
 		self.ability:SetInAbilityPhase(true)
 		self.parent:GiveMana(self.ability:GetManaCost(-1)) 
 				
+		local modifier = self.parent:FindModifierByName("modifier_generic_pre_silence_lua")
+		
+		-- Safe destroying CHECKEAR 
+		if modifier ~= nil then
+			if not modifier:IsNull() then
+				modifier:Destroy()
+				self:Destroy()
+				return
+			end
+		end
+
 		if self.disable_all ~= 0 then
 			self:SwapActiveSpells("disable")
 		end
@@ -157,10 +159,11 @@ end
 -- Destroyer
 function modifier_generic_pseudo_cast_point:OnDestroy(params)
 	local ability = self.ability
-
 	if IsServer() then
 		--Destroyed before it duration ends
 		if self:GetRemainingTime() >= 0.05 then
+			print("DESTROYING (CANCEL)")
+
 			GameRules.EndAnimation(self.parent)
 			self:StopCast()
 		else
@@ -270,6 +273,7 @@ function modifier_generic_pseudo_cast_point:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 		MODIFIER_EVENT_ON_ORDER,
+		MODIFIER_EVENT_ON_TAKEDAMAGE,
 	}
 
 	return funcs
@@ -305,6 +309,15 @@ function modifier_generic_pseudo_cast_point:OnOrder(params)
 		end
 	end
 end
+
+function modifier_generic_pseudo_cast_point:OnTakeDamage( params )
+	if IsServer() then
+        if params.unit~=self:GetCaster() then return end
+		if self.cancel_on_damage ~= 1 then return end
+        self:Destroy()
+	end
+end
+
 --------------------------------------------------------------------------------
 -- Status Effects
 function modifier_generic_pseudo_cast_point:CheckState()

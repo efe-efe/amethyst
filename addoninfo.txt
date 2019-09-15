@@ -111,5 +111,10 @@
             "Key"       "C"
             "Command"   "+CustomGameC"
         }
+        "19"
+        {
+            "Key"       "Z"
+            "Command"   "-CustomGameExecuteAbilityZ"
+        }
     }
 }

@@ -14,8 +14,8 @@ end
 -- Initializer
 function modifier_tinker_second_attack_thinker:OnCreated( kv )
     self.radius = self:GetAbility():GetSpecialValueFor("radius")
-    self.projectile_speed = 2000--self:GetAbility():GetSpecialValueFor("speed")
-    local max_range = 2200--self:GetAbility():GetSpecialValueFor("range")
+    self.projectile_speed = self:GetAbility():GetSpecialValueFor("projectile_speed")
+    local max_range = self:GetAbility():GetSpecialValueFor("projectile_range")
     
     local changes = 8
     self.range_interval = max_range/changes

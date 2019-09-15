@@ -15,64 +15,61 @@ function modifier_wisp_counter_buffs:IsPurgable()
 end
 
 --------------------------------------------------------------------------------
+-- Initializations
+function modifier_wisp_counter_buffs:OnCreated( kv )
+	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor( "speed_buff_pct" )
+	self.damage_reduction_pct = self:GetAbility():GetSpecialValueFor( "damage_reduction_pct" )
+	local total_heal = self:GetAbility():GetSpecialValueFor( "total_heal" )
+	local duration = self:GetDuration()
+	local think_interval = 0.5
+	local ticks = duration/think_interval
+	self.heal_per_think = total_heal/ticks
+
+	if IsServer() then 
+		self:StartIntervalThink(0.5)
+		self:PlayEffects()
+	end
+end
+
+function modifier_wisp_counter_buffs:OnIntervalThink()
+	self:GetParent():Heal(self.heal_per_think, self:GetParent())
+end
+
+--------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_wisp_counter_buffs:DeclareFunctions()
 	local funcs = {
-        MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
-        MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT,
+		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
+		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
 	}
 
 	return funcs
 end
 
---------------------------------------------------------------------------------
--- Initializations
-function modifier_wisp_counter_buffs:OnCreated( kv )
-	self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
-	self.heal_regen = self:GetAbility():GetSpecialValueFor( "heal_regen" )
-	
-    if IsServer() then
-
-		-- Strong Dispel
-		local RemovePositiveBuffs = false
-		local RemoveDebuffs = true
-		local BuffsCreatedThisFrameOnly = false
-		local RemoveStuns = true
-		local RemoveExceptions = false
-
-		-- Apply dispell after debuffs and stuns are applied
-		Timers:CreateTimer(0.001, function()
-			self:GetCaster():Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
-			self:PlayEffects()
-		end)
-		
-    end
+function modifier_wisp_counter_buffs:GetModifierMoveSpeedBonus_Percentage()
+    return self.speed_buff_pct
 end
 
-function modifier_wisp_counter_buffs:GetModifierMoveSpeed_Absolute()
-    return self.movement_speed
-end
-
-function modifier_wisp_counter_buffs:GetModifierConstantHealthRegen()
-    return self.heal_regen
+function modifier_wisp_counter_buffs:GetModifierIgnoreMovespeedLimit( params )
+    return 1
 end
 
 function modifier_wisp_counter_buffs:GetModifierIncomingDamage_Percentage( params )
-	return -80
+	return -self.damage_reduction_pct
 end
 
+--------------------------------------------------------------------------------
+-- Graphics & Sounds
 function modifier_wisp_counter_buffs:PlayEffects()
-	-- Get Resources
-	local sound_cast = "Hero_Wisp.Spirits.Destroy"
-	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
-    local origin = self:GetCaster():GetOrigin()
+	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster()  )
-
+	EmitSoundOn( "Hero_Wisp.Spirits.Destroy", caster )
+	
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 

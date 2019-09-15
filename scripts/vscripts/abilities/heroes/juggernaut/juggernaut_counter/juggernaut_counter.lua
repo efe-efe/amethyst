@@ -40,8 +40,14 @@ function juggernaut_counter:OnEndPseudoCastPoint( point )
             rate = 0.1
         } -- kv
     )
-end
 
+    self.reflector = caster:AddNewModifier(
+        caster,
+        self,
+        "modifier_generic_projectile_reflector_lua",
+        { duration = duration }
+    )
+end
 
 --------------------------------------------------------------------------------
 -- On Trigger
@@ -61,6 +67,8 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & Sounds
 function juggernaut_counter:OnEndCounter()
+    self.reflector:Destroy()
+
     -- Create Sound
     EmitSoundOn("Hero_Juggernaut.Attack", self:GetCaster())
 

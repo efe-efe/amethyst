@@ -12,7 +12,6 @@ end
 function tinker_second_attack:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
-	self.radius = self:GetSpecialValueFor("radius")
 	local cast_point = self:GetCastPoint()
 
 	-- Animation and pseudo cast point
@@ -26,7 +25,7 @@ end
 function tinker_second_attack:OnEndPseudoCastPoint( pos )
 	local caster = self:GetCaster()
 	local direction = (pos - caster:GetOrigin()):Normalized()
-	local duration = 0.8
+	local duration = 0.9
 
 	CreateModifierThinker(
 		caster, --hCaster

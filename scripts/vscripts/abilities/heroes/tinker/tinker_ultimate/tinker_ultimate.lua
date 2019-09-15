@@ -21,7 +21,8 @@ function tinker_ultimate:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
-		fixed_range = 1
+		fixed_range = 1,
+		show_all = 1,
 	})
 end
 
@@ -54,7 +55,7 @@ function tinker_ultimate:OnEndPseudoCastPoint( pos )
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -78,14 +79,6 @@ function tinker_ultimate:OnEndPseudoCastPoint( pos )
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			-- Count targets
-			local counter = 0
-			for k, v in pairs(_self.rehit) do
-				counter = counter + 1
-			end
-
-			if counter > 0 then return end
-
 			local modifier = unit:FindModifierByName( "modifier_tinker_ultimate" )
 			local final_damage = damage
 
@@ -115,10 +108,11 @@ function tinker_ultimate:OnEndPseudoCastPoint( pos )
 			)
 
 			self:PlayEffects_a(_self.Source, unit)
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffects_b(_self.Source, pos)
+			if next(_self.rehit) == nil then
+				self:PlayEffects_b(_self.Source, pos)
+			end
 		end,
 	}
 	Projectiles:CreateProjectile(projectile)

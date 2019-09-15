@@ -22,7 +22,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.3"
-		"AbilityCastRange"				"750"
+		"AbilityCastRange"				"800"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -44,7 +44,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"750"
+				"projectile_range"			"800"
 			}
 			"03"
 			{
@@ -69,14 +69,9 @@
 			"07"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
-			}
-			"08"
-			{
-				"var_type"					"FIELD_INTEGER"
 				"damage_return"				"30"
 			}
-			"09"
+			"08"
 			{
 				"var_type"					"FIELD_INTEGER"
 				"heal_share"				"200"
@@ -96,12 +91,12 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AOERadius"						"%hitbox"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"1.0"
+		"AbilityCastPoint"				"0.5"
+		"AbilityCastRange"				"1200"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -113,7 +108,7 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"30"
+		"AbilityDamage"					"20"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -127,7 +122,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"1500"
+				"projectile_range"			"1200"
 			}
 			"03"
 			{
@@ -180,17 +175,22 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"heal_regen"				"13"
+				"total_heal"				"30"
 			}
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"movement_speed"			"600"
+				"speed_buff_pct"			"50"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
 				"buff_duration"				"2.5"
+			}
+			"04"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"damage_reduction_pct"		"50"
 			}
 		}
 	}
@@ -203,7 +203,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_ex_counter"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -243,16 +243,16 @@
 			"02"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"delay_time"			"0.1"
+				"delay_time"			"0.3"
 			}
 			"03"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"heal"					"15"
+				"heal"					"25"
 			}
 		}
 	}
-
+		
 	"wisp_special_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -261,16 +261,15 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"MaxLevel"						"1"
-		"AOERadius"						"%radius"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"1500"
+		"AbilityCastRange"				"1200"
 		"AbilityCastPoint"				"0.2"
 		
 		// Time		
@@ -324,7 +323,7 @@
 			}
 		}
 	}
-	
+
 	"wisp_ex_special_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -333,7 +332,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_ex_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -353,13 +352,7 @@
 		
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"				"25"
-
-		// Precache
-		//-------------------------------------------------------------------------------------------------------------
-		"precache"
-		{
-		}
+		"AbilityDamage"					"25"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -373,7 +366,7 @@
 			"02"
 			{
 				"var_type"				"FIELD_FLOAT"
-				"delay_time"			"0.1"
+				"delay_time"			"0.5"
 			}
 			"03"
 			{
@@ -391,12 +384,13 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_relocate"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"MaxLevel"						"1"
 		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.3"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCastRange"				"900"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -406,12 +400,6 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityManaCost"				"0"
 
-		// Precache
-		//-------------------------------------------------------------------------------------------------------------
-		"precache"
-		{
-		}
-
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilitySpecial"
@@ -419,17 +407,12 @@
 			"01"
 			{
 				"var_type"				"FIELD_INTEGER"
-				"range"					"1200"
+				"range"					"900"
 			}
 			"02"
 			{
 				"var_type"				"FIELD_FLOAT"
 				"back_duration"			"4.0"
-			}
-			"03"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"quick_cast"				"1"
 			}
 		}
 	}
@@ -442,7 +425,7 @@
 		// General
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_mobility_back"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"MaxLevel"						"1"
 
 		// Casting
@@ -459,16 +442,16 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityTextureName"			"wisp_ultimate"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AOERadius"						"%radius"
 		"MaxLevel"						"1"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"1600"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -490,17 +473,17 @@
 			"01"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"350"	
+				"radius"					"250"	
 			}
 			"02"
 			{
-				"var_type"				"FIELD_FLOAT"
-				"delay_time"			"0.7"
+				"var_type"					"FIELD_FLOAT"
+				"delay_time"				"0.8"
 			}
 			"03"
 			{
-				"var_type"				"FIELD_INTEGER"
-				"range"					"1500"
+				"var_type"					"FIELD_INTEGER"
+				"range"						"1600"
 			}
 			"04"
 			{
@@ -522,7 +505,6 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AOERadius"						"%radius"
 		"MaxLevel"						"1"
 
 		// Casting
@@ -549,12 +531,12 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"damage_bonus"				"5"
+				"speed_buff_pct"			"50"
 			}
 			"03"
 			{
 				"var_type"					"FIELD_FLOAT"
-				"duration"					"4.0"
+				"duration"					"3.0"
 			}
 		}
 	}
@@ -1173,7 +1155,7 @@
 		// Casting		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.35"
-		"AbilityCastRange"				"750"
+		"AbilityCastRange"				"800"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -1202,7 +1184,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"750"
+				"projectile_range"			"800"
 			}
 			"03"
 			{
@@ -3307,7 +3289,7 @@
 		// Casting		
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastPoint"				"0.2"
-		"AbilityCastRange"				"800"
+		"AbilityCastRange"				"850"
 
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -3329,7 +3311,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"800"
+				"projectile_range"			"850"
 			}
 			"03"
 			{
@@ -3398,7 +3380,7 @@
 			"01"
 			{ 
 				"var_type"					"FIELD_INTEGER"
-				"projectile_speed"			"1500"
+				"projectile_speed"			"2000"
 			}
 			"02"
 			{
@@ -3408,7 +3390,7 @@
 			"03"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"radius"					"120"
+				"radius"					"100"
 			}
 			"04"
 			{
@@ -3536,7 +3518,7 @@
 
 		// Ability Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.3"
+		"AbilityCastPoint"				"0.5"
 		"AbilityCastRange"				"900"
 
 		// Ability Resource
@@ -3824,8 +3806,6 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AOERadius"						"%hitbox"
-		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
 		"MaxLevel"						"1"
 
 		// Time		
@@ -3835,12 +3815,6 @@
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityManaCost"				"0"
-		
-		// Precache
-		//-------------------------------------------------------------------------------------------------------------
-		"precache"
-		{
-		}
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -4472,7 +4446,7 @@
 		
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange" 				"800"
+		"AbilityCastRange" 				"850"
 
 		// Cost
 		//-------------------------------------------------------------------------------------------------------------
@@ -4496,7 +4470,7 @@
 			"02"
 			{
 				"var_type"					"FIELD_INTEGER"
-				"projectile_range"			"800"
+				"projectile_range"			"850"
 			}
 			"03"
 			{
@@ -4543,7 +4517,7 @@
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityCastRange"				"1200"
-		"AbilityCastPoint"				"0.9"
+		"AbilityCastPoint"				"0.4"
 		
 		// Time		
 		//-------------------------------------------------------------------------------------------------------------
@@ -4555,7 +4529,7 @@
 
 		// Damage
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityDamage"					"12"
+		"AbilityDamage"					"15"
 
 		// Special
 		//-------------------------------------------------------------------------------------------------------------
@@ -5581,6 +5555,108 @@
 	}
 
 	//=================================================================================================================
+	// COMMON
+	//=================================================================================================================
+	"mount"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/common/mount/mount"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"mount"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"MaxLevel"						"1"
+
+		// Casting		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.8"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"1.0"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"bonus_movement_speed"		"470"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"fading_slow"				"50"
+			}
+			"03"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"slow_duration"				"2.0"
+			}
+		}
+	}
+
+	"charge"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/common/mount/charge"
+		
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityTextureName"			"charge"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"MaxLevel"						"1"
+
+		// Casting		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCastPoint"				"0.1"
+
+		// Time		
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityCooldown"				"10"
+
+		// Cost
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityManaCost"				"0"
+		
+		// Precache
+		//-------------------------------------------------------------------------------------------------------------
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"
+		}
+
+		// Special
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"					"FIELD_INTEGER"
+				"speed_buff_pct"			"33"
+			}
+			"02"
+			{
+				"var_type"					"FIELD_FLOAT"
+				"duration"					"2.0"
+			}
+		}
+	}
+
+	//=================================================================================================================
 	// Builder
 	//=================================================================================================================
 	
@@ -5596,11 +5672,10 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"MaxLevel"						"1"
-		"AOERadius"						"%radius"
 
 		// Casting
 		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastRange"				"9999"
+		"AbilityCastRange"				"0"
 		"AbilityCastPoint"				"0.0"
 		
 		// Time		

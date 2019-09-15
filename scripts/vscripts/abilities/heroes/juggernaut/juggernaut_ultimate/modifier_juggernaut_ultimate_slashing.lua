@@ -69,6 +69,11 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
         local enemy_index = RandomInt(1, #enemies)
         local target = enemies[enemy_index]
 
+        while target:GetName() == "npc_dota_creature" do
+            enemy_index = RandomInt(1, #enemies)
+            target = enemies[enemy_index]
+        end
+
         local damage_table = {
             victim = target,
             attacker = self:GetParent(),

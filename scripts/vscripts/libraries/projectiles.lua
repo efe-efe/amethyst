@@ -257,6 +257,7 @@ function Projectiles:CreateProjectile(projectile)
                         
                         --VectorDistanceSq(nozpos, origin) <= radiusSq and subpos.z >= orgz + zOffset and subpos.z <= orgz + height then
                         local time = projectile.rehit[entity:entindex()]
+                        
                         if time==nil or curTime > time then
                             local status, test = pcall(projectile.UnitTest, projectile, entity)
 
@@ -319,6 +320,13 @@ function Projectiles:CreateProjectile(projectile)
                                     end
                                 else
 
+                                    --MOVED HERE
+                                    if projectile.bMultipleHits then
+                                        projectile.rehit[entity:entindex()] = curTime + projectile.fRehitDelay
+                                    else
+                                        projectile.rehit[entity:entindex()] = curTime + 10000
+                                    end
+
                                     local status, action = pcall(projectile.OnUnitHit, projectile, entity)
                                     if not status then
                                         print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
@@ -337,11 +345,13 @@ function Projectiles:CreateProjectile(projectile)
                                     -- bounce math
                                     end
 
+                                    --[[
                                     if projectile.bMultipleHits then
                                         projectile.rehit[entity:entindex()] = curTime + projectile.fRehitDelay
                                     else
                                         projectile.rehit[entity:entindex()] = curTime + 10000
                                     end
+                                    ]]
                                 end
                             end
                         end

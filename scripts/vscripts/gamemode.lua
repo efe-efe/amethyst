@@ -1,7 +1,7 @@
 RITE_DEBUG_SPEW = true -- Complete Debug?
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 
-_G.nCOUNTDOWNTIMER = 0
+_G.nCOUNTDOWNTIMER = 90
 
 --============================================================================================
 -- INSTANTIATE GAME MODE
@@ -145,11 +145,12 @@ function GameMode:InitGameMode()
             "abilities/generic/modifier_generic_stunned_lua", 
             LUA_MODIFIER_MOTION_NONE
         )
-        
+        LinkLuaModifier( 
+            "modifier_generic_provides_vision", 
+            "abilities/generic/modifier_generic_provides_vision", 
+            LUA_MODIFIER_MOTION_NONE
+        )
         DebugPrint('[RITE] Useful modifiers linked')
-
-
-
 end
 
 --============================================================================================

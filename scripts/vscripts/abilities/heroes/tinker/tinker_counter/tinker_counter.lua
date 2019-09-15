@@ -28,6 +28,7 @@ function tinker_counter:OnSpellStart()
 		duration = cast_point,
 		movement_speed = 10,
 		fixed_range = 1,
+		show_all = 1,
 	})
 end
 
@@ -185,7 +186,7 @@ function tinker_counter:OnEndPseudoCastPoint( point )
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -209,13 +210,6 @@ function tinker_counter:OnEndPseudoCastPoint( point )
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
-			-- Count targets
-			local counter = 0
-			for k, v in pairs(_self.rehit) do
-				counter = counter + 1
-			end
-
-			if counter > 0 and stacks <= 0 then return end
 			-- precache damage
 			local damage = {
 				victim = unit,
@@ -244,10 +238,11 @@ function tinker_counter:OnEndPseudoCastPoint( point )
 			self:Refract( _self.Source, targets, 1 )
 
 			self:PlayEffects_a(_self.Source, unit)
-			_self:Destroy()
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffects_b(_self.Source, pos)
+			if next(_self.rehit) == nil then
+				self:PlayEffects_b(_self.Source, pos)
+			end
 		end,
 	}
 	Projectiles:CreateProjectile(projectile)
@@ -258,6 +253,7 @@ function tinker_counter:OnEndPseudoCastPoint( point )
 end
 
 --------------------------------------------------------------------------------
+-- Graphics & animation
 function tinker_counter:PlayEffects_a( source, target )
 	-- Get Resources
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_laser.vpcf"
@@ -295,8 +291,6 @@ function tinker_counter:PlayEffects_a( source, target )
 	EmitSoundOn( sound_target, target )
 end
 
-
---------------------------------------------------------------------------------
 function tinker_counter:PlayEffects_b( source, point )
 	-- Get Resources
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_laser.vpcf"

@@ -27,9 +27,6 @@ function spectre_counter_lua:OnSpellStart()
         "modifier_generic_projectile_reflector_lua",
         { duration = duration }
     )
-
-
-
 end
 
 function spectre_counter_lua:OnTrigger()

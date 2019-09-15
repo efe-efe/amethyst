@@ -63,7 +63,7 @@ function sky_basic_attack:OnEndPseudoCastPoint( pos )
 		Source = caster,
 		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
+		UnitBehavior = PROJECTILES_DESTROY,
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
@@ -86,7 +86,6 @@ function sky_basic_attack:OnEndPseudoCastPoint( pos )
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-
 			-- perform the actual attack
 			_self.Source:PerformAttack(
 				unit, -- handle hTarget 
@@ -104,7 +103,6 @@ function sky_basic_attack:OnEndPseudoCastPoint( pos )
 				--Silence enemy
 				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = self.silence_duration})
 				unit:AddNewModifier(_self.Source, self , "modifier_sky_basic_attack_debuff", { duration = self.silence_duration})
-				self:PlayEffects_b(_self:GetPosition())
 
 				local damage = {
 					victim = unit,
@@ -114,11 +112,7 @@ function sky_basic_attack:OnEndPseudoCastPoint( pos )
 				}
 		
 				ApplyDamage( damage )
-
-			else
-				self:PlayEffects_d(_self:GetPosition())
 			end
-			_self.Destroy()
 		end,
 		OnFinish = function(_self, pos)
 			--Apply charged weapon effects

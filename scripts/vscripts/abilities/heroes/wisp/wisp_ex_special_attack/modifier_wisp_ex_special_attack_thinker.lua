@@ -11,8 +11,9 @@ end
 
 function modifier_wisp_ex_special_attack_thinker:OnCreated( kv )
     if IsServer() then
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
         self.damage = self:GetAbility():GetAbilityDamage()
+
+        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
         self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
         self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
         

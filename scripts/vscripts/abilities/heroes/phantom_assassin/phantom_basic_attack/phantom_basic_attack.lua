@@ -78,7 +78,7 @@ function phantom_basic_attack:OnEndPseudoCastPoint( point )
 		draw = false,
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
-		OnUnitHit = function(_self, unit) 
+		OnUnitHit = function(_self, unit)
 			-- perform the actual attack
 			caster:PerformAttack(
 				unit, -- handle hTarget 
