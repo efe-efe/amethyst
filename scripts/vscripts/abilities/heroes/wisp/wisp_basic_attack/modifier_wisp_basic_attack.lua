@@ -28,6 +28,7 @@ function modifier_wisp_basic_attack:OnHealthGained(params)
         end
 
         local heal = params.gain * self.heal_share/100
+        
         self:GetCaster():Heal(heal, self:GetAbility())
 
         --return true

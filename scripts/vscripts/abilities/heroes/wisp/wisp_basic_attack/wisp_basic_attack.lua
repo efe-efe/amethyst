@@ -108,7 +108,7 @@ function wisp_basic_attack:OnEndPseudoCastPoint( point )
 
 				if _self.Source == caster then
 					if caster:GetMaxHealth() == caster:GetHealth() then
-						unit:Heal(heal/2, _self.Source )
+						unit:Heal(heal * 2, _self.Source )
 					end
 				end
 			end

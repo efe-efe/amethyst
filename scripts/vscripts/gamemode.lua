@@ -247,14 +247,23 @@ function GameMode:CaptureGameMode()
             if unit == nil then return end
             if unit.direction == nil then return end
 
-            if unit.first_move == false then 
-                unit.first_move = true --To prevent releasing before pressing
+            if args.direction == "right" then 
+                if unit.first_right == false then unit.first_right = true end
+                unit.direction.x = unit.direction.x + 1 
             end
 
-            if args.direction == "right" then unit.direction.x = unit.direction.x + 1 end
-            if args.direction == "left" then unit.direction.x = unit.direction.x - 1 end
-            if args.direction == "up" then unit.direction.y = unit.direction.y + 1 end
-            if args.direction == "down" then unit.direction.y = unit.direction.y - 1 end
+            if args.direction == "left" then 
+                if unit.first_left == false then unit.first_left = true end
+                unit.direction.x = unit.direction.x - 1 
+            end
+            if args.direction == "up" then 
+                if unit.first_up == false then unit.first_up = true end
+                unit.direction.y = unit.direction.y + 1 
+            end
+            if args.direction == "down" then 
+                if unit.first_down == false then unit.first_down = true end
+                unit.direction.y = unit.direction.y - 1 
+            end
         end)
 
         CustomGameEventManager:RegisterListener('stopUnit', function(eventSourceIndex, args)
@@ -264,12 +273,23 @@ function GameMode:CaptureGameMode()
             --Not initialized yet
             if unit == nil then return end
             if unit.direction == nil then return end
-            if unit.first_move == false then return end
 
-            if args.direction == "right" then unit.direction.x = unit.direction.x - 1 end
-            if args.direction == "left" then unit.direction.x = unit.direction.x + 1 end
-            if args.direction == "up" then unit.direction.y = unit.direction.y - 1 end
-            if args.direction == "down" then unit.direction.y = unit.direction.y + 1 end
+            if args.direction == "right" then 
+                if unit.first_right == false then return end
+                unit.direction.x = unit.direction.x - 1
+            end
+            if args.direction == "left" then 
+                if unit.first_left == false then return end
+                unit.direction.x = unit.direction.x + 1 
+            end
+            if args.direction == "up" then 
+                if unit.first_up == false then return end
+                unit.direction.y = unit.direction.y - 1 
+            end
+            if args.direction == "down" then 
+                if unit.first_down == false then return end
+                unit.direction.y = unit.direction.y + 1 
+            end
         end)
     end 
 end

@@ -115,7 +115,7 @@ function spectre_basic_attack:OnEndPseudoCastPoint( point )
 				counter = counter + 1
 			end
 
-			if counter > 0 and stacks <= 0 then return end
+			if counter > 1 and stacks <= 0 then return end
 			
 			-- perform the actual attack
 			_self.Source:PerformAttack(

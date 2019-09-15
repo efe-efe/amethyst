@@ -52,13 +52,16 @@ end
 
 function modifier_wisp_basic_attack_link_negative:GetModifierIncomingDamage_Percentage(params)
     if IsServer() then
-        local damage = params.damage * self.damage_return/100
 
+        local damage = params.damage * self.damage_return/100
+        if params.damage_flags == DOTA_DAMAGE_FLAG_REFLECTION then return end
+        
         local damage = {
 			victim = self:GetCaster(),
 			attacker = self:GetParent(),
 			damage = damage,
-			damage_type = DAMAGE_TYPE_PURE,
+            damage_type = DAMAGE_TYPE_PURE,
+            damage_flags = DOTA_DAMAGE_FLAG_REFLECTION,
 		}
 
         ApplyDamage( damage )

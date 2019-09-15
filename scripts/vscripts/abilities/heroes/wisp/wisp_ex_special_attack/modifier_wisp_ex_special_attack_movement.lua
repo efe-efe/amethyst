@@ -26,7 +26,7 @@ function modifier_wisp_ex_special_attack_movement:OnCreated( kv )
         -- references
 		self.distance = kv.r
 		self.direction = Vector(kv.x,kv.y,0):Normalized()
-		self.speed = 1500 -- special value
+		self.speed = 1800 -- special value
 		self.origin = self:GetParent():GetOrigin()
 		self.radius = self:GetAbility():GetSpecialValueFor("radius")
 		self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")

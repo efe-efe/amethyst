@@ -79,7 +79,11 @@ function GameMode:OnHeroInGame(keys)
             npc.direction.x = 0
             npc.direction.y = 0
             npc.direction.z = 0
-            npc.first_move = false
+
+            npc.first_left = false
+            npc.first_right = false
+            npc.first_up = false
+            npc.first_down = false
 
             self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)
 
