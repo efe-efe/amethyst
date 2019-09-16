@@ -128,7 +128,7 @@ function juggernaut_ultimate:OnEndPseudoCastPoint( point )
         fVisionLingerDuration = 1,
         draw = false,
         fRehitDelay = 1.0,
-        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() and unit:Attribute_GetIntValue("dummy", 0) ~= 1 end,
         OnUnitHit = function(_self, unit) 
             if _self.Source == caster then
                 if caster:HasModifier("modifier_juggernaut_ultimate_movement") then

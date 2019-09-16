@@ -47,6 +47,7 @@ function sky_special_attack:OnEndPseudoCastPoint( point )
     )
 
     bubble:SetHullRadius(self.radius)
+    bubble:Attribute_SetIntValue("dummy", 1)
     bubble:AddNewModifier(
         caster,
         self,

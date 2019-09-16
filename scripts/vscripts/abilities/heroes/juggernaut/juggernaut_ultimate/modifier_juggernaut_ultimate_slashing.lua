@@ -69,7 +69,7 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
         local enemy_index = RandomInt(1, #enemies)
         local target = enemies[enemy_index]
 
-        while target:GetName() == "npc_dota_creature" do
+        while target:Attribute_GetIntValue("dummy", 0) == 1 do
             enemy_index = RandomInt(1, #enemies)
             target = enemies[enemy_index]
         end
