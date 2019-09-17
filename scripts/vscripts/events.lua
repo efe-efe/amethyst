@@ -85,6 +85,8 @@ function GameMode:OnHeroInGame(keys)
             npc.first_up = false
             npc.first_down = false
 
+            npc.healing_reduction_pct = 0
+
             self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)
 
             -- Basic modifiers
@@ -411,8 +413,6 @@ function GameMode:CreateDeathZone()
         DOTA_TEAM_NOTEAM, --nTeamNumber
         false --bPhantomBlocker
     )
-    
-    PrintTable(self.modifier_death_zone)
 end
 
 --------------------------------------------------------------------------------

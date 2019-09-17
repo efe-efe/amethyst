@@ -114,7 +114,7 @@ function nevermore_mobility:OnEndPseudoCastPoint( pos )
                 victim = unit,
                 attacker = _self.Source,
                 damage = damage,
-                damage_type = DAMAGE_TYPE_PHYSICAL,
+                damage_type = DAMAGE_TYPE_PURE,
             }
 
             ApplyDamage( damage_table )
@@ -144,7 +144,7 @@ function nevermore_mobility:OnEndPseudoCastPoint( pos )
             )
 
             -- Give Mana
-			if counter < 1 then
+			if counter == 1 then
 				local mana_gain_final = _self.Source:GetMaxMana() * mana_gain
 				_self.Source:GiveMana(mana_gain_final)
             end

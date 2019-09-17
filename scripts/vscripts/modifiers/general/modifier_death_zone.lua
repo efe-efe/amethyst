@@ -5,7 +5,7 @@ modifier_death_zone = class({})
 function modifier_death_zone:OnCreated( kv )
     --self.max_radius = 5000
     self.radius = 5000--self:GetAbility():GetSpecialValueFor( "radius" )
-    self.min_radius = 400
+    self.min_radius = 600
 
     self.counter = 0
     --self.counter_b = 0
@@ -19,7 +19,7 @@ function modifier_death_zone:OnCreated( kv )
     end
 end
 
-function modifier_death_zone:OnDestroy()
+function modifier_death_zone:OnRemoved()
     if IsServer() then
         self:StopEffects()
 		UTIL_Remove( self:GetParent() )
@@ -122,7 +122,8 @@ function modifier_death_zone:PlayEffects()
     ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(self.radius, 1,1))
     ParticleManager:SetParticleControl( self.effect_cast, 15, Vector(250, 70, 70))
 
-    --[[particles 1
+    --particles 1
+    --[[particle_cast = "particles/mod_units/heroes/hero_dark_willow/dw_ti8_immortal_cursed_crown_marker.vpcf"
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
     ParticleManager:SetParticleControl( effect_cast, 2, Vector( self.radius, self.radius , self.radius ) )

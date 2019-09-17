@@ -41,7 +41,6 @@ function modifier_wisp_counter_buffs:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
-		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
 	}
 
 	return funcs
@@ -55,9 +54,6 @@ function modifier_wisp_counter_buffs:GetModifierIgnoreMovespeedLimit( params )
     return 1
 end
 
-function modifier_wisp_counter_buffs:GetModifierIncomingDamage_Percentage( params )
-	return -self.damage_reduction_pct
-end
 
 --------------------------------------------------------------------------------
 -- Graphics & Sounds
@@ -76,7 +72,7 @@ end
 
 -- Graphics & Animations
 function modifier_wisp_counter_buffs:GetEffectName()
-	return "particles/econ/courier/courier_polycount_01/courier_trail_polycount_01.vpcf"
+	return "particles/econ/items/juggernaut/jugg_fortunes_tout/jugg_healling_ward_fortunes_tout_hero_heal.vpcf"
 end
 
 function modifier_wisp_counter_buffs:GetEffectAttachType()

@@ -9,6 +9,13 @@ function mount:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 
+    StartAnimation(caster, {
+        duration = cast_point + 0.1, 
+        activity=ACT_DOTA_GENERIC_CHANNEL_1, 
+        rate=1.5
+    })
+
+    
 	-- Animation and pseudo cast point
 	caster:AddNewModifier(
         caster, 
@@ -50,7 +57,7 @@ function mount:OnEndPseudoCastPoint( point )
 end
 
 function mount:OnStopPseudoCastPoint()
-    self:StopEffects()
+    self:StopEffectsCasting()
 end
 
 function mount:PlayEffectsOnCast()

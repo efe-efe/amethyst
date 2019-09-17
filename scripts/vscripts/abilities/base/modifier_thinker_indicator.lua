@@ -35,7 +35,8 @@ end
 -- Destroyer
 function modifier_thinker_indicator:OnDestroy()
     if IsServer() then
-	    self:StopEffects()
+        self:StopEffects()
+		UTIL_Remove( self:GetParent() )
 	end
 end
 

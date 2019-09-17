@@ -81,7 +81,7 @@ function sniper_second_attack:OnEndPseudoCastPoint( pos )
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
 			-- Count targets
-			local counter = 0
+			local counter = -1
 			for k, v in pairs(_self.rehit) do
 				counter = counter + 1
 			end

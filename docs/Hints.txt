@@ -22,3 +22,6 @@ Use the "Keyword" on the particle manager to find the particles related to the "
 
     keyword: swipe
     Use: Cleaves, meele atack effects
+
+    AOE FINDER:
+        particles/ui_mouseactions/wards_area_view.vpcf

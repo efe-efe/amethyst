@@ -1,6 +1,5 @@
 modifier_sniper_mobility_thinker = class({})
 LinkLuaModifier( "modifier_sniper_mobility", "abilities/heroes/sniper/sniper_mobility/modifier_sniper_mobility", LUA_MODIFIER_MOTION_BOTH )
-LinkLuaModifier( "modifier_sniper_shrapnel_debuff", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_debuff", LUA_MODIFIER_MOTION_NONE )
 
 function modifier_sniper_mobility_thinker:OnCreated()
     if IsServer() then
@@ -39,36 +38,23 @@ function modifier_sniper_mobility_thinker:OnIntervalThink()
             false -- bool, can grow cache
         )
 
-        --Find allies to heal
-        local units = FindUnitsInRadius( 
-            caster:GetTeamNumber(), -- int, your team number
-            self:GetParent():GetOrigin(), -- point, center point
-            nil, -- handle, cacheUnit. (not known)
-            self.knockback_radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-            DOTA_UNIT_TARGET_TEAM_BOTH, -- int, team filter
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-            0, -- int, flag filter
-            0, -- int, order filter
-            false -- bool, can grow cache
+        --Knockback
+        local x = caster:GetOrigin().x - self:GetParent():GetOrigin().x
+        local y = caster:GetOrigin().y - self:GetParent():GetOrigin().y
+        local difference = caster:GetOrigin() - self:GetParent():GetOrigin()
+        
+        caster:AddNewModifier(
+            caster, -- player source
+            self:GetAbility(), -- ability source
+            "modifier_sniper_mobility", -- modifier name
+            {
+                x = x,
+                y = y,
+                r = self.knockback_distance,
+                speed = 2000,
+            } -- kv
         )
-
-        for _,unit in pairs(units) do
-            --Knockback
-            local x = unit:GetOrigin().x - self:GetParent():GetOrigin().x
-            local y = unit:GetOrigin().y - self:GetParent():GetOrigin().y
-            local difference = unit:GetOrigin() - self:GetParent():GetOrigin()
-            local movement_modifier = unit:AddNewModifier(
-                caster, -- player source
-                self:GetAbility(), -- ability source
-                "modifier_sniper_mobility", -- modifier name
-                {
-                    x = x,
-                    y = y,
-                    r = self.knockback_distance,
-                    speed = 2000,
-                } -- kv
-            )
-        end
+        --end
 
         for _,enemy in pairs(enemies) do
             
@@ -82,11 +68,20 @@ function modifier_sniper_mobility_thinker:OnIntervalThink()
 
             ApplyDamage( damage )
 
+            -- Add modifier
             enemy:AddNewModifier(
-                caster,
-                self:GetAbility(),
-                "modifier_sniper_shrapnel_debuff",
-                {duration = self.slow_linger}
+                caster, -- player source
+                self:GetAbility(), -- ability source
+                "modifier_generic_knockback_lua", -- modifier name
+                { 
+                    duration = 0.5,
+                    distance = 150,
+                    z = 100,
+                    x = -x,
+                    y = -y,
+                    disable = 1,
+                    invulnerable = 1,
+                } -- kv
             )
         end
 

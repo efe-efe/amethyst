@@ -86,7 +86,7 @@ function modifier_axe_ex_mobility_movement:OnDestroy( kv )
 				victim = enemy,
 				attacker = caster,
 				damage = self.damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
+				damage_type = DAMAGE_TYPE_PURE,
 			}
 
 			ApplyDamage( damage )

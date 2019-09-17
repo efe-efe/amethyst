@@ -63,12 +63,6 @@ function wisp_counter:OnTrigger( params )
     )
 end
 
---------------------------------------------------------------------------------
--- Graphics & Sounds
-function wisp_counter:OnEndCounter()
-    ParticleManager:DestroyParticle(self.effect_cast, false)
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
-end
 
 function wisp_counter:PlayEffectsOnCast()
 	-- Create Sound
@@ -78,9 +72,4 @@ function wisp_counter:PlayEffectsOnCast()
 	local particle_cast = "particles/econ/items/wisp/wisp_relocate_teleport_ti7.vpcf"
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
-
-
-    -- Create Particles
-	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_relocate_channel.vpcf"
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
 end

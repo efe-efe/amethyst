@@ -55,8 +55,7 @@ function phantom_ex_ultimate:OnEndPseudoCastPoint( point )
 	
     -- Dinamyc data
     local origin = caster:GetOrigin()
-    local direction_normal = (point - origin):Normalized()
-    local initial_position = origin + Vector(direction_normal.x * offset, direction_normal.y * offset, 0)
+    local initial_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
     local projectile_direction = direction
 
     local projectile = {

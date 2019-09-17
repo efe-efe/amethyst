@@ -1,13 +1,13 @@
 modifier_wisp_special_attack_thinker = class({})
 
 --------------------------------------------------------------------------------
-
+-- Classifications
 function modifier_wisp_special_attack_thinker:IsHidden()
 	return true
 end
 
 --------------------------------------------------------------------------------
-
+-- Initializer
 function modifier_wisp_special_attack_thinker:OnCreated( kv )
     if IsServer() then
         self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
@@ -19,12 +19,12 @@ function modifier_wisp_special_attack_thinker:OnCreated( kv )
         -- Start Interval
         self:StartIntervalThink( self.delay_time )
 
-        self:PlayEffects()
+        self:PlayEffectsOnCreated()
     end
 end
 
 --------------------------------------------------------------------------------
-
+-- On Think
 function modifier_wisp_special_attack_thinker:OnIntervalThink()
     if IsServer() then
         -- find enemies
@@ -72,63 +72,41 @@ function modifier_wisp_special_attack_thinker:OnIntervalThink()
             self:GetCaster():GiveMana(mana_gain_final)    
         end
         
-		self:PlayEffects2()
+		self:PlayEffectsOnImpact()
 
 	    self:Destroy()
 	end
 end
 
 --------------------------------------------------------------------------------
+-- Graphics & Sounds
+function modifier_wisp_special_attack_thinker:PlayEffectsOnCreated()
+    local thinker = self:GetParent()
 
-function modifier_wisp_special_attack_thinker:PlayEffects()
-	-- Get Resources
+    -- Create Sounds
+    EmitSoundOn( "Ability.PreLightStrikeArray", thinker )
+
+    -- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_relocate_teleport.vpcf"
-	local sound_cast = "Ability.PreLightStrikeArray"
-
-    local effect_cast = ParticleManager:CreateParticle( 
-        particle_cast, 
-        PATTACH_WORLDORIGIN, 
-        self:GetCaster()
-    )
-
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, thinker )
     ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
-
-    EmitSoundOn( 
-        sound_cast, 
-        self:GetCaster() 
-    )
 end
 
-function modifier_wisp_special_attack_thinker:PlayEffects2()
-    -- Get Resources
-    local sound_cast = "Ability.LightStrikeArray"
+function modifier_wisp_special_attack_thinker:PlayEffectsOnImpact()
+    local thinker = self:GetParent()
+
+    -- Create Sounds
+    EmitSoundOnLocationWithCaster( thinker:GetOrigin(), "Ability.LightStrikeArray", thinker )
+
+    -- Create Particles
 	local particle_cast = "particles/units/heroes/hero_chen/chen_divine_favor.vpcf"
-    
-    -- particles 1
-    local effect_cast = ParticleManager:CreateParticle( 
-            particle_cast, 
-            PATTACH_WORLDORIGIN, 
-            nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, thinker )
     ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 
-    -- particles 2
-			
-    local particle_cast2 = "particles/units/heroes/hero_lina/lina_spell_light_strike_array_impact_sparks.vpcf"
-    
-    local effect_cast2 = ParticleManager:CreateParticle( 
-            particle_cast2, 
-            PATTACH_WORLDORIGIN, 
-            nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast2, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast2 )
-
-
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+    local particle_cast_b = "particles/units/heroes/hero_lina/lina_spell_light_strike_array_impact_sparks.vpcf"
+    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, thinker )
+    ParticleManager:SetParticleControl( effect_cast_b, 1, Vector( self.radius, 1, 1 ) )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end

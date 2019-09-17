@@ -41,8 +41,14 @@ end
 function GameMode:HealingFilter(keys)
 	--PrintTable(keys)
 
-	local healing_target_index = keys.entindex_target_const
-	local heal_amount = math.floor(keys.heal) -- heal amount of the ability or health restored with hp regen during server tick
+    local healing_target_index = keys.entindex_target_const
+    local healing_target = EntIndexToHScript(healing_target_index)
+
+    -- Reduce incoming heal
+    local reduction =  1 - healing_target.healing_reduction_pct/100
+    if reduction <= 0 then reduction = 0.1 end
+    keys.heal = math.floor(keys.heal * reduction)
+    print(reduction .. " | " .. keys.heal)
 
 	local healer_index
 	if keys.entindex_healer_const then
@@ -54,7 +60,6 @@ function GameMode:HealingFilter(keys)
 		healing_ability_index = keys.entindex_inflictor_const
 	end
 
-	local healing_target = EntIndexToHScript(healing_target_index)
 
 	-- Find the source of the heal - the healer
 	local healer
@@ -72,11 +77,11 @@ function GameMode:HealingFilter(keys)
 	else
 		healing_ability = nil -- hp regen
     end
-    
-    --print("healing_target.iTreshold(" .. healing_target.iTreshold .. ") + heal_amount(" .. heal_amount .. ") >= " .. "iMaxTreshold(" .. iMaxTreshold .. ")" )
 
+    
+    -- Check if is able to heal
     if healing_target:IsRealHero() then
-        local new_treshold = healing_target.iTreshold + heal_amount
+        local new_treshold = healing_target.iTreshold + keys.heal
         if new_treshold > self.iMaxTreshold then
             keys.heal = self.iMaxTreshold - healing_target.iTreshold
             healing_target.iTreshold = self.iMaxTreshold

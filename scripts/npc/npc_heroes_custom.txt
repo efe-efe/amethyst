@@ -105,7 +105,7 @@
 		"AttackDamageMin"			"9"										// Damage range min.
 		"AttackDamageMax"			"9"										// Damage range max.	
 		"AttackRate"				"0.3"									// Speed of attack.
-		"AttackAnimationPoint"		"0.1"	
+		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
 		
 		// Movement
@@ -300,7 +300,7 @@
 		"AttackDamageMin"			"9"										// Damage range min.
 		"AttackDamageMax"			"9"										// Damage range max.	
 		"AttackRate"				"0.3"									// Speed of attack.
-		"AttackAnimationPoint"		"0.1"	
+		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
 		
 		// Movement
@@ -730,15 +730,15 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"juggernaut_counter"
-		"Ability2"						"juggernaut_basic_attack"
-		"Ability3"						"juggernaut_special_attack"
-		"Ability4"						"juggernaut_second_attack"
-		"Ability5"						"juggernaut_ex_ultimate"
-		"Ability6"						"juggernaut_ultimate"           
-		"Ability7"						"juggernaut_mobility"            
-		"Ability8"						"juggernaut_ex_special_attack"       
-		"Ability9"						"juggernaut_ex_second_attack"	
+		"Ability1"						"treant_counter"
+		"Ability2"						"treant_basic_attack"
+		"Ability3"						"treant_special_attack"
+		"Ability4"						"treant_second_attack"
+		"Ability5"						"treant_ex_ultimate"
+		"Ability6"						"treant_ultimate"           
+		"Ability7"						"treant_mobility"            
+		"Ability8"						"treant_ex_special_attack"       
+		"Ability9"						"treant_ex_second_attack"	
 		"Ability10"						"mount"					
 		"Ability11"						"charge"		
 		
@@ -754,10 +754,10 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"9"										// Damage range min.
-		"AttackDamageMax"			"9"										// Damage range max.	
+		"AttackDamageMin"			"13"										// Damage range min.
+		"AttackDamageMax"			"13"										// Damage range max.	
 		"AttackRate"				"0.3"									// Speed of attack.
-		"AttackAnimationPoint"		"0.1"	
+		"AttackAnimationPoint"		"0.5"	
 		"AttackRange"				"80"
 		
 		// Movement

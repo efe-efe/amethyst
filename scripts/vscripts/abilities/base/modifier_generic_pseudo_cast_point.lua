@@ -162,8 +162,6 @@ function modifier_generic_pseudo_cast_point:OnDestroy(params)
 	if IsServer() then
 		--Destroyed before it duration ends
 		if self:GetRemainingTime() >= 0.05 then
-			print("DESTROYING (CANCEL)")
-
 			GameRules.EndAnimation(self.parent)
 			self:StopCast()
 		else

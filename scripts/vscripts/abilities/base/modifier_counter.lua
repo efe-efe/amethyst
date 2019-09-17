@@ -57,6 +57,8 @@ function modifier_counter:OnCreated( kv )
         if self.ability.OnStartCounter ~= nil then
             self.ability:OnStartCounter()
         end
+
+        self:PlayEffectsAura()
     end
 end
 
@@ -76,6 +78,8 @@ function modifier_counter:OnDestroy( kv )
         if self.ability.OnEndCounter ~= nil then
             self.ability:OnEndCounter()
         end
+
+        self:StopEffectsAura()
     end
 end
 
@@ -240,4 +244,13 @@ end
 -- Graphics & Animations
 function modifier_counter:GetStatusEffectName()
 	return "particles/status_fx/status_effect_avatar.vpcf"
+end
+
+function modifier_counter:PlayEffectsAura()
+    self.effect_cast = ParticleManager:CreateParticle( "particles/items_fx/black_king_bar_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+end
+
+function modifier_counter:StopEffectsAura()
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex( self.effect_cast )
 end

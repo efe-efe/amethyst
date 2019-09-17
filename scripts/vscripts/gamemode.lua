@@ -150,6 +150,22 @@ function GameMode:InitGameMode()
             "abilities/generic/modifier_generic_provides_vision", 
             LUA_MODIFIER_MOTION_NONE
         )
+        LinkLuaModifier( 
+            "modifier_generic_knockback_lua", 
+            "abilities/generic/modifier_generic_knockback_lua", 
+            LUA_MODIFIER_MOTION_BOTH
+        )
+        LinkLuaModifier( 
+            "modifier_following_aoe_indicator", 
+            "abilities/base/modifier_following_aoe_indicator", 
+            LUA_MODIFIER_MOTION_NONE
+        )
+        LinkLuaModifier( 
+            "modifier_generic_rooted_lua", 
+            "abilities/generic/modifier_generic_rooted_lua", 
+            LUA_MODIFIER_MOTION_NONE
+        )
+        
         DebugPrint('[RITE] Useful modifiers linked')
 end
 
