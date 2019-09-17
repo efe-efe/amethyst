@@ -24,7 +24,7 @@ end
 function spectre_basic_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
+	local cast_point = caster:GetAttackAnimationPoint()
 	self.silence_duration = self:GetSpecialValueFor("silence_duration")
 	self.desolate_duration = self:GetSpecialValueFor("desolate_duration")
     self.heal_charged = self:GetSpecialValueFor("heal_charged")

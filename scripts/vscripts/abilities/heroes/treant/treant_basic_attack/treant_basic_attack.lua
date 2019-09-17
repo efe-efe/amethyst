@@ -7,7 +7,7 @@ function treant_basic_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-	StartAnimation(caster, {duration = 0.4, activity=ACT_DOTA_ATTACK, rate=1.8})
+	StartAnimation(caster, {duration = cast_point + 0.1, activity=ACT_DOTA_ATTACK, rate=1.8})
 	
 	caster:AddNewModifier( caster, self, "modifier_generic_pseudo_cast_point", { 
 		duration = cast_point, 

@@ -82,17 +82,6 @@ function sniper_ultimate_projectile:OnEndPseudoCastPoint( pos )
 			
 			ApplyDamage( damage )
 			
-			-- Effect thinker
-			CreateModifierThinker(
-				_self.Source, --hCaster
-				self, --hAbility
-				"modifier_sniper_ultimate_thinker", --modifierName
-				{ duration = duration }, --paramTable
-				_self.currentPosition, --vOrigin
-				_self.Source:GetTeamNumber(), --nTeamNumber
-				false --bPhantomBlocker
-			)
-
 			self:PlayEffects_c(unit, _self.currentPosition)
 		end,
         OnFinish = function(_self, pos)

@@ -107,7 +107,7 @@ function treant_mobility:OnEndPseudoCastPoint( point )
                     victim = unit,
                     attacker = _self.Source,
                     damage = damage,
-                    damage_type = DAMAGE_TYPE_PHYSICAL,
+                    damage_type = DAMAGE_TYPE_PURE,
                 }
     
                 ApplyDamage( damage_table )
