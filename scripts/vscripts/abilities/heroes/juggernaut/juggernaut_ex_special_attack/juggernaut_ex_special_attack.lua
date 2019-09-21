@@ -25,14 +25,14 @@ function juggernaut_ex_special_attack:OnSpellStart()
 		activity = ACT_DOTA_TAUNT,
 		rate = 1.3
 	})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
 		fixed_range = 1,
 	})
 end
 
-function juggernaut_ex_special_attack:OnEndPseudoCastPoint( pos )
+function juggernaut_ex_special_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -65,7 +65,6 @@ function juggernaut_ex_special_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

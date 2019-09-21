@@ -22,7 +22,7 @@ function sky_second_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
 			radius = self:GetSpecialValueFor( "radius" ),
@@ -31,7 +31,7 @@ function sky_second_attack:OnSpellStart()
 	)
 end
 
-function sky_second_attack:OnEndPseudoCastPoint( point )
+function sky_second_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 
 	CreateModifierThinker(

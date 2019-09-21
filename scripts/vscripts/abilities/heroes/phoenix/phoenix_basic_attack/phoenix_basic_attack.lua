@@ -11,10 +11,10 @@ function phoenix_basic_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.5})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { duration = cast_point})
 end
 
-function phoenix_basic_attack:OnEndPseudoCastPoint( pos )
+function phoenix_basic_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 	self:SetActivated(true)
 
@@ -48,7 +48,6 @@ function phoenix_basic_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

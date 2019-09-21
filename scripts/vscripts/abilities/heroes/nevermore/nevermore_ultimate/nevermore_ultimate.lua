@@ -17,7 +17,7 @@ function nevermore_ultimate:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=2.0, activity=ACT_DOTA_CAST_ABILITY_6, rate=1.2})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		can_walk = 0,
 		no_target = 1
@@ -26,7 +26,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function nevermore_ultimate:OnEndPseudoCastPoint()
+function nevermore_ultimate:OnCastPointEnd()
 	-- get number of souls
 	local lines = 5
 	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )

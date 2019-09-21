@@ -17,7 +17,7 @@ function wisp_ex_special_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_generic_pseudo_cast_point",
+		"modifier_cast_point",
 		{ 
 			duration = cast_point, 
             can_walk = 0,
@@ -28,7 +28,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_ex_special_attack:OnEndPseudoCastPoint()
+function wisp_ex_special_attack:OnCastPointEnd()
 	-- unit identifier
 	local caster = self:GetCaster()
     local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link_negative", caster )

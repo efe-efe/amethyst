@@ -22,7 +22,7 @@ function sky_ex_basic_attack:OnSpellStart()
 	caster:AddNewModifier(
         caster, 
         self,
-        "modifier_generic_pseudo_cast_point", 
+        "modifier_cast_point", 
         {
             duration = cast_point,
             movement_speed = 10,
@@ -33,7 +33,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_ex_basic_attack:OnEndPseudoCastPoint( point )
+function sky_ex_basic_attack:OnCastPointEnd( point )
     self:PlayEffects()
 end
 

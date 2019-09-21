@@ -1,0 +1,31 @@
+"DOTAAbilities" {
+    "wisp_mobility"
+    {
+        "BaseClass"						"ability_lua"
+        "ScriptFile"					"abilities/heroes/wisp/wisp_mobility/wisp_mobility"
+        "MaxLevel"						"1"
+        
+        "AbilityTextureName"			"wisp_relocate"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+        "AbilityCastPoint"				"0.2"
+        "AbilityCastRange"				"900"
+        "AbilityCooldown"				"13.0"
+
+        "AbilitySpecial"
+        {
+            "01"{ "var_type"    "FIELD_INTEGER"     "range"         "900" }
+            "02"{ "var_type"    "FIELD_FLOAT"       "back_duration" "4.0" }
+        }
+    }
+    
+    "wisp_mobility_back"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/wisp/wisp_mobility/wisp_mobility"
+		"MaxLevel"						"1"
+		
+		"AbilityTextureName"			"wisp_mobility_back"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityCastPoint"				"0.3"
+	}
+}

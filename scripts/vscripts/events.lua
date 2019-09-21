@@ -7,7 +7,6 @@ function GameMode:OnGameRulesStateChange(keys)
     end
 
     local newState = GameRules:State_Get()
-    
     -------------------------------
     -- Setup Rules
     -------------------------------
@@ -20,7 +19,7 @@ end
 -- GAME OFFICIALY BEGINS (00:00)
 --============================================================================================
 function GameMode:OnGameInProgress()
-	DebugPrint("[RITE] The game has officially begun")
+	print("[AMETHYST] The game has officially begun")
 
     self.countdownEnabled = true
     GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 ) 
@@ -125,6 +124,7 @@ function GameMode:OnHeroInGame(keys)
         -------------------------------
         -- Always
         -------------------------------
+        SafeDestroyModifier("modifier_generic_provides_vision", npc, nil)
         npc:SetMana(0)
         npc:SetHealth(npc:GetMaxHealth())
         npc.iTreshold = 40
@@ -237,8 +237,6 @@ end
 -- UNIT HAS BEEN DAMAGED
 --============================================================================================
 function GameMode:OnEntityHurt(keys)
-    --DebugPrintTable(keys)
-
     local damagebits = keys.damagebits -- This might always be 0 and therefore useless
     if keys.entindex_attacker ~= nil and keys.entindex_killed ~= nil then
         local entCause = EntIndexToHScript(keys.entindex_attacker)
@@ -399,7 +397,7 @@ end
 -- Death zone spawner
 --------------------------------------------------------------------------------
 function GameMode:CreateDeathZone()
-    DebugPrint("[RITE] Creating Death Zone")
+    print("[AMETHYST] Creating Death Zone")
         
     if self.middle_orb_ent == nil then return end
     local orb_position = self.middle_orb_ent:GetOrigin()
@@ -419,7 +417,7 @@ end
 -- Death zone destroyer
 --------------------------------------------------------------------------------
 function GameMode:DestroyDeathZone()
-    DebugPrint("[RITE] Destroying Death Zone")
+    print("[AMETHYST] Destroying Death Zone")
     -- Safe destroying
     if self.modifier_death_zone ~= nil then
         if not self.modifier_death_zone:IsNull() then
@@ -432,7 +430,7 @@ end
 -- Middle Orb spawner
 --------------------------------------------------------------------------------
 function GameMode:CreateMiddleOrb( delay )
-    DebugPrint("[RITE] Creating Middle Orb")
+    print("[AMETHYST] Creating Middle Orb")
     
     if self.middle_orb_ent == nil then return end
     local orb_position = self.middle_orb_ent:GetOrigin()

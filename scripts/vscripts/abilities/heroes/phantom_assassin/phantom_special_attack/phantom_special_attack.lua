@@ -20,13 +20,13 @@ function phantom_special_attack:OnSpellStart()
 		activity = ACT_DOTA_SPAWN, 
 		rate = 2.0 
 	})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		fixed_range= 1
 	})
 end
 
-function phantom_special_attack:OnEndPseudoCastPoint( point )
+function phantom_special_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -57,7 +57,6 @@ function phantom_special_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

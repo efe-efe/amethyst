@@ -9,6 +9,8 @@ function modifier_thinker_indicator:OnCreated( kv )
         self.show_all = kv.show_all
         self.radius = kv.radius
         self.delay_time = kv.delay_time
+
+        local extra_one = kv.extra_one
         local thinker_duration = kv.thinker_duration
 
         self.caster = self:GetCaster()
@@ -19,7 +21,7 @@ function modifier_thinker_indicator:OnCreated( kv )
             self.caster, --hCaster
             self:GetAbility(), --hAbility
             thinker, --modifierName
-            { duration = thinker_duration }, --paramTable
+            { duration = thinker_duration, extra_one = extra_one }, --paramTable
             self.origin, --vOrigin
             self.caster:GetTeamNumber(), --nTeamNumber
             false --bPhantomBlocker

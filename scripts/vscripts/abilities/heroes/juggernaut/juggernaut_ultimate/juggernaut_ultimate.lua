@@ -43,7 +43,7 @@ function juggernaut_ultimate:OnSpellStart()
 		activity = ACT_DOTA_TAUNT,
         rate=2.5
     })
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
         duration = cast_point,
         can_walk = 0,
         fixed_range = 1,
@@ -56,7 +56,7 @@ function juggernaut_ultimate:OnStopPseudoCastPoint()
 end
 
 
-function juggernaut_ultimate:OnEndPseudoCastPoint( point )
+function juggernaut_ultimate:OnCastPointEnd( point )
     local caster = self:GetCaster()
     local distance = self:GetSpecialValueFor( "range" )
     local omni_duration = self:GetSpecialValueFor( "duration" )

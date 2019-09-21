@@ -16,9 +16,14 @@ function modifier_sniper_ultimate_movement:OnCreated( kv )
 	if IsServer() then
         -- references
 		self.distance = kv.r
-		self.direction = Vector(kv.x,kv.y,0):Normalized()
 		self.speed = kv.speed -- special value
-		self.origin = self:GetParent():GetOrigin()
+
+		local origin_x = kv.origin_x
+		local origin_y = kv.origin_y
+		local origin_z = kv.origin_z
+
+		self.direction = Vector(kv.x, kv.y, 0):Normalized()
+		self.origin = Vector( origin_x, origin_y, origin_z )
 
 		if self:ApplyHorizontalMotionController() == false then
 			self:Destroy()
@@ -68,6 +73,11 @@ function modifier_sniper_ultimate_movement:DeclareFunctions()
 	return funcs
 end
 
+function modifier_sniper_ultimate_movement:GetOverrideAnimation()
+	return ACT_DOTA_FLAIL
+end
+
+--------------------------------------------------------------------------------
 -- Status Effects
 function modifier_sniper_ultimate_movement:CheckState()
 	local state = {
@@ -77,6 +87,3 @@ function modifier_sniper_ultimate_movement:CheckState()
 	return state
 end
 
-function modifier_sniper_ultimate_movement:GetOverrideAnimation()
-	return ACT_DOTA_FLAIL
-end

@@ -30,7 +30,6 @@ function phoenix_ex_special_attack:OnSpellStart()
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

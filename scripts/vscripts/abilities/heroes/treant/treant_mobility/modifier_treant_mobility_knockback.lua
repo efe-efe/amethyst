@@ -14,20 +14,6 @@ function modifier_treant_mobility_knockback:OnDestroy()
     end
 end
 
---------------------------------------------------------------------------------
--- Status Effects
-function modifier_treant_mobility_knockback:CheckState()
-	local state = {
-		[MODIFIER_STATE_INVULNERABLE] = true,
-		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
-		[MODIFIER_STATE_COMMAND_RESTRICTED] = true,
-        [MODIFIER_STATE_NO_HEALTH_BAR] = true,
-		[MODIFIER_STATE_OUT_OF_GAME] = true,
-	}
-
-	return state
-end
-
 function modifier_treant_mobility_knockback:PlayEffectsRoot()
     local caster = self:GetCaster()
     local particle_cast = "particles/econ/items/dark_willow/dark_willow_chakram_immortal/dark_willow_chakram_immortal_bramble_root.vpcf"

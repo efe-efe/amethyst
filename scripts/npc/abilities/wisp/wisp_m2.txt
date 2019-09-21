@@ -1,0 +1,26 @@
+"DOTAAbilities" {
+    "wisp_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/wisp/wisp_second_attack/wisp_second_attack"
+		"MaxLevel"						"1"
+		
+		"AbilityTextureName"			"wisp_overcharge"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastPoint"				"0.5"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"7.0"
+		"AbilityDamage"					"20"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"	"2150" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"	"1200" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"			"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain"			"10" }
+		}
+	}
+}

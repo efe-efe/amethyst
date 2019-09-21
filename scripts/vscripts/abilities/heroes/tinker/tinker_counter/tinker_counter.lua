@@ -24,7 +24,7 @@ function tinker_counter:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=cast_point+0.1, activity=ACT_DOTA_TELEPORT_END, translate="bot", rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
 		fixed_range = 1,
@@ -158,7 +158,7 @@ function tinker_counter:Refract( source, targets, jumps )
 end
 
 
-function tinker_counter:OnEndPseudoCastPoint( point )
+function tinker_counter:OnCastPointEnd( point )
 	-- load data
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
@@ -190,7 +190,6 @@ function tinker_counter:OnEndPseudoCastPoint( point )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

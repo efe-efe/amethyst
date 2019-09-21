@@ -11,7 +11,7 @@ function nevermore_counter:OnSpellStart()
     EmitSoundOn("Hero_Nevermore.PreAttack", caster)
 
 	-- Animation and pseudo cast point
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
         can_walk = 0,
         no_target = 1
@@ -19,7 +19,7 @@ function nevermore_counter:OnSpellStart()
 end
 
 --------------------------------------------------------------------------------
-function nevermore_counter:OnEndPseudoCastPoint( point )
+function nevermore_counter:OnCastPointEnd( point )
     --load data
     local caster = self:GetCaster()
     local duration = self:GetDuration()

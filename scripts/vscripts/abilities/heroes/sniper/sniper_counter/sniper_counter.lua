@@ -9,7 +9,7 @@ function sniper_counter:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, { duration= cast_point + 0.1, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5 })
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
         duration = cast_point, 
         movement_speed = 100,
         no_target = 1, 
@@ -18,7 +18,7 @@ end
 
 
 --------------------------------------------------------------------------------
-function sniper_counter:OnEndPseudoCastPoint( point ) 
+function sniper_counter:OnCastPointEnd( point ) 
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
     self:PlayEffects()

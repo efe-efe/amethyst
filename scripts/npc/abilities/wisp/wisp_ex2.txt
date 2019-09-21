@@ -1,0 +1,26 @@
+"DOTAAbilities" {
+    "wisp_ex_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/wisp/wisp_ex_special_attack/wisp_ex_special_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"wisp_ex_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCooldown"				"10.0"
+		"AbilityManaCost"				"25"
+		"AbilityDamage"					"20"
+
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"			"180" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"		"0.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"disable_duration"	"1.0" }
+		}
+	}
+}

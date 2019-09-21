@@ -22,13 +22,13 @@ function nevermore_counter_mobility:OnSpellStart()
     )
 
 	-- Animation and pseudo cast point
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,
 	})
 end
 
-function nevermore_counter_mobility:OnEndPseudoCastPoint( pos )
+function nevermore_counter_mobility:OnCastPointEnd( pos )
     
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()

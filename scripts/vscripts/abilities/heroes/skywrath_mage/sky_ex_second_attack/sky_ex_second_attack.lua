@@ -22,7 +22,7 @@ function sky_ex_second_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
 			radius = self:GetSpecialValueFor( "hitbox" ),
@@ -34,7 +34,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_ex_second_attack:OnEndPseudoCastPoint( point )
+function sky_ex_second_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 
@@ -62,7 +62,6 @@ function sky_ex_second_attack:OnEndPseudoCastPoint( point )
 		UnitBehavior = PROJECTILES_DESTROY,
 		bIgnoreSource = false,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

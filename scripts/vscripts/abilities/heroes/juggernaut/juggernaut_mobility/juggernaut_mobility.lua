@@ -10,7 +10,7 @@ function juggernaut_mobility:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=cast_point + 0.1, activity=ACT_DOTA_ATTACK, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		movement_speed = 50,
 		no_target = 1
@@ -18,7 +18,7 @@ function juggernaut_mobility:OnSpellStart()
 end
 
 --------------------------------------------------------------------------------
-function juggernaut_mobility:OnEndPseudoCastPoint()
+function juggernaut_mobility:OnCastPointEnd()
 
     local caster = self:GetCaster()
     local duration = self:GetDuration()

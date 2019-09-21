@@ -18,7 +18,7 @@ function spectre_ex_second_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
 			can_walk = 0,
@@ -29,7 +29,7 @@ end
 
 --------------------------------------------------------------------------------
 -- End casting
-function spectre_ex_second_attack:OnEndPseudoCastPoint( point )
+function spectre_ex_second_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	
@@ -58,7 +58,6 @@ function spectre_ex_second_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

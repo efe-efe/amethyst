@@ -28,7 +28,7 @@ function axe_ex_mobility:OnSpellStart()
         activity = ACT_DOTA_ATTACK, 
         rate = 1.1
     })
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		movement_speed = 10,
         radius = radius,
@@ -37,7 +37,7 @@ function axe_ex_mobility:OnSpellStart()
 	})
 end
 
-function axe_ex_mobility:OnEndPseudoCastPoint( point )
+function axe_ex_mobility:OnCastPointEnd( point )
     local caster = self:GetCaster()    
     local origin = caster:GetOrigin()
     local difference = (point - origin):Length2D()

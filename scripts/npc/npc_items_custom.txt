@@ -10,7 +10,7 @@
 		"BaseClass"                     "item_lua"
 		"ID"                            "1251"
 		"AbilityTextureName"			"item_mini_haste"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"Model"							"models/props_gameplay/salve.vmdl"
 		"ScriptFile"                    "items/item_health_orb/item_health_orb.lua"
 
@@ -44,7 +44,7 @@
 		"BaseClass"                     "item_lua"
 		"ID"                            "1252"
 		"AbilityTextureName"			"item_mini_haste"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"Model"							"models/props_gameplay/clarity.vmdl"
 		"ScriptFile"                    "items/item_mana_orb/item_mana_orb.lua"
 
@@ -79,7 +79,7 @@
 		"BaseClass"                     "item_lua"
 		"ID"                            "1253"
 		"AbilityTextureName"			"item_mini_haste"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"Model"							"models/props_items/bloodstone.vmdl"
 		"ScriptFile"                    "items/item_death_orb/item_death_orb.lua"
 

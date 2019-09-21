@@ -25,12 +25,12 @@ function antimage_basic_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point",
+		"modifier_cast_point",
 		{ duration = cast_point }
 	)
 end
 
-function antimage_basic_attack:OnEndPseudoCastPoint( point )
+function antimage_basic_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local offset = 10
 
@@ -64,7 +64,6 @@ function antimage_basic_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

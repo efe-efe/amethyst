@@ -17,13 +17,13 @@ function juggernaut_ex_second_attack:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, { duration=cast_point, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5 })
-    caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", 
+    caster:AddNewModifier(caster, self , "modifier_cast_point", 
         { duration = cast_point })
 end
 
 
 --------------------------------------------------------------------------------
-function juggernaut_ex_second_attack:OnEndPseudoCastPoint( point ) 
+function juggernaut_ex_second_attack:OnCastPointEnd( point ) 
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
     self:PlayEffects()

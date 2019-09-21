@@ -20,7 +20,7 @@ function sniper_ex_mobility:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
             movement_speed = 50,
@@ -29,7 +29,7 @@ function sniper_ex_mobility:OnSpellStart()
 	)
 end
 
-function sniper_ex_mobility:OnEndPseudoCastPoint( point )
+function sniper_ex_mobility:OnCastPointEnd( point )
     -- Initialize variables
 	local caster = self:GetCaster()
     local origin = caster:GetOrigin()

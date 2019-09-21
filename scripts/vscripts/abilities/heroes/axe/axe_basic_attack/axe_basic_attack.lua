@@ -9,14 +9,15 @@ function axe_basic_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		no_target = 1,
 		placeholder = 0,
+		movement_speed = 80,
 	})
 end
 
-function axe_basic_attack:OnEndPseudoCastPoint( point )
+function axe_basic_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
@@ -45,7 +46,6 @@ function axe_basic_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

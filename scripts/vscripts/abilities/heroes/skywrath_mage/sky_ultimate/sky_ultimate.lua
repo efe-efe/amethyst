@@ -18,7 +18,7 @@ function sky_ultimate:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
             radius = self.radius,
@@ -30,7 +30,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_ultimate:OnEndPseudoCastPoint( point )
+function sky_ultimate:OnCastPointEnd( point )
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
 

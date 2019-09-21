@@ -532,8 +532,8 @@ function Projectiles:InitialSetup(projectile)
     if projectile.bisReflectableByAllies == nil then projectile.bisReflectableByAllies = true end
     
     -- Radius
-    projectile.fStartRadius =       projectile.fStartRadius or 100
-    projectile.fEndRadius =         projectile.fEndRadius or 100
+    projectile.fStartRadius =       projectile.fStartRadius or projectile.fUniqueRadius or 100
+    projectile.fEndRadius =         projectile.fEndRadius or projectile.fUniqueRadius or  100
 
     -- Control points
     projectile.iPositionCP =                    projectile.iPositionCP or 0
@@ -555,7 +555,7 @@ function Projectiles:InitialSetup(projectile)
 
     -- Misc
     if projectile.bIgnoreSource == nil then projectile.bIgnoreSource = true end
-    if projectile.bZCheck == nil then projectile.bZCheck = true end
+    if projectile.bZCheck == nil then projectile.bZCheck = false end
     if projectile.bCutTrees == nil then projectile.bCutTrees = false end
     if projectile.bDestroyImmediate == nil then projectile.bDestroyImmediate = true end
     projectile.fExpireTime = projectile.fExpireTime or 8.0
@@ -566,7 +566,7 @@ function Projectiles:InitialSetup(projectile)
     projectile.fChangeDelay = projectile.fChangeDelay or .1
 
     -- Position
-    projectile.bGroundLock = projectile.bGroundLock or false
+    projectile.bGroundLock = projectile.bGroundLock or true
     projectile.fGroundOffset = projectile.fGroundOffset or 40
 
     -- Unit filter
@@ -584,15 +584,15 @@ function Projectiles:InitialSetup(projectile)
     if projectile.bTreeFullCollision == nil then projectile.bTreeFullCollision = false end
 
     -- Vision
-    projectile.bProvidesVision = projectile.bProvidesVision or false
-    if projectile.bFlyingVision == nil then projectile.bFlyingVision = true end
+    projectile.bProvidesVision = projectile.bProvidesVision or true
+    if projectile.bFlyingVision == nil then projectile.bFlyingVision = false end
     projectile.iVisionRadius = projectile.iVisionRadius or 200
     projectile.iVisionTeamNumber = projectile.iVisionTeamNumber or projectile.Source:GetTeam()
     projectile.fVisionTickTime = projectile.fVisionTickTime or .1
     if projectile.fVisionTickTime <= 0 then
         projectile.fVisionTickTime = .1
     end
-    projectile.fVisionLingerDuration = projectile.fVisionLingerDuration or projectile.fVisionTickTime
+    projectile.fVisionLingerDuration = projectile.fVisionLingerDuration or 1
     if projectile.fVisionLingerDuration < projectile.fVisionTickTime then
         projectile.fVisionLingerDuration = projectile.fVisionTickTime
     end

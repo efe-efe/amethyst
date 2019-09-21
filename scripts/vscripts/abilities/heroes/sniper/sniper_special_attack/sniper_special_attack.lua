@@ -16,14 +16,14 @@ function sniper_special_attack:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
 		radius = self.radius
 	})
 end
 
-function sniper_special_attack:OnEndPseudoCastPoint( point )
+function sniper_special_attack:OnCastPointEnd( point )
     local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor( "duration" )
 	local delay_time = self:GetSpecialValueFor( "delay_time" )

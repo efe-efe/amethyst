@@ -46,15 +46,6 @@ function modifier_juggernaut_basic_attack_stacks:OnDestroy( kv )
 end
 
 --------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_juggernaut_basic_attack_stacks:DeclareFunctions()
-	local funcs = {
-	}
-
-	return funcs
-end
-
---------------------------------------------------------------------------------
 --Graphics
 function modifier_juggernaut_basic_attack_stacks:GetTexture()
 	return "juggernaut_blade_dance"

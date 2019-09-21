@@ -86,7 +86,6 @@ function modifier_tinker_ex_second_attack_thinker:OnIntervalThink()
 		bIgnoreSource = true,
         bIsReflectable = false,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

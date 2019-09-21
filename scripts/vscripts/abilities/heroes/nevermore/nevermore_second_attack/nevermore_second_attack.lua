@@ -16,7 +16,7 @@ function nevermore_second_attack:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=1.0, activity=ACT_DOTA_RAZE_2, rate=1.6})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
 		radius = self.radius,
@@ -25,7 +25,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function nevermore_second_attack:OnEndPseudoCastPoint( point )
+function nevermore_second_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 

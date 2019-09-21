@@ -15,20 +15,10 @@ function modifier_axe_counter_buff:IsPurgable()
 end
 
 --------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_axe_counter_buff:DeclareFunctions()
-	local funcs = {
-        MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
-		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
-	}
-
-	return funcs
-end
-
---------------------------------------------------------------------------------
 -- Initializations
 function modifier_axe_counter_buff:OnCreated( kv )
 	self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
+	self.damage_reduction_pct = self:GetAbility():GetSpecialValueFor( "damage_reduction_pct" )
 
     if IsServer() then
 		self:PlayEffects()
@@ -36,8 +26,7 @@ function modifier_axe_counter_buff:OnCreated( kv )
     end
 end
 
-
------------------------------------
+--------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_axe_counter_buff:OnIntervalThink()
 	-- Strong Dispel
@@ -50,13 +39,24 @@ function modifier_axe_counter_buff:OnIntervalThink()
 	self:GetParent():Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
 end
 
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_axe_counter_buff:DeclareFunctions()
+	local funcs = {
+        MODIFIER_PROPERTY_MOVESPEED_ABSOLUTE,
+		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
+	}
+
+	return funcs
+end
+
 
 function modifier_axe_counter_buff:GetModifierMoveSpeed_Absolute()
     return self.movement_speed
 end
 
 function modifier_axe_counter_buff:GetModifierIncomingDamage_Percentage( params )
-	return -90
+	return -self.damage_reduction_pct
 end
 
 function modifier_axe_counter_buff:PlayEffects()

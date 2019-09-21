@@ -20,7 +20,7 @@ function sky_special_attack:OnSpellStart()
 	caster:AddNewModifier(
         caster, 
         self,
-        "modifier_generic_pseudo_cast_point", 
+        "modifier_cast_point", 
         {
             duration = cast_point,
             radius = self.radius,
@@ -31,7 +31,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_special_attack:OnEndPseudoCastPoint( point )
+function sky_special_attack:OnCastPointEnd( point )
 
 	-- unit identifier
 	local caster = self:GetCaster()

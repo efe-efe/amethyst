@@ -18,14 +18,14 @@ function tinker_special_attack:OnSpellStart(  )
 	})
 
 	self:PlayEffects()
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		no_target = 1,
 		movement_speed = 80
 	})
 end
 
-function tinker_special_attack:OnEndPseudoCastPoint( point )
+function tinker_special_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 
 	-- find all refreshable abilities

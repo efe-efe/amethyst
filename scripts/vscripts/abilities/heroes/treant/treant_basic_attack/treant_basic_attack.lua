@@ -1,77 +1,32 @@
 treant_basic_attack = class({})
 LinkLuaModifier( "modifier_treant_natures_punishment", "abilities/heroes/treant/treant_shared_modifiers/modifier_treant_natures_punishment", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Ability Start
-function treant_basic_attack:OnSpellStart()
-	-- Initialize variables
+function treant_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local cast_point = caster:GetAttackAnimationPoint()
-	StartAnimation(caster, {duration = cast_point + 0.1, activity=ACT_DOTA_ATTACK, rate=1.8})
-	
-	caster:AddNewModifier( caster, self, "modifier_generic_pseudo_cast_point", { 
-		duration = cast_point, 
-		movement_speed = 90,
-		placeholder = 0,
-	})
-end
-
-function treant_basic_attack:OnEndPseudoCastPoint( point )
-	local caster = self:GetCaster()
-
-	-- Projectile data
-    local projectile_name = "particles/mod_units/heroes/hero_necrolyte/necrolyte_base_attack_ka.vpcf"
-	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local point = self:GetCursorPosition()
+	local origin = caster:GetOrigin()
+	local attack_damage = caster:GetAttackDamage()
 
 	local reduction_per_hit = self:GetSpecialValueFor("reduction_per_hit_pct")/100
-	
-	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
-
-	local attack_damage = caster:GetAttackDamage()
 	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
 	local heal = self:GetSpecialValueFor("heal")
 	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
-
-	-- Dinamyc data
-	local origin = caster:GetOrigin()
-	local direction = (point - origin):Normalized()
-	local final_position = origin + Vector(direction.x, direction.y, 0)
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	
+	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
 	local projectile = {
-		EffectName = projectile_name,
-		vSpawnOrigin = final_position + Vector(0,0,80),
-		fDistance = projectile_distance,
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
+		EffectName = "particles/mod_units/heroes/hero_necrolyte/necrolyte_base_attack_ka.vpcf",
+		vSpawnOrigin = origin + Vector(0,0,80),
+		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
-		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,
-		bMultipleHits = false,
-		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
-		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		nChangeMax = 1,
-		bRecreateOnChange = true,
-		bZCheck = false,
-		bGroundLock = true,
-		bProvidesVision = true,
-		iVisionRadius = 200,
-		iVisionTeamNumber = caster:GetTeam(),
-		bFlyingVision = false,
-		fVisionTickTime = .1,
-		fVisionLingerDuration = 1,
-		draw = false,
-		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" end,
 		OnUnitHit = function(_self, unit)
 			-- Count targets
@@ -117,8 +72,6 @@ function treant_basic_attack:OnEndPseudoCastPoint( point )
 	}
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-	self:StartCooldown(attack_speed)
-
 	self:PlayEffectsOnCast()
 end
 
@@ -157,3 +110,11 @@ function treant_basic_attack:PlayEffectsOnImpact( hTarget, pos )
 	local sound_cast = "Hero_Treant.Attack.Impact"
 	EmitSoundOn( sound_cast, hTarget )
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	treant_basic_attack,
+	{ activity = ACT_DOTA_ATTACK, rate = 1.8 },
+	{ movement_speed = 30, hide_indicator = 1 }
+)
+Abilities.BasicAttack( treant_basic_attack )

@@ -13,13 +13,13 @@ function nevermore_mobility:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration= cast_point + 0.1, activity=ACT_DOTA_RAZE_1, rate=1.1})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,
 	})
 end
 
-function nevermore_mobility:OnEndPseudoCastPoint( pos )
+function nevermore_mobility:OnCastPointEnd( pos )
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 	local damage = self:GetAbilityDamage()

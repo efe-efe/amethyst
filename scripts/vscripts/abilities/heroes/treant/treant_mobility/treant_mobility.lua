@@ -3,30 +3,15 @@ LinkLuaModifier( "modifier_treant_mobility", "abilities/heroes/treant/treant_mob
 LinkLuaModifier( "modifier_treant_mobility_movement", "abilities/heroes/treant/treant_mobility/modifier_treant_mobility_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
 LinkLuaModifier( "modifier_treant_mobility_knockback", "abilities/heroes/treant/treant_mobility/modifier_treant_mobility_knockback", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Ability Start
-function treant_mobility:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration = cast_point + 0.1, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.1})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
-        duration = cast_point,
-        can_walk = 0,
-        is_fixed = 1
-	})
-end
-
-function treant_mobility:OnEndPseudoCastPoint( point )
-    --Initialize variables
+function treant_mobility:OnCastPointEnd( )
     local caster = self:GetCaster()
-    local direction = caster:GetForwardVector()
-    local distance = self:GetSpecialValueFor( "range" )
+	local point = self:GetCursorPosition()
+    local origin = caster:GetOrigin()
+    local direction = ( point - origin ):Normalized()
+
+    local distance = self:GetSpecialValueFor( "min_range" )
     local heal = self:GetSpecialValueFor( "heal" )
     local knockback_duration = self:GetSpecialValueFor("knockback_duration")
-
 	local damage = self:GetAbilityDamage()
     local speed = 1800
 
@@ -52,53 +37,21 @@ function treant_mobility:OnEndPseudoCastPoint( point )
         } -- kv
     )
 
-    -- Initialize variables
-    local offset = 0
-    
     -- load data
-    local projectile_name = ""
-	local projectile_start_radius = 0
-	local projectile_end_radius = self.radius
-	local projectile_distance = distance
 	local projectile_speed = speed + 150
 	
-    -- Dinamyc data
-    local origin = caster:GetOrigin()
-    local initial_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
-    local projectile_direction = direction
-
     local projectile = {
-        EffectName = projectile_name,
-        vSpawnOrigin = initial_position + Vector(0,0,80),
-        fDistance = projectile_distance,
-        fStartRadius = projectile_start_radius,
-        fEndRadius = projectile_end_radius,
+        EffectName = "",
+        vSpawnOrigin = origin + Vector(0,0,80),
+		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+        fUniqueRadius = 100,
         Source = caster,
-        fExpireTime = 8.0,
-        vVelocity = projectile_direction * projectile_speed,
+        vVelocity = direction * projectile_speed,
         UnitBehavior = PROJECTILES_NOTHING,
-        bMultipleHits = false,
-        bIgnoreSource = true,
         TreeBehavior = PROJECTILES_NOTHING,
-        bCutTrees = true,
-        bTreeFullCollision = false,
         WallBehavior = PROJECTILES_DESTROY,
         GroundBehavior = PROJECTILES_NOTHING,
         fGroundOffset = 0,
-        nChangeMax = 1,
-        bRecreateOnChange = true,
-        bZCheck = false,
-        bGroundLock = true,
-        bProvidesVision = true,
-        bIsReflectable = false,
-        bIsSlowable = false,
-        iVisionRadius = 200,
-        iVisionTeamNumber = caster:GetTeam(),
-        bFlyingVision = false,
-        fVisionTickTime = .1,
-        fVisionLingerDuration = 1,
-        draw = false,
-        fRehitDelay = 1.0,
         UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" end,
         OnUnitHit = function(_self, unit) 
             -- ENEMIES
@@ -111,6 +64,15 @@ function treant_mobility:OnEndPseudoCastPoint( point )
                 }
     
                 ApplyDamage( damage_table )
+                
+                unit:AddNewModifier(
+                    caster, -- player source
+                    self, -- ability source
+                    "modifier_treant_mobility_knockback", -- modifier name
+                    { 
+                        duration = knockback_duration,
+                    } -- kv
+                )
 
                 -- Add modifier
                 unit:AddNewModifier(
@@ -123,15 +85,8 @@ function treant_mobility:OnEndPseudoCastPoint( point )
                         z = 100,
                         x = x,
                         y = y,
-                    } -- kv
-                )
-
-                unit:AddNewModifier(
-                    caster, -- player source
-                    self, -- ability source
-                    "modifier_treant_mobility_knockback", -- modifier name
-                    { 
-                        duration = knockback_duration,
+                        disable = 1,
+                        invulnerable = 1
                     } -- kv
                 )
                 
@@ -150,5 +105,11 @@ function treant_mobility:OnEndPseudoCastPoint( point )
     }
     -- Cast projectile
     Projectiles:CreateProjectile(projectile)
-
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	treant_mobility,
+	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.1 },
+	{ movement_speed = 0, fixed_range = 1 }
+)

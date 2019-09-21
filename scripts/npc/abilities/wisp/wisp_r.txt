@@ -1,0 +1,27 @@
+"DOTAAbilities" {
+    "wisp_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/wisp/wisp_ultimate/wisp_ultimate"
+		"MaxLevel"						"1"
+		
+		"AbilityTextureName"			"wisp_ultimate"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"1600"
+		"AbilityManaCost"				"100"
+		"AbilityDamage"					"10"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"    "FIELD_INTEGER"		"radius" "250" }
+			"02"{ "var_type"    "FIELD_FLOAT"   "delay_time" "1.0" }
+			"03"{ "var_type"    "FIELD_INTEGER"		"range" "1600" }
+			"04"{ "var_type"    "FIELD_FLOAT"   "stun_duration" "2.0" }
+		}
+	}
+}

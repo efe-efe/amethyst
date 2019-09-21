@@ -20,7 +20,7 @@ function mount:OnSpellStart()
 	caster:AddNewModifier(
         caster, 
         self,
-        "modifier_generic_pseudo_cast_point", 
+        "modifier_cast_point", 
         {
             duration = cast_point,
             no_target = 1,
@@ -33,7 +33,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function mount:OnEndPseudoCastPoint( point )
+function mount:OnCastPointEnd( point )
     local caster = self:GetCaster()
     EmitSoundOn("Courier.Spawn", caster)
     

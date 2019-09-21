@@ -23,7 +23,7 @@ function spectre_second_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
 			can_walk = 0,
@@ -34,7 +34,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function spectre_second_attack:OnEndPseudoCastPoint( point )
+function spectre_second_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 
 	-- load data

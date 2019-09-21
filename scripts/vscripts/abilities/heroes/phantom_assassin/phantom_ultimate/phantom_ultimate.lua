@@ -14,7 +14,7 @@ function phantom_ultimate:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{
 			duration = cast_point, 
 			can_walk = 0,
@@ -24,7 +24,7 @@ function phantom_ultimate:OnSpellStart()
 	)
 end
 
-function phantom_ultimate:OnEndPseudoCastPoint( point )
+function phantom_ultimate:OnCastPointEnd( point )
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
@@ -53,7 +53,6 @@ function phantom_ultimate:OnEndPseudoCastPoint( point )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,

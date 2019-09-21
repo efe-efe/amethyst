@@ -3,26 +3,7 @@ LinkLuaModifier( "modifier_treant_leeching_seed", "abilities/heroes/treant/trean
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function treant_counter:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-    
-	-- Animation and pseudo cast point
-	caster:AddNewModifier(
-        caster, 
-        self,
-        "modifier_generic_pseudo_cast_point", 
-        {
-            duration = cast_point,
-            no_target = 1,
-        }
-    )
-end
-
---------------------------------------------------------------------------------
--- Ability Start
-function treant_counter:OnEndPseudoCastPoint( point )
+function treant_counter:OnCastPointEnd()
     --load data
     local caster = self:GetCaster()
     local duration = self:GetDuration()
@@ -104,3 +85,10 @@ function treant_counter:PlayEffectsOnTrigger()
     ParticleManager:SetParticleControl( effect_cast_b, 3, caster:GetOrigin())    
     ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+    treant_counter,
+    nil, 
+	{ movement_speed = 0, hide_indicator = 1 }
+)

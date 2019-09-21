@@ -25,3 +25,6 @@ Use the "Keyword" on the particle manager to find the particles related to the "
 
     AOE FINDER:
         particles/ui_mouseactions/wards_area_view.vpcf
+
+    keyword: cast
+    Use: Small explosions

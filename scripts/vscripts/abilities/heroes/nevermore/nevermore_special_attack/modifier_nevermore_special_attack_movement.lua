@@ -32,8 +32,8 @@ function modifier_nevermore_special_attack_movement:OnCreated( kv )
 		}
 		ExecuteOrderFromTable(order)
 
-		if self:GetParent():HasModifier("modifier_generic_pseudo_cast_point") then
-			SafeDestroyModifier("modifier_generic_pseudo_cast_point", self:GetParent(), self:GetParent())
+		if self:GetParent():HasModifier("modifier_cast_point") then
+			SafeDestroyModifier("modifier_cast_point", self:GetParent(), self:GetParent())
 		end
 
 		if self:ApplyVerticalMotionController() == false then

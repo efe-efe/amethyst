@@ -18,14 +18,14 @@ function nevermore_basic_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.6, activity=ACT_DOTA_ATTACK, rate=1.8})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
 		placeholder = 0,
 	})
 end
 
-function nevermore_basic_attack:OnEndPseudoCastPoint( pos )
+function nevermore_basic_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 
 	-- Get Stack
@@ -65,7 +65,6 @@ function nevermore_basic_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

@@ -20,7 +20,7 @@ function axe_special_attack:OnSpellStart()
 		activity = ACT_DOTA_OVERRIDE_ABILITY_1, 
 		rate = 1.5
 	})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,
 		no_target = 1,
@@ -31,7 +31,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function axe_special_attack:OnEndPseudoCastPoint()
+function axe_special_attack:OnCastPointEnd()
 	-- unit identifier
 	local caster = self:GetCaster()
 	local point = caster:GetOrigin()

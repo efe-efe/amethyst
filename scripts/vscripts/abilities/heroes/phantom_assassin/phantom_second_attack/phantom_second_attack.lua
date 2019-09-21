@@ -9,11 +9,11 @@ function phantom_second_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_ATTACK_EVENT, rate=2.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { duration = cast_point})
 end
 
 
-function phantom_second_attack:OnEndPseudoCastPoint( pos )
+function phantom_second_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 	local offset = 20
 
@@ -50,7 +50,6 @@ function phantom_second_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

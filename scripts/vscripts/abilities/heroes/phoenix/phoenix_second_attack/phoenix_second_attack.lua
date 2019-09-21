@@ -23,10 +23,10 @@ function phoenix_second_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.5})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { duration = cast_point})
 end
 
-function phoenix_second_attack:OnEndPseudoCastPoint( pos )
+function phoenix_second_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -62,7 +62,6 @@ function phoenix_second_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

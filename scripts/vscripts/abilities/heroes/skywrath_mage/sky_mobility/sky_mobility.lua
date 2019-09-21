@@ -17,7 +17,7 @@ function sky_mobility:OnSpellStart()
 	caster:AddNewModifier(
         caster, 
         self,
-        "modifier_generic_pseudo_cast_point", 
+        "modifier_cast_point", 
         {
             duration = cast_point,
             radius = self.radius,
@@ -27,7 +27,7 @@ function sky_mobility:OnSpellStart()
 end
 
 --------------------------------------------------------------------------------
-function sky_mobility:OnEndPseudoCastPoint( point )
+function sky_mobility:OnCastPointEnd( point )
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()

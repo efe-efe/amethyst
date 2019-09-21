@@ -41,7 +41,7 @@ function modifier_builder_check_area_thinker_lua:OnIntervalThink()
 
         -- Print units
         for _,unit in pairs(units) do
-            DebugPrint("Unit: " .. unit:GetName())
+            print("Unit: " .. unit:GetName())
         end
 
 		self:PlayEffects2()

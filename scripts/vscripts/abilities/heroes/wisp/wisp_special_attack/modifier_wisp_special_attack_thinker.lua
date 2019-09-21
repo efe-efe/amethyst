@@ -84,7 +84,7 @@ function modifier_wisp_special_attack_thinker:PlayEffectsOnCreated()
     local thinker = self:GetParent()
 
     -- Create Sounds
-    EmitSoundOn( "Ability.PreLightStrikeArray", thinker )
+    EmitSoundOn( "Ability.PreLightStrikeArray", self:GetCaster() )
 
     -- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_relocate_teleport.vpcf"

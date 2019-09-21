@@ -10,7 +10,7 @@ function wisp_second_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_generic_pseudo_cast_point",
+		"modifier_cast_point",
 		{ 
 			duration = cast_point, 
 			can_walk = 0,
@@ -21,7 +21,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_second_attack:OnEndPseudoCastPoint( pos )
+function wisp_second_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -50,7 +50,6 @@ function wisp_second_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

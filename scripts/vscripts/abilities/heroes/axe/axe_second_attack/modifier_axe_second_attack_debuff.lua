@@ -31,14 +31,15 @@ function modifier_axe_second_attack_debuff:OnCreated( kv )
 			victim = self:GetParent(),
 			attacker = self:GetCaster(),
 			damage = damage,
-			damage_type = DAMAGE_TYPE_PURE,
 			ability = self:GetAbility(), --Optional.
-			damage_flags = DOTA_DAMAGE_FLAG_NONE, --Optional.
 		}
+		
+		self.damageTable.damage_type = DAMAGE_TYPE_MAGICAL
+		ApplyDamage( self.damageTable )
+		self.damageTable.damage_type = DAMAGE_TYPE_PURE
 
 		-- Start interval
 		self:StartIntervalThink( interval )
-		self:OnIntervalThink()
 	end
 end
 
@@ -62,6 +63,14 @@ function modifier_axe_second_attack_debuff:OnDestroy( kv )
 end
 
 --------------------------------------------------------------------------------
+-- Interval Effects
+function modifier_axe_second_attack_debuff:OnIntervalThink()
+	-- apply damage
+	ApplyDamage( self.damageTable )
+end
+
+
+--------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_axe_second_attack_debuff:DeclareFunctions()
 	local funcs = {
@@ -76,14 +85,6 @@ function modifier_axe_second_attack_debuff:OnDeath( params )
 		if params.attacker~=self:GetParent() then return end
 		self:Destroy()
 	end
-end
-
-
---------------------------------------------------------------------------------
--- Interval Effects
-function modifier_axe_second_attack_debuff:OnIntervalThink()
-	-- apply damage
-	ApplyDamage( self.damageTable )
 end
 
 --------------------------------------------------------------------------------

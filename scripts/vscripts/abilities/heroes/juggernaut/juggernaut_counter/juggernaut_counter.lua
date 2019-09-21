@@ -12,7 +12,7 @@ function juggernaut_counter:OnSpellStart()
 	caster:AddNewModifier(
         caster, 
         self,
-        "modifier_generic_pseudo_cast_point", 
+        "modifier_cast_point", 
         {
             duration = cast_point,
         }
@@ -21,7 +21,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function juggernaut_counter:OnEndPseudoCastPoint( point )
+function juggernaut_counter:OnCastPointEnd( point )
     --load data
     local caster = self:GetCaster()
     local duration = self:GetDuration()

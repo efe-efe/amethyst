@@ -38,16 +38,16 @@ function spectre_basic_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point",
+		"modifier_cast_point",
 		{ 
 			duration = cast_point,
-			movement_speed = 50,
+			movement_speed = 80,
 			placeholder = 0,
 		}
 	)
 end
 
-function spectre_basic_attack:OnEndPseudoCastPoint( point )
+function spectre_basic_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local offset = 10
 
@@ -90,7 +90,6 @@ function spectre_basic_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
@@ -166,6 +165,8 @@ function spectre_basic_attack:OnEndPseudoCastPoint( point )
 	modifier:CalculateCharge()
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+
+	print(attack_speed)
 	self:StartCooldown(attack_speed)
 end
 

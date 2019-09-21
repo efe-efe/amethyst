@@ -19,16 +19,16 @@ function sniper_basic_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_generic_pseudo_cast_point",
+		"modifier_cast_point",
 		{ 
 			duration = cast_point,
 			placeholder = 0,
-			movement_speed = 50,
+			movement_speed = 30,
 		}
 	)
 end
 
-function sniper_basic_attack:OnEndPseudoCastPoint( pos )
+function sniper_basic_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -59,7 +59,6 @@ function sniper_basic_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

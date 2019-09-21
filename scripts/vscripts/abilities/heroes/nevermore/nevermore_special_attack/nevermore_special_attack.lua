@@ -17,7 +17,7 @@ function nevermore_special_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.7, activity=ACT_DOTA_RAZE_1, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,
 		fixed_range = 1,
@@ -25,7 +25,7 @@ function nevermore_special_attack:OnSpellStart()
 end
 
 
-function nevermore_special_attack:OnEndPseudoCastPoint( pos )
+function nevermore_special_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -53,7 +53,6 @@ function nevermore_special_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

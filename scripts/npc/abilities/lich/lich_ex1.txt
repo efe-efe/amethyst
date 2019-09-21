@@ -1,0 +1,30 @@
+"DOTAAbilities" {
+    "lich_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/lich/lich_ex_second_attack/lich_ex_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"lich_ex_second_attack"
+		"AbilityBehavior"               "DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.5"
+		"AbilityCooldown"				"1.5"
+		"AbilityDamage"					"14"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"judgement_duration"		"5.0" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"corruption_duration"		"5.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"heal"		                "6" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"judgement_damage_pct"		"15" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"corruption_heal_pct"		"15" }
+		}
+	}
+}

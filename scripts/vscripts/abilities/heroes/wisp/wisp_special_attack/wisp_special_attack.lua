@@ -19,7 +19,7 @@ function wisp_special_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_generic_pseudo_cast_point",
+		"modifier_cast_point",
 		{ 
 			duration = cast_point, 
             movement_speed = 50,
@@ -30,7 +30,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_special_attack:OnEndPseudoCastPoint( point )
+function wisp_special_attack:OnCastPointEnd( point )
 	-- unit identifier
 	local caster = self:GetCaster()
     local delay_time = self:GetSpecialValueFor( "delay_time" )

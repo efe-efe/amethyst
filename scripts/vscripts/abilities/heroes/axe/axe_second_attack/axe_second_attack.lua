@@ -25,14 +25,14 @@ function axe_second_attack:OnSpellStart()
 		rate = 1.3
 	})
 	
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		can_walk = 0,
 		radius = self.radius,
 	})
 end
 
-function axe_second_attack:OnEndPseudoCastPoint( point )
+function axe_second_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 

@@ -16,7 +16,7 @@ function sniper_mobility:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_CAST_ABILITY_1, rate=2.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10,
 	})
@@ -24,7 +24,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sniper_mobility:OnEndPseudoCastPoint( point )
+function sniper_mobility:OnCastPointEnd( point )
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor( "duration" )
     local shrapnel = caster:FindAbilityByName("sniper_special_attack")

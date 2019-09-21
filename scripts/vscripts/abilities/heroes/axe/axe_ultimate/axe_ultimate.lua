@@ -12,7 +12,7 @@ function axe_ultimate:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.6, activity=ACT_DOTA_CAST_ABILITY_4, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		can_walk = 0,
         radius = self.radius,
@@ -21,7 +21,7 @@ function axe_ultimate:OnSpellStart()
 end
 
 --------------------------------------------------------------------------------
-function axe_ultimate:OnEndPseudoCastPoint( pos )
+function axe_ultimate:OnCastPointEnd( pos )
     local caster = self:GetCaster()
 	local damage = self:GetAbilityDamage()
 	local treshold = self:GetSpecialValueFor("treshold")

@@ -19,16 +19,17 @@ function sniper_ex_second_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
 			can_walk = 0,
-			show_all = 1
+			show_all = 1,
+			fixed_range = 1,
 		}
 	)
 end
 
-function sniper_ex_second_attack:OnEndPseudoCastPoint( pos )
+function sniper_ex_second_attack:OnCastPointEnd( pos )
 	-- Initialize variables
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -59,7 +60,6 @@ function sniper_ex_second_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

@@ -19,7 +19,7 @@ function phantom_ex_special_attack:OnSpellStart()
 		activity = ACT_DOTA_CAST_ABILITY_3, 
 		rate = 1.2 
 	})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,
 		fixed_range= 1
@@ -29,7 +29,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function phantom_ex_special_attack:OnEndPseudoCastPoint( point )
+function phantom_ex_special_attack:OnCastPointEnd( point )
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -57,7 +57,6 @@ function phantom_ex_special_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

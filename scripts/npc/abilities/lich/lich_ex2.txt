@@ -1,0 +1,30 @@
+"DOTAAbilities" {
+    "lich_ex_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/lich/lich_ex_special_attack/lich_ex_special_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"lich_ex_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCooldown"				"5.0"
+		"AbilityDamage"					"12"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"210" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"0.6" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"heal"					"6" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"extra_damage"			"6" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"silence_duration"		"0.5" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"fading_slow"			"100" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"	"1.0" }
+		}
+	}
+}

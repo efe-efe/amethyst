@@ -1,25 +1,3 @@
-function DebugPrint(...)
-    local spew = Convars:GetInt('barebones_spew') or -1
-    if spew == -1 and RITE_DEBUG_SPEW then
-      spew = 1
-    end
-  
-    if spew == 1 then
-      print(...)
-    end
-end
-
-function DebugPrintTable(...)
-  local spew = Convars:GetInt('barebones_spew') or -1
-  if spew == -1 and BAREBONES_DEBUG_SPEW then
-    spew = 1
-  end
-
-  if spew == 1 then
-    PrintTable(...)
-  end
-end
-
 function PrintTable(t, indent, done)
   --print ( string.format ('PrintTable type %s', type(keys)) )
   if type(t) ~= "table" then return end
@@ -94,7 +72,6 @@ function array_sub(t1, t2)
   end
 end
 
-
 function NearestValue(table, number)
     local smallestSoFar, smallestIndex
     for i, y in ipairs(table) do
@@ -104,4 +81,29 @@ function NearestValue(table, number)
         end
     end
     return table[smallestIndex]
+end
+
+function FlagExist(a,b)--Bitwise Exist
+	local p,c,d=1,0,b
+	while a>0 and b>0 do
+		local ra,rb=a%2,b%2
+		if ra+rb>1 then c=c+p end
+		a,b,p=(a-ra)/2,(b-rb)/2,p*2
+	end
+	return c==d
+end
+
+function string.split(str, sep)
+  local result = {}
+  local regex = ("([^%s]+)"):format(sep)
+  
+  for each in str:gmatch(regex) do
+     table.insert(result, each)
+  end
+
+  return result
+end
+
+function string.ends(str, ending)
+  return ending == '' or string.sub(str, -string.len(ending)) == ending
 end

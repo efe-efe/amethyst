@@ -14,7 +14,7 @@ function spectre_ex_mobility:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_ATTACK, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
 		can_walk = 0,
 		no_target = 1,
@@ -22,7 +22,7 @@ function spectre_ex_mobility:OnSpellStart()
 end
 
 --------------------------------------------------------------------------------
-function spectre_ex_mobility:OnEndPseudoCastPoint()
+function spectre_ex_mobility:OnCastPointEnd()
 
     local caster = self:GetCaster()
     local duration = self:GetDuration()

@@ -13,16 +13,16 @@ function wisp_basic_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_generic_pseudo_cast_point",
+		"modifier_cast_point",
 		{
 			duration = cast_point,
-			movement_speed = 50,
+			movement_speed = 10,
 			placeholder = 0,
 		}
 	)
 end
 
-function wisp_basic_attack:OnEndPseudoCastPoint( point )
+function wisp_basic_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
 	local attack_speed = ( 1 / attacks_per_second )
@@ -56,7 +56,6 @@ function wisp_basic_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

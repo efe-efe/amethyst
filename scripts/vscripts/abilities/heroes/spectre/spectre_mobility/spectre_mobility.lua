@@ -16,14 +16,14 @@ function spectre_mobility:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_ATTACK, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point, 
         radius = self.radius
 	})
 end
 
 --------------------------------------------------------------------------------
-function spectre_mobility:OnEndPseudoCastPoint( point )
+function spectre_mobility:OnCastPointEnd( point )
     -- unit identifier
 	local caster = self:GetCaster()
     local delay_time = self:GetSpecialValueFor( "delay_time" )

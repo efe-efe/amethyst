@@ -18,14 +18,14 @@ function juggernaut_second_attack:OnSpellStart()
 		activity = ACT_DOTA_SPAWN,
 		rate = 3.0
 	})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		movement_speed = 10
 	})
 end
 
 
-function juggernaut_second_attack:OnEndPseudoCastPoint( pos )
+function juggernaut_second_attack:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 	local offset = 20
 
@@ -60,7 +60,6 @@ function juggernaut_second_attack:OnEndPseudoCastPoint( pos )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

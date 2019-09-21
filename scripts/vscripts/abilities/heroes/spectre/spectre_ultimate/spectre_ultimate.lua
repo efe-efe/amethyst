@@ -13,7 +13,7 @@ function spectre_ultimate:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
 			can_walk = 0,
@@ -24,7 +24,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function spectre_ultimate:OnEndPseudoCastPoint( pos )
+function spectre_ultimate:OnCastPointEnd( pos )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local name = caster:GetUnitName()
@@ -54,7 +54,6 @@ function spectre_ultimate:OnEndPseudoCastPoint( pos )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,

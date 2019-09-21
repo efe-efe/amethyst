@@ -48,7 +48,7 @@ function GameMode:HealingFilter(keys)
     local reduction =  1 - healing_target.healing_reduction_pct/100
     if reduction <= 0 then reduction = 0.1 end
     keys.heal = math.floor(keys.heal * reduction)
-    print(reduction .. " | " .. keys.heal)
+    --print(reduction .. " | " .. keys.heal)
 
 	local healer_index
 	if keys.entindex_healer_const then

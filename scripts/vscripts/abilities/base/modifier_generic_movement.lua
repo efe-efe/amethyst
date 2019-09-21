@@ -128,7 +128,7 @@ function modifier_generic_movement:OnIntervalThink()
 
 
 		-- If not casting
-		if not self.parent:HasModifier("modifier_generic_pseudo_cast_point") then --THIS CAN END BEFORE THE ACTUAL ANIMATION
+		if not self.parent:HasModifier("modifier_cast_point") and not self.parent:HasModifier("modifier_cast_point_new") then --THIS CAN END BEFORE THE ACTUAL ANIMATION
 			--self.parent:FaceTowards(facing_point)
 			self.parent:SetForwardVector(direction)
 		else

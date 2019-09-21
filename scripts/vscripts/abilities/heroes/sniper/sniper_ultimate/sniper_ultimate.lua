@@ -17,7 +17,7 @@ function sniper_ultimate:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_generic_pseudo_cast_point", 
+		"modifier_cast_point", 
 		{ 
 			duration = cast_point,
 			can_walk = 0,
@@ -26,7 +26,7 @@ function sniper_ultimate:OnSpellStart()
 	)
 end
 
-function sniper_ultimate:OnEndPseudoCastPoint()
+function sniper_ultimate:OnCastPointEnd()
     local caster = self:GetCaster()
     local attack_time = self:GetSpecialValueFor("duration")
     

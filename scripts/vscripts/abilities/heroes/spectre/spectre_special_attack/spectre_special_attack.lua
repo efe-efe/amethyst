@@ -11,7 +11,7 @@ function spectre_special_attack:OnSpellStart()
 	
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=0.7})
-	caster:AddNewModifier(caster, self , "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
 		duration = cast_point,
 		can_walk = 1,
 		fixed_range = 1
@@ -19,7 +19,7 @@ function spectre_special_attack:OnSpellStart()
 end
 
 
-function spectre_special_attack:OnEndPseudoCastPoint( point )
+function spectre_special_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -54,7 +54,6 @@ function spectre_special_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = true,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,

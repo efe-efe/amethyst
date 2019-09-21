@@ -22,17 +22,13 @@ function modifier_generic_knockback_lua:OnCreated( kv )
 			-- kv.damage (nil)
 			-- kv.IsPurgable () // later 
 
-			PrintTable(kv)
 		-- references
 		self.distance = kv.distance or 0
 		self.duration = kv.duration or 0
 		self.flail = kv.flail
 
-		self.disable = false
-		self.invulnerable = false
-
-		if kv.disable then self.disable = true end
-		if kv.invulnerable then self.invulnerable = true end
+		self.disable = kv.disable and true or false
+		self.invulnerable = kv.invulnerable and true or false
 
 		if kv.x and kv.y then
 			self.direction = Vector(kv.x,kv.y,0):Normalized()
@@ -165,8 +161,8 @@ end
 function modifier_generic_knockback_lua:CheckState()
 	local state = {
 		[MODIFIER_STATE_STUNNED] = self.stun,
-        [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
-        [MODIFIER_STATE_NO_HEALTH_BAR] = self.disable,
+        [MODIFIER_STATE_COMMAND_RESTRICTED] = self.disable,
+        [MODIFIER_STATE_NO_HEALTH_BAR] = self.invulnerable,
 		[MODIFIER_STATE_INVULNERABLE] = self.invulnerable,
 		[MODIFIER_STATE_OUT_OF_GAME] = self.invulnerable,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = self.invulnerable,

@@ -12,7 +12,7 @@ function charge:OnSpellStart()
 	caster:AddNewModifier(
         caster, 
         self,
-        "modifier_generic_pseudo_cast_point", 
+        "modifier_cast_point", 
         {
             duration = cast_point,
             no_target = 1,
@@ -24,7 +24,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function charge:OnEndPseudoCastPoint(  )
+function charge:OnCastPointEnd(  )
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
 

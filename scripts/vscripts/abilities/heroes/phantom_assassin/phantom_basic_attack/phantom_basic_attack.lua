@@ -17,14 +17,14 @@ function phantom_basic_attack:OnSpellStart()
 		rate=1.8
 	})
 	
-	caster:AddNewModifier( caster, self, "modifier_generic_pseudo_cast_point", { 
+	caster:AddNewModifier( caster, self, "modifier_cast_point", { 
 		duration = cast_point, 
-		movement_speed = 90,
+		movement_speed = 80,
 		placeholder = 0,
 	})
 end
 
-function phantom_basic_attack:OnEndPseudoCastPoint( point )
+function phantom_basic_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
 	local offset = 20
 
@@ -60,7 +60,6 @@ function phantom_basic_attack:OnEndPseudoCastPoint( point )
 		bMultipleHits = false,
 		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bCutTrees = true,
 		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
