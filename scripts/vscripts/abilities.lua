@@ -21,7 +21,7 @@ function Abilities.Initialize( ability, animation, warmup, range )
         
         if animation and animation.activity then
             StartAnimation(caster, {
-                duration = cast_point + 0.1, 
+                duration = animation.duration or cast_point + 0.1, 
                 activity = animation.activity, 
                 rate = animation.rate or 1.0  
             })

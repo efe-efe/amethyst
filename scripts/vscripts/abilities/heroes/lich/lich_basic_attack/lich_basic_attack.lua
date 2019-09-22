@@ -1,5 +1,5 @@
 lich_basic_attack = class({})
-LinkLuaModifier( "modifier_lich_corruption", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_corruption", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_lich_frost", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_frost", LUA_MODIFIER_MOTION_NONE )
 
 function lich_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -7,7 +7,8 @@ function lich_basic_attack:OnCastPointEnd()
     local origin = caster:GetOrigin()
 	local damage = caster:GetAttackDamage()
 
-	local corruption_duration = self:GetSpecialValueFor("corruption_duration")
+	local frost_duration = self:GetSpecialValueFor("frost_duration")
+	local heal = self:GetSpecialValueFor("heal")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")/100
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
@@ -34,7 +35,8 @@ function lich_basic_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 
-			unit:AddNewModifier(_self.Source, self, "modifier_lich_corruption", { duration = corruption_duration })
+			unit:AddNewModifier(_self.Source, self, "modifier_lich_frost", { duration = frost_duration })
+			_self.Source:Heal(heal, _self.Source)
 
 			local mana_gain_final = _self.Source:GetMaxMana() * mana_gain_pct
 			_self.Source:GiveMana(mana_gain_final)

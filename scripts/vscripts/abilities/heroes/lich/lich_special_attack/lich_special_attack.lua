@@ -64,16 +64,16 @@ function lich_special_attack:ConsumeDebuffs( base_damage, origin, radius, knockb
     for _,enemy in pairs(enemies) do
         local final_damage = base_damage
         
-        if enemy:HasModifier("modifier_lich_judgement") then
+        if enemy:HasModifier("modifier_lich_decay") then
             final_damage = final_damage + extra_damage
             enemy:AddNewModifier(caster, self, "modifier_generic_silenced_lua", { duration = silence_duration })
-            SafeDestroyModifier("modifier_lich_judgement", enemy, caster)
+            SafeDestroyModifier("modifier_lich_decay", enemy, caster)
         end
 
-        if enemy:HasModifier("modifier_lich_corruption") then
+        if enemy:HasModifier("modifier_lich_frost") then
             caster:Heal(heal, caster)
             enemy:AddNewModifier(caster, self, "modifier_generic_fading_slow_lua", { duration = fading_slow_duration })
-            SafeDestroyModifier("modifier_lich_corruption", enemy, caster)
+            SafeDestroyModifier("modifier_lich_frost", enemy, caster)
         end
 
 

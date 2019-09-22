@@ -6,7 +6,6 @@ LinkLuaModifier( "modifier_treant_ultimate_movement", "abilities/heroes/treant/t
 function treant_ultimate:OnCastPointEnd( )
 	-- unit identifier
 	local caster = self:GetCaster()
-    local delay_time = self:GetSpecialValueFor( "delay_time" )
     local root_duration = self:GetSpecialValueFor("root_duration")
     local radius = self:GetSpecialValueFor("radius")
     local damage = self:GetAbilityDamage()

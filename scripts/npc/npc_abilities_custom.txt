@@ -2207,10 +2207,8 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"140" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"					"750" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"knockback_duration"		"1.2" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"knockback_duration"		"1.2" }
 		}
 	}
 
@@ -2321,9 +2319,7 @@
 
 		"AbilityTextureName"			"treant_ex_special_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
 		"AbilityCastPoint"				"0.4"
 		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
@@ -2353,7 +2349,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.5" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.5" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_block"				"20" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_pct"			"20" }
 		}
@@ -2377,8 +2373,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"400" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"1.5" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"root_duration"			"1.2" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"root_duration"			"1.2" }
 		}
 	}
 

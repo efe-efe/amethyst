@@ -1,9 +1,9 @@
-modifier_lich_judgement = class({})
+modifier_lich_decay = class({})
 
 --------------------------------------------------------------------------------
 -- Initializer
-function modifier_lich_judgement:OnCreated()
-	self.judgement_damage_pct = self:GetAbility():GetSpecialValueFor("judgement_damage_pct")
+function modifier_lich_decay:OnCreated()
+	self.decay_damage_pct = self:GetAbility():GetSpecialValueFor("decay_damage_pct")
 	self.radius = 100
 
 	if IsServer() then
@@ -12,17 +12,17 @@ function modifier_lich_judgement:OnCreated()
 	end
 end
 
-function modifier_lich_judgement:OnRefresh()
+function modifier_lich_decay:OnRefresh()
 	self.radius = 100
 end
 
-function modifier_lich_judgement:OnDestroy()
+function modifier_lich_decay:OnDestroy()
 	if IsServer() then
 		self:StopEffectsTimer()
 	end
 end
 
-function modifier_lich_judgement:OnIntervalThink()
+function modifier_lich_decay:OnIntervalThink()
 	self.radius = self.radius - 0.2
 	self:StopEffectsTimer()
 	self:PlayEffectsTimer()
@@ -30,7 +30,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_lich_judgement:DeclareFunctions()
+function modifier_lich_decay:DeclareFunctions()
 	local funcs = {
         MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
 	}
@@ -38,13 +38,13 @@ function modifier_lich_judgement:DeclareFunctions()
 	return funcs
 end
 
-function modifier_lich_judgement:GetModifierIncomingDamage_Percentage( params )
-	return self.judgement_damage_pct
+function modifier_lich_decay:GetModifierIncomingDamage_Percentage( params )
+	return self.decay_damage_pct
 end
 
 --------------------------------------------------------------------------------
 -- Graphics & animations
-function modifier_lich_judgement:PlayEffectsTimer()
+function modifier_lich_decay:PlayEffectsTimer()
     local particle_cast = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
 
 	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
@@ -52,7 +52,7 @@ function modifier_lich_judgement:PlayEffectsTimer()
 	ParticleManager:SetParticleControl( self.effect_cast, 15, Vector(175, 75, 175) )
 end
 
-function modifier_lich_judgement:StopEffectsTimer()
+function modifier_lich_decay:StopEffectsTimer()
 	ParticleManager:DestroyParticle(self.effect_cast, false)
 	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

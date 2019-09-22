@@ -7,6 +7,8 @@ function lich_ultimate_mobility:OnCastPointEnd()
     local origin = caster:GetOrigin()
     local damage = self:GetAbilityDamage()
     local ability = caster:FindAbilityByName("lich_ultimate_mobility")
+	local ability_b = caster:FindAbilityByName("lich_ultimate")
+	local hit_count = ability_b:GetSpecialValueFor("hit_count")
 
     local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
@@ -43,7 +45,7 @@ function lich_ultimate_mobility:OnCastPointEnd()
             if next(_self.rehit) ~= nil then
                 local stacks = SafeGetModifierStacks("modifier_lich_ultimate", caster, caster)
 
-                if stacks < 3 then 
+                if stacks < hit_count then 
                     caster:AddNewModifier(caster, self, "modifier_lich_ultimate", {})
                     caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
                 else

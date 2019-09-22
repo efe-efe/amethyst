@@ -19,12 +19,6 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"210" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"0.6" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"heal"					"6" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"extra_damage"			"6" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"silence_duration"		"0.5" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"fading_slow"			"100" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"	"1.0" }
 		}
 	}
 }

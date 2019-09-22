@@ -19,8 +19,8 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"7" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"judgement_duration"		"5.0" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"judgement_damage_pct"		"15" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"decay_duration"		"5.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"decay_damage_pct"		"15" }
 		}
 	}
 }

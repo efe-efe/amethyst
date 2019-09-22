@@ -1,6 +1,6 @@
 lich_ex_second_attack = class({})
-LinkLuaModifier( "modifier_lich_judgement", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_judgement", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_lich_corruption", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_corruption", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_lich_decay", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_decay", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_lich_frost", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_frost", LUA_MODIFIER_MOTION_NONE )
 
 function lich_ex_second_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -8,8 +8,8 @@ function lich_ex_second_attack:OnCastPointEnd()
     local origin = caster:GetOrigin()
 	local damage = self:GetAbilityDamage()
 
-	local judgement_duration = self:GetSpecialValueFor("judgement_duration")
-	local corruption_duration = self:GetSpecialValueFor("corruption_duration")
+	local decay_duration = self:GetSpecialValueFor("decay_duration")
+	local frost_duration = self:GetSpecialValueFor("frost_duration")
 	local heal = self:GetSpecialValueFor("heal")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
@@ -37,8 +37,8 @@ function lich_ex_second_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 
-			unit:AddNewModifier(_self.Source, self, "modifier_lich_judgement", { duration = judgement_duration })
-			unit:AddNewModifier(_self.Source, self, "modifier_lich_corruption", { duration = corruption_duration })
+			unit:AddNewModifier(_self.Source, self, "modifier_lich_decay", { duration = decay_duration })
+			unit:AddNewModifier(_self.Source, self, "modifier_lich_frost", { duration = frost_duration })
             _self.Source:Heal(heal, _self.Source)
 
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)

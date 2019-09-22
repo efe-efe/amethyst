@@ -20,11 +20,11 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"judgement_duration"		"5.0" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"corruption_duration"		"5.0" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"decay_duration"		"5.0" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"frost_duration"		"5.0" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"heal"		                "6" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"judgement_damage_pct"		"15" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"corruption_heal_pct"		"15" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"decay_damage_pct"		"15" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"frost_heal_pct"		"15" }
 		}
 	}
 }

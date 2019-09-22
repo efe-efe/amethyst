@@ -137,7 +137,7 @@ function spectre_second_attack:PlayEffects_b( pos )
 
 	-- Create Particles
 	local particle_cast_a = "particles/econ/items/death_prophet/death_prophet_ti9/death_prophet_silence_ti9_ground_smoke.vpcf"
-	local particle_cast_b = "particles/mod_units/heroes/hero_bane/bane_projectile_explosion.vpcf"
+	local particle_cast_b = "particles/units/heroes/hero_bane/bane_projectile_explosion.vpcf"
 	
 	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN, caster )
 	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN, caster )
