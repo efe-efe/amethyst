@@ -9,7 +9,7 @@ function treant_mobility:OnCastPointEnd( )
     local origin = caster:GetOrigin()
     local direction = ( point - origin ):Normalized()
 
-    local distance = self:GetSpecialValueFor( "min_range" )
+    local distance = self:GetCastRange(Vector(0,0,0), nil)
     local heal = self:GetSpecialValueFor( "heal" )
     local knockback_duration = self:GetSpecialValueFor("knockback_duration")
 	local damage = self:GetAbilityDamage()
