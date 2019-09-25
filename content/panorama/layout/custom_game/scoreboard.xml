@@ -1,0 +1,29 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/custom_game/scoreboard.css" />
+	</styles>
+	<scripts>
+		<include src="file://{resources}/scripts/custom_game/scoreboard.js" />
+	</scripts>
+	<Panel class="AmethystScore">
+		<Panel id="Title">
+			<Label id="TitleName" text="Scoreboard:" />
+		</Panel>
+		<Panel id="ScoreRowRadiant" class="ScoreRow">
+            <Label id="RadiantName" text="Left Team" />
+            <Label id="RadiantScore" text="Off" />
+		</Panel>
+		<Panel id="ScoreRowDire" class="ScoreRow">
+            <Label id="DireName" text="Right Team" />
+            <Label id="DireScore" text="Off" />
+		</Panel>
+		<Panel id="ScoreRowCustomOne" class="ScoreRow">
+            <Label id="CustomOneName" text="North Team" />
+            <Label id="CustomOneScore" text="Off" />
+		</Panel>
+		<Panel id="ScoreRowCustomTwo" class="ScoreRow">
+            <Label id="CustomTwoName" text="South Team" />
+            <Label id="CustomTwoScore" text="Off" />
+		</Panel>
+	</Panel>
+</root>

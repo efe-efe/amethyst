@@ -1,0 +1,141 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf23:version{636cefcd-6551-40ad-801c-6085f7e67e27} -->
+{
+	_class = "CParticleSystemDefinition"
+	m_bShouldHitboxesFallbackToRenderBounds = false
+	m_nMaxParticles = 16
+	m_ConstantColor = [ 39, 209, 147, 255 ]
+	m_nConstantSequenceNumber = 6
+	m_bShouldSort = false
+	m_Renderers = 
+	[
+		{
+			_class = "C_OP_RenderTrails"
+			m_nSequenceCombineMode = "SEQUENCE_COMBINE_MODE_USE_SEQUENCE_0"
+			m_flOverbrightFactor = 6.0
+			m_flAddSelfAmount = 2.0
+			m_bSaturateColorPreAlphaBlend = false
+			m_hTexture = resource:"materials/particle/sparks/sparks.vtex"
+			m_bDisableOperator = true
+			m_flLengthFadeInTime = 0.1
+			m_flMaxLength = 46.0
+			m_flFinalTextureScaleV = -1.0
+			m_flFinalTextureOffsetV = 1.0
+			m_flRadiusScale = 
+			{
+				m_nType = "PF_TYPE_LITERAL"
+				m_flLiteralValue = 0.5
+			}
+		},
+	]
+	m_Operators = 
+	[
+		{
+			_class = "C_OP_BasicMovement"
+		},
+		{
+			_class = "C_OP_Decay"
+			m_nOpEndCapState = 1
+		},
+		{
+			_class = "C_OP_SetChildControlPoints"
+			m_nFirstControlPoint = 3
+			m_bSetOrientation = true
+		},
+	]
+	m_Initializers = 
+	[
+		{
+			_class = "C_INIT_CreateWithinSphere"
+		},
+		{
+			_class = "C_INIT_RandomRadius"
+			m_flRadiusMin = 30.0
+			m_flRadiusMax = 30.0
+		},
+		{
+			_class = "C_INIT_RandomLifeTime"
+		},
+		{
+			_class = "C_INIT_RandomTrailLength"
+		},
+		{
+			_class = "C_INIT_VelocityFromCP"
+			m_nControlPoint = 1
+		},
+	]
+	m_Emitters = 
+	[
+		{
+			_class = "C_OP_InstantaneousEmitter"
+			m_nParticlesToEmit = 
+			{
+				m_nType = "PF_TYPE_LITERAL"
+				m_flLiteralValue = 1.0
+			}
+		},
+	]
+	m_Children = 
+	[
+		{
+			m_bEndCap = true
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_explosion.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_launch.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_glow.vpcf"
+		},
+		{
+			m_bEndCap = true
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_cloud.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_launch_exp.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_flash.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_launch_glow.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_trail_noise.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_gas.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_trail_b.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_sand_trail.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/necrolyte/necronub_base_attack/necrolyte_base_attack_ka_trail.vpcf"
+		},
+	]
+	m_nBehaviorVersion = 4
+	m_controlPointConfigurations = 
+	[
+		{
+			m_name = "preview"
+			m_drivers = 
+			[
+				{
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 3
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
+					m_entityName = "self"
+				},
+			]
+		},
+	]
+}

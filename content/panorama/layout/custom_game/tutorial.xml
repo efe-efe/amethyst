@@ -1,0 +1,35 @@
+<root>
+	<styles>
+		<include src="file://{resources}/styles/custom_game/tutorial.css" />
+	</styles>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/tutorial.js" />
+    </scripts>
+	<Panel class="Tutorial">
+        <Panel id="OpenTutorial">
+            <Button id="OpenTutorialBtn" onactivate="OpenTutorial()" >
+                <Label id="OpenTutorialLabel"  class="TitleFont" text="?" />
+            </Button>
+        </Panel>
+        <Panel id="TutorialContent">
+            <Panel class="TutorialTitle">
+                <Label hittest="false" id="TutorialTitle" class="TitleFont" text="Information" />
+                <Button id="CloseTutorial" onactivate="HideTutorial()" >
+                    <Label id="CloseTutorialLabel" text="X" />
+                </Button>
+            </Panel>
+            <Panel id="WasdRow" class="InfoRow">            
+                <Image id="WasdImage" src="file://{images}/custom_game/wasd.png" />
+                <Label id="WasdText" html="true" text="Use the WASD keys on your keyboard to move your hero over the map." />
+            </Panel>
+            <Panel id="SpacebarRow" class="InfoRow">
+                <Image id="SpacebarImage" src="file://{images}/custom_game/spacebar.png" />
+                <Label id="SpacebarText" html="true" text="Use the spacebar to cast your Mobility spell. Almost all heroes all invulnerable when are affected by their Mobility spells" />
+            </Panel>
+            <Panel id="MouseRow" class="InfoRow">
+                <Image id="MouseImage" src="file://{images}/custom_game/mouse.png" />
+                <Label id="MouseText" html="true" text="Use the your mouse to attack and aim. Left click is used to attack with your basic attack. Right click is used to cast your secondary spell. Other spells are casted using [Q], [E], [R], [F], [D], [1] and [2] on your keyboard" />
+            </Panel>
+        </Panel>
+    </Panel>
+</root>

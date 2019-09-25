@@ -1,0 +1,88 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf12:version{cf2e4e5e-e5e0-4da9-930b-a526a91236e2} -->
+{
+	_class = "CParticleSystemDefinition"
+	m_bShouldHitboxesFallbackToRenderBounds = false
+	m_nMaxParticles = 4
+	m_Children = 
+	[
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_luna/luna_lucent_beam_impact_ground.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_luna/luna_lucent_beam_impact_smoke_notarget_spotlight.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_luna/luna_lucent_beam_impact_smoke_notarget.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_luna/luna_lucent_beam_impact_shaft_bits.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_luna/luna_lucent_beam_impact_shaft06.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_luna/luna_lucent_beam_impact_shaft07.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_luna/luna_lucent_beam_impact_shaft08.vpcf"
+		},
+	]
+	m_PreEmissionOperators = 
+	[
+		{
+			_class = "C_OP_HSVShiftToCP"
+			m_DefaultHSVColor = [ 43, 135, 255, 255 ]
+		},
+	]
+	m_nBehaviorVersion = 6
+	m_controlPointConfigurations = 
+	[
+		{
+			m_name = "preview"
+			m_drivers = 
+			[
+				{
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 1
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 5
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 62
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 60
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 8.0, 229.0, 96.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 61
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+			]
+		},
+	]
+}

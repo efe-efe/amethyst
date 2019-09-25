@@ -1,8 +1,0 @@
-free_for_all
-{
-	material materials/overviews/free_for_all.vmat
-	pos_x -3904
-	pos_y 3904
-	scale 7.625
-}
-

@@ -1,0 +1,19 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/underscore-min.js" />
+        <include src="file://{resources}/scripts/custom_game/hero_bar.js" />
+    </scripts>
+    <styles>
+        <include src="file://{resources}/styles/custom_game/hero_bar.css" />
+    </styles>
+    <snippets>
+        <snippet name="HealthBar">
+            <Panel class="HeroBar" hittest="false" hittestchildren="false">
+                <Panel id="HealthTreshold"/>
+            </Panel>
+        </snippet>
+    </snippets>
+    <Panel class="MainPanel" hittest="false">
+        <Panel id="HeroBarsContainer" hittest="false" class="MainPanel"/>
+    </Panel>
+</root>

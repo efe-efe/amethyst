@@ -1,0 +1,153 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf19:version{aafc65d8-7a5a-4e01-bd8d-3ac118422503} -->
+{
+	_class = "CParticleSystemDefinition"
+	m_bShouldHitboxesFallbackToRenderBounds = false
+	m_nMaxParticles = 16
+	m_flConstantRadius = 2.0
+	m_bShouldSort = false
+	m_Renderers = 
+	[
+		{
+			_class = "C_OP_RenderModels"
+			m_bSuppressTint = true
+			m_ModelList = 
+			[
+				{
+					m_model = resource:"models/particle/phantom_assassin_dagger_model.vmdl"
+				},
+			]
+			m_bAnimated = true
+			m_nLOD = 1
+			m_bForceLoopingAnimation = true
+		},
+		{
+			_class = "C_OP_RenderDeferredLight"
+			m_flAlphaScale = 5.0
+			m_flRadiusScale = 120.0
+			m_ColorScale = [ 170, 158, 89 ]
+		},
+	]
+	m_Operators = 
+	[
+		{
+			_class = "C_OP_BasicMovement"
+		},
+		{
+			_class = "C_OP_Decay"
+			m_nOpEndCapState = 1
+		},
+		{
+			_class = "C_OP_InterpolateRadius"
+			m_flEndTime = 2.0
+			m_flStartScale = 0.2
+		},
+		{
+			_class = "C_OP_SetControlPointsToParticle"
+			m_bSetOrientation = true
+			m_nFirstControlPoint = 3
+		},
+		{
+			_class = "C_OP_CPOffsetToPercentageBetweenCPs"
+			m_bScaleOffset = true
+			m_flInputBias = 0.1
+			m_vecOffset = [ 0.0, 0.0, 0.35 ]
+			m_nOffsetCP = 1
+			m_flInputMax = 0.0
+			m_flInputMin = 1.0
+		},
+		{
+			_class = "C_OP_RemapVelocityToVector"
+			m_bNormalize = true
+			m_nFieldOutput = "21"
+		},
+		{
+			_class = "C_OP_Spin"
+			m_fSpinRateStopTime = 777.0
+			m_nSpinRateDegrees = 77
+		},
+	]
+	m_Initializers = 
+	[
+		{
+			_class = "C_INIT_CreateWithinSphere"
+		},
+		{
+			_class = "C_INIT_RandomLifeTime"
+			m_fLifetimeMin = 0.1
+			m_fLifetimeMax = 0.1
+		},
+		{
+			_class = "C_INIT_VelocityFromCP"
+			m_nControlPoint = 1
+		},
+	]
+	m_Emitters = 
+	[
+		{
+			_class = "C_OP_InstantaneousEmitter"
+			m_nParticlesToEmit = 
+			{
+				m_nType = "PF_TYPE_LITERAL"
+				m_flLiteralValue = 1.0
+			}
+		},
+	]
+	m_Children = 
+	[
+		{
+			m_ChildRef = resource:"particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_stifling_dagger_launch_arcana.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_stifling_dagger_trail_arcana.vpcf"
+		},
+		{
+			m_bEndCap = true
+			m_ChildRef = resource:"particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_stifling_dagger_explosion_arcana.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_stifling_dagger_trail_c_arcana.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_stifling_dagger_trail_d_arcana.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_stifling_dagger_trail_glow_arcana.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_stifling_dagger_trail_glow_b_arcana.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_stifling_dagger_trail_glow_c_arcana.vpcf"
+		},
+	]
+	m_nBehaviorVersion = 5
+	m_controlPointConfigurations = 
+	[
+		{
+			m_name = "preview"
+			m_drivers = 
+			[
+				{
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 1
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 4
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
+					m_entityName = "self"
+				},
+			]
+		},
+	]
+}

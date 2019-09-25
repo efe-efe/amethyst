@@ -1,0 +1,12 @@
+﻿"lang"
+{
+	"Language"		"English"
+	"Tokens"
+	{		
+		"addon_game_name"			"amethyst"
+
+		
+        "DOTA_Tooltip_ability_slark_ex_pounce"      "EX - Pounce"
+        "DOTA_Tooltip_ability_slark_ex_pounce_Description"  "alternate version of pounce. Applies stun instead of root"
+	}
+}
