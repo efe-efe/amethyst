@@ -13,6 +13,15 @@ function modifier_spectre_desolate_lua:IsPurgable()
 	return true
 end
 
+function modifier_spectre_desolate_lua:OnCreated()
+	ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+		style = "Desolate",
+		text = "desolate",
+		progressBarType = "duration",
+		priority = 3,
+	})
+end
+
 -- Graphics & Animations
 function modifier_spectre_desolate_lua:GetEffectName()
 	return "particles/units/heroes/hero_spectre/spectre_desolate_debuff.vpcf"

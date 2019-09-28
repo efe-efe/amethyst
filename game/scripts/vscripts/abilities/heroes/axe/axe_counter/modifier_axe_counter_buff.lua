@@ -23,6 +23,13 @@ function modifier_axe_counter_buff:OnCreated( kv )
     if IsServer() then
 		self:PlayEffects()
 		self:StartIntervalThink(0.05)
+		
+		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Invulnerable",
+			text = "invulnerable",
+			progressBarType = "duration",
+			priority = 1,
+		})
     end
 end
 

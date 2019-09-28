@@ -5,6 +5,14 @@ function modifier_sniper_ultimate_timer:OnCreated()
         -- Can't move
         self:OnIntervalThink()
         self:StartIntervalThink( 0.45 )
+
+        
+        ProgressBars:AddProgressBar(self:GetCaster(), self:GetName(), {
+            style = "Ultimate",
+            text = "ultimate",
+            progressBarType = "duration",
+            priority = 1,
+        })
     end
 end
 
@@ -28,7 +36,7 @@ function modifier_sniper_ultimate_timer:OnIntervalThink()
     local caster = self:GetCaster()
     local ability = caster:FindAbilityByName("sniper_ultimate_projectile")
     
-    caster:CastAbilityOnPosition(Vector(0,0,0), ability, caster:GetPlayerID())
+    caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
 end
 
 function modifier_sniper_ultimate_timer:PlayEffects()

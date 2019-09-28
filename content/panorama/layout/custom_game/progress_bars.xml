@@ -1,0 +1,28 @@
+<root>
+  <styles>
+    <include src="s2r://panorama/styles/dotastyles.vcss_c" />
+    <include src="file://{resources}/styles/custom_game/progress_bars.css" />
+  </styles>
+  <scripts>
+    <include src="file://{resources}/scripts/custom_game/progress_bars.js" />
+  </scripts>
+
+  <snippets>
+    <snippet name="ProgressBar">
+      <Panel class="ProgressBarParent">
+        <Label class="ProgressBarLabel"/>
+        <Panel class="ProgressBar">
+            <Panel class="ProgressBarForeground"></Panel>
+            <Panel class="ProgressBarProgress"></Panel>
+        </Panel>
+      </Panel>
+
+    </snippet>
+  </snippets>
+
+  <Panel hittest="false" class="Outer">
+      <Panel hittest="false" id="Inner">
+      </Panel>
+  </Panel>
+</root>
+

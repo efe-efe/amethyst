@@ -30,6 +30,13 @@ function modifier_axe_extra:OnCreated( kv )
     if IsServer() then
         self.damage_reduction = -self:GetAbility():GetSpecialValueFor( "damage_reduction" )
         self:PlayEffects()
+
+        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Generic",
+			text = "Armor",
+			progressBarType = "duration",
+			priority = 2,
+		})
     end
 end
 

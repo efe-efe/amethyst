@@ -65,6 +65,11 @@ function ExecuteAbility(index)
     var playerId = Players.GetLocalPlayer();
     var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
     var abilityIndex = Entities.GetAbility( heroIndex, index );
+    
+    //Debug
+    heroIndex = Players.GetSelectedEntities( playerId )[0];
+    abilityIndex = Entities.GetAbility( heroIndex, index );
+
     if(heroIndex == -1){
         $.Msg("[Custom Bindings] Invalid hero: The hero hasn't been asigned yet");
     }

@@ -129,7 +129,7 @@ function GameMode:OnHeroInGame(keys)
         npc:SetHealth(npc:GetMaxHealth())
         npc.iTreshold = 40
         local health_bar = "(" .. npc.iTreshold .. "/" .. self.iMaxTreshold ..")"
-        npc:SetCustomHealthLabel(health_bar, 255, 255, 255)
+        --npc:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end)
 end
 

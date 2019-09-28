@@ -8,7 +8,7 @@ LinkLuaModifier( "modifier_wisp_basic_attack_link_negative", "abilities/heroes/w
 function wisp_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = caster:GetAttackAnimationPoint()
-
+	
 	-- Animation and pseudo cast point
 	caster:AddNewModifier(
 		caster,

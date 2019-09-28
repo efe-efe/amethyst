@@ -8,6 +8,13 @@ function modifier_axe_special_attack_debuff:OnCreated()
         -- Start Interval
         self:StartIntervalThink( 0.1 )   
         self:OnIntervalThink()
+
+        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Taunt",
+			text = "Taunt",
+			progressBarType = "duration",
+			priority = 1,
+		})
     end
 end
 

@@ -12,6 +12,13 @@ function modifier_treant_leeching_seed:OnCreated( kv )
 
         self:StartIntervalThink( 1.0 )
         self:PlayEffectsOnCast()
+        
+        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+            style = "Seed",
+            text = "seed",
+            progressBarType = "duration",
+            priority = 0,
+        })
     end
 end
 

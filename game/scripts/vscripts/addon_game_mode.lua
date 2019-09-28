@@ -2,6 +2,7 @@ require('util/util')
 require('util/modifiers')
 require('util/health')
 require('util/abilities')
+require('util/npc')
 
 _G.nCOUNTDOWNTIMER = 90
 
@@ -35,6 +36,8 @@ end
 require('libraries/timers') -- This library allow for easily delayed/timed actions
 require('libraries/projectiles') -- This library allow for easily delayed/timed actions
 require('libraries/animations') -- This library allows starting customized animations on units from lua
+require('libraries/progress_bars') 
+
 require('settings') -- settings.lua is where resides many different properties for Dotarite.
 require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.

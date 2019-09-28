@@ -56,6 +56,15 @@ function Abilities.Initialize( ability, animation, warmup, range )
             max_range = max_range,
             hide_indicator = warmup.hide_indicator or false
         })
+        
+        if self:GetAbilityType() == 1 then
+            ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
+                style = "Ultimate",
+                text = "ultimate",
+                progressBarType = "duration",
+                priority = 0,
+            })
+        end
     end
 
     function ability:OnCastPointEnd()

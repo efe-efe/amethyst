@@ -59,6 +59,12 @@ function modifier_counter:OnCreated( kv )
         end
 
         self:PlayEffectsAura()
+        ProgressBars:AddProgressBar(self.caster, self:GetName(), {
+            style = "Counter",
+            text = "counter",
+            progressBarType = "duration",
+            priority = 0,
+        })
     end
 end
 

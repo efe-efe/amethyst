@@ -1,0 +1,22 @@
+"DOTAAbilities" {
+	"treant_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/treant/treant_extra/treant_extra"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"treant_living_armor"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityCastPoint"				"0.1"		
+		"AbilityCooldown"				"15.0"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"damage_block"				"20" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_pct"			"20" }
+		}
+	}
+}

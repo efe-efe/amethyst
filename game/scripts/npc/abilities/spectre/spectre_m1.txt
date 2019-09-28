@@ -1,0 +1,33 @@
+"DOTAAbilities" {
+    "spectre_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_basic_attack/spectre_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_basic_attack"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"130"
+		"AbilityCastPoint"				"0.2"
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.5" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"heal_desolate"				"6" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_desolate"		"2" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_charged"		"8" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.4" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"charge_cooldown"				"8.0" }
+			"09"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"12" }
+		}
+	}
+}

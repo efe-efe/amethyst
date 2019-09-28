@@ -24,6 +24,8 @@ function sniper_ultimate:OnSpellStart()
 			no_target = 1
 		}
 	)
+
+
 end
 
 function sniper_ultimate:OnCastPointEnd()

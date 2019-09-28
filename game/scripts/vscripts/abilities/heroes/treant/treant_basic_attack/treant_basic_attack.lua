@@ -8,7 +8,7 @@ function treant_basic_attack:OnCastPointEnd()
 	local attack_damage = caster:GetAttackDamage()
 
 	local reduction_per_hit = self:GetSpecialValueFor("reduction_per_hit_pct")/100
-	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local heal = self:GetSpecialValueFor("heal")
 	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
@@ -60,8 +60,7 @@ function treant_basic_attack:OnCastPointEnd()
 
 			-- Give Mana
 			if counter < 1 then
-				local mana_gain_final = _self.Source:GetMaxMana() * mana_gain
-				_self.Source:GiveMana(mana_gain_final)
+				_self.Source:GiveManaPercent(mana_gain_pct)
 			end
 
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)

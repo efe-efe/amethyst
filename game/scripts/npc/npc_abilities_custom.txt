@@ -18,44 +18,24 @@
 #base "abilities\lich\lich_ex1.txt"
 #base "abilities\lich\lich_ex2.txt"
 
+#base "abilities\treant\treant_m1.txt"
+#base "abilities\treant\treant_m2.txt"
+#base "abilities\treant\treant_q.txt"
+#base "abilities\treant\treant_e.txt"
+#base "abilities\treant\treant_f.txt"
+#base "abilities\treant\treant_r.txt"
+#base "abilities\treant\treant_space.txt"
+#base "abilities\treant\treant_ex1.txt"
+#base "abilities\treant\treant_ex2.txt"
+
+#base "abilities\spectre\spectre_m1.txt"
+
 "DOTAAbilities"
 {
 	//=================================================================================================================
 	// Spectre
 	//=================================================================================================================
-	"spectre_basic_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_basic_attack/spectre_basic_attack"
-		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"spectre_basic_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"130"
-		"AbilityCastPoint"				"0.2"
-		
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.5" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"heal_desolate"				"6" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_desolate"		"2" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_charged"		"8" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.4" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"charge_cooldown"				"8.0" }
-			"09"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"12" }
-			"10"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"130" }
-		}
-	}
 	
 	"spectre_second_attack"
 	{
@@ -2152,228 +2132,6 @@
 			"01"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
 			"02"{ "var_type"			"FIELD_INTEGER"		"speed_buff"		"65" }
 			"03"{ "var_type"			"FIELD_FLOAT"		"stun_duration"		"1.0" }
-		}
-	}
-
-	//=================================================================================================================
-	// Treant Protector
-	//=================================================================================================================
-	"treant_basic_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_basic_attack/treant_basic_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_basic_attack"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"500"
-		"AbilityCastPoint"				"0.3"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1200" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"reduction_per_hit_pct"		"30" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"heal"						"7" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"5" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"healing_reduction_pct"		"5" }
-			"08"{ "var_type"	"FIELD_INTEGER"		"stack_limit"				"4" }
-		}
-	}
-
-	"treant_mobility"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_mobility/treant_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_natures_guise"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"750"
-		"AbilityCastPoint"				"0.5"
-		"AbilityCooldown"				"8.0"
-		"AbilityDamage"					"10"
-
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_spirit_breaker.vsndevts"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"140" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"knockback_duration"		"1.2" }
-		}
-	}
-
-	"treant_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_second_attack/treant_second_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastRange"				"1200"
-		"AbilityCastPoint"				"0.4"
-		"AbilityCooldown"				"8.0"
-		"AbilityDamage"					"15"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"180" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"0.5" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain"				"15" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"		"3" }
-		}
-	}
-
-	"treant_counter"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_counter/treant_counter"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_counter"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.1"
-		"AbilityDuration"				"1.5"
-		"AbilityCooldown"				"6.0"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"350" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"root_duration"				"0.5" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"leeching_duration"			"4.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"heal_damage"				"12" }
-		}
-	}
-
-	"treant_special_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_special_attack/treant_special_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_leech_seed"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.5"
-		"AbilityCastRange" 				"1200"
-		"AbilityCooldown"				"8.0"
-		"AbilityDamage"					"20"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"350" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"leeching_duration"			"4.0" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"heal_damage"				"24" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-		}
-	}
-
-	"treant_ex_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_ex_second_attack/treant_ex_second_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_ex_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastRange"				"1200"
-		"AbilityCastPoint"				"0.4"
-		"AbilityCooldown"				"8.0"
-		"AbilityManaCost"				"25"
-		"AbilityDamage"					"10"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"1.0" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"disable_duration"		"1.0" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"stun_per_stack"		"0.1" }
-		}
-	}
-
-	"treant_ex_special_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_ex_special_attack/treant_ex_special_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_ex_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
-		"AbilityCastPoint"				"0.4"
-		"AbilityCooldown"				"8.0"
-		"AbilityManaCost"				"25"
-		"AbilityDamage"					"10"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"300" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"1.5" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"heal"					"35" }
-		}
-	}
-
-	"treant_extra"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_extra/treant_extra"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_living_armor"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
-		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.1"		
-		"AbilityCooldown"				"15.0"
-		"AbilityManaCost"				"25"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.5" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"damage_block"				"20" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_pct"			"20" }
-		}
-	}
-
-	"treant_ultimate"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/treant/treant_ultimate/treant_ultimate"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"treant_overgrowth"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastPoint"				"1.0"
-		"AbilityManaCost"				"100"
-		"AbilityDamage"					"15"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"400" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"root_duration"			"1.2" }
 		}
 	}
 

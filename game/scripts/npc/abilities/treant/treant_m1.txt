@@ -1,0 +1,27 @@
+"DOTAAbilities" {
+    "treant_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/treant/treant_basic_attack/treant_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"treant_basic_attack"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"500"
+		"AbilityCastPoint"				"0.3"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"7" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1200" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"reduction_per_hit_pct"		"30" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"heal"						"7" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"5" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"healing_reduction_pct"		"5" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"stack_limit"				"4" }
+		}
+	}
+}

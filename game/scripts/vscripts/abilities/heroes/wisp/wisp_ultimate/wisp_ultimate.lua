@@ -25,6 +25,13 @@ function wisp_ultimate:OnSpellStart()
             radius = self.radius,
 		}
 	)
+
+	ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+		style = "Ultimate",
+		text = "ultimate",
+		progressBarType = "duration",
+		priority = 1,
+	})
 end
 
 --------------------------------------------------------------------------------
