@@ -15,12 +15,16 @@ function modifier_sniper_shrapnel_thinker_lua:OnCreated()
 
         self.initialized = false
 
-        self:StartIntervalThink( self.delay_time )  
+        self:StartIntervalThink( self.delay_time )
+        
+        EmitSoundOn("Hero_Sniper.MKG_ShrapnelShatter", self:GetParent())
     end
 end
 
 function modifier_sniper_shrapnel_thinker_lua:OnDestroy()
     if IsServer() then
+        
+        StopSoundOn("Hero_Sniper.MKG_ShrapnelShatter", self:GetParent())
 		ParticleManager:DestroyParticle( self.effect_cast, false )
         ParticleManager:ReleaseParticleIndex( self.effect_cast )    
 		UTIL_Remove( self:GetParent() )
@@ -30,7 +34,6 @@ end
 --------------------------------------------------------------------------------
 function modifier_sniper_shrapnel_thinker_lua:OnIntervalThink()
     local caster = self:GetCaster()
-
     if self.initialized == false then
         -- Start Interval
         AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.radius, self.duration, false )

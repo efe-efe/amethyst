@@ -37,7 +37,7 @@ function sniper_special_attack:OnCastPointEnd( point )
 			show_all = 1,
 			radius = self.radius,
 			delay_time = delay_time,
-			thinker_duration = duration,
+			thinker_duration = duration + delay_time ,
 		}, --paramTable
 		point, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber

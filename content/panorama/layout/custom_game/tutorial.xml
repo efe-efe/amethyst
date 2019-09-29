@@ -28,7 +28,7 @@
             </Panel>
             <Panel id="MouseRow" class="InfoRow">
                 <Image id="MouseImage" src="file://{images}/custom_game/mouse.png" />
-                <Label id="MouseText" html="true" text="Use the your mouse to attack and aim. Left click is used to attack with your basic attack. Right click is used to cast your secondary spell. Other spells are casted using [Q], [E], [R], [F], [D], [1] and [2] on your keyboard" />
+                <Label id="MouseText" html="true" text="Use the your mouse to attack and aim. Left click is used to attack with your basic attack. Right click is used to cast your secondary spell. Other spells are casted using [Q], [E], [R], [F], [1] and [2] on your keyboard" />
             </Panel>
         </Panel>
     </Panel>

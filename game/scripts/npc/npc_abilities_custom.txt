@@ -396,18 +396,18 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1200"
 		"AbilityCastPoint"				"0.3"
-		"AbilityCooldown"				"7.0"
+		"AbilityCooldown"				"8.0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"3" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.5" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"slow"						"40" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"slow_linger"				"1.0" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"2" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"25" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"slow_linger"				"0.5" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"max_charges"				"2" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.4" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.7" }
 		}
 	}
 

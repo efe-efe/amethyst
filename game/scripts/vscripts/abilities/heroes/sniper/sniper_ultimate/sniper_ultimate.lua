@@ -25,7 +25,13 @@ function sniper_ultimate:OnSpellStart()
 		}
 	)
 
-
+	ProgressBars:AddProgressBar(self:GetCaster(), "modifier_cast_point", {
+		style = "Ultimate",
+		text = "ultimate",
+		progressBarType = "duration",
+		priority = 1,
+		reversedProgress = true,
+	})
 end
 
 function sniper_ultimate:OnCastPointEnd()

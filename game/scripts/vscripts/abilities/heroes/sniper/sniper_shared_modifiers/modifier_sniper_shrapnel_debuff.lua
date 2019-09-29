@@ -18,7 +18,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_sniper_shrapnel_debuff:OnCreated( kv )
-	self.slow = -self:GetAbility():GetSpecialValueFor("slow")
+	self.slow_pct = -self:GetAbility():GetSpecialValueFor("slow_pct")
 end
 
 --------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ function modifier_sniper_shrapnel_debuff:DeclareFunctions()
 end
 
 function modifier_sniper_shrapnel_debuff:GetModifierMoveSpeedBonus_Percentage()
-    return self.slow
+    return self.slow_pct
 end
 
 

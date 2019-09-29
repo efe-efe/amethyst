@@ -115,7 +115,7 @@ end
 
 -- Graphics & Animations
 function modifier_nevermore_mobility_movement:GetEffectName()
-	return "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger_path_owner.vpcf"
+	return "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner.vpcf"
 end
 
 function modifier_nevermore_mobility_movement:GetEffectAttachType()
