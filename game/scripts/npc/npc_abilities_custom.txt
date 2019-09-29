@@ -29,234 +29,17 @@
 #base "abilities\treant\treant_ex2.txt"
 
 #base "abilities\spectre\spectre_m1.txt"
+#base "abilities\spectre\spectre_m2.txt"
+#base "abilities\spectre\spectre_q.txt"
+#base "abilities\spectre\spectre_e.txt"
+#base "abilities\spectre\spectre_f.txt"
+#base "abilities\spectre\spectre_r.txt"
+#base "abilities\spectre\spectre_space.txt"
+#base "abilities\spectre\spectre_ex1.txt"
+#base "abilities\spectre\spectre_ex2.txt"
 
 "DOTAAbilities"
 {
-	//=================================================================================================================
-	// Spectre
-	//=================================================================================================================
-
-	
-	"spectre_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_second_attack/spectre_second_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"spectre_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastRange"				"1200"
-		"AbilityCastPoint"				"1.0"
-		"AbilityCooldown"				"5.0"
-		"AbilityDamage"					"30"
-
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1200" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"9" }
-		}
-	}
-
-	"spectre_ex_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_ex_second_attack/spectre_ex_second_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"spectre_ex_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastPoint"				"0.2"
-		"AbilityCastRange"				"1200"
-		"AbilityCooldown"				"7.0"
-		"AbilityManaCost"				"25"
-		"AbilityDamage"					"15"
-
-		"precache"
-		{	
-			"particle" "particles/mod_units/heroes/hero_dark_willow/dark_willow_base_attack.vpcf"
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1200" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"5.0" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"vision_radius"				"200.0" }
-		}
-	}
-
-	"spectre_counter_lua"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_counter_lua/spectre_counter_lua"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"spectre_dispersion"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityDuration"				"1.5"
-		"AbilityCooldown"				"9.0"
-
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"speed_debuff"				"300" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.4" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"damage"					"15" }
-		}
-	}
-
-	"spectre_special_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
-		"MaxLevel"						"1"
-		
-		"AbilityTextureName"			"spectre_spectral_dagger"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastPoint"				"0.5"
-		"AbilityCastRange"				"1000"
-		"AbilityCooldown"				"7.0"
-		"AbilityDamage"					"12"
-
-		"precache"
-		{
-			"particle" "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2300" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1000" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"100" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"10" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"1.5" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"buff_duration"				"1.5" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"path_duration"				"3.0" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"speed_buff"				"35" }
-		}
-	}
-
-	"spectre_mobility"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_mobility/spectre_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"spectre_desolate"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityCastPoint"				"0.1"
-		"AbilityCastRange"				"800"
-		"AbilityCooldown"				"8.0"
-		"AbilityDamage"					"16"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"range"						"800" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.2" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"160" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"6" }
-		}
-	}
-	
-	"spectre_ex_mobility"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_ex_mobility/spectre_ex_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"spectre_ex_mobility"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
-		"AbilityDuration"				"1.8"
-		"AbilityCastPoint"				"0.2"
-		"AbilityCooldown"				"13.0"
-		"AbilityManaCost"				"25"
-
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"7" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff"				"100" }
-		}
-	}
-	
-	"spectre_ultimate"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_ultimate/spectre_ultimate"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"spectre_haunt"
-		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastPoint"				"0.6"
-		"AbilityCastRange"				"1600"
-		"AbilityManaCost"				"100"
-		"AbilityDamage"					"18"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2800" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1600" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"illusion_duration"			"3.0" }
-		}
-	}
-
-	"spectre_extra"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_extra/spectre_extra"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"spectre_reality"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityCastPoint"				"0.1"
-		"AbilityCastRange"				"800"
-		"AbilityCooldown"				"8.0"
-		"AbilityManaCost"				"25"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"range"						"800" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.8" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.0" }
-		}
-	}
-
 	//=================================================================================================================
 	// Skywrath Mage
 	//=================================================================================================================
@@ -1441,7 +1224,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"mana_gain"				"50" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"life_loss"				"10" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"life_loss"				"25" }
 		}
 	}
 
@@ -2182,7 +1965,7 @@
 		"MaxLevel"						"1"
 		
 		"AbilityTextureName"			"mount"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCastPoint"				"0.8"
 		"AbilityCooldown"				"1.0"
 
@@ -2207,7 +1990,7 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"charge"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCastPoint"				"0.1"
 		"AbilityCooldown"				"10"
 

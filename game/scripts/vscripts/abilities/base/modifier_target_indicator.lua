@@ -56,9 +56,6 @@ end
 function modifier_target_indicator:OnIntervalThink()
     local mouse = GameMode.mouse_positions[self.parent:GetPlayerID()]
     local origin = self.parent:GetOrigin()
-    
-	local direction = (mouse - origin):Normalized()
-	local distance = (mouse - origin):Length2D()
     local point = CalcRange(origin, mouse, self.max_range, self.min_range)
 
     self:UpdateEffects(origin, point)

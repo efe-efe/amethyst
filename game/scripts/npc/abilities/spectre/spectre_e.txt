@@ -1,0 +1,35 @@
+"DOTAAbilities" {
+	"spectre_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
+		"MaxLevel"						"1"
+		
+		"AbilityTextureName"			"spectre_spectral_dagger"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastPoint"				"0.5"
+		"AbilityCastRange"				"1000"
+		"AbilityCooldown"				"7.0"
+		"AbilityDamage"					"12"
+
+		"precache"
+		{
+			"particle" "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2300" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"100" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"10" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"1.5" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"buff_duration"				"0.5" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"path_duration"				"3.0" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"				"15" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"speed_debuff_pct"				"70" }
+		}
+	}
+}

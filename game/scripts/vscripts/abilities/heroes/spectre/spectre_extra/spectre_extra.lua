@@ -3,27 +3,12 @@ LinkLuaModifier( "modifier_spectre_extra_thinker", "abilities/heroes/spectre/spe
 LinkLuaModifier( "modifier_spectre_extra", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
--- Ability Start
-function spectre_extra:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	self.radius = self:GetSpecialValueFor("radius")
-
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_ATTACK, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
-		duration = cast_point, 
-        movement_speed = 10,
-        radius = self.radius
-	})
-end
-
---------------------------------------------------------------------------------
-function spectre_extra:OnCastPointEnd( point )
+function spectre_extra:OnCastPointEnd()
     -- unit identifier
 	local caster = self:GetCaster()
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
+	local radius = self:GetSpecialValueFor( "radius" )
+	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
     self:PlayEffects()
 
@@ -41,7 +26,7 @@ function spectre_extra:OnCastPointEnd( point )
 		{ 
 			thinker = "modifier_spectre_extra_thinker",
 			show_all = 1,
-			radius = self.radius,
+			radius = radius,
 			delay_time = delay_time,
 		}, --paramTable
 		point, --vOrigin
@@ -69,3 +54,10 @@ function spectre_extra:PlayEffects()
     ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	spectre_extra,
+	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
+	{ movement_speed = 10 }
+)

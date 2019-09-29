@@ -38,15 +38,22 @@ function juggernaut_ultimate:OnSpellStart()
     
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {
-        duration=cast_point + 0.1,
-		translate= "sharp_blade",
+        duration= cast_point + 0.1,
 		activity = ACT_DOTA_TAUNT,
+		translate= "sharp_blade",
         rate=2.5
     })
 	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
         duration = cast_point,
         can_walk = 0,
         fixed_range = 1,
+    })
+    ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+		style = "Ultimate",
+		text = "ultimate",
+		progressBarType = "duration",
+		priority = 1,
+		reversedProgress = true,
 	})
 end
 

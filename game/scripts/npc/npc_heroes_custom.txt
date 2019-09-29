@@ -78,7 +78,7 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"spectre_counter_lua"
+		"Ability1"						"spectre_counter"
 		"Ability2"						"spectre_basic_attack"
 		"Ability3"						"spectre_special_attack"
 		"Ability4"						"spectre_second_attack"

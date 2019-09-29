@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+	"spectre_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_mobility/spectre_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_desolate"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"AbilityCastPoint"				"0.1"
+		"AbilityCastRange"				"600"
+		"AbilityCooldown"				"8.0"
+		"AbilityDamage"					"16"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"6" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"          "1800" }
+		}
+	}
+}
+	

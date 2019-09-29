@@ -105,9 +105,6 @@ function spectre_basic_attack:PlayEffectsOnFinish( pos, charged )
 	local offset = 50
 	local new_position = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * offset
 
-	-- Create Sound
-	EmitSoundOn( "Hero_Spectre.Attack", caster )
-	
 	local particle_cast_b = "particles/units/heroes/hero_nyx_assassin/nyx_assassin_vendetta_swipe.vpcf"
 	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( effect_cast_b, 0, new_position)
@@ -140,6 +137,9 @@ function spectre_basic_attack:PlayEffectsOnImpact( hTarget, pos, charged )
 		local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, hTarget )
 		ParticleManager:ReleaseParticleIndex( effect_cast )
 	else
+		-- Create Sound
+		EmitSoundOn( "Hero_Spectre.Attack", hTarget )
+
 		local caster = self:GetCaster()
 		local offset = 50
 		local new_position = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * offset

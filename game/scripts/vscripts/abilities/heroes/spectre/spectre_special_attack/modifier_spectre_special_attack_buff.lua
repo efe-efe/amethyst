@@ -16,7 +16,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_special_attack_buff:OnCreated( kv )
-	self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
+	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 end
 
 --------------------------------------------------------------------------------
@@ -41,5 +41,5 @@ function modifier_spectre_special_attack_buff:DeclareFunctions()
 end
 
 function modifier_spectre_special_attack_buff:GetModifierMoveSpeedBonus_Percentage()
-    return self.speed_buff
+    return self.speed_buff_pct
 end

@@ -22,6 +22,13 @@ function nevermore_ultimate:OnSpellStart()
 		can_walk = 0,
 		no_target = 1
 	})
+    ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+		style = "Ultimate",
+		text = "ultimate",
+		progressBarType = "duration",
+		priority = 1,
+		reversedProgress = true,
+	})
 end
 
 --------------------------------------------------------------------------------

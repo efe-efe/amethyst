@@ -24,6 +24,13 @@ function tinker_ultimate:OnSpellStart()
 		fixed_range = 1,
 		show_all = 1,
 	})
+    ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+		style = "Ultimate",
+		text = "ultimate",
+		progressBarType = "duration",
+		priority = 1,
+		reversedProgress = true,
+	})
 end
 
 function tinker_ultimate:OnCastPointEnd( pos )

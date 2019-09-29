@@ -2,81 +2,38 @@ spectre_special_attack = class({})
 LinkLuaModifier( "modifier_spectre_special_attack_debuff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_debuff", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_special_attack_thinker", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Ability Start
-function spectre_special_attack:OnSpellStart()
-	-- Initialize variables
+function spectre_special_attack:OnCastPointEnd( )
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=0.7})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
-		duration = cast_point,
-		can_walk = 1,
-		fixed_range = 1
-	})
-end
-
-
-function spectre_special_attack:OnCastPointEnd( point )
-	local caster = self:GetCaster()
+	local point = self:GetCursorPosition()
+	local damage = self:GetAbilityDamage()
+	local origin = caster:GetOrigin()
 
 	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf" 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_vision = 500
+	local hitbox = self:GetSpecialValueFor("hitbox")
 
 	-- Extra data
 	local path_duration = self:GetSpecialValueFor("path_duration")
-	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
-	local damage = self:GetAbilityDamage()
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
 
-	-- Dynamic data
-	local origin = caster:GetOrigin()
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-	
-	-- logic
+
 	local projectile = {
-		EffectName = ""--[[projectile_name]],
 		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
-		fDistance = projectile_distance,
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
+		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		bUniqueRadius = hitbox,
 		Source = caster,
-		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,
-		bMultipleHits = true,
-		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
-		nChangeMax = 1,
-		bRecreateOnChange = true,
-		bZCheck = false,
-		bGroundLock = true,
-		bProvidesVision = true,
+		fGroundOffset = 0,
 		bIsSlowable = false,
-		iVisionRadius = 200,
-		iVisionTeamNumber = caster:GetTeam(),
-		bFlyingVision = false,
-		fVisionTickTime = .1,
-		fVisionLingerDuration = 1,
-		draw = false,
-		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
-			-- Hit
-			--------------------
-			local caster =  self:GetCaster()
-		
 			local damage = {
 				victim = unit,
 				attacker = caster,
@@ -94,18 +51,14 @@ function spectre_special_attack:OnCastPointEnd( point )
 			)
 
 			-- Give Mana
-			local mana_gain_final = caster:GetMaxMana() * mana_gain
-			caster:GiveMana(mana_gain_final)
-
-			-- Effects
-			self:PlayEffects_b(_self:GetPosition())
-			_self.Destroy()
+			caster:GiveManaPercent(mana_gain_pct)
+			self:PlayEffectsOnImpact(unit)
 		end,
 		OnFinish = function(_self, pos)
 		end,
 	}
 
-	local path = CreateModifierThinker(
+	CreateModifierThinker(
 		caster, -- player source
 		self, -- ability source
 		"modifier_spectre_special_attack_thinker", -- modifier name
@@ -113,8 +66,9 @@ function spectre_special_attack:OnCastPointEnd( point )
 			duration = path_duration,
 			x = point.x,
 			y = point.y,
-			z = point.z
-	 	}, -- kv
+			z = point.z,
+
+		 }, -- kv
 		origin,
 		caster:GetTeamNumber(),
 		false --bPhantomBlocker
@@ -133,10 +87,10 @@ function spectre_special_attack:OnCastPointEnd( point )
 		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
 			
 		EffectName = projectile_name, 
-		fDistance = projectile_distance, 
-		fStartRadius = projectile_start_radius, 
-		fEndRadius =projectile_end_radius, 
-		vVelocity = projectile_direction * projectile_speed, 
+		fDistance = projectile.fDistance, 
+		fStartRadius = hitbox, 
+		fEndRadius = hitbox, 
+		vVelocity = projectile.vVelocity, 
 	
 		bHasFrontalCone = false, 
 		bReplaceExisting = false, 
@@ -144,25 +98,32 @@ function spectre_special_attack:OnCastPointEnd( point )
 			
 		bProvidesVision = true, 
 	} 
-
-	self:PlayEffects_a()
 	Projectiles:CreateProjectile(projectile)
 	ProjectileManager:CreateLinearProjectile(info) 
+	self:PlayEffectsOnCast()
 end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 
 -- On Ability start
-function spectre_special_attack:PlayEffects_a()
-	-- Create Sound
-	local sound_cast = "Hero_Spectre.DaggerCast"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+function spectre_special_attack:PlayEffectsOnCast()
+	EmitSoundOn( "Hero_Spectre.DaggerCast", self:GetCaster() )
 end
 
 -- On Projectile hit an enemy
-function spectre_special_attack:PlayEffects_b(hTarget)
-	-- Create Sound
-	local sound_cast = "Hero_Spectre.DaggerImpact"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+function spectre_special_attack:PlayEffectsOnImpact(hTarget)
+	EmitSoundOn( "Hero_Spectre.DaggerImpact", hTarget )
+
+	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_impact.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, hTarget )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+	
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	spectre_special_attack,
+	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 0.7 },
+	{ movement_speed = 20, fixed_range = 1 }
+)

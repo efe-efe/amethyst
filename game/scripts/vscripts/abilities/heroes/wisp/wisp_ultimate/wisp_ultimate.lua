@@ -31,6 +31,7 @@ function wisp_ultimate:OnSpellStart()
 		text = "ultimate",
 		progressBarType = "duration",
 		priority = 1,
+		reversedProgress = true,
 	})
 end
 

@@ -1,0 +1,27 @@
+"DOTAAbilities" {
+    "spectre_ex_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ex_mobility/spectre_ex_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_ex_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityDuration"				"1.8"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCooldown"				"13.0"
+		"AbilityManaCost"				"25"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"7" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff"				"100" }
+		}
+	}
+}

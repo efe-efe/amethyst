@@ -1,0 +1,34 @@
+"DOTAAbilities" {
+    "spectre_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ex_second_attack/spectre_ex_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_ex_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"7.0"
+		"AbilityManaCost"				"25"
+		"AbilityDamage"					"15"
+
+		"precache"
+		{	
+			"particle" "particles/mod_units/heroes/hero_dark_willow/dark_willow_base_attack.vpcf"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"5.0" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"vision_radius"				"200.0" }
+		}
+	}
+}

@@ -13,16 +13,16 @@ function attack_name:OnCastPointEnd()
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
 	local projectile = {
-		vSpawnOrigin = origin + Vector(0,0,80),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
+		vSpawnOrigin =		origin + Vector(0,0,80),
+		fDistance =			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		fUniqueRadius =		self:GetSpecialValueFor("hitbox"),
+		Source =			caster,
+		vVelocity =			projectile_direction * projectile_speed,
+		UnitBehavior =		PROJECTILES_NOTHING,
+		TreeBehavior =		PROJECTILES_NOTHING,
+		WallBehavior =		PROJECTILES_DESTROY,
+		GroundBehavior =	PROJECTILES_NOTHING,
+		fGroundOffset =		0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" end,
 		OnUnitHit = function(_self, unit)
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)

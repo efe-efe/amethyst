@@ -1,35 +1,5 @@
 mount = class({})
 LinkLuaModifier( "modifier_mount", "abilities/heroes/common/mount/modifier_mount.lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_mount_casting", "abilities/heroes/common/mount/modifier_mount_casting.lua", LUA_MODIFIER_MOTION_NONE )
-
---------------------------------------------------------------------------------
--- Ability Start
-function mount:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-
-    StartAnimation(caster, {
-        duration = cast_point + 0.1, 
-        activity=ACT_DOTA_GENERIC_CHANNEL_1, 
-        rate=1.5
-    })
-
-    
-	-- Animation and pseudo cast point
-	caster:AddNewModifier(
-        caster, 
-        self,
-        "modifier_cast_point", 
-        {
-            duration = cast_point,
-            no_target = 1,
-            can_walk = 0,
-            cancel_on_damage = 1,
-        }
-    )
-    self:PlayEffectsCasting()
-end
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -81,3 +51,10 @@ function mount:StopEffectsCasting()
         ParticleManager:ReleaseParticleIndex( self.effect_cast )
     end
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	mount,
+	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.5 },
+	{ movement_speed = 0 }
+)

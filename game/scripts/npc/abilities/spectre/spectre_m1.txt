@@ -26,7 +26,7 @@
 			"05"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_desolate"		"2" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_charged"		"8" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.4" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"charge_cooldown"				"8.0" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"charge_cooldown"			"8.0" }
 			"09"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"12" }
 		}
 	}

@@ -6,23 +6,23 @@ function ability_name:OnCastPointEnd()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
 	--local damage = caster:GetAttackDamage()
-	--local damage = caster:GetAbilityDamage()
+	--local damage = self:GetAbilityDamage()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_necrolyte/necrolyte_base_attack_ka.vpcf",
-		vSpawnOrigin = origin + Vector(0,0,80),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
+		EffectName =		"particles/mod_units/heroes/hero_necrolyte/necrolyte_base_attack_ka.vpcf",
+		vSpawnOrigin =		origin + Vector(0,0,80),
+		fDistance =			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		fUniqueRadius = 	self:GetSpecialValueFor("hitbox"),
+		Source =			caster,
+		vVelocity =			projectile_direction * projectile_speed,
+		UnitBehavior =		PROJECTILES_NOTHING,
+		TreeBehavior =		PROJECTILES_NOTHING,
+		WallBehavior =		PROJECTILES_DESTROY,
+		GroundBehavior =	PROJECTILES_NOTHING,
+		fGroundOffset =		0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit"  and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)

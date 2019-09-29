@@ -3,73 +3,30 @@ LinkLuaModifier( "modifier_spectre_ultimate_illusion", "abilities/heroes/spectre
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function spectre_ultimate:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=0.4})
-	caster:AddNewModifier(
-		caster, 
-		self, 
-		"modifier_cast_point", 
-		{ 
-			duration = cast_point,
-			can_walk = 0,
-			fixed_range = 1,
-		}
-	)
-end
-
---------------------------------------------------------------------------------
--- Ability Start
-function spectre_ultimate:OnCastPointEnd( pos )
+function spectre_ultimate:OnCastPointEnd( )
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
+	local point = self:GetCursorPosition()
 	local name = caster:GetUnitName()
-	
-	-- load data
-	local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_transversant_spectral_dagger.vpcf"
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_vision = 500
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
 	local damage = self:GetAbilityDamage()
-	self.illusion_duration = self:GetSpecialValueFor("illusion_duration")
+	
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+
+	local illusion_duration = self:GetSpecialValueFor("illusion_duration")
 
 	-- logic
 	local projectile = {
-		EffectName = "" --[[projectile_name]],
 		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
-		fDistance = projectile_distance,
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
+		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		bUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
-		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,
-		bMultipleHits = true,
-		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
-		nChangeMax = 1,
-		bRecreateOnChange = true,
-		bZCheck = false,
-		bGroundLock = true,
-		bProvidesVision = true,
-		iVisionRadius = 200,
-		iVisionTeamNumber = caster:GetTeam(),
-		bFlyingVision = false,
-		fVisionTickTime = .1,
-		fVisionLingerDuration = 1,
-		draw = false,
-		fRehitDelay = 1.0,
+		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
 			local caster =  self:GetCaster()
@@ -105,7 +62,7 @@ function spectre_ultimate:OnCastPointEnd( pos )
 					_self.Source,
 					self,
 					"modifier_spectre_ultimate_illusion",
-					{ duration = self.illusion_duration }
+					{ duration = illusion_duration }
 				)
 			end
 			
@@ -128,7 +85,7 @@ function spectre_ultimate:OnCastPointEnd( pos )
 			)
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffects_b(pos)
+			self:PlayEffectsOnFinish(pos)
 		end,
 	}
 
@@ -137,27 +94,22 @@ function spectre_ultimate:OnCastPointEnd( pos )
 		Source = caster, 
 		Ability = self, 
 		vSpawnOrigin = origin, 
-		 
 		bDeleteOnHit = false, 
-		 
 		iUnitTargetTeam = DOTA_UNIT_TARGET_TEAM_ENEMY, 
 		iUnitTargetFlags = DOTA_UNIT_TARGET_FLAG_NONE, 
 		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-		 
-		EffectName = projectile_name, 
-		fDistance = projectile_distance, 
-		fStartRadius = projectile_start_radius, 
-		fEndRadius =projectile_end_radius, 
-		vVelocity = projectile_direction * projectile_speed, 
- 
+		EffectName = "particles/mod_units/heroes/hero_spectre/spectre_transversant_spectral_dagger.vpcf", 
+		fDistance = projectile.fDistance, 
+		fStartRadius = projectile.bUniqueRadius, 
+		fEndRadius =projectile.bUniqueRadius, 
+		vVelocity = projectile.vVelocity, 
 		bHasFrontalCone = false, 
 		bReplaceExisting = false, 
 		fExpireTime = GameRules:GetGameTime() + 8.0, 
-		 
 		bProvidesVision = false, 
 	} 
 	 
-	self:PlayEffects_a()
+	self:PlayEffectsOnLaunch()
 	Projectiles:CreateProjectile(projectile)
 	ProjectileManager:CreateLinearProjectile(info) 
 end
@@ -165,7 +117,7 @@ end
 -- Graphics & sounds
 
 --cast
-function spectre_ultimate:PlayEffects_a()
+function spectre_ultimate:PlayEffectsOnLaunch()
 	-- Get Resources
 	local sound_cast = "Hero_Spectre.DaggerCast.ti7"
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
@@ -179,7 +131,7 @@ function spectre_ultimate:PlayEffects_a()
 end
 
 --Impact
-function spectre_ultimate:PlayEffects_b(pos)
+function spectre_ultimate:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	-- Cast Sound
     local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
@@ -191,3 +143,11 @@ function spectre_ultimate:PlayEffects_b(pos)
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	spectre_ultimate,
+	{ activity = ACT_DOTA_ATTACK, rate = 0.4 },
+	{ movement_speed = 0, fixed_range = 1 }
+)

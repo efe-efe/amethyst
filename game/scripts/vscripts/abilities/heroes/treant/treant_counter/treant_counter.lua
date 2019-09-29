@@ -90,5 +90,5 @@ if IsClient() then require("abilities") end
 Abilities.Initialize( 
     treant_counter,
     nil, 
-	{ movement_speed = 0, hide_indicator = 1 }
+	{ movement_speed = 0 }
 )

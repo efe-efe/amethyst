@@ -41,7 +41,6 @@ function treant_mobility:OnCastPointEnd( )
 	local projectile_speed = speed + 150
 	
     local projectile = {
-        EffectName = "",
         vSpawnOrigin = origin + Vector(0,0,80),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
         fUniqueRadius = 100,

@@ -14,12 +14,14 @@ function modifier_spectre_desolate_lua:IsPurgable()
 end
 
 function modifier_spectre_desolate_lua:OnCreated()
-	ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-		style = "Desolate",
-		text = "desolate",
-		progressBarType = "duration",
-		priority = 3,
-	})
+	if IsServer() then
+		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Desolate",
+			text = "desolate",
+			progressBarType = "duration",
+			priority = 3,
+		})
+	end
 end
 
 -- Graphics & Animations

@@ -22,6 +22,13 @@ function phantom_ultimate:OnSpellStart()
 			show_all = 1
 		}
 	)
+    ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+		style = "Ultimate",
+		text = "ultimate",
+		progressBarType = "duration",
+		priority = 1,
+		reversedProgress = true,
+	})
 end
 
 function phantom_ultimate:OnCastPointEnd( point )

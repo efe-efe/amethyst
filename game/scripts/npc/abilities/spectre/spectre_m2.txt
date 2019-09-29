@@ -1,0 +1,30 @@
+"DOTAAbilities" {
+    "spectre_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_second_attack/spectre_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_second_attack"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"1.0"
+		"AbilityCooldown"				"5.0"
+		"AbilityDamage"					"30"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
+		}
+	}
+}

@@ -17,14 +17,16 @@ function modifier_generic_fading_slow_lua:OnCreated( kv )
     self.fading_slow = -self:GetAbility():GetSpecialValueFor("fading_slow")
     self.speed_per_tick = self.fading_slow / self.duration
 
-    self:StartIntervalThink( 0.5 )
+    if IsServer() then 
+        self:StartIntervalThink( 0.5 )
 
-    ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-        style = "Generic",
-        text = "fading slow",
-        progressBarType = "duration",
-        priority = 2,
-    })
+        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+            style = "Generic",
+            text = "fading slow",
+            progressBarType = "duration",
+            priority = 2,
+        })
+    end
 end
 
 --------------------------------------------------------------------------------

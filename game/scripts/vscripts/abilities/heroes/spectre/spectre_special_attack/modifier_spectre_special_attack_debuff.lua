@@ -4,7 +4,7 @@ modifier_spectre_special_attack_debuff = class({})
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_special_attack_debuff:OnCreated( kv )
-	self.speed_buff = -self:GetAbility():GetSpecialValueFor("speed_buff")
+	self.speed_debuff_pct = -self:GetAbility():GetSpecialValueFor("speed_debuff_pct")
 end
 
 --------------------------------------------------------------------------------
@@ -18,13 +18,13 @@ function modifier_spectre_special_attack_debuff:DeclareFunctions()
 end
 
 function modifier_spectre_special_attack_debuff:GetModifierMoveSpeedBonus_Percentage()
-    return self.speed_buff
+    return self.speed_debuff_pct
 end
 
 
 -- Graphics & Animations
 function modifier_spectre_special_attack_debuff:GetEffectName()
-	return "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger_path_owner.vpcf"
+	return "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner.vpcf"
 end
 
 function modifier_spectre_special_attack_debuff:GetEffectAttachType()

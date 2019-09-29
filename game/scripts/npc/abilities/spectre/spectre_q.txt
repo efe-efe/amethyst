@@ -1,0 +1,25 @@
+"DOTAAbilities" {
+    "spectre_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_dispersion"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityDuration"				"1.5"
+		"AbilityCooldown"				"9.0"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"speed_debuff"				"300" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.4" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"damage"					"15" }
+		}
+	}
+}

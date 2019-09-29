@@ -8,8 +8,10 @@ Abilities = {}
     }
 ]]
 
-function Abilities.Initialize( ability, animation, warmup, range )
+function Abilities.Initialize( ability, animation, warmup )
     local onCastPointEnd = ability.OnCastPointEnd
+    local onSpellStart = ability.OnSpellStart
+
 
     function ability:GetBehavior()
         return self.BaseClass.GetBehavior(self) + DOTA_ABILITY_BEHAVIOR_IMMEDIATE
@@ -43,9 +45,7 @@ function Abilities.Initialize( ability, animation, warmup, range )
         if warmup.fixed_range then
             min_range = max_range
         else
-            if warmup.min_range then
-                min_range = self:GetSpecialValueFor("min_range")
-            end
+            min_range = self:GetSpecialValueFor("min_range")
         end
 
         caster:AddNewModifier( caster, self, "modifier_cast_point_new", { 
@@ -63,7 +63,22 @@ function Abilities.Initialize( ability, animation, warmup, range )
                 text = "ultimate",
                 progressBarType = "duration",
                 priority = 0,
+                reversedProgress = true,
             })
+        end
+
+        if self:GetName() == "mount" then
+            ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
+                style = "Generic",
+                text = "mounting",
+                progressBarType = "duration",
+                priority = 1,
+                reversedProgress = true,
+            })
+        end
+
+        if onSpellStart then
+            onSpellStart(self)
         end
     end
 

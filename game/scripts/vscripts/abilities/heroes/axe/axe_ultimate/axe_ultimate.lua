@@ -18,6 +18,13 @@ function axe_ultimate:OnSpellStart()
         radius = self.radius,
         show_all = 1,
 	})
+    ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+		style = "Ultimate",
+		text = "ultimate",
+		progressBarType = "duration",
+		priority = 1,
+		reversedProgress = true,
+	})
 end
 
 --------------------------------------------------------------------------------
