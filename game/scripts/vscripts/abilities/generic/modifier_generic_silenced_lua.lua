@@ -34,7 +34,7 @@ end
 -- Modifier State
 function modifier_generic_silenced_lua:CheckState()
 	local state = {
-		[MODIFIER_STATE_SILENCED] = true,
+		--[MODIFIER_STATE_SILENCED] = true,
 	}
 
 	return state

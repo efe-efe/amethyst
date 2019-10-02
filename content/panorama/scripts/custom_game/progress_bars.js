@@ -39,7 +39,6 @@ function DeleteProgressBarFromKey(key)
 }
 
 function OnProgressBarTableChange(table_name, key, data){
-
     if (isEmpty(data)) {
         //$.Msg("Progress Bar Panoramanager OnProgressBarTableChange | Empty data!")
         DeleteProgressBarFromKey(key)
@@ -66,7 +65,7 @@ function CreateProgressBar(args) {
     newBar["style"] = args.style;
     newBar["maxStacks"] = args.maxStacks || 0;
     newBar["textSuffix"] = args.textSuffix || false;
-    newBar["priority"] = args.priority || 100;
+    newBar["priority"] = args.priority !== null && args.priority || 100;
     newBar["ignorePriority"] = args.ignorePriority || false;
     newBar["parentPanel"] = CreateProgressBarPanel(newBar);
 
@@ -157,12 +156,12 @@ function CreateProgressBarPanel(params) {
 // Save marginal effort by only running updates if we need to
 function SchedulePositionUpdates() {
     if (activeBars.length > 0) {
-        UpdateBarPositions();
+        UpdateAllBars();
         $.Schedule(INTERVAL, SchedulePositionUpdates);
     }
 }
 
-function UpdateBarPositions() {
+function UpdateAllBars() {
     var i = activeBars.length;
     while (i--) { UpdateProgressBar(activeBars[i]) }
 }
@@ -197,7 +196,7 @@ function SetVisibility( progressBar, hasModifier, positioned ){
         })
 
         // Check wich bar to show based on priority. (Lower number = higher priority)
-        ownActiveBars.sort(function(a, b) { return a.priority - b.priority; });
+        ownActiveBars.sort(function(a, b) { return a.priority - b.priority; }).reverse();
         if(
             ownActiveBars[0]["unitIndex"] != progressBar["unitIndex"] ||
             ownActiveBars[0]["modifierName"] != progressBar["modifierName"]
@@ -302,7 +301,16 @@ function PositionProgressBar(progressBar)
         var x = scale * Math.min(sw - parentPanel.actuallayoutwidth,Math.max(0, wx - parentPanel.actuallayoutwidth/2));
         var y = scale * Math.min(sh - parentPanel.actuallayoutheight,Math.max(0, wy - parentPanel.actuallayoutheight));
 
+        // For some reason i have to do this otherwise the bar starts misspositioned 
         parentPanel.style.position = x + "px " + y + "px 0px;";
+        if(
+            parentPanel.actuallayoutwidth ==  0 &&
+            parentPanel.actuallayoutheight ==  0
+        
+        ){
+            parentPanel.style.position = "-1000px -1000px 0px;";
+            return true;
+        }
     } else {
         parentPanel.style.position = "-1000px -1000px 0px;";
         return false;

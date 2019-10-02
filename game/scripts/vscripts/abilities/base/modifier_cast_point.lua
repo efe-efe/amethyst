@@ -50,6 +50,14 @@ function modifier_cast_point:OnCreated(params)
 	self.point = Vector(0,0,0)
 	
 	if IsServer() then
+
+		ProgressBars:AddProgressBar(self.parent, self:GetName(), {
+			style = "Castpoint",
+			progressBarType = "duration",
+			ignorePriority = true,
+			reversedProgress = true,
+		})
+
 		self:StartCast()
 		self:StartIntervalThink( 0.01 )
 	end
@@ -79,8 +87,15 @@ function modifier_cast_point:OnRefresh(params)
 	self.disable_all = params.disable_all
 	self.point = Vector(0,0,0)
 
-
 	if IsServer() then
+		
+		ProgressBars:AddProgressBar(self.parent, self:GetName(), {
+			style = "Castpoint",
+			progressBarType = "duration",
+			ignorePriority = true,
+			reversedProgress = true,
+		})
+
 		self:StopEffects()
 		self:StartCast()
 		self:StartIntervalThink( 0.01 )
