@@ -57,6 +57,7 @@ function Abilities.Initialize( ability, animation, warmup )
             hide_indicator = warmup.hide_indicator or false
         })
         
+        -- Castbar (ULTIMATE)
         if self:GetAbilityType() == 1 then
             ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
                 style = "Ultimate",
@@ -65,14 +66,21 @@ function Abilities.Initialize( ability, animation, warmup )
                 priority = 0,
                 reversedProgress = true,
             })
-        end
-
-        if self:GetName() == "mount" then
+        -- Castbar (MOUNT)
+        elseif self:GetName() == "mount" then
             ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
                 style = "Generic",
                 text = "mounting",
                 progressBarType = "duration",
                 priority = 1,
+                reversedProgress = true,
+            })
+        -- Castbar
+        else
+            ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
+                style = "Castpoint",
+                progressBarType = "duration",
+                ignorePriority = true,
                 reversedProgress = true,
             })
         end

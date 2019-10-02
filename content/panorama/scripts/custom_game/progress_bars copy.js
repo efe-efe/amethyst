@@ -21,12 +21,18 @@
 
 
 var INTERVAL = 0.03;
+var FAST_INTERVAL = 0.03;
+var SLOW_INTERVAL = 0.03;
 
 var activeBars = [] // list of active bars
+
 var hud = null
 var barContainerPanel = null
 
+// ---------------------------------------------------------------------- //
 // -------------- Table Synchronisation and Periodic Updates ------------ //
+// ---------------------------------------------------------------------- //
+
 // A key is a pair of unitID-_-modifierName,
 // So if we want to delete a progress bar,
 // We will have to extract this data from the key
@@ -68,16 +74,18 @@ function CreateProgressBar(args) {
     newBar["textSuffix"] = args.textSuffix || false;
     newBar["priority"] = args.priority || 100;
     newBar["ignorePriority"] = args.ignorePriority || false;
-    newBar["parentPanel"] = CreateProgressBarPanel(newBar);
+
+    var newPanel = CreateProgressBarPanel(newBar)
+
+    newBar["parentPanel"] = newPanel;
+
 
     // Check to see if there already exists a progress bar for this modifier and unit
     var oldBarFound = false;
+    
     for (var i = 0; i < activeBars.length; i++)
     {
-        if (
-            activeBars[i]["unitIndex"] == newBar["unitIndex"] && 
-            activeBars[i]["modifierName"] == newBar["modifierName"]
-        )
+        if (activeBars[i]["unitIndex"] == newBar["unitIndex"] && activeBars[i]["modifierName"] == newBar["modifierName"])
         {
             // This bar was already registered, but perhaps the parameters have updated. Overwrite the old one
             activeBars[i]["parentPanel"].DeleteAsync(0);
@@ -93,7 +101,8 @@ function CreateProgressBar(args) {
         // This is a new bar, add it to the end of the active list
         activeBars.push(newBar)
 
-        // This was the only progress bar: start scheduling updates
+        // If the length of activeBars is now 1,
+        // then this was the only progress bar: start scheduling updates
         if (activeBars.length == 1)
         {
             $.Schedule(INTERVAL, SchedulePositionUpdates);
@@ -112,10 +121,7 @@ function DeleteProgressBar(args)
 
     var i = activeBars.length
     while (i--) {
-        if (
-            activeBars[i]["unitIndex"] == unitIndex && 
-            activeBars[i]["modifierName"] == modifierName
-        )
+        if (activeBars[i]["unitIndex"] == unitIndex && activeBars[i]["modifierName"] == modifierName)
         {
             //$.Msg("Found a duplicate panel, deleting the old one!");
             activeBars[i]["parentPanel"].DeleteAsync(0);
@@ -126,6 +132,7 @@ function DeleteProgressBar(args)
 
 
 function CreateProgressBarPanel(params) {
+
     // Create the panel inside our hud so that it inherits the correct styles
     var newPanel = $.CreatePanel("Panel", $("#Inner"), "" );
     newPanel.BLoadLayoutSnippet("ProgressBar");
@@ -164,51 +171,75 @@ function SchedulePositionUpdates() {
 
 function UpdateBarPositions() {
     var i = activeBars.length;
-    while (i--) { UpdateProgressBar(activeBars[i]) }
+    var unitFound = false;
+    var modifierFound = false;
+
+    while (i--) {
+        if (UpdateProgressBar(activeBars[i])) // This returns true if an update was successfully made
+        {
+            unitFound = true;
+        } else {
+            // We aren't aware of the unit
+        }
+    }
+
+    if (unitFound)
+    {
+        INTERVAL = FAST_INTERVAL;
+    } else {
+        // All of the bars are attached to units that we can't see.
+        // We can afford to wait a longer interval before the next update
+        INTERVAL = SLOW_INTERVAL;
+    }
+
 }
 
+// ---------------------------------------------------------------------- //
 // --------------------------- Core Update Loop ------------------------- //
+// ---------------------------------------------------------------------- //
+
 // Takes a handle to a progress bar object
 // Updates the panel
 function UpdateProgressBar(progressBar)
 {
+    // Set Visibility
     var modifierIndex = GetProgressBarModifierIndex(progressBar)
-    var positioned = PositionProgressBar(progressBar);
-    if (!SetVisibility(progressBar, modifierIndex, positioned)){ return false }
-    SetProgressBarFilledness(progressBar, modifierIndex);
-    return true;
-}
-
-function SetVisibility( progressBar, hasModifier, positioned ){
-    if (!hasModifier  || !positioned ) {
+    if (!modifierIndex) {
         progressBar.parentPanel.visible = false;
         return false
-    } else{
-        if( progressBar["ignorePriority"]){
-            progressBar["parentPanel"].visible = true;
-            return true;
-        }
-
-        var ownActiveBars = [];
-        activeBars.forEach( function(bar){
-            if(bar.unitIndex == progressBar.unitIndex && !bar["ignorePriority"]){
-                ownActiveBars.push(bar);
-            }
-        })
-
-        // Check wich bar to show based on priority. (Lower number = higher priority)
-        ownActiveBars.sort(function(a, b) { return a.priority - b.priority; });
-        if(
-            ownActiveBars[0]["unitIndex"] != progressBar["unitIndex"] ||
-            ownActiveBars[0]["modifierName"] != progressBar["modifierName"]
-        ){
-            progressBar["parentPanel"].visible = false;
-            return false;
-        } else {
-            progressBar["parentPanel"].visible = true;
-            return true;
-        }
+    } else {
+        progressBar["lastIndex"] = modifierIndex;
+        progressBar.parentPanel.visible = true;
     }
+
+    SetProgressBarFilledness(progressBar, modifierIndex);
+    PositionProgressBar(progressBar);
+
+    var ownActiveBars = [];
+    activeBars.forEach( function(bar){
+        if(bar.unitIndex == progressBar.unitIndex){
+            ownActiveBars.push(bar);
+        }
+    })
+
+    // Check wich bar to show based on priority. (Lower number = higher priority)
+    ownActiveBars.sort(function(a, b) {
+        return a.priority - b.priority;
+    });
+
+    ownActiveBars.forEach( function(bar, i){
+
+        if(bar["ignorePriority"]){
+            bar["parentPanel"].visible = true;
+        }
+        else if( i == 0 ){
+            bar["parentPanel"].visible = true;
+        } else {
+            bar["parentPanel"].visible = false;
+        }
+    })
+
+    return true
 }
 
 // Returns an integer corresponding to the buffIndex that matches the progress bar
@@ -216,9 +247,14 @@ function SetVisibility( progressBar, hasModifier, positioned ){
 function GetProgressBarModifierIndex(progressBar)
 {
 
+    var parentPanel = progressBar["parentPanel"];
     var unitIndex = progressBar["unitIndex"];
-    // Hide the panel and sleep
-    if (!Entities.IsAlive(unitIndex)) { return false; }
+
+    // If the unit is dead (or we don't have knowledge of it) then hide the panel and sleep
+    if (!Entities.IsAlive(unitIndex)) { 
+        parentPanel.visible = false;
+        return false
+    }
 
     // Fetch the modifier of the unit
     // We check the last index at which we successfully found the modifier
@@ -240,6 +276,7 @@ function GetProgressBarModifierIndex(progressBar)
     // The unit is alive but doesn't have the modifier.
     // Hide the progress bar and give up for this frame.
     if (!modifierIndex) { 
+        parentPanel.visible = false;
         return false
     }
 
@@ -250,6 +287,7 @@ function GetProgressBarModifierIndex(progressBar)
 // How filled should the "progress made" panel be?
 function SetProgressBarFilledness(progressBar, modifierIndex)
 {
+
     var parentPanel = progressBar["parentPanel"];
     var unitIndex = progressBar["unitIndex"];
     var progressMadePanel = parentPanel.FindChildrenWithClassTraverse("ProgressBarProgress")[0];
@@ -294,6 +332,7 @@ function PositionProgressBar(progressBar)
 
     var check = Game.ScreenXYToWorld(wx, wy);
 
+
     if(check[1] != 0) {
         var sw = Game.GetScreenWidth();
         var sh = Game.GetScreenHeight();
@@ -302,15 +341,19 @@ function PositionProgressBar(progressBar)
         var x = scale * Math.min(sw - parentPanel.actuallayoutwidth,Math.max(0, wx - parentPanel.actuallayoutwidth/2));
         var y = scale * Math.min(sh - parentPanel.actuallayoutheight,Math.max(0, wy - parentPanel.actuallayoutheight));
 
+        //$.Msg("Setting Position to: " + x + " px  " + y + " px");
+
         parentPanel.style.position = x + "px " + y + "px 0px;";
+        parentPanel.visible = true;
     } else {
         parentPanel.style.position = "-1000px -1000px 0px;";
-        return false;
+        parentPanel.visible = false;
     }
 
     // We succeeded in positioning the panel
     // Return true so that we know we have to update again very soon
     return true
+
 }
 
 // ---------------------------------------------------------------------- //

@@ -25,7 +25,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Refresh
-function modifier_target_indicator:OnRefresh()
+function modifier_target_indicator:OnRefresh( params )
 	self.parent = self:GetParent()
 	self.radius = params.radius
     self.min_range = params.min_range

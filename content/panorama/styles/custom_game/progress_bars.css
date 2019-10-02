@@ -33,7 +33,8 @@
     width: 100%;
     font-family: MingLiU;
     text-transform: uppercase;
-    text-shadow: 2px 2px 8px 5.0 black;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    /*text-shadow: 2px 2px 8px 5.0 black;*/
     text-overflow: clip;
 }
 
@@ -90,8 +91,11 @@
 .Seed .ProgressBarProgress{ background-color: #43cf20; }
 .Seed .ProgressBarLabel{ color: #43cf20; }
 
-
-
+.Castpoint .ProgressBarProgress{ background-color: white; }
+.Castpoint.ProgressBarParent{ 
+    transform: translate3d(-1px, -12.5px, 0px); 
+    width: 110px;
+}
 
 /* ------------------------------------- */
 /* --------- SM Related Stuff ---------- */

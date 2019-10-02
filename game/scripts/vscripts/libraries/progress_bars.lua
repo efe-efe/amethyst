@@ -34,7 +34,7 @@ if not ProgressBars then
     ProgressBars = {}
 end
 
-ProgressBars.THINK_INTERVAL = 1
+ProgressBars.THINK_INTERVAL = 0.03 -- CHANGED FROM 1.0. ¿Performance ISSUES?
 
 function ProgressBars:new( o )
   o = o or {}

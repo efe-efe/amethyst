@@ -18,7 +18,7 @@ function modifier_generic_knockback_lua:OnCreated( kv )
 			-- kv.distance (0)
 			-- kv.duration (0)
 			-- kv.x, kv.y, kv.z (xy:-forward vector, z:0)
-			-- kv.IsStun (false)
+			
 			-- kv.damage (nil)
 			-- kv.IsPurgable () // later 
 
@@ -36,7 +36,7 @@ function modifier_generic_knockback_lua:OnCreated( kv )
 			self.direction = -(self:GetParent():GetForwardVector())
 		end
 		self.height = kv.z or 0
-		self.stun = kv.IsStun
+		--self.stun = kv.IsStun
 
 		-- load data
 		self.origin = self:GetParent():GetOrigin()
@@ -160,7 +160,7 @@ end
 -- Status Effects
 function modifier_generic_knockback_lua:CheckState()
 	local state = {
-		[MODIFIER_STATE_STUNNED] = self.stun,
+		--[MODIFIER_STATE_STUNNED] = self.stun,
         [MODIFIER_STATE_COMMAND_RESTRICTED] = self.disable,
         [MODIFIER_STATE_NO_HEALTH_BAR] = self.invulnerable,
 		[MODIFIER_STATE_INVULNERABLE] = self.invulnerable,

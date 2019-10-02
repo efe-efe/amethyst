@@ -21,9 +21,9 @@ function spectre_basic_attack:OnCastPointEnd()
 	local heal_charged = self:GetSpecialValueFor("heal_charged")
 	local damage_bonus_charged = self:GetSpecialValueFor("damage_bonus_charged")
 
-	local projectile_speed = 3000
+	local projectile_speed = 2000
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
-	local offset = 10
+	local offset = 50
 
 	local modifier = caster:FindModifierByName("modifier_spectre_basic_attack")
 	local charged = modifier:GetStackCount() > 0 and true or false 
@@ -39,7 +39,7 @@ function spectre_basic_attack:OnCastPointEnd()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
 			local counter = 0
 			for k, v in pairs(_self.rehit) do counter = counter + 1 end
@@ -163,6 +163,6 @@ if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	spectre_basic_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.1 },
-	{ movement_speed = 80, hide_indicator = 1 }
+	{ movement_speed = 80 }
 )
 Abilities.BasicAttack( spectre_basic_attack )

@@ -9,7 +9,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"130"
+		"AbilityCastRange"				"120"
 		"AbilityCastPoint"				"0.2"
 		
 		"precache"
@@ -19,7 +19,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"120" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.5" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"heal_desolate"				"6" }

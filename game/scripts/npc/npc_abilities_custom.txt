@@ -38,6 +38,8 @@
 #base "abilities\spectre\spectre_ex1.txt"
 #base "abilities\spectre\spectre_ex2.txt"
 
+#base "abilities\juggernaut\juggernaut_m1.txt"
+
 "DOTAAbilities"
 {
 	//=================================================================================================================
@@ -1707,28 +1709,7 @@
 	//=================================================================================================================
 	// Juggernaut
 	//=================================================================================================================
-	"juggernaut_basic_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_basic_attack/juggernaut_basic_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_blade_dance"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"130"
-		"AbilityCastPoint"				"0.1"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"130" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"cooldown_reduction"		"1.0" }
-		}
-	}
+	
 
 	"juggernaut_second_attack"
 	{

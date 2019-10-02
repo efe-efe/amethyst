@@ -167,7 +167,8 @@ function GameMode:CaptureGameMode()
                 not ability:IsInAbilityPhase() and
                 not caster:IsSilenced() and
                 not caster:IsCommandRestricted() and
-                not caster:IsNightmared()
+                not caster:IsNightmared() and
+                not caster:IsStunned()
             then
                 caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
             end

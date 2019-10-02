@@ -1,87 +1,31 @@
 juggernaut_basic_attack = class({})
-LinkLuaModifier( 
-	"modifier_juggernaut_basic_attack_stacks", 
-	"abilities/heroes/juggernaut/juggernaut_basic_attack/modifier_juggernaut_basic_attack_stacks", 
-	LUA_MODIFIER_MOTION_NONE 
-)
-
---------------------------------------------------------------------------------
--- Ability Start
-function juggernaut_basic_attack:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = caster:GetAttackAnimationPoint()
-	StartAnimation(caster, {duration = 0.4, activity=ACT_DOTA_ATTACK_EVENT, rate=1.8})
-	
-	caster:AddNewModifier( caster, self, "modifier_cast_point", { 
-		duration = cast_point, 
-		movement_speed = 80,
-		placeholder = 0,
-	})
-end
+LinkLuaModifier( "modifier_juggernaut_basic_attack_stacks", "abilities/heroes/juggernaut/juggernaut_basic_attack/modifier_juggernaut_basic_attack_stacks", LUA_MODIFIER_MOTION_NONE )
 
 function juggernaut_basic_attack:OnCastPointEnd( point )
 	local caster = self:GetCaster()
-	local offset = 20
-
-	-- Projectile data
-    local projectile_name = ""
-	local projectile_start_radius = 50
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_speed = 2000
+	local point = self:GetCursorPosition()
+	local origin = caster:GetOrigin()
+	local attack_damage = caster:GetAttackDamage()
 	
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
 	local stun_duration = caster:FindAbilityByName("juggernaut_ex_second_attack"):GetSpecialValueFor("stun_duration")
-	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
-
-	local attack_damage = caster:GetAttackDamage()
-	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
-	local perform_special = false
-
-	-- Dinamyc data
-	local origin = caster:GetOrigin()
-	local direction_normalized = (point - origin):Normalized()
-	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
+	local perform_special = caster:HasModifier("modifier_juggernaut_ex_second_attack") and true or false
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-
-
-	--Check if we should crit and stun
-	if caster:HasModifier("modifier_juggernaut_ex_second_attack") then
-		perform_special = true
-	end
-
+	local offset = 50
+	local projectile_speed = 2000
 
 	local projectile = {
-		EffectName = projectile_name,
-		vSpawnOrigin = final_position + Vector(0,0,80),
-		fDistance = projectile_distance,
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
+		vSpawnOrigin = origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
+		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
-		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,
-		bMultipleHits = false,
-		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		nChangeMax = 1,
-		bRecreateOnChange = true,
-		bZCheck = false,
-		bGroundLock = true,
-		bProvidesVision = true,
-		iVisionRadius = 200,
-		iVisionTeamNumber = caster:GetTeam(),
-		bFlyingVision = false,
-		fVisionTickTime = .1,
-		fVisionLingerDuration = 1,
-		draw = false,
-		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
 			if perform_special == true then
@@ -101,9 +45,7 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 			ApplyDamage( damage_table )
 
 			if _self.Source == caster then 
-				local mana_gain_final = caster:GetMaxMana() * mana_gain
-				caster:GiveMana(mana_gain_final)
-
+				caster:GiveManaPercent(mana_gain_pct)
 				if unit:IsRealHero() then 
 					-- Add modifier
 					caster:AddNewModifier(
@@ -137,7 +79,6 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 	}
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-	self:StartCooldown(attack_speed)
 end
 
 --------------------------------------------------------------------------------
@@ -185,3 +126,10 @@ function juggernaut_basic_attack:PlayEffects_c( pos )
 	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 end
 
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	juggernaut_basic_attack,
+	{ activity = ACT_DOTA_ATTACK_EVENT, rate = 1.8 },
+	{ movement_speed = 80 }
+)
+Abilities.BasicAttack( juggernaut_basic_attack )

@@ -14,7 +14,7 @@ end
 function modifier_generic_sleep_lua:CheckState()
 	local state = {
 		[MODIFIER_STATE_NIGHTMARED] = true,
-		[MODIFIER_STATE_STUNNED] = true,
+		--[MODIFIER_STATE_STUNNED] = true,
 		[MODIFIER_STATE_COMMAND_RESTRICTED] = true,
 	}
 
