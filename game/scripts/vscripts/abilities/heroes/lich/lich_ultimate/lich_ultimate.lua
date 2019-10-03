@@ -29,5 +29,5 @@ if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	lich_ultimate,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.8 },
-    { movement_speed = 30, fixed_range = 1 }
+    { movement_speed = 30, fixed_range = 1, hide_castbar = 1}
 )

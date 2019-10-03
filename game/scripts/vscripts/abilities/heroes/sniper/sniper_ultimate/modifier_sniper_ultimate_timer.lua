@@ -5,6 +5,13 @@ function modifier_sniper_ultimate_timer:OnCreated()
         -- Can't move
         self:OnIntervalThink()
         self:StartIntervalThink( 0.45 )
+
+        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+            style = "Ultimate",
+            text = "ultimate",
+            progressBarType = "duration",
+            priority = 0,
+        })
     end
 end
 

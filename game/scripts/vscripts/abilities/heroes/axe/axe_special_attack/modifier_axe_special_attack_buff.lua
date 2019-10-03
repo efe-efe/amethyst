@@ -11,6 +11,13 @@ function modifier_axe_special_attack_buff:OnCreated()
         local think_interval = 0.3--self:GetAbility():GetSpecialValueFor( "think_interval" )
         -- Start Interval
         self:StartIntervalThink( think_interval )   
+
+        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+            style = "Call",
+            text = "call",
+            progressBarType = "duration",
+            priority = 1,
+        })
     end
 end
 

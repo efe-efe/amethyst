@@ -51,13 +51,14 @@ function modifier_sky_special_attack_thinker:OnIntervalThink()
         local x = enemy:GetOrigin().x - thinker_origin.x
         local y = enemy:GetOrigin().y - thinker_origin.y
         local difference = enemy:GetOrigin() - thinker_origin
-        local distance = self.radius - difference:Length2D()
+        local distance = self.radius - difference:Length2D() + 20
 
         local movement_modifier = enemy:AddNewModifier(
             self:GetCaster(), -- player source
             self:GetAbility(), -- ability source
             "modifier_sky_special_attack_movement", -- modifier name
             {
+                speed = 800,
                 x = x,
                 y = y,
                 r = distance,

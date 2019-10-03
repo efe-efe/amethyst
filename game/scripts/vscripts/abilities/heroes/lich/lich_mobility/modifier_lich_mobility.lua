@@ -21,6 +21,14 @@ function modifier_lich_mobility:OnCreated( kv )
         self.duration = self:GetAbility():GetSpecialValueFor( "duration" )
         self.damage_block = self:GetAbility():GetSpecialValueFor( "damage_block" )
 
+        if IsServer() then
+            ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+                style = "Generic",
+                text = "shield",
+                progressBarType = "duration",
+                priority = 1,
+            })
+        end
         self:PlayEffects()
     end
 end

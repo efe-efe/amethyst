@@ -24,6 +24,12 @@ function modifier_wisp_extra:OnCreated( kv )
 
         EmitSoundOn( sound_cast, self:GetParent() )
 
+        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+            style = "Overcharge",
+            text = "overcharge",
+            progressBarType = "duration",
+            priority = 1,
+        })
         self:PlayEffects()
     end
 end

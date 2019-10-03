@@ -16,6 +16,7 @@ function modifier_generic_fading_slow_lua:OnCreated( kv )
     self.duration = self:GetDuration()
     self.fading_slow = -self:GetAbility():GetSpecialValueFor("fading_slow")
     self.speed_per_tick = self.fading_slow / self.duration
+    self.effect_name = kv.effect_name or false
 
     if IsServer() then 
         self:StartIntervalThink( 0.5 )
@@ -57,9 +58,12 @@ end
 
 --------------------------------------------------------------------------------
 --Graphics
-
 function modifier_generic_fading_slow_lua:GetEffectName()
-	return "particles/generic_gameplay/rune_haste.vpcf"
+    if self.effect_name == false then
+        return "particles/generic_gameplay/rune_haste.vpcf"
+    else
+        return self.effect_name
+    end
 end
 
 function modifier_generic_fading_slow_lua:GetEffectAttachType()
@@ -69,3 +73,4 @@ end
 function modifier_generic_fading_slow_lua:GetTexture()
 	return "modifier_generic_fading_slow_lua"
 end
+

@@ -27,7 +27,16 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_axe_ultimate:OnCreated( kv )
-		self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
+	self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
+
+	if IsServer() then
+		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Generic",
+			text = "haste",
+			progressBarType = "duration",
+			priority = 1,
+		})
+	end
 end
 
 function modifier_axe_ultimate:GetModifierMoveSpeedBonus_Percentage()

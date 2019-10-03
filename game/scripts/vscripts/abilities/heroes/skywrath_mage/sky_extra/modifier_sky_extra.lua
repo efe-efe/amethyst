@@ -22,6 +22,15 @@ function modifier_sky_extra:OnCreated( kv )
         self.damage_block = self:GetAbility():GetSpecialValueFor( "damage_block" )
         
         self:PlayEffects()
+
+        if IsServer() then
+            ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+                style = "Generic",
+                text = "shield",
+                progressBarType = "duration",
+                priority = 1,
+            })
+        end
     end
 end
 --------------------------------------------------------------------------

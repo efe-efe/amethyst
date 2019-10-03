@@ -44,19 +44,25 @@ function modifier_sky_second_attack_thinker:OnIntervalThink()
             false -- bool, can grow cache
         )
 
+        local healed = false
+
         -- Heal allys
         for _,ally in pairs(alies) do
-            ally:Heal(self.heal, self:GetCaster())
-            self:GetCaster():AddNewModifier(
-                self:GetCaster(),
-                ability,
-                "modifier_sky_second_attack_reducer",
-                {}
-            )
+            if ally:GetMaxHealth() ~= ally:GetHealth() then
+                ally:Heal(self.heal, self:GetCaster())
+                self:GetCaster():AddNewModifier(
+                    self:GetCaster(),
+                    ability,
+                    "modifier_sky_second_attack_reducer",
+                    {}
+                )
+
+                healed = true
+            end
         end
 
         -- if at least 1 ally
-            if #alies > 0 then
+        if healed then
             -- Give Mana
             local mana_gain_final = self:GetCaster():GetMaxMana() * self.mana_gain
             self:GetCaster():GiveMana(mana_gain_final)

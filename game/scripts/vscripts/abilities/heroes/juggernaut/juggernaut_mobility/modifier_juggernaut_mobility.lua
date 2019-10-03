@@ -31,8 +31,17 @@ function modifier_juggernaut_mobility:OnCreated( kv )
             rate = 1.0
         })
 
-        self:PlayEffects()
+        if IsServer() then 
+            ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+                style = "Generic",
+                text = "Haste",
+                progressBarType = "duration",
+                priority = 1,
+            })
+        end
+
         self:StartIntervalThink( 0.3 )
+        self:PlayEffects()
     end
 end
 

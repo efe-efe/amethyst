@@ -1,10 +1,5 @@
 
 juggernaut_special_attack = class({})
-LinkLuaModifier( 
-	"modifier_juggernaut_special_attack", 
-	"abilities/heroes/juggernaut/juggernaut_special_attack/modifier_juggernaut_special_attack",
-	LUA_MODIFIER_MOTION_NONE
-)
 
 function juggernaut_special_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("juggernaut_ex_special_attack")
@@ -43,8 +38,8 @@ function juggernaut_special_attack:OnCastPointEnd( point )
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	-- Extra data
-	local slow_duration = self:GetSpecialValueFor("slow_duration")
-	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
+	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
+	local mana_gain = self:GetSpecialValueFor("mana_gain")
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
@@ -91,18 +86,13 @@ function juggernaut_special_attack:OnCastPointEnd( point )
 			}
 			ApplyDamage( damage_table )
 
-			-- Add modifier
-			unit:AddNewModifier(
-				caster, -- player source
-				self, -- ability source
-				"modifier_juggernaut_special_attack", -- modifier name
-				{ duration = slow_duration } -- kv
-			)
+			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow_lua", { 
+				duration = fading_slow_duration,
+				effect_name = "particles/generic_gameplay/generic_purge.vpcf"
+			})
 
 			if _self.Source == caster then
-				-- Give Mana
-				local mana_gain_final = caster:GetMaxMana() * mana_gain
-				caster:GiveMana(mana_gain_final)
+				caster:GiveManaPercent(mana_gain)
 			end
 		end,
 		OnFinish = function(_self, pos)

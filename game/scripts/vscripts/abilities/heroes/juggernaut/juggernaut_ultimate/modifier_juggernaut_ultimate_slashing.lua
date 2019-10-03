@@ -33,6 +33,16 @@ function modifier_juggernaut_ultimate_slashing:OnCreated( kv )
             activity=ACT_DOTA_OVERRIDE_ABILITY_4, 
             rate=1.5
         })
+
+        
+        if IsServer() then 
+            ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+                style = "Ultimate",
+                text = "ultimate",
+                progressBarType = "duration",
+                priority = 1,
+            })
+        end
         
         self:OnIntervalThink()
         self:StartIntervalThink( attack_speed )

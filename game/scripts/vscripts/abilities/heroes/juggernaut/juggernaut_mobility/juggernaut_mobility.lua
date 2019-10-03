@@ -15,6 +15,9 @@ function juggernaut_mobility:OnSpellStart()
 		movement_speed = 50,
 		no_target = 1
 	})
+
+	-- Strong Dispel
+	self:GetCaster():Purge( false, true, false, true, false )
 end
 
 --------------------------------------------------------------------------------

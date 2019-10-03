@@ -38,7 +38,14 @@ function modifier_nevermore_special_attack_movement:OnCreated( kv )
 
 		if self:ApplyVerticalMotionController() == false then
 			self:Destroy()
-        end
+		end
+		
+		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+            style = "Generic",
+            text = "flying",
+            progressBarType = "duration",
+            priority = 1,
+        })
 	end
 end
 

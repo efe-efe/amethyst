@@ -29,6 +29,13 @@ function modifier_spectre_ex_mobility:OnCreated( kv )
         self:PlayEffects2()
 
         self:StartIntervalThink( 0.3 )
+
+		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Darkness",
+			text = "darkness",
+			progressBarType = "duration",
+			priority = 3,
+		})
     end
 end
 

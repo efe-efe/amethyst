@@ -56,3 +56,8 @@ function modifier_lich_frost:StopEffectsTimer()
 	ParticleManager:DestroyParticle(self.effect_cast, false)
 	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
+
+function modifier_lich_frost:GetTexture()
+	return "lich_basic_attack"
+end
+

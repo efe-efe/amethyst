@@ -20,7 +20,7 @@
 */
 
 
-var INTERVAL = 0.03;
+var INTERVAL = 0.01;
 
 var activeBars = [] // list of active bars
 var hud = null

@@ -20,6 +20,13 @@ end
 function modifier_generic_pre_silence_lua:OnCreated()
     if IsServer() then
         self:PlayEffects_a()
+
+        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+            style = "PreSilence",
+            text = "pre-silence",
+            progressBarType = "duration",
+            priority = 1,
+        })
     end
 end
 

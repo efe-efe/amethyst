@@ -25,7 +25,7 @@ function modifier_sky_special_attack_movement:OnCreated( kv )
         -- references
 		self.distance = kv.r
 		self.direction = Vector(kv.x,kv.y,0):Normalized()
-		self.speed = 300 -- special value
+		self.speed = kv.speed -- special value
 		self.origin = self:GetParent():GetOrigin()
 
 		-- apply motion controller

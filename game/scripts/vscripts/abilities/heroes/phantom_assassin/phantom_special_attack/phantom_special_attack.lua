@@ -39,6 +39,7 @@ function phantom_special_attack:OnCastPointEnd( point )
 	-- Extra data
 	local slow_duration = self:GetSpecialValueFor("slow_duration")
 	local crit_multiplier = self:GetSpecialValueFor("crit_multiplier")
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
@@ -87,14 +88,17 @@ function phantom_special_attack:OnCastPointEnd( point )
 			ApplyDamage( damage_table )
 			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, damage, nil )
 
-			if unit:IsRealHero() and _self.Source == caster then 
-				-- Add modifier
-				caster:AddNewModifier(
-					caster, -- player source
-					self, -- ability source
-					"modifier_phantom_assassin_strike_stack_lua", -- modifier name
-					{} -- kv
-				)
+			if _self.Source == caster then
+				caster:GiveManaPercent(mana_gain_pct)
+				if unit:IsRealHero() then 
+					-- Add modifier
+					caster:AddNewModifier(
+						caster, -- player source
+						self, -- ability source
+						"modifier_phantom_assassin_strike_stack_lua", -- modifier name
+						{} -- kv
+					)
+				end
 			end
 
 			-- Add modifier

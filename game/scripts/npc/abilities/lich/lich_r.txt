@@ -41,6 +41,8 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2200" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"decay_duration"		"5.0" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"frost_duration"		"5.0" }
 		}
 	}
 }

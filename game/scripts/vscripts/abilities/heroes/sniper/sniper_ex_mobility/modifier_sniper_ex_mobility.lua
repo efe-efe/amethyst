@@ -3,7 +3,16 @@ modifier_sniper_ex_mobility = class({})
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_sniper_ex_mobility:OnCreated( kv )
-	self.speed_buff = -100 --self:GetAbility():GetSpecialValueFor("speed_buff")
+	self.speed_debuff_pct = -self:GetAbility():GetSpecialValueFor("speed_debuff_pct")
+
+	if IsServer() then 
+		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Generic",
+			text = "slow",
+			progressBarType = "duration",
+			priority = 3,
+		})
+	end
 end
 
 --------------------------------------------------------------------------------
@@ -17,7 +26,7 @@ function modifier_sniper_ex_mobility:DeclareFunctions()
 end
 
 function modifier_sniper_ex_mobility:GetModifierMoveSpeedBonus_Percentage()
-    return self.speed_buff
+    return self.speed_debuff_pct
 end
 
 

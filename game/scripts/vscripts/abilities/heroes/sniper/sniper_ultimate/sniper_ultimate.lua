@@ -4,64 +4,43 @@ LinkLuaModifier( "modifier_sniper_ultimate_timer", "abilities/heroes/sniper/snip
 --------------------------------------------------------------------------------
 -- Ability Start
 function sniper_ultimate:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	local radius = self:GetSpecialValueFor("hitbox")
-    
-    -- play effects
-	self:PlayEffects_a()
-	
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.6, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
-	caster:AddNewModifier(
-		caster, 
-		self, 
-		"modifier_cast_point", 
-		{ 
-			duration = cast_point,
-			can_walk = 0,
-			no_target = 1
-		}
-	)
-
-	ProgressBars:AddProgressBar(self:GetCaster(), "modifier_cast_point", {
-		style = "Ultimate",
-		text = "ultimate",
-		progressBarType = "duration",
-		priority = 1,
-		reversedProgress = true,
-	})
+	self:PlayEffectsOnPhase()
 end
 
 function sniper_ultimate:OnCastPointEnd()
     local caster = self:GetCaster()
-    local attack_time = self:GetSpecialValueFor("duration")
-    
+    local duration = self:GetSpecialValueFor("duration")
+	local projectile = caster:FindAbilityByName("sniper_ultimate_projectile")
+	
     caster:AddNewModifier(
         caster, -- player source
 		self, -- ability source
 		"modifier_sniper_ultimate_timer", -- modifier name
-		{ duration = attack_time } -- kv
+		{ duration = duration + projectile:GetCastPoint() - 0.1 } -- kv
     )
-
-    self:PlayEffects_b()
+    self:PlayEffectsOnCast()
 end
 
 function sniper_ultimate:OnStopPseudoCastPoint()
-	self:StopEffects_a()
+	self:StopEffectsOnPhase()
 end
 
-function sniper_ultimate:PlayEffects_a()
+function sniper_ultimate:PlayEffectsOnPhase()
     EmitGlobalSound( "sniper_snip_ability_assass_02")
 end
 
-function sniper_ultimate:StopEffects_a()
+function sniper_ultimate:StopEffectsOnPhase()
     StopGlobalSound( "sniper_snip_ability_assass_02" )
 end
 
-function sniper_ultimate:PlayEffects_b()
+function sniper_ultimate:PlayEffectsOnCast()
     local sound_cast = "sniper_snip_laugh_08"
     EmitGlobalSound( sound_cast)
 end
 
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	sniper_ultimate,
+	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },
+	{ movement_speed = 0}
+)

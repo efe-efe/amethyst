@@ -56,3 +56,8 @@ function modifier_lich_decay:StopEffectsTimer()
 	ParticleManager:DestroyParticle(self.effect_cast, false)
 	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
+
+
+function modifier_lich_decay:GetTexture()
+	return "lich_second_attack"
+end

@@ -22,6 +22,15 @@ function modifier_treant_extra:OnCreated( kv )
     if IsServer() then
         self.duration = self:GetAbility():GetSpecialValueFor( "duration" )
         self.damage_block = self:GetAbility():GetSpecialValueFor( "damage_block" )
+        
+        if IsServer() then
+            ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+                style = "Generic",
+                text = "shield",
+                progressBarType = "duration",
+                priority = 1,
+            })
+        end
         self:PlayEffects()
     end
 end

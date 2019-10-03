@@ -23,6 +23,8 @@
 
 .ProgressBarLabel
 {
+    width: 100%;
+
     align: center center;
     text-align: center;
     border-radius: 8px;
@@ -30,7 +32,6 @@
     font-weight: bold;
     padding: 2px;
     color: white;
-    width: 100%;
     font-family: MingLiU;
     text-transform: uppercase;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -40,11 +41,12 @@
 
 .ProgressBar
 {
-    width: 100%;
-    height: 6px;
-    border-radius: 5px;
     z-index: 1;
+
+    width: 100%;
+    height: 7px;
     border: 1px solid rgb(34, 34, 34);
+    border-radius: 3px;
     box-shadow: fill rgb(34, 34, 34) 0px 0px 4px 4px;
 }
 
@@ -82,20 +84,30 @@
 .Counter .ProgressBarProgress{ background-color: rgb(209, 218, 255); }
 .Ultimate .ProgressBarProgress{ background-color: #FDDF5A; }
 .Desolate .ProgressBarProgress{ background-color: #A049AC; }
-.Desolate .ProgressBarLabel{ color: #A049AC; }
+.Desolate .ProgressBarLabel{ color: rgb(181, 58, 185); }
+.Darkness .ProgressBarProgress{ background-color: rgb(181, 58, 185); }
+.Darkness .ProgressBarLabel{ color: #A049AC; }
 .Invulnerable .ProgressBarProgress{ background-color: #FDDF5A; }
-.Taunt .ProgressBarProgress{ background-color: #D57A6F; }
+.Taunt .ProgressBarProgress{ background-color: #f12d2d; }
 .Taunt .ProgressBarLabel{ color: #D57A6F; }
 .Generic .ProgressBarProgress{ background-color: white; }
 .Generic .ProgressBarLabel{ color: white; }
 .Seed .ProgressBarProgress{ background-color: #43cf20; }
 .Seed .ProgressBarLabel{ color: #43cf20; }
+.HealingWard .ProgressBarProgress{ background-color: #43cf20; }
+.HealingWard .ProgressBarLabel{ color: #43cf20; }
+.Overcharge .ProgressBarProgress{ background-color: #f12d2d; }
+.Overcharge .ProgressBarLabel{ color: #f12d2d; }
+.Call .ProgressBarProgress{ background-color: #f12d2d; }
+.Call .ProgressBarLabel{ color: #f12d2d; }
+.PreSilence .ProgressBarProgress{ background-color: rgb(181, 58, 185); }
 
 .Castpoint .ProgressBarProgress{ background-color: white; }
 .Castpoint.ProgressBarParent{ 
     transform: translate3d(-1px, -12.5px, 0px); 
     width: 110px;
 }
+
 
 /* ------------------------------------- */
 /* --------- SM Related Stuff ---------- */

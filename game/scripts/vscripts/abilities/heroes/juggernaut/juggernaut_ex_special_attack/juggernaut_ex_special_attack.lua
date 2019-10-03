@@ -1,10 +1,5 @@
 
 juggernaut_ex_special_attack = class({})
-LinkLuaModifier( 
-	"modifier_juggernaut_ex_special_attack", 
-	"abilities/heroes/juggernaut/juggernaut_ex_special_attack/modifier_juggernaut_ex_special_attack",
-	LUA_MODIFIER_MOTION_NONE
-)
 
 function juggernaut_ex_special_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("juggernaut_special_attack")
@@ -43,7 +38,7 @@ function juggernaut_ex_special_attack:OnCastPointEnd( pos )
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	-- Extra data
-	local slow_duration = self:GetSpecialValueFor("slow_duration")
+	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
 	local crit_multiplier = self:GetSpecialValueFor("crit_multiplier")
 
 	-- Dinamyc data
@@ -91,13 +86,10 @@ function juggernaut_ex_special_attack:OnCastPointEnd( pos )
 			}
 			ApplyDamage( damage_table )
 
-			-- Add modifier
-			unit:AddNewModifier(
-				_self.Source, -- player source
-				self, -- ability source
-				"modifier_juggernaut_ex_special_attack", -- modifier name
-				{ duration = slow_duration } -- kv
-            )
+			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow_lua", { 
+				duration = fading_slow_duration,
+				effect_name = "particles/generic_gameplay/generic_purge.vpcf"
+			})
 
             local particle_cast = "particles/econ/events/nexon_hero_compendium_2014/blink_dagger_start_nexon_hero_cp_2014.vpcf"
             local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, _self.Source )

@@ -17,7 +17,16 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_juggernaut_ex_second_attack:OnCreated( kv )
-    self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
+	self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
+	
+	if IsServer() then 
+		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Generic",
+			text = "invisible",
+			progressBarType = "duration",
+			priority = 2,
+		})
+	end
 end
 
 --------------------------------------------------------------------------------

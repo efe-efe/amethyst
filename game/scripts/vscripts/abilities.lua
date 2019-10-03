@@ -77,12 +77,14 @@ function Abilities.Initialize( ability, animation, warmup )
             })
         -- Castbar
         else
-            ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
-                style = "Castpoint",
-                progressBarType = "duration",
-                ignorePriority = true,
-                reversedProgress = true,
-            })
+            if warmup.hide_castbar ~= 1 then
+                ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
+                    style = "Castpoint",
+                    progressBarType = "duration",
+                    ignorePriority = true,
+                    reversedProgress = true,
+                })
+            end
         end
 
         if onSpellStart then

@@ -1,5 +1,7 @@
 lich_ultimate_mobility = class({})
 LinkLuaModifier( "modifier_lich_ultimate", "abilities/heroes/lich/lich_ultimate/modifier_lich_ultimate", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_lich_decay", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_decay", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_lich_frost", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_frost", LUA_MODIFIER_MOTION_NONE )
 
 function lich_ultimate_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -9,6 +11,8 @@ function lich_ultimate_mobility:OnCastPointEnd()
     local ability = caster:FindAbilityByName("lich_ultimate_mobility")
 	local ability_b = caster:FindAbilityByName("lich_ultimate")
 	local hit_count = ability_b:GetSpecialValueFor("hit_count")
+	local decay_duration = self:GetSpecialValueFor("decay_duration")
+	local frost_duration = self:GetSpecialValueFor("frost_duration")
 
     local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
@@ -35,6 +39,9 @@ function lich_ultimate_mobility:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PURE,
 			}
             ApplyDamage( damage_table )
+
+			unit:AddNewModifier(_self.Source, self, "modifier_lich_decay", { duration = decay_duration })
+			unit:AddNewModifier(_self.Source, self, "modifier_lich_frost", { duration = frost_duration })
 
             self:PlayEffectsOnImpact(unit, _self.currentPosition)
 		end,
@@ -96,5 +103,5 @@ if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	lich_ultimate_mobility,
     nil,
-	{ movement_speed = 100, fixed_range = 1 }
+	{ movement_speed = 100, fixed_range = 1, hide_castbar = 1}
 )
