@@ -1,0 +1,26 @@
+"DOTAAbilities" {
+	"juggernaut_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_special_attack/juggernaut_special_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_special_attack"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastPoint"				"0.5"
+		"AbilityCastRange" 				"1200"
+		"AbilityCooldown"				"8.0"
+		"AbilityDamage"					"20"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"90" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+		}
+	}
+}

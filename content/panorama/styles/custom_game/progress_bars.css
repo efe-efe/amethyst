@@ -105,8 +105,23 @@
 .Castpoint .ProgressBarProgress{ background-color: white; }
 .Castpoint.ProgressBarParent{ 
     transform: translate3d(-1px, -12.5px, 0px); 
-    width: 110px;
+    width: 108px;
 }
+
+.Treshold .ProgressBarProgress{ 
+    background-color: white; 
+}
+.Treshold .ProgressBar{
+    height: 4px;
+    border: 1px solid black;
+    border-radius: 0;
+    box-shadow: none;
+}
+.Treshold.ProgressBarParent{ 
+    transform: translate3d(-1px, -40px, 0px); 
+    width: 108px;
+}
+
 
 
 /* ------------------------------------- */

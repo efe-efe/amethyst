@@ -39,6 +39,17 @@
 #base "abilities\spectre\spectre_ex2.txt"
 
 #base "abilities\juggernaut\juggernaut_m1.txt"
+#base "abilities\juggernaut\juggernaut_m2.txt"
+#base "abilities\juggernaut\juggernaut_e.txt"
+#base "abilities\juggernaut\juggernaut_q.txt"
+#base "abilities\juggernaut\juggernaut_space.txt"
+#base "abilities\juggernaut\juggernaut_f.txt"
+#base "abilities\juggernaut\juggernaut_r.txt"
+#base "abilities\juggernaut\juggernaut_ex1.txt"
+#base "abilities\juggernaut\juggernaut_ex2.txt"
+
+#base "abilities\sniper\sniper_m1.txt"
+#base "abilities\sniper\sniper_m2.txt"
 
 "DOTAAbilities"
 {
@@ -282,59 +293,6 @@
 	//=================================================================================================================
 	// Sniper
 	//=================================================================================================================
-	"sniper_basic_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_basic_attack/sniper_basic_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"sniper_basic_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.2"
-		"AbilityCastRange" 				"900"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"900" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"max_charges"				"4" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"start_charges"				"4" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"2.0" }
-		}
-	}
-	
-	"sniper_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack/sniper_second_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"sniper_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"1.6"
-		"AbilityCastRange"				"1600"
-		"AbilityCooldown"				"6.0"
-		"AbilityDamage"					"38"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1600" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.5" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"14" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"reduction_per_hit"			"35" }
-		}
-	}
-
 	"sniper_ex_second_attack"
 	{
 		"BaseClass"						"ability_lua"
@@ -1712,198 +1670,6 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"souls"						"6" }
-		}
-	}
-
-	//=================================================================================================================
-	// Juggernaut
-	//=================================================================================================================
-	
-
-	"juggernaut_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_second_attack/juggernaut_second_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.2"
-		"AbilityCastRange" 				"100"
-		"AbilityCooldown"				"7.0"
-		"AbilityDamage"					"14"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"100" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"3" }
-		}
-	}
-
-	"juggernaut_counter"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_counter"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"130"
-		"AbilityCastPoint"				"0.1"
-		"AbilityDuration"				"1.5"
-		"AbilityCooldown"				"6.0"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"90" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"attack_speed_bonus"		"30" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
-		}
-	}
-
-	"juggernaut_special_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_special_attack/juggernaut_special_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.5"
-		"AbilityCastRange" 				"1200"
-		"AbilityCooldown"				"8.0"
-		"AbilityDamage"					"20"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1200" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"90" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-		}
-	}
-
-	"juggernaut_mobility"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_mobility/juggernaut_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_blade_fury"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityDuration"				"2.5"
-		"AbilityCastPoint"				"0.2"
-		"AbilityCooldown"				"10.0"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"85" }
-		}
-
-	}
-
-	"juggernaut_extra"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_extra/juggernaut_extra"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_healing_ward"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityCastRange"				"130"
-		"AbilityCastPoint"				"1.0"
-		"AbilityCooldown"				"12.0"
-		"AbilityManaCost"				"25"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"heal_per_second"			"8" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
-		}
-	}
-
-	"juggernaut_ultimate"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_ultimate/juggernaut_ultimate"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_omni_slash"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.8"
-		"AbilityCastRange"				"1200"
-		"AbilityManaCost"				"100"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"range"					"1200" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"300" }
-		}
-	}
-
-	"juggernaut_ex_special_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_ex_special_attack/juggernaut_ex_special_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_ex_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.5"
-		"AbilityCastRange" 				"1200"
-		"AbilityCooldown"				"8.0"
-		"AbilityManaCost"				"25"
-		"AbilityDamage"					"20"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1200" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"90" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
-		}
-	}
-
-	"juggernaut_ex_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_ex_second_attack/juggernaut_ex_second_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"juggernaut_ex_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
-		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.1"
-		"AbilityCooldown"				"8.0"
-		"AbilityManaCost"				"25"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"speed_buff"		"65" }
-			"03"{ "var_type"			"FIELD_FLOAT"		"stun_duration"		"1.0" }
 		}
 	}
 

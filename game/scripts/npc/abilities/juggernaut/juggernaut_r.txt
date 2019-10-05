@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+    "juggernaut_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_ultimate/juggernaut_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_omni_slash"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastPoint"				"0.8"
+		"AbilityCastRange"				"1200"
+		"AbilityManaCost"				"100"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"300" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"                "80" }
+		}
+	}
+}

@@ -64,6 +64,6 @@ if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	ability_name,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.8 },
-	{ movement_speed = 30 }
+	{ movement_speed = 30, fixed_range = 1 }
 )
 --Abilities.BasicAttack( ability_name )

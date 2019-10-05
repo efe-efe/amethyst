@@ -3,25 +3,7 @@ LinkLuaModifier( "modifier_juggernaut_counter_buff", "abilities/heroes/juggernau
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function juggernaut_counter:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-
-	-- Animation and pseudo cast point
-	caster:AddNewModifier(
-        caster, 
-        self,
-        "modifier_cast_point", 
-        {
-            duration = cast_point,
-        }
-    )
-end
-
---------------------------------------------------------------------------------
--- Ability Start
-function juggernaut_counter:OnCastPointEnd( point )
+function juggernaut_counter:OnCastPointEnd()
     --load data
     local caster = self:GetCaster()
     local duration = self:GetDuration()
@@ -87,3 +69,10 @@ function juggernaut_counter:PlayEffectsOnTrigger()
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+    juggernaut_counter,
+    nil, 
+	{ movement_speed = 0, hide_indicator = 1 }
+)

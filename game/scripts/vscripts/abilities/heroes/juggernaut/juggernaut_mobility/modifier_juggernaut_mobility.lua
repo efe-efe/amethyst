@@ -24,6 +24,8 @@ function modifier_juggernaut_mobility:OnCreated( kv )
         self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
         self.radius = 250
 
+        self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_generic_silenced_lua", { duration = self:GetDuration() }) 
+
         -- Animation and pseudo cast point
         StartAnimation(self:GetParent(), { 
             duration = self:GetDuration(), 
@@ -36,7 +38,7 @@ function modifier_juggernaut_mobility:OnCreated( kv )
                 style = "Generic",
                 text = "Haste",
                 progressBarType = "duration",
-                priority = 1,
+                priority = 0,
             })
         end
 
@@ -80,6 +82,8 @@ function modifier_juggernaut_mobility:OnDestroy( kv )
     if IsServer() then
         self:StopEffects()
         EmitSoundOn("Hero_Juggernaut.BladeFuryStop", self:GetParent())
+
+        SafeDestroyModifier("modifier_generic_silenced_lua", self:GetParent(), self:GetParent())
     end
 end
 
@@ -106,7 +110,6 @@ end
 -- Modifier State
 function modifier_juggernaut_mobility:CheckState()
 	local state = {
-        [MODIFIER_STATE_SILENCED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
 		[MODIFIER_STATE_INVULNERABLE] = true,
 		[MODIFIER_STATE_OUT_OF_GAME] = true,

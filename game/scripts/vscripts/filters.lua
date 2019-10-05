@@ -90,7 +90,12 @@ function GameMode:HealingFilter(keys)
         end
         --print("[HEAL] " .. healing_target:GetName() .. " = " .. healing_target.iTreshold)
     	SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, healing_target, keys.heal, nil )
-        local health_bar = "(" .. healing_target.iTreshold .. "/" .. self.iMaxTreshold ..")"
+        
+        for i = 0, keys.heal - 1 do
+            healing_target:FindModifierByName("modifier_treshold"):IncrementStackCount()
+        end
+
+        --local health_bar = "(" .. healing_target.iTreshold .. "/" .. self.iMaxTreshold ..")"
         --healing_target:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end
 
@@ -140,7 +145,12 @@ function GameMode:DamageFilter(keys)
         if victim.iTreshold < 0 then
             victim.iTreshold = 0
         end
-        local health_bar = "(" .. victim.iTreshold .. "/" .. self.iMaxTreshold ..")"
+
+        for i = 0, damage_after_reductions - 1 do
+            victim:FindModifierByName("modifier_treshold"):DecrementStackCount()
+        end
+        
+        --local health_bar = "(" .. victim.iTreshold .. "/" .. self.iMaxTreshold ..")"
         --victim:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end
 

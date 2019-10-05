@@ -1,0 +1,25 @@
+"DOTAAbilities" {
+	"sniper_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_basic_attack/sniper_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"sniper_basic_attack"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCastRange" 				"900"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"max_charges"				"4" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"start_charges"				"4" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"2.0" }
+		}
+	}
+}

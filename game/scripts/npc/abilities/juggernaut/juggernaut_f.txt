@@ -1,0 +1,21 @@
+"DOTAAbilities" {
+	"juggernaut_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_extra/juggernaut_extra"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_healing_ward"
+		"AbilityCastRange"				"130"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCooldown"				"12.0"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal_per_second"			"8" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+		}
+	}
+}

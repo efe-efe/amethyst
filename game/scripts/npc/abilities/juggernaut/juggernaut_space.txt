@@ -1,0 +1,22 @@
+"DOTAAbilities" {
+	"juggernaut_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_mobility/juggernaut_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_blade_fury"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"AbilityDuration"				"2.5"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCooldown"				"10.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"85" }
+		}
+	}
+}

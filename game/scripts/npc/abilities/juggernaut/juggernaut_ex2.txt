@@ -1,0 +1,23 @@
+"DOTAAbilities" {
+	"juggernaut_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_ex_second_attack/juggernaut_ex_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_ex_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.1"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"speed_buff"		"65" }
+			"03"{ "var_type"			"FIELD_FLOAT"		"stun_duration"		"1.0" }
+		}
+	}
+
+}

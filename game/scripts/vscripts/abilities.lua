@@ -25,7 +25,8 @@ function Abilities.Initialize( ability, animation, warmup )
             StartAnimation(caster, {
                 duration = animation.duration or cast_point + 0.1, 
                 activity = animation.activity, 
-                rate = animation.rate or 1.0  
+                rate = animation.rate or 1.0,
+                translate = animation.translate or nil,
             })
         end
 

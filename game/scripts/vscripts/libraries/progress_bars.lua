@@ -159,11 +159,12 @@ function ProgressBars:StartThinkLoop()
             local modifierName = v["modifierName"]
 
             -- If the unit is dead or the modifier gone, remove the bar
-            if unit:IsNull() or
-                (not unit:IsAlive()) or
+            if  unit:IsNull() or
                 (not unit:FindModifierByName(modifierName))
             then
-                self:RemoveProgressBar(unit, modifierName)
+                if not unit["persistOnDeath"] then
+                    self:RemoveProgressBar(unit, modifierName)
+                end
             end
         end
 

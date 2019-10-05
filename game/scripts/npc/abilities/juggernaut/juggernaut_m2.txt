@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+    "juggernaut_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_second_attack/juggernaut_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_second_attack"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCastRange" 				"80"
+		"AbilityCooldown"				"7.0"
+		"AbilityDamage"					"14"
+
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"3" }
+		}
+	}
+}

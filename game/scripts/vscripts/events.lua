@@ -91,7 +91,8 @@ function GameMode:OnHeroInGame(keys)
             -- Basic modifiers
             npc:AddNewModifier( npc,  nil, "modifier_disable_right_click", { } )
             npc:AddNewModifier( npc,  nil, "modifier_generic_movement", { } )
-
+            npc:AddNewModifier( npc,  nil, "modifier_treshold", { max_treshold = self.iMaxTreshold })
+            
             -- Level up 1 point to all spells
             for i = 0, 23 do
                 local ability = npc:GetAbilityByIndex(i)
@@ -126,9 +127,11 @@ function GameMode:OnHeroInGame(keys)
         -------------------------------
         SafeDestroyModifier("modifier_generic_provides_vision", npc, nil)
         npc:SetMana(0)
+		npc:FindModifierByName("modifier_treshold"):SetStackCount(self.iMaxTreshold)
+
         npc:SetHealth(npc:GetMaxHealth())
         npc.iTreshold = 40
-        local health_bar = "(" .. npc.iTreshold .. "/" .. self.iMaxTreshold ..")"
+        --local health_bar = "(" .. npc.iTreshold .. "/" .. self.iMaxTreshold ..")"
         --npc:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end)
 end

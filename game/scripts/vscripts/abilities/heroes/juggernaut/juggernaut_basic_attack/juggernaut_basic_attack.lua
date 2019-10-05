@@ -12,7 +12,7 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local perform_special = caster:HasModifier("modifier_juggernaut_ex_second_attack") and true or false
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-	local offset = 50
+	local offset = 80
 	local projectile_speed = 2000
 
 	local projectile = {
