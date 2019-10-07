@@ -130,7 +130,7 @@ function GameMode:OnHeroInGame(keys)
 		npc:FindModifierByName("modifier_treshold"):SetStackCount(self.iMaxTreshold)
 
         npc:SetHealth(npc:GetMaxHealth())
-        npc.iTreshold = 40
+        npc.iTreshold = self.iMaxTreshold
         --local health_bar = "(" .. npc.iTreshold .. "/" .. self.iMaxTreshold ..")"
         --npc:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end)

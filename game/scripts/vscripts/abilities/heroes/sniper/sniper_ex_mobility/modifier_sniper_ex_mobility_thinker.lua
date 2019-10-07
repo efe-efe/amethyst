@@ -64,7 +64,7 @@ function modifier_sniper_ex_mobility_thinker:OnIntervalThink()
     for _,enemy in pairs(enemies) do
         enemy:AddNewModifier(
             caster, -- player source
-            self, -- ability source
+            self:GetAbility(), -- ability source
             "modifier_sniper_ex_mobility", -- modifier name
             { duration = self.slow_linger } -- kv
         )

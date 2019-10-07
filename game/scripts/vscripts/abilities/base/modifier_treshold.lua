@@ -29,14 +29,14 @@ function modifier_treshold:OnCreated( kv )
 
 	-- references
 	if IsServer() then
-        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+        --[[ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
             style = "Treshold",
             progressBarType = "stacks",
             ignorePriority = 1,
             maxStacks = self.max_stack,
             reversedProgress = true,
             persistOnDeath = true,
-        })
+        })]]
 	end
 end
 
