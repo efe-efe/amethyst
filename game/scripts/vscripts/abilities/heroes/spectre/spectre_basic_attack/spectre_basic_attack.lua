@@ -8,6 +8,16 @@ function spectre_basic_attack:GetIntrinsicModifierName()
 	return "modifier_spectre_basic_attack"
 end
 
+function spectre_basic_attack:GetPlaybackRateOverride()
+	if IsServer() then 
+		local modifier = self:GetCaster():FindModifierByName("modifier_spectre_basic_attack")
+		local slow = modifier:GetStackCount() > 0 and 0.3 or 0.0 
+
+		return 1.1 - slow
+	end
+end
+function spectre_basic_attack:GetCastAnimation() return ACT_DOTA_ATTACK end
+
 function spectre_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
@@ -117,6 +127,14 @@ function spectre_basic_attack:PlayEffectsOnFinish( pos, charged )
 		local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
 		ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
 		ParticleManager:ReleaseParticleIndex( effect_cast )
+
+
+		
+		local particle_cast = "particles/econ/items/dragon_knight/dk_immortal_dragon/dragon_knight_dragon_tail_dragonform_iron_dragon.vpcf"
+		local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
+		ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
+		ParticleManager:SetParticleControl( effect_cast, 4, caster:GetOrigin())
+		ParticleManager:ReleaseParticleIndex( effect_cast )
 	end
 end
 
@@ -160,9 +178,9 @@ function spectre_basic_attack:PlayEffectsOnImpact( hTarget, pos, charged )
 end
 
 if IsClient() then require("abilities") end
+Abilities.BasicAttack( spectre_basic_attack )
 Abilities.Initialize( 
 	spectre_basic_attack,
-	{ activity = ACT_DOTA_ATTACK, rate = 1.1 },
+	nil,
 	{ movement_speed = 80 }
 )
-Abilities.BasicAttack( spectre_basic_attack )

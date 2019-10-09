@@ -29,9 +29,6 @@ function spectre_ultimate:OnCastPointEnd( )
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
-			local caster =  self:GetCaster()
-			
-			-- Damage
 			local damage_table = {
 				victim = unit,
 				attacker = _self.Source,
@@ -64,6 +61,18 @@ function spectre_ultimate:OnCastPointEnd( )
 					"modifier_spectre_ultimate_illusion",
 					{ duration = illusion_duration }
 				)
+
+				if _self.Source == caster then
+					local swap = caster:FindAbilityByName("spectre_ultimate_swap")
+					swap.illusion_index = illusion:GetEntityIndex()
+					
+					caster:SwapAbilities( 
+						"spectre_ultimate",
+						"spectre_ultimate_swap",
+						false,
+						true
+					)
+				end
 			end
 			
 			--ilusion position
@@ -83,6 +92,7 @@ function spectre_ultimate:OnCastPointEnd( )
 				_self.Source:GetTeamNumber(), -- iTeamNumber
 				modifyIllusion
 			)
+			
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

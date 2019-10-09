@@ -91,9 +91,9 @@ function sniper_basic_attack:PlayEffectsOnFinish( pos )
 end
 
 if IsClient() then require("abilities") end
+Abilities.BasicAttack( sniper_basic_attack )
 Abilities.Initialize( 
 	sniper_basic_attack,
 	{ activity = ACT_DOTA_RUN, translate = "aggressive", rate = 2.0 },
-	{ movement_speed = 10, hide_indicator = 1 }
+	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }
 )
-Abilities.BasicAttack( sniper_basic_attack )

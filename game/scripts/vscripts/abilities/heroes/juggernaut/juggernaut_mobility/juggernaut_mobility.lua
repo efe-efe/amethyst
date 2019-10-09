@@ -5,7 +5,7 @@ function juggernaut_mobility:OnCastPointEnd()
     local caster = self:GetCaster()
     local duration = self:GetDuration()
 
-	caster:Purge( false, true, false, true, false )
+	caster:StrongPurge()
 	caster:AddNewModifier(caster, self, "modifier_juggernaut_mobility", { duration = duration })
 end
 

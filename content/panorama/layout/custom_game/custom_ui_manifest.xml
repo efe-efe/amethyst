@@ -7,6 +7,7 @@
         <include src="file://{resources}/scripts/custom_game/camera.js" />
         <include src="file://{resources}/scripts/custom_game/mouse.js" />
         <include src="file://{resources}/scripts/custom_game/hero_base.js" />
+        <include src="file://{resources}/scripts/custom_game/middle_orb.js" />
 	</scripts>
 		
 	<Panel>

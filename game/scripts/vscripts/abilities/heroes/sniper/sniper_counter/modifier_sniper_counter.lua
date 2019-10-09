@@ -17,7 +17,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_sniper_counter:OnCreated( kv )
-	self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
+	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 	
 	if IsServer() then 
 		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
@@ -45,15 +45,15 @@ function modifier_sniper_counter:GetModifierInvisibilityLevel()
 end
 
 function modifier_sniper_counter:GetModifierMoveSpeedBonus_Percentage()
-    return self.speed_buff
+    return self.speed_buff_pct
 end
 
 --------------------------------------------------------------------------------
 -- Status Effects
 function modifier_sniper_counter:CheckState()
 	local state = {
-	[MODIFIER_STATE_INVISIBLE] = true,
-	[MODIFIER_STATE_TRUESIGHT_IMMUNE] = false,
+		[MODIFIER_STATE_INVISIBLE] = true,
+		[MODIFIER_STATE_TRUESIGHT_IMMUNE] = false,
 	}
 
 	return state

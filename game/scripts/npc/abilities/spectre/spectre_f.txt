@@ -5,7 +5,7 @@
 		"ScriptFile"					"abilities/heroes/spectre/spectre_extra/spectre_extra"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"spectre_reality"
+		"AbilityTextureName"			"spectre_extra"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityCastPoint"				"0.1"
 		"AbilityCastRange"				"800"

@@ -26,7 +26,7 @@
 
 		// Armor
 		//----------------------------------------------------------------
-		"ArmorPhysical"				"1"			// Physical protection.
+		"ArmorPhysical"				"0"			// Physical protection.
 
 		// Attack
 		//----------------------------------------------------------------
@@ -43,7 +43,7 @@
 
 		// Bounds
 		//----------------------------------------------------------------
-		"RingRadius"				"70"
+		"RingRadius"				"60"
 		"HealthBarOffset"			"170"
 
 		// Bounty
@@ -120,7 +120,7 @@
 
 		// Armor
 		//----------------------------------------------------------------
-		"ArmorPhysical"				"1"			// Physical protection.
+		"ArmorPhysical"				"0"			// Physical protection.
 
 		// Attack
 		//----------------------------------------------------------------

@@ -4,7 +4,8 @@ require('util/health')
 require('util/abilities')
 require('util/npc')
 
-_G.nCOUNTDOWNTIMER = 90
+_G.nMAX_COUNTDOWNTIMER = 60
+_G.nCOUNTDOWNTIMER = 60
 
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 
@@ -107,13 +108,16 @@ function GameMode:LinkModifiers()
 
     LinkLuaModifier("modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_projectile_reflector_lua", "abilities/generic/modifier_generic_projectile_reflector_lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_fading_haste", "abilities/generic/modifier_generic_fading_haste", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_provides_vision", "abilities/generic/modifier_generic_provides_vision", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_knockback_lua", "abilities/generic/modifier_generic_knockback_lua", LUA_MODIFIER_MOTION_BOTH )
+    LinkLuaModifier("modifier_generic_knockback", "abilities/generic/modifier_generic_knockback", LUA_MODIFIER_MOTION_BOTH )
     LinkLuaModifier("modifier_generic_rooted_lua", "abilities/generic/modifier_generic_rooted_lua", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_invencible", "abilities/generic/modifier_generic_invencible", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_displacement", "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH )
+    
     LinkLuaModifier("modifier_generic_movement", "abilities/base/modifier_generic_movement", LUA_MODIFIER_MOTION_NONE )
-
     LinkLuaModifier("modifier_cast_point", "abilities/base/modifier_cast_point", LUA_MODIFIER_MOTION_NONE ) -- Delete after
     LinkLuaModifier("modifier_treshold", "abilities/base/modifier_treshold", LUA_MODIFIER_MOTION_NONE ) -- Delete after
     LinkLuaModifier("modifier_cast_point_new", "abilities/base/modifier_cast_point_new", LUA_MODIFIER_MOTION_NONE )
@@ -140,7 +144,8 @@ function GameMode:CaptureGameMode()
         self.ROUNDS_TO_WIN = 3
         self.iMaxTreshold = 40
         self.ORBS_SPAWN_TIME = 25.0
-        self.MIDDLE_ORB_SPAWN_TIME = 30.0
+        self.FIRST_MIDDLE_ORB_SPAWN_TIME = 20.0
+        self.MIDDLE_ORB_SPAWN_TIME = 25.0
         self.mouse_positions = {}
 
         -------------------------------

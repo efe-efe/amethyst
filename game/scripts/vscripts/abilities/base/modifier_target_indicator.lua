@@ -3,21 +3,20 @@ modifier_target_indicator = class({})
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_target_indicator:IsHidden()
-	return false
+	return true
 end
 
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_target_indicator:OnCreated( params )
 	self.parent = self:GetParent()
-	self.radius = params.radius
-    self.min_range = params.min_range
-	self.max_range = params.max_range
-
-	--print("CREATED TARGET INDICATOR")
-	--print(self:GetDuration())
 
     if IsServer() then
+		self.radius = params.radius
+		self.min_range = params.min_range
+		self.max_range = params.max_range
+		self.public = params.public and true or false
+
         self:PlayEffects()
         self:StartIntervalThink( 0.01 )
     end
@@ -27,13 +26,13 @@ end
 -- Refresh
 function modifier_target_indicator:OnRefresh( params )
 	self.parent = self:GetParent()
-	self.radius = params.radius
-    self.min_range = params.min_range
-    self.max_range = params.max_range
-
-	--print("REFRESHED TARGET INDICATOR")
 
     if IsServer() then
+		self.radius = params.radius
+		self.min_range = params.min_range
+		self.max_range = params.max_range
+		self.public = params.public and true or false
+	
         self:StopEffects()
         self:PlayEffects()
         self:StartIntervalThink( 0.01 )
@@ -45,8 +44,6 @@ end
 -- Refresh
 function modifier_target_indicator:OnDestroy()
 	if IsServer() then
-		--print("DESTROYED TARGET INDICATOR")
-
         self:StopEffects()
     end
 end
@@ -69,7 +66,7 @@ function modifier_target_indicator:PlayEffects()
 	local player_owner = self.parent:GetPlayerOwner()
     local mouse = GameMode.mouse_positions[self.parent:GetPlayerID()]
 
-	if self.show_all == 1 then
+	if self.public then
 		if self.no_target ~= 1 then
 			self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent)
 		end
@@ -81,7 +78,6 @@ function modifier_target_indicator:PlayEffects()
 	else
 		if self.no_target ~= 1 then
 			self.effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast, PATTACH_WORLDORIGIN, self.parent, player_owner )
-			--print("CREATING EFFECTS TARGET INDICATOR")
 		end
 		if self.radius ~= nil then
 			self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer( particle_cast_aoe, PATTACH_WORLDORIGIN, self.parent, player_owner )
@@ -96,7 +92,6 @@ function modifier_target_indicator:StopEffects()
 	if self.effect_cast ~= nil then
 		ParticleManager:DestroyParticle( self.effect_cast, false ) 
 		ParticleManager:ReleaseParticleIndex( self.effect_cast )
-		--print("DESTROYING EFFECTS TARGET INDICATOR")
 	end
 
 	if self.effect_cast_aoe ~= nil then

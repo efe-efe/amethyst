@@ -1,5 +1,5 @@
 modifier_wisp_ex_special_attack_thinker = class({})
-LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ function modifier_wisp_ex_special_attack_thinker:OnIntervalThink()
             enemy:AddNewModifier( 
                 self:GetCaster(), -- player source
                 self:GetAbility(), -- ability source
-                "modifier_generic_stunned_lua", -- modifier name
+                "modifier_generic_stunned", -- modifier name
                 { duration = self.disable_duration } -- kv
             )
 		end

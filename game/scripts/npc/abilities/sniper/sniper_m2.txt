@@ -6,7 +6,6 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"sniper_second_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -18,10 +17,9 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1600" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.5" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"14" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"14" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"reduction_per_hit"			"35" }
 		}
 	}

@@ -1,8 +1,8 @@
 nevermore_mobility = class({})
 LinkLuaModifier( "modifier_nevermore_mobility_movement", "abilities/heroes/nevermore/nevermore_mobility/modifier_nevermore_mobility_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
-LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -139,7 +139,7 @@ function nevermore_mobility:OnCastPointEnd( pos )
             unit:AddNewModifier(
                 _self.Source, -- player source
                 self, -- ability source
-                "modifier_generic_fading_slow_lua", -- modifier name
+                "modifier_generic_fading_slow", -- modifier name
                 { duration = slow_duration } -- kv
             )
 

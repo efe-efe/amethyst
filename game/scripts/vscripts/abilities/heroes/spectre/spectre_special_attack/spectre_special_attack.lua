@@ -4,9 +4,9 @@ LinkLuaModifier( "modifier_spectre_special_attack_thinker", "abilities/heroes/sp
 
 function spectre_special_attack:OnCastPointEnd( )
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
 	local damage = self:GetAbilityDamage()
 	local origin = caster:GetOrigin()
+	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf" 

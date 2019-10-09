@@ -1,7 +1,7 @@
 juggernaut_ultimate = class({})
 LinkLuaModifier( "modifier_juggernaut_ultimate_movement", "abilities/heroes/juggernaut/juggernaut_ultimate/modifier_juggernaut_ultimate_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
 LinkLuaModifier( "modifier_juggernaut_ultimate_slashing", "abilities/heroes/juggernaut/juggernaut_ultimate/modifier_juggernaut_ultimate_slashing", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 
 function juggernaut_ultimate:OnSpellStart()
     self:PlayEffectsOnPhase()

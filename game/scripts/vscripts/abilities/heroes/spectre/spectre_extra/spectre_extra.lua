@@ -10,7 +10,6 @@ function spectre_extra:OnCastPointEnd()
 	local radius = self:GetSpecialValueFor( "radius" )
 	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
-    self:PlayEffects()
 
     caster:AddNewModifier(
         caster,
@@ -32,24 +31,19 @@ function spectre_extra:OnCastPointEnd()
 		point, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
-    )
+	)
+	
+    self:PlayEffects()
 end
 
 --------------------------------------------------------------------------------
 --Effects
-
---Jump
 function spectre_extra:PlayEffects()
     -- Get Resources
-    local sound_cast = "Hero_Spectre.Haunt"
-    
-    -- particles 1
+    EmitSoundOn( "Hero_Spectre.Reality", self:GetCaster() )
+
     local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( 
-            particle_cast, 
-            PATTACH_WORLDORIGIN, 
-            nil 
-        )
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
     ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast )

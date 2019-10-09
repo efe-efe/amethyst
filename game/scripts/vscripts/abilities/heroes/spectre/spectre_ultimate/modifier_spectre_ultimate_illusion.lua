@@ -35,14 +35,24 @@ function modifier_spectre_ultimate_illusion:OnCreated( kv )
         SafeDestroyModifier("modifier_disable_right_click", parent, parent)
         
         -- Attack the closests
-        if enemies[1]:IsRealHero() then
-            parent:SetForceAttackTarget(enemies[1])
+        if enemies[1] then
+            if enemies[1]:IsRealHero() then
+                parent:SetForceAttackTarget(enemies[1])
+            end
         end
     end
 end
 
 function modifier_spectre_ultimate_illusion:OnDestroy( kv )
     if IsServer() then
+				
+        self:GetCaster():SwapAbilities( 
+            "spectre_ultimate",
+            "spectre_ultimate_swap",
+            true,
+            false
+        )
+
         if self:GetParent() ~= nil then
             self:GetParent():ForceKill( false )
         end
@@ -85,5 +95,5 @@ function modifier_spectre_ultimate_illusion:GetModifierBaseAttackTimeConstant()
 end
 
 function modifier_spectre_ultimate_illusion:GetModifierMoveSpeed_Absolute()
-    return 1000
+    return 400
 end

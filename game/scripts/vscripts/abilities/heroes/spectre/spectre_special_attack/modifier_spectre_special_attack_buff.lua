@@ -17,6 +17,16 @@ end
 -- Initializations
 function modifier_spectre_special_attack_buff:OnCreated( kv )
 	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
+
+	if IsServer() then
+		self:PlayEffects()
+	end
+end
+
+function modifier_spectre_special_attack_buff:OnDestroy()
+	if IsServer() then
+		self:StopEffects()
+	end
 end
 
 --------------------------------------------------------------------------------
@@ -42,4 +52,23 @@ end
 
 function modifier_spectre_special_attack_buff:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
+end
+
+function modifier_spectre_special_attack_buff:PlayEffects()
+	local particle_cast = "particles/econ/items/lifestealer/lifestealer_immortal_backbone/lifestealer_immortal_backbone_rage_swirl.vpcf"
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent() )
+    ParticleManager:SetParticleControlEnt( 
+        self.effect_cast, 
+        2, 
+        self:GetParent(), 
+        PATTACH_POINT_FOLLOW, 
+        "attach_hitloc", 
+        self:GetParent():GetOrigin(), 
+        true 
+    )
+end
+
+function modifier_spectre_special_attack_buff:StopEffects()
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex( self.effect_cast )
 end

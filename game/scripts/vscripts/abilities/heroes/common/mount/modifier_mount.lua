@@ -103,7 +103,7 @@ function modifier_mount:OnTakeDamage( params )
 	if IsServer() then
         if params.unit~=self:GetCaster() then return end
 
-		self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_fading_slow_lua", { duration = self.slow_duration })
+		self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_fading_slow", { duration = self.slow_duration })
 		self:Destroy()
 	end
 end

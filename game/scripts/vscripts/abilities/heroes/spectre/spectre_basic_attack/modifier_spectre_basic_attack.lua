@@ -30,6 +30,8 @@ function modifier_spectre_basic_attack:OnCreated( kv )
     self.max_charges = 1
 
     if IsServer() then
+	    self.attack_speed_bonus = 0.2 + self:GetCaster():GetAttackAnimationPoint()--self:GetAbility():GetSpecialValueFor("attack_speed_bonus")
+
 		self:SetStackCount( self.max_charges )
 		self:CalculateCharge()
     end
@@ -73,10 +75,22 @@ function modifier_spectre_basic_attack:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
         MODIFIER_EVENT_ON_ATTACK_LANDED,
+		MODIFIER_PROPERTY_ATTACK_POINT_CONSTANT,
 	}
 
 	return funcs
 end
+
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_spectre_basic_attack:GetModifierAttackPointConstant()
+    if self:GetStackCount() == 0 then return 0 end
+    if IsServer() then     
+        return self.attack_speed_bonus
+    end
+end
+
+--------------------------------------------------------------------------------
 
 function modifier_spectre_basic_attack:GetModifierPreAttack_BonusDamage()
     if self:GetStackCount() == 0 then return 0 end

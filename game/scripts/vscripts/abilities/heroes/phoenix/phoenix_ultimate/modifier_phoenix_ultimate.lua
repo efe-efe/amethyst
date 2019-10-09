@@ -30,12 +30,7 @@ function modifier_phoenix_ultimate:OnCreated( kv )
 	if IsServer() then
 		self.base_health = kv.base_health
 
-		local RemovePositiveBuffs = false
-		local RemoveDebuffs = true
-		local BuffsCreatedThisFrameOnly = false
-		local RemoveStuns = true
-		local RemoveExceptions = false
-		self:GetCaster():Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
+		self:GetCaster():StrongPurge()
 
 		-- play effects
         self:PlayEffects_b()

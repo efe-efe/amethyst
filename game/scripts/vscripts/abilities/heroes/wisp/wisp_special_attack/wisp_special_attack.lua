@@ -1,6 +1,6 @@
 wisp_special_attack = class({})
 LinkLuaModifier( "modifier_wisp_special_attack_thinker", "abilities/heroes/wisp/wisp_special_attack/modifier_wisp_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 function wisp_special_attack:GetAlternateVersion()

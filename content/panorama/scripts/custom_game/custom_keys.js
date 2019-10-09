@@ -89,6 +89,9 @@ function SendMovementSignal( action, direction )
     var playerId = Players.GetLocalPlayer();
     var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
     
+    //Debug
+    heroIndex = Players.GetSelectedEntities( playerId )[0];
+    
     GameEvents.SendCustomGameEventToServer(action, { 
         entityIndex: heroIndex,
         direction: direction

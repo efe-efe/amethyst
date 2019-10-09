@@ -36,14 +36,7 @@ end
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_axe_counter_buff:OnIntervalThink()
-	-- Strong Dispel
-	local RemovePositiveBuffs = false
-	local RemoveDebuffs = true
-	local BuffsCreatedThisFrameOnly = false
-	local RemoveStuns = true
-	local RemoveExceptions = false
-
-	self:GetParent():Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
+	self:GetParent():StrongPurge()
 end
 
 --------------------------------------------------------------------------------

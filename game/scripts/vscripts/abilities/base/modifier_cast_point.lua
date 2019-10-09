@@ -1,5 +1,7 @@
 modifier_cast_point = class({})
 
+local COOLDOWN_BY_CANCEL = 0.5
+
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_cast_point:IsHidden()
@@ -49,6 +51,8 @@ function modifier_cast_point:OnCreated(params)
 	self.initialized = false
 	self.point = Vector(0,0,0)
 	
+	self.canceled_by_player = false
+
 	if IsServer() then
 
 		ProgressBars:AddProgressBar(self.parent, self:GetName(), {
@@ -86,6 +90,8 @@ function modifier_cast_point:OnRefresh(params)
 	self.initialized = false
 	self.disable_all = params.disable_all
 	self.point = Vector(0,0,0)
+
+	self.canceled_by_player = false
 
 	if IsServer() then
 		
@@ -166,6 +172,11 @@ function modifier_cast_point:StopCast()
 		self:SwapActiveSpells("enable")
 		if self.ability.OnStopPseudoCastPoint ~= nil then
 			self.ability:OnStopPseudoCastPoint()
+		end
+		if self.canceled_by_player == true then
+			if not self.ability:IsBasicAttack() then
+				self.ability:StartCooldown(COOLDOWN_BY_CANCEL)
+			end
 		end
 	end
 end
@@ -309,6 +320,7 @@ function modifier_cast_point:OnOrder(params)
 			params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET or
 			params.order_type == DOTA_UNIT_ORDER_CAST_TOGGLE
 		then
+			self.canceled_by_player = true
 			self:Destroy()
 		end
 
@@ -318,7 +330,6 @@ function modifier_cast_point:OnOrder(params)
 				params.order_type == DOTA_UNIT_ORDER_ATTACK_MOVE or
 				params.order_type == DOTA_UNIT_ORDER_ATTACK_TARGET
 			then
-				print("destroying")
 				self:Destroy()
 			end
 		end

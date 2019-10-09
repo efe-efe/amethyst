@@ -85,14 +85,7 @@ end
 -----------------------------------
 -- Interval Effects
 function modifier_middle_orb_base_lua:OnIntervalThink()
-	-- Strong Dispel
-	local RemovePositiveBuffs = false
-	local RemoveDebuffs = true
-	local BuffsCreatedThisFrameOnly = false
-	local RemoveStuns = true
-	local RemoveExceptions = false
-
-	self:GetCaster():Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
+	self:GetCaster():StrongPurge()
 end
 
 --------------------------------------------------------------------------------

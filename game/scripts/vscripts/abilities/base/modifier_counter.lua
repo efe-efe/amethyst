@@ -19,7 +19,6 @@ end
 function modifier_counter:OnCreated( kv )
     if IsServer() then
         self.movement_speed = kv.movement_speed
-        self.can_walk = kv.can_walk
         self.sound = kv.sound
         self.can_be_cancelled = kv.can_be_cancelled
         self.disable = kv.disable
@@ -92,7 +91,7 @@ end
 --------------------------------------------------------------------------------
 -- Status Effects
 function modifier_counter:CheckState()
-    if self.can_walk == 0 then
+    if self.movement_speed == 0 then
         return { [MODIFIER_STATE_ROOTED] = true }
     else
         return {}
@@ -113,7 +112,7 @@ function modifier_counter:DeclareFunctions()
 end
 
 function modifier_counter:GetModifierMoveSpeedBonus_Percentage()
-	if self.movement_speed ~= nil then
+	if self.movement_speed ~= nil and self.movement_speed ~= 0 then
 		return - (100 - self.movement_speed)
 	end
 end
@@ -134,7 +133,11 @@ function modifier_counter:GetModifierIncomingDamage_Percentage( params )
         -- Pure damage doesnt trigger the counter
         if params.damage_type ~= DAMAGE_TYPE_PURE then
             self.ability:OnTrigger( params )
-            self:StrongPurge()
+
+            Timers:CreateTimer(0.001, function()
+                self.caster:StrongPurge()
+            end)
+
             if self.destroy_on_trigger == 1 then
                 self:Destroy()
             end
@@ -154,22 +157,6 @@ function modifier_counter:OnAbilityFullyCast( params )
         end
 	end
 end
-
---------------------------------------------------------------------------------
--- Helpers
-function modifier_counter:StrongPurge()
-    local RemovePositiveBuffs = false
-    local RemoveDebuffs = true
-    local BuffsCreatedThisFrameOnly = false
-    local RemoveStuns = true
-    local RemoveExceptions = false
-
-    -- Apply dispell after debuffs and stuns are applied
-    Timers:CreateTimer(0.001, function()
-        self.caster:Purge( RemovePositiveBuffs, RemoveDebuffs, BuffsCreatedThisFrameOnly, RemoveStuns, RemoveExceptions)
-    end)
-end
-
 
 function modifier_counter:DisableSpells( mode )
 	if IsServer() then

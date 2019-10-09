@@ -77,7 +77,7 @@ function treant_mobility:OnCastPointEnd( )
                 unit:AddNewModifier(
                     caster, -- player source
                     self, -- ability source
-                    "modifier_generic_knockback_lua", -- modifier name
+                    "modifier_generic_knockback", -- modifier name
                     { 
                         duration = knockback_duration,
                         distance = 200,

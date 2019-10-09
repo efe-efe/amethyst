@@ -51,7 +51,7 @@ function modifier_treant_ex_second_attack_thinker:OnIntervalThink()
             damageTable.damage = final_damage
             ApplyDamage(damageTable)
 
-            enemy:AddNewModifier(self:GetCaster(), self , "modifier_generic_stunned_lua", { duration = final_stun })
+            enemy:AddNewModifier(self:GetCaster(), self , "modifier_generic_stunned", { duration = final_stun })
             
             SafeDestroyModifier("modifier_treant_natures_punishment", enemy, self:GetCaster())
         end

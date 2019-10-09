@@ -30,7 +30,7 @@ function lich_counter_mobility:OnCastPointEnd()
     for _,enemy in pairs(enemies) do
         local direction = (enemy:GetOrigin() - caster:GetOrigin()):Normalized()
 
-        enemy:AddNewModifier(caster, self, "modifier_generic_knockback_lua", {
+        enemy:AddNewModifier(caster, self, "modifier_generic_knockback", {
             distance = knockback_distance,
             x = direction.x,
             y = direction.y,

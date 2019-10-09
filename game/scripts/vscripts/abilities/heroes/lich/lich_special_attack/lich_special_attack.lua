@@ -72,7 +72,7 @@ function lich_special_attack:ConsumeDebuffs( base_damage, origin, radius, knockb
 
         if enemy:HasModifier("modifier_lich_frost") then
             caster:Heal(heal, caster)
-            enemy:AddNewModifier(caster, self, "modifier_generic_fading_slow_lua", { duration = fading_slow_duration })
+            enemy:AddNewModifier(caster, self, "modifier_generic_fading_slow", { duration = fading_slow_duration })
             SafeDestroyModifier("modifier_lich_frost", enemy, caster)
         end
 
@@ -80,7 +80,7 @@ function lich_special_attack:ConsumeDebuffs( base_damage, origin, radius, knockb
         if knockback then
             local direction = (enemy:GetOrigin() - origin):Normalized()
 
-            enemy:AddNewModifier(caster, self, "modifier_generic_knockback_lua", {
+            enemy:AddNewModifier(caster, self, "modifier_generic_knockback", {
                 distance = self:GetSpecialValueFor("knockback_distance"),
                 x = direction.x,
                 y = direction.y,

@@ -12,21 +12,22 @@ function Abilities.Initialize( ability, animation, warmup )
     local onCastPointEnd = ability.OnCastPointEnd
     local onSpellStart = ability.OnSpellStart
 
-
     function ability:GetBehavior()
         return self.BaseClass.GetBehavior(self) + DOTA_ABILITY_BEHAVIOR_IMMEDIATE
     end
     
     function ability:OnSpellStart()
         local caster = self:GetCaster()
-        local cast_point = self:IsBasicAttack() and caster:GetAttackAnimationPoint() or self:GetCastPoint() 
-        
-        if animation and animation.activity then
+        local cast_point = self:GetCastPoint() 
+        local myrate = animation and animation.rate or self:GetPlaybackRateOverride()
+
+
+        if animation or self.GetCastAnimation then
             StartAnimation(caster, {
-                duration = animation.duration or cast_point + 0.1, 
-                activity = animation.activity, 
-                rate = animation.rate or 1.0,
-                translate = animation.translate or nil,
+                duration = animation and animation.duration or cast_point + 0.1, 
+                activity = animation and animation.activity or self:GetCastAnimation(), 
+                rate = animation and animation.rate or self:GetPlaybackRateOverride(),
+                translate = animation and animation.translate or nil,
             })
         end
 
@@ -55,7 +56,8 @@ function Abilities.Initialize( ability, animation, warmup )
             radius = radius,
             min_range = min_range,
             max_range = max_range,
-            hide_indicator = warmup.hide_indicator or false
+            hide_indicator = warmup.hide_indicator or false,
+            public = warmup.public or nil
         })
         
         -- Castbar (ULTIMATE)
@@ -105,6 +107,7 @@ end
 
 function Abilities.BasicAttack( ability )
     local onCastPointEnd = ability.OnCastPointEnd
+    local getCastPoint = ability.GetCastPoint
 
     function ability:OnCastPointEnd()
         if onCastPointEnd then onCastPointEnd(self) end
@@ -113,4 +116,11 @@ function Abilities.BasicAttack( ability )
         local attack_speed = ( 1 / attacks_per_second )
         self:StartCooldown( attack_speed )
     end
+
+    function ability:GetCastPoint()
+        if IsServer() then
+            return self.BaseClass.GetCastPoint( self ) + self:GetCaster():GetAttackAnimationPoint()
+        end
+    end
+    
 end

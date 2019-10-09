@@ -13,7 +13,7 @@ function lich_counter:OnCastPointEnd()
 		self, -- ability source
 		"modifier_counter", -- modifier name
 		{ 
-            can_walk = 0,
+            movement_speed = 0,
             duration = duration,
             destroy_on_trigger = 1,
             mobility = 1,

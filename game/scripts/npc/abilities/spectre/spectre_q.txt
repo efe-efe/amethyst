@@ -17,9 +17,9 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"speed_debuff"				"300" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.4" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"damage"					"15" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration_invis"		"3.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration_invulnerable"	"0.8" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"fading_haste"			"35" }
 		}
 	}
 }

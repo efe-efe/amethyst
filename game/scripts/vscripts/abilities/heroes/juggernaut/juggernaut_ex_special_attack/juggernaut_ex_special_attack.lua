@@ -34,7 +34,7 @@ function juggernaut_ex_special_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 
-			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow_lua", { 
+			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
 				duration = fading_slow_duration,
 				effect_name = "particles/generic_gameplay/generic_purge.vpcf"
 			})

@@ -10,18 +10,28 @@ function modifier_spectre_special_attack_thinker:OnCreated( kv )
     if IsServer() then
         self.start_pos = self:GetParent():GetOrigin()
         self.end_pos = Vector(kv.x, kv.y, kv.z)
+        
+        self:StartIntervalThink( 0.05 )
+        
+        -- DEBUG
 
-        self:StartIntervalThink( 0.1 )
-        ----local variables
+        if kv.draw then
+            self:PlayEffects(self.start_pos)
+            --self:PlayEffects(self.end_pos)
+        end
+    end
+end
+
+function modifier_spectre_special_attack_thinker:OnDestroy()
+    if IsServer() then
+        self:StopEffects()
     end
 end
 
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_spectre_special_attack_thinker:OnIntervalThink()
-    -- DEBUG
-    --self:PlayEffects(self.start_pos)
-    --self:PlayEffects(self.end_pos)
+
 
     local units = FindUnitsInLine(
         self:GetCaster():GetTeamNumber(),
@@ -48,8 +58,15 @@ end
 
 function modifier_spectre_special_attack_thinker:PlayEffects(pos)
 	-- Get Resources
-	local particle_cast = "particles/econ/items/wisp/wisp_relocate_teleport_ti7.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_energy.vpcf"
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( self.effect_cast, 0, pos )
+end
+
+
+function modifier_spectre_special_attack_thinker:StopEffects()
+    if self.effect_cast then
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    end
 end

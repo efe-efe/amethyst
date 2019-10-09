@@ -5,7 +5,6 @@ function spectre_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 	local origin = caster:GetOrigin()
-	local damage = self:GetAbilityDamage()
 	local min_range = self:GetSpecialValueFor( "min_range" )
 	local mana_gain_pct = self:GetSpecialValueFor( "mana_gain_pct" )
 	self.radius = self:GetSpecialValueFor( "radius" )
@@ -22,7 +21,7 @@ function spectre_mobility:OnCastPointEnd()
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,
 		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
+		WallBehavior = PROJECTILES_NOTHING,
         GroundBehavior = PROJECTILES_NOTHING,
         bIsReflectable = false,
         bIsSlowable = false,
@@ -41,25 +40,14 @@ function spectre_mobility:OnCastPointEnd()
 				0, -- int, order filter
 				false -- bool, can grow cache
 			)
-	
-			local damageTable = {
-				-- victim = target,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PURE,
-				ability = self --Optional.
-			}
-			
-			for _,enemy in pairs(enemies) do
-				-- damage
-				damageTable.victim = enemy
-				ApplyDamage(damageTable)
-				self:PlayEffectsOnImpact(enemy)
-			end
-			
+
 			-- if at least 1 enemy
 			if #enemies > 0 then
 				-- Give Mana
+				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack")
+				modifier:IncrementStackCount()
+				modifier:StartIntervalThink(-1)
+				modifier:CalculateCharge()
 				caster:GiveManaPercent(mana_gain_pct)    
 			end
             self:PlayEffectsOnFinish(pos)

@@ -1,32 +1,12 @@
 sniper_special_attack = class({})
 LinkLuaModifier( "modifier_sniper_shrapnel_thinker_lua", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_thinker_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_charges_one", "abilities/generic/charges/modifier_generic_charges_one", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Passive Modifier
-function sniper_special_attack:GetIntrinsicModifierName()
-	return "modifier_generic_charges_one"
-end
-
-function sniper_special_attack:OnSpellStart()
-	-- Initialize variables
+function sniper_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	self.radius = self:GetSpecialValueFor("radius")
-	
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
-		duration = cast_point,
-		movement_speed = 10,
-		radius = self.radius
-	})
-end
-
-function sniper_special_attack:OnCastPointEnd( point )
-    local caster = self:GetCaster()
+	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local duration = self:GetSpecialValueFor( "duration" )
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
+	local radius = self:GetSpecialValueFor("radius")
 
 	CreateModifierThinker(
 		caster, --hCaster
@@ -35,7 +15,7 @@ function sniper_special_attack:OnCastPointEnd( point )
 		{ 
 			thinker = "modifier_sniper_shrapnel_thinker_lua",
 			show_all = 1,
-			radius = self.radius,
+			radius = radius,
 			delay_time = delay_time,
 			thinker_duration = duration + delay_time ,
 		}, --paramTable
@@ -75,3 +55,9 @@ function sniper_special_attack:PlayEffects( point )
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	sniper_special_attack,
+	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },
+	{ movement_speed = 10 }
+)

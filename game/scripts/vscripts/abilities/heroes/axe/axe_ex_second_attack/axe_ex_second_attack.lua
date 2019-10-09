@@ -1,6 +1,6 @@
 axe_ex_second_attack = class({})
 LinkLuaModifier( "modifier_axe_ex_second_attack_movement", "abilities/heroes/axe/axe_ex_second_attack/modifier_axe_ex_second_attack_movement", LUA_MODIFIER_MOTION_BOTH )
-LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
 
 
 function axe_ex_second_attack:IsHidden()
@@ -75,7 +75,7 @@ function axe_ex_second_attack:OnCastPointEnd( pos )
         enemy:AddNewModifier(
             caster, -- player source
             self, -- ability source
-            "modifier_generic_stunned_lua", -- modifier name
+            "modifier_generic_stunned", -- modifier name
             { duration = stun_duration } -- kv
         )
         

@@ -46,7 +46,7 @@ function modifier_axe_second_attack_thinker:OnIntervalThink()
             enemy:AddNewModifier(
                 caster,
                 self:GetAbility(),
-                "modifier_generic_fading_slow_lua",
+                "modifier_generic_fading_slow",
                 { duration = self.duration }
             )
 

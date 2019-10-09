@@ -59,7 +59,7 @@ function modifier_wisp_special_attack_thinker:OnIntervalThink()
             enemy:AddNewModifier( 
                 self:GetCaster(), -- player source
                 self:GetAbility(), -- ability source
-                "modifier_generic_fading_slow_lua", -- modifier name
+                "modifier_generic_fading_slow", -- modifier name
                 { duration = self.disable_duration } -- kv
             )
 

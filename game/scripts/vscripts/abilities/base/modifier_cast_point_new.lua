@@ -1,5 +1,7 @@
 modifier_cast_point_new = class({})
 
+local COOLDOWN_BY_CANCEL = 0.5
+
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_cast_point_new:IsHidden()
@@ -24,20 +26,21 @@ function modifier_cast_point_new:OnCreated(params)
 	self.ability = self:GetAbility()
 	self.parent = self:GetParent()
 	
-	self.movement_speed = params.movement_speed
-	self.show_all = params.show_all
-	self.no_target = params.no_target
-	self.radius = params.radius
-	self.hide_indicator = params.hide_indicator
-	
-	self.min_range = params.min_range
-	self.max_range = params.max_range
-
-	self.disable_all = params.disable_all
-	self.placeholder = params.placeholder
-	self.cancel_on_damage = params.cancel_on_damage
+	self.canceled_by_player = false
 
 	if IsServer() then
+		self.movement_speed = params.movement_speed
+		self.show_all = params.show_all
+		self.no_target = params.no_target
+		self.radius = params.radius
+		self.hide_indicator = params.hide_indicator
+		
+		self.min_range = params.min_range
+		self.max_range = params.max_range
+	
+		self.disable_all = params.disable_all
+		self.public = params.public
+		self.cancel_on_damage = params.cancel_on_damage
 
 		if self.hide_indicator ~= nil then
 			self.parent:AddNewModifier(self.parent, nil, "modifier_target_indicator", { 
@@ -45,6 +48,7 @@ function modifier_cast_point_new:OnCreated(params)
 				min_range = self.min_range,
 				max_range = self.max_range,
 				radius = self.radius,
+				public = self.public
 			})
 		end
 
@@ -60,33 +64,31 @@ function modifier_cast_point_new:OnRefresh(params)
 	if IsServer() then
 		self:StopCast()
 	end
-
-	--print("REFRESHED")
-
-	self.ability = self:GetAbility()
-	self.parent = self:GetParent()
-	
-	self.movement_speed = params.movement_speed
-	self.show_all = params.show_all
-	self.no_target = params.no_target
-	self.radius = params.radius
-	
-	self.min_range = params.min_range
-	self.max_range = params.max_range
-
-	self.disable_all = params.disable_all
-	self.placeholder = params.placeholder
-	self.cancel_on_damage = params.cancel_on_damage
-
+	self.canceled_by_player = false
 
 	if IsServer() then
-		--self:StopEffects()
+		self.ability = self:GetAbility()
+		self.parent = self:GetParent()
+		
+		self.movement_speed = params.movement_speed
+		self.show_all = params.show_all
+		self.no_target = params.no_target
+		self.radius = params.radius
+		
+		self.min_range = params.min_range
+		self.max_range = params.max_range
+	
+		self.disable_all = params.disable_all
+		self.public = params.public
+		self.cancel_on_damage = params.cancel_on_damage
+
 		if self.hide_indicator ~= nil then
 			self.parent:AddNewModifier(self.parent, nil, "modifier_target_indicator", { 
 				duration = self:GetDuration(),
 				min_range = self.min_range,
 				max_range = self.max_range,
 				radius = self.radius,
+				public = self.public
 			})
 		end
 
@@ -149,6 +151,11 @@ function modifier_cast_point_new:StopCast()
 		self:SwapActiveSpells("enable")
 		if self.ability.OnStopPseudoCastPoint ~= nil then
 			self.ability:OnStopPseudoCastPoint()
+		end
+		if self.canceled_by_player == true then
+			if not self.ability:IsBasicAttack() then
+				self.ability:StartCooldown(COOLDOWN_BY_CANCEL)
+			end
 		end
 		SafeDestroyModifier("modifier_target_indicator", self.parent, self.parent)
 	end
@@ -254,6 +261,7 @@ function modifier_cast_point_new:OnOrder(params)
 			params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET or
 			params.order_type == DOTA_UNIT_ORDER_CAST_TOGGLE
 		then
+			self.canceled_by_player = true
 			self:Destroy()
 		end
 	end

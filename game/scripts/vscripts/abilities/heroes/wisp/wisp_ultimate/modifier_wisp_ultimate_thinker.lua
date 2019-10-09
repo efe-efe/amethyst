@@ -1,5 +1,5 @@
 modifier_wisp_ultimate_thinker = class({})
-LinkLuaModifier( "modifier_generic_stunned_lua", "abilities/generic/modifier_generic_stunned_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -71,7 +71,7 @@ function modifier_wisp_ultimate_thinker:OnIntervalThink()
             enemy:AddNewModifier(
                 caster,
                 self:GetAbility(),
-                "modifier_generic_stunned_lua",
+                "modifier_generic_stunned",
                 { duration = self.stun_duration }
             )
 		end

@@ -29,7 +29,7 @@ function nevermore_counter:OnCastPointEnd( point )
 		self, -- ability source
 		"modifier_counter", -- modifier name
 		{ 
-            can_walk = 0,
+            movement_speed = 0,
             sound = "Hero_Nevermore.RequiemOfSoulsCast",
             duration = duration, 
             destroy_on_trigger = 1,

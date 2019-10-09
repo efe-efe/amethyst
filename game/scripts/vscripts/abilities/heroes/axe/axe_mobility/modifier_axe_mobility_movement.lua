@@ -1,5 +1,5 @@
 modifier_axe_mobility_movement = class({})
-LinkLuaModifier( "modifier_generic_fading_slow_lua", "abilities/generic/modifier_generic_fading_slow_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -93,7 +93,7 @@ function modifier_axe_mobility_movement:OnDestroy( kv )
 			enemy:AddNewModifier(
 				caster,
 				self:GetAbility(),
-				"modifier_generic_fading_slow_lua",
+				"modifier_generic_fading_slow",
 				{ duration = self.slow_duration }
 			)
 		end

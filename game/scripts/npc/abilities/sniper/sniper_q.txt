@@ -1,0 +1,20 @@
+"DOTAAbilities" {
+	"sniper_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_counter/sniper_counter"
+		"MaxLevel"						"1"
+		
+		"AbilityTextureName"			"sniper_counter"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.1"
+		"AbilityCooldown"				"8.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "20" }
+		}
+	}
+}

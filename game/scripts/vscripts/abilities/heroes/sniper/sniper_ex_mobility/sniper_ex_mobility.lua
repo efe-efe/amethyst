@@ -1,135 +1,95 @@
 sniper_ex_mobility = class({})
 LinkLuaModifier( "modifier_sniper_ex_mobility_thinker", "abilities/heroes/sniper/sniper_ex_mobility/modifier_sniper_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
 
-function sniper_ex_mobility:GetAlternateVersion()
-    return self:GetCaster():FindAbilityByName("sniper_mobility")
-end
+function sniper_ex_mobility:OnCastPointEnd()
+    local caster = self:GetCaster()
+	local origin = caster:GetOrigin()
+	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
---------------------------------------------------------------------------------
--- Ability Start
-function sniper_ex_mobility:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
     local radius = self:GetSpecialValueFor("radius")
+    local duration = self:GetSpecialValueFor("duration")
 
-    EmitGlobalSound( "Ability.AssassinateLoad")
+	local direction = (point - origin):Normalized()
+	local distance = (point - origin):Length2D()
 
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
-	caster:AddNewModifier(
-		caster, 
-		self, 
-		"modifier_cast_point", 
-		{ 
-			duration = cast_point,
-            movement_speed = 50,
-            radius = radius, 
-		}
-	)
-end
+    CreateModifierThinker(
+        caster, --hCaster
+        self, --hAbility
+        "modifier_sniper_ex_mobility_thinker", --modifierName
+        { duration = duration }, --paramTable
+		caster:GetOrigin(), --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+        false --bPhantomBlocker
+    )
 
-function sniper_ex_mobility:OnCastPointEnd( point )
-    -- Initialize variables
-	local caster = self:GetCaster()
-    local origin = caster:GetOrigin()
-    local damage = self:GetSpecialValueFor("damage")
-	local duration = self:GetSpecialValueFor( "duration" )
+    caster:AddNewModifier(
+        caster, -- player source
+        self, -- ability source
+        "modifier_generic_displacement", -- modifier name
+        {
+            x = direction.x,
+            y = direction.y,
+            r = distance,
+            speed = 1500,
+            peak = 400,
+            i_frame = 1
+        } -- kv
+    )
 
-	-- Projectile data
-	local projectile_name = "particles/mod_units/heroes/hero_sniper/techies_base_attack.vpcf"
-	local projectile_start_radius = 80--self:GetSpecialValueFor("hitbox")
-	local projectile_end_radius = 80--self:GetSpecialValueFor("hitbox")
-	local projectile_distance = (origin - point):Length2D()
-	local projectile_speed = 1700--self:GetSpecialValueFor("projectile_speed")
-    local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, -100 )):Normalized()
 
-    -- Projectile
-    local projectile = {
-        EffectName = projectile_name,
-        vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,60),
-        fDistance = projectile_distance,
-        fStartRadius = projectile_start_radius,
-        fEndRadius = projectile_end_radius,
-        Source = caster,
-        fExpireTime = 8.0,
-        vVelocity = projectile_direction * projectile_speed,
-        UnitBehavior = PROJECTILES_DESTROY,
-        bMultipleHits = true,
-        bIgnoreSource = true,
-        TreeBehavior = PROJECTILES_NOTHING,
-        bCutTrees = true,
-        bTreeFullCollision = false,
-        WallBehavior = PROJECTILES_DESTROY,
-        GroundBehavior = PROJECTILES_NOTHING,
-        fGroundOffset = 80,
-        nChangeMax = 1,
-        bRecreateOnChange = true,
-        bZCheck = false,
-        bGroundLock = true,
-        bProvidesVision = true,
-        iVisionRadius = 200,
-        iVisionTeamNumber = caster:GetTeam(),
-        bFlyingVision = false,
-        fVisionTickTime = .1,
-        fVisionLingerDuration = 1,
-        draw = false,
-        fRehitDelay = 1.0,
-        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
-        OnUnitHit = function(_self, unit) 
-            --Damage
-            local damage = {
-                victim = unit,
-                attacker = _self.Source,
-                damage = damage,
-                damage_type = DAMAGE_TYPE_MAGICAL,
-            }
-            ApplyDamage( damage )
-        end,
-        OnFinish = function(_self, pos)
-            -- Effect thinker
-            CreateModifierThinker(
-                _self.Source, --hCaster
-                self, --hAbility
-                "modifier_sniper_ex_mobility_thinker", --modifierName
-                { duration = duration }, --paramTable
-                pos, --vOrigin
-                _self.Source:GetTeamNumber(), --nTeamNumber
-                false --bPhantomBlocker
-            )
-            self:PlayEffects_b(pos)
-        end,
-    }
-
-    Projectiles:CreateProjectile(projectile)
-    self:PlayEffects_a( pos )
     
-    -- Put CD on the alternate version of the ability
-	local alternate_version = caster:FindAbilityByName("sniper_mobility")
-	alternate_version:StartCooldown(self:GetCooldown(0))
+    --Find enemies to damage
+    local enemies = FindUnitsInRadius( 
+        caster:GetTeamNumber(), -- int, your team number
+        origin, -- point, center point
+        nil, -- handle, cacheUnit. (not known)
+        radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
+        DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+        0, -- int, flag filter
+        0, -- int, order filter
+        false -- bool, can grow cache
+    )
 
+    for _,enemy in pairs(enemies) do
+
+        local tinker_direction = (point - enemy:GetOrigin()):Normalized()
+
+        -- Add modifier
+        enemy:AddNewModifier(
+            caster, -- player source
+            self, -- ability source
+            "modifier_generic_knockback", -- modifier name
+            { 
+                duration = 0.2,
+                distance = 100,
+                z = 50,
+                x = tinker_direction.x,
+                y = tinker_direction.y,
+                disable = 1,
+                stun = 1,
+            } -- kv
+        )
+    end
+
+    self:PlayEffects()
 end
 
 --------------------------------------------------------------------------------
-function sniper_ex_mobility:PlayEffects_a( point )
-	-- Cast Sound
-	local sound_cast = "Hero_Sniper.ShrapnelShoot"
-    EmitSoundOn( sound_cast, self:GetCaster() )
+function sniper_ex_mobility:PlayEffects()
+    EmitSoundOn( "Hero_Techies.LandMine.Detonate", self:GetCaster() )
+    
+    local particle_cast = "particles/econ/courier/courier_cluckles/courier_cluckles_ambient_rocket_explosion.vpcf"
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin())
+    
+    ParticleManager:ReleaseParticleIndex( effect_cast )    
 end
 
--- On hit wall 
-function sniper_ex_mobility:PlayEffects_b( pos )
-	local caster = self:GetCaster()
-	
-	-- Cast Sound
-	local sound_cast = "Hero_Sniper.AssassinateDamage"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
-
-	-- Cast Particle
-	local particle_cast = "particles/econ/items/storm_spirit/strom_spirit_ti8/storm_spirit_ti8_overload_flash.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	sniper_ex_mobility,
+	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },
+	{ movement_speed = 50 }
+)

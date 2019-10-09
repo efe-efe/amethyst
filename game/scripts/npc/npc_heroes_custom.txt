@@ -88,7 +88,9 @@
 		"Ability8"						"spectre_ex_second_attack"       
 		"Ability9"						"spectre_ex_mobility"	
 		"Ability10"						"mount"						
-		"Ability11"						"charge"	
+		"Ability11"						"charge"					
+		"Ability12"						"spectre_ex_second_attack_projectile"
+		"Ability13"						"spectre_ultimate_swap"		
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -232,8 +234,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"7"										// Damage range min.
-		"AttackDamageMax"			"7"										// Damage range max.	
+		"AttackDamageMin"			"9"										// Damage range min.
+		"AttackDamageMax"			"9"										// Damage range max.	
 		"AttackRate"				"0.0"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"

@@ -1,0 +1,50 @@
+"DOTAAbilities" {
+    "sniper_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_ultimate/sniper_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"sniper_take_aim"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"AbilityCastPoint"				"0.6"
+		"AbilityManaCost"				"100"
+		"AbilityDamage"					"20"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"15" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"170" }
+		}
+	}
+
+	"sniper_ultimate_projectile"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_ultimate/sniper_ultimate_projectile"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"sniper_assassinate"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN" 
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"1600"
+		"AbilityCastPoint"				"0.35"
+
+		"precache"
+		{
+			"particle" "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1600" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+		}
+	}
+}

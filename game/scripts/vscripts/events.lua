@@ -29,20 +29,23 @@ function GameMode:OnGameInProgress()
     GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
     GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
     
-    
     self.health_orbs_ent = Entities:FindAllByName("health_orb")
     self.mana_orbs_ent = Entities:FindAllByName("mana_orb")
-    self.middle_orb_ent = Entities:FindByName(nil, "orb_spawn")
-    self.orbs = {}
+    self.middle_orbs_ent = Entities:FindAllByName("orb_spawn")
+    self.orbs = {} -- Created orbs on the map
     self.orb_timers_ent = {}
 
     for i = 1, 5 do
         local orb_name = "orb_timer" .. tostring(i)
-        self.orb_timers_ent[i] = Entities:FindByName(nil, orb_name)
+        self.orb_timers_ent[i] = Entities:FindAllByName(orb_name)
     end
+    
     self.orb_timers = {}
     self:CreateAllOrbs()
-    self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
+
+    self.actual_middle_orb_index = 1
+    self:CreateMiddleOrb( self.actual_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
+    self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
 end
 
 --============================================================================================
@@ -153,7 +156,12 @@ function GameMode:OnEntityKilled( keys )
     -- Recreate orb
     if isMiddleOrb == 1 then
         self:DestroyAllTimers()
-        self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
+        self.actual_middle_orb_index = self.next_middle_orb_index
+        self:CreateMiddleOrb( self.actual_middle_orb_index, self.MIDDLE_ORB_SPAWN_TIME)
+        if not self:IsDeathZoneCreated() then
+            CustomGameEventManager:Send_ServerToAllClients( "middle_orb_scheduled", { spawn_location = self.middle_orbs_ent[self.actual_middle_orb_index]:GetOrigin() } )
+            self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
+        end
     end
 
     if killed:IsRealHero() and Convars:GetInt('test_mode') == 0 then
@@ -363,8 +371,10 @@ function GameMode:EndRound( delay )
         self:DestroyMiddleOrb()
         self:DestroyDeathZone()
         self:DestroyAllOrbs()
-        
-        self:CreateMiddleOrb(self.MIDDLE_ORB_SPAWN_TIME)
+
+        self.actual_middle_orb_index = 1
+        self:CreateMiddleOrb(self.actual_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
+        self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
         self:CreateAllOrbs()
 
         for _,actual_team in pairs(self.teams) do
@@ -392,7 +402,7 @@ function GameMode:EndRound( delay )
         end
         self.countdownEnabled = true
         self.lock_round = false
-        nCOUNTDOWNTIMER = 120
+        nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
     end)
 end
 
@@ -401,9 +411,11 @@ end
 --------------------------------------------------------------------------------
 function GameMode:CreateDeathZone()
     print("[AMETHYST] Creating Death Zone")
-        
-    if self.middle_orb_ent == nil then return end
-    local orb_position = self.middle_orb_ent:GetOrigin()
+
+    local index = self:IsMiddleOrbCreated() and self.actual_middle_orb_index or self.next_middle_orb_index
+    self.next_middle_orb_index = self.actual_middle_orb_index
+    
+    local orb_position = self.middle_orbs_ent[index]:GetOrigin()
 
     self.modifier_death_zone = CreateModifierThinker(
         nil, --hCaster
@@ -414,6 +426,22 @@ function GameMode:CreateDeathZone()
         DOTA_TEAM_NOTEAM, --nTeamNumber
         false --bPhantomBlocker
     )
+end
+
+function GameMode:IsDeathZoneCreated()
+    if self.modifier_death_zone ~= nil then
+        if not self.modifier_death_zone:IsNull() then
+            return true
+        end
+    end
+    return false
+end
+
+function GameMode:IsMiddleOrbCreated()
+    if self.middle_orb_instance ~= nil then
+        return true
+    end
+    return false
 end
 
 --------------------------------------------------------------------------------
@@ -432,11 +460,10 @@ end
 --------------------------------------------------------------------------------
 -- Middle Orb spawner
 --------------------------------------------------------------------------------
-function GameMode:CreateMiddleOrb( delay )
+function GameMode:CreateMiddleOrb( index, delay )
     print("[AMETHYST] Creating Middle Orb")
     
-    if self.middle_orb_ent == nil then return end
-    local orb_position = self.middle_orb_ent:GetOrigin()
+    local orb_position = self.middle_orbs_ent[index]:GetOrigin()
 
     self.middle_orb_instance = CreateUnitByName(
         "npc_dota_creature_middle_orb", --szUnitName
@@ -453,15 +480,17 @@ function GameMode:CreateMiddleOrb( delay )
         "modifier_middle_orb_exiled",
         {}
     )
-
+    self.middle_orb_instance:SetHullRadius(10)
     
     local counter = 0.0
-    local counter_sum = self.MIDDLE_ORB_SPAWN_TIME / 5
+    local counter_sum = delay / 5
     
     for _,orb_timer_ent in pairs(self.orb_timers_ent) do
         counter = counter + counter_sum
-        local timer_origin = orb_timer_ent:GetOrigin()
-        local name = "SpawnTimer_" .. _ 
+
+        local timer_origin = orb_timer_ent[index]:GetOrigin()
+        local name = "SpawnTimer_" .. orb_timer_ent[index]:GetEntityIndex() 
+
         self.middle_orb_instance:SetContextThink( name , function()
             self.orb_timers[_] = CreateUnitByName(
                 "npc_dota_creature_middle_orb_timer", --szUnitName
