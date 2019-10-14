@@ -1,4 +1,10 @@
 modifier_generic_movement = class({})
+local DEBUG = true
+local DEBUG_RADIUS = 40
+local DEBUG_RADIUS_MINI = 10
+local RED = Vector(255, 0, 0)
+local GREEN = Vector(0, 255, 0)
+local BLUE = Vector(0, 0, 255)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -29,8 +35,6 @@ function modifier_generic_movement:OnCreated(params)
 	self.frame = 0.00
 	self.parent = self:GetParent()
 	self.max_diff_z = 70
-	self.debug_radius = 40
-	self.debug_radius_mini = 10
 
 	if IsServer() then
 		self.previous_speed = self:GetParent():GetIdealSpeed() / 100
@@ -103,29 +107,51 @@ function modifier_generic_movement:OnIntervalThink()
 		--test_position.z = test_z
 
 		-- Test position, where to test the z
-		local test_position_a = test_position + self.debug_radius * Vector(1, 0, 0)
+		local test_position_a = test_position + DEBUG_RADIUS * Vector(1, 0, 0)
 		local test_z_a = GetGroundPosition(test_position_a, self.parent).z
-		--test_position_a.z = test_z_a -- Not necesary, only for debug
+		
 
-		local test_position_b = test_position + self.debug_radius * Vector(-1, 0, 0)
+		local test_position_b = test_position + DEBUG_RADIUS * Vector(-1, 0, 0)
 		local test_z_b = GetGroundPosition(test_position_b, self.parent).z
-		--test_position_b.z = test_z_b -- Not necesary, only for debug
 
-		local test_position_c = test_position + self.debug_radius * Vector(0, 1, 0)
+		local test_position_c = test_position + DEBUG_RADIUS * Vector(0, 1, 0)
 		local test_z_c = GetGroundPosition(test_position_c, self.parent).z
-		--test_position_c.z = test_z_c -- Not necesary, only for debug
 
-		local test_position_d = test_position + self.debug_radius * Vector(0, -1, 0)
+		local test_position_d = test_position + DEBUG_RADIUS * Vector(0, -1, 0)
 		local test_z_d = GetGroundPosition(test_position_d, self.parent).z
-		--test_position_d.z = test_z_d -- Not necesary, only for debug
 
-		--DebugDrawCircle(future_position, Vector(255,0,0), 5, self.debug_radius, false, 0.01)
-		--DebugDrawCircle(test_position, Vector(0,255,0), 5, self.debug_radius, false, 0.01)
-		--DebugDrawCircle(test_position_a, Vector(0,0,255), 5, self.debug_radius_mini, false, 0.01)
-		--DebugDrawCircle(test_position_b, Vector(0,0,250), 5, self.debug_radius_mini, false, 0.01)
-		--DebugDrawCircle(test_position_c, Vector(0,0,250), 5, self.debug_radius_mini, false, 0.01)
-		--DebugDrawCircle(test_position_d, Vector(0,0,250), 5, self.debug_radius_mini, false, 0.01)
+		if DEBUG then 
+			test_position_a.z = test_z_a 
+			test_position_b.z = test_z_b
+			test_position_c.z = test_z_c
+			test_position_d.z = test_z_d
 
+			DebugDrawCircle(future_position, RED, 5, DEBUG_RADIUS, false, 0.01)
+			DebugDrawCircle(test_position, GREEN, 5, DEBUG_RADIUS, false, 0.01)
+			DebugDrawCircle(test_position_a, BLUE, 5, DEBUG_RADIUS_MINI, false, 0.01)
+			DebugDrawCircle(test_position_b, BLUE, 5, DEBUG_RADIUS_MINI, false, 0.01)
+			DebugDrawCircle(test_position_c, BLUE, 5, DEBUG_RADIUS_MINI, false, 0.01)
+			DebugDrawCircle(test_position_d, BLUE, 5, DEBUG_RADIUS_MINI, false, 0.01)
+
+			local units = FindUnitsInRadius( 
+				self.parent:GetTeamNumber(), -- int, your team number
+				test_position, -- point, center point
+				nil, -- handle, cacheUnit. (not known)
+				DEBUG_RADIUS, -- float, radius. or use FIND_UNITS_EVERYWHERE
+				DOTA_UNIT_TARGET_TEAM_BOTH, -- int, team filter
+				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+				0, -- int, flag filter
+				0, -- int, order filter
+				false -- bool, can grow cache
+			)
+
+			for _,unit in pairs(units) do
+				if unit ~= self.parent then
+					print(unit:GetName())
+					unit.direction.x = unit.direction.x + 1
+				end
+			end
+		end
 
 		-- If not casting
 		if not self.parent:HasModifier("modifier_cast_point") and not self.parent:HasModifier("modifier_cast_point_new") then --THIS CAN END BEFORE THE ACTUAL ANIMATION
