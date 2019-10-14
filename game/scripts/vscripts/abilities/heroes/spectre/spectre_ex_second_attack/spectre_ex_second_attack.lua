@@ -12,11 +12,49 @@ end
 function spectre_ex_second_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
-	local projectiles_count = self:GetSpecialValueFor("projectiles_count")
-	local delay_time = self:GetCastPoint() + 0.1
-	local duration = delay_time * (projectiles_count + 1)
 
-	caster:AddNewModifier(caster, self, "modifier_spectre_ex_second_attack", { duration = duration })
+	if IsServer() then
+		local delay_time = self:GetCastPoint() + 0.1
+		self.projectiles_count = self:GetSpecialValueFor("projectiles_count")
+
+		local duration = delay_time * (self.projectiles_count + 1)
+		self.projectile_spell = caster:FindAbilityByName("spectre_ex_second_attack_projectile")
+		self.counter = 0
+
+		caster:AddNewModifier(
+			caster, -- player source
+			self, -- ability source
+			"modifier_channeling", -- modifier name
+			{ 
+				duration = duration,
+				movement_speed = 80,
+				channeling_tick = self.projectile_spell:GetCastPoint() + 0.1,
+				immediate = 1,
+			} -- kv
+		)
+		
+	end
+end
+
+function spectre_ex_second_attack:OnChannelingTick()
+	if IsServer() then
+		if self.counter < self.projectiles_count then
+			self:PlayEffects()
+			self.counter = self.counter + 1
+			self:GetCaster():CastAbilityImmediately(self.projectile_spell, self:GetCaster():GetEntityIndex())
+		end
+	end
+end
+
+function spectre_ex_second_attack:PlayEffects()
+	local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start_embers.vpcf"
+	local origin = self:GetCaster():GetOrigin()
+	
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	ParticleManager:SetParticleControlEnt( effect_cast, 1, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_hitloc", origin, true );
+	ParticleManager:SetParticleControlEnt( effect_cast, 3, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_hitloc", origin, true );
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+
 end
 
 function spectre_ex_second_attack:PlayEffectsOnPhase()

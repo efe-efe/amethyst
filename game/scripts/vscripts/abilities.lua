@@ -57,7 +57,8 @@ function Abilities.Initialize( ability, animation, warmup )
             min_range = min_range,
             max_range = max_range,
             hide_indicator = warmup.hide_indicator or false,
-            public = warmup.public or nil
+            public = warmup.public or nil,
+            disable_all = warmup.disable_all == false and 0 or 1
         })
         
         -- Castbar (ULTIMATE)
@@ -96,8 +97,12 @@ function Abilities.Initialize( ability, animation, warmup )
     end
 
     function ability:OnCastPointEnd()
+        if self:HasBehavior(DOTA_ABILITY_BEHAVIOR_CHANNELLED) then
+            
+        end
+
         if onCastPointEnd then onCastPointEnd(self) end
-        
+
         local alternate_version = self:GetCaster():FindAbilityByName(self:GetAlternateName())
         if alternate_version ~= nil then
             alternate_version:StartCooldown(self:GetCooldown(0))

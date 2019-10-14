@@ -60,7 +60,7 @@ function treant_basic_attack:OnCastPointEnd()
 
 			-- Give Mana
 			if counter < 1 then
-				_self.Source:GiveManaPercent(mana_gain_pct)
+				_self.Source:GiveManaPercent(mana_gain_pct, unit)
 			end
 
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)

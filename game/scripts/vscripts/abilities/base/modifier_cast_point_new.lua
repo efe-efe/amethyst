@@ -38,7 +38,7 @@ function modifier_cast_point_new:OnCreated(params)
 		self.min_range = params.min_range
 		self.max_range = params.max_range
 	
-		self.disable_all = params.disable_all
+		self.disable_all = params.disable_all == 1 and true or false
 		self.public = params.public
 		self.cancel_on_damage = params.cancel_on_damage
 
@@ -78,7 +78,7 @@ function modifier_cast_point_new:OnRefresh(params)
 		self.min_range = params.min_range
 		self.max_range = params.max_range
 	
-		self.disable_all = params.disable_all
+		self.disable_all = params.disable_all == 1 and true or false
 		self.public = params.public
 		self.cancel_on_damage = params.cancel_on_damage
 
@@ -97,33 +97,9 @@ function modifier_cast_point_new:OnRefresh(params)
 	end
 end
 
-function modifier_cast_point_new:SwapActiveSpells( mode )
-	local boolean_mode
-
-	if mode == "disable" then
-		boolean_mode = false
-	elseif mode == "enable" then
-		boolean_mode = true
-	end
-
-	if IsServer() then
-		for i = 0, 12 do
-			local ability = self.parent:GetAbilityByIndex(i)
-			if ability then
-				if ability:GetAbilityType() ~= 2 then -- To not level up the talents
-					if ability ~= self:GetAbility() then
-						ability:SetActivated( boolean_mode )
-					end
-				end
-			end
-		end
-	end
-end
-
 function modifier_cast_point_new:StartCast()
 	if IsServer() then
 		self.ability:EndCooldown()
-		self.ability:SetActivated(false)
 		self.ability:SetInAbilityPhase(true)
 		self.parent:GiveMana(self.ability:GetManaCost(-1)) 
 				
@@ -138,17 +114,18 @@ function modifier_cast_point_new:StartCast()
 			end
 		end
 
-		if self.disable_all ~= 0 then
-			self:SwapActiveSpells("disable")
+		if self.disable_all then
+			self.parent:SetAllAbilitiesActivated( false )
 		end
 	end
 end
 
 function modifier_cast_point_new:StopCast()
 	if IsServer() then
-		self.ability:SetActivated(true)
 		self.ability:SetInAbilityPhase(false)
-		self:SwapActiveSpells("enable")
+		if self.disable_all then
+			self.parent:SetAllAbilitiesActivated( true )
+		end
 		if self.ability.OnStopPseudoCastPoint ~= nil then
 			self.ability:OnStopPseudoCastPoint()
 		end
@@ -192,8 +169,9 @@ function modifier_cast_point_new:OnDestroy(params)
 				self.ability:PayManaCost()
 
 				self.ability:SetInAbilityPhase( false )
-				self.ability:SetActivated( true )
-				self:SwapActiveSpells( "enable" )
+				if self.disable_all then
+					self.parent:SetAllAbilitiesActivated( true )
+				end
 
 				if self.ability.force_position ~= nil then
 					self.ability:OnCastPointEnd( self.ability.force_position )

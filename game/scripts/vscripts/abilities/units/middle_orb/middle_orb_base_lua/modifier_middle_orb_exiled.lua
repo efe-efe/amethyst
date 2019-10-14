@@ -30,7 +30,7 @@ function modifier_middle_orb_exiled:OnDestroy( kv )
         local origin = parent:GetOrigin()
 
         --self:StopEffects()
-        parent:SetOrigin(Vector(origin.x, origin.y, 256))
+        parent:SetOrigin(Vector(origin.x, origin.y, origin.z + 128))
         parent:RemoveNoDraw()
 	end
 end
@@ -45,22 +45,4 @@ function modifier_middle_orb_exiled:CheckState()
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
     }
 	return state
-end
-
-function modifier_middle_orb_exiled:PlayEffects()
-    -- Create particles
-    
-    local position = self:GetParent():GetOrigin()
-    local new_position = Vector(position.x, position.y, position.z + 128)
-
-    local particle_cast = "particles/neutral_fx/roshan_death_timer_arc.vpcf"
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-
-    ParticleManager:SetParticleControl( self.effect_cast, 0, new_position )
-    ParticleManager:SetParticleControl( self.effect_cast, 3, new_position )
-end
-
-function modifier_middle_orb_exiled:StopEffects()
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
 end

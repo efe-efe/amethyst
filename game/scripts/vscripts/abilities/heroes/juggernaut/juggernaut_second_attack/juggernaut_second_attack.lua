@@ -43,7 +43,7 @@ function juggernaut_second_attack:OnCastPointEnd( )
 			SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
 
 			if _self.Source == caster then
-				caster:GiveManaPercent(mana_gain_pct)
+				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
 			
 			self:PlayEffectsOnImpact(unit, stacks)

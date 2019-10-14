@@ -5,7 +5,7 @@ require('util/abilities')
 require('util/npc')
 
 _G.nMAX_COUNTDOWNTIMER = 60
-_G.nCOUNTDOWNTIMER = 60
+_G.nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
 
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 
@@ -118,6 +118,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_displacement", "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH )
     
     LinkLuaModifier("modifier_generic_movement", "abilities/base/modifier_generic_movement", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_channeling", "abilities/base/modifier_channeling", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_cast_point", "abilities/base/modifier_cast_point", LUA_MODIFIER_MOTION_NONE ) -- Delete after
     LinkLuaModifier("modifier_treshold", "abilities/base/modifier_treshold", LUA_MODIFIER_MOTION_NONE ) -- Delete after
     LinkLuaModifier("modifier_cast_point_new", "abilities/base/modifier_cast_point_new", LUA_MODIFIER_MOTION_NONE )

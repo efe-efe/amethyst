@@ -34,6 +34,7 @@ function GameMode:OnGameInProgress()
     self.middle_orbs_ent = Entities:FindAllByName("orb_spawn")
     self.orbs = {} -- Created orbs on the map
     self.orb_timers_ent = {}
+    self.effect_cast_arrows = {}
 
     for i = 1, 5 do
         local orb_name = "orb_timer" .. tostring(i)
@@ -43,8 +44,9 @@ function GameMode:OnGameInProgress()
     self.orb_timers = {}
     self:CreateAllOrbs()
 
-    self.actual_middle_orb_index = 1
-    self:CreateMiddleOrb( self.actual_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
+    self.scheduled_middle_orb_index = RandomInt(1, 3)
+    self:CreateMiddleOrb( self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
+    self:PlayEffectsArrow()
     self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
 end
 
@@ -145,7 +147,6 @@ end
 function GameMode:OnEntityKilled( keys )
     -- The Killed
     local killed = EntIndexToHScript( keys.entindex_killed )
-    local isMiddleOrb = killed:Attribute_GetIntValue("middle_orb", 0)
 
     -- The Killer
     local killerEntity = nil
@@ -154,12 +155,17 @@ function GameMode:OnEntityKilled( keys )
     end
     
     -- Recreate orb
-    if isMiddleOrb == 1 then
+    if killed:IsMiddleOrb() then
         self:DestroyAllTimers()
-        self.actual_middle_orb_index = self.next_middle_orb_index
-        self:CreateMiddleOrb( self.actual_middle_orb_index, self.MIDDLE_ORB_SPAWN_TIME)
+
+        self:CreateMiddleOrb( self.next_middle_orb_index, self.MIDDLE_ORB_SPAWN_TIME)
+        self.scheduled_middle_orb_index = self.next_middle_orb_index
+
+        self:StopEffectsArrow()
+        self:PlayEffectsArrow()
+
         if not self:IsDeathZoneCreated() then
-            CustomGameEventManager:Send_ServerToAllClients( "middle_orb_scheduled", { spawn_location = self.middle_orbs_ent[self.actual_middle_orb_index]:GetOrigin() } )
+            CustomGameEventManager:Send_ServerToAllClients( "middle_orb_scheduled", { spawn_location = self.middle_orbs_ent[self.scheduled_middle_orb_index]:GetOrigin() } )
             self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
         end
     end
@@ -372,9 +378,11 @@ function GameMode:EndRound( delay )
         self:DestroyDeathZone()
         self:DestroyAllOrbs()
 
-        self.actual_middle_orb_index = 1
-        self:CreateMiddleOrb(self.actual_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
+        self.scheduled_middle_orb_index = RandomInt(1, 3)
+        self:CreateMiddleOrb(self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
+        self:PlayEffectsArrow()
         self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
+        
         self:CreateAllOrbs()
 
         for _,actual_team in pairs(self.teams) do
@@ -412,8 +420,8 @@ end
 function GameMode:CreateDeathZone()
     print("[AMETHYST] Creating Death Zone")
 
-    local index = self:IsMiddleOrbCreated() and self.actual_middle_orb_index or self.next_middle_orb_index
-    self.next_middle_orb_index = self.actual_middle_orb_index
+    local index = self:IsMiddleOrbCreated() and self.scheduled_middle_orb_index or self.next_middle_orb_index
+    self.next_middle_orb_index = self.scheduled_middle_orb_index
     
     local orb_position = self.middle_orbs_ent[index]:GetOrigin()
 
@@ -510,23 +518,21 @@ function GameMode:CreateMiddleOrb( index, delay )
     self.middle_orb_instance:SetContextThink("SpawnMiddleOrb", function()
         GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> has spawned", 0, 0)
         SafeDestroyModifier("modifier_middle_orb_exiled", self.middle_orb_instance, self.middle_orb_instance)
+        
+        EmitSoundOn( "Hero_Oracle.FortunesEnd.Target", self.middle_orb_instance )
 
         -- Orb Spawn Effects
         local particle_cast_a = "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf"
         local particle_cast_b = "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf"
         local particle_cast_c = "particles/generic_gameplay/rune_arcane.vpcf"
 
-        local sound_cast = "Hero_Oracle.FortunesEnd.Target"
         local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
         local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
         ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
 
         ParticleManager:ReleaseParticleIndex( effect_cast_a )
         ParticleManager:ReleaseParticleIndex( effect_cast_b )
-        EmitSoundOn( sound_cast, self.middle_orb_instance )
     end, delay)
-
-
 end
 
 --------------------------------------------------------------------------------
@@ -536,6 +542,7 @@ function GameMode:DestroyMiddleOrb()
     if self.middle_orb_instance ~= nil then
         UTIL_Remove(self.middle_orb_instance)
         self:DestroyAllTimers()
+        self:StopEffectsArrow()
     end
 end
 
@@ -624,4 +631,30 @@ end
 --------------------------------------------------------------------------------
 function GameMode:EndGame( victoryTeam )
 	GameRules:SetGameWinner( victoryTeam )
+end
+
+function GameMode:StopEffectsArrow()
+    for _,effect in pairs(self.effect_cast_arrows) do
+        ParticleManager:DestroyParticle(effect, false)
+        ParticleManager:ReleaseParticleIndex(effect)
+    end
+end
+
+function GameMode:PlayEffectsArrow()
+    local offset = 128
+    local particle_cast = "particles/ui_mouseactions/range_finder_directional.vpcf"
+
+    for _, middle_orb_ent in pairs(self.middle_orbs_ent) do
+        local next_orb_ent = self.middle_orbs_ent[self.scheduled_middle_orb_index]
+        if middle_orb_ent ~= next_orb_ent then 
+            local next_origin = next_orb_ent:GetOrigin()
+            local origin = middle_orb_ent:GetOrigin()
+            local direction = (next_origin - origin):Normalized()
+            local second_arrow_origin = origin + direction * Vector(offset, offset, 0)
+        
+            self.effect_cast_arrows[middle_orb_ent] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+            ParticleManager:SetParticleControl( self.effect_cast_arrows[middle_orb_ent], 0, origin )
+            ParticleManager:SetParticleControl( self.effect_cast_arrows[middle_orb_ent], 2, second_arrow_origin )
+        end
+    end
 end

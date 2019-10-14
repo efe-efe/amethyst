@@ -46,9 +46,13 @@ function spectre_ex_second_attack_projectile:OnCastPointEnd()
 	}
 
 	-- Cast projectile
+	self:PlayEffectsOnCast()
 	Projectiles:CreateProjectile(projectile)
 end
 
+function spectre_ex_second_attack_projectile:PlayEffectsOnCast()
+	EmitSoundOn( "Hero_Spectre.DaggerCast", self:GetCaster() )
+end
 
 --Impact
 function spectre_ex_second_attack_projectile:PlayEffects(pos)
@@ -69,5 +73,5 @@ if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	spectre_ex_second_attack_projectile,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.3 },
-	{ movement_speed = 100, fixed_range = 1 }
+	{ movement_speed = 100, fixed_range = 1, disable_all = false }
 )

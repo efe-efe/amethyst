@@ -10,7 +10,7 @@ end
 -- Not done on "OnProjectileHit" because on that moment we dont know if the attack misses or not
 function modifier_mana_on_attack:GetModifierProcAttack_Feedback(kv)
     local mana = self.mana_gain == 0 and self.mana_gain_pct or self.mana_gain
-    self:GetCaster():GiveManaPercent(mana)
+    self:GetCaster():GiveManaPercent(mana, kv.target)
 end
 
 --- Misc 

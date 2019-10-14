@@ -50,7 +50,7 @@ function sniper_second_attack:OnCastPointEnd()
 			
 			-- Give Mana
 			if counter < 1 then
-				_self.Source:GiveManaPercent(mana_gain_pct)
+				_self.Source:GiveManaPercent(mana_gain_pct, unit)
 			end
 	
 			ApplyDamage( damage )

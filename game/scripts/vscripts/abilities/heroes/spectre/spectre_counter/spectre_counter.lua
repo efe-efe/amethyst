@@ -40,6 +40,7 @@ function spectre_counter:OnTrigger()
 end
 
 function spectre_counter:PlayEffectsOnTrigger()
+    EmitSoundOn( "Hero_Spectre.Reality", self:GetCaster() )
     local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )

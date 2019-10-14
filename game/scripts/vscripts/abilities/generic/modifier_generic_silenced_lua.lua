@@ -23,6 +23,8 @@ function modifier_generic_silenced_lua:OnCreated()
             priority = 0,
 		})
 		self:PlayEffects()
+
+		SafeDestroyModifier("modifier_channeling", self:GetParent())
 	end
 end
 function modifier_generic_silenced_lua:OnDestroy()

@@ -3,25 +3,25 @@ modifier_death_zone = class({})
 --Initializer
 --------------------------------------------------------------------------------
 function modifier_death_zone:OnCreated( kv )
-    --self.max_radius = 5000
+    self.max_radius = 5000
     self.radius = 5000--self:GetAbility():GetSpecialValueFor( "radius" )
     self.min_radius = 600
 
     self.counter = 0
-    --self.counter_b = 0
+    self.counter_b = 0
 
     if IsServer() then
         -- Start Interval
         GameRules:SendCustomMessage("The <b><font color='blue'>Death zone</font></b> has initiated, don't get close to the edges!", 0, 0)
 
-        self:PlayEffects()
-        self:StartIntervalThink(0.01)      
+        self:PlayEffects(self.radius, Vector(250, 70, 70))
+        self:StartIntervalThink(0.1)      
     end
 end
 
 function modifier_death_zone:OnRemoved()
     if IsServer() then
-        self:StopEffects()
+        --self:StopEffects()
 		UTIL_Remove( self:GetParent() )
 	end
 end
@@ -30,10 +30,10 @@ end
 --------------------------------------------------------------------------------
 function modifier_death_zone:OnIntervalThink()
     --ParticleManager:SetParticleControl( self.effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    self:StopEffects()
-    self:PlayEffects()
+    --self:StopEffects()
+    self:PlayEffects(self.radius, Vector(250, 70, 70))
 
-    if self.counter == 100 then 
+    if self.counter == 10 then 
         local all_units = FindUnitsInRadius(
             DOTA_TEAM_NOTEAM,	-- int, your team number
             self:GetParent():GetOrigin(),	-- point, center point
@@ -81,24 +81,22 @@ function modifier_death_zone:OnIntervalThink()
         self.counter = 0
     end
 
-    --[[
+    
     if self.counter_b == 10 then
-        for j = 0, 2 do
-            for i = self.radius, self.max_radius, 200 do
-                self:PlayAoe(i)
-            end
+        for i = self.radius, self.max_radius, 200 do
+            self:PlayEffects(i, Vector(0, 0, 0))
         end
         self.counter_b = 0
     end
-    ]]
 
-    local new_radius = self.radius - 1
+
+    local new_radius = self.radius - 5
     if new_radius > self.min_radius then
         self.radius = new_radius
     end
 
     self.counter = self.counter + 1
-    --self.counter_b = self.counter_b + 1
+    self.counter_b = self.counter_b + 1
 end
 
 
@@ -112,23 +110,24 @@ function modifier_death_zone:PlayAoe(radius)
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-function modifier_death_zone:PlayEffects()
+function modifier_death_zone:PlayEffects(radius, color)
 	--local particle_cast = "particles/mod_units/heroes/hero_dark_willow/dw_ti8_immortal_cursed_crown_marker.vpcf"
-    local particle_cast = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
-
-
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin())	-- line origin
-    ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(self.radius, 1,1))
-    ParticleManager:SetParticleControl( self.effect_cast, 15, Vector(250, 70, 70))
-
+    --local particle_cast = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
+    local particle_cast = "particles/mod_units/instant_aoe_marker.vpcf"
+    
+    --[[local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin())	-- line origin
+    ParticleManager:SetParticleControl( effect_cast, 1, Vector(radius, 1,1))
+    ParticleManager:SetParticleControl( effect_cast, 2, color)
+    ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0))
+]]
     --particles 1
-    --[[particle_cast = "particles/mod_units/heroes/hero_dark_willow/dw_ti8_immortal_cursed_crown_marker.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    --particle_cast = "particles/mod_units/heroes/hero_dark_willow/dw_ti8_immortal_cursed_crown_marker.vpcf"
+    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( self.radius, self.radius , self.radius ) )
+    ParticleManager:SetParticleControl( effect_cast, 2, Vector( radius, radius, radius ) )
     ParticleManager:SetParticleControl( effect_cast, 4, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )]]
+    ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 function modifier_death_zone:StopEffects()

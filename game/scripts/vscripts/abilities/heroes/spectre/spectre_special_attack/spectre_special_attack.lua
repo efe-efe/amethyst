@@ -51,7 +51,7 @@ function spectre_special_attack:OnCastPointEnd( )
 			)
 
 			-- Give Mana
-			caster:GiveManaPercent(mana_gain_pct)
+			caster:GiveManaPercent(mana_gain_pct, unit)
 			self:PlayEffectsOnImpact(unit)
 		end,
 		OnFinish = function(_self, pos)

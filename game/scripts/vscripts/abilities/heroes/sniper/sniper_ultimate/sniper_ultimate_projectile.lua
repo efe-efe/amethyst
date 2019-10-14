@@ -160,5 +160,5 @@ if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	sniper_ultimate_projectile,
 	{ activity = ACT_DOTA_ATTACK, rate = 0.4 },
-	{ movement_speed = 0, fixed_range = 1 }
+	{ movement_speed = 0, fixed_range = 1, disable_all = false }
 )

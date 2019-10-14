@@ -4,6 +4,8 @@ function ModifyHotkeyBox( parent ) {
 
     if(!ModifyText(parent, "Ability1", "L-Mouse")){ return false; }
     if(!ModifyText(parent, "Ability3", "R-Mouse")){ return false; }
+    if(!ModifyText(parent, "Ability4", "R")){ return false; }
+    if(!ModifyText(parent, "Ability5", "F")){ return false; }
     if(!ModifyText(parent, "Ability6", "Space")){ return false; }
     if(!ModifyText(parent, "Ability7", "Z")){ return false; }
     return true;

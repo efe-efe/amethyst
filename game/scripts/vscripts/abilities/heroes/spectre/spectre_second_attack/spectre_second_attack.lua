@@ -49,7 +49,7 @@ function spectre_second_attack:OnCastPointEnd()
 
 			ApplyDamage( damage_table )
 
-			caster:GiveManaPercent(mana_gain_pct)
+			caster:GiveManaPercent(mana_gain_pct, unit)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

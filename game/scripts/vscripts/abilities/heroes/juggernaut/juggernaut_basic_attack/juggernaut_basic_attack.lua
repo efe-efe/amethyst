@@ -45,7 +45,7 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 			ApplyDamage( damage_table )
 
 			if _self.Source == caster then 
-				caster:GiveManaPercent(mana_gain_pct)
+				caster:GiveManaPercent(mana_gain_pct, unit)
 				if unit:IsRealHero() then 
 					-- Add modifier
 					caster:AddNewModifier(

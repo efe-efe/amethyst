@@ -43,7 +43,7 @@ function juggernaut_special_attack:OnCastPointEnd()
 			})
 
 			if _self.Source == caster then
-				caster:GiveManaPercent(mana_gain_pct)
+				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
 		end,
 		OnFinish = function(_self, pos)

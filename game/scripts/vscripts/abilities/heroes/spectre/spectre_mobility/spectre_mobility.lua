@@ -48,7 +48,12 @@ function spectre_mobility:OnCastPointEnd()
 				modifier:IncrementStackCount()
 				modifier:StartIntervalThink(-1)
 				modifier:CalculateCharge()
-				caster:GiveManaPercent(mana_gain_pct)    
+
+				if #enemies == 1 then
+					caster:GiveManaPercent(mana_gain_pct, enemies[1])    
+				else
+					caster:GiveManaPercent(mana_gain_pct)
+				end
 			end
             self:PlayEffectsOnFinish(pos)
             SafeDestroyModifier("modifier_spectre_banish", caster, caster)

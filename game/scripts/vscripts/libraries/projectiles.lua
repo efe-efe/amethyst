@@ -106,6 +106,14 @@ function Projectiles:CreateProjectile(projectile)
     Projectiles:InitialSetup(projectile);   -- Set defaults and initial values
     Projectiles:CreateParticle(projectile); -- Create visuals
 
+    -------------------------------
+    -- Getters asingment
+    -------------------------------
+    function projectile:GetCreationTime() return        projectile.spawnTime end
+    function projectile:GetDistanceTraveled() return    projectile.distanceTraveled end
+    function projectile:GetPosition() return            projectile.currentPosition end
+    function projectile:GetVelocity() return            projectile.currentVelocity * 30 end
+
     if projectile.GroundBehavior == PROJECTILES_FOLLOW then
         local future = projectile.currentPosition + projectile.currentVelocity
         local ground = GetGroundPosition(projectile.currentPosition, projectile.Source) + Vector(0,0,projectile.fGroundOffset)
@@ -118,14 +126,6 @@ function Projectiles:CreateProjectile(projectile)
     else
         ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, projectile.currentVelocity * 30)
     end
-
-    -------------------------------
-    -- Getters asingment
-    -------------------------------
-    function projectile:GetCreationTime() return        projectile.spawnTime end
-    function projectile:GetDistanceTraveled() return    projectile.distanceTraveled end
-    function projectile:GetPosition() return            projectile.currentPosition end
-    function projectile:GetVelocity() return            projectile.currentVelocity * 30 end
 
     -------------------------------
     -- Exposed methods
@@ -269,6 +269,7 @@ function Projectiles:CreateProjectile(projectile)
                                 local is_slower = entity:FindModifierByName("modifier_generic_projectile_slower_lua")
                                 local is_reflector = entity:FindModifierByName("modifier_generic_projectile_reflector_lua")
                                 local is_enemy_blocker = entity:FindModifierByName("modifier_generic_projectile_enemy_blocker_lua")
+                                local is_countering = entity:HasModifier("modifier_counter")
 
                                 if is_slower ~= nil then
                                     if not is_slower:IsNull() then
@@ -319,8 +320,6 @@ function Projectiles:CreateProjectile(projectile)
                                         end
                                     end
                                 else
-
-                                    --MOVED HERE
                                     if projectile.bMultipleHits then
                                         projectile.rehit[entity:entindex()] = curTime + projectile.fRehitDelay
                                     else
@@ -345,6 +344,9 @@ function Projectiles:CreateProjectile(projectile)
                                     -- bounce math
                                     end
 
+                                    if is_countering then
+                                        projectile:Destroy();
+                                    end
                                     --[[
                                     if projectile.bMultipleHits then
                                         projectile.rehit[entity:entindex()] = curTime + projectile.fRehitDelay

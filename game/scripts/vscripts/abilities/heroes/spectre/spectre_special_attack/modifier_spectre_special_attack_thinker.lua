@@ -58,9 +58,17 @@ end
 
 function modifier_spectre_special_attack_thinker:PlayEffects(pos)
 	-- Get Resources
-	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_energy.vpcf"
+	local particle_cast = "particles/econ/items/dazzle/dazzle_ti6/dazzle_ti6_shallow_grave_ground_steam.vpcf"
 	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( self.effect_cast, 0, pos )
+    ParticleManager:SetParticleControl( self.effect_cast, 1, pos )
+    
+    -- Get Resources
+	particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_pounce_start_spiral.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 
