@@ -1,0 +1,21 @@
+"DOTAAbilities" {
+    "phantom_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack/phantom_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"phantom_basic_attack"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"120"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"120" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"cooldown_reduction"		"1.0" }
+		}
+	}
+}

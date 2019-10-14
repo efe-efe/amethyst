@@ -81,7 +81,7 @@ function phantom_ultimate:OnCastPointEnd( point )
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
 
-			local stacks = SafeGetModifierStacks("modifier_phantom_assassin_strike_stack_lua", caster, caster)
+			local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 			local final_damage = damage + ( stacks * damage_per_stack )
 
 			local damage_table = {
@@ -105,7 +105,7 @@ function phantom_ultimate:OnCastPointEnd( point )
             --Effects
 			self:PlayEffects_b(pos)
 
-			SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
+			SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 		end,
 	}
 	self:PlayEffects_d()

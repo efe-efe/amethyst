@@ -1,5 +1,5 @@
 modifier_phantom_counter = class({})
-LinkLuaModifier( "modifier_phantom_counter_buff", "abilities/heroes/phantom_assassin/phantom_counter/modifier_phantom_counter_buff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_phantom_counter_buff", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter_buff", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 function modifier_phantom_counter:IsDebuff()

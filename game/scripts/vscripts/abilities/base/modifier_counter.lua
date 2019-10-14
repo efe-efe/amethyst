@@ -33,10 +33,7 @@ function modifier_counter:OnCreated( kv )
         self.ability = self:GetAbility()
 
         if kv.activity ~= nil then
-            local rate = 1.0
-            if kv.rate ~= nil then
-                rate = kv.rate
-            end
+            local rate = kv.rate or 1.0
 
             StartAnimation(self.caster, { 
                 duration = self:GetDuration() + 0.1, 

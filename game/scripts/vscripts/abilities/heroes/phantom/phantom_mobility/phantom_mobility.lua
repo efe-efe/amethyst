@@ -1,5 +1,5 @@
 phantom_mobility = class({})
-LinkLuaModifier( "modifier_phantom_mobility", "abilities/heroes/phantom_assassin/phantom_mobility/modifier_phantom_mobility", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_phantom_mobility", "abilities/heroes/phantom/phantom_mobility/modifier_phantom_mobility", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start

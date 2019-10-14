@@ -1,5 +1,5 @@
 phantom_counter = class({})
-LinkLuaModifier( "modifier_phantom_counter", "abilities/heroes/phantom_assassin/phantom_counter/modifier_phantom_counter", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_phantom_counter", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_charges", "abilities/generic/modifier_generic_charges", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------

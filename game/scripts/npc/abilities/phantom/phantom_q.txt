@@ -1,0 +1,37 @@
+"DOTAAbilities" {
+    "phantom_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"phantom_assassin_blur"
+		"AbilityCooldown"				"8.0"
+		"AbilityDuration"				"1.5"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal"					    "16" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"lifesteal"                 "7" }
+		}
+	}
+
+    "phantom_counter_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter_mobility"
+		"MaxLevel"						"1"
+		"AbilityTextureName"			"phantom_assassin_blur"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_AOE"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"800"
+		"AbilityCastPoint"				"0.9"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+		}
+	}
+}

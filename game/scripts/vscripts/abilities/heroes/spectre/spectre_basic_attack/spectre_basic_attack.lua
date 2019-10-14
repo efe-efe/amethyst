@@ -139,8 +139,7 @@ function spectre_basic_attack:PlayEffectsOnFinish( pos, charged )
 end
 
 function spectre_basic_attack:PlayEffectsOnCast( )
-	local sound_cast = "Hero_Spectre.PreAttack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn( "Hero_Spectre.PreAttack", self:GetCaster() )
 end
 
 -- On Projectile Hit enemy

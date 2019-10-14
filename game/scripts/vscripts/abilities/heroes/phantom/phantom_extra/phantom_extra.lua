@@ -1,5 +1,5 @@
 phantom_extra = class({})
-LinkLuaModifier( "modifier_phantom_extra_movement", "abilities/heroes/phantom_assassin/phantom_extra/modifier_phantom_extra_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier( "modifier_phantom_extra_movement", "abilities/heroes/phantom/phantom_extra/modifier_phantom_extra_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
 LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------

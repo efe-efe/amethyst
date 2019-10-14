@@ -97,7 +97,7 @@ function phantom_ex_special_attack:OnCastPointEnd( point )
 				caster:AddNewModifier(
 					caster, -- player source
 					self, -- ability source
-					"modifier_phantom_assassin_strike_stack_lua", -- modifier name
+					"modifier_phantom_strike_stack", -- modifier name
 					{} -- kv
 				)
 			end

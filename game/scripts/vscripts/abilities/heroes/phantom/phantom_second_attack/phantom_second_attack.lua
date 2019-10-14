@@ -1,74 +1,32 @@
 phantom_second_attack = class({})
 
---------------------------------------------------------------------------------
--- Ability Start
-function phantom_second_attack:OnSpellStart()
-	-- Initialize variables
+function phantom_second_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_ATTACK_EVENT, rate=2.0})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { duration = cast_point})
-end
-
-
-function phantom_second_attack:OnCastPointEnd( pos )
-	local caster = self:GetCaster()
-	local offset = 20
-
-	-- load data
-    local projectile_name = ""
-	local projectile_start_radius = 50
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_speed = 2000
-
-	-- Extra data
-	local damage = self:GetAbilityDamage()
-	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
-	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
-
-	self:SetActivated(true)
-	
-	-- Dinamyc data
+	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
-	local direction_normal = (pos - origin):Normalized()
-	local initial_position = origin + Vector(direction_normal.x * offset, direction_normal.y * offset, 0)
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local damage = self:GetAbilityDamage()
+
+	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
+
+	local projectile_speed = 2000
+	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
+	local offset = 50
 
 	local projectile = {
-		EffectName = projectile_name,
-		vSpawnOrigin = initial_position + Vector(0,0,80),
-		fDistance = projectile_distance,
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
+		vSpawnOrigin = origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
+		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
-		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		bMultipleHits = false,
-		bIgnoreSource = true,
+		UnitBehavior = PROJECTILES_NOTHING,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		nChangeMax = 1,
-		bRecreateOnChange = true,
-		bZCheck = false,
-		bGroundLock = true,
-		bProvidesVision = true,
-		iVisionRadius = 200,
-		iVisionTeamNumber = caster:GetTeam(),
-		bFlyingVision = false,
-		fVisionTickTime = .1,
-		fVisionLingerDuration = 1,
-		draw = false,
-		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
-		OnUnitHit = function(_self, unit) 
-			local stacks = SafeGetModifierStacks("modifier_phantom_assassin_strike_stack_lua", caster, caster)
+		OnUnitHit = function(_self, unit)
+			local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 			local final_damage = damage + ( stacks * damage_per_stack )
 
 			local damage_table = {
@@ -82,45 +40,31 @@ function phantom_second_attack:OnCastPointEnd( pos )
 			
 			if stacks == 3 then
 				local mobility = caster:FindAbilityByName("phantom_mobility")
-				local new_cd = mobility:GetCooldownTimeRemaining()/2
 				mobility:EndCooldown()
-				mobility:StartCooldown(new_cd)
 			end
 
 			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
-			SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
+			caster:GiveManaPercent(mana_gain_pct, unit)
 
-			-- Give Mana
-			local mana_gain_final = caster:GetMaxMana() * mana_gain
-			caster:GiveMana(mana_gain_final)
-
-			self:PlayEffects_a(unit, stacks)
+			self:PlayEffectsOnImpact(unit, stacks)
 		end,
 		OnFinish = function(_self, pos)
-			if next(_self.rehit) == nil then
-				self:PlayEffects_b(pos)
-			end
-
-			SafeDestroyModifier("modifier_phantom_assassin_strike_stack_lua", caster, caster)
+			self:PlayEffectsOnFinish(pos)
+			SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 		end,
 	}
+
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+	self:PlayEffectsOnCast()
 end
 
 --------------------------------------------------------------------------------
 -- Effects
-
--- On Projectile Hit enemy
-function phantom_second_attack:PlayEffects_a( hTarget, stacks )
+function phantom_second_attack:PlayEffectsOnImpact( hTarget, stacks )
 	-- Create Sound
-	local sound_cast_a = "Hero_PhantomAssassin.Arcana_Layer"
-	local sound_cast_b = "Hero_PhantomAssassin.Attack"
-	local sound_cast_c = "Hero_PhantomAssassin.Spatter"
-
-	EmitSoundOn( sound_cast_a, hTarget )
-	EmitSoundOn( sound_cast_b, hTarget )
-
+	EmitSoundOn( "Hero_PhantomAssassin.Arcana_Layer", hTarget )
+	EmitSoundOn( "Hero_PhantomAssassin.Attack", hTarget )
 	
 	-- Create Particles
 	local caster = self:GetCaster()
@@ -133,7 +77,7 @@ function phantom_second_attack:PlayEffects_a( hTarget, stacks )
 
 	if stacks == 3 then 
 		particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop.vpcf"
-		EmitSoundOn( sound_cast_c, hTarget )
+		EmitSoundOn( "Hero_PhantomAssassin.Spatter", hTarget )
 	else 
 		particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_r.vpcf"
 	end
@@ -144,13 +88,13 @@ function phantom_second_attack:PlayEffects_a( hTarget, stacks )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
--- On Projectile Miss
-function phantom_second_attack:PlayEffects_b(pos)
-	local caster = self:GetCaster()
+function phantom_second_attack:PlayEffectsOnCast()
+	EmitSoundOn( "Hero_PhantomAssassin.PreAttack", self:GetCaster() )
+end
 
-	-- Create Sound
-	local sound_cast = "Hero_PhantomAssassin.PreAttack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+-- On Projectile Miss
+function phantom_second_attack:PlayEffectsOnFinish(pos)
+	local caster = self:GetCaster()
 
 	-- Create Particles
 	local offset = 100
@@ -179,3 +123,9 @@ function phantom_second_attack:PlayEffects_b(pos)
 	ParticleManager:ReleaseParticleIndex( effect_cast_c )
 end
 
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	phantom_second_attack,
+	{ activity = ACT_DOTA_ATTACK_EVENT, rate = 2.0 },
+	{ movement_speed = 80 }
+)

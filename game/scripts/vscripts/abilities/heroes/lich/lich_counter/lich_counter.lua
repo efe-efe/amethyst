@@ -39,8 +39,6 @@ end
 -- Graphics & Sounds
 function lich_counter:PlayEffectsOnTrigger()
     local caster = self:GetCaster()
-    -- Create Sound
-    EmitSoundOn( "Hero_Treant.LeechSeed.Target" , caster)
 
     -- Create Particles
     local effect_cast = ParticleManager:CreateParticle("particles/econ/events/nexon_hero_compendium_2014/blink_dagger_start_nexon_hero_cp_2014.vpcf", PATTACH_WORLDORIGIN, nil )

@@ -42,12 +42,12 @@ function lich_counter_mobility:OnCastPointEnd()
         show_all = 1,
         radius = self.radius,
     })
-    self:PlayEffectsOnTrigger()
+    self:PlayEffectsOnCast()
 end
 
 --------------------------------------------------------------------------------
 -- Graphics & Sounds
-function lich_counter_mobility:PlayEffectsOnTrigger()
+function lich_counter_mobility:PlayEffectsOnCast()
     local caster = self:GetCaster()
     -- Create sound
     EmitSoundOn( "Hero_Lich.IceAge", thinker )
