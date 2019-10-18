@@ -101,6 +101,10 @@ function Abilities.Initialize( ability, animation, warmup )
         if alternate_version ~= nil then
             alternate_version:StartCooldown(self:GetCooldown(0))
         end
+
+        if not self:HasBehavior(DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE) then
+            self:GetCaster():SetLastAbility(self)
+        end
     end
 end
 

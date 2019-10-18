@@ -1308,7 +1308,7 @@
 		"MaxLevel"						"1"
 		
 		"AbilityTextureName"			"mount"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 		"AbilityCastPoint"				"0.8"
 		"AbilityCooldown"				"1.0"
 
@@ -1333,7 +1333,7 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"charge"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 		"AbilityCastPoint"				"0.1"
 		"AbilityCooldown"				"10"
 

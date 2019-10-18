@@ -1,5 +1,11 @@
 phantom_mobility = class({})
 
+--------------------------------------------------------------------------------
+-- Passive Modifier
+function phantom_mobility:GetIntrinsicModifierName()
+	return "modifier_generic_charges_two"
+end
+
 -----------------------------------------------------------
 -- Ability Start
 function phantom_mobility:OnCastPointEnd()

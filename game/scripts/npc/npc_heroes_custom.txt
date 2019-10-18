@@ -156,7 +156,7 @@
 		"Ability9"						"phantom_ex_special_attack"	
 		"Ability10"						"mount"							
 		"Ability11"						"charge"						
-		"Ability12"						"phantom_counter_mobility"	
+		"Ability12"						"vengeful_mobility_swap"	
 		"Ability13"						"phantom_extra_mobility"
 		
 

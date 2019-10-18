@@ -89,6 +89,8 @@ function GameMode:OnHeroInGame(keys)
             npc.first_up = false
             npc.first_down = false
 
+            npc.last_spell = nil
+
             npc.healing_reduction_pct = 0
 
             self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)

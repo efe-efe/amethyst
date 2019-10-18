@@ -46,15 +46,13 @@ function phantom_special_attack:OnCastPointEnd()
 
 			if _self.Source == caster then
 				caster:GiveManaPercent(mana_gain_pct, unit)
-				if unit:IsRealHero() then 
-					-- Add modifier
-					caster:AddNewModifier(
-						caster, -- player source
-						self, -- ability source
-						"modifier_phantom_strike_stack", -- modifier name
-						{} -- kv
-					)
-				end
+				-- Add modifier
+				caster:AddNewModifier(
+					caster, -- player source
+					self, -- ability source
+					"modifier_phantom_strike_stack", -- modifier name
+					{} -- kv
+				)
 				if should_lifesteal then
 					local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
 					local heal = ability:GetSpecialValueFor( "heal" )

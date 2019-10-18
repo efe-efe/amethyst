@@ -29,5 +29,5 @@ if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	phantom_ex_basic_attack,
 	{ activity = ACT_DOTA_TELEPORT_END, rate = 0.7 },
-	{ movement_speed = 80, fixed_range = 1}
+	{ movement_speed = 100 }
 )

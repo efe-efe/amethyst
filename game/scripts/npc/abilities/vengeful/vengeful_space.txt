@@ -16,4 +16,15 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"             "600" }
 		}   
 	}
+
+	"vengeful_mobility_swap"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility_swap"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_reality"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+		"AbilityCastPoint"				"0.0"
+	}
 }
