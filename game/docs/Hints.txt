@@ -28,3 +28,6 @@ Use the "Keyword" on the particle manager to find the particles related to the "
 
     keyword: cast
     Use: Small explosions
+
+    Keyword: glow (courier generally)
+    Use: efx on body 

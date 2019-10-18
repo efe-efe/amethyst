@@ -47,7 +47,7 @@ function modifier_counter:OnCreated( kv )
         end
 
         if self.disable ~= 0 then
-            self:DisableSpells( false )
+			self.caster:DeactivateNotPriorityAbilities()
         end
 
         if self.ability.OnStartCounter ~= nil then
@@ -70,7 +70,7 @@ function modifier_counter:OnDestroy( kv )
     if IsServer() then
         
         if self.disable ~= 0 then
-            self:DisableSpells( true )
+			self.caster:SetAllAbilitiesActivated( true )
         end
         
         if self.sound ~= nil then 
@@ -82,6 +82,8 @@ function modifier_counter:OnDestroy( kv )
         end
 
         self:StopEffectsAura()
+
+        GameRules.EndAnimation(self:GetParent())
     end
 end
 
@@ -153,81 +155,6 @@ function modifier_counter:OnAbilityFullyCast( params )
             self:Destroy()
         end
 	end
-end
-
-function modifier_counter:DisableSpells( mode )
-	if IsServer() then
-        for i = 0, 12 do
-            local ability = self.caster:GetAbilityByIndex(i)
-            if ability then
-                if ability:GetAbilityType() ~= 2 then -- To not level up the talents
-                    if ability ~= self:GetAbility() then
-                        if self:DisableTest(i) == true then
-                            ability:SetActivated( mode  )
-                        end 
-                    end
-                end
-            end
-		end
-	end
-end
-
-function modifier_counter:DisableTest(index)
-    if      index == 0 then
-        if self.counter ~= 1 then
-            return true
-        end
-    elseif  index == 1 then
-        if self.basic_attack ~= 1 then
-            return true
-        end
-    elseif  index == 2 then
-        if self.special_attack ~= 1 then
-            return true
-        end
-    elseif  index == 3 then
-        if self.second_attack ~= 1 then
-            return true
-        end
-    elseif  index == 4 then
-        if self.ex_ultimate ~= 1 then
-            return true
-        end
-    elseif  index == 5 then
-        if self.ultimate ~= 1 then
-            return true
-        end
-    elseif  index == 6 then
-        if self.mobility ~= 1 then
-            return true
-        end
-    elseif  index == 7 then
-        if self.ex_one ~= 1 then
-            return true
-        end
-    elseif  index == 8 then
-        if self.ex_two ~= 1 then
-            return true
-        end
-    elseif  index == 9 then
-        if self.ex_three ~= 1 then
-            return true
-        end
-    elseif  index == 10 then
-        if self.ex_four ~= 1 then
-            return true
-        end
-    elseif  index == 11 then
-        if self.ex_five ~= 1 then
-            return true
-        end
-    elseif  index == 12 then
-        if self.ex_six ~= 1 then
-            return true
-        end
-    end
-
-    return false
 end
 
 --------------------------------------------------------------------------------

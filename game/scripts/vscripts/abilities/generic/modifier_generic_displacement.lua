@@ -12,20 +12,24 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_generic_displacement:OnCreated( kv )
+function modifier_generic_displacement:OnCreated( params )
 	if IsServer() then
         -- references
-		self.distance = kv.r
-		self.direction = Vector(kv.x,kv.y,0):Normalized()
-		self.speed = kv.speed -- special value
+		self.distance = params.r
+		self.direction = Vector(params.x,params.y,0):Normalized()
+		self.speed = params.speed -- special value
 		self.previous_origin = self:GetParent():GetOrigin()
 		self.origin = self:GetParent():GetOrigin()
-		self.i_frame = kv.i_frame == 1 and true or false
-		self.colliding = kv.colliding == 1 and true or false
-		self.damage_on_collision = kv.damage_on_collision or nil
+		self.i_frame = params.i_frame == 1 and true or false
+		self.colliding = params.colliding == 1 and true or false
+		self.damage_on_collision = params.damage_on_collision or nil
+		
+		local activity = params.activity or ACT_DOTA_FLAIL
+		local rate = params.rate or 1.0
+		local translate = params.translate or nil
 
 		self.duration = self.distance/self.speed
-		self.peak = kv.peak
+		self.peak = params.peak
 		self.gravity = -self.peak/(self.duration*self.duration*0.125)
 		self.hVelocity = self.speed
 		self.vVelocity = (-0.5)*self.gravity*self.duration
@@ -44,16 +48,28 @@ function modifier_generic_displacement:OnCreated( kv )
 		
 		if self:ApplyHorizontalMotionController() == false then
 			self:Destroy()
-        end
+		end
+		
+		StartAnimation(self:GetParent(), {
+			duration = 100,
+			activity = activity, 
+			rate = rate, 
+			translate = translate,
+		})
 	end
 end
 
-function modifier_generic_displacement:OnRefresh( kv )
+function modifier_generic_displacement:OnRefresh( params )
 end
 
-function modifier_generic_displacement:OnDestroy( kv )
+function modifier_generic_displacement:OnDestroy( params )
 	if IsServer() then
+		GameRules.EndAnimation(self:GetParent())
 		self:GetParent():InterruptMotionControllers( true )
+
+		if self:GetAbility().OnDisplacementEnd then
+			self:GetAbility():OnDisplacementEnd()
+		end
 	end
 end
 
@@ -128,19 +144,10 @@ function modifier_generic_displacement:OnVerticalMotionInterrupted()
 	end
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_generic_displacement:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
-	}
-
-	return funcs
-end
-
 -- Status Effects
 function modifier_generic_displacement:CheckState()
 	local state = {
+		[MODIFIER_STATE_ROOTED] = true,
 		[MODIFIER_STATE_COMMAND_RESTRICTED] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = self.i_frame,
@@ -149,8 +156,4 @@ function modifier_generic_displacement:CheckState()
 	}
 
 	return state
-end
-
-function modifier_generic_displacement:GetOverrideAnimation()
-	return ACT_DOTA_FLAIL
 end

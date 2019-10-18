@@ -1,0 +1,19 @@
+"DOTAAbilities" {
+    "vengeful_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"phantom_assassin_phantom_strike"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastPoint"				"0.1"
+		"AbilityCooldown"				"8.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"				"3.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"             "600" }
+		}   
+	}
+}

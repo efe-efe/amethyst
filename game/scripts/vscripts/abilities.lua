@@ -19,8 +19,6 @@ function Abilities.Initialize( ability, animation, warmup )
     function ability:OnSpellStart()
         local caster = self:GetCaster()
         local cast_point = self:GetCastPoint() 
-        local myrate = animation and animation.rate or self:GetPlaybackRateOverride()
-
 
         if animation or self.GetCastAnimation then
             StartAnimation(caster, {
@@ -97,10 +95,6 @@ function Abilities.Initialize( ability, animation, warmup )
     end
 
     function ability:OnCastPointEnd()
-        if self:HasBehavior(DOTA_ABILITY_BEHAVIOR_CHANNELLED) then
-            
-        end
-
         if onCastPointEnd then onCastPointEnd(self) end
 
         local alternate_version = self:GetCaster():FindAbilityByName(self:GetAlternateName())

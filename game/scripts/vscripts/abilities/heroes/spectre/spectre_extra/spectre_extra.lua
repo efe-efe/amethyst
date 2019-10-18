@@ -2,6 +2,10 @@ spectre_extra = class({})
 LinkLuaModifier( "modifier_spectre_extra_thinker", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra_thinker", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_extra", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra", LUA_MODIFIER_MOTION_NONE )
 
+function spectre_extra:HasPriority()
+    return true
+end
+
 --------------------------------------------------------------------------------
 function spectre_extra:OnCastPointEnd()
     -- unit identifier

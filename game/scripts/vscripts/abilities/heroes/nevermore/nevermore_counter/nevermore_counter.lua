@@ -33,7 +33,6 @@ function nevermore_counter:OnCastPointEnd( point )
             sound = "Hero_Nevermore.RequiemOfSoulsCast",
             duration = duration, 
             destroy_on_trigger = 1,
-            mobility = 1,
             activity = ACT_DOTA_TELEPORT,
             rate = 1.0
         } -- kv

@@ -26,6 +26,11 @@ function phantom_second_attack:OnCastPointEnd()
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
+			local counter = 0
+			for k, v in pairs(_self.rehit) do counter = counter + 1 end
+			if counter > 1 then return end
+
+
 			local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 			local final_damage = damage + ( stacks * damage_per_stack )
 
@@ -38,9 +43,14 @@ function phantom_second_attack:OnCastPointEnd()
 
 			ApplyDamage( damage_table )
 			
-			if stacks == 3 then
-				local mobility = caster:FindAbilityByName("phantom_mobility")
-				mobility:EndCooldown()
+			if _self.Source == caster then
+				if stacks == 3 then
+					local mobility = caster:FindAbilityByName("phantom_mobility")
+					local modifier = caster:FindModifierByName("modifier_generic_charges_two")
+					modifier:IncrementStackCount()
+					modifier:CalculateCharge()
+					--caster:AddNewModifier(caster, mobility, "modifier_generic_charges_two", {})
+				end
 			end
 
 			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
@@ -49,8 +59,8 @@ function phantom_second_attack:OnCastPointEnd()
 			self:PlayEffectsOnImpact(unit, stacks)
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
 			SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
+			self:PlayEffectsOnFinish(pos)
 		end,
 	}
 
@@ -64,7 +74,6 @@ end
 function phantom_second_attack:PlayEffectsOnImpact( hTarget, stacks )
 	-- Create Sound
 	EmitSoundOn( "Hero_PhantomAssassin.Arcana_Layer", hTarget )
-	EmitSoundOn( "Hero_PhantomAssassin.Attack", hTarget )
 	
 	-- Create Particles
 	local caster = self:GetCaster()
@@ -89,7 +98,7 @@ function phantom_second_attack:PlayEffectsOnImpact( hTarget, stacks )
 end
 
 function phantom_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_PhantomAssassin.PreAttack", self:GetCaster() )
+	EmitSoundOn( "Hero_PhantomAssassin.Attack", self:GetCaster() )
 end
 
 -- On Projectile Miss
@@ -126,6 +135,6 @@ end
 if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	phantom_second_attack,
-	{ activity = ACT_DOTA_ATTACK_EVENT, rate = 2.0 },
+	{ activity = ACT_DOTA_ATTACK_EVENT, rate = 0.8 },
 	{ movement_speed = 80 }
 )

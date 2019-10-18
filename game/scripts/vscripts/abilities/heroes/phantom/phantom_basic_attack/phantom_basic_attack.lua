@@ -1,6 +1,9 @@
 phantom_basic_attack = class({})
 LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
 
+function phantom_basic_attack:OnSpellStart()
+end
+
 function phantom_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
@@ -26,6 +29,9 @@ function phantom_basic_attack:OnCastPointEnd()
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
+			local counter = 0
+			for k, v in pairs(_self.rehit) do counter = counter + 1 end
+			if counter > 1 then return end
 			-- perform the actual attack
 			caster:PerformAttack(
 				unit, -- handle hTarget 
@@ -47,15 +53,13 @@ function phantom_basic_attack:OnCastPointEnd()
 					SafeDestroyModifier("modifier_phantom_counter", caster, caster)
 				end
 
-				if unit:IsRealHero() then 
-					-- Add modifier
-					caster:AddNewModifier(
-						caster, -- player source
-						self, -- ability source
-						"modifier_phantom_strike_stack", -- modifier name
-						{} -- kv
-					)
-				end
+				-- Add modifier
+				caster:AddNewModifier(
+					caster, -- player source
+					self, -- ability source
+					"modifier_phantom_strike_stack", -- modifier name
+					{} -- kv
+				)
 			end
 
 			-- Reduce the cd of the second attack by 1
@@ -126,6 +130,6 @@ if IsClient() then require("abilities") end
 Abilities.BasicAttack( phantom_basic_attack )
 Abilities.Initialize( 
 	phantom_basic_attack,
-	{ activity = ACT_DOTA_SPAWN, rate = 1.8 },
+	{ activity = ACT_DOTA_TELEPORT_END, rate = 1.3 },
 	{ movement_speed = 80 }
 )

@@ -15,9 +15,6 @@ function axe_counter:OnSpellStart()
             movement_speed = 0,
             duration = duration, 
             destroy_on_trigger = 1,
-            mobility = 1,
-            ultimate = 1,
-            ex_two = 1,
         } -- kv
     )
     self:PlayEffects()

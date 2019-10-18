@@ -1,26 +1,7 @@
 phantom_ex_basic_attack = class({})
 LinkLuaModifier("modifier_phantom_ex_basic_attack", "abilities/heroes/phantom/phantom_ex_basic_attack/modifier_phantom_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
-function phantom_ex_basic_attack:GetAlternateVersion()
-    return self:GetCaster():FindAbilityByName("phantom_basic_attack")
-end
-
---------------------------------------------------------------------------------
--- Ability Start
-function phantom_ex_basic_attack:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration= 0.3, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.5})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
-		duration = cast_point, 
-        no_target = 1
-	})
-end
-
-function phantom_ex_basic_attack:OnCastPointEnd( pos )
+function phantom_ex_basic_attack:OnCastPointEnd()
     local caster = self:GetCaster()
 
     caster:AddNewModifier(
@@ -44,3 +25,9 @@ function phantom_ex_basic_attack:PlayEffects()
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	phantom_ex_basic_attack,
+	{ activity = ACT_DOTA_TELEPORT_END, rate = 0.7 },
+	{ movement_speed = 80, fixed_range = 1}
+)

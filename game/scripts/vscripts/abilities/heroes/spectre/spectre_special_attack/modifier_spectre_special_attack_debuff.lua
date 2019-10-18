@@ -21,7 +21,8 @@ function modifier_spectre_special_attack_debuff:OnIntervalThink()
 			x = origin.x,
 			y = origin.y,
 			z = origin.z,
-			draw = 1
+			draw = 1,
+			spiral = 1,
 
 		 }, -- kv
 		origin,

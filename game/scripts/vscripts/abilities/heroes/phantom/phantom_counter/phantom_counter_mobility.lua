@@ -1,6 +1,10 @@
 phantom_counter_mobility = class({})
 LinkLuaModifier( "modifier_phantom_counter", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter", LUA_MODIFIER_MOTION_NONE )
 
+function phantom_counter_mobility:HasPriority()
+    return true
+end
+
 --------------------------------------------------------------------------------
 -- Ability Start
 function phantom_counter_mobility:OnCastPointEnd()

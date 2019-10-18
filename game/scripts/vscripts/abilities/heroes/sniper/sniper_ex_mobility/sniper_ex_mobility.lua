@@ -1,6 +1,10 @@
 sniper_ex_mobility = class({})
 LinkLuaModifier( "modifier_sniper_ex_mobility_thinker", "abilities/heroes/sniper/sniper_ex_mobility/modifier_sniper_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
 
+function sniper_ex_mobility:HasPriority()
+    return true
+end
+
 function sniper_ex_mobility:OnCastPointEnd()
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()

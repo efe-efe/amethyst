@@ -2,79 +2,36 @@
 phantom_ex_special_attack = class({})
 LinkLuaModifier( "modifier_generic_sleep_lua", "abilities/generic/modifier_generic_sleep_lua", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_ex_special_attack:GetAlternateVersion()
-    return self:GetCaster():FindAbilityByName("phantom_special_attack")
-end
-
 --------------------------------------------------------------------------------
 -- Ability Start
-function phantom_ex_special_attack:OnSpellStart()
-	-- Initialize variables
+function phantom_ex_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {
-		duration = cast_point + 0.1, 
-		activity = ACT_DOTA_CAST_ABILITY_3, 
-		rate = 1.2 
-	})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
-		duration = cast_point, 
-		can_walk = 0,
-		fixed_range= 1
-	})
-end
-
-
---------------------------------------------------------------------------------
--- Ability Start
-function phantom_ex_special_attack:OnCastPointEnd( point )
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	local sleep_duration = self:GetSpecialValueFor("sleep_duration")
+	local point = self:GetCursorPosition()
+    local origin = caster:GetOrigin()
 	local damage = self:GetAbilityDamage()
 
-	-- Projectile data
-    local projectile_name = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger_arcana.vpcf"
-	local projectile_start_radius = 50
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
+	local sleep_duration = self:GetSpecialValueFor("sleep_duration")
+	local sleep_per_stack = self:GetSpecialValueFor("sleep_per_stack")
+	local should_lifesteal = caster:HasModifier("modifier_phantom_ex_basic_attack")
+
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
-		EffectName = projectile_name,
+		EffectName = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger.vpcf",
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
-		fDistance = projectile_distance,
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
+		fDistance =	self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
-		fExpireTime = 8.0,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,
-		bMultipleHits = false,
-		bIgnoreSource = true,
 		TreeBehavior = PROJECTILES_NOTHING,
-		bTreeFullCollision = false,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		nChangeMax = 1,
-		bRecreateOnChange = true,
-		bZCheck = false,
-		bGroundLock = true,
-		bProvidesVision = true,
-		iVisionRadius = 200,
-		iVisionTeamNumber = caster:GetTeam(),
-		bFlyingVision = false,
-		fVisionTickTime = .1,
-		fVisionLingerDuration = 1,
-		draw = false,
-		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
+			local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 			local damage = {
 				victim = unit,
 				attacker = _self.Source,
@@ -89,42 +46,30 @@ function phantom_ex_special_attack:OnCastPointEnd( point )
 				caster, -- player source
 				self, -- ability source
 				"modifier_generic_sleep_lua", -- modifier name
-				{ duration = sleep_duration } -- kv
+				{ duration = sleep_duration + (stacks * sleep_per_stack) } -- kv
 			)
-			
-			if unit:IsRealHero() and _self.Source == caster then 
-				-- Add modifier
-				caster:AddNewModifier(
-					caster, -- player source
-					self, -- ability source
-					"modifier_phantom_strike_stack", -- modifier name
-					{} -- kv
-				)
+
+			if should_lifesteal then
+				local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
+				local heal = ability:GetSpecialValueFor( "heal" )
+				caster:Heal(heal, caster)
 			end
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffects_a(pos)
+			SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
+			self:PlayEffectsOnFinish(pos)
 		end,
 	}
 
-	self:PlayEffects_b()
-	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-
-	-- Put CD on the alternate of the ability
-	local alternate_version = caster:FindAbilityByName("phantom_special_attack")
-	alternate_version:StartCooldown(self:GetCooldown(0))
-	
+	self:PlayEffectsOnCast()
 end
 
 --------------------------------------------------------------------------------
 -- Effects
-
--- On Projectile finish
-function phantom_ex_special_attack:PlayEffects_a( pos )
+function phantom_ex_special_attack:PlayEffectsOnFinish( pos )
 	-- Create Sound
-	local sound_cast = "Hero_PhantomAssassin.Dagger.Target"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
+	EmitSoundOnLocationWithCaster( pos, "Hero_PhantomAssassin.Dagger.Target", self:GetCaster() )
 	
 	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger_explosion.vpcf"
@@ -134,8 +79,14 @@ function phantom_ex_special_attack:PlayEffects_a( pos )
 end
 
 -- On ability start
-function phantom_ex_special_attack:PlayEffects_b( )
-	-- Create Sound
-	local sound_cast = "Hero_PhantomAssassin.Dagger.Cast"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+function phantom_ex_special_attack:PlayEffectsOnCast( )
+	EmitSoundOn( "Hero_PhantomAssassin.Dagger.Cast", self:GetCaster() )
 end
+
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	phantom_ex_special_attack,
+	{ activity = ACT_DOTA_CAST_ABILITY_3, rate = 1.3 },
+	{ movement_speed = 0, fixed_range = 1}
+)

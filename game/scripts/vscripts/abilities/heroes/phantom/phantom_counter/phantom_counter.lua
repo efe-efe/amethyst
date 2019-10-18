@@ -17,8 +17,6 @@ function phantom_counter:OnCastPointEnd()
             movement_speed = 0,
             duration = duration, 
             destroy_on_trigger = 1,
-            mobility = 1,
-            ultimate = 1,
         }
     )
 end
@@ -26,8 +24,8 @@ end
 function phantom_counter:OnTrigger()
 	local caster = self:GetCaster()
     local ability = caster:FindAbilityByName("phantom_counter_mobility")
-    
-    caster:AddNewModifier(caster, self, "modifier_phantom_banish", {})
+
+    caster:AddNewModifier(caster, self, "modifier_phantom_banish", { duration = 5 })
     caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
 	
 	caster:FindAbilityByName("phantom_special_attack"):EndCooldown()

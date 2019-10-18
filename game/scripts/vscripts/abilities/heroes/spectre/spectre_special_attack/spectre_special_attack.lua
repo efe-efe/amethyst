@@ -21,7 +21,7 @@ function spectre_special_attack:OnCastPointEnd( )
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
-		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
+		vSpawnOrigin = origin,
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		bUniqueRadius = hitbox,
 		Source = caster,
@@ -56,6 +56,24 @@ function spectre_special_attack:OnCastPointEnd( )
 		end,
 		OnFinish = function(_self, pos)
 		end,
+		OnThinkBegin = function(_self)
+			CreateModifierThinker(
+				caster, -- player source
+				self, -- ability source
+				"modifier_spectre_special_attack_thinker", -- modifier name
+				{ 
+					duration = path_duration,
+					x = _self.currentPosition.x,
+					y = _self.currentPosition.y,
+					z = _self.currentPosition.z,
+					draw = 1,
+				 }, -- kv
+				 _self.currentPosition,
+				caster:GetTeamNumber(),
+				false --bPhantomBlocker
+			)
+			print()
+		end
 	}
 
 	CreateModifierThinker(
@@ -67,7 +85,6 @@ function spectre_special_attack:OnCastPointEnd( )
 			x = point.x,
 			y = point.y,
 			z = point.z,
-
 		 }, -- kv
 		origin,
 		caster:GetTeamNumber(),

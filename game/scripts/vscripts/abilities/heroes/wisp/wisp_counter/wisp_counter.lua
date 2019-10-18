@@ -39,8 +39,6 @@ function wisp_counter:OnCastPointEnd( point )
             movement_speed = 0,
             duration = duration, 
             destroy_on_trigger = 1,
-            mobility = 1,
-            ultimate = 1,
             activity = ACT_DOTA_SPAWN,
             rate = 1.0
         } -- kv

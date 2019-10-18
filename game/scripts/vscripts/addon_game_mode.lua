@@ -105,7 +105,9 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_middle_orb_exiled", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", LUA_MODIFIER_MOTION_NONE )
-
+    
+    LinkLuaModifier("modifier_generic_charges_one", "abilities/generic/charges/modifier_generic_charges_one", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_charges_two", "abilities/generic/charges/modifier_generic_charges_two", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_projectile_reflector_lua", "abilities/generic/modifier_generic_projectile_reflector_lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )

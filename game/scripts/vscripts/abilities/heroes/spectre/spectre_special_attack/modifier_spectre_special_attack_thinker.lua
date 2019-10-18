@@ -14,9 +14,8 @@ function modifier_spectre_special_attack_thinker:OnCreated( kv )
         self:StartIntervalThink( 0.05 )
         
         -- DEBUG
-
         if kv.draw then
-            self:PlayEffects(self.start_pos)
+            self:PlayEffects(self.start_pos, kv.sprial)
             --self:PlayEffects(self.end_pos)
         end
     end
@@ -56,19 +55,28 @@ function modifier_spectre_special_attack_thinker:OnIntervalThink()
     end
 end
 
-function modifier_spectre_special_attack_thinker:PlayEffects(pos)
-	-- Get Resources
-	local particle_cast = "particles/econ/items/dazzle/dazzle_ti6/dazzle_ti6_shallow_grave_ground_steam.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, pos )
+function modifier_spectre_special_attack_thinker:PlayEffects(pos, spiral)
+-- Get Resources
+    local particle_cast = "particles/econ/items/dazzle/dazzle_ti6/dazzle_ti6_shallow_grave_ground_steam.vpcf"
+    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( self.effect_cast, 0, pos )
     ParticleManager:SetParticleControl( self.effect_cast, 1, pos )
     
-    -- Get Resources
-	particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_pounce_start_spiral.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	-- Get Resources
+	particle_cast = "particles/econ/items/lifestealer/ls_ti9_immortal/ls_ti9_open_wounds_ground.vpcf"
+	self.effect_cast_dark = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( self.effect_cast_dark, 0, pos )
+	ParticleManager:SetParticleControl( self.effect_cast_dark, 5, pos )
+    
+    
+    if spiral ~= nil then
+        -- Get Resources
+        particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_pounce_start_spiral.vpcf"
+        local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+        ParticleManager:SetParticleControl( effect_cast, 0, pos )
+        ParticleManager:SetParticleControl( effect_cast, 3, pos )
+        ParticleManager:ReleaseParticleIndex( effect_cast )
+    end
 end
 
 
@@ -76,5 +84,10 @@ function modifier_spectre_special_attack_thinker:StopEffects()
     if self.effect_cast then
         ParticleManager:DestroyParticle(self.effect_cast, false)
         ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    end
+
+    if self.effect_cast_dark then
+        ParticleManager:DestroyParticle(self.effect_cast_dark, false)
+        ParticleManager:ReleaseParticleIndex( self.effect_cast_dark )
     end
 end

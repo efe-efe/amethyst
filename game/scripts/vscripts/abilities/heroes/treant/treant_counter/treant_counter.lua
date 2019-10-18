@@ -16,8 +16,6 @@ function treant_counter:OnCastPointEnd()
             movement_speed = 0,
             duration = duration, 
             destroy_on_trigger = 1,
-            mobility = 1,
-            ultimate = 1,
             activity = ACT_DOTA_CAST_ABILITY_4,
             rate = 0.4
         } -- kv

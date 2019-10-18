@@ -1,0 +1,19 @@
+"DOTAAbilities" {
+	"phantom_ex_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_ex_basic_attack/phantom_ex_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"phantom_ex_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityCastPoint"				"0.5"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"heal"						"7" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"charges"					"4" }
+		}
+	}
+}

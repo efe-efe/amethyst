@@ -62,14 +62,17 @@ function modifier_middle_orb_base_lua:OnDeath(params)
 				false	-- bool, can grow cache
 			)
 
+			local final_heal = self.heal / #killer_team
+			local final_mana = self.mana / #killer_team
+
 			-- Heal and give mana
 			for _,ally in pairs(killer_team) do
 				if ally:IsRealHero() then 
 					-- Give Mana
-					PseudoHeal(ally:GetHealth(), self.heal, ally)
-					ally:GiveMana(self.mana)
+					PseudoHeal(ally:GetHealth(), final_heal, ally)
+					ally:GiveMana(final_mana)
 
-					SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, ally, self.mana, nil )
+					SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, ally, final_mana, nil )
 
 					self:PlayEffects_b(ally)
 				end

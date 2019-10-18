@@ -1,5 +1,5 @@
 modifier_generic_movement = class({})
-local DEBUG = true
+local DEBUG = false
 local DEBUG_RADIUS = 40
 local DEBUG_RADIUS_MINI = 10
 local RED = Vector(255, 0, 0)
@@ -88,7 +88,7 @@ function modifier_generic_movement:OnIntervalThink()
 	------------------------
 	-- If Moving
 	------------------------
-	if self.parent.direction.x ~= 0 or self.parent.direction.y ~= 0 then
+	if self.parent:IsWalking() then
 		-- Control diagonals
 		if self.parent.direction.x ~= 0 and self.parent.direction.y ~= 0 then
 			speed = speed * 0.75

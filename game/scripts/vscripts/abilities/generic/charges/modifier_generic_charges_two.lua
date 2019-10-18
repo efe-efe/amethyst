@@ -38,16 +38,29 @@ function modifier_generic_charges_two:OnRefresh( kv )
 	end
 end
 
-function modifier_generic_charges_two:OnDestroy( kv )
-
-end
-
 function modifier_generic_charges_two:OnSpellCast( )
 	if IsServer() then
 		self:DecrementStackCount()
 		self:CalculateCharge()
 	end
 end
+
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_generic_charges_two:DeclareFunctions()
+	local funcs = {
+		MODIFIER_EVENT_ON_DEATH,
+	}
+
+	return funcs
+end
+
+function modifier_generic_charges_two:OnDeath( kv )
+	if IsServer() then
+		self:SetStackCount( self.max_charges )
+	end
+end
+
 
 --------------------------------------------------------------------------------
 -- Interval Effects
@@ -61,6 +74,7 @@ function modifier_generic_charges_two:CalculateCharge()
 	self:GetAbility():EndCooldown()
 	if self:GetStackCount()>=self.max_charges then
 		-- stop charging
+		self:SetStackCount( self.max_charges )
 		self:SetDuration( -1, false )
 		self:StartIntervalThink( -1 )
 	else

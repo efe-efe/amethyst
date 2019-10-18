@@ -158,6 +158,11 @@ function Projectiles:CreateProjectile(projectile)
         callback = function()
             local curTime = GameRules:GetGameTime()
 
+
+            if projectile.OnThinkBegin then
+                pcall(projectile.OnThinkBegin, projectile)
+            end
+
             -- Refresh position
             local currentPosition = projectile.currentPosition
             if projectile.bGroundLock then  -- Stick to the ground
@@ -582,6 +587,7 @@ function Projectiles:InitialSetup(projectile)
     
     -- On finish
     projectile.OnFinish = projectile.OnFinish or nil
+    projectile.OnThinkBegin = projectile.OnThinkBegin or nil
 
     if projectile.bTreeFullCollision == nil then projectile.bTreeFullCollision = false end
 

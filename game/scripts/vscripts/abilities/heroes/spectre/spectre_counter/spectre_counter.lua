@@ -15,8 +15,6 @@ function spectre_counter:OnCastPointEnd()
             movement_speed = 0,
             duration = duration, 
             destroy_on_trigger = 1,
-            mobility = 1,
-            ultimate = 1,
             sound = "Hero_Spectre.HauntCast"
         } -- kv
     )

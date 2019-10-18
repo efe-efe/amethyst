@@ -1,78 +1,66 @@
 phantom_mobility = class({})
-LinkLuaModifier( "modifier_phantom_mobility", "abilities/heroes/phantom/phantom_mobility/modifier_phantom_mobility", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
+-----------------------------------------------------------
 -- Ability Start
-function phantom_mobility:OnSpellStart()
-	-- Initialize variables
+function phantom_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	self:PlayEffects_a()
+	self.origin = caster:GetOrigin()
+	local point = self:GetCursorPosition()
 
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.5})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
-        duration = cast_point
-	})
-end
+	local direction = (point - self.origin):Normalized()
+	local distance = self:GetSpecialValueFor("min_range")
 
-function phantom_mobility:OnCastPointEnd( pos )
-    --Initialize variables
-    local caster = self:GetCaster()
-    local origin = caster:GetOrigin()
-    local max_range = self:GetSpecialValueFor("max_range")
-    local buff_duration = self:GetSpecialValueFor("buff_duration")
-
-
-    -- determine target position
-    local difference = pos - origin
-
-    if difference:Length2D() > max_range then
-        pos = origin + (pos - origin):Normalized() * max_range
+    if caster:IsWalking() then
+        direction = caster:GetDirection()
     end
 
-    -- teleport
-    FindClearSpaceForUnit( caster, pos , true )
-
+    --Knockback
     caster:AddNewModifier(
-        caster,
-        self,
-        "modifier_phantom_mobility",
-        {duration = buff_duration}
+        caster, -- player source
+        self, -- ability source
+        "modifier_generic_displacement", -- modifier name
+        {
+            x = direction.x,
+            y = direction.y,
+            r = distance,
+            speed = 1800,
+            peak = 30,
+            colliding = 0,
+            activity = ACT_DOTA_CAST_ABILITY_2,
+            rate = 1.5,
+        } -- kv
     )
 
-    local special_attack = caster:FindAbilityByName("phantom_special_attack")
-    local ex_special_attack = caster:FindAbilityByName("phantom_ex_special_attack")
-    special_attack:EndCooldown()
-    ex_special_attack:EndCooldown()
 
-    --Effects
-    self:PlayEffects_b()
+    self:PlayEffectsOnCast()
 end
 
-function phantom_mobility:PlayEffects_a()
-	-- Get Resources
-	local particle_cast = "particles/units/heroes/hero_phantom_assassin/phantom_assassin_phantom_strike_start.vpcf"
-    local sound_cast = "Hero_PhantomAssassin.Strike.Start"
-    
+function phantom_mobility:OnDisplacementEnd()
+	local origin = self:GetCaster():GetOrigin()
+    self:PlayEffectsOnDisplacementEnd( origin )
+end
+
+function phantom_mobility:PlayEffectsOnCast()
+    local caster = self:GetCaster()
     -- Sound
-    EmitSoundOn(sound_cast, self:GetCaster())
+    EmitSoundOn("Hero_PhantomAssassin.Strike.Start", caster)
 
-	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+
 end
 
-function phantom_mobility:PlayEffects_b()
-	-- Get Resources
-	local particle_cast = "particles/units/heroes/hero_phantom_assassin/phantom_assassin_phantom_strike_end.vpcf"
-    local sound_cast = "Hero_PhantomAssassin.Strike.End"
-    
+function phantom_mobility:PlayEffectsOnDisplacementEnd( origin )
     -- Sound
-    EmitSoundOn(sound_cast, self:GetCaster())
-
-	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    --EmitSoundOn( "Hero_PhantomAssassin.Strike.End", self:GetCaster())
+    -- Play particle trail when moving
+    local trail_pfx = ParticleManager:CreateParticle("particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_trail.vpcf", PATTACH_ABSORIGIN, self:GetCaster())
+    ParticleManager:SetParticleControl(trail_pfx, 0, self.origin)
+    ParticleManager:SetParticleControl(trail_pfx, 1, origin )
+    ParticleManager:ReleaseParticleIndex(trail_pfx)
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	phantom_mobility,
+	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },
+	{ movement_speed = 100 }
+)

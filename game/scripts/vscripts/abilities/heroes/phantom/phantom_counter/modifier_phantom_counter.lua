@@ -1,5 +1,19 @@
 modifier_phantom_counter = class({})
 
+
+--------------------------------------------------------------------------------
+-- Initializations
+function modifier_phantom_counter:OnCreated( kv )
+	if IsServer() then
+		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
+			style = "Generic",
+			text = "lifesteal",
+			progressBarType = "duration",
+			priority = 1,
+		})
+	end
+end
+
 function modifier_phantom_counter:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end

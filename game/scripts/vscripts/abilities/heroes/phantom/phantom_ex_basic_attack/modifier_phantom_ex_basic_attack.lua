@@ -26,28 +26,8 @@ function modifier_phantom_ex_basic_attack:OnCreated( kv )
         local charges = self:GetAbility():GetSpecialValueFor( "charges" )
         self.heal = self:GetAbility():GetSpecialValueFor( "heal" )
 
-
-		self:SetStackCount(charges)
-
-
-		local particle_cast = "particles/units/heroes/hero_skeletonking/wraith_king_reincarnate_slow_debuff.vpcf"
-        local origin = self:GetParent():GetOrigin()
-        
-        self.effect_cast = ParticleManager:CreateParticle( 
-            particle_cast, 
-            PATTACH_CUSTOMORIGIN, 
-            nil
-        )
-
-        ParticleManager:SetParticleControlEnt( 
-            self.effect_cast, 
-            0, 
-            self:GetParent(), 
-            PATTACH_POINT_FOLLOW, 
-            "attach_attack1", 
-            origin + Vector( 0, 0, 96 ), 
-            true 
-        )
+        self:SetStackCount(charges)
+        self:PlayEffectsOnCast()
 	end
 end
 
@@ -63,9 +43,8 @@ function modifier_phantom_ex_basic_attack:OnRefresh( kv )
 end
 
 function modifier_phantom_ex_basic_attack:OnDestroy( kv )
-	if IsServer() then
-		ParticleManager:DestroyParticle( self.effect_cast, false )
-		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    if IsServer() then
+        self:StopEffects()
 	end
 end
 --------------------------------------------------------------------------------
@@ -80,12 +59,16 @@ function modifier_phantom_ex_basic_attack:DeclareFunctions()
 end
 
 function modifier_phantom_ex_basic_attack:OnAbilityFullyCast(params)
-    if params.ability==self:GetParent():FindAbilityByName("phantom_basic_attack") or params.ability==self:GetParent():FindAbilityByName("phantom_special_attack") then
-        self:DecrementStackCount()
-
-        if self:GetStackCount()<=0 then
-            self:Destroy()
-        end
+    if  params.ability==self:GetParent():FindAbilityByName("phantom_basic_attack") or 
+        params.ability==self:GetParent():FindAbilityByName("phantom_special_attack") 
+    then
+        -- Wait to be read on basic attack before destroying
+        Timers:CreateTimer(params.ability:GetCastPoint(), function()
+            self:DecrementStackCount()
+            if self:GetStackCount()<=0 then
+                self:Destroy()
+            end
+        end)
     end
 end
 
@@ -93,15 +76,76 @@ end
 function modifier_phantom_ex_basic_attack:GetModifierProcAttack_BonusDamage_Physical( params )
 	if IsServer() then
 		if self:GetParent():PassivesDisabled() then return end
-            self:GetParent():Heal( self.heal, self:GetParent() )
-            self:PlayEffects()
-        
+        self:GetParent():Heal( self.heal, self:GetParent() )
+        self:PlayEffectsLifeSteal()
         return 0
 	end
 end
 
 
-function modifier_phantom_ex_basic_attack:PlayEffects()
+
+function modifier_phantom_ex_basic_attack:PlayEffectsOnCast()
+    local particle_cast = "particles/econ/courier/courier_greevil_green/courier_greevil_green_ambient_2.vpcf"
+    local origin = self:GetParent():GetOrigin()
+
+    self.effect_cast = ParticleManager:CreateParticle( 
+        particle_cast, 
+        PATTACH_CUSTOMORIGIN, 
+        self:GetParent()
+    )
+
+    ParticleManager:SetParticleControlEnt( 
+        self.effect_cast, 
+        0, 
+        self:GetParent(), 
+        PATTACH_POINT_FOLLOW, 
+        "attach_hitloc", 
+        origin, 
+        true 
+    )
+    ParticleManager:SetParticleControlEnt( 
+        self.effect_cast, 
+        1, 
+        self:GetParent(), 
+        PATTACH_POINT_FOLLOW, 
+        "attach_hitloc", 
+        origin, 
+        true 
+    )
+
+    particle_cast = "particles/econ/courier/courier_babyroshan_winter18/courier_babyroshan_winter18_ambient_sparks.vpcf"
+
+    self.effect_cast_sparks = ParticleManager:CreateParticle( 
+        particle_cast, 
+        PATTACH_CUSTOMORIGIN, 
+        self:GetParent()
+    )
+
+    ParticleManager:SetParticleControlEnt( 
+        self.effect_cast_sparks, 
+        0, 
+        self:GetParent(), 
+        PATTACH_POINT_FOLLOW, 
+        "attach_hitloc", 
+        origin, 
+        true 
+    )
+end
+
+function modifier_phantom_ex_basic_attack:StopEffects()
+    if self.effect_cast ~= nil then
+        ParticleManager:DestroyParticle( self.effect_cast, false )
+        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    end
+
+    if self.effect_cast_sparks ~= nil then
+        ParticleManager:DestroyParticle( self.effect_cast_sparks, false )
+        ParticleManager:ReleaseParticleIndex( self.effect_cast_sparks )
+    end
+    
+end
+
+function modifier_phantom_ex_basic_attack:PlayEffectsLifeSteal()
 	-- Get Resources
 	local particle_cast = "particles/generic_gameplay/generic_lifesteal.vpcf"
 

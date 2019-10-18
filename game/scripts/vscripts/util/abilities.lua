@@ -36,14 +36,35 @@ function CDOTABaseAbility:GetAlternateName()
 end
 
 function CDOTABaseAbility:IsBasicAttack()
-	if string.ends(self:GetName(), "_ex_basic_attack") then
+	return IsType(self, "basic_attack")
+end
+
+function CDOTABaseAbility:IsCounter()
+	return IsType(self, "counter")
+end
+
+function CDOTABaseAbility:IsMobility()
+	return IsType(self, "mobility")
+end
+
+function CDOTABaseAbility:IsUltimate()
+	return IsType(self, "ultimate")
+end
+
+function CDOTABaseAbility:HasPriority()
+	return false
+end
+
+function IsType(ability, type)
+	if string.ends(ability:GetName(), "_ex_" .. type) then
 		return false
-	elseif string.ends(self:GetName(), "basic_attack") then
+	elseif string.ends(ability:GetName(), type) then
 		return true
 	else
 		return false
 	end
 end
+
 
 function CalcRange(origin, point, max_range, min_range)
 	local direction = (point - origin):Normalized()

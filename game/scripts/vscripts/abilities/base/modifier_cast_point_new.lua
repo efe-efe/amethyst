@@ -64,16 +64,18 @@ function modifier_cast_point_new:OnRefresh(params)
 	if IsServer() then
 		self:StopCast()
 	end
+
+	self.ability = self:GetAbility()
+	self.parent = self:GetParent()
 	self.canceled_by_player = false
 
 	if IsServer() then
-		self.ability = self:GetAbility()
-		self.parent = self:GetParent()
-		
+		self:SetDuration(params.duration, true)
 		self.movement_speed = params.movement_speed
 		self.show_all = params.show_all
 		self.no_target = params.no_target
 		self.radius = params.radius
+		self.hide_indicator = params.hide_indicator
 		
 		self.min_range = params.min_range
 		self.max_range = params.max_range
@@ -115,7 +117,7 @@ function modifier_cast_point_new:StartCast()
 		end
 
 		if self.disable_all then
-			self.parent:SetAllAbilitiesActivated( false )
+			self.parent:DeactivateNotPriorityAbilities()
 		end
 	end
 end

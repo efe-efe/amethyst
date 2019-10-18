@@ -17,17 +17,14 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_ex_mobility:OnCreated( kv )
-    self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
-    self.damage_done = 0
+    self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 
-    --Initializers
     if IsServer() then
         self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
         self.radius = 250
+        self.damage_done = 0
 
-        self:PlayEffects()
-        self:PlayEffects2()
-
+        self:PlayEffectsOnCreated()
         self:StartIntervalThink( 0.3 )
 
 		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
@@ -62,7 +59,7 @@ function modifier_spectre_ex_mobility:OnIntervalThink()
             damage_type = DAMAGE_TYPE_PURE,
         }
         self.damage_done = self.damage_done + self.damage_per_second
-        self:PlayEffects3(enemy)
+        self:PlayEffectsOnTarget(enemy)
         ApplyDamage( damage )
     end
 end
@@ -76,63 +73,53 @@ function modifier_spectre_ex_mobility:OnDestroy( kv )
     end
 end
 
-
-function modifier_spectre_ex_mobility:OnAbilityExecuted( params )
-	if IsServer() then
-		if params.unit~=self:GetParent() then return end
-		self:Destroy()
-	end
-end
-
-
 --------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_spectre_ex_mobility:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-		MODIFIER_EVENT_ON_ABILITY_EXECUTED,
+		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 	}
 
 	return funcs
 end
 
 function modifier_spectre_ex_mobility:GetModifierMoveSpeedBonus_Percentage()
-    return self.speed_buff
+    return self.speed_buff_pct
 end
 
+function modifier_spectre_ex_mobility:GetModifierIgnoreMovespeedLimit( params )
+    return 1
+end
+
+--------------------------------------------------------------------------------
 -- Graphics & Animations
-function modifier_spectre_ex_mobility:PlayEffects( )
+function modifier_spectre_ex_mobility:PlayEffectsOnCreated( )
+    local parent = self:GetParent()
+    EmitSoundOn("Hero_Spectre.Haunt", parent)
+
 	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_blade_fury_abyssal.vpcf"
-
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:SetParticleControl( self.effect_cast, 2, self:GetParent():GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, parent )
+    ParticleManager:SetParticleControl( self.effect_cast, 2, parent:GetOrigin() )
     
-end
-
--- Graphics & Animations
-function modifier_spectre_ex_mobility:PlayEffects2( )
+    
     local particle_cast = "particles/econ/items/silencer/silencer_ti6/silencer_last_word_status_ti6_ring_mist.vpcf"
-    local sound_cast = "Hero_Spectre.Haunt"
-
-	self.effect_cast2 = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:SetParticleControl( self.effect_cast2, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast2, 3, self:GetParent():GetOrigin() )
-
-    EmitSoundOn(sound_cast, self:GetParent())
-    
+	self.effect_cast_ring = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, parent )
+    ParticleManager:SetParticleControl( self.effect_cast_ring, 3, parent:GetOrigin() )
 end
 
 function modifier_spectre_ex_mobility:StopEffects()
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
-    
-    ParticleManager:DestroyParticle( self.effect_cast2, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast2 )
+    if self.effect_cast ~= nil then
+        ParticleManager:DestroyParticle( self.effect_cast, false )
+        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    end
+    if self.effect_cast_ring ~= nil then
+        ParticleManager:DestroyParticle( self.effect_cast_ring, false )
+        ParticleManager:ReleaseParticleIndex( self.effect_cast_ring )
+    end
 end
 
 -- Graphics & Animations
-function modifier_spectre_ex_mobility:PlayEffects3( hTarget )
-    local sound_cast = "Hero_Spectre.Desolate"
-
-    EmitSoundOn(sound_cast, hTarget)
+function modifier_spectre_ex_mobility:PlayEffectsOnTarget( hTarget )
+    EmitSoundOn("Hero_Spectre.Desolate", hTarget)
 end

@@ -1,0 +1,21 @@
+"DOTAAbilities" {
+	"phantom_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_ultimate/phantom_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"phantom_assassin_coup_de_grace"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityCastPoint"				"1.0"
+		"AbilityCastRange"				"2400"
+		"AbilityManaCost"				"100"
+		"AbilityDamage"					"35"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"		"8" }
+		}
+	}
+}
