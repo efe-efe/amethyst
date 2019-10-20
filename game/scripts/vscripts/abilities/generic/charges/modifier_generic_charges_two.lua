@@ -55,8 +55,9 @@ function modifier_generic_charges_two:DeclareFunctions()
 	return funcs
 end
 
-function modifier_generic_charges_two:OnDeath( kv )
+function modifier_generic_charges_two:OnDeath( params )
 	if IsServer() then
+		if params.unit ~= self:GetParent() then return end
 		self:SetStackCount( self.max_charges )
 	end
 end

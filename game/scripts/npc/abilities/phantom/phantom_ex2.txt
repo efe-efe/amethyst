@@ -20,8 +20,8 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"2.0" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"sleep_per_stack"			"0.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"0.8" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"sleep_per_stack"			"0.4" }
 		}
 	}
 }

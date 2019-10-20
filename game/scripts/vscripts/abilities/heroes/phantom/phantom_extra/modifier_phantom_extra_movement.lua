@@ -26,9 +26,6 @@ function modifier_phantom_extra_movement:OnCreated( kv )
 	end
 end
 
-function modifier_phantom_extra_movement:OnRefresh( kv )
-end
-
 function modifier_phantom_extra_movement:OnDestroy( kv )
 	if IsServer() then
 		
@@ -81,9 +78,6 @@ end
 function modifier_phantom_extra_movement:CheckState()
 	local state = {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
-        [MODIFIER_STATE_NO_HEALTH_BAR] = true,
-		[MODIFIER_STATE_INVULNERABLE] = true,
-		[MODIFIER_STATE_OUT_OF_GAME] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
 

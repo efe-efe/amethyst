@@ -50,8 +50,12 @@ function modifier_phantom_extra:OnIntervalThink()
     if self:GetStackCount() < self.max_stacks then
         self:IncrementStackCount()
     elseif self:GetStackCount() == self.max_stacks and self.casting == false then
-        self:GetParent():CastAbilityImmediately(self.ability, self:GetParent():GetEntityIndex())
-        self.casting = true
+        if not self:GetParent():HasModifier("modifier_phantom_banish") then
+            self:GetParent():CastAbilityImmediately(self.ability, self:GetParent():GetEntityIndex())
+            self.casting = true
+        else
+            self:Destroy()
+        end
     end
     
     if self.counter_b == 4 then 

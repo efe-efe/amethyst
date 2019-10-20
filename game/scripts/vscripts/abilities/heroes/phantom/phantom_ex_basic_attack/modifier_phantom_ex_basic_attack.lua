@@ -63,7 +63,7 @@ function modifier_phantom_ex_basic_attack:OnAbilityFullyCast(params)
         params.ability==self:GetParent():FindAbilityByName("phantom_special_attack") 
     then
         -- Wait to be read on basic attack before destroying
-        Timers:CreateTimer(params.ability:GetCastPoint(), function()
+        Timers:CreateTimer(params.ability:GetCastPoint() + 0.1, function()
             self:DecrementStackCount()
             if self:GetStackCount()<=0 then
                 self:Destroy()
@@ -75,7 +75,6 @@ end
 
 function modifier_phantom_ex_basic_attack:GetModifierProcAttack_BonusDamage_Physical( params )
 	if IsServer() then
-		if self:GetParent():PassivesDisabled() then return end
         self:GetParent():Heal( self.heal, self:GetParent() )
         self:PlayEffectsLifeSteal()
         return 0

@@ -22,7 +22,6 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter_mobility"
 		"MaxLevel"						"1"
-		"AbilityTextureName"			"phantom_assassin_blur"
 
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_AOE"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"

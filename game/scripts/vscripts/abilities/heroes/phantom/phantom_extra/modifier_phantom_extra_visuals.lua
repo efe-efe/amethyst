@@ -17,13 +17,13 @@ end
 function modifier_phantom_extra_visuals:OnCreated( kv )
     if IsServer() then
         self:PlayEffects_a()
-		self:GetParent():AddNoDraw()
+		--self:GetParent():AddNoDraw()
 	end
 end
 
 function modifier_phantom_extra_visuals:OnDestroy( kv )
 	if IsServer() then
-		self:GetParent():RemoveNoDraw()
+		--self:GetParent():RemoveNoDraw()
 		self:PlayEffects_b()
 	end
 end
