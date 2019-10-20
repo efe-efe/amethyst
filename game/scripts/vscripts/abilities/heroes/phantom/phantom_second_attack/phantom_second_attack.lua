@@ -59,7 +59,9 @@ function phantom_second_attack:OnCastPointEnd()
 			self:PlayEffectsOnImpact(unit, stacks)
 		end,
 		OnFinish = function(_self, pos)
-			SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
+			if _self.Source == caster then 
+				SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
+			end
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}

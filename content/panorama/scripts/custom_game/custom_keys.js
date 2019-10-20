@@ -47,7 +47,7 @@ GameUI.SetMouseCallback( function( eventName, arg ) {
 		if ( nMouseButton === 0 )
 		{
             OnLeftButtOnPressed();
-            return CONTINUE_PROCESSING_EVENT;//CONSUME_EVENT;
+            return CONSUME_EVENT;//CONTINUE_PROCESSING_EVENT;
 		}
 
 		if ( nMouseButton === 1 )

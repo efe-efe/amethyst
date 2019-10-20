@@ -1,0 +1,56 @@
+"DOTAAbilities" {
+    "vengeful_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_special_attack/vengeful_special_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_special_attack"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCooldown"				"8.0"
+		"AbilityDamage"					"8"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"link_duration"             "1.5" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"extra_damage"              "8" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"root_duration"             "1.0" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"link_range"                 "1200" }
+		}
+	}
+
+    "vengeful_special_attack_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_special_attack/vengeful_special_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_special_attack_ultimate"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCooldown"				"8.0"
+		"AbilityDamage"					"8"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
+		}
+	}
+}

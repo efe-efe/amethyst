@@ -1,26 +1,23 @@
-sniper_basic_attack = class({})
-LinkLuaModifier( "modifier_sniper_basic_attack_charges", "abilities/heroes/sniper/sniper_basic_attack/modifier_sniper_basic_attack_charges", LUA_MODIFIER_MOTION_NONE )
+vengeful_basic_attack = class({})
+LinkLuaModifier( "modifier_vengeful_basic_attack_stack", "abilities/heroes/vengeful/vengeful_basic_attack/modifier_vengeful_basic_attack_stack", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
---Passive Modifier
-function sniper_basic_attack:GetIntrinsicModifierName()
-	return "modifier_sniper_basic_attack_charges"
-end
-
-function sniper_basic_attack:OnCastPointEnd()
+function vengeful_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local modifier = caster:FindModifierByName("modifier_sniper_basic_attack_charges")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+
+	local extra_damage = self:GetSpecialValueFor("extra_damage")
+	local modifier = caster:FindModifierByName("modifier_vengeful_basic_attack_stack")
+	local charged = modifier and (modifier:GetStackCount() == 3 and true or false) or false
 
 	-- Projectile
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack.vpcf",
-		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
+		EffectName = "particles/mod_units/heroes/hero_venge/vengeful_base_attack.vpcf",
+		vSpawnOrigin = origin + Vector(0,0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
@@ -42,23 +39,45 @@ function sniper_basic_attack:OnCastPointEnd()
 				false, -- bool bFakeAttack
 				true -- bool bNeverMiss
 			)
+
+			if _self.Source == caster then 
+				-- Add modifier
+				caster:AddNewModifier(
+					caster, -- player source
+					self, -- ability source
+					"modifier_vengeful_basic_attack_stack", -- modifier name
+					{} -- kv
+				)
+
+				if charged then
+					local damage = {
+						victim = unit,
+						attacker = _self.Source,
+						damage = extra_damage,
+						damage_type = DAMAGE_TYPE_PHYSICAL,
+					}
+					ApplyDamage( damage )
+				end 
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}
 
-	modifier:DecrementStackCount()
-	modifier:CalculateCharge()
-	
 	Projectiles:CreateProjectile(projectile)
+	
+	if charged then
+		SafeDestroyModifier("modifier_vengeful_basic_attack_stack", caster, caster)
+	end
+
 	self:PlayEffectsOnCast()
 end
 
 --------------------------------------------------------------------------------
 -- Misc
 -- Add mana on attack modifier. Only first time upgraded
-function sniper_basic_attack:OnUpgrade()
+function vengeful_basic_attack:OnUpgrade()
 	if self:GetLevel()==1 then
 		local caster = self:GetCaster()
 		-- Gain mana
@@ -69,31 +88,27 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 
--- On ability start
-function sniper_basic_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Sniper.MKG_attack", self:GetCaster() )
+function vengeful_basic_attack:PlayEffectsOnCast()
+	EmitSoundOn( "Hero_VengefulSpirit.Attack", self:GetCaster() )
 end
 
-
--- On Projectile finish
-function sniper_basic_attack:PlayEffectsOnFinish( pos )
+function vengeful_basic_attack:PlayEffectsOnFinish( pos )
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_Sniper.ProjectileImpact", caster )
+	EmitSoundOnLocationWithCaster( pos, "Hero_VengefulSpirit.ProjectileImpact", caster )
 
 	-- Create Particle
-	local particle_cast = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack_explosion.vpcf"
+	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_base_attack_end_flash.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 if IsClient() then require("abilities") end
-Abilities.BasicAttack( sniper_basic_attack )
+Abilities.BasicAttack( vengeful_basic_attack )
 Abilities.Initialize( 
-	sniper_basic_attack,
-	{ activity = ACT_DOTA_RUN, translate = "aggressive", rate = 1.0 },
+	vengeful_basic_attack,
+	{ activity = ACT_DOTA_ATTACK, rate = 2.0 },
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }
 )

@@ -7,7 +7,7 @@
 
 		"AbilityTextureName"			"phantom_ex_basic_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
-		"AbilityCastPoint"				"0.5"
+		"AbilityCastPoint"				"0.4"
 		"AbilityManaCost"				"25"
 
 		"AbilitySpecial"

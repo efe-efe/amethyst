@@ -1,9 +1,6 @@
 phantom_basic_attack = class({})
 LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_basic_attack:OnSpellStart()
-end
-
 function phantom_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()

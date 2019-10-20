@@ -1,4 +1,5 @@
 vengeful_mobility = class({})
+vengeful_mobility_ultimate = class({})
 LinkLuaModifier( "modifier_vengeful_mobility_illusion", "abilities/heroes/vengeful/vengeful_mobility/modifier_vengeful_mobility_illusion", LUA_MODIFIER_MOTION_NONE )
 
 -----------------------------------------------------------
@@ -9,7 +10,6 @@ function vengeful_mobility:OnCastPointEnd()
 	local point = self:GetCursorPosition()
 	local name = caster:GetUnitName()
 
-    print(caster:GetLastAbility():GetName())
 	local direction = (point - self.origin):Normalized()
 	local distance = self:GetSpecialValueFor("min_range")
 
@@ -17,7 +17,8 @@ function vengeful_mobility:OnCastPointEnd()
         direction = caster:GetDirection()
     end
     
-    local swap = caster:FindAbilityByName("vengeful_mobility_swap")
+    local swap_name = string.ends(self:GetName(), "_ultimate") and "vengeful_mobility_swap_ultimate" or "vengeful_mobility_swap"
+    local swap = caster:FindAbilityByName(swap_name)
     swap.illusion_index = self:IllusionLogic():GetEntityIndex()
     
     caster:AddNewModifier(
@@ -37,8 +38,8 @@ function vengeful_mobility:OnCastPointEnd()
     )
 
     caster:SwapAbilities( 
-        "vengeful_mobility",
-        "vengeful_mobility_swap",
+        self:GetAbilityName(),
+        swap_name,
         false,
         true
     )
@@ -65,10 +66,8 @@ function vengeful_mobility:IllusionLogic()
     --self:PlayEffectsIllusion( illusion[1] )
     illusion[1]:AddNewModifier(caster, self, "modifier_vengeful_mobility_illusion", {})
 
-
     return illusion[1]
 end
-
 
 -----------------------------------------------------------
 -- Graphics and sounds
@@ -95,9 +94,43 @@ function vengeful_mobility:PlayEffectsIllusion( hTarget )
     ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
+vengeful_mobility_ultimate.OnCastPointEnd = vengeful_mobility.OnCastPointEnd
+vengeful_mobility_ultimate.OnDisplacementEnd = vengeful_mobility.OnDisplacementEnd
+vengeful_mobility_ultimate.IllusionLogic = vengeful_mobility.IllusionLogic
+vengeful_mobility_ultimate.PlayEffectsOnCast = vengeful_mobility.PlayEffectsOnCast
+vengeful_mobility_ultimate.PlayEffectsOnDisplacementEnd = vengeful_mobility.PlayEffectsOnDisplacementEnd
+vengeful_mobility_ultimate.PlayEffectsIllusion = vengeful_mobility.PlayEffectsIllusion
+
+function vengeful_mobility_ultimate:OnAdded()
+    local ability = self:GetCaster():AddAbility( "vengeful_mobility_swap_ultimate" )
+    ability:SetLevel( 1 )
+end
+
+function vengeful_mobility_ultimate:OnRemoved()
+    local ability = self:GetCaster():FindAbilityByName("vengeful_mobility_swap_ultimate")
+    local illusion = EntIndexToHScript( ability.illusion_index )
+    if illusion then
+        local modifier = illusion:FindModifierByName("modifier_vengeful_mobility_illusion")
+        if modifier ~= nil then
+            if not modifier:IsNull() then
+                modifier:Destroy()
+                return
+            end
+        end
+    end
+    self:GetCaster():RemoveAbility( "vengeful_mobility_swap_ultimate" )
+end
+
 if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	vengeful_mobility,
+	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },
+	{ movement_speed = 100 }
+)
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	vengeful_mobility_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },
 	{ movement_speed = 100 }
 )

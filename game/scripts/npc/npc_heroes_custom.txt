@@ -146,11 +146,11 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
 		"Ability1"						"phantom_counter"
-		"Ability2"						"phantom_basic_attack"
-		"Ability3"						"phantom_special_attack"
+		"Ability2"						"vengeful_basic_attack"
+		"Ability3"						"vengeful_special_attack"
 		"Ability4"						"phantom_second_attack"
 		"Ability5"						"phantom_extra"
-		"Ability6"						"phantom_ultimate"
+		"Ability6"						"vengeful_ultimate"
 		"Ability7"						"vengeful_mobility"
 		"Ability8"						"phantom_ex_basic_attack"
 		"Ability9"						"phantom_ex_special_attack"	
@@ -172,8 +172,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"9"										// Damage range min.
-		"AttackDamageMax"			"9"										// Damage range max.	
+		"AttackDamageMin"			"8"										// Damage range min.
+		"AttackDamageMax"			"8"										// Damage range max.	
 		"AttackRate"				"0.3"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
@@ -307,7 +307,7 @@
 		"AttackDamageMin"			"9"										// Damage range min.
 		"AttackDamageMax"			"9"										// Damage range max.	
 		"AttackRate"				"0.0"									// Speed of attack.	
-		"AttackAnimationPoint"		"0.2"	
+		"AttackAnimationPoint"		"0.3"	
 		"AttackRange"				"80"
 		
 		// Movement

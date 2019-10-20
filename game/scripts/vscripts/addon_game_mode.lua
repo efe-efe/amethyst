@@ -68,8 +68,8 @@ function GameMode:SetupRules()
         GameRules:SetUseBaseGoldBountyOnHeroes(false)
     end
     if GetMapName() == "mad_moon_map" then
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 3 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 3 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 2 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 2 )
     elseif GetMapName() == "free_for_all" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
@@ -173,6 +173,7 @@ function GameMode:CaptureGameMode()
             if  ability:IsCooldownReady() and
                 ability:IsActivated() and
                 ability:IsOwnersManaEnough() and
+                not ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_PASSIVE) and
                 not ability:IsInAbilityPhase() and
                 not caster:IsSilenced() and
                 not caster:IsCommandRestricted() and

@@ -4,8 +4,8 @@
     "IsPlayable"  "1"
     "mad_moon_map"
     {
-        "MaxPlayers"                    "6"
-        "TeamCount" "2"
+        "MaxPlayers"                    "4"
+        "TeamCount"                     "2"
     }
     
     "free_for_all"

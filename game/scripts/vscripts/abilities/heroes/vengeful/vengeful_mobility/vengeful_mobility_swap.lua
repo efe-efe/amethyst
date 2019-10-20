@@ -1,5 +1,7 @@
 vengeful_mobility_swap = class({})
+vengeful_mobility_swap_ultimate = class({})
 
+vengeful_mobility_swap_ultimate.illusion_index = nil
 vengeful_mobility_swap.illusion_index = nil
 
 function vengeful_mobility_swap:OnCastPointEnd()
@@ -9,6 +11,10 @@ function vengeful_mobility_swap:OnCastPointEnd()
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor( "radius" )
     local illusion = EntIndexToHScript( self.illusion_index )
+	
+	local ability_name = string.ends(self:GetAbilityName(), "_ultimate") and "vengeful_mobility_ultimate" or "vengeful_mobility"
+	local ability = caster:FindAbilityByName(ability_name)
+	ability:StartCooldown(ability:GetCooldown(0))
 
     if illusion then
         self:PlayEffectsOnCast(illusion)
@@ -56,9 +62,19 @@ function vengeful_mobility_swap:PlayEffectsOnCast( hTarget )
     EmitSoundOn("Hero_VengefulSpirit.NetherSwap", hTarget)
 end
 
+vengeful_mobility_swap_ultimate.OnCastPointEnd = vengeful_mobility_swap.OnCastPointEnd
+vengeful_mobility_swap_ultimate.PlayEffectsOnCast = vengeful_mobility_swap.PlayEffectsOnCast
+
 if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	vengeful_mobility_swap,
+	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
+	{ movement_speed = 10 }
+)
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	vengeful_mobility_swap_ultimate,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
 	{ movement_speed = 10 }
 )

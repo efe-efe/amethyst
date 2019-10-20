@@ -13,12 +13,12 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2200" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"max_charges"				"2" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"start_charges"				"2" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"0.7" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"0.9" }
 		}
 	}
 }

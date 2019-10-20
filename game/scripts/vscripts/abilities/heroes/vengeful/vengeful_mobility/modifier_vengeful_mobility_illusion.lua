@@ -25,13 +25,16 @@ end
 
 function modifier_vengeful_mobility_illusion:OnDestroy( kv )
     if IsServer() then
-        
-        self:GetCaster():SwapAbilities( 
-            "vengeful_mobility",
-            "vengeful_mobility_swap",
-            true,
-            false
-        )
+        local name = string.ends(self:GetAbility():GetAbilityName(), "_ultimate") and "vengeful_mobility_swap_ultimate" or "vengeful_mobility_swap"
+
+        if self:GetCaster():FindAbilityByName(self:GetAbility():GetAbilityName()) then 
+            self:GetCaster():SwapAbilities( 
+                self:GetAbility():GetAbilityName(),
+                name,
+                true,
+                false
+            )
+        end
             
         if self:GetParent() ~= nil then
             self:GetParent():ForceKill( false )
