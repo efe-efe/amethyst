@@ -10,14 +10,14 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastPoint"				"0.6"
 		"AbilityCastRange"				"1600"
 		"AbilityManaCost"				"100"
 		"AbilityDamage"					"18"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2800" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.6" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2800" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"illusion_duration"			"3.0" }
 		}

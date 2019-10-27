@@ -6,14 +6,14 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"vengeful_mobility"
-        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityCastPoint"				"0.1"
-		"AbilityCooldown"				"9.0"
+		"AbilityCooldown"				"6.0"
+		"AbilityCastRange"				"600"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"				"3.0" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"             "600" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.1" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"radius"				"200" }
 		}   
 	}
 
@@ -35,15 +35,14 @@
 
 		"AbilityTextureName"			"vengeful_mobility_ultimate"
         "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityCastPoint"				"0.1"
-		"AbilityCooldown"				"9.0"
-		"AbilityManaCost"				"75"
+		"AbilityCooldown"				"6.0"
+		"AbilityManaCost"				"25"
+		"AbilityCastRange"				"600"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"				"3.0" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"             "600" }
-		}   
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.1" }
+		}
 	}
 	
 	"vengeful_mobility_swap_ultimate"
@@ -52,7 +51,7 @@
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility_swap"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"vengefulspirit_nether_swap"
+		"AbilityTextureName"			"vengeful_mobility_swap_ultimate"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 	}
 }

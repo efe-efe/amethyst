@@ -4,7 +4,7 @@ function phantom_second_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
-	local damage = self:GetAbilityDamage()
+	local damage = self:GetSpecialValueFor("ability_damage")
 
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")

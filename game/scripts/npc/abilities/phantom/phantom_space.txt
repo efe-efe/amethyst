@@ -7,7 +7,6 @@
 
 		"AbilityTextureName"			"phantom_assassin_phantom_strike"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityCastPoint"				"0.0"
 		"AbilityCooldown"				"5.0"
 		"AbilityCastRange"				"300"
 

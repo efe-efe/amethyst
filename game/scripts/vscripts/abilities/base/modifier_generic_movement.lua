@@ -78,7 +78,7 @@ function modifier_generic_movement:OnIntervalThink()
 		return
 	end
 
-	local speed = self.parent:GetIdealSpeed() / 100
+	local speed = self.parent:GetIdealSpeed() / 85
 	local origin = self.parent:GetAbsOrigin()
 	local direction = Vector(
 		self.parent.direction.x, 

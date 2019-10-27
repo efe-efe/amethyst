@@ -69,11 +69,14 @@
 #base "abilities\phantom\phantom_ex2.txt"
 
 #base "abilities\vengeful\vengeful_m1.txt"
+#base "abilities\vengeful\vengeful_m2.txt"
 #base "abilities\vengeful\vengeful_e.txt"
+#base "abilities\vengeful\vengeful_q.txt"
 #base "abilities\vengeful\vengeful_space.txt"
 #base "abilities\vengeful\vengeful_r.txt"
-
-
+#base "abilities\vengeful\vengeful_f.txt"
+#base "abilities\vengeful\vengeful_ex1.txt"
+#base "abilities\vengeful\vengeful_ex2.txt"
 
 "DOTAAbilities"
 {

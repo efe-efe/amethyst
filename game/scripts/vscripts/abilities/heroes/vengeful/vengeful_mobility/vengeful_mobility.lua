@@ -7,17 +7,14 @@ LinkLuaModifier( "modifier_vengeful_mobility_illusion", "abilities/heroes/vengef
 function vengeful_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
 	self.origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
+	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local name = caster:GetUnitName()
 
+    self.ability = caster:FindAbilityByName("vengeful_mobility")
 	local direction = (point - self.origin):Normalized()
-	local distance = self:GetSpecialValueFor("min_range")
+	local distance = (point - self.origin):Length2D()
 
-    if caster:IsWalking() then
-        direction = caster:GetDirection()
-    end
-    
-    local swap_name = string.ends(self:GetName(), "_ultimate") and "vengeful_mobility_swap_ultimate" or "vengeful_mobility_swap"
+    local swap_name = string.ends(self:GetAbilityName(), "_ultimate") and "vengeful_mobility_swap_ultimate" or "vengeful_mobility_swap"
     local swap = caster:FindAbilityByName(swap_name)
     swap.illusion_index = self:IllusionLogic():GetEntityIndex()
     
@@ -29,7 +26,7 @@ function vengeful_mobility:OnCastPointEnd()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = 1800,
+            speed = 2200,
             peak = 80,
             colliding = 0,
             activity = ACT_DOTA_TELEPORT_END,
@@ -41,20 +38,47 @@ function vengeful_mobility:OnCastPointEnd()
         self:GetAbilityName(),
         swap_name,
         false,
-        true
+        not self:IsHidden()
     )
     self:PlayEffectsOnCast()
 end
 
 function vengeful_mobility:OnDisplacementEnd()
-	local origin = self:GetCaster():GetOrigin()
-    self:PlayEffectsOnDisplacementEnd( origin )
+    local caster = self:GetCaster()
+    local origin = caster:GetOrigin()
+    local radius = self.ability:GetSpecialValueFor("radius")
 
+    -- find enemies
+    local enemies = FindUnitsInRadius( 
+        caster:GetTeamNumber(), -- int, your team number
+        origin , -- point, center point
+        nil, -- handle, cacheUnit. (not known)
+        radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
+        DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+        0, -- int, flag filter
+        0, -- int, order filter
+        false -- bool, can grow cache
+    )
+
+    -- if at least 1 enemy
+    if #enemies > 0 then
+        for i = 0, 3 do
+            caster:AddNewModifier(
+                caster, -- player source
+                caster:FindAbilityByName("vengeful_basic_attack"), -- ability source
+                "modifier_vengeful_basic_attack_stack", -- modifier name
+                {} -- kv
+            )
+        end
+    end
+
+    self:PlayEffectsOnDisplacementEnd( origin, radius)
 end
 
 function vengeful_mobility:IllusionLogic()
     local caster = self:GetCaster()
-    local illusion_duration = self:GetSpecialValueFor("duration")
+    local illusion_duration = self.ability:GetSpecialValueFor("duration")
 
     local illusion = CreateIllusions( caster, caster, {
         duration = illusion_duration,
@@ -69,22 +93,32 @@ function vengeful_mobility:IllusionLogic()
     return illusion[1]
 end
 
+function vengeful_mobility:OnSwapPress()
+    return false
+end
+
+function vengeful_mobility:OnSwapRelease()
+    return false
+end
+
 -----------------------------------------------------------
 -- Graphics and sounds
 function vengeful_mobility:PlayEffectsOnCast()
-    local caster = self:GetCaster()
-    -- Sound
-    EmitSoundOn("Hero_PhantomAssassin.Strike.Start", caster)
+    EmitSoundOn("Hero_PhantomAssassin.Strike.Start", self:GetCaster())
 end
 
-function vengeful_mobility:PlayEffectsOnDisplacementEnd( origin )
-    -- Sound
-    --EmitSoundOn( "Hero_PhantomAssassin.Strike.End", self:GetCaster())
-    -- Play particle trail when moving
-    local trail_pfx = ParticleManager:CreateParticle("particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_trail.vpcf", PATTACH_ABSORIGIN, self:GetCaster())
-    ParticleManager:SetParticleControl(trail_pfx, 0, self.origin)
-    ParticleManager:SetParticleControl(trail_pfx, 1, origin )
-    ParticleManager:ReleaseParticleIndex(trail_pfx)
+function vengeful_mobility:PlayEffectsOnDisplacementEnd( origin, radius )
+    local particle_cast = "particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_trail.vpcf"
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetCaster())
+    ParticleManager:SetParticleControl(effect_cast, 0, self.origin)
+    ParticleManager:SetParticleControl(effect_cast, 1, origin )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
+
+    	
+	local particle_cast_c = "particles/mod_units/dw_ti8_immortal_cursed_crown_marker.vpcf"
+	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl( effect_cast_c, 2, Vector(radius, 1, 1))
+	ParticleManager:ReleaseParticleIndex( effect_cast_c )
 end
 
 function vengeful_mobility:PlayEffectsIllusion( hTarget )
@@ -108,16 +142,15 @@ end
 
 function vengeful_mobility_ultimate:OnRemoved()
     local ability = self:GetCaster():FindAbilityByName("vengeful_mobility_swap_ultimate")
-    local illusion = EntIndexToHScript( ability.illusion_index )
-    if illusion then
-        local modifier = illusion:FindModifierByName("modifier_vengeful_mobility_illusion")
-        if modifier ~= nil then
-            if not modifier:IsNull() then
-                modifier:Destroy()
-                return
-            end
-        end
+    if ability.illusion_index then
+        self:GetCaster():SwapAbilities( 
+            "vengeful_mobility_ultimate",
+            "vengeful_mobility_swap_ultimate",
+            not ability:IsHidden(),
+            false
+        )
     end
+    ability.illusion_index = nil
     self:GetCaster():RemoveAbility( "vengeful_mobility_swap_ultimate" )
 end
 

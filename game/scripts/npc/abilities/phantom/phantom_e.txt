@@ -9,18 +9,18 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.2"
 		"AbilityCastRange" 				"1200"
 		"AbilityCooldown"				"8.0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"80" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"slow_duration"				"4.0" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"crit_multiplier"			"1.0" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"80" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"slow_duration"				"4.0" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"crit_multiplier"			"1.0" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
 		}
 	}
 }

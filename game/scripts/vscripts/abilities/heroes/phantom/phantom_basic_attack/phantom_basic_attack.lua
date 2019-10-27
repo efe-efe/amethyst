@@ -47,7 +47,6 @@ function phantom_basic_attack:OnCastPointEnd()
 					local heal = ability:GetSpecialValueFor("lifesteal")
 					caster:Heal(heal, caster)
 
-					SafeDestroyModifier("modifier_phantom_counter", caster, caster)
 				end
 
 				-- Add modifier
@@ -75,6 +74,9 @@ function phantom_basic_attack:OnCastPointEnd()
 			self:PlayEffectsOnImpact(unit)
 		end,
 		OnFinish = function(_self, pos)
+			if _self.Source == caster then 
+				SafeDestroyModifier("modifier_phantom_counter", caster, caster)
+			end
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}

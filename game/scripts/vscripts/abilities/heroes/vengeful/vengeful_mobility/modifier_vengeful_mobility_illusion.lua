@@ -25,13 +25,24 @@ end
 
 function modifier_vengeful_mobility_illusion:OnDestroy( kv )
     if IsServer() then
-        local name = string.ends(self:GetAbility():GetAbilityName(), "_ultimate") and "vengeful_mobility_swap_ultimate" or "vengeful_mobility_swap"
 
-        if self:GetCaster():FindAbilityByName(self:GetAbility():GetAbilityName()) then 
+        --Prevent trying to find a forgotten ability
+        if self:GetAbility() then
+            local my_name = self:GetAbility():GetAbilityName()
+            local name = string.ends(my_name, "_ultimate") and "vengeful_mobility_swap_ultimate" or "vengeful_mobility_swap"
+
+            local ability = self:GetCaster():FindAbilityByName(name)
+            ability.illusion_index = nil
+
+            --local activate = not self:GetAbility():IsHidden()
+            if string.ends(my_name, "_ultimate") then
+                activate = true      
+            end
+
             self:GetCaster():SwapAbilities( 
-                self:GetAbility():GetAbilityName(),
+                my_name,
                 name,
-                true,
+                true,--activate,
                 false
             )
         end

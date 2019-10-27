@@ -2,13 +2,13 @@
 
 //Custom key bindings
 
-var BASIC_ATTACK_INDEX = 1; 
-var SECOND_ATTACK_INDEX = 3; 
-var COUNTER_INDEX = 0;
-var SPECIAL_ATTACK_INDEX = 2;
-var EX_ULTIMATE_INDEX = 5;//4;
-var ULTIMATE_INDEX = 4;//5;
-var MOBILITY_ABILITY_INDEX = 6;
+var BASIC_ATTACK_INDEX = 0; 
+var SECOND_ATTACK_INDEX = 1; 
+var MOBILITY_ABILITY_INDEX = 2;
+var COUNTER_INDEX = 3;
+var SPECIAL_ATTACK_INDEX = 4;
+var EX_ULTIMATE_INDEX = 5;
+var ULTIMATE_INDEX = 6;
 var EX_ABILITY_ONE_INDEX = 7; 
 var EX_ABILITY_TWO_INDEX = 8; 
 var MOUNT = 9; 
@@ -103,8 +103,8 @@ Game.OnPress1 = function(){        ExecuteAbility(EX_ABILITY_ONE_INDEX) }
 Game.OnPress2 = function(){        ExecuteAbility(EX_ABILITY_TWO_INDEX) }
 Game.OnPressQ = function(){        ExecuteAbility(COUNTER_INDEX) }
 Game.OnPressE = function(){        ExecuteAbility(SPECIAL_ATTACK_INDEX) }
-Game.OnPressF = function(){        ExecuteAbility(EX_ULTIMATE_INDEX) }
-Game.OnPressR = function(){        ExecuteAbility(ULTIMATE_INDEX) }
+Game.OnPressR = function(){        ExecuteAbility(EX_ULTIMATE_INDEX) }
+Game.OnPressF = function(){        ExecuteAbility(ULTIMATE_INDEX) }
 Game.OnPressZ = function(){        ExecuteAbility(MOUNT) }
 Game.OnPressW = function(){        SendMovementSignal( "moveUnit", "up" ) }
 Game.OnReleaseW = function(){      SendMovementSignal( "stopUnit", "up" ) }

@@ -1,0 +1,45 @@
+"DOTAAbilities" {
+    "vengeful_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_counter/vengeful_counter"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengefulspirit_wave_of_terror"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"8.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"8" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "5" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"backwards_damage"			"10" }
+		}
+	}
+
+    "vengeful_counter_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_counter/vengeful_counter"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"venge_counter_ultimate"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25"
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+		}
+	}
+}

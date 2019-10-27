@@ -50,7 +50,7 @@ function modifier_spectre_basic_attack:CalculateCharge()
 		-- stop charging
 		self:SetDuration( -1, false )
 		self:StartIntervalThink( -1 )
-        self:PlayEffects_a()
+        self:PlayEffectsCharged()
         self:PlayEffects_b()
     elseif self:GetStackCount() > self.max_charges then
 		-- stop charging
@@ -124,19 +124,22 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Animations
-
-function modifier_spectre_basic_attack:PlayEffects_a()
-	-- Get Resources
-	local sound_cast = "Hero_Wisp.Spirits.Destroy"
+function modifier_spectre_basic_attack:PlayEffectsCharged()
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
-    local origin = self:GetCaster():GetOrigin()
+	local caster = self:GetParent()
+    local origin = caster:GetOrigin()
 
-	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster()  )
-
-	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, caster )
+	ParticleManager:SetParticleControlEnt( 
+		effect_cast, 
+		0, 
+		caster, 
+		PATTACH_POINT_FOLLOW, 
+		"attach_attack1", 
+		origin, 
+		true 
+	)
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 function modifier_spectre_basic_attack:PlayEffects_b()

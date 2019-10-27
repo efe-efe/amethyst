@@ -5,7 +5,7 @@ LinkLuaModifier( "modifier_spectre_ex_mobility", "abilities/heroes/spectre/spect
 -- Ability Start
 function spectre_ex_mobility:OnCastPointEnd()
     local caster = self:GetCaster()
-    local duration = self:GetDuration()
+    local duration = self:GetSpecialValueFor("duration")
 
     caster:AddNewModifier(caster, self, "modifier_spectre_ex_mobility", { duration = duration })
 end

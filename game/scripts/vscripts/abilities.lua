@@ -18,7 +18,7 @@ function Abilities.Initialize( ability, animation, warmup )
     
     function ability:OnSpellStart()
         local caster = self:GetCaster()
-        local cast_point = self:GetCastPoint() 
+        local cast_point = self:GetSpecialValueFor("cast_point") ~= 0 and self:GetSpecialValueFor("cast_point") or self:GetCastPoint() 
 
         if animation or self.GetCastAnimation then
             StartAnimation(caster, {
@@ -56,7 +56,8 @@ function Abilities.Initialize( ability, animation, warmup )
             max_range = max_range,
             hide_indicator = warmup.hide_indicator or false,
             public = warmup.public or nil,
-            disable_all = warmup.disable_all == false and 0 or 1
+            disable_all = warmup.disable_all == false and 0 or 1,
+            cancelable = self:GetAbilityType() == 1 and 0 or 1,
         })
         
         -- Castbar (ULTIMATE)

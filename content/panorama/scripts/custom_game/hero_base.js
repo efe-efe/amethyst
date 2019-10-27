@@ -2,11 +2,13 @@
 function ModifyHotkeyBox( parent ) {
     // get topmost panel
 
-    if(!ModifyText(parent, "Ability1", "L-Mouse")){ return false; }
-    if(!ModifyText(parent, "Ability3", "R-Mouse")){ return false; }
-    if(!ModifyText(parent, "Ability4", "R")){ return false; }
-    if(!ModifyText(parent, "Ability5", "F")){ return false; }
-    if(!ModifyText(parent, "Ability6", "Space")){ return false; }
+    if(!ModifyText(parent, "Ability0", "L-Mouse")){ return false; }
+    if(!ModifyText(parent, "Ability1", "R-Mouse")){ return false; }
+    if(!ModifyText(parent, "Ability2", "Space")){ return false; }
+    if(!ModifyText(parent, "Ability3", "Q")){ return false; }
+    if(!ModifyText(parent, "Ability4", "E")){ return false; }
+    if(!ModifyText(parent, "Ability5", "R")){ return false; }
+    if(!ModifyText(parent, "Ability6", "F")){ return false; }
     if(!ModifyText(parent, "Ability7", "Z")){ return false; }
     return true;
 }

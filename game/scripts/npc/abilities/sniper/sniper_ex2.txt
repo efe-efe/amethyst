@@ -11,7 +11,6 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"900"
-		"AbilityCastPoint"				"0.3"
 		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
 
@@ -23,13 +22,14 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"3" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"280" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.5" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"slow_linger"				"1.0" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"base_damage"				"8" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"speed_debuff_pct"			"100" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"3" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"280" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.5" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"slow_linger"				"1.0" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"base_damage"				"8" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"speed_debuff_pct"			"100" }
 		}
 	}
 

@@ -9,15 +9,15 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"AbilityCastPoint"				"0.6"
 		"AbilityManaCost"				"100"
-		"AbilityDamage"					"20"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"15" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"170" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.6" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"14" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"170" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"28" }
 		}
 	}
 
@@ -33,7 +33,6 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1600"
-		"AbilityCastPoint"				"0.35"
 
 		"precache"
 		{
@@ -42,9 +41,10 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1600" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.35" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1600" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 		}
 	}
 }

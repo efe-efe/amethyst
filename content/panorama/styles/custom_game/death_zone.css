@@ -1,0 +1,27 @@
+.MainPanel
+{
+    width: 100%;
+    height: 100%;
+}
+
+.MainPanel #DeathZone
+{
+    /*background-color: black;*/
+}
+
+#DeathZone #DeathZoneText
+{
+    opacity: 0;
+    font-size: 48px;
+    margin-top: 128px;
+    align: center top;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 0px 3px 0px #b2a98f,
+    0px 14px 10px rgba(0,0,0,0.15),
+    0px 24px 2px rgba(0,0,0,0.1),
+    0px 34px 30px rgba(0,0,0,0.1);
+    
+    transition-property: opacity;
+    transition-duration: 1.0s;
+}

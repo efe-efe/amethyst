@@ -129,6 +129,20 @@ function modifier_middle_orb_base_lua:PlayEffects_b( recipient )
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, recipient )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 
+--particles/units/heroes/hero_clinkz/clinkz_death_pact_buff_ring_rope_bright.vpcf
+	-- Create Particle
+	effect_cast = ParticleManager:CreateParticle( "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rope.vpcf", PATTACH_ABSORIGIN_FOLLOW, recipient )
+	ParticleManager:SetParticleControl( effect_cast, 3, recipient:GetOrigin())
+	ParticleManager:SetParticleControl( effect_cast, 15, Vector(115, 248, 255))
+	ParticleManager:SetParticleControl( effect_cast, 16, Vector(1,0,0))
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+
+	effect_cast = ParticleManager:CreateParticle( "particles/econ/items/zeus/arcana_chariot/zeus_arcana_thundergods_wrath_start_bolt_parent.vpcf", PATTACH_ABSORIGIN_FOLLOW, recipient )
+	ParticleManager:SetParticleControl( effect_cast, 1, recipient:GetOrigin())
+	ParticleManager:SetParticleControl( effect_cast, 3, recipient:GetOrigin())
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+
 	-- Create Sound
 	EmitSoundOn( sound_cast, recipient )
 end

@@ -145,10 +145,10 @@ function GameMode:CaptureGameMode()
         self.lock_round = false
         self.teams = {}
         self.ROUNDS_TO_WIN = 3
-        self.iMaxTreshold = 40
-        self.ORBS_SPAWN_TIME = 25.0
+        self.iMaxTreshold = 30
+        self.ORBS_SPAWN_TIME = 20.0
         self.FIRST_MIDDLE_ORB_SPAWN_TIME = 20.0
-        self.MIDDLE_ORB_SPAWN_TIME = 25.0
+        self.MIDDLE_ORB_SPAWN_TIME = 20.0
         self.mouse_positions = {}
 
         -------------------------------
@@ -196,6 +196,13 @@ function GameMode:CaptureGameMode()
 
                         if alternate_version ~= nil then
                             if mode == "press" then
+                                
+                                if ability.OnSwapPress then
+                                    if ability:OnSwapPress() == false then
+                                        return
+                                    end
+                                end
+
                                 caster:SwapAbilities( 
                                     ability:GetAbilityName(),
                                     alternate_version:GetAbilityName(),
@@ -203,6 +210,13 @@ function GameMode:CaptureGameMode()
                                     true
                                 )
                             elseif mode == "release" then
+
+                                if ability.OnSwapRelease then
+                                    if ability:OnSwapRelease() == false then
+                                        return
+                                    end
+                                end
+
                                 caster:SwapAbilities( 
                                     alternate_version:GetAbilityName(),
                                     ability:GetAbilityName(),
@@ -215,6 +229,20 @@ function GameMode:CaptureGameMode()
                 end
             end
 
+
+            --[[
+            local string = ""
+            for i = 0, 14 do
+                local ability = caster:GetAbilityByIndex(i)
+                if ability:GetAbilityType() ~= 2 then -- ignore talents
+
+                    local hidden = ability:IsHidden() and " (HIDDEN)" or ""
+                    string = string .. "[" .. (i+1) .. "] " .. ability:GetAbilityName() .. hidden .. "\n"
+                end
+            end
+
+            print(string)
+            ]]
         end)
 
         CustomGameEventManager:RegisterListener('updateMousePosition', function(eventSourceIndex, args)

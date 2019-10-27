@@ -1,6 +1,7 @@
 vengeful_special_attack = class({})
 vengeful_special_attack_ultimate = class({})
 LinkLuaModifier( "modifier_vengeful_special_attack_link", "abilities/heroes/vengeful/vengeful_special_attack/modifier_vengeful_special_attack_link", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_vengeful_special_attack_link_ultimate", "abilities/heroes/vengeful/vengeful_special_attack/modifier_vengeful_special_attack_link", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -9,11 +10,11 @@ function vengeful_special_attack:OnCastPointEnd()
 	local ability = caster:FindAbilityByName("vengeful_special_attack")
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
-	local damage = ability:GetAbilityDamage()
+	local damage = ability:GetSpecialValueFor("ability_damage")
 
 	-- load data
     local mana_gain_pct = ability:GetSpecialValueFor("mana_gain_pct")
-    local link_duration = ability:GetSpecialValueFor("link_duration")
+	local link_duration = ability:GetSpecialValueFor("link_duration")
 	
 	-- Dynamic data
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -23,11 +24,11 @@ function vengeful_special_attack:OnCastPointEnd()
 		EffectName = 			"particles/mod_units/heroes/hero_venge/vengeful_magic_missle.vpcf",
 		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = 			ability:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		bUniqueRadius =			ability:GetSpecialValueFor("hitbox"),
+		fUniqueRadius =			ability:GetSpecialValueFor("hitbox"),
 		Source = 				caster,
 		vVelocity = 			projectile_direction * projectile_speed,
 		UnitBehavior = 			PROJECTILES_DESTROY,
-		WallBehavior = 			PROJECTILES_DESTROY,
+		WallBehavior = 			PROJECTILES_NOTHING,
 		TreeBehavior = 			PROJECTILES_NOTHING,
 		GroundBehavior = 		PROJECTILES_NOTHING,
 		fGroundOffset = 		80,
@@ -42,11 +43,16 @@ function vengeful_special_attack:OnCastPointEnd()
 
 			ApplyDamage( damage_table )
 
-            if _self.Source == caster then
-                caster:GiveManaPercent(mana_gain_pct, unit)
-            end
-
-            unit:AddNewModifier(_self.Source, self, "modifier_vengeful_special_attack_link", { duration = link_duration })
+			if not string.ends(self:GetAbilityName(), "_ultimate") then
+				if _self.Source == caster then
+					caster:GiveManaPercent(mana_gain_pct, unit)
+				end
+			end
+			local modifier_name = string.ends(self:GetAbilityName(), "_ultimate") and
+            "modifier_vengeful_special_attack_link_ultimate" or 
+			"modifier_vengeful_special_attack_link"
+			
+            unit:AddNewModifier(_self.Source, self, modifier_name, { duration = link_duration })
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

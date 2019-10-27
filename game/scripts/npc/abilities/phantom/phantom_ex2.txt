@@ -11,17 +11,17 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1200"
-		"AbilityCastPoint"				"0.3"
 		"AbilityCooldown"				"3.5"
 		"AbilityManaCost"				"25"
-		"AbilityDamage"					"9"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"0.8" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"sleep_per_stack"			"0.4" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"9" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"0.8" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"sleep_per_stack"			"0.4" }
 		}
 	}
 }

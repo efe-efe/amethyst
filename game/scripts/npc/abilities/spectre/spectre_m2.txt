@@ -10,9 +10,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityCastRange"				"1200"
-		"AbilityCastPoint"				"1.0"
 		"AbilityCooldown"				"5.0"
-		"AbilityDamage"					"30"
 
 		"precache"
 		{
@@ -22,9 +20,11 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"1.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"30" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
 		}
 	}
 }

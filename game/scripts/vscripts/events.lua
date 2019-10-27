@@ -427,6 +427,8 @@ function GameMode:CreateDeathZone()
     
     local orb_position = self.middle_orbs_ent[index]:GetOrigin()
 
+    CustomGameEventManager:Send_ServerToAllClients( "death_zone_initiated", {} )
+
     self.modifier_death_zone = CreateModifierThinker(
         nil, --hCaster
         nil, --hAbility

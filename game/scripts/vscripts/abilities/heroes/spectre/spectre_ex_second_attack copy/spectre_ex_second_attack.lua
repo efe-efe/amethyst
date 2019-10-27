@@ -24,7 +24,7 @@ function spectre_ex_second_attack:OnCastPointEnd()
 		EffectName = projectile_name,
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance =	self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		bUniqueRadius = hitbox,
+		fUniqueRadius = hitbox,
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,

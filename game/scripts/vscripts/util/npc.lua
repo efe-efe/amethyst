@@ -40,7 +40,7 @@ function CDOTA_BaseNPC:IsWalking()
     return direction.x ~= 0 or direction.y ~= 0
 end
 
-function CDOTA_BaseNPC:SetOneAbilityActive( spell )
+function CDOTA_BaseNPC:DeactivateAllAbilitiesWithExeption( spell )
 	if IsServer() then
 		for i = 0, 10 do
 			local ability = self:GetAbilityByIndex(i)
@@ -53,7 +53,7 @@ function CDOTA_BaseNPC:SetOneAbilityActive( spell )
 	end
 end
 
-function CDOTA_BaseNPC:DeactivateNotPriorityAbilities()
+function CDOTA_BaseNPC:DeactivateNonPriorityAbilities()
 	if IsServer() then
 		for i = 0, 10 do
 			local ability = self:GetAbilityByIndex(i)

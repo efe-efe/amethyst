@@ -7,9 +7,7 @@
 
 		"AbilityTextureName"			"spectre_ex_mobility"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityDuration"				"2.4"
-		"AbilityCastPoint"				"0.2"
-		"AbilityCooldown"				"13.0"
+		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
 
 		"precache"
@@ -19,9 +17,12 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"5" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"60" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"5" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"60" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.4" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
 		}
 	}
 }

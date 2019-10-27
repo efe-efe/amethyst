@@ -4,7 +4,7 @@ LinkLuaModifier( "modifier_spectre_special_attack_thinker", "abilities/heroes/sp
 
 function spectre_special_attack:OnCastPointEnd( )
 	local caster = self:GetCaster()
-	local damage = self:GetAbilityDamage()
+	local damage = self:GetSpecialValueFor("ability_damage")
 	local origin = caster:GetOrigin()
 	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
@@ -23,7 +23,7 @@ function spectre_special_attack:OnCastPointEnd( )
 	local projectile = {
 		vSpawnOrigin = origin,
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		bUniqueRadius = hitbox,
+		fUniqueRadius = hitbox,
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,
@@ -31,6 +31,7 @@ function spectre_special_attack:OnCastPointEnd( )
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
+		bGroundLock = true,
 		bIsSlowable = false,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit)
@@ -51,7 +52,10 @@ function spectre_special_attack:OnCastPointEnd( )
 			)
 
 			-- Give Mana
-			caster:GiveManaPercent(mana_gain_pct, unit)
+			if _self.Source == caster then
+				caster:GiveManaPercent(mana_gain_pct, unit)
+			end
+
 			self:PlayEffectsOnImpact(unit)
 		end,
 		OnFinish = function(_self, pos)
@@ -72,7 +76,6 @@ function spectre_special_attack:OnCastPointEnd( )
 				caster:GetTeamNumber(),
 				false --bPhantomBlocker
 			)
-			print()
 		end
 	}
 

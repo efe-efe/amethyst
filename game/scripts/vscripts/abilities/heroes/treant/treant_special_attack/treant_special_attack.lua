@@ -21,7 +21,7 @@ function treant_special_attack:OnCastPointEnd()
 		EffectName = "particles/mod_units/heroes/hero_treant/treant_leech_seed_projectile.vpcf",
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		bUniqueRadius = hitbox,
+		fUniqueRadius = hitbox,
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,

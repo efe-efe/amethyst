@@ -168,6 +168,12 @@ function Projectiles:CreateProjectile(projectile)
             if projectile.bGroundLock then  -- Stick to the ground
                 currentPosition.z = GetGroundPosition(currentPosition, projectile.Source).z + projectile.fGroundOffset
             end
+
+            -- Follow
+            if projectile.FollowTarget then
+                print(projectile.FollowTarget:GetAbsOrigin())
+                projectile:SetVelocity((projectile.FollowTarget:GetAbsOrigin() - projectile.currentPosition):Normalized() * 1000)
+            end
             
             -- Checks expiration
             if curTime > projectile.spawnTime + projectile.fExpireTime or projectile.distanceTraveled > projectile.fDistance then
@@ -532,6 +538,7 @@ function Projectiles:InitialSetup(projectile)
     -- Movement
     projectile.vVelocity = projectile.vVelocity or Vector(0,0,0)
     projectile.fDistance = projectile.fDistance or 1000
+    projectile.FollowTarget = projectile.FollowTarget or nil
 
     -- Special behaviors
     if projectile.bIsSlowable == nil then projectile.bIsSlowable = true end
@@ -573,7 +580,7 @@ function Projectiles:InitialSetup(projectile)
     projectile.fChangeDelay = projectile.fChangeDelay or .1
 
     -- Position
-    projectile.bGroundLock = projectile.bGroundLock or true
+    projectile.bGroundLock = projectile.bGroundLock or false
     projectile.fGroundOffset = projectile.fGroundOffset or 40
 
     -- Unit filter

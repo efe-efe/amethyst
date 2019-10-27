@@ -34,6 +34,7 @@ function modifier_cast_point_new:OnCreated(params)
 		self.no_target = params.no_target
 		self.radius = params.radius
 		self.hide_indicator = params.hide_indicator
+		self.cancelable = params.cancelable
 		
 		self.min_range = params.min_range
 		self.max_range = params.max_range
@@ -76,6 +77,7 @@ function modifier_cast_point_new:OnRefresh(params)
 		self.no_target = params.no_target
 		self.radius = params.radius
 		self.hide_indicator = params.hide_indicator
+		self.cancelable = params.cancelable
 		
 		self.min_range = params.min_range
 		self.max_range = params.max_range
@@ -117,7 +119,11 @@ function modifier_cast_point_new:StartCast()
 		end
 
 		if self.disable_all then
-			self.parent:DeactivateNotPriorityAbilities()
+			if self.cancelable == 1 then
+				self.parent:DeactivateNonPriorityAbilities()
+			else
+				self.parent:DeactivateAllAbilitiesWithExeption(self.ability)
+			end
 		end
 	end
 end
@@ -233,7 +239,7 @@ function modifier_cast_point_new:GetModifierMoveSpeedBonus_Percentage()
 end
 
 function modifier_cast_point_new:OnOrder(params)
-	if params.unit==self.parent then
+	if params.unit==self.parent and self.cancelable == 1 then
 		if 	params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION or
 			params.order_type == DOTA_UNIT_ORDER_CAST_POSITION or
 			params.order_type == DOTA_UNIT_ORDER_CAST_TARGET or

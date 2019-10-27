@@ -47,7 +47,7 @@ function modifier_counter:OnCreated( kv )
         end
 
         if self.disable ~= 0 then
-			self.caster:DeactivateNotPriorityAbilities()
+			self.caster:DeactivateNonPriorityAbilities()
         end
 
         if self.ability.OnStartCounter ~= nil then

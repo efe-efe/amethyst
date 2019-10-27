@@ -1,5 +1,10 @@
 phantom_ultimate = class({})
 
+function phantom_ultimate:OnSpellStart()
+	EmitGlobalSound("phantom_assassin_phass_ability_coupdegrace_03")
+end
+
+
 function phantom_ultimate:OnCastPointEnd()
     --Initialize variables
     local caster = self:GetCaster()
@@ -7,7 +12,7 @@ function phantom_ultimate:OnCastPointEnd()
 	local point = self:GetCursorPosition()
 	
     local max_range = self:GetSpecialValueFor("range")
-    local damage = self:GetAbilityDamage()
+    local damage = self:GetSpecialValueFor("ability_damage")
     local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 
 	-- load data
@@ -46,10 +51,9 @@ function phantom_ultimate:OnCastPointEnd()
 			
 			ApplyDamage( damage_table )
 
+			self:PlayEffectsOnCast(caster)
             FindClearSpaceForUnit( caster, unit:GetOrigin() , true )
-
 			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
-
             self:PlayEffectsOnImpact(unit)
 		end,
         OnFinish = function(_self, pos)
@@ -59,7 +63,6 @@ function phantom_ultimate:OnCastPointEnd()
 	}
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-	self:PlayEffectsOnCast()
 end
 
 -- On projectile finish
@@ -88,11 +91,11 @@ function phantom_ultimate:PlayEffectsOnImpact(hTarget)
 end
 
 -- On spell start
-function phantom_ultimate:PlayEffectsOnCast()
+function phantom_ultimate:PlayEffectsOnCast( caster )
     -- Cast Particles
     local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
+	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 

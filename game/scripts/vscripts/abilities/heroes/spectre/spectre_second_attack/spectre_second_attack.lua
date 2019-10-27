@@ -12,9 +12,9 @@ function spectre_second_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
-	local damage = self:GetAbilityDamage()
 
 	-- load data
+	local damage = self:GetSpecialValueFor("ability_damage")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	
 	-- Dynamic data
@@ -25,7 +25,7 @@ function spectre_second_attack:OnCastPointEnd()
 		EffectName = 			"particles/mod_units/heroes/hero_bane/bane_projectile.vpcf",
 		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		bUniqueRadius =			self:GetSpecialValueFor("hitbox"),
+		fUniqueRadius =			self:GetSpecialValueFor("hitbox"),
 		Source = 				caster,
 		vVelocity = 			projectile_direction * projectile_speed,
 		UnitBehavior = 			PROJECTILES_DESTROY,

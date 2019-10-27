@@ -21,11 +21,12 @@ function modifier_spectre_ex_mobility:OnCreated( kv )
 
     if IsServer() then
         self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
+        local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
         self.radius = 250
         self.damage_done = 0
 
         self:PlayEffectsOnCreated()
-        self:StartIntervalThink( 0.3 )
+        self:StartIntervalThink( think_interval )
 
 		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
 			style = "Darkness",

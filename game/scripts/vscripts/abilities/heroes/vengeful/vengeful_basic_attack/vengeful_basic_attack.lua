@@ -1,6 +1,18 @@
 vengeful_basic_attack = class({})
 LinkLuaModifier( "modifier_vengeful_basic_attack_stack", "abilities/heroes/vengeful/vengeful_basic_attack/modifier_vengeful_basic_attack_stack", LUA_MODIFIER_MOTION_NONE )
 
+function vengeful_basic_attack:GetPlaybackRateOverride()
+	if IsServer() then 
+		local modifier = self:GetCaster():FindModifierByName("modifier_vengeful_basic_attack_stack")
+		local charged = modifier and (modifier:GetStackCount() == 3 and true or false) or false
+		local slow = charged and 0.9 or 0.0 
+
+		return 2.0 - slow
+	end
+end
+
+function vengeful_basic_attack:GetCastAnimation() return ACT_DOTA_ATTACK end
+
 function vengeful_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
@@ -61,7 +73,7 @@ function vengeful_basic_attack:OnCastPointEnd()
 			end
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
+			self:PlayEffectsOnFinish(pos, charged)
 		end,
 	}
 
@@ -92,14 +104,14 @@ function vengeful_basic_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_VengefulSpirit.Attack", self:GetCaster() )
 end
 
-function vengeful_basic_attack:PlayEffectsOnFinish( pos )
+function vengeful_basic_attack:PlayEffectsOnFinish( pos, charged )
 	local caster = self:GetCaster()
 
 	-- Create Sound
 	EmitSoundOnLocationWithCaster( pos, "Hero_VengefulSpirit.ProjectileImpact", caster )
 
 	-- Create Particle
-	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_base_attack_end_flash.vpcf"
+	local particle_cast = charged and "particles/items4_fx/meteor_hammer_spell_impact_ember.vpcf" or "particles/units/heroes/hero_vengeful/vengeful_base_attack_end_flash.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
@@ -109,6 +121,6 @@ if IsClient() then require("abilities") end
 Abilities.BasicAttack( vengeful_basic_attack )
 Abilities.Initialize( 
 	vengeful_basic_attack,
-	{ activity = ACT_DOTA_ATTACK, rate = 2.0 },
+	nil,
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }
 )

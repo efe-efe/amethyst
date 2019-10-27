@@ -1,6 +1,7 @@
 sniper_ultimate_projectile = class({})
 LinkLuaModifier( "modifier_sniper_ultimate_thinker", "abilities/heroes/sniper/sniper_ultimate/modifier_sniper_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_sniper_ultimate_movement", "abilities/heroes/sniper/sniper_ultimate/modifier_sniper_ultimate_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier( "modifier_sniper_ultimate_hit", "abilities/heroes/sniper/sniper_ultimate/modifier_sniper_ultimate_hit", LUA_MODIFIER_MOTION_NONE )
 
 function sniper_ultimate_projectile:OnCastPointEnd( )
 	-- Initialize variables
@@ -8,7 +9,7 @@ function sniper_ultimate_projectile:OnCastPointEnd( )
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
 	local ability = caster:FindAbilityByName("sniper_ultimate") -- Get special values from original
-	local damage = ability:GetAbilityDamage()
+	local damage = ability:GetSpecialValueFor("ability_damage")
 
 	self.radius = ability:GetSpecialValueFor("radius")
 	self.aoe_damage = ability:GetSpecialValueFor("aoe_damage")
@@ -41,6 +42,7 @@ function sniper_ultimate_projectile:OnCastPointEnd( )
 			
 			ApplyDamage( damage_table )
 			
+			unit:AddNewModifier(_self.Source, self, "modifier_sniper_ultimate_hit", { duration = 0.1 })
 			self:PlayEffectsTarget(unit, _self.currentPosition)
 		end,
         OnFinish = function(_self, pos)
@@ -77,10 +79,12 @@ function sniper_ultimate_projectile:Explosion( pos )
             attacker = caster,
             damage = self.aoe_damage,
             damage_type = DAMAGE_TYPE_PURE,
-        }
-
-        ApplyDamage( damage )
-
+		}
+	
+		if not enemy:HasModifier("modifier_sniper_ultimate_hit") then
+        	ApplyDamage( damage )
+		end
+		
         local x = enemy:GetOrigin().x - pos.x
         local y = enemy:GetOrigin().y - pos.y
 

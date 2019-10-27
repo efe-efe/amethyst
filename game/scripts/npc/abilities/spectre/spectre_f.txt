@@ -7,16 +7,16 @@
 
 		"AbilityTextureName"			"spectre_extra"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityCastPoint"				"0.1"
 		"AbilityCastRange"				"800"
 		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.8" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.0" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.8" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.0" }
 		}
 	}
 }

@@ -1,8 +1,8 @@
 vengeful_mobility_swap = class({})
 vengeful_mobility_swap_ultimate = class({})
 
-vengeful_mobility_swap_ultimate.illusion_index = nil
 vengeful_mobility_swap.illusion_index = nil
+vengeful_mobility_swap_ultimate.illusion_index = nil
 
 function vengeful_mobility_swap:OnCastPointEnd()
     -- unit identifier
@@ -14,24 +14,45 @@ function vengeful_mobility_swap:OnCastPointEnd()
 	
 	local ability_name = string.ends(self:GetAbilityName(), "_ultimate") and "vengeful_mobility_ultimate" or "vengeful_mobility"
 	local ability = caster:FindAbilityByName(ability_name)
-	ability:StartCooldown(ability:GetCooldown(0))
 
     if illusion then
         self:PlayEffectsOnCast(illusion)
         FindClearSpaceForUnit( caster, illusion:GetOrigin() , true )
         FindClearSpaceForUnit( illusion, origin , true )
         
-        Timers:CreateTimer(0.001, function()
-            local modifier = illusion:FindModifierByName("modifier_vengeful_mobility_illusion")
-            if modifier ~= nil then
-                if not modifier:IsNull() then
-                    modifier:Destroy()
-                    return
-                end
-            end
+		Timers:CreateTimer(0.001, function()
+			if illusion then
+				local modifier = illusion:FindModifierByName("modifier_vengeful_mobility_illusion")
+				if modifier ~= nil then
+					if not modifier:IsNull() then
+						modifier:Destroy()
+						return
+					end
+				end
+			end
         end)
     end
 end
+
+function vengeful_mobility_swap:OnSwapPress()
+    return false
+end
+
+function vengeful_mobility_swap:OnSwapRelease()
+    return false
+end
+
+--[[
+function vengeful_mobility_swap:OnSwapRelease()
+	print("HERE")
+	self:GetCaster():SwapAbilities( 
+		"vengeful_mobility",
+		"vengeful_mobility_swap",
+		false,
+		true
+	)
+end
+]]
 
 function vengeful_mobility_swap:PlayEffectsOnCast( hTarget )
     local caster = self:GetCaster()

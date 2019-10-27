@@ -8,8 +8,8 @@ function phantom_ex_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
-	local damage = self:GetAbilityDamage()
-
+	local damage = self:GetSpecialValueFor("ability_damage")
+	
 	local sleep_duration = self:GetSpecialValueFor("sleep_duration")
 	local sleep_per_stack = self:GetSpecialValueFor("sleep_per_stack")
 	local should_lifesteal = caster:HasModifier("modifier_phantom_ex_basic_attack")

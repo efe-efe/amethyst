@@ -1,5 +1,4 @@
 sniper_ex_second_attack = class({})
-LinkLuaModifier( "modifier_generic_rooted_lua", "abilities/generic/modifier_generic_rooted_lua", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -12,7 +11,7 @@ function sniper_ex_second_attack:OnCastPointEnd( pos )
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
-	local damage = self:GetAbilityDamage()
+	local damage = self:GetSpecialValueFor("ability_damage")
 
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")

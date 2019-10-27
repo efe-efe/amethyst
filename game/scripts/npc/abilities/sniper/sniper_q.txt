@@ -8,13 +8,13 @@
 		"AbilityTextureName"			"sniper_counter"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.1"
 		"AbilityCooldown"				"8.0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "20" }
+			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.1" }
+			"02"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
+			"03"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "20" }
 		}
 	}
 }

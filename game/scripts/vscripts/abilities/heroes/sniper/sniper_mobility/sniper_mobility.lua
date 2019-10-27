@@ -12,21 +12,22 @@ function sniper_mobility:OnCastPointEnd()
 
 	local direction = (point - origin):Normalized()
 	local distance = (point - origin):Length2D()
+	local radius = self:GetSpecialValueFor("radius")
 
-    -- Effect thinker
-    CreateModifierThinker(
-        caster, --hCaster
-        self, --hAbility
-        "modifier_sniper_mobility_thinker", --modifierName
+    --Knockback
+    caster:AddNewModifier(
+        caster, -- player source
+        self, -- ability source
+        "modifier_generic_displacement", -- modifier name
         {
-			x = direction.x,
-			y = direction.y,
-			distance = distance
-		}, --paramTable
-        caster:GetOrigin(), --vOrigin
-        caster:GetTeamNumber(), --nTeamNumber
-        false --bPhantomBlocker
-    )
+            x = direction.x,
+            y = direction.y,
+            r = distance,
+            speed = 2000,
+            peak = 50,
+            colliding = 1,
+        } -- kv
+	)
 
 	CreateModifierThinker(
 		caster, --hCaster
@@ -35,7 +36,7 @@ function sniper_mobility:OnCastPointEnd()
 		{ 
 			thinker = "modifier_sniper_shrapnel_thinker_lua",
 			show_all = 1,
-			radius = self.radius,
+			radius = radius,
 			delay_time = shrapnel:GetSpecialValueFor( "delay_time" ),
 			thinker_duration = shrapnel:GetSpecialValueFor( "duration" ),
 		}, --paramTable
@@ -44,12 +45,17 @@ function sniper_mobility:OnCastPointEnd()
 		false --bPhantomBlocker
 	)
 
-    self:PlayEffects()
+    self:PlayEffectsOnCast()
 end
 
-function sniper_mobility:PlayEffects()
-    local sound_cast = "Hero_Techies.LandMine.Detonate"
-    EmitSoundOn( sound_cast, self:GetCaster() )	
+function sniper_mobility:PlayEffectsOnCast()
+	EmitSoundOn( "Hero_Techies.LandMine.Detonate", self:GetCaster() )	
+    -- Cast particle
+    local particle_cast = "particles/econ/courier/courier_cluckles/courier_cluckles_ambient_rocket_explosion.vpcf"
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex( effect_cast )  
 end
 
 if IsClient() then require("abilities") end

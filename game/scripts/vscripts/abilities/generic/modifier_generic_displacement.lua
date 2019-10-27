@@ -23,6 +23,7 @@ function modifier_generic_displacement:OnCreated( params )
 		self.i_frame = params.i_frame == 1 and true or false
 		self.colliding = params.colliding == 1 and true or false
 		self.damage_on_collision = params.damage_on_collision or nil
+		self.restricted = params.restricted and params.restricted or true
 		
 		local activity = params.activity or ACT_DOTA_FLAIL
 		local rate = params.rate or 1.0
@@ -148,7 +149,7 @@ end
 function modifier_generic_displacement:CheckState()
 	local state = {
 		[MODIFIER_STATE_ROOTED] = true,
-		[MODIFIER_STATE_COMMAND_RESTRICTED] = true,
+		[MODIFIER_STATE_COMMAND_RESTRICTED] = self.restricted,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = self.i_frame,
 		[MODIFIER_STATE_INVULNERABLE] = self.i_frame,

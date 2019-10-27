@@ -7,15 +7,17 @@
 
 		"AbilityTextureName"			"phantom_assassin_coup_de_grace"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityCastPoint"				"1.0"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"2400"
 		"AbilityManaCost"				"100"
-		"AbilityDamage"					"35"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"		"8" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"1.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"25" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"		"10" }
 		}
 	}
 }

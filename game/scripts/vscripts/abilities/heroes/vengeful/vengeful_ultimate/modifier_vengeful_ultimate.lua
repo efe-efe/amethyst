@@ -13,25 +13,23 @@ end
 function modifier_vengeful_ultimate:OnAbilityFullyCast( params )
     if IsServer() then
         local parent = self:GetParent()
+        if params.unit ~= parent then return end
         
-		if params.unit ~= parent then
-			return
-        end
-        
-        local name = params.ability:GetName() 
-        local ability = self:GetAbility()
+        local ultimate = self:GetAbility()
+        local incoming_ability = params.ability
+        local incoming_ability_name = incoming_ability:GetName() 
 
-		if 	name == "item_death_orb" or
-            name == "item_mana_orb" or
-            name == "item_health_orb" or
-            params.ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE) 
+		if 	incoming_ability_name == "item_death_orb" or
+            incoming_ability_name == "item_mana_orb" or
+            incoming_ability_name == "item_health_orb" or
+            incoming_ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE) 
 		then
 			return
         end
 
-        if ability.current_ability then
-            if  ability.current_ability == params.ability or
-                ability.current_ability:GetAbilityName() == name .. "_ultimate"
+        if ultimate.current_ability then
+            if  ultimate.current_ability == incoming_ability or
+                ultimate.current_ability:GetAbilityName() == incoming_ability_name .. "_ultimate"
             then
                 return
             end
@@ -39,45 +37,39 @@ function modifier_vengeful_ultimate:OnAbilityFullyCast( params )
             self:ForgetSpell()
         end
 
-        ability.current_ability = parent:AddAbility( name .. "_ultimate" )
-        ability.current_ability:SetLevel( 1 )
-        ability.current_ability:SetStolen(true)	
-        
+        ultimate.current_ability = parent:AddAbility( incoming_ability_name .. "_ultimate" )
+        ultimate.current_ability:SetLevel( 1 )
+        if ultimate.current_ability.OnAdded then
+            ultimate.current_ability:OnAdded()
+        end
+
         parent:SwapAbilities(
-            ability.current_ability:GetAbilityName(), 
+            ultimate.current_ability:GetAbilityName(), 
             "vengeful_ultimate", 
             true, 
             false
         )
-
-        if ability.current_ability.OnAdded then
-            ability.current_ability:OnAdded()
-        end
 	end
 end
 
 -- Remove currently stolen spell
 function modifier_vengeful_ultimate:ForgetSpell()
-    local ability = self:GetAbility()
+    local ultimate = self:GetAbility()
     local parent = self:GetParent()
 
-
-    if ability.current_ability ~= nil then
-        if ability.current_ability.OnRemoved then
-            ability.current_ability:OnRemoved()
+    if ultimate.current_ability ~= nil then
+        if ultimate.current_ability.OnRemoved then
+            ultimate.current_ability:OnRemoved()
         end
 
         parent:SwapAbilities( 
             "vengeful_ultimate",
-            ability.current_ability:GetAbilityName(), 
+            ultimate.current_ability:GetAbilityName(), 
             true, 
             false 
         )
 
-		parent:RemoveAbility( ability.current_ability:GetAbilityName() )
-		ability.current_ability = nil
+		parent:RemoveAbility( ultimate.current_ability:GetAbilityName() )
+		ultimate.current_ability = nil
 	end
 end
-
---[[
-]]

@@ -9,7 +9,7 @@ function spectre_ex_second_attack_projectile:OnCastPointEnd()
 	local ability = caster:FindAbilityByName("spectre_ex_second_attack")
 	
 	local hitbox = self:GetSpecialValueFor("hitbox")
-	local damage = self:GetAbilityDamage()
+	local damage = self:GetSpecialValueFor("ability_damage")
 
 	local heal = ability:GetSpecialValueFor("heal")
 
@@ -21,7 +21,7 @@ function spectre_ex_second_attack_projectile:OnCastPointEnd()
 		EffectName = "particles/mod_units/heroes/hero_dark_willow/dark_willow_base_attack.vpcf",
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance =	self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		bUniqueRadius = hitbox,
+		fUniqueRadius = hitbox,
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,

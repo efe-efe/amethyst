@@ -1,24 +1,22 @@
 modifier_death_zone = class({})
+LinkLuaModifier("modifier_death_zone_damage", "modifiers/general/modifier_death_zone_damage.lua", LUA_MODIFIER_MOTION_NONE )
 
---Initializer
 --------------------------------------------------------------------------------
+--Initializer
 function modifier_death_zone:OnCreated( kv )
-    self.max_radius = 5000
-    self.radius = 5000--self:GetAbility():GetSpecialValueFor( "radius" )
+    self.max_radius = 8000--self:GetAbility():GetSpecialValueFor( "radius" )
+    self.radius = self.max_radius
     self.min_radius = 600
     self.initialized = false
-
     self.effects = {}
-
     self.counter = 0
-    self.counter_b = 0
 
     if IsServer() then
         -- Start Interval
         GameRules:SendCustomMessage("The <b><font color='blue'>Death zone</font></b> has initiated, don't get close to the edges!", 0, 0)
         self:StartIntervalThink(0.1)      
 
-        --self:PlayEffectsOnCreated(0, self.radius, 0)
+        self:PlayEffectsOnCreated()
     end
 end
 
@@ -29,73 +27,60 @@ function modifier_death_zone:OnRemoved()
 	end
 end
 
---On think
 --------------------------------------------------------------------------------
+--On think
 function modifier_death_zone:OnIntervalThink()
+    local all_units = FindUnitsInRadius(
+        DOTA_TEAM_NOTEAM,	-- int, your team number
+        self:GetParent():GetOrigin(),	-- point, center point
+        nil,	-- handle, cacheUnit. (not known)
+        FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
+        DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
+        0,	-- int, order filter
+        false	-- bool, can grow cache
+    )
 
-    if self.counter == 10 then 
-        local all_units = FindUnitsInRadius(
-            DOTA_TEAM_NOTEAM,	-- int, your team number
-            self:GetParent():GetOrigin(),	-- point, center point
-            nil,	-- handle, cacheUnit. (not known)
-            FIND_UNITS_EVERYWHERE,	-- float, radius. or use FIND_UNITS_EVERYWHERE
-            DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-            DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
-            0,	-- int, order filter
-            false	-- bool, can grow cache
-        )
+    local not_affected = FindUnitsInRadius(
+        DOTA_TEAM_NOTEAM,	-- int, your team number
+        self:GetParent():GetOrigin(),	-- point, center point
+        nil,	-- handle, cacheUnit. (not known)
+        self.radius,	-- float, radius. or use FIND_UNITS_EVERYWHERE
+        DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
+        0,	-- int, order filter
+        false	-- bool, can grow cache
+    )
 
-        local not_affected = FindUnitsInRadius(
-            DOTA_TEAM_NOTEAM,	-- int, your team number
-            self:GetParent():GetOrigin(),	-- point, center point
-            nil,	-- handle, cacheUnit. (not known)
-            self.radius,	-- float, radius. or use FIND_UNITS_EVERYWHERE
-            DOTA_UNIT_TARGET_TEAM_BOTH,	-- int, team filter
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-            DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,	-- int, flag filter
-            0,	-- int, order filter
-            false	-- bool, can grow cache
-        )
-
-        for _,unit in pairs(all_units) do
-            local continue = true
-            for _,exclude in pairs(not_affected) do
-                if exclude == unit then
-                    continue = false
-                    break
-                end
+    for _,unit in pairs(all_units) do
+        local continue = true
+        for _,exclude in pairs(not_affected) do
+            if exclude == unit then
+                continue = false
+                break
             end
+        end
 
-            if continue then
-                local damage_table = {
-                    damage = 15,
-                    damage_type = DAMAGE_TYPE_PURE,
-                    victim = unit,
-                    attacker = unit,
-                }
-                ApplyDamage( damage_table )
-                self:PlayEffectsOnTarget(unit)
-            end
+        if continue then
+            unit:AddNewModifier(unit, nil, "modifier_death_zone_damage", { duration = 0.3 })
+        end
+    end
+    
+    if self.counter == 10 then
+        for i = self.radius, self.max_radius, 200 do
+            self:PlayEffectsAoe(i, 0)
         end
         self.counter = 0
     end
 
-    
-    if self.counter_b == 10 then
-        for i = self.radius, self.max_radius, 200 do
-            self:PlayEffectsAoe(i, 0)
-        end
-        self.counter_b = 0
-    end
-
-    local new_radius = self.radius - 5
+    local new_radius = self.radius - 15
     if new_radius > self.min_radius then
         self.radius = new_radius
     end
 
     self.counter = self.counter + 1
-    self.counter_b = self.counter_b + 1
 
     
     --[[
@@ -136,11 +121,14 @@ function modifier_death_zone:UpdateParticles()
     end
 end
 
-function modifier_death_zone:PlayEffectsOnCreated(i, radius, z_offset)
+function modifier_death_zone:PlayEffectsOnCreated()--i, radius, z_offset
+    EmitGlobalSound("MegaCreeps.Dire")
+    --[[
     local particle_cast = "particles/units/heroes/hero_zeus/zeus_cloud.vpcf"
     self.effects[i] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( self.effects[i], 0, self:GetParent():GetOrigin() + Vector(0, 0, z_offset))
     ParticleManager:SetParticleControl( self.effects[i], 1, Vector( radius, 1, 1 ) )
+    ]]
 end
 
 function modifier_death_zone:StopEffects()
@@ -148,16 +136,4 @@ function modifier_death_zone:StopEffects()
         ParticleManager:DestroyParticle( efx, false )
         ParticleManager:ReleaseParticleIndex( efx )
     end
-end
-
-function modifier_death_zone:PlayEffectsOnTarget( hTarget )
-    local particle_cast = "particles/econ/items/lion/fish_stick_retro/fish_stick_spell_fish_retro_b.vpcf"
-
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
-
---TODO
-    local particle_cast_b = "particles/econ/items/zeus/arcana_chariot/zeus_tgw_screen_damage.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticleForPlayer(particle_cast_b, PATTACH_EYES_FOLLOW, hTarget, hTarget:GetPlayerOwner())
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end

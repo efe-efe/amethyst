@@ -96,8 +96,8 @@ function sniper_extra:OnCastPointEnd()
         } -- kv
     )
 
-    local projectile_b = self:Copy(projectile_a)
-    local projectile_c = self:Copy(projectile_a)
+    local projectile_b = DuplicateTable(projectile_a)
+    local projectile_c = DuplicateTable(projectile_a)
 
     projectile_b.vVelocity = projectile_direction_b * projectile_speed
     projectile_c.vVelocity = projectile_direction_c * projectile_speed
@@ -131,16 +131,6 @@ function sniper_extra:PlayEffects_c( pos )
     ParticleManager:SetParticleControl( effect_cast, 3, pos )
 	
 	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
-function sniper_extra:Copy(obj, seen)
-    if type(obj) ~= 'table' then return obj end
-    if seen and seen[obj] then return seen[obj] end
-    local s = seen or {}
-    local res = setmetatable({}, getmetatable(obj))
-    s[obj] = res
-    for k, v in pairs(obj) do res[self:Copy(k, s)] = self:Copy(v, s) end
-    return res
 end
 
 if IsClient() then require("abilities") end
