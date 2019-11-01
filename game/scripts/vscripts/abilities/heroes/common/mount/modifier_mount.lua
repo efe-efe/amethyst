@@ -18,27 +18,49 @@ function modifier_mount:RandomModel()
 
     local random_number = RandomInt( 1, 100 )
     local model 
-    if random_number <= 10 then
-        model = "models/items/hex/sheep_hex/sheep_hex_gold.vmdl"
-    elseif random_number > 10 and random_number <= 20 then
+    if random_number <= 5 then
+		model = "models/items/hex/sheep_hex/sheep_hex_gold.vmdl"
+	elseif random_number > 5 and random_number <= 10 then
+		model = "models/items/courier/nexon_turtle_09_blue/nexon_turtle_09_blue.vmdl"
+    elseif random_number > 10 and random_number <= 15 then
+		model = "models/items/courier/mighty_chicken/mighty_chicken.vmdl"
+    elseif random_number > 15 and random_number <= 20 then
         model = "models/items/undying/idol_of_ruination/ruin_wight_minion.vmdl"
-    elseif random_number > 20 and random_number <= 30 then
+    elseif random_number > 20 and random_number <= 25 then
+        model = "models/items/courier/mok/mok.vmdl"
+    elseif random_number > 25 and random_number <= 30 then
         model = "models/courier/baby_rosh/babyroshan_alt.vmdl"
-    elseif random_number > 30 and random_number <= 40 then
+    elseif random_number > 30 and random_number <= 35 then
+        model = "models/items/courier/royal_griffin_cub/royal_griffin_cub.vmdl"
+    elseif random_number > 35 and random_number <= 40 then
         model = "models/courier/beetlejaws/mesh/beetlejaws.vmdl"
-    elseif random_number > 40 and random_number <= 50 then
+    elseif random_number > 40 and random_number <= 45 then
+        model = "models/items/courier/snaggletooth_red_panda/snaggletooth_red_panda.vmdl"
+    elseif random_number > 45 and random_number <= 50 then
         model = "models/courier/juggernaut_dog/juggernaut_dog.vmdl"
-    elseif random_number > 50 and random_number <= 60 then
+    elseif random_number > 50 and random_number <= 55 then
+        model = "models/items/courier/tory_the_sky_guardian/tory_the_sky_guardian.vmdl"
+    elseif random_number > 55 and random_number <= 60 then
         model = "models/courier/mech_donkey/mech_donkey.vmdl"
-    elseif random_number > 60 and random_number <= 70 then
+    elseif random_number > 60 and random_number <= 65 then
+        model = "models/items/courier/virtus_werebear_t1/virtus_werebear_t1.vmdl"
+    elseif random_number > 65 and random_number <= 70 then
         model = "models/items/broodmother/spiderling/lycosidae_spiderling/lycosidae_spiderling.vmdl"
-    elseif random_number > 70 and random_number <= 80 then
+    elseif random_number > 70 and random_number <= 75 then
+        model = "models/items/courier/amaterasu/amaterasu.vmdl"
+    elseif random_number > 75 and random_number <= 80 then
         model = "models/items/courier/axolotl/axolotl.vmdl"
-    elseif random_number > 80 and random_number <= 90 then
+    elseif random_number > 80 and random_number <= 85 then
         model = "models/items/courier/carty/carty.vmdl"
-    elseif random_number > 90 and random_number <= 100 then
+    elseif random_number > 85 and random_number <= 90 then
+        model = "models/items/courier/atrophic_skitterwing/atrophic_skitterwing.vmdl"
+    elseif random_number > 90 and random_number <= 95 then
+        model = "models/items/courier/chocobo/chocobo.vmdl"
+    elseif random_number > 95 and random_number <= 100 then
         model = "models/items/courier/livery_llama_courier/livery_llama_courier.vmdl"
-    end
+	end
+	
+	
 
     return model
 end

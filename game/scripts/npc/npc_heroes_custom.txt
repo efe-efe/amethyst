@@ -2,6 +2,7 @@
 #base "heroes\sniper.txt"
 #base "heroes\spectre.txt"
 #base "heroes\vengeful.txt"
+#base "heroes\ancient.txt"
 
 "DOTAHeroes"
 {   
@@ -675,6 +676,8 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
 		"Ability1"						"builder_check_area_lua"
+		"Ability2"						"builder_create_block"
+		"Ability3"						"builder_mobility"
 
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------

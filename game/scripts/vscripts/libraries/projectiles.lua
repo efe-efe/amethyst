@@ -7,6 +7,7 @@ PROJECTILES_NOTHING = 0
 PROJECTILES_DESTROY = 1
 PROJECTILES_BOUNCE = 2
 PROJECTILES_FOLLOW = 3
+SPEED_FACTOR = 1.0
 
 -- Initialize Projectiles Library
 if Projectiles == nil then
@@ -425,18 +426,21 @@ function Projectiles:CreateProjectile(projectile)
                         local vec = Vector(GridNav:GridPosToWorldCenterX(GridNav:WorldToGridPosX(subpos.x)), GridNav:GridPosToWorldCenterY(GridNav:WorldToGridPosY(subpos.y)), ground.z)
                         local status, action = pcall(projectile.OnWallHit, projectile, vec)
                         if not status then
-                        print('[PROJECTILES] Projectile OnWallHit Failure!: ' .. action)
+                            print('[PROJECTILES] Projectile OnWallHit Failure!: ' .. action)
                         end
 
+                        print(ground.z, projectile.prevPos.z)
+                        print("=====")
+                        
                         if projectile.WallBehavior == PROJECTILES_DESTROY then
-                        ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
-                        if projectile.OnFinish then
-                            local status, out = pcall(projectile.OnFinish, projectile, subpos)
-                            if not status then
-                            print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                            ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
+                            if projectile.OnFinish then
+                                local status, out = pcall(projectile.OnFinish, projectile, subpos)
+                                if not status then
+                                    print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                                end
                             end
-                        end
-                        return
+                            return
                         elseif projectile.WallBehavior == PROJECTILES_BOUNCE and projectile.changes > 0 and curTime >= projectile.changeTime then
                             -- bounce calculation
                             --local normal = Projectiles:CalcNormal(ground, projectile.Source)
@@ -536,7 +540,7 @@ end
 -- Default Values
 function Projectiles:InitialSetup(projectile)
     -- Movement
-    projectile.vVelocity = projectile.vVelocity or Vector(0,0,0)
+    projectile.vVelocity = projectile.vVelocity * SPEED_FACTOR or Vector(0,0,0) * SPEED_FACTOR
     projectile.fDistance = projectile.fDistance or 1000
     projectile.FollowTarget = projectile.FollowTarget or nil
 

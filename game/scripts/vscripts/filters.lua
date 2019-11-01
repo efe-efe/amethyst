@@ -99,6 +99,12 @@ function GameMode:HealingFilter(keys)
         --healing_target:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end
 
+    
+    Timers:CreateTimer(0.1, function()
+        self:UpdateHealthBars()
+        self:UpdateHeroHealthBar( healing_target )
+    end)
+
 	return true
 end
 
@@ -150,6 +156,10 @@ function GameMode:DamageFilter(keys)
             victim:FindModifierByName("modifier_treshold"):DecrementStackCount()
         end
         
+        Timers:CreateTimer(0.1, function()
+            self:UpdateHealthBars()
+            self:UpdateHeroHealthBar( victim )
+        end)
         --local health_bar = "(" .. victim.iTreshold .. "/" .. self.iMaxTreshold ..")"
         --victim:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end
@@ -177,4 +187,118 @@ function GameMode:DamageFilter(keys)
         end
         ]]
 	return true
+end
+
+function GameMode:UpdateHealthBars()
+    local total_max_health = {}
+    local total_actual_health = {}
+
+    total_max_health[DOTA_TEAM_GOODGUYS] = 0
+    total_max_health[DOTA_TEAM_BADGUYS] = 0
+
+    total_actual_health[DOTA_TEAM_GOODGUYS] = 0
+    total_actual_health[DOTA_TEAM_BADGUYS] = 0
+
+    for team_number, team in pairs(self.teams) do
+        for hero_index, hero in pairs(team.heroes) do
+            total_max_health[team_number] = total_max_health[team_number] + hero:GetMaxHealth()
+            total_actual_health[team_number] = total_actual_health[team_number] + hero:GetHealth()
+        end
+    end
+
+    local good_guys = 100 * total_actual_health[DOTA_TEAM_GOODGUYS]/total_max_health[DOTA_TEAM_GOODGUYS]
+    local bad_guys = 100 * total_actual_health[DOTA_TEAM_BADGUYS]/total_max_health[DOTA_TEAM_BADGUYS]
+
+    if good_guys ~= good_guys then
+        good_guys = 0
+    end
+
+    if bad_guys ~= bad_guys then
+        bad_guys = 0
+    end
+
+    local data = {
+        good_guys = good_guys,
+        bad_guys = bad_guys
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "update_team_health_bars", data )
+end
+
+function GameMode:UpdateHeroHealthBar( hero )
+    local potential_health = hero:GetHealth() + (self.iMaxTreshold - hero.iTreshold)
+    local treshold = 100 * potential_health/hero:GetMaxHealth()
+    local percentage = 100 * hero:GetHealth()/potential_health
+    
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        percentage = percentage,
+        treshold = treshold,
+    }
+
+    CustomGameEventManager:Send_ServerToAllClients( "update_hero_health_bar", data )
+end
+
+
+function GameMode:UpdateHeroManaBar( hero )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        percentage = hero:GetManaPercent()
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "update_hero_mana_bar", data )
+end
+
+function GameMode:UpdateHeroStacks( hero, stacks )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        stacks = stacks
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "update_hero_stacks", data )
+end
+
+function GameMode:UpdateHeroCharges( hero, charges )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        charges = charges
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "update_hero_charges", data )
+end
+
+
+function GameMode:InitializeHeroCharges( hero, charges )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        charges = charges
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "initialize_hero_charges", data )
+end
+
+function GameMode:InitializeCastPoint( hero, duration )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        duration = duration,
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "initialize_cast_point", data )
+end
+
+function GameMode:InitializeCooldown( hero, modifierName )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        modifierName = modifierName,
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "initialize_hero_cooldown", data )
+end
+
+function GameMode:StopCastPoint( hero )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex()
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "stop_cast_point", data )
 end

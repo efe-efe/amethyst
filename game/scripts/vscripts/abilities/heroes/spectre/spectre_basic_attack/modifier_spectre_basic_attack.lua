@@ -24,14 +24,13 @@ function modifier_spectre_basic_attack:OnCreated( kv )
     self.damage_bonus_desolate = self:GetAbility():GetSpecialValueFor("damage_bonus_desolate")
     self.damage_bonus_charged = self:GetAbility():GetSpecialValueFor("damage_bonus_charged")
     self.heal_desolate = self:GetAbility():GetSpecialValueFor("heal_desolate")
-
     self.charge_cooldown = self:GetAbility():GetSpecialValueFor("charge_cooldown")
-    
     self.max_charges = 1
 
     if IsServer() then
 	    self.attack_speed_bonus = 0.2 + self:GetCaster():GetAttackAnimationPoint()--self:GetAbility():GetSpecialValueFor("attack_speed_bonus")
 
+        GameMode:InitializeCooldown( self:GetParent(), self:GetName() )
 		self:SetStackCount( self.max_charges )
 		self:CalculateCharge()
     end
@@ -46,12 +45,12 @@ function modifier_spectre_basic_attack:OnIntervalThink()
 end
 
 function modifier_spectre_basic_attack:CalculateCharge()
-	if self:GetStackCount() == self.max_charges then
+    if self:GetStackCount() == self.max_charges then
 		-- stop charging
-		self:SetDuration( -1, false )
+		self:SetDuration( -1, true )
 		self:StartIntervalThink( -1 )
         self:PlayEffectsCharged()
-        self:PlayEffects_b()
+        self:PlayEffectsWeapon()
     elseif self:GetStackCount() > self.max_charges then
 		-- stop charging
 		self:SetStackCount( self.max_charges )
@@ -64,7 +63,7 @@ function modifier_spectre_basic_attack:CalculateCharge()
 			local charge_time = self.charge_cooldown
 			self:StartIntervalThink( charge_time )
 			self:SetDuration( charge_time, true )
-            self:StopEffects_b()
+            self:StopEffectsWeapon()
 		end
 	end
 end
@@ -115,7 +114,7 @@ function modifier_spectre_basic_attack:OnAttackLanded( params )
     
             ApplyDamage( damage )
             params.attacker:Heal( self.heal_desolate, params.attacker )
-            self:PlayEffects_c()
+            self:PlayEffectsLifeSteal()
         end
 	end
 end
@@ -142,7 +141,7 @@ function modifier_spectre_basic_attack:PlayEffectsCharged()
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-function modifier_spectre_basic_attack:PlayEffects_b()
+function modifier_spectre_basic_attack:PlayEffectsWeapon()
     if IsServer() then
         -- Get Resources
         local caster = self:GetParent()
@@ -176,7 +175,7 @@ function modifier_spectre_basic_attack:PlayEffects_b()
     end
 end
 
-function modifier_spectre_basic_attack:PlayEffects_c( )
+function modifier_spectre_basic_attack:PlayEffectsLifeSteal( )
 	-- Create Particles
 	local particle_cast = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
@@ -184,7 +183,7 @@ function modifier_spectre_basic_attack:PlayEffects_c( )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-function modifier_spectre_basic_attack:StopEffects_b()
+function modifier_spectre_basic_attack:StopEffectsWeapon()
     if IsServer() then
         ParticleManager:DestroyParticle( self.effect_cast, false )
         ParticleManager:ReleaseParticleIndex( self.effect_cast )

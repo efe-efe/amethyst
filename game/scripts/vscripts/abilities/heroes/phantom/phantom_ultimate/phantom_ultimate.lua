@@ -1,7 +1,11 @@
 phantom_ultimate = class({})
 
 function phantom_ultimate:OnSpellStart()
-	EmitGlobalSound("phantom_assassin_phass_ability_coupdegrace_03")
+	self:PlayEffectsOnCastPoint()
+end
+
+function phantom_ultimate:OnStopPseudoCastPoint()
+	self:StopEffectsOnCastPoint()
 end
 
 
@@ -20,7 +24,7 @@ function phantom_ultimate:OnCastPointEnd()
 	local projectile_start_radius = 70
 	local projectile_end_radius = 100
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-	local projectile_speed = 4500
+	local projectile_speed = 4000
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -63,6 +67,12 @@ function phantom_ultimate:OnCastPointEnd()
 	}
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
+	StartAnimation(caster, {
+		duration = 0.2, 
+		activity = ACT_DOTA_ATTACK_EVENT, 
+		rate = 3.0,
+	})
+	self:StopEffectsOnCastPoint()
 end
 
 -- On projectile finish
@@ -99,6 +109,27 @@ function phantom_ultimate:PlayEffectsOnCast( caster )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
+function phantom_ultimate:PlayEffectsOnCastPoint()
+	EmitGlobalSound("phantom_assassin_phass_ability_coupdegrace_03")
+
+	-- Cast Particles
+	local particle_cast = "particles/econ/items/monkey_king/arcana/water/mk_spring_arcana_water_channel_powertrails.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+	particle_cast = "particles/econ/items/wisp/wisp_relocate_channel_ti7.vpcf"
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetCaster():GetOrigin() )
+    ParticleManager:SetParticleControl( self.effect_cast, 1, self:GetCaster():GetOrigin() )
+	ParticleManager:SetParticleControl( self.effect_cast, 3, self:GetCaster():GetOrigin() )
+end
+
+function phantom_ultimate:StopEffectsOnCastPoint()
+	if self.effect_cast ~= nil then
+		ParticleManager:DestroyParticle(self.effect_cast, false)
+		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	end
+end
 
 if IsClient() then require("abilities") end
 Abilities.Initialize( 

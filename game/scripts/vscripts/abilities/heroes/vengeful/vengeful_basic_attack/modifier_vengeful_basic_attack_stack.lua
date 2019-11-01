@@ -26,7 +26,7 @@ function modifier_vengeful_basic_attack_stack:OnCreated( kv )
 		self.attack_speed_bonus = 0.2 + self:GetParent():GetAttackAnimationPoint()--self:GetAbility():GetSpecialValueFor("attack_speed_bonus")
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
-		self:PlayEffects()
+		GameMode:UpdateHeroStacks(self:GetParent(), 1)
 	end
 end
 
@@ -39,9 +39,12 @@ function modifier_vengeful_basic_attack_stack:OnRefresh( kv )
 			self:StopEffects()
 			self.effects_cast_weapon = {}
 			self:IncrementStackCount()
-			self:PlayEffects()
+
+			GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
+
 			if self:GetStackCount() == max_stack then
 				self:PlayEffectsCharged()
+				self:PlayEffects()
 			end
 		end
 	end
@@ -50,6 +53,7 @@ end
 function modifier_vengeful_basic_attack_stack:OnDestroy( kv )
 	if IsServer() then
 		self:StopEffects()
+		GameMode:UpdateHeroStacks(self:GetParent(), 0)
 	end
 end
 
@@ -96,17 +100,9 @@ function modifier_vengeful_basic_attack_stack:PlayEffectsCharged()
 end
 
 function modifier_vengeful_basic_attack_stack:PlayEffects()
-	local caster = self:GetParent()
-
-    local particle_cast = "particles/units/heroes/hero_abaddon/abaddon_curse_counter_stack.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_OVERHEAD_FOLLOW, caster )
-	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(0, self:GetStackCount(), 0) )
-	
-	if self:GetStackCount() == 3 then
-		self:CreateGlow(0)
-		self:CreateGlow(1)
-		self:CreateGlow(2)
-	end
+	self:CreateGlow(0)
+	self:CreateGlow(1)
+	self:CreateGlow(2)
 end
 
 function modifier_vengeful_basic_attack_stack:CreateGlow(index)

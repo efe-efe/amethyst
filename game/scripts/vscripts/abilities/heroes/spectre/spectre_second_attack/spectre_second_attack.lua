@@ -22,7 +22,6 @@ function spectre_second_attack:OnCastPointEnd()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
-		EffectName = 			"particles/mod_units/heroes/hero_bane/bane_projectile.vpcf",
 		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius =			self:GetSpecialValueFor("hitbox"),
@@ -48,6 +47,16 @@ function spectre_second_attack:OnCastPointEnd()
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
+		end,
+		OnThinkBegin = function(_self)
+			-- Create Particles
+			local effect_cast = ParticleManager:CreateParticle( "particles/units/heroes/hero_grimstroke/grimstroke_cast_soulchain.vpcf", PATTACH_WORLDORIGIN, nil )
+			ParticleManager:SetParticleControl( effect_cast, 0, _self.currentPosition )
+			ParticleManager:SetParticleControl( effect_cast, 1, _self.currentPosition )
+			ParticleManager:SetParticleControl( effect_cast, 2, _self.currentPosition )
+			ParticleManager:SetParticleControl( effect_cast, 60, Vector(155, 7, 229) )
+			ParticleManager:SetParticleControl( effect_cast, 61, Vector(1, 0, 0) )
+			ParticleManager:ReleaseParticleIndex( effect_cast )
 		end,
 	}
 
@@ -83,17 +92,19 @@ function spectre_second_attack:PlayEffectsOnFinish( pos )
 	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
 
 	-- Create Particles
-	local particle_cast_a = "particles/econ/items/death_prophet/death_prophet_ti9/death_prophet_silence_ti9_ground_smoke.vpcf"
+	local particle_cast_a = "particles/units/heroes/hero_arc_warden/arc_warden_wraith_cast.vpcf"
 	local particle_cast_b = "particles/units/heroes/hero_bane/bane_projectile_explosion.vpcf"
 	
 	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN, caster )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN, caster )
+	--local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN, caster )
 	
 	ParticleManager:SetParticleControl( effect_cast_a, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast_b, 0, pos )
+	ParticleManager:SetParticleControl( effect_cast_a, 1, pos )
+	ParticleManager:SetParticleControl( effect_cast_a, 2, pos )
+	--ParticleManager:SetParticleControl( effect_cast_b, 0, pos )
 
 	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	--ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
 
 function spectre_second_attack:PlayEffectsOnCast()

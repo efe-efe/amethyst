@@ -15,7 +15,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"9" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"8" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"120" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"6" }

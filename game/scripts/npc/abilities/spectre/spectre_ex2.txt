@@ -17,7 +17,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"5" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"60" }

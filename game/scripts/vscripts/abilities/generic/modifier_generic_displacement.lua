@@ -67,6 +67,8 @@ function modifier_generic_displacement:OnDestroy( params )
 	if IsServer() then
 		GameRules.EndAnimation(self:GetParent())
 		self:GetParent():InterruptMotionControllers( true )
+		FindClearSpaceForUnit( self:GetParent(), self:GetParent():GetOrigin() , true )
+
 
 		if self:GetAbility().OnDisplacementEnd then
 			self:GetAbility():OnDisplacementEnd()
@@ -151,7 +153,7 @@ function modifier_generic_displacement:CheckState()
 		[MODIFIER_STATE_ROOTED] = true,
 		[MODIFIER_STATE_COMMAND_RESTRICTED] = self.restricted,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
-        [MODIFIER_STATE_NO_HEALTH_BAR] = self.i_frame,
+        --[MODIFIER_STATE_NO_HEALTH_BAR] = self.i_frame,
 		[MODIFIER_STATE_INVULNERABLE] = self.i_frame,
 		[MODIFIER_STATE_OUT_OF_GAME] = self.i_frame,
 	}

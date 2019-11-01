@@ -2,6 +2,10 @@ function CDOTA_BaseNPC:IsMiddleOrb()
     return self:Attribute_GetIntValue("middle_orb", 0) == 1 and true or false
 end
 
+function CDOTA_BaseNPC:IsWall()
+    return self:Attribute_GetIntValue("wall", 0) == 1 and true or false
+end
+
 function CDOTA_BaseNPC:GetLastAbility()
 	return self.last_spell
 end
@@ -12,7 +16,7 @@ end
 
 
 function CDOTA_BaseNPC:GiveManaPercent( percentage, source )
-    if source ~= nil and source:IsMiddleOrb() then
+    if source ~= nil and (source:IsMiddleOrb() or source:IsWall()) then
         return
     end
 

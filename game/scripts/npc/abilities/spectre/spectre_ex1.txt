@@ -13,12 +13,12 @@
 		"AbilityCastPoint"				"0.4"
 		"AbilityCooldown"				"7.0"
 		"AbilityManaCost"				"25"
-		"AbilityDamage"					"10"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectiles_count"			"3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectiles_count"			"3" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
 		}
 	}
 

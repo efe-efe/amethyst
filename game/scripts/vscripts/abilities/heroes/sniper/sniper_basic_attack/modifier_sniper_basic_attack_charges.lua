@@ -33,7 +33,8 @@ function modifier_sniper_basic_attack_charges:OnCreated( kv )
         self.max_charges = self:GetAbility():GetSpecialValueFor("max_charges")
         self.replenish_time = self:GetAbility():GetSpecialValueFor("replenish_time")
 
-        self:SetStackCount(self.max_charges)
+		self:SetStackCount(self.max_charges)
+		GameMode:InitializeHeroCharges(self:GetParent(), self:GetStackCount())
     end
 end
 
@@ -41,6 +42,7 @@ end
 -- Interval Effects
 function modifier_sniper_basic_attack_charges:OnIntervalThink()
 	self:SetStackCount(self.max_charges)
+	GameMode:UpdateHeroCharges(self:GetParent(), self:GetStackCount())
 	self:StartIntervalThink(-1)
 end
 
@@ -61,4 +63,5 @@ function modifier_sniper_basic_attack_charges:CalculateCharge()
 			self:GetAbility():StartCooldown( self:GetRemainingTime() )
 		end
 	end
+	GameMode:UpdateHeroCharges(self:GetParent(), self:GetStackCount())
 end

@@ -6,16 +6,16 @@ LinkLuaModifier("modifier_death_zone_damage", "modifiers/general/modifier_death_
 function modifier_death_zone:OnCreated( kv )
     self.max_radius = 8000--self:GetAbility():GetSpecialValueFor( "radius" )
     self.radius = self.max_radius
-    self.min_radius = 600
+    self.min_radius = 1
     self.initialized = false
     self.effects = {}
     self.counter = 0
+    self.counter_seconds = 0
+    self.reduction_ratio = 15
 
     if IsServer() then
         -- Start Interval
-        GameRules:SendCustomMessage("The <b><font color='blue'>Death zone</font></b> has initiated, don't get close to the edges!", 0, 0)
         self:StartIntervalThink(0.1)      
-
         self:PlayEffectsOnCreated()
     end
 end
@@ -30,6 +30,24 @@ end
 --------------------------------------------------------------------------------
 --On think
 function modifier_death_zone:OnIntervalThink()
+    self.counter_seconds = self.counter_seconds + 1
+
+    if self.counter_seconds == 300 then
+        self.reduction_ratio = 4
+    end
+
+    if self.counter_seconds == 900 then
+        self.reduction_ratio = 2
+    end
+
+    if self.counter_seconds == 1100 then
+        self.reduction_ratio = 0
+    end
+
+    if self.counter_seconds == 1250 then
+        self.reduction_ratio = 1
+    end
+
     local all_units = FindUnitsInRadius(
         DOTA_TEAM_NOTEAM,	-- int, your team number
         self:GetParent():GetOrigin(),	-- point, center point
@@ -58,13 +76,16 @@ function modifier_death_zone:OnIntervalThink()
         local continue = true
         for _,exclude in pairs(not_affected) do
             if exclude == unit then
+                SafeDestroyModifier("modifier_death_zone_damage", unit)
                 continue = false
                 break
             end
         end
 
         if continue then
-            unit:AddNewModifier(unit, nil, "modifier_death_zone_damage", { duration = 0.3 })
+            if not unit:HasModifier("modifier_death_zone_damage") then
+                unit:AddNewModifier(unit, nil, "modifier_death_zone_damage", {})
+            end
         end
     end
     
@@ -75,7 +96,7 @@ function modifier_death_zone:OnIntervalThink()
         self.counter = 0
     end
 
-    local new_radius = self.radius - 15
+    local new_radius = self.radius - self.reduction_ratio
     if new_radius > self.min_radius then
         self.radius = new_radius
     end

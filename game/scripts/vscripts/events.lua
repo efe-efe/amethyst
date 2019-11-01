@@ -32,9 +32,11 @@ function GameMode:OnGameInProgress()
     self.health_orbs_ent = Entities:FindAllByName("health_orb")
     self.mana_orbs_ent = Entities:FindAllByName("mana_orb")
     self.middle_orbs_ent = Entities:FindAllByName("orb_spawn")
+    self.walls_ents = Entities:FindAllByName("wall_spawn")
     self.orbs = {} -- Created orbs on the map
     self.orb_timers_ent = {}
     self.effect_cast_arrows = {}
+    self.walls = {} -- Created walls on the map
 
     for i = 1, 5 do
         local orb_name = "orb_timer" .. tostring(i)
@@ -43,7 +45,8 @@ function GameMode:OnGameInProgress()
     
     self.orb_timers = {}
     self:CreateAllOrbs()
-
+    self:CreateWalls()
+    
     self.scheduled_middle_orb_index = RandomInt(1, 3)
     self:CreateMiddleOrb( self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
     self:PlayEffectsArrow()
@@ -119,14 +122,18 @@ function GameMode:OnHeroInGame(keys)
                     heroes = {},
                     teamId = team,
                 }
-                
-                --Update GUI
-                local score = { winnerId = team, wins = 0 }
-                CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
             end
 
             self.teams[team].players[playerID] = playerOwner
             self.teams[team].heroes[keys.entindex] = npc -- Save the heroe, in case the player is not connected
+
+            local data = {
+                teamID = team,
+                playerID = playerID,
+                heroIndex = keys.entindex,
+                heroName = npc:GetName()
+            }
+            CustomGameEventManager:Send_ServerToAllClients( "add_player", data )
         end
 
         -------------------------------
@@ -138,6 +145,8 @@ function GameMode:OnHeroInGame(keys)
 
         npc:SetHealth(npc:GetMaxHealth())
         npc.iTreshold = self.iMaxTreshold
+        self:UpdateHeroHealthBar( npc )
+        self:UpdateHeroManaBar( npc )
         --local health_bar = "(" .. npc.iTreshold .. "/" .. self.iMaxTreshold ..")"
         --npc:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end)
@@ -167,7 +176,6 @@ function GameMode:OnEntityKilled( keys )
         self:PlayEffectsArrow()
 
         if not self:IsDeathZoneCreated() then
-            CustomGameEventManager:Send_ServerToAllClients( "middle_orb_scheduled", { spawn_location = self.middle_orbs_ent[self.scheduled_middle_orb_index]:GetOrigin() } )
             self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
         end
     end
@@ -185,12 +193,6 @@ function GameMode:OnEntityKilled( keys )
                 local winner = self:FindWinner()
                 if winner ~= false then 
                     winner.wins = winner.wins + 1
-
-                    local score = { winnerId = winner.teamId, wins = winner.wins }
-
-                    --Update score
-                    CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
-
                     self:EndRound(3.0)
                 end
             end
@@ -379,6 +381,7 @@ function GameMode:EndRound( delay )
         self:DestroyMiddleOrb()
         self:DestroyDeathZone()
         self:DestroyAllOrbs()
+        --self:DestroyAllWalls()
 
         self.scheduled_middle_orb_index = RandomInt(1, 3)
         self:CreateMiddleOrb(self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
@@ -386,6 +389,7 @@ function GameMode:EndRound( delay )
         self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
         
         self:CreateAllOrbs()
+        --self:CreateWalls()
 
         for _,actual_team in pairs(self.teams) do
             
@@ -412,6 +416,15 @@ function GameMode:EndRound( delay )
         end
         self.countdownEnabled = true
         self.lock_round = false
+        
+        local score = { 
+            good_guys = self.teams[DOTA_TEAM_GOODGUYS].wins,
+            bad_guys = self.teams[DOTA_TEAM_BADGUYS].wins,
+        }
+
+        --Update score
+        CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
+
         nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
     end)
 end
@@ -467,6 +480,30 @@ function GameMode:DestroyDeathZone()
             self.modifier_death_zone:Destroy()
         end
     end
+end
+
+--------------------------------------------------------------------------------
+-- Walls Orb spawner
+--------------------------------------------------------------------------------
+function GameMode:CreateWalls()
+    print("[AMETHYST] Creating Walls")
+    for _,wall_ent in pairs(self.walls_ents) do
+        self:CreateWall(wall_ent)
+    end
+end
+
+function GameMode:CreateWall( ent )
+    self.walls[ent] = CreateUnitByName(
+        "npc_dota_creature_wall", --szUnitName
+        ent:GetOrigin(), --vLocation
+        true, --bFindClearSpace
+        nil, --hNPCOwner
+        nil, --hUnitOwner
+        DOTA_TEAM_NOTEAM
+    )
+    self.walls[ent]:Attribute_SetIntValue("wall", 1)
+    self.walls[ent]:SetHullRadius(120)
+    self.walls[ent]:AddNewModifier(self.walls[ent], nil, "wall_base", {})
 end
 
 --------------------------------------------------------------------------------
@@ -571,6 +608,15 @@ function GameMode:DestroyAllOrbs()
         UTIL_Remove( orb.item ) -- otherwise it pollutes the player inventory
         if orb.drop ~= nil and not orb.drop:IsNull() then
             UTIL_Remove( orb.drop )
+        end
+    end
+end
+
+function GameMode:DestroyAllWalls()
+    for _,wall in pairs(self.walls) do
+        PrintTable(wall)
+        if wall:IsAlive() then
+            wall:Kill(nil, wall)
         end
     end
 end

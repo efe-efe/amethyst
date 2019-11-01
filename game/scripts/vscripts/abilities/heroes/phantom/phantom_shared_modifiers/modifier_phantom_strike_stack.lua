@@ -25,7 +25,7 @@ function modifier_phantom_strike_stack:OnCreated( kv )
 	if IsServer() then
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
-		self:PlayEffects()
+		GameMode:UpdateHeroStacks(self:GetParent(), 1)
 	end
 end
 
@@ -39,6 +39,9 @@ function modifier_phantom_strike_stack:OnRefresh( kv )
 			self.effects_cast_weapon = {}
 			self:IncrementStackCount()
 			self:PlayEffects()
+
+			GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
+
 			if self:GetStackCount() == max_stack then
 				self:PlayEffectsCharged()
 			end
@@ -49,6 +52,7 @@ end
 function modifier_phantom_strike_stack:OnDestroy( kv )
 	if IsServer() then
 		self:StopEffects()
+		GameMode:UpdateHeroStacks(self:GetParent(), 0)
 	end
 end
 
@@ -86,12 +90,6 @@ function modifier_phantom_strike_stack:PlayEffectsCharged()
 end
 
 function modifier_phantom_strike_stack:PlayEffects()
-	local caster = self:GetParent()
-
-    local particle_cast = "particles/units/heroes/hero_abaddon/abaddon_curse_counter_stack.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_OVERHEAD_FOLLOW, caster )
-	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(0, self:GetStackCount(), 0) )
-	
 	if self:GetStackCount() == 3 then
 		self:CreateGlow(0)
 		self:CreateGlow(1)
@@ -132,11 +130,6 @@ function modifier_phantom_strike_stack:CreateGlow(index)
 end
 
 function modifier_phantom_strike_stack:StopEffects()
-	if self.effect_cast ~= nil then
-		ParticleManager:DestroyParticle( self.effect_cast, false )
-		ParticleManager:ReleaseParticleIndex( self.effect_cast )
-	end
-
 	for _,efx in pairs(self.effects_cast_weapon) do
 		if efx ~= nil then
 			ParticleManager:DestroyParticle( efx, false )

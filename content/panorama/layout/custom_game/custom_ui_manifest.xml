@@ -7,17 +7,16 @@
         <include src="file://{resources}/scripts/custom_game/camera.js" />
         <include src="file://{resources}/scripts/custom_game/mouse.js" />
         <include src="file://{resources}/scripts/custom_game/hero_base.js" />
-        <include src="file://{resources}/scripts/custom_game/middle_orb.js" />
 	</scripts>
 		
 	<Panel>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/tutorial.xml"/>
-		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/scoreboard.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/hero_bar.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/progress_bars.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/death_zone.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/top_bar.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/heroes_status.xml"/>
 
-		<CustomUIElement type="HudTopBar"			layoutfile="file://{resources}/layout/custom_game/multiteam_top_scoreboard.xml" />
 		<CustomUIElement type="GameSetup"			layoutfile="file://{resources}/layout/custom_game/team_select.xml" />
 		<CustomUIElement type="FlyoutScoreboard"	layoutfile="file://{resources}/layout/custom_game/multiteam_flyout_scoreboard.xml" />
 		<CustomUIElement type="HeroSelection" 		layoutfile="file://{resources}/layout/custom_game/multiteam_hero_select_overlay.xml" />

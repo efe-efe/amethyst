@@ -4,11 +4,164 @@
     height: 100%;
 }
 
-.HeroBar #HealthTreshold
-{
-    border: 1px solid black;
-    height: 12px;
-    width: 110px;
-    background-color: white;
+#HeroBarsContainer .HeroBar{
+    /*margin-left: 18px;*/
+    height: 30px;
+    width: 160px;
+    flow-children: right;
+    transform: translate3d(-1px, -20px, 0px);
+}
+
+#HeroBarsContainer .HeroBar .Left{
+    width: 14%;
+    margin-right: 2%;
+    height: 100%;
+    flow-children: down;
+}
+
+#HeroBarsContainer .HeroBar .Middle{
+    width: 68%;
+    margin-right: 2%;
+    height: 100%;
+    flow-children: down;
+}
+
+#HeroBarsContainer .HeroBar .Right{
+    width: 14%;
+    height: 100%;
+}
+
+#HeroBarsContainer .HeroBar .Left .HeroBarCharges{
+    width: 100%;
+    height: 80%;
+    opacity: 0.0;
+    
+    flow-children: right;
+}
+
+#HeroBarsContainer .HeroBar .Right .HeroBarStacks{
+    width: 100%;
+    height: 80%;
+
+    flow-children: right;
+}
+
+#HeroBarsContainer .HeroBar .Right .HeroBarCooldown{
+    width: 100%;
+    height: 80%;
+
+    opacity: 0.0;
+    padding: 4px 3px;
+}
+
+#HeroBarsContainer .HeroBar .Left .HeroBarCharges .HeroBarChargeText{
+    width: 25%;
+    height: 100%;
+    margin: 0px;
+
     align: center center;
+    text-align: center;
+    font-size: 18px;
+    color: rgb(221, 221, 221);
+
+    text-shadow:2px 2px 2px #000;
+}
+
+#HeroBarsContainer .HeroBar .Left .HeroBarCharges .HeroBarChargeText.Number{
+    font-size: 16px;
+    width: 50%;
+}
+
+#HeroBarsContainer .HeroBar .Right .HeroBarStacks .HeroBarStack{
+    width: 30%;
+    margin-right: 5%;
+    height: 100%;
+    opacity: 0.0;
+    
+    transition-property: opacity;
+    transition-duration: 0.1s;
+    border: 1px solid rgb(36, 42, 53);
+    background-color: gradient( linear, 0% 0%, 0% 100%, from( rgba(201, 81, 253, 1.0) ), to( rgba(250, 117, 245, 1.0) ) );
+}
+
+
+#HeroBarsContainer .HeroBar .Right .HeroBarCooldown .HeroBarCooldownCircleBackground{
+    width: 100%;
+    height: 100%;
+
+    border: 1px solid black;
+    border-radius: 50%;
+   
+	box-shadow:0 0 5px rgba(0, 0, 0, 1.0);
+    background-color: rgba(36, 42, 53, 0.8);
+}
+
+#HeroBarsContainer .HeroBar .Right .HeroBarCooldown .HeroBarCooldownCircle{
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+
+    border: 1px solid rgb(0, 0, 0);
+    box-shadow: inset 0 0 10px #000000;
+    background-color: gradient( linear, 0% 0%, 0% 100%, from( rgba(201, 81, 253, 1.0) ), to( rgba(250, 117, 245, 1.0) ) );  
+    clip: radial( 50% 50%, 0deg, 90deg );
+}
+
+
+#HeroBarsContainer .HeroBar .Middle .HeroBarHealth{
+    width: 100%;
+    height: 50%;
+    margin-bottom: 7%;
+
+    background-color: rgba(36, 42, 53, 0.9);
+    border: 1px solid rgb(36, 42, 53);
+}
+
+#HeroBarsContainer .HeroBar .Middle .HeroBarMana{
+    width: 100%;
+    height: 20%;
+    margin-bottom: 7%;
+
+    border: 1px solid rgb(36, 42, 53);
+    background-color: rgba(36, 42, 53, 0.7);
+}
+
+#HeroBarsContainer .HeroBar .Middle .HeroBarCastPoint{
+    width: 100%;
+    height: 26%;
+    opacity: 0.0;
+
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    background-color: rgba(36, 42, 53, 0.9);
+    border: 1px solid rgb(36, 42, 53);
+}
+
+#HeroBarsContainer .HeroBar .Middle .HeroBarHealth .HeroBarHealthInner{
+    height: 100%;
+    width: 100%;
+}
+
+#HeroBarsContainer .HeroBar .Middle .HeroBarHealth .HeroBarHealthInnerBack{
+    width: 100%;
+    height: 100%;
+    background-color: #FAFAFA;
+    transition-property: width;
+    transition-duration: 0.5s;
+}
+
+#HeroBarsContainer .HeroBar .Middle .HeroBarManaInner{
+    height: 100%;
+    width: 0%;
+
+    background-color: gradient( linear, 0% 0%, 100% 0%, from( rgba(27, 113, 210, 1.0) ), to( rgba(120, 156, 190, 1.0) ) );
+}
+
+
+#HeroBarsContainer .HeroBar .Middle .HeroBarCastPoint .HeroBarCastPointInner{
+    width: 100%;
+    height: 100%;
+
+    background-color: #FAFAFA;
 }

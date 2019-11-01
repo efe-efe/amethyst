@@ -7,13 +7,44 @@
         <include src="file://{resources}/styles/custom_game/hero_bar.css" />
     </styles>
     <snippets>
-        <snippet name="HealthBar">
+    
+        <snippet name="HeroBar">
             <Panel class="HeroBar" hittest="false" hittestchildren="false">
-                <Panel id="HealthTreshold"/>
+                <Panel class="Left" hittest="false" hittestchildren="false">
+                    <Panel class="HeroBarCharges" hittest="false" hittestchildren="false" >
+                        <Label class="HeroBarChargeText" html="true" text="(" />
+                        <Label class="HeroBarChargeText Number" html="true" text="0" />
+                        <Label class="HeroBarChargeText" html="true" text=")" />
+                    </Panel>
+                </Panel>
+                <Panel class="Middle" hittest="false" hittestchildren="false">
+                    <Panel class="HeroBarHealth" hittest="false" hittestchildren="false">
+                        <Panel class="HeroBarHealthInnerBack" hittest="false" hittestchildren="false"/>
+                        <Panel class="HeroBarHealthInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                    <Panel class="HeroBarMana" hittest="false" hittestchildren="false">
+                        <Panel class="HeroBarManaInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                    <Panel class="HeroBarCastPoint" hittest="false" hittestchildren="false">
+                        <Panel class="HeroBarCastPointInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                </Panel>
+                <Panel class="Right" hittest="false" hittestchildren="false">
+                    <Panel class="HeroBarStacks" hittest="false" hittestchildren="false" >
+                        <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
+                        <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
+                        <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
+                    </Panel>
+                    <Panel class="HeroBarCooldown" hittest="false" hittestchildren="false" >
+                        <Panel class="HeroBarCooldownCircleBackground" hittest="false" hittestchildren="false" />
+                        <Panel class="HeroBarCooldownCircle" hittest="false" hittestchildren="false" />
+                    </Panel>
+                </Panel>
             </Panel>
         </snippet>
+
     </snippets>
     <Panel class="MainPanel" hittest="false">
-        <Panel id="HeroBarsContainer" hittest="false" class="MainPanel"/>
+        <Panel id="HeroBarsContainer" hittest="false" class="MainPanel" />
     </Panel>
 </root>

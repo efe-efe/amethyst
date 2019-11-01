@@ -18,7 +18,7 @@ function Precache( context )
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_oracle.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_silencer.vsndevts", context)
-	
+	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_furion.vsndevts", context)
 	PrecacheResource( "particle", "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", context )
 	PrecacheResource( "particle", "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf", context )
 	PrecacheResource( "particle", "particles/base_attacks/ranged_badguy_persistent_glow_green.vpcf", context )
@@ -105,7 +105,8 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_middle_orb_exiled", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", LUA_MODIFIER_MOTION_NONE )
-    
+    LinkLuaModifier("wall_base", "modifiers/general/wall_base.lua", LUA_MODIFIER_MOTION_NONE )
+
     LinkLuaModifier("modifier_generic_charges_one", "abilities/generic/charges/modifier_generic_charges_one", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_charges_two", "abilities/generic/charges/modifier_generic_charges_two", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )

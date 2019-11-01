@@ -29,6 +29,12 @@ function modifier_sniper_counter:OnCreated( kv )
 	end
 end
 
+function modifier_sniper_counter:OnDestroy( kv )
+	if IsServer() then 
+		self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
+	end
+end
+
 --------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_sniper_counter:DeclareFunctions()

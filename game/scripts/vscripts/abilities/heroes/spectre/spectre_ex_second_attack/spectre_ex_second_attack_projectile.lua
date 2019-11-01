@@ -9,8 +9,7 @@ function spectre_ex_second_attack_projectile:OnCastPointEnd()
 	local ability = caster:FindAbilityByName("spectre_ex_second_attack")
 	
 	local hitbox = self:GetSpecialValueFor("hitbox")
-	local damage = self:GetSpecialValueFor("ability_damage")
-
+	local damage = ability:GetSpecialValueFor("ability_damage")
 	local heal = ability:GetSpecialValueFor("heal")
 
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()

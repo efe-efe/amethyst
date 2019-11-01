@@ -1,6 +1,6 @@
 Label
 {
-    font-size: 17px;
+    font-size: 20px;
     color: #FAFAFA;
     vertical-align: top;
 }
@@ -8,9 +8,9 @@ Label
 .AmethystScore
 {
 	margin-top: 164px;
-    width:10%;
+    width: 15%;
     flow-children: down;
-    background-color: gradient( linear, 0% 0%, 100% 0%, from( rgba(36, 42, 53, 0.644) ), to( #00000010 ) );
+    background-color: gradient( linear, 0% 0%, 100% 0%, from( rgba(36, 42, 53, 0.644) ), to( rgba(36, 42, 53, 0.0) ) );
 }
  
 #Title
@@ -21,7 +21,7 @@ Label
 #TitleName
 {
     color: #cccccc;
-    font-size: 14px;
+    font-size: 20px;
     margin-left: 8px;
     margin-top: 8px;
     text-transform: uppercase;

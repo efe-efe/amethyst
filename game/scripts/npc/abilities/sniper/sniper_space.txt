@@ -10,7 +10,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"800"
-		"AbilityCooldown"				"8.0"
+		"AbilityCooldown"				"9.0"
 
 		"precache"
 		{

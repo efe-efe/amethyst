@@ -29,6 +29,7 @@ function modifier_death_zone_damage:OnIntervalThink()
     }
     ApplyDamage( damage_table )
     self:PlayEffectsOnTarget(self:GetParent())
+    self:Destroy()
 end
 
 

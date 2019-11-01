@@ -53,6 +53,8 @@ function modifier_cast_point_new:OnCreated(params)
 			})
 		end
 
+		GameMode:InitializeCastPoint( self.parent, self:GetDuration(), self:GetName() )
+
 		self:StartCast()
 		self:StartIntervalThink( 0.01 )
 	end
@@ -140,6 +142,7 @@ function modifier_cast_point_new:StopCast()
 		if self.canceled_by_player == true then
 			if not self.ability:IsBasicAttack() then
 				self.ability:StartCooldown(COOLDOWN_BY_CANCEL)
+				GameMode:StopCastPoint( self.parent )
 			end
 		end
 		SafeDestroyModifier("modifier_target_indicator", self.parent, self.parent)

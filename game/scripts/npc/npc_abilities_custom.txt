@@ -1380,6 +1380,31 @@
 			"03"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.2" }
 		}
 	}
+	
+	"builder_create_block"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/builder/builder_create_block/builder_create_block"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"sky_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"0"
+		"AbilityCastPoint"				"0.0"
+	}
+
+	"builder_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/builder/builder_mobility/builder_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"sky_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+	}
+	
 
 
 
