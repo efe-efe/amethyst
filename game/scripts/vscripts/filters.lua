@@ -91,9 +91,8 @@ function GameMode:HealingFilter(keys)
         --print("[HEAL] " .. healing_target:GetName() .. " = " .. healing_target.iTreshold)
     	SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, healing_target, keys.heal, nil )
         
-        for i = 0, keys.heal - 1 do
-            healing_target:FindModifierByName("modifier_treshold"):IncrementStackCount()
-        end
+        local treshold_modifier = healing_target:FindModifierByName("modifier_treshold")
+        treshold_modifier:SetStackCount(treshold_modifier:GetStackCount() + keys.heal)
 
         --local health_bar = "(" .. healing_target.iTreshold .. "/" .. self.iMaxTreshold ..")"
         --healing_target:SetCustomHealthLabel(health_bar, 255, 255, 255)
@@ -226,14 +225,26 @@ end
 
 function GameMode:UpdateHeroHealthBar( hero )
     local potential_health = hero:GetHealth() + (self.iMaxTreshold - hero.iTreshold)
-    local treshold = 100 * potential_health/hero:GetMaxHealth()
-    local percentage = 100 * hero:GetHealth()/potential_health
+    --local treshold = 100 * potential_health/hero:GetMaxHealth()
+    --local percentage = 100 * hero:GetHealth()/potential_health
+    local shield_modifier = hero:FindModifierByName("modifier_shield")
+    local shield = 0
+
+    if shield_modifier~=nil then
+        if not shield_modifier:IsNull() then
+            shield = shield_modifier:GetStackCount()
+        end
+    end
     
     local data = {
         teamID = hero:GetTeamNumber(),
         heroIndex = hero:GetEntityIndex(),
-        percentage = percentage,
-        treshold = treshold,
+        --percentage = percentage,
+        --treshold = treshold,
+        shield = shield,
+        current_health = hero:GetHealth(),
+        max_health = hero:GetMaxHealth(),
+        potential_health = potential_health,
     }
 
     CustomGameEventManager:Send_ServerToAllClients( "update_hero_health_bar", data )
@@ -293,12 +304,4 @@ function GameMode:InitializeCooldown( hero, modifierName )
         modifierName = modifierName,
     }
     CustomGameEventManager:Send_ServerToAllClients( "initialize_hero_cooldown", data )
-end
-
-function GameMode:StopCastPoint( hero )
-    local data = {
-        teamID = hero:GetTeamNumber(),
-        heroIndex = hero:GetEntityIndex()
-    }
-    CustomGameEventManager:Send_ServerToAllClients( "stop_cast_point", data )
 end

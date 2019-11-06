@@ -1,3 +1,17 @@
+var camera_distance = 0;
+var camera_distance_actual = 0;
+var camera_distance_lerp = 30;
+var camera_position_lerp = 0.15;
+var camera_position_lerp_fast = 0.05;
+
+function ChangeDistanceOffset(data){
+    camera_distance = data.offset;
+
+    if(data.lerp){
+        camera_distance_lerp = data.lerp;
+    }
+}
+
 function UpdatePosition()
 {
     var initialized = false;
@@ -23,6 +37,27 @@ function UpdatePosition()
         var hero_screen_y = Game.WorldToScreenY( hero_origin[0], hero_origin[1], hero_origin[2] );
         var mouse_position = GameUI.GetCursorPosition();
 
+        var sw = Game.GetScreenWidth();
+        var sh = Game.GetScreenHeight();
+        
+        camera_position_lerp = 0.15;
+        if( hero_screen_x < 0 ){
+            hero_screen_x = 0
+            camera_position_lerp = camera_position_lerp_fast
+        }
+        if( hero_screen_x > sw ){
+            hero_screen_x = sw
+            camera_position_lerp = camera_position_lerp_fast
+        }
+
+        if( hero_screen_y < 0 ){
+            hero_screen_y = 0
+            camera_position_lerp = camera_position_lerp_fast
+        }
+        if( hero_screen_y > sh ){
+            hero_screen_y = sh
+            camera_position_lerp = camera_position_lerp_fast
+        }
 
         var distance_x = (hero_screen_x - mouse_position[0]);
         var distance_y = (hero_screen_y - mouse_position[1]);
@@ -31,67 +66,23 @@ function UpdatePosition()
         var pos_y = hero_screen_y + distance_y*-1/2.5;
 
         var camera_position = Game.ScreenXYToWorld(pos_x, pos_y);
-        
-        GameUI.SetCameraTargetPosition( camera_position, 0.15 )
+
+        // Smooth camera distance changes
+        if ( camera_distance_actual < camera_distance ){
+            camera_distance_actual = camera_distance_actual + camera_distance_lerp;
+        } else if( camera_distance_actual > camera_distance ) {
+            camera_distance_actual = camera_distance_actual - camera_distance_lerp;
+        }
+
+        GameUI.SetCameraTargetPosition( camera_position, camera_position_lerp );
+        GameUI.SetCameraLookAtPositionHeightOffset( camera_distance_actual );
 
         $.Schedule( 0.01, tic );
     })();
 }
 
-//TODO: Make it UTIL
-function ArrayEquals(array1, array2) {
-    // if the other array is a falsy value, return
-    if (!array2)
-        return false;
-
-    // compare lengths - can save a lot of time 
-    if (array1.length != array2.length)
-        return false;
-
-    for (var i = 0, l=array1.length; i < l; i++) {
-        // Check if we have nested arrays
-        if (array1[i] instanceof Array && array2[i] instanceof Array) {
-            // recurse into the nested arrays
-            if (!array1[i].equals(array2[i]))
-                return false;       
-        }           
-        else if (array1[i] != array2[i]) { 
-            // Warning - two different object instances will never be equal: {x:20} != {x:20}
-            return false;   
-        }           
-    }       
-    return true;
-}
-
-//array1-array2
-function ArrayRest(array1, array2){
-    var rest = array1.map(function (num, idx) {
-        return num - array2[idx];
-    })
-
-    return rest;
-}
-
-//array1+array2
-function ArraySum(array1, array2){
-    var sum = array1.map(function (num, idx) {
-        return num + array2[idx];
-    })
-
-    return sum;
-}
-
-//array1+array2
-function ArrayMult(array1, factor){
-    var mult = array1.map(function (num) {
-        return num * factor;
-    })
-
-    return mult;
-}
-
 (function() {
-    $.Msg("Camera Loaded");
     UpdatePosition();
+    GameEvents.Subscribe( "change_distance_offset", ChangeDistanceOffset );
 })();
 

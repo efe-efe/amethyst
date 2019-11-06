@@ -2,16 +2,26 @@
 phantom_special_attack = class({})
 LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_phantom_special_attack_charges", "abilities/heroes/phantom/phantom_special_attack/modifier_phantom_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
+
+--------------------------------------------------------------------------------
+-- Passive Modifier
+function phantom_special_attack:GetIntrinsicModifierName()
+	return "modifier_phantom_special_attack_charges"
+end
+
+function phantom_special_attack:HasCharges()
+	return true
+end
 
 function phantom_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
-	local damage = self:GetAbilityDamage()
+	local damage = self:GetSpecialValueFor("ability_damage")
 
 	-- Extra data
 	local slow_duration = self:GetSpecialValueFor("slow_duration")
-	local crit_multiplier = self:GetSpecialValueFor("crit_multiplier")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local should_lifesteal = caster:HasModifier("modifier_phantom_ex_basic_attack")
 
@@ -33,8 +43,6 @@ function phantom_special_attack:OnCastPointEnd()
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
 		OnUnitHit = function(_self, unit) 
-			local damage = caster:GetAttackDamage() * crit_multiplier
-
 			local damage_table = {
 				victim = unit,
 				attacker = caster,

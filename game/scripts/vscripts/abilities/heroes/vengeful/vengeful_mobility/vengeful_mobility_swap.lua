@@ -34,26 +34,6 @@ function vengeful_mobility_swap:OnCastPointEnd()
     end
 end
 
-function vengeful_mobility_swap:OnSwapPress()
-    return false
-end
-
-function vengeful_mobility_swap:OnSwapRelease()
-    return false
-end
-
---[[
-function vengeful_mobility_swap:OnSwapRelease()
-	print("HERE")
-	self:GetCaster():SwapAbilities( 
-		"vengeful_mobility",
-		"vengeful_mobility_swap",
-		false,
-		true
-	)
-end
-]]
-
 function vengeful_mobility_swap:PlayEffectsOnCast( hTarget )
     local caster = self:GetCaster()
 	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_nether_swap.vpcf"

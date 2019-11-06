@@ -18,7 +18,7 @@ function tinker_extra:OnSpellStart(  )
 		rate = 1.0
 	})
 	self:PlayEffects()
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { duration = cast_point, no_target = 1 })
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { duration = cast_point, no_target = 1 })
 end
 
 --------------------------------------------------------------------------------

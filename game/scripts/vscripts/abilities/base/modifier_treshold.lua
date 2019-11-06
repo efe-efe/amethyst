@@ -26,18 +26,6 @@ end
 -- Initializations
 function modifier_treshold:OnCreated( kv )
     self.max_stack = kv.max_treshold
-
-	-- references
-	if IsServer() then
-        --[[ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-            style = "Treshold",
-            progressBarType = "stacks",
-            ignorePriority = 1,
-            maxStacks = self.max_stack,
-            reversedProgress = true,
-            persistOnDeath = true,
-        })]]
-	end
 end
 
 function modifier_treshold:OnStackCountChanged( old )
@@ -47,7 +35,7 @@ function modifier_treshold:OnStackCountChanged( old )
         end
 
         if self:GetStackCount() > self.max_stack then
-			self:SetStackCount(self.max_stacks)
+			self:SetStackCount(self.max_stack)
         end
 	end
 end

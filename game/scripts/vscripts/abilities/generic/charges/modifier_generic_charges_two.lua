@@ -76,7 +76,7 @@ function modifier_generic_charges_two:CalculateCharge()
 	if self:GetStackCount()>=self.max_charges then
 		-- stop charging
 		self:SetStackCount( self.max_charges )
-		self:SetDuration( -1, false )
+		self:SetDuration( -1, true )
 		self:StartIntervalThink( -1 )
 	else
 		-- if not charging

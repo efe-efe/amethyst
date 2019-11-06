@@ -138,7 +138,7 @@ function modifier_middle_orb_base_lua:PlayEffects_b( recipient )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 
 
-	effect_cast = ParticleManager:CreateParticle( "particles/econ/items/zeus/arcana_chariot/zeus_arcana_thundergods_wrath_start_bolt_parent.vpcf", PATTACH_ABSORIGIN_FOLLOW, recipient )
+	effect_cast = ParticleManager:CreateParticle( "particles/econ/items/crystal_maiden/crystal_maiden_maiden_of_icewrack/cm_arcana_pup_lvlup_godray.vpcf", PATTACH_ABSORIGIN_FOLLOW, recipient )
 	ParticleManager:SetParticleControl( effect_cast, 1, recipient:GetOrigin())
 	ParticleManager:SetParticleControl( effect_cast, 3, recipient:GetOrigin())
 	ParticleManager:ReleaseParticleIndex( effect_cast )

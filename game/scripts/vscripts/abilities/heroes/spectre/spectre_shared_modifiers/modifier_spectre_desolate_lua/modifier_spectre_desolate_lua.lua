@@ -15,12 +15,9 @@ end
 
 function modifier_spectre_desolate_lua:OnCreated()
 	if IsServer() then
-		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-			style = "Desolate",
-			text = "desolate",
-			progressBarType = "duration",
-			priority = 3,
-		})
+		self:GetParent():AddStatusBar({
+			label = "Desolate", modifier = self, priority = 2, 
+		}) 
 	end
 end
 

@@ -10,15 +10,15 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastPoint"				"0.4"
 		"AbilityCooldown"				"7.0"
 		"AbilityManaCost"				"25"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectiles_count"			"3" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectiles_count"			"3" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
 		}
 	}
 
@@ -33,7 +33,6 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastPoint"				"0.4"
 		"AbilityCastRange"				"1200"
 		"AbilityDamage"					"10"
 
@@ -46,8 +45,9 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 		}
 	}
 }

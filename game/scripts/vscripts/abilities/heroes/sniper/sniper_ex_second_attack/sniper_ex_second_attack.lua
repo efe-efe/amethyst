@@ -20,7 +20,7 @@ function sniper_ex_second_attack:OnCastPointEnd( pos )
 
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf",
-		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
+		vSpawnOrigin = origin + Vector(0,0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,

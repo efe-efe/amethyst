@@ -46,10 +46,9 @@ function phantom_second_attack:OnCastPointEnd()
 			if _self.Source == caster then
 				if stacks == 3 then
 					local mobility = caster:FindAbilityByName("phantom_mobility")
-					local modifier = caster:FindModifierByName("modifier_generic_charges_two")
+					local modifier = caster:FindModifierByName("modifier_phantom_mobility_charges")
 					modifier:IncrementStackCount()
 					modifier:CalculateCharge()
-					--caster:AddNewModifier(caster, mobility, "modifier_generic_charges_two", {})
 				end
 			end
 

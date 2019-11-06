@@ -23,7 +23,7 @@
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility_swap"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"vengefulspirit_nether_swap"
+		"AbilityTextureName"			"vengeful_mobility"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 	}
 
@@ -51,7 +51,7 @@
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility_swap"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"vengeful_mobility_swap_ultimate"
+		"AbilityTextureName"			"vengeful_mobility_ultimate"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 	}
 }

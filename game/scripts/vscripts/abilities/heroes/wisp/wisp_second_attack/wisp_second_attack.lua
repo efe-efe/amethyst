@@ -10,7 +10,7 @@ function wisp_second_attack:OnSpellStart()
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_cast_point",
+		"modifier_cast_point_old",
 		{ 
 			duration = cast_point, 
 			can_walk = 0,

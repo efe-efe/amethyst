@@ -20,7 +20,7 @@ function sniper_ex_mobility:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_cast_point", 
+		"modifier_cast_point_old", 
 		{ 
 			duration = cast_point,
             movement_speed = 50,

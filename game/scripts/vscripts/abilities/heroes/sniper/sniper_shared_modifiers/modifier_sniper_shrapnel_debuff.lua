@@ -21,11 +21,8 @@ function modifier_sniper_shrapnel_debuff:OnCreated( kv )
 	self.slow_pct = -self:GetAbility():GetSpecialValueFor("slow_pct")
 
 	if IsServer() then 
-		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-			style = "Generic",
-			text = "slow",
-			progressBarType = "duration",
-			priority = 3,
+		self:GetParent():AddStatusBar({
+			label = "Slow", modifier = self, priority = 2, 
 		})
 	end
 end

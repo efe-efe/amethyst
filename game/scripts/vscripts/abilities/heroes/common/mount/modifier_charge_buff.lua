@@ -20,12 +20,9 @@ function modifier_charge_buff:OnCreated( kv )
 	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor( "speed_buff_pct" )
 	
 	if IsServer() then
-		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-			style = "Generic",
-			text = "Haste",
-			progressBarType = "duration",
-			priority = 3,
-		})
+		self:GetParent():AddStatusBar({
+            label = "Haste", modifier = self, priority = 1, 
+        }) 
 	end
 end
 

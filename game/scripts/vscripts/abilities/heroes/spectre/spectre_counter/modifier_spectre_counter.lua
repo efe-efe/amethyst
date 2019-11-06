@@ -18,11 +18,8 @@ end
 -- Initializations
 function modifier_spectre_counter:OnCreated( kv )
 	if IsServer() then 
-		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-			style = "Generic",
-			text = "invisible",
-			progressBarType = "duration",
-			priority = 2,
+		self:GetParent():AddStatusBar({
+			label = "Invisible", modifier = self, priority = 3, 
 		})
 	end
 end

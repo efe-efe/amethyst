@@ -18,7 +18,7 @@ function wisp_ultimate:OnSpellStart()
 	caster:AddNewModifier(
 		caster,
 		self,
-		"modifier_cast_point",
+		"modifier_cast_point_old",
 		{ 
 			duration = cast_point, 
             can_walk = 0,
@@ -26,7 +26,7 @@ function wisp_ultimate:OnSpellStart()
 		}
 	)
 
-	ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+	ProgressBars:AddProgressBar(caster, "modifier_cast_point_old", {
 		style = "Ultimate",
 		text = "ultimate",
 		progressBarType = "duration",

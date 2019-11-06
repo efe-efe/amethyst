@@ -13,14 +13,13 @@ function vengeful_second_attack:OnCastPointEnd()
 
 	-- load data
     local mana_gain_pct = ability:GetSpecialValueFor("mana_gain_pct")
-	local link_duration = ability:GetSpecialValueFor("link_duration")
 	
 	-- Dynamic data
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	local projectile_speed = ability:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
-		EffectName = 			"particles/mod_units/heroes/hero_venge/vs_ti8_immortal_magic_missle.vpcf",
+		EffectName = 			"particles/vs_ti8_immortal_magic_missle_crimson.vpcf",
 		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = 			ability:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius =			ability:GetSpecialValueFor("hitbox"),
@@ -47,12 +46,6 @@ function vengeful_second_attack:OnCastPointEnd()
 					caster:GiveManaPercent(mana_gain_pct, unit)
 				end
 			end
-
-			local modifier_name = string.ends(name, "_ultimate") and
-            "modifier_vengeful_second_attack_link_ultimate" or 
-			"modifier_vengeful_second_attack_link"
-			
-            unit:AddNewModifier(_self.Source, self, modifier_name, { duration = link_duration })
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

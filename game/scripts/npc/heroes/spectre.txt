@@ -21,7 +21,6 @@
 		"Ability10"						"mount"						
 		"Ability11"						"charge"					
 		"Ability12"						"spectre_ex_second_attack_projectile"
-		"Ability13"						"spectre_ultimate_swap"		
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -35,8 +34,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"8"										// Damage range min.
-		"AttackDamageMax"			"8"										// Damage range max.	
+		"AttackDamageMin"			"7"										// Damage range min.
+		"AttackDamageMax"			"7"										// Damage range max.	
 		"AttackRate"				"0.3"									// Speed of attack.
 		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
@@ -57,7 +56,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"230" //CAN VARY!						// Base health.
+		"StatusHealth"				"140" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"

@@ -18,13 +18,13 @@ function tinker_ultimate:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, { duration=1.0, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0 })
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point,
 		movement_speed = 10,
 		fixed_range = 1,
 		show_all = 1,
 	})
-    ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+    ProgressBars:AddProgressBar(caster, "modifier_cast_point_old", {
 		style = "Ultimate",
 		text = "ultimate",
 		progressBarType = "duration",

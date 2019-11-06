@@ -9,10 +9,13 @@
         <include src="file://{resources}/scripts/custom_game/hero_base.js" />
 	</scripts>
 		
+    <styles>
+        <include src="file://{resources}/styles/custom_game/fonts_color.css" />
+    </styles>
+
 	<Panel>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/tutorial.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/hero_bar.xml"/>
-		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/progress_bars.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/death_zone.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/top_bar.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/heroes_status.xml"/>

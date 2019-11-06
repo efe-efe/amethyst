@@ -7,7 +7,7 @@ function builder_create_block:OnSpellStart()
     local wall = CreateUnitByName(
         "npc_dota_creature_wall", --szUnitName
         point, --vLocation
-        true, --bFindClearSpace
+        false, --bFindClearSpace
         nil, --hNPCOwner
         nil, --hUnitOwner
         self:GetCaster():GetTeamNumber()--DOTA_TEAM_NOTEAM

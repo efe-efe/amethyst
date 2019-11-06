@@ -20,7 +20,7 @@ function axe_special_attack:OnSpellStart()
 		activity = ACT_DOTA_OVERRIDE_ABILITY_1, 
 		rate = 1.5
 	})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point, 
 		can_walk = 0,
 		no_target = 1,

@@ -1,21 +1,51 @@
 spectre_ultimate_swap = class({})
-
-spectre_ultimate_swap.illusion_index = nil
+spectre_ultimate_swap.illusions = {}
 
 --------------------------------------------------------------------------------
 function spectre_ultimate_swap:OnCastPointEnd()
-    -- unit identifier
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
-	local radius = self:GetSpecialValueFor( "radius" )
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-    local illusion = EntIndexToHScript( self.illusion_index )
+    local point = self:GetCursorPosition()
 
-    FindClearSpaceForUnit( caster, illusion:GetOrigin() , true )
-    FindClearSpaceForUnit( illusion, origin , true )
+    local allies = FindUnitsInRadius( 
+        caster:GetTeamNumber(), -- int, your team number
+        point, -- point, center point
+        nil, -- handle, cacheUnit. (not known)
+        FIND_UNITS_EVERYWHERE, -- float, radius. or use FIND_UNITS_EVERYWHERE
+        DOTA_UNIT_TARGET_TEAM_FRIENDLY, -- int, team filter
+        DOTA_UNIT_TARGET_HERO,	-- int, type filter
+        0, -- int, flag filter
+        FIND_CLOSEST, -- int, order filter
+        false -- bool, can grow cache
+    )
+    
+    local found = nil
+    for _,ally in pairs(allies) do
+        if found == nil then
+            for _,illu in pairs(self.illusions) do
+                if found == nil then
+                    if illu == ally then
+                        found = ally
+                    end
+                end
+            end
+        end
+    end
 
-    self:PlayEffects()
+    if found ~= nil then
+        print(found:IsIllusion() and "true" or "false")
+        FindClearSpaceForUnit( caster, found:GetOrigin() , true )
+        FindClearSpaceForUnit( found, origin , true )
+        self:PlayEffects()
+    end
+end
+
+function spectre_ultimate_swap:AddIllusion( illusion_index )
+    self.illusions[illusion_index] = EntIndexToHScript( illusion_index )
+end
+
+function spectre_ultimate_swap:CleanIllusions( illusion_index )
+    self.illusions = {}
 end
 
 function spectre_ultimate_swap:PlayEffects()

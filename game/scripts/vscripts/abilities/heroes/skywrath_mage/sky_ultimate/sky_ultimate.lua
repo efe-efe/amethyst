@@ -18,7 +18,7 @@ function sky_ultimate:OnSpellStart()
 	caster:AddNewModifier(
 		caster, 
 		self, 
-		"modifier_cast_point", 
+		"modifier_cast_point_old", 
 		{ 
 			duration = cast_point,
             radius = self.radius,
@@ -26,7 +26,7 @@ function sky_ultimate:OnSpellStart()
 			show_all = 1,
 		}
 	)
-    ProgressBars:AddProgressBar(caster, "modifier_cast_point", {
+    ProgressBars:AddProgressBar(caster, "modifier_cast_point_old", {
 		style = "Ultimate",
 		text = "ultimate",
 		progressBarType = "duration",

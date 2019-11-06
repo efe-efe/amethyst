@@ -27,12 +27,9 @@ function modifier_vengeful_extra:OnCreated( kv )
         self:PlayEffects(self.duration)
 
         if IsServer() then
-            ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-                style = "Generic",
-                text = "shield",
-                progressBarType = "duration",
-                priority = 1,
-            })
+            self:GetParent():AddStatusBar({
+                label = "Shield", modifier = self, priority = 2, 
+            }) 
         end
     end
 end
@@ -79,7 +76,6 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Sounds
-
 -- On activated
 function modifier_vengeful_extra:PlayEffects( duration )
     -- Get Resources

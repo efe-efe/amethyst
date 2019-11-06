@@ -11,9 +11,8 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"heal"						"7" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"charges"					"3" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0" }
 		}
 	}
 }

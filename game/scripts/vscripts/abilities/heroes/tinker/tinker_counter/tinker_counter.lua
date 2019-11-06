@@ -24,7 +24,7 @@ function tinker_counter:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=cast_point+0.1, activity=ACT_DOTA_TELEPORT_END, translate="bot", rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point,
 		movement_speed = 10,
 		fixed_range = 1,

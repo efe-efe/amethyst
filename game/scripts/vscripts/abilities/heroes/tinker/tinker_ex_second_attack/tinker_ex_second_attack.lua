@@ -14,7 +14,7 @@ function tinker_ex_second_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=cast_point + 0.1, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point, 
 		movement_speed = 10,
 		radius = self:GetSpecialValueFor("radius"),

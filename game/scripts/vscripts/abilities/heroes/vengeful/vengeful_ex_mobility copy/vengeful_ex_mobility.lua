@@ -1,23 +1,23 @@
-vengeful_ex_mobility = class({})
-vengeful_ex_mobility_ultimate = class({})
-LinkLuaModifier( "modifier_vengeful_ex_mobility_illusion", "abilities/heroes/vengeful/vengeful_ex_mobility/modifier_vengeful_ex_mobility_illusion", LUA_MODIFIER_MOTION_NONE )
+vengeful_ex_second_attack = class({})
+vengeful_ex_second_attack_ultimate = class({})
+LinkLuaModifier( "modifier_vengeful_ex_second_attack_illusion", "abilities/heroes/vengeful/vengeful_ex_second_attack/modifier_vengeful_ex_second_attack_illusion", LUA_MODIFIER_MOTION_NONE )
 
 -----------------------------------------------------------
 -- Ability Start
-function vengeful_ex_mobility:OnCastPointEnd()
+function vengeful_ex_second_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	self.origin = caster:GetOrigin()
 	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local name = caster:GetUnitName()
 
-    self.ability = caster:FindAbilityByName("vengeful_ex_mobility")
+    self.ability = caster:FindAbilityByName("vengeful_ex_second_attack")
 	local direction = (point - self.origin):Normalized()
 	local distance = (point - self.origin):Length2D()
     local radius = self.ability:GetSpecialValueFor("radius")
     local heal = self.ability:GetSpecialValueFor("heal")
     local damage = self.ability:GetSpecialValueFor("ability_damage")
 
-    local swap_name = string.ends(self:GetAbilityName(), "_ultimate") and "vengeful_ex_mobility_swap_ultimate" or "vengeful_ex_mobility_swap"
+    local swap_name = string.ends(self:GetAbilityName(), "_ultimate") and "vengeful_ex_second_attack_swap_ultimate" or "vengeful_ex_second_attack_swap"
     local swap = caster:FindAbilityByName(swap_name)
     swap.illusion_index = self:IllusionLogic():GetEntityIndex()
     
@@ -95,13 +95,13 @@ function vengeful_ex_mobility:OnCastPointEnd()
     self:PlayEffectsOnCast()
 end
 
-function vengeful_ex_mobility:OnDisplacementEnd()
+function vengeful_ex_second_attack:OnDisplacementEnd()
 	local origin = self:GetCaster():GetOrigin()
     self:PlayEffectsOnDisplacementEnd( origin )
 
 end
 
-function vengeful_ex_mobility:IllusionLogic()
+function vengeful_ex_second_attack:IllusionLogic()
     local caster = self:GetCaster()
     local illusion_duration = self.ability:GetSpecialValueFor("duration")
 
@@ -113,22 +113,22 @@ function vengeful_ex_mobility:IllusionLogic()
 
 
     --self:PlayEffectsIllusion( illusion[1] )
-    illusion[1]:AddNewModifier(caster, self, "modifier_vengeful_ex_mobility_illusion", {})
+    illusion[1]:AddNewModifier(caster, self, "modifier_vengeful_ex_second_attack_illusion", {})
 
     return illusion[1]
 end
 
-function vengeful_ex_mobility:OnSwapPress()
+function vengeful_ex_second_attack:OnSwapPress()
     return false
 end
 
-function vengeful_ex_mobility:OnSwapRelease()
+function vengeful_ex_second_attack:OnSwapRelease()
     return false
 end
 
 -----------------------------------------------------------
 -- Graphics and sounds
-function vengeful_ex_mobility:PlayEffectsOnCast()
+function vengeful_ex_second_attack:PlayEffectsOnCast()
     local caster = self:GetCaster()
     -- Sound
     EmitSoundOn("Hero_PhantomAssassin.Strike.Start", caster)
@@ -137,7 +137,7 @@ function vengeful_ex_mobility:PlayEffectsOnCast()
     ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function vengeful_ex_mobility:PlayEffectsOnDisplacementEnd( origin )
+function vengeful_ex_second_attack:PlayEffectsOnDisplacementEnd( origin )
     -- Sound
     --EmitSoundOn( "Hero_PhantomAssassin.Strike.End", self:GetCaster())
     -- Play particle trail when moving
@@ -147,49 +147,49 @@ function vengeful_ex_mobility:PlayEffectsOnDisplacementEnd( origin )
     ParticleManager:ReleaseParticleIndex(trail_pfx)
 end
 
-function vengeful_ex_mobility:PlayEffectsIllusion( hTarget )
+function vengeful_ex_second_attack:PlayEffectsIllusion( hTarget )
     local particle_cast = "particles/units/heroes/hero_pugna/pugna_decrepify.vpcf"
     local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
     ParticleManager:SetParticleControl(effect_cast, 3, hTarget:GetOrigin())
     ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-vengeful_ex_mobility_ultimate.OnCastPointEnd = vengeful_ex_mobility.OnCastPointEnd
-vengeful_ex_mobility_ultimate.OnDisplacementEnd = vengeful_ex_mobility.OnDisplacementEnd
-vengeful_ex_mobility_ultimate.IllusionLogic = vengeful_ex_mobility.IllusionLogic
-vengeful_ex_mobility_ultimate.PlayEffectsOnCast = vengeful_ex_mobility.PlayEffectsOnCast
-vengeful_ex_mobility_ultimate.PlayEffectsOnDisplacementEnd = vengeful_ex_mobility.PlayEffectsOnDisplacementEnd
-vengeful_ex_mobility_ultimate.PlayEffectsIllusion = vengeful_ex_mobility.PlayEffectsIllusion
+vengeful_ex_second_attack_ultimate.OnCastPointEnd = vengeful_ex_second_attack.OnCastPointEnd
+vengeful_ex_second_attack_ultimate.OnDisplacementEnd = vengeful_ex_second_attack.OnDisplacementEnd
+vengeful_ex_second_attack_ultimate.IllusionLogic = vengeful_ex_second_attack.IllusionLogic
+vengeful_ex_second_attack_ultimate.PlayEffectsOnCast = vengeful_ex_second_attack.PlayEffectsOnCast
+vengeful_ex_second_attack_ultimate.PlayEffectsOnDisplacementEnd = vengeful_ex_second_attack.PlayEffectsOnDisplacementEnd
+vengeful_ex_second_attack_ultimate.PlayEffectsIllusion = vengeful_ex_second_attack.PlayEffectsIllusion
 
-function vengeful_ex_mobility_ultimate:OnAdded()
-    local ability = self:GetCaster():AddAbility( "vengeful_ex_mobility_swap_ultimate" )
+function vengeful_ex_second_attack_ultimate:OnAdded()
+    local ability = self:GetCaster():AddAbility( "vengeful_ex_second_attack_swap_ultimate" )
     ability:SetLevel( 1 )
 end
 
-function vengeful_ex_mobility_ultimate:OnRemoved()
-    local ability = self:GetCaster():FindAbilityByName("vengeful_ex_mobility_swap_ultimate")
+function vengeful_ex_second_attack_ultimate:OnRemoved()
+    local ability = self:GetCaster():FindAbilityByName("vengeful_ex_second_attack_swap_ultimate")
     if ability.illusion_index then
         self:GetCaster():SwapAbilities( 
-            "vengeful_ex_mobility_ultimate",
-            "vengeful_ex_mobility_swap_ultimate",
+            "vengeful_ex_second_attack_ultimate",
+            "vengeful_ex_second_attack_swap_ultimate",
             false,
             not ability:IsHidden()
         )
     end
     ability.illusion_index = nil
-    self:GetCaster():RemoveAbility( "vengeful_ex_mobility_swap_ultimate" )
+    self:GetCaster():RemoveAbility( "vengeful_ex_second_attack_swap_ultimate" )
 end
 
 if IsClient() then require("abilities") end
 Abilities.Initialize( 
-	vengeful_ex_mobility,
+	vengeful_ex_second_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 0.8 },
 	{ movement_speed = 10 }
 )
 
 if IsClient() then require("abilities") end
 Abilities.Initialize( 
-	vengeful_ex_mobility_ultimate,
+	vengeful_ex_second_attack_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 0.8 },
 	{ movement_speed = 10 }
 )

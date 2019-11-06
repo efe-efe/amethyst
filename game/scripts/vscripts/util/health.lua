@@ -7,6 +7,11 @@ function PseudoHeal(base, heal, unit)
     else
         unit.iTreshold = new_treshold
     end
+
+    for i = 0, heal - 1 do
+        unit:FindModifierByName("modifier_treshold"):IncrementStackCount()
+    end
+
     SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, unit, heal, nil )
     GameMode:UpdateHeroHealthBar(unit)
 end

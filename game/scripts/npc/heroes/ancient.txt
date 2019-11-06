@@ -15,13 +15,14 @@
 		"Ability4"						"vengeful_counter"
 		"Ability5"						"vengeful_special_attack"
 		"Ability6"						"vengeful_extra"
-		"Ability7"						"vengeful_ultimate"
+		"Ability7"						"ancient_ultimate"
 		"Ability8"						"vengeful_ex_counter"
-		"Ability9"						"vengeful_ex_mobility"	
+		"Ability9"						"vengeful_ex_second_attack"	
 		"Ability10"						"mount"							
 		"Ability11"						"charge"						
 		"Ability12"						"vengeful_mobility_swap"		
-		"Ability13"						"vengeful_ex_mobility_swap"	
+		"Ability13"						"vengeful_ex_second_attack_swap"		
+		"Ability14"						"ancient_ultimate_projectile"	
 		
 
 		//Vision
@@ -58,7 +59,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"230" //CAN VARY!						// Base health.
+		"StatusHealth"				"230" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"

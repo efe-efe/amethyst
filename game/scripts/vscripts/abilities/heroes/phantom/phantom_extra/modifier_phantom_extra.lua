@@ -17,14 +17,20 @@ function modifier_phantom_extra:OnCreated(params)
 
         self:SetStackCount(0)
 
-        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-			style = "Generic",
-			text = "charging",
-			progressBarType = "stacks",
+        self:GetParent():AddStatusBar({
+            label = "Charging", 
+            modifier = self, 
+            priority = 3, 
+            type = "stack",
+            maxStacks = self.max_stacks
+        }) 
+        self:GetParent():AddRecastVisual({
+            key = "R",
+            modifier = self,
+            abilityName = self:GetAbility():GetName(),
             maxStacks = self.max_stacks,
-            priority = 1,
+            type = "stack"
         })
-        
         self:PlayEffectsWeapon()
         self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_phantom_extra_visuals", { duration = 0.2 })
     end

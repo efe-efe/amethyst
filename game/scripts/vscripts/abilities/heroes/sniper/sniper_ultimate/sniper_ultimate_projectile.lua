@@ -148,8 +148,6 @@ function sniper_ultimate_projectile:PlayEffectsTarget( hTarget, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-
-
 function sniper_ultimate_projectile:PlayEffectsExplosion( pos )
     local particle_cast = "particles/econ/items/techies/techies_arcana/techies_suicide_arcana.vpcf"
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )

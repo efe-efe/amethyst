@@ -16,30 +16,18 @@ end
 
 function modifier_generic_silenced_lua:OnCreated()
 	if IsServer() then
-        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-            style = "Generic",
-            text = "silenced",
-            progressBarType = "duration",
-            priority = 0,
-		})
+		self:GetParent():AddStatusBar({
+			label = "Silence", modifier = self, priority = 4, 
+		}) 
 		self:PlayEffects()
-
 		SafeDestroyModifier("modifier_channeling", self:GetParent())
 	end
 end
+
 function modifier_generic_silenced_lua:OnDestroy()
 	if IsServer() then
 		self:StopEffects()
 	end
-end
---------------------------------------------------------------------------------
--- Modifier State
-function modifier_generic_silenced_lua:CheckState()
-	local state = {
-		--[MODIFIER_STATE_SILENCED] = true,
-	}
-
-	return state
 end
 
 --------------------------------------------------------------------------------

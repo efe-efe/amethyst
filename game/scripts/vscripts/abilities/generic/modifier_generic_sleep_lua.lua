@@ -10,6 +10,14 @@ function modifier_generic_sleep_lua:IsStunDebuff()
 	return true
 end
 
+function modifier_generic_sleep_lua:OnCreated( params )
+	if IsServer() then 
+		self:GetParent():AddStatusBar({
+			label = "Sleep", modifier = self, priority = 3, 
+		}) 
+	end
+end
+
 --------------------------------------------------------------------------------
 function modifier_generic_sleep_lua:CheckState()
 	local state = {

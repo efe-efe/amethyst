@@ -24,7 +24,7 @@ function axe_ex_second_attack:OnSpellStart()
 	self.radius = self:GetSpecialValueFor("radius")
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.4, activity=ACT_DOTA_TELEPORT_END, rate=1.3})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point,
 		can_walk = 0,
         no_target = 1,

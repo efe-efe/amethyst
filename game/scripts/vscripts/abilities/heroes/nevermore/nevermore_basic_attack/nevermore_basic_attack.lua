@@ -18,7 +18,7 @@ function nevermore_basic_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.6, activity=ACT_DOTA_ATTACK, rate=1.8})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point,
 		movement_speed = 10,
 		placeholder = 0,

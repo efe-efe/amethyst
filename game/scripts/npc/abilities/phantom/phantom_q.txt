@@ -5,15 +5,16 @@
 		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"phantom_assassin_blur"
-		"AbilityCooldown"				"8.0"
+		"AbilityTextureName"			"phantom_assassin_phantom_strike"
+		"AbilityCooldown"				"7.0"
 		"AbilityDuration"				"1.5"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"heal"					    "16" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"lifesteal"                 "7" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"as_speed"					"200" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"3.0" }
 		}
 	}
 

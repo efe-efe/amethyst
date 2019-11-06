@@ -9,7 +9,7 @@ function tinker_mobility:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.3, activity=ACT_DOTA_CAST_ABILITY_2, rate=1.2})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
         duration = cast_point
 	})
 end

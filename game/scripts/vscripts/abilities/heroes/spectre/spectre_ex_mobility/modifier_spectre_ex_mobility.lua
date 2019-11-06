@@ -28,12 +28,21 @@ function modifier_spectre_ex_mobility:OnCreated( kv )
         self:PlayEffectsOnCreated()
         self:StartIntervalThink( think_interval )
 
-		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-			style = "Darkness",
-			text = "darkness",
-			progressBarType = "duration",
-			priority = 3,
+        self:GetParent():AddStatusBar({
+			label = "Darkness", modifier = self, priority = 3, 
 		})
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Destroyer
+function modifier_spectre_ex_mobility:OnDestroy( kv )
+    if IsServer() then
+        self:GetParent():Heal( self.damage_done, self:GetParent() )
+        
+        self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
+        
+        self:StopEffects()
     end
 end
 
@@ -62,15 +71,6 @@ function modifier_spectre_ex_mobility:OnIntervalThink()
         self.damage_done = self.damage_done + self.damage_per_second
         self:PlayEffectsOnTarget(enemy)
         ApplyDamage( damage )
-    end
-end
-
---------------------------------------------------------------------------------
--- Destroyer
-function modifier_spectre_ex_mobility:OnDestroy( kv )
-    if IsServer() then
-        self:GetParent():Heal( self.damage_done, self:GetParent() )
-        self:StopEffects()
     end
 end
 

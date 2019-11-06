@@ -78,6 +78,11 @@
 #base "abilities\vengeful\vengeful_ex1.txt"
 #base "abilities\vengeful\vengeful_ex2.txt"
 
+#base "abilities\ancient\ancient_r.txt"
+
+#base "abilities\weaver\weaver_q.txt"
+#base "abilities\weaver\weaver_r.txt"
+
 "DOTAAbilities"
 {
 	//=================================================================================================================
@@ -1471,7 +1476,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"heal"						"30" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"heal"						"20" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"mana"						"40" }
 		}
 	}

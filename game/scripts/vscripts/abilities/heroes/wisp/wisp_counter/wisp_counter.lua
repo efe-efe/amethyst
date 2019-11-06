@@ -16,7 +16,7 @@ function wisp_counter:OnSpellStart()
 	caster:AddNewModifier(
         caster, 
         self,
-        "modifier_cast_point", 
+        "modifier_cast_point_old", 
         {
             duration = cast_point,
         }

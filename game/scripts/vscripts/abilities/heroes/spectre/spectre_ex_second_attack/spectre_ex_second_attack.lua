@@ -14,7 +14,7 @@ function spectre_ex_second_attack:OnCastPointEnd()
 	local point = self:GetCursorPosition()
 
 	if IsServer() then
-		local delay_time = self:GetCastPoint()
+		local delay_time = self:GetSpecialValueFor("cast_point")
 		self.projectiles_count = self:GetSpecialValueFor("projectiles_count")
 
 		local duration = delay_time * (self.projectiles_count + 1)
@@ -28,7 +28,7 @@ function spectre_ex_second_attack:OnCastPointEnd()
 			{ 
 				duration = duration,
 				movement_speed = 80,
-				channeling_tick = self.projectile_spell:GetCastPoint() + 0.1,
+				channeling_tick = self.projectile_spell:GetSpecialValueFor("cast_point") + 0.1,
 				immediate = 1,
 			} -- kv
 		)

@@ -26,13 +26,9 @@ function modifier_generic_fading_haste:OnCreated( kv )
     self:StartIntervalThink( tick )
 
     if IsServer() then 
-
-        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-            style = "Generic",
-            text = "fading haste",
-            progressBarType = "duration",
-            priority = 2,
-        })
+		self:GetParent():AddStatusBar({
+			label = "Fading Haste", modifier = self, priority = 2, 
+		}) 
     end
 end
 

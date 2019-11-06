@@ -429,9 +429,6 @@ function Projectiles:CreateProjectile(projectile)
                             print('[PROJECTILES] Projectile OnWallHit Failure!: ' .. action)
                         end
 
-                        print(ground.z, projectile.prevPos.z)
-                        print("=====")
-                        
                         if projectile.WallBehavior == PROJECTILES_DESTROY then
                             ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
                             if projectile.OnFinish then

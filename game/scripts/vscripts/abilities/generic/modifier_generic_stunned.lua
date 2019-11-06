@@ -10,15 +10,12 @@ end
 
 function modifier_generic_stunned:OnCreated()
 	if IsServer() then
-        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-            style = "Generic",
-            text = "stunned",
-            progressBarType = "duration",
-            priority = 0,
-		})
+		self:GetParent():AddStatusBar({
+			label = "Stun", modifier = self, priority = 4, 
+		}) 
 		
+		SafeDestroyModifier("modifier_cast_point_old", self:GetParent(), self:GetParent())
 		SafeDestroyModifier("modifier_cast_point", self:GetParent(), self:GetParent())
-		SafeDestroyModifier("modifier_cast_point_new", self:GetParent(), self:GetParent())
 	end
 end
 

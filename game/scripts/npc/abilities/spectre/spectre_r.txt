@@ -7,6 +7,7 @@
 
 		"AbilityTextureName"			"spectre_haunt"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
@@ -16,10 +17,11 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.6" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2800" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"illusion_duration"			"3.0" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"600" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"100" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
 		}
 	}
 
@@ -34,6 +36,6 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastPoint"				"0.2"
+		"AbilityCastPoint"				"0.1"
 	}
 }

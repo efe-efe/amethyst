@@ -1,25 +1,19 @@
 modifier_spectre_extra_thinker = class({})
-LinkLuaModifier( "modifier_spectre_desolate_lua", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_lua/modifier_spectre_desolate_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_spectre_extra", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_spectre_extra_recast", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra_recast", LUA_MODIFIER_MOTION_NONE )
 
 function modifier_spectre_extra_thinker:OnCreated( kv )
     self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
-    self.desolate_duration = self:GetAbility():GetSpecialValueFor("desolate_duration")
     self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
+    self.recast_time = self:GetAbility():GetSpecialValueFor("recast_time")
 
     if IsServer() then
-        EmitSoundOn( "Hero_Spectre.Reality", self:GetParent() )
-
-        -- Start Interval
         self:StartIntervalThink( self.delay_time )
-
     end
 end
 
-
 function modifier_spectre_extra_thinker:OnIntervalThink()
     local thinker_origin = self:GetParent():GetOrigin()
-
-    FindClearSpaceForUnit( self:GetCaster(), thinker_origin , true )
 
     -- find enemies
     local enemies = FindUnitsInRadius( 
@@ -34,8 +28,27 @@ function modifier_spectre_extra_thinker:OnIntervalThink()
         false -- bool, can grow cache
     )
 
+    local data =  { duration = self.recast_time }
+    local counter = 0
+
     for _,enemy in pairs(enemies) do
-        enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_spectre_desolate_lua", { duration = self.desolate_duration })
+        enemy:AddNewModifier(
+            self:GetCaster(),
+            self:GetAbility(),
+            "modifier_spectre_extra",
+            { duration = self.recast_time }
+        )
+        data["enemy_" .. counter] = enemy:GetEntityIndex()
+        counter = counter + 1
+    end
+
+    if #enemies > 0 then
+        self:GetCaster():AddNewModifier(
+            self:GetCaster(),
+            self:GetAbility(),
+            "modifier_spectre_extra_recast",
+            data
+        )
     end
     
     self:PlayEffects()
@@ -43,23 +56,11 @@ function modifier_spectre_extra_thinker:OnIntervalThink()
 end
 
 function modifier_spectre_extra_thinker:PlayEffects()
-    -- Get Resources
     EmitSoundOn( "Hero_Spectre.Reality", self:GetParent() )
-
-    local particle_cast = "particles/econ/items/outworld_devourer/od_shards_exile_gold/od_shards_exile_prison_end_gold.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( 
-            particle_cast, 
-            PATTACH_WORLDORIGIN, 
-            nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
-
-
-    local particle_cast_c = "particles/econ/items/dark_willow/dark_willow_ti8_immortal_head/dw_ti8_immortal_cursed_crown_marker.vpcf"
-	local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
-	ParticleManager:SetParticleControl( effect_cast_c, 2, Vector(self.radius, 1, 1))
-	ParticleManager:ReleaseParticleIndex( effect_cast_c )
+    local particle_cast = "particles/econ/items/dark_willow/dark_willow_ti8_immortal_head/dw_ti8_immortal_cursed_crown_marker.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControl( effect_cast, 2, Vector(self.radius, 1, 1))
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 

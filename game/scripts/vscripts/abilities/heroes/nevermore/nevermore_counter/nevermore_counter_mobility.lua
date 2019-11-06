@@ -22,7 +22,7 @@ function nevermore_counter_mobility:OnSpellStart()
     )
 
 	-- Animation and pseudo cast point
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point, 
 		can_walk = 0,
 	})

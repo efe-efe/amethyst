@@ -11,7 +11,7 @@ function phoenix_basic_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=1.5, activity=ACT_DOTA_ATTACK, rate=1.5})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { duration = cast_point})
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { duration = cast_point})
 end
 
 function phoenix_basic_attack:OnCastPointEnd( pos )

@@ -1,0 +1,21 @@
+
+"DOTAAbilities" {
+	"weaver_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/weaver/weaver_ultimate/weaver_ultimate"
+		"MaxLevel"						"1"
+		
+		"AbilityTextureName"			"weaver_time_lapse"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCastRange"				"0"
+		"AbilityCooldown"				"1.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.3" }
+			"02"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
+			"03"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "100" }
+		}
+	}
+}

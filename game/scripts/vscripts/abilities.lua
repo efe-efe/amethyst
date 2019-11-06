@@ -48,7 +48,7 @@ function Abilities.Initialize( ability, animation, warmup )
             min_range = self:GetSpecialValueFor("min_range")
         end
 
-        caster:AddNewModifier( caster, self, "modifier_cast_point_new", { 
+        local modifier = caster:AddNewModifier( caster, self, "modifier_cast_point", { 
             duration = cast_point, 
             movement_speed = warmup.movement_speed,
             radius = radius,
@@ -62,33 +62,12 @@ function Abilities.Initialize( ability, animation, warmup )
         
         -- Castbar (ULTIMATE)
         if self:GetAbilityType() == 1 then
-            ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
-                style = "Ultimate",
-                text = "ultimate",
-                progressBarType = "duration",
-                priority = 0,
-                reversedProgress = true,
-            })
-        -- Castbar (MOUNT)
+            caster:AddStatusBar({ label = "Ultimate", modifier = modifier, priority = 5, reversed = 1}) 
         elseif self:GetName() == "mount" then
-            ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
-                style = "Generic",
-                text = "mounting",
-                progressBarType = "duration",
-                priority = 1,
-                reversedProgress = true,
-            })
-        -- Castbar
+            caster:AddStatusBar({ label = "Mount", modifier = modifier, priority = 5, reversed = 1 }) 
         else
             if warmup.hide_castbar ~= 1 then
-                --[[
-                ProgressBars:AddProgressBar(caster, "modifier_cast_point_new", {
-                    style = "Castpoint",
-                    progressBarType = "duration",
-                    ignorePriority = true,
-                    reversedProgress = true,
-                })
-                ]]
+                -- TODO: HIDING CAST POINT BAR
             end
         end
 
@@ -98,16 +77,30 @@ function Abilities.Initialize( ability, animation, warmup )
     end
 
     function ability:OnCastPointEnd()
-        if onCastPointEnd then onCastPointEnd(self) end
-
         local alternate_version = self:GetCaster():FindAbilityByName(self:GetAlternateName())
         if alternate_version ~= nil then
-            alternate_version:StartCooldown(self:GetCooldown(0))
+            if alternate_version.HasCharges then
+                local charges_modifier_name = alternate_version:GetIntrinsicModifierName()
+                local charges_modifier = alternate_version:GetCaster():FindModifierByName(charges_modifier_name)
+                
+                if charges_modifier ~= nil then
+                    if charges_modifier.OnSpellCast ~= nil then
+                        charges_modifier:OnSpellCast()
+                    else
+                        print("[PSEUDO CAST POINT ERROR] Charges don't have OnSpellCast funcion")
+                    end
+                end
+            else
+                alternate_version:StartCooldown(self:GetCooldown(0))
+            end
         end
+
 
         if not self:HasBehavior(DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE) then
             self:GetCaster():SetLastAbility(self)
         end
+
+        if onCastPointEnd then onCastPointEnd(self) end
     end
 end
 

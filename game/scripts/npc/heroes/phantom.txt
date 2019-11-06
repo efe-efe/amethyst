@@ -22,6 +22,7 @@
 		"Ability11"						"charge"						
 		"Ability12"						"phantom_counter_mobility"	
 		"Ability13"						"phantom_extra_mobility"
+		"Ability14"						"phantom_basic_attack_ranged"
 		
 
 		//Vision
@@ -58,7 +59,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"230" //CAN VARY!						// Base health.
+		"StatusHealth"				"140" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"

@@ -23,9 +23,8 @@ function sniper_mobility:OnCastPointEnd()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = 2000,
-            peak = 50,
-            colliding = 1,
+            speed = 1500,
+            peak = 400,
         } -- kv
 	)
 

@@ -5,7 +5,7 @@
 		"ScriptFile"					"abilities/heroes/phantom/phantom_mobility/phantom_mobility"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"phantom_assassin_phantom_strike"
+		"AbilityTextureName"			"phantom_mobility"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCooldown"				"5.0"
 		"AbilityCastRange"				"300"

@@ -9,6 +9,7 @@ function modifier_vengeful_extra_thinker:OnCreated( kv )
         self.radius = self.ability:GetSpecialValueFor( "radius" )
         self.delay_time = self.ability:GetSpecialValueFor( "delay_time" )
         self.duration = self.ability:GetSpecialValueFor( "duration" )
+        self.damage_block = self.ability:GetSpecialValueFor( "damage_block" )
 
         -- Start Interval
         self:StartIntervalThink( self.delay_time )
@@ -37,7 +38,8 @@ function modifier_vengeful_extra_thinker:OnIntervalThink()
         )
 
         for _,ally in pairs(allies) do
-            ally:AddNewModifier(caster, self:GetAbility(), "modifier_vengeful_extra", { duration = self.duration })
+           ally:AddNewModifier(caster, self:GetAbility(), "modifier_shield", { duration = self.duration, damage_block = self.damage_block })
+            --ally:AddNewModifier(caster, self:GetAbility(), "modifier_vengeful_extra", { duration = self.duration })
         end
 
         CreateRadiusMarker(caster, thinker:GetOrigin(), { 

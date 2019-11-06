@@ -113,7 +113,11 @@ function modifier_spectre_basic_attack:OnAttackLanded( params )
             }
     
             ApplyDamage( damage )
-            params.attacker:Heal( self.heal_desolate, params.attacker )
+
+            if not params.target:IsWall() then
+                params.attacker:Heal( self.heal_desolate, params.attacker )
+            end
+            
             self:PlayEffectsLifeSteal()
         end
 	end

@@ -10,6 +10,16 @@ function modifier_generic_rooted_lua:IsStunDebuff()
 	return true
 end
 
+
+function modifier_generic_rooted_lua:OnCreated()
+	if IsServer() then
+		self:GetParent():AddStatusBar({
+			label = "Root", modifier = self, priority = 4, 
+		}) 
+		
+	end
+end
+
 --------------------------------------------------------------------------------
 
 function modifier_generic_rooted_lua:CheckState()

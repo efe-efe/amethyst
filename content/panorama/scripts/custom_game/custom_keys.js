@@ -47,7 +47,7 @@ GameUI.SetMouseCallback( function( eventName, arg ) {
 		if ( nMouseButton === 0 )
 		{
             OnLeftButtOnPressed();
-            return CONSUME_EVENT;//CONTINUE_PROCESSING_EVENT;
+            return CONTINUE_PROCESSING_EVENT;//CONSUME_EVENT;
 		}
 
 		if ( nMouseButton === 1 )
@@ -64,11 +64,8 @@ function ExecuteAbility(index)
 {
     var playerId = Players.GetLocalPlayer();
     var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
+    heroIndex = Players.GetSelectedEntities( playerId )[0]; //DEBUG
     var abilityIndex = Entities.GetAbility( heroIndex, index );
-    
-    //Debug
-    heroIndex = Players.GetSelectedEntities( playerId )[0];
-    abilityIndex = Entities.GetAbility( heroIndex, index );
 
     if(heroIndex == -1){
         $.Msg("[Custom Bindings] Invalid hero: The hero hasn't been asigned yet");

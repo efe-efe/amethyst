@@ -147,7 +147,7 @@ function modifier_generic_movement:Move()
 		local colliding = self:GetColliding(test_position_front, origin.z, GREEN)
 
 		-- If not casting
-		if not self.parent:HasModifier("modifier_cast_point") and not self.parent:HasModifier("modifier_cast_point_new") then --THIS CAN END BEFORE THE ACTUAL ANIMATION
+		if not self.parent:HasModifier("modifier_cast_point_old") and not self.parent:HasModifier("modifier_cast_point") then --THIS CAN END BEFORE THE ACTUAL ANIMATION
 			self.parent:SetForwardVector(direction)
 		else
 			self.frame = 0.00
@@ -275,6 +275,10 @@ function modifier_generic_movement:GetColliding(test_position_front, actual_z, c
 end
 
 function modifier_generic_movement:GetCollidingWithObjects(test_position)
+	if self.parent:IsPhased() then
+		return false
+	end
+
 	local blocked = false
 
 	local units = FindUnitsInRadius( 

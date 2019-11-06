@@ -6,11 +6,8 @@ function modifier_sniper_ex_mobility:OnCreated( kv )
 	self.speed_debuff_pct = -self:GetAbility():GetSpecialValueFor("speed_debuff_pct")
 
 	if IsServer() then 
-		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-			style = "Generic",
-			text = "slow",
-			progressBarType = "duration",
-			priority = 3,
+		self:GetParent():AddStatusBar({
+			label = "Slow", modifier = self, priority = 2, 
 		})
 	end
 end

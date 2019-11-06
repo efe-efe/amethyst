@@ -1,0 +1,61 @@
+"DOTAAbilities" {
+    "vengeful_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_second_attack/vengeful_ex_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_ex_second_attack"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25"
+		"AbilityCastRange"				"600"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"10" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.5" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"             	"250" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"heal"					"10" }
+		}   
+	}
+
+	"vengeful_ex_second_attack_swap"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_second_attack/vengeful_ex_second_attack_swap"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengefulspirit_nether_swap"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+	}
+
+	"vengeful_ex_second_attack_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_second_attack/vengeful_ex_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_ex_second_attack_ultimate"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25"
+		"AbilityCastRange"				"600"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.3" }
+		}
+	}
+	
+	"vengeful_ex_second_attack_swap_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_second_attack/vengeful_ex_second_attack_swap"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_mobility_swap_ultimate"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+	}
+}

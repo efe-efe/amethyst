@@ -24,7 +24,7 @@ function phantom_counter_mobility:OnCastPointEnd()
     })
 
     caster:Heal(heal, caster)
-    caster:AddNewModifier(caster, self, "modifier_phantom_counter", { duration = duration })
+    caster:AddNewModifier(caster, ability, "modifier_phantom_counter", { duration = duration })
 
     self:PlayEffectsOnCast()
 end

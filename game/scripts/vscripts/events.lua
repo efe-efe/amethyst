@@ -127,6 +127,8 @@ function GameMode:OnHeroInGame(keys)
             self.teams[team].players[playerID] = playerOwner
             self.teams[team].heroes[keys.entindex] = npc -- Save the heroe, in case the player is not connected
 
+            --self:UpdateAlliance(keys.entindex)
+
             local data = {
                 teamID = team,
                 playerID = playerID,
@@ -135,7 +137,7 @@ function GameMode:OnHeroInGame(keys)
             }
             CustomGameEventManager:Send_ServerToAllClients( "add_player", data )
         end
-
+    
         -------------------------------
         -- Always
         -------------------------------
@@ -493,17 +495,18 @@ function GameMode:CreateWalls()
 end
 
 function GameMode:CreateWall( ent )
+    local fow_blocker = SpawnEntityFromTableSynchronous("point_simple_obstruction", {origin = ent:GetOrigin(), block_fow = true})
     self.walls[ent] = CreateUnitByName(
         "npc_dota_creature_wall", --szUnitName
         ent:GetOrigin(), --vLocation
-        true, --bFindClearSpace
+        false, --bFindClearSpace
         nil, --hNPCOwner
         nil, --hUnitOwner
         DOTA_TEAM_NOTEAM
     )
     self.walls[ent]:Attribute_SetIntValue("wall", 1)
-    self.walls[ent]:SetHullRadius(120)
-    self.walls[ent]:AddNewModifier(self.walls[ent], nil, "wall_base", {})
+    self.walls[ent]:SetHullRadius(70)
+    self.walls[ent]:AddNewModifier(self.walls[ent], nil, "wall_base", { fow_blocker = fow_blocker:GetEntityIndex() })
 end
 
 --------------------------------------------------------------------------------

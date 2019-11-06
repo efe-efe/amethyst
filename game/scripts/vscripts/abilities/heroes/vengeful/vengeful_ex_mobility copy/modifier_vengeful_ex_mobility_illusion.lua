@@ -1,18 +1,18 @@
-modifier_vengeful_ex_mobility_illusion = class({})
+modifier_vengeful_ex_second_attack_illusion = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_vengeful_ex_mobility_illusion:IsHidden()
+function modifier_vengeful_ex_second_attack_illusion:IsHidden()
 	return false
 end
 
-function modifier_vengeful_ex_mobility_illusion:IsPurgable()
+function modifier_vengeful_ex_second_attack_illusion:IsPurgable()
 	return false
 end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_vengeful_ex_mobility_illusion:OnCreated( kv )
+function modifier_vengeful_ex_second_attack_illusion:OnCreated( kv )
     if IsServer() then
         ProgressBars:AddProgressBar(self:GetCaster(), self:GetName(), {
 			style = "Generic",
@@ -23,13 +23,13 @@ function modifier_vengeful_ex_mobility_illusion:OnCreated( kv )
     end
 end
 
-function modifier_vengeful_ex_mobility_illusion:OnDestroy( kv )
+function modifier_vengeful_ex_second_attack_illusion:OnDestroy( kv )
     if IsServer() then
 
         --Prevent trying to find a forgotten ability
         if self:GetAbility() then
             local my_name = self:GetAbility():GetAbilityName()
-            local name = string.ends(my_name, "_ultimate") and "vengeful_ex_mobility_swap_ultimate" or "vengeful_ex_mobility_swap"
+            local name = string.ends(my_name, "_ultimate") and "vengeful_ex_second_attack_swap_ultimate" or "vengeful_ex_second_attack_swap"
             local ability = self:GetCaster():FindAbilityByName(name)
             ability.illusion_index = nil
 
@@ -54,7 +54,7 @@ function modifier_vengeful_ex_mobility_illusion:OnDestroy( kv )
 end
 
 -- Status Effects
-function modifier_vengeful_ex_mobility_illusion:CheckState()
+function modifier_vengeful_ex_second_attack_illusion:CheckState()
 	local state = {
 		[MODIFIER_STATE_INVULNERABLE] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
@@ -69,11 +69,11 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Animations
-function modifier_vengeful_ex_mobility_illusion:GetEffectName()
+function modifier_vengeful_ex_second_attack_illusion:GetEffectName()
 	return "particles/items4_fx/nullifier_slow.vpcf"
 end
 
-function modifier_vengeful_ex_mobility_illusion:GetEffectAttachType()
+function modifier_vengeful_ex_second_attack_illusion:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
 

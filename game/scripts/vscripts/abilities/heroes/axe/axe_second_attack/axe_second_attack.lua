@@ -25,7 +25,7 @@ function axe_second_attack:OnSpellStart()
 		rate = 1.3
 	})
 	
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point,
 		can_walk = 0,
 		radius = self.radius,

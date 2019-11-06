@@ -93,14 +93,6 @@ function vengeful_mobility:IllusionLogic()
     return illusion[1]
 end
 
-function vengeful_mobility:OnSwapPress()
-    return false
-end
-
-function vengeful_mobility:OnSwapRelease()
-    return false
-end
-
 -----------------------------------------------------------
 -- Graphics and sounds
 function vengeful_mobility:PlayEffectsOnCast()

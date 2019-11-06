@@ -4,7 +4,7 @@ require('util/health')
 require('util/abilities')
 require('util/npc')
 
-_G.nMAX_COUNTDOWNTIMER = 60
+_G.nMAX_COUNTDOWNTIMER = 99999-- 60
 _G.nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
 
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
@@ -19,12 +19,12 @@ function Precache( context )
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_silencer.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_furion.vsndevts", context)
-	PrecacheResource( "particle", "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", context )
-	PrecacheResource( "particle", "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf", context )
-	PrecacheResource( "particle", "particles/base_attacks/ranged_badguy_persistent_glow_green.vpcf", context )
-	PrecacheResource( "particle", "particles/units/heroes/hero_wisp/wisp_overcharge_c.vpcf", context )
-	PrecacheResource( "particle", "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf", context )
-	PrecacheResource( "particle", "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf", context )
+	PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", context )
+	PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf", context )
+	PrecacheResource("particle", "particles/base_attacks/ranged_badguy_persistent_glow_green.vpcf", context )
+	PrecacheResource("particle", "particles/units/heroes/hero_wisp/wisp_overcharge_c.vpcf", context )
+	PrecacheResource("particle", "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf", context )
+	PrecacheResource("particle", "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf", context )
 	
 	--PrecacheResource("model", "particles/heroes/viper/viper.vmdl", context)
 end
@@ -37,12 +37,12 @@ end
 require('libraries/timers') -- This library allow for easily delayed/timed actions
 require('libraries/projectiles') -- This library allow for easily delayed/timed actions
 require('libraries/animations') -- This library allows starting customized animations on units from lua
-require('libraries/progress_bars') 
 
 require('settings') -- settings.lua is where resides many different properties for Dotarite.
 require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('abilities')
+require('modifiers')
 
 function GameMode:InitGameMode()
     if GameMode._reentrantCheck then
@@ -70,6 +70,8 @@ function GameMode:SetupRules()
     if GetMapName() == "mad_moon_map" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 2 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 2 )
+        --GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 2 )
+        --GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_2, 2 )
     elseif GetMapName() == "free_for_all" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
@@ -106,9 +108,8 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_middle_orb_exiled", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("wall_base", "modifiers/general/wall_base.lua", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("wall_phase", "modifiers/general/wall_phase", LUA_MODIFIER_MOTION_NONE)
 
-    LinkLuaModifier("modifier_generic_charges_one", "abilities/generic/charges/modifier_generic_charges_one", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_charges_two", "abilities/generic/charges/modifier_generic_charges_two", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_projectile_reflector_lua", "abilities/generic/modifier_generic_projectile_reflector_lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
@@ -121,16 +122,68 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_displacement", "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH )
     
     LinkLuaModifier("modifier_generic_movement", "abilities/base/modifier_generic_movement", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_shield", "abilities/base/modifier_shield", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_channeling", "abilities/base/modifier_channeling", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_cast_point", "abilities/base/modifier_cast_point", LUA_MODIFIER_MOTION_NONE ) -- Delete after
     LinkLuaModifier("modifier_treshold", "abilities/base/modifier_treshold", LUA_MODIFIER_MOTION_NONE ) -- Delete after
-    LinkLuaModifier("modifier_cast_point_new", "abilities/base/modifier_cast_point_new", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_cast_point", "abilities/base/modifier_cast_point", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_thinker_indicator", "abilities/base/modifier_thinker_indicator", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_counter", "abilities/base/modifier_counter", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_following_aoe_indicator", "abilities/base/modifier_following_aoe_indicator", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_target_indicator", "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
 
     print('[AMETHYST] Useful modifiers linked')
+end
+
+function GameMode:InitializeAlliances()
+    self.alliances = {}
+end
+
+function GameMode:CreateAlliance( name, teams )
+    self.alliances[name] = { 
+        teams = {},
+        wins = 0,
+        looser = false,
+        players = {},
+        heroes = {},
+    }
+end
+
+function GameMode:AddTeamToAlliance( alliance, team )
+	local i = 1
+	while self.alliances[alliance].teams[i] ~= nil do
+		i = i+1
+    end
+    
+    self.alliances[alliance].teams[i] = team
+end
+
+function GameMode:UpdateAlliance( heroIndex )
+    local heroEnt = EntIndexToHScript(heroIndex) 
+    local team = heroEnt:GetTeamNumber()
+    local playerID = heroEnt:GetPlayerOwnerID()
+    local playerOwner = heroEnt:GetPlayerOwner()
+
+    local alliance = self:FindAllianceByTeam(team)
+    alliance.players[playerID] = playerOwner
+    alliance.heroes[heroIndex] = heroEnt
+end
+
+function GameMode:FindAllianceByTeam( team )
+    for _,alliance in pairs(self.alliances) do
+        for _,m_team in pairs(alliance.teams) do
+            if m_team == team then
+                return alliance
+            end
+        end
+    end
+end
+
+function GameMode:CheckAllies( hero_a, hero_b )
+    local alliance_a = self:FindAllianceByTeam(hero_a:GetTeamNumber())
+    local alliance_b = self:FindAllianceByTeam(hero_b:GetTeamNumber())
+
+    if alliance_a == alliance_b then return true end
+    return false
 end
 
 --============================================================================================
@@ -151,6 +204,22 @@ function GameMode:CaptureGameMode()
         self.FIRST_MIDDLE_ORB_SPAWN_TIME = 20.0
         self.MIDDLE_ORB_SPAWN_TIME = 20.0
         self.mouse_positions = {}
+
+        -------------------------------
+        -- Team Alliances
+        -------------------------------
+
+        --[[
+        self:InitializeAlliances()
+        self:CreateAlliance("DOTA_TEAM_RADIANT")
+        self:CreateAlliance("DOTA_TEAM_DIRE")
+
+        self:AddTeamToAlliance("DOTA_TEAM_RADIANT", DOTA_TEAM_GOODGUYS)
+        self:AddTeamToAlliance("DOTA_TEAM_RADIANT", DOTA_TEAM_CUSTOM_1)
+        
+        self:AddTeamToAlliance("DOTA_TEAM_DIRE", DOTA_TEAM_BADGUYS)
+        self:AddTeamToAlliance("DOTA_TEAM_DIRE", DOTA_TEAM_CUSTOM_2)
+        ]]
 
         -------------------------------
         -- Set GameMode parameters
@@ -229,21 +298,6 @@ function GameMode:CaptureGameMode()
                     end
                 end
             end
-
-
-            --[[
-            local string = ""
-            for i = 0, 14 do
-                local ability = caster:GetAbilityByIndex(i)
-                if ability:GetAbilityType() ~= 2 then -- ignore talents
-
-                    local hidden = ability:IsHidden() and " (HIDDEN)" or ""
-                    string = string .. "[" .. (i+1) .. "] " .. ability:GetAbilityName() .. hidden .. "\n"
-                end
-            end
-
-            print(string)
-            ]]
         end)
 
         CustomGameEventManager:RegisterListener('updateMousePosition', function(eventSourceIndex, args)

@@ -1,61 +1,48 @@
 "DOTAAbilities" {
-    "vengeful_ex_mobility"
+    "vengeful_ex_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_mobility/vengeful_ex_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"vengeful_ex_mobility"
-        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityCooldown"				"8.0"
-		"AbilityManaCost"				"25"
-		"AbilityCastRange"				"600"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"10" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.5" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"radius"             	"250" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"heal"					"10" }
-		}   
-	}
-
-	"vengeful_ex_mobility_swap"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_mobility/vengeful_ex_mobility_swap"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_second_attack/vengeful_ex_second_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"vengefulspirit_nether_swap"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
-	}
-
-	"vengeful_ex_mobility_ultimate"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_mobility/vengeful_ex_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"vengeful_ex_mobility_ultimate"
-        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityCooldown"				"8.0"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1600"
+		"AbilityCooldown"				"6.0"
 		"AbilityManaCost"				"25"
-		"AbilityCastRange"				"600"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.3" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"15" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"15" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
+		}
+	}
+
+	"vengeful_ex_second_attack_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_second_attack/vengeful_ex_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_ex_second_attack_ultimate"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1600"
+		"AbilityCooldown"				"6.0"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
 		}
 	}
 	
-	"vengeful_ex_mobility_swap_ultimate"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/vengeful/vengeful_ex_mobility/vengeful_ex_mobility_swap"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"vengeful_mobility_swap_ultimate"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
-	}
 }

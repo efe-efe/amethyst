@@ -1,4 +1,6 @@
 modifier_vengeful_mobility_illusion = class({})
+LinkLuaModifier( "modifier_vengeful_mobility_recast", "abilities/heroes/vengeful/vengeful_mobility/modifier_vengeful_mobility_recast", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_vengeful_mobility_recast_ultimate", "abilities/heroes/vengeful/vengeful_mobility/modifier_vengeful_mobility_recast", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -14,12 +16,12 @@ end
 -- Initializations
 function modifier_vengeful_mobility_illusion:OnCreated( kv )
     if IsServer() then
-        ProgressBars:AddProgressBar(self:GetCaster(), self:GetName(), {
-			style = "Generic",
-			text = "duration",
-			progressBarType = "duration",
-			priority = 1,
-		})
+        local ability = self:GetParent():FindAbilityByName("vengeful_mobility")
+        local illusion_duration = ability:GetSpecialValueFor("duration")
+
+        local my_name = self:GetAbility():GetAbilityName()
+        local name = string.ends(my_name, "_ultimate") and "modifier_vengeful_mobility_recast_ultimate" or "modifier_vengeful_mobility_recast"
+        self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), name, { duration = illusion_duration })
     end
 end
 
@@ -46,6 +48,8 @@ function modifier_vengeful_mobility_illusion:OnDestroy( kv )
                 false
             )
         end
+
+        SafeDestroyModifier( "modifier_vengeful_mobility_recast", self:GetCaster(), self:GetCaster() )
             
         if self:GetParent() ~= nil then
             self:GetParent():ForceKill( false )

@@ -16,7 +16,7 @@ function nevermore_ex_second_attack:OnSpellStart()
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.7, activity=ACT_DOTA_RAZE_2, rate=1.1})
-	caster:AddNewModifier(caster, self , "modifier_cast_point", { 
+	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
 		duration = cast_point,
 		movement_speed = 10,
 		radius = radius

@@ -2,9 +2,13 @@ modifier_channeling = class({})
 
 function modifier_channeling:OnCreated(params)
     if IsServer() then
+        if self:GetAbility().OnChannelingStart then
+            self:GetAbility():OnChannelingStart()
+        end
+
         self.movement_speed = params.movement_speed
         local style = params.style or "Generic"
-        local title = params.title or "channeling"
+        local title = params.title or "Channeling"
         local channeling_tick = params.channeling_tick or 1.0
         local immediate = params.immediate and true or false
 
@@ -15,12 +19,9 @@ function modifier_channeling:OnCreated(params)
             self:OnIntervalThink()
         end
 
-        ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-            style = style,
-            text = title,
-            progressBarType = "duration",
-            priority = 0,
-        })
+        self:GetParent():AddStatusBar({
+			label = title, modifier = self, priority = 6
+		})
     end
 end
 
@@ -35,7 +36,9 @@ end
 
 
 function modifier_channeling:OnIntervalThink()
-    self:GetAbility():OnChannelingTick()
+    if self:GetAbility().OnChannelingTick then
+        self:GetAbility():OnChannelingTick()
+    end
 end
 
 --------------------------------------------------------------------------------

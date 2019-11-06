@@ -20,7 +20,7 @@ function sky_special_attack:OnSpellStart()
 	caster:AddNewModifier(
         caster, 
         self,
-        "modifier_cast_point", 
+        "modifier_cast_point_old", 
         {
             duration = cast_point,
             radius = self.radius,

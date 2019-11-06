@@ -1,9 +1,15 @@
+
 phantom_mobility = class({})
+LinkLuaModifier( "modifier_phantom_mobility_charges", "abilities/heroes/phantom/phantom_mobility/modifier_phantom_mobility_charges", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Passive Modifier
 function phantom_mobility:GetIntrinsicModifierName()
-	return "modifier_generic_charges_two"
+	return "modifier_phantom_mobility_charges"
+end
+
+function phantom_mobility:HasCharges()
+	return true
 end
 
 -----------------------------------------------------------

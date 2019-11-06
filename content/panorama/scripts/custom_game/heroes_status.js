@@ -36,19 +36,21 @@ function AddPlayer( data ){
     }
 
     health_bar_inner.style.backgroundColor = color;
-    UpdateHealthBar({ teamID: data.teamID, heroIndex: data.heroIndex, percentage: 100});
-    UpdateManaBar({ teamID: data.teamID, heroIndex: data.heroIndex, percentage: 0});
 }
 
 function UpdateHealthBar( data ){
     var teamID = data.teamID;
     var heroIndex = data.heroIndex;
-    var percentage = data.percentage;
+    var current_health = data.current_health
+    var max_health = data.max_health
+
+    var health_with = 100 * current_health/max_health
 
     var health_bar_inner = heroes_status[teamID].heroe_panels[heroIndex].FindChildrenWithClassTraverse("HeroHealthBarInner")[0];
     var health_bar_inner_back = heroes_status[teamID].heroe_panels[heroIndex].FindChildrenWithClassTraverse("HeroHealthBarInnerBack")[0];
-    health_bar_inner.style.width = percentage.toString() + "%";
-    health_bar_inner_back.style.width = percentage.toString() + "%";
+    health_bar_inner.style.width = health_with.toString() + "%";
+    health_bar_inner_back.style.width = health_with.toString() + "%";
+    health_bar_inner_back.style.margin = "0 0 0 -100%";
 }
 
 function UpdateManaBar( data ){
