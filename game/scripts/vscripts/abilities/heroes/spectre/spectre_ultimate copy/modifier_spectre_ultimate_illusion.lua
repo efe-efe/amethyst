@@ -48,7 +48,7 @@ function modifier_spectre_ultimate_illusion:OnDestroy( kv )
 				
         self:GetCaster():SwapAbilities( 
             "spectre_ultimate",
-            "spectre_ultimate_swap",
+            "spectre_ultimate_recast",
             true,
             false
         )

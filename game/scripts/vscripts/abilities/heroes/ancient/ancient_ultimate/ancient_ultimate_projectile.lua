@@ -27,7 +27,7 @@ function ancient_ultimate_projectile:OnCastPointEnd( )
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 80,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
 			--self:PlayEffectsTarget(unit, _self.currentPosition)
 		end,

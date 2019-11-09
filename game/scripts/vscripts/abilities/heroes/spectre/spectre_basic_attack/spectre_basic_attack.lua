@@ -36,6 +36,8 @@ function spectre_basic_attack:OnCastPointEnd()
 
 	local modifier = caster:FindModifierByName("modifier_spectre_basic_attack")
 	local charged = modifier:GetStackCount() > 0 and true or false 
+	local ultimate = SafeGetModifierStacks("modifier_spectre_ultimate_damage", caster, caster)
+
 
 	local projectile = {
 		vSpawnOrigin = origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
@@ -48,7 +50,7 @@ function spectre_basic_attack:OnCastPointEnd()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
 			local countering = unit:HasModifier("modifier_counter")
 
@@ -87,7 +89,18 @@ function spectre_basic_attack:OnCastPointEnd()
 				}
 		
 				ApplyDamage( damage )
-			end 
+			end
+		
+			if ultimate and ultimate > 0 then
+				local damage = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = ultimate,
+					damage_type = DAMAGE_TYPE_PHYSICAL,
+				}
+		
+				ApplyDamage( damage )
+			end
 			self:PlayEffectsOnImpact(unit, _self.currentPosition, charged)
 		end,
 		OnFinish = function(_self, pos)

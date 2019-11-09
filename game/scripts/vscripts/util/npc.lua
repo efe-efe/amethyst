@@ -2,6 +2,34 @@ function CDOTA_BaseNPC:IsAlly( hero )
 	return GameMode:CheckAllies(self, hero)
 end
 
+function CDOTA_BaseNPC:FindUnitsInRadius( origin, radius, teamFilter, typeFilter, flagFilter, orderFilter  )
+    local units = FindUnitsInRadius( 
+        self:GetTeamNumber(), -- int, your team number
+        origin, -- point, center point
+        nil, -- handle, cacheUnit. (not known)
+        radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
+        DOTA_UNIT_TARGET_TEAM_BOTH, -- int, team filter
+        typeFilter,	-- int, type filter
+        flagFilter, -- int, flag filter
+        orderFilter, -- int, order filter
+        false -- bool, can grow cache
+	)
+
+	local filtered_units = {}
+
+	for _,unit in pairs(units) do
+		if teamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and self:IsAlly(unit) then
+			filtered_units[_] = unit
+		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not self:IsAlly(unit) then
+			filtered_units[_] = unit
+		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
+			filtered_units[_] = unit
+		end
+	end
+	
+	return filtered_units
+end
+
 function CDOTA_BaseNPC:AddStatusBar( incoming_data ) --{ label, modifier, priority, reversed }
 	local data = {
 		heroIndex = self:GetEntityIndex(),
@@ -12,6 +40,7 @@ function CDOTA_BaseNPC:AddStatusBar( incoming_data ) --{ label, modifier, priori
 		type = incoming_data.type or "duration",
 		maxStacks = incoming_data.maxStacks or nil,
 		local_only = incoming_data.local_only or nil,
+		stylename = incoming_data.stylename or nil,
 	}
 	CustomGameEventManager:Send_ServerToAllClients( "add_status", data )
 end
@@ -29,6 +58,7 @@ function CDOTA_BaseNPC:AddRecastVisual( incoming_data )
 		modifier = incoming_data.modifier, 
 		priority = 4, 
 		local_only = 1,
+		stylename = "Recast",
 		type = incoming_data.type or "duration",
 		maxStacks = incoming_data.maxStacks or nil,
 	})

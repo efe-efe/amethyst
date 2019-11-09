@@ -29,7 +29,7 @@ function modifier_spectre_ex_mobility:OnCreated( kv )
         self:StartIntervalThink( think_interval )
 
         self:GetParent():AddStatusBar({
-			label = "Darkness", modifier = self, priority = 3, 
+			label = "Darkness", modifier = self, priority = 3, stylename="Darkness"
 		})
     end
 end
@@ -49,16 +49,13 @@ end
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_spectre_ex_mobility:OnIntervalThink()
-    local enemies = FindUnitsInRadius( 
-        self:GetParent():GetTeamNumber(), -- int, your team number
-        self:GetParent():GetOrigin(), -- point, center point
-        nil, -- handle, cacheUnit. (not known)
-        self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-        DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
-        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-        0, -- int, flag filter
-        0, -- int, order filter
-        false -- bool, can grow cache
+    local enemies = self:GetCaster():FindUnitsInRadius( 
+        self:GetParent():GetOrigin(), 
+        self.radius, 
+        DOTA_UNIT_TARGET_TEAM_ENEMY, 
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+        DOTA_UNIT_TARGET_FLAG_NONE,
+        FIND_ANY_ORDER
     )
 
     for _,enemy in pairs(enemies) do

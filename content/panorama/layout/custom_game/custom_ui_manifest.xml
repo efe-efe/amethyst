@@ -1,0 +1,32 @@
+<root>
+	<scripts>
+        <include src="file://{resources}/scripts/custom_game/underscore-min.js" />
+        <include src="file://{resources}/scripts/custom_game/key_binding.js" />
+        <include src="file://{resources}/scripts/custom_game/custom_keys.js" />
+        <include src="file://{resources}/scripts/custom_game/base.js" />
+        <include src="file://{resources}/scripts/custom_game/camera.js" />
+        <include src="file://{resources}/scripts/custom_game/mouse.js" />
+        <include src="file://{resources}/scripts/custom_game/hero_base.js" />
+	</scripts>
+		
+    <styles>
+        <include src="file://{resources}/styles/custom_game/fonts_color.css" />
+    </styles>
+
+	<Panel>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/tutorial.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/hero_bar.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/death_zone.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/top_bar.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/heroes_status.xml"/>
+
+		<CustomUIElement type="GameSetup"			layoutfile="file://{resources}/layout/custom_game/team_select.xml" />
+		<CustomUIElement type="FlyoutScoreboard"	layoutfile="file://{resources}/layout/custom_game/multiteam_flyout_scoreboard.xml" />
+		<CustomUIElement type="HeroSelection" 		layoutfile="file://{resources}/layout/custom_game/multiteam_hero_select_overlay.xml" />
+		<CustomUIElement type="EndScreen" 			layoutfile="file://{resources}/layout/custom_game/multiteam_end_screen.xml" />
+
+		<CustomUIElement type="GameInfo" 			layoutfile="file://{resources}/layout/custom_game/overthrow_game_info.xml" />
+	</Panel>
+</root>
+
+

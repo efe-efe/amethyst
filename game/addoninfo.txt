@@ -4,7 +4,7 @@
     "IsPlayable"  "1"
     "mad_moon_map"
     {
-        "MaxPlayers"                    "8"
+        "MaxPlayers"                    "4"
         "TeamCount"                     "4"
     }
     

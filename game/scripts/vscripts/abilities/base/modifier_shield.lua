@@ -22,7 +22,7 @@ function modifier_shield:OnCreated( params )
         self:PlayEffects()
         GameMode:UpdateHeroHealthBar( self:GetParent() )
         self:GetParent():AddStatusBar({
-			label = "Shield", modifier = self, priority = 2, 
+			label = "Shield", modifier = self, priority = 2, stylename="Shield"
 		}) 
 	end
 end

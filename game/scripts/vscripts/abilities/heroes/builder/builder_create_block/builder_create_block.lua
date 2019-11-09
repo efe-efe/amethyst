@@ -16,3 +16,10 @@ function builder_create_block:OnSpellStart()
     wall:SetHullRadius(180)
     wall:AddNewModifier(self:GetCaster(), self, "wall_base", {})
 end
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	builder_create_block,
+    { activity = ACT_DOTA_ATTACK, rate = 1.3 },
+	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }
+)

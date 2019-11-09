@@ -15,3 +15,11 @@ function builder_mobility:PlayEffects()
     ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+
+if IsClient() then require("abilities") end
+Abilities.Initialize( 
+	builder_mobility,
+    { activity = ACT_DOTA_ATTACK, rate = 1.3 },
+	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }
+)

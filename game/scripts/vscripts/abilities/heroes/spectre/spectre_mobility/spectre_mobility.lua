@@ -26,19 +26,15 @@ function spectre_mobility:OnCastPointEnd()
         bIsReflectable = false,
         bIsSlowable = false,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit"  and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit"  and not _self.Source:IsAlly(unit) end,
 		OnFinish = function(_self, pos)
-			 -- find enemies
-			 local enemies = FindUnitsInRadius( 
-				caster:GetTeamNumber(), -- int, your team number
-				pos , -- point, center point
-				nil, -- handle, cacheUnit. (not known)
-				self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-				DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
-				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-				0, -- int, flag filter
-				0, -- int, order filter
-				false -- bool, can grow cache
+			local enemies = self:GetCaster():FindUnitsInRadius( 
+				pos, 
+				self.radius, 
+				DOTA_UNIT_TARGET_TEAM_ENEMY, 
+				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+				DOTA_UNIT_TARGET_FLAG_NONE,
+				FIND_ANY_ORDER
 			)
 
 			-- if at least 1 enemy

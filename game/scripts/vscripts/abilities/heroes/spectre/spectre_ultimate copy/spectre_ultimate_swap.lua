@@ -1,9 +1,9 @@
-spectre_ultimate_swap = class({})
+spectre_ultimate_recast = class({})
 
-spectre_ultimate_swap.illusion_index = nil
+spectre_ultimate_recast.illusion_index = nil
 
 --------------------------------------------------------------------------------
-function spectre_ultimate_swap:OnCastPointEnd()
+function spectre_ultimate_recast:OnCastPointEnd()
     -- unit identifier
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -18,7 +18,7 @@ function spectre_ultimate_swap:OnCastPointEnd()
     self:PlayEffects()
 end
 
-function spectre_ultimate_swap:PlayEffects()
+function spectre_ultimate_recast:PlayEffects()
     -- Get Resources
     EmitSoundOn( "Hero_Spectre.Reality", self:GetCaster() )
 
@@ -31,7 +31,7 @@ end
 
 if IsClient() then require("abilities") end
 Abilities.Initialize( 
-	spectre_ultimate_swap,
+	spectre_ultimate_recast,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
 	{ movement_speed = 10 }
 )

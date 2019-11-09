@@ -188,25 +188,26 @@ function GameMode:DamageFilter(keys)
 	return true
 end
 
-function GameMode:UpdateHealthBars()
-    local total_max_health = {}
-    local total_actual_health = {}
+function GameMode:GetAllianceHealth( name )
+    local health = {
+        current = 0,
+        max = 0,
+    }
 
-    total_max_health[DOTA_TEAM_GOODGUYS] = 0
-    total_max_health[DOTA_TEAM_BADGUYS] = 0
-
-    total_actual_health[DOTA_TEAM_GOODGUYS] = 0
-    total_actual_health[DOTA_TEAM_BADGUYS] = 0
-
-    for team_number, team in pairs(self.teams) do
-        for hero_index, hero in pairs(team.heroes) do
-            total_max_health[team_number] = total_max_health[team_number] + hero:GetMaxHealth()
-            total_actual_health[team_number] = total_actual_health[team_number] + hero:GetHealth()
-        end
+    for _,hero in pairs(self.alliances[name].heroes) do
+        health.max = health.max + hero:GetMaxHealth()
+        health.current = health.current + hero:GetHealth()
     end
 
-    local good_guys = 100 * total_actual_health[DOTA_TEAM_GOODGUYS]/total_max_health[DOTA_TEAM_GOODGUYS]
-    local bad_guys = 100 * total_actual_health[DOTA_TEAM_BADGUYS]/total_max_health[DOTA_TEAM_BADGUYS]
+    return health
+end
+
+function GameMode:UpdateHealthBars()
+    local radiant_health = self:GetAllianceHealth("DOTA_ALLIANCE_RADIANT")
+    local dire_health = self:GetAllianceHealth("DOTA_ALLIANCE_DIRE")
+
+    local good_guys = 100 * radiant_health.current/radiant_health.max
+    local bad_guys = 100 * dire_health.current/dire_health.max
 
     if good_guys ~= good_guys then
         good_guys = 0
@@ -225,8 +226,6 @@ end
 
 function GameMode:UpdateHeroHealthBar( hero )
     local potential_health = hero:GetHealth() + (self.iMaxTreshold - hero.iTreshold)
-    --local treshold = 100 * potential_health/hero:GetMaxHealth()
-    --local percentage = 100 * hero:GetHealth()/potential_health
     local shield_modifier = hero:FindModifierByName("modifier_shield")
     local shield = 0
 
@@ -239,8 +238,6 @@ function GameMode:UpdateHeroHealthBar( hero )
     local data = {
         teamID = hero:GetTeamNumber(),
         heroIndex = hero:GetEntityIndex(),
-        --percentage = percentage,
-        --treshold = treshold,
         shield = shield,
         current_health = hero:GetHealth(),
         max_health = hero:GetMaxHealth(),

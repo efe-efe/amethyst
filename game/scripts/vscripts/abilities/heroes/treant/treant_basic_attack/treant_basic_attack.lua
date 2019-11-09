@@ -39,7 +39,7 @@ function treant_basic_attack:OnCastPointEnd()
 			local final_heal = heal * (1 - (counter * reduction_per_hit))
 
 			-- ENEMIES
-			if unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() then
+			if not _self.Source:IsAlly(unit) then
 				local damage_table = {
 					victim = unit,
 					attacker = _self.Source,

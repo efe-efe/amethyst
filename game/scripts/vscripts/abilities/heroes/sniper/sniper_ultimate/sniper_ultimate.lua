@@ -18,7 +18,7 @@ function sniper_ultimate:OnCastPointEnd()
 		"modifier_channeling", -- modifier name
 		{ 
             duration = duration,
-            style = "Ultimate",
+            style = "ChannelingUltimate",
             title = "ultimate",
             movement_speed = 0,
             channeling_tick = 0.45,

@@ -41,7 +41,7 @@ function phantom_ultimate:OnCastPointEnd()
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 80,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
 			local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 			local final_damage = damage + ( stacks * damage_per_stack )
@@ -50,7 +50,7 @@ function phantom_ultimate:OnCastPointEnd()
 				victim = unit,
 				attacker = _self.Source,
 				damage = final_damage,
-				damage_type = DAMAGE_TYPE_PURE,
+				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
 			
 			ApplyDamage( damage_table )

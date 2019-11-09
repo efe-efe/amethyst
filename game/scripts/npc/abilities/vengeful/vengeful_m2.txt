@@ -10,7 +10,6 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityCastRange"				"1200"
-		"AbilityCastPoint"				"0.5"
 		"AbilityCooldown"				"5.0"
 
 		"AbilitySpecial"

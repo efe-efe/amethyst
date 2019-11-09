@@ -9,8 +9,9 @@ function wall_base:DeclareFunctions()
 	return funcs
 end
 
-function wall_base:OnDeath()
+function wall_base:OnDeath( params )
     if IsServer() then 
+		if params.unit ~= self:GetParent() then return end
         self:PlayEffectsOnDeath()
         self:GetParent():AddNoDraw()
     end

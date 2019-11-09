@@ -49,7 +49,7 @@ function juggernaut_ultimate:OnCastPointEnd()
         WallBehavior = PROJECTILES_DESTROY,
         GroundBehavior = PROJECTILES_NOTHING,
         fGroundOffset = 0,
-        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() and unit:Attribute_GetIntValue("dummy", 0) ~= 1 end,
+        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) and unit:Attribute_GetIntValue("dummy", 0) ~= 1 end,
         OnUnitHit = function(_self, unit) 
             if _self.Source == caster then
                 if caster:HasModifier("modifier_juggernaut_ultimate_movement") then

@@ -54,7 +54,7 @@ function modifier_counter:OnCreated( kv )
             self.ability:OnStartCounter()
         end
 
-        self.caster:AddStatusBar({ label = "Counter", modifier = self, priority = 4,  }) 
+        self.caster:AddStatusBar({ label = "Counter", modifier = self, priority = 4, stylename="Counter" }) 
         self:PlayEffectsAura()
     end
 end

@@ -32,7 +32,7 @@ function vengeful_ex_second_attack:OnCastPointEnd()
 		fGroundOffset = 		80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit ~= _self.Source end,
 		OnUnitHit = function(_self, unit) 
-			if unit:GetTeamNumber() == _self.Source:GetTeamNumber() then
+			if _self.Source:IsAlly(unit) then
 				unit:Heal(heal, _self.Source )
 			else 
 				local damage_table = {

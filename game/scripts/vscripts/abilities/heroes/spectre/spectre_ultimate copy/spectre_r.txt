@@ -23,10 +23,10 @@
 		}
 	}
 
-	"spectre_ultimate_swap"
+	"spectre_ultimate_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_ultimate/spectre_ultimate_swap"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ultimate/spectre_ultimate_recast"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"spectre_reality"

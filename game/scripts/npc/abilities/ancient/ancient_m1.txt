@@ -1,0 +1,25 @@
+"DOTAAbilities" {
+    "ancient_basic_attack"
+    {
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/ancient/ancient_basic_attack/ancient_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_basic_attack"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1100"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "6" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"max_stacks"				"3" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"				    "2.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"ms_pct_per_stack"          "7" }
+		}
+	}
+}

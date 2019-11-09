@@ -62,7 +62,7 @@ function GameMode:OnHeroInGame(keys)
     -------------------------------
     -- Timer to prevent illusions from passing
     -------------------------------
-    Timers:CreateTimer(0.5, function()
+    Timers:CreateTimer(0.1, function()
         -------------------------------
         -- Filter unwanted units
         -------------------------------
@@ -114,6 +114,7 @@ function GameMode:OnHeroInGame(keys)
             end
 
             -- Initialize team if not initialized yet
+            --[[
             if self.teams[team] == nil then
                 self.teams[team] = {
                     wins = 0,
@@ -126,8 +127,9 @@ function GameMode:OnHeroInGame(keys)
 
             self.teams[team].players[playerID] = playerOwner
             self.teams[team].heroes[keys.entindex] = npc -- Save the heroe, in case the player is not connected
+            ]]
 
-            --self:UpdateAlliance(keys.entindex)
+            self:UpdateAlliance(keys.entindex)
 
             local data = {
                 teamID = team,
@@ -158,17 +160,11 @@ end
 -- ENTITY DIED
 --============================================================================================
 function GameMode:OnEntityKilled( keys )
-    -- The Killed
     local killed = EntIndexToHScript( keys.entindex_killed )
-
-    -- The Killer
-    local killerEntity = nil
-    if keys.entindex_attacker ~= nil then
-        killerEntity = EntIndexToHScript( keys.entindex_attacker )
-    end
     
     -- Recreate orb
-    if killed:IsMiddleOrb() then
+    if killed:IsMiddleOrb() then     
+
         self:DestroyAllTimers()
 
         self:CreateMiddleOrb( self.next_middle_orb_index, self.MIDDLE_ORB_SPAWN_TIME)
@@ -180,18 +176,34 @@ function GameMode:OnEntityKilled( keys )
         if not self:IsDeathZoneCreated() then
             self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
         end
+
+        if keys.entindex_attacker ~= nil then
+            local killer = EntIndexToHScript( keys.entindex_attacker )
+            local killer_team = killer:GetTeamNumber()
+            local killer_alliance = self:FindAllianceByTeam(killer_team)
+
+            killer_alliance.amethysts = killer_alliance.amethysts + 1
+            
+            local data = {
+                good_guys = self.alliances["DOTA_ALLIANCE_RADIANT"].amethysts,
+                bad_guys = self.alliances["DOTA_ALLIANCE_DIRE"].amethysts
+            }
+
+            CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
+
+        end
     end
 
-    if killed:IsRealHero() and Convars:GetInt('test_mode') == 0 then
+    if killed:IsRealHero() then
         local killed_team = killed:GetTeamNumber()
+        local killed_alliance = self:FindAllianceByTeam(killed_team)
 
         if not self.lock_round then
             self:CreateDeathOrb(killed)
-            if self:GetAliveHeroes(killed_team) <= 0 then
-                -- Set the victory state
-                self.teams[killed_team].looser = true
-                print("Team " .. killed_team .. " loses this round")
-                
+            if self:GetAliveHeroes(killed_alliance) <= 0 then
+                print("[ROUNDS] Alliance " .. killed_alliance.name .. " loses this round")
+
+                killed_alliance.looser = true
                 local winner = self:FindWinner()
                 if winner ~= false then 
                     winner.wins = winner.wins + 1
@@ -202,22 +214,6 @@ function GameMode:OnEntityKilled( keys )
     end
 
     self:UpdateCameras()
-
-    -- Remove dead non-hero units from selection -> bugged ability/cast bar
-	if killed:IsIllusion() or (killed:IsControllableByAnyPlayer() and (not killed:IsRealHero()) and (not killed:IsCourier()) and (not killed:IsClone())) and (not killed:IsTempestDouble()) then
-		local player = killed:GetPlayerOwner()
-		local playerID
-		if player == nil then
-			playerID = killed:GetPlayerOwnerID()
-		else
-			playerID = player:GetPlayerID()
-		end
-		
-		if Selection then
-			-- Without Selection library this will return an error
-			PlayerResource:RemoveFromSelection(playerID, killed)
-		end
-	end
 end
 
 --------------------------------------------------------------------------------
@@ -297,18 +293,18 @@ end
 -- HELPERS
 --============================================================================================
 function GameMode:FindWinner()
-    local teams_with_alive_players = 0
+    local alliances_with_alive_players = 0
     local winner = nil
 
-    for teamNumber, team in pairs(self.teams) do
-        if not team.looser then 
-            winner = team
-            teams_with_alive_players = teams_with_alive_players + 1
+    for _,alliance in pairs(self.alliances) do
+        if not alliance.looser then 
+            winner = alliance
+            alliances_with_alive_players = alliances_with_alive_players + 1
         end
     end
 
     -- If there are only 1 not looser, lock the round
-    if teams_with_alive_players == 1 then
+    if alliances_with_alive_players == 1 then
         self.lock_round = true
         return winner
     else
@@ -316,8 +312,8 @@ function GameMode:FindWinner()
     end
 end
 
-function GameMode:FindNextAliveAlly( team )
-    for heroIndex, hero in pairs(self.teams[team].heroes) do
+function GameMode:FindNextAliveAlly( alliance )
+    for _,hero in pairs(alliance.heroes) do
         if hero:IsAlive() then
             return hero
         end
@@ -327,8 +323,8 @@ function GameMode:FindNextAliveAlly( team )
 end
 
 function GameMode:FindNextAliveHero()
-    for teamNumber, team in pairs(self.teams) do
-        for heroIndex, hero in pairs(team.heroes) do
+    for _,alliance in pairs(self.alliances) do
+        for _,hero in pairs(alliance.heroes) do
             if hero:IsAlive() then
                 return hero
             end
@@ -338,10 +334,10 @@ function GameMode:FindNextAliveHero()
     return nil
 end
 
-function GameMode:GetAliveHeroes( team )
+function GameMode:GetAliveHeroes( alliance )
     local alive_heroes = 0
     
-    for heroIndex, hero in pairs(self.teams[team].heroes) do
+    for _,hero in pairs(alliance.heroes) do
         if hero:IsAlive() then
             alive_heroes = alive_heroes + 1
         end
@@ -351,13 +347,19 @@ function GameMode:GetAliveHeroes( team )
 end
 
 function GameMode:UpdateCameras()
-    for teamNumber, team in pairs(self.teams) do
-        for heroIndex, hero in pairs(team.heroes) do
+    for _,alliance in pairs(self.alliances) do
+        for _,hero in pairs(alliance.heroes) do
             if not hero:IsAlive() then
-                local alive_ally = self:FindNextAliveAlly( teamNumber )
+                local alive_ally = self:FindNextAliveAlly( alliance )
 
                 if alive_ally ~= nil then
                     PlayerResource:SetCameraTarget(hero:GetPlayerID(), alive_ally)
+                    alive_ally:AddNewModifier(
+                        hero,
+                        nil,
+                        "modifier_generic_provides_vision",
+                        {}
+                    )
                 else 
                     local alive_hero = self:FindNextAliveHero()
                     if alive_hero ~= nil then
@@ -393,20 +395,23 @@ function GameMode:EndRound( delay )
         self:CreateAllOrbs()
         --self:CreateWalls()
 
-        for _,actual_team in pairs(self.teams) do
-            
-            if actual_team.wins >= self.ROUNDS_TO_WIN then
-                self:EndGame(_) 
+        for _,alliance in pairs(self.alliances) do
+            if 
+                alliance.wins >= self.ROUNDS_TO_WIN or 
+                ( alliance.wins - self:GetOppositeAlliance(alliance).wins ) >= self.DIFFERNECE_TO_WIN
+            then
+                self:EndGame(alliance.teams[1]) 
                 break
             end
 
-            for heroIndex, hero in pairs(actual_team.heroes) do
+            for _,hero in pairs(alliance.heroes) do
                 hero:Kill(nil, hero)	
             end
             
-            actual_team.looser = false
+            alliance.looser = false
+            alliance.amethysts = 0
 
-            for heroIndex, hero in pairs(actual_team.heroes) do
+            for heroIndex, hero in pairs(alliance.heroes) do
                 hero:SetRespawnsDisabled(false)
                 hero:RespawnHero(false, false)
                 hero:SetRespawnsDisabled(true)
@@ -420,13 +425,19 @@ function GameMode:EndRound( delay )
         self.lock_round = false
         
         local score = { 
-            good_guys = self.teams[DOTA_TEAM_GOODGUYS].wins,
-            bad_guys = self.teams[DOTA_TEAM_BADGUYS].wins,
+            good_guys = self.alliances["DOTA_ALLIANCE_RADIANT"].wins,
+            bad_guys = self.alliances["DOTA_ALLIANCE_DIRE"].wins,
         }
 
         --Update score
         CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
 
+        local data = {
+            good_guys = self.alliances["DOTA_ALLIANCE_RADIANT"].amethysts,
+            bad_guys = self.alliances["DOTA_ALLIANCE_DIRE"].amethysts
+        }
+        CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
+        
         nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
     end)
 end
@@ -709,5 +720,14 @@ function GameMode:PlayEffectsArrow()
             ParticleManager:SetParticleControl( self.effect_cast_arrows[middle_orb_ent], 0, origin )
             ParticleManager:SetParticleControl( self.effect_cast_arrows[middle_orb_ent], 2, second_arrow_origin )
         end
+    end
+end
+
+
+function GameMode:GetOppositeAlliance( alliance )
+    if alliance.name == "DOTA_ALLIANCE_RADIANT" then
+        return self.alliances["DOTA_ALLIANCE_DIRE"]
+    else
+        return self.alliances["DOTA_ALLIANCE_RADIANT"]
     end
 end

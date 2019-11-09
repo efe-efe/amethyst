@@ -13,7 +13,7 @@ end
 function modifier_generic_sleep_lua:OnCreated( params )
 	if IsServer() then 
 		self:GetParent():AddStatusBar({
-			label = "Sleep", modifier = self, priority = 3, 
+			label = "Sleep", modifier = self, priority = 3, stylename="Sleep"
 		}) 
 	end
 end

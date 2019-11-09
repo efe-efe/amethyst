@@ -113,7 +113,7 @@ function tinker_counter:Refract( source, targets, jumps )
 			draw = false,
 			fRehitDelay = 1.0,
 			UnitTest = function(_self, unit) 
-				return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() and unit ~= targets[jumps]
+				return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) and unit ~= targets[jumps]
 			end,
 			OnUnitHit = function(_self, unit) 
 
@@ -207,7 +207,7 @@ function tinker_counter:OnCastPointEnd( point )
 		fVisionLingerDuration = 1,
 		draw = false,
 		fRehitDelay = 1.0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
 			-- precache damage
 			local damage = {

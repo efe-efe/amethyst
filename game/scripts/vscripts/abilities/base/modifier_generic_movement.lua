@@ -279,8 +279,6 @@ function modifier_generic_movement:GetCollidingWithObjects(test_position)
 		return false
 	end
 
-	local blocked = false
-
 	local units = FindUnitsInRadius( 
 		self.parent:GetTeamNumber(), -- int, your team number
 		test_position, -- point, center point
@@ -295,13 +293,13 @@ function modifier_generic_movement:GetCollidingWithObjects(test_position)
 
 	for _,unit in pairs(units) do
 		if unit ~= self.parent then
-			if unit:Attribute_GetIntValue("wall", 1) then
-				blocked = true
+			if not unit:IsPhased() then
+				return true
 			end
 		end
 	end
 
-	return blocked
+	return false
 end
 
 function modifier_generic_movement:SubMove(colliding, origin, speed, direction_a, direction_b, slow)
@@ -353,7 +351,6 @@ function modifier_generic_movement:OnSpentMana(params)
         end)
 	end	
 end
-
 
 -- Status Effects
 function modifier_generic_movement:CheckState()

@@ -11,7 +11,7 @@ end
 function modifier_generic_stunned:OnCreated()
 	if IsServer() then
 		self:GetParent():AddStatusBar({
-			label = "Stun", modifier = self, priority = 4, 
+			label = "Stun", modifier = self, priority = 4, stylename="Stun"
 		}) 
 		
 		SafeDestroyModifier("modifier_cast_point_old", self:GetParent(), self:GetParent())

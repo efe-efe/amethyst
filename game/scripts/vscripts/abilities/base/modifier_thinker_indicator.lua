@@ -58,22 +58,24 @@ function modifier_thinker_indicator:PlayEffects()
     local effect_cast
     
     if self.show_all == 1 then
-        for _,actual_team in pairs(GameMode.teams) do
-            effect_cast = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self.caster, _ )
-            self.effects_cast_aoe[_] = ParticleManager:CreateParticleForTeam( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, _ )
+        for _,alliance in pairs(GameMode.alliances) do
+            for _,team in pairs(alliance.teams) do
+                effect_cast = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self.caster, _ )
+                self.effects_cast_aoe[team] = ParticleManager:CreateParticleForTeam( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, team )
 
-            ParticleManager:SetParticleControl( self.effects_cast_aoe[_], 0, self.origin)	-- line origin
-            ParticleManager:SetParticleControl( self.effects_cast_aoe[_], 1, Vector(self.radius, 1,1))
+                ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 0, self.origin)	-- line origin
+                ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 1, Vector(self.radius, 1,1))
 
-            if self.caster:GetTeam() == _ then
-                ParticleManager:SetParticleControl( self.effects_cast_aoe[_], 15, Vector(70, 70, 250))
-            else
-                ParticleManager:SetParticleControl( self.effects_cast_aoe[_], 15, Vector(250, 70, 70))
+                if self.caster:GetTeam() == team then
+                    ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(70, 70, 250))
+                else
+                    ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(250, 70, 70))
+                end
+
+                ParticleManager:SetParticleControl( effect_cast, 0, self.origin)	-- line origin
+                ParticleManager:SetParticleControl( effect_cast, 1, self.origin)	-- line origin
+                ParticleManager:ReleaseParticleIndex( effect_cast )
             end
-
-            ParticleManager:SetParticleControl( effect_cast, 0, self.origin)	-- line origin
-            ParticleManager:SetParticleControl( effect_cast, 1, self.origin)	-- line origin
-            ParticleManager:ReleaseParticleIndex( effect_cast )
         end
     else
 
@@ -98,10 +100,12 @@ function modifier_thinker_indicator:StopEffects()
 		ParticleManager:ReleaseParticleIndex( self.effect_cast_aoe )
     end
     
-    for _,actual_team in pairs(GameMode.teams) do
-        if self.effects_cast_aoe[_]  ~= nil then
-            ParticleManager:DestroyParticle( self.effects_cast_aoe[_], false ) 
-            ParticleManager:ReleaseParticleIndex( self.effects_cast_aoe[_] )
+    for _,alliance in pairs(GameMode.alliances) do
+        for _,team in pairs(alliance.teams) do
+            if self.effects_cast_aoe[team]  ~= nil then
+                ParticleManager:DestroyParticle( self.effects_cast_aoe[team], false ) 
+                ParticleManager:ReleaseParticleIndex( self.effects_cast_aoe[team] )
+            end
         end
     end
 end

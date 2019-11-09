@@ -1,0 +1,45 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/util.js" />
+        <include src="file://{resources}/scripts/custom_game/top_bar.js" />
+    </scripts>
+    <styles>
+        <include src="file://{resources}/styles/custom_game/top_bar.css" />
+    </styles>
+    <snippets>
+        <snippet name="TeamHealthBar">
+            <Panel class="TeamBarContainer" hittest="false" hittestchildren="false">
+                <Panel class="TeamHealthBar" hittest="false" hittestchildren="false">
+                    <Panel class="TeamHealthBarInnerBack" hittest="false" hittestchildren="false"/>
+                    <Panel class="TeamHealthBarInner" hittest="false" hittestchildren="false"/>
+                </Panel>
+                <Panel id="TeamAmethysts" hittest="false" hittestchildren="false">
+                    <Panel id="TeamAmethystsImageContainer" hittest="false" hittestchildren="false">
+                        <Image id="TeamAmethystsImage" src="file://{images}/custom_game/amethyst.png" />
+                    </Panel>
+                    <Label id="TeamAmethystsText" html="true" text="X0" />
+                </Panel>
+            </Panel>
+        </snippet>
+    </snippets>
+    <Panel class="MainPanel" hittest="false">
+        <Panel id="TopBar" hittest="false" class="MainPanel">
+            <Panel id="TopBarLeft" class="TopBarTeamPositioner">
+            </Panel>
+            <Panel id="TopBarMiddle">
+                <Panel id="TopScore" hittest="false" hittestchildren="false">
+                    <Label class="TopScoreText" id="TopScoreTextLeft" html="true" text="0" />
+                    <Panel id="TopScoreMiddle" hittest="false" hittestchildren="false">
+                        <Image id="TopScoreImage" src="file://{images}/custom_game/sword.png" />
+                    </Panel>
+                    <Label class="TopScoreText" id="TopScoreTextRight" html="true" text="0" />
+                </Panel>
+                <Panel id="Clock" hittest="false" hittestchildren="false">
+                    <Label id="ClockText" html="true" text="--:--" />
+                </Panel>
+            </Panel>
+            <Panel id="TopBarRight" class="TopBarTeamPositioner">
+            </Panel>
+        </Panel>
+    </Panel>
+</root>

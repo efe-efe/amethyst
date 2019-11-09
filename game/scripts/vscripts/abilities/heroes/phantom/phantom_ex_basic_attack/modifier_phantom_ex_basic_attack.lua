@@ -31,7 +31,7 @@ function modifier_phantom_ex_basic_attack:OnCreated( kv )
         )
 
         self:GetParent():AddStatusBar({
-            label = "dancing daggers", modifier = self, priority = 2, 
+            label = "dancing daggers", modifier = self, priority = 2, stylename="DancingBlades"
         }) 
         self:PlayEffectsOnCast()
 	end

@@ -75,7 +75,7 @@ function wisp_basic_attack:OnCastPointEnd( point )
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" end,
 		OnUnitHit = function(_self, unit)
 			-- ENEMIES
-			if unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() then
+			if not _self.Source:IsAlly(unit) then
 				_self.Source:AddNewModifier(
 					unit,
 					self,

@@ -36,18 +36,16 @@ function modifier_cast_point:OnCreated(params)
 		self.hide_indicator = params.hide_indicator
 		self.cancelable = params.cancelable
 		
-		self.min_range = params.min_range
-		self.max_range = params.max_range
-	
 		self.disable_all = params.disable_all == 1 and true or false
 		self.public = params.public
 		self.cancel_on_damage = params.cancel_on_damage
 
+		local fixed_range = params.fixed_range
+
 		if self.hide_indicator ~= nil then
-			self.parent:AddNewModifier(self.parent, nil, "modifier_target_indicator", { 
+			self.parent:AddNewModifier(self.parent, self:GetAbility(), "modifier_target_indicator", { 
 				duration = self:GetDuration(),
-				min_range = self.min_range,
-				max_range = self.max_range,
+				fixed_range = fixed_range,
 				radius = self.radius,
 				public = self.public
 			})
@@ -81,18 +79,16 @@ function modifier_cast_point:OnRefresh(params)
 		self.hide_indicator = params.hide_indicator
 		self.cancelable = params.cancelable
 		
-		self.min_range = params.min_range
-		self.max_range = params.max_range
-	
 		self.disable_all = params.disable_all == 1 and true or false
 		self.public = params.public
 		self.cancel_on_damage = params.cancel_on_damage
 
+		local fixed_range = params.fixed_range
+
 		if self.hide_indicator ~= nil then
-			self.parent:AddNewModifier(self.parent, nil, "modifier_target_indicator", { 
+			self.parent:AddNewModifier(self.parent, self:GetAbility(), "modifier_target_indicator", { 
 				duration = self:GetDuration(),
-				min_range = self.min_range,
-				max_range = self.max_range,
+				fixed_range = fixed_range,
 				radius = self.radius,
 				public = self.public
 			})
@@ -259,11 +255,12 @@ function modifier_cast_point:OnOrder(params)
 			params.order_type == DOTA_UNIT_ORDER_CAST_POSITION or
 			params.order_type == DOTA_UNIT_ORDER_CAST_TARGET or
 			params.order_type == DOTA_UNIT_ORDER_CAST_TARGET_TREE or
-			params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET or
-			params.order_type == DOTA_UNIT_ORDER_CAST_TOGGLE
+			params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
 		then
 			self.canceled_by_player = true
 			self:Destroy()
+		elseif params.order_type == DOTA_UNIT_ORDER_CAST_TOGGLE then
+			print("YEAH")
 		end
 	end
 end
@@ -284,4 +281,11 @@ function modifier_cast_point:CheckState()
     else
         return {}
     end
+end
+
+function modifier_cast_point:OnKeyReleased( key )
+	print(key)
+	--[[if self:GetAbility().OnKeyReleased and self:GetAbility().GetKey() == key then
+		self:GetAbility():OnKeyReleased()
+	end]]
 end

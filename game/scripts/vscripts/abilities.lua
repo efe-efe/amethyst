@@ -30,31 +30,16 @@ function Abilities.Initialize( ability, animation, warmup )
         end
 
         local radius = nil
-        local min_range = nil
-        local max_range = nil
-
         if self:HasBehavior(DOTA_ABILITY_BEHAVIOR_AOE) then
             radius = self:GetSpecialValueFor("radius")
-        end
-        if self:HasBehavior(DOTA_ABILITY_BEHAVIOR_NO_TARGET) then
-            max_range = 0
-        else 
-            max_range = self:GetCastRange(Vector(0,0,0), nil)
-        end
-
-        if warmup.fixed_range then
-            min_range = max_range
-        else
-            min_range = self:GetSpecialValueFor("min_range")
         end
 
         local modifier = caster:AddNewModifier( caster, self, "modifier_cast_point", { 
             duration = cast_point, 
             movement_speed = warmup.movement_speed,
             radius = radius,
-            min_range = min_range,
-            max_range = max_range,
-            hide_indicator = warmup.hide_indicator or false,
+            fixed_range = warmup.fixed_range or 0,
+            hide_indicator = warmup.hide_indicator or 0,
             public = warmup.public or nil,
             disable_all = warmup.disable_all == false and 0 or 1,
             cancelable = self:GetAbilityType() == 1 and 0 or 1,
@@ -62,9 +47,9 @@ function Abilities.Initialize( ability, animation, warmup )
         
         -- Castbar (ULTIMATE)
         if self:GetAbilityType() == 1 then
-            caster:AddStatusBar({ label = "Ultimate", modifier = modifier, priority = 5, reversed = 1}) 
+            caster:AddStatusBar({ label = "Ultimate", modifier = modifier, priority = 5, reversed = 1, stylename = "Ultimate"}) 
         elseif self:GetName() == "mount" then
-            caster:AddStatusBar({ label = "Mount", modifier = modifier, priority = 5, reversed = 1 }) 
+            caster:AddStatusBar({ label = "Mount", modifier = modifier, priority = 5, reversed = 1, stylename = "Mount" }) 
         else
             if warmup.hide_castbar ~= 1 then
                 -- TODO: HIDING CAST POINT BAR

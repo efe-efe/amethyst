@@ -15,17 +15,13 @@ end
 function modifier_spectre_extra_thinker:OnIntervalThink()
     local thinker_origin = self:GetParent():GetOrigin()
 
-    -- find enemies
-    local enemies = FindUnitsInRadius( 
-        self:GetCaster():GetTeamNumber(), -- int, your team number
-        thinker_origin, -- point, center point
-        nil, -- handle, cacheUnit. (not known)
-        self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-        DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
-        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-        0, -- int, flag filter
-        0, -- int, order filter
-        false -- bool, can grow cache
+    local enemies = self:GetCaster():FindUnitsInRadius( 
+        thinker_origin, 
+        self.radius, 
+        DOTA_UNIT_TARGET_TEAM_ENEMY, 
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+        DOTA_UNIT_TARGET_FLAG_NONE,
+        FIND_ANY_ORDER
     )
 
     local data =  { duration = self.recast_time }

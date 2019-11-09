@@ -46,7 +46,7 @@ function phoenix_ex_special_attack:OnSpellStart()
 		fVisionLingerDuration = 1,
 		draw = false,
 		fRehitDelay = 1.0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
 
 			local damage = {

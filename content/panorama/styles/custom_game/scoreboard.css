@@ -1,0 +1,48 @@
+Label
+{
+    font-size: 20px;
+    color: #FAFAFA;
+    vertical-align: top;
+}
+
+.AmethystScore
+{
+	margin-top: 164px;
+    width: 15%;
+    flow-children: down;
+    background-color: gradient( linear, 0% 0%, 100% 0%, from( rgba(36, 42, 53, 0.644) ), to( rgba(36, 42, 53, 0.0) ) );
+}
+ 
+#Title
+{
+    flow-children: down;
+}
+
+#TitleName
+{
+    color: #cccccc;
+    font-size: 20px;
+    margin-left: 8px;
+    margin-top: 8px;
+    text-transform: uppercase;
+    vertical-align: center;
+}
+
+#RadiantName, #RadiantScore
+{
+    margin-top: 10px;
+}
+
+#RadiantName, #RadiantScore,
+#DireName, #DireScore, 
+#CustomOneName, #CustomOneScore,
+#CustomTwoName, #CustomTwoScore
+{
+    margin-left: 8px;
+}
+
+.ScoreRow
+{
+    flow-children: right;
+    padding-bottom: 8px;
+}

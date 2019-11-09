@@ -13,9 +13,8 @@ function modifier_target_indicator:OnCreated( params )
 
     if IsServer() then
 		self.radius = params.radius
-		self.min_range = params.min_range
-		self.max_range = params.max_range
 		self.public = params.public and true or false
+		self.fixed_range = params.fixed_range
 
         self:PlayEffects()
         self:StartIntervalThink( 0.01 )
@@ -29,9 +28,8 @@ function modifier_target_indicator:OnRefresh( params )
 
     if IsServer() then
 		self.radius = params.radius
-		self.min_range = params.min_range
-		self.max_range = params.max_range
 		self.public = params.public and true or false
+		self.fixed_range = params.fixed_range
 	
         self:StopEffects()
         self:PlayEffects()
@@ -52,8 +50,10 @@ end
 -- Interval Effects
 function modifier_target_indicator:OnIntervalThink()
     local mouse = GameMode.mouse_positions[self.parent:GetPlayerID()]
-    local origin = self.parent:GetOrigin()
-    local point = CalcRange(origin, mouse, self.max_range, self.min_range)
+	local origin = self.parent:GetOrigin()
+	local ranges = self:GetRanges(self.fixed_range)
+
+    local point = CalcRange(origin, mouse, ranges.max_range, ranges.min_range)
 
     self:UpdateEffects(origin, point)
 end
@@ -116,4 +116,25 @@ function modifier_target_indicator:UpdateEffects(origin, point)
 			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, point)	
 		end
 	end
+end
+
+function modifier_target_indicator:GetRanges( fixed )
+	local ranges = {
+		min_range = 0,
+		max_range = 0,
+	}
+
+	if self:GetAbility():HasBehavior(DOTA_ABILITY_BEHAVIOR_NO_TARGET) then
+		ranges.max_range = 0
+	else 
+		ranges.max_range = self:GetAbility():GetCastRange(Vector(0,0,0), nil)
+	end
+
+	if fixed == 1 then
+		ranges.min_range = ranges.max_range
+	else
+		ranges.min_range = self:GetAbility():GetSpecialValueFor("min_range")
+	end
+
+	return ranges
 end

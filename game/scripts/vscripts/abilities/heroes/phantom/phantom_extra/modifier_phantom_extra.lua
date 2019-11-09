@@ -22,14 +22,14 @@ function modifier_phantom_extra:OnCreated(params)
             modifier = self, 
             priority = 3, 
             type = "stack",
-            maxStacks = self.max_stacks
+            maxStacks = self.max_stacks,
         }) 
         self:GetParent():AddRecastVisual({
             key = "R",
             modifier = self,
             abilityName = self:GetAbility():GetName(),
             maxStacks = self.max_stacks,
-            type = "stack"
+            type = "stack",
         })
         self:PlayEffectsWeapon()
         self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_phantom_extra_visuals", { duration = 0.2 })

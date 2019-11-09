@@ -54,7 +54,7 @@ function treant_mobility:OnCastPointEnd( )
         UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" end,
         OnUnitHit = function(_self, unit) 
             -- ENEMIES
-			if unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() then
+			if not _self.Source:IsAlly(unit) then
                 local damage_table = {
                     victim = unit,
                     attacker = _self.Source,

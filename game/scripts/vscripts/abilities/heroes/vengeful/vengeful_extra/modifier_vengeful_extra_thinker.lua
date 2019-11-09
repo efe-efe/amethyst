@@ -25,20 +25,17 @@ function modifier_vengeful_extra_thinker:OnIntervalThink()
         local thinker = self:GetParent()
 
          -- Find allies
-        local allies = FindUnitsInRadius( 
-            caster:GetTeamNumber(), -- int, your team number
-            thinker:GetOrigin(), -- point, center point
-            nil, -- handle, cacheUnit. (not known)
-            self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-            DOTA_UNIT_TARGET_TEAM_FRIENDLY, -- int, team filter
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-            0, -- int, flag filter
-            0, -- int, order filter
-            false -- bool, can grow cache
+         local allies = caster:FindUnitsInRadius( 
+            thinker:GetOrigin(), 
+            self.radius, 
+            DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
+            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+            DOTA_UNIT_TARGET_FLAG_NONE,
+            FIND_ANY_ORDER
         )
 
         for _,ally in pairs(allies) do
-           ally:AddNewModifier(caster, self:GetAbility(), "modifier_shield", { duration = self.duration, damage_block = self.damage_block })
+            ally:AddNewModifier(caster, self:GetAbility(), "modifier_shield", { duration = self.duration, damage_block = self.damage_block })
             --ally:AddNewModifier(caster, self:GetAbility(), "modifier_vengeful_extra", { duration = self.duration })
         end
 

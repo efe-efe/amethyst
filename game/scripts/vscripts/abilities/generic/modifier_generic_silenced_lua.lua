@@ -17,7 +17,7 @@ end
 function modifier_generic_silenced_lua:OnCreated()
 	if IsServer() then
 		self:GetParent():AddStatusBar({
-			label = "Silence", modifier = self, priority = 4, 
+			label = "Silence", modifier = self, priority = 4, stylename="Silence"
 		}) 
 		self:PlayEffects()
 		SafeDestroyModifier("modifier_channeling", self:GetParent())

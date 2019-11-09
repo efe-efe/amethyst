@@ -4,7 +4,7 @@ require('util/health')
 require('util/abilities')
 require('util/npc')
 
-_G.nMAX_COUNTDOWNTIMER = 99999-- 60
+_G.nMAX_COUNTDOWNTIMER = 60
 _G.nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
 
 Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
@@ -68,10 +68,10 @@ function GameMode:SetupRules()
         GameRules:SetUseBaseGoldBountyOnHeroes(false)
     end
     if GetMapName() == "mad_moon_map" then
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 2 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 2 )
-        --GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 2 )
-        --GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_2, 2 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 1 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_2, 1 )
     elseif GetMapName() == "free_for_all" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
@@ -145,6 +145,8 @@ function GameMode:CreateAlliance( name, teams )
         looser = false,
         players = {},
         heroes = {},
+        name = name,
+        amethysts = 0,
     }
 end
 
@@ -198,7 +200,8 @@ function GameMode:CaptureGameMode()
         self.countdownEnabled = false
         self.lock_round = false
         self.teams = {}
-        self.ROUNDS_TO_WIN = 3
+        self.DIFFERNECE_TO_WIN = 3
+        self.ROUNDS_TO_WIN = 5
         self.iMaxTreshold = 30
         self.ORBS_SPAWN_TIME = 20.0
         self.FIRST_MIDDLE_ORB_SPAWN_TIME = 20.0
@@ -209,17 +212,15 @@ function GameMode:CaptureGameMode()
         -- Team Alliances
         -------------------------------
 
-        --[[
         self:InitializeAlliances()
-        self:CreateAlliance("DOTA_TEAM_RADIANT")
-        self:CreateAlliance("DOTA_TEAM_DIRE")
+        self:CreateAlliance("DOTA_ALLIANCE_RADIANT")
+        self:CreateAlliance("DOTA_ALLIANCE_DIRE")
 
-        self:AddTeamToAlliance("DOTA_TEAM_RADIANT", DOTA_TEAM_GOODGUYS)
-        self:AddTeamToAlliance("DOTA_TEAM_RADIANT", DOTA_TEAM_CUSTOM_1)
+        self:AddTeamToAlliance("DOTA_ALLIANCE_RADIANT", DOTA_TEAM_GOODGUYS)
+        self:AddTeamToAlliance("DOTA_ALLIANCE_RADIANT", DOTA_TEAM_CUSTOM_1)
         
-        self:AddTeamToAlliance("DOTA_TEAM_DIRE", DOTA_TEAM_BADGUYS)
-        self:AddTeamToAlliance("DOTA_TEAM_DIRE", DOTA_TEAM_CUSTOM_2)
-        ]]
+        self:AddTeamToAlliance("DOTA_ALLIANCE_DIRE", DOTA_TEAM_BADGUYS)
+        self:AddTeamToAlliance("DOTA_ALLIANCE_DIRE", DOTA_TEAM_CUSTOM_2)
 
         -------------------------------
         -- Set GameMode parameters
@@ -304,6 +305,20 @@ function GameMode:CaptureGameMode()
             local mouse_position = Vector(args.x, args.y, args.z)
             self:UpdateMousePosition(mouse_position, args.playerID)
         end)
+        
+
+        CustomGameEventManager:RegisterListener('key_released', function(eventSourceIndex, args)
+            local unit = EntIndexToHScript(args.entityIndex)
+            local modifier = unit:FindModifierByName("modifier_cast_point")
+
+            if modifier ~= nil then
+                if not modifier:IsNull() then
+                    modifier:OnKeyReleased( args.key )
+                end
+            end
+        
+        end)
+        
 
         CustomGameEventManager:RegisterListener('moveUnit', function(eventSourceIndex, args)
             local direction = args.direction

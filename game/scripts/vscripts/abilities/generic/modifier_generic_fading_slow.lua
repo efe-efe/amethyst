@@ -22,7 +22,7 @@ function modifier_generic_fading_slow:OnCreated( kv )
     self:StartIntervalThink( tick )
 
     if IsServer() then 
-        self:GetParent():AddStatusBar({ label = "Fading slow", modifier = self, priority = 2,  }) 
+        self:GetParent():AddStatusBar({ label = "Fading slow", modifier = self, priority = 2, stylename="Slow" }) 
     end
 end
 

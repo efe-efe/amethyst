@@ -3,7 +3,7 @@ function CDOTABaseAbility:HasBehavior(behavior)
 	return bit.band(abilityBehavior, behavior) == behavior
 end
 
-function CDOTABaseAbility:GetCursorPosition( )
+function CDOTABaseAbility:GetCursorPosition()
 	return GameMode.mouse_positions[self:GetCaster():GetPlayerID()]
 end
 
@@ -37,6 +37,10 @@ end
 
 function CDOTABaseAbility:IsBasicAttack()
 	return IsType(self, "basic_attack")
+end
+
+function CDOTABaseAbility:IsSecondAttack()
+	return IsType(self, "second_attack")
 end
 
 function CDOTABaseAbility:IsCounter()

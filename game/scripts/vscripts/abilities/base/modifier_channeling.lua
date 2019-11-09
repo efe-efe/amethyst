@@ -7,7 +7,7 @@ function modifier_channeling:OnCreated(params)
         end
 
         self.movement_speed = params.movement_speed
-        local style = params.style or "Generic"
+        local style = params.style or ""
         local title = params.title or "Channeling"
         local channeling_tick = params.channeling_tick or 1.0
         local immediate = params.immediate and true or false
@@ -20,7 +20,7 @@ function modifier_channeling:OnCreated(params)
         end
 
         self:GetParent():AddStatusBar({
-			label = title, modifier = self, priority = 6
+			label = title, modifier = self, priority = 6, stylename= style
 		})
     end
 end

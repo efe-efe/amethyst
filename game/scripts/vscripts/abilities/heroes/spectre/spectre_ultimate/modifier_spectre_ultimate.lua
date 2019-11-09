@@ -14,27 +14,34 @@ function modifier_spectre_ultimate:IsPurgable()
 	return true
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_spectre_ultimate:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_BONUS_VISION_PERCENTAGE,
-	}
-
-	return funcs
+function modifier_spectre_ultimate:OnCreated( params )
+	if IsServer() then
+		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
+		self.aoe_origin = Vector(params.x, params.y, 0)
+		self.radius = params.radius
+		
+		self.hit = false
+		self:StartIntervalThink(0.1)
+	end
 end
 
-function modifier_spectre_ultimate:GetBonusVisionPercentage()
-    return -85
-end
-
---------------------------------------------------------------------------------
-function modifier_spectre_ultimate:CheckState()
-	local state = {
-	    [MODIFIER_STATE_PROVIDES_VISION] = true,
-	}
-
-	return state
+function modifier_spectre_ultimate:OnIntervalThink()
+	if (self.aoe_origin - self:GetParent():GetOrigin()):Length2D() > self.radius then
+		if self.hit == false then
+			self.hit = true
+			
+			local damage = {
+				victim = self:GetParent(),
+				attacker = self:GetCaster(),
+				damage = self.damage,
+				damage_type = DAMAGE_TYPE_PURE,
+			}
+			ApplyDamage( damage )
+			
+		end
+	else
+		self.hit = false
+	end
 end
 
 --------------------------------------------------------------------------------

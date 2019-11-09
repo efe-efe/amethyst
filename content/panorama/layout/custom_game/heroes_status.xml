@@ -1,0 +1,34 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/heroes_status.js" />
+        <include src="file://{resources}/scripts/custom_game/util.js" />
+    </scripts>
+    <styles>
+        <include src="file://{resources}/styles/custom_game/heroes_status.css" />
+    </styles>
+    <snippets>
+        <snippet name="HeroStatus">
+            <Panel class="HeroStatus" hittest="false" hittestchildren="false">
+                <Panel class="HeroStatusTop" hittest="false" hittestchildren="false">
+                    <DOTAHeroImage id="HeroStatusAvatarImage" heroimagestyle="landscape" heroname=""/>
+                </Panel>
+                <Panel class="HeroStatusBottom" hittest="false" hittestchildren="false">
+                    <Panel class="HeroHealthBar" hittest="false" hittestchildren="false">
+                        <Panel class="HeroHealthBarInnerBack" hittest="false" hittestchildren="false"/>
+                        <Panel class="HeroHealthBarInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                    <Panel class="HeroManaBar" hittest="false" hittestchildren="false">
+                        <Panel class="HeroManaBarInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                </Panel>
+            </Panel>
+        </snippet>
+
+    </snippets>
+    <Panel class="MainPanel" hittest="false">
+        <Panel id="HeroesStatus" hittest="false" class="MainPanel">
+            <Panel id="HeroesStatusLeft" class="TeamHeroes" hittest="false" />
+            <Panel id="HeroesStatusRight" class="TeamHeroes" hittest="false" />
+        </Panel>
+    </Panel>
+</root>

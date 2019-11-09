@@ -16,7 +16,7 @@ end
 function modifier_spectre_desolate_lua:OnCreated()
 	if IsServer() then
 		self:GetParent():AddStatusBar({
-			label = "Desolate", modifier = self, priority = 2, 
+			label = "Desolate", modifier = self, priority = 2, stylename = "Desolate"
 		}) 
 	end
 end

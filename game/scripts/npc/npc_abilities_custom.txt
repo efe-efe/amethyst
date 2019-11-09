@@ -78,6 +78,8 @@
 #base "abilities\vengeful\vengeful_ex1.txt"
 #base "abilities\vengeful\vengeful_ex2.txt"
 
+#base "abilities\ancient\ancient_m1.txt"
+#base "abilities\ancient\ancient_m2.txt"
 #base "abilities\ancient\ancient_r.txt"
 
 #base "abilities\weaver\weaver_q.txt"
@@ -1365,6 +1367,26 @@
 	// Builder
 	//=================================================================================================================
 	
+	"builder_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/builder/builder_attack/builder_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_basic_attack"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"2000"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
+		}
+	}
+
 	"builder_check_area_lua"
 	{
 		"BaseClass"						"ability_lua"
@@ -1397,7 +1419,8 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"0"
-		"AbilityCastPoint"				"0.0"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCooldown"				"1.5"
 	}
 
 	"builder_mobility"
@@ -1408,6 +1431,8 @@
 
 		"AbilityTextureName"			"sky_mobility"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCooldown"				"3.0"
 	}
 	
 

@@ -27,7 +27,7 @@ function spectre_ultimate:OnCastPointEnd( )
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
 			local damage_table = {
 				victim = unit,
@@ -63,12 +63,12 @@ function spectre_ultimate:OnCastPointEnd( )
 				)
 
 				if _self.Source == caster then
-					local swap = caster:FindAbilityByName("spectre_ultimate_swap")
+					local swap = caster:FindAbilityByName("spectre_ultimate_recast")
 					swap.illusion_index = illusion:GetEntityIndex()
 					
 					caster:SwapAbilities( 
 						"spectre_ultimate",
-						"spectre_ultimate_swap",
+						"spectre_ultimate_recast",
 						false,
 						true
 					)

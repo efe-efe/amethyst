@@ -1,0 +1,432 @@
+/* ------------------------------------- */
+/* ---- Core/Default Functionality ----- */
+/* ------------------------------------- */
+
+.Outer
+{
+    width: 100%;
+    height: 100%;
+}
+
+#Inner
+{
+    width: 100%;
+    height: 100%;
+}
+
+.ProgressBarParent
+{
+    transform: translate3d(-1px, -50px, 0px);
+    width: 106px;
+    flow-children: down;
+}
+
+.ProgressBarLabel
+{
+    width: 100%;
+
+    align: center center;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 2px;
+    color: white;
+    font-family: MingLiU;
+    text-transform: uppercase;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    /*text-shadow: 2px 2px 8px 5.0 black;*/
+    text-overflow: clip;
+}
+
+.ProgressBar
+{
+    z-index: 1;
+
+    width: 100%;
+    height: 7px;
+    border: 1px solid rgb(34, 34, 34);
+    border-radius: 3px;
+    box-shadow: fill rgb(34, 34, 34) 0px 0px 4px 4px;
+}
+
+.ProgressBarProgress
+{
+    width: 50%;
+    height: 100%;
+    background-color: gradient( linear, 0% 0%, 100% 100%, from(#104010), to(#206010));
+    align: left center;
+    z-index: 2;
+}
+
+.ProgressBarForeground
+{
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+}
+
+.red .ProgressBarLabel
+{
+    color: #662222;
+}
+
+.red .ProgressBarProgress
+{
+    background-color: #401010;
+}
+
+
+/* ------------------------------------- */
+/* --------- Counter         ---------- */
+/* ------------------------------------- */
+
+.Counter .ProgressBarProgress{ background-color: rgb(209, 218, 255); }
+.Ultimate .ProgressBarProgress{ background-color: #FDDF5A; }
+.Desolate .ProgressBarProgress{ background-color: #A049AC; }
+.Desolate .ProgressBarLabel{ color: rgb(181, 58, 185); }
+.Darkness .ProgressBarProgress{ background-color: rgb(181, 58, 185); }
+.Darkness .ProgressBarLabel{ color: #A049AC; }
+.Invulnerable .ProgressBarProgress{ background-color: #FDDF5A; }
+.Taunt .ProgressBarProgress{ background-color: #f12d2d; }
+.Taunt .ProgressBarLabel{ color: #D57A6F; }
+.Generic .ProgressBarProgress{ background-color: white; }
+.Generic .ProgressBarLabel{ color: white; }
+.Seed .ProgressBarProgress{ background-color: #43cf20; }
+.Seed .ProgressBarLabel{ color: #43cf20; }
+.HealingWard .ProgressBarProgress{ background-color: #43cf20; }
+.HealingWard .ProgressBarLabel{ color: #43cf20; }
+.Overcharge .ProgressBarProgress{ background-color: #f12d2d; }
+.Overcharge .ProgressBarLabel{ color: #f12d2d; }
+.Call .ProgressBarProgress{ background-color: #f12d2d; }
+.Call .ProgressBarLabel{ color: #f12d2d; }
+.PreSilence .ProgressBarProgress{ background-color: rgb(181, 58, 185); }
+
+.Castpoint .ProgressBarProgress{ background-color: white; }
+.Castpoint.ProgressBarParent{ 
+    transform: translate3d(-1px, -12.5px, 0px); 
+    width: 108px;
+}
+
+.Treshold .ProgressBarProgress{ 
+    background-color: white; 
+}
+.Treshold .ProgressBar{
+    height: 4px;
+    border: 1px solid black;
+    border-radius: 0;
+    box-shadow: none;
+}
+.Treshold.ProgressBarParent{ 
+    transform: translate3d(-1px, -40px, 0px); 
+    width: 108px;
+}
+
+
+
+/* ------------------------------------- */
+/* --------- SM Related Stuff ---------- */
+/* ------------------------------------- */
+
+.EnrageStacks.ProgressBarParent
+{
+    transform: translate3d(-1px, -45px, 0px);
+    width: 106px;
+}
+
+.EnrageStacks .ProgressBarProgress
+{
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#bb4400), to (#440000));
+}
+
+.EnrageStacks .ProgressBar
+{
+    height: 12px;
+    border: 1px solid #999999;
+}
+
+.EnrageStacks .ProgressBarLabel
+{
+    text-align: center;
+    border-radius: 8px;
+    background-color: #22222288;
+}
+
+.Enraged .ProgressBar
+{
+    height: 12px;
+    border: 1px solid #999999;
+    box-shadow: fill #bb4400 0px 0px 4px 4px;
+}
+
+.Enraged .ProgressBarProgress
+{
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#CC0000), to (#220000));
+}
+
+.Enraged .ProgressBarLabel
+{
+    text-align: center;
+    border-radius: 8px;
+    background-color: #22222288;
+}
+
+.Enraged.ProgressBarParent
+{
+    transform: translate3d(-1px, -25px, 0px);
+    width: 106px;
+}
+
+/* ------------------------------------- */
+/* --------- ABM Hacking Stuff --------- */
+/* ------------------------------------- */
+
+.Hacking.ProgressBarParent
+{
+    transform: translate3d(-1px, -75px, 0px) scale3d(1, -1, 1);
+    width: 106px; 
+}
+
+.Hacking .ProgressBar
+{
+    height: 16px;
+    border: 1px solid #999999;
+    background-color: #000000BB;
+}
+
+.Hacking .ProgressBarProgress
+{
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#002288), to (#2244CC));
+}
+
+.Hacking .ProgressBarLabel
+{
+    margin-bottom: -16px;
+    transform: scale3d(1, -1, 1);
+    text-align: center;
+    border-radius: 8px;
+    z-index: 3;
+}
+.HackingCooldown.ProgressBarParent
+{
+    transform: translate3d(-1px, -75px, 0px) scale3d(1, -1, 1);
+    width: 106px; 
+}
+
+.HackingCooldown .ProgressBar
+{
+    height: 16px;
+    border: 1px solid #999999;
+    background-color: #000000BB;
+}
+
+.HackingCooldown .ProgressBarProgress  
+{
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#442200), to (#882200));
+}
+
+.HackingCooldown .ProgressBarLabel
+{
+    margin-bottom: -16px;
+    transform: scale3d(1, -1, 1);
+    text-align: center;
+    border-radius: 8px;
+    z-index: 3;
+}
+
+/* ------------------------------------- */
+/* ----------- Firefly Stuff ----------- */
+/* ------------------------------------- */
+
+.Firefly.ProgressBarParent
+{
+    transform: translate3d(-5px, -25px, 0px);
+    width: 70px;
+}
+
+.Firefly .ProgressBarProgress
+{
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#CC6C20), to (#FFCC60));
+}
+
+.Firefly .ProgressBar
+{
+    height: 8px;
+    border: 1px solid #444444;
+    background-color: #000000BB;
+}
+
+
+/* ------------------------------------- */
+/* --------- APC Related Stuff --------- */
+/* ------------------------------------- */
+
+.APCEight .ProgressBarForeground
+{
+    background-image: url("file://{images}/progressbars/8slot.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat no-repeat;
+}
+
+.APCTen .ProgressBarForeground
+{
+    background-image: url("file://{images}/progressbars/10slot.png");
+    background-size: 100% 100%;
+}
+
+.APCEight .ProgressBarProgress
+{
+    background-color: green;
+}
+
+.APCEight .ProgressBar
+{
+    height: 12px;
+}
+
+.APCTen .ProgressBar
+{
+    height: 12px;
+}
+
+.APCTen .ProgressBarProgress
+{
+    background-color: green;
+}
+
+.whiteGradient .ProgressBarProgress
+{
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#FFFFFF), to (#000000));
+}
+
+.APCEight.ProgressBarParent
+{
+    transform: translateY(-40px);
+}
+
+.APCTen.ProgressBarParent
+{
+    transform: translateY(-40px);
+}
+
+.whiteGradient .ProgressBarLabel
+{
+    transform: translateY(10px);
+    height: 25px;
+    text-align: center;
+    font-size: 18px;
+    color: #000000;
+    text-shadow: 0px 0px 2px 1.0 #888888;
+}
+
+.whiteGradient.ProgressBarParent
+{
+    height: 40px;
+    transform: translateY(0px);
+}
+
+.whiteGradient .ProgressBar
+{
+    height: 12px;
+    border: 2px solid #000000;
+    align: center bottom;
+}
+
+
+/* ------------------------------------- */
+/* ------ Nemesis Forcefield Stuff ----- */
+/* ------------------------------------- */
+
+.NemForcefield.ProgressBarParent
+{
+    transform: translate3d(-1px, 2px, 0px) scale3d(1, -1, 1);
+    width: 84px;
+}
+
+.NemForcefield .ProgressBarProgress
+{
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#0000dd), to (#4444ff));
+}
+
+.NemForcefield .ProgressBar
+{
+    height: 14px;
+    border: 1px solid #999999;
+    background-color: black;
+}
+
+.NemForcefield .ProgressBarLabel
+{
+    margin-bottom: -16px;
+    transform: scale3d(1, -1, 1);
+    text-align: center;
+    border-radius: 8px;
+    z-index: 3;
+}
+
+
+/* ------------------------------------- */
+/* ----- Scientist Inventing Stuff ----- */
+/* ------------------------------------- */
+
+.Inventing.ProgressBarParent
+{
+    transform: translate3d(-1px, -60px, 0px) scale3d(1, -1, 1);
+    width: 106px; 
+}
+
+.Inventing .ProgressBar
+{
+    height: 16px;
+    border: 1px solid #999999;
+    background-color: #000000BB;
+}
+
+.Inventing .ProgressBarProgress
+{
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#845F07), to (#AD8F00));
+}
+
+.Inventing .ProgressBarLabel
+{
+    margin-bottom: -16px;
+    transform: scale3d(1, -1, 1);
+    text-align: center;
+    border-radius: 8px;
+    z-index: 3;
+}
+
+/* ------------------------------------- */
+/* ----- Graveyard Antiphase Stuff ----- */
+/* ------------------------------------- */
+
+.PhaseDisruptor.ProgressBarParent
+{
+    transform: translate3d(-1px, -75px, 0px) scale3d(1, -1, 1);
+    width: 106px; 
+    box-shadow: 0px 1px 8px #662200;
+    padding-top: -2px;
+    padding-bottom: -2px;
+}
+
+.PhaseDisruptor .ProgressBar
+{
+    height: 20px;
+    border: 2px solid #662200;
+    background-color: #000000BB;
+}
+
+.PhaseDisruptor .ProgressBarProgress
+{
+    transition: width 5s linear 0s;
+    background-color: gradient( linear, 0% 0%, 0% 90%, from (#662200), to (#AA2200));
+}
+
+.PhaseDisruptor .ProgressBarLabel
+{
+    margin-bottom: -19px;
+    transform: scale3d(1, -1, 1);
+    text-align: center;
+    border-radius: 8px;
+    z-index: 3;
+}

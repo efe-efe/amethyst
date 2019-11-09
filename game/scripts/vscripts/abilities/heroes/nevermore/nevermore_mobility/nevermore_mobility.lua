@@ -102,7 +102,7 @@ function nevermore_mobility:OnCastPointEnd( pos )
         fVisionLingerDuration = 1,
         draw = false,
         fRehitDelay = 0.2,
-        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit:GetTeamNumber() ~= _self.Source:GetTeamNumber() end,
+        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
         OnUnitHit = function(_self, unit) 
             -- Count targets
 			local counter = 0

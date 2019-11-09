@@ -676,7 +676,7 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"builder_check_area_lua"
+		"Ability1"						"builder_attack"
 		"Ability2"						"builder_create_block"
 		"Ability3"						"builder_mobility"
 
@@ -694,7 +694,8 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AttackDamageMin"			"100"										// Damage range min.
 		"AttackDamageMax"			"100"										// Damage range max.	
-		"AttackRate"				"0.7"									// Speed of attack.	
+		"AttackRate"				"0.2"									// Speed of attack.	
+		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
 		
 		// Movement
@@ -713,8 +714,8 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"10000" 						// Base health.
-		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
+		"StatusHealth"				"200" 						// Base health.
+		"StatusHealthRegen"			"5.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	

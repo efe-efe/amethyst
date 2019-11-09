@@ -9,8 +9,8 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"vengeful_basic_attack"
-		"Ability2"						"vengeful_second_attack"
+		"Ability1"						"ancient_basic_attack"
+		"Ability2"						"ancient_second_attack"
 		"Ability3"						"vengeful_mobility"
 		"Ability4"						"vengeful_counter"
 		"Ability5"						"vengeful_special_attack"
@@ -37,10 +37,10 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"8"										// Damage range min.
-		"AttackDamageMax"			"8"										// Damage range max.	
-		"AttackRate"				"0.5"									// Speed of attack.	
-		"AttackAnimationPoint"		"0.2"	
+		"AttackDamageMin"			"10"										// Damage range min.
+		"AttackDamageMax"			"10"										// Damage range max.	
+		"AttackRate"				"0.4"									// Speed of attack.	
+		"AttackAnimationPoint"		"0.3"	
 		"AttackRange"				"80"
 		
 		// Movement

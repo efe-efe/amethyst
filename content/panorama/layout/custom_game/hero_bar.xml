@@ -1,0 +1,78 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/underscore-min.js" />
+        <include src="file://{resources}/scripts/custom_game/status_bar_styles.js" />
+        <include src="file://{resources}/scripts/custom_game/hero_bar.js" />
+        <include src="file://{resources}/scripts/custom_game/util.js" />
+    </scripts>
+    <styles>
+        <include src="file://{resources}/styles/custom_game/hero_bar.css" />
+    </styles>
+    <snippets>
+    
+        <snippet name="HeroBar">
+            <Panel class="HeroBar" hittest="false" hittestchildren="false">
+                <Panel class="Top" hittest="false" hittestchildren="false">
+                    <Panel id="HeroBarRecast" hittest="false" hittestchildren="false" >
+                        <Label class="HeroBarRecastKeyText" html="true" text="R" />
+                        <DOTAAbilityImage id="HeroBarRecastSpellImage" abilityname="" />
+                    </Panel>
+                </Panel>
+                <Panel class="Middle" hittest="false" hittestchildren="false">
+                    <Panel id="HeroBarStatus" hittest="false" hittestchildren="false" >
+                        <Panel class="HeroBarStatusText" hittest="false" hittestchildren="false" >
+                            <Label class="HeroBarStatusTextGlow" html="true" text="" />
+                            <Label class="HeroBarStatusTextNormal" html="true" text="" />
+                        </Panel>
+                        <Panel class="HeroBarStatusProgress" hittest="false" hittestchildren="false" >
+                            <Panel class="HeroBarStatusProgressInner" hittest="false" hittestchildren="false" />
+                        </Panel>
+                    </Panel>
+                    <Panel id="HeroBarPlayer" hittest="false" hittestchildren="false" >
+                        <Label class="HeroBarPlayerText" html="true" text="No name" />
+                    </Panel>
+                </Panel>
+                <Panel class="Bottom" hittest="false" hittestchildren="false">
+                    <Panel class="Left" hittest="false" hittestchildren="false">
+                        <Panel id="HeroBarCharges" hittest="false" hittestchildren="false" >
+                            <Label class="HeroBarChargeText" html="true" text="(" />
+                            <Label class="HeroBarChargeText Number" html="true" text="0" />
+                            <Label class="HeroBarChargeText" html="true" text=")" />
+                        </Panel>
+                    </Panel>
+                    <Panel class="Middle" hittest="false" hittestchildren="false">
+                        <Panel class="HeroBarHealth NoShield" hittest="false" hittestchildren="false">
+                            <Panel class="HeroBarHealthInnerBack" hittest="false" hittestchildren="false"/>
+                            <Panel class="HeroBarHealthInner" hittest="false" hittestchildren="false"/>                           
+                        </Panel>
+                        <Panel class="HeroBarHealth WithShield" hittest="false" hittestchildren="false">
+                            <Panel class="HeroBarHealthInner" hittest="false" hittestchildren="false"/>                           
+                            <Panel class="HeroBarShield" hittest="false" hittestchildren="false" />
+                        </Panel>
+                        <Panel id="HeroBarMana" hittest="false" hittestchildren="false">
+                            <Panel class="HeroBarManaInner" hittest="false" hittestchildren="false"/>
+                        </Panel>
+                        <Panel id="HeroBarCastPoint" hittest="false" hittestchildren="false">
+                            <Panel class="HeroBarCastPointInner" hittest="false" hittestchildren="false"/>
+                        </Panel>
+                    </Panel>
+                    <Panel class="Right" hittest="false" hittestchildren="false">
+                        <Panel id="HeroBarStacks" hittest="false" hittestchildren="false" >
+                            <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
+                            <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
+                            <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
+                        </Panel>
+                        <Panel id="HeroBarCooldown" hittest="false" hittestchildren="false" >
+                            <Panel class="HeroBarCooldownCircleBackground" hittest="false" hittestchildren="false" />
+                            <Panel class="HeroBarCooldownCircle" hittest="false" hittestchildren="false" />
+                        </Panel>
+                    </Panel>
+                </Panel>
+            </Panel>
+        </snippet>
+
+    </snippets>
+    <Panel class="MainPanel" hittest="false">
+        <Panel id="HeroBarsContainer" hittest="false" class="MainPanel" />
+    </Panel>
+</root>
