@@ -5,16 +5,18 @@
 		"ScriptFile"					"abilities/heroes/ancient/ancient_ultimate/ancient_ultimate"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"sniper_second_attack"
+		"AbilityTextureName"			"ancient_apparition_ice_blast"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCooldown"				"3.0"
+		"AbilityManaCost"				"100"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"38" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
 		}
 	}
 
@@ -24,19 +26,18 @@
 		"ScriptFile"					"abilities/heroes/ancient/ancient_ultimate/ancient_ultimate_projectile"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"sniper_second_attack"
+		"AbilityTextureName"			"ancient_apparition_ice_blast"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCooldown"				"0.0"
 		"AbilityCastRange"				"2800"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.6" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				    "250" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2200" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 		}
 	}

@@ -40,6 +40,7 @@ function vengeful_counter:OnCastPointEnd()
 				victim = unit,
 				attacker = caster,
 				damage = damage,
+				ability = self,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
@@ -89,6 +90,7 @@ function vengeful_counter:OnCastPointEnd()
 						attacker = caster,
 						damage = backwards_damage,
 						damage_type = DAMAGE_TYPE_PURE,
+						ability = self,
 					}
 		
 					ApplyDamage( damage_table_backwards )

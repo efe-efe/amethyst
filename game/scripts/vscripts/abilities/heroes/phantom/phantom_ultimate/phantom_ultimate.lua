@@ -25,6 +25,7 @@ function phantom_ultimate:OnCastPointEnd()
 	local projectile_end_radius = 100
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	local projectile_speed = 4000
+	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -43,7 +44,6 @@ function phantom_ultimate:OnCastPointEnd()
 		fGroundOffset = 80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
-			local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 			local final_damage = damage + ( stacks * damage_per_stack )
 
 			local damage_table = {
@@ -61,10 +61,11 @@ function phantom_ultimate:OnCastPointEnd()
             self:PlayEffectsOnImpact(unit)
 		end,
         OnFinish = function(_self, pos)
-			SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}
+
+	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
 	StartAnimation(caster, {

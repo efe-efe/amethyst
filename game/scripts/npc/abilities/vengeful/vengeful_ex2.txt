@@ -17,8 +17,8 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"15" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"15" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"12" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"12" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }

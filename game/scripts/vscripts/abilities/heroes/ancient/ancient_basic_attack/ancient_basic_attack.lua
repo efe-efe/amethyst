@@ -44,6 +44,20 @@ function ancient_basic_attack:OnCastPointEnd()
 					"modifier_ancient_basic_attack", -- modifier name
 					{  } -- kv
 				)
+
+				
+				if unit:HasModifier("modifier_ancient_special_attack") then
+					local ability = caster:FindAbilityByName("ancient_special_attack") 
+					local extra_damage = ability:GetSpecialValueFor("extra_damage")
+
+					local damage_table = {
+						victim = unit,
+						attacker = caster,
+						damage = extra_damage,
+						damage_type = DAMAGE_TYPE_PURE,
+					}
+					ApplyDamage( damage_table )
+				end
 			end
 		end,
 		OnFinish = function(_self, pos)

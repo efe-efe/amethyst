@@ -175,6 +175,9 @@ function GameMode:OnEntityKilled( keys )
 
         if not self:IsDeathZoneCreated() then
             self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
+            while self.next_middle_orb_index == self.scheduled_middle_orb_index do
+                self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
+            end
         end
 
         if keys.entindex_attacker ~= nil then

@@ -2,6 +2,49 @@ Modifiers = {}
 
 function Modifiers.Recast( modifier, data )
     
+    local onCreated = modifier.OnCreated
+    local onDestroy = modifier.OnDestroy
+
+    function modifier:OnCreated( params )
+        if IsServer() then
+
+            if data.create_ability == 1 then
+                local recast_ability = self:GetParent():AddAbility( data.ability_name )
+                recast_ability:SetLevel( 1 )
+            end
+
+            self:GetParent():SwapAbilities(
+                self:GetAbility():GetName(), 
+                data.ability_name, 
+                false, 
+                true
+            )
+            
+            self:GetParent():AddRecastVisual({
+                key = data.key,
+                modifier = self,
+                abilityName = data.ability_name,
+            })
+        end
+        
+        if onCreated then onCreated(self, params) end
+    end
+
+    function modifier:OnDestroy()
+        if IsServer() then
+            self:GetParent():SwapAbilities(
+                self:GetAbility():GetName(), 
+                data.ability_name, 
+                true, 
+                false
+            )
+            
+            if data.create_ability == 1 then
+                self:GetParent():RemoveAbility( data.ability_name )
+            end
+        end
+        if onDestroy then onDestroy(self) end
+    end
 end
 
 function Modifiers.Charges( modifier, data )

@@ -39,6 +39,7 @@ function vengeful_special_attack:OnCastPointEnd()
 				attacker = caster,
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
+				ability = self,
 			}
 
 			ApplyDamage( damage_table )

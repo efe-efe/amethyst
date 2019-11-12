@@ -47,6 +47,7 @@ function vengeful_ex_counter:OnCastPointEnd()
 				attacker = caster,
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
+				ability = self,
 			}
 
 			--targets = targets + 1

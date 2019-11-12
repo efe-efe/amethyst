@@ -17,6 +17,7 @@ function vengeful_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
+	local attack_damage = caster:GetAttackDamage()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
@@ -25,6 +26,7 @@ function vengeful_basic_attack:OnCastPointEnd()
 	local extra_damage = self:GetSpecialValueFor("extra_damage")
 	local modifier = caster:FindModifierByName("modifier_vengeful_basic_attack_stack")
 	local charged = modifier and (modifier:GetStackCount() == 3 and true or false) or false
+    local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	-- Projectile
 	local projectile = {
@@ -41,35 +43,33 @@ function vengeful_basic_attack:OnCastPointEnd()
 		fGroundOffset = 80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
-			caster:PerformAttack(
-				unit, -- handle hTarget 
-				true, -- bool bUseCastAttackOrb, 
-				true, -- bool bProcessProcs,
-				true, -- bool bSkipCooldown
-				false, -- bool bIgnoreInvis
-				false, -- bool bUseProjectile
-				false, -- bool bFakeAttack
-				true -- bool bNeverMiss
-			)
+			local final_damage = attack_damage
 
 			if _self.Source == caster then 
 				-- Add modifier
-				caster:AddNewModifier(
-					caster, -- player source
-					self, -- ability source
-					"modifier_vengeful_basic_attack_stack", -- modifier name
-					{} -- kv
-				)
+
+				if not unit:IsWall() then
+					caster:AddNewModifier(
+						caster, -- player source
+						self, -- ability source
+						"modifier_vengeful_basic_attack_stack", -- modifier name
+						{} -- kv
+					)
+				end
+				caster:GiveManaPercent(mana_gain_pct, unit)
 
 				if charged then
-					local damage = {
-						victim = unit,
-						attacker = _self.Source,
-						damage = extra_damage,
-						damage_type = DAMAGE_TYPE_PHYSICAL,
-					}
-					ApplyDamage( damage )
+					final_damage = final_damage + extra_damage
 				end 
+
+				local damage = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = final_damage,
+					damage_type = DAMAGE_TYPE_PHYSICAL,
+					ability = self
+				}
+				ApplyDamage( damage )
 			end
 		end,
 		OnFinish = function(_self, pos)
@@ -87,19 +87,7 @@ function vengeful_basic_attack:OnCastPointEnd()
 end
 
 --------------------------------------------------------------------------------
--- Misc
--- Add mana on attack modifier. Only first time upgraded
-function vengeful_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
-end
-
---------------------------------------------------------------------------------
 -- Graphics & sounds
-
 function vengeful_basic_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_VengefulSpirit.Attack", self:GetCaster() )
 end

@@ -33,18 +33,18 @@ function modifier_death_zone:OnIntervalThink()
     self.counter_seconds = self.counter_seconds + 1
 
     if self.counter_seconds == 300 then
+        self.reduction_ratio = 6
+    end
+
+    if self.counter_seconds == 600 then
         self.reduction_ratio = 4
     end
 
     if self.counter_seconds == 900 then
-        self.reduction_ratio = 2
-    end
-
-    if self.counter_seconds == 1100 then
         self.reduction_ratio = 0
     end
 
-    if self.counter_seconds == 1250 then
+    if self.counter_seconds == 1050 then
         self.reduction_ratio = 1
     end
 

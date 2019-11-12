@@ -1,9 +1,12 @@
 ancient_ultimate = class({})
 
+function ancient_ultimate:OnSpellStart()
+    EmitGlobalSound("ancient_apparition_appa_ability_iceblast_01")
+end
 
 function ancient_ultimate:OnCastPointEnd()
     local caster = self:GetCaster()
-    local duration = 3.0
+    local duration = self:GetSpecialValueFor("duration")
 
     caster:AddNewModifier(
         caster, -- player source
@@ -14,7 +17,7 @@ function ancient_ultimate:OnCastPointEnd()
             style = "Ultimate",
             title = "ultimate",
             movement_speed = 0,
-            channeling_tick = 1.0,
+            channeling_tick = 0.7,
             immediate = 1,
         } -- kv
     )

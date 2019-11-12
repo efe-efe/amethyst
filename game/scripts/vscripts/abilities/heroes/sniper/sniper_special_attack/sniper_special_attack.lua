@@ -19,7 +19,7 @@ function sniper_special_attack:OnCastPointEnd()
 			delay_time = delay_time,
 			thinker_duration = duration + delay_time ,
 		}, --paramTable
-		point, --vOrigin
+		Vector(point.x, point.y, caster:GetOrigin().z), --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
 	)

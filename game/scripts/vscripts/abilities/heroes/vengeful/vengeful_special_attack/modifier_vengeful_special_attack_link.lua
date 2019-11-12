@@ -30,6 +30,7 @@ function modifier_vengeful_special_attack_link:OnDestroy()
 				attacker = self:GetCaster(),
 				damage = self.extra_damage,
 				damage_type = DAMAGE_TYPE_PURE,
+				ability = self:GetAbility(),
 			}
 
             ApplyDamage( damage_table )
@@ -50,6 +51,24 @@ function modifier_vengeful_special_attack_link:OnIntervalThink()
 
     if distance > self.max_range then
         self:Destroy()
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_vengeful_special_attack_link:DeclareFunctions()
+	local funcs = {
+		MODIFIER_EVENT_ON_DEATH,
+	}
+	return funcs
+end
+
+
+function modifier_vengeful_special_attack_link:OnDeath( params )
+    if IsServer() then 
+        if params.unit == self:GetCaster() then 
+            self:Destroy()
+        end
     end
 end
 

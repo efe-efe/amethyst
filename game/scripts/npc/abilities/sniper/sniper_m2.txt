@@ -15,12 +15,13 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"1.6" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"38" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"32" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.5" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"14" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"reduction_per_hit"			"35" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"min_damage"				"14" }
 		}
 	}
 }

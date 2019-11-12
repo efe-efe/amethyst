@@ -8,7 +8,7 @@ Abilities = {}
     }
 ]]
 
-function Abilities.Initialize( ability, animation, warmup )
+function Abilities.Initialize( ability, animation, warmup, recast )
     local onCastPointEnd = ability.OnCastPointEnd
     local onSpellStart = ability.OnSpellStart
 
@@ -85,7 +85,32 @@ function Abilities.Initialize( ability, animation, warmup )
             self:GetCaster():SetLastAbility(self)
         end
 
+        if recast and recast.modifier_name then
+            self:GetCaster():RemoveModifierByName(recast.modifier_name)
+        end
+
         if onCastPointEnd then onCastPointEnd(self) end
+    end
+
+    function ability:CastFilterResult()
+        -- Remnant data can't be accessed on the client
+        --if not IsServer() then return UF_SUCCESS end
+    
+        if true then
+            return UF_FAIL_CUSTOM
+        end
+    
+        return UF_SUCCESS
+    end
+    
+    function ability:GetCustomCastError()
+        --if not IsServer() then return "" end
+    
+        if true then
+            return "#dota_hud_error_cant_cast_no_dead_remnants"
+        end
+    
+        return ""
     end
 end
 

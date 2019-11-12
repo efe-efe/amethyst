@@ -80,7 +80,11 @@
 
 #base "abilities\ancient\ancient_m1.txt"
 #base "abilities\ancient\ancient_m2.txt"
+#base "abilities\ancient\ancient_e.txt"
+#base "abilities\ancient\ancient_q.txt"
 #base "abilities\ancient\ancient_r.txt"
+#base "abilities\ancient\ancient_f.txt"
+#base "abilities\ancient\ancient_space.txt"
 
 #base "abilities\weaver\weaver_q.txt"
 #base "abilities\weaver\weaver_r.txt"

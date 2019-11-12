@@ -259,8 +259,6 @@ function modifier_cast_point:OnOrder(params)
 		then
 			self.canceled_by_player = true
 			self:Destroy()
-		elseif params.order_type == DOTA_UNIT_ORDER_CAST_TOGGLE then
-			print("YEAH")
 		end
 	end
 end
@@ -284,8 +282,11 @@ function modifier_cast_point:CheckState()
 end
 
 function modifier_cast_point:OnKeyReleased( key )
-	print(key)
-	--[[if self:GetAbility().OnKeyReleased and self:GetAbility().GetKey() == key then
-		self:GetAbility():OnKeyReleased()
-	end]]
+	if self.ability.CastOnRelease and self.ability.CastOnRelease() == true then
+		self:SetDuration(0.0, true)
+		SafeDestroyModifier("modifier_target_indicator", self.parent, self.parent)
+		--[[if self:GetAbility().OnKeyReleased and self:GetAbility().GetKey() == key then
+			self:GetAbility():OnKeyReleased()
+		end]]
+	end
 end

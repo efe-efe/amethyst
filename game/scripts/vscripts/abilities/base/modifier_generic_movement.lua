@@ -87,7 +87,7 @@ function modifier_generic_movement:ItemsPickup( hUnit )
 		
 		--Only pickup items owned by teammates
 		if owner ~= nil then
-			if owner:GetTeam() == hUnit:GetTeam() then
+			if hUnit:IsAlly(owner) then
 				hUnit:PickupDroppedItem(drop_item)
 			end
 		else

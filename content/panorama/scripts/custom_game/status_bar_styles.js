@@ -69,7 +69,15 @@ styles["Root"] = {
     textShadow: CreateTextShadow("#94A551"),
 }
 
+styles["Chill"] = {
+    backgroundColor: "#9ccee6",
+    textShadow: CreateTextShadow("#9ccee6"),
+}
 
+styles["MagicMissile"] = {
+    backgroundColor: "#cb70dd",
+    color: "#cb70dd"
+}
 
 function CreateTextShadow( color ){
     return "0px 0px 30px 8.0 " + color + ";"

@@ -40,6 +40,7 @@ function vengeful_ex_second_attack:OnCastPointEnd()
 					attacker = caster,
 					damage = damage,
 					damage_type = DAMAGE_TYPE_MAGICAL,
+					ability = self,
 				}
 	
 				ApplyDamage( damage_table )

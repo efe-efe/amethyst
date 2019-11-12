@@ -60,7 +60,7 @@ function ancient_ultimate_projectile:OnCastPointEnd( )
 	}
 
     Projectiles:CreateProjectile(projectile)
-	--self:PlayEffectsOnCast()
+	self:PlayEffectsOnCast()
 end
 
 -- On hit wall 
@@ -68,7 +68,7 @@ function ancient_ultimate_projectile:PlayEffectsProjectileImpact( pos )
 	local caster = self:GetCaster()
 
 	-- Cast Sound
-	EmitSoundOn( "Hero_Sniper.AssassinateDamage", caster )
+	EmitSoundOn( "Hero_Ancient_Apparition.IceBlast.Target", caster )
 
 	-- Cast Particle
 	local particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_explode_ti5.vpcf"
@@ -76,6 +76,11 @@ function ancient_ultimate_projectile:PlayEffectsProjectileImpact( pos )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+
+function ancient_ultimate_projectile:PlayEffectsOnCast()
+	EmitSoundOn( "Hero_Ancient_Apparition.IceBlastRelease.Cast", self:GetCaster() )
 end
 
 if IsClient() then require("abilities") end

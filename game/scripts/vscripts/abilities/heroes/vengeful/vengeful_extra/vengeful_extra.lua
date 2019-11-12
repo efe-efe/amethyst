@@ -21,8 +21,9 @@ function vengeful_extra:OnCastPointEnd()
 			thinker = "modifier_vengeful_extra_thinker",
 			radius = radius,
 			delay_time = delay_time,
+			draw_clock = 1
 		}, --paramTable
-		point, --vOrigin
+		Vector(point.x, point.y, caster:GetOrigin().z), --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
 	)

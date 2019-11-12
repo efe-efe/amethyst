@@ -1,6 +1,19 @@
 
 phantom_ex_special_attack = class({})
 LinkLuaModifier( "modifier_generic_sleep_lua", "abilities/generic/modifier_generic_sleep_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_phantom_ex_special_attack_charges", "abilities/heroes/phantom/phantom_ex_special_attack/modifier_phantom_ex_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
+
+
+--------------------------------------------------------------------------------
+-- Passive Modifier
+function phantom_ex_special_attack:GetIntrinsicModifierName()
+	return "modifier_phantom_ex_special_attack_charges"
+end
+
+function phantom_ex_special_attack:HasCharges()
+	return true
+end
+
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -16,6 +29,7 @@ function phantom_ex_special_attack:OnCastPointEnd()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger.vpcf",
@@ -31,7 +45,6 @@ function phantom_ex_special_attack:OnCastPointEnd()
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
-			local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 			local damage = {
 				victim = unit,
 				attacker = _self.Source,
@@ -56,11 +69,10 @@ function phantom_ex_special_attack:OnCastPointEnd()
 			end
 		end,
 		OnFinish = function(_self, pos)
-			SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}
-
+	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end

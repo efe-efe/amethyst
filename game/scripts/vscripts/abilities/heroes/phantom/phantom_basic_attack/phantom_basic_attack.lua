@@ -41,7 +41,7 @@ function phantom_basic_attack:OnCastPointEnd()
 				true -- bool bNeverMiss
 			)
 
-			if _self.Source == caster then 
+			if _self.Source == caster and not unit:IsWall() then 
 				caster:AddNewModifier(
 					caster, -- player source
 					self, -- ability source

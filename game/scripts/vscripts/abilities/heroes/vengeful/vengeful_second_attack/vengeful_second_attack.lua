@@ -1,5 +1,13 @@
 vengeful_second_attack = class({})
 vengeful_second_attack_ultimate = class({})
+LinkLuaModifier( "modifier_vengeful_second_attack", "abilities/heroes/vengeful/vengeful_second_attack/modifier_vengeful_second_attack", LUA_MODIFIER_MOTION_NONE )
+
+function vengeful_second_attack:OnSpellStart()
+	local particle_cast = "particles/monkey_king_spring_cast_spiral_ember.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -9,6 +17,7 @@ function vengeful_second_attack:OnCastPointEnd()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
 	local damage = ability:GetSpecialValueFor("ability_damage")
+	local duration = ability:GetSpecialValueFor("duration")
 	local name = self:GetAbilityName()
 
 	-- load data
@@ -37,6 +46,7 @@ function vengeful_second_attack:OnCastPointEnd()
 				attacker = caster,
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
+				ability = self,
 			}
 
 			ApplyDamage( damage_table )
@@ -44,6 +54,7 @@ function vengeful_second_attack:OnCastPointEnd()
 			if not string.ends(name, "_ultimate") then
 				if _self.Source == caster then
 					caster:GiveManaPercent(mana_gain_pct, unit)
+					unit:AddNewModifier(caster, self, "modifier_vengeful_second_attack", { duration = duration })
 				end
 			end
 		end,
@@ -59,7 +70,6 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-
 function vengeful_second_attack:PlayEffectsOnFinish( pos )
 	local caster = self:GetCaster()
 
@@ -77,19 +87,25 @@ function vengeful_second_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_VengefulSpirit.MagicMissile", self:GetCaster() )
 end
 
+vengeful_second_attack_ultimate.OnSpellStart = vengeful_second_attack.OnSpellStart
 vengeful_second_attack_ultimate.OnCastPointEnd = vengeful_second_attack.OnCastPointEnd
 vengeful_second_attack_ultimate.PlayEffectsOnFinish = vengeful_second_attack.PlayEffectsOnFinish
 vengeful_second_attack_ultimate.PlayEffectsOnCast = vengeful_second_attack.PlayEffectsOnCast
 
+
+
+local animation = { activity = ACT_DOTA_SPAWN, rate = 2.0 }
+local warmup = { movement_speed = 80, fixed_range = 1 }
+
 if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	vengeful_second_attack,
-	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.0 },
-	{ movement_speed = 80, fixed_range = 1}
+	animation,
+	warmup
 )
 if IsClient() then require("abilities") end
 Abilities.Initialize( 
 	vengeful_second_attack_ultimate,
-	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.0 },
-	{ movement_speed = 80, fixed_range = 1}
+	animation,
+	warmup
 )

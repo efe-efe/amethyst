@@ -12,6 +12,7 @@ function phantom_second_attack:OnCastPointEnd()
 	local projectile_speed = 2000
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local offset = 50
+	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 
 	local projectile = {
 		vSpawnOrigin = origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
@@ -30,8 +31,6 @@ function phantom_second_attack:OnCastPointEnd()
 			for k, v in pairs(_self.rehit) do counter = counter + 1 end
 			if counter > 1 then return end
 
-
-			local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 			local final_damage = damage + ( stacks * damage_per_stack )
 
 			local damage_table = {
@@ -59,11 +58,12 @@ function phantom_second_attack:OnCastPointEnd()
 		end,
 		OnFinish = function(_self, pos)
 			if _self.Source == caster then 
-				SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 			end
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}
+
+	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)

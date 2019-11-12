@@ -18,6 +18,7 @@ function sniper_second_attack:OnCastPointEnd()
 	local stun_duration = self:GetSpecialValueFor("stun_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local reduction_per_hit = self:GetSpecialValueFor("reduction_per_hit")/100
+	local min_damage = self:GetSpecialValueFor("min_damage")
 
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf",
@@ -40,6 +41,7 @@ function sniper_second_attack:OnCastPointEnd()
 			end
 			local final_damage = damage * (1 - (counter * reduction_per_hit))
 			
+			if final_damage < min_damage then final_damage = min_damage end
 			-- Damage
 			local damage = {
 				victim = unit,

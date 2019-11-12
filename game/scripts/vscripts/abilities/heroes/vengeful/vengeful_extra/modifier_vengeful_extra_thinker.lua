@@ -1,5 +1,4 @@
 modifier_vengeful_extra_thinker = class({})
-LinkLuaModifier( "modifier_vengeful_extra", "abilities/heroes/vengeful/vengeful_extra/modifier_vengeful_extra", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Initializer
@@ -11,7 +10,6 @@ function modifier_vengeful_extra_thinker:OnCreated( kv )
         self.duration = self.ability:GetSpecialValueFor( "duration" )
         self.damage_block = self.ability:GetSpecialValueFor( "damage_block" )
 
-        -- Start Interval
         self:StartIntervalThink( self.delay_time )
         self:PlayEffectsOnCreated()
     end
@@ -36,7 +34,6 @@ function modifier_vengeful_extra_thinker:OnIntervalThink()
 
         for _,ally in pairs(allies) do
             ally:AddNewModifier(caster, self:GetAbility(), "modifier_shield", { duration = self.duration, damage_block = self.damage_block })
-            --ally:AddNewModifier(caster, self:GetAbility(), "modifier_vengeful_extra", { duration = self.duration })
         end
 
         CreateRadiusMarker(caster, thinker:GetOrigin(), { 

@@ -5,7 +5,7 @@
 		"ScriptFile"					"abilities/heroes/ancient/ancient_basic_attack/ancient_basic_attack"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"vengeful_basic_attack"
+		"AbilityTextureName"			"ancient_apparition_cold_feet"
         "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	

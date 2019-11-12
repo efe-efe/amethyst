@@ -9,6 +9,7 @@ function modifier_thinker_indicator:OnCreated( kv )
         self.show_all = kv.show_all
         self.radius = kv.radius
         self.delay_time = kv.delay_time
+        self.draw_clock = kv.draw_clock 
 
         local extra_one = kv.extra_one
         local thinker_duration = kv.thinker_duration
@@ -16,6 +17,7 @@ function modifier_thinker_indicator:OnCreated( kv )
         self.caster = self:GetCaster()
         self.origin = self:GetParent():GetOrigin()
         self.effects_cast_aoe = {}
+        self.effects_cast = {}
 
         CreateModifierThinker(
             self.caster, --hCaster
@@ -28,8 +30,11 @@ function modifier_thinker_indicator:OnCreated( kv )
         )
 
         self:PlayEffects()
-        -- Start Interval
-        self:StartIntervalThink( self.delay_time )
+
+        self.current_degree = 0
+        self.max_degree = 360
+        self.interval = self.delay_time/self.max_degree
+        self:StartIntervalThink( self.interval )
     end
 end
 
@@ -45,9 +50,28 @@ end
 --------------------------------------------------------------------------------
 -- On Think
 function modifier_thinker_indicator:OnIntervalThink()
-    if IsServer() then
-	    self:Destroy()
-	end
+    if self.current_degree >= self.max_degree then
+        self:Destroy()
+        return
+    end
+
+    if self.draw_clock == 1 then 
+        local x = self.origin.x + self.radius * math.cos(self.current_degree * math.pi/180)
+        local y = self.origin.y + self.radius * math.sin(self.current_degree * math.pi/180)
+        local target_point = Vector(x, y, self.origin.z)
+
+        DebugDrawLine_vCol(
+            self.origin, 
+            target_point, 
+            Vector(254, 255, 234), 
+            false, 
+            self.interval
+        )
+
+        self:PlayEffectsDot(target_point, self.current_degree)
+    end
+
+    self.current_degree = (self.current_degree + 1)
 end
 
 --------------------------------------------------------------------------------
@@ -108,4 +132,23 @@ function modifier_thinker_indicator:StopEffects()
             end
         end
     end
+
+
+    for _,effect in pairs(self.effects_cast) do
+        if effect ~= nil then
+            ParticleManager:DestroyParticle( effect, false ) 
+            ParticleManager:ReleaseParticleIndex( effect )
+        end
+
+    end
+end
+
+function modifier_thinker_indicator:PlayEffectsDot(pos, index)
+    local particle_cast = "particles/units/heroes/hero_warlock/warlock_base_attack_sphere_glow.vpcf"
+    self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 0, pos)
+    ParticleManager:SetParticleControl( self.effects_cast[index], 1, pos )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 2, pos )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 3, pos )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 4, pos )
 end
