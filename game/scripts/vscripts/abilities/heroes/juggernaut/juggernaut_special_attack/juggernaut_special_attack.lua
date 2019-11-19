@@ -76,7 +76,7 @@ function juggernaut_special_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_Juggernaut.BladeDance", self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	juggernaut_special_attack,
 	{ activity = ACT_DOTA_TAUNT, rate = 1.3, translate = "odachi" },

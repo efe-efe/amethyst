@@ -25,7 +25,7 @@ function lich_extra:PlayEffectsOnCast()
 end
 
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	lich_extra,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.8 },

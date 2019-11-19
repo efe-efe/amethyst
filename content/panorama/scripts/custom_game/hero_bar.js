@@ -8,7 +8,7 @@ var FRIENDLY_COLOR_LIGHT = "rgba(162, 249, 154, 1.0)"
 var ENEMY_COLOR_DARK = "rgba(238, 53, 0, 1.0)"
 var ENEMY_COLOR_LIGHT = "rgba(216, 134, 89, 1.0)"
 
-var INTERVAL = 0.01;
+var INTERVAL = 0.02;
 /*
 hero_overhead_bars = {
     heroIndex: {
@@ -334,8 +334,10 @@ function UpdateHealthBar( data ){
 function UpdateManaBar( data ){
     var localPlayerId = Game.GetLocalPlayerID();
     var localPlayerTeam = Players.GetTeam( localPlayerId );
+    var localPlayerAlliance = FindAllianceByTeam( localPlayerTeam );
+    var alliance = FindAllianceByTeam( data.teamID );
 
-    if( localPlayerTeam != data.teamID ){ 
+    if( localPlayerAlliance != alliance ){ 
         return false;
     }
 
@@ -349,8 +351,10 @@ function UpdateManaBar( data ){
 function UpdateStacks( data ){
     var localPlayerId = Game.GetLocalPlayerID();
     var localPlayerTeam = Players.GetTeam( localPlayerId );
+    var localPlayerAlliance = FindAllianceByTeam( localPlayerTeam );
+    var alliance = FindAllianceByTeam( data.teamID );
 
-    if( localPlayerTeam != data.teamID ){ 
+    if( localPlayerAlliance != alliance ){ 
         return false;
     }
     

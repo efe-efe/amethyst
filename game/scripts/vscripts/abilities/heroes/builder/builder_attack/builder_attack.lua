@@ -42,7 +42,7 @@ function builder_attack:OnCastPointEnd()
 	Projectiles:CreateProjectile(projectile)
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.BasicAttack( builder_attack )
 Abilities.Initialize( 
 	builder_attack,

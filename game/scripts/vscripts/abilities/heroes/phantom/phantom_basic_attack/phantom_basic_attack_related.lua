@@ -1,16 +1,17 @@
 
-phantom_basic_attack_ranged = class({})
+phantom_basic_attack_related = class({})
 LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_basic_attack_ranged:OnCastPointEnd()
+function phantom_basic_attack_related:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
-	local damage = self:GetSpecialValueFor("ability_damage")
+	local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
+	local damage = ability:GetSpecialValueFor("ability_damage")
 
 	-- Extra data
-	local slow_duration = self:GetSpecialValueFor("slow_duration")
+	local slow_duration = ability:GetSpecialValueFor("slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local should_lifesteal = caster:HasModifier("modifier_phantom_ex_basic_attack")
 
@@ -43,13 +44,16 @@ function phantom_basic_attack_ranged:OnCastPointEnd()
 
 			if _self.Source == caster then
 				caster:GiveManaPercent(mana_gain_pct, unit)
-				-- Add modifier
-				caster:AddNewModifier(
-					caster, -- player source
-					self, -- ability source
-					"modifier_phantom_strike_stack", -- modifier name
-					{} -- kv
-				)
+					
+				if _self.Source == caster and not unit:IsWall() then 
+					caster:AddNewModifier(
+						caster, -- player source
+						self, -- ability source
+						"modifier_phantom_strike_stack", -- modifier name
+						{} -- kv
+					)
+				end
+				
 				if should_lifesteal then
 					local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
 					local heal = ability:GetSpecialValueFor( "heal" )
@@ -60,7 +64,7 @@ function phantom_basic_attack_ranged:OnCastPointEnd()
 			-- Add modifier
 			unit:AddNewModifier(
 				caster, -- player source
-				self, -- ability source
+				ability, -- ability source
 				"modifier_generic_fading_slow", -- modifier name
 				{ duration = slow_duration } -- kv
 			)
@@ -77,7 +81,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Effects
-function phantom_basic_attack_ranged:PlayEffectsOnFinish( pos )
+function phantom_basic_attack_related:PlayEffectsOnFinish( pos )
 	-- Create Sound
 	EmitSoundOnLocationWithCaster( pos, "Hero_PhantomAssassin.Dagger.Target", self:GetCaster() )
 	
@@ -88,14 +92,14 @@ function phantom_basic_attack_ranged:PlayEffectsOnFinish( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-function phantom_basic_attack_ranged:PlayEffectsOnCast( )
+function phantom_basic_attack_related:PlayEffectsOnCast( )
 	EmitSoundOn( "Hero_PhantomAssassin.Dagger.Cast", self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
-Abilities.BasicAttack( phantom_basic_attack_ranged )
+if IsClient() then require("wrappers/abilities") end
+Abilities.BasicAttack( phantom_basic_attack_related )
 Abilities.Initialize( 
-	phantom_basic_attack_ranged,
+	phantom_basic_attack_related,
 	{ activity = ACT_DOTA_TELEPORT_END, rate = 2.0 },
 	{ movement_speed = 80, fixed_range = 1}
 )

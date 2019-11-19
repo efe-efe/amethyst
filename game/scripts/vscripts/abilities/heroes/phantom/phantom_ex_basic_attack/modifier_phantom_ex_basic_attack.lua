@@ -23,13 +23,16 @@ end
 function modifier_phantom_ex_basic_attack:OnCreated( kv )
 	-- references
     if IsServer() then
+        
+        local ability = self:GetParent():FindAbilityByName("phantom_basic_attack")
+
         self:GetParent():SwapAbilities(
             "phantom_basic_attack", 
-            "phantom_basic_attack_ranged", 
+            "phantom_basic_attack_related", 
             false, 
-            true
+            not ability:IsHidden()
         )
-
+        
         self:GetParent():AddStatusBar({
             label = "dancing daggers", modifier = self, priority = 2, stylename="DancingBlades"
         }) 
@@ -39,11 +42,12 @@ end
 
 function modifier_phantom_ex_basic_attack:OnDestroy( kv )
     if IsServer() then
+        local ability = self:GetParent():FindAbilityByName("phantom_basic_attack_related")
         
         self:GetParent():SwapAbilities(
             "phantom_basic_attack", 
-            "phantom_basic_attack_ranged", 
-            true, 
+            "phantom_basic_attack_related", 
+            not ability:IsHidden(),
             false
         )
 

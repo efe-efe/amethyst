@@ -47,7 +47,7 @@ function phantom_counter:PlayEffectsOnTrigger()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
     phantom_counter,
     nil, 

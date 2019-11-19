@@ -25,7 +25,7 @@ function phantom_ex_basic_attack:PlayEffects()
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	phantom_ex_basic_attack,
 	{ activity = ACT_DOTA_TELEPORT_END, rate = 0.7 },

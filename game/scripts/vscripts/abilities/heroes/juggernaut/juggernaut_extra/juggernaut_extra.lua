@@ -26,7 +26,7 @@ function juggernaut_extra:OnCastPointEnd()
 	healing_ward:AddNewModifier(caster, self, "juggernaut_extra_ward", { duration = duration })
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
     juggernaut_extra,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },

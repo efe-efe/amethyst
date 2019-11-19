@@ -19,7 +19,7 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"9" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"0.8" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"sleep_per_stack"			"0.4" }
 			"07"{ "var_type"	"FIELD_INTEGER"		"max_charges"               "2" }

@@ -32,6 +32,7 @@ end
 function modifier_ancient_mobility_buff:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
+		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 	}
 
 	return funcs
@@ -41,6 +42,9 @@ function modifier_ancient_mobility_buff:GetModifierMoveSpeedBonus_Percentage()
     return self.ms_swing_pct
 end
 
+function modifier_ancient_mobility_buff:GetModifierIgnoreMovespeedLimit( params )
+    return 1
+end
 
 -- Graphics & Animations
 function modifier_ancient_mobility_buff:GetEffectName()

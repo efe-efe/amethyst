@@ -22,7 +22,7 @@
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"400" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"damage_per_bullet"			"8" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"damage_on_collision"		"6" }

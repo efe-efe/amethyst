@@ -194,7 +194,7 @@ function GameMode:GetAllianceHealth( name )
         max = 0,
     }
 
-    for _,hero in pairs(self.alliances[name].heroes) do
+    for _,hero in pairs(Alliances.alliances[name].heroes) do
         health.max = health.max + hero:GetMaxHealth()
         health.current = health.current + hero:GetHealth()
     end

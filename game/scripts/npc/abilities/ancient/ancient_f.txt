@@ -23,8 +23,8 @@
 			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow"               "35" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"stun_duration"             "1.5" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"stun_radius"               "100" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"stun_radius"               "150" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.8" }
 			"09"{ "var_type"	"FIELD_FLOAT"		"extra_damage"				"10" }
 		}
     }

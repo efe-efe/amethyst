@@ -133,7 +133,7 @@ function phantom_second_attack:PlayEffectsOnFinish(pos)
 	ParticleManager:ReleaseParticleIndex( effect_cast_c )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	phantom_second_attack,
 	{ activity = ACT_DOTA_ATTACK_EVENT, rate = 0.8 },

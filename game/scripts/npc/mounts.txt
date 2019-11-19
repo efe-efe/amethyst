@@ -1,0 +1,83 @@
+"mounts"
+{
+    "sheep_golden"
+    {
+        "model" "models/items/hex/sheep_hex/sheep_hex_gold.vmdl"
+    }
+    "turtle"
+    {
+        "model" "models/items/courier/nexon_turtle_09_blue/nexon_turtle_09_blue.vmdl"
+    }
+    "chicken"
+    {
+        "model" "models/items/courier/mighty_chicken/mighty_chicken.vmdl"
+    }
+    "minion"
+    {
+        "model" "models/items/undying/idol_of_ruination/ruin_wight_minion.vmdl"
+    }
+    "mok"
+    {
+        "model" "models/items/courier/mok/mok.vmdl"
+    }
+    "baby_roshan_golden"
+    {
+        "model" "models/courier/baby_rosh/babyroshan_alt.vmdl"
+    }
+    "griffin"
+    {
+        "model" "models/items/courier/royal_griffin_cub/royal_griffin_cub.vmdl"
+    }
+    "bettlejaws"
+    {
+        "model" "models/courier/beetlejaws/mesh/beetlejaws.vmdl"
+    }
+    "red_panda"
+    {
+        "model" "models/items/courier/snaggletooth_red_panda/snaggletooth_red_panda.vmdl"
+    }
+    "juggernaut_dog"
+    {
+        "model" "models/courier/juggernaut_dog/juggernaut_dog.vmdl"
+    }
+    "tory"
+    {
+        "model" "models/items/courier/tory_the_sky_guardian/tory_the_sky_guardian.vmdl"
+    }
+    "mech_donkey"
+    {
+        "model" "models/courier/mech_donkey/mech_donkey.vmdl"
+    }
+    "werebear"
+    {
+        "model" "models/items/courier/virtus_werebear_t1/virtus_werebear_t1.vmdl"
+    }
+    "green_spider"
+    {
+        "model" "models/items/broodmother/spiderling/lycosidae_spiderling/lycosidae_spiderling.vmdl"
+    }
+    "amaterasu"
+    {
+        "model" "models/items/courier/amaterasu/amaterasu.vmdl"
+    }
+    "axolotl"
+    {
+        "model" "models/items/courier/axolotl/axolotl.vmdl"
+    }
+    "carty"
+    {
+        "model" "models/items/courier/carty/carty.vmdl"
+    }
+    "skitterwing"
+    {
+        "model" "models/items/courier/atrophic_skitterwing/atrophic_skitterwing.vmdl"
+    }
+    "chocobo"
+    {
+        "model" "models/items/courier/chocobo/chocobo.vmdl"
+    }
+    "llama"
+    {
+        "model" "models/items/courier/livery_llama_courier/livery_llama_courier.vmdl"
+    }
+}

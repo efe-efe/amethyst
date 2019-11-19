@@ -106,7 +106,7 @@ function phantom_special_attack:PlayEffectsOnCast( )
 	EmitSoundOn( "Hero_PhantomAssassin.Dagger.Cast", self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	phantom_special_attack,
 	{ activity = ACT_DOTA_TELEPORT_END, rate = 2.0 },

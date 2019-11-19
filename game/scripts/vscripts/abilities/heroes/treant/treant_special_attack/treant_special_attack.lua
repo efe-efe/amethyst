@@ -75,7 +75,7 @@ function treant_special_attack:PlayEffectsOnLaunch( )
     EmitSoundOn( "Hero_Treant.NaturesGuise.On", self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	treant_special_attack,
 	{ activity = ACT_DOTA_ATTACK2, rate = 1.0 },

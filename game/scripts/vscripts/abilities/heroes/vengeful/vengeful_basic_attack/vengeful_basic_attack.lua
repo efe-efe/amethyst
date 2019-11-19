@@ -105,7 +105,7 @@ function vengeful_basic_attack:PlayEffectsOnFinish( pos, charged )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.BasicAttack( vengeful_basic_attack )
 Abilities.Initialize( 
 	vengeful_basic_attack,

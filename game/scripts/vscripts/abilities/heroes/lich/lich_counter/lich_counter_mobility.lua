@@ -62,7 +62,7 @@ function lich_counter_mobility:PlayEffectsOnCast()
     ParticleManager:CreateParticle( "particles/econ/events/nexon_hero_compendium_2014/blink_dagger_end_nexon_hero_cp_2014.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
     lich_counter_mobility,
     nil, 

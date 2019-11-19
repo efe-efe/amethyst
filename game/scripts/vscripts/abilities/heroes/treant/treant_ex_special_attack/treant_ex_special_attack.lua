@@ -28,7 +28,7 @@ function treant_ex_special_attack:OnCastPointEnd( )
 	alternate_version:StartCooldown(self:GetCooldown(0))
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	treant_ex_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },

@@ -89,13 +89,13 @@ vengeful_special_attack_ultimate.OnCastPointEnd = vengeful_special_attack.OnCast
 vengeful_special_attack_ultimate.PlayEffectsOnFinish = vengeful_special_attack.PlayEffectsOnFinish
 vengeful_special_attack_ultimate.PlayEffectsOnCast = vengeful_special_attack.PlayEffectsOnCast
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.0 },
 	{ movement_speed = 0, fixed_range = 1}
 )
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_special_attack_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.0 },

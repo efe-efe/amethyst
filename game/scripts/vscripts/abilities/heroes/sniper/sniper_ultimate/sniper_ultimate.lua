@@ -109,7 +109,7 @@ function sniper_ultimate:PlayEffectsOnCast()
     EmitGlobalSound( sound_cast)
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	sniper_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },

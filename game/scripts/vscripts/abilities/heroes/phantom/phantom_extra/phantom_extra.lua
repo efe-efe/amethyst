@@ -22,7 +22,7 @@ function phantom_extra:PlayEffectsOnCast()
     EmitSoundOn("Hero_PhantomAssassin.Blur", self:GetCaster())
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	phantom_extra,
 	{ activity = ACT_DOTA_CAST_ABILITY_3, rate = 1.0 },

@@ -4,7 +4,6 @@ LinkLuaModifier( "modifier_ancient_mobility_thinker", "abilities/heroes/ancient/
 function ancient_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-	local duration = self:GetSpecialValueFor( "duration" )
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
 
@@ -17,7 +16,7 @@ function ancient_mobility:OnCastPointEnd()
 			show_all = 1,
 			radius = radius,
 			delay_time = delay_time,
-			thinker_duration = duration + delay_time ,
+			draw_clock = 1
 		}, --paramTable
 		point, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
@@ -34,7 +33,7 @@ function ancient_mobility:PlayEffects( )
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	ancient_mobility,
 	{ activity = ACT_DOTA_ICE_VORTEX, rate = 1.0 },

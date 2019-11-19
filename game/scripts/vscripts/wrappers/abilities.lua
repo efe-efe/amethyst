@@ -81,9 +81,11 @@ function Abilities.Initialize( ability, animation, warmup, recast )
         end
 
 
+        --[[
         if not self:HasBehavior(DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE) then
             self:GetCaster():SetLastAbility(self)
         end
+        ]]
 
         if recast and recast.modifier_name then
             self:GetCaster():RemoveModifierByName(recast.modifier_name)

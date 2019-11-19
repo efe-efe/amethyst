@@ -20,7 +20,7 @@ function sniper_ultimate_projectile:OnCastPointEnd( )
 	-- Extra data
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf",
-		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
+		vSpawnOrigin = origin + Vector(0,0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		fEndRadius = projectile_end_radius,
@@ -154,7 +154,7 @@ function sniper_ultimate_projectile:PlayEffectsExplosion( pos )
     ParticleManager:ReleaseParticleIndex( effect_cast )    
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	sniper_ultimate_projectile,
 	{ activity = ACT_DOTA_ATTACK, rate = 0.4 },

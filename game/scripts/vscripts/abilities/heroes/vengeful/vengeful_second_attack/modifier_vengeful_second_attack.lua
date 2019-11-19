@@ -7,7 +7,7 @@ function modifier_vengeful_second_attack:OnCreated( params )
         self.extra_damage = ability:GetSpecialValueFor("extra_damage")
 
         self:GetParent():AddStatusBar({
-            label = "magic missile", modifier = self, priority = 2, stylename="MagicMissile"
+            label = "vengance", modifier = self, priority = 2, stylename="Vengance"
         }) 
     end
 end

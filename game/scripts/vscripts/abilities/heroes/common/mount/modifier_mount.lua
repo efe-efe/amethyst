@@ -15,6 +15,13 @@ function modifier_mount:IsPurgable()
 end
 
 function modifier_mount:RandomModel()
+    local mounts = LoadKeyValues("scripts/npc/mounts.txt")
+
+	--[[
+    for _, data in pairs(mounts) do
+        PrecacheResource("model", data.model, context)
+	end
+	]]
 
     local random_number = RandomInt( 1, 100 )
     local model 
@@ -59,8 +66,6 @@ function modifier_mount:RandomModel()
     elseif random_number > 95 and random_number <= 100 then
         model = "models/items/courier/livery_llama_courier/livery_llama_courier.vmdl"
 	end
-	
-	
 
     return model
 end

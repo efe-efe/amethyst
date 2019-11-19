@@ -135,7 +135,7 @@ function lich_special_attack:PlayEffectsKnockback(radius, origin)
 end
 
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	lich_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },

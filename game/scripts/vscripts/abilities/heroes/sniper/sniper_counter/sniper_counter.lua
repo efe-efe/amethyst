@@ -42,7 +42,7 @@ function sniper_counter:PlayEffects()
 	ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	sniper_counter,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },

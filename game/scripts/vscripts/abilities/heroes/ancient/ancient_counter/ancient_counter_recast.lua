@@ -100,7 +100,7 @@ function ancient_counter_recast:PlayEffectsConsume( hTarget )
 	 
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	ancient_counter_recast,
 	{ activity = ACT_DOTA_TELEPORT_END, rate = 2.0 },

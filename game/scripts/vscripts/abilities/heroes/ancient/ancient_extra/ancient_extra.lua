@@ -7,7 +7,8 @@ function ancient_extra:OnCastPointEnd()
 	local duration = self:GetSpecialValueFor( "duration" )
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
-
+	local stun_radius = self:GetSpecialValueFor("stun_radius")
+	
 	CreateModifierThinker(
 		caster, --hCaster
 		self, --hAbility
@@ -17,7 +18,22 @@ function ancient_extra:OnCastPointEnd()
 			show_all = 1,
 			radius = radius,
 			delay_time = delay_time,
-			thinker_duration = duration + delay_time ,
+			thinker_duration = duration + delay_time,
+			draw_clock = 1,
+		}, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
+
+	CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			show_all = 1,
+			radius = stun_radius,
+			delay_time = delay_time,
 		}, --paramTable
 		point, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
@@ -34,7 +50,7 @@ function ancient_extra:PlayEffects( )
 	EmitSoundOn( sound_cast, self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	ancient_extra,
 	{ activity = ACT_DOTA_ICE_VORTEX, rate = 1.0 },

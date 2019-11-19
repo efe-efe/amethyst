@@ -32,6 +32,7 @@ function modifier_vengeful_mobility_illusion:OnDestroy( kv )
         if self:GetAbility() then
             local my_name = self:GetAbility():GetAbilityName()
             local name = string.ends(my_name, "_ultimate") and "vengeful_mobility_swap_ultimate" or "vengeful_mobility_swap"
+            local modifier_name = string.ends(my_name, "_ultimate") and "modifier_vengeful_mobility_recast_ultimate" or "modifier_vengeful_mobility_recast"
 
             local ability = self:GetCaster():FindAbilityByName(name)
             ability.illusion_index = nil
@@ -47,10 +48,10 @@ function modifier_vengeful_mobility_illusion:OnDestroy( kv )
                 true,--activate,
                 false
             )
+            SafeDestroyModifier( modifier_name, self:GetCaster(), self:GetCaster() )
         end
 
-        SafeDestroyModifier( "modifier_vengeful_mobility_recast", self:GetCaster(), self:GetCaster() )
-            
+
         if self:GetParent() ~= nil then
             self:GetParent():ForceKill( false )
             UTIL_Remove( self:GetParent() )

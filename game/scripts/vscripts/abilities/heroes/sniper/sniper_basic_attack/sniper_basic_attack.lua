@@ -90,7 +90,7 @@ function sniper_basic_attack:PlayEffectsOnFinish( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.BasicAttack( sniper_basic_attack )
 Abilities.Initialize( 
 	sniper_basic_attack,

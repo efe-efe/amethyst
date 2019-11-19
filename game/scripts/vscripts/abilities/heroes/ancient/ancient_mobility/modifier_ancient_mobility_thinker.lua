@@ -4,12 +4,10 @@ LinkLuaModifier( "modifier_ancient_mobility_debuff", "abilities/heroes/ancient/a
 
 function modifier_ancient_mobility_thinker:OnCreated()
     if IsServer() then
-        self.duration = self:GetAbility():GetSpecialValueFor("duration")
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
         self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
-        self.ms_swing_linger = self:GetAbility():GetSpecialValueFor("ms_swing_linger")
-        self.initialized = false
-
+        self.duration = self:GetAbility():GetSpecialValueFor("duration")
+        self:PlayEffects()
         self:StartIntervalThink( self.delay_time )
     end
 end
@@ -24,27 +22,6 @@ end
 --------------------------------------------------------------------------------
 function modifier_ancient_mobility_thinker:OnIntervalThink()
     local caster = self:GetCaster()
-    if self.initialized == false then
-        AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.radius, self.duration, false )
-        self:PlayEffects()
-
-        CreateModifierThinker(
-            caster, --hCaster
-            self:GetAbility(), --hAbility
-            "modifier_thinker_indicator", --modifierName
-            { 
-                show_all = 1,
-                radius = self.radius,
-                delay_time = self.duration,
-            }, --paramTable
-            self:GetParent():GetOrigin(), --vOrigin
-            caster:GetTeamNumber(), --nTeamNumber
-            false --bPhantomBlocker
-        )
-    
-        self.initialized = true
-        self:StartIntervalThink( 0.1 )  
-    end
 
     local units = caster:FindUnitsInRadius(
         self:GetParent():GetOrigin(), 
@@ -57,11 +34,14 @@ function modifier_ancient_mobility_thinker:OnIntervalThink()
 
     for _,unit in pairs(units) do
         if caster:IsAlly(unit) then
-            unit:AddNewModifier(caster, self:GetAbility(), "modifier_ancient_mobility_buff", { duration = self.ms_swing_linger })
+            unit:AddNewModifier(caster, self:GetAbility(), "modifier_ancient_mobility_buff", { duration = self.duration })
         else
-            unit:AddNewModifier(caster, self:GetAbility(), "modifier_ancient_mobility_debuff", { duration = self.ms_swing_linger })
+            unit:AddNewModifier(caster, self:GetAbility(), "modifier_ancient_mobility_debuff", { duration = self.duration })
         end
     end
+
+    self:PlayEffectsTrigger()
+    self:Destroy()
 end
 
 function modifier_ancient_mobility_thinker:PlayEffects()
@@ -73,6 +53,18 @@ function modifier_ancient_mobility_thinker:PlayEffects()
     ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
     ParticleManager:SetParticleControl( self.effect_cast, 5, Vector(self.radius,self.radius,self.radius) )
 end
+
+function modifier_ancient_mobility_thinker:PlayEffectsTrigger()
+    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetParent() )
+
+    local particle_cast = "particles/techies_blast_off_ringmodel.vpcf"
+
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 1, self:GetParent():GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast )    
+end
+
 
 function modifier_ancient_mobility_thinker:StopEffects()
     StopSoundOn("Hero_Ancient_Apparition", nil)

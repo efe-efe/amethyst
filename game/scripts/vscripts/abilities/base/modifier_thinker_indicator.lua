@@ -31,10 +31,17 @@ function modifier_thinker_indicator:OnCreated( kv )
 
         self:PlayEffects()
 
-        self.current_degree = 0
-        self.max_degree = 360
-        self.interval = self.delay_time/self.max_degree
-        self:StartIntervalThink( self.interval )
+        
+        if self.draw_clock == 1 then 
+            self.current_degree = 0
+            self.max_degree = 360
+            
+            local degree_interval = 360/20
+            self.interval = self.delay_time/degree_interval
+            self:StartIntervalThink( self.interval )
+        else 
+            self:StartIntervalThink( self.delay_time )
+        end
     end
 end
 
@@ -50,28 +57,24 @@ end
 --------------------------------------------------------------------------------
 -- On Think
 function modifier_thinker_indicator:OnIntervalThink()
+    if self.draw_clock ~= 1 then
+        self:Destroy()
+        return
+    end
+
     if self.current_degree >= self.max_degree then
         self:Destroy()
         return
     end
 
-    if self.draw_clock == 1 then 
-        local x = self.origin.x + self.radius * math.cos(self.current_degree * math.pi/180)
-        local y = self.origin.y + self.radius * math.sin(self.current_degree * math.pi/180)
-        local target_point = Vector(x, y, self.origin.z)
+    local x = self.origin.x + self.radius * math.cos(self.current_degree * math.pi/180)
+    local y = self.origin.y + self.radius * math.sin(self.current_degree * math.pi/180)
+    local target_point = Vector(x, y, self.origin.z)
 
-        DebugDrawLine_vCol(
-            self.origin, 
-            target_point, 
-            Vector(254, 255, 234), 
-            false, 
-            self.interval
-        )
-
-        self:PlayEffectsDot(target_point, self.current_degree)
-    end
-
-    self.current_degree = (self.current_degree + 1)
+    --DebugDrawLine_vCol( self.origin, target_point, Vector(254, 255, 234), false, self.interval )
+    --DebugDrawCircle(target_point, Vector(234, 245, 254), 0.5, 3, true, self.delay_time - self.current_degree * self.interval)
+    self:PlayEffectsDot(target_point, self.current_degree)
+    self.current_degree = (self.current_degree + 20)
 end
 
 --------------------------------------------------------------------------------
@@ -82,7 +85,7 @@ function modifier_thinker_indicator:PlayEffects()
     local effect_cast
     
     if self.show_all == 1 then
-        for _,alliance in pairs(GameMode.alliances) do
+        for _,alliance in pairs(Alliances.alliances) do
             for _,team in pairs(alliance.teams) do
                 effect_cast = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self.caster, _ )
                 self.effects_cast_aoe[team] = ParticleManager:CreateParticleForTeam( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, team )
@@ -124,7 +127,7 @@ function modifier_thinker_indicator:StopEffects()
 		ParticleManager:ReleaseParticleIndex( self.effect_cast_aoe )
     end
     
-    for _,alliance in pairs(GameMode.alliances) do
+    for _,alliance in pairs(Alliances.alliances) do
         for _,team in pairs(alliance.teams) do
             if self.effects_cast_aoe[team]  ~= nil then
                 ParticleManager:DestroyParticle( self.effects_cast_aoe[team], false ) 
@@ -144,11 +147,12 @@ function modifier_thinker_indicator:StopEffects()
 end
 
 function modifier_thinker_indicator:PlayEffectsDot(pos, index)
-    local particle_cast = "particles/units/heroes/hero_warlock/warlock_base_attack_sphere_glow.vpcf"
+    local particle_cast = "particles/econ/items/drow/drow_ti6/drow_ti6_silence_arrow_ring.vpcf"
     self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( self.effects_cast[index], 0, pos)
     ParticleManager:SetParticleControl( self.effects_cast[index], 1, pos )
     ParticleManager:SetParticleControl( self.effects_cast[index], 2, pos )
     ParticleManager:SetParticleControl( self.effects_cast[index], 3, pos )
     ParticleManager:SetParticleControl( self.effects_cast[index], 4, pos )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 5, pos )
 end

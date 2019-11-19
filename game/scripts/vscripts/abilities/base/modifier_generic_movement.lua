@@ -111,12 +111,7 @@ function modifier_generic_movement:Move()
 	------------------------
 	-- Disable conditions
 	------------------------
-	if 	self.parent:IsStunned() or 
-		self.parent:IsCommandRestricted() or 
-		not self.parent:IsAlive() or 
-		self.parent:IsRooted() or
-		self.parent:IsNightmared()
-	then
+	if not self.parent:CanWalk() then
 		if current_animation == "walking" then
 			GameRules.EndAnimation(self.parent)
 		end
@@ -360,4 +355,5 @@ function modifier_generic_movement:CheckState()
 
 	return state
 end
+
 

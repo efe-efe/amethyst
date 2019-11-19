@@ -74,7 +74,7 @@ styles["Chill"] = {
     textShadow: CreateTextShadow("#9ccee6"),
 }
 
-styles["MagicMissile"] = {
+styles["Vengance"] = {
     backgroundColor: "#cb70dd",
     color: "#cb70dd"
 }

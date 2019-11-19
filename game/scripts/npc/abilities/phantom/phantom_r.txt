@@ -18,6 +18,7 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"1.0" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"25" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"		"10" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"				"90" }
 		}
 	}
 }

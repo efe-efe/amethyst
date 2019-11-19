@@ -100,7 +100,7 @@ function spectre_mobility:PlayEffectsOnImpact(hTarget)
 end
 
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	spectre_mobility,
     nil,

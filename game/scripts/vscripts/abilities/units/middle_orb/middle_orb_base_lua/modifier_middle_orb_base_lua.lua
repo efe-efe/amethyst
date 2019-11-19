@@ -36,16 +36,16 @@ end
 
 function modifier_middle_orb_base_lua:OnDeath(params)
 	if IsServer() then
-
 		local caster = self:GetAbility():GetCaster()
+		local pass = false 
+
 		-- filter other units with the same name
-		local pass = false
-		if params.unit==caster then
-			pass = true
+		if params.unit == caster and params.unit == self:GetParent() then
+			pass = true 
 		end
 		
 		-- logic
-		if pass then
+		if pass then		
 			local killer = params.attacker
 			local orb_origin = caster:GetOrigin()
 

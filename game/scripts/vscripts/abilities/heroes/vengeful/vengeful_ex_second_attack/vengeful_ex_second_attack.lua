@@ -130,14 +130,14 @@ vengeful_ex_second_attack_ultimate.PlayEffectsOnCast = vengeful_ex_second_attack
 vengeful_ex_second_attack_ultimate.PlayEffectsSwap = vengeful_ex_second_attack.PlayEffectsSwap
 vengeful_ex_second_attack_ultimate.PlayEffectsOnFinish = vengeful_ex_second_attack.PlayEffectsOnFinish
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_ex_second_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 0.8 },
 	{ movement_speed = 10, fixed_range = 1 }
 )
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_ex_second_attack_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 0.8 },

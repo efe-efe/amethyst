@@ -100,7 +100,7 @@ function sniper_ex_second_attack:PlayEffectsOnImpact( hTarget )
 
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	sniper_ex_second_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 0.8 },

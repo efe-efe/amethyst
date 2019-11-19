@@ -194,7 +194,7 @@ function spectre_basic_attack:PlayEffectsOnImpact( hTarget, pos, charged )
 	end
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.BasicAttack( spectre_basic_attack )
 Abilities.Initialize( 
 	spectre_basic_attack,

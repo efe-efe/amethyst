@@ -106,7 +106,7 @@ function treant_mobility:OnCastPointEnd( )
     Projectiles:CreateProjectile(projectile)
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	treant_mobility,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.1 },

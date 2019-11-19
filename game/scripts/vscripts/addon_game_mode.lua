@@ -25,8 +25,17 @@ function Precache( context )
 	PrecacheResource("particle", "particles/units/heroes/hero_wisp/wisp_overcharge_c.vpcf", context )
 	PrecacheResource("particle", "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf", context )
 	PrecacheResource("particle", "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf", context )
-	
-	--PrecacheResource("model", "particles/heroes/viper/viper.vmdl", context)
+    
+    local heroes = LoadKeyValues("scripts/npc/npc_heroes_custom.txt")
+    local mounts = LoadKeyValues("scripts/npc/mounts.txt")
+
+    for _, data in pairs(heroes) do
+        PrecacheUnitByNameSync(data.override_hero, context)
+    end
+
+    for _, data in pairs(mounts) do
+        PrecacheResource("model", data.model, context)
+    end
 end
 
 function Activate()
@@ -41,8 +50,9 @@ require('libraries/animations') -- This library allows starting customized anima
 require('settings') -- settings.lua is where resides many different properties for Dotarite.
 require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.
-require('abilities')
-require('modifiers')
+require('wrappers/abilities')
+require('wrappers/modifiers')
+require('alliances')
 
 function GameMode:InitGameMode()
     if GameMode._reentrantCheck then
@@ -134,60 +144,6 @@ function GameMode:LinkModifiers()
     print('[AMETHYST] Useful modifiers linked')
 end
 
-function GameMode:InitializeAlliances()
-    self.alliances = {}
-end
-
-function GameMode:CreateAlliance( name, teams )
-    self.alliances[name] = { 
-        teams = {},
-        wins = 0,
-        looser = false,
-        players = {},
-        heroes = {},
-        name = name,
-        amethysts = 0,
-    }
-end
-
-function GameMode:AddTeamToAlliance( alliance, team )
-	local i = 1
-	while self.alliances[alliance].teams[i] ~= nil do
-		i = i+1
-    end
-    
-    self.alliances[alliance].teams[i] = team
-end
-
-function GameMode:UpdateAlliance( heroIndex )
-    local heroEnt = EntIndexToHScript(heroIndex) 
-    local team = heroEnt:GetTeamNumber()
-    local playerID = heroEnt:GetPlayerOwnerID()
-    local playerOwner = heroEnt:GetPlayerOwner()
-
-    local alliance = self:FindAllianceByTeam(team)
-    alliance.players[playerID] = playerOwner
-    alliance.heroes[heroIndex] = heroEnt
-end
-
-function GameMode:FindAllianceByTeam( team )
-    for _,alliance in pairs(self.alliances) do
-        for _,m_team in pairs(alliance.teams) do
-            if m_team == team then
-                return alliance
-            end
-        end
-    end
-end
-
-function GameMode:CheckAllies( hero_a, hero_b )
-    local alliance_a = self:FindAllianceByTeam(hero_a:GetTeamNumber())
-    local alliance_b = self:FindAllianceByTeam(hero_b:GetTeamNumber())
-
-    if alliance_a == alliance_b then return true end
-    return false
-end
-
 --============================================================================================
 -- FIRST PLAYER CONNECT SETUP
 --============================================================================================
@@ -212,15 +168,17 @@ function GameMode:CaptureGameMode()
         -- Team Alliances
         -------------------------------
 
-        self:InitializeAlliances()
-        self:CreateAlliance("DOTA_ALLIANCE_RADIANT")
-        self:CreateAlliance("DOTA_ALLIANCE_DIRE")
+        Alliances:Initialize()
 
-        self:AddTeamToAlliance("DOTA_ALLIANCE_RADIANT", DOTA_TEAM_GOODGUYS)
-        self:AddTeamToAlliance("DOTA_ALLIANCE_RADIANT", DOTA_TEAM_CUSTOM_1)
+        Alliances:Create("DOTA_ALLIANCE_RADIANT")
+        Alliances:Create("DOTA_ALLIANCE_DIRE")
+
+        Alliances:AddTeam("DOTA_ALLIANCE_RADIANT", DOTA_TEAM_GOODGUYS)
+        Alliances:AddTeam("DOTA_ALLIANCE_RADIANT", DOTA_TEAM_CUSTOM_1)
         
-        self:AddTeamToAlliance("DOTA_ALLIANCE_DIRE", DOTA_TEAM_BADGUYS)
-        self:AddTeamToAlliance("DOTA_ALLIANCE_DIRE", DOTA_TEAM_CUSTOM_2)
+        Alliances:AddTeam("DOTA_ALLIANCE_DIRE", DOTA_TEAM_BADGUYS)
+        Alliances:AddTeam("DOTA_ALLIANCE_DIRE", DOTA_TEAM_CUSTOM_2)
+
 
         -------------------------------
         -- Set GameMode parameters
@@ -258,42 +216,39 @@ function GameMode:CaptureGameMode()
         CustomGameEventManager:RegisterListener('swap_abilities', function(eventSourceIndex, args)
             local caster = EntIndexToHScript(args.entityIndex)
             local mode = args.mode
+
             for i = 0, 6 do
                 local ability = caster:GetAbilityByIndex(i)
                 if ability then
                     if ability:GetAbilityType() ~= 2 then -- ignore talents
-                        local alternate_name =  ability:GetAlternateName()
-                        local alternate_version = caster:FindAbilityByName(alternate_name)
+                        local ex_name =  ability:GetAlternateName()
+                        local alternate_version = caster:FindAbilityByName(ex_name)
 
                         if alternate_version ~= nil then
-                            if mode == "press" then
-                                
-                                if ability.OnSwapPress then
-                                    if ability:OnSwapPress() == false then
-                                        return
-                                    end
-                                end
+                            local swapeable_ability = alternate_version
 
+                            if swapeable_ability:GetAbilityIndex() ~= swapeable_ability:GetAbilityOriginalIndex() then
+                                if swapeable_ability:GetAbilityIndex() ~= ability:GetAbilityOriginalIndex() then
+                                    swapeable_ability = swapeable_ability:GetRelatedAbility()
+                                end
+                            end
+
+                            if mode == "press" then
                                 caster:SwapAbilities( 
                                     ability:GetAbilityName(),
-                                    alternate_version:GetAbilityName(),
+                                    swapeable_ability:GetAbilityName(),
                                     false,
                                     true
                                 )
                             elseif mode == "release" then
-
-                                if ability.OnSwapRelease then
-                                    if ability:OnSwapRelease() == false then
-                                        return
-                                    end
+                                if not swapeable_ability:IsEx() then
+                                    caster:SwapAbilities( 
+                                        swapeable_ability:GetAbilityName(),
+                                        ability:GetAbilityName(),
+                                        true,
+                                        false
+                                    )
                                 end
-
-                                caster:SwapAbilities( 
-                                    alternate_version:GetAbilityName(),
-                                    ability:GetAbilityName(),
-                                    true,
-                                    false
-                                )
                             end
                         end
                     end

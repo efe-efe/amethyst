@@ -9,7 +9,7 @@ function juggernaut_mobility:OnCastPointEnd()
 	caster:AddNewModifier(caster, self, "modifier_juggernaut_mobility", { duration = duration })
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
     juggernaut_mobility,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },

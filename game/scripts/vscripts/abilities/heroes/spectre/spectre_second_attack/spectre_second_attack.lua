@@ -111,7 +111,7 @@ function spectre_second_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_Nevermore.Raze_Flames", self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	spectre_second_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 0.25 },

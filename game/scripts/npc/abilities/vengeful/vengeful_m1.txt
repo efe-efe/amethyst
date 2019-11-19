@@ -15,7 +15,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "6" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"max_stacks"				"3" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"extra_damage"				"8" }

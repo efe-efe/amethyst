@@ -77,7 +77,7 @@ function treant_ultimate:PlayEffectsOnTrigger()
     ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	treant_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_5, rate = 0.9 },

@@ -114,7 +114,7 @@ function phantom_basic_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_PhantomAssassin.PreAttack", self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.BasicAttack( phantom_basic_attack )
 Abilities.Initialize( 
 	phantom_basic_attack,

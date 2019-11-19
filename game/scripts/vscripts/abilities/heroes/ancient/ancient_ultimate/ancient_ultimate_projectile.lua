@@ -33,22 +33,20 @@ function ancient_ultimate_projectile:OnCastPointEnd( )
 		end,
 		OnFinish = function(_self, pos)
 
-			local enemies = FindUnitsInRadius( 
-				caster:GetTeamNumber(), -- int, your team number
-				pos, -- point, center point
-				nil, -- handle, cacheUnit. (not known)
-				self:GetSpecialValueFor("radius"), -- float, radius. or use FIND_UNITS_EVERYWHERE
-				DOTA_UNIT_TARGET_TEAM_BOTH, -- int, team filter
-				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-				0, -- int, flag filter
-				0, -- int, order filter
-				false -- bool, can grow cache
+			local enemies = caster:FindUnitsInRadius(
+				pos, 
+				self:GetSpecialValueFor("radius"), 
+				DOTA_UNIT_TARGET_TEAM_ENEMY, 
+				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+				DOTA_UNIT_TARGET_FLAG_NONE,
+				FIND_ANY_ORDER
 			)
+
 			for _,enemy in pairs(enemies) do
 				local damage_table = {
 					victim = enemy,
 					attacker = caster,
-					damage = 60,
+					damage = damage,
 					damage_type = DAMAGE_TYPE_PURE,
 				}
 				ApplyDamage( damage_table )
@@ -83,7 +81,7 @@ function ancient_ultimate_projectile:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_Ancient_Apparition.IceBlastRelease.Cast", self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	ancient_ultimate_projectile,
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.0 },

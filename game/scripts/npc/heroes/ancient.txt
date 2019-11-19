@@ -40,7 +40,7 @@
 		"AttackDamageMin"			"10"										// Damage range min.
 		"AttackDamageMax"			"10"										// Damage range max.	
 		"AttackRate"				"0.4"									// Speed of attack.	
-		"AttackAnimationPoint"		"0.3"	
+		"AttackAnimationPoint"		"0.5"	
 		"AttackRange"				"80"
 		
 		// Movement
@@ -59,7 +59,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"230" 						// Base health.
+		"StatusHealth"				"140" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"

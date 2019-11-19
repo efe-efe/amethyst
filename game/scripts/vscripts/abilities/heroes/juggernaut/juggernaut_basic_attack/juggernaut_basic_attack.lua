@@ -126,7 +126,7 @@ function juggernaut_basic_attack:PlayEffects_c( pos )
 	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	juggernaut_basic_attack,
 	{ activity = ACT_DOTA_ATTACK_EVENT, rate = 1.8 },

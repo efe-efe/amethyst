@@ -60,7 +60,7 @@ function spectre_counter:PlayEffectsOnTrigger()
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
     spectre_counter,
     nil, 

@@ -101,7 +101,7 @@ function juggernaut_ultimate:PlayEffectsOnImpact( hTarget )
     EmitSoundOn("Hero_PhantomAssassin.Attack", hTarget)
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	juggernaut_ultimate,
 	{ activity = ACT_DOTA_TAUNT, translate = "sharp_blade", rate = 2.5 },

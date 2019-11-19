@@ -70,7 +70,7 @@ function phantom_mobility:PlayEffectsOnDisplacementEnd( origin )
     ParticleManager:ReleaseParticleIndex(trail_pfx)
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	phantom_mobility,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },

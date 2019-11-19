@@ -26,7 +26,7 @@ function treant_second_attack:OnCastPointEnd()
 	)
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	treant_second_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },

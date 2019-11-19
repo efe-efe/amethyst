@@ -47,7 +47,7 @@
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
 		}
 	}
 }

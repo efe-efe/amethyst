@@ -23,7 +23,7 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"1.0" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"25" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
 		}
 	}

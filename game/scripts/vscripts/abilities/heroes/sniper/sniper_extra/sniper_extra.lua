@@ -133,7 +133,7 @@ function sniper_extra:PlayEffects_c( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	sniper_extra,
 	{ activity = ACT_DOTA_ATTACK, rate = 0.4 },

@@ -110,7 +110,7 @@ function treant_basic_attack:PlayEffectsOnImpact( hTarget, pos )
 	EmitSoundOn( sound_cast, hTarget )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	treant_basic_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.8 },

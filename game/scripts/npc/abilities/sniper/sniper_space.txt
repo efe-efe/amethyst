@@ -10,7 +10,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"800"
-		"AbilityCooldown"				"9.0"
+		"AbilityCooldown"				"8.0"
 
 		"precache"
 		{
@@ -20,7 +20,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.1" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"350" }
 		}
 	}
 }

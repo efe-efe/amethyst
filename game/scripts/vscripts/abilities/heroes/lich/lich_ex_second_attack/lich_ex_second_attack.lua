@@ -77,7 +77,7 @@ function lich_ex_second_attack:PlayEffectsOnImpact( hTarget, pos )
 	EmitSoundOn( sound_cast, hTarget )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	lich_ex_second_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_6, rate = 0.8 },

@@ -97,13 +97,13 @@ vengeful_second_attack_ultimate.PlayEffectsOnCast = vengeful_second_attack.PlayE
 local animation = { activity = ACT_DOTA_SPAWN, rate = 2.0 }
 local warmup = { movement_speed = 80, fixed_range = 1 }
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_second_attack,
 	animation,
 	warmup
 )
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_second_attack_ultimate,
 	animation,

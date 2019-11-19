@@ -110,7 +110,7 @@ function sniper_second_attack:PlayEffectsOnHit( hTarget )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	sniper_second_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.3 },

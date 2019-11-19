@@ -1,5 +1,13 @@
 function CDOTA_BaseNPC:IsAlly( hero )
-	return GameMode:CheckAllies(self, hero)
+	return Alliances:CheckAllies(self, hero)
+end
+
+function CDOTA_BaseNPC:CanWalk( hero )
+	return not ( self:IsStunned() or 
+	self:IsCommandRestricted() or 
+	self:IsRooted() or
+	self:IsNightmared() or
+	not self:IsAlive() )
 end
 
 function CDOTA_BaseNPC:FindUnitsInRadius( origin, radius, teamFilter, typeFilter, flagFilter, orderFilter  )
@@ -16,14 +24,18 @@ function CDOTA_BaseNPC:FindUnitsInRadius( origin, radius, teamFilter, typeFilter
 	)
 
 	local filtered_units = {}
-
+	local counter = 1
+	
 	for _,unit in pairs(units) do
 		if teamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and self:IsAlly(unit) then
-			filtered_units[_] = unit
+			filtered_units[counter] = unit
+			counter = counter + 1
 		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not self:IsAlly(unit) then
-			filtered_units[_] = unit
+			filtered_units[counter] = unit
+			counter = counter + 1
 		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
-			filtered_units[_] = unit
+			filtered_units[counter] = unit
+			counter = counter + 1
 		end
 	end
 	
@@ -74,6 +86,7 @@ function CDOTA_BaseNPC:IsWall()
     return self:Attribute_GetIntValue("wall", 0) == 1 and true or false
 end
 
+--[[
 function CDOTA_BaseNPC:GetLastAbility()
 	return self.last_spell
 end
@@ -81,7 +94,7 @@ end
 function CDOTA_BaseNPC:SetLastAbility( ability )
 	self.last_spell = ability
 end
-
+]]
 
 function CDOTA_BaseNPC:GiveManaPercent( percentage, source )
     if source ~= nil and (source:IsMiddleOrb() or source:IsWall()) then

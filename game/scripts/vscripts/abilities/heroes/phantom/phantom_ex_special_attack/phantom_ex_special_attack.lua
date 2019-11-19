@@ -96,7 +96,7 @@ function phantom_ex_special_attack:PlayEffectsOnCast( )
 end
 
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	phantom_ex_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_3, rate = 1.3 },

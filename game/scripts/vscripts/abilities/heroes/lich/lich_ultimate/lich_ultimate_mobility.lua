@@ -99,7 +99,7 @@ function lich_ultimate_mobility:PlayEffectsOnImpact( hTarget, pos )
 	EmitSoundOn( sound_cast, hTarget )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	lich_ultimate_mobility,
     nil,

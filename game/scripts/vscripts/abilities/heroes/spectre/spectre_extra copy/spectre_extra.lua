@@ -53,7 +53,7 @@ function spectre_extra:PlayEffects()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	spectre_extra,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },

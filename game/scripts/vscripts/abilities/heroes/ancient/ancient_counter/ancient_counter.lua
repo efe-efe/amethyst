@@ -69,7 +69,7 @@ function ancient_counter:PlayEffectsOnTrigger( radius )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
     ancient_counter,
     nil, 

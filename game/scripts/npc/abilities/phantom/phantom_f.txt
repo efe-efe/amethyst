@@ -54,7 +54,7 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"fading_slow"			"100" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"slow_duration"			"2.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"			    "150" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"			    "140" }
 		}
 	}
 }

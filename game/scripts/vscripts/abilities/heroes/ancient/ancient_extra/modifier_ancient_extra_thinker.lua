@@ -7,6 +7,9 @@ function modifier_ancient_extra_thinker:OnCreated()
         self.stun_radius = self:GetAbility():GetSpecialValueFor("stun_radius")
         self.slow_duration = self:GetAbility():GetSpecialValueFor("slow_duration")
         self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
+        self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
+        self.ability_damage = self:GetAbility():GetSpecialValueFor("ability_damage")
+        self.extra_damage = self:GetAbility():GetSpecialValueFor("extra_damage")
         
         self:StartIntervalThink( self.delay_time )
         self:PlayEffects()
@@ -53,11 +56,25 @@ function modifier_ancient_extra_thinker:OnIntervalThink()
 
         if continue then
             enemy:AddNewModifier(caster, self:GetAbility() , "modifier_generic_fading_slow", { duration = self.slow_duration })
+            local damage = {
+				victim = enemy,
+				attacker = self:GetCaster(),
+				damage = self.ability_damage,
+				damage_type = DAMAGE_TYPE_PURE,
+			}
+			ApplyDamage( damage )
         end
     end
 
     for _,enemy in pairs(enemies_small_radius) do
         enemy:AddNewModifier(caster, self:GetAbility() , "modifier_generic_stunned", { duration = self.stun_duration })
+        local damage = {
+            victim = enemy,
+            attacker = self:GetCaster(),
+            damage = self.ability_damage + self.extra_damage,
+            damage_type = DAMAGE_TYPE_PURE,
+        }
+        ApplyDamage( damage )
     end
 
     self:PlayEffectsOnProc()
@@ -65,7 +82,7 @@ end
 
 function modifier_ancient_extra_thinker:PlayEffects()
     EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.IceVortex.lp", self:GetCaster())
-    local particle_cast = "particles/econ/items/ancient_apparition/ancient_apparation_ti8/ancient_ice_vortex_ti8.vpcf"
+    local particle_cast = "particles/ancient_ice_vortex.vpcf"
     
     self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     

@@ -96,9 +96,9 @@ end
 
 function ancient_second_attack:CastOnRelease() return true end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	ancient_second_attack,
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.0 },
-	{ movement_speed = 80, fixed_range = 1}
+	{ movement_speed = 50, fixed_range = 1}
 )

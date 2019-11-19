@@ -32,14 +32,14 @@ end
 vengeful_extra_ultimate.OnCastPointEnd = vengeful_extra.OnCastPointEnd
 
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_extra,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },
 	{ movement_speed = 10 }
 )
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_extra_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },

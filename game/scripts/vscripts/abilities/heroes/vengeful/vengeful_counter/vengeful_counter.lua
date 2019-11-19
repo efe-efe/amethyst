@@ -1,5 +1,6 @@
 vengeful_counter = class({})
 vengeful_counter_ultimate = class({})
+LinkLuaModifier("modifier_vengeful_counter", "abilities/heroes/vengeful/vengeful_counter/modifier_vengeful_counter", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -13,8 +14,10 @@ function vengeful_counter:OnCastPointEnd()
 
 	-- load data
     local mana_gain_pct = ability:GetSpecialValueFor("mana_gain_pct")
-	local link_duration = ability:GetSpecialValueFor("link_duration")
 	local backwards_damage = ability:GetSpecialValueFor("backwards_damage")
+	local duration = ability:GetSpecialValueFor("duration")
+	local ms_buff_per_stack_pct = ability:GetSpecialValueFor("ms_buff_per_stack_pct")
+	local targets = 0
 	
 	-- Dynamic data
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -45,6 +48,10 @@ function vengeful_counter:OnCastPointEnd()
 			}
 
 			ApplyDamage( damage_table )
+
+			if not unit:IsWall() then
+				targets = targets + 1
+			end
 
 			if not string.ends(self:GetAbilityName(), "_ultimate") then
 				if _self.Source == caster then
@@ -78,8 +85,13 @@ function vengeful_counter:OnCastPointEnd()
 						self:PlayEffectsOnImpact(unit)
 						self:PlayEffectsOnImpactCaster(unit)
 						self:StopEffectsProjectile()
+						_self.Source:AddNewModifier(_self.Source, self, "modifier_vengeful_counter", { duration = duration, stacks = targets * ms_buff_per_stack_pct })
 						_self:Destroy()
 						return
+					else
+						if not unit:IsWall() then
+							targets = targets + 1
+						end
 					end
 
 					if _self.Source:IsAlly(unit) then return end
@@ -100,6 +112,7 @@ function vengeful_counter:OnCastPointEnd()
 							caster:GiveManaPercent(mana_gain_pct, unit)
 						end
 					end
+
 				end,
 				OnFinish = function(_self, pos)
 					self:PlayEffectsOnFinish(pos)
@@ -196,13 +209,13 @@ vengeful_counter_ultimate.PlayEffectsOnReCast = vengeful_counter.PlayEffectsOnRe
 vengeful_counter_ultimate.PlayEffectsOnImpact = vengeful_counter.PlayEffectsOnImpact
 vengeful_counter_ultimate.PlayEffectsOnImpactCaster = vengeful_counter.PlayEffectsOnImpactCaster
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_counter,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },
 	{ movement_speed = 0, fixed_range = 1}
 )
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_counter_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },

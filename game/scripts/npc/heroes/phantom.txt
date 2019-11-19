@@ -22,7 +22,7 @@
 		"Ability11"						"charge"						
 		"Ability12"						"phantom_counter_mobility"	
 		"Ability13"						"phantom_extra_mobility"
-		"Ability14"						"phantom_basic_attack_ranged"
+		"Ability14"						"phantom_basic_attack_related"
 		
 
 		//Vision
@@ -39,7 +39,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AttackDamageMin"			"8"										// Damage range min.
 		"AttackDamageMax"			"8"										// Damage range max.	
-		"AttackRate"				"0.3"									// Speed of attack.
+		"AttackRate"				"0.4"									// Speed of attack.
 		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
 		

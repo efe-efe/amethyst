@@ -42,7 +42,7 @@ function phantom_counter_mobility:PlayEffectsOnCast()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
     phantom_counter_mobility,
     nil, 

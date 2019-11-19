@@ -1,3 +1,6 @@
+
+require('alliances')
+
 --============================================================================================
 -- GAME PHASES
 --============================================================================================
@@ -50,7 +53,7 @@ function GameMode:OnGameInProgress()
     self.scheduled_middle_orb_index = RandomInt(1, 3)
     self:CreateMiddleOrb( self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
     self:PlayEffectsArrow()
-    self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
+    self:CalculateNextSpawn()
 end
 
 --============================================================================================
@@ -129,7 +132,7 @@ function GameMode:OnHeroInGame(keys)
             self.teams[team].heroes[keys.entindex] = npc -- Save the heroe, in case the player is not connected
             ]]
 
-            self:UpdateAlliance(keys.entindex)
+            Alliances:Update(npc)
 
             local data = {
                 teamID = team,
@@ -160,7 +163,7 @@ end
 -- ENTITY DIED
 --============================================================================================
 function GameMode:OnEntityKilled( keys )
-    local killed = EntIndexToHScript( keys.entindex_killed )
+        local killed = EntIndexToHScript( keys.entindex_killed )
     
     -- Recreate orb
     if killed:IsMiddleOrb() then     
@@ -174,22 +177,19 @@ function GameMode:OnEntityKilled( keys )
         self:PlayEffectsArrow()
 
         if not self:IsDeathZoneCreated() then
-            self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
-            while self.next_middle_orb_index == self.scheduled_middle_orb_index do
-                self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
-            end
+            self:CalculateNextSpawn()
         end
 
         if keys.entindex_attacker ~= nil then
             local killer = EntIndexToHScript( keys.entindex_attacker )
             local killer_team = killer:GetTeamNumber()
-            local killer_alliance = self:FindAllianceByTeam(killer_team)
+            local killer_alliance = Alliances:FindByTeam(killer_team)
 
             killer_alliance.amethysts = killer_alliance.amethysts + 1
             
             local data = {
-                good_guys = self.alliances["DOTA_ALLIANCE_RADIANT"].amethysts,
-                bad_guys = self.alliances["DOTA_ALLIANCE_DIRE"].amethysts
+                good_guys = Alliances.alliances["DOTA_ALLIANCE_RADIANT"].amethysts,
+                bad_guys = Alliances.alliances["DOTA_ALLIANCE_DIRE"].amethysts
             }
 
             CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
@@ -199,7 +199,7 @@ function GameMode:OnEntityKilled( keys )
 
     if killed:IsRealHero() then
         local killed_team = killed:GetTeamNumber()
-        local killed_alliance = self:FindAllianceByTeam(killed_team)
+        local killed_alliance = Alliances:FindByTeam(killed_team)
 
         if not self.lock_round then
             self:CreateDeathOrb(killed)
@@ -299,7 +299,7 @@ function GameMode:FindWinner()
     local alliances_with_alive_players = 0
     local winner = nil
 
-    for _,alliance in pairs(self.alliances) do
+    for _,alliance in pairs(Alliances.alliances) do
         if not alliance.looser then 
             winner = alliance
             alliances_with_alive_players = alliances_with_alive_players + 1
@@ -326,7 +326,7 @@ function GameMode:FindNextAliveAlly( alliance )
 end
 
 function GameMode:FindNextAliveHero()
-    for _,alliance in pairs(self.alliances) do
+    for _,alliance in pairs(Alliances.alliances) do
         for _,hero in pairs(alliance.heroes) do
             if hero:IsAlive() then
                 return hero
@@ -350,7 +350,7 @@ function GameMode:GetAliveHeroes( alliance )
 end
 
 function GameMode:UpdateCameras()
-    for _,alliance in pairs(self.alliances) do
+    for _,alliance in pairs(Alliances.alliances) do
         for _,hero in pairs(alliance.heroes) do
             if not hero:IsAlive() then
                 local alive_ally = self:FindNextAliveAlly( alliance )
@@ -398,7 +398,7 @@ function GameMode:EndRound( delay )
         self:CreateAllOrbs()
         --self:CreateWalls()
 
-        for _,alliance in pairs(self.alliances) do
+        for _,alliance in pairs(Alliances.alliances) do
             if 
                 alliance.wins >= self.ROUNDS_TO_WIN or 
                 ( alliance.wins - self:GetOppositeAlliance(alliance).wins ) >= self.DIFFERNECE_TO_WIN
@@ -428,16 +428,16 @@ function GameMode:EndRound( delay )
         self.lock_round = false
         
         local score = { 
-            good_guys = self.alliances["DOTA_ALLIANCE_RADIANT"].wins,
-            bad_guys = self.alliances["DOTA_ALLIANCE_DIRE"].wins,
+            good_guys = Alliances.alliances["DOTA_ALLIANCE_RADIANT"].wins,
+            bad_guys = Alliances.alliances["DOTA_ALLIANCE_DIRE"].wins,
         }
 
         --Update score
         CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
 
         local data = {
-            good_guys = self.alliances["DOTA_ALLIANCE_RADIANT"].amethysts,
-            bad_guys = self.alliances["DOTA_ALLIANCE_DIRE"].amethysts
+            good_guys = Alliances.alliances["DOTA_ALLIANCE_RADIANT"].amethysts,
+            bad_guys = Alliances.alliances["DOTA_ALLIANCE_DIRE"].amethysts
         }
         CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
         
@@ -519,7 +519,7 @@ function GameMode:CreateWall( ent )
         DOTA_TEAM_NOTEAM
     )
     self.walls[ent]:Attribute_SetIntValue("wall", 1)
-    self.walls[ent]:SetHullRadius(70)
+    self.walls[ent]:SetHullRadius(65)
     self.walls[ent]:AddNewModifier(self.walls[ent], nil, "wall_base", { fow_blocker = fow_blocker:GetEntityIndex() })
 end
 
@@ -631,7 +631,6 @@ end
 
 function GameMode:DestroyAllWalls()
     for _,wall in pairs(self.walls) do
-        PrintTable(wall)
         if wall:IsAlive() then
             wall:Kill(nil, wall)
         end
@@ -729,8 +728,23 @@ end
 
 function GameMode:GetOppositeAlliance( alliance )
     if alliance.name == "DOTA_ALLIANCE_RADIANT" then
-        return self.alliances["DOTA_ALLIANCE_DIRE"]
+        return Alliances.alliances["DOTA_ALLIANCE_DIRE"]
     else
-        return self.alliances["DOTA_ALLIANCE_RADIANT"]
+        return Alliances.alliances["DOTA_ALLIANCE_RADIANT"]
+    end
+end
+
+function GameMode:CalculateNextSpawn()
+    self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
+
+    --If spawn is the same than the actual one, pick the next spawn
+    if self.next_middle_orb_index == self.scheduled_middle_orb_index then
+
+        self.next_middle_orb_index = self.next_middle_orb_index + 1
+
+        -- If the spawn is higher than the possible ones, use the first one
+        if self.next_middle_orb_index > #self.middle_orbs_ent then
+            self.next_middle_orb_index = 1
+        end
     end
 end

@@ -68,7 +68,7 @@ function juggernaut_counter:PlayEffectsOnTrigger()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
     juggernaut_counter,
     nil, 

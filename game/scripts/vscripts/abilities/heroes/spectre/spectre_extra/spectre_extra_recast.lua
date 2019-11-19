@@ -12,7 +12,7 @@ function spectre_extra_recast:OnCastPointEnd()
 	self:GetCaster():RemoveModifierByName("modifier_spectre_extra_recast")	
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	spectre_extra_recast,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },

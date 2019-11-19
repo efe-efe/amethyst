@@ -143,14 +143,14 @@ function vengeful_mobility_ultimate:OnRemoved()
     self:GetCaster():RemoveAbility( "vengeful_mobility_swap_ultimate" )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_mobility,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },
 	{ movement_speed = 100 }
 )
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_mobility_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },

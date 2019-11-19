@@ -38,7 +38,7 @@ function spectre_ultimate:PlayEffectsOnCast(pos)
 
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	spectre_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 0.6 },

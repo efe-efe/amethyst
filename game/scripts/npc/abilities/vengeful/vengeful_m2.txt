@@ -17,7 +17,7 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"16" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"extra_damage"             	"6" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"duration"             		"3.0" }

@@ -3,6 +3,9 @@ ancient_special_attack = class({})
 LinkLuaModifier( "modifier_ancient_special_attack_charges", "abilities/heroes/ancient/ancient_special_attack/modifier_ancient_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_ancient_special_attack", "abilities/heroes/ancient/ancient_special_attack/modifier_ancient_special_attack", LUA_MODIFIER_MOTION_NONE )
 
+
+
+
 --------------------------------------------------------------------------------
 -- Passive Modifier
 function ancient_special_attack:GetIntrinsicModifierName()
@@ -12,6 +15,36 @@ end
 function ancient_special_attack:HasCharges()
 	return true
 end
+
+function ancient_special_attack:OnSpellStart()
+	local particle_cast = "particles/units/heroes/hero_keeper_of_the_light/keeper_chakra_magic.vpcf"
+    local effect_cast = ParticleManager:CreateParticle( 
+        particle_cast, 
+        PATTACH_CUSTOMORIGIN, 
+        self:GetCaster()
+    )
+
+    ParticleManager:SetParticleControlEnt( 
+        effect_cast, 
+        0, 
+        self:GetCaster(), 
+        PATTACH_POINT_FOLLOW, 
+        "attach_hitloc", 
+        self:GetCaster():GetOrigin(), 
+        true 
+	)
+	ParticleManager:SetParticleControlEnt( 
+        effect_cast, 
+        1, 
+        self:GetCaster(), 
+        PATTACH_POINT_FOLLOW, 
+        "attach_hitloc", 
+        self:GetCaster():GetOrigin(), 
+        true 
+    )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
 
 function ancient_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -60,8 +93,8 @@ function ancient_special_attack:OnCastPointEnd()
 							x = projectile_direction.x,
 							y = projectile_direction.y,
 							r = knockback_distance,
-							speed = 1500,
-							peak = 50,
+							speed = 1350,
+							peak = 100,
 							restricted = 1,
 						} -- kv
 					)
@@ -124,9 +157,9 @@ function ancient_special_attack:PlayEffectsConsume( hTarget )
 	 
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	ancient_special_attack,
-	{ activity = ACT_DOTA_TELEPORT_END, rate = 2.0 },
+	{ activity = ACT_DOTA_TELEPORT_END, rate = 1.0 },
 	{ movement_speed = 80, fixed_range = 1}
 )

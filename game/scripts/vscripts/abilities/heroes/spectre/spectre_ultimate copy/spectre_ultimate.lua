@@ -155,7 +155,7 @@ function spectre_ultimate:PlayEffectsOnFinish(pos)
 end
 
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	spectre_ultimate,
 	{ activity = ACT_DOTA_ATTACK, rate = 0.4 },

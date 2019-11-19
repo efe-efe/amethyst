@@ -66,14 +66,14 @@ end
 vengeful_mobility_swap_ultimate.OnCastPointEnd = vengeful_mobility_swap.OnCastPointEnd
 vengeful_mobility_swap_ultimate.PlayEffectsOnCast = vengeful_mobility_swap.PlayEffectsOnCast
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_mobility_swap,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
 	{ movement_speed = 10 }
 )
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_mobility_swap_ultimate,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },

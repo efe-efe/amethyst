@@ -19,7 +19,7 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2200" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"heal_per_target"			"10" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"speed_per_target_pct"		"14" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"duration_per_target"		"1.0" }

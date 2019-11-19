@@ -102,7 +102,7 @@ function juggernaut_second_attack:PlayEffectsOnFinish(pos)
 	ParticleManager:ReleaseParticleIndex( effect_cast_a )
 end
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	juggernaut_second_attack,
 	{ activity = ACT_DOTA_SPAWN, translate = "odachi", rate = 3.0 },

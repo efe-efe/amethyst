@@ -4,7 +4,7 @@ function wall_base:OnCreated( params )
 	if IsServer() then
 		self.fow_blocker = EntIndexToHScript(params.fow_blocker) 
 		self.prev_origin = self:GetParent():GetOrigin()
-		self:StartIntervalThink(0.1)
+		--self:StartIntervalThink(0.1) TODO CHECK THIS; CAN THIS BE OPTIMIZED? CAN THIS BE ACTIVATED AGAIN?
 	end
 end
 

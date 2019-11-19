@@ -39,7 +39,7 @@ function lich_mobility:PlayEffectsOnTarget( target )
 end
 
 
-if IsClient() then require("abilities") end
+if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	lich_mobility,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },

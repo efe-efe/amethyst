@@ -443,7 +443,7 @@
 	{
 		// General
 		//----------------------------------------------------------------
-		"Model"						"models/props_debris/shop_set_cage001.vmdl"	// Model.
+		"Model"						"models/props_generic/barrel_02.vmdl"	// Model.
 		//"Model"						"models/items/earthshaker/totem_dragon_wall/fissure_body.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"
 		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
