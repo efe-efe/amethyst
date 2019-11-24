@@ -20,7 +20,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.1" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"350" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"300" }
 		}
 	}
 }

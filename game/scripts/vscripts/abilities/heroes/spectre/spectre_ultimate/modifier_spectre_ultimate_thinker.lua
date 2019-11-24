@@ -68,7 +68,7 @@ function modifier_spectre_ultimate_thinker:Initialize()
 
     local counter = 0
     for _,enemy in pairs(enemies) do
-        if not enemy:IsWall() then
+        if not enemy:IsObstacle() then
             local illusion = CreateIllusions( self:GetCaster(), self:GetCaster(), {
                 duration = self.duration,
                 outgoing_damage = -50, 

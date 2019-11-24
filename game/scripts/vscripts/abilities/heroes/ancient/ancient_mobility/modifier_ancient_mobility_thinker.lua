@@ -1,6 +1,4 @@
 modifier_ancient_mobility_thinker = class({})
-LinkLuaModifier( "modifier_ancient_mobility_buff", "abilities/heroes/ancient/ancient_mobility/modifier_ancient_mobility_buff", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_ancient_mobility_debuff", "abilities/heroes/ancient/ancient_mobility/modifier_ancient_mobility_debuff", LUA_MODIFIER_MOTION_NONE )
 
 function modifier_ancient_mobility_thinker:OnCreated()
     if IsServer() then
@@ -34,9 +32,14 @@ function modifier_ancient_mobility_thinker:OnIntervalThink()
 
     for _,unit in pairs(units) do
         if caster:IsAlly(unit) then
-            unit:AddNewModifier(caster, self:GetAbility(), "modifier_ancient_mobility_buff", { duration = self.duration })
+            caster:AddNewModifier(caster, self:GetAbility(), "modifier_generic_fading_haste", { duration = self.duration })
         else
-            unit:AddNewModifier(caster, self:GetAbility(), "modifier_ancient_mobility_debuff", { duration = self.duration })
+            if unit:HasModifier("modifier_ancient_special_attack") then 
+                unit:AddNewModifier(caster, self:GetAbility(), "modifier_generic_rooted_lua", { duration = self.duration })
+                unit:RemoveModifierByName("modifier_ancient_special_attack")
+            else
+                unit:AddNewModifier(caster, self:GetAbility(), "modifier_generic_fading_slow", { duration = self.duration })
+            end
         end
     end
 
@@ -46,7 +49,7 @@ end
 
 function modifier_ancient_mobility_thinker:PlayEffects()
     EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.IceVortex.lp", self:GetCaster())
-    local particle_cast = "particles/econ/items/ancient_apparition/ancient_apparation_ti8/ancient_ice_vortex_ti8.vpcf"
+    local particle_cast = "particles/units/heroes/hero_ancient_apparition/ancient_ice_vortex.vpcf"
     
     self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     

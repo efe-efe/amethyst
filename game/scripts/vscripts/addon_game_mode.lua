@@ -77,7 +77,7 @@ function GameMode:SetupRules()
     if USE_CUSTOM_HERO_GOLD_BOUNTY then
         GameRules:SetUseBaseGoldBountyOnHeroes(false)
     end
-    if GetMapName() == "mad_moon_map" then
+    if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 1 )
@@ -118,7 +118,6 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_middle_orb_exiled", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("wall_base", "modifiers/general/wall_base.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("wall_phase", "modifiers/general/wall_phase", LUA_MODIFIER_MOTION_NONE)
 
     LinkLuaModifier("modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_projectile_reflector_lua", "abilities/generic/modifier_generic_projectile_reflector_lua", LUA_MODIFIER_MOTION_NONE )
@@ -140,6 +139,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_counter", "abilities/base/modifier_counter", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_following_aoe_indicator", "abilities/base/modifier_following_aoe_indicator", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_target_indicator", "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_target_indicator_permanent", "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
 
     print('[AMETHYST] Useful modifiers linked')
 end
@@ -160,7 +160,7 @@ function GameMode:CaptureGameMode()
         self.ROUNDS_TO_WIN = 5
         self.iMaxTreshold = 30
         self.ORBS_SPAWN_TIME = 20.0
-        self.FIRST_MIDDLE_ORB_SPAWN_TIME = 20.0
+        self.FIRST_MIDDLE_ORB_SPAWN_TIME = 10.0
         self.MIDDLE_ORB_SPAWN_TIME = 20.0
         self.mouse_positions = {}
 
@@ -231,6 +231,11 @@ function GameMode:CaptureGameMode()
                                 if swapeable_ability:GetAbilityIndex() ~= ability:GetAbilityOriginalIndex() then
                                     swapeable_ability = swapeable_ability:GetRelatedAbility()
                                 end
+                            end
+
+                            if swapeable_ability == nil then
+                                print("[SWAP] ERROR: ability " .. ability:GetAbilityName() .. " related bug!", swapeable_ability:GetAbilityIndex(), swapeable_ability:GetAbilityOriginalIndex())
+                                return
                             end
 
                             if mode == "press" then

@@ -113,7 +113,7 @@ function modifier_generic_movement:Move()
 	------------------------
 	if not self.parent:CanWalk() then
 		if current_animation == "walking" then
-			GameRules.EndAnimation(self.parent)
+			--GameRules.EndAnimation(self.parent)
 		end
 		return
 	end
@@ -325,7 +325,8 @@ end
 function modifier_generic_movement:DeclareFunctions()
 	local funcs = {
 		MODIFIER_EVENT_ON_MANA_GAINED,
-		MODIFIER_EVENT_ON_SPENT_MANA
+		MODIFIER_EVENT_ON_SPENT_MANA,
+		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 	}
 
 	return funcs
@@ -345,6 +346,10 @@ function modifier_generic_movement:OnSpentMana(params)
 			GameMode:UpdateHeroManaBar(params.unit)
         end)
 	end	
+end
+
+function modifier_generic_movement:GetModifierIgnoreMovespeedLimit( params )
+    return 1
 end
 
 -- Status Effects

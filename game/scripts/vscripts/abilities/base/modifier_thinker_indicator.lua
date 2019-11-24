@@ -82,6 +82,7 @@ end
 function modifier_thinker_indicator:PlayEffects()                
     local particle_cast = "particles/econ/events/ti9/mekanism_recipient_b_ti9.vpcf"--ally
     local particle_cast_aoe = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
+    local caster_alliance = Alliances:FindByTeam(self.caster:GetTeam())
     local effect_cast
     
     if self.show_all == 1 then
@@ -93,7 +94,9 @@ function modifier_thinker_indicator:PlayEffects()
                 ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 0, self.origin)	-- line origin
                 ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 1, Vector(self.radius, 1,1))
 
-                if self.caster:GetTeam() == team then
+                local alliance = Alliances:FindByTeam(team)
+
+                if alliance == caster_alliance then
                     ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(70, 70, 250))
                 else
                     ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(250, 70, 70))

@@ -21,7 +21,7 @@
 			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "5" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"backwards_damage"			"10" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
-			"08"{ "var_type"	"FIELD_INTEGER"		"ms_buff_per_stack_pct"		"5" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"ms_buff_per_stack_pct"		"7" }
 		}
 	}
 

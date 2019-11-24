@@ -76,7 +76,6 @@ end
 function modifier_spectre_ex_mobility:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 	}
 
 	return funcs
@@ -84,10 +83,6 @@ end
 
 function modifier_spectre_ex_mobility:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
-end
-
-function modifier_spectre_ex_mobility:GetModifierIgnoreMovespeedLimit( params )
-    return 1
 end
 
 --------------------------------------------------------------------------------

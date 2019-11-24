@@ -4,11 +4,16 @@ var camera_distance_lerp = 30;
 var camera_position_lerp = 0.15;
 var camera_position_lerp_fast = 0.05;
 
+//Call it without data.playerId to affect all players
 function ChangeDistanceOffset(data){
-    camera_distance = data.offset;
+    var localPlayerId = Game.GetLocalPlayerID();
 
-    if(data.lerp){
-        camera_distance_lerp = data.lerp;
+    if(data.playerId == localPlayerId || !data.playerId){
+        camera_distance = data.offset;
+
+        if(data.lerp){
+            camera_distance_lerp = data.lerp;
+        }
     }
 }
 

@@ -15,11 +15,12 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"ms_swing_pct"              "50" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"1.0" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"fading_slow"              	"70" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"fading_haste"              "70" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"1.0" }
 		}
     }
 }

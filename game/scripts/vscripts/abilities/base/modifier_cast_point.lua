@@ -154,9 +154,7 @@ function modifier_cast_point:OnDestroy(params)
 			self:StopCast()
 		else
 			if self.ability.OnCastPointEnd ~= nil then
-				local modifier = nil 
-
-				if self.ability.HasCharges ~= nil then
+				if self.ability:HasCharges() then
 					local charges_modifier_name = self.ability:GetIntrinsicModifierName()
 					local charges_modifier = self.ability:GetCaster():FindModifierByName(charges_modifier_name)
 					
@@ -167,22 +165,8 @@ function modifier_cast_point:OnDestroy(params)
 							print("[PSEUDO CAST POINT ERROR] Charges don't have OnSpellCast funcion")
 						end
 					end
-				else 
-					if self.ability:GetIntrinsicModifierName() == "modifier_generic_charges_one" then
-						modifier = self.ability:GetCaster():FindModifierByName("modifier_generic_charges_one")
-					elseif self.ability:GetIntrinsicModifierName() == "modifier_generic_charges_two" then
-						modifier = self.ability:GetCaster():FindModifierByName("modifier_generic_charges_two")
-					end
-
-					if modifier ~= nil then
-						if modifier.OnSpellCast ~= nil then
-							modifier:OnSpellCast()
-						else
-							print("[PSEUDO CAST POINT ERROR] Charges don't have OnSpellCast funcion")
-						end
-					else
-						self.ability:StartCooldown(self.ability:GetCooldown(0))
-					end
+				else
+					self.ability:StartCooldown(self.ability:GetCooldown(0))
 				end
 
 				self.ability:PayManaCost()

@@ -1,12 +1,14 @@
 ancient_basic_attack = class({})
 LinkLuaModifier( "modifier_ancient_basic_attack", "abilities/heroes/ancient/ancient_basic_attack/modifier_ancient_basic_attack", LUA_MODIFIER_MOTION_NONE )
 
-function ancient_basic_attack:OnCastPointEnd()
+function ancient_basic_attack:OnCastPointEnd()   
+
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 	local attack_damage = caster:GetAttackDamage()
-
+	local extra_damage = self:GetSpecialValueFor("extra_damage")
+	
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -14,7 +16,7 @@ function ancient_basic_attack:OnCastPointEnd()
     -- Projectile
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_ancient/ancient_apparition_base_attack.vpcf",
-		vSpawnOrigin = origin + Vector(0,0, 96),
+		vSpawnOrigin = origin + Vector(0,0, 150),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
@@ -29,7 +31,7 @@ function ancient_basic_attack:OnCastPointEnd()
 			local final_damage = attack_damage
 
 			if _self.Source == caster then 
-				if not unit:IsWall() then
+				if not unit:IsObstacle() then
 					caster:AddNewModifier(
 						caster, -- player source
 						self, -- ability source
@@ -41,9 +43,7 @@ function ancient_basic_attack:OnCastPointEnd()
 				caster:GiveManaPercent(mana_gain_pct, unit)
 
 				if unit:HasModifier("modifier_ancient_special_attack") then
-					local ability = caster:FindAbilityByName("ancient_special_attack") 
-					local extra_damage = ability:GetSpecialValueFor("extra_damage")
-					local final_damage = final_damage + extra_damage
+					final_damage = final_damage + extra_damage
 				end
 			end
 			local damage_table = {

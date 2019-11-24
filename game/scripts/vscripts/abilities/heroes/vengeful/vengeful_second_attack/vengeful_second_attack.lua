@@ -103,7 +103,6 @@ Abilities.Initialize(
 	animation,
 	warmup
 )
-if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_second_attack_ultimate,
 	animation,

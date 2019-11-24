@@ -82,8 +82,17 @@ function CDOTA_BaseNPC:IsMiddleOrb()
     return self:Attribute_GetIntValue("middle_orb", 0) == 1 and true or false
 end
 
+function CDOTA_BaseNPC:IsBarrel()
+    return self:Attribute_GetIntValue("barrel", 0) == 1 and true or false
+end
+
 function CDOTA_BaseNPC:IsWall()
     return self:Attribute_GetIntValue("wall", 0) == 1 and true or false
+end
+
+
+function CDOTA_BaseNPC:IsObstacle()
+    return ( self:IsBarrel() or self:IsWall() ) and true or false
 end
 
 --[[
@@ -97,7 +106,7 @@ end
 ]]
 
 function CDOTA_BaseNPC:GiveManaPercent( percentage, source )
-    if source ~= nil and (source:IsMiddleOrb() or source:IsWall()) then
+    if source ~= nil and (source:IsMiddleOrb() or source:IsObstacle()) then
         return
     end
 

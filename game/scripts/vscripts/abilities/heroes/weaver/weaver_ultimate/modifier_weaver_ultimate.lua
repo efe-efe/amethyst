@@ -30,7 +30,7 @@ function modifier_weaver_ultimate:OnDestroy( kv )
 end
 
 function modifier_weaver_ultimate:OnIntervalThink()
-	if self.counter > 40 then
+	if self.counter > 20 then
 		self.counter = 0
 		self.initialized = true
 	end
@@ -44,18 +44,9 @@ function modifier_weaver_ultimate:OnIntervalThink()
 end
 
 function modifier_weaver_ultimate:PlayEffects( pos )
-	local particle_cast = "particles/econ/items/puck/puck_alliance_set/puck_phase_shift_c_aproset.vpcf"
+	local particle_cast = "particles/econ/events/ti9/hero_levelup_ti9_flash_hit_rings.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
---------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_weaver_ultimate:DeclareFunctions()
-	local funcs = {
-	}
-
-	return funcs
 end

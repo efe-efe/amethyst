@@ -1,4 +1,5 @@
 modifier_target_indicator = class({})
+modifier_target_indicator_permanent = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -138,3 +139,13 @@ function modifier_target_indicator:GetRanges( fixed )
 
 	return ranges
 end
+
+modifier_target_indicator_permanent.IsHidden = modifier_target_indicator.IsHidden
+modifier_target_indicator_permanent.OnCreated = modifier_target_indicator.OnCreated 
+modifier_target_indicator_permanent.OnRefresh = modifier_target_indicator.OnRefresh
+modifier_target_indicator_permanent.OnDestroy = modifier_target_indicator.OnDestroy
+modifier_target_indicator_permanent.OnIntervalThink =modifier_target_indicator.OnIntervalThink
+modifier_target_indicator_permanent.PlayEffects =modifier_target_indicator.PlayEffects
+modifier_target_indicator_permanent.StopEffects = modifier_target_indicator.StopEffects
+modifier_target_indicator_permanent.UpdateEffects = modifier_target_indicator.UpdateEffects
+modifier_target_indicator_permanent.GetRanges = modifier_target_indicator.GetRanges

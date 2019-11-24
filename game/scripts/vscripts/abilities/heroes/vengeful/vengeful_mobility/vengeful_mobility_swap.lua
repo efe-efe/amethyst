@@ -72,8 +72,6 @@ Abilities.Initialize(
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
 	{ movement_speed = 10 }
 )
-
-if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_mobility_swap_ultimate,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },

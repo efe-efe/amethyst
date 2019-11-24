@@ -1,8 +1,5 @@
 modifier_ancient_counter_recast = class({})
 
-function modifier_ancient_counter_recast:OnCreated(params)
-end
-
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Recast( 
 	modifier_ancient_counter_recast,

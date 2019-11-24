@@ -18,13 +18,8 @@ function modifier_spectre_special_attack_debuff:OnIntervalThink()
 		"modifier_spectre_special_attack_thinker", -- modifier name
 		{ 
 			duration = self:GetRemainingTime(),
-			x = origin.x,
-			y = origin.y,
-			z = origin.z,
-			draw = 1,
 			spiral = 1,
-
-		 }, -- kv
+		}, -- kv
 		origin,
 		self:GetCaster():GetTeamNumber(),
 		false --bPhantomBlocker

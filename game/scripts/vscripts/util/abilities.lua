@@ -14,6 +14,35 @@ SPELLS_HIERARCHY_TABLE["ex_counter"] = 10
 SPELLS_HIERARCHY_TABLE["ex_special_attack"] = 11
 SPELLS_HIERARCHY_TABLE["mount"] = 12
 
+function CDOTABaseAbility:AddCharges(num)
+	if IsServer() then
+		local charges_modifier_name = self:GetIntrinsicModifierName()
+
+		if charges_modifier_name == nil or charges_modifier_name == "" then
+			print("[ADD CHARGE ERROR] Ability don't has charges modifier")
+			return
+		end
+		
+		local charges_modifier = self:GetCaster():FindModifierByName(charges_modifier_name)
+
+		if charges_modifier ~= nil then
+			local new_charges = charges_modifier:GetStackCount() + num
+			local max_charges = self:GetSpecialValueFor("max_charges")
+			local extra_charges = self:GetSpecialValueFor("extra_charges")
+
+			if new_charges > (extra_charges + max_charges) then
+				new_charges = extra_charges + max_charges
+			end
+			charges_modifier:SetStackCount(new_charges)
+		else
+			print("[ADD CHARGE ERROR] Charge modifier doesnt exists")
+		end
+	end
+end
+
+function CDOTABaseAbility:HasCharges()
+	return false
+end
 
 function CDOTABaseAbility:HasBehavior(behavior)
 	local abilityBehavior = tonumber(tostring(self:GetBehavior()))
@@ -67,6 +96,7 @@ function CDOTABaseAbility:IsEx()
 	if splitted[2] == "ex" then
 		if string.ends(self:GetName(), "_ultimate") then return false end 
 		if string.ends(self:GetName(), "_projectile") then return false end 
+		if string.ends(self:GetName(), "_recast") then return false end 
 		return true
 	end
 	return false

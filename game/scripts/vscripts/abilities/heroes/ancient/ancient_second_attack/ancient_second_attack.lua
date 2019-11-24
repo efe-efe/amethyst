@@ -3,7 +3,7 @@ LinkLuaModifier( "modifier_ancient_second_attack", "abilities/heroes/ancient/anc
 
 function ancient_second_attack:OnSpellStart()
 	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_ancient_second_attack", {} )
-	EmitSoundOn("ancient_apparition_appa_ability_touch_01", self:GetCaster())
+	EmitSoundOn("Hero_Ancient_Apparition.ColdFeetCast", self:GetCaster())
 end
 
 
@@ -29,6 +29,7 @@ function ancient_second_attack:OnCastPointEnd()
 
 	-- load data
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
+    local min_silence = self:GetSpecialValueFor("min_silence")
 	
 	-- Dynamic data
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -51,7 +52,7 @@ function ancient_second_attack:OnCastPointEnd()
 			local damage_table = {
 				victim = unit,
 				attacker = caster,
-				damage = damage + stacks/10,
+				damage = damage + 1.25 * (stacks/10),
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
@@ -61,6 +62,12 @@ function ancient_second_attack:OnCastPointEnd()
 				if _self.Source == caster then
 					caster:GiveManaPercent(mana_gain_pct, unit)
 				end
+			end
+
+			if unit:HasModifier("modifier_ancient_special_attack") then
+				local silence_duration = min_silence + stacks/200
+				unit:AddNewModifier(_self.Source, self, "modifier_generic_silenced_lua", { duration = silence_duration })
+				unit:RemoveModifierByName("modifier_ancient_special_attack")
 			end
 		end,
 		OnFinish = function(_self, pos)

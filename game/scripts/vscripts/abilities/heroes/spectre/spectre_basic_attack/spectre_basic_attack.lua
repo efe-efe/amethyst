@@ -77,7 +77,7 @@ function spectre_basic_attack:OnCastPointEnd()
 				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", { duration = desolate_duration })
 
 
-				if not countering and not unit:IsWall() then
+				if not countering and not unit:IsObstacle() then
 					_self.Source:Heal( heal_charged, _self.Source )
 				end
 

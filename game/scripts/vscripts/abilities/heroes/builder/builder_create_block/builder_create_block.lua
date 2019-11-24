@@ -12,7 +12,7 @@ function builder_create_block:OnSpellStart()
         nil, --hUnitOwner
         self:GetCaster():GetTeamNumber()--DOTA_TEAM_NOTEAM
     )
-    wall:Attribute_SetIntValue("wall", 1)
+    wall:Attribute_SetIntValue("barrel", 1)
     wall:SetHullRadius(180)
     wall:AddNewModifier(self:GetCaster(), self, "wall_base", {})
 end

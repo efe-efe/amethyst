@@ -3,21 +3,13 @@ LinkLuaModifier( "modifier_spectre_special_attack_buff", "abilities/heroes/spect
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_spectre_special_attack_thinker:OnCreated( kv )
+function modifier_spectre_special_attack_thinker:OnCreated( params )
     self.buff_duration = self:GetAbility():GetSpecialValueFor("buff_duration")
-	self.path_radius = 100
+	self.radius = 100
 
     if IsServer() then
-        self.start_pos = self:GetParent():GetOrigin()
-        self.end_pos = Vector(kv.x, kv.y, kv.z)
-        
         self:StartIntervalThink( 0.05 )
-        
-        -- DEBUG
-        if kv.draw then
-            self:PlayEffects(self.start_pos, kv.sprial)
-            --self:PlayEffects(self.end_pos)
-        end
+        self:PlayEffects(params.spiral)
     end
 end
 
@@ -30,22 +22,18 @@ end
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_spectre_special_attack_thinker:OnIntervalThink()
-
-
-    local units = FindUnitsInLine(
-        self:GetCaster():GetTeamNumber(),
-		self.start_pos,
-		self.end_pos,
-		nil,
-		self.path_radius,
-		DOTA_UNIT_TARGET_TEAM_FRIENDLY,
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
-		0
+    local allies = self:GetCaster():FindUnitsInRadius(
+        self:GetParent():GetOrigin(), 
+        self.radius, 
+        DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
+        DOTA_UNIT_TARGET_HERO, 
+        DOTA_UNIT_TARGET_FLAG_NONE,
+        FIND_ANY_ORDER
     )
 
-    for _,unit in pairs(units) do
-        if unit == self:GetCaster() then
-            unit:AddNewModifier(
+    for _,ally in pairs(allies) do
+        if ally == self:GetCaster() then
+            ally:AddNewModifier(
                 self:GetCaster(), 
                 self:GetAbility(), 
                 "modifier_spectre_special_attack_buff", 
@@ -55,19 +43,17 @@ function modifier_spectre_special_attack_thinker:OnIntervalThink()
     end
 end
 
-function modifier_spectre_special_attack_thinker:PlayEffects(pos, spiral)
--- Get Resources
+function modifier_spectre_special_attack_thinker:PlayEffects(spiral)
+    local pos = self:GetParent():GetOrigin()
     local particle_cast = "particles/econ/items/dazzle/dazzle_ti6/dazzle_ti6_shallow_grave_ground_steam.vpcf"
     self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( self.effect_cast, 0, pos )
     ParticleManager:SetParticleControl( self.effect_cast, 1, pos )
     
-	-- Get Resources
 	particle_cast = "particles/econ/items/lifestealer/ls_ti9_immortal/ls_ti9_open_wounds_ground.vpcf"
 	self.effect_cast_dark = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( self.effect_cast_dark, 0, pos )
-	ParticleManager:SetParticleControl( self.effect_cast_dark, 5, pos )
-    
+    ParticleManager:SetParticleControl( self.effect_cast_dark, 5, pos )
     
     if spiral ~= nil then
         -- Get Resources

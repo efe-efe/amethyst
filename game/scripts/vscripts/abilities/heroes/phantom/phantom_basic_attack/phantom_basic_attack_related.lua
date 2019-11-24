@@ -45,7 +45,7 @@ function phantom_basic_attack_related:OnCastPointEnd()
 			if _self.Source == caster then
 				caster:GiveManaPercent(mana_gain_pct, unit)
 					
-				if _self.Source == caster and not unit:IsWall() then 
+				if _self.Source == caster and not unit:IsObstacle() then 
 					caster:AddNewModifier(
 						caster, -- player source
 						self, -- ability source

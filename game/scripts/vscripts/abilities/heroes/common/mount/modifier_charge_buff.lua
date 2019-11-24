@@ -31,7 +31,6 @@ end
 function modifier_charge_buff:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 	}
 
 	return funcs
@@ -41,14 +40,8 @@ function modifier_charge_buff:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
 end
 
-function modifier_charge_buff:GetModifierIgnoreMovespeedLimit( params )
-    return 1
-end
-
 --------------------------------------------------------------------------------
 --Graphics & Animations
-
-
 function modifier_charge_buff:GetEffectName()
 	return "particles/econ/items/spirit_breaker/spirit_breaker_iron_surge/spirit_breaker_charge_foot_glow_iron.vpcf"
 end

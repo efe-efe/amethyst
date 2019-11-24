@@ -50,7 +50,11 @@ function GameMode:OnGameInProgress()
     self:CreateAllOrbs()
     self:CreateWalls()
     
-    self.scheduled_middle_orb_index = RandomInt(1, 3)
+    if GetMapName() == "forest_map" then
+        self.scheduled_middle_orb_index = 1 
+    else
+        self.scheduled_middle_orb_index = RandomInt(1, 3)
+    end
     self:CreateMiddleOrb( self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
     self:PlayEffectsArrow()
     self:CalculateNextSpawn()
@@ -390,7 +394,12 @@ function GameMode:EndRound( delay )
         self:DestroyAllOrbs()
         --self:DestroyAllWalls()
 
-        self.scheduled_middle_orb_index = RandomInt(1, 3)
+        if GetMapName() == "forest_map" then
+            self.scheduled_middle_orb_index = 1 
+        else
+            self.scheduled_middle_orb_index = RandomInt(1, 3)
+        end
+        
         self:CreateMiddleOrb(self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
         self:PlayEffectsArrow()
         self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
@@ -518,7 +527,7 @@ function GameMode:CreateWall( ent )
         nil, --hUnitOwner
         DOTA_TEAM_NOTEAM
     )
-    self.walls[ent]:Attribute_SetIntValue("wall", 1)
+    self.walls[ent]:Attribute_SetIntValue("barrel", 1)
     self.walls[ent]:SetHullRadius(65)
     self.walls[ent]:AddNewModifier(self.walls[ent], nil, "wall_base", { fow_blocker = fow_blocker:GetEntityIndex() })
 end

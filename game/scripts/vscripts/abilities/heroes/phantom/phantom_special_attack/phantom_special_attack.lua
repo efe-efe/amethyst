@@ -56,7 +56,7 @@ function phantom_special_attack:OnCastPointEnd()
 				caster:GiveManaPercent(mana_gain_pct, unit)
 				-- Add modifier
 
-				if not unit:IsWall() then
+				if not unit:IsObstacle() then
 					caster:AddNewModifier(
 						caster, -- player source
 						self, -- ability source

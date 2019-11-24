@@ -36,6 +36,6 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	ancient_mobility,
-	{ activity = ACT_DOTA_ICE_VORTEX, rate = 1.0 },
+	nil,
 	{ movement_speed = 10 }
 )

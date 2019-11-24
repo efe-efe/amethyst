@@ -1,81 +1,31 @@
 ancient_ultimate_projectile = class({})
+LinkLuaModifier( "modifier_ancient_ultimate_thinker", "abilities/heroes/ancient/ancient_ultimate/modifier_ancient_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
 
 function ancient_ultimate_projectile:OnCastPointEnd( )
 	-- Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local radius = self:GetSpecialValueFor("radius")
+	local delay_time = self:GetCooldown(0)
+	
+	CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_thinker_indicator", --modifierName
+		{ 
+			thinker = "modifier_ancient_ultimate_thinker",
+			show_all = 1,
+			radius = radius,
+			delay_time = delay_time,
+		}, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
 
-	local ability = caster:FindAbilityByName("ancient_ultimate") -- Get special values from original
-	local damage = ability:GetSpecialValueFor("ability_damage")
-
-    local projectile_distance = (point - origin):Length2D()
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-
-	-- Extra data
-	local projectile = {
-		EffectName = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_initial_ti5.vpcf",
-		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
-		fDistance = projectile_distance,
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
-		fEndRadius = projectile_end_radius,
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_NOTHING,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
-		OnUnitHit = function(_self, unit)
-			--self:PlayEffectsTarget(unit, _self.currentPosition)
-		end,
-		OnFinish = function(_self, pos)
-
-			local enemies = caster:FindUnitsInRadius(
-				pos, 
-				self:GetSpecialValueFor("radius"), 
-				DOTA_UNIT_TARGET_TEAM_ENEMY, 
-				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-				DOTA_UNIT_TARGET_FLAG_NONE,
-				FIND_ANY_ORDER
-			)
-
-			for _,enemy in pairs(enemies) do
-				local damage_table = {
-					victim = enemy,
-					attacker = caster,
-					damage = damage,
-					damage_type = DAMAGE_TYPE_PURE,
-				}
-				ApplyDamage( damage_table )
-
-			end
-
-			self:PlayEffectsProjectileImpact(pos)
-		end,
-	}
-
-    Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
-
--- On hit wall 
-function ancient_ultimate_projectile:PlayEffectsProjectileImpact( pos )
-	local caster = self:GetCaster()
-
-	-- Cast Sound
-	EmitSoundOn( "Hero_Ancient_Apparition.IceBlast.Target", caster )
-
-	-- Cast Particle
-	local particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_explode_ti5.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
 
 function ancient_ultimate_projectile:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_Ancient_Apparition.IceBlastRelease.Cast", self:GetCaster() )
@@ -85,5 +35,6 @@ if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	ancient_ultimate_projectile,
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.0 },
-	{ movement_speed = 0, disable_all = false }
+	{ movement_speed = 0, disable_all = false },
+	{ modifier_name = "modifier_ancient_ultimate_recast" }
 )

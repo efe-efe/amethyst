@@ -1,6 +1,6 @@
 "AddonInfo"
 {
-    "maps"      "mad_moon_map free_for_all"
+    "maps"      "mad_moon_map forest_map"
     "IsPlayable"  "1"
     "mad_moon_map"
     {
@@ -14,6 +14,11 @@
         "TeamCount"                     "4"
     }
 
+    "forest_map"
+    {
+        "MaxPlayers"                    "4"
+        "TeamCount"                     "4"
+    }
     "Default_Keys"
     {
         "01"{ "Key" "SHIFT"     "Command"   "+ShiftKey" }

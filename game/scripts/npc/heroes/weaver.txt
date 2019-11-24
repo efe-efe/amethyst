@@ -9,10 +9,10 @@
 		// Abilities
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
-		"Ability1"						"sniper_basic_attack"
+		"Ability1"						"weaver_basic_attack"
 		"Ability2"						"sniper_second_attack"
-		"Ability3"						"sniper_mobility"
-		"Ability4"						"weaver_counter"
+		"Ability3"						"weaver_mobility"
+		"Ability4"						"sniper_counter"
 		"Ability5"						"sniper_special_attack"
 		"Ability6"						"sniper_extra"
 		"Ability7"						"weaver_ultimate"
@@ -56,7 +56,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"120" 						// Base health.
+		"StatusHealth"				"155" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"

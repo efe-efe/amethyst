@@ -1,4 +1,5 @@
 ancient_ultimate = class({})
+LinkLuaModifier( "modifier_ancient_ultimate_recast", "abilities/heroes/ancient/ancient_ultimate/modifier_ancient_ultimate_recast", LUA_MODIFIER_MOTION_NONE )
 
 function ancient_ultimate:OnSpellStart()
     EmitGlobalSound("ancient_apparition_appa_ability_iceblast_01")
@@ -7,34 +8,7 @@ end
 function ancient_ultimate:OnCastPointEnd()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
-
-    caster:AddNewModifier(
-        caster, -- player source
-		self, -- ability source
-		"modifier_channeling", -- modifier name
-		{ 
-            duration = duration,
-            style = "Ultimate",
-            title = "ultimate",
-            movement_speed = 0,
-            channeling_tick = 0.7,
-            immediate = 1,
-        } -- kv
-    )
-end
-
-function ancient_ultimate:OnChannelingStart()
-    CustomGameEventManager:Send_ServerToAllClients( "change_distance_offset", { offset = 600.0, lerp = 50 })
-end
-
-function ancient_ultimate:OnChannelingEnd()
-    CustomGameEventManager:Send_ServerToAllClients( "change_distance_offset", { offset = 0.0, lerp = 50 })
-end
-
-function ancient_ultimate:OnChannelingTick()
-    local caster = self:GetCaster()
-    local ability = caster:FindAbilityByName("ancient_ultimate_projectile")
-    caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
+    caster:AddNewModifier(caster, self, "modifier_ancient_ultimate_recast", { duration = duration })
 end
 
 if IsClient() then require("wrappers/abilities") end

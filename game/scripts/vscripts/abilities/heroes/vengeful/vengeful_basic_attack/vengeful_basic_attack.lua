@@ -48,7 +48,7 @@ function vengeful_basic_attack:OnCastPointEnd()
 			if _self.Source == caster then 
 				-- Add modifier
 
-				if not unit:IsWall() then
+				if not unit:IsObstacle() then
 					caster:AddNewModifier(
 						caster, -- player source
 						self, -- ability source

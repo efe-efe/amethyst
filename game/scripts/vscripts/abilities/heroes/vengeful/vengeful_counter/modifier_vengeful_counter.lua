@@ -20,7 +20,6 @@ function modifier_vengeful_counter:OnCreated( params )
     if IsServer() then
         local stacks = params.stacks
         self:SetStackCount(stacks)
-
         self:GetParent():AddStatusBar({
             label = "Haste", modifier = self, priority = 1, 
         }) 
@@ -46,7 +45,6 @@ end
 function modifier_vengeful_counter:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 	}
 
 	return funcs
@@ -54,8 +52,4 @@ end
 
 function modifier_vengeful_counter:GetModifierMoveSpeedBonus_Percentage()
     return self:GetStackCount()
-end
-
-function modifier_vengeful_counter:GetModifierIgnoreMovespeedLimit( params )
-    return 1
 end

@@ -1,13 +1,5 @@
 Abilities = {}
 
---[[
-    warmup = {
-        fixed_range = 1 or nil,     max_range equals to min_range
-        min_range = 1 or nil,       min_range comes from SpecialValue "min_range",
-        movement_speed = int        movement_speed pct while casting
-    }
-]]
-
 function Abilities.Initialize( ability, animation, warmup, recast )
     local onCastPointEnd = ability.OnCastPointEnd
     local onSpellStart = ability.OnSpellStart
@@ -64,7 +56,7 @@ function Abilities.Initialize( ability, animation, warmup, recast )
     function ability:OnCastPointEnd()
         local alternate_version = self:GetCaster():FindAbilityByName(self:GetAlternateName())
         if alternate_version ~= nil then
-            if alternate_version.HasCharges then
+            if alternate_version:HasCharges() then
                 local charges_modifier_name = alternate_version:GetIntrinsicModifierName()
                 local charges_modifier = alternate_version:GetCaster():FindModifierByName(charges_modifier_name)
                 
@@ -80,39 +72,16 @@ function Abilities.Initialize( ability, animation, warmup, recast )
             end
         end
 
-
-        --[[
-        if not self:HasBehavior(DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE) then
-            self:GetCaster():SetLastAbility(self)
-        end
-        ]]
-
         if recast and recast.modifier_name then
-            self:GetCaster():RemoveModifierByName(recast.modifier_name)
+            local recast_modifier = self:GetCaster():FindModifierByName(recast.modifier_name)
+            if recast_modifier ~= nil then
+                if not recast_modifier:IsNull() then
+                    recast_modifier:DecrementStackCount()
+                end
+            end
         end
 
         if onCastPointEnd then onCastPointEnd(self) end
-    end
-
-    function ability:CastFilterResult()
-        -- Remnant data can't be accessed on the client
-        --if not IsServer() then return UF_SUCCESS end
-    
-        if true then
-            return UF_FAIL_CUSTOM
-        end
-    
-        return UF_SUCCESS
-    end
-    
-    function ability:GetCustomCastError()
-        --if not IsServer() then return "" end
-    
-        if true then
-            return "#dota_hud_error_cant_cast_no_dead_remnants"
-        end
-    
-        return ""
     end
 end
 

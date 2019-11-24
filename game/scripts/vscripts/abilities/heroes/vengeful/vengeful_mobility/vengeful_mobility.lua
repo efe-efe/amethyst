@@ -149,8 +149,6 @@ Abilities.Initialize(
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },
 	{ movement_speed = 100 }
 )
-
-if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_mobility_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },

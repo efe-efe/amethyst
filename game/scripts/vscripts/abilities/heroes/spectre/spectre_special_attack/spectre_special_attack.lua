@@ -65,34 +65,13 @@ function spectre_special_attack:OnCastPointEnd( )
 				caster, -- player source
 				self, -- ability source
 				"modifier_spectre_special_attack_thinker", -- modifier name
-				{ 
-					duration = path_duration,
-					x = _self.currentPosition.x,
-					y = _self.currentPosition.y,
-					z = _self.currentPosition.z,
-					draw = 1,
-				 }, -- kv
+				{ duration = path_duration }, -- kv
 				 _self.currentPosition,
 				caster:GetTeamNumber(),
 				false --bPhantomBlocker
 			)
 		end
 	}
-
-	CreateModifierThinker(
-		caster, -- player source
-		self, -- ability source
-		"modifier_spectre_special_attack_thinker", -- modifier name
-		{ 
-			duration = path_duration,
-			x = point.x,
-			y = point.y,
-			z = point.z,
-		 }, -- kv
-		origin,
-		caster:GetTeamNumber(),
-		false --bPhantomBlocker
-	)
 
 	--THIS IS ONLY FOR VISUALS
 	local info = { 

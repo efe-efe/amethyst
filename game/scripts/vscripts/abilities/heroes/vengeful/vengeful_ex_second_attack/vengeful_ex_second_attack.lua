@@ -30,8 +30,8 @@ function vengeful_ex_second_attack:OnCastPointEnd()
 		TreeBehavior = 			PROJECTILES_NOTHING,
 		GroundBehavior = 		PROJECTILES_NOTHING,
 		fGroundOffset = 		80,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit ~= _self.Source end,
-		OnUnitHit = function(_self, unit) 
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit ~= _self.Source and not unit:IsWall() end,
+		OnUnitHit = function(_self, unit)
 			if _self.Source:IsAlly(unit) then
 				unit:Heal(heal, _self.Source )
 			else 
@@ -136,8 +136,6 @@ Abilities.Initialize(
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 0.8 },
 	{ movement_speed = 10, fixed_range = 1 }
 )
-
-if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_ex_second_attack_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 0.8 },

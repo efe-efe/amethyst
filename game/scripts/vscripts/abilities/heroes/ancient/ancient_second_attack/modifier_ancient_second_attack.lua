@@ -18,8 +18,6 @@ function modifier_ancient_second_attack:OnDestroy()
     end
 end
 
-
-
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_ancient_second_attack:OnIntervalThink()

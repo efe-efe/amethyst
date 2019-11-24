@@ -15,8 +15,8 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"28" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"10.0" }
 		}
 	}
 
@@ -32,12 +32,12 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"2800"
+		"AbilityCooldown"				"0.7"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.6" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				    "250" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2200" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 		}
 	}

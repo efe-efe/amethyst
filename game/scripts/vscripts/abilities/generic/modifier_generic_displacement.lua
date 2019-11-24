@@ -23,7 +23,15 @@ function modifier_generic_displacement:OnCreated( params )
 		self.i_frame = params.i_frame == 1 and true or false
 		self.colliding = params.colliding == 1 and true or false
 		self.damage_on_collision = params.damage_on_collision or nil
-		self.restricted = params.restricted and params.restricted or true
+		self.restricted = params.restricted
+
+		if self.restricted == 1 then
+			self.restricted = true
+		elseif self.restricted == 0 then
+			self.restricted = false
+		else 
+			self.restricted = true
+		end
 		
 		local activity = params.activity or ACT_DOTA_FLAIL
 		local rate = params.rate or 1.0
@@ -65,10 +73,9 @@ end
 
 function modifier_generic_displacement:OnDestroy( params )
 	if IsServer() then
-		GameRules.EndAnimation(self:GetParent())
 		self:GetParent():InterruptMotionControllers( true )
+		GameRules.EndAnimation(self:GetParent())
 		FindClearSpaceForUnit( self:GetParent(), self:GetParent():GetOrigin() , true )
-
 
 		if self:GetAbility().OnDisplacementEnd then
 			self:GetAbility():OnDisplacementEnd()

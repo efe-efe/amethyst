@@ -49,7 +49,7 @@ function vengeful_counter:OnCastPointEnd()
 
 			ApplyDamage( damage_table )
 
-			if not unit:IsWall() then
+			if not unit:IsObstacle() then
 				targets = targets + 1
 			end
 
@@ -85,11 +85,13 @@ function vengeful_counter:OnCastPointEnd()
 						self:PlayEffectsOnImpact(unit)
 						self:PlayEffectsOnImpactCaster(unit)
 						self:StopEffectsProjectile()
-						_self.Source:AddNewModifier(_self.Source, self, "modifier_vengeful_counter", { duration = duration, stacks = targets * ms_buff_per_stack_pct })
+						if targets > 0 then
+							_self.Source:AddNewModifier(_self.Source, self, "modifier_vengeful_counter", { duration = duration, stacks = targets * ms_buff_per_stack_pct })
+						end
 						_self:Destroy()
 						return
 					else
-						if not unit:IsWall() then
+						if not unit:IsObstacle() then
 							targets = targets + 1
 						end
 					end
@@ -215,7 +217,6 @@ Abilities.Initialize(
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },
 	{ movement_speed = 0, fixed_range = 1}
 )
-if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	vengeful_counter_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },
