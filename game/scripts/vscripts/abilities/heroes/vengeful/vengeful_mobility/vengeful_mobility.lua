@@ -58,8 +58,16 @@ function vengeful_mobility:OnDisplacementEnd()
         FIND_ANY_ORDER
     )
     
-    -- if at least 1 enemy
-    if #enemies > 0 then
+
+    local charge = false
+
+    for _, enemy in pairs(enemies) do 
+        if not enemy:IsObstacle() then
+            charge = true
+        end
+    end
+
+    if charge == true then
         for i = 0, 3 do
             caster:AddNewModifier(
                 caster, -- player source

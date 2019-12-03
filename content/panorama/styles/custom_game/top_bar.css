@@ -6,27 +6,44 @@
 
 #TopBar
 {
-    width: 800px;
+    width: 1400px;
     height: 100px;
     align: center top;
     flow-children: right;
 }
 
 .TopBarTeamPositioner{
-    width: 35%;
+    width: 40%;
     height: 100%;
 }
 
 #TopBarMiddle{
-    width: 30%;
+    width: 20%;
     height: 100%;
     flow-children: down;
 }
 
+#TopBarLeft{
+    flow-children: left;
+}
+
+#TopBarRight{
+    flow-children: right;
+}
+
+#TopBarLeft .TeamBarContainer{
+    margin-right: 5%;
+}
+
+#TopBarRight .TeamBarContainer{
+    margin-left: 5%;
+}
+
 .TeamBarContainer{
     height: 70%;
-    width: 100%;
+    width: 45%;
     flow-children: down;
+    visibility: collapse;
 }
 
 #TeamAmethysts{
@@ -61,7 +78,7 @@
 
 #TopScore{
     width: 100%;
-    height: 70%;
+    height: 40%;
 
     border: 1px solid black;
     background-color: #1B2532;
@@ -102,7 +119,7 @@
     align: center center;
 }
 
-.TeamHealthBar
+#TeamHealthBar
 {
     width: 400px;
     height: 50%;
@@ -111,13 +128,13 @@
     border: 1px solid black;
 }
 
-.TeamHealthBarInner
+#TeamHealthBarInner
 {
     width: 100%;
     height: 100%;
 }
 
-.TeamHealthBarInnerBack
+#TeamHealthBarInnerBack
 {
     width: 100%;
     height: 100%;

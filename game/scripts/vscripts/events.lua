@@ -25,37 +25,34 @@ function GameMode:OnGameInProgress()
 	print("[AMETHYST] The game has officially begun")
 
     self.countdownEnabled = true
-    GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 ) 
+    GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 )
 
-    CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.ROUNDS_TO_WIN } );
-
-    GameRules:SendCustomMessage("Welcome to <b><font color='purple'>Amethyst</font></b>. If you have any doubts click on the 'i' at the left top corner of your screen.", 0, 0)
-    GameRules:SendCustomMessage("Hotkeys are: <b>[ Q, W, E, D, SPACEBAR ]</b> for basic abilities. <b>[ R ]</b> For the ultimate. <b>[ 1, 2 ]</b> for the Ex-Abilities</b>", 0, 0)
+    CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.WIN_CONDITION.number } );
     
     self.health_orbs_ent = Entities:FindAllByName("health_orb")
     self.mana_orbs_ent = Entities:FindAllByName("mana_orb")
-    self.middle_orbs_ent = Entities:FindAllByName("orb_spawn")
+    self.amethysts_ent = Entities:FindAllByName("orb_spawn")
     self.walls_ents = Entities:FindAllByName("wall_spawn")
-    self.orbs = {} -- Created orbs on the map
-    self.orb_timers_ent = {}
+    self.pickups = {} -- Created orbs on the map
+    self.amethysts_timers_ent = {}
     self.effect_cast_arrows = {}
     self.walls = {} -- Created walls on the map
 
     for i = 1, 5 do
-        local orb_name = "orb_timer" .. tostring(i)
-        self.orb_timers_ent[i] = Entities:FindAllByName(orb_name)
+        local timer_name = "orb_timer" .. tostring(i)
+        self.amethysts_timers_ent[i] = Entities:FindAllByName(timer_name)
     end
     
-    self.orb_timers = {}
-    self:CreateAllOrbs()
+    self.amethyst_timers = {}
     self:CreateWalls()
-    
-    if GetMapName() == "forest_map" then
-        self.scheduled_middle_orb_index = 1 
-    else
-        self.scheduled_middle_orb_index = RandomInt(1, 3)
-    end
-    self:CreateMiddleOrb( self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
+    self:StartRound()
+end
+
+
+function GameMode:StartRound()
+    self.scheduled_amethyst_index = self:GetFirstAmethyst()
+    self:CreatePickups()
+    self:CreateAmethyst( self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
     self:PlayEffectsArrow()
     self:CalculateNextSpawn()
 end
@@ -87,22 +84,8 @@ function GameMode:OnHeroInGame(keys)
         -- First time spawning
         -------------------------------
         if npc.bFirstSpawnedPG == nil then
-            npc.bFirstSpawnedPG = true
-
-            npc.direction = {}
-            npc.direction.x = 0
-            npc.direction.y = 0
-            npc.direction.z = 0
-
-            npc.first_left = false
-            npc.first_right = false
-            npc.first_up = false
-            npc.first_down = false
-
-            npc.last_spell = nil
-
-            npc.healing_reduction_pct = 0
-
+            
+            npc:Initialize({ max_lifes = self.MAX_LIFES })
             self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)
 
             -- Basic modifiers
@@ -119,22 +102,6 @@ function GameMode:OnHeroInGame(keys)
                     end
                 end
             end
-
-            -- Initialize team if not initialized yet
-            --[[
-            if self.teams[team] == nil then
-                self.teams[team] = {
-                    wins = 0,
-                    looser = false,
-                    players = {},
-                    heroes = {},
-                    teamId = team,
-                }
-            end
-
-            self.teams[team].players[playerID] = playerOwner
-            self.teams[team].heroes[keys.entindex] = npc -- Save the heroe, in case the player is not connected
-            ]]
 
             Alliances:Update(npc)
 
@@ -158,8 +125,6 @@ function GameMode:OnHeroInGame(keys)
         npc.iTreshold = self.iMaxTreshold
         self:UpdateHeroHealthBar( npc )
         self:UpdateHeroManaBar( npc )
-        --local health_bar = "(" .. npc.iTreshold .. "/" .. self.iMaxTreshold ..")"
-        --npc:SetCustomHealthLabel(health_bar, 255, 255, 255)
     end)
 end
 
@@ -167,60 +132,21 @@ end
 -- ENTITY DIED
 --============================================================================================
 function GameMode:OnEntityKilled( keys )
-        local killed = EntIndexToHScript( keys.entindex_killed )
+    local killed = EntIndexToHScript( keys.entindex_killed )
     
     -- Recreate orb
-    if killed:IsMiddleOrb() then     
-
-        self:DestroyAllTimers()
-
-        self:CreateMiddleOrb( self.next_middle_orb_index, self.MIDDLE_ORB_SPAWN_TIME)
-        self.scheduled_middle_orb_index = self.next_middle_orb_index
-
-        self:StopEffectsArrow()
-        self:PlayEffectsArrow()
-
-        if not self:IsDeathZoneCreated() then
-            self:CalculateNextSpawn()
-        end
-
-        if keys.entindex_attacker ~= nil then
-            local killer = EntIndexToHScript( keys.entindex_attacker )
-            local killer_team = killer:GetTeamNumber()
-            local killer_alliance = Alliances:FindByTeam(killer_team)
-
-            killer_alliance.amethysts = killer_alliance.amethysts + 1
-            
-            local data = {
-                good_guys = Alliances.alliances["DOTA_ALLIANCE_RADIANT"].amethysts,
-                bad_guys = Alliances.alliances["DOTA_ALLIANCE_DIRE"].amethysts
-            }
-
-            CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
-
-        end
+    if killed:IsAmethyst() then     
+        local killer = EntIndexToHScript( keys.entindex_attacker )
+        self:OnAmethystDestroy(killer)
     end
 
     if killed:IsRealHero() then
-        local killed_team = killed:GetTeamNumber()
-        local killed_alliance = Alliances:FindByTeam(killed_team)
-
-        if not self.lock_round then
-            self:CreateDeathOrb(killed)
-            if self:GetAliveHeroes(killed_alliance) <= 0 then
-                print("[ROUNDS] Alliance " .. killed_alliance.name .. " loses this round")
-
-                killed_alliance.looser = true
-                local winner = self:FindWinner()
-                if winner ~= false then 
-                    winner.wins = winner.wins + 1
-                    self:EndRound(3.0)
-                end
-            end
-        end
+        self:OnHeroKilled(killed)
     end
 
-    self:UpdateCameras()
+    if GetMapName() == "free_for_all" then
+        --PlayerResource:GetDeaths(killed:GetPlayerID())
+    end
 end
 
 --------------------------------------------------------------------------------
@@ -242,10 +168,79 @@ function GameMode:OnItemPickUp( event )
                 name = "mana" 
             end
 
-            self:CreateOrb(self.orbs[event.ItemEntityIndex].pos, name, self.ORBS_SPAWN_TIME)
+            self:CreatePickup(self.pickups[event.ItemEntityIndex].pos, name, self.PICKUPS_SPAWN_TIME)
         end
 
         UTIL_Remove( item ) -- otherwise it pollutes the player inventory
+    end
+end
+
+function GameMode:OnAmethystDestroy(killer)
+    self:DestroyAllTimers()
+
+    self:CreateAmethyst( self.next_amethyst_index, self.AMETHYST_SPAWN_TIME)
+    self.scheduled_amethyst_index = self.next_amethyst_index
+
+    self:StopEffectsArrow()
+    self:PlayEffectsArrow()
+
+    if not self:IsDeathZoneCreated() then
+        self:CalculateNextSpawn()
+    end
+
+    if killer ~= nil then
+        local killer_alliance = killer:GetAlliance()
+
+        killer_alliance.amethysts = killer_alliance.amethysts + 1
+        
+        local data = {
+            alliance = killer_alliance.name,
+            amethysts = killer_alliance.amethysts
+        }
+        CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
+
+        if self.WIN_CONDITION.type == "AMETHYSTS" then
+            CustomGameEventManager:Send_ServerToAllClients( "update_score", data )
+            if killer_alliance.amethysts >= self.WIN_CONDITION.number then
+                self:EndGame(killer_alliance.teams[1]) 
+            end
+        end
+    end
+end
+
+function GameMode:OnHeroKilled(killed)
+    local killed_alliance = killed:GetAlliance()
+
+    if self.WIN_CONDITION.type == "ROUNDS" then
+        if not self.lock_round then
+            self:CreateDeathOrb(killed)
+            if self:GetAliveHeroes(killed_alliance) <= 0 then
+                print("[ROUNDS] Alliance " .. killed_alliance.name .. " loses this round")
+
+                killed_alliance.looser = true
+                local winner = self:FindWinner()
+                if winner ~= false then 
+                    winner.wins = winner.wins + 1
+                    self:EndRound(3.0)
+                end
+            end
+        end
+        self:UpdateCameras()
+    elseif self.WIN_CONDITION.type == "AMETHYSTS" then
+        killed.lifes = killed.lifes - 1 
+
+        local new_respawn_time = nil
+
+        if killed.lifes <= 0 then
+            new_respawn_time = 999
+        else
+            new_respawn_time = self.BASE_RESPAWN_TIME + self.RESPAWN_TIME_PER_DEATH * (PlayerResource:GetDeaths(killed:GetPlayerID()) - 1)
+            if new_respawn_time > self.MAX_RESPAWN_TIME then 
+                new_respawn_time = self.MAX_RESPAWN_TIME 
+            end
+        end
+
+        killed:SetTimeUntilRespawn(new_respawn_time)
     end
 end
 
@@ -304,7 +299,7 @@ function GameMode:FindWinner()
     local winner = nil
 
     for _,alliance in pairs(Alliances.alliances) do
-        if not alliance.looser then 
+        if alliance.initialized and not alliance.looser then 
             winner = alliance
             alliances_with_alive_players = alliances_with_alive_players + 1
         end
@@ -384,6 +379,14 @@ function GameMode:UpdateCameras()
     end
 end
 
+function GameMode:GetFirstAmethyst()
+    if GetMapName() == "forest_map" or GetMapName() == "free_for_all" then
+        return 1 
+    else
+        return RandomInt(1, 3)
+    end
+end
+
 --------------------------------------------------------------------------------
 -- Restart Round
 --------------------------------------------------------------------------------
@@ -391,26 +394,21 @@ function GameMode:EndRound( delay )
     Timers:CreateTimer(delay, function()
         self:DestroyMiddleOrb()
         self:DestroyDeathZone()
-        self:DestroyAllOrbs()
+        self:DestroyAllPickups()
         --self:DestroyAllWalls()
 
-        if GetMapName() == "forest_map" then
-            self.scheduled_middle_orb_index = 1 
-        else
-            self.scheduled_middle_orb_index = RandomInt(1, 3)
-        end
-        
-        self:CreateMiddleOrb(self.scheduled_middle_orb_index, self.FIRST_MIDDLE_ORB_SPAWN_TIME)
+        self.scheduled_amethyst_index = self:GetFirstAmethyst()
+        self:CreateAmethyst(self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
         self:PlayEffectsArrow()
-        self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
+        self.next_amethyst_index = RandomInt(1, #self.amethysts_ent)
         
-        self:CreateAllOrbs()
+        self:CreatePickups()
         --self:CreateWalls()
 
         for _,alliance in pairs(Alliances.alliances) do
             if 
-                alliance.wins >= self.ROUNDS_TO_WIN or 
-                ( alliance.wins - self:GetOppositeAlliance(alliance).wins ) >= self.DIFFERNECE_TO_WIN
+                alliance.wins >= self.WIN_CONDITION.number or 
+                ( alliance.wins - self:GetOppositeAlliance(alliance).wins ) >= self.WIN_CONDITION.difference
             then
                 self:EndGame(alliance.teams[1]) 
                 break
@@ -422,6 +420,12 @@ function GameMode:EndRound( delay )
             
             alliance.looser = false
             alliance.amethysts = 0
+
+            local data = {
+                alliance = alliance.name,
+                amethysts = alliance.amethysts
+            }
+            CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
 
             for heroIndex, hero in pairs(alliance.heroes) do
                 hero:SetRespawnsDisabled(false)
@@ -444,11 +448,7 @@ function GameMode:EndRound( delay )
         --Update score
         CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
 
-        local data = {
-            good_guys = Alliances.alliances["DOTA_ALLIANCE_RADIANT"].amethysts,
-            bad_guys = Alliances.alliances["DOTA_ALLIANCE_DIRE"].amethysts
-        }
-        CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
+
         
         nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
     end)
@@ -460,10 +460,10 @@ end
 function GameMode:CreateDeathZone()
     print("[AMETHYST] Creating Death Zone")
 
-    local index = self:IsMiddleOrbCreated() and self.scheduled_middle_orb_index or self.next_middle_orb_index
-    self.next_middle_orb_index = self.scheduled_middle_orb_index
+    local index = self:IsAmethystCreated() and self.scheduled_amethyst_index or self.next_amethyst_index
+    self.next_amethyst_index = self.scheduled_amethyst_index
     
-    local orb_position = self.middle_orbs_ent[index]:GetOrigin()
+    local origin = self.amethysts_ent[index]:GetOrigin()
 
     CustomGameEventManager:Send_ServerToAllClients( "death_zone_initiated", {} )
 
@@ -472,7 +472,7 @@ function GameMode:CreateDeathZone()
         nil, --hAbility
         "modifier_death_zone", --modifierName
         {}, --paramTable
-        orb_position, --vOrigin
+        origin, --vOrigin
         DOTA_TEAM_NOTEAM, --nTeamNumber
         false --bPhantomBlocker
     )
@@ -487,8 +487,8 @@ function GameMode:IsDeathZoneCreated()
     return false
 end
 
-function GameMode:IsMiddleOrbCreated()
-    if self.middle_orb_instance ~= nil then
+function GameMode:IsAmethystCreated()
+    if self.amethyst_orb_instance ~= nil then
         return true
     end
     return false
@@ -535,39 +535,59 @@ end
 --------------------------------------------------------------------------------
 -- Middle Orb spawner
 --------------------------------------------------------------------------------
-function GameMode:CreateMiddleOrb( index, delay )
+function GameMode:CreateAmethyst( index, delay )
     print("[AMETHYST] Creating Middle Orb")
     
-    local orb_position = self.middle_orbs_ent[index]:GetOrigin()
+    local origin = self.amethysts_ent[index]:GetOrigin()
 
-    self.middle_orb_instance = CreateUnitByName(
+    self.amethyst_orb_instance = CreateUnitByName(
         "npc_dota_creature_middle_orb", --szUnitName
-        orb_position, --vLocation
+        origin, --vLocation
         true, --bFindClearSpace
         nil, --hNPCOwner
         nil, --hUnitOwner
         DOTA_TEAM_NOTEAM
     )
-    self.middle_orb_instance:Attribute_SetIntValue("middle_orb", 1)
-    self.middle_orb_instance:AddNewModifier(
-        self.middle_orb_instance,
+    if  self.WIN_CONDITION.type == "AMETHYSTS" then
+        self.amethyst_orb_instance:CreatureLevelUp(1)	
+        self.amethyst_orb_instance:AddNewModifier(
+            self.amethyst_orb_instance,
+            nil,
+            "modifier_amethyst_base",
+            {}
+        )
+    else
+        self.amethyst_orb_instance:AddNewModifier(
+            self.amethyst_orb_instance,
+            nil,
+            "modifier_amethyst_base",
+            {
+                mana = 40,
+                heal = 20,
+            }
+        )
+    end
+
+    self.amethyst_orb_instance:Attribute_SetIntValue("middle_orb", 1)
+    self.amethyst_orb_instance:AddNewModifier(
+        self.amethyst_orb_instance,
         nil,
-        "modifier_middle_orb_exiled",
+        "modifier_amethyst_exiled",
         {}
     )
-    self.middle_orb_instance:SetHullRadius(10)
+    self.amethyst_orb_instance:SetHullRadius(10)
     
     local counter = 0.0
     local counter_sum = delay / 5
     
-    for _,orb_timer_ent in pairs(self.orb_timers_ent) do
+    for _,orb_timer_ent in pairs(self.amethysts_timers_ent) do
         counter = counter + counter_sum
 
         local timer_origin = orb_timer_ent[index]:GetOrigin()
         local name = "SpawnTimer_" .. orb_timer_ent[index]:GetEntityIndex() 
 
-        self.middle_orb_instance:SetContextThink( name , function()
-            self.orb_timers[_] = CreateUnitByName(
+        self.amethyst_orb_instance:SetContextThink( name , function()
+            self.amethyst_timers[_] = CreateUnitByName(
                 "npc_dota_creature_middle_orb_timer", --szUnitName
                 timer_origin, --vLocation
                 true, --bFindClearSpace
@@ -577,28 +597,33 @@ function GameMode:CreateMiddleOrb( index, delay )
             )
             
             local particle_cast = "particles/mod_units/units/middle_orb/rune_arcane.vpcf"
-            ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.orb_timers[_] )
+            ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.amethyst_timers[_] )
         end, counter)
     end
 
     GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> will spawn in <b>" .. delay .. "</b> seconds", 0, 0)
-    self.middle_orb_instance:SetContextThink("SpawnMiddleOrb", function()
+    self.amethyst_orb_instance:SetContextThink("SpawnMiddleOrb", function()
         GameRules:SendCustomMessage("The <b><font color='purple'>Amethyst</font></b> has spawned", 0, 0)
-        SafeDestroyModifier("modifier_middle_orb_exiled", self.middle_orb_instance, self.middle_orb_instance)
+        SafeDestroyModifier("modifier_amethyst_exiled", self.amethyst_orb_instance, self.amethyst_orb_instance)
         
-        EmitSoundOn( "Hero_Oracle.FortunesEnd.Target", self.middle_orb_instance )
+        EmitSoundOn( "Hero_Oracle.FortunesEnd.Target", self.amethyst_orb_instance )
 
         -- Orb Spawn Effects
         local particle_cast_a = "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf"
         local particle_cast_b = "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf"
         local particle_cast_c = "particles/generic_gameplay/rune_arcane.vpcf"
 
-        local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
-        local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
-        ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self.middle_orb_instance )
+        local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self.amethyst_orb_instance )
+        local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self.amethyst_orb_instance )
+        ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self.amethyst_orb_instance )
 
         ParticleManager:ReleaseParticleIndex( effect_cast_a )
         ParticleManager:ReleaseParticleIndex( effect_cast_b )
+
+        local data = {
+            unitIndex = self.amethyst_orb_instance:GetEntityIndex(),
+        }
+        CustomGameEventManager:Send_ServerToAllClients( "add_unit", data )    
     end, delay)
 end
 
@@ -606,8 +631,8 @@ end
 -- Middle Orb Destroyer
 --------------------------------------------------------------------------------
 function GameMode:DestroyMiddleOrb()
-    if self.middle_orb_instance ~= nil then
-        UTIL_Remove(self.middle_orb_instance)
+    if self.amethyst_orb_instance ~= nil then
+        UTIL_Remove(self.amethyst_orb_instance)
         self:DestroyAllTimers()
         self:StopEffectsArrow()
     end
@@ -616,21 +641,21 @@ end
 --------------------------------------------------------------------------------
 --Health and mana orbs spawner
 --------------------------------------------------------------------------------
-function GameMode:CreateAllOrbs()
+function GameMode:CreatePickups()
     for _,health_orb_ent in pairs(self.health_orbs_ent) do
-        self:CreateOrb(health_orb_ent:GetOrigin(), "health", self.ORBS_SPAWN_TIME)
+        self:CreatePickup(health_orb_ent:GetOrigin(), "health", self.PICKUPS_SPAWN_TIME)
     end
 
     for _,mana_orb_ent in pairs(self.mana_orbs_ent) do
-        self:CreateOrb(mana_orb_ent:GetOrigin(), "mana", self.ORBS_SPAWN_TIME)
+        self:CreatePickup(mana_orb_ent:GetOrigin(), "mana", self.PICKUPS_SPAWN_TIME)
     end
 end
 
 --------------------------------------------------------------------------------
 --Health and mana orbs destroyer
 --------------------------------------------------------------------------------
-function GameMode:DestroyAllOrbs()
-    for _,orb in pairs(self.orbs) do
+function GameMode:DestroyAllPickups()
+    for _,orb in pairs(self.pickups) do
         UTIL_Remove( orb.item ) -- otherwise it pollutes the player inventory
         if orb.drop ~= nil and not orb.drop:IsNull() then
             UTIL_Remove( orb.drop )
@@ -647,7 +672,7 @@ function GameMode:DestroyAllWalls()
 end
 
 function GameMode:DestroyAllTimers()
-    for _,timer in pairs(self.orb_timers) do
+    for _,timer in pairs(self.amethyst_timers) do
         UTIL_Remove( timer )
     end
 end
@@ -656,16 +681,16 @@ function GameMode:CreateDeathOrb( hero )
     -- CREATE DEATH ORB
     local current_mana = hero:GetMana()
     local mana_given = NearestValue({ 25, 50, 75, 100 }, current_mana)
-    local death_orb_ent = self:CreateOrb(hero:GetOrigin(), "death", 0.0, (mana_given/100) + 0.25 )
+    local death_orb_ent = self:CreatePickup(hero:GetOrigin(), "death", 0.0, (mana_given/100) + 0.25 )
 
-    self.orbs[death_orb_ent].item:SetCurrentCharges(mana_given)
-    self.orbs[death_orb_ent].item:SetPurchaser(hero)
+    self.pickups[death_orb_ent].item:SetCurrentCharges(mana_given)
+    self.pickups[death_orb_ent].item:SetPurchaser(hero)
 end
 
 --------------------------------------------------------------------------------
 -- Middle Orb spawner
 --------------------------------------------------------------------------------
-function GameMode:CreateOrb( pos, type, delay, scale )
+function GameMode:CreatePickup( pos, type, delay, scale )
     local name = "item_" .. type .. "_orb"
 
     local particle_cast = ""
@@ -682,10 +707,10 @@ function GameMode:CreateOrb( pos, type, delay, scale )
     
     local item_index = item:GetEntityIndex()
 
-    self.orbs[item_index] = {}
-    self.orbs[item_index].item = item
-    self.orbs[item_index].drop = nil
-    self.orbs[item_index].pos = pos
+    self.pickups[item_index] = {}
+    self.pickups[item_index].item = item
+    self.pickups[item_index].drop = nil
+    self.pickups[item_index].pos = pos
 
     item:SetContextThink("SpawnItem", function() 
         local drop = CreateItemOnPositionForLaunch( pos, item )
@@ -695,7 +720,7 @@ function GameMode:CreateOrb( pos, type, delay, scale )
             drop:SetModelScale( scale )	
         end
 
-        self.orbs[item_index].drop = drop
+        self.pickups[item_index].drop = drop
     end, delay)
 
     return item_index
@@ -719,8 +744,8 @@ function GameMode:PlayEffectsArrow()
     local offset = 128
     local particle_cast = "particles/ui_mouseactions/range_finder_directional.vpcf"
 
-    for _, middle_orb_ent in pairs(self.middle_orbs_ent) do
-        local next_orb_ent = self.middle_orbs_ent[self.scheduled_middle_orb_index]
+    for _, middle_orb_ent in pairs(self.amethysts_ent) do
+        local next_orb_ent = self.amethysts_ent[self.scheduled_amethyst_index]
         if middle_orb_ent ~= next_orb_ent then 
             local next_origin = next_orb_ent:GetOrigin()
             local origin = middle_orb_ent:GetOrigin()
@@ -744,16 +769,16 @@ function GameMode:GetOppositeAlliance( alliance )
 end
 
 function GameMode:CalculateNextSpawn()
-    self.next_middle_orb_index = RandomInt(1, #self.middle_orbs_ent)
+    self.next_amethyst_index = RandomInt(1, #self.amethysts_ent)
 
     --If spawn is the same than the actual one, pick the next spawn
-    if self.next_middle_orb_index == self.scheduled_middle_orb_index then
+    if self.next_amethyst_index == self.scheduled_amethyst_index then
 
-        self.next_middle_orb_index = self.next_middle_orb_index + 1
+        self.next_amethyst_index = self.next_amethyst_index + 1
 
         -- If the spawn is higher than the possible ones, use the first one
-        if self.next_middle_orb_index > #self.middle_orbs_ent then
-            self.next_middle_orb_index = 1
+        if self.next_amethyst_index > #self.amethysts_ent then
+            self.next_amethyst_index = 1
         end
     end
 end

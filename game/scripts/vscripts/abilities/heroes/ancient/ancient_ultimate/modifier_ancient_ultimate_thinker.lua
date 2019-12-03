@@ -1,13 +1,25 @@
 modifier_ancient_ultimate_thinker = class({})
 
 function modifier_ancient_ultimate_thinker:OnCreated( params )
-    if IsServer() then
+    if IsServer() then 
+        self.initialized = false
+
+        local delay_time = self:GetAbility():GetCooldown(0)
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
+
+        AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.radius, delay_time + 1.5, true )
+
+        self:StartIntervalThink(delay_time)
+    end
+end
+
+function modifier_ancient_ultimate_thinker:OnIntervalThink()
+    if self.initialized == false then
         local caster = self:GetCaster()
         local origin = caster:GetOrigin()
         local ability = caster:FindAbilityByName("ancient_ultimate") -- Get special values from original
         local damage = ability:GetSpecialValueFor("ability_damage")
         local point = self:GetParent():GetOrigin()
-        local radius = self:GetAbility():GetSpecialValueFor("radius")
         
         local projectile_distance = (point - origin):Length2D()
         local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -28,7 +40,7 @@ function modifier_ancient_ultimate_thinker:OnCreated( params )
             GroundBehavior = PROJECTILES_NOTHING,
             fGroundOffset = 80,
             fVisionLingerDuration = 2.0,
-            iVisionRadius = radius,
+            iVisionRadius = self.radius,
             UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
             OnUnitHit = function(_self, unit)
                 --self:PlayEffectsTarget(unit, _self.currentPosition)
@@ -36,7 +48,7 @@ function modifier_ancient_ultimate_thinker:OnCreated( params )
             OnFinish = function(_self, pos)
                 local enemies = caster:FindUnitsInRadius(
                     pos, 
-                    radius,
+                    self.radius,
                     DOTA_UNIT_TARGET_TEAM_ENEMY, 
                     DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
                     DOTA_UNIT_TARGET_FLAG_NONE,
@@ -55,10 +67,12 @@ function modifier_ancient_ultimate_thinker:OnCreated( params )
                 end
         
                 self:PlayEffectsProjectileImpact(pos)
+                self:Destroy()
             end,
         }
         
         Projectiles:CreateProjectile(projectile)
+        self.initialized = true
     end
 end
 

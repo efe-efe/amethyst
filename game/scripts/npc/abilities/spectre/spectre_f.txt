@@ -8,7 +8,7 @@
 		"AbilityTextureName"			"spectre_extra"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityCastRange"				"900"
-		"AbilityCooldown"				"8.0"
+		"AbilityCooldown"				"10.0"
 		"AbilityManaCost"				"25"
 
 		"AbilitySpecial"

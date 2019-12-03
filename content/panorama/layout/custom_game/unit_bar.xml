@@ -1,0 +1,20 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/unit_bar.js" />
+    </scripts>
+    <styles>
+        <include src="file://{resources}/styles/custom_game/unit_bar.css" />
+    </styles>
+    <snippets>
+    
+        <snippet name="UnitBar">
+            <Panel class="UnitBar" hittest="false" hittestchildren="false">
+                <Label class="UnitBarHealthText" html="true" text="" />
+            </Panel>
+        </snippet>
+
+    </snippets>
+    <Panel class="MainPanel" hittest="false">
+        <Panel id="UnitBarsContainer" hittest="false" class="MainPanel" />
+    </Panel>
+</root>

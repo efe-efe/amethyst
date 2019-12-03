@@ -82,7 +82,7 @@ end
 function modifier_thinker_indicator:PlayEffects()                
     local particle_cast = "particles/econ/events/ti9/mekanism_recipient_b_ti9.vpcf"--ally
     local particle_cast_aoe = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
-    local caster_alliance = Alliances:FindByTeam(self.caster:GetTeam())
+    local caster_alliance = self.caster:GetAlliance()
     local effect_cast
     
     if self.show_all == 1 then

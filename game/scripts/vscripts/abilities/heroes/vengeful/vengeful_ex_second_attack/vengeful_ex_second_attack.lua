@@ -35,6 +35,23 @@ function vengeful_ex_second_attack:OnCastPointEnd()
 			if _self.Source:IsAlly(unit) then
 				unit:Heal(heal, _self.Source )
 			else 
+				if not unit:IsCountering() then
+					_self.Source:Heal(heal, _self.Source )
+
+					local unit_origin = unit:GetOrigin()
+					local source_origin = _self.Source:GetOrigin()
+					
+					FindClearSpaceForUnit( _self.Source, unit_origin , true )
+					FindClearSpaceForUnit( unit, source_origin , true )
+
+					if not string.ends(name, "_ultimate") then
+						if _self.Source == caster then
+							caster:GiveManaPercent(mana_gain_pct, unit)
+						end
+					end
+					self:PlayEffectsSwap(unit)
+				end
+				
 				local damage_table = {
 					victim = unit,
 					attacker = caster,
@@ -46,21 +63,6 @@ function vengeful_ex_second_attack:OnCastPointEnd()
 				ApplyDamage( damage_table )
 			end
 
-			_self.Source:Heal(heal, _self.Source )
-
-            local unit_origin = unit:GetOrigin()
-            local source_origin = _self.Source:GetOrigin()
-            
-            FindClearSpaceForUnit( _self.Source, unit_origin , true )
-			FindClearSpaceForUnit( unit, source_origin , true )
-
-			if not string.ends(name, "_ultimate") then
-				if _self.Source == caster then
-					caster:GiveManaPercent(mana_gain_pct, unit)
-				end
-			end
-
-            self:PlayEffectsSwap(unit)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

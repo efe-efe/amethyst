@@ -32,7 +32,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"2800"
-		"AbilityCooldown"				"0.7"
+		"AbilityCooldown"				"0.5"
 
 		"AbilitySpecial"
 		{

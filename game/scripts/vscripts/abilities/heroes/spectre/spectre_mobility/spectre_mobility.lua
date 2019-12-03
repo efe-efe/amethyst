@@ -37,8 +37,16 @@ function spectre_mobility:OnCastPointEnd()
 				FIND_ANY_ORDER
 			)
 
+			local charge = false
+
+			for _, enemy in pairs(enemies) do 
+				if not enemy:IsObstacle() then
+					charge = true
+				end
+			end
+
 			-- if at least 1 enemy
-			if #enemies > 0 then
+			if charge == true then
 				-- Give Mana
 				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack")
 				modifier:IncrementStackCount()

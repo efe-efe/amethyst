@@ -1482,36 +1482,6 @@
 
 
         
-	
-	//=================================================================================================================
-	// Misc: Orb
-	//=================================================================================================================
-	
-	"middle_orb_base_lua"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/units/middle_orb/middle_orb_base_lua/middle_orb_base_lua"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"drow_ranger_frost_arrows"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts"
-			"soundfile"	"soundevents/game_sounds_items.vsndevts"
-			"particle"	"particles/items_fx/arcane_boots_recipient.vpcf"
-			"particle"	"particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf"
-			"particle"	"particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"heal"						"20" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana"						"40" }
-		}
-	}
 
 	//=================================================================================================================
 	// Misc: Orb Timer

@@ -52,8 +52,6 @@ function spectre_basic_attack:OnCastPointEnd()
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
-			local countering = unit:HasModifier("modifier_counter")
-
 			local counter = 0
 			for k, v in pairs(_self.rehit) do counter = counter + 1 end
 			if counter > 1 and not charged then return end
@@ -77,7 +75,7 @@ function spectre_basic_attack:OnCastPointEnd()
 				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", { duration = desolate_duration })
 
 
-				if not countering and not unit:IsObstacle() then
+				if not unit:IsCountering() and not unit:IsObstacle() then
 					_self.Source:Heal( heal_charged, _self.Source )
 				end
 

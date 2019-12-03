@@ -22,6 +22,7 @@
 			"04"{ "var_type"	"FIELD_INTEGER"		"heal"              		"5" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"400" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.5" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.7" }
 		}
     }
 }

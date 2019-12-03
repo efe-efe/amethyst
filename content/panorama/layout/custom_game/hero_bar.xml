@@ -1,9 +1,9 @@
 <root>
     <scripts>
+        <include src="file://{resources}/scripts/custom_game/util.js" />
         <include src="file://{resources}/scripts/custom_game/underscore-min.js" />
         <include src="file://{resources}/scripts/custom_game/status_bar_styles.js" />
         <include src="file://{resources}/scripts/custom_game/hero_bar.js" />
-        <include src="file://{resources}/scripts/custom_game/util.js" />
     </scripts>
     <styles>
         <include src="file://{resources}/styles/custom_game/hero_bar.css" />

@@ -26,6 +26,12 @@ function Precache( context )
 	PrecacheResource("particle", "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf", context )
 	PrecacheResource("particle", "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf", context )
     
+	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts", context )
+	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context )
+	PrecacheResource("particle", "particles/items_fx/arcane_boots_recipient.vpcf", context )
+	PrecacheResource("particle", "particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf", context )
+	PrecacheResource("particle", "particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf", context )
+
     local heroes = LoadKeyValues("scripts/npc/npc_heroes_custom.txt")
     local mounts = LoadKeyValues("scripts/npc/mounts.txt")
 
@@ -61,11 +67,11 @@ function GameMode:InitGameMode()
     self:SetupRules()
     self:SetupEventHooks()
     self:SetupFilters()
+    self:SetupAlliances()
     self:LinkModifiers()
 end
 
 function GameMode:SetupRules()
-    GameRules:SetHeroRespawnEnabled( ENABLE_HERO_RESPAWN )
     GameRules:SetSameHeroSelectionEnabled( ALLOW_SAME_HERO_SELECTION )
     GameRules:SetPreGameTime( PRE_GAME_TIME)
     GameRules:SetGoldPerTick( GOLD_PER_TICK )
@@ -82,11 +88,14 @@ function GameMode:SetupRules()
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_2, 1 )
+        GameRules:SetHeroRespawnEnabled( false )
     elseif GetMapName() == "free_for_all" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 0 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 1 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_2, 1 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_3, 1 )
+        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_5, 1 )
+        GameRules:SetHeroRespawnEnabled( true )
     end
     print('[AMETHYST] GameRules set')
 end
@@ -116,9 +125,11 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_mana_on_attack", "modifiers/general/modifier_mana_on_attack.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_disable_right_click", "modifiers/general/modifier_disable_right_click.lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_death_zone", "modifiers/general/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_middle_orb_exiled", "abilities/units/middle_orb/middle_orb_base_lua/modifier_middle_orb_exiled", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_amethyst_exiled", "abilities/units/amethyst/modifier_amethyst_exiled", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("wall_base", "modifiers/general/wall_base.lua", LUA_MODIFIER_MOTION_NONE )
 
+    LinkLuaModifier("modifier_amethyst_base", "abilities/units/amethyst/modifier_amethyst_base.lua", LUA_MODIFIER_MOTION_NONE )
+    
     LinkLuaModifier("modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_projectile_reflector_lua", "abilities/generic/modifier_generic_projectile_reflector_lua", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
@@ -144,48 +155,60 @@ function GameMode:LinkModifiers()
     print('[AMETHYST] Useful modifiers linked')
 end
 
+function GameMode:SetupAlliances()
+    Alliances:Initialize()
+end
+
 --============================================================================================
 -- FIRST PLAYER CONNECT SETUP
 --============================================================================================
 mode = nil
 function GameMode:CaptureGameMode()
     if mode == nil then
+        mode = GameRules:GetGameModeEntity()
+
         -------------------------------
         -- Core Variables
         -------------------------------
         self.countdownEnabled = false
         self.lock_round = false
-        self.teams = {}
-        self.DIFFERNECE_TO_WIN = 3
-        self.ROUNDS_TO_WIN = 5
         self.iMaxTreshold = 30
-        self.ORBS_SPAWN_TIME = 20.0
-        self.FIRST_MIDDLE_ORB_SPAWN_TIME = 10.0
-        self.MIDDLE_ORB_SPAWN_TIME = 20.0
         self.mouse_positions = {}
 
         -------------------------------
-        -- Team Alliances
+        -- Core Constants
         -------------------------------
+        self.FIRST_AMETHYST_SPAWN_TIME = 10.0
+        self.PICKUPS_SPAWN_TIME = 20.0
 
-        Alliances:Initialize()
+        if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
+            self.AMETHYST_SPAWN_TIME = 20.0
+            self.WIN_CONDITION = {
+                type = "ROUNDS",
+                number = 5,
+                difference = 3,
+            }
+            mode:SetFixedRespawnTime( -1 ) 
+        elseif GetMapName() == "free_for_all" then
+            self.AMETHYST_SPAWN_TIME = 15.0
+            nCOUNTDOWNTIMER = 99999
+            self.WIN_CONDITION = {
+                type = "AMETHYSTS",
+                number = 5,
+                difference = 3,
+            }
 
-        Alliances:Create("DOTA_ALLIANCE_RADIANT")
-        Alliances:Create("DOTA_ALLIANCE_DIRE")
-
-        Alliances:AddTeam("DOTA_ALLIANCE_RADIANT", DOTA_TEAM_GOODGUYS)
-        Alliances:AddTeam("DOTA_ALLIANCE_RADIANT", DOTA_TEAM_CUSTOM_1)
-        
-        Alliances:AddTeam("DOTA_ALLIANCE_DIRE", DOTA_TEAM_BADGUYS)
-        Alliances:AddTeam("DOTA_ALLIANCE_DIRE", DOTA_TEAM_CUSTOM_2)
-
+            self.MAX_RESPAWN_TIME = 15.0 
+            self.RESPAWN_TIME_PER_DEATH = 3.0
+            self.BASE_RESPAWN_TIME = 9.0
+            self.MAX_LIFES = 3
+            mode:SetFixedRespawnTime( self.BASE_RESPAWN_TIME ) 
+        end
 
         -------------------------------
         -- Set GameMode parameters
         -------------------------------
-        mode = GameRules:GetGameModeEntity()
         mode:SetBuybackEnabled( BUYBACK_ENABLED )
-        mode:SetFixedRespawnTime( FIXED_RESPAWN_TIME ) 
         mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
         mode:SetCameraDistanceOverride( CAMERA_DISTANCE_OVERRIDE )
 
@@ -266,7 +289,6 @@ function GameMode:CaptureGameMode()
             self:UpdateMousePosition(mouse_position, args.playerID)
         end)
         
-
         CustomGameEventManager:RegisterListener('key_released', function(eventSourceIndex, args)
             local unit = EntIndexToHScript(args.entityIndex)
             local modifier = unit:FindModifierByName("modifier_cast_point")
@@ -276,9 +298,7 @@ function GameMode:CaptureGameMode()
                     modifier:OnKeyReleased( args.key )
                 end
             end
-        
         end)
-        
 
         CustomGameEventManager:RegisterListener('moveUnit', function(eventSourceIndex, args)
             local direction = args.direction

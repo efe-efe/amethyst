@@ -1,3 +1,27 @@
+function CDOTA_BaseNPC:Initialize(data)
+	self.bFirstSpawnedPG = true
+
+	self.direction = {}
+	self.direction.x = 0
+	self.direction.y = 0
+	self.direction.z = 0
+
+	self.first_left = false
+	self.first_right = false
+	self.first_up = false
+	self.first_down = false
+
+	self.last_spell = nil
+	self.lifes = data.max_lifes
+
+	self.healing_reduction_pct = 0
+end
+
+function CDOTA_BaseNPC:GetAlliance()
+	local team = self:GetTeamNumber()
+	return Alliances:FindByTeam(team)
+end
+
 function CDOTA_BaseNPC:IsAlly( hero )
 	return Alliances:CheckAllies(self, hero)
 end
@@ -78,7 +102,7 @@ function CDOTA_BaseNPC:AddRecastVisual( incoming_data )
 	CustomGameEventManager:Send_ServerToAllClients( "add_recast", data )
 end
 
-function CDOTA_BaseNPC:IsMiddleOrb()
+function CDOTA_BaseNPC:IsAmethyst()
     return self:Attribute_GetIntValue("middle_orb", 0) == 1 and true or false
 end
 
@@ -106,7 +130,7 @@ end
 ]]
 
 function CDOTA_BaseNPC:GiveManaPercent( percentage, source )
-    if source ~= nil and (source:IsMiddleOrb() or source:IsObstacle()) then
+    if source ~= nil and (source:IsAmethyst() or source:IsObstacle()) then
         return
     end
 
@@ -132,6 +156,10 @@ end
 function CDOTA_BaseNPC:IsWalking()
 	local direction = self:GetDirection()
     return direction.x ~= 0 or direction.y ~= 0
+end
+
+function CDOTA_BaseNPC:IsCountering()
+	return self:HasModifier("modifier_counter")
 end
 
 function CDOTA_BaseNPC:DeactivateAllAbilitiesWithExeption( spell )

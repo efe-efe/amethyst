@@ -1,7 +1,7 @@
 <root>
     <scripts>
-        <include src="file://{resources}/scripts/custom_game/heroes_status.js" />
         <include src="file://{resources}/scripts/custom_game/util.js" />
+        <include src="file://{resources}/scripts/custom_game/heroes_status.js" />
     </scripts>
     <styles>
         <include src="file://{resources}/styles/custom_game/heroes_status.css" />
@@ -26,9 +26,19 @@
 
     </snippets>
     <Panel class="MainPanel" hittest="false">
-        <Panel id="HeroesStatus" hittest="false" class="MainPanel">
-            <Panel id="HeroesStatusLeft" class="TeamHeroes" hittest="false" />
-            <Panel id="HeroesStatusRight" class="TeamHeroes" hittest="false" />
+        <Panel id="HeroesStatusContainer" hittest="false" class="MainPanel">
+            <Panel id="TeamHeroesStatusLeft" class="TeamHeroesStatus" hittest="false">
+                <Panel class="TeamStatusContainer" hittest="false" hittestchildren="false">
+                </Panel>
+                <Panel class="TeamStatusContainer" hittest="false" hittestchildren="false">
+                </Panel>
+            </Panel>
+            <Panel id="TeamHeroesStatusRight" class="TeamHeroesStatus" hittest="false">
+                <Panel class="TeamStatusContainer" hittest="false" hittestchildren="false">
+                </Panel>
+                <Panel class="TeamStatusContainer" hittest="false" hittestchildren="false">
+                </Panel>
+            </Panel>
         </Panel>
     </Panel>
 </root>

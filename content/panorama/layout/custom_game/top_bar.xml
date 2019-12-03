@@ -25,6 +25,30 @@
     <Panel class="MainPanel" hittest="false">
         <Panel id="TopBar" hittest="false" class="MainPanel">
             <Panel id="TopBarLeft" class="TopBarTeamPositioner">
+                <Panel class="TeamBarContainer" hittest="false" hittestchildren="false">
+                    <Panel id="TeamHealthBar" hittest="false" hittestchildren="false">
+                        <Panel id="TeamHealthBarInnerBack" hittest="false" hittestchildren="false"/>
+                        <Panel id="TeamHealthBarInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                    <Panel id="TeamAmethysts" hittest="false" hittestchildren="false">
+                        <Panel id="TeamAmethystsImageContainer" hittest="false" hittestchildren="false">
+                            <Image id="TeamAmethystsImage" src="file://{images}/custom_game/amethyst.png" />
+                        </Panel>
+                        <Label id="TeamAmethystsText" html="true" text="X0" />
+                    </Panel>
+                </Panel>
+                <Panel class="TeamBarContainer" hittest="false" hittestchildren="false">
+                    <Panel id="TeamHealthBar" hittest="false" hittestchildren="false">
+                        <Panel id="TeamHealthBarInnerBack" hittest="false" hittestchildren="false"/>
+                        <Panel id="TeamHealthBarInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                    <Panel id="TeamAmethysts" hittest="false" hittestchildren="false">
+                        <Panel id="TeamAmethystsImageContainer" hittest="false" hittestchildren="false">
+                            <Image id="TeamAmethystsImage" src="file://{images}/custom_game/amethyst.png" />
+                        </Panel>
+                        <Label id="TeamAmethystsText" html="true" text="X0" />
+                    </Panel>
+                </Panel>
             </Panel>
             <Panel id="TopBarMiddle">
                 <Panel id="TopScore" hittest="false" hittestchildren="false">
@@ -39,6 +63,30 @@
                 </Panel>
             </Panel>
             <Panel id="TopBarRight" class="TopBarTeamPositioner">
+                <Panel class="TeamBarContainer" hittest="false" hittestchildren="false">
+                    <Panel id="TeamHealthBar" hittest="false" hittestchildren="false">
+                        <Panel id="TeamHealthBarInnerBack" hittest="false" hittestchildren="false"/>
+                        <Panel id="TeamHealthBarInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                    <Panel id="TeamAmethysts" hittest="false" hittestchildren="false">
+                        <Panel id="TeamAmethystsImageContainer" hittest="false" hittestchildren="false">
+                            <Image id="TeamAmethystsImage" src="file://{images}/custom_game/amethyst.png" />
+                        </Panel>
+                        <Label id="TeamAmethystsText" html="true" text="X0" />
+                    </Panel>
+                </Panel>
+                <Panel class="TeamBarContainer" hittest="false" hittestchildren="false">
+                    <Panel id="TeamHealthBar" hittest="false" hittestchildren="false">
+                        <Panel id="TeamHealthBarInnerBack" hittest="false" hittestchildren="false"/>
+                        <Panel id="TeamHealthBarInner" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                    <Panel id="TeamAmethysts" hittest="false" hittestchildren="false">
+                        <Panel id="TeamAmethystsImageContainer" hittest="false" hittestchildren="false">
+                            <Image id="TeamAmethystsImage" src="file://{images}/custom_game/amethyst.png" />
+                        </Panel>
+                        <Label id="TeamAmethystsText" html="true" text="X0" />
+                    </Panel>
+                </Panel>
             </Panel>
         </Panel>
     </Panel>

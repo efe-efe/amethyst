@@ -1,27 +1,29 @@
-function FindAllianceByTeam( team ){
-    switch( team ){
-        case DOTATeam_t.DOTA_TEAM_GOODGUYS:
-            return "DOTA_ALLIANCE_RADIANT";
-            break;
-        case DOTATeam_t.DOTA_TEAM_CUSTOM_1:
-            return "DOTA_ALLIANCE_RADIANT";
-            break;
-        case DOTATeam_t.DOTA_TEAM_BADGUYS:
-            return "DOTA_ALLIANCE_DIRE";
-            break;
-        case DOTATeam_t.DOTA_TEAM_CUSTOM_2:
-            return "DOTA_ALLIANCE_DIRE";
-            break;
-        default:
-            return "DOTA_NO_ALLIANCE"
-            break
-        }
+var COLORS_RGB = {}
+COLORS_RGB["LOCAL"] = {
+    light: "rgba(162, 249, 154, 1.0)",
+    dark: "rgba(51, 162, 40, 1.0)",
+}
+COLORS_RGB["YELLOW"] = {
+    light: "rgba(249, 246, 154, 1.0)",
+    dark: "rgba(196, 192, 45, 1.0)",
+}
+COLORS_RGB["LIGHTGREEN"] = {
+    light: "rgba(154, 249, 224, 1.0)",
+    dark: "rgba(78, 128, 114, 1.0)",
+}
+COLORS_RGB["PINK"] = {
+    light: "rgba(197, 77, 168 ,1.0)",
+    dark: "rgba(92, 15, 73, 1.0)",
+}
+COLORS_RGB["ORANGE"] = {
+    light: "rgba(255, 108, 0, 1.0)",
+    dark: "rgba(219, 99, 11, 1.0)",
 }
 
-function GetOppositeAlliance( alliance ){
-    if( alliance == "DOTA_ALLIANCE_RADIANT" ){
-        return "DOTA_ALLIANCE_DIRE"
-    } else {
-        return "DOTA_ALLIANCE_RADIANT"
+var Colors = {
+    Gradient: function(color){
+        var color_a = COLORS_RGB[color].light;
+        var color_b = COLORS_RGB[color].dark;
+        return "gradient( linear, 0% 0%, 100% 0%, from( " + color_a + "), to( " + color_b + "));";
     }
 }

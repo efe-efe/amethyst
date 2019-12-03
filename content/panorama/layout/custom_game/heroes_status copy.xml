@@ -27,7 +27,6 @@
                 </Panel>
             </Panel>
         </snippet>
-
     </snippets>
     <Panel class="MainPanel" hittest="false">
         <Panel id="HeroesStatus" hittest="false" class="MainPanel">

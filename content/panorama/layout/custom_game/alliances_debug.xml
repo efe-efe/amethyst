@@ -1,0 +1,14 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/alliances_debug.js" />
+    </scripts>
+	<styles>
+        <include src="file://{resources}/styles/custom_game/alliances_debug.css" />
+	</styles>
+	<Panel class="AlliancesDebug">
+		<Label id="AlliancesDebugText" html="true" text="Alliances" />
+		<Label id="TeamsDebugText" html="true" text="Teams" />
+	</Panel>
+</root>
+
+                    

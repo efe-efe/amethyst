@@ -1,6 +1,5 @@
 -- In this file resides all the properties and settings for Dotarite
 
-ENABLE_HERO_RESPAWN = true             -- Should the heroes automatically respawn on a timer or stay dead until manually respawned
 ALLOW_SAME_HERO_SELECTION = true        -- Should we let people select the same hero as each other
 
 PRE_GAME_TIME = 0.0                     -- How long after people select their heroes should the horn blow and the game start?
@@ -10,7 +9,6 @@ CAMERA_DISTANCE_OVERRIDE = 1350           -- How far out should we allow the cam
 USE_CUSTOM_HERO_GOLD_BOUNTY = true			-- Should the gold for hero kills be modified (true) or same as in default Dota (false)?
 DISABLE_ALL_GOLD_FROM_HERO_KILLS = true	-- Should we remove gold gain from hero kills? USE_CUSTOM_HERO_GOLD_BOUNTY needs to be true.
 
-FIXED_RESPAWN_TIME = 3.0
 if Convars:GetInt('test_mode') == 0 then
     ENABLE_HERO_RESPAWN = false         -- Should the heroes automatically respawn on a timer or stay dead until manually respawned
 end

@@ -1,14 +1,7 @@
 var mainPanel = $("#HeroBarsContainer");
 var hero_overhead_bars = {}
-
-var FRIENDLY_COLOR_DARK = "rgba(51, 162, 40, 1.0)"
-var FRIENDLY_COLOR_LIGHT = "rgba(162, 249, 154, 1.0)"
-
-
-var ENEMY_COLOR_DARK = "rgba(238, 53, 0, 1.0)"
-var ENEMY_COLOR_LIGHT = "rgba(216, 134, 89, 1.0)"
-
 var INTERVAL = 0.02;
+
 /*
 hero_overhead_bars = {
     heroIndex: {
@@ -196,11 +189,11 @@ function UpdateRecastCycle( heroIndex ){
 function AddPlayer( data ){
     var localPlayerId = Game.GetLocalPlayerID();
     var localPlayerTeam = Players.GetTeam( localPlayerId );
-    var localPlayerAlliance = FindAllianceByTeam( localPlayerTeam );
+    var localPlayerAlliance = GameUI.CustomUIConfig().Alliances.FindAllianceNameByTeam( localPlayerTeam );
 
     var heroIndex = data.heroIndex;
     var teamID = data.teamID;
-    var alliance = FindAllianceByTeam( teamID );
+    var alliance = GameUI.CustomUIConfig().Alliances.FindAllianceNameByTeam( teamID );
     var playerID = data.playerID;
 
     hero_overhead_bars[heroIndex] = {}
@@ -211,23 +204,19 @@ function AddPlayer( data ){
     heroBar.status = {};
     heroBar.recast = {};
 
-    var color_gradient = null;
     var color = null;
-
     if(localPlayerAlliance == alliance){
-        color_gradient = "gradient( linear, 0% 0%, 100% 0%, from(" +  FRIENDLY_COLOR_DARK + "), to(" +  FRIENDLY_COLOR_LIGHT + ") )";
-        color = FRIENDLY_COLOR_LIGHT;
+        color = "LOCAL";
     } else {
-        color_gradient = "gradient( linear, 0% 0%, 100% 0%, from(" +  ENEMY_COLOR_DARK + "), to(" +  ENEMY_COLOR_LIGHT + ") )";
-        color = ENEMY_COLOR_LIGHT;
+        color = GameUI.CustomUIConfig().Alliances.alliances[alliance].color;
         var mana_bar = heroBar.panel.FindChildTraverse("HeroBarMana");
         mana_bar.style.opacity = "0.0";
     }
 
     var health_bar_inner = heroBar.panel.FindChildrenWithClassTraverse("HeroBarHealthInner")[0];
     var health_bar_inner_2 = heroBar.panel.FindChildrenWithClassTraverse("HeroBarHealthInner")[1];
-    health_bar_inner.style.backgroundColor = color_gradient;
-    health_bar_inner_2.style.backgroundColor = color_gradient;
+    health_bar_inner.style.backgroundColor = Colors.Gradient(color);
+    health_bar_inner_2.style.backgroundColor = Colors.Gradient(color);
     
     var hero_bar_stacks = heroBar.panel.FindChildTraverse("HeroBarStacks");
     hero_bar_stacks.GetChild(hero_bar_stacks.GetChildCount() - 1).style.margin = "0px";
@@ -237,9 +226,9 @@ function AddPlayer( data ){
 
     var hero_bar_player = heroBar.panel.FindChildrenWithClassTraverse("HeroBarPlayerText")[0];
     hero_bar_player.text = Players.GetPlayerName( playerID );
-    hero_bar_player.style.color = color;
+    hero_bar_player.style.color = Colors.Gradient(color);
 
-    UpdateStacks({ heroIndex: heroIndex, stacks: 0 })
+    UpdateStacks({ heroIndex: heroIndex, stacks: 0, teamID: data.teamID })
     MainCycle(heroIndex);
 }
 
@@ -253,6 +242,9 @@ function AddStatus( data ){
     var type = data.type || "duration";
     var maxStacks = data.maxStacks || null;
     var local_only = data.local_only || null;
+
+    
+    if(!hero_overhead_bars[heroIndex]){ return }
 
     if(local_only){
         if( heroIndex == Players.GetPlayerHeroEntityIndex( Players.GetLocalPlayer() )){
@@ -334,8 +326,8 @@ function UpdateHealthBar( data ){
 function UpdateManaBar( data ){
     var localPlayerId = Game.GetLocalPlayerID();
     var localPlayerTeam = Players.GetTeam( localPlayerId );
-    var localPlayerAlliance = FindAllianceByTeam( localPlayerTeam );
-    var alliance = FindAllianceByTeam( data.teamID );
+    var localPlayerAlliance = GameUI.CustomUIConfig().Alliances.FindAllianceNameByTeam( localPlayerTeam );
+    var alliance = GameUI.CustomUIConfig().Alliances.FindAllianceNameByTeam( data.teamID );
 
     if( localPlayerAlliance != alliance ){ 
         return false;
@@ -351,8 +343,8 @@ function UpdateManaBar( data ){
 function UpdateStacks( data ){
     var localPlayerId = Game.GetLocalPlayerID();
     var localPlayerTeam = Players.GetTeam( localPlayerId );
-    var localPlayerAlliance = FindAllianceByTeam( localPlayerTeam );
-    var alliance = FindAllianceByTeam( data.teamID );
+    var localPlayerAlliance = GameUI.CustomUIConfig().Alliances.FindAllianceNameByTeam( localPlayerTeam );
+    var alliance = GameUI.CustomUIConfig().Alliances.FindAllianceNameByTeam( data.teamID );
 
     if( localPlayerAlliance != alliance ){ 
         return false;

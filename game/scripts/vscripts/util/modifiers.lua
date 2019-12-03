@@ -53,16 +53,18 @@ function CreateRadiusMarker(caster, origin, params)
     local particle_cast_ally = "particles/mod_units/heroes/hero_dark_willow/dw_ti8_immortal_cursed_crown_marker.vpcf"
     
     if params.show_all == 1 then
-        for _,actual_team in pairs(GameMode.teams) do
-            if caster:GetTeam() == _ then
-                effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_ally, PATTACH_WORLDORIGIN, nil, _ )
-            else
-                effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_enemy, PATTACH_WORLDORIGIN, nil, _ )
+        for _,alliance in pairs(Alliances.alliances) do
+            for _,team in pairs(alliance.teams) do
+                if caster:GetTeam() == team then
+                    effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_ally, PATTACH_WORLDORIGIN, nil, team )
+                else
+                    effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_enemy, PATTACH_WORLDORIGIN, nil, team )
+                end
+                    ParticleManager:SetParticleControl( effect_cast, 0, origin )
+                    ParticleManager:SetParticleControl( effect_cast, 2, Vector( params.radius, params.radius , params.radius ) )
+                    ParticleManager:SetParticleControl( effect_cast, 4, origin)
+                    ParticleManager:ReleaseParticleIndex( effect_cast )
             end
-                ParticleManager:SetParticleControl( effect_cast, 0, origin )
-                ParticleManager:SetParticleControl( effect_cast, 2, Vector( params.radius, params.radius , params.radius ) )
-                ParticleManager:SetParticleControl( effect_cast, 4, origin)
-                ParticleManager:ReleaseParticleIndex( effect_cast )
         end
     else
         effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast_ally, PATTACH_WORLDORIGIN, nil, caster:GetPlayerOwner() )

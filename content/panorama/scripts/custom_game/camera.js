@@ -1,14 +1,14 @@
 var camera_distance = 0;
 var camera_distance_actual = 0;
 var camera_distance_lerp = 30;
-var camera_position_lerp = 0.15;
+var camera_position_lerp = 0.125;
 var camera_position_lerp_fast = 0.05;
 
 //Call it without data.playerId to affect all players
 function ChangeDistanceOffset(data){
     var localPlayerId = Game.GetLocalPlayerID();
 
-    if(data.playerId == localPlayerId || !data.playerId){
+    if(data.playerId == localPlayerId){
         camera_distance = data.offset;
 
         if(data.lerp){
@@ -45,7 +45,7 @@ function UpdatePosition()
         var sw = Game.GetScreenWidth();
         var sh = Game.GetScreenHeight();
         
-        camera_position_lerp = 0.15;
+        camera_position_lerp = 0.125;
         if( hero_screen_x < 0 ){
             hero_screen_x = 0
             camera_position_lerp = camera_position_lerp_fast

@@ -281,7 +281,7 @@ function Projectiles:CreateProjectile(projectile)
                                 local is_slower = entity:FindModifierByName("modifier_generic_projectile_slower_lua")
                                 local is_reflector = entity:FindModifierByName("modifier_generic_projectile_reflector_lua")
                                 local is_enemy_blocker = entity:FindModifierByName("modifier_generic_projectile_enemy_blocker_lua")
-                                local is_countering = entity:HasModifier("modifier_counter")
+                                local is_countering = entity:IsCountering()
 
                                 if entity:IsWall() then
                                     if projectile.Source:IsAlly(entity) then

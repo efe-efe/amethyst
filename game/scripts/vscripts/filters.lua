@@ -100,7 +100,7 @@ function GameMode:HealingFilter(keys)
 
     
     Timers:CreateTimer(0.1, function()
-        self:UpdateHealthBars()
+        self:UpdateHealthBar( healing_target:GetAlliance() )
         self:UpdateHeroHealthBar( healing_target )
     end)
 
@@ -156,15 +156,15 @@ function GameMode:DamageFilter(keys)
         end
         
         Timers:CreateTimer(0.1, function()
-            self:UpdateHealthBars()
+            self:UpdateHealthBar( victim:GetAlliance() )
             self:UpdateHeroHealthBar( victim )
         end)
-        --local health_bar = "(" .. victim.iTreshold .. "/" .. self.iMaxTreshold ..")"
-        --victim:SetCustomHealthLabel(health_bar, 255, 255, 255)
+    elseif victim:IsAmethyst() then
+        Timers:CreateTimer(0.1, function()
+            self:UpdateUnitHealthBar( victim )
+        end)
     end
 
-    --print("[DAMAGE] " .. victim:GetName() .. " = " .. victim.iTreshold)
-	
 	--[[ Update the gold bounty of the hero before he dies
         if USE_CUSTOM_HERO_GOLD_BOUNTY then
             if attacker:IsControllableByAnyPlayer() and victim:IsRealHero() and damage_after_reductions >= victim:GetHealth() then
@@ -202,26 +202,15 @@ function GameMode:GetAllianceHealth( name )
     return health
 end
 
-function GameMode:UpdateHealthBars()
-    local radiant_health = self:GetAllianceHealth("DOTA_ALLIANCE_RADIANT")
-    local dire_health = self:GetAllianceHealth("DOTA_ALLIANCE_DIRE")
-
-    local good_guys = 100 * radiant_health.current/radiant_health.max
-    local bad_guys = 100 * dire_health.current/dire_health.max
-
-    if good_guys ~= good_guys then
-        good_guys = 0
-    end
-
-    if bad_guys ~= bad_guys then
-        bad_guys = 0
-    end
+function GameMode:UpdateHealthBar( alliance )
+    local alliance_health = self:GetAllianceHealth(alliance.name)
+    local health_pct = 100 * alliance_health.current/alliance_health.max
 
     local data = {
-        good_guys = good_guys,
-        bad_guys = bad_guys
+        health_pct = health_pct,
+        alliance = alliance.name
     }
-    CustomGameEventManager:Send_ServerToAllClients( "update_team_health_bars", data )
+    CustomGameEventManager:Send_ServerToAllClients( "update_alliance_health_bar", data )
 end
 
 function GameMode:UpdateHeroHealthBar( hero )
@@ -247,6 +236,15 @@ function GameMode:UpdateHeroHealthBar( hero )
     CustomGameEventManager:Send_ServerToAllClients( "update_hero_health_bar", data )
 end
 
+function GameMode:UpdateUnitHealthBar( unit )
+    local data = {
+        unitIndex = unit:GetEntityIndex(),
+        current_health = unit:GetHealth(),
+        max_health = unit:GetMaxHealth()
+    }
+
+    CustomGameEventManager:Send_ServerToAllClients( "update_unit_health_bar", data )
+end
 
 function GameMode:UpdateHeroManaBar( hero )
     local data = {

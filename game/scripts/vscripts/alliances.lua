@@ -1,28 +1,42 @@
 Alliances = Alliances or class({})
 
 function Alliances:Initialize()
-    self.alliances = {}
+    local teams_radiant = {}
+    local teams_dire = {}
+    local teams_legion = {}
+    local teams_void = {}
+
+    teams_radiant[0] = DOTA_TEAM_GOODGUYS
+    teams_radiant[1] = DOTA_TEAM_BADGUYS
+
+    teams_dire[0] = DOTA_TEAM_CUSTOM_1
+    teams_dire[1] = DOTA_TEAM_CUSTOM_2
+    
+    teams_legion[0] = DOTA_TEAM_CUSTOM_3
+    teams_legion[1] = DOTA_TEAM_CUSTOM_4
+    
+    teams_void[0] = DOTA_TEAM_CUSTOM_5
+    teams_void[1] = DOTA_TEAM_CUSTOM_6
+
+    self.alliances = {
+        DOTA_ALLIANCE_RADIANT = Alliances:Create("DOTA_ALLIANCE_RADIANT", teams_radiant),
+        DOTA_ALLIANCE_DIRE = Alliances:Create("DOTA_ALLIANCE_DIRE", teams_dire),
+        DOTA_ALLIANCE_LEGION = Alliances:Create("DOTA_ALLIANCE_LEGION", teams_legion),
+        DOTA_ALLIANCE_VOID = Alliances:Create("DOTA_ALLIANCE_VOID", teams_void),
+    }
 end
 
-function Alliances:Create( name )
-    self.alliances[name] = { 
-        teams = {},
+function Alliances:Create( name, teams )
+    return { 
+        teams = teams,
         wins = 0,
         looser = false,
         players = {},
         heroes = {},
         name = name,
         amethysts = 0,
+        initialized = false
     }
-end
-
-function Alliances:AddTeam( alliance, team )
-	local i = 1
-	while self.alliances[alliance].teams[i] ~= nil do
-		i = i+1
-    end
-    
-    self.alliances[alliance].teams[i] = team
 end
 
 function Alliances:Update( hero )
@@ -34,6 +48,9 @@ function Alliances:Update( hero )
 
     alliance.players[playerID] = playerOwner
     alliance.heroes[heroIndex] = hero
+    if alliance.initialized == false then
+        alliance.initialized = true
+    end
 end
 
 function Alliances:FindByTeam( team )

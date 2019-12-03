@@ -48,20 +48,19 @@ function phantom_basic_attack:OnCastPointEnd()
 					"modifier_phantom_strike_stack", -- modifier name
 					{} -- kv
 				)
+
+				-- Reduce the cd of the second attack by 1
+				local second_attack = caster:FindAbilityByName("phantom_second_attack")
+				local second_attack_cd = second_attack:GetCooldownTimeRemaining()
+				local new_cd = second_attack_cd - cooldown_reduction
+
+				if (new_cd) < 0 then 
+					second_attack:EndCooldown()
+				else
+					second_attack:EndCooldown()
+					second_attack:StartCooldown(new_cd)
+				end
 			end
-
-			-- Reduce the cd of the second attack by 1
-			local second_attack = caster:FindAbilityByName("phantom_second_attack")
-			local second_attack_cd = second_attack:GetCooldownTimeRemaining()
-			local new_cd = second_attack_cd - cooldown_reduction
-
-			if (new_cd) < 0 then 
-				second_attack:EndCooldown()
-			else
-				second_attack:EndCooldown()
-				second_attack:StartCooldown(new_cd)
-			end
-
 
 			self:PlayEffectsOnImpact(unit)
 		end,

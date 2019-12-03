@@ -21,12 +21,9 @@ function modifier_generic_invencible:OnCreated( kv )
 		self:PlayEffects()
 		self:StartIntervalThink(0.05)
 		
-		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-			style = "Invulnerable",
-			text = "invulnerable",
-			progressBarType = "duration",
-			priority = 1,
-		})
+		self:GetParent():AddStatusBar({
+			label = "Invencible", modifier = self, priority = 3, stylename="Ultimate"
+		}) 
     end
 end
 

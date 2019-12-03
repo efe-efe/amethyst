@@ -7,7 +7,7 @@ function modifier_ancient_ex_mobility_thinker:OnCreated()
         self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
         self.ability_damage = self:GetAbility():GetSpecialValueFor("ability_damage")
         self.heal = self:GetAbility():GetSpecialValueFor("heal")
-        self.think_interval = 0.7--self:GetAbility():GetSpecialValueFor("think_interval")
+        self.think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
         self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
 
         self.ticks = 3 
@@ -117,9 +117,14 @@ end
 function modifier_ancient_ex_mobility_thinker:PlayEffectsLastTick()
     EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.IceVortex.TI8", self:GetParent() )
     local particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_sphere_final_explosion_smoke_ti5.vpcf"
-    
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+
+
+    particle_cast = "particles/earthshaker_arcana_echoslam_start_v2_ring_rope.vpcf"
+    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+    
 end
 
 function modifier_ancient_ex_mobility_thinker:StopEffects()

@@ -19,7 +19,7 @@
 
 		// Abilities
 		//----------------------------------------------------------------
-		"Ability1"					"middle_orb_base_lua"			// Ability 1
+		"Ability1"					""			// Ability 1
 		"Ability2"					""			// Ability 2
 		"Ability3"					""			// Ability 3
 		"Ability4"					""			// Ability 4
@@ -81,7 +81,7 @@
 		"Creature"
 		{
 			//Level Up
-			"HPGain"					"0"
+			"HPGain"					"40"
 			"DamageGain"				"0"
 			"ArmorGain"					"0.0"
 			"MagicResistGain"			"0.0"
