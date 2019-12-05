@@ -1,6 +1,7 @@
 mount = class({})
 LinkLuaModifier( "modifier_mount", "abilities/heroes/common/mount/modifier_mount.lua", LUA_MODIFIER_MOTION_NONE )
 
+--[[
 --------------------------------------------------------------------------------
 -- Ability Start
 function mount:OnCastPointEnd( point )
@@ -58,3 +59,4 @@ Abilities.Initialize(
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.5 },
 	{ movement_speed = 0 }
 )
+]]

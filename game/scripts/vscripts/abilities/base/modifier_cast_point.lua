@@ -275,3 +275,4 @@ function modifier_cast_point:OnKeyReleased( key )
 		end]]
 	end
 end
+

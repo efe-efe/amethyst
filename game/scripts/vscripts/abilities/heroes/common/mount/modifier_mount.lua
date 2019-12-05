@@ -99,6 +99,8 @@ function modifier_mount:OnDestroy( kv )
 		local caster = self:GetCaster()
 		-- play effects
 		-- Swap abilities back to be able to stop
+
+		--[[
 		caster:SwapAbilities( 
 			"mount",
 			"charge",
@@ -107,7 +109,7 @@ function modifier_mount:OnDestroy( kv )
 		)
 
 		SafeDestroyModifier("modifier_charge_buff", caster, caster )
-		
+		]]
 		self:PlayEffects( )
 	end
 end
@@ -149,6 +151,7 @@ function modifier_mount:OnAbilityExecuted( params )
 		if 	params.ability:GetName() == "item_death_orb" or
 			params.ability:GetName() == "item_mana_orb" or
 			params.ability:GetName() == "item_health_orb" or
+			params.ability:GetName() == "item_shield_orb" or
 			params.ability:GetName() == "charge"
 		then
 			return

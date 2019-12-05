@@ -154,11 +154,13 @@ function GameMode:DamageFilter(keys)
         for i = 0, damage_after_reductions - 1 do
             victim:FindModifierByName("modifier_treshold"):DecrementStackCount()
         end
+        victim:AddNewModifier(victim, nil, "modifier_damage_fx", { duration = 0.1 })
         
         Timers:CreateTimer(0.1, function()
             self:UpdateHealthBar( victim:GetAlliance() )
             self:UpdateHeroHealthBar( victim )
         end)
+
     elseif victim:IsAmethyst() then
         Timers:CreateTimer(0.1, function()
             self:UpdateUnitHealthBar( victim )

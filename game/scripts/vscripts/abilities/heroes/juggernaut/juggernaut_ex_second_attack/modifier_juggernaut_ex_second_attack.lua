@@ -62,7 +62,8 @@ function modifier_juggernaut_ex_second_attack:OnAbilityFullyCast( params )
 
 		if 	params.ability:GetName() == "item_death_orb" or
 			params.ability:GetName() == "item_mana_orb" or
-			params.ability:GetName() == "item_health_orb"
+			params.ability:GetName() == "item_health_orb" or
+			params.ability:GetName() == "item_shield_orb" 
 		then
 			return
 		end

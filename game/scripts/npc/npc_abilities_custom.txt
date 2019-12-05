@@ -1328,7 +1328,7 @@
 		"MaxLevel"						"1"
 		
 		"AbilityTextureName"			"mount"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE | DOTA_ABILITY_BEHAVIOR_PASSIVE"
 		"AbilityCastPoint"				"0.8"
 		"AbilityCooldown"				"1.0"
 
@@ -1340,7 +1340,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"bonus_movement_speed"		"470" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"bonus_movement_speed"		"500" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"50" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"slow_duration"				"2.0" }
 		}

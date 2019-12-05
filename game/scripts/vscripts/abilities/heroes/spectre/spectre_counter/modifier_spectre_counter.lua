@@ -53,6 +53,7 @@ function modifier_spectre_counter:OnAbilityFullyCast( params )
 
 		if 	params.ability:GetName() == "item_death_orb" or
 			params.ability:GetName() == "item_mana_orb" or
+			params.ability:GetName() == "item_shield_orb" or
 			params.ability:GetName() == "item_health_orb"
 		then
 			return

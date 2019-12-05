@@ -31,6 +31,7 @@ function GameMode:OnGameInProgress()
     
     self.health_orbs_ent = Entities:FindAllByName("health_orb")
     self.mana_orbs_ent = Entities:FindAllByName("mana_orb")
+    self.shield_orbs_ent = Entities:FindAllByName("shield_orb")
     self.amethysts_ent = Entities:FindAllByName("orb_spawn")
     self.walls_ents = Entities:FindAllByName("wall_spawn")
     self.pickups = {} -- Created orbs on the map
@@ -120,6 +121,7 @@ function GameMode:OnHeroInGame(keys)
         SafeDestroyModifier("modifier_generic_provides_vision", npc, nil)
         npc:SetMana(0)
 		npc:FindModifierByName("modifier_treshold"):SetStackCount(self.iMaxTreshold)
+        npc:AddNewModifier(npc, npc:FindAbilityByName("mount"), "modifier_mount", {})
 
         npc:SetHealth(npc:GetMaxHealth())
         npc.iTreshold = self.iMaxTreshold
@@ -158,14 +160,21 @@ function GameMode:OnItemPickUp( event )
     
     if  event.itemname == "item_health_orb" or 
         event.itemname == "item_mana_orb" or 
+        event.itemname == "item_shield_orb" or 
         event.itemname == "item_death_orb" 
     then
-        if event.itemname == "item_health_orb" or event.itemname == "item_mana_orb" then
+        if  
+            event.itemname == "item_health_orb" or 
+            event.itemname == "item_mana_orb" or
+            event.itemname == "item_shield_orb"
+        then
             local name 
             if event.itemname == "item_health_orb" then
                 name = "health"
             elseif event.itemname == "item_mana_orb" then
                 name = "mana" 
+            elseif event.itemname == "item_shield_orb" then
+                name = "shield" 
             end
 
             self:CreatePickup(self.pickups[event.ItemEntityIndex].pos, name, self.PICKUPS_SPAWN_TIME)
@@ -269,25 +278,6 @@ function GameMode:OnEntityHurt(keys)
         if keys.entindex_inflictor ~= nil then
         damagingAbility = EntIndexToHScript( keys.entindex_inflictor )
         end
-
-        local particle_cast = "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf"
-        local effect_cast = ParticleManager:CreateParticle( 
-            particle_cast, 
-            PATTACH_CUSTOMORIGIN, 
-            nil
-        )
-
-        ParticleManager:SetParticleControlEnt( 
-            effect_cast, 
-            0, 
-            entVictim, 
-            PATTACH_POINT_FOLLOW, 
-            "attach_hitloc", 
-            entVictim:GetOrigin(), 
-            true 
-        );
-        
-        ParticleManager:ReleaseParticleIndex( effect_cast )
     end
 end
 	
@@ -649,6 +639,10 @@ function GameMode:CreatePickups()
     for _,mana_orb_ent in pairs(self.mana_orbs_ent) do
         self:CreatePickup(mana_orb_ent:GetOrigin(), "mana", self.PICKUPS_SPAWN_TIME)
     end
+
+    for _,shield_orb_ent in pairs(self.shield_orbs_ent) do
+        self:CreatePickup(shield_orb_ent:GetOrigin(), "shield", self.PICKUPS_SPAWN_TIME)
+    end
 end
 
 --------------------------------------------------------------------------------
@@ -698,6 +692,8 @@ function GameMode:CreatePickup( pos, type, delay, scale )
         particle_cast = "particles/generic_gameplay/rune_regeneration.vpcf"
     elseif type == "mana" then
         particle_cast = "particles/generic_gameplay/rune_doubledamage.vpcf"
+    elseif type == "shield" then
+        particle_cast = "particles/generic_gameplay/rune_bounty.vpcf"
     elseif type == "death" then
         particle_cast = "particles/generic_gameplay/rune_haste.vpcf"
     end
