@@ -266,7 +266,8 @@ function GameMode:CaptureGameMode()
                             end
 
                             if swapeable_ability == nil then
-                                print("[SWAP] ERROR: ability " .. ability:GetAbilityName() .. " related bug!", swapeable_ability:GetAbilityIndex(), swapeable_ability:GetAbilityOriginalIndex())
+                                print("[SWAP] ERROR: ability " .. ability:GetAbilityName() .. " related bug!")
+                                print("[SWAP] Possible reasons: The abilities are in the wrong order on the hero layout")
                                 return
                             end
 

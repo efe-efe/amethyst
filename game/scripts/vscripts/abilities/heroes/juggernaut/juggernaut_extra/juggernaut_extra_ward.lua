@@ -28,11 +28,8 @@ function juggernaut_extra_ward:OnCreated()
         self:StartIntervalThink( 1.0 )
 
         if IsServer() then 
-            ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-                style = "HealingWard",
-                text = "Ward",
-                progressBarType = "duration",
-                priority = 1,
+            self:GetParent():AddStatusBar({
+                label = "Ward", modifier = self, priority = 3, 
             })
         end
     end
