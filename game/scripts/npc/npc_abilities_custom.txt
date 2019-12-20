@@ -92,6 +92,14 @@
 #base "abilities\weaver\weaver_r.txt"
 #base "abilities\weaver\weaver_space.txt"
 
+#base "abilities\terrorblade\terrorblade_m1.txt"
+#base "abilities\terrorblade\terrorblade_m2.txt"
+#base "abilities\terrorblade\terrorblade_space.txt"
+#base "abilities\terrorblade\terrorblade_e.txt"
+#base "abilities\terrorblade\terrorblade_q.txt"
+#base "abilities\terrorblade\terrorblade_f.txt"
+#base "abilities\terrorblade\terrorblade_base.txt"
+
 "DOTAAbilities"
 {
 	//=================================================================================================================

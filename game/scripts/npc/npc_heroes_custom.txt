@@ -4,6 +4,7 @@
 #base "heroes\vengeful.txt"
 #base "heroes\ancient.txt"
 #base "heroes\weaver.txt"
+#base "heroes\terrorblade.txt"
 
 "DOTAHeroes"
 {   

@@ -1,5 +1,4 @@
 sniper_second_attack = class({})
-LinkLuaModifier( "modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
 
 function sniper_second_attack:OnSpellStart()
     EmitGlobalSound( "Ability.AssassinateLoad")

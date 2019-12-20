@@ -203,6 +203,7 @@ function modifier_cast_point:OnIntervalThink()
 	if 	self.parent:IsStunned() or 
 		self.parent:IsNightmared() or
 		self.parent:IsSilenced() or
+		self.parent:HasFear() or
 		self.parent:HasModifier("modifier_generic_displacement") or
 		not self.parent:IsAlive()
 	then

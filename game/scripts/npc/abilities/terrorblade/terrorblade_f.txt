@@ -1,0 +1,44 @@
+"DOTAAbilities" {
+    "terrorblade_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/terrorblade/terrorblade_extra/terrorblade_extra"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"terrorblade_conjure_image"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"		    "0.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"16" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"stun_duration"			"1.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"			    "250" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"			    "2.5" }
+		}
+	}
+	
+    "terrorblade_extra_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/terrorblade/terrorblade_extra/terrorblade_extra_recast"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"terrorblade_conjure_image"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"		    "0.1" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"			    "250" }
+		}
+	}
+}

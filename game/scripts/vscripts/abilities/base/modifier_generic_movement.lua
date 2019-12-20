@@ -120,11 +120,21 @@ function modifier_generic_movement:Move()
 
 	local speed = self.parent:GetIdealSpeed() / 76.5
 	local origin = self.parent:GetAbsOrigin()
-	local direction = Vector(
-		self.parent.direction.x, 
-		self.parent.direction.y, 
-		self.parent:GetForwardVector().z
-	)
+	local direction = nil
+
+	if self.parent:IsDirectionForced() then
+		direction = Vector(
+			self.parent.forced_direction.x,
+			self.parent.forced_direction.y,
+			self.parent:GetForwardVector().z
+		)
+	else
+		direction = Vector(
+			self.parent.direction.x * (self.parent:IsConfused() and -1 or 1), 
+			self.parent.direction.y * (self.parent:IsConfused() and -1 or 1), 
+			self.parent:GetForwardVector().z
+		)
+	end
 	------------------------
 	-- If Moving
 	------------------------

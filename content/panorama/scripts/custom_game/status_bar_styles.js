@@ -79,6 +79,20 @@ styles["Vengance"] = {
     color: "#cb70dd"
 }
 
+
+styles["Fear"] = {
+    backgroundColor: "#E55C34",
+    textShadow: CreateTextShadow("#DC8668"),
+    color: "#DC8668"
+}
+
+styles["Confused"] = {
+    backgroundColor: "#E55C34",
+    textShadow: CreateTextShadow("#DC8668"),
+    color: "#DC8668"
+}
+
+
 function CreateTextShadow( color ){
     return "0px 0px 30px 8.0 " + color + ";"
 }

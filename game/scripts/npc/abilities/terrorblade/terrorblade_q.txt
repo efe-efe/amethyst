@@ -1,0 +1,21 @@
+
+"DOTAAbilities" {
+    "terrorblade_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/terrorblade/terrorblade_counter/terrorblade_counter"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"terrorblade_counter"
+		"AbilityCooldown"				"7.0"
+		"AbilityDuration"				"1.5"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal"					    "16" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"fear_duration"             "1.5" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"                    "1400" }
+		}
+	}
+}

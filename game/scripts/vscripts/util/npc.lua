@@ -2,6 +2,7 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.bFirstSpawnedPG = true
 
 	self.direction = {}
+	self.forced_direction = nil
 	self.direction.x = 0
 	self.direction.y = 0
 	self.direction.z = 0
@@ -15,6 +16,21 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.lifes = data.max_lifes
 
 	self.healing_reduction_pct = 0
+end
+
+function CDOTA_BaseNPC:ForceDirection( direction )
+	self.forced_direction = direction
+end
+
+function CDOTA_BaseNPC:UnforceDirection( direction )
+	self.forced_direction = nil
+end
+
+function CDOTA_BaseNPC:IsDirectionForced()
+	if self.forced_direction ~= nil then
+		return true
+	end
+	return false
 end
 
 function CDOTA_BaseNPC:GetAlliance()
@@ -45,6 +61,37 @@ function CDOTA_BaseNPC:FindUnitsInRadius( origin, radius, teamFilter, typeFilter
         flagFilter, -- int, flag filter
         orderFilter, -- int, order filter
         false -- bool, can grow cache
+	)
+
+	local filtered_units = {}
+	local counter = 1
+	
+	for _,unit in pairs(units) do
+		if teamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and self:IsAlly(unit) then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not self:IsAlly(unit) then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		end
+	end
+	
+	return filtered_units
+end
+
+function CDOTA_BaseNPC:FindUnitsInLine( start_pos, end_pos, radius, teamFilter, typeFilter, flagFilter )
+	local units = FindUnitsInLine(
+		self:GetTeamNumber(), -- int, your team number
+		start_pos, -- point, start position
+		end_pos, -- point, end position
+		nil, -- handle, cacheUnit. (not known)
+		radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
+		DOTA_UNIT_TARGET_TEAM_BOTH,
+		typeFilter,
+		flagFilter
 	)
 
 	local filtered_units = {}
@@ -141,8 +188,8 @@ function CDOTA_BaseNPC:IsSilenced()
     return self:HasModifier("modifier_generic_silenced_lua")
 end
 
-function CDOTA_BaseNPC:IsStunned()
-    return self:HasModifier("modifier_generic_stunned")
+function CDOTA_BaseNPC:HasFear()
+    return self:HasModifier("modifier_generic_fear")
 end
 
 function CDOTA_BaseNPC:StrongPurge()
@@ -153,13 +200,38 @@ function CDOTA_BaseNPC:GetDirection()
 	return Vector(self.direction.x, self.direction.y, nil)
 end
 
+function CDOTA_BaseNPC:GetForcedDirection()
+	if self.forced_direction == nil then
+		return nil
+	else 
+		return Vector(self.forced_direction.x, self.forced_direction.y, nil)
+	end
+end
+
 function CDOTA_BaseNPC:IsWalking()
+	local is_walking = false
 	local direction = self:GetDirection()
-    return direction.x ~= 0 or direction.y ~= 0
+	local forced_direction = self:GetForcedDirection()
+	
+	if 	direction.x ~= 0 or 
+		direction.y ~= 0 or 
+		forced_direction and (
+			forced_direction.x ~= 0 or 
+			forced_direction.y ~= 0
+		)
+	then
+		return true
+	else
+		return false
+	end
 end
 
 function CDOTA_BaseNPC:IsCountering()
 	return self:HasModifier("modifier_counter")
+end
+
+function CDOTA_BaseNPC:IsConfused()
+	return self:HasModifier("modifier_generic_confused")
 end
 
 function CDOTA_BaseNPC:DeactivateAllAbilitiesWithExeption( spell )
