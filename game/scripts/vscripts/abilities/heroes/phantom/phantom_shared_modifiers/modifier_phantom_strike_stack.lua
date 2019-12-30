@@ -57,15 +57,6 @@ function modifier_phantom_strike_stack:OnDestroy( kv )
 end
 
 --------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_phantom_strike_stack:DeclareFunctions()
-	local funcs = {
-	}
-
-	return funcs
-end
-
---------------------------------------------------------------------------------
 -- Graphics & Animations
 function modifier_phantom_strike_stack:GetTexture()
 	return "phantom_basic_attack"
@@ -136,7 +127,6 @@ function modifier_phantom_strike_stack:StopEffects()
 			ParticleManager:ReleaseParticleIndex( efx )
 		end
 	end
-
 end
 
 

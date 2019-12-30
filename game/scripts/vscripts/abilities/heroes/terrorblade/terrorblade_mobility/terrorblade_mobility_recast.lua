@@ -132,6 +132,6 @@ if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	terrorblade_mobility_recast,
 	{ activity = ACT_DOTA_CAST_ABILITY_3, rate = 0.9 },
-	{ movement_speed = 10 },
+	{ movement_speed = 100 },
 	{ modifier_name = "modifier_terrorblade_mobility_recast" }
 )

@@ -9,15 +9,34 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"130"
-		"AbilityCastPoint"				"0.1"
 		"AbilityDuration"				"1.5"
 		"AbilityCooldown"				"6.0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"90" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"attack_speed_bonus"		"30" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"8" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"recasts"					"3" }
 		}
 	}
+
+	"juggernaut_counter_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter_recast"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_counter"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityCastRange"				"900"
+		"AbilityCooldown"				"0.3"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"					"350" }
+		}
+	}
+	
 }

@@ -1,19 +1,30 @@
 
 juggernaut_ex_special_attack = class({})
 
+function juggernaut_ex_special_attack:OnSpellStart()
+	local caster = self:GetCaster()
+	local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_crit_tgt.vpcf"
+
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
+    ParticleManager:SetParticleControl( effect_cast, 1, caster:GetOrigin() )
+    ParticleManager:SetParticleControl( effect_cast, 3, caster:GetOrigin() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
 function juggernaut_ex_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
 	local damage = self:GetAbilityDamage()
 
+	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
 	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_silencer/silencer_ti8_glaive.vpcf",
+		EffectName = "particles/mod_units/heroes/hero_silencer/silencer_ti8_glaive_2.vpcf",
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
@@ -34,15 +45,16 @@ function juggernaut_ex_special_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 
-			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
+			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow_new", { 
 				duration = fading_slow_duration,
-				effect_name = "particles/generic_gameplay/generic_purge.vpcf"
+				max_slow_pct = fading_slow_pct
 			})
 
             local particle_cast = "particles/econ/events/nexon_hero_compendium_2014/blink_dagger_start_nexon_hero_cp_2014.vpcf"
-            local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, _self.Source )
+            local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+			ParticleManager:SetParticleControl( effect_cast, 0, _self.Source:GetOrigin() )
             ParticleManager:ReleaseParticleIndex( effect_cast )
-            
+			
             FindClearSpaceForUnit( _self.Source, unit:GetOrigin() , true )
 		end,
 		OnFinish = function(_self, pos)
@@ -66,6 +78,11 @@ function juggernaut_ex_special_attack:PlayEffectsOnFinish( pos )
 	local particle_cast = "particles/units/heroes/hero_luna/luna_base_attack_impact.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( effect_cast, 1, pos )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+	particle_cast = "particles/econ/events/nexon_hero_compendium_2014/blink_dagger_start_nexon_hero_cp_2014.vpcf"
+	effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 

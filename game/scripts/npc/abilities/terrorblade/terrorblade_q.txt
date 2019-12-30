@@ -14,7 +14,7 @@
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"heal"					    "16" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"fear_duration"             "1.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"1.5" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"                    "1400" }
 		}
 	}

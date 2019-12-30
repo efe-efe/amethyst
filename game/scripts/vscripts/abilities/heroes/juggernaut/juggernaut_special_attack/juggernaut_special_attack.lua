@@ -7,6 +7,7 @@ function juggernaut_special_attack:OnCastPointEnd()
     local origin = caster:GetOrigin()
 	local damage = self:GetAbilityDamage()
 
+	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
 	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
@@ -37,9 +38,9 @@ function juggernaut_special_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 
-			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
+			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow_new", { 
 				duration = fading_slow_duration,
-				effect_name = "particles/generic_gameplay/generic_purge.vpcf"
+				max_slow_pct = fading_slow_pct 
 			})
 
 			if _self.Source == caster then
@@ -64,9 +65,9 @@ function juggernaut_special_attack:PlayEffectsOnFinish( pos )
 	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
 	
 	-- Create Particles
-	local particle_cast = "particles/units/heroes/hero_luna/luna_base_attack_impact.vpcf"
+	local particle_cast = "particles/econ/items/arc_warden/arc_warden_ti9_immortal/arc_warden_ti9_wraith_impact_start.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 

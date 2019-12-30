@@ -18,4 +18,14 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
 		}
 	}
+
+	"juggernaut_extra_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_extra/juggernaut_extra_recast"
+		"MaxLevel"						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN"
+
+		"AbilityTextureName"			"juggernaut_healing_ward"
+	}
 }

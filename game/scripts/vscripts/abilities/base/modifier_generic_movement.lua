@@ -362,13 +362,4 @@ function modifier_generic_movement:GetModifierIgnoreMovespeedLimit( params )
     return 1
 end
 
--- Status Effects
-function modifier_generic_movement:CheckState()
-	local state = {
-		[MODIFIER_STATE_NO_HEALTH_BAR] = true,
-	}
-
-	return state
-end
-
 

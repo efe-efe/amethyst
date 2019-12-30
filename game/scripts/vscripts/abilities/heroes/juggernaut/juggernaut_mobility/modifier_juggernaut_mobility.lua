@@ -22,6 +22,8 @@ function modifier_juggernaut_mobility:OnCreated( kv )
     --Initializers
     if IsServer() then
         self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
+        local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
+
         self.radius = 250
 
         self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_generic_silenced_lua", { duration = self:GetDuration() }) 
@@ -36,7 +38,7 @@ function modifier_juggernaut_mobility:OnCreated( kv )
         self:GetParent():AddStatusBar({ label = "Haste", modifier = self, priority = 1, stylename="Generic" }) 
 
 
-        self:StartIntervalThink( 0.3 )
+        self:StartIntervalThink( think_interval )
         self:PlayEffects()
     end
 end
@@ -44,16 +46,14 @@ end
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_juggernaut_mobility:OnIntervalThink()
-    local enemies = FindUnitsInRadius( 
-        self:GetParent():GetTeamNumber(), -- int, your team number
-        self:GetParent():GetOrigin(), -- point, center point
-        nil, -- handle, cacheUnit. (not known)
-        self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-        DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
-        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-        0, -- int, flag filter
-        0, -- int, order filter
-        false -- bool, can grow cache
+
+    local enemies = self:GetParent():FindUnitsInRadius(
+        self:GetParent():GetOrigin(), 
+        self.radius, 
+        DOTA_UNIT_TARGET_TEAM_ENEMY, 
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+        DOTA_UNIT_TARGET_FLAG_NONE,
+        FIND_ANY_ORDER
     )
 
     for _,enemy in pairs(enemies) do
@@ -76,7 +76,6 @@ function modifier_juggernaut_mobility:OnDestroy( kv )
     if IsServer() then
         self:StopEffects()
         EmitSoundOn("Hero_Juggernaut.BladeFuryStop", self:GetParent())
-
         SafeDestroyModifier("modifier_generic_silenced_lua", self:GetParent(), self:GetParent())
     end
 end
@@ -87,10 +86,20 @@ function modifier_juggernaut_mobility:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
+		MODIFIER_EVENT_ON_ORDER,
 	}
 
 	return funcs
 end
+
+function modifier_juggernaut_mobility:OnOrder(params)
+	if params.unit==self:GetParent() then
+		if 	params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION then
+			self:Destroy()
+		end
+	end
+end
+
 
 function modifier_juggernaut_mobility:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
@@ -104,9 +113,6 @@ end
 -- Modifier State
 function modifier_juggernaut_mobility:CheckState()
 	local state = {
-        [MODIFIER_STATE_NO_HEALTH_BAR] = true,
-		[MODIFIER_STATE_INVULNERABLE] = true,
-		[MODIFIER_STATE_OUT_OF_GAME] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
 

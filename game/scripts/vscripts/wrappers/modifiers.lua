@@ -13,8 +13,11 @@ function Modifiers.Recast( modifier, data )
             end
             
             local charges = data.charges or 1
-            self:SetStackCount(charges)
-
+            if charges == -1 then
+                self:SetStackCount(999)
+            else
+                self:SetStackCount(charges)
+            end
             self:GetParent():SwapAbilities(
                 self:GetAbility():GetName(), 
                 data.ability_name, 

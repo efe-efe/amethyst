@@ -31,7 +31,7 @@ function UpdateBarCycle( heroIndex )
 }
 
 function UpdateBarVisibilityCycle( heroIndex ){
-    if(!Entities.IsAlive( heroIndex ) || !IsVisibleByLocal(heroIndex)){
+    if(!Entities.IsAlive( heroIndex ) || !IsVisibleByLocal(heroIndex) || Entities.NoHealthBar( heroIndex )){
         hero_overhead_bars[heroIndex].panel.style.opacity = "0.0";
         return false;
     } else {
@@ -42,7 +42,7 @@ function UpdateBarVisibilityCycle( heroIndex ){
 
 function UpdateBarPositionCycle( heroIndex ){
     var origin = Entities.GetAbsOrigin(heroIndex);
-    var hpOffset = Entities.GetHealthBarOffset(heroIndex);
+    var hpOffset = 300//Entities.GetHealthBarOffset(heroIndex);
 
     var wx = Game.WorldToScreenX(origin[0], origin[1], origin[2] + hpOffset);
     var wy = Game.WorldToScreenY(origin[0], origin[1], origin[2] + hpOffset);
@@ -354,7 +354,7 @@ function UpdateStacks( data ){
     var stacks = data.stacks;
     var hero_bar_stacks = hero_overhead_bars[heroIndex].panel.FindChildTraverse("HeroBarStacks");
 
-    for(i = 0; i < 3; i++){
+    for(i = 0; i < 4; i++){
         hero_bar_stacks.GetChild(i).style.opacity = "0.0";
     }
 

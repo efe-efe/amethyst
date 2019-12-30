@@ -2,6 +2,10 @@ modifier_terrorblade_normal = class({})
 
 function modifier_terrorblade_normal:OnCreated(params)
 	if IsServer() then
+		
+		self:GetParent():SetModel("models/heroes/terrorblade/terrorblade.vmdl")
+		self:GetParent():SetOriginalModel("models/heroes/terrorblade/terrorblade.vmdl")
+		
 		if params.first_time ~= 1 then
 			self:GetParent():SwapAbilities(
 				"terrorblade_basic_attack",
@@ -23,18 +27,4 @@ function modifier_terrorblade_normal:OnCreated(params)
 			)
 		end
 	end
-end
-
---------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_terrorblade_normal:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_MODEL_CHANGE,
-	}
-
-	return funcs
-end
-
-function modifier_terrorblade_normal:GetModifierModelChange()
-	return "models/heroes/terrorblade/terrorblade.vmdl"
 end

@@ -61,6 +61,7 @@
                             <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
                             <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
                             <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
+                            <Panel class="HeroBarStack" hittest="false" hittestchildren="false" />
                         </Panel>
                         <Panel id="HeroBarCooldown" hittest="false" hittestchildren="false" >
                             <Panel class="HeroBarCooldownCircleBackground" hittest="false" hittestchildren="false" />

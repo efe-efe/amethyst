@@ -21,7 +21,9 @@ end
 function terrorblade_counter:OnTrigger()
     local caster = self:GetCaster()
     local radius = self:GetSpecialValueFor("radius")
-    local fear_duration = self:GetSpecialValueFor("fear_duration")
+    local debuff_duration = self:GetSpecialValueFor("debuff_duration")
+    local base = caster:FindModifierByName("modifier_terrorblade_base")
+    
 
     local enemies = caster:FindUnitsInRadius(
         caster:GetOrigin(), 
@@ -33,14 +35,20 @@ function terrorblade_counter:OnTrigger()
     )
     
     for _,enemy in pairs(enemies) do
-        local x =  - (caster:GetOrigin() - enemy:GetOrigin()):Normalized().x
-        local y =  - (caster:GetOrigin() - enemy:GetOrigin()):Normalized().y
-    
-        enemy:AddNewModifier(caster, self, "modifier_generic_fear", { 
-            duration = fear_duration, 
-            x = x ,
-            y = y
-        })
+        if base:GetState() == "NORMAL" then
+            enemy:AddNewModifier(caster, self, "modifier_generic_hypnotize", { 
+                duration = debuff_duration
+            })
+        else
+            local x =  - (caster:GetOrigin() - enemy:GetOrigin()):Normalized().x
+            local y =  - (caster:GetOrigin() - enemy:GetOrigin()):Normalized().y
+        
+            enemy:AddNewModifier(caster, self, "modifier_generic_fear", { 
+                duration = debuff_duration, 
+                x = x ,
+                y = y
+            })
+        end
     end
     self:PlayEffectsOnTrigger(radius)
 end

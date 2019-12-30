@@ -1,5 +1,5 @@
 terrorblade_basic_attack = class({})
-LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_terrorblade_basic_attack", "abilities/heroes/terrorblade/terrorblade_basic_attack/modifier_terrorblade_basic_attack", LUA_MODIFIER_MOTION_NONE )
 
 function terrorblade_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -40,6 +40,7 @@ function terrorblade_basic_attack:OnCastPointEnd()
 				false, -- bool bFakeAttack
 				true -- bool bNeverMiss
 			)
+			unit:AddNewModifier(caster, self, "modifier_terrorblade_basic_attack", {})
 
 			self:PlayEffectsOnImpact(unit)
 		end,

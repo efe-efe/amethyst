@@ -17,8 +17,9 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.0" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"300" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"350" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"                "80" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"aspd_per_stack"		"12.5" }
 		}
 	}
 }

@@ -9,16 +9,18 @@ function modifier_generic_fear:OnCreated( params )
         )
 
         self:GetParent():ForceDirection( direction )
-
-        self:GetParent():AddStatusBar({ label = "Fear", modifier = self, priority = 1, stylename="Fear" }) 
+        self:GetParent():AddNewModifier(self:GetCaster(), nil, "modifier_generic_silenced_lua", { duration = self:GetDuration() })
+        self:GetParent():AddStatusBar({ label = "Fear", modifier = self, priority = 5, stylename="Fear" }) 
     end
 end
 
 function modifier_generic_fear:OnDestroy()
     if IsServer() then
         self:GetParent():UnforceDirection()
+        self:GetParent():RemoveModifierByName("modifier_generic_silenced_lua")
     end
 end
+
 
 --------------------------------------------------------------------------------
 -- Modifier Effects
@@ -31,5 +33,5 @@ function modifier_generic_fear:DeclareFunctions()
 end
 
 function modifier_generic_fear:GetModifierMoveSpeedBonus_Percentage()
-    return 60
+    return 30
 end

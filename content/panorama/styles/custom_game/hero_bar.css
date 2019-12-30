@@ -152,7 +152,7 @@
 }
 
 .HeroBar .Bottom .Middle{
-    width: 68%;
+    width: 64%;
     margin-right: 2%;
     height: 100%;
     flow-children: down;
@@ -206,7 +206,7 @@
 }
 
 #HeroBarStacks .HeroBarStack{
-    width: 30%;
+    width: 20%;
     margin-right: 5%;
     height: 100%;
     opacity: 0.0;

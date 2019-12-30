@@ -16,7 +16,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_juggernaut_ultimate_slashing:OnCreated( kv )
+function modifier_juggernaut_ultimate_slashing:OnCreated( params )
     self.radius = self:GetAbility():GetSpecialValueFor("find_radius")
 
     --Initializers
@@ -24,9 +24,6 @@ function modifier_juggernaut_ultimate_slashing:OnCreated( kv )
         self.damage_per_second = self:GetParent():GetAttackDamage()
         self.current_position = self:GetParent():GetOrigin()
         self.previous_position = self:GetParent():GetOrigin()
-        local attacks_per_second = self:GetParent():GetAttacksPerSecond()
-	    local attack_speed = math.abs( 1 / attacks_per_second )
-
 
         StartAnimation(self:GetParent(), {
             duration=self:GetDuration() + 0.1, 
@@ -34,13 +31,14 @@ function modifier_juggernaut_ultimate_slashing:OnCreated( kv )
             rate=1.5
         })
 
+        self:SetStackCount(params.aspd_buff)
+
+        local attacks_per_second = self:GetParent():GetAttacksPerSecond()
+        local attack_speed = math.abs( 1 / attacks_per_second )
         
         if IsServer() then 
-            ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
-                style = "Ultimate",
-                text = "ultimate",
-                progressBarType = "duration",
-                priority = 1,
+            self:GetParent():AddStatusBar({
+                label = "Ultimate", modifier = self, priority = 6, stylename="Ultimate"
             })
         end
         
@@ -49,40 +47,34 @@ function modifier_juggernaut_ultimate_slashing:OnCreated( kv )
     end
 end
 
-
---------------------------------------------------------------------------------
--- Destroyer
-function modifier_juggernaut_ultimate_slashing:OnDestroy( kv )
-    if IsServer() then
-        GameRules:EndAnimation(self:GetParent())
-    end
-end
-
-
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
 
-    local enemies = FindUnitsInRadius( 
-        self:GetParent():GetTeamNumber(), -- int, your team number
-        self:GetParent():GetOrigin(), -- point, center point
-        nil, -- handle, cacheUnit. (not known)
-        self.radius, -- float, radius. or use FIND_UNITS_EVERYWHERE
-        DOTA_UNIT_TARGET_TEAM_ENEMY, -- int, team filter
-        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
-        0, -- int, flag filter
-        0, -- int, order filter
-        false -- bool, can grow cache
+    local enemies = self:GetParent():FindUnitsInRadius(
+        self:GetParent():GetOrigin(), 
+        self.radius, 
+        DOTA_UNIT_TARGET_TEAM_ENEMY, 
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+        DOTA_UNIT_TARGET_FLAG_NONE,
+        FIND_ANY_ORDER
     )
-    
-    if #enemies > 0 then
-        local enemy_index = RandomInt(1, #enemies)
-        local target = enemies[enemy_index]
 
-        while target:Attribute_GetIntValue("dummy", 0) == 1 do
-            enemy_index = RandomInt(1, #enemies)
-            target = enemies[enemy_index]
+    local filtered_enemies = {}
+    local counter = 0
+
+    for _,enemy in pairs(enemies) do
+        if  (not enemy:IsObstacle()) and 
+            (not (enemy:Attribute_GetIntValue("dummy", 0) == 1)) 
+        then
+            counter = counter + 1
+            filtered_enemies[counter] = enemy
         end
+    end
+
+    if counter > 0 then
+        local enemy_index = RandomInt(1, counter)
+        local target = filtered_enemies[enemy_index]
 
         local damage_table = {
             victim = target,
@@ -102,28 +94,27 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
 
         self:PlayEffects(target)
         self:PlayEffects_b()
+        self:PlayEffectsAoe()
 
         self.previous_position = self.current_position
+
     else
         self:Destroy()
     end
 end
 
 --------------------------------------------------------------------------------
--- Destroyer
-function modifier_juggernaut_ultimate_slashing:OnDestroy( kv )
-    if IsServer() then
-    end
-end
-
-
---------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_juggernaut_ultimate_slashing:DeclareFunctions()
 	local funcs = {
+		MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT,
 	}
 
 	return funcs
+end
+
+function modifier_juggernaut_ultimate_slashing:GetModifierAttackSpeedBonus_Constant()
+	return self:GetStackCount()
 end
 
 --------------------------------------------------------------------------------
@@ -159,6 +150,16 @@ function modifier_juggernaut_ultimate_slashing:PlayEffects_b( )
     ParticleManager:ReleaseParticleIndex(trail_pfx)
 end
 
+function modifier_juggernaut_ultimate_slashing:PlayEffectsAoe()
+    local particle_cast = "particles/aoe_marker.vpcf"
+
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
+    ParticleManager:SetParticleControl( effect_cast, 2, Vector( 255, 1, 1 ) )
+    ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+end
 
 function modifier_juggernaut_ultimate_slashing:GetEffectName()
 	return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf"

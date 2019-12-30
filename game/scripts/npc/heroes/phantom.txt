@@ -65,5 +65,6 @@
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
+		"HealthBarOffset"		"9999999999999"	
 	}
 }

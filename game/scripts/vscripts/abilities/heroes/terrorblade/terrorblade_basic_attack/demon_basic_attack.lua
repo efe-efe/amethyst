@@ -1,4 +1,5 @@
 demon_basic_attack = class({})
+LinkLuaModifier( "modifier_terrorblade_basic_attack", "abilities/heroes/terrorblade/terrorblade_basic_attack/modifier_terrorblade_basic_attack", LUA_MODIFIER_MOTION_NONE )
 
 function demon_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -38,6 +39,8 @@ function demon_basic_attack:OnCastPointEnd()
 					ability = self
 				}
 				ApplyDamage( damage )
+
+				unit:AddNewModifier(caster, self, "modifier_terrorblade_basic_attack", {})
 			end
 		end,
 		OnFinish = function(_self, pos)

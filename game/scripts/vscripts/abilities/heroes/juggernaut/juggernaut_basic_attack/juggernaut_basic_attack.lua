@@ -44,28 +44,26 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 			}
 			ApplyDamage( damage_table )
 
-			if _self.Source == caster then 
+			if _self.Source == caster and not unit:IsObstacle() then 
 				caster:GiveManaPercent(mana_gain_pct, unit)
-				if unit:IsRealHero() then 
-					-- Add modifier
-					caster:AddNewModifier(
-						caster, -- player source
-						self, -- ability source
-						"modifier_juggernaut_basic_attack_stacks", -- modifier name
-						{} -- kv
-					)
+				-- Add modifier
+				caster:AddNewModifier(
+					caster, -- player source
+					self, -- ability source
+					"modifier_juggernaut_basic_attack_stacks", -- modifier name
+					{} -- kv
+				)
 
-					-- Reduce the cd of the second attack by 1
-					local second_attack = caster:FindAbilityByName("juggernaut_second_attack")
-					local second_attack_cd = second_attack:GetCooldownTimeRemaining()
-					local new_cd = second_attack_cd - cooldown_reduction
+				-- Reduce the cd of the second attack by 1
+				local second_attack = caster:FindAbilityByName("juggernaut_second_attack")
+				local second_attack_cd = second_attack:GetCooldownTimeRemaining()
+				local new_cd = second_attack_cd - cooldown_reduction
 
-					if (new_cd) < 0 then 
-						second_attack:EndCooldown()
-					else
-						second_attack:EndCooldown()
-						second_attack:StartCooldown(new_cd)
-					end
+				if (new_cd) < 0 then 
+					second_attack:EndCooldown()
+				else
+					second_attack:EndCooldown()
+					second_attack:StartCooldown(new_cd)
 				end
 			end
 
@@ -75,6 +73,7 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 				self:PlayEffects_c(pos)
 			end
 			self:PlayEffects_a(pos)
+			self:PlayEffectsOnFinish( pos )
 		end,
 	}
 	-- Cast projectile
@@ -96,6 +95,22 @@ end
 -- Graphics & sounds
 
 -- On Projectile Finish
+function juggernaut_basic_attack:PlayEffectsOnFinish( pos )
+	local caster = self:GetCaster()
+	local offset = 40
+	local origin = caster:GetOrigin()
+	local direction = (pos - origin):Normalized()
+	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
+
+	-- Create Particles
+	local particle_cast = "particles/meele_swing_red/pa_arcana_attack_blinkb_red.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
+	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
+	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+
 function juggernaut_basic_attack:PlayEffects_a( pos )
 	local caster = self:GetCaster()
 	-- Create Particles

@@ -16,6 +16,9 @@ function juggernaut_ultimate:OnCastPointEnd()
     local origin = caster:GetOrigin()
     local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
     local omni_duration = self:GetSpecialValueFor( "duration" )
+    local aspd_per_stack = self:GetSpecialValueFor( "aspd_per_stack" )
+    local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
+
     local direction = caster:GetForwardVector()
 
     local speed = 3000
@@ -44,12 +47,12 @@ function juggernaut_ultimate:OnCastPointEnd()
         fUniqueRadius = self:GetSpecialValueFor( "hitbox" ),
         Source = caster,
         vVelocity = direction * projectile_speed,
-        UnitBehavior = PROJECTILES_NOTHING,
+        UnitBehavior = PROJECTILES_DESTROY,
         TreeBehavior = PROJECTILES_NOTHING,
         WallBehavior = PROJECTILES_DESTROY,
         GroundBehavior = PROJECTILES_NOTHING,
         fGroundOffset = 0,
-        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) and unit:Attribute_GetIntValue("dummy", 0) ~= 1 end,
+        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) and unit:Attribute_GetIntValue("dummy", 0) ~= 1 and not unit:IsObstacle() end,
         OnUnitHit = function(_self, unit) 
             if _self.Source == caster then
                 if caster:HasModifier("modifier_juggernaut_ultimate_movement") then
@@ -62,15 +65,22 @@ function juggernaut_ultimate:OnCastPointEnd()
                 caster, -- player source
                 self, -- ability source
                 "modifier_juggernaut_ultimate_slashing", -- modifier name
-                { duration = omni_duration } -- kv
+                {
+                    duration = omni_duration,
+                    aspd_buff =  aspd_per_stack * stacks
+                } -- kv
             )
 
             self:PlayEffectsOnImpact(unit)
+
+            if stacks == 4 then
+                caster:GiveManaPercent(25, nil)
+            end
         end,
     }
-    -- Cast projectile
-    self:PlayEffectsOnCast()
     Projectiles:CreateProjectile(projectile)
+    SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
+    self:PlayEffectsOnCast()
 end
 
 --------------------------------------------------------------------------------
@@ -104,6 +114,6 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	juggernaut_ultimate,
-	{ activity = ACT_DOTA_TAUNT, translate = "sharp_blade", rate = 2.5 },
+	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, translate = "sharp_blade", rate = 2.0 },
 	{ movement_speed = 0, fixed_range = 1 }
 )

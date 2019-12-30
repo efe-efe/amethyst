@@ -20,7 +20,7 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"90" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
 		}
 	}

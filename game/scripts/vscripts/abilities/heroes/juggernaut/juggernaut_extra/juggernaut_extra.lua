@@ -1,5 +1,6 @@
 juggernaut_extra = class({})
-LinkLuaModifier( "juggernaut_extra_ward", "abilities/heroes/juggernaut/juggernaut_extra/juggernaut_extra_ward", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_juggernaut_extra_ward", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_ward", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_juggernaut_extra_recast", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_recast", LUA_MODIFIER_MOTION_NONE )
 
 function juggernaut_extra:OnCastPointEnd()
     local caster = self:GetCaster()
@@ -23,7 +24,11 @@ function juggernaut_extra:OnCastPointEnd()
     
 	-- Prevent nearby units from getting stuck
 	ResolveNPCPositions(healing_ward:GetAbsOrigin(), healing_ward:GetHullRadius() + healing_ward:GetCollisionPadding())
-	healing_ward:AddNewModifier(caster, self, "juggernaut_extra_ward", { duration = duration })
+    healing_ward:AddNewModifier(caster, self, "modifier_juggernaut_extra_ward", { duration = duration })
+    
+    caster:FindAbilityByName("juggernaut_extra_recast"):SetHealingWardIndex(healing_ward:GetEntityIndex())
+
+    caster:AddNewModifier(caster, self, "modifier_juggernaut_extra_recast", { duration = duration })
 end
 
 if IsClient() then require("wrappers/abilities") end

@@ -15,6 +15,7 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"root_duration"             "0.8" }
 		}
 	}
 
@@ -36,6 +37,7 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"root_duration"             "0.8" }
 		}
 	}
 }
