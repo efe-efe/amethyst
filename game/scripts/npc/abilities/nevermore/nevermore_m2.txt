@@ -1,0 +1,28 @@
+"DOTAAbilities" {
+    "nevermore_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_second_attack/nevermore_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_shadowraze1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"8.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.4" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"		"15" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"		"2200" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"				"80" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"radius"				"150" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"			"7" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"stack_duration"		"4.0" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"recasts"				"2" }
+		}
+	}
+}

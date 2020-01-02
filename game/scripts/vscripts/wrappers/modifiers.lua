@@ -18,12 +18,15 @@ function Modifiers.Recast( modifier, data )
             else
                 self:SetStackCount(charges)
             end
-            self:GetParent():SwapAbilities(
-                self:GetAbility():GetName(), 
-                data.ability_name, 
-                false, 
-                true
-            )
+
+            if data.keep_order ~= 1 then
+                self:GetParent():SwapAbilities(
+                    self:GetAbility():GetName(), 
+                    data.ability_name, 
+                    false, 
+                    true
+                )
+            end
             
             self:GetParent():AddRecastVisual({
                 key = data.key,
@@ -37,12 +40,14 @@ function Modifiers.Recast( modifier, data )
 
     function modifier:OnDestroy()
         if IsServer() then
-            self:GetParent():SwapAbilities(
-                self:GetAbility():GetName(), 
-                data.ability_name, 
-                true, 
-                false
-            )
+            if data.keep_order ~= 1 then
+                self:GetParent():SwapAbilities(
+                    self:GetAbility():GetName(), 
+                    data.ability_name, 
+                    true, 
+                    false
+                )
+            end
             
             if data.create_ability == 1 then
                 self:GetParent():RemoveAbility( data.ability_name )

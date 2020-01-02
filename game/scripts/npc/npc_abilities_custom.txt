@@ -101,6 +101,10 @@
 #base "abilities\terrorblade\terrorblade_base.txt"
 
 #base "abilities\pudge\pudge_space.txt"
+#base "abilities\nevermore\nevermore_m1.txt"
+#base "abilities\nevermore\nevermore_m2.txt"
+#base "abilities\nevermore\nevermore_e.txt"
+#base "abilities\nevermore\nevermore_space.txt"
 
 "DOTAAbilities"
 {
@@ -1050,60 +1054,9 @@
 		}
 	}
 
-	//=================================================================================================================
-	// Shadow Fiend
-	//=================================================================================================================
-	"nevermore_basic_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_basic_attack/nevermore_basic_attack"
-		"MaxLevel"						"1"
+	
 
-		"AbilityTextureName"			"nevermore_necromastery"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.3" //CANT SET IT DINAMICALLY :((
-		"AbilityCastRange" 				"850"
 
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"850" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"1" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"max_stacks"				"5" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
-		}
-	}
-
-	"nevermore_second_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_second_attack/nevermore_second_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"nevermore_shadowraze1"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
-		"AbilityCastRange"				"1200"
-		"AbilityCastPoint"				"0.4"
-		"AbilityCooldown"				"8.0"
-		"AbilityDamage"					"15"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"3" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"stack_duration"			"4.0" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
-		}
-	}
 
 	"nevermore_counter"
 	{
@@ -1141,57 +1094,6 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"AbilityCastPoint"				"0.6"
 		"AbilityCastRange"				"800"
-	}
-
-	"nevermore_special_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_special_attack/nevermore_special_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"nevermore_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
-		"AbilityCastPoint"				"0.6"
-		"AbilityCastRange" 				"1200"
-		"AbilityCooldown"				"8.0"
-		"AbilityDamage"					"15"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2200" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_range"			"1200" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"120" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain"					"7" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"lift_duration"				"2.5" }
-		}
-	}
-
-	"nevermore_mobility"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_mobility/nevermore_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"nevermore_mobility"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
-		"AbilityCastPoint"				"0.3"
-		"AbilityCastRange"				"800"
-		"AbilityCooldown"				"8.0"
-		"AbilityDamage"					"12"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"max_range"				"800" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"fading_slow"			"100" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain"				"6" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"slow_duration"			"2.0" }
-		}
 	}
 
 	"nevermore_ultimate"

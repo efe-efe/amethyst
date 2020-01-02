@@ -75,6 +75,9 @@ function modifier_juggernaut_basic_attack_stacks:PlayEffectsCharged()
 	self:CreateGlow(0)
 	self:CreateGlow(1)
 	self:CreateGlow(2)
+	self:CreateGlow(3)
+	self:CreateGlow(4)
+	self:CreateGlow(5)
 end
 
 

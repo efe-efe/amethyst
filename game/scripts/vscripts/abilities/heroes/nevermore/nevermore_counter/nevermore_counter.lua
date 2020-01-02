@@ -68,3 +68,10 @@ function nevermore_counter:PlayEffects()
 	ParticleManager:SetParticleControl( effect_cast_b, 0, caster:GetOrigin() )
     ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Initialize( 
+	nevermore_counter,
+	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
+	{ movement_speed = 10 }
+)

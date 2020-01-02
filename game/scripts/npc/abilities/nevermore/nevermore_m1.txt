@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+	"nevermore_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_basic_attack/nevermore_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_necromastery"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"850"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"1" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"max_stacks"				"5" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
+		}
+	}
+}

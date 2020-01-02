@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+    "nevermore_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_mobility/nevermore_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_mobility"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
+		"AbilityCastRange"				"800"
+		"AbilityCooldown"				"8.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"        "12" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow"			"100" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain"				"6" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"slow_duration"			"2.0" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"min_range"			    "300" }
+		}
+	}
+}

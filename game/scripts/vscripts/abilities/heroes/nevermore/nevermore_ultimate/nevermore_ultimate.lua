@@ -185,3 +185,9 @@ function nevermore_ultimate:PlayEffects_b( pos )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+if IsClient() then require("wrappers/abilities") end
+Abilities.Initialize( 
+	nevermore_ultimate,
+	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
+	{ movement_speed = 10 }
+)

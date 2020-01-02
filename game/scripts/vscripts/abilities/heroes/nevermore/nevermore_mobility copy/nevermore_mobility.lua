@@ -19,24 +19,32 @@ function nevermore_mobility:OnSpellStart()
 	})
 end
 
-function nevermore_mobility:OnCastPointEnd()
+function nevermore_mobility:OnCastPointEnd( pos )
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 	local damage = self:GetAbilityDamage()
-    local min_range = self:GetSpecialValueFor("min_range")
+    local max_range = self:GetSpecialValueFor("max_range")
+    local min_range = max_range/3
     local slow_duration = self:GetSpecialValueFor("slow_duration")
     local mana_gain = self:GetSpecialValueFor("mana_gain")/100
-    local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
-
+    
     local speed = 1800
-    local direction = (point - origin):Normalized()
+    local direction = (pos - origin):Normalized()
 	local basic_attack = caster:FindAbilityByName("nevermore_basic_attack")
 
     -- determine target position
-    local difference = (point - origin):Length2D()
+    local difference = (pos - origin):Length2D()
 
-    local x = point.x - origin.x
-    local y = point.y - origin.y
+    if difference > max_range then
+        difference = tonumber(max_range)
+    else
+        if difference < min_range then
+            difference = min_range
+        end
+    end
+
+    local x = pos.x - origin.x
+    local y = pos.y - origin.y
 
     caster:AddNewModifier(
         caster, -- player source
