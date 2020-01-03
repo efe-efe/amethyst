@@ -7,7 +7,8 @@ LinkLuaModifier( "modifier_sniper_shrapnel_thinker_lua", "abilities/heroes/snipe
 function sniper_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local min_range = self:GetSpecialValueFor("min_range")
+	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
     local shrapnel = caster:FindAbilityByName("sniper_special_attack")
 
 	local direction = (point - origin):Normalized()
@@ -23,7 +24,7 @@ function sniper_mobility:OnCastPointEnd()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = 1500,
+            speed = (distance/0.5),
             peak = 400,
         } -- kv
 	)

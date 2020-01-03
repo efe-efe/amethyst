@@ -53,7 +53,10 @@ end
 function GameMode:StartRound()
     self.scheduled_amethyst_index = self:GetFirstAmethyst()
     self:CreatePickups()
-    self:CreateAmethyst( self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
+    
+    Amethyst()
+
+    --self:CreateAmethyst( self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
     self:PlayEffectsArrow()
     self:CalculateNextSpawn()
 end
@@ -535,7 +538,7 @@ function GameMode:CreateAmethyst( index, delay )
     local origin = self.amethysts_ent[index]:GetOrigin()
 
     self.amethyst_orb_instance = CreateUnitByName(
-        "npc_dota_creature_middle_orb", --szUnitName
+        "npc_dota_creature_amethyst", --szUnitName
         origin, --vLocation
         true, --bFindClearSpace
         nil, --hNPCOwner
@@ -582,7 +585,7 @@ function GameMode:CreateAmethyst( index, delay )
 
         self.amethyst_orb_instance:SetContextThink( name , function()
             self.amethyst_timers[_] = CreateUnitByName(
-                "npc_dota_creature_middle_orb_timer", --szUnitName
+                "npc_dota_creature_amethyst_timer", --szUnitName
                 timer_origin, --vLocation
                 true, --bFindClearSpace
                 nil, --hNPCOwner

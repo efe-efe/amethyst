@@ -4,6 +4,8 @@ require('util/health')
 require('util/abilities')
 require('util/npc')
 
+require('clases/amethyst')
+
 _G.nMAX_COUNTDOWNTIMER = 60
 _G.nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
 
@@ -157,6 +159,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_target_indicator", "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_target_indicator_permanent", "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_hide_bar", "abilities/base/modifier_hide_bar", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_hidden", "abilities/base/modifier_hidden", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier( "modifier_mount", "abilities/heroes/common/mount/modifier_mount.lua", LUA_MODIFIER_MOTION_NONE )
 

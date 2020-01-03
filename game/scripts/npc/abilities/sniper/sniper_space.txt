@@ -21,6 +21,7 @@
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.1" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"300" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
 		}
 	}
 }

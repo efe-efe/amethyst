@@ -8,7 +8,8 @@ end
 function sniper_ex_mobility:OnCastPointEnd()
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local min_range = self:GetSpecialValueFor("min_range")
+	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 
     local radius = self:GetSpecialValueFor("radius")
     local duration = self:GetSpecialValueFor("duration")
@@ -34,7 +35,7 @@ function sniper_ex_mobility:OnCastPointEnd()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = 1500,
+            speed = (distance/0.5),
             peak = 400,
             i_frame = 1
         } -- kv
