@@ -100,6 +100,8 @@
 #base "abilities\terrorblade\terrorblade_f.txt"
 #base "abilities\terrorblade\terrorblade_base.txt"
 
+#base "abilities\pudge\pudge_space.txt"
+
 "DOTAAbilities"
 {
 	//=================================================================================================================

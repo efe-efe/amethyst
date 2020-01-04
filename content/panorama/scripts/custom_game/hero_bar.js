@@ -31,7 +31,10 @@ function UpdateBarCycle( heroIndex )
 }
 
 function UpdateBarVisibilityCycle( heroIndex ){
-    if(!Entities.IsAlive( heroIndex ) || !IsVisibleByLocal(heroIndex) || Entities.NoHealthBar( heroIndex )){
+    
+    var noHealthBar = FindModifierByName(heroIndex, "modifier_hide_bar")
+
+    if(!Entities.IsAlive( heroIndex ) || !IsVisibleByLocal(heroIndex) || noHealthBar != false ){
         hero_overhead_bars[heroIndex].panel.style.opacity = "0.0";
         return false;
     } else {
@@ -42,7 +45,7 @@ function UpdateBarVisibilityCycle( heroIndex ){
 
 function UpdateBarPositionCycle( heroIndex ){
     var origin = Entities.GetAbsOrigin(heroIndex);
-    var hpOffset = 300//Entities.GetHealthBarOffset(heroIndex);
+    var hpOffset = Entities.GetHealthBarOffset(heroIndex);
 
     var wx = Game.WorldToScreenX(origin[0], origin[1], origin[2] + hpOffset);
     var wy = Game.WorldToScreenY(origin[0], origin[1], origin[2] + hpOffset);

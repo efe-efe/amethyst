@@ -23,6 +23,18 @@ function juggernaut_counter_recast:OnCastPointEnd( pos )
 		DOTA_UNIT_TARGET_FLAG_NONE
 	)
 	
+    local filtered_enemies = {}
+    local counter = 0
+
+    for _,enemy in pairs(enemies) do
+        if  (not enemy:IsObstacle()) and 
+			(not enemy:IsCountering())
+        then
+            counter = counter + 1
+            filtered_enemies[counter] = enemy
+        end
+    end
+
 	for _,enemy in pairs(enemies) do
 		local damage_table = {
 			victim = enemy,
@@ -35,7 +47,7 @@ function juggernaut_counter_recast:OnCastPointEnd( pos )
 		self:PlayEffectsOnTarget(enemy)
 	end
 
-	if #enemies > 0 then
+	if #filtered_enemies > 0 then
 		local modifier = caster:AddNewModifier(
 			caster,
 			self,

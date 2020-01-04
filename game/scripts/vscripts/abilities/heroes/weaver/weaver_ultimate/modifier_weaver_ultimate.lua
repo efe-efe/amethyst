@@ -30,17 +30,18 @@ function modifier_weaver_ultimate:OnDestroy( kv )
 end
 
 function modifier_weaver_ultimate:OnIntervalThink()
-	if self.counter > 20 then
-		self.counter = 0
-		self.initialized = true
-	end
-
 	if self.initialized then
 		self:PlayEffects(self.origins[self.counter])
 	end
 
 	self.origins[self.counter] = self:GetParent():GetOrigin()
+
 	self.counter = self.counter + 1
+
+	if self.counter == 20 then
+		self.counter = 0
+		self.initialized = true
+	end
 end
 
 function modifier_weaver_ultimate:PlayEffects( pos )

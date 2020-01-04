@@ -6,6 +6,7 @@
 #base "heroes\weaver.txt"
 #base "heroes\terrorblade.txt"
 #base "heroes\juggernaut.txt"
+#base "heroes\pudge.txt"
 
 "DOTAHeroes"
 {   

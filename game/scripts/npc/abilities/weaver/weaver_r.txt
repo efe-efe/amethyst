@@ -14,8 +14,11 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.3" }
-			"02"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
-			"03"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "100" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"25" }
+			"03"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
+			"04"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "100" }
+			"05"{ "var_type"			"FIELD_INTEGER"		"radius"   		 	"350" }
+			"06"{ "var_type"			"FIELD_FLOAT"		"stun_duration"		"1.5" }
 		}
 	}
 }

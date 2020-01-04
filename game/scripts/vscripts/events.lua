@@ -120,9 +120,13 @@ function GameMode:OnHeroInGame(keys)
         -------------------------------
         SafeDestroyModifier("modifier_generic_provides_vision", npc, nil)
         npc:SetMana(0)
-		npc:FindModifierByName("modifier_treshold"):SetStackCount(self.iMaxTreshold)
-        npc:AddNewModifier(npc, npc:FindAbilityByName("mount"), "modifier_mount", {})
-
+        npc:FindModifierByName("modifier_treshold"):SetStackCount(self.iMaxTreshold)
+        
+        if npc:FindAbilityByName("mount") then
+            npc:AddNewModifier(npc, npc:FindAbilityByName("mount"), "modifier_mount", {})
+        else
+            print("ERROR: UNIT DOESN'T HAS 'MOUNT' SPELL")
+        end
         npc:SetHealth(npc:GetMaxHealth())
         npc.iTreshold = self.iMaxTreshold
         self:UpdateHeroHealthBar( npc )

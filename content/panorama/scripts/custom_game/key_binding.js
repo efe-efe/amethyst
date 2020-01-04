@@ -23,7 +23,7 @@ Game.EmptyCallback = function() {};
 
     Game.AddCommand( "-ZKey", WrapFunction("EmptyCallback"), "", 0 );
     Game.AddCommand( "-CKey", WrapFunction("EmptyCallback"), "", 0 );
-    Game.AddCommand( "-SpaceKey", WrapFunction("EmptyCallback"), "", 0 );
+    Game.AddCommand( "-SpaceKey", WrapFunction("OnReleaseSpace"), "", 0 );
     Game.AddCommand( "-1Key", WrapFunction("EmptyCallback"), "", 0 );
     Game.AddCommand( "-2Key", WrapFunction("EmptyCallback"), "", 0 );
     Game.AddCommand( "-QKey", WrapFunction("EmptyCallback"), "", 0 );

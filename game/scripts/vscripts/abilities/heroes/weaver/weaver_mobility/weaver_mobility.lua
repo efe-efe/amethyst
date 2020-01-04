@@ -45,6 +45,6 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	weaver_mobility,
-	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },
+	nil,
 	{ movement_speed = 100 }
 )

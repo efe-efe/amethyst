@@ -60,7 +60,7 @@ function modifier_weaver_mobility:OnIntervalThink()
 			enemy:AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_weaver_mobility_mark", { duration =  self:GetDuration() })
 			self:PlayEffectsDamage(enemy)
 
-			self.ability:AddCharges(1)
+			self.ability:AddCharges(2)
 		end
 	end
 end

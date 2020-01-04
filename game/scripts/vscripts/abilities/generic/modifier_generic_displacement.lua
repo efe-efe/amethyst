@@ -65,6 +65,10 @@ function modifier_generic_displacement:OnCreated( params )
 			rate = rate, 
 			translate = translate,
 		})
+
+		if self.i_frame then
+			self:GetCaster():HideHealthBar()
+		end
 	end
 end
 
@@ -76,6 +80,10 @@ function modifier_generic_displacement:OnDestroy( params )
 		self:GetParent():InterruptMotionControllers( true )
 		GameRules.EndAnimation(self:GetParent())
 		FindClearSpaceForUnit( self:GetParent(), self:GetParent():GetOrigin() , true )
+
+		if self.i_frame then
+			self:GetCaster():UnhideHealthBar()
+		end
 
 		if self:GetAbility().OnDisplacementEnd then
 			self:GetAbility():OnDisplacementEnd()
@@ -161,7 +169,6 @@ function modifier_generic_displacement:CheckState()
 		[MODIFIER_STATE_COMMAND_RESTRICTED] = self.restricted,
 		[MODIFIER_STATE_SILENCED] = self.restricted,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
-        [MODIFIER_STATE_NO_HEALTH_BAR] = self.i_frame,
 		[MODIFIER_STATE_INVULNERABLE] = self.i_frame,
 		[MODIFIER_STATE_OUT_OF_GAME] = self.i_frame,
 	}

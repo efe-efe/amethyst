@@ -9,6 +9,9 @@ function weaver_ultimate:OnCastPointEnd()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
     local origin = caster:GetOrigin()
+    local radius = self:GetSpecialValueFor("radius")
+    local stun_duration = self:GetSpecialValueFor("stun_duration")
+    local damage = self:GetSpecialValueFor("ability_damage")
 
     local modifier = caster:FindModifierByName("modifier_weaver_ultimate")
     if 
@@ -17,15 +20,36 @@ function weaver_ultimate:OnCastPointEnd()
         modifier.origins[modifier.counter] == nil 
     then
         FindClearSpaceForUnit(caster, origin, true)
-        self:PlayEffects(origin, origin)
+        self:PlayEffects(origin, origin, radius)
     else
         FindClearSpaceForUnit(caster, modifier.origins[modifier.counter], true)
-        self:PlayEffects(origin, modifier.origins[modifier.counter])
+
+        local enemies = caster:FindUnitsInRadius(
+            caster:GetOrigin(), 
+            radius, 
+            DOTA_UNIT_TARGET_TEAM_ENEMY, 
+            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+            DOTA_UNIT_TARGET_FLAG_NONE,
+            FIND_ANY_ORDER
+        )
+        
+        for _,enemy in pairs(enemies) do
+            enemy:AddNewModifier(caster, self, "modifier_generic_stunned", { duration = stun_duration })
+            local damage = {
+                victim = enemy,
+                attacker = caster,
+                damage = damage,
+                damage_type = DAMAGE_TYPE_PURE,
+            }
+            ApplyDamage( damage )
+        end
+
+        self:PlayEffects(origin, modifier.origins[modifier.counter], radius)
     end
 
 end
 
-function weaver_ultimate:PlayEffects(origin, target)
+function weaver_ultimate:PlayEffects(origin, target, radius)
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 
@@ -38,7 +62,12 @@ function weaver_ultimate:PlayEffects(origin, target)
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
     ParticleManager:SetParticleControl( effect_cast, 0, origin)
     ParticleManager:SetParticleControl( effect_cast, 2, target)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+    
+	particle_cast = "particles/call_modified/axe_beserkers_call_owner_shoutmask.vpcf"
+    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
+    ParticleManager:SetParticleControl( effect_cast, 2, Vector( radius, 1, 1 ) )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 if IsClient() then require("wrappers/abilities") end

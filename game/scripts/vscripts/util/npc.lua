@@ -18,6 +18,14 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.healing_reduction_pct = 0
 end
 
+function CDOTA_BaseNPC:HideHealthBar()
+	self:AddNewModifier(self, nil, "modifier_hide_bar", {})
+end
+
+function CDOTA_BaseNPC:UnhideHealthBar()
+	self:RemoveModifierByName("modifier_hide_bar")
+end
+
 function CDOTA_BaseNPC:ForceDirection( direction )
 	self.forced_direction = direction
 end

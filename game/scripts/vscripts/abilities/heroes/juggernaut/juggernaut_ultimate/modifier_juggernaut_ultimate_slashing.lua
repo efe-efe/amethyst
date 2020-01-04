@@ -1,4 +1,5 @@
 modifier_juggernaut_ultimate_slashing = class({})
+LinkLuaModifier( "modifier_juggernaut_second_attack", "abilities/heroes/juggernaut/juggernaut_second_attack/modifier_juggernaut_second_attack", LUA_MODIFIER_MOTION_HORIZONTAL )
 
 --- Misc 
 function modifier_juggernaut_ultimate_slashing:IsHidden()
@@ -44,6 +45,15 @@ function modifier_juggernaut_ultimate_slashing:OnCreated( params )
         
         self:OnIntervalThink()
         self:StartIntervalThink( attack_speed )
+        self:GetCaster():HideHealthBar()
+
+    end
+end
+
+function modifier_juggernaut_ultimate_slashing:OnDestroy()
+    if IsServer() then
+        self:GetCaster():UnhideHealthBar()
+        self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_juggernaut_second_attack", {duration = 0.3})
     end
 end
 

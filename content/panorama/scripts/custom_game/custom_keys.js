@@ -1,7 +1,6 @@
 "use strict";
 
 //Custom key bindings
-
 var BASIC_ATTACK_INDEX = 0; 
 var SECOND_ATTACK_INDEX = 1; 
 var MOBILITY_ABILITY_INDEX = 2;
@@ -36,14 +35,7 @@ function OnRightButtonPressed()
 // Handle Right Button events
 function OnRightButtonReleased()
 {
-    var playerId = Players.GetLocalPlayer();
-    var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
-    heroIndex = Players.GetSelectedEntities( playerId )[0]; //DEBUG
-    
-    GameEvents.SendCustomGameEventToServer("key_released", { 
-        entityIndex: heroIndex,
-        key: "m2",
-    });
+    OnReleaseKey("m2")
 }
 
 
@@ -85,6 +77,17 @@ GameUI.SetMouseCallback( function( eventName, arg ) {
 	if ( eventName === "doublepressed" ){ return CONSUME_EVENT }
 	return CONTINUE_PROCESSING_EVENT;
 } );
+
+function OnReleaseKey( key ){
+    var playerId = Players.GetLocalPlayer();
+    var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
+    heroIndex = Players.GetSelectedEntities( playerId )[0]; //DEBUG
+    
+    GameEvents.SendCustomGameEventToServer("key_released", { 
+        entityIndex: heroIndex,
+        key: key,
+    });
+}
 
 function ExecuteAbility(index)
 {
@@ -129,6 +132,7 @@ Game.OnPressE = function(){        ExecuteAbility(SPECIAL_ATTACK_INDEX) }
 Game.OnPressR = function(){        ExecuteAbility(EX_ULTIMATE_INDEX) }
 Game.OnPressF = function(){        ExecuteAbility(ULTIMATE_INDEX) }
 Game.OnPressZ = function(){        ExecuteAbility(MOUNT) }
+Game.OnReleaseSpace = function(){   OnReleaseKey("space") }
 Game.OnPressW = function(){        SendMovementSignal( "moveUnit", "up" ) }
 Game.OnReleaseW = function(){      SendMovementSignal( "stopUnit", "up" ) }
 Game.OnPressD = function(){        SendMovementSignal( "moveUnit", "right" ) }

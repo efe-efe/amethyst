@@ -14,9 +14,9 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.1" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"12" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"8" }
 			"03"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
-			"04"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "100" }
+			"04"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "130" }
 		}
 	}
 }

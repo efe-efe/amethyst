@@ -327,9 +327,6 @@ function modifier_generic_movement:SubMove(colliding, origin, speed, direction_a
 	end
 end
 
-
-
-
 --------------------------------------------------------------------------------
 -- Modifier Effects
 function modifier_generic_movement:DeclareFunctions()
@@ -362,4 +359,13 @@ function modifier_generic_movement:GetModifierIgnoreMovespeedLimit( params )
     return 1
 end
 
+--------------------------------------------------------------------------------
+-- Status Effects
+function modifier_generic_movement:CheckState()
+	local state = {
+        [MODIFIER_STATE_NO_HEALTH_BAR] = true,
+	}
+
+	return state
+end
 

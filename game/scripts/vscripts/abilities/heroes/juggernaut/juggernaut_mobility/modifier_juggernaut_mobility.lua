@@ -35,9 +35,6 @@ function modifier_juggernaut_mobility:OnCreated( kv )
             rate = 1.0
         })
 
-        self:GetParent():AddStatusBar({ label = "Haste", modifier = self, priority = 1, stylename="Generic" }) 
-
-
         self:StartIntervalThink( think_interval )
         self:PlayEffects()
     end
