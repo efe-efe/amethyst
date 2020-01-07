@@ -1,0 +1,12 @@
+"DOTAAbilities"
+{
+    "item_health_orb"
+    {
+        "BaseClass"                     "item_lua"
+        "ID"                            "1251"
+        "AbilityTextureName"            "item_mini_haste"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+        "Model"							"models/props_gameplay/salve.vmdl"
+        "ScriptFile"                    "items/item_health_orb/item_health_orb.lua"
+    }
+}

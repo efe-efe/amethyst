@@ -4,12 +4,12 @@ require('util/health')
 require('util/abilities')
 require('util/npc')
 
+require('clases/pickup')
 require('clases/amethyst')
+require('clases/round')
 
 _G.nMAX_COUNTDOWNTIMER = 60
 _G.nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
-
-Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 
 if GameMode == nil then
     print( '[AMETHYST] creating Dotarite game mode' )
@@ -55,7 +55,6 @@ require('libraries/timers') -- This library allow for easily delayed/timed actio
 require('libraries/projectiles') -- This library allow for easily delayed/timed actions
 require('libraries/animations') -- This library allows starting customized animations on units from lua
 
-require('settings') -- settings.lua is where resides many different properties for Dotarite.
 require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('wrappers/abilities')
@@ -74,17 +73,16 @@ function GameMode:InitGameMode()
 end
 
 function GameMode:SetupRules()
-    GameRules:SetSameHeroSelectionEnabled( ALLOW_SAME_HERO_SELECTION )
-    GameRules:SetPreGameTime( PRE_GAME_TIME)
-    GameRules:SetGoldPerTick( GOLD_PER_TICK )
-    GameRules:SetGoldTickTime( GOLD_TICK_TIME )
-    GameRules:SetStartingGold( STARTING_GOLD )
-    GameRules:SetCustomGameSetupAutoLaunchDelay( AUTO_LAUNCH_DELAY )
+    GameRules:SetSameHeroSelectionEnabled( true )
+    GameRules:SetPreGameTime( 0.0 )
+    GameRules:SetGoldPerTick( 0 )
+    GameRules:SetGoldTickTime( 0 )
+    GameRules:SetStartingGold( 0 )
+    GameRules:SetCustomGameSetupAutoLaunchDelay( 10 )
     GameRules:SetStrategyTime( 0.0 )
     GameRules:SetShowcaseTime( 0.0 )
-    if USE_CUSTOM_HERO_GOLD_BOUNTY then
-        GameRules:SetUseBaseGoldBountyOnHeroes(false)
-    end
+    GameRules:SetUseBaseGoldBountyOnHeroes(false)
+
     if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
@@ -163,8 +161,6 @@ function GameMode:LinkModifiers()
     
     LinkLuaModifier( "modifier_mount", "abilities/heroes/common/mount/modifier_mount.lua", LUA_MODIFIER_MOTION_NONE )
 
-
-
     print('[AMETHYST] Useful modifiers linked')
 end
 
@@ -221,9 +217,9 @@ function GameMode:CaptureGameMode()
         -------------------------------
         -- Set GameMode parameters
         -------------------------------
-        mode:SetBuybackEnabled( BUYBACK_ENABLED )
-        mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
-        mode:SetCameraDistanceOverride( CAMERA_DISTANCE_OVERRIDE )
+        mode:SetBuybackEnabled( false )
+        mode:SetDaynightCycleDisabled( true )
+        mode:SetCameraDistanceOverride( 1350 )
 
         -------------------------------
         -- Link Client/Server Events

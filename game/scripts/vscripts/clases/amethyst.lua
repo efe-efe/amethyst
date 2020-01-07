@@ -1,8 +1,9 @@
-Amethyst = Amethyst or class({})
+Amethyst = Amethyst or class({}, nil, HScriptEntity)
 
-function Amethyst:constructor( index, delay_time )
-    self.entities = Entities:FindAllByName("orb_spawn")
-    self.origin = self.entities[index]:GetOrigin()
+function Amethyst:constructor( origin, delay, callback)
+    self.origin = origin
+    self.delay = delay
+    self.callback = callback
     self.mana_bounty = 40
     self.heal_bounty = 20
 
@@ -15,11 +16,13 @@ function Amethyst:constructor( index, delay_time )
         DOTA_TEAM_NOTEAM
     ))
 
-    self:Hide()
-    self:Spawn( delay_time )
+    local unit = self:GetUnit()
 
-    self:GetUnit():AddNewModifier(
-        self:GetUnit(),
+    self:Hide()
+    self:Spawn()
+
+    unit:AddNewModifier(
+        unit,
         nil,
         "modifier_amethyst_base",
         {
@@ -53,7 +56,7 @@ function Amethyst:Unhide()
     self:GetUnit():SetAbsOrigin(Vector(self.origin.x, self.origin.y, self.origin.z))
 end
 
-function Amethyst:Spawn( delay_time )
+function Amethyst:Spawn()
     self:GetUnit():SetContextThink("Spawn", function()
         self:Unhide()
 
@@ -61,7 +64,13 @@ function Amethyst:Spawn( delay_time )
         CustomGameEventManager:Send_ServerToAllClients( "add_unit", data )    
 
         self:PlayEffectsOnSpawn()
-    end, delay_time)
+    end, self.delay)
+end
+
+function Amethyst:OnDeath()
+    if self.callback then
+        self:callback()
+    end
 end
 
 function Amethyst:Remove()

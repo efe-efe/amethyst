@@ -46,18 +46,23 @@ function GameMode:OnGameInProgress()
     
     self.amethyst_timers = {}
     self:CreateWalls()
+
+    self.round = Round()
+
+    self.scheduled_amethyst_index = self:GetFirstAmethyst()
+    self.round:Start()
+    
     self:StartRound()
 end
 
 
 function GameMode:StartRound()
-    self.scheduled_amethyst_index = self:GetFirstAmethyst()
-    self:CreatePickups()
-    
-    --self.amethyst = Amethyst(self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
+    --self.scheduled_amethyst_index = self:GetFirstAmethyst()
+    --self:CreatePickups()
 
-    self:CreateAmethyst( self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
-    self:PlayEffectsArrow()
+    --self.amethyst = Amethyst(self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
+    --self:CreateAmethyst( self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
+    --self:PlayEffectsArrow()
     self:CalculateNextSpawn()
 end
 
@@ -152,49 +157,20 @@ function GameMode:OnEntityKilled( keys )
     if killed:IsRealHero() then
         self:OnHeroKilled(killed)
     end
-
-    if GetMapName() == "free_for_all" then
-        --PlayerResource:GetDeaths(killed:GetPlayerID())
-    end
 end
 
 --------------------------------------------------------------------------------
 -- Event: OnItemPickUp
 --------------------------------------------------------------------------------
 function GameMode:OnItemPickUp( event )
-	local item = EntIndexToHScript( event.ItemEntityIndex )
-    local owner = EntIndexToHScript( event.HeroEntityIndex )
-    
-    if  event.itemname == "item_health_orb" or 
-        event.itemname == "item_mana_orb" or 
-        event.itemname == "item_shield_orb" or 
-        event.itemname == "item_death_orb" 
-    then
-        if  
-            event.itemname == "item_health_orb" or 
-            event.itemname == "item_mana_orb" or
-            event.itemname == "item_shield_orb"
-        then
-            local name 
-            if event.itemname == "item_health_orb" then
-                name = "health"
-            elseif event.itemname == "item_mana_orb" then
-                name = "mana" 
-            elseif event.itemname == "item_shield_orb" then
-                name = "shield" 
-            end
-
-            self:CreatePickup(self.pickups[event.ItemEntityIndex].pos, name, self.PICKUPS_SPAWN_TIME)
-        end
-
-        UTIL_Remove( item ) -- otherwise it pollutes the player inventory
-    end
+	local item = EntIndexToHScript( event.ItemEntityIndex ):GetParentEntity()
+    item:OnPickedUp()
 end
 
 function GameMode:OnAmethystDestroy(killer)
     self:DestroyAllTimers()
 
-    self:CreateAmethyst( self.next_amethyst_index, self.AMETHYST_SPAWN_TIME)
+    --self.amethyst = Amethyst(self.next_amethyst_index, self.AMETHYST_SPAWN_TIME)
     self.scheduled_amethyst_index = self.next_amethyst_index
 
     self:StopEffectsArrow()
@@ -396,7 +372,7 @@ function GameMode:EndRound( delay )
         self.amethyst:Remove()
 
         self.scheduled_amethyst_index = self:GetFirstAmethyst()
-        self:CreateAmethyst(self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
+        self.amethyst = Amethyst(self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
         self:PlayEffectsArrow()
         self.next_amethyst_index = RandomInt(1, #self.amethysts_ent)
         
