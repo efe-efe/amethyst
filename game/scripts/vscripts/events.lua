@@ -23,9 +23,17 @@ end
 --============================================================================================
 function GameMode:OnGameInProgress()
 	print("[AMETHYST] The game has officially begun")
-
     self.countdownEnabled = true
+
+    self:RegisterThinker(1.0 ,function()
+        self.round:Update()
+    end
+)
+
     GameRules:GetGameModeEntity():SetThink( "OnThink", self, 1 )
+
+
+
 
     CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.WIN_CONDITION.number } );
     
@@ -147,15 +155,21 @@ end
 --============================================================================================
 function GameMode:OnEntityKilled( keys )
     local killed = EntIndexToHScript( keys.entindex_killed )
-    
-    -- Recreate orb
-    if killed:IsAmethyst() then     
-        local killer = EntIndexToHScript( keys.entindex_attacker )
-        self:OnAmethystDestroy(killer)
-    end
 
-    if killed:IsRealHero() then
-        self:OnHeroKilled(killed)
+    -- TODO: DELETE THIS WRAP
+    if killed.GetParentEntity then
+        local entity = killed:GetParentEntity()
+
+        -- Recreate orb
+        if instanceof(entity, Amethyst) then     
+            entity:OnDeath({ killer = EntIndexToHScript( keys.entindex_attacker ) })
+            --self:OnAmethystDestroy( EntIndexToHScript( keys.entindex_attacker ))
+        end
+    else
+
+        if killed:IsRealHero() then
+            self:OnHeroKilled(killed)
+        end
     end
 end
 
@@ -163,8 +177,8 @@ end
 -- Event: OnItemPickUp
 --------------------------------------------------------------------------------
 function GameMode:OnItemPickUp( event )
-	local item = EntIndexToHScript( event.ItemEntityIndex ):GetParentEntity()
-    item:OnPickedUp()
+	local entity = EntIndexToHScript( event.ItemEntityIndex ):GetParentEntity()
+    entity:OnPickedUp()
 end
 
 function GameMode:OnAmethystDestroy(killer)

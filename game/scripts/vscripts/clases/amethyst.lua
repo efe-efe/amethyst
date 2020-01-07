@@ -17,19 +17,10 @@ function Amethyst:constructor( origin, delay, callback)
     ))
 
     local unit = self:GetUnit()
+    unit:AddNewModifier(unit, nil, "modifier_generic_magic_immune", {})
 
     self:Hide()
     self:Spawn()
-
-    unit:AddNewModifier(
-        unit,
-        nil,
-        "modifier_amethyst_base",
-        {
-            mana = mana_bounty,
-            heal = heal_bounty,
-        }
-    )
 end
 
 function Amethyst:SetUnit(unit)
@@ -47,7 +38,7 @@ end
 function Amethyst:Hide()
     self:GetUnit():AddNoDraw()
     self:GetUnit():AddNewModifier(self:GetUnit(), nil, "modifier_hidden", {})
-    self:GetUnit():SetAbsOrigin(Vector(0, 0, 10000))
+    --self:GetUnit():SetAbsOrigin(Vector(0, 0, 10000))
 end
 
 function Amethyst:Unhide()
@@ -67,15 +58,39 @@ function Amethyst:Spawn()
     end, self.delay)
 end
 
-function Amethyst:OnDeath()
+function Amethyst:OnDeath(params)
+    local killer = params.killer
+
+    if IsServer() then
+		local units = killer:FindUnitsInRadius(
+			self:GetUnit():GetOrigin(), 
+			FIND_UNITS_EVERYWHERE, 
+			DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
+			DOTA_UNIT_TARGET_HERO, 
+			DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,
+			FIND_ANY_ORDER
+		)
+
+		local final_heal = self.heal_bounty / #units
+		local final_mana = self.mana_bounty / #units
+
+		for _,unit in pairs(units) do
+			if unit:IsRealHero() then 
+				PseudoHeal(unit:GetHealth(), final_heal, unit)
+				unit:GiveMana(final_mana)
+                SendOverheadEventMessage( nil, OVERHEAD_ALERT_MANA_ADD, unit, final_mana, nil )
+                
+                self:PlayEffectsOnTarget(unit)
+			end
+		end
+
+        self:PlayEffectsOnDeath(unit)
+        self:Hide()
+	end
+    
     if self.callback then
         self:callback()
     end
-end
-
-function Amethyst:Remove()
-    self:GetUnit():AddNoDraw()
-    UTIL_Remove(self:GetUnit())
 end
 
 function Amethyst:PlayEffectsOnSpawn()
@@ -93,3 +108,51 @@ function Amethyst:PlayEffectsOnSpawn()
     ParticleManager:ReleaseParticleIndex( effect_cast_b )
     ParticleManager:ReleaseParticleIndex( effect_cast_c )
 end
+
+function Amethyst:PlayEffectsOnDeath()
+    local parent = self:GetUnit()
+    local origin = parent:GetOrigin()
+
+    EmitSoundOn( "Hero_Magnataur.ReversePolarity.Cast", parent )
+
+    -- Cast particles
+    local particle_cast_a = "particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf"
+    local particle_cast_b = "particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf"
+
+    local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, parent )
+    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, parent )
+    
+    ParticleManager:SetParticleControl( effect_cast_a, 0, origin )
+    ParticleManager:SetParticleControl( effect_cast_a, 2, Vector(255, 80, 230) )
+
+    ParticleManager:SetParticleControl( effect_cast_b, 0, origin)
+    ParticleManager:SetParticleControl( effect_cast_b, 5, origin)
+
+    ParticleManager:ReleaseParticleIndex( effect_cast_a )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+end
+
+function Amethyst:PlayEffectsOnTarget( hTarget )
+    EmitSoundOn( "DOTA_Item.ArcaneBoots.Activate", hTarget )
+
+    local particle_cast_a = "particles/items_fx/arcane_boots_recipient.vpcf"
+    local particle_cast_b = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rope.vpcf"
+    local particle_cast_c = "particles/econ/items/crystal_maiden/crystal_maiden_maiden_of_icewrack/cm_arcana_pup_lvlup_godray.vpcf"
+
+    local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+    local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+    
+    ParticleManager:ReleaseParticleIndex( effect_cast_a )
+
+    ParticleManager:SetParticleControl( effect_cast_b, 3, hTarget:GetOrigin())
+    ParticleManager:SetParticleControl( effect_cast_b, 15, Vector(115, 248, 255))
+    ParticleManager:SetParticleControl( effect_cast_b, 16, Vector(1,0,0))
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+
+    ParticleManager:SetParticleControl( effect_cast_c, 1, hTarget:GetOrigin())
+    ParticleManager:SetParticleControl( effect_cast_c, 3, hTarget:GetOrigin())
+    ParticleManager:ReleaseParticleIndex( effect_cast_c )
+end
+
+    

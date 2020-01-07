@@ -231,7 +231,17 @@ function Projectiles:CreateProjectile(projectile)
                     if projectile.bZCheck then
                         ents = Entities:FindAllInSphere(framehalf, framerad)
                     else
-                        ents = FindUnitsInRadius(0, framehalf, nil, framerad, DOTA_UNIT_TARGET_TEAM_BOTH, DOTA_UNIT_TARGET_ALL, DOTA_UNIT_TARGET_FLAG_NONE, FIND_ANY_ORDER, false)
+                        ents = FindUnitsInRadius(
+                            0, 
+                            framehalf, 
+                            nil, 
+                            framerad, 
+                            DOTA_UNIT_TARGET_TEAM_BOTH, 
+                            DOTA_UNIT_TARGET_ALL, 
+                            projectile.iFlagFilter,
+                            FIND_ANY_ORDER, 
+                            false
+                        )
                     end
                 end
             end
@@ -561,6 +571,8 @@ function Projectiles:InitialSetup(projectile)
     if projectile.bIsReflectable == nil then projectile.bIsReflectable = true end
     if projectile.bisReflectableByAllies == nil then projectile.bisReflectableByAllies = true end
     
+    projectile.iFlagFilter =        projectile.iFlagFilter or DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES 
+
     -- Radius
     projectile.fStartRadius =       projectile.fStartRadius or projectile.fUniqueRadius or 100
     projectile.fEndRadius =         projectile.fEndRadius or projectile.fUniqueRadius or  100

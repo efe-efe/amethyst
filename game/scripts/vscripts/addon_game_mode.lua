@@ -144,6 +144,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_displacement", "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH )
     LinkLuaModifier("modifier_generic_confused", "abilities/generic/modifier_generic_confused", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_hypnotize", "abilities/generic/modifier_generic_hypnotize", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_magic_immune", "abilities/generic/modifier_generic_magic_immune", LUA_MODIFIER_MOTION_NONE )
     
     LinkLuaModifier("modifier_damage_fx", "abilities/base/modifier_damage_fx", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_movement", "abilities/base/modifier_generic_movement", LUA_MODIFIER_MOTION_NONE )
@@ -370,9 +371,6 @@ function GameMode:UpdateMousePosition(pos, playerID)
     self.mouse_positions[playerID] = pos
 end
 
----------------------------------------------------------------------------
--- Update player labels and the scoreboard
----------------------------------------------------------------------------
 function GameMode:OnThink()
 	if GameRules:IsGamePaused() == true then
         return 1
@@ -385,5 +383,27 @@ function GameMode:OnThink()
             self:CreateDeathZone()
         end
     end
+
+    local now = Time()
+    if GameRules:State_Get() >= DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+        for _, thinker in ipairs(self.Thinkers) do
+            if now >= thinker.next then
+                thinker.next = math.max(thinker.next + thinker.period, now)
+                thinker.callback()
+            end
+        end
+    end
+
 	return 1
+end
+
+function GameMode:RegisterThinker(period, callback)
+    local timer = {}
+    timer.period = period
+    timer.callback = callback
+    timer.next = Time() + period
+
+    self.Thinkers = self.Thinkers or {}
+
+    table.insert(self.Thinkers, timer)
 end

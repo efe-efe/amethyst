@@ -8,6 +8,7 @@
 		"AbilityTextureName"			"juggernaut_blade_fury"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityDuration"				"2.5"
 		"AbilityCastPoint"				"0.2"
 		"AbilityCooldown"				"10.0"

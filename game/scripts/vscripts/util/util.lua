@@ -55,9 +55,6 @@ function CountdownTimer()
       }
 
   CustomGameEventManager:Send_ServerToAllClients( "countdown", broadcast_gametimer )
-  --if t <= 120 then
-  --    CustomGameEventManager:Send_ServerToAllClients( "time_remaining", broadcast_gametimer )
-  --end
 end
 
 function array_sub(t1, t2)
