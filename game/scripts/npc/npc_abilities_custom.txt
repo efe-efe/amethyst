@@ -101,6 +101,9 @@
 #base "abilities\terrorblade\terrorblade_base.txt"
 
 #base "abilities\pudge\pudge_space.txt"
+#base "abilities\pudge\pudge_m1.txt"
+#base "abilities\pudge\pudge_e.txt"
+
 #base "abilities\nevermore\nevermore_m1.txt"
 #base "abilities\nevermore\nevermore_m2.txt"
 #base "abilities\nevermore\nevermore_e.txt"

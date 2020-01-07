@@ -22,6 +22,7 @@ function modifier_generic_displacement:OnCreated( params )
 		self.origin = self:GetParent():GetOrigin()
 		self.i_frame = params.i_frame == 1 and true or false
 		self.colliding = params.colliding == 1 and true or false
+		self.collide_with_ent = params.collide_with_ent == 1 and true or false
 		self.damage_on_collision = params.damage_on_collision or nil
 		self.restricted = params.restricted
 
@@ -124,6 +125,22 @@ function modifier_generic_displacement:SyncTime( iDir, dt )
 		end
 
 		self:Destroy()
+	end
+
+	if self.collide_with_ent then
+		local units = self:GetCaster():FindUnitsInRadius(
+            self:GetParent():GetOrigin(), 
+            self:GetParent():GetHullRadius(), 
+            DOTA_UNIT_TARGET_TEAM_BOTH, 
+            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+            DOTA_UNIT_TARGET_FLAG_NONE,
+            FIND_ANY_ORDER
+		)
+
+		-- 1 is self
+		if #units >= 2 then
+			self:Destroy()
+		end
 	end
 	self.previous_origin = self:GetParent():GetOrigin()
 end

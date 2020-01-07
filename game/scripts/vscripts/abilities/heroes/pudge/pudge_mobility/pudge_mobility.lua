@@ -8,6 +8,8 @@ function pudge_mobility:OnCastPointEnd()
 
 	local direction = (point - origin):Normalized()
     local distance = (point - origin):Length2D()
+	
+	--[[
 
     self.vHookOffset = 0
     self.hook_speed = 2000
@@ -36,10 +38,7 @@ function pudge_mobility:OnCastPointEnd()
 	ParticleManager:SetParticleControlEnt( self.nChainParticleFXIndex, 7, self:GetCaster(), PATTACH_CUSTOMORIGIN, nil, self:GetCaster():GetOrigin(), true )
 
 
-
---[[
-
-
+    ]]
 
     caster:AddNewModifier(
         caster, -- player source
@@ -49,39 +48,47 @@ function pudge_mobility:OnCastPointEnd()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = 1500,
-            peak = 200,
+            speed = (distance/0.65),
+            peak = 90,
             colliding = 0,
+			collide_with_ent = 1, 
             activity = ACT_DOTA_FLAIL,
             rate = 1.0,
         } -- kv
-    )
-    ]]
+	)
+	
+	self:PlayEffectsOnCast()
+end
+
+function pudge_mobility:OnDisplacementEnd()
+	self:PlayEffectsOnDisplacementEnd()
+end
+
+function pudge_mobility:PlayEffectsOnDisplacementEnd()
+	local particle_cast = "particles/econ/events/ti8/blink_dagger_ti8_end.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
+
+	
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex( self.effect_cast )
 end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function pudge_mobility:PlayEffectsOnFinish( pos )
-	local caster = self:GetCaster()
-
-	EmitSoundOnLocationWithCaster( pos, "Hero_Ancient_Apparition.ChillingTouch.Target", caster )
-
-	-- Create Particles
-	local particle_cast = "particles/units/heroes/hero_ancient_apparition/ancient_apparition_chilling_touch_projectile_hit.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
 function pudge_mobility:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster() )
+	EmitSoundOn( "Hero.Pudge.Arcana.Streak", self:GetCaster() )
+
+	local particle_cast = "particles/red_blink/blink_dagger_ti8_start.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
+
+	self.effect_cast = ParticleManager:CreateParticle("particles/econ/items/pudge/pudge_tassles_of_black_death/pudge_black_death_rot.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(250,0,0) )
+
 end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	pudge_mobility,
-	{ activity = ACT_DOTA_OVERRIDE_ABILITY_1, rate =1.0 },
+	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 2.0 },
 	{ movement_speed = 0}
 )

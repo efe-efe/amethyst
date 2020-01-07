@@ -20,7 +20,7 @@ function phantom_extra_mobility:OnCastPointEnd()
 	local distance = self:GetCastRange(Vector(0,0,0), nil)
     local damage = base_damage + stacks
 
-    local speed = 1700
+    local speed = 2000
 	local offset = 100
     local radius = self:GetSpecialValueFor( "radius" )
     local slow_duration = self:GetSpecialValueFor( "slow_duration" )
@@ -33,7 +33,7 @@ function phantom_extra_mobility:OnCastPointEnd()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = speed,
+            speed = (distance/0.3),
         } -- kv
     )
 

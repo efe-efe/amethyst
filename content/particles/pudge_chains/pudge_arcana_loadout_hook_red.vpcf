@@ -1,0 +1,135 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf25:version{7bca2d8d-3a14-4a76-bd41-f483fdf78d50} -->
+{
+	_class = "CParticleSystemDefinition"
+	m_bShouldHitboxesFallbackToRenderBounds = false
+	m_nMaxParticles = 1
+	m_flConstantRadius = 1.0
+	m_flNoDrawTimeToGoToSleep = 32.0
+	m_bShouldSort = false
+	m_Renderers = 
+	[
+		{
+			_class = "C_OP_RenderModels"
+			m_bSuppressTint = true
+			m_ModelList = 
+			[
+				{
+					m_model = resource:"models/items/pudge/arcana/pudge_arcana_loadout_chain.vmdl"
+				},
+			]
+			m_bAnimated = true
+			m_nLOD = 1
+			m_bIgnoreNormal = true
+			m_bForceLoopingAnimation = true
+			m_flAnimationRate = 200.0
+		},
+	]
+	m_Operators = 
+	[
+		{
+			_class = "C_OP_Decay"
+		},
+		{
+			_class = "C_OP_BasicMovement"
+			m_nOpEndCapState = 1
+		},
+		{
+			_class = "C_OP_PositionLock"
+			m_bLockRot = true
+			m_bDisableOperator = true
+		},
+		{
+			_class = "C_OP_SpinUpdate"
+			m_bDisableOperator = true
+		},
+		{
+			_class = "C_OP_RemapCPOrientationToRotations"
+		},
+		{
+			_class = "C_OP_SetToCP"
+		},
+		{
+			_class = "C_OP_FadeOutSimple"
+			m_flFadeOutTime = 0.1
+		},
+		{
+			_class = "C_OP_SetControlPointsToModelParticles"
+			m_nFirstControlPoint = 6
+			m_bSkin = true
+		},
+		{
+			_class = "C_OP_SetControlPointsToModelParticles"
+			m_nFirstControlPoint = 7
+			m_bSkin = true
+		},
+	]
+	m_Initializers = 
+	[
+		{
+			_class = "C_INIT_RandomLifeTime"
+			m_fLifetimeMin = 1.5
+			m_fLifetimeMax = 1.5
+		},
+		{
+			_class = "C_INIT_CreateWithinSphere"
+		},
+		{
+			_class = "C_INIT_RandomRadius"
+		},
+	]
+	m_Emitters = 
+	[
+		{
+			_class = "C_OP_InstantaneousEmitter"
+			m_nParticlesToEmit = 
+			{
+				m_nType = "PF_TYPE_LITERAL"
+				m_flLiteralValue = 1.0
+			}
+		},
+	]
+	m_flConstantLifespan = 10.0
+	m_controlPointConfigurations = 
+	[
+		{
+			m_name = "preview"
+			m_drivers = 
+			[
+				{
+					m_iAttachType = "PATTACH_ABSORIGIN_FOLLOW"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+			]
+			m_previewState = 
+			{
+				m_hitboxSetName = "default"
+			}
+		},
+	]
+	m_Children = 
+	[
+		{
+			m_ChildRef = resource:"particles/econ/items/pudge/pudge_arcana/pudge_arcana_loadout_ambient_red_beam_l_fx.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/pudge/pudge_arcana/pudge_arcana_loadout_ambient_red_beam_r_fx.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/pudge/pudge_arcana/pudge_arcana_loadout_ambient_red_hook_l_fx.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/pudge/pudge_arcana/pudge_arcana_loadout_ambient_red_hook_r_fx.vpcf"
+		},
+	]
+	m_PreEmissionOperators = 
+	[
+		{
+			_class = "C_OP_StopAfterCPDuration"
+			m_flDuration = 2.33
+			m_bDisableOperator = true
+		},
+	]
+	m_nBehaviorVersion = 4
+}

@@ -1,12 +1,8 @@
-FIRST_DELAY = 10.0
-DELAY = 15.0
-
 Amethyst = Amethyst or class({})
 
-function Amethyst:constructor()
+function Amethyst:constructor( index, delay_time )
     self.entities = Entities:FindAllByName("orb_spawn")
-    self.index = 1--self:GetSpawnIndex()
-    self.origin = self.entities[self.index]:GetOrigin()
+    self.origin = self.entities[index]:GetOrigin()
     self.mana_bounty = 40
     self.heal_bounty = 20
 
@@ -20,9 +16,8 @@ function Amethyst:constructor()
     ))
 
     self:Hide()
-    self:Spawn()
+    self:Spawn( delay_time )
 
-    --[[
     self:GetUnit():AddNewModifier(
         self:GetUnit(),
         nil,
@@ -32,7 +27,6 @@ function Amethyst:constructor()
             heal = heal_bounty,
         }
     )
-]]
 end
 
 function Amethyst:SetUnit(unit)
@@ -47,14 +41,6 @@ function Amethyst:GetUnit()
     return self.unit
 end
 
-function Amethyst:GetSpawnIndex()
-    if GetMapName() == "forest_map" or GetMapName() == "free_for_all" then
-        return 1 
-    else
-        return RandomInt(1, 3)
-    end
-end
-
 function Amethyst:Hide()
     self:GetUnit():AddNoDraw()
     self:GetUnit():AddNewModifier(self:GetUnit(), nil, "modifier_hidden", {})
@@ -64,10 +50,10 @@ end
 function Amethyst:Unhide()
     self:GetUnit():RemoveNoDraw()
     self:GetUnit():RemoveModifierByName("modifier_hidden")
-    self:GetUnit():SetAbsOrigin(Vector(self.origin.x, self.origin.y, self.origin.z ))
+    self:GetUnit():SetAbsOrigin(Vector(self.origin.x, self.origin.y, self.origin.z))
 end
 
-function Amethyst:Spawn()
+function Amethyst:Spawn( delay_time )
     self:GetUnit():SetContextThink("Spawn", function()
         self:Unhide()
 
@@ -75,7 +61,12 @@ function Amethyst:Spawn()
         CustomGameEventManager:Send_ServerToAllClients( "add_unit", data )    
 
         self:PlayEffectsOnSpawn()
-    end, FIRST_DELAY)
+    end, delay_time)
+end
+
+function Amethyst:Remove()
+    self:GetUnit():AddNoDraw()
+    UTIL_Remove(self:GetUnit())
 end
 
 function Amethyst:PlayEffectsOnSpawn()

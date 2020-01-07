@@ -1,7 +1,7 @@
-ability_name = class({})
-LinkLuaModifier( "modifier_ability_name", "abilities/heroes/hero_name/ability_name/modifier_ability_name", LUA_MODIFIER_MOTION_NONE )
+pudge_basic_attack = class({})
+LinkLuaModifier( "modifier_ability_name", "abilities/heroes/hero_name/pudge_basic_attack/modifier_ability_name", LUA_MODIFIER_MOTION_NONE )
 
-function ability_name:OnCastPointEnd()
+function pudge_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -26,6 +26,13 @@ function ability_name:OnCastPointEnd()
 		fGroundOffset =		0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
+			local damage_table = {
+				victim = unit,
+				attacker = _self.Source,
+				damage = damage,
+				damage_type = DAMAGE_TYPE_PHYSICAL,
+			}
+			ApplyDamage( damage_table )
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)
 		end,
 		OnFinish = function(_self, pos)
@@ -39,19 +46,33 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function ability_name:PlayEffectsOnFinish( pos )
+function pudge_basic_attack:PlayEffectsOnFinish( pos )
+	local caster = self:GetCaster()
+	local offset = 40
+	local origin = caster:GetOrigin()
+	local direction = (pos - origin):Normalized()
+	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
+
+	-- Create Particles
+	local particle_cast = "particles/meele_swing_red/pa_arcana_attack_blinkb_red.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
+	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
+	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-function ability_name:PlayEffectsOnCast( )
+function pudge_basic_attack:PlayEffectsOnCast()
+	EmitSoundOn("Hero_Pudge.PreAttack", self:GetCaster())
 end
 
-function ability_name:PlayEffectsOnImpact( hTarget, pos )
+function pudge_basic_attack:PlayEffectsOnImpact( hTarget, pos )
+	EmitSoundOn("Hero_Pudge.Attack", hTarget)
 end
 
 if IsClient() then require("wrappers/abilities") end
---Abilities.BasicAttack( ability_name )
+Abilities.BasicAttack( pudge_basic_attack )
 Abilities.Initialize( 
-	ability_name,
-	{ activity = ACT_DOTA_ATTACK, rate = 1.5 },
-	{ movement_speed = 80, hide_indicator = 1 }
+	pudge_basic_attack,
+	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
+	{ movement_speed = 40, hide_indicator = 1 }
 )

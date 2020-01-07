@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+	"pudge_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/pudge/pudge_special_attack/pudge_special_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"pudge_meat_hook"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1800"
+		"AbilityCooldown"				"8.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"25" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+		}
+	}
+}

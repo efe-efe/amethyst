@@ -67,7 +67,7 @@ function juggernaut_second_attack:OnCastPointEnd( )
 	else
 		caster:AddNewModifier(caster, self, "modifier_juggernaut_second_attack", { duration = 0.3 })
 		local give_mana = false
-		local radius = 200 
+		local radius = 275 
 
 		local enemies = caster:FindUnitsInRadius(
 			caster:GetOrigin(), 
@@ -163,5 +163,5 @@ if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	juggernaut_second_attack,
 	{ activity = ACT_DOTA_ATTACK, translate = "odachi", rate = 1.5 },
-	{ movement_speed = 10 }
+	{ movement_speed = 40 }
 )

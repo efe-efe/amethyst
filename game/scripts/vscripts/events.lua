@@ -54,9 +54,9 @@ function GameMode:StartRound()
     self.scheduled_amethyst_index = self:GetFirstAmethyst()
     self:CreatePickups()
     
-    Amethyst()
+    --self.amethyst = Amethyst(self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
 
-    --self:CreateAmethyst( self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
+    self:CreateAmethyst( self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
     self:PlayEffectsArrow()
     self:CalculateNextSpawn()
 end
@@ -393,6 +393,7 @@ function GameMode:EndRound( delay )
         self:DestroyDeathZone()
         self:DestroyAllPickups()
         --self:DestroyAllWalls()
+        self.amethyst:Remove()
 
         self.scheduled_amethyst_index = self:GetFirstAmethyst()
         self:CreateAmethyst(self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
