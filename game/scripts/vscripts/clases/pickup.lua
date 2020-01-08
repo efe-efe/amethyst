@@ -28,19 +28,29 @@ local PICKUP_MODELS = {
     [PickupTypes.DEATH] = "models/props_items/bloodstone.vmdl"
 }
 
-function Pickup:constructor(type, origin, delay, scale, callback)
+function Pickup:constructor(type, origin, scale)
     self.type = type
     self.origin = origin
     self.scale = scale
-    self.delay = delay
-    self.callback = callback
     self.item = nil
     self.drop = nil
+    self.picked = false
 
     self:SetItem(CreateItem( PICKUP_ITEM_NAMES[self.type], nil, nil ))
-    self:GetItem():SetCastOnPickup(true)
 
-    self:Spawn()
+    local item = self:GetItem()
+    item:SetCastOnPickup(true)
+    item:LaunchLootInitialHeight( false, 0, 50, 0.5, self.origin )
+    self.drop = CreateItemOnPositionForLaunch( self.origin, item )
+    ParticleManager:CreateParticle( PICKUP_PARTICLES[self.type], PATTACH_ABSORIGIN_FOLLOW, self.drop )
+    
+    if self.scale ~= nil then
+        self.drop:SetModelScale( self.scale )	
+    end
+end
+
+function Pickup:Alive()
+    return not self.picked
 end
 
 function Pickup:SetItem(item)
@@ -55,26 +65,7 @@ function Pickup:GetItem()
     return self.item
 end
 
-function Pickup:Spawn()
-    self:GetItem():LaunchLootInitialHeight( false, 0, 50, 0.5, self.origin )
-    self:GetItem():SetContextThink("Spawn", function() 
-        self.drop = CreateItemOnPositionForLaunch( self.origin, self:GetItem() )
-        ParticleManager:CreateParticle( PICKUP_PARTICLES[self.type], PATTACH_ABSORIGIN_FOLLOW, self.drop )
-        
-        if self.scale ~= nil then
-            self.drop:SetModelScale( self.scale )	
-        end
-    end, self.delay)
-end
-
 function Pickup:OnPickedUp()
-    UTIL_Remove( self:GetItem() ) -- otherwise it pollutes the player inventory
-
-    if self.callback then
-        self.callback()
-    end
-end
-
-function Pickup:Remove()
-
+    UTIL_Remove(self:GetItem()) -- otherwise it pollutes the player inventory
+    self.picked = true
 end

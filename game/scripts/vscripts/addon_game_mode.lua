@@ -380,7 +380,7 @@ function GameMode:OnThink()
         CountdownTimer()
         if nCOUNTDOWNTIMER <= 0 then
             self.countdownEnabled = false
-            self:CreateDeathZone()
+            --self:CreateDeathZone()
         end
     end
 

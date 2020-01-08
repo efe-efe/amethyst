@@ -54,7 +54,7 @@ function CountdownTimer()
           timer_second_01 = s01,
       }
 
-  CustomGameEventManager:Send_ServerToAllClients( "countdown", broadcast_gametimer )
+  --CustomGameEventManager:Send_ServerToAllClients( "countdown", broadcast_gametimer )
 end
 
 function array_sub(t1, t2)

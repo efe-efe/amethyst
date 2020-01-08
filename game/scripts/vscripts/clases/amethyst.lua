@@ -1,11 +1,10 @@
 Amethyst = Amethyst or class({}, nil, HScriptEntity)
 
-function Amethyst:constructor( origin, delay, callback)
+function Amethyst:constructor(origin)
     self.origin = origin
-    self.delay = delay
-    self.callback = callback
     self.mana_bounty = 40
     self.heal_bounty = 20
+    self.destroyed = false
 
     self:SetUnit(CreateUnitByName(
         "npc_dota_creature_amethyst", --szUnitName
@@ -16,11 +15,13 @@ function Amethyst:constructor( origin, delay, callback)
         DOTA_TEAM_NOTEAM
     ))
 
-    local unit = self:GetUnit()
-    unit:AddNewModifier(unit, nil, "modifier_generic_magic_immune", {})
 
-    self:Hide()
-    self:Spawn()
+    local unit = self:GetUnit()
+    unit:SetAbsOrigin(Vector(self.origin.x, self.origin.y, self.origin.z))
+    unit:AddNewModifier(unit, nil, "modifier_generic_magic_immune", {})
+    local data = { unitIndex = self:GetUnit():GetEntityIndex() }
+    CustomGameEventManager:Send_ServerToAllClients( "add_unit", data )    
+    self:PlayEffectsOnSpawn()
 end
 
 function Amethyst:SetUnit(unit)
@@ -35,27 +36,8 @@ function Amethyst:GetUnit()
     return self.unit
 end
 
-function Amethyst:Hide()
-    self:GetUnit():AddNoDraw()
-    self:GetUnit():AddNewModifier(self:GetUnit(), nil, "modifier_hidden", {})
-    --self:GetUnit():SetAbsOrigin(Vector(0, 0, 10000))
-end
-
-function Amethyst:Unhide()
-    self:GetUnit():RemoveNoDraw()
-    self:GetUnit():RemoveModifierByName("modifier_hidden")
-    self:GetUnit():SetAbsOrigin(Vector(self.origin.x, self.origin.y, self.origin.z))
-end
-
-function Amethyst:Spawn()
-    self:GetUnit():SetContextThink("Spawn", function()
-        self:Unhide()
-
-        local data = { unitIndex = self:GetUnit():GetEntityIndex() }
-        CustomGameEventManager:Send_ServerToAllClients( "add_unit", data )    
-
-        self:PlayEffectsOnSpawn()
-    end, self.delay)
+function Amethyst:Alive()
+    return not self.destroyed
 end
 
 function Amethyst:OnDeath(params)
@@ -84,13 +66,11 @@ function Amethyst:OnDeath(params)
 			end
 		end
 
-        self:PlayEffectsOnDeath(unit)
-        self:Hide()
+        self:PlayEffectsOnDeath(self:GetUnit())
+        self:GetUnit():AddNoDraw()
 	end
     
-    if self.callback then
-        self:callback()
-    end
+    self.destroyed = true
 end
 
 function Amethyst:PlayEffectsOnSpawn()
@@ -111,7 +91,6 @@ end
 
 function Amethyst:PlayEffectsOnDeath()
     local parent = self:GetUnit()
-    local origin = parent:GetOrigin()
 
     EmitSoundOn( "Hero_Magnataur.ReversePolarity.Cast", parent )
 
@@ -122,11 +101,11 @@ function Amethyst:PlayEffectsOnDeath()
     local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, parent )
     local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, parent )
     
-    ParticleManager:SetParticleControl( effect_cast_a, 0, origin )
+    ParticleManager:SetParticleControl( effect_cast_a, 0, self.origin )
     ParticleManager:SetParticleControl( effect_cast_a, 2, Vector(255, 80, 230) )
 
-    ParticleManager:SetParticleControl( effect_cast_b, 0, origin)
-    ParticleManager:SetParticleControl( effect_cast_b, 5, origin)
+    ParticleManager:SetParticleControl( effect_cast_b, 0, self.origin)
+    ParticleManager:SetParticleControl( effect_cast_b, 5, self.origin)
 
     ParticleManager:ReleaseParticleIndex( effect_cast_a )
     ParticleManager:ReleaseParticleIndex( effect_cast_b )
