@@ -4,10 +4,12 @@ require('util/health')
 require('util/abilities')
 require('util/npc')
 
+require('clases/pickup')
+require('clases/amethyst')
+require('clases/round')
+
 _G.nMAX_COUNTDOWNTIMER = 60
 _G.nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
-
-Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
 
 if GameMode == nil then
     print( '[AMETHYST] creating Dotarite game mode' )
@@ -53,7 +55,6 @@ require('libraries/timers') -- This library allow for easily delayed/timed actio
 require('libraries/projectiles') -- This library allow for easily delayed/timed actions
 require('libraries/animations') -- This library allows starting customized animations on units from lua
 
-require('settings') -- settings.lua is where resides many different properties for Dotarite.
 require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('wrappers/abilities')
@@ -72,17 +73,16 @@ function GameMode:InitGameMode()
 end
 
 function GameMode:SetupRules()
-    GameRules:SetSameHeroSelectionEnabled( ALLOW_SAME_HERO_SELECTION )
-    GameRules:SetPreGameTime( PRE_GAME_TIME)
-    GameRules:SetGoldPerTick( GOLD_PER_TICK )
-    GameRules:SetGoldTickTime( GOLD_TICK_TIME )
-    GameRules:SetStartingGold( STARTING_GOLD )
-    GameRules:SetCustomGameSetupAutoLaunchDelay( AUTO_LAUNCH_DELAY )
+    GameRules:SetSameHeroSelectionEnabled( true )
+    GameRules:SetPreGameTime( 0.0 )
+    GameRules:SetGoldPerTick( 0 )
+    GameRules:SetGoldTickTime( 0 )
+    GameRules:SetStartingGold( 0 )
+    GameRules:SetCustomGameSetupAutoLaunchDelay( 10 )
     GameRules:SetStrategyTime( 0.0 )
     GameRules:SetShowcaseTime( 0.0 )
-    if USE_CUSTOM_HERO_GOLD_BOUNTY then
-        GameRules:SetUseBaseGoldBountyOnHeroes(false)
-    end
+    GameRules:SetUseBaseGoldBountyOnHeroes(false)
+
     if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
@@ -144,6 +144,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_displacement", "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH )
     LinkLuaModifier("modifier_generic_confused", "abilities/generic/modifier_generic_confused", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_hypnotize", "abilities/generic/modifier_generic_hypnotize", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_magic_immune", "abilities/generic/modifier_generic_magic_immune", LUA_MODIFIER_MOTION_NONE )
     
     LinkLuaModifier("modifier_damage_fx", "abilities/base/modifier_damage_fx", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_movement", "abilities/base/modifier_generic_movement", LUA_MODIFIER_MOTION_NONE )
@@ -160,8 +161,6 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_hidden", "abilities/base/modifier_hidden", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier( "modifier_mount", "abilities/heroes/common/mount/modifier_mount.lua", LUA_MODIFIER_MOTION_NONE )
-
-
 
     print('[AMETHYST] Useful modifiers linked')
 end
@@ -219,9 +218,9 @@ function GameMode:CaptureGameMode()
         -------------------------------
         -- Set GameMode parameters
         -------------------------------
-        mode:SetBuybackEnabled( BUYBACK_ENABLED )
-        mode:SetDaynightCycleDisabled( DISABLE_DAY_NIGHT_CYCLE )
-        mode:SetCameraDistanceOverride( CAMERA_DISTANCE_OVERRIDE )
+        mode:SetBuybackEnabled( false )
+        mode:SetDaynightCycleDisabled( true )
+        mode:SetCameraDistanceOverride( 1350 )
 
         -------------------------------
         -- Link Client/Server Events
@@ -372,9 +371,6 @@ function GameMode:UpdateMousePosition(pos, playerID)
     self.mouse_positions[playerID] = pos
 end
 
----------------------------------------------------------------------------
--- Update player labels and the scoreboard
----------------------------------------------------------------------------
 function GameMode:OnThink()
 	if GameRules:IsGamePaused() == true then
         return 1
@@ -384,8 +380,30 @@ function GameMode:OnThink()
         CountdownTimer()
         if nCOUNTDOWNTIMER <= 0 then
             self.countdownEnabled = false
-            self:CreateDeathZone()
+            --self:CreateDeathZone()
         end
     end
+
+    local now = Time()
+    if GameRules:State_Get() >= DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+        for _, thinker in ipairs(self.Thinkers) do
+            if now >= thinker.next then
+                thinker.next = math.max(thinker.next + thinker.period, now)
+                thinker.callback()
+            end
+        end
+    end
+
 	return 1
+end
+
+function GameMode:RegisterThinker(period, callback)
+    local timer = {}
+    timer.period = period
+    timer.callback = callback
+    timer.next = Time() + period
+
+    self.Thinkers = self.Thinkers or {}
+
+    table.insert(self.Thinkers, timer)
 end
