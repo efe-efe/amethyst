@@ -1,5 +1,5 @@
 pudge_basic_attack = class({})
-LinkLuaModifier( "modifier_ability_name", "abilities/heroes/hero_name/pudge_basic_attack/modifier_ability_name", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_pudge_basic_attack", "abilities/heroes/pudge/pudge_basic_attack/modifier_pudge_basic_attack", LUA_MODIFIER_MOTION_NONE )
 
 function pudge_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -7,8 +7,9 @@ function pudge_basic_attack:OnCastPointEnd()
 	local origin = caster:GetOrigin()
 
 	local damage = caster:GetAttackDamage() -- or self:GetSpecialValueFor("ability_damage")
-	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")/100
-	
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
+	local duration =  self:GetSpecialValueFor("duration")
+
 	local offset = 80
 	local projectile_speed = 2000
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
@@ -34,6 +35,11 @@ function pudge_basic_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)
+
+			if _self.Source == caster then 
+				unit:AddNewModifier(caster, self, "modifier_pudge_basic_attack", { duration = duration })
+				caster:GiveManaPercent(mana_gain_pct, unit)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

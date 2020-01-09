@@ -92,6 +92,13 @@ styles["Confused"] = {
     color: "#DC8668"
 }
 
+styles["Infection"] = {
+    backgroundColor: "#E55C34",
+    textShadow: CreateTextShadow("#DC8668"),
+    color: "#1aed4e"
+}
+
+
 
 function CreateTextShadow( color ){
     return "0px 0px 30px 8.0 " + color + ";"

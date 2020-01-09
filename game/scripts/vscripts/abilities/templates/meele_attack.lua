@@ -7,7 +7,7 @@ function ability_name:OnCastPointEnd()
 	local origin = caster:GetOrigin()
 
 	local damage = caster:GetAttackDamage() -- or self:GetSpecialValueFor("ability_damage")
-	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")/100
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	
 	local offset = 80
 	local projectile_speed = 2000
@@ -26,6 +26,9 @@ function ability_name:OnCastPointEnd()
 		fGroundOffset =		0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
+			if _self.Source == caster then 
+				caster:GiveManaPercent(mana_gain_pct, unit)
+			end
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)
 		end,
 		OnFinish = function(_self, pos)

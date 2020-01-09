@@ -393,7 +393,7 @@ function GameMode:EndRound( delay )
         self:DestroyDeathZone()
         self:DestroyAllPickups()
         --self:DestroyAllWalls()
-        self.amethyst:Remove()
+        --self.amethyst:Remove()
 
         self.scheduled_amethyst_index = self:GetFirstAmethyst()
         self:CreateAmethyst(self.scheduled_amethyst_index, self.FIRST_AMETHYST_SPAWN_TIME)
