@@ -37,6 +37,7 @@ function ancient_counter_recast:OnCastPointEnd()
 					unit:RemoveModifierByName("modifier_ancient_special_attack")
 					final_damage = final_damage + consume_damage
 
+					unit:InterruptMotionControllers( true )
 					unit:AddNewModifier(
 						caster, -- player source
 						self, -- ability source

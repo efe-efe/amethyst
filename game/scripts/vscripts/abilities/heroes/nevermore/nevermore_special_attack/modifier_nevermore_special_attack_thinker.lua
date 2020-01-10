@@ -38,6 +38,7 @@ function modifier_nevermore_special_attack_thinker:OnIntervalThink()
         }
         ApplyDamage( damage_table )
 
+        enemy:InterruptMotionControllers( true )
         enemy:AddNewModifier(
             self:GetCaster(), -- player source
             self:GetAbility(), -- ability source

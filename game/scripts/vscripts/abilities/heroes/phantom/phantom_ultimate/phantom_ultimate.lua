@@ -57,7 +57,7 @@ function phantom_ultimate:OnCastPointEnd()
 
 			self:PlayEffectsOnCast(caster)
             FindClearSpaceForUnit( caster, unit:GetOrigin() , true )
-			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
+			--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
             self:PlayEffectsOnImpact(unit)
 		end,
         OnFinish = function(_self, pos)

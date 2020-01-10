@@ -1,8 +1,8 @@
-modifier_ancient_second_attack = class({})
+modifier_pudge_second_attack = class({})
 
 ---------------------------------------------------------------------------------
 -- Initializer
-function modifier_ancient_second_attack:OnCreated(params)
+function modifier_pudge_second_attack:OnCreated(params)
     if IsServer() then
         self.effects_cast = {}
         self.counter = 0
@@ -12,7 +12,7 @@ function modifier_ancient_second_attack:OnCreated(params)
 	end
 end
 
-function modifier_ancient_second_attack:OnDestroy()
+function modifier_pudge_second_attack:OnDestroy()
     if IsServer() then
         self:StopEffects()
     end
@@ -20,9 +20,9 @@ end
 
 --------------------------------------------------------------------------------
 -- Interval Effects
-function modifier_ancient_second_attack:OnIntervalThink()
+function modifier_pudge_second_attack:OnIntervalThink()
     self:IncrementStackCount()
-    if self.counter == 20  then
+    if self.counter == 0  then
         self:PlayEffects(self.index)
         self.index = self.index + 1
         self.counter = 0
@@ -31,8 +31,8 @@ function modifier_ancient_second_attack:OnIntervalThink()
 end
 
 
-function modifier_ancient_second_attack:PlayEffects(index)
-    local particle_cast = "particles/units/heroes/hero_visage/visage_ambient.vpcf"
+function modifier_pudge_second_attack:PlayEffects(index)
+    local particle_cast = "particles/units/heroes/hero_demonartist/demonartist_soulchain_debuff.vpcf"
     self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent() )
     ParticleManager:SetParticleControlEnt( 
         self.effects_cast[index], 
@@ -54,7 +54,7 @@ function modifier_ancient_second_attack:PlayEffects(index)
     )
 end
 
-function modifier_ancient_second_attack:StopEffects()
+function modifier_pudge_second_attack:StopEffects()
     for _,effect in pairs(self.effects_cast) do
         ParticleManager:DestroyParticle(effect, false)
         ParticleManager:ReleaseParticleIndex(effect)

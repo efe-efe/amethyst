@@ -49,7 +49,7 @@ function juggernaut_second_attack:OnCastPointEnd( )
 				}
 				ApplyDamage( damage_table )
 				
-				SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
+				--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
 
 				if _self.Source == caster then
 					caster:GiveManaPercent(mana_gain_pct, unit)
@@ -90,7 +90,7 @@ function juggernaut_second_attack:OnCastPointEnd( )
 				damage_type = DAMAGE_TYPE_PURE,
 			}
 			ApplyDamage( damage_table )
-			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, enemy, final_damage, nil )
+			--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, enemy, final_damage, nil )
 			self:PlayEffectsOnImpact(enemy)
 		end
 

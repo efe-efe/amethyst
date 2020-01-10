@@ -50,7 +50,8 @@ function sniper_extra:OnCastPointEnd()
             local y = unit:GetOrigin().y - origin.y
 
             local distance = knockback_distance - (unit:GetOrigin() - origin):Length2D()
-
+            
+            unit:InterruptMotionControllers( true )
             unit:AddNewModifier(
                 _self.Source, -- player source
                 self, -- ability source

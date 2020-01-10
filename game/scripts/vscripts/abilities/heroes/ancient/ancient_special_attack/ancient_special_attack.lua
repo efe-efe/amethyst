@@ -84,7 +84,8 @@ function ancient_special_attack:OnCastPointEnd()
 				if unit:HasModifier("modifier_ancient_special_attack") then
 					unit:RemoveModifierByName("modifier_ancient_special_attack")
 					final_damage = final_damage + consume_damage
-
+					
+					unit:InterruptMotionControllers( true )
 					unit:AddNewModifier(
 						caster, -- player source
 						self, -- ability source

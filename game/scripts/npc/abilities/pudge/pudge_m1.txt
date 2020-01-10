@@ -5,7 +5,7 @@
 		"ScriptFile"					"abilities/heroes/pudge/pudge_basic_attack/pudge_basic_attack"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"juggernaut_blade_dance"
+		"AbilityTextureName"			"pudge_basic_attack"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"

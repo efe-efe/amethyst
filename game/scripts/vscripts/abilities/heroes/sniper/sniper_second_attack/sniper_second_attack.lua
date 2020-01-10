@@ -38,11 +38,14 @@ function sniper_second_attack:OnCastPointEnd()
 			for k, v in pairs(_self.rehit) do
 				counter = counter + 1
 			end
+			
 			local final_damage = damage * (1 - (counter * reduction_per_hit))
 			
-			if final_damage < min_damage then final_damage = min_damage end
-			-- Damage
-			local damage = {
+			if final_damage < min_damage then 
+				final_damage = min_damage 
+			end
+
+			local damage_table = {
 				victim = unit,
 				attacker = _self.Source,
 				damage = final_damage,
@@ -54,7 +57,7 @@ function sniper_second_attack:OnCastPointEnd()
 				_self.Source:GiveManaPercent(mana_gain_pct, unit)
 			end
 	
-			ApplyDamage( damage )
+			ApplyDamage( damage_table )
 			-- Stun
 			unit:AddNewModifier(_self.Source, self , "modifier_generic_stunned", { duration = stun_duration})
 	

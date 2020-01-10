@@ -51,7 +51,7 @@ function phantom_second_attack:OnCastPointEnd()
 				end
 			end
 
-			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
+			--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
 			caster:GiveManaPercent(mana_gain_pct, unit)
 
 			self:PlayEffectsOnImpact(unit, stacks)

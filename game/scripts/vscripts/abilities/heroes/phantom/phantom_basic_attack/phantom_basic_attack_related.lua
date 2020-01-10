@@ -40,7 +40,7 @@ function phantom_basic_attack_related:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
 			ApplyDamage( damage_table )
-			SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, damage, nil )
+			--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, damage, nil )
 
 			if _self.Source == caster then
 				caster:GiveManaPercent(mana_gain_pct, unit)

@@ -51,6 +51,8 @@ function pudge_special_attack:OnCastPointEnd()
 
 			local source_direction = (_self.Source:GetOrigin() - unit:GetOrigin()):Normalized()
 			local source_distance = (_self.Source:GetOrigin() - unit:GetOrigin()):Length2D()
+			
+			unit:InterruptMotionControllers( true )
 			unit:AddNewModifier(
 				caster, -- player source
 				self, -- ability source
