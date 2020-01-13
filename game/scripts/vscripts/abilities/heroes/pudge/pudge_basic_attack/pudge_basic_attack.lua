@@ -37,7 +37,9 @@ function pudge_basic_attack:OnCastPointEnd()
 			self:PlayEffectsOnImpact(unit, _self.currentPosition)
 
 			if _self.Source == caster then 
-				unit:AddNewModifier(caster, self, "modifier_pudge_basic_attack", { duration = duration })
+				if not unit:IsAmethyst() then
+					unit:AddNewModifier(caster, self, "modifier_pudge_basic_attack", { duration = duration })
+				end
 				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
 		end,

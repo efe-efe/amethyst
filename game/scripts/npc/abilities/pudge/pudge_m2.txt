@@ -5,18 +5,19 @@
 		"ScriptFile"					"abilities/heroes/pudge/pudge_second_attack/pudge_second_attack"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"pudge_basic_attack"
+		"AbilityTextureName"			"pudge_second_attack"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"110"
+		"AbilityCooldown"				"5.0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"1.5" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"5" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"1.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "12" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"heal"			            "5" }
 		}
 	}

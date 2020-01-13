@@ -50,9 +50,9 @@ function modifier_nevermore_special_attack_thinker:OnIntervalThink()
                 speed = 150,
                 peak = 500,
                 restricted = 1,
+                effect = 1
             } -- kv
         )
-        self:GetAbility():PlayEffectsTornado( enemy )
         self:PlayEffectsOnDelayEnds( enemy:GetOrigin() )
     end
 	self:Destroy()

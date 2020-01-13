@@ -25,18 +25,6 @@ function nevermore_special_attack:OnCastPointEnd()
 	)
 end
 
-function nevermore_special_attack:PlayEffectsTornado( hTarget )
-	local particle_cast = "particles/mod_units/heroes/hero_nevermore/invoker_tornado_ti6_funnel.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, hTarget:GetOrigin() )
-	ParticleManager:SetParticleControl( self.effect_cast, 3, hTarget:GetOrigin() )
-end
-
-function nevermore_special_attack:OnDisplacementEnd()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )    
-end
-
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	nevermore_special_attack,

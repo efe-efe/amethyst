@@ -13,7 +13,7 @@ function pudge_extra:OnCastPointEnd()
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
     local self_damage = self:GetSpecialValueFor("self_damage")
     local heal = self:GetSpecialValueFor("heal")
-	local damage = caster:GetAttackDamage() -- or self:GetSpecialValueFor("ability_damage")
+	local damage = self:GetSpecialValueFor("ability_damage")
 
 	-- Projectile
 	local projectile = {
@@ -53,9 +53,17 @@ function pudge_extra:OnCastPointEnd()
     local damage_table = {
         victim = caster,
         attacker = caster,
-        damage = self_damage,
         damage_type = DAMAGE_TYPE_PURE,
-    }
+	}
+
+	local current_health = caster:GetHealth()
+
+	if current_health - self_damage <= 0 then
+        damage_table.damage = current_health - 1
+    else
+        damage_table.damage = self_damage
+    end
+
     ApplyDamage( damage_table )
 
 	Projectiles:CreateProjectile(projectile)

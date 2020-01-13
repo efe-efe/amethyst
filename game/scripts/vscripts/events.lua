@@ -164,7 +164,7 @@ end
 function GameMode:OnItemPickUp( event )
 	local item = EntIndexToHScript( event.ItemEntityIndex )
     local owner = EntIndexToHScript( event.HeroEntityIndex )
-    
+
     if  event.itemname == "item_health_orb" or 
         event.itemname == "item_mana_orb" or 
         event.itemname == "item_shield_orb" or 
@@ -718,7 +718,7 @@ function GameMode:CreatePickup( pos, type, delay, scale )
 
     local item = CreateItem( name, nil, nil )
     item:LaunchLootInitialHeight( false, 0, 50, 0.5, pos )
-    
+    item:SetCastOnPickup(true)
     local item_index = item:GetEntityIndex()
 
     self.pickups[item_index] = {}

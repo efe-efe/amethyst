@@ -37,6 +37,7 @@ function pudge_special_attack:OnCastPointEnd()
 		TreeBehavior = PROJECTILES_NOTHING,
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,
+		bIsReflectable = false,
 		fGroundOffset = 80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
@@ -52,6 +53,7 @@ function pudge_special_attack:OnCastPointEnd()
 			local source_direction = (_self.Source:GetOrigin() - unit:GetOrigin()):Normalized()
 			local source_distance = (_self.Source:GetOrigin() - unit:GetOrigin()):Length2D()
 			
+			unit:AddNewModifier(_self.Source, self, "modifier_generic_stunned", { duration = 0.1 })
 			unit:InterruptMotionControllers( true )
 			unit:AddNewModifier(
 				caster, -- player source
@@ -84,7 +86,6 @@ function pudge_special_attack:OnCastPointEnd()
 		end,
 	}
 
-	self:EndCooldown()
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast(projectile_speed, distance, hitbox, duration, Vector(point.x, point.y, 0))
 end

@@ -7,7 +7,7 @@
 
 		"AbilityTextureName"			"pudge_rot"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_TOGGLE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_TOGGLE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 
@@ -15,7 +15,9 @@
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			    "0.1" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"10" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"			        "250" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"self_damage_per_second"	"4" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"			        "250" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"speed_debuff_pct"			"50" }
 		}
 	}
 }

@@ -82,7 +82,6 @@ end
 function modifier_juggernaut_mobility:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
 		MODIFIER_EVENT_ON_ORDER,
 	}
 
@@ -97,13 +96,8 @@ function modifier_juggernaut_mobility:OnOrder(params)
 	end
 end
 
-
 function modifier_juggernaut_mobility:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
-end
-
-function modifier_juggernaut_mobility:GetModifierIgnoreMovespeedLimit( params )
-    return 1
 end
 
 --------------------------------------------------------------------------------

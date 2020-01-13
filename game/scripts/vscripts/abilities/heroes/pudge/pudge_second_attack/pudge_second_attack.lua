@@ -40,7 +40,7 @@ function pudge_second_attack:OnCastPointEnd()
 			local damage_table = {
 				victim = unit,
 				attacker = _self.Source,
-				damage = damage + 1.0 * (stacks/10),
+				damage = damage + 1.5 * (stacks/10),
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
 			ApplyDamage( damage_table )
@@ -111,7 +111,7 @@ if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	pudge_second_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 0.2 },
-	{ movement_speed = 50, hide_indicator = 1 }
+	{ movement_speed = 70, hide_indicator = 1 }
 )
 
 function pudge_second_attack:CastOnRelease() 

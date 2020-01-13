@@ -8,37 +8,9 @@ function pudge_mobility:OnCastPointEnd()
 
 	local direction = (point - origin):Normalized()
     local distance = (point - origin):Length2D()
-	
-	--[[
 
-    self.vHookOffset = 0
-    self.hook_speed = 2000
-    self.hook_distance = distance
-    self.hook_width = 150
-    
-   -- local vKillswitch = --Vector( ( ( self.hook_distance / self.hook_speed ) * 2 ), 0, 0 )
-    
-    local duration = 5
+	self.radius = self:GetSpecialValueFor("radius")
 
-    if caster and caster:IsHero() then
-		local hHook = caster:GetTogglableWearable( DOTA_LOADOUT_TYPE_WEAPON )
-		if hHook ~= nil then
-			hHook:AddEffects( EF_NODRAW )
-		end
-    end
-    
-	self.nChainParticleFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_pudge/pudge_meathook.vpcf", PATTACH_CUSTOMORIGIN, self:GetCaster() )
-	ParticleManager:SetParticleAlwaysSimulate( self.nChainParticleFXIndex )
-	ParticleManager:SetParticleControlEnt( self.nChainParticleFXIndex, 0, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_weapon_chain_rt", self:GetCaster():GetOrigin() + self.vHookOffset, true )
-	ParticleManager:SetParticleControl( self.nChainParticleFXIndex, 1, Vector(point.x, point.y, 0 ))
-	ParticleManager:SetParticleControl( self.nChainParticleFXIndex, 2, Vector( self.hook_speed, self.hook_distance, self.hook_width ) )
-	ParticleManager:SetParticleControl( self.nChainParticleFXIndex, 3, Vector( duration, 0,0 ) )
-	ParticleManager:SetParticleControl( self.nChainParticleFXIndex, 4, Vector( 1, 0, 0 ) )
-	ParticleManager:SetParticleControl( self.nChainParticleFXIndex, 5, Vector( 1, 0, 0 ) )
-	ParticleManager:SetParticleControlEnt( self.nChainParticleFXIndex, 7, self:GetCaster(), PATTACH_CUSTOMORIGIN, nil, self:GetCaster():GetOrigin(), true )
-
-
-    ]]
 
     caster:AddNewModifier(
         caster, -- player source
@@ -50,7 +22,6 @@ function pudge_mobility:OnCastPointEnd()
             r = distance,
             speed = (distance/0.65),
             peak = 90,
-            colliding = 0,
 			collide_with_ent = 1, 
             activity = ACT_DOTA_FLAIL,
             rate = 1.0,
@@ -61,16 +32,53 @@ function pudge_mobility:OnCastPointEnd()
 end
 
 function pudge_mobility:OnDisplacementEnd()
+	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
+	local fading_slow_pct =self:GetSpecialValueFor("fading_slow_pct")
+
+	local enemies = self:GetCaster():FindUnitsInRadius(
+        self:GetCaster():GetOrigin(), 
+        self.radius, 
+        DOTA_UNIT_TARGET_TEAM_ENEMY, 
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+        DOTA_UNIT_TARGET_FLAG_NONE,
+        FIND_ANY_ORDER
+    )
+
+    for _,enemy in pairs(enemies) do
+        local damage_table = {
+            victim = enemy,
+            attacker = self:GetCaster(),
+            damage = self:GetSpecialValueFor("ability_damage"),
+            damage_type = DAMAGE_TYPE_PURE,
+        }
+		ApplyDamage( damage_table )
+		
+		enemy:AddNewModifier(self:GetCaster(), self, "modifier_generic_fading_slow_new", { 
+			duration = fading_slow_duration,
+			max_slow_pct = fading_slow_pct
+		})
+    end
+
 	self:PlayEffectsOnDisplacementEnd()
 end
 
 function pudge_mobility:PlayEffectsOnDisplacementEnd()
+	EmitSoundOn("Hero_EarthShaker.Fissure", self:GetCaster())
+
 	local particle_cast = "particles/econ/events/ti8/blink_dagger_ti8_end.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
 
-	
 	ParticleManager:DestroyParticle(self.effect_cast, false)
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+
+	particle_cast = "particles/econ/items/earthshaker/earthshaker_arcana/earthshaker_arcana_aftershock_v2.vpcf"
+    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	ParticleManager:SetParticleControl( effect_cast, 2, self:GetCaster():GetOrigin() )
+	
+	CreateRadiusMarker( self:GetCaster(), self:GetCaster():GetOrigin(), {
+		show_all = 1,
+		radius = self.radius
+	})
 end
 
 --------------------------------------------------------------------------------

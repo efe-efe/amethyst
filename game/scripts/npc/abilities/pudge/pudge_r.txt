@@ -5,21 +5,25 @@
 		"ScriptFile"					"abilities/heroes/pudge/pudge_ultimate/pudge_ultimate"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"pudge_extra"
+		"AbilityTextureName"			"pudge_dismember"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"1800"
-		"AbilityCooldown"				"8.0"
-		"AbilityManaCost"				"25"
+		"AbilityManaCost"				"100"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"35" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2200" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"heal"                      "15" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"heal"                      "10" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"400" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"1.0" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"interval"					"0.5" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.2" }
 		}
 	}
 }

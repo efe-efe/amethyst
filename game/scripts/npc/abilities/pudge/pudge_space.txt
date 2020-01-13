@@ -5,15 +5,22 @@
 		"ScriptFile"					"abilities/heroes/pudge/pudge_mobility/pudge_mobility"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"vengeful_mobility"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityTextureName"			"pudge_mobility"
 		"AbilityCooldown"				"6.0"
 		"AbilityCastRange"				"1000"
 
+		"precache"
+		{
+			"soundfile"	        "soundevents/game_sounds_heroes/game_sounds_earthshaker.vsndevts"
+		}
+
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.5" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"radius"				"250" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"16" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"	"3.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"		"80" }	
 		}   
 	}
 }

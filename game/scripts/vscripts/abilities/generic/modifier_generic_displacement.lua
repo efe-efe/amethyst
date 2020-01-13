@@ -1,5 +1,14 @@
 modifier_generic_displacement = class({})
 
+local effects = {}
+effects[1] = {
+	particle = "particles/mod_units/heroes/hero_nevermore/invoker_tornado_ti6_funnel.vpcf",
+	control_points = {}
+}
+
+effects[1].control_points[0] = "origin"
+effects[1].control_points[3] = "origin"
+
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_generic_displacement:IsHidden()
@@ -25,6 +34,7 @@ function modifier_generic_displacement:OnCreated( params )
 		self.collide_with_ent = params.collide_with_ent == 1 and true or false
 		self.damage_on_collision = params.damage_on_collision or nil
 		self.restricted = params.restricted
+		self.effect = params.effect
 
 		if self.restricted == 1 then
 			self.restricted = true
@@ -70,6 +80,11 @@ function modifier_generic_displacement:OnCreated( params )
 		if self.i_frame then
 			self:GetCaster():HideHealthBar()
 		end
+
+		if self.effect then
+			self:SetStackCount(self.effect)
+			self:PlayEffects()
+		end
 	end
 end
 
@@ -88,6 +103,10 @@ function modifier_generic_displacement:OnDestroy( params )
 
 		if self:GetAbility().OnDisplacementEnd then
 			self:GetAbility():OnDisplacementEnd()
+		end
+
+		if self.effect then
+			self:StopEffects()
 		end
 	end
 end
@@ -128,9 +147,11 @@ function modifier_generic_displacement:SyncTime( iDir, dt )
 	end
 
 	if self.collide_with_ent then
+		local test_origin = self:GetParent():GetOrigin() + Vector(self.direction.x * 80, self.direction.y * 80, 0)
+
 		local units = self:GetCaster():FindUnitsInRadius(
-            self:GetParent():GetOrigin(), 
-            self:GetParent():GetHullRadius(), 
+            test_origin, 
+            80, 
             DOTA_UNIT_TARGET_TEAM_BOTH, 
             DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
             DOTA_UNIT_TARGET_FLAG_NONE,
@@ -179,6 +200,7 @@ function modifier_generic_displacement:OnVerticalMotionInterrupted()
 	end
 end
 
+--------------------------------------------------------------------------------
 -- Status Effects
 function modifier_generic_displacement:CheckState()
 	local state = {
@@ -189,6 +211,27 @@ function modifier_generic_displacement:CheckState()
 		[MODIFIER_STATE_INVULNERABLE] = self.i_frame,
 		[MODIFIER_STATE_OUT_OF_GAME] = self.i_frame,
 	}
-
 	return state
+end
+
+--------------------------------------------------------------------------------
+-- Graphics & Sounds
+function modifier_generic_displacement:PlayEffects()
+	local particle_cast = effects[self:GetStackCount()].particle
+
+	PrintTable(effects)
+	print(particle_cast)
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	
+	for _,cp in pairs(effects[self:GetStackCount()].control_points) do
+		if cp == "origin" then
+			print("HEY")
+			ParticleManager:SetParticleControl( self.effect_cast, _, self:GetParent():GetOrigin())
+		end
+	end
+end
+
+function modifier_generic_displacement:StopEffects()
+	ParticleManager:DestroyParticle( self.effect_cast, false )
+	ParticleManager:ReleaseParticleIndex( self.effect_cast )    
 end

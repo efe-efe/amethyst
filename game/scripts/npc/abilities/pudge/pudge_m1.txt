@@ -14,10 +14,9 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "10" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"extra_damage"				"6" }
 		}
 	}
 }
