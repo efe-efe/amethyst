@@ -1,0 +1,25 @@
+"DOTAAbilities" {
+	"pudge_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/pudge/pudge_ultimate/pudge_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"pudge_extra"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1800"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"35" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2200" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"heal"                      "15" }
+		}
+	}
+}

@@ -16,7 +16,7 @@
 		"Ability4"						"pudge_counter"
 		"Ability5"						"pudge_special_attack"
 		"Ability6"						"pudge_extra"           
-		"Ability7"						"juggernaut_ultimate"            
+		"Ability7"						"pudge_ultimate"            
 		"Ability8"						"juggernaut_ex_second_attack"       
 		"Ability9"						"juggernaut_ex_special_attack"	
 		"Ability10"						"mount"					
