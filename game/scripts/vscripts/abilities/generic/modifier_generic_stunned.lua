@@ -14,8 +14,7 @@ function modifier_generic_stunned:OnCreated()
 			label = "Stun", modifier = self, priority = 4, stylename="Stun"
 		}) 
 		
-		SafeDestroyModifier("modifier_cast_point_old", self:GetParent(), self:GetParent())
-		SafeDestroyModifier("modifier_cast_point", self:GetParent(), self:GetParent())
+		self:GetParent():InterruptCastPoint()
 	end
 end
 

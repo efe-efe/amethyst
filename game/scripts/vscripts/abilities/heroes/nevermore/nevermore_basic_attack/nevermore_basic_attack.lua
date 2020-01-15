@@ -43,7 +43,7 @@ function nevermore_basic_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 
-			if _self.Source == caster then 
+			if _self.Source == caster and not unit:IsObstacle() then 
 				caster:GiveManaPercent(mana_gain_pct, unit)
 
 				caster:AddNewModifier(

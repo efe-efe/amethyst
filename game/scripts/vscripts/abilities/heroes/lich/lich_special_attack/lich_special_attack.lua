@@ -66,7 +66,7 @@ function lich_special_attack:ConsumeDebuffs( base_damage, origin, radius, knockb
         
         if enemy:HasModifier("modifier_lich_decay") then
             final_damage = final_damage + extra_damage
-            enemy:AddNewModifier(caster, self, "modifier_generic_silenced_lua", { duration = silence_duration })
+            enemy:AddNewModifier(caster, self, "modifier_generic_silenced", { duration = silence_duration })
             SafeDestroyModifier("modifier_lich_decay", enemy, caster)
         end
 

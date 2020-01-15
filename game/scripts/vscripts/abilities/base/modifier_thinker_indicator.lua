@@ -150,7 +150,7 @@ function modifier_thinker_indicator:StopEffects()
 end
 
 function modifier_thinker_indicator:PlayEffectsDot(pos, index)
-    local particle_cast = "particles/econ/items/drow/drow_ti6/drow_ti6_silence_arrow_ring.vpcf"
+    local particle_cast = "particles/drow_ti6_silence_arrow_ring.vpcf"
     self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( self.effects_cast[index], 0, pos)
     ParticleManager:SetParticleControl( self.effects_cast[index], 1, pos )

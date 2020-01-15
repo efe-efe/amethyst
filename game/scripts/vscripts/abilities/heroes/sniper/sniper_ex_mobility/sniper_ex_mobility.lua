@@ -27,6 +27,7 @@ function sniper_ex_mobility:OnCastPointEnd()
         false --bPhantomBlocker
     )
 
+    caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source

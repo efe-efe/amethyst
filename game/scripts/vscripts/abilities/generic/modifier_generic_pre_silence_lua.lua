@@ -1,5 +1,5 @@
 modifier_generic_pre_silence_lua = class({})
-LinkLuaModifier( "modifier_generic_silenced_lua", "abilities/generic/modifier_generic_silenced_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_silenced", "abilities/generic/modifier_generic_silenced", LUA_MODIFIER_MOTION_NONE )
 
 function modifier_generic_pre_silence_lua:IsHidden()
     return false
@@ -41,7 +41,7 @@ function modifier_generic_pre_silence_lua:OnDestroy()
             self:GetParent():AddNewModifier(
                 self:GetCaster(),
                 self:GetAbility(),
-                "modifier_generic_silenced_lua",
+                "modifier_generic_silenced",
                 { duration = silence_duration }
             )
         end

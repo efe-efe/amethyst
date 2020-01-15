@@ -18,6 +18,7 @@ function vengeful_mobility:OnCastPointEnd()
     local swap = caster:FindAbilityByName(swap_name)
     swap.illusion_index = self:IllusionLogic():GetEntityIndex()
     
+    caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source
@@ -29,8 +30,6 @@ function vengeful_mobility:OnCastPointEnd()
             speed = 2200,
             peak = 80,
             colliding = 0,
-            activity = ACT_DOTA_TELEPORT_END,
-            rate = 1.0,
         } -- kv
     )
 

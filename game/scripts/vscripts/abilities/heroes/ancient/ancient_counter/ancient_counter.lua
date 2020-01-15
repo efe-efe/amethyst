@@ -41,7 +41,7 @@ function ancient_counter:OnTrigger()
         local direction = (enemy:GetOrigin() - caster:GetOrigin()):Normalized()
         local distance = radius - (enemy:GetOrigin() - caster:GetOrigin()):Length2D()
         
-        enemy:InterruptMotionControllers( true )
+        enemy:RemoveModifierByName("modifier_generic_displacement")
         enemy:AddNewModifier(
             caster, -- player source
             self, -- ability source

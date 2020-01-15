@@ -101,7 +101,7 @@ function sky_basic_attack:OnCastPointEnd( pos )
 			--Apply charged weapon effects
 			if stacks > 0 then
 				--Silence enemy
-				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = self.silence_duration})
+				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced", { duration = self.silence_duration})
 				unit:AddNewModifier(_self.Source, self , "modifier_sky_basic_attack_debuff", { duration = self.silence_duration})
 
 				local damage = {

@@ -11,7 +11,7 @@ function pudge_mobility:OnCastPointEnd()
 
 	self.radius = self:GetSpecialValueFor("radius")
 
-
+	caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source
@@ -22,9 +22,7 @@ function pudge_mobility:OnCastPointEnd()
             r = distance,
             speed = (distance/0.65),
             peak = 90,
-			collide_with_ent = 1, 
-            activity = ACT_DOTA_FLAIL,
-            rate = 1.0,
+			collide_with_ent = 1,
         } -- kv
 	)
 	

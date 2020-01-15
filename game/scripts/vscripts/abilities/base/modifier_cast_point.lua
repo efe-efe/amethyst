@@ -200,20 +200,18 @@ end
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_cast_point:OnIntervalThink()
-	if 	self.parent:IsStunned() or 
-		self.parent:IsNightmared() or
-		self.parent:IsSilenced() or
-		self.parent:HasFear() or
-		self.parent:HasModifier("modifier_generic_displacement") or
-		not self.parent:IsAlive()
-	then
+	if not self.parent:IsAlive() then
 		self:Destroy()
 	end
 		
     local mouse = GameMode.mouse_positions[self.parent:GetPlayerID()]
 	local direction = (mouse - self.parent:GetOrigin()):Normalized()
 
-	self.parent:SetForwardVector(Vector(direction.x, direction.y, self.parent:GetForwardVector().z ))
+	if not self.parent:HasModifier("modifier_generic_displacement") then
+		self.parent:SetForwardVector(Vector(direction.x, direction.y, self.parent:GetForwardVector().z ))
+	else
+		self.parent:FaceTowards(Vector(direction.x, direction.y, self.parent:GetForwardVector().z ))
+	end
 end
 
 

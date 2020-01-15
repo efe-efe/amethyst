@@ -15,7 +15,7 @@ function sniper_mobility:OnCastPointEnd()
 	local distance = (point - origin):Length2D()
 	local radius = self:GetSpecialValueFor("radius")
 
-    --Knockback
+	caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source

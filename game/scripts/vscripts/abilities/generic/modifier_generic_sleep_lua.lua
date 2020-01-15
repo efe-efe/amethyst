@@ -15,6 +15,7 @@ function modifier_generic_sleep_lua:OnCreated( params )
 		self:GetParent():AddStatusBar({
 			label = "Sleep", modifier = self, priority = 3, stylename="Sleep"
 		}) 
+		self:GetParent():InterruptCastPoint()
 	end
 end
 

@@ -1,4 +1,5 @@
 
+
 phantom_mobility = class({})
 LinkLuaModifier( "modifier_phantom_mobility_charges", "abilities/heroes/phantom/phantom_mobility/modifier_phantom_mobility_charges", LUA_MODIFIER_MOTION_NONE )
 
@@ -26,7 +27,7 @@ function phantom_mobility:OnCastPointEnd()
         direction = caster:GetDirection()
     end
 
-    --Knockback
+    caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source

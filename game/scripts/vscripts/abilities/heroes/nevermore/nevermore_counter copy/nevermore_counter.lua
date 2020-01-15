@@ -1,7 +1,9 @@
 nevermore_counter = class({})
-LinkLuaModifier( "modifier_nevermore_counter_recast", "abilities/heroes/nevermore/nevermore_counter/modifier_nevermore_counter_recast", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_nevermore_counter", "abilities/heroes/nevermore/nevermore_counter/modifier_nevermore_counter", LUA_MODIFIER_MOTION_NONE )
 
-function nevermore_counter:OnCastPointEnd()
+--------------------------------------------------------------------------------
+function nevermore_counter:OnCastPointEnd( point )
+    --load data
     local caster = self:GetCaster()
     local duration = self:GetDuration()
 
@@ -18,17 +20,13 @@ function nevermore_counter:OnCastPointEnd()
             rate = 1.0
         } -- kv
     )
-
-    self:EndCooldown()
 end
 
 function nevermore_counter:OnTrigger( params )
     local caster = self:GetCaster()
-    local duration = self:GetSpecialValueFor("duration")
     
-    caster:AddNoDraw()
-    caster:AddNewModifier(caster, nil, "modifier_banish", {})
-    caster:AddNewModifier(caster, self, "modifier_nevermore_counter_recast", { duration = duration })
+    local ability = caster:FindAbilityByName("nevermore_counter_mobility")
+    caster:CastAbilityOnPosition(Vector(0,0,0), ability, caster:GetPlayerID())
 
     self:PlayEffectsOnTrigger()
 end

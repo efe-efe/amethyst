@@ -51,7 +51,7 @@ function sniper_extra:OnCastPointEnd()
 
             local distance = knockback_distance - (unit:GetOrigin() - origin):Length2D()
             
-            unit:InterruptMotionControllers( true )
+            unit:RemoveModifierByName("modifier_generic_displacement")
             unit:AddNewModifier(
                 _self.Source, -- player source
                 self, -- ability source
@@ -82,6 +82,7 @@ function sniper_extra:OnCastPointEnd()
     }
 
     local direction = -(point - origin):Normalized()
+    caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source

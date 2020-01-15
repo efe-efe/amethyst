@@ -54,7 +54,7 @@ function pudge_special_attack:OnCastPointEnd()
 			local source_distance = (_self.Source:GetOrigin() - unit:GetOrigin()):Length2D()
 			
 			unit:AddNewModifier(_self.Source, self, "modifier_generic_stunned", { duration = 0.1 })
-			unit:InterruptMotionControllers( true )
+			unit:RemoveModifierByName("modifier_generic_displacement")
 			unit:AddNewModifier(
 				caster, -- player source
 				self, -- ability source
@@ -66,8 +66,6 @@ function pudge_special_attack:OnCastPointEnd()
 					speed = projectile_speed,
 					peak = 0,
 					colliding = 0,
-					activity = ACT_DOTA_FLAIL,
-					rate = 1.0,
 				} -- kv
 			)
 

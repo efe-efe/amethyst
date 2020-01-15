@@ -26,7 +26,7 @@ function modifier_juggernaut_mobility:OnCreated( kv )
 
         self.radius = 250
 
-        self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_generic_silenced_lua", { duration = self:GetDuration() }) 
+        self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_generic_silenced", { duration = self:GetDuration() }) 
 
         -- Animation and pseudo cast point
         StartAnimation(self:GetParent(), { 
@@ -73,7 +73,7 @@ function modifier_juggernaut_mobility:OnDestroy( kv )
     if IsServer() then
         self:StopEffects()
         EmitSoundOn("Hero_Juggernaut.BladeFuryStop", self:GetParent())
-        SafeDestroyModifier("modifier_generic_silenced_lua", self:GetParent(), self:GetParent())
+        SafeDestroyModifier("modifier_generic_silenced", self:GetParent(), self:GetParent())
     end
 end
 

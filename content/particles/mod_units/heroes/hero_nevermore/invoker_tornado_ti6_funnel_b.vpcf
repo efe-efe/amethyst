@@ -1,10 +1,10 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf21:version{7a150ecc-d865-438f-ad53-5963fe1a2720} -->
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf25:version{7bca2d8d-3a14-4a76-bd41-f483fdf78d50} -->
 {
 	_class = "CParticleSystemDefinition"
 	m_bShouldHitboxesFallbackToRenderBounds = false
 	m_nMaxParticles = 63
 	m_flConstantLifespan = 10.0
-	m_ConstantColor = [ 79, 51, 135, 255 ]
+	m_ConstantColor = [ 135, 50, 50, 255 ]
 	m_Renderers = 
 	[
 		{
@@ -19,7 +19,11 @@
 			m_flAnimationRate = 20.0
 			m_bAnimateInFPS = true
 			m_nAnimationType = "ANIMATION_TYPE_FIT_LIFETIME"
-			m_ColorScale = [ 255, 255, 255 ]
+			m_vecColorScale = 
+			{
+				m_nType = "PVEC_TYPE_LITERAL_COLOR"
+				m_LiteralColor = [ 255, 255, 255 ]
+			}
 		},
 	]
 	m_Operators = 
@@ -140,7 +144,7 @@
 	m_Children = 
 	[
 		{
-			m_ChildRef = resource:"particles/econ/items/invoker/invoker_ti6/invoker_tornado_ti6_trail_b.vpcf"
+			m_ChildRef = resource:"particles/mod_units/heroes/hero_nevermore/invoker_tornado_ti6_trail_b.vpcf"
 		},
 		{
 			m_ChildRef = resource:"particles/econ/items/invoker/invoker_ti6/invoker_tornado_ti6_trail_glow.vpcf"

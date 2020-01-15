@@ -1,0 +1,20 @@
+"DOTAAbilities" {
+	"nevermore_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_extra/nevermore_extra"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_extra"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCooldown"				"12"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.4" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"heal_per_soul"		"5" }
+		}
+	}
+}

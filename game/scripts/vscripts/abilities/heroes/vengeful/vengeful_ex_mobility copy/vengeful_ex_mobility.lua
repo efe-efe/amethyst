@@ -21,6 +21,7 @@ function vengeful_ex_second_attack:OnCastPointEnd()
     local swap = caster:FindAbilityByName(swap_name)
     swap.illusion_index = self:IllusionLogic():GetEntityIndex()
     
+    caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source
@@ -63,6 +64,7 @@ function vengeful_ex_second_attack:OnCastPointEnd()
         end
 
         if unit ~= self.parent then
+            unit:RemoveModifierByName("modifier_generic_displacement")
             unit:AddNewModifier(
                 caster, -- player source
                 self, -- ability source
@@ -74,8 +76,6 @@ function vengeful_ex_second_attack:OnCastPointEnd()
                     speed = 1800,
                     peak = 80,
                     colliding = 0,
-                    activity = ACT_DOTA_FLAIL,
-                    rate = 1.0,
                 } -- kv
             )
         end

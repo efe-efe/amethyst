@@ -1,4 +1,4 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf13:version{10b35a8e-b1ee-4f14-87a6-a7b6aae37699} -->
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf25:version{7bca2d8d-3a14-4a76-bd41-f483fdf78d50} -->
 {
 	_class = "CParticleSystemDefinition"
 	m_bShouldHitboxesFallbackToRenderBounds = false
@@ -86,7 +86,11 @@
 	[
 		{
 			_class = "C_OP_InstantaneousEmitter"
-			m_nParticlesToEmit = 10
+			m_nParticlesToEmit = 
+			{
+				m_nType = "PF_TYPE_LITERAL"
+				m_flLiteralValue = 10.0
+			}
 		},
 	]
 	m_ForceGenerators = 
@@ -107,25 +111,7 @@
 	m_Children = 
 	[
 		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_ground_cracks.vpcf"
-		},
-		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_ground_rope.vpcf"
-		},
-		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_g.vpcf"
-		},
-		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_column.vpcf"
-		},
-		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_f.vpcf"
-		},
-		{
 			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_b.vpcf"
-		},
-		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_collumn_b.vpcf"
 		},
 		{
 			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_smoke.vpcf"
@@ -134,22 +120,13 @@
 			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_h.vpcf"
 		},
 		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_glow.vpcf"
-		},
-		{
 			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_rope.vpcf"
-		},
-		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_ground.vpcf"
 		},
 		{
 			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_end_smoke.vpcf"
 		},
 		{
 			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_ember.vpcf"
-		},
-		{
-			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_end_swirl.vpcf"
 		},
 		{
 			m_ChildRef = resource:"particles/units/heroes/hero_nevermore/nevermore_shadowraze_flek.vpcf"
@@ -162,7 +139,7 @@
 			m_DefaultHSVColor = [ 255, 0, 0, 255 ]
 		},
 	]
-	m_nBehaviorVersion = 6
+	m_nBehaviorVersion = 10
 	m_nFirstMultipleOverride_BackwardCompat = 6
 	m_controlPointConfigurations = 
 	[

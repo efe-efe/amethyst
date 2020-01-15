@@ -18,6 +18,10 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.healing_reduction_pct = 0
 end
 
+function CDOTA_BaseNPC:InterruptCastPoint()
+	self:RemoveModifierByName("modifier_cast_point")
+end
+
 function CDOTA_BaseNPC:HideHealthBar()
 	self:AddNewModifier(self, nil, "modifier_hide_bar", {})
 end
@@ -193,7 +197,7 @@ function CDOTA_BaseNPC:GiveManaPercent( percentage, source )
 end
 
 function CDOTA_BaseNPC:IsSilenced()
-    return self:HasModifier("modifier_generic_silenced_lua")
+    return self:HasModifier("modifier_generic_silenced")
 end
 
 function CDOTA_BaseNPC:HasFear()

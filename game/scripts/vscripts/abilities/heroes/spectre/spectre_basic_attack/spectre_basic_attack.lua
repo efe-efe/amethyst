@@ -71,7 +71,7 @@ function spectre_basic_attack:OnCastPointEnd()
 			--Apply charged weapon effects
 			if charged then
 				--Silence enemy
-				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced_lua", { duration = silence_duration })
+				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced", { duration = silence_duration })
 				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", { duration = desolate_duration })
 
 

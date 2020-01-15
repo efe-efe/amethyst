@@ -1,40 +1,26 @@
 nevermore_ultimate = class({})
-LinkLuaModifier( "modifier_nevermore_ultimate_scepter", "lua_abilities/nevermore_ultimate/modifier_nevermore_ultimate_scepter", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_nevermore_ultimate", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate", LUA_MODIFIER_MOTION_NONE )
-
+LinkLuaModifier( "modifier_nevermore_ultimate_attract", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate_attract", LUA_MODIFIER_MOTION_NONE )
 
 function nevermore_ultimate:OnStopPseudoCastPoint()
-	self:StopEffects1( false )
+	self:StopEffectsOnCastPoint( false )
+
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_ultimate:OnSpellStart()
-	-- Initialize variables
 	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-	self:PlayEffects1()
-	
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=2.0, activity=ACT_DOTA_CAST_ABILITY_6, rate=1.2})
-	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
-		duration = cast_point,
-		can_walk = 0,
-		no_target = 1
-	})
-    ProgressBars:AddProgressBar(caster, "modifier_cast_point_old", {
-		style = "Ultimate",
-		text = "ultimate",
-		progressBarType = "duration",
-		priority = 1,
-		reversedProgress = true,
-	})
+	local origin = caster:GetOrigin()
+	local radius = self:GetSpecialValueFor("radius")
+
+	caster:AddNewModifier(caster, self, "modifier_nevermore_ultimate_attract", { duration = self:GetSpecialValueFor("cast_point") })
+	self:PlayEffectsOnCastPoint()
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function nevermore_ultimate:OnCastPointEnd()
-	-- get number of souls
 	local lines = 5
 	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )
 	if modifier~=nil then
@@ -42,7 +28,6 @@ function nevermore_ultimate:OnCastPointEnd()
 		modifier:Destroy()
 	end
 
-	-- explode
 	self:Explode( lines )
 end
 
@@ -62,6 +47,9 @@ function nevermore_ultimate:Explode( lines )
 	-- create linear projectile
 	local initial_angle_deg = self:GetCaster():GetAnglesAsVector().y
 	local delta_angle = 360/lines
+
+	local counter = 0
+
 	for i=0, lines-1 do
 		-- Determine velocity
 		local facing_angle_deg = initial_angle_deg + delta_angle * i
@@ -111,7 +99,9 @@ function nevermore_ultimate:Explode( lines )
                     ability = self,
                 }
                 ApplyDamage( damage )
-    
+				
+				counter = counter + 1
+				print(counter)
                 -- apply modifier
                 unit:AddNewModifier(
                     _self.Source,
@@ -130,25 +120,22 @@ function nevermore_ultimate:Explode( lines )
     end
     
 	-- Play effects
-	self:StopEffects1( true )
+	self:StopEffectsOnCastPoint( true )
 	self:PlayEffects2( lines )
+
+	self:GetCaster():GiveMana(100)
 end
 
 
 --------------------------------------------------------------------------------
 -- Effects
-function nevermore_ultimate:PlayEffects1()
-	-- Get Resources
+function nevermore_ultimate:PlayEffectsOnCastPoint()
 	local particle_precast = "particles/units/heroes/hero_nevermore/nevermore_wings.vpcf"
-	local sound_precast = "Hero_Nevermore.ROS.Arcana.Cast"
-
-	-- Create Particles
+	EmitGlobalSound("Hero_Nevermore.ROS.Arcana.Cast")
 	self.effect_precast = ParticleManager:CreateParticle( particle_precast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )	
-
-	-- Play Sounds
-	EmitGlobalSound(sound_precast)
 end
-function nevermore_ultimate:StopEffects1( success )
+
+function nevermore_ultimate:StopEffectsOnCastPoint( success )
 	-- Get Resources
 	local sound_precast = "Hero_Nevermore.ROS.Arcana.Cast"
 
@@ -185,9 +172,10 @@ function nevermore_ultimate:PlayEffects_b( pos )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	nevermore_ultimate,
-	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
-	{ movement_speed = 10 }
+	{ activity = ACT_DOTA_CAST_ABILITY_6, rate = 1.2 },
+	{ movement_speed = 0 }
 )

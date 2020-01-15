@@ -12,7 +12,7 @@ effects[1].control_points[3] = "origin"
 --------------------------------------------------------------------------------
 -- Classifications
 function modifier_generic_displacement:IsHidden()
-	return true
+	return false
 end
 
 function modifier_generic_displacement:IsPurgable()
@@ -23,16 +23,21 @@ end
 -- Initializations
 function modifier_generic_displacement:OnCreated( params )
 	if IsServer() then
-        -- references
 		self.distance = params.r
 		self.direction = Vector(params.x,params.y,0):Normalized()
 		self.speed = params.speed -- special value
+
 		self.previous_origin = self:GetParent():GetOrigin()
 		self.origin = self:GetParent():GetOrigin()
+		self.initial_origin = self:GetParent():GetOrigin()
+		
 		self.i_frame = params.i_frame == 1 and true or false
 		self.colliding = params.colliding == 1 and true or false
 		self.collide_with_ent = params.collide_with_ent == 1 and true or false
+		self.interrupt = params.interrupt == nil and true or false
 		self.damage_on_collision = params.damage_on_collision or nil
+		self.called_callback_on_half = false
+
 		self.restricted = params.restricted
 		self.effect = params.effect
 
@@ -44,7 +49,7 @@ function modifier_generic_displacement:OnCreated( params )
 			self.restricted = true
 		end
 		
-		local activity = params.activity or ACT_DOTA_FLAIL
+		local activity = params.activity or 1
 		local rate = params.rate or 1.0
 		local translate = params.translate or nil
 
@@ -69,13 +74,6 @@ function modifier_generic_displacement:OnCreated( params )
 		if self:ApplyHorizontalMotionController() == false then
 			self:Destroy()
 		end
-		
-		StartAnimation(self:GetParent(), {
-			duration = 100,
-			activity = activity, 
-			rate = rate, 
-			translate = translate,
-		})
 
 		if self.i_frame then
 			self:GetCaster():HideHealthBar()
@@ -85,6 +83,12 @@ function modifier_generic_displacement:OnCreated( params )
 			self:SetStackCount(self.effect)
 			self:PlayEffects()
 		end
+
+		if self.interrupt then
+			self:GetParent():InterruptCastPoint()
+		end
+
+		self:SetStackCount(activity)
 	end
 end
 
@@ -116,6 +120,17 @@ end
 function modifier_generic_displacement:SyncTime( iDir, dt )
 	local actual_z = GetGroundPosition(self:GetParent():GetOrigin(), self:GetParent()).z
 
+	if not self.called_callback_on_half then
+		local distance = (self.initial_origin - self:GetParent():GetOrigin()):Length2D()
+
+		if distance >= self.distance/2 then
+			if self:GetAbility().OnDisplacementHalf then
+				self:GetAbility():OnDisplacementHalf()
+			end
+			self.called_callback_on_half = true
+		end
+	end
+
 	-- check if already synced
 	if self.motionTick[1]==self.motionTick[2] then
 		self.motionTick[0] = self.motionTick[0] + 1
@@ -129,7 +144,6 @@ function modifier_generic_displacement:SyncTime( iDir, dt )
 	if self.elapsedTime > self.duration and self.motionTick[1]==self.motionTick[2] then
 		self:Destroy()
 	end
-
 	
 	if self.colliding and actual_z - self.previous_origin.z > 32  then
 		--Damage
@@ -163,6 +177,7 @@ function modifier_generic_displacement:SyncTime( iDir, dt )
 			self:Destroy()
 		end
 	end
+
 	self.previous_origin = self:GetParent():GetOrigin()
 end
 
@@ -188,7 +203,7 @@ function modifier_generic_displacement:UpdateVerticalMotion( me, dt )
 	local parent = self:GetParent()
 
 	-- set relative position
-	local target = self.vVelocity*self.elapsedTime + 0.5*self.gravity*self.elapsedTime*self.elapsedTime
+	local target = self.vVelocity * self.elapsedTime + 0.5 * self.gravity * self.elapsedTime * self.elapsedTime
 
 	-- change height
 	parent:SetOrigin( Vector( parent:GetOrigin().x, parent:GetOrigin().y, self.origin.z+target ) )
@@ -218,14 +233,10 @@ end
 -- Graphics & Sounds
 function modifier_generic_displacement:PlayEffects()
 	local particle_cast = effects[self:GetStackCount()].particle
-
-	PrintTable(effects)
-	print(particle_cast)
 	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	
 	for _,cp in pairs(effects[self:GetStackCount()].control_points) do
 		if cp == "origin" then
-			print("HEY")
 			ParticleManager:SetParticleControl( self.effect_cast, _, self:GetParent():GetOrigin())
 		end
 	end
@@ -234,4 +245,28 @@ end
 function modifier_generic_displacement:StopEffects()
 	ParticleManager:DestroyParticle( self.effect_cast, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )    
+end
+
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_generic_displacement:DeclareFunctions()
+	local funcs = {
+		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
+		MODIFIER_PROPERTY_TRANSLATE_ACTIVITY_MODIFIERS
+	}
+
+	return funcs
+end
+--------------------------------------------------------------------------------
+-- Graphics & animations
+function modifier_generic_displacement:GetOverrideAnimation()
+	if self:GetStackCount() == 1 or self:GetStackCount() == 2 then
+		return ACT_DOTA_FLAIL
+	end
+end
+
+function modifier_generic_displacement:GetActivityTranslationModifiers(...)
+	if self:GetStackCount() == 2 then
+		return "forcestaff_friendly"
+	end
 end

@@ -1,102 +1,56 @@
 nevermore_mobility = class({})
 LinkLuaModifier( "modifier_nevermore_mobility_movement", "abilities/heroes/nevermore/nevermore_mobility/modifier_nevermore_mobility_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
-LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
-
---------------------------------------------------------------------------------
--- Ability Start
-function nevermore_mobility:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = self:GetCastPoint()
-
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration= cast_point + 0.1, activity=ACT_DOTA_RAZE_1, rate=1.1})
-	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
-		duration = cast_point, 
-		can_walk = 0,
-	})
-end
 
 function nevermore_mobility:OnCastPointEnd()
     local caster = self:GetCaster()
-    local origin = caster:GetOrigin()
-	local damage = self:GetAbilityDamage()
+    self.origin = caster:GetOrigin()
+
+	local damage = self:GetSpecialValueFor("ability_damage")
     local min_range = self:GetSpecialValueFor("min_range")
     local slow_duration = self:GetSpecialValueFor("slow_duration")
-    local mana_gain = self:GetSpecialValueFor("mana_gain")/100
-    local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+    local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
+	local point = CalcRange(self.origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 
-    local speed = 1800
-    local direction = (point - origin):Normalized()
+    local direction = (point - self.origin):Normalized()
+    local distance = (point - self.origin):Length2D()
+    local speed = (distance/0.5)
 	local basic_attack = caster:FindAbilityByName("nevermore_basic_attack")
 
-    -- determine target position
-    local difference = (point - origin):Length2D()
-
-    local x = point.x - origin.x
-    local y = point.y - origin.y
-
+    caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source
-        "modifier_nevermore_mobility_movement", -- modifier name
+        "modifier_generic_displacement", -- modifier name
         {
-            x = x,
-            y = y,
-            r = difference,
+            x = direction.x,
+            y = direction.y,
+            r = distance,
             speed = speed,
+            peak = 0,
+            colliding = 0,
+            activity = 2,
         } -- kv
     )
 
-    -- Initialize variables
 	local offset = 100
-	local damage = 10--self:GetSpecialValueFor("damage")
-
-	-- load data
-    local projectile_name = ""
-	local projectile_start_radius = 150
-	local projectile_end_radius = 150
-	local projectile_distance = difference
-	local projectile_speed = speed
-    local projectile_direction = direction
+	local hitbox = 150
 	
     local projectile = {
-        EffectName = projectile_name,
-        vSpawnOrigin = origin,
-        fDistance = projectile_distance,
-        fStartRadius = projectile_start_radius,
-        fEndRadius = projectile_end_radius,
+        vSpawnOrigin = self.origin,
+        fDistance = distance,
+        fUniqueRadius = hitbox,
         Source = caster,
-        fExpireTime = 8.0,
-        vVelocity = projectile_direction * projectile_speed,
+        vVelocity = direction * speed,
         UnitBehavior = PROJECTILES_NOTHING,
-        bMultipleHits = false,
-        bIgnoreSource = true,
         TreeBehavior = PROJECTILES_NOTHING,
-        bCutTrees = true,
-        bTreeFullCollision = false,
         WallBehavior = PROJECTILES_DESTROY,
         GroundBehavior = PROJECTILES_NOTHING,
         fGroundOffset = 0,
-        nChangeMax = 1,
-        bRecreateOnChange = true,
-        bZCheck = false,
-        bGroundLock = true,
-        bProvidesVision = true,
         bIsReflectable = false,
         bIsSlowable = false,
-        iVisionRadius = 200,
-        iVisionTeamNumber = caster:GetTeam(),
-        bFlyingVision = false,
-        fVisionTickTime = .1,
-        fVisionLingerDuration = 1,
-        draw = false,
-        fRehitDelay = 0.2,
         UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
         OnUnitHit = function(_self, unit) 
-            -- Count targets
 			local counter = 0
 			for k, v in pairs(_self.rehit) do
 				counter = counter + 1
@@ -108,23 +62,21 @@ function nevermore_mobility:OnCastPointEnd()
                 damage = damage,
                 damage_type = DAMAGE_TYPE_PURE,
             }
-
             ApplyDamage( damage_table )
 
-            if unit:IsRealHero() then 
-                _self.Source:AddNewModifier(
-                    _self.Source,
-                    basic_attack,
-                    "modifier_nevermore_souls",
-                    { duration = basic_attack:GetSpecialValueFor("duration") }
-                )
+            if _self.Source == caster and not unit:IsObstacle() then
+                for i = 0, 1 do
+                    caster:AddNewModifier(
+                        caster,
+                        basic_attack,
+                        "modifier_nevermore_souls",
+                        { duration = basic_attack:GetSpecialValueFor("duration") }
+                    )
+                end
                 
-                _self.Source:AddNewModifier(
-                    _self.Source,
-                    basic_attack,
-                    "modifier_nevermore_souls",
-                    { duration = basic_attack:GetSpecialValueFor("duration") }
-                )
+                if counter == 1 then
+                    caster:GiveManaPercent(mana_gain_pct, unit)
+                end
             end
 
             -- Add modifier
@@ -134,49 +86,57 @@ function nevermore_mobility:OnCastPointEnd()
                 "modifier_generic_fading_slow", -- modifier name
                 { duration = slow_duration } -- kv
             )
-
-            -- Give Mana
-			if counter == 1 then
-				local mana_gain_final = _self.Source:GetMaxMana() * mana_gain
-				_self.Source:GiveMana(mana_gain_final)
-            end
-            
-            self:PlayEffects_c(unit)
+            self:PlayEffectsOnImpact(unit)
         end,
-        OnFinish = function(_self, pos)
-            self:PlayEffects_b(pos)
+        OnThinkBegin = function(_self)
+            local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
+            local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+            ParticleManager:SetParticleControl( effect_cast, 0, _self.currentPosition - direction * 80)
+            ParticleManager:SetParticleControl( effect_cast, 1, Vector( 250, 1, 1 ) )
+            ParticleManager:ReleaseParticleIndex( effect_cast )
         end,
     }
-    -- Cast projectile
-    self:PlayEffects_a()
+
     Projectiles:CreateProjectile(projectile)
+    self:PlayEffectsOnCast()
+
+    self:EndCooldown()
+end
+
+
+function nevermore_mobility:OnDisplacementEnd()
+    self:PlayEffectsOnDisplacementEnd()
+end
+
+function nevermore_mobility:OnDisplacementHalf()
+    self:PlayEffectsOnDisplacementHalf()
 end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-
--- On Spell start
-function nevermore_mobility:PlayEffects_a()
-    local caster = self:GetCaster()
-    -- Cast Sound
-    local sound_cast = "Hero_Nevermore.Death"
-    EmitSoundOn(sound_cast, caster)
+function nevermore_mobility:PlayEffectsOnCast()
+    EmitSoundOn("Hero_Nevermore.Death", self:GetCaster())
 end
 
--- On Projectile Finish
-function nevermore_mobility:PlayEffects_b( pos )
+function nevermore_mobility:PlayEffectsOnDisplacementHalf()
+    local particle_cast = "particles/econ/items/shadow_fiend/sf_desolation/sf_desolation_scratch.vpcf"
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin()) 
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
--- On Projectile Hit enemy
-function nevermore_mobility:PlayEffects_c( hTarget )
-    -- Cast Sound
-    local sound_cast = "Hero_Nevermore.ProjectileImpact"
-    EmitSoundOn(sound_cast, hTarget)
+function nevermore_mobility:PlayEffectsOnDisplacementEnd()
+    local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl( effect_cast, 1, Vector( 250, 1, 1 ) )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+end
 
-	-- Get Resources
+function nevermore_mobility:PlayEffectsOnImpact( hTarget )
 	local projectile_name = "particles/units/heroes/hero_nevermore/nevermore_necro_souls.vpcf"
+    EmitSoundOn("Hero_Nevermore.ProjectileImpact", hTarget)
 
-	-- CreateProjectile
 	local info = {
 		Target = self:GetCaster(),
 		Source = hTarget,
@@ -194,6 +154,6 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	nevermore_mobility,
-	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
-	{ movement_speed = 10 }
+	{ activity = ACT_DOTA_RAZE_1, rate = 1.1 },
+	{ movement_speed = 0 }
 )

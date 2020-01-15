@@ -1,23 +1,23 @@
-modifier_nevermore_special_attack_thinker = class({})
+modifier_nevermore_counter_thinker = class({})
 
-function modifier_nevermore_special_attack_thinker:OnCreated()
+function modifier_nevermore_counter_thinker:OnCreated()
     if IsServer() then
         self.origin = self:GetParent():GetOrigin()
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
         self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
         self:StartIntervalThink( self.delay_time )
-		self:PlayEffects()
+        self:PlayEffects()
     end
 end
 
-function modifier_nevermore_special_attack_thinker:OnDestroy()
-	if IsServer() then
-		self:StopEffects()
+function modifier_nevermore_counter_thinker:OnDestroy()
+    if IsServer() then
+        self:StopEffects()
 		UTIL_Remove( self:GetParent() )
 	end
 end
 
-function modifier_nevermore_special_attack_thinker:OnIntervalThink()
+function modifier_nevermore_counter_thinker:OnIntervalThink()
     local enemies = self:GetCaster():FindUnitsInRadius(
         self.origin, 
         self.radius, 
@@ -53,16 +53,24 @@ function modifier_nevermore_special_attack_thinker:OnIntervalThink()
                 effect = 1
             } -- kv
         )
-        self:PlayEffectsOnDelayEnds( enemy:GetOrigin() )
     end
-	self:Destroy()
+
+    FindClearSpaceForUnit( self:GetCaster(), self:GetParent():GetOrigin() , true )
+
+    self:GetCaster():RemoveNoDraw()
+    self:GetCaster():RemoveModifierByName("modifier_banish")
+
+    StartAnimation(self:GetCaster(), { 
+        duration = 0.5, 
+        activity = ACT_DOTA_RAZE_2, 
+        rate = 1.2
+    })
+
+    self:PlayEffectsOnDelayEnds()
+    self:Destroy()
 end
 
-function modifier_nevermore_special_attack_thinker:PlayEffectsOnDelayEnds( pos )
-	EmitSoundOnLocationWithCaster( pos, "Hero_Nevermore.Shadowraze", self:GetCaster() )
-end
-
-function modifier_nevermore_special_attack_thinker:PlayEffects()
+function modifier_nevermore_counter_thinker:PlayEffects()
     local particle_cast = "particles/units/heroes/hero_shadow_demon/shadow_demon_soul_catcher_v2_ground01.vpcf"
     self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( self.effect_cast, 0, self.origin )
@@ -71,7 +79,28 @@ function modifier_nevermore_special_attack_thinker:PlayEffects()
     ParticleManager:SetParticleControl( self.effect_cast, 3, Vector(self.radius, 0, 0) )
 end
 
-function modifier_nevermore_special_attack_thinker:StopEffects()
+function modifier_nevermore_counter_thinker:StopEffects()
 	ParticleManager:DestroyParticle( self.effect_cast, false )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )    
+end
+
+function modifier_nevermore_counter_thinker:PlayEffectsOnDelayEnds()
+    local caster = self:GetCaster()
+	EmitSoundOn( "Hero_Nevermore.Shadowraze", caster )
+
+	local particle_cast = "particles/econ/events/ti9/blink_dagger_ti9_end.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+    
+    -- create particle
+	local particle_cast_b = "particles/econ/events/ti9/phase_boots_ti9_body_magic.vpcf"
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, caster:GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+
+	particle_cast_b = "particles/earthshaker_arcana_aftershock.vpcf"
+	effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, caster:GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
 end

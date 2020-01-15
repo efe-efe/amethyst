@@ -9,7 +9,8 @@ function modifier_generic_fear:OnCreated( params )
         )
 
         self:GetParent():ForceDirection( direction )
-        self:GetParent():AddNewModifier(self:GetCaster(), nil, "modifier_generic_silenced_lua", { duration = self:GetDuration() })
+        self:GetParent():InterruptCastPoint()
+        self:GetParent():AddNewModifier(self:GetCaster(), nil, "modifier_generic_silenced", { duration = self:GetDuration() })
         self:GetParent():AddStatusBar({ label = "Fear", modifier = self, priority = 5, stylename="Fear" }) 
     end
 end
@@ -17,7 +18,7 @@ end
 function modifier_generic_fear:OnDestroy()
     if IsServer() then
         self:GetParent():UnforceDirection()
-        self:GetParent():RemoveModifierByName("modifier_generic_silenced_lua")
+        self:GetParent():RemoveModifierByName("modifier_generic_silenced")
     end
 end
 

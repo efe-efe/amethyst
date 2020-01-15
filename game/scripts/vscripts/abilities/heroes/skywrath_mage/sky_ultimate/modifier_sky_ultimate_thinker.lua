@@ -71,8 +71,8 @@ function modifier_sky_ultimate_thinker:OnIntervalThink()
 
         ApplyDamage( damage )
 
-        if enemy:HasModifier("modifier_generic_silenced_lua") then
-            enemy:AddNewModifier(caster, self , "modifier_generic_silenced_lua", { 
+        if enemy:HasModifier("modifier_generic_silenced") then
+            enemy:AddNewModifier(caster, self , "modifier_generic_silenced", { 
                 duration = self:GetRemainingTime()
             })
         end

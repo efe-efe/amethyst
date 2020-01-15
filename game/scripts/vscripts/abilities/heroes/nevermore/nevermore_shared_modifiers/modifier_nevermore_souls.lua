@@ -18,35 +18,30 @@ end
 -- Initializer
 function modifier_nevermore_souls:OnCreated()
     self.damage_per_stack = self:GetAbility():GetSpecialValueFor( "damage_per_stack" )
-    self.max_stacks = self:GetAbility():GetSpecialValueFor( "max_stacks" )
-
-    if IsServer() then
+	self.max_stacks = self:GetAbility():GetSpecialValueFor( "max_stacks" )
+	
+	if IsServer() then
 	    self:SetStackCount(1)
-        -- Start Interval
+		GameMode:UpdateHeroStacks(self:GetParent(), 1)
     end
 end
 
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_nevermore_souls:OnRefresh()
-    self.damage_per_stack = self:GetAbility():GetSpecialValueFor( "damage_per_stack" )
-    self.max_stacks = self:GetAbility():GetSpecialValueFor( "max_stacks" )
+	if IsServer() then
 
-    if IsServer() then
-	    self:IncrementStackCount()
-        -- Start Interval
+		if self:GetStackCount() < self.max_stacks then
+			self:IncrementStackCount()
+			GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
+		end
     end
 end
 
-function modifier_nevermore_souls:OnStackCountChanged( old )
+function modifier_nevermore_souls:OnDestroy()
 	if IsServer() then
-		if self:GetStackCount() < 1 then
-			self:Destroy()
-		end
-		if self:GetStackCount() > self.max_stacks then
-			self:SetStackCount(self.max_stacks)
-		end
-	end
+		GameMode:UpdateHeroStacks(self:GetParent(), 0)
+    end
 end
 
 --------------------------------------------------------------------------------
