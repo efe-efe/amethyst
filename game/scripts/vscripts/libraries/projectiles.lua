@@ -2,21 +2,18 @@ PROJECTILES_VERSION = "1.00"
 
 PROJECTILES_THINK = 0.01
 
--- Default constants
 PROJECTILES_NOTHING = 0
 PROJECTILES_DESTROY = 1
 PROJECTILES_BOUNCE = 2
 PROJECTILES_FOLLOW = 3
 SPEED_FACTOR = 1.0
 
--- Initialize Projectiles Library
 if Projectiles == nil then
     print ( '[PROJECTILES] creating Projectiles' )
     Projectiles = {}
     Projectiles.__index = Projectiles
 end
 
--- Generate the thinkers
 function Projectiles:start()
     Projectiles = self
 

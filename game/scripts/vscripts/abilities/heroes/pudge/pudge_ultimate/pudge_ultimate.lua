@@ -6,7 +6,6 @@ function pudge_ultimate:OnCastPointEnd()
 	local duration = self:GetSpecialValueFor("duration")
 
 	caster:AddNewModifier(caster, self, "modifier_pudge_ultimate", { duration = duration }) 
-	caster:GiveMana(100)
 	self:PlayEffectsOnCast()
 end
 

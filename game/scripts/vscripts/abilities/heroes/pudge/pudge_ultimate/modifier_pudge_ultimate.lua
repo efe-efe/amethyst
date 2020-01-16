@@ -10,8 +10,15 @@ function modifier_pudge_ultimate:OnCreated()
         self.counter = 0
         self.effects_cast = {}
         self:StartIntervalThink(self.interval)
+
+        if IsServer() then 
+            self:GetParent():AddStatusBar({
+                label = "Ultimate", modifier = self, priority = 6, stylename="Ultimate"
+            })
+        end
     end
 end
+
 
 function modifier_pudge_ultimate:OnDestroy()
 	if IsServer() then
@@ -45,8 +52,8 @@ function modifier_pudge_ultimate:OnIntervalThink()
     
     
     self:PlayEffects(self.counter, origin)
-    self.counter = self.counter + 1
-    self:PlayEffectsAoe(origin)
+    self:PlayEffectsAoe(self.counter + 1, origin)
+    self.counter = self.counter + 2
 end
 
 function modifier_pudge_ultimate:PlayEffects( index, origin )
@@ -55,28 +62,23 @@ function modifier_pudge_ultimate:PlayEffects( index, origin )
 
     
     local particle_cast = "particles/econ/items/pudge/pudge_arcana/pudge_arcana_dismember_default.vpcf"
-    self.effects_cast[self.counter] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( self.effects_cast[self.counter], 0, origin )
-    
-    if index == 0 then
-        particle_cast = "particles/units/heroes/hero_shadow_demon/shadow_demon_soul_catcher_v2_ground01.vpcf"
-        self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-        ParticleManager:SetParticleControl( self.effect_cast, 0, origin )
-        ParticleManager:SetParticleControl( self.effect_cast, 1, origin )
-        ParticleManager:SetParticleControl( self.effect_cast, 2, origin )
-        ParticleManager:SetParticleControl( self.effect_cast, 3, Vector(self.radius, 0, 0) )
-    end
+    self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 0, origin )
 end
 
-function modifier_pudge_ultimate:PlayEffectsAoe(origin)
-    local particle_cast = "particles/aoe_marker.vpcf"
-
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+function modifier_pudge_ultimate:PlayEffectsAoe( index, origin)
+    local effect_cast = ParticleManager:CreateParticle( "particles/aoe_marker.vpcf", PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( effect_cast, 0, origin)
     ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
     ParticleManager:SetParticleControl( effect_cast, 2, Vector( 255, 1, 1 ) )
     ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
+
+    self.effects_cast[index] = ParticleManager:CreateParticle( "particles/units/heroes/hero_shadow_demon/shadow_demon_soul_catcher_v2_ground01.vpcf", PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 0, origin )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 1, origin )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 2, origin )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 3, Vector(self.radius, 0, 0) )
 end
 
 function modifier_pudge_ultimate:StopEffects()
@@ -84,8 +86,4 @@ function modifier_pudge_ultimate:StopEffects()
         ParticleManager:DestroyParticle( effect_cast, false )
         ParticleManager:ReleaseParticleIndex( effect_cast )    
     end
-
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )    
-    
 end
