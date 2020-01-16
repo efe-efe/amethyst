@@ -70,7 +70,7 @@ function nevermore_mobility:OnCastPointEnd()
                         caster,
                         basic_attack,
                         "modifier_nevermore_souls",
-                        { duration = basic_attack:GetSpecialValueFor("duration") }
+                        {}
                     )
                 end
                 

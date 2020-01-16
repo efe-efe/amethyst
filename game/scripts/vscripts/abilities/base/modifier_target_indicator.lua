@@ -69,11 +69,12 @@ function modifier_target_indicator:PlayEffects()
 
 	if self.public then
 		if self.no_target ~= 1 then
-			self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent)
+			self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, self.parent)
 		end
 		if self.radius ~= nil then
             self.effect_cast_aoe = ParticleManager:CreateParticle( particle_cast_aoe, PATTACH_WORLDORIGIN, self.parent)
 			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, mouse)
+			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, mouse)
 			ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
 		end
 	else

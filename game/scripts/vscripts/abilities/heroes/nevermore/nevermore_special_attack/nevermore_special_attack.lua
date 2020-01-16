@@ -1,5 +1,4 @@
 nevermore_special_attack = class({})
-LinkLuaModifier( "modifier_nevermore_special_attack_thinker", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
 
 function nevermore_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -7,27 +6,17 @@ function nevermore_special_attack:OnCastPointEnd()
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
 
-	CreateModifierThinker(
-		caster, --hCaster
-		self, --hAbility
-		"modifier_thinker_indicator", --modifierName
-		{ 
-			thinker = "modifier_nevermore_special_attack_thinker",
-			show_all = 1,
-			radius = radius,
-			delay_time = delay_time,
-			draw_clock = 1
-			--thinker_duration = duration + delay_time ,
-		}, --paramTable
-		point, --vOrigin
-		caster:GetTeamNumber(), --nTeamNumber
-		false --bPhantomBlocker
-	)
+	local particle_cast = "particles/econ/items/oracle/oracle_fortune_ti7/oracle_fortune_ti7_aoe.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
+	ParticleManager:SetParticleControl( effect_cast, 3, caster:GetOrigin() )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+	
+	self:EndCooldown()
 end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	nevermore_special_attack,
 	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
-	{ movement_speed = 10 }
+	{ movement_speed = 80 }
 )

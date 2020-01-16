@@ -14,7 +14,6 @@ function nevermore_basic_attack:OnCastPointEnd()
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
     local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 	local attack_damage = caster:GetAttackDamage() -- or self:GetSpecialValueFor("ability_damage")
-	local duration = self:GetSpecialValueFor("duration")
 	local stacks = SafeGetModifierStacks("modifier_nevermore_souls", caster, caster)
 
 	-- Projectile
@@ -50,7 +49,7 @@ function nevermore_basic_attack:OnCastPointEnd()
 					caster,
 					self,
 					"modifier_nevermore_souls",
-					{ duration = duration }
+					{}
 				)
 
 				self:PlayEffectsSoul(unit)

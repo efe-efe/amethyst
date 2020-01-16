@@ -137,14 +137,14 @@ function nevermore_special_attack:TornadoLogic( hSource, hTarget )
 		hSource,
 		basic_attack,
 		"modifier_nevermore_souls",
-		{ duration = basic_attack:GetSpecialValueFor("duration") }
+		{}
 	)
 	--Add stack
 	hSource:AddNewModifier(
 		hSource,
 		basic_attack,
 		"modifier_nevermore_souls",
-		{ duration = basic_attack:GetSpecialValueFor("duration") }
+		{}
 	)
 
 	hTarget:AddNewModifier(

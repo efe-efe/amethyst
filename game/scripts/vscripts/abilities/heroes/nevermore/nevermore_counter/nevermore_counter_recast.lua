@@ -1,29 +1,90 @@
 nevermore_counter_recast = class({})
-LinkLuaModifier( "modifier_nevermore_counter_thinker", "abilities/heroes/nevermore/nevermore_counter/modifier_nevermore_counter_thinker", LUA_MODIFIER_MOTION_NONE )
 
 function nevermore_counter_recast:OnCastPointEnd()
-    local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local caster = self:GetCaster()
+	local origin = caster:GetOrigin()
+	
+	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
+	local damage = self:GetSpecialValueFor("ability_damage")
+	
+	FindClearSpaceForUnit( caster, point , true )
+	caster:RemoveNoDraw()
+	caster:RemoveModifierByName("modifier_banish")
+	
+	local enemies = self:GetCaster():FindUnitsInRadius(
+		caster:GetOrigin(), 
+		radius, 
+		DOTA_UNIT_TARGET_TEAM_ENEMY, 
+		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+		DOTA_UNIT_TARGET_FLAG_NONE,
+		FIND_ANY_ORDER
+	)
 
-	CreateModifierThinker(
-		caster, --hCaster
-		self, --hAbility
-		"modifier_thinker_indicator", --modifierName
-		{ 
-			thinker = "modifier_nevermore_counter_thinker",
-			show_all = 1,
-			radius = radius,
-			delay_time = delay_time,
-			--thinker_duration = duration + delay_time ,
-			draw_clock = 1
-		}, --paramTable
-		point, --vOrigin
-		caster:GetTeamNumber(), --nTeamNumber
-		false --bPhantomBlocker
-    )
+	-- for each affected enemies
+	for _,enemy in pairs(enemies) do
+		-- Apply damage
+		local damage_table = {
+			victim = enemy,
+			attacker = caster,
+			damage = damage,
+			damage_type = DAMAGE_TYPE_MAGICAL,
+		}
+		ApplyDamage( damage_table )
+
+		enemy:RemoveModifierByName("modifier_generic_displacement")
+		enemy:AddNewModifier(
+			caster, -- player source
+			self, -- ability source
+			"modifier_generic_displacement", -- modifier name
+			{
+				x = 0,
+				y = 0,
+				r = 300,
+				speed = 150,
+				peak = 500,
+				restricted = 1,
+				effect = 1
+			} -- kv
+		)
+	end
+
+	StartAnimation(caster, { 
+		duration = 0.5, 
+		activity = ACT_DOTA_RAZE_2, 
+		rate = 1.2
+	})
+
+	CreateRadiusMarker(caster, point, {
+		show_all = 1,
+		radius = radius
+	})
+
+	self:PlayEffectsOnCast()
 end
+
+function nevermore_counter_recast:PlayEffectsOnCast()
+    local caster = self:GetCaster()
+	EmitSoundOn( "Hero_Nevermore.Shadowraze", caster )
+
+	local particle_cast = "particles/econ/events/ti9/blink_dagger_ti9_end.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+    
+    -- create particle
+	local particle_cast_b = "particles/econ/events/ti9/phase_boots_ti9_body_magic.vpcf"
+	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, caster:GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+
+	particle_cast_b = "particles/earthshaker_arcana_aftershock.vpcf"
+	effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:SetParticleControl( effect_cast_b, 0, caster:GetOrigin() )
+    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+end
+
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 

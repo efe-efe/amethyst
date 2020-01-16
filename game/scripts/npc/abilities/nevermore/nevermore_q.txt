@@ -22,14 +22,13 @@
 		"ScriptFile"					"abilities/heroes/nevermore/nevermore_counter/nevermore_counter_recast"
 		"MaxLevel"						"1"
 
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityTextureName"			"nevermore_dark_lord"
 		"AbilityCastRange" 				"1200"
 
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"                "300" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"0.3" }
 		}
 	}
 }

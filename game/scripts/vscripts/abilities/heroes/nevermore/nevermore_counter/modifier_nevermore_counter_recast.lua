@@ -5,9 +5,14 @@ function modifier_nevermore_counter_recast:OnCreated(params)
 		local ability = self:GetParent():FindAbilityByName("nevermore_counter_recast")
 		local radius = ability:GetSpecialValueFor("radius")
 
-		self:GetParent():AddNewModifier(self:GetParent(), ability, "modifier_target_indicator_permanent", {
-			radius = radius,
-		})
+		self:GetParent():AddNewModifier(
+			self:GetParent(), 
+			ability, 
+			"modifier_target_indicator_permanent", 
+			{
+				radius = radius,
+				public = 1
+			})
 	end
 end
 

@@ -124,14 +124,14 @@ function nevermore_mobility:OnCastPointEnd( pos )
                     _self.Source,
                     basic_attack,
                     "modifier_nevermore_souls",
-                    { duration = basic_attack:GetSpecialValueFor("duration") }
+                    {}
                 )
                 
                 _self.Source:AddNewModifier(
                     _self.Source,
                     basic_attack,
                     "modifier_nevermore_souls",
-                    { duration = basic_attack:GetSpecialValueFor("duration") }
+                    {}
                 )
             end
 

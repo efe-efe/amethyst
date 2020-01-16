@@ -67,7 +67,7 @@ function nevermore_ex_second_attack:OnCastPointEnd( pos )
 					caster,
 					caster:FindAbilityByName("nevermore_basic_attack"),
 					"modifier_nevermore_souls",
-					{ duration = 4.0 }
+					{}
 				)
 				self:PlayEffects_b(enemies[1])
 			end
