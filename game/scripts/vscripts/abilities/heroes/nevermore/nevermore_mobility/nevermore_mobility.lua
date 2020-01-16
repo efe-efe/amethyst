@@ -99,8 +99,6 @@ function nevermore_mobility:OnCastPointEnd()
 
     Projectiles:CreateProjectile(projectile)
     self:PlayEffectsOnCast()
-
-    self:EndCooldown()
 end
 
 

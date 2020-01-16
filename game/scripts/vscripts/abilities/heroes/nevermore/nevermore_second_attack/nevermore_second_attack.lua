@@ -1,6 +1,8 @@
 nevermore_second_attack = class({})
 LinkLuaModifier( "modifier_nevermore_second_attack_recast", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_recast", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_nevermore_second_attack", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_nevermore_second_attack_debuff", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_debuff", LUA_MODIFIER_MOTION_NONE )
+
 
 function nevermore_second_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -15,7 +17,9 @@ function nevermore_second_attack:OnCastPointEnd()
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local radius = self:GetSpecialValueFor("radius")
 	local damage = self:GetSpecialValueFor("ability_damage")
-
+	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
+	local recast_duration = self:GetSpecialValueFor("recast_duration")
+	
 	-- Projectile
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_nevermore/invoker_tornado_ti6.vpcf",
@@ -28,13 +32,10 @@ function nevermore_second_attack:OnCastPointEnd()
 		TreeBehavior = PROJECTILES_NOTHING,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
-		bIsReflectable = false,
 		fGroundOffset = 80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
-		OnUnitHit = function(_self, unit) 
-		end,
 		OnFinish = function(_self, pos)
-			local enemies = caster:FindUnitsInRadius(
+			local enemies = _self.Source:FindUnitsInRadius(
 				pos, 
 				radius, 
 				DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -42,39 +43,47 @@ function nevermore_second_attack:OnCastPointEnd()
 				DOTA_UNIT_TARGET_FLAG_NONE,
 				FIND_ANY_ORDER
 			)
+
+			local damage_table = {
+				attacker = _self.Source,
+				damage_type = DAMAGE_TYPE_PURE,
+			}
 	
-			-- for each affected enemies
 			for _,enemy in pairs(enemies) do
-				-- Apply damage
-				local damage_table = {
-					victim = enemy,
-					attacker = caster,
-					damage = damage,
-					damage_type = DAMAGE_TYPE_MAGICAL,
-				}
+				local stacks = SafeGetModifierStacks("modifier_nevermore_second_attack_debuff", enemy)
+
+				damage_table.victim = enemy
+				damage_table.damage = damage + stacks * damage_per_stack
+
+
 				ApplyDamage( damage_table )
+
+				enemy:AddNewModifier(_self.Source, self, "modifier_nevermore_second_attack_debuff", { duration = recast_duration })
 			end
 	
-			if #enemies > 0 then
-				local modifier = caster:AddNewModifier(
-					caster,
-					self,
-					"modifier_nevermore_second_attack",
-					{}
-				)
-
-				if modifier:GetStackCount() <= self:GetSpecialValueFor("recasts") then
-					caster:AddNewModifier(
+			if _self.Source == caster then
+				if #enemies > 0 then
+					local modifier = caster:AddNewModifier(
 						caster,
 						self,
-						"modifier_nevermore_second_attack_recast",
-						{ duration = 5.0 }
+						"modifier_nevermore_second_attack",
+						{}
 					)
+
+					if modifier:GetStackCount() <= self:GetSpecialValueFor("recasts") then
+						caster:AddNewModifier(
+							caster,
+							self,
+							"modifier_nevermore_second_attack_recast",
+							{ duration = recast_duration }
+						)
+					else
+						caster:RemoveModifierByName("modifier_nevermore_second_attack")
+					end
+					caster:GiveManaPercent(mana_gain_pct, unit)
 				else
 					caster:RemoveModifierByName("modifier_nevermore_second_attack")
 				end
-
-				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
 
 			self:PlayEffectsRaze( pos, radius )
@@ -86,7 +95,7 @@ function nevermore_second_attack:OnCastPointEnd()
 end
 
 function nevermore_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "CAST_SOUND", self:GetCaster() )
+	EmitSoundOn( "Hero_Nevermore.Attack", self:GetCaster() )
 end
 
 function nevermore_second_attack:PlayEffectsRaze( pos, radius )

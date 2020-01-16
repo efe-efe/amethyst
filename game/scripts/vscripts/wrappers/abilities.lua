@@ -22,9 +22,16 @@ function Abilities.Initialize( ability, animation, warmup, recast )
         end
 
         local radius = nil
+
+ 
         if self:HasBehavior(DOTA_ABILITY_BEHAVIOR_AOE) then
-            radius = self:GetSpecialValueFor("radius")
+            if self.GetRadius then
+                radius = self:GetRadius() 
+            else
+                radius = self:GetSpecialValueFor("radius")
+            end
         end
+
 
         local modifier = caster:AddNewModifier( caster, self, "modifier_cast_point", { 
             duration = cast_point, 

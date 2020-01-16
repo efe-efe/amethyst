@@ -12,7 +12,8 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"			    "1.0" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"20" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"			    "1.0" }
 		}
 	}
 

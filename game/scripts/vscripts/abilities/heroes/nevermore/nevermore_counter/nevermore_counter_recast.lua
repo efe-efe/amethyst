@@ -7,7 +7,8 @@ function nevermore_counter_recast:OnCastPointEnd()
 	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
-	local damage = self:GetSpecialValueFor("ability_damage")
+	local ability = caster:FindAbilityByName("nevermore_counter")
+	local damage = ability:GetSpecialValueFor("ability_damage")
 	
 	FindClearSpaceForUnit( caster, point , true )
 	caster:RemoveNoDraw()
@@ -22,15 +23,14 @@ function nevermore_counter_recast:OnCastPointEnd()
 		FIND_ANY_ORDER
 	)
 
-	-- for each affected enemies
+	local damage_table = {
+		attacker = caster,
+		damage = damage,
+		damage_type = DAMAGE_TYPE_PURE,
+	}
+	
 	for _,enemy in pairs(enemies) do
-		-- Apply damage
-		local damage_table = {
-			victim = enemy,
-			attacker = caster,
-			damage = damage,
-			damage_type = DAMAGE_TYPE_MAGICAL,
-		}
+		damage_table.victim = enemy
 		ApplyDamage( damage_table )
 
 		enemy:RemoveModifierByName("modifier_generic_displacement")
@@ -45,7 +45,8 @@ function nevermore_counter_recast:OnCastPointEnd()
 				speed = 150,
 				peak = 500,
 				restricted = 1,
-				effect = 1
+				effect = 1,
+				i_frame = 1,
 			} -- kv
 		)
 	end

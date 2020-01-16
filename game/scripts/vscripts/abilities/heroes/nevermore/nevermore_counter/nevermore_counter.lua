@@ -18,8 +18,6 @@ function nevermore_counter:OnCastPointEnd()
             rate = 1.0
         } -- kv
     )
-
-    self:EndCooldown()
 end
 
 function nevermore_counter:OnTrigger( params )

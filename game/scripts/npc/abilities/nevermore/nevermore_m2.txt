@@ -21,8 +21,9 @@
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"				"80" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"radius"				"150" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"			"7" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"stack_duration"		"4.0" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"recast_duration"		"5.0" }
 			"08"{ "var_type"	"FIELD_INTEGER"		"recasts"				"2" }
+			"09"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"		"4" }
 		}
 	}
 }

@@ -76,7 +76,7 @@ function modifier_generic_displacement:OnCreated( params )
 		end
 
 		if self.i_frame then
-			self:GetCaster():HideHealthBar()
+			self:GetParent():HideHealthBar()
 		end
 
 		if self.effect then
@@ -102,7 +102,7 @@ function modifier_generic_displacement:OnDestroy( params )
 		FindClearSpaceForUnit( self:GetParent(), self:GetParent():GetOrigin() , true )
 
 		if self.i_frame then
-			self:GetCaster():UnhideHealthBar()
+			self:GetParent():UnhideHealthBar()
 		end
 
 		if self:GetAbility().OnDisplacementEnd then

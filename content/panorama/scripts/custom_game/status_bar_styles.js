@@ -98,6 +98,11 @@ styles["Infection"] = {
     color: "#1aed4e"
 }
 
+styles["Raze"] = {
+    backgroundColor: "#E55C34",
+    textShadow: CreateTextShadow("#DC8668"),
+    color: "#E8C070"
+}
 
 
 function CreateTextShadow( color ){
