@@ -1,4 +1,5 @@
 modifier_spectre_ultimate = class({})
+LinkLuaModifier( "modifier_spectre_special_attack_debuff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_debuff", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -19,7 +20,9 @@ function modifier_spectre_ultimate:OnCreated( params )
 		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
 		self.aoe_origin = Vector(params.x, params.y, 0)
 		self.radius = params.radius
-		
+		self.ability = self:GetCaster():FindAbilityByName("spectre_special_attack")
+		self.debuff_duration = 5.0
+
 		self.hit = false
 		self:StartIntervalThink(0.1)
 	end
@@ -30,6 +33,7 @@ function modifier_spectre_ultimate:OnIntervalThink()
 		if self.hit == false then
 			self.hit = true
 			
+			EmitSoundOn( "Hero_Spectre.DaggerImpact", self:GetParent() )
 			local damage = {
 				victim = self:GetParent(),
 				attacker = self:GetCaster(),
@@ -37,7 +41,14 @@ function modifier_spectre_ultimate:OnIntervalThink()
 				damage_type = DAMAGE_TYPE_PURE,
 			}
 			ApplyDamage( damage )
-			
+
+			self:GetParent():AddNewModifier(self:GetCaster(), self.ability, "modifier_spectre_special_attack_debuff", { 
+				duration = self.debuff_duration
+			})
+			self:GetParent():AddNewModifier(self:GetCaster(), self.ability, "modifier_generic_fading_slow_new", { 
+				duration = self.debuff_duration,
+				max_slow_pct = 50
+			})
 		end
 	else
 		self.hit = false
