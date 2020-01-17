@@ -19,8 +19,6 @@ function pudge_ultimate:OnCastPointEnd()
 
 	caster:AddNewModifier(caster, self, "modifier_pudge_ultimate", { duration = duration }) 
 	self:PlayEffectsOnCast()
-
-	caster:GiveMana(100)
 end
 
 function pudge_ultimate:PlayEffectsOnCast()
