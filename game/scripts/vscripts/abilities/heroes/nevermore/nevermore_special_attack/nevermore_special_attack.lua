@@ -1,10 +1,16 @@
 nevermore_special_attack = class({})
-LinkLuaModifier( "modifier_nevermore_special_attack", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Passive Modifier
-function nevermore_special_attack:GetIntrinsicModifierName()
-	return "modifier_nevermore_special_attack"
+function nevermore_special_attack:GetRadius()
+	local stacks = 0
+	local radius = self:GetSpecialValueFor("radius")
+	local radius_per_stack = self:GetSpecialValueFor("radius_per_stack")
+		
+	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )
+	if modifier~=nil then
+		stacks = stacks + modifier:GetStackCount()
+	end
+
+    return radius + stacks * radius_per_stack
 end
 
 function nevermore_special_attack:GetCastRange( vLocation, hTarget )
@@ -21,7 +27,7 @@ end
 
 function nevermore_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local radius = self:GetSpecialValueFor("radius")
+	local radius = self:GetRadius()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local duration = self:GetSpecialValueFor("duration")
 	local duration_per_stack = self:GetSpecialValueFor("duration_per_stack")
@@ -85,6 +91,6 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	nevermore_special_attack,
-	{ activity = ACT_DOTA_RAZE_2, rate = 1.3 },
-	{ movement_speed = 80, public = 1 }
+	{ activity = ACT_DOTA_RAZE_2, rate = 0.8 },
+	{ movement_speed = 10, public = 1 }
 )

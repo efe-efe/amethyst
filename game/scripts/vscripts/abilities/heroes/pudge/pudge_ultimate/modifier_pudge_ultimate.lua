@@ -5,10 +5,13 @@ function modifier_pudge_ultimate:OnCreated()
         self.parent = self:GetParent()
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
         self.interval = self:GetAbility():GetSpecialValueFor("interval")
-        self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
+        self.fading_slow_duration = self:GetAbility():GetSpecialValueFor("fading_slow_duration")
+        self.fading_slow_pct = self:GetAbility():GetSpecialValueFor("fading_slow_pct")
         self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
+        self.heal = self:GetAbility():GetSpecialValueFor("heal")
         self.counter = 0
         self.effects_cast = {}
+        self:OnIntervalThink()
         self:StartIntervalThink(self.interval)
 
         if IsServer() then 
@@ -28,7 +31,7 @@ end
 
 function modifier_pudge_ultimate:OnIntervalThink()
     local origin = self.parent:GetOrigin()
-    local enemies = self:GetCaster():FindUnitsInRadius(
+    local enemies = self.parent:FindUnitsInRadius(
         origin, 
         self.radius, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -40,17 +43,20 @@ function modifier_pudge_ultimate:OnIntervalThink()
     for _,enemy in pairs(enemies) do
         local damage_table = {
             victim = enemy,
-            attacker = self:GetCaster(),
+            attacker = self.parent,
             damage = self.damage,
             damage_type = DAMAGE_TYPE_PURE,
         }
         ApplyDamage( damage_table )
 
-        enemy:InterruptMotionControllers( true )
-        enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_stunned", { duration = self.stun_duration })
+        enemy:AddNewModifier(self.parent, self:GetAbility(), "modifier_generic_fading_slow_new", { 
+            duration = self.fading_slow_duration,
+            max_slow_pct = self.fading_slow_pct
+        })
+        self.parent:Heal(self.heal, self.parent)
     end
     
-    
+
     self:PlayEffects(self.counter, origin)
     self:PlayEffectsAoe(self.counter + 1, origin)
     self.counter = self.counter + 2
@@ -74,11 +80,9 @@ function modifier_pudge_ultimate:PlayEffectsAoe( index, origin)
     ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 
-    self.effects_cast[index] = ParticleManager:CreateParticle( "particles/units/heroes/hero_shadow_demon/shadow_demon_soul_catcher_v2_ground01.vpcf", PATTACH_WORLDORIGIN, nil )
+    self.effects_cast[index] = ParticleManager:CreateParticle( "particles/grimstroke_ink_swell_aoe.vpcf", PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( self.effects_cast[index], 0, origin )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 1, origin )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 2, origin )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 3, Vector(self.radius, 0, 0) )
+    ParticleManager:SetParticleControl( self.effects_cast[index], 1, Vector(self.radius, self.radius, self.radius) )
 end
 
 function modifier_pudge_ultimate:StopEffects()

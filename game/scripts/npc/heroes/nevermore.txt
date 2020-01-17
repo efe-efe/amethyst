@@ -34,8 +34,8 @@
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"12"										// Damage range min.
-		"AttackDamageMax"			"12"										// Damage range max.	
+		"AttackDamageMin"			"10"										// Damage range min.
+		"AttackDamageMax"			"10"										// Damage range max.	
 		"AttackRate"				"0.4"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.3"	
 		"AttackRange"				"80"
