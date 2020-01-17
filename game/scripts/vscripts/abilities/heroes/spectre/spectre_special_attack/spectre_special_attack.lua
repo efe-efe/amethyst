@@ -60,13 +60,13 @@ function spectre_special_attack:OnCastPointEnd( )
 		end,
 		OnFinish = function(_self, pos)
 		end,
-		OnThinkBegin = function(_self)
+		OnThinkBegin = function(_self, pos)
 			CreateModifierThinker(
 				caster, -- player source
 				self, -- ability source
 				"modifier_spectre_special_attack_thinker", -- modifier name
 				{ duration = path_duration }, -- kv
-				 _self.current_position,
+				pos,
 				caster:GetTeamNumber(),
 				false --bPhantomBlocker
 			)

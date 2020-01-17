@@ -366,6 +366,33 @@ function Projectiles:CreateProjectile(projectile)
                                             projectile:SetVelocity(projectile.vVelocity * (1 - slow_percent))
                                         end
                                     end
+                                elseif is_reflector ~= nil then
+                                    if not is_reflector:IsNull() then
+                                        if projectile.bIsReflectable == true then
+
+                                            local reflectedProjectile = projectile;
+
+                                            reflectedProjectile.vSpawnOrigin = projectile.current_position;
+                                            reflectedProjectile.Source = entity;
+                                            reflectedProjectile.bIgnoreSource = true;
+                                            reflectedProjectile.nChangeMax = projectile.nChangeMax - 1;
+                                            reflectedProjectile.iVisionTeamNumber = entity:GetTeam();
+                                            reflectedProjectile.vVelocity = -projectile.currentVelocity * 30,
+                                            projectile:Destroy();
+                                            
+                                            -- Deal damage to activate counters
+                                            local damage = {
+                                                victim = entity,
+                                                attacker = projectile.Source,
+                                                damage = 1,
+                                                damage_type = DAMAGE_TYPE_MAGICAL,
+                                            }
+                                            ApplyDamage( damage )
+
+                                            Projectiles:CreateProjectile( reflectedProjectile )
+                                            return
+                                        end
+                                    end
                                 elseif is_enemy_blocker ~= nil then
                                     if not is_enemy_blocker:IsNull() then
                                         if projectile.Source:GetTeamNumber() ~= entity:GetTeamNumber() then

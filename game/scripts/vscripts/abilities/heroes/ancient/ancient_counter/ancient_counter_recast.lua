@@ -68,8 +68,8 @@ function ancient_counter_recast:OnCastPointEnd()
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
 		end,
-		OnThinkBegin = function(_self)
-			self:PlayEffectsOnThink(_self.current_position)
+		OnThinkBegin = function(_self, pos)
+			self:PlayEffectsOnThink(pos)
 		end
 	}
 

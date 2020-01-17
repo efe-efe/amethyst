@@ -87,10 +87,10 @@ function nevermore_mobility:OnCastPointEnd()
 
             self:PlayEffectsOnImpact(unit)
         end,
-        OnThinkBegin = function(_self)
+        OnThinkBegin = function(_self, pos)
             local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
             local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-            ParticleManager:SetParticleControl( effect_cast, 0, _self.current_position - direction * 80)
+            ParticleManager:SetParticleControl( effect_cast, 0, pos - direction * 80)
             ParticleManager:SetParticleControl( effect_cast, 1, Vector( 250, 1, 1 ) )
             ParticleManager:ReleaseParticleIndex( effect_cast )
         end,

@@ -119,12 +119,12 @@ function vengeful_counter:OnCastPointEnd()
 				OnFinish = function(_self, pos)
 					self:PlayEffectsOnFinish(pos)
 				end,
-				OnThinkBegin = function(_self)	
+				OnThinkBegin = function(_self, pos)	
 					counter = counter + 1
-					local direction_to_owner = (caster:GetOrigin() - _self.current_position ):Normalized()
+					local direction_to_owner = (caster:GetOrigin() - pos ):Normalized()
 					--[[DebugDrawLine_vCol(
-						_self.current_position, 
-						(_self.current_position + direction_to_owner * (caster:GetOrigin() - _self.current_position):Length2D()), 
+						pos, 
+						(pos + direction_to_owner * (caster:GetOrigin() - pos):Length2D()), 
 						Vector(255,255,255), 
 						true, 
 						0.1
@@ -133,7 +133,7 @@ function vengeful_counter:OnCastPointEnd()
 
 					if counter == 2 then
 						self:StopEffectsProjectile()
-						self:PlayEffectsProjectile(_self.current_position, _self.currentVelocity)
+						self:PlayEffectsProjectile(pos, _self.currentVelocity)
 						counter = 0
 					end
 				end
