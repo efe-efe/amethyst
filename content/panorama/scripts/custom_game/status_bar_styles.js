@@ -104,6 +104,11 @@ styles["Raze"] = {
     color: "#E8C070"
 }
 
+styles["Desolation"] = {
+    backgroundColor: "#E55C34",
+    textShadow: CreateTextShadow("#DC8668"),
+    color: "#E8C070"
+}
 
 function CreateTextShadow( color ){
     return "0px 0px 30px 8.0 " + color + ";"

@@ -89,8 +89,6 @@ function modifier_spectre_basic_attack:GetModifierAttackPointConstant()
     end
 end
 
---------------------------------------------------------------------------------
-
 function modifier_spectre_basic_attack:GetModifierPreAttack_BonusDamage()
     if self:GetStackCount() == 0 then return 0 end
     return self.damage_bonus_charged

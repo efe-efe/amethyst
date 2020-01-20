@@ -115,6 +115,8 @@
 #base "abilities\nevermore\nevermore_r.txt"
 #base "abilities\nevermore\nevermore_f.txt"
 #base "abilities\nevermore\nevermore_q.txt"
+#base "abilities\nevermore\nevermore_ex1.txt"
+#base "abilities\nevermore\nevermore_ex2.txt"
 
 "DOTAAbilities"
 {

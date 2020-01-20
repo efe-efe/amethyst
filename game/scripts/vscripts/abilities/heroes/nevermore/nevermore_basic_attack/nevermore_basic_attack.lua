@@ -12,13 +12,24 @@ function nevermore_basic_attack:OnCastPointEnd()
 
 	-- Probable data
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-    local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
-	local attack_damage = caster:GetAttackDamage() -- or self:GetSpecialValueFor("ability_damage")
-	local stacks = SafeGetModifierStacks("modifier_nevermore_souls", caster, caster)
 
+	local ability = caster:FindAbilityByName("nevermore_ex_basic_attack")
+	local fading_slow_pct = ability:GetSpecialValueFor("fading_slow")
+	local fading_slow_duration = ability:GetSpecialValueFor("slow_duration")
+
+	local damage = caster:GetAverageTrueAttackDamage(caster) -- or self:GetSpecialValueFor("ability_damage")
+	local particle = "particles/mod_units/heroes/hero_nevermore/nevermore_base_attack.vpcf"
+	local slow = false
+
+	if caster:HasModifier("modifier_nevermore_ex_basic_attack") then
+		particle = "particles/mod_units/heroes/hero_nevermore/sf_base_attack_desolation_desolator.vpcf"
+		slow = true 
+	end
+
+	
 	-- Projectile
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_nevermore/nevermore_base_attack.vpcf",
+		EffectName = particle,
 		vSpawnOrigin = origin + Vector(0, 0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
@@ -31,16 +42,21 @@ function nevermore_basic_attack:OnCastPointEnd()
 		fGroundOffset = 80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
-			local final_damage = attack_damage + stacks * damage_per_stack
-
 			local damage_table = {
 				victim = unit,
 				attacker = _self.Source,
-				damage = final_damage,
+				damage = damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 				ability = self
 			}
 			ApplyDamage( damage_table )
+
+			if slow then
+				unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow_new", { 
+					duration = fading_slow_duration,
+					max_slow_pct = fading_slow_pct
+				})
+			end
 
 			if _self.Source == caster and not unit:IsObstacle() then 
 				caster:GiveManaPercent(mana_gain_pct, unit)
@@ -103,104 +119,3 @@ Abilities.Initialize(
 	{ activity = ACT_DOTA_ATTACK, rate = 1.5 },
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }
 )
-
-
---[[
---------------------------------------------------------------------------------
--- Ability Start
-function nevermore_basic_attack:OnSpellStart()
-	-- Initialize variables
-	local caster = self:GetCaster()
-	local cast_point = caster:GetAttackAnimationPoint()
-	
-    EmitSoundOn("Hero_Nevermore.PreAttack", caster)
-
-	-- Animation and pseudo cast point
-	StartAnimation(caster, {duration=0.6, activity=ACT_DOTA_ATTACK, rate=1.8})
-	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { 
-		duration = cast_point,
-		movement_speed = 10,
-		placeholder = 0,
-	})
-end
-
-function nevermore_basic_attack:OnCastPointEnd( pos )
-	local caster = self:GetCaster()
-
-	-- Get Stack
-	local modifier = caster:FindModifierByNameAndCaster("modifier_nevermore_ex_special_attack", caster)
-	local stacks = 0
-	if modifier~=nil then
-		stacks = modifier:GetStackCount()
-	end
-	-- Projectile data
-	local projectile_name = "particles/mod_units/heroes/hero_nevermore/nevermore_base_attack.vpcf"
-	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-
-	if stacks > 0 then
-		projectile_name = "particles/mod_units/heroes/hero_nevermore/sf_base_attack_desolation_desolator.vpcf"
-	end
-
-	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
-
-	-- Dynamic data
-	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
-
-	local projectile = {
-		EffectName = projectile_name,
-		vSpawnOrigin = origin + Vector(0, 0, 80),
-		fDistance = projectile_distance,
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
-		Source = caster,
-		fExpireTime = 8.0,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		bMultipleHits = false,
-		bIgnoreSource = true,
-		TreeBehavior = PROJECTILES_NOTHING,
-		bTreeFullCollision = false,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
-		nChangeMax = 1,
-		bRecreateOnChange = true,
-		bZCheck = false,
-		bGroundLock = true,
-		bProvidesVision = true,
-		iVisionRadius = 200,
-		iVisionTeamNumber = caster:GetTeam(),
-		bFlyingVision = false,
-		fVisionTickTime = .1,
-		fVisionLingerDuration = 1,
-		draw = false,
-		fRehitDelay = 1.0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
-		OnUnitHit = function(_self, unit) 
-			-- perform the actual attack
-			_self.Source:PerformAttack(
-				unit, -- handle hTarget 
-				true, -- bool bUseCastAttackOrb, 
-				true, -- bool bProcessProcs,
-				true, -- bool bSkipCooldown
-				false, -- bool bIgnoreInvis
-				false, -- bool bUseProjectile
-				false, -- bool bFakeAttack
-				true -- bool bNeverMiss
-			)
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffects_b(pos)
-		end,
-	}
-	
-	self:PlayEffects_a()
-	Projectiles:CreateProjectile(projectile)
-	self:StartCooldown(attack_speed)
-end
-]]
