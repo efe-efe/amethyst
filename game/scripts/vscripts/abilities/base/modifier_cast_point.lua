@@ -35,6 +35,7 @@ function modifier_cast_point:OnCreated(params)
 		self.radius = params.radius
 		self.hide_indicator = params.hide_indicator
 		self.cancelable = params.cancelable
+		self.min_cast_point = params.min_cast_point
 		
 		self.disable_all = params.disable_all == 1 and true or false
 		self.public = params.public
@@ -267,7 +268,9 @@ end
 
 function modifier_cast_point:OnKeyReleased( key )
 	if self.ability.CastOnRelease and self.ability.CastOnRelease() == true then
-		self:SetDuration(0.0, true)
+		local new_duration = self.min_cast_point - (self:GetDuration() - self:GetRemainingTime())
+
+		self:SetDuration(new_duration, true)
 		SafeDestroyModifier("modifier_target_indicator", self.parent, self.parent)
 		--[[if self:GetAbility().OnKeyReleased and self:GetAbility().GetKey() == key then
 			self:GetAbility():OnKeyReleased()

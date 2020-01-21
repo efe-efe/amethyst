@@ -8,7 +8,8 @@ function nevermore_mobility:OnCastPointEnd()
 
 	local damage = self:GetSpecialValueFor("ability_damage")
     local min_range = self:GetSpecialValueFor("min_range")
-    local slow_duration = self:GetSpecialValueFor("slow_duration")
+    local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
+    local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local point = CalcRange(self.origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 
@@ -79,13 +80,11 @@ function nevermore_mobility:OnCastPointEnd()
                 end
             end
 
-            -- Add modifier
-            unit:AddNewModifier(
-                _self.Source, -- player source
-                self, -- ability source
-                "modifier_generic_fading_slow", -- modifier name
-                { duration = slow_duration } -- kv
-            )
+            unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow_new", { 
+				duration = fading_slow_duration,
+				max_slow_pct = fading_slow_pct
+			})
+
             self:PlayEffectsOnImpact(unit)
         end,
         OnThinkBegin = function(_self)

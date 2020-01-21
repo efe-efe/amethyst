@@ -17,12 +17,13 @@
 		{
 			"01"{ "var_type"						"FIELD_FLOAT"		"cast_point"            "1.2" }
 			"02"{ "var_type"						"FIELD_INTEGER"		"radius"				"500" }
-			"03"{ "var_type"						"FIELD_INTEGER"		"reduction_ms"			"-25" }
+			"03"{ "var_type"						"FIELD_INTEGER"		"reduction_ms"			"25" }
 			"04"{ "var_type"						"FIELD_INTEGER"		"slow_duration"			"5.0" }
 			"05"{ "var_type"						"FIELD_INTEGER"		"line_width_start"		"125" }
 			"06"{ "var_type"						"FIELD_INTEGER"		"line_width_end"		"120" }
 			"07"{ "var_type"						"FIELD_INTEGER"		"line_speed"			"700" }
 			"08"{ "var_type"						"FIELD_INTEGER"		"damage_per_soul"		"8" }
+			"09"{ "var_type"						"FIELD_INTEGER"		"base_lines"			"5" }
 		}
 	}
 }

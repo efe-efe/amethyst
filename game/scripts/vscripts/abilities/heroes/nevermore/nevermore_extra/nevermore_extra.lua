@@ -5,7 +5,8 @@ nevermore_extra = class({})
 function nevermore_extra:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local heal_per_soul = self:GetSpecialValueFor("heal_per_soul")
-	local stacks = 1
+	local heal = self:GetSpecialValueFor("heal")
+	local stacks = 0
 
 	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", caster )
 	if modifier~=nil then
@@ -14,7 +15,7 @@ function nevermore_extra:OnCastPointEnd()
 	end
 
 	self:PlayEffects()
-	caster:Heal(heal_per_soul * stacks, caster)
+	caster:Heal(heal + (heal_per_soul * stacks), caster)
 end
 
 --------------------------------------------------------------------------------

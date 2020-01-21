@@ -32,6 +32,7 @@ function Abilities.Initialize( ability, animation, warmup, recast )
             end
         end
 
+        local min_cast_point = self:GetSpecialValueFor("min_cast_point")
 
         local modifier = caster:AddNewModifier( caster, self, "modifier_cast_point", { 
             duration = cast_point, 
@@ -42,6 +43,7 @@ function Abilities.Initialize( ability, animation, warmup, recast )
             public = warmup.public or nil,
             disable_all = warmup.disable_all == false and 0 or 1,
             cancelable = self:GetAbilityType() == 1 and 0 or 1,
+            min_cast_point = min_cast_point,
         })
         
         -- Castbar (ULTIMATE)

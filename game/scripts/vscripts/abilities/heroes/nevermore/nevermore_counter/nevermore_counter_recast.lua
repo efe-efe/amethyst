@@ -9,6 +9,7 @@ function nevermore_counter_recast:OnCastPointEnd()
 	local radius = self:GetSpecialValueFor("radius")
 	local ability = caster:FindAbilityByName("nevermore_counter")
 	local damage = ability:GetSpecialValueFor("ability_damage")
+	local lift_duration = ability:GetSpecialValueFor("lift_duration")
 	
 	FindClearSpaceForUnit( caster, point , true )
 	caster:RemoveNoDraw()
@@ -29,6 +30,8 @@ function nevermore_counter_recast:OnCastPointEnd()
 		damage_type = DAMAGE_TYPE_PURE,
 	}
 	
+	local distance = 300
+	
 	for _,enemy in pairs(enemies) do
 		damage_table.victim = enemy
 		ApplyDamage( damage_table )
@@ -41,8 +44,8 @@ function nevermore_counter_recast:OnCastPointEnd()
 			{
 				x = 0,
 				y = 0,
-				r = 300,
-				speed = 150,
+				r = distance,
+				speed = (distance/lift_duration),
 				peak = 500,
 				restricted = 1,
 				effect = 1,

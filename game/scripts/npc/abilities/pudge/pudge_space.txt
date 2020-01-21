@@ -6,6 +6,7 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"pudge_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityCooldown"				"6.0"
 		"AbilityCastRange"				"1000"
 

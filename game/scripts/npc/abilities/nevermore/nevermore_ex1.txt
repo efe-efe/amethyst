@@ -5,7 +5,7 @@
 		"ScriptFile"					"abilities/heroes/nevermore/nevermore_ex_basic_attack/nevermore_ex_basic_attack"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"nevermore_ex_basic_attack"
+		"AbilityTextureName"			"nevermore_dark_lord"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"1.0"
@@ -20,8 +20,8 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_soul"			"2" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"               	"5.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"100" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"slow_duration"				"0.2" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"100" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"0.2" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"base_damage"				"1" }
 		}
     }

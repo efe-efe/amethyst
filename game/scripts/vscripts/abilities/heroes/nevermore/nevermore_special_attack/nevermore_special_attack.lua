@@ -14,15 +14,17 @@ function nevermore_special_attack:GetRadius()
 end
 
 function nevermore_special_attack:GetCastRange( vLocation, hTarget )
-	local stacks = 0
-	local range_per_stack = self:GetSpecialValueFor("range_per_stack")
-		
-	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )
-	if modifier~=nil then
-		stacks = stacks + modifier:GetStackCount()
-	end
+	if IsServer() then
+		local stacks = 0
+		local range_per_stack = self:GetSpecialValueFor("range_per_stack")
+			
+		local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )
+		if modifier~=nil then
+			stacks = stacks + modifier:GetStackCount()
+		end
 
-    return self.BaseClass.GetCastRange(self, vLocation, hTarget) + stacks * range_per_stack
+		return self.BaseClass.GetCastRange(self, vLocation, hTarget) + stacks * range_per_stack
+	end
 end
 
 function nevermore_special_attack:OnCastPointEnd()
@@ -30,11 +32,13 @@ function nevermore_special_attack:OnCastPointEnd()
 	local radius = self:GetRadius()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local duration = self:GetSpecialValueFor("duration")
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local duration_per_stack = self:GetSpecialValueFor("duration_per_stack")
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	local stacks = 0
+	local give_mana = false
 		
 	local modifier = caster:FindModifierByNameAndCaster( "modifier_nevermore_souls", caster )
 	if modifier~=nil then
@@ -62,12 +66,20 @@ function nevermore_special_attack:OnCastPointEnd()
 		ApplyDamage( damage_table )
 
 		enemy:AddNewModifier(caster, self, "modifier_generic_stunned", { duration = ( duration + duration_per_stack * stacks ) })
+		
+		if not enemy:IsObstacle() then
+			give_mana = true
+		end
 	end
 
 	CreateRadiusMarker(caster, point, {
 		show_all = 1,
 		radius = radius
 	})
+
+	if give_mana then
+		caster:GiveManaPercent(mana_gain_pct)    
+	end
 
 	self:PlayEffectsOnCast( point, radius )
 end

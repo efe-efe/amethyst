@@ -16,9 +16,12 @@
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"1.0" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "12" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"heal"			            "5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"max_ability_damage"		"25" } //Only for KV, this does nothing
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "12" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"heal"			            "5" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"max_heal"					"15" } //Only for KV, this does nothing
+			"08"{ "var_type"	"FIELD_FLOAT"		"min_cast_point"			"0.2" }
 		}
 	}
 }

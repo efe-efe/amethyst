@@ -1,6 +1,6 @@
-modifier_pudge_counter_debuff = class({})
+modifier_ex_pudge_counter_debuff = class({})
 
-function modifier_pudge_counter_debuff:OnCreated()
+function modifier_ex_pudge_counter_debuff:OnCreated()
     self.speed_debuff_pct = -self:GetAbility():GetSpecialValueFor("speed_debuff_pct")
 
     if IsServer() then
@@ -10,7 +10,7 @@ function modifier_pudge_counter_debuff:OnCreated()
         self.parent = self:GetParent()
 
         self.parent:AddStatusBar({
-            label = "Putrefaction", modifier = self, priority = 3, stylename="Infection"
+            label = "Rot", modifier = self, priority = 3, stylename="Infection"
         })
 
         self:OnIntervalThink()
@@ -19,7 +19,7 @@ function modifier_pudge_counter_debuff:OnCreated()
     end
 end
 
-function modifier_pudge_counter_debuff:OnIntervalThink()
+function modifier_ex_pudge_counter_debuff:OnIntervalThink()
     local damage_table = {
         victim = self.parent,
         attacker = self.caster,
@@ -30,10 +30,9 @@ function modifier_pudge_counter_debuff:OnIntervalThink()
     ApplyDamage( damage_table )
 end
 
-
 --------------------------------------------------------------------------------
 -- Modifier Effects
-function modifier_pudge_counter_debuff:DeclareFunctions()
+function modifier_ex_pudge_counter_debuff:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 		MODIFIER_EVENT_ON_ORDER,
@@ -42,11 +41,11 @@ function modifier_pudge_counter_debuff:DeclareFunctions()
 	return funcs
 end
 
-function modifier_pudge_counter_debuff:GetModifierMoveSpeedBonus_Percentage()
+function modifier_ex_pudge_counter_debuff:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_debuff_pct
 end
 
-function modifier_pudge_counter_debuff:PlayEffectsOnCreated()
-    local nFXIndex = ParticleManager:CreateParticle( "particles/units/heroes/hero_pudge/pudge_rot_recipient.vpcf", PATTACH_ABSORIGIN_FOLLOW, self.parent )
+function modifier_ex_pudge_counter_debuff:PlayEffectsOnCreated()
+    local nFXIndex = ParticleManager:CreateParticle( "particles/econ/items/pudge/pudge_immortal_arm/pudge_immortal_arm_rot_recipient.vpcf", PATTACH_ABSORIGIN_FOLLOW, self.parent )
     self:AddParticle( nFXIndex, false, false, -1, false, false )
 end

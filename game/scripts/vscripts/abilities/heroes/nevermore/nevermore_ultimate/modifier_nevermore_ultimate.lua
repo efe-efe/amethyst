@@ -13,11 +13,11 @@ end
 --------------------------------------------------------------------------------
 
 function modifier_nevermore_ultimate:OnCreated( kv )
-	self.reduction_ms_pct = self:GetAbility():GetSpecialValueFor("reduction_ms")
+	self.reduction_ms_pct = -self:GetAbility():GetSpecialValueFor("reduction_ms")
 end
 
 function modifier_nevermore_ultimate:OnRefresh( kv )
-	self.reduction_ms_pct = self:GetAbility():GetSpecialValueFor("reduction_ms")
+	self.reduction_ms_pct = -self:GetAbility():GetSpecialValueFor("reduction_ms")
 end
 
 --------------------------------------------------------------------------------

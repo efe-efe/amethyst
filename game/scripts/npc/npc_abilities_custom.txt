@@ -107,6 +107,8 @@
 #base "abilities\pudge\pudge_q.txt"
 #base "abilities\pudge\pudge_f.txt"
 #base "abilities\pudge\pudge_r.txt"
+#base "abilities\pudge\pudge_ex1.txt"
+#base "abilities\pudge\pudge_ex2.txt"
 
 #base "abilities\nevermore\nevermore_m1.txt"
 #base "abilities\nevermore\nevermore_m2.txt"

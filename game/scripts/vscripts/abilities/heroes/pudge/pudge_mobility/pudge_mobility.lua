@@ -11,6 +11,8 @@ function pudge_mobility:OnCastPointEnd()
 
 	self.radius = self:GetSpecialValueFor("radius")
 
+	local peak_percentage = 1 - (distance)/self:GetCastRange(Vector(0,0,0), nil)
+
 	caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
         caster, -- player source
@@ -21,7 +23,7 @@ function pudge_mobility:OnCastPointEnd()
             y = direction.y,
             r = distance,
             speed = (distance/0.65),
-            peak = 90,
+            peak = (150 * peak_percentage) + 100,
 			collide_with_ent = 1,
         } -- kv
 	)

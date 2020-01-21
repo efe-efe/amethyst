@@ -20,7 +20,7 @@ function nevermore_ultimate:OnCastPointEnd()
 	local duration = self:GetSpecialValueFor("slow_duration")
 	local damage = self:GetSpecialValueFor("damage_per_soul")
 
-	local lines = 5
+	local lines = self:GetSpecialValueFor("base_lines")
 	local modifier = caster:FindModifierByNameAndCaster( "modifier_nevermore_souls", caster )
 	if modifier~=nil then
 		lines = lines + modifier:GetStackCount()
