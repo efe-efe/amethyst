@@ -9,7 +9,7 @@ function spectre_ultimate_recast:OnCastPointEnd()
 	local origin = caster:GetOrigin()
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor( "radius" )
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     local illusion = EntIndexToHScript( self.illusion_index )
 
     FindClearSpaceForUnit( caster, illusion:GetOrigin() , true )

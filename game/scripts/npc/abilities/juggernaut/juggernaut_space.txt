@@ -9,16 +9,17 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityDuration"				"2.5"
 		"AbilityCastPoint"				"0.2"
 		"AbilityCooldown"				"10.0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"4" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"85" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.25" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"4" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"85" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.25" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.5" }
 		}
 	}
 }

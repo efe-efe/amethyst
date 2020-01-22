@@ -4,7 +4,7 @@ LinkLuaModifier( "modifier_juggernaut_counter_recast", "abilities/heroes/juggern
 function juggernaut_counter_recast:OnCastPointEnd( pos )
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local ability = caster:FindAbilityByName("juggernaut_counter")
 	local damage = ability:GetSpecialValueFor("ability_damage")
 	

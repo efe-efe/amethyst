@@ -4,7 +4,7 @@ pudge_mobility = class({})
 function pudge_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	local direction = (point - origin):Normalized()
     local distance = (point - origin):Length2D()

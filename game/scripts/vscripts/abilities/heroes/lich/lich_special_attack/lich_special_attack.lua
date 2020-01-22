@@ -6,7 +6,7 @@ LinkLuaModifier( "modifier_lich_special_attack_thinker", "abilities/heroes/lich/
 function lich_special_attack:OnCastPointEnd()
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
     self:CreateShard(point, nil)
 end

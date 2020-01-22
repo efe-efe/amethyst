@@ -158,7 +158,7 @@ function Projectiles:CreateProjectile(projectile)
 
 
             if projectile.OnThinkBegin then
-                pcall(projectile.OnThinkBegin, projectile)
+                pcall(projectile.OnThinkBegin, projectile, projectile.currentPosition)
             end
 
             -- Refresh position

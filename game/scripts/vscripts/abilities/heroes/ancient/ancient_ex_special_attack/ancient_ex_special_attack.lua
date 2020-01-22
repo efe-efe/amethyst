@@ -15,7 +15,7 @@ end
 
 function ancient_ex_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     local origin = caster:GetOrigin()
 	local duration = self:GetSpecialValueFor("duration")
 	local offset = 250--self:GetCastRange(Vector(0,0,0), nil)
@@ -77,7 +77,7 @@ Abilities.Initialize(
 --[[
 
 local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     local origin = caster:GetOrigin()
 	local duration = self:GetSpecialValueFor("duration")
 	local offset = 100

@@ -54,7 +54,7 @@ function nevermore_ultimate:OnCastPointEnd()
             TreeBehavior = PROJECTILES_NOTHING,
             WallBehavior = PROJECTILES_DESTROY,
             GroundBehavior = PROJECTILES_NOTHING,
-            fGroundOffset = 80,
+			fGroundOffset = 80,
             UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
             OnUnitHit = function(_self, unit) 
                 local damage_table = {

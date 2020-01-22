@@ -3,7 +3,7 @@ LinkLuaModifier( "modifier_nevermore_ex_mobility_thinker", "abilities/heroes/nev
 
 function nevermore_ex_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
 

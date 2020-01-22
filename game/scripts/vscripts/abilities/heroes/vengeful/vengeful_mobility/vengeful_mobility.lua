@@ -7,7 +7,7 @@ LinkLuaModifier( "modifier_vengeful_mobility_illusion", "abilities/heroes/vengef
 function vengeful_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
 	self.origin = caster:GetOrigin()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local name = caster:GetUnitName()
 
     self.ability = caster:FindAbilityByName("vengeful_mobility")

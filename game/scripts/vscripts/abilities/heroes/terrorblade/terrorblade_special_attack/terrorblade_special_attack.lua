@@ -5,7 +5,7 @@ LinkLuaModifier( "modifier_terrorblade_special_attack_recast", "abilities/heroes
 function terrorblade_special_attack:OnCastPointEnd()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     local ability = caster:FindAbilityByName("terrorblade_special_attack_recast")
 
     -- Spawn the Healing Ward

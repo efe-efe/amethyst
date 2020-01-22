@@ -15,7 +15,7 @@ function juggernaut_ex_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
-	local damage = self:GetAbilityDamage()
+	local damage = self:GetSpecialValueFor("ability_damage")
 
 	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
 	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")

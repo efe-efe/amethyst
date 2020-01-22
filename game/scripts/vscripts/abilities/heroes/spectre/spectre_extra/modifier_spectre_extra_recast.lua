@@ -44,7 +44,7 @@ function modifier_spectre_extra_recast:OnDestroy( kv )
         self:GetParent():RemoveAbility( "spectre_extra_recast" )
         
         local counter = 0
-        local point = CalcRange(self:GetParent():GetOrigin(), self:GetAbility():GetCursorPosition(), self:GetAbility():GetCastRange(Vector(0,0,0), nil), nil)
+        local point = CalcPoint(self:GetParent():GetOrigin(), self:GetAbility():GetCursorPosition(), self:GetAbility():GetCastRange(Vector(0,0,0), nil), nil)
 
         while self.params["enemy_" .. counter] ~= nil do
             local enemy = EntIndexToHScript(self.params["enemy_" .. counter]) 

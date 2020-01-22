@@ -3,7 +3,7 @@ LinkLuaModifier( "modifier_ancient_extra_thinker", "abilities/heroes/ancient/anc
 
 function ancient_extra:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local duration = self:GetSpecialValueFor( "duration" )
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")

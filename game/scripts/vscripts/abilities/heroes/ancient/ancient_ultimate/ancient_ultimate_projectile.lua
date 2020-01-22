@@ -5,7 +5,7 @@ function ancient_ultimate_projectile:OnCastPointEnd( )
 	-- Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-    local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local radius = self:GetSpecialValueFor("radius")
 	local delay_time = self:GetCooldown(0)
 	

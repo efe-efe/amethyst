@@ -4,7 +4,7 @@ function nevermore_counter_recast:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	
-	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
 	local ability = caster:FindAbilityByName("nevermore_counter")

@@ -3,7 +3,7 @@ LinkLuaModifier( "modifier_juggernaut_mobility", "abilities/heroes/juggernaut/ju
 
 function juggernaut_mobility:OnCastPointEnd()
     local caster = self:GetCaster()
-    local duration = self:GetDuration()
+    local duration = self:GetSpecialValueFor("duration")
 
 	caster:StrongPurge()
 	caster:AddNewModifier(caster, self, "modifier_juggernaut_mobility", { duration = duration })

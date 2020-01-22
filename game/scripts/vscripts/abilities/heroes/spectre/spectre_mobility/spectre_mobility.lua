@@ -3,7 +3,7 @@ LinkLuaModifier( "modifier_spectre_banish", "abilities/heroes/spectre/spectre_sh
 
 function spectre_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 	local origin = caster:GetOrigin()
 	local min_range = self:GetSpecialValueFor( "min_range" )
 	local mana_gain_pct = self:GetSpecialValueFor( "mana_gain_pct" )

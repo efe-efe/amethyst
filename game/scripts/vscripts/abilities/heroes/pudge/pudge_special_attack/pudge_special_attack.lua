@@ -5,7 +5,7 @@ pudge_special_attack = class({})
 function pudge_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local offset = 50
 	
 	-- Projectile data

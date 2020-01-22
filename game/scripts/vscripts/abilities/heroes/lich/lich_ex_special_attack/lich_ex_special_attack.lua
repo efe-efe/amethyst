@@ -6,7 +6,7 @@ lich_ex_special_attack = class({})
 function lich_ex_special_attack:OnCastPointEnd()
 	-- unit identifier
 	local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     local ability = caster:FindAbilityByName("lich_special_attack") 
 
     ability:CreateShard(point, 1)

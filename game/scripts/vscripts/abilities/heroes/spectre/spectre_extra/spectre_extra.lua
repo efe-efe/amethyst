@@ -7,7 +7,7 @@ function spectre_extra:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor( "radius" )
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	CreateModifierThinker(
 		caster, --hCaster

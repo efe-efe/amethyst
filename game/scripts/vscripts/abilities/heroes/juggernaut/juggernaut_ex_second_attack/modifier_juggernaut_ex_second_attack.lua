@@ -17,7 +17,7 @@ end
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_juggernaut_ex_second_attack:OnCreated( kv )
-	self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
+	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 	
 	if IsServer() then 
 		self:GetParent():AddStatusBar({
@@ -48,7 +48,7 @@ function modifier_juggernaut_ex_second_attack:GetModifierIgnoreMovespeedLimit( p
 end
 
 function modifier_juggernaut_ex_second_attack:GetModifierMoveSpeedBonus_Percentage()
-    return self.speed_buff
+    return self.speed_buff_pct
 end
 
 function modifier_juggernaut_ex_second_attack:OnAbilityFullyCast( params )

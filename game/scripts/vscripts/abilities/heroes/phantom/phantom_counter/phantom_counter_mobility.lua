@@ -13,7 +13,7 @@ function phantom_counter_mobility:OnCastPointEnd()
     local radius = self:GetSpecialValueFor("radius")
     local heal = ability:GetSpecialValueFor("heal")
     local duration = ability:GetSpecialValueFor("duration")
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
     SafeDestroyModifier("modifier_phantom_banish", caster, caster)
     FindClearSpaceForUnit( caster, point , true )

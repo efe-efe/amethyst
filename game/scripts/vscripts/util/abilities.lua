@@ -192,7 +192,7 @@ function IsType(ability, type)
 end
 
 
-function CalcRange(origin, point, max_range, min_range)
+function CalcPoint(origin, point, max_range, min_range)
 	local direction = (point - origin):Normalized()
 	local distance = (point - origin):Length2D()
 	local output_point = point

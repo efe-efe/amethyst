@@ -12,9 +12,9 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"20" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"18" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"duration"			    "1.0" }
-			"03"{ "var_type"	"FIELD_FLOAT" 		"lift_duration"			"1.0" }
+			"03"{ "var_type"	"FIELD_FLOAT" 		"lift_duration"			"1.5" }
 		}
 	}
 
@@ -30,7 +30,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"                "300" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"                "250" }
 		}
 	}
 }

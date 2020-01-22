@@ -3,7 +3,7 @@ LinkLuaModifier( "modifier_sniper_shrapnel_thinker_lua", "abilities/heroes/snipe
 
 function sniper_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local duration = self:GetSpecialValueFor( "duration" )
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")

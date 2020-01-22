@@ -8,7 +8,7 @@ function sniper_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
-	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = CalcPoint(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
     local shrapnel = caster:FindAbilityByName("sniper_special_attack")
 
 	local direction = (point - origin):Normalized()

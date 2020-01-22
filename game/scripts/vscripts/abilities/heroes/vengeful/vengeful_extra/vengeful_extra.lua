@@ -7,7 +7,7 @@ LinkLuaModifier( "modifier_vengeful_extra_thinker", "abilities/heroes/vengeful/v
 -- Ability Start
 function vengeful_extra:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local ability = caster:FindAbilityByName("vengeful_extra")
     local delay_time = ability:GetSpecialValueFor( "delay_time" )
 	local radius = ability:GetSpecialValueFor( "radius" )

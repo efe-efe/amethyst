@@ -14,7 +14,7 @@ function terrorblade_special_attack_recast:OnCastPointEnd()
     local caster = self:GetCaster()
 	local ability = caster:FindAbilityByName("terrorblade_special_attack")
     local delay_time = ability:GetSpecialValueFor("delay_time")
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
     -- Spawn the Healing Ward
     self.blade = CreateUnitByName(

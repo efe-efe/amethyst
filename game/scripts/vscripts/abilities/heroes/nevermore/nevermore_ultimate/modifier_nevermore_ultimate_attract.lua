@@ -3,7 +3,7 @@ modifier_nevermore_ultimate_attract = class({})
 function modifier_nevermore_ultimate_attract:OnCreated()
     if IsServer() then 
         local interval = 0.01
-        self.distance = 5
+        self.distance = 8
         self.caster = self:GetCaster()
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
         self.speed = self.distance/interval

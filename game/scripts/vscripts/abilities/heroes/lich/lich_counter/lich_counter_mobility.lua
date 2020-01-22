@@ -7,7 +7,7 @@ function lich_counter_mobility:OnCastPointEnd()
     local caster = self:GetCaster()
     local radius = self:GetSpecialValueFor("radius")
     local knockback_distance = self:GetSpecialValueFor("knockback_distance")
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     local special_attack = caster:FindAbilityByName("lich_special_attack")
 
     SafeDestroyModifier("modifier_lich_banish", caster, caster)

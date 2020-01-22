@@ -11,14 +11,14 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"110"
 		"AbilityCooldown"				"7.0"
-		"AbilityDamage"					"14"
 
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"14" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"3" }
 		}
 	}
 }

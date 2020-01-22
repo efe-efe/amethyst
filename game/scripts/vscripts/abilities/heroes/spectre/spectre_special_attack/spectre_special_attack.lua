@@ -6,7 +6,7 @@ function spectre_special_attack:OnCastPointEnd( )
 	local caster = self:GetCaster()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local origin = caster:GetOrigin()
-	local point = CalcRange(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf" 

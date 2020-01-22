@@ -11,7 +11,7 @@ function nevermore_mobility:OnCastPointEnd()
     local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
     local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-	local point = CalcRange(self.origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = CalcPoint(self.origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 
     local direction = (point - self.origin):Normalized()
     local distance = (point - self.origin):Length2D()

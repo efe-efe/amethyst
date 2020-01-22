@@ -7,7 +7,7 @@ LinkLuaModifier( "modifier_vengeful_ex_second_attack_illusion", "abilities/heroe
 function vengeful_ex_second_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	self.origin = caster:GetOrigin()
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local name = caster:GetUnitName()
 
     self.ability = caster:FindAbilityByName("vengeful_ex_second_attack")

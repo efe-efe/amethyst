@@ -5,7 +5,7 @@ LinkLuaModifier( "modifier_juggernaut_extra_recast", "abilities/heroes/juggernau
 function juggernaut_extra:OnCastPointEnd()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
-	local point = CalcRange(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
     -- Spawn the Healing Ward
     local healing_ward = CreateUnitByName(
