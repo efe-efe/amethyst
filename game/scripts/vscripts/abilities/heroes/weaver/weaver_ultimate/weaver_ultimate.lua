@@ -13,40 +13,42 @@ function weaver_ultimate:OnCastPointEnd()
     local stun_duration = self:GetSpecialValueFor("stun_duration")
     local damage = self:GetSpecialValueFor("ability_damage")
 
+    local location = nil
+
     local modifier = caster:FindModifierByName("modifier_weaver_ultimate")
     if 
         modifier.origins == nil or
         modifier.counter == nil or 
         modifier.origins[modifier.counter] == nil 
     then
-        FindClearSpaceForUnit(caster, origin, true)
-        self:PlayEffects(origin, origin, radius)
+        location = origin
     else
-        FindClearSpaceForUnit(caster, modifier.origins[modifier.counter], true)
+        location = modifier.origins[modifier.counter]
+    end
+    
+    FindClearSpaceForUnit(caster, location, true)
 
-        local enemies = caster:FindUnitsInRadius(
-            caster:GetOrigin(), 
-            radius, 
-            DOTA_UNIT_TARGET_TEAM_ENEMY, 
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-            DOTA_UNIT_TARGET_FLAG_NONE,
-            FIND_ANY_ORDER
-        )
-        
-        for _,enemy in pairs(enemies) do
-            enemy:AddNewModifier(caster, self, "modifier_generic_stunned", { duration = stun_duration })
-            local damage = {
-                victim = enemy,
-                attacker = caster,
-                damage = damage,
-                damage_type = DAMAGE_TYPE_PURE,
-            }
-            ApplyDamage( damage )
-        end
-
-        self:PlayEffects(origin, modifier.origins[modifier.counter], radius)
+    local enemies = caster:FindUnitsInRadius(
+        caster:GetOrigin(), 
+        radius, 
+        DOTA_UNIT_TARGET_TEAM_ENEMY, 
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+        DOTA_UNIT_TARGET_FLAG_NONE,
+        FIND_ANY_ORDER
+    )
+    
+    for _,enemy in pairs(enemies) do
+        enemy:AddNewModifier(caster, self, "modifier_generic_stunned", { duration = stun_duration })
+        local damage = {
+            victim = enemy,
+            attacker = caster,
+            damage = damage,
+            damage_type = DAMAGE_TYPE_PURE,
+        }
+        ApplyDamage( damage )
     end
 
+    self:PlayEffects(origin, location, radius)
 end
 
 function weaver_ultimate:PlayEffects(origin, target, radius)

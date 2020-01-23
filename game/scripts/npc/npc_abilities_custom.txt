@@ -89,6 +89,7 @@
 #base "abilities\ancient\ancient_ex2.txt"
 
 #base "abilities\weaver\weaver_m1.txt"
+#base "abilities\weaver\weaver_m2.txt"
 #base "abilities\weaver\weaver_r.txt"
 #base "abilities\weaver\weaver_space.txt"
 

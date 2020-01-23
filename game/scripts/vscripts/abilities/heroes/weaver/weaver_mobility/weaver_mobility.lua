@@ -13,11 +13,6 @@ function weaver_mobility:OnCastPointEnd()
     )
     
     self:PlayEffects()
-
-    local ability = caster:FindAbilityByName("sniper_second_attack")
-    local ability_ex = caster:FindAbilityByName("sniper_ex_second_attack")
-    ability:EndCooldown()
-    ability_ex:EndCooldown()
 end
 
 function weaver_mobility:PlayEffects()

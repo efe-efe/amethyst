@@ -1,5 +1,8 @@
 #base "units\terrorblade\blade.txt"
 #base "units\juggernaut\healing_ward.txt"
+#base "units\weaver\bug.txt"
+
+
 
 "DOTAUnits"
 {

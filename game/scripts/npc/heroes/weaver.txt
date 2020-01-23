@@ -10,7 +10,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AbilityLayout"					"9"
 		"Ability1"						"weaver_basic_attack"
-		"Ability2"						"sniper_second_attack"
+		"Ability2"						"weaver_second_attack"
 		"Ability3"						"weaver_mobility"
 		"Ability4"						"sniper_counter"
 		"Ability5"						"sniper_special_attack"
