@@ -73,7 +73,7 @@ function nevermore_ultimate:OnCastPointEnd()
                     { duration = duration }
                 )
 
-                self:PlayEffectsOnFinish(_self.currentPosition)
+                self:PlayEffectsOnFinish(_self.current_position)
             end,
             OnFinish = function(_self, pos)
                self:PlayEffectsOnFinish(pos)

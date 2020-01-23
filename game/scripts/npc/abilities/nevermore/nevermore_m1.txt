@@ -16,7 +16,7 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"1" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"2" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"max_stacks"				"4" }
 		}
 	}

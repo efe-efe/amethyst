@@ -48,16 +48,20 @@ function nevermore_special_attack:OnCastPointEnd()
 		CreateModifierThinker(
 			caster, --hCaster
 			self, --hAbility
-			"modifier_nevermore_special_attack_thinker", --modifierName
+			"modifier_thinker_indicator", --modifierName
 			{ 
+				thinker = "modifier_nevermore_special_attack_thinker",
+				show_all = 1,
 				radius = radius + (radius_per_stack * i),
 				delay_time = (delay_time * i),
-				damage = damage + (damage_per_stack * i)
+				damage = damage + (damage_per_stack * i),
+				draw_clock = 1,
 			}, --paramTable
 			points[i], --vOrigin
 			caster:GetTeamNumber(), --nTeamNumber
 			false --bPhantomBlocker
 		)
+	
 	end
 end
 

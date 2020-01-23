@@ -11,7 +11,6 @@ function modifier_nevermore_counter_recast:OnCreated(params)
 			"modifier_target_indicator_permanent", 
 			{
 				radius = radius,
-				public = 1
 			})
 	end
 end

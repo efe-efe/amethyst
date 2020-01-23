@@ -43,7 +43,7 @@ function lich_ultimate_mobility:OnCastPointEnd()
 			unit:AddNewModifier(_self.Source, self, "modifier_lich_decay", { duration = decay_duration })
 			unit:AddNewModifier(_self.Source, self, "modifier_lich_frost", { duration = frost_duration })
 
-            self:PlayEffectsOnImpact(unit, _self.currentPosition)
+            self:PlayEffectsOnImpact(unit, _self.current_position)
 		end,
         OnFinish = function(_self, pos)
             self:PlayEffectsOnFinish(pos)

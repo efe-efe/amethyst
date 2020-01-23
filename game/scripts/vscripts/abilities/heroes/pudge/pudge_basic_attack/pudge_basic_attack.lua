@@ -34,7 +34,7 @@ function pudge_basic_attack:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
 			ApplyDamage( damage_table )
-			self:PlayEffectsOnImpact(unit, _self.currentPosition)
+			self:PlayEffectsOnImpact(unit, _self.current_position)
 
 			if _self.Source == caster then 
 				if not unit:IsAmethyst() then

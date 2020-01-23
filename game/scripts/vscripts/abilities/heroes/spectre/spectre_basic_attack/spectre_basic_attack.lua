@@ -75,7 +75,7 @@ function spectre_basic_attack:OnCastPointEnd()
 				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate_lua", { duration = desolate_duration })
 
 
-				if not unit:IsCountering() and not unit:IsObstacle() then
+				if not unit:IsObstacle() then
 					_self.Source:Heal( heal_charged, _self.Source )
 				end
 
@@ -99,7 +99,7 @@ function spectre_basic_attack:OnCastPointEnd()
 		
 				ApplyDamage( damage )
 			end
-			self:PlayEffectsOnImpact(unit, _self.currentPosition, charged)
+			self:PlayEffectsOnImpact(unit, _self.current_position, charged)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos, charged)

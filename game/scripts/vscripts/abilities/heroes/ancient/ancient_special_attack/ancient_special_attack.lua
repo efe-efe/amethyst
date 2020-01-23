@@ -117,7 +117,7 @@ function ancient_special_attack:OnCastPointEnd()
 			self:PlayEffectsOnFinish(pos)
 		end,
 		OnThinkBegin = function(_self)
-			self:PlayEffectsOnThink(_self.currentPosition)
+			self:PlayEffectsOnThink(_self.current_position)
 		end
 	}
 

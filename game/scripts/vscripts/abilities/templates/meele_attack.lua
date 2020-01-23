@@ -29,7 +29,7 @@ function ability_name:OnCastPointEnd()
 			if _self.Source == caster then 
 				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
-			self:PlayEffectsOnImpact(unit, _self.currentPosition)
+			self:PlayEffectsOnImpact(unit, _self.current_position)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

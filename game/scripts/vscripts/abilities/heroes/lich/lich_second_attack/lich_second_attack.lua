@@ -40,7 +40,7 @@ function lich_second_attack:OnCastPointEnd()
 			local mana_gain_final = _self.Source:GetMaxMana() * mana_gain_pct
 			_self.Source:GiveMana(mana_gain_final)
 
-			self:PlayEffectsOnImpact(unit, _self.currentPosition)
+			self:PlayEffectsOnImpact(unit, _self.current_position)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

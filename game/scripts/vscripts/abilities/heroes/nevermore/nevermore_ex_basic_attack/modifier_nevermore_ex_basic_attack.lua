@@ -22,7 +22,6 @@ end
 -- Initializations
 function modifier_nevermore_ex_basic_attack:OnCreated( params )
     self.damage_per_soul = self:GetAbility():GetSpecialValueFor("damage_per_soul")
-    self.base_damage = self:GetAbility():GetSpecialValueFor("base_damage")
 
     if IsServer() then
         self:SetStackCount(params.stacks)
@@ -105,5 +104,5 @@ function modifier_nevermore_ex_basic_attack:DeclareFunctions()
 end
 
 function modifier_nevermore_ex_basic_attack:GetModifierPreAttack_BonusDamage()
-    return self.base_damage + ( self:GetStackCount() * self.damage_per_soul )
+    return self:GetStackCount() * self.damage_per_soul
 end

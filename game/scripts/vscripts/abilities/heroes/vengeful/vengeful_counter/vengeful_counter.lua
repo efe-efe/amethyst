@@ -61,7 +61,7 @@ function vengeful_counter:OnCastPointEnd()
 			self:PlayEffectsOnImpact(unit)
 		end,
 		OnFinish = function(_self, pos)
-			local initial_direction_to_owner = (caster:GetOrigin() - _self.currentPosition):Normalized()
+			local initial_direction_to_owner = (caster:GetOrigin() - _self.current_position):Normalized()
 
 			local projectile_backwards = {
 				--EffectName = 			"particles/units/heroes/hero_vengeful/vengeful_wave_of_terror.vpcf",
@@ -121,10 +121,10 @@ function vengeful_counter:OnCastPointEnd()
 				end,
 				OnThinkBegin = function(_self)	
 					counter = counter + 1
-					local direction_to_owner = (caster:GetOrigin() - _self.currentPosition ):Normalized()
+					local direction_to_owner = (caster:GetOrigin() - _self.current_position ):Normalized()
 					--[[DebugDrawLine_vCol(
-						_self.currentPosition, 
-						(_self.currentPosition + direction_to_owner * (caster:GetOrigin() - _self.currentPosition):Length2D()), 
+						_self.current_position, 
+						(_self.current_position + direction_to_owner * (caster:GetOrigin() - _self.current_position):Length2D()), 
 						Vector(255,255,255), 
 						true, 
 						0.1
@@ -133,7 +133,7 @@ function vengeful_counter:OnCastPointEnd()
 
 					if counter == 2 then
 						self:StopEffectsProjectile()
-						self:PlayEffectsProjectile(_self.currentPosition, _self.currentVelocity)
+						self:PlayEffectsProjectile(_self.current_position, _self.currentVelocity)
 						counter = 0
 					end
 				end

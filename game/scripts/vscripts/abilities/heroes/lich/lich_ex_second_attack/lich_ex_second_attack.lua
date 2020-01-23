@@ -41,7 +41,7 @@ function lich_ex_second_attack:OnCastPointEnd()
 			unit:AddNewModifier(_self.Source, self, "modifier_lich_frost", { duration = frost_duration })
             _self.Source:Heal(heal, _self.Source)
 
-			self:PlayEffectsOnImpact(unit, _self.currentPosition)
+			self:PlayEffectsOnImpact(unit, _self.current_position)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

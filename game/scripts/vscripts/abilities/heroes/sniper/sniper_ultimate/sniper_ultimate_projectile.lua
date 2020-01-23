@@ -43,7 +43,7 @@ function sniper_ultimate_projectile:OnCastPointEnd( )
 			ApplyDamage( damage_table )
 			
 			unit:AddNewModifier(_self.Source, self, "modifier_sniper_ultimate_hit", { duration = 0.1 })
-			self:PlayEffectsTarget(unit, _self.currentPosition)
+			self:PlayEffectsTarget(unit, _self.current_position)
 		end,
         OnFinish = function(_self, pos)
             self:Explosion(pos)

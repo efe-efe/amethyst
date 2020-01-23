@@ -66,7 +66,7 @@ function spectre_special_attack:OnCastPointEnd( )
 				self, -- ability source
 				"modifier_spectre_special_attack_thinker", -- modifier name
 				{ duration = path_duration }, -- kv
-				 _self.currentPosition,
+				 _self.current_position,
 				caster:GetTeamNumber(),
 				false --bPhantomBlocker
 			)

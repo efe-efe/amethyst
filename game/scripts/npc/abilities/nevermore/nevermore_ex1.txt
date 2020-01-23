@@ -18,11 +18,10 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_soul"			"2" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_soul"			"3" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"               	"5.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"100" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"0.2" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"base_damage"				"1" }
 		}
     }
 }

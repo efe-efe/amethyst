@@ -29,7 +29,7 @@ function lich_extra_mobility:OnCastPointEnd()
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit"  and not _self.Source:IsAlly(unit) end,
         OnUnitHit = function(_self, unit)
             ability:CreateShard(unit:GetOrigin(), nil)
-            self:PlayEffectsOnImpact(unit, _self.currentPosition)
+            self:PlayEffectsOnImpact(unit, _self.current_position)
 		end,
 		OnFinish = function(_self, pos)
             self:PlayEffectsOnFinish(pos)
