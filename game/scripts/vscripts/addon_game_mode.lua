@@ -4,10 +4,11 @@ require('util/health')
 require('util/abilities')
 require('util/npc')
 
-_G.nMAX_COUNTDOWNTIMER = 60
-_G.nCOUNTDOWNTIMER = nMAX_COUNTDOWNTIMER
+require('clases/pickup')
+require('clases/amethyst')
+require('clases/round')
 
-Convars:RegisterConvar('test_mode', '0', 'Set to 1 to start test mode.  Set to 0 to disable.', 0)
+THINK_PERIOD = 0.01
 
 if GameMode == nil then
     print( '[AMETHYST] creating Dotarite game mode' )
@@ -46,7 +47,7 @@ end
 
 function Activate()
 	GameRules.GameMode = GameMode()
-	GameRules.GameMode:InitGameMode()
+	GameRules.GameMode:SetupMode()
 end
 
 require('libraries/timers') -- This library allow for easily delayed/timed actions
@@ -59,15 +60,21 @@ require('wrappers/abilities')
 require('wrappers/modifiers')
 require('alliances')
 
-function GameMode:InitGameMode()
-    if GameMode._reentrantCheck then
-        return
+function GameMode:OnThink()
+	if GameRules:IsGamePaused() == true then
+        return THINK_PERIOD
     end
-    self:SetupRules()
-    self:SetupEventHooks()
-    self:SetupFilters()
-    self:SetupAlliances()
-    self:LinkModifiers()
+    local now = Time()
+    if GameRules:State_Get() >= DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+        for _, thinker in ipairs(self.thinkers) do
+            if now >= thinker.next then
+                thinker.next = math.max(thinker.next + thinker.period, now)
+                thinker.callback()
+            end
+        end
+    end
+
+	return THINK_PERIOD
 end
 
 function GameMode:SetupRules()
@@ -99,12 +106,12 @@ function GameMode:SetupRules()
 end
 
 function GameMode:SetupEventHooks()
-    ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap(GameMode, "OnItemPickUp"), GameMode )
-    ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnHeroInGame'), GameMode)
-    ListenToGameEvent('entity_killed', Dynamic_Wrap(GameMode, 'OnEntityKilled'), GameMode)
-    ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), GameMode)
-    ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(GameMode, 'OnGameRulesStateChange'), GameMode)
-    ListenToGameEvent('entity_hurt', Dynamic_Wrap(GameMode, 'OnEntityHurt'), GameMode)
+    ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap(self, "OnItemPickUp"), self )
+    ListenToGameEvent('npc_spawned', Dynamic_Wrap(self, 'OnHeroInGame'), self)
+    ListenToGameEvent('entity_killed', Dynamic_Wrap(self, 'OnEntityKilled'), self)
+    ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(self, 'OnGameRulesStateChange'), self)
+    ListenToGameEvent('entity_hurt', Dynamic_Wrap(self, 'OnEntityHurt'), self)
+    ListenToGameEvent('player_connect_full', Dynamic_Wrap(self, 'EventPlayerConnected'), self)
     print('[AMETHYST] Event hooks set')
 end
 
@@ -160,8 +167,6 @@ function GameMode:LinkModifiers()
     
     LinkLuaModifier( "modifier_mount", "abilities/heroes/common/mount/modifier_mount.lua", LUA_MODIFIER_MOTION_NONE )
 
-
-
     print('[AMETHYST] Useful modifiers linked')
 end
 
@@ -169,222 +174,227 @@ function GameMode:SetupAlliances()
     Alliances:Initialize()
 end
 
---============================================================================================
--- FIRST PLAYER CONNECT SETUP
---============================================================================================
-mode = nil
-function GameMode:CaptureGameMode()
-    if mode == nil then
-        mode = GameRules:GetGameModeEntity()
+function GameMode:SetupPanoramaEventHooks()
+    CustomGameEventManager:RegisterListener('execute_ability', function(eventSourceIndex, args)
+        local caster = EntIndexToHScript(args.entityIndex)
+        local ability = EntIndexToHScript(args.abilityIndex)
 
-        -------------------------------
-        -- Core Variables
-        -------------------------------
-        self.countdownEnabled = false
-        self.lock_round = false
-        self.iMaxTreshold = 30
-        self.mouse_positions = {}
+        if caster.bFirstSpawnedPG ~= true then return end
 
-        -------------------------------
-        -- Core Constants
-        -------------------------------
-        self.FIRST_AMETHYST_SPAWN_TIME = 10.0
-        self.PICKUPS_SPAWN_TIME = 20.0
-
-        if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
-            self.AMETHYST_SPAWN_TIME = 20.0
-            self.WIN_CONDITION = {
-                type = "ROUNDS",
-                number = 5,
-                difference = 3,
-            }
-            mode:SetFixedRespawnTime( -1 ) 
-        elseif GetMapName() == "free_for_all" then
-            self.AMETHYST_SPAWN_TIME = 15.0
-            nCOUNTDOWNTIMER = 99999
-            self.WIN_CONDITION = {
-                type = "AMETHYSTS",
-                number = 5,
-                difference = 3,
-            }
-
-            self.MAX_RESPAWN_TIME = 15.0 
-            self.RESPAWN_TIME_PER_DEATH = 3.0
-            self.BASE_RESPAWN_TIME = 9.0
-            self.MAX_LIFES = 3
-            mode:SetFixedRespawnTime( self.BASE_RESPAWN_TIME ) 
+        if  ability:IsCooldownReady() and
+            ability:IsActivated() and
+            ability:IsOwnersManaEnough() and
+            not ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_PASSIVE) and
+            not ability:IsInAbilityPhase() and
+            not caster:IsSilenced() and
+            not caster:HasFear() and
+            not caster:IsCommandRestricted() and
+            not caster:IsNightmared() and
+            not caster:IsStunned()
+        then
+            caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
         end
+    end)
 
-        -------------------------------
-        -- Set GameMode parameters
-        -------------------------------
-        mode:SetBuybackEnabled( false )
-        mode:SetDaynightCycleDisabled( true )
-        mode:SetCameraDistanceOverride( 1350 )
+    CustomGameEventManager:RegisterListener('swap_abilities', function(eventSourceIndex, args)
+        local caster = EntIndexToHScript(args.entityIndex)
+        local mode = args.mode
 
-        -------------------------------
-        -- Link Client/Server Events
-        -------------------------------
-        
-        CustomGameEventManager:RegisterListener('execute_ability', function(eventSourceIndex, args)
-            local caster = EntIndexToHScript(args.entityIndex)
-            local ability = EntIndexToHScript(args.abilityIndex)
+        for i = 0, 6 do
+            local ability = caster:GetAbilityByIndex(i)
+            if ability then
+                if ability:GetAbilityType() ~= 2 then -- ignore talents
+                    local ex_name =  ability:GetAlternateName()
+                    local alternate_version = caster:FindAbilityByName(ex_name)
 
-            if caster.bFirstSpawnedPG ~= true then return end
+                    if alternate_version ~= nil then
+                        local swapeable_ability = alternate_version
 
-            if  ability:IsCooldownReady() and
-                ability:IsActivated() and
-                ability:IsOwnersManaEnough() and
-                not ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_PASSIVE) and
-                not ability:IsInAbilityPhase() and
-                not caster:IsSilenced() and
-                not caster:HasFear() and
-                not caster:IsCommandRestricted() and
-                not caster:IsNightmared() and
-                not caster:IsStunned()
-            then
-                caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
-            end
-        end)
-
-        CustomGameEventManager:RegisterListener('swap_abilities', function(eventSourceIndex, args)
-            local caster = EntIndexToHScript(args.entityIndex)
-            local mode = args.mode
-
-            for i = 0, 6 do
-                local ability = caster:GetAbilityByIndex(i)
-                if ability then
-                    if ability:GetAbilityType() ~= 2 then -- ignore talents
-                        local ex_name =  ability:GetAlternateName()
-                        local alternate_version = caster:FindAbilityByName(ex_name)
-
-                        if alternate_version ~= nil then
-                            local swapeable_ability = alternate_version
-
-                            if swapeable_ability:GetAbilityIndex() ~= swapeable_ability:GetAbilityOriginalIndex() then
-                                if swapeable_ability:GetAbilityIndex() ~= ability:GetAbilityOriginalIndex() then
-                                    swapeable_ability = swapeable_ability:GetRelatedAbility()
-                                end
+                        if swapeable_ability:GetAbilityIndex() ~= swapeable_ability:GetAbilityOriginalIndex() then
+                            if swapeable_ability:GetAbilityIndex() ~= ability:GetAbilityOriginalIndex() then
+                                swapeable_ability = swapeable_ability:GetRelatedAbility()
                             end
+                        end
 
-                            if swapeable_ability == nil then
-                                print("[SWAP] ERROR: ability " .. ability:GetAbilityName() .. " related bug!")
-                                print("[SWAP] Possible reasons: The abilities are in the wrong order on the hero layout")
-                                return
-                            end
+                        if swapeable_ability == nil then
+                            print("[SWAP] ERROR: ability " .. ability:GetAbilityName() .. " related bug!")
+                            print("[SWAP] Possible reasons: The abilities are in the wrong order on the hero layout")
+                            return
+                        end
 
-                            if mode == "press" then
+                        if mode == "press" then
+                            caster:SwapAbilities( 
+                                ability:GetAbilityName(),
+                                swapeable_ability:GetAbilityName(),
+                                false,
+                                true
+                            )
+                        elseif mode == "release" then
+                            if not swapeable_ability:IsEx() then
                                 caster:SwapAbilities( 
-                                    ability:GetAbilityName(),
                                     swapeable_ability:GetAbilityName(),
-                                    false,
-                                    true
+                                    ability:GetAbilityName(),
+                                    true,
+                                    false
                                 )
-                            elseif mode == "release" then
-                                if not swapeable_ability:IsEx() then
-                                    caster:SwapAbilities( 
-                                        swapeable_ability:GetAbilityName(),
-                                        ability:GetAbilityName(),
-                                        true,
-                                        false
-                                    )
-                                end
                             end
                         end
                     end
                 end
             end
-        end)
+        end
+    end)
 
-        CustomGameEventManager:RegisterListener('updateMousePosition', function(eventSourceIndex, args)
-            local mouse_position = Vector(args.x, args.y, args.z)
-            self:UpdateMousePosition(mouse_position, args.playerID)
-        end)
+    CustomGameEventManager:RegisterListener('updateMousePosition', function(eventSourceIndex, args)
+        local mouse_position = Vector(args.x, args.y, args.z)
+        self:UpdateMousePosition(mouse_position, args.playerID)
+    end)
         
-        CustomGameEventManager:RegisterListener('key_released', function(eventSourceIndex, args)
-            local unit = EntIndexToHScript(args.entityIndex)
-            local modifier = unit:FindModifierByName("modifier_cast_point")
+    CustomGameEventManager:RegisterListener('key_released', function(eventSourceIndex, args)
+        local unit = EntIndexToHScript(args.entityIndex)
+        local modifier = unit:FindModifierByName("modifier_cast_point")
 
-            if modifier ~= nil then
-                if not modifier:IsNull() then
-                    modifier:OnKeyReleased( args.key )
-                end
+        if modifier ~= nil then
+            if not modifier:IsNull() then
+                modifier:OnKeyReleased( args.key )
             end
-        end)
+        end
+    end)
 
-        CustomGameEventManager:RegisterListener('moveUnit', function(eventSourceIndex, args)
-            local direction = args.direction
-            local unit = EntIndexToHScript(args.entityIndex)
+    CustomGameEventManager:RegisterListener('moveUnit', function(eventSourceIndex, args)
+        local direction = args.direction
+        local unit = EntIndexToHScript(args.entityIndex)
 
-            --Not initialized yet
-            if unit == nil then return end
-            if unit.direction == nil then return end
+        --Not initialized yet
+        if unit == nil then return end
+        if unit.direction == nil then return end
 
-            if args.direction == "right" then 
-                if unit.first_right == false then unit.first_right = true end
-                unit.direction.x = unit.direction.x + 1 
-            end
+        if args.direction == "right" then 
+            if unit.first_right == false then unit.first_right = true end
+            unit.direction.x = unit.direction.x + 1 
+        end
 
-            if args.direction == "left" then 
-                if unit.first_left == false then unit.first_left = true end
-                unit.direction.x = unit.direction.x - 1 
-            end
-            if args.direction == "up" then 
-                if unit.first_up == false then unit.first_up = true end
-                unit.direction.y = unit.direction.y + 1 
-            end
-            if args.direction == "down" then 
-                if unit.first_down == false then unit.first_down = true end
-                unit.direction.y = unit.direction.y - 1 
-            end
-        end)
+        if args.direction == "left" then 
+            if unit.first_left == false then unit.first_left = true end
+            unit.direction.x = unit.direction.x - 1 
+        end
+        if args.direction == "up" then 
+            if unit.first_up == false then unit.first_up = true end
+            unit.direction.y = unit.direction.y + 1 
+        end
+        if args.direction == "down" then 
+            if unit.first_down == false then unit.first_down = true end
+            unit.direction.y = unit.direction.y - 1 
+        end
+    end)
 
-        CustomGameEventManager:RegisterListener('stopUnit', function(eventSourceIndex, args)
-            local direction = args.direction
-            local unit = EntIndexToHScript(args.entityIndex)
-            
-            --Not initialized yet
-            if unit == nil then return end
-            if unit.direction == nil then return end
+    CustomGameEventManager:RegisterListener('stopUnit', function(eventSourceIndex, args)
+        local direction = args.direction
+        local unit = EntIndexToHScript(args.entityIndex)
+        
+        --Not initialized yet
+        if unit == nil then return end
+        if unit.direction == nil then return end
 
-            if args.direction == "right" then 
-                if unit.first_right == false then return end
-                unit.direction.x = unit.direction.x - 1
-            end
-            if args.direction == "left" then 
-                if unit.first_left == false then return end
-                unit.direction.x = unit.direction.x + 1 
-            end
-            if args.direction == "up" then 
-                if unit.first_up == false then return end
-                unit.direction.y = unit.direction.y - 1 
-            end
-            if args.direction == "down" then 
-                if unit.first_down == false then return end
-                unit.direction.y = unit.direction.y + 1 
-            end
-        end)
-    end 
+        if args.direction == "right" then 
+            if unit.first_right == false then return end
+            unit.direction.x = unit.direction.x - 1
+        end
+        if args.direction == "left" then 
+            if unit.first_left == false then return end
+            unit.direction.x = unit.direction.x + 1 
+        end
+        if args.direction == "up" then 
+            if unit.first_up == false then return end
+            unit.direction.y = unit.direction.y - 1 
+        end
+        if args.direction == "down" then 
+            if unit.first_down == false then return end
+            unit.direction.y = unit.direction.y + 1 
+        end
+    end)
+end
+
+function GameMode:SetupMode()
+    self.players = {}
+    --self.thinkers = {}
+
+    GameRules:GetGameModeEntity():SetThink("OnThink", self, THINK_PERIOD)
+
+    self:SetupRules()
+    self:SetupEventHooks()
+    self:SetupPanoramaEventHooks()
+    self:SetupFilters()
+    self:SetupAlliances()
+    self:LinkModifiers()
+
+    local mode = GameRules:GetGameModeEntity()
+    -------------------------------
+    -- Set GameMode parameters
+    -------------------------------
+    mode:SetBuybackEnabled( false )
+    mode:SetDaynightCycleDisabled( true )
+    mode:SetCameraDistanceOverride( 1350 )
+end
+
+function GameMode:Start()
+    self.lock_round = false
+    self.iMaxTreshold = 30
+    self.mouse_positions = {}
+    self.round = Round()
+
+    self:RegisterThinker(1.0, function()
+        self.round:Update()
+    end)
+
+    if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
+        self.WIN_CONDITION = {
+            type = "ROUNDS",
+            number = 5,
+            difference = 3,
+        }
+        GameRules:GetGameModeEntity():SetFixedRespawnTime( -1 ) 
+    elseif GetMapName() == "free_for_all" then
+        nCOUNTDOWNTIMER = 99999
+        self.WIN_CONDITION = {
+            type = "AMETHYSTS",
+            number = 5,
+            difference = 3,
+        }
+
+        self.MAX_RESPAWN_TIME = 15.0 
+        self.RESPAWN_TIME_PER_DEATH = 3.0
+        self.BASE_RESPAWN_TIME = 9.0
+        self.MAX_LIFES = 3
+
+        GameRules:GetGameModeEntity():SetFixedRespawnTime( self.BASE_RESPAWN_TIME ) 
+    end
 end
 
 function GameMode:UpdateMousePosition(pos, playerID)
     self.mouse_positions[playerID] = pos
 end
 
----------------------------------------------------------------------------
--- Update player labels and the scoreboard
----------------------------------------------------------------------------
-function GameMode:OnThink()
-	if GameRules:IsGamePaused() == true then
-        return 1
+function GameMode:RegisterThinker(period, callback)
+    local timer = {}
+    timer.period = period
+    timer.callback = callback
+    timer.next = Time() + period
+
+    self.thinkers = self.thinkers or {}
+
+    table.insert(self.thinkers, timer)
+end
+
+
+
+function GameMode:EventPlayerConnected(args)
+    local playerEntity = EntIndexToHScript(args.index + 1)
+
+    if not IsValidEntity(playerEntity) then
+        return
     end
-    
-    if self.countdownEnabled == true then
-        CountdownTimer()
-        if nCOUNTDOWNTIMER <= 0 then
-            self.countdownEnabled = false
-            self:CreateDeathZone()
-        end
-    end
-	return 1
+
+    print("Player connected")
+    PrintTable(args)
 end

@@ -10,13 +10,13 @@ AMETHYST_RESPAWN_TIME = 15.0
 local PICKUPS_TIMER = 5.0 --20.0
 local ROUND_TIMER = 30.0
 
-function Round:constructor()
+function Round:constructor(players)
     self.amethyst = nil
     self.death_zone = nil
     self.pickups = {}
     self.lights = {}
     self.arrows = {}
-
+    self.players = players
     self.ended = false
     self.time_over = false
     self.hero_died = false
@@ -131,6 +131,7 @@ function Round:Update()
                 self:SpawnArrows()
             end
         end
+
         for _,pickup in pairs(self.pickups) do
             if not pickup.entity then
                 self.pickups[_].timer = pickup.timer - 1
@@ -144,6 +145,7 @@ function Round:Update()
                 end
             end
         end
+
         if self.hero_died then
             self.hero_died = false
 

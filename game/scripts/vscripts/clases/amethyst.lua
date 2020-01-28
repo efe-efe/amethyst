@@ -1,6 +1,8 @@
 Amethyst = Amethyst or class({}, nil, HScriptEntity)
 
 function Amethyst:constructor(origin)
+    print("[CLASS=AMETHYST] CREATING AMETHYST")
+
     self.origin = origin
     self.mana_bounty = 40
     self.heal_bounty = 20
@@ -14,7 +16,6 @@ function Amethyst:constructor(origin)
         nil, --hUnitOwner
         DOTA_TEAM_NOTEAM
     ))
-
 
     local unit = self:GetUnit()
     unit:SetAbsOrigin(Vector(self.origin.x, self.origin.y, self.origin.z))
