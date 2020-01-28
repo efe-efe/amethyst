@@ -19,7 +19,7 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"85" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.25" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.5" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
 		}
 	}
 }

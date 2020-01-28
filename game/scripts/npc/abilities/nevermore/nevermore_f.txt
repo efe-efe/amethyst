@@ -13,8 +13,8 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.4" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"heal"				"5" }
+			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.5" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"heal"				"2" }
 			"03"{ "var_type"			"FIELD_INTEGER"		"heal_per_soul"		"4" }
 		}
 	}

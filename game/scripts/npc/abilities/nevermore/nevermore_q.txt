@@ -31,7 +31,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"                "200" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"delay_time"			"0.5" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"0.5" }
 		}
 	}
 }

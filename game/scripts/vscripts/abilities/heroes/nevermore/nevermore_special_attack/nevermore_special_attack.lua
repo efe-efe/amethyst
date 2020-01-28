@@ -23,6 +23,13 @@ function nevermore_special_attack:GetCastRange( vLocation, hTarget )
 end
 
 ]]
+function nevermore_special_attack:OnSpellStart()
+	--[[local radius = self:GetSpecialValueFor("radius")
+
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_target_indicator_permanent", {
+		radius = radius,
+	})]]
+end
 
 function nevermore_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -41,8 +48,8 @@ function nevermore_special_attack:OnCastPointEnd()
 	local offset = 128
 
 	points[0] = origin + Vector(direction.x * offset , direction.y * offset, 0 )
-	points[1] = origin + Vector(direction.x * (distance/2 + offset), direction.y * (distance/2 + offset), 0 )
-	points[2] = origin + Vector(direction.x * (distance + offset), direction.y * (distance + offset), 0 )
+	points[1] = origin + Vector(direction.x * (distance/2), direction.y * (distance/2), 0 )
+	points[2] = origin + Vector(direction.x * (distance), direction.y * (distance), 0 )
 
 	for i = 0, 2 do
 		CreateModifierThinker(

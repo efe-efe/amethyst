@@ -25,7 +25,8 @@ function sniper_mobility:OnCastPointEnd()
             y = direction.y,
             r = distance,
             speed = (distance/0.5),
-            peak = 400,
+			peak = 400,
+			i_frame = 1,
         } -- kv
 	)
 

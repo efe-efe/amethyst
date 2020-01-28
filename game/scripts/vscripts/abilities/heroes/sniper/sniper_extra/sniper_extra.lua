@@ -1,5 +1,4 @@
 sniper_extra = class({})
-LinkLuaModifier( "modifier_sniper_extra_movement", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
 
 function sniper_extra:HasPriority()
     return true

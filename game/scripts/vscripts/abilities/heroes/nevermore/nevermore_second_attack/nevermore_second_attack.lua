@@ -48,8 +48,14 @@ function nevermore_second_attack:OnCastPointEnd()
 				attacker = _self.Source,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
+
+			local should_recast = false
 	
 			for _,enemy in pairs(enemies) do
+				if not enemy:IsObstacle() then
+					should_recast = true
+				end
+
 				local stacks = SafeGetModifierStacks("modifier_nevermore_second_attack_debuff", enemy)
 
 				damage_table.victim = enemy
@@ -62,7 +68,7 @@ function nevermore_second_attack:OnCastPointEnd()
 			end
 	
 			if _self.Source == caster then
-				if #enemies > 0 then
+				if should_recast then
 					local modifier = caster:AddNewModifier(
 						caster,
 						self,
