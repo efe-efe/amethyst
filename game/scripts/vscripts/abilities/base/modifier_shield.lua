@@ -22,7 +22,7 @@ function modifier_shield:OnCreated( params )
 
         self:SetStackCount(params.damage_block)
         self:PlayEffects( self:GetDuration() )
-        GameMode:UpdateHeroHealthBar( self:GetParent() )
+        GameRules.GameMode:UpdateHeroHealthBar( self:GetParent() )
         self:GetParent():AddStatusBar({
 			label = "Shield", modifier = self, priority = 2, stylename="Shield"
 		}) 
@@ -41,14 +41,14 @@ function modifier_shield:OnRefresh( params )
         self:SetDuration(new_duration, true)
         self:StopEffects()
         self:PlayEffects(new_duration)
-        GameMode:UpdateHeroHealthBar( self:GetParent() )
+        GameRules.GameMode:UpdateHeroHealthBar( self:GetParent() )
     end
 end
 
 function modifier_shield:OnDestroy( kv )
     if IsServer() then
         self:StopEffects()
-        GameMode:UpdateHeroHealthBar( self:GetParent() )
+        GameRules.GameMode:UpdateHeroHealthBar( self:GetParent() )
     end
 end
 

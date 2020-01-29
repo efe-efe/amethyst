@@ -50,7 +50,7 @@ end
 --------------------------------------------------------------------------------
 -- Interval Effects
 function modifier_target_indicator:OnIntervalThink()
-    local mouse = GameMode.mouse_positions[self.parent:GetPlayerID()]
+    local mouse = GameRules.GameMode.mouse_positions[self.parent:GetPlayerID()]
 	local origin = self.parent:GetOrigin()
 	local ranges = self:GetRanges(self.fixed_range)
 
@@ -65,7 +65,7 @@ function modifier_target_indicator:PlayEffects()
 	local particle_cast = "particles/mod_units/range_finder_tower_aoe.vpcf"
 	local particle_cast_aoe = "particles/ui_mouseactions/range_finder_aoe.vpcf"
 	local player_owner = self.parent:GetPlayerOwner()
-    local mouse = GameMode.mouse_positions[self.parent:GetPlayerID()]
+    local mouse = GameRules.GameMode.mouse_positions[self.parent:GetPlayerID()]
 
 	if self.public then
 		if self.no_target ~= 1 then

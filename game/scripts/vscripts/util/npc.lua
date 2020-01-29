@@ -46,12 +46,19 @@ function CDOTA_BaseNPC:IsDirectionForced()
 end
 
 function CDOTA_BaseNPC:GetAlliance()
-	local team = self:GetTeamNumber()
-	return Alliances:FindByTeam(team)
+	local playerID = self:GetPlayerOwnerID()
+	return GameRules.GameMode.players[playerID].alliance
 end
 
-function CDOTA_BaseNPC:IsAlly( hero )
-	return Alliances:CheckAllies(self, hero)
+function CDOTA_BaseNPC:IsAlly( unit )
+	local playerID = self:GetPlayerOwnerID()
+	local playerID_test = unit:GetPlayerOwnerID()
+
+	if playerID_test == -1 then
+		return false
+	end
+
+	return self:GetAlliance() == unit:GetAlliance()
 end
 
 function CDOTA_BaseNPC:CanWalk( hero )

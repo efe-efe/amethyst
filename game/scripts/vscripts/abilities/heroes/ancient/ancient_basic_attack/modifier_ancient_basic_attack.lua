@@ -24,7 +24,7 @@ function modifier_ancient_basic_attack:OnCreated()
     if IsServer() then
         self:SetStackCount(1)
         self:StartIntervalThink(self.duration)
-		GameMode:UpdateHeroStacks(self:GetParent(), 1)
+		GameRules.GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 1)
         -- Start Interval
     end
 end
@@ -43,7 +43,7 @@ end
 
 function modifier_ancient_basic_attack:OnDestroy()
     if IsServer() then
-		GameMode:UpdateHeroStacks(self:GetParent(), 0)
+		GameRules.GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 0)
     end
 end
 
@@ -59,7 +59,7 @@ function modifier_ancient_basic_attack:OnStackCountChanged( old )
 		if self:GetStackCount() > self.max_stacks then
 			self:SetStackCount(self.max_stacks)
         end
-        GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
+        GameRules.GameRules.GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
 	end
 end
 

@@ -53,7 +53,7 @@ end
 function modifier_terrorblade_basic_attack:OnDestroy( kv )
 	if IsServer() then
 		self:StopEffects()
-		GameMode:UpdateHeroStacks(self:GetParent(), 0)
+		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 0)
 	end
 end
 

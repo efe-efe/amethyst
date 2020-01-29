@@ -52,7 +52,7 @@ function modifier_cast_point:OnCreated(params)
 			})
 		end
 
-		GameMode:InitializeCastPoint( self.parent, self:GetDuration(), self:GetName() )
+		GameRules.GameMode:InitializeCastPoint( self.parent, self:GetDuration(), self:GetName() )
 
 		self:StartCast()
 		self:StartIntervalThink( 0.01 )
@@ -205,7 +205,7 @@ function modifier_cast_point:OnIntervalThink()
 		self:Destroy()
 	end
 		
-    local mouse = GameMode.mouse_positions[self.parent:GetPlayerID()]
+    local mouse = GameRules.GameMode.mouse_positions[self.parent:GetPlayerID()]
 	local direction = (mouse - self.parent:GetOrigin()):Normalized()
 
 	if not self.parent:HasModifier("modifier_generic_displacement") then

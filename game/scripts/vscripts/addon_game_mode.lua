@@ -7,6 +7,8 @@ require('util/npc')
 require('clases/pickup')
 require('clases/amethyst')
 require('clases/round')
+require('clases/alliance')
+require('clases/player')
 
 THINK_PERIOD = 0.01
 
@@ -112,8 +114,26 @@ function GameMode:SetupEventHooks()
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(self, 'OnGameRulesStateChange'), self)
     ListenToGameEvent('entity_hurt', Dynamic_Wrap(self, 'OnEntityHurt'), self)
     ListenToGameEvent('player_connect_full', Dynamic_Wrap(self, 'EventPlayerConnected'), self)
+
+    ListenToGameEvent('dota_player_team_changed', Dynamic_Wrap(self, 'Event1'), self)
+    ListenToGameEvent('dota_player_selected_custom_team', Dynamic_Wrap(self, 'Event2'), self)
+    ListenToGameEvent('player_team', Dynamic_Wrap(self, 'EventPlayerTeam'), self)
+    
     print('[AMETHYST] Event hooks set')
 end
+
+
+
+function GameMode:Event1(args)
+    print("=========================================EVENT1: dota_player_team_changed")
+    PrintTable(args)
+end
+
+function GameMode:Event2(args)
+    print("=========================================EVENT2: dota_player_selected_custom_team")
+    PrintTable(args)
+end
+
 
 function GameMode:SetupFilters()
     local mode = GameRules:GetGameModeEntity()
@@ -317,7 +337,12 @@ end
 
 function GameMode:SetupMode()
     self.players = {}
-    --self.thinkers = {}
+    self.alliances = {}
+
+    table.insert(self.alliances, Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS }))
+    table.insert(self.alliances, Alliance(DOTA_ALLIANCE_DIRE, { DOTA_TEAM_CUSTOM_1, DOTA_TEAM_CUSTOM_2 }))
+    table.insert(self.alliances, Alliance(DOTA_ALLIANCE_LEGION, { DOTA_TEAM_CUSTOM_3, DOTA_TEAM_CUSTOM_4 }))
+    table.insert(self.alliances, Alliance(DOTA_ALLIANCE_VOID, { DOTA_TEAM_CUSTOM_5, DOTA_TEAM_CUSTOM_6 }))
 
     GameRules:GetGameModeEntity():SetThink("OnThink", self, THINK_PERIOD)
 
@@ -325,7 +350,6 @@ function GameMode:SetupMode()
     self:SetupEventHooks()
     self:SetupPanoramaEventHooks()
     self:SetupFilters()
-    self:SetupAlliances()
     self:LinkModifiers()
 
     local mode = GameRules:GetGameModeEntity()
@@ -341,11 +365,16 @@ function GameMode:Start()
     self.lock_round = false
     self.iMaxTreshold = 30
     self.mouse_positions = {}
-    self.round = Round()
+    self.round = Round(self.players)
 
     self:RegisterThinker(1.0, function()
         self.round:Update()
     end)
+
+    self.walls_ents = Entities:FindAllByName("wall_spawn")
+    self.walls = {} -- Created walls on the map
+
+    self:CreateWalls()
 
     if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
         self.WIN_CONDITION = {
@@ -369,6 +398,8 @@ function GameMode:Start()
 
         GameRules:GetGameModeEntity():SetFixedRespawnTime( self.BASE_RESPAWN_TIME ) 
     end
+
+    CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.WIN_CONDITION.number } );
 end
 
 function GameMode:UpdateMousePosition(pos, playerID)
@@ -386,15 +417,55 @@ function GameMode:RegisterThinker(period, callback)
     table.insert(self.thinkers, timer)
 end
 
-
-
 function GameMode:EventPlayerConnected(args)
-    local playerEntity = EntIndexToHScript(args.index + 1)
+    print("===============================EventPlayerConnected")
 
-    if not IsValidEntity(playerEntity) then
+    local player_entity = EntIndexToHScript(args.index + 1)
+
+    if not IsValidEntity(player_entity) then
         return
     end
 
-    print("Player connected")
-    PrintTable(args)
+    local id = args.PlayerID
+    local userid = args.userid
+
+    if id == -1 then
+        return
+    end
+
+    if not self.players[id] then
+        local player = Player(id, userid)
+        self.players[id] = player
+    end
+end
+
+function GameMode:EventPlayerTeam(args)
+    print("===============================EventPlayerTeam")
+    local alliance_number = 0
+    local player_object = nil
+
+    for _,alliance in ipairs(self.alliances) do
+        for _,team in ipairs(alliance.teams) do
+            if team == args.team then
+                alliance_number = alliance.number
+            end
+        end
+    end
+
+    for _,player in pairs(self.players) do
+        if player.userid == args.userid then
+            player_object = player
+        end
+    end
+
+    if player_object == nil and IsInToolsMode() then
+        if not self.players[id] then
+            local player = Player(id, userid)
+            self.players[id] = player
+        end
+    end
+
+    player_object:SetTeam(args.team)
+    player_object:SetAlliance(alliance_number)
+    
 end

@@ -34,7 +34,7 @@ function modifier_sniper_basic_attack_charges:OnCreated( kv )
         self.replenish_time = self:GetAbility():GetSpecialValueFor("replenish_time")
 
 		self:SetStackCount(self.max_charges)
-		GameMode:InitializeHeroCharges(self:GetParent(), self:GetStackCount())
+		GameRules.GameMode:InitializeHeroCharges(self:GetParent(), self:GetStackCount())
     end
 end
 

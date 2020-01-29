@@ -1,32 +1,8 @@
-
-
--- Gold filter, can be used to modify how much gold player gains/loses
 function GameMode:GoldFilter(keys)
 	local gold = keys.gold
 	local playerID = keys.player_id_const
 	local reason = keys.reason_const
 
-	-- Reasons:
-        -- DOTA_ModifyGold_Unspecified = 0
-        -- DOTA_ModifyGold_Death = 1
-        -- DOTA_ModifyGold_Buyback = 2
-        -- DOTA_ModifyGold_PurchaseConsumable = 3
-        -- DOTA_ModifyGold_PurchaseItem = 4
-        -- DOTA_ModifyGold_AbandonedRedistribute = 5
-        -- DOTA_ModifyGold_SellItem = 6
-        -- DOTA_ModifyGold_AbilityCost = 7
-        -- DOTA_ModifyGold_CheatCommand = 8
-        -- DOTA_ModifyGold_SelectionPenalty = 9
-        -- DOTA_ModifyGold_GameTick = 10
-        -- DOTA_ModifyGold_Building = 11
-        -- DOTA_ModifyGold_HeroKill = 12
-        -- DOTA_ModifyGold_CreepKill = 13
-        -- DOTA_ModifyGold_RoshanKill = 14
-        -- DOTA_ModifyGold_CourierKill = 15
-        -- DOTA_ModifyGold_SharedGold = 16
-
-    
-    -- Disable all hero kill gold
     if reason == DOTA_ModifyGold_HeroKill then
         return false
     end
@@ -34,11 +10,7 @@ function GameMode:GoldFilter(keys)
 	return true
 end
 
--- Healing Filter, can be used to modify how much hp regen and healing a unit is gaining
--- Triggers every time a unit gains health
 function GameMode:HealingFilter(keys)
-	--PrintTable(keys)
-
     local healing_target_index = keys.entindex_target_const
     local healing_target = EntIndexToHScript(healing_target_index)
 
@@ -58,7 +30,6 @@ function GameMode:HealingFilter(keys)
 		healing_ability_index = keys.entindex_inflictor_const
 	end
 
-
 	-- Find the source of the heal - the healer
 	local healer
 	if healer_index then
@@ -75,7 +46,6 @@ function GameMode:HealingFilter(keys)
 	else
 		healing_ability = nil -- hp regen
     end
-
     
     -- Check if is able to heal
     if healing_target:IsRealHero() then
@@ -123,14 +93,6 @@ function GameMode:DamageFilter(keys)
 	local inflictor = keys.entindex_inflictor_const	-- keys.entindex_inflictor_const is nil if damage is not caused by an ability
 	local damage_after_reductions = math.floor(keys.damage) 	-- keys.damage is damage after reductions without spell amplifications
 
-	-- Damage types:
-        -- DAMAGE_TYPE_NONE = 0
-        -- DAMAGE_TYPE_PHYSICAL = 1
-        -- DAMAGE_TYPE_MAGICAL = 2
-        -- DAMAGE_TYPE_PURE = 4
-        -- DAMAGE_TYPE_ALL = 7
-        -- DAMAGE_TYPE_HP_REMOVAL = 8
-
 	local damaging_ability
 	if inflictor then
 		damaging_ability = EntIndexToHScript(inflictor)
@@ -167,22 +129,24 @@ function GameMode:DamageFilter(keys)
 	return true
 end
 
-function GameMode:GetAllianceHealth( name )
+function GameMode:GetAllianceHealth( alliance )
     local health = {
         current = 0,
         max = 0,
     }
 
-    for _,hero in pairs(Alliances.alliances[name].heroes) do
-        health.max = health.max + hero:GetMaxHealth()
-        health.current = health.current + hero:GetHealth()
+    for _,player in pairs(self.players) do
+        if player.alliance == alliance then
+            health.max = health.max + player.hero:GetMaxHealth()
+            health.current = health.current + player.hero:GetHealth()
+        end
     end
 
     return health
 end
 
 function GameMode:UpdateHealthBar( alliance )
-    local alliance_health = self:GetAllianceHealth(alliance.name)
+    local alliance_health = self:GetAllianceHealth( alliance )
     local health_pct = 100 * alliance_health.current/alliance_health.max
 
     local data = {

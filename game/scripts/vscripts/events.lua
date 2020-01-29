@@ -7,6 +7,10 @@ require('alliances')
 function GameMode:OnGameRulesStateChange(keys)
     local state = GameRules:State_Get()
 
+    if state == DOTA_GAMERULES_STATE_HERO_SELECTION then
+
+    end
+
     if state == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
         GameMode:OnGameInProgress()
     end
@@ -17,13 +21,6 @@ end
 --============================================================================================
 function GameMode:OnGameInProgress()
     self:Start()
-
-    CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.WIN_CONDITION.number } );
-    
-    self.walls_ents = Entities:FindAllByName("wall_spawn")
-    self.walls = {} -- Created walls on the map
-
-    self:CreateWalls()
 end
 
 --============================================================================================
@@ -72,7 +69,9 @@ function GameMode:OnHeroInGame(keys)
                 end
             end
 
-            Alliances:Update(npc)
+            print("===============================OnHeroInGame")
+            --self.players[playerID]:SetHero(npc)
+            --Alliances:Update(npc)
 
             local data = {
                 teamID = team,
@@ -134,7 +133,7 @@ end
 
 function GameMode:OnAmethystDestroy(killer)
     if killer ~= nil then
-        local killer_alliance = killer:GetAlliance()
+        local killer_alliance = killer.alliance
 
         killer_alliance.amethysts = killer_alliance.amethysts + 1
         
@@ -154,7 +153,7 @@ function GameMode:OnAmethystDestroy(killer)
 end
 
 function GameMode:OnHeroKilled(killed)
-    local killed_alliance = killed:GetAlliance()
+    local killed_alliance = killed.alliance
 
     if self.WIN_CONDITION.type == "ROUNDS" then
         if not self.lock_round then

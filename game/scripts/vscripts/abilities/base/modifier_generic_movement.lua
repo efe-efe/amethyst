@@ -342,7 +342,7 @@ end
 function modifier_generic_movement:OnManaGained(params)
 	if params.unit == self:GetParent() then
 		Timers:CreateTimer(0.1, function()
-			GameMode:UpdateHeroManaBar(params.unit)
+			GameRules.GameMode:UpdateHeroManaBar(params.unit)
         end)
 	end	
 end
@@ -350,7 +350,7 @@ end
 function modifier_generic_movement:OnSpentMana(params)
 	if params.unit == self:GetParent() then
 		Timers:CreateTimer(0.1, function()
-			GameMode:UpdateHeroManaBar(params.unit)
+			GameRules.GameMode:UpdateHeroManaBar(params.unit)
         end)
 	end	
 end

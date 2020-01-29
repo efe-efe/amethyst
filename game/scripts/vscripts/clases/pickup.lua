@@ -1,4 +1,4 @@
-Pickup = Pickup or class({}, nil, HScriptEntity)
+Pickup = Pickup or class({})
 
 PickupTypes = {
     HEALTH = 0,

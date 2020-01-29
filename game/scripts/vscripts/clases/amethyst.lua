@@ -1,4 +1,4 @@
-Amethyst = Amethyst or class({}, nil, HScriptEntity)
+Amethyst = Amethyst or class({})
 
 function Amethyst:constructor(origin)
     print("[CLASS=AMETHYST] CREATING AMETHYST")

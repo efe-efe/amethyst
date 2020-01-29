@@ -85,7 +85,7 @@ function Modifiers.Charges( modifier, data )
                 self.replenish_time = self:GetAbility():GetSpecialValueFor("replenish_time")
 
                 if data.show_icon == 1 then
-                    GameMode:InitializeHeroCharges(self:GetParent(), self:GetStackCount())
+                    GameRules.GameMode:InitializeHeroCharges(self:GetParent(), self:GetStackCount())
                 end
             end
         end

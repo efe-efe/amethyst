@@ -157,7 +157,7 @@ function Round:Update()
 end
 
 function Round:CheckEndConditions() 
-
+    
 end
 
 function Round:CleanLights()
