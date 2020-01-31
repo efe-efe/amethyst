@@ -25,7 +25,7 @@ function modifier_juggernaut_basic_attack_stacks:OnCreated( kv )
 	if IsServer() then
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
-		GameRules.GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 1)
+		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 1)
 	end
 end
 
@@ -38,7 +38,7 @@ function modifier_juggernaut_basic_attack_stacks:OnRefresh( kv )
 			self.effects_cast_weapon = {}
 			self:IncrementStackCount()
 
-			GameRules.GameRules.GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
+			GameRules.GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
 
 			if self:GetStackCount() == max_stack then
 				self:PlayEffectsCharged()
@@ -49,7 +49,7 @@ end
 
 function modifier_juggernaut_basic_attack_stacks:OnDestroy( kv )
 	if IsServer() then
-		GameRules.GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 0)
+		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 0)
 		self:StopEffects()
 	end
 end

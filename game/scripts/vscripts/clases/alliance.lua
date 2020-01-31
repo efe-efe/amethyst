@@ -17,4 +17,29 @@ function Alliance:constructor(number, teams)
     self.teams = teams
     self.number = number
     self.name = ALLIANCE_NAMES[number]
+    self.players = {}
+end
+
+function Alliance:GetCurrentHealth()
+    local current = 0
+
+    for _,player in pairs(self.players) do
+        current = current + player.hero:GetHealth()
+    end
+
+    return current
+end
+
+function Alliance:GetMaxHealth()
+    local max = 0
+
+    for _,player in pairs(self.players) do
+        max = max + player.hero:GetMaxHealth()
+    end
+
+    return max
+end
+
+function Alliance:AddPlayer(player)
+    table.insert( self.players, player)
 end

@@ -57,7 +57,7 @@ function CreateRadiusMarker(caster, origin, params)
     local particle_cast_ally = "particles/mod_units/heroes/hero_dark_willow/dw_ti8_immortal_cursed_crown_marker.vpcf"
     
     if params.show_all == 1 then
-        for _,alliance in pairs(Alliances.alliances) do
+        for _,alliance in pairs(GameRules.GameMode.alliances) do
             for _,team in pairs(alliance.teams) do
                 if caster:GetTeam() == team then
                     effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_ally, PATTACH_WORLDORIGIN, nil, team )

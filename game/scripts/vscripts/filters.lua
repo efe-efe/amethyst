@@ -129,25 +129,8 @@ function GameMode:DamageFilter(keys)
 	return true
 end
 
-function GameMode:GetAllianceHealth( alliance )
-    local health = {
-        current = 0,
-        max = 0,
-    }
-
-    for _,player in pairs(self.players) do
-        if player.alliance == alliance then
-            health.max = health.max + player.hero:GetMaxHealth()
-            health.current = health.current + player.hero:GetHealth()
-        end
-    end
-
-    return health
-end
-
 function GameMode:UpdateHealthBar( alliance )
-    local alliance_health = self:GetAllianceHealth( alliance )
-    local health_pct = 100 * alliance_health.current/alliance_health.max
+    local health_pct = 100 * alliance:GetCurrentHealth()/alliance:GetMaxHealth()
 
     local data = {
         health_pct = health_pct,

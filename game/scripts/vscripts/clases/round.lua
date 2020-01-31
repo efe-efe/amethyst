@@ -8,7 +8,7 @@ AMETHYST_SPAWN_TIME = 10.0
 AMETHYST_RESPAWN_TIME = 15.0
 
 local PICKUPS_TIMER = 5.0 --20.0
-local ROUND_TIMER = 30.0
+local ROUND_TIMER = 2000--30.0
 
 function Round:constructor(players)
     self.amethyst = nil

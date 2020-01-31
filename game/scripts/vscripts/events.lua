@@ -69,9 +69,12 @@ function GameMode:OnHeroInGame(keys)
                 end
             end
 
-            print("===============================OnHeroInGame")
-            --self.players[playerID]:SetHero(npc)
-            --Alliances:Update(npc)
+            if playerID == -1 then
+                npc:Destroy()
+                print("ERROR: TRYING TO CREATE AN UNIT ON AN INVALID PLAYER")
+                return false
+            end
+            self.players[playerID]:SetHero(npc)
 
             local data = {
                 teamID = team,

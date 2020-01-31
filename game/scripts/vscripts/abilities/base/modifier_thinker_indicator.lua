@@ -89,11 +89,36 @@ end
 function modifier_thinker_indicator:PlayEffects()                
     local particle_cast = "particles/econ/events/ti9/mekanism_recipient_b_ti9.vpcf"--ally
     local particle_cast_aoe = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
-    local caster_alliance = GameRules.GameMode.players[self.caster:GetPlayerOwnerID()].alliance
+    local caster_alliance = self.caster:GetAlliance()
 
     local effect_cast
     if self.show_all == 1 then
-        for _,player in pairs(GameRules.GameMode.players) do
+        for _,alliance in pairs(GameRules.GameMode.alliances) do
+            for _,team in pairs(alliance.teams) do
+                effect_cast = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self.caster, _ )
+                self.effects_cast_aoe[team] = ParticleManager:CreateParticleForTeam( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, team )
+
+                ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 0, self.origin)	-- line origin
+                ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 1, Vector(self.radius, 1,1))
+
+                local alliance = GameRules.GameMode:FindAllianceByTeam(team)
+
+                if alliance == caster_alliance then
+                    ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(70, 70, 250))
+                else
+                    ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(250, 70, 70))
+                end
+
+                ParticleManager:SetParticleControl( effect_cast, 0, self.origin)	-- line origin
+                ParticleManager:SetParticleControl( effect_cast, 1, self.origin)	-- line origin
+                ParticleManager:ReleaseParticleIndex( effect_cast )
+            end
+        end
+
+
+
+        --[[
+                for _,player in pairs(GameRules.GameMode.players) do
             effect_cast = ParticleManager:CreateParticleForPlayer( 
                 particle_cast, 
                 PATTACH_WORLDORIGIN, 
@@ -121,28 +146,6 @@ function modifier_thinker_indicator:PlayEffects()
             ParticleManager:ReleaseParticleIndex( effect_cast )
         end
 
-        --[[
-        for _,alliance in pairs(GameRules.GameMode.alliances) do
-            for _,team in pairs(alliance.teams) do
-                effect_cast = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self.caster, _ )
-                self.effects_cast_aoe[team] = ParticleManager:CreateParticleForTeam( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, team )
-
-                ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 0, self.origin)	-- line origin
-                ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 1, Vector(self.radius, 1,1))
-
-                local alliance = Alliances:FindByTeam(team)
-
-                if alliance == caster_alliance then
-                    ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(70, 70, 250))
-                else
-                    ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(250, 70, 70))
-                end
-
-                ParticleManager:SetParticleControl( effect_cast, 0, self.origin)	-- line origin
-                ParticleManager:SetParticleControl( effect_cast, 1, self.origin)	-- line origin
-                ParticleManager:ReleaseParticleIndex( effect_cast )
-            end
-        end
         ]]
     else
 

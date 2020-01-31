@@ -113,27 +113,12 @@ function GameMode:SetupEventHooks()
     ListenToGameEvent('entity_killed', Dynamic_Wrap(self, 'OnEntityKilled'), self)
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(self, 'OnGameRulesStateChange'), self)
     ListenToGameEvent('entity_hurt', Dynamic_Wrap(self, 'OnEntityHurt'), self)
-    ListenToGameEvent('player_connect_full', Dynamic_Wrap(self, 'EventPlayerConnected'), self)
-
-    ListenToGameEvent('dota_player_team_changed', Dynamic_Wrap(self, 'Event1'), self)
-    ListenToGameEvent('dota_player_selected_custom_team', Dynamic_Wrap(self, 'Event2'), self)
+    ListenToGameEvent('player_connect_full', Dynamic_Wrap(self, 'EventPlayerConnectFull'), self)
+    ListenToGameEvent('player_connect', Dynamic_Wrap(self, 'EventPlayerConnect'), self)
     ListenToGameEvent('player_team', Dynamic_Wrap(self, 'EventPlayerTeam'), self)
-    
+
     print('[AMETHYST] Event hooks set')
 end
-
-
-
-function GameMode:Event1(args)
-    print("=========================================EVENT1: dota_player_team_changed")
-    PrintTable(args)
-end
-
-function GameMode:Event2(args)
-    print("=========================================EVENT2: dota_player_selected_custom_team")
-    PrintTable(args)
-end
-
 
 function GameMode:SetupFilters()
     local mode = GameRules:GetGameModeEntity()
@@ -339,10 +324,10 @@ function GameMode:SetupMode()
     self.players = {}
     self.alliances = {}
 
-    table.insert(self.alliances, Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS }))
-    table.insert(self.alliances, Alliance(DOTA_ALLIANCE_DIRE, { DOTA_TEAM_CUSTOM_1, DOTA_TEAM_CUSTOM_2 }))
-    table.insert(self.alliances, Alliance(DOTA_ALLIANCE_LEGION, { DOTA_TEAM_CUSTOM_3, DOTA_TEAM_CUSTOM_4 }))
-    table.insert(self.alliances, Alliance(DOTA_ALLIANCE_VOID, { DOTA_TEAM_CUSTOM_5, DOTA_TEAM_CUSTOM_6 }))
+    self.alliances[DOTA_ALLIANCE_RADIANT] = Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS })
+    self.alliances[DOTA_ALLIANCE_DIRE] = Alliance(DOTA_ALLIANCE_DIRE, { DOTA_TEAM_CUSTOM_1, DOTA_TEAM_CUSTOM_2 })
+    self.alliances[DOTA_ALLIANCE_LEGION] = Alliance(DOTA_ALLIANCE_LEGION, { DOTA_TEAM_CUSTOM_3, DOTA_TEAM_CUSTOM_4 })
+    self.alliances[DOTA_ALLIANCE_VOID] = Alliance(DOTA_ALLIANCE_VOID, { DOTA_TEAM_CUSTOM_5, DOTA_TEAM_CUSTOM_6 })
 
     GameRules:GetGameModeEntity():SetThink("OnThink", self, THINK_PERIOD)
 
@@ -417,9 +402,7 @@ function GameMode:RegisterThinker(period, callback)
     table.insert(self.thinkers, timer)
 end
 
-function GameMode:EventPlayerConnected(args)
-    print("===============================EventPlayerConnected")
-
+function GameMode:EventPlayerConnectFull(args)
     local player_entity = EntIndexToHScript(args.index + 1)
 
     if not IsValidEntity(player_entity) then
@@ -440,14 +423,13 @@ function GameMode:EventPlayerConnected(args)
 end
 
 function GameMode:EventPlayerTeam(args)
-    print("===============================EventPlayerTeam")
-    local alliance_number = 0
+    local alliance_object = nil
     local player_object = nil
 
     for _,alliance in ipairs(self.alliances) do
         for _,team in ipairs(alliance.teams) do
             if team == args.team then
-                alliance_number = alliance.number
+                alliance_object = alliance
             end
         end
     end
@@ -458,14 +440,44 @@ function GameMode:EventPlayerTeam(args)
         end
     end
 
-    if player_object == nil and IsInToolsMode() then
-        if not self.players[id] then
-            local player = Player(id, userid)
-            self.players[id] = player
-        end
+    if alliance_object == nil then 
+        print("ERROR: THE PLAYER TEAM IS NOT PART OF ANY ALLiANCE!")
+        return
+    end
+
+    if player_object == nil then 
+        print("ERROR: THE PLAYER OBJECT HAS NOT BEEN CREATED YET!")
+        return 
     end
 
     player_object:SetTeam(args.team)
-    player_object:SetAlliance(alliance_number)
+    player_object:SetAlliance(alliance_object)
+    alliance_object:AddPlayer(player_object)
+end
+
+function GameMode:EventPlayerConnect(args)
+    -- This event is used only when connecting bots via commands
     
+    local id = args.userid - 1
+    local userid = args.userid
+
+    if id == -1 then
+        return
+    end
+
+    if not self.players[id] then
+        local player = Player(id, userid)
+        self.players[id] = player
+    end
+end
+
+
+function GameMode:FindAllianceByTeam( team )
+    for _,alliance in pairs(self.alliances) do
+        for _,m_team in pairs(alliance.teams) do
+            if m_team == team then
+                return alliance
+            end
+        end
+    end
 end
