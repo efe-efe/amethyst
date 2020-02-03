@@ -1,3 +1,4 @@
+
 function PrintTable(t, indent, done)
   --print ( string.format ('PrintTable type %s', type(keys)) )
   if type(t) ~= "table" then return end
@@ -7,11 +8,17 @@ function PrintTable(t, indent, done)
   indent = indent or 0
 
   local l = {}
+  local canCompare = true
   for k, v in pairs(t) do
     table.insert(l, k)
+    if type(k) == "table" then
+        canCompare = false
+    end
   end
 
-  table.sort(l)
+  if canCompare then
+    table.sort(l)
+  end
   for k, v in ipairs(l) do
     -- Ignore FDesc
     if v ~= 'FDesc' then

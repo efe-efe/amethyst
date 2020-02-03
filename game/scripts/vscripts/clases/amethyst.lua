@@ -1,8 +1,6 @@
 Amethyst = Amethyst or class({})
 
 function Amethyst:constructor(origin)
-    print("[CLASS=AMETHYST] CREATING AMETHYST")
-
     self.origin = origin
     self.mana_bounty = 40
     self.heal_bounty = 20
@@ -39,6 +37,11 @@ end
 
 function Amethyst:Alive()
     return not self.destroyed
+end
+
+function Amethyst:Destroy()
+    self.destroyed = true
+    UTIL_Remove(self:GetUnit())
 end
 
 function Amethyst:OnDeath(params)

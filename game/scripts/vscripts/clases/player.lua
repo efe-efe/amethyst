@@ -3,7 +3,7 @@ Player = class({
     userid = 0,
     hero = nil,
     team = 0,
-    alliance = 0,
+    alliance = nil,
 })
 
 function Player:constructor(id, userid)
@@ -19,6 +19,6 @@ function Player:SetTeam(i)
     self.team = i
 end
 
-function Player:SetAlliance(i)
-    self.alliance = i
+function Player:SetAlliance( alliance )
+    self.alliance = alliance
 end

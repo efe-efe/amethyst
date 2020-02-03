@@ -1,35 +1,41 @@
 Round = Round or class({})
 
--- Win conditions
-ROUNDS = 0
-POINTS = 1 
-
 AMETHYST_SPAWN_TIME = 10.0
 AMETHYST_RESPAWN_TIME = 15.0
 
 local PICKUPS_TIMER = 5.0 --20.0
-local ROUND_TIMER = 2000--30.0
+local ROUND_TIMER = 10--30.0
+local DRAW_TIME = 2.0
 
-function Round:constructor(players)
+function Round:constructor(players, callback)
+    self.players = players
+    self.callback = callback
+    
     self.amethyst = nil
     self.death_zone = nil
+    self.winner = nil
+    self.amethyst_index = nil
+
     self.pickups = {}
     self.lights = {}
     self.arrows = {}
-    self.players = players
+    self.light_entities = {}
+
     self.ended = false
     self.time_over = false
     self.hero_died = false
+    self.ended = false
+    self.is_trying_to_end = false
+
     self.amethyst_timer = AMETHYST_SPAWN_TIME
     self.light_spawn_time = AMETHYST_SPAWN_TIME / 5
-    
-    self.amethyst_index = nil
+    self.time_remianing_until_end = DRAW_TIME
+    self.time_remaining = ROUND_TIMER
 
     self.amethyst_entities = Entities:FindAllByName("orb_spawn")
     self.health_entities = Entities:FindAllByName("health_orb")
     self.mana_entities = Entities:FindAllByName("mana_orb")
     self.shield_entities = Entities:FindAllByName("shield_orb")
-    self.light_entities = {}
 
     if GetMapName() == "forest_map" or GetMapName() == "free_for_all" then
         self.amethyst_index = 1
@@ -87,10 +93,10 @@ function Round:SpawnArrows()
 end
 
 function Round:Update()
-    if ROUND_TIMER > 0 then
-        ROUND_TIMER = ROUND_TIMER - 1
-        self:UpdateGameTimer(ROUND_TIMER)
-        if ROUND_TIMER <= 0 then
+    if self.time_remaining > 0 then
+        self.time_remaining = self.time_remaining - 1
+        self:UpdateGameTimer(self.time_remaining)
+        if self.time_remaining <= 0 then
             self.time_over = true
             self:CreateDeathZone()
         end
@@ -145,19 +151,66 @@ function Round:Update()
                 end
             end
         end
+    else
+        return
+    end
 
-        if self.hero_died then
-            self.hero_died = false
+    if self.is_trying_to_end then
+        self.time_remianing_until_end = self.time_remianing_until_end - 1
 
-            if self:CheckEndConditions() then
-                
-            end
+        if self.time_remianing_until_end <= 0 then
+            local last_alive, competing_alliances = self:GetLastOrNoneAlive()  
+                  
+            self.winner = last_alive
+            self:EndRound()
+        end
+    end
+
+    if self.hero_died then
+        self.hero_died = false
+
+        if self:CheckEndConditions() then
+            self.is_trying_to_end = true
         end
     end
 end
 
-function Round:CheckEndConditions() 
-    
+function Round:EndRound()       
+    self.ended = true
+
+    self:DestroyAllPickups()
+    self:DestroyDeathZone()
+    self:DestroyAmethyst()
+    self:CleanLights()
+    self:CleanArrows()
+
+    self:callback()
+end
+
+function Round:GetLastOrNoneAlive()
+    local alliances = {}
+
+    for _,player in pairs(self.players) do
+        if player.hero and not player.hero:IsNull() and player.hero:IsAlive() then
+            alliances[player.alliance.number] = player.alliance
+        end
+    end
+
+    local competing_alliances = 0
+    local last_alive = nil
+
+    for alliance_number, alliance in pairs(alliances) do
+        competing_alliances = competing_alliances + 1
+        last_alive = alliance
+    end
+
+    return last_alive, competing_alliances
+end
+
+function Round:CheckEndConditions()
+    local last_alive, competing_alliances = self:GetLastOrNoneAlive()
+
+    return competing_alliances <= 1
 end
 
 function Round:CleanLights()
@@ -211,12 +264,15 @@ function Round:DestroyDeathZone()
 end
 
 function Round:DestroyAllPickups()
-    for _,orb in pairs(self.pickups) do
-        UTIL_Remove( orb.item ) -- otherwise it pollutes the player inventory
-        if orb.drop ~= nil and not orb.drop:IsNull() then
-            UTIL_Remove( orb.drop )
-        end
+    for _,pickup in pairs(self.pickups) do
+        pickup.entity:Destroy()
+        self.pickups[_] = nil
     end
+end
+
+function Round:DestroyAmethyst()
+    self.amethyst:Destroy()
+    self.amethyst = nil
 end
 
 function Round:UpdateGameTimer( time )

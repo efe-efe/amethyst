@@ -69,3 +69,13 @@ function Pickup:OnPickedUp()
     UTIL_Remove(self:GetItem()) -- otherwise it pollutes the player inventory
     self.picked = true
 end
+
+function Pickup:Destroy()
+    if not self.picked then
+        UTIL_Remove(self:GetItem())
+    end
+
+    if self.drop ~= nil and not self.drop:IsNull() then
+        UTIL_Remove( self.drop )
+    end
+end

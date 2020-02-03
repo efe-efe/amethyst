@@ -11,9 +11,10 @@ require('clases/alliance')
 require('clases/player')
 
 THINK_PERIOD = 0.01
+_G.STATE_NONE = 0
+_G.STATE_ROUND_IN_PROGRESS = 1 
 
-if GameMode == nil then
-    print( '[AMETHYST] creating Dotarite game mode' )
+if _G.GameMode == nil then
     _G.GameMode = class({})
 end
 
@@ -49,7 +50,7 @@ end
 
 function Activate()
 	GameRules.GameMode = GameMode()
-	GameRules.GameMode:SetupMode()
+    GameRules.GameMode:SetupMode()
 end
 
 require('libraries/timers') -- This library allow for easily delayed/timed actions
@@ -113,9 +114,9 @@ function GameMode:SetupEventHooks()
     ListenToGameEvent('entity_killed', Dynamic_Wrap(self, 'OnEntityKilled'), self)
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(self, 'OnGameRulesStateChange'), self)
     ListenToGameEvent('entity_hurt', Dynamic_Wrap(self, 'OnEntityHurt'), self)
-    ListenToGameEvent('player_connect_full', Dynamic_Wrap(self, 'EventPlayerConnectFull'), self)
-    ListenToGameEvent('player_connect', Dynamic_Wrap(self, 'EventPlayerConnect'), self)
-    ListenToGameEvent('player_team', Dynamic_Wrap(self, 'EventPlayerTeam'), self)
+    --ListenToGameEvent('player_connect_full', Dynamic_Wrap(self, 'EventPlayerConnectFull'), self)
+    --ListenToGameEvent('player_connect', Dynamic_Wrap(self, 'EventPlayerConnect'), self)
+    --ListenToGameEvent('player_team', Dynamic_Wrap(self, 'EventPlayerTeam'), self)
 
     print('[AMETHYST] Event hooks set')
 end
@@ -321,14 +322,6 @@ function GameMode:SetupPanoramaEventHooks()
 end
 
 function GameMode:SetupMode()
-    self.players = {}
-    self.alliances = {}
-
-    self.alliances[DOTA_ALLIANCE_RADIANT] = Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS })
-    self.alliances[DOTA_ALLIANCE_DIRE] = Alliance(DOTA_ALLIANCE_DIRE, { DOTA_TEAM_CUSTOM_1, DOTA_TEAM_CUSTOM_2 })
-    self.alliances[DOTA_ALLIANCE_LEGION] = Alliance(DOTA_ALLIANCE_LEGION, { DOTA_TEAM_CUSTOM_3, DOTA_TEAM_CUSTOM_4 })
-    self.alliances[DOTA_ALLIANCE_VOID] = Alliance(DOTA_ALLIANCE_VOID, { DOTA_TEAM_CUSTOM_5, DOTA_TEAM_CUSTOM_6 })
-
     GameRules:GetGameModeEntity():SetThink("OnThink", self, THINK_PERIOD)
 
     self:SetupRules()
@@ -338,19 +331,32 @@ function GameMode:SetupMode()
     self:LinkModifiers()
 
     local mode = GameRules:GetGameModeEntity()
-    -------------------------------
-    -- Set GameMode parameters
-    -------------------------------
     mode:SetBuybackEnabled( false )
     mode:SetDaynightCycleDisabled( true )
     mode:SetCameraDistanceOverride( 1350 )
 end
 
 function GameMode:Start()
-    self.lock_round = false
-    self.iMaxTreshold = 30
+    self.players = {}
+    self.alliances = {}
     self.mouse_positions = {}
-    self.round = Round(self.players)
+
+    self.state = STATE_NONE
+    self.iMaxTreshold = 30
+
+    self.alliances[DOTA_ALLIANCE_RADIANT] = Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS })
+    self.alliances[DOTA_ALLIANCE_DIRE] = Alliance(DOTA_ALLIANCE_DIRE, { DOTA_TEAM_CUSTOM_1, DOTA_TEAM_CUSTOM_2 })
+    self.alliances[DOTA_ALLIANCE_LEGION] = Alliance(DOTA_ALLIANCE_LEGION, { DOTA_TEAM_CUSTOM_3, DOTA_TEAM_CUSTOM_4 })
+    self.alliances[DOTA_ALLIANCE_VOID] = Alliance(DOTA_ALLIANCE_VOID, { DOTA_TEAM_CUSTOM_5, DOTA_TEAM_CUSTOM_6 })
+
+    self:SetState(STATE_ROUND_IN_PROGRESS)
+
+    self.round = Round(
+        self.players,
+        function(context) 
+            self:OnRoundEnd(context)
+        end
+    )
 
     self:RegisterThinker(1.0, function()
         self.round:Update()
@@ -387,6 +393,36 @@ function GameMode:Start()
     CustomNetTables:SetTableValue( "game_state", "victory_condition", { rounds_to_win = self.WIN_CONDITION.number } );
 end
 
+function GameMode:OnRoundEnd(context)
+    local round = context
+
+    for _,player in pairs(self.players) do
+        player.hero:Kill(nil, player.hero)	
+        player.hero:RespawnHero(false, false)
+    end
+
+    if round.winner then
+        self.alliances[round.winner.number].wins = self.alliances[round.winner.number].wins + 1
+
+        local score = { 
+            good_guys = self.alliances[DOTA_ALLIANCE_RADIANT].wins,
+            bad_guys = self.alliances[DOTA_ALLIANCE_DIRE].wins,
+        }
+    
+        CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
+    else
+        print("DRAW!!!!")
+    end
+
+    self.round = nil
+    self.round = Round(
+        self.players,
+        function(context) 
+            self:OnRoundEnd(context)
+        end
+    )
+end
+
 function GameMode:UpdateMousePosition(pos, playerID)
     self.mouse_positions[playerID] = pos
 end
@@ -402,82 +438,455 @@ function GameMode:RegisterThinker(period, callback)
     table.insert(self.thinkers, timer)
 end
 
-function GameMode:EventPlayerConnectFull(args)
-    local player_entity = EntIndexToHScript(args.index + 1)
-
-    if not IsValidEntity(player_entity) then
-        return
-    end
-
-    local id = args.PlayerID
-    local userid = args.userid
-
-    if id == -1 then
-        return
-    end
-
-    if not self.players[id] then
-        local player = Player(id, userid)
-        self.players[id] = player
-    end
-end
-
-function GameMode:EventPlayerTeam(args)
-    local alliance_object = nil
-    local player_object = nil
-
-    for _,alliance in ipairs(self.alliances) do
-        for _,team in ipairs(alliance.teams) do
-            if team == args.team then
-                alliance_object = alliance
-            end
-        end
-    end
-
-    for _,player in pairs(self.players) do
-        if player.userid == args.userid then
-            player_object = player
-        end
-    end
-
-    if alliance_object == nil then 
-        print("ERROR: THE PLAYER TEAM IS NOT PART OF ANY ALLiANCE!")
-        return
-    end
-
-    if player_object == nil then 
-        print("ERROR: THE PLAYER OBJECT HAS NOT BEEN CREATED YET!")
-        return 
-    end
-
-    player_object:SetTeam(args.team)
-    player_object:SetAlliance(alliance_object)
-    alliance_object:AddPlayer(player_object)
-end
-
-function GameMode:EventPlayerConnect(args)
-    -- This event is used only when connecting bots via commands
-    
-    local id = args.userid - 1
-    local userid = args.userid
-
-    if id == -1 then
-        return
-    end
-
-    if not self.players[id] then
-        local player = Player(id, userid)
-        self.players[id] = player
-    end
-end
-
-
-function GameMode:FindAllianceByTeam( team )
+function GameMode:FindAllianceByTeam(team)
     for _,alliance in pairs(self.alliances) do
         for _,m_team in pairs(alliance.teams) do
             if m_team == team then
                 return alliance
             end
         end
+    end
+end
+
+function GameMode:RegisterPlayer(hero)
+    local team = hero:GetTeamNumber()
+    local playerID = hero:GetPlayerOwnerID()
+    local userID = playerID + 1
+
+    if playerID == -1 then
+        hero:Destroy()
+        print("ERROR: TRYING TO CREATE AN UNIT ON AN INVALID PLAYER")
+        return false
+    else
+        if not self.players[playerID] then
+            local player = Player(playerID, userID)
+            self.players[playerID] = player
+
+            local alliance = self:FindAllianceByTeam(team)
+
+            if alliance == nil then 
+                print("ERROR: THE PLAYER TEAM IS NOT PART OF ANY ALLIANCE!")
+                return
+            end
+
+            player:SetTeam(team)
+            player:SetAlliance(alliance)
+            player:SetHero(hero)
+
+            alliance:AddPlayer(player)
+        end
+
+        return true
+    end
+end
+
+function GameMode:SetState(state)
+    self.state = state
+end 
+
+--============================================================================================
+-- GAME PHASES
+--============================================================================================
+function GameMode:OnGameRulesStateChange(keys)
+    local state = GameRules:State_Get()
+
+    if state == DOTA_GAMERULES_STATE_HERO_SELECTION then
+
+    end
+
+    if state == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+        GameMode:OnGameInProgress()
+    end
+end
+
+--============================================================================================
+-- GAME OFFICIALY BEGINS (00:00)
+--============================================================================================
+function GameMode:OnGameInProgress()
+    self:Start()
+end
+
+--============================================================================================
+-- HERO SPAWNS
+--============================================================================================
+function GameMode:OnHeroInGame(keys)
+    local npc = EntIndexToHScript(keys.entindex)
+
+    -------------------------------
+    -- Timer to prevent illusions from passing
+    -------------------------------
+    Timers:CreateTimer(0.1, function()
+        -------------------------------
+        -- Filter unwanted units
+        -------------------------------
+        if npc:IsNull() then return end
+        if not npc:IsRealHero() then return end
+
+        -------------------------------
+        -- Initialize variables
+        -------------------------------
+        local team = npc:GetTeamNumber()
+        local playerID = npc:GetPlayerOwnerID()
+        local playerOwner = npc:GetPlayerOwner()
+
+        -------------------------------
+        -- First time spawning
+        -------------------------------
+        if npc.bFirstSpawnedPG == nil then
+            
+            npc:Initialize({ max_lifes = self.MAX_LIFES })
+            self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)
+
+            -- Basic modifiers
+            npc:AddNewModifier( npc,  nil, "modifier_disable_right_click", { } )
+            npc:AddNewModifier( npc,  nil, "modifier_generic_movement", { } )
+            npc:AddNewModifier( npc,  nil, "modifier_treshold", { max_treshold = self.iMaxTreshold })
+            
+            -- Level up 1 point to all spells
+            for i = 0, 23 do
+                local ability = npc:GetAbilityByIndex(i)
+                if ability then
+                    if ability:GetAbilityType() ~= 2 then -- To not level up the talents
+                        ability:SetLevel(1)
+                    end
+                end
+            end
+
+            if not self:RegisterPlayer(npc) then
+                return false
+            end
+            
+            local data = {
+                teamID = team,
+                playerID = playerID,
+                heroIndex = keys.entindex,
+                heroName = npc:GetName()
+            }
+            CustomGameEventManager:Send_ServerToAllClients( "add_player", data )
+        end
+    
+        -------------------------------
+        -- Always
+        -------------------------------
+        SafeDestroyModifier("modifier_generic_provides_vision", npc, nil)
+        npc:SetMana(0)
+        npc:FindModifierByName("modifier_treshold"):SetStackCount(self.iMaxTreshold)
+        
+        if npc:FindAbilityByName("mount") then
+            npc:AddNewModifier(npc, npc:FindAbilityByName("mount"), "modifier_mount", {})
+        else
+            print("ERROR: UNIT DOESN'T HAS 'MOUNT' SPELL")
+        end
+        npc:SetHealth(npc:GetMaxHealth())
+        npc.iTreshold = self.iMaxTreshold
+        self:UpdateHeroHealthBar( npc )
+        self:UpdateHeroManaBar( npc )
+    end)
+end
+
+--============================================================================================
+-- ENTITY DIED
+--============================================================================================
+function GameMode:OnEntityKilled( keys )
+    local killed = EntIndexToHScript( keys.entindex_killed )
+
+    -- TODO: DELETE THIS WRAP
+    if killed.GetParentEntity then
+        local entity = killed:GetParentEntity()
+
+        if instanceof(entity, Amethyst) then     
+            entity:OnDeath({ killer = EntIndexToHScript( keys.entindex_attacker ) })
+        end
+    else
+
+        if killed:IsRealHero() then
+            self.round.hero_died = true
+            --self:OnHeroKilled(killed)
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Event: OnItemPickUp
+--------------------------------------------------------------------------------
+function GameMode:OnItemPickUp( event )
+	local entity = EntIndexToHScript( event.ItemEntityIndex ):GetParentEntity()
+    entity:OnPickedUp()
+end
+
+function GameMode:OnAmethystDestroy(killer)
+    if killer ~= nil then
+        local killer_alliance = killer.alliance
+
+        killer_alliance.amethysts = killer_alliance.amethysts + 1
+        
+        local data = {
+            alliance = killer_alliance.name,
+            amethysts = killer_alliance.amethysts
+        }
+        CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
+
+        if self.WIN_CONDITION.type == "AMETHYSTS" then
+            CustomGameEventManager:Send_ServerToAllClients( "update_score", data )
+            if killer_alliance.amethysts >= self.WIN_CONDITION.number then
+                self:EndGame(killer_alliance.teams[1]) 
+            end
+        end
+    end
+end
+
+function GameMode:OnHeroKilled(killed)
+    local killed_alliance = killed.alliance
+
+    if self.WIN_CONDITION.type == "ROUNDS" then
+        if not self.lock_round then
+            self:CreateDeathOrb(killed)
+            if self:GetAliveHeroes(killed_alliance) <= 0 then
+                print("[ROUNDS] Alliance " .. killed_alliance.name .. " loses this round")
+
+                killed_alliance.looser = true
+                local winner = self:FindWinner()
+                if winner ~= false then 
+                    winner.wins = winner.wins + 1
+                    self:EndRound(3.0)
+                end
+            end
+        end
+        self:UpdateCameras()
+    elseif self.WIN_CONDITION.type == "AMETHYSTS" then
+        killed.lifes = killed.lifes - 1 
+
+        local new_respawn_time = nil
+
+        if killed.lifes <= 0 then
+            new_respawn_time = 999
+        else
+            new_respawn_time = self.BASE_RESPAWN_TIME + self.RESPAWN_TIME_PER_DEATH * (PlayerResource:GetDeaths(killed:GetPlayerID()) - 1)
+            if new_respawn_time > self.MAX_RESPAWN_TIME then 
+                new_respawn_time = self.MAX_RESPAWN_TIME 
+            end
+        end
+
+        killed:SetTimeUntilRespawn(new_respawn_time)
+    end
+end
+
+
+--============================================================================================
+-- UNIT HAS BEEN DAMAGED
+--============================================================================================
+function GameMode:OnEntityHurt(keys)
+    local damagebits = keys.damagebits -- This might always be 0 and therefore useless
+    if keys.entindex_attacker ~= nil and keys.entindex_killed ~= nil then
+        local entCause = EntIndexToHScript(keys.entindex_attacker)
+        local entVictim = EntIndexToHScript(keys.entindex_killed)
+
+        -- The ability/item used to damage, or nil if not damaged by an item/ability
+        local damagingAbility = nil
+
+        if keys.entindex_inflictor ~= nil then
+        damagingAbility = EntIndexToHScript( keys.entindex_inflictor )
+        end
+    end
+end
+	
+--============================================================================================
+-- HELPERS
+--============================================================================================
+function GameMode:FindWinner()
+    local alliances_with_alive_players = 0
+    local winner = nil
+
+    for _,alliance in pairs(Alliances.alliances) do
+        if alliance.initialized and not alliance.looser then 
+            winner = alliance
+            alliances_with_alive_players = alliances_with_alive_players + 1
+        end
+    end
+
+    -- If there are only 1 not looser, lock the round
+    if alliances_with_alive_players == 1 then
+        self.lock_round = true
+        return winner
+    else
+        return false
+    end
+end
+
+function GameMode:FindNextAliveAlly( alliance )
+    for _,hero in pairs(alliance.heroes) do
+        if hero:IsAlive() then
+            return hero
+        end
+    end
+
+    return nil
+end
+
+function GameMode:FindNextAliveHero()
+    for _,alliance in pairs(Alliances.alliances) do
+        for _,hero in pairs(alliance.heroes) do
+            if hero:IsAlive() then
+                return hero
+            end
+        end
+    end
+
+    return nil
+end
+
+function GameMode:GetAliveHeroes( alliance )
+    local alive_heroes = 0
+    
+    for _,hero in pairs(alliance.heroes) do
+        if hero:IsAlive() then
+            alive_heroes = alive_heroes + 1
+        end
+    end
+
+    return alive_heroes
+end
+
+function GameMode:UpdateCameras()
+    for _,alliance in pairs(Alliances.alliances) do
+        for _,hero in pairs(alliance.heroes) do
+            if not hero:IsAlive() then
+                local alive_ally = self:FindNextAliveAlly( alliance )
+
+                if alive_ally ~= nil then
+                    PlayerResource:SetCameraTarget(hero:GetPlayerID(), alive_ally)
+                    alive_ally:AddNewModifier(
+                        hero,
+                        nil,
+                        "modifier_generic_provides_vision",
+                        {}
+                    )
+                else 
+                    local alive_hero = self:FindNextAliveHero()
+                    if alive_hero ~= nil then
+                        PlayerResource:SetCameraTarget(hero:GetPlayerID(), alive_hero)
+                        alive_hero:AddNewModifier(
+                            hero,
+                            nil,
+                            "modifier_generic_provides_vision",
+                            {}
+                        )
+                    end
+                end
+            end
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+-- Restart Round
+--------------------------------------------------------------------------------
+function GameMode:EndRound( delay )
+    Timers:CreateTimer(delay, function()
+        for _,alliance in pairs(Alliances.alliances) do
+            if 
+                alliance.wins >= self.WIN_CONDITION.number or 
+                ( alliance.wins - self:GetOppositeAlliance(alliance).wins ) >= self.WIN_CONDITION.difference
+            then
+                self:EndGame(alliance.teams[1]) 
+                break
+            end
+
+            for _,hero in pairs(alliance.heroes) do
+                hero:Kill(nil, hero)	
+            end
+            
+            alliance.looser = false
+            alliance.amethysts = 0
+
+            local data = {
+                alliance = alliance.name,
+                amethysts = alliance.amethysts
+            }
+            CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
+
+            for heroIndex, hero in pairs(alliance.heroes) do
+                hero:SetRespawnsDisabled(false)
+                hero:RespawnHero(false, false)
+                hero:SetRespawnsDisabled(true)
+                PlayerResource:SetCameraTarget(hero:GetPlayerID(), hero)
+                Timers:CreateTimer(0.5, function()	
+                    PlayerResource:SetCameraTarget(hero:GetPlayerID(), nil)
+                end)
+            end
+        end
+        self.lock_round = false
+        
+        local score = { 
+            good_guys = Alliances.alliances["DOTA_ALLIANCE_RADIANT"].wins,
+            bad_guys = Alliances.alliances["DOTA_ALLIANCE_DIRE"].wins,
+        }
+
+        --Update score
+        CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
+    end)
+end
+
+--------------------------------------------------------------------------------
+-- Walls Orb spawner
+--------------------------------------------------------------------------------
+function GameMode:CreateWalls()
+    print("[AMETHYST] Creating Walls")
+    for _,wall_ent in pairs(self.walls_ents) do
+        self:CreateWall(wall_ent)
+    end
+end
+
+function GameMode:CreateWall( ent )
+    local fow_blocker = SpawnEntityFromTableSynchronous("point_simple_obstruction", {origin = ent:GetOrigin(), block_fow = true})
+    self.walls[ent] = CreateUnitByName(
+        "npc_dota_creature_wall", --szUnitName
+        ent:GetOrigin(), --vLocation
+        false, --bFindClearSpace
+        nil, --hNPCOwner
+        nil, --hUnitOwner
+        DOTA_TEAM_NOTEAM
+    )
+    self.walls[ent]:Attribute_SetIntValue("barrel", 1)
+    self.walls[ent]:SetHullRadius(65)
+    self.walls[ent]:AddNewModifier(self.walls[ent], nil, "wall_base", { fow_blocker = fow_blocker:GetEntityIndex() })
+end
+
+function GameMode:DestroyAllWalls()
+    for _,wall in pairs(self.walls) do
+        if wall:IsAlive() then
+            wall:Kill(nil, wall)
+        end
+    end
+end
+
+function GameMode:CreateDeathOrb( hero )
+    local current_mana = hero:GetMana()
+    local mana_given = NearestValue({ 25, 50, 75, 100 }, current_mana)
+    local entity = Pickup(PickupTypes.DEATH, hero:GetOrigin(), (mana_given/100) + 0.25)
+
+    self.round.pickups[hero:GetEntityIndex()] = {
+        origin = hero:GetOrigin(),
+        type = PickupTypes.DEATH,
+        timer = 0,
+        entity = entity
+    }
+
+    entity:GetItem():SetCurrentCharges(mana_given)
+    entity:GetItem():SetPurchaser(hero)
+end
+
+--------------------------------------------------------------------------------
+-- End Game
+--------------------------------------------------------------------------------
+function GameMode:EndGame( victoryTeam )
+	GameRules:SetGameWinner( victoryTeam )
+end
+
+function GameMode:GetOppositeAlliance( alliance )
+    if alliance.name == "DOTA_ALLIANCE_RADIANT" then
+        return Alliances.alliances["DOTA_ALLIANCE_DIRE"]
+    else
+        return Alliances.alliances["DOTA_ALLIANCE_RADIANT"]
     end
 end

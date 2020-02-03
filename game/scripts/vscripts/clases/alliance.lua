@@ -18,6 +18,7 @@ function Alliance:constructor(number, teams)
     self.number = number
     self.name = ALLIANCE_NAMES[number]
     self.players = {}
+    self.wins = 0
 end
 
 function Alliance:GetCurrentHealth()
