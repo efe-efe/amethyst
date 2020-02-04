@@ -49,30 +49,30 @@ function Round:constructor(players, callback)
     end
 
     for _,entity in pairs(self.health_entities) do
-        self.pickups[entity:GetEntityIndex()] = {
+        table.insert(self.pickups, {
             origin = entity:GetOrigin(),
             type = PickupTypes.HEALTH,
             timer = PICKUPS_TIMER,
             entity = nil
-        }
+        })
     end
 
     for _,entity in pairs(self.mana_entities) do
-        self.pickups[entity:GetEntityIndex()] = {
+        table.insert(self.pickups, {
             origin = entity:GetOrigin(),
             type = PickupTypes.MANA,
             timer = PICKUPS_TIMER,
             entity = nil,
-        }
+        })
     end
 
     for _,entity in pairs(self.shield_entities) do
-        self.pickups[entity:GetEntityIndex()] = {
+        table.insert(self.pickups, {
             origin = entity:GetOrigin(),
             type = PickupTypes.SHIELD,
             timer = PICKUPS_TIMER,
             entity = nil
-        }
+        })
     end
 
     self:SpawnArrows()
@@ -138,7 +138,7 @@ function Round:Update()
             end
         end
 
-        for _,pickup in pairs(self.pickups) do
+        for _,pickup in ipairs(self.pickups) do
             if not pickup.entity then
                 self.pickups[_].timer = pickup.timer - 1
                 if self.pickups[_].timer == 0 then
@@ -271,8 +271,10 @@ function Round:DestroyAllPickups()
 end
 
 function Round:DestroyAmethyst()
-    self.amethyst:Destroy()
-    self.amethyst = nil
+    if self.amethyst ~= nil then
+        self.amethyst:Destroy()
+        self.amethyst = nil
+    end 
 end
 
 function Round:UpdateGameTimer( time )

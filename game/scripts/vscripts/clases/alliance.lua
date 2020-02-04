@@ -13,11 +13,11 @@ local ALLIANCE_NAMES = {
 }
 
 function Alliance:constructor(number, teams)
-    print("[CLASS=ALLIANCE] CREATING ALLIANCE")
     self.teams = teams
     self.number = number
     self.name = ALLIANCE_NAMES[number]
     self.players = {}
+    self.amethysts = 0
     self.wins = 0
 end
 
