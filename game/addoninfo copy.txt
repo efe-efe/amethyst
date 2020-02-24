@@ -1,9 +1,15 @@
 "AddonInfo"
 {
-    "maps"      "mad_moon_map"
+    "maps"      "mad_moon_map free_for_all"
     "IsPlayable"  "1"
 
     "mad_moon_map"
+    {
+        "MaxPlayers"                    "4"
+        "TeamCount"                     "4"
+    }
+    
+    "free_for_all"
     {
         "MaxPlayers"                    "4"
         "TeamCount"                     "4"

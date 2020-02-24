@@ -4,12 +4,12 @@
     height: 100%;
 }
 
-.MainPanel #DeathZone
+.MainPanel #CustomMessage
 {
     /*background-color: black;*/
 }
 
-#DeathZone #DeathZoneText
+#CustomMessage #CustomMessageText
 {
     opacity: 0;
     font-size: 48px;

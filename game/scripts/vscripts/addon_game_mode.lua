@@ -60,7 +60,6 @@ require('libraries/timers') -- This library allow for easily delayed/timed actio
 require('libraries/projectiles') -- This library allow for easily delayed/timed actions
 require('libraries/animations') -- This library allows starting customized animations on units from lua
 
-require('events') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.
 require('wrappers/abilities')
 require('wrappers/modifiers')
@@ -415,7 +414,8 @@ function GameMode:OnRoundEnd(context)
             )
         end
     else
-        print("DRAW!!!!")
+        CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "DRAW!" } )
+
         self.round = nil
         self.round = Round(
             self.players,

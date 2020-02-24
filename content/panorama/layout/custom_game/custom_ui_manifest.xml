@@ -18,7 +18,7 @@
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/tutorial.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/hero_bar.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/unit_bar.xml"/>
-		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/death_zone.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/custom_message.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/top_bar.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/heroes_status.xml"/>
 

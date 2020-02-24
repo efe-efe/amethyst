@@ -242,7 +242,7 @@ function Round:CreateLight()
 end
 
 function Round:CreateDeathZone()    
-    CustomGameEventManager:Send_ServerToAllClients( "death_zone_initiated", {} )
+    CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "Death Zone has initiated!" } )
 
     self.death_zone = CreateModifierThinker(
         nil, --hCaster
