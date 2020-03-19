@@ -1,11 +1,11 @@
 modifier_generic_movement = class({})
 
-local DEBUG = false
+local DEBUG = true
 
 local RADIUS_BIG = 40
 local RADIUS_MINI = 10
 
-local COLLIDE_OFFSET = 7
+local COLLIDE_OFFSET = 1
 local COLLIDE_OFFSET_MINI = 1.0
 
 local COLLIDE_SLOW_FACTOR = 1.5
@@ -69,9 +69,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Interval Effects
-function modifier_generic_movement:OnIntervalThink()
-    CustomGameEventManager:Send_ServerToAllClients("getMousePosition", {})
-	
+function modifier_generic_movement:OnIntervalThink()	
 	self:ItemsPickup(self.parent)
 	self:Move()
 end
@@ -179,18 +177,13 @@ function modifier_generic_movement:Move()
 					self:SubMove(colliding, origin, speed, SOUTH, WEST, COLLIDE_SLOW_FACTOR)
 
 
-				elseif direction == EAST then
+				elseif direction == EAST or direction == WEST then
 					self:SubMove(colliding, origin, speed, SOUTH, NORTH, COLLIDE_SUPER_SLOW_FACTOR)
-				elseif direction == WEST then
-					self:SubMove(colliding, origin, speed, SOUTH, NORTH, COLLIDE_SUPER_SLOW_FACTOR)
-				elseif direction == NORTH then
-					self:SubMove(colliding, origin, speed, EAST, WEST, COLLIDE_SUPER_SLOW_FACTOR)
-				elseif direction == SOUTH then
+				elseif direction == NORTH or direction == SOUTH then
 					self:SubMove(colliding, origin, speed, EAST, WEST, COLLIDE_SUPER_SLOW_FACTOR)
 				end
 			end
 		end
-
 
 		-- If not animating
 		if current_animation_modifier == nil then
@@ -248,6 +241,20 @@ function modifier_generic_movement:GetColliding(test_position_front, actual_z, c
 	local test_z_north = GetGroundPosition(test_position_north, self.parent).z
 	local test_z_south = GetGroundPosition(test_position_south, self.parent).z
 
+	print("CFP:", 
+		"N", GridNav:CanFindPath(test_position_north, test_position_north) and "TRUE" or "FALS",
+		"S", GridNav:CanFindPath(test_position_south, test_position_south) and "TRUE" or "FALS",
+		"W", GridNav:CanFindPath(test_position_west, test_position_west) and "TRUE" or "FALS",
+		"E", GridNav:CanFindPath(test_position_east, test_position_east) and "TRUE" or "FALS"
+	)
+	print("IST:", 
+		"N", GridNav:IsTraversable(test_position_north) and "TRUE" or "FALS",
+		"S", GridNav:IsTraversable(test_position_south) and "TRUE" or "FALS",
+		"W", GridNav:IsTraversable(test_position_west) and "TRUE" or "FALS",
+		"E", GridNav:IsTraversable(test_position_east) and "TRUE" or "FALS"
+	)
+	print("============================================================")
+
 	if DEBUG then 
 		test_position_east.z = test_z_east 
 		test_position_west.z = test_z_west
@@ -271,10 +278,10 @@ function modifier_generic_movement:GetColliding(test_position_front, actual_z, c
 		south = math.abs(test_z_south - actual_z),
 	}
 
-	colliding[EAST] = differences.east > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_east) == true or differences.east < MIN_Z_DIFF
-	colliding[WEST] = differences.west > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_west) == true or differences.west < MIN_Z_DIFF
-	colliding[NORTH] = differences.north > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_north) == true or differences.north < MIN_Z_DIFF
-	colliding[SOUTH] = differences.south > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_south) == true or differences.south < MIN_Z_DIFF
+	colliding[EAST] = not GridNav:IsTraversable(test_position_east) or self:GetCollidingWithObjects(test_position_east) --differences.east > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_east) == true or differences.east < MIN_Z_DIFF
+	colliding[WEST] = not GridNav:IsTraversable(test_position_west) or self:GetCollidingWithObjects(test_position_west) --differences.west > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_west) == true or differences.west < MIN_Z_DIFF
+	colliding[NORTH] = not GridNav:IsTraversable(test_position_north) or self:GetCollidingWithObjects(test_position_north) --differences.north > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_north) == true or differences.north < MIN_Z_DIFF
+	colliding[SOUTH] = not GridNav:IsTraversable(test_position_south) or self:GetCollidingWithObjects(test_position_south) --differences.south > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_south) == true or differences.south < MIN_Z_DIFF
 
 	return colliding
 end
@@ -309,20 +316,20 @@ end
 
 function modifier_generic_movement:SubMove(colliding, origin, speed, direction_a, direction_b, slow)
 	if colliding[direction_a] then
-		local sub_future_position = origin + direction_b * speed / slow
-		local sub_test_position_front = origin + direction_b * speed * COLLIDE_OFFSET
-		local sub_colliding = self:GetColliding(sub_test_position_front, origin.z, RED)
+		local future_position = origin + direction_b * speed / slow
+		local test_position_front = origin + direction_b * speed * COLLIDE_OFFSET
+		local sub_colliding = self:GetColliding(test_position_front, origin.z, RED)
 		
 		if not sub_colliding[direction_b] then
-			self.parent:SetAbsOrigin(sub_future_position)
+			self.parent:SetAbsOrigin(future_position)
 		end
 	else
-		local sub_future_position = origin + direction_a * speed / slow
-		local sub_test_position_front = origin + direction_a * speed * COLLIDE_OFFSET
-		local sub_colliding = self:GetColliding(sub_test_position_front, origin.z, RED)
+		local future_position = origin + direction_a * speed / slow
+		local test_position_front = origin + direction_a * speed * COLLIDE_OFFSET
+		local sub_colliding = self:GetColliding(test_position_front, origin.z, RED)
 		
 		if not sub_colliding[direction_a] then
-			self.parent:SetAbsOrigin(sub_future_position)
+			self.parent:SetAbsOrigin(future_position)
 		end
 	end
 end

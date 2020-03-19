@@ -180,7 +180,7 @@ function modifier_cast_point:OnDestroy(params)
 				if self.ability.force_position ~= nil then
 					self.ability:OnCastPointEnd( self.ability.force_position )
 				else
-					self.ability:OnCastPointEnd( self.point )
+					self.ability:OnCastPointEnd()
 				end
 
 				if self.ability.OnRemovePseudoCastPoint ~= nil then
@@ -205,7 +205,7 @@ function modifier_cast_point:OnIntervalThink()
 		self:Destroy()
 	end
 		
-    local mouse = GameRules.GameMode.mouse_positions[self.parent:GetPlayerID()]
+    local mouse = self:GetAbility():GetCursorPosition()
 	local direction = (mouse - self.parent:GetOrigin()):Normalized()
 
 	if not self.parent:HasModifier("modifier_generic_displacement") then

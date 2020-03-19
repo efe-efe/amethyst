@@ -10,6 +10,15 @@ require('clases/round')
 require('clases/alliance')
 require('clases/player')
 
+require('libraries/timers') 
+require('libraries/projectiles') 
+require('libraries/animations') 
+
+require('wrappers/abilities')
+require('wrappers/modifiers')
+
+require('filters')
+
 THINK_PERIOD = 0.01
 ROUNDS_TO_WIN = 5
 ROUNDS_DIFFERENCE_TO_WIN = 3
@@ -17,8 +26,8 @@ ROUNDS_DIFFERENCE_TO_WIN = 3
 _G.STATE_NONE = 0
 _G.STATE_ROUND_IN_PROGRESS = 1 
 
-if _G.GameMode == nil then
-    _G.GameMode = class({})
+if GameMode == nil then
+    GameMode = class({})
 end
 
 function Precache( context )
@@ -56,21 +65,13 @@ function Activate()
     GameRules.GameMode:SetupMode()
 end
 
-require('libraries/timers') -- This library allow for easily delayed/timed actions
-require('libraries/projectiles') -- This library allow for easily delayed/timed actions
-require('libraries/animations') -- This library allows starting customized animations on units from lua
-
-require('filters') -- events.lua is where you can specify the actions to be taken when any event occurs.
-require('wrappers/abilities')
-require('wrappers/modifiers')
-require('alliances')
-
 function GameMode:OnThink()
 	if GameRules:IsGamePaused() == true then
         return THINK_PERIOD
     end
     local now = Time()
-    if GameRules:State_Get() >= DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+
+    if GameRules:State_Get() >= DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP then
         for _, thinker in ipairs(self.thinkers) do
             if now >= thinker.next then
                 thinker.next = math.max(thinker.next + thinker.period, now)
@@ -174,10 +175,6 @@ function GameMode:LinkModifiers()
     print('[AMETHYST] Useful modifiers linked')
 end
 
-function GameMode:SetupAlliances()
-    Alliances:Initialize()
-end
-
 function GameMode:SetupPanoramaEventHooks()
     CustomGameEventManager:RegisterListener('execute_ability', function(eventSourceIndex, args)
         local caster = EntIndexToHScript(args.entityIndex)
@@ -249,9 +246,12 @@ function GameMode:SetupPanoramaEventHooks()
         end
     end)
 
-    CustomGameEventManager:RegisterListener('updateMousePosition', function(eventSourceIndex, args)
-        local mouse_position = Vector(args.x, args.y, args.z)
-        self:UpdateMousePosition(mouse_position, args.playerID)
+    CustomGameEventManager:RegisterListener('update_mouse_position', function(eventSourceIndex, args)
+        local position = Vector(args.x, args.y, args.z)
+
+        if self.players and self.players[args.playerID] then
+            self.players[args.playerID]:UpdateCursorPosition(position)
+        end
     end)
         
     CustomGameEventManager:RegisterListener('key_released', function(eventSourceIndex, args)
@@ -265,7 +265,7 @@ function GameMode:SetupPanoramaEventHooks()
         end
     end)
 
-    CustomGameEventManager:RegisterListener('moveUnit', function(eventSourceIndex, args)
+    CustomGameEventManager:RegisterListener('move_unit', function(eventSourceIndex, args)
         local direction = args.direction
         local unit = EntIndexToHScript(args.entityIndex)
 
@@ -292,7 +292,7 @@ function GameMode:SetupPanoramaEventHooks()
         end
     end)
 
-    CustomGameEventManager:RegisterListener('stopUnit', function(eventSourceIndex, args)
+    CustomGameEventManager:RegisterListener('stop_unit', function(eventSourceIndex, args)
         local direction = args.direction
         local unit = EntIndexToHScript(args.entityIndex)
         
@@ -320,6 +320,11 @@ function GameMode:SetupPanoramaEventHooks()
 end
 
 function GameMode:SetupMode()
+    self.thinkers = {}
+    self.players = {}
+    self.alliances = {}
+    self.round = nil
+
     GameRules:GetGameModeEntity():SetThink("OnThink", self, THINK_PERIOD)
 
     self:SetupRules()
@@ -328,6 +333,8 @@ function GameMode:SetupMode()
     self:SetupFilters()
     self:LinkModifiers()
 
+    Filters:Activate(GameMode, self)
+
     local mode = GameRules:GetGameModeEntity()
     mode:SetBuybackEnabled( false )
     mode:SetDaynightCycleDisabled( true )
@@ -335,8 +342,6 @@ function GameMode:SetupMode()
 end
 
 function GameMode:Start()
-    self.players = {}
-    self.alliances = {}
     self.mouse_positions = {}
 
     self.state = STATE_NONE
@@ -356,8 +361,12 @@ function GameMode:Start()
         end
     )
 
-    self:RegisterThinker(1.0, function()
-        self.round:Update()
+    self:RegisterThinker(0.01, function()
+        if self.state == STATE_ROUND_IN_PROGRESS and self.round then
+            self.round:Update()
+
+            CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
+        end
     end)
 
     self.walls_ents = Entities:FindAllByName("wall_spawn")
@@ -382,54 +391,6 @@ function GameMode:Start()
     end
 end
 
-function GameMode:OnRoundEnd(context)
-    local round = context
-
-    for _,player in pairs(self.players) do
-        player.hero:Kill(nil, player.hero)	
-        player.hero:RespawnHero(false, false)
-    end
-
-    round:DestroyAllPickups() -- Remove death orbs
-
-    if round.winner then
-        round.winner.wins = round.winner.wins + 1
-
-        local score = { 
-            good_guys = self.alliances[DOTA_ALLIANCE_RADIANT].wins,
-            bad_guys = self.alliances[DOTA_ALLIANCE_DIRE].wins,
-        }
-    
-        CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
-
-        if  round.winner.wins >= ROUNDS_TO_WIN or self:GetHighestWinsDifference(round.winner) >= ROUNDS_DIFFERENCE_TO_WIN then
-            self:EndGame(round.winner.teams[1]) 
-        else
-            self.round = nil
-            self.round = Round(
-                self.players,
-                function(context) 
-                    self:OnRoundEnd(context)
-                end
-            )
-        end
-    else
-        CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "DRAW!" } )
-
-        self.round = nil
-        self.round = Round(
-            self.players,
-            function(context) 
-                self:OnRoundEnd(context)
-            end
-        )
-    end
-end
-
-function GameMode:UpdateMousePosition(pos, playerID)
-    self.mouse_positions[playerID] = pos
-end
-
 function GameMode:RegisterThinker(period, callback)
     local timer = {}
     timer.period = period
@@ -437,7 +398,6 @@ function GameMode:RegisterThinker(period, callback)
     timer.next = Time() + period
 
     self.thinkers = self.thinkers or {}
-
     table.insert(self.thinkers, timer)
 end
 
@@ -487,31 +447,62 @@ function GameMode:SetState(state)
     self.state = state
 end 
 
---============================================================================================
--- GAME PHASES
---============================================================================================
 function GameMode:OnGameRulesStateChange(keys)
     local state = GameRules:State_Get()
-
-    if state == DOTA_GAMERULES_STATE_HERO_SELECTION then
-
-    end
-
+    
     if state == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-        GameMode:OnGameInProgress()
+        self:OnGameInProgress()
     end
 end
 
---============================================================================================
--- GAME OFFICIALY BEGINS (00:00)
---============================================================================================
+function GameMode:OnRoundEnd(context)
+    local round = context
+
+    for _,player in pairs(self.players) do
+        player.hero:Kill(nil, player.hero)	
+        player.hero:RespawnHero(false, false)
+    end
+
+    round:DestroyAllPickups() -- Remove death orbs
+
+    if round.winner then
+        round.winner.wins = round.winner.wins + 1
+
+        local score = { 
+            good_guys = self.alliances[DOTA_ALLIANCE_RADIANT].wins,
+            bad_guys = self.alliances[DOTA_ALLIANCE_DIRE].wins,
+        }
+    
+        CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
+
+        if  round.winner.wins >= ROUNDS_TO_WIN or self:GetHighestWinsDifference(round.winner) >= ROUNDS_DIFFERENCE_TO_WIN then
+            self:EndGame(round.winner.teams[1]) 
+        else
+            self.round = nil
+            self.round = Round(
+                self.players,
+                function(context) 
+                    self:OnRoundEnd(context)
+                end
+            )
+        end
+    else
+        CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "DRAW!" } )
+
+        self.round = nil
+        self.round = Round(
+            self.players,
+            function(context) 
+                self:OnRoundEnd(context)
+            end
+        )
+    end
+end
+
 function GameMode:OnGameInProgress()
     self:Start()
 end
 
---============================================================================================
--- HERO SPAWNS
---============================================================================================
 function GameMode:OnHeroInGame(keys)
     local npc = EntIndexToHScript(keys.entindex)
 
@@ -589,9 +580,6 @@ function GameMode:OnHeroInGame(keys)
     end)
 end
 
---============================================================================================
--- ENTITY DIED
---============================================================================================
 function GameMode:OnEntityKilled( keys )
     local killed = EntIndexToHScript( keys.entindex_killed )
 
@@ -610,25 +598,6 @@ function GameMode:OnEntityKilled( keys )
     end
 end
 
-function GameMode:GetHighestWinsDifference(alliance)
-    local difference = 0
-
-    for _,m_alliance in pairs(self.alliances) do
-        if m_alliance ~= alliance then
-            local m_difference = alliance.wins - m_alliance.wins
-
-            if m_difference > difference then
-                difference = m_difference 
-            end
-        end
-    end 
-
-    return difference
-end
-
---------------------------------------------------------------------------------
--- Event: OnItemPickUp
---------------------------------------------------------------------------------
 function GameMode:OnItemPickUp( event )
 	local entity = EntIndexToHScript( event.ItemEntityIndex ):GetParentEntity()
     entity:OnPickedUp()
@@ -674,10 +643,6 @@ function GameMode:OnHeroKilled(killed)
     end
 end
 
-
---============================================================================================
--- UNIT HAS BEEN DAMAGED
---============================================================================================
 function GameMode:OnEntityHurt(keys)
     local damagebits = keys.damagebits -- This might always be 0 and therefore useless
     if keys.entindex_attacker ~= nil and keys.entindex_killed ~= nil then
@@ -691,6 +656,22 @@ function GameMode:OnEntityHurt(keys)
         damagingAbility = EntIndexToHScript( keys.entindex_inflictor )
         end
     end
+end
+
+function GameMode:GetHighestWinsDifference(alliance)
+    local difference = 0
+
+    for _,m_alliance in pairs(self.alliances) do
+        if m_alliance ~= alliance then
+            local m_difference = alliance.wins - m_alliance.wins
+
+            if m_difference > difference then
+                difference = m_difference 
+            end
+        end
+    end 
+
+    return difference
 end
 
 function GameMode:FindNextAliveAlly( alliance )
@@ -743,9 +724,6 @@ function GameMode:UpdateCameras()
     end
 end
 
---------------------------------------------------------------------------------
--- Walls Orb spawner
---------------------------------------------------------------------------------
 function GameMode:CreateWalls()
     print("[AMETHYST] Creating Walls")
     for _,wall_ent in pairs(self.walls_ents) do
@@ -794,3 +772,101 @@ end
 function GameMode:EndGame( victoryTeam )
 	GameRules:SetGameWinner( victoryTeam )
 end
+
+function GameMode:InitializeHeroCharges( hero, charges )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        charges = charges
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "initialize_hero_charges", data )
+end
+
+function GameMode:UpdateHealthBar( alliance )
+    local health_pct = 100 * alliance:GetCurrentHealth()/alliance:GetMaxHealth()
+
+    local data = {
+        health_pct = health_pct,
+        alliance = alliance.name
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "update_alliance_health_bar", data )
+end
+
+function GameMode:UpdateHeroHealthBar( hero )
+    local potential_health = hero:GetHealth() + (self.iMaxTreshold - hero.iTreshold)
+    local shield_modifier = hero:FindModifierByName("modifier_shield")
+    local shield = 0
+
+    if shield_modifier~=nil then
+        if not shield_modifier:IsNull() then
+            shield = shield_modifier:GetStackCount()
+        end
+    end
+    
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        shield = shield,
+        current_health = hero:GetHealth(),
+        max_health = hero:GetMaxHealth(),
+        potential_health = potential_health,
+    }
+
+    CustomGameEventManager:Send_ServerToAllClients( "update_hero_health_bar", data )
+end
+
+function GameMode:UpdateUnitHealthBar( unit )
+    local data = {
+        unitIndex = unit:GetEntityIndex(),
+        current_health = unit:GetHealth(),
+        max_health = unit:GetMaxHealth()
+    }
+
+    CustomGameEventManager:Send_ServerToAllClients( "update_unit_health_bar", data )
+end
+
+function GameMode:UpdateHeroManaBar( hero )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        percentage = hero:GetManaPercent()
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "update_hero_mana_bar", data )
+end
+
+function GameMode:UpdateHeroStacks( hero, stacks )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        stacks = stacks
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "update_hero_stacks", data )
+end
+
+function GameMode:UpdateHeroCharges( hero, charges )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        charges = charges
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "update_hero_charges", data )
+end
+
+function GameMode:InitializeCastPoint( hero, duration )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        duration = duration,
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "initialize_cast_point", data )
+end
+
+function GameMode:InitializeCooldown( hero, modifierName )
+    local data = {
+        teamID = hero:GetTeamNumber(),
+        heroIndex = hero:GetEntityIndex(),
+        modifierName = modifierName,
+    }
+    CustomGameEventManager:Send_ServerToAllClients( "initialize_hero_cooldown", data )
+end
+

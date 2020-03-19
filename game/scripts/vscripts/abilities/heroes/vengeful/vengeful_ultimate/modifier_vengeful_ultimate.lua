@@ -38,8 +38,6 @@ function modifier_vengeful_ultimate:OnAbilityFullyCast( params )
             self:ForgetSpell()
         end
 
-        print(incoming_ability_name)
-
         ultimate.current_ability = parent:AddAbility( incoming_ability_name .. "_ultimate" )
         ultimate.current_ability:SetLevel( 1 )
         if ultimate.current_ability.OnAdded then

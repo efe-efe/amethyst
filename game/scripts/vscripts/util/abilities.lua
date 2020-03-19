@@ -50,7 +50,9 @@ function CDOTABaseAbility:HasBehavior(behavior)
 end
 
 function CDOTABaseAbility:GetCursorPosition()
-	return GameMode.mouse_positions[self:GetCaster():GetPlayerID()]
+	local position = GameRules.GameMode.players[self:GetCaster():GetPlayerID()].cursor_position
+
+	return position
 end
 
 function CDOTABaseAbility:GetAlternateName()

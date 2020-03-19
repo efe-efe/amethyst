@@ -170,7 +170,7 @@ function Modifiers.Charges( modifier, data )
     function modifier:OnStackCountChanged(old)
         if IsServer() then
             if data.show_icon == 1 then
-                GameMode:UpdateHeroCharges(self:GetParent(), self:GetStackCount())
+                GameRules.GameMode:UpdateHeroCharges(self:GetParent(), self:GetStackCount())
             end
         end
     end

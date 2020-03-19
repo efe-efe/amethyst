@@ -3,8 +3,8 @@ Round = Round or class({})
 AMETHYST_SPAWN_TIME = 10.0
 AMETHYST_RESPAWN_TIME = 15.0
 
-local PICKUPS_TIMER = 5.0 --20.0
-local ROUND_TIMER = 10--30.0
+local PICKUPS_TIMER = 20.0
+local ROUND_TIMER = 999--30.0
 local DRAW_TIME = 2.0
 
 function Round:constructor(players, callback)
@@ -27,10 +27,10 @@ function Round:constructor(players, callback)
     self.ended = false
     self.is_trying_to_end = false
 
-    self.amethyst_timer = AMETHYST_SPAWN_TIME
+    self.amethyst_timer = AMETHYST_SPAWN_TIME * 30
     self.light_spawn_time = AMETHYST_SPAWN_TIME / 5
     self.time_remianing_until_end = DRAW_TIME
-    self.time_remaining = ROUND_TIMER
+    self.time_remaining = ROUND_TIMER * 30
 
     self.amethyst_entities = Entities:FindAllByName("orb_spawn")
     self.health_entities = Entities:FindAllByName("health_orb")
@@ -52,7 +52,7 @@ function Round:constructor(players, callback)
         table.insert(self.pickups, {
             origin = entity:GetOrigin(),
             type = PickupTypes.HEALTH,
-            timer = PICKUPS_TIMER,
+            timer = PICKUPS_TIMER * 30,
             entity = nil
         })
     end
@@ -61,7 +61,7 @@ function Round:constructor(players, callback)
         table.insert(self.pickups, {
             origin = entity:GetOrigin(),
             type = PickupTypes.MANA,
-            timer = PICKUPS_TIMER,
+            timer = PICKUPS_TIMER * 30,
             entity = nil,
         })
     end
@@ -70,7 +70,7 @@ function Round:constructor(players, callback)
         table.insert(self.pickups, {
             origin = entity:GetOrigin(),
             type = PickupTypes.SHIELD,
-            timer = PICKUPS_TIMER,
+            timer = PICKUPS_TIMER * 30,
             entity = nil
         })
     end
@@ -95,7 +95,8 @@ end
 function Round:Update()
     if self.time_remaining > 0 then
         self.time_remaining = self.time_remaining - 1
-        self:UpdateGameTimer(self.time_remaining)
+
+        self:UpdateGameTimer(math.floor(self.time_remaining/30))
         if self.time_remaining <= 0 then
             self.time_over = true
             self:CreateDeathZone()
@@ -106,11 +107,11 @@ function Round:Update()
         if not self.amethyst then
             self.amethyst_timer = self.amethyst_timer - 1
 
-            if math.fmod(self.amethyst_timer, self.light_spawn_time) == 0 then
+            if math.fmod(self.amethyst_timer/30, self.light_spawn_time) == 0 then
                 self:CreateLight() 
             end
 
-            if self.amethyst_timer == 0 then
+            if self.amethyst_timer <= 0 then
                 self.amethyst = Amethyst(self.amethyst_entities[self.amethyst_index]:GetOrigin())
             end
         else
@@ -129,7 +130,7 @@ function Round:Update()
                     self.amethyst_index = index
                 end
 
-                self.amethyst_timer = AMETHYST_RESPAWN_TIME
+                self.amethyst_timer = AMETHYST_RESPAWN_TIME * 30
                 self.light_spawn_time = AMETHYST_RESPAWN_TIME / 5
 
                 self:CleanLights()
@@ -141,12 +142,12 @@ function Round:Update()
         for _,pickup in ipairs(self.pickups) do
             if not pickup.entity then
                 self.pickups[_].timer = pickup.timer - 1
-                if self.pickups[_].timer == 0 then
+                if self.pickups[_].timer <= 0 then
                     self.pickups[_].entity = Pickup(pickup.type, pickup.origin, nil)
                 end
             else
                 if not pickup.entity:Alive() then
-                    self.pickups[_].timer = PICKUPS_TIMER
+                    self.pickups[_].timer = PICKUPS_TIMER * 30
                     self.pickups[_].entity = nil
                 end
             end
@@ -156,7 +157,7 @@ function Round:Update()
     end
 
     if self.is_trying_to_end then
-        self.time_remianing_until_end = self.time_remianing_until_end - 1
+        self.time_remianing_until_end = self.time_remianing_until_end - FrameTime()
 
         if self.time_remianing_until_end <= 0 then
             local last_alive, competing_alliances = self:GetLastOrNoneAlive()  
@@ -265,7 +266,10 @@ end
 
 function Round:DestroyAllPickups()
     for _,pickup in pairs(self.pickups) do
-        pickup.entity:Destroy()
+        if pickup.entity then
+            pickup.entity:Destroy()
+        end
+
         self.pickups[_] = nil
     end
 end
