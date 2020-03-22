@@ -1,12 +1,12 @@
 modifier_generic_movement = class({})
 
-local DEBUG = true
+local DEBUG = false
 
 local RADIUS_BIG = 40
-local RADIUS_MINI = 10
+local RADIUS_MINI = 5
 
-local COLLIDE_OFFSET = 1
-local COLLIDE_OFFSET_MINI = 1.0
+local COLLIDE_OFFSET = 4
+local COLLIDE_OFFSET_MINI = 1
 
 local COLLIDE_SLOW_FACTOR = 1.5
 local COLLIDE_SUPER_SLOW_FACTOR = 5.0
@@ -235,12 +235,7 @@ function modifier_generic_movement:GetColliding(test_position_front, actual_z, c
 	local test_position_north = test_position_front + RADIUS_BIG * NORTH * COLLIDE_OFFSET_MINI
 	local test_position_south = test_position_front + RADIUS_BIG * SOUTH * COLLIDE_OFFSET_MINI
 
-	local test_z = GetGroundPosition(test_position_front, self.parent).z
-	local test_z_east = GetGroundPosition(test_position_east, self.parent).z
-	local test_z_west = GetGroundPosition(test_position_west, self.parent).z
-	local test_z_north = GetGroundPosition(test_position_north, self.parent).z
-	local test_z_south = GetGroundPosition(test_position_south, self.parent).z
-
+	--[[
 	print("CFP:", 
 		"N", GridNav:CanFindPath(test_position_north, test_position_north) and "TRUE" or "FALS",
 		"S", GridNav:CanFindPath(test_position_south, test_position_south) and "TRUE" or "FALS",
@@ -254,13 +249,22 @@ function modifier_generic_movement:GetColliding(test_position_front, actual_z, c
 		"E", GridNav:IsTraversable(test_position_east) and "TRUE" or "FALS"
 	)
 	print("============================================================")
+	]]
 
-	if DEBUG then 
+	if IsInToolsMode() and DEBUG then
+		local test_z = GetGroundPosition(test_position_front, self.parent).z
+		local test_z_east = GetGroundPosition(test_position_east, self.parent).z
+		local test_z_west = GetGroundPosition(test_position_west, self.parent).z
+		local test_z_north = GetGroundPosition(test_position_north, self.parent).z
+		local test_z_south = GetGroundPosition(test_position_south, self.parent).z
+
 		test_position_east.z = test_z_east 
 		test_position_west.z = test_z_west
 		test_position_north.z = test_z_north
 		test_position_south.z = test_z_south
 
+
+		print(test_position_front.z, self.parent:GetOrigin().z)
 
 		--DebugDrawCircle(future_position, RED, 5, RADIUS_BIG, false, 0.01)
 		DebugDrawCircle(test_position_front, color, 5, RADIUS_BIG, false, 0.01)
@@ -268,15 +272,28 @@ function modifier_generic_movement:GetColliding(test_position_front, actual_z, c
 		DebugDrawCircle(test_position_west, YELLOW, 5, RADIUS_MINI, false, 0.01)
 		DebugDrawCircle(test_position_north, SKYBLUE, 5, RADIUS_MINI, false, 0.01)
 		DebugDrawCircle(test_position_south, PURPLE, 5, RADIUS_MINI, false, 0.01)
+
+		DebugDrawLine_vCol(test_position_front, test_position_front, color, true, 0.01)
+		DebugDrawLine_vCol(test_position_front, test_position_east, BLUE, true, 0.01)
+		DebugDrawLine_vCol(test_position_front, test_position_west, YELLOW, true, 0.01)
+		DebugDrawLine_vCol(test_position_front, test_position_north, SKYBLUE, true, 0.01)
+		DebugDrawLine_vCol(test_position_front, test_position_south, PURPLE, true, 0.01)
+
+
+		self:Aoe(RADIUS_BIG, color, 0.01, test_position_front)
+		self:Aoe(RADIUS_MINI, BLUE, 0.01, test_position_east)
+		self:Aoe(RADIUS_MINI, YELLOW, 0.01, test_position_west)
+		self:Aoe(RADIUS_MINI, SKYBLUE, 0.01, test_position_north)
+		self:Aoe(RADIUS_MINI, PURPLE, 0.01, test_position_south)
 	end
 
 	local colliding = {}
-	local differences = {
+	--[[local differences = {
 		east = math.abs(test_z_east - actual_z),
 		west = math.abs(test_z_west - actual_z),
 		north = math.abs(test_z_north - actual_z),
 		south = math.abs(test_z_south - actual_z),
-	}
+	}]]
 
 	colliding[EAST] = not GridNav:IsTraversable(test_position_east) or self:GetCollidingWithObjects(test_position_east) --differences.east > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_east) == true or differences.east < MIN_Z_DIFF
 	colliding[WEST] = not GridNav:IsTraversable(test_position_west) or self:GetCollidingWithObjects(test_position_west) --differences.west > MAX_Z_DIFF or self:GetCollidingWithObjects(test_position_west) == true or differences.west < MIN_Z_DIFF
@@ -376,3 +393,12 @@ function modifier_generic_movement:CheckState()
 	return state
 end
 
+function modifier_generic_movement:Aoe(radius, color, duration, origin)
+    local particle_cast = "particles/aoe_marker.vpcf"
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 0, origin )
+    ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 1, 1 ) )
+    ParticleManager:SetParticleControl( effect_cast, 2, color )
+    ParticleManager:SetParticleControl( effect_cast, 3, Vector(duration, 0, 0) )
+    ParticleManager:ReleaseParticleIndex( effect_cast )
+end

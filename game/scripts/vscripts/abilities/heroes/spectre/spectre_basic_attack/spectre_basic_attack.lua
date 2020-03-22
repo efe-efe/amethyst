@@ -37,8 +37,7 @@ function spectre_basic_attack:OnCastPointEnd()
 	local modifier = caster:FindModifierByName("modifier_spectre_basic_attack")
 	local charged = modifier:GetStackCount() > 0 and true or false 
 	local ultimate = SafeGetModifierStacks("modifier_spectre_ultimate_damage", caster, caster)
-
-
+	
 	local projectile = {
 		vSpawnOrigin = origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),

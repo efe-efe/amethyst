@@ -20,8 +20,8 @@ require('wrappers/modifiers')
 require('filters')
 
 THINK_PERIOD = 0.01
-ROUNDS_TO_WIN = 5
-ROUNDS_DIFFERENCE_TO_WIN = 3
+ROUNDS_TO_WIN = 9
+ROUNDS_DIFFERENCE_TO_WIN = 9
 
 _G.STATE_NONE = 0
 _G.STATE_ROUND_IN_PROGRESS = 1 
@@ -121,6 +121,8 @@ function GameMode:SetupEventHooks()
 end
 
 function GameMode:SetupFilters()
+    Filters:Activate(GameMode, self)
+
     local mode = GameRules:GetGameModeEntity()
     mode:SetModifyGoldFilter(Dynamic_Wrap(GameMode, 'GoldFilter'), GameMode)
     mode:SetHealingFilter(Dynamic_Wrap(GameMode, 'HealingFilter'), GameMode)
@@ -333,7 +335,6 @@ function GameMode:SetupMode()
     self:SetupFilters()
     self:LinkModifiers()
 
-    Filters:Activate(GameMode, self)
 
     local mode = GameRules:GetGameModeEntity()
     mode:SetBuybackEnabled( false )
