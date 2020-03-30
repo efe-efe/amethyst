@@ -82,10 +82,17 @@ function Modifiers.Charges( modifier, data )
             if data.type == "unsynced" then    
                 self:CalculateCharge()
             elseif data.type == "synced" then
-                self.replenish_time = self:GetAbility():GetSpecialValueFor("replenish_time")
+                if data.replenish == "aspd" then
+                    local attacks_per_second = self:GetParent():GetAttacksPerSecond()
+                    self.replenish_time = ( 1 / attacks_per_second )
+                else 
+                    self.replenish_time = self:GetAbility():GetSpecialValueFor("replenish_time")
+                end
 
                 if data.show_icon == 1 then
-                    GameRules.GameMode:InitializeHeroCharges(self:GetParent(), self:GetStackCount())
+                    self:GetParent():AddChargesVisual({
+                        modifier = self
+                    })
                 end
             end
         end
@@ -112,17 +119,6 @@ function Modifiers.Charges( modifier, data )
         end
     end
 
-    function modifier:OnIntervalThink()
-        if data.type == "unsynced" then
-            self:IncrementStackCount()
-            self:StartIntervalThink(-1)
-            self:CalculateCharge()
-        elseif data.type == "synced" then
-            self:SetStackCount(self.max_charges)
-            self:StartIntervalThink(-1)
-        end
-    end
-
     function modifier:CalculateCharge()
         if data.type == "unsynced" then
             self:GetAbility():EndCooldown()
@@ -146,24 +142,36 @@ function Modifiers.Charges( modifier, data )
                 end
             end
         elseif data.type == "synced" then
-            if self:GetStackCount() > self.max_charges then
-                print("HER")
-            elseif self:GetStackCount() == self.max_charges then
+            if self:GetStackCount() == self.max_charges then
                 -- Stop charging
                 self:SetDuration( -1, false )
                 self:StartIntervalThink( -1 )
-            else
+            elseif self:GetStackCount() < self.max_charges then
                 -- If not charging
                 if self:GetRemainingTime() <= 0.05 then
+                    if data.replenish == "aspd" then -- Checks for changes on ASPD
+                        local attacks_per_second = self:GetParent():GetAttacksPerSecond()
+                        self.replenish_time = ( 1 / attacks_per_second )
+                    end
                     self:StartIntervalThink( self.replenish_time )
                     self:SetDuration( self.replenish_time, true )
                 end
-        
                 -- Set on cooldown if no charges
                 if self:GetStackCount() == 0 then
                     self:GetAbility():StartCooldown( self:GetRemainingTime() )
                 end
             end
+        end
+    end
+
+    function modifier:OnIntervalThink()
+        if data.type == "unsynced" then
+            self:IncrementStackCount()
+            self:StartIntervalThink(-1)
+            self:CalculateCharge()
+        elseif data.type == "synced" then
+            self:SetStackCount(self.max_charges)
+            self:StartIntervalThink(-1)
         end
     end
 

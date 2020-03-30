@@ -363,22 +363,6 @@ function modifier_generic_movement:DeclareFunctions()
 	return funcs
 end
 
-function modifier_generic_movement:OnManaGained(params)
-	if params.unit == self:GetParent() then
-		Timers:CreateTimer(0.1, function()
-			GameRules.GameMode:UpdateHeroManaBar(params.unit)
-        end)
-	end	
-end
-
-function modifier_generic_movement:OnSpentMana(params)
-	if params.unit == self:GetParent() then
-		Timers:CreateTimer(0.1, function()
-			GameRules.GameMode:UpdateHeroManaBar(params.unit)
-        end)
-	end	
-end
-
 function modifier_generic_movement:GetModifierIgnoreMovespeedLimit( params )
     return 1
 end

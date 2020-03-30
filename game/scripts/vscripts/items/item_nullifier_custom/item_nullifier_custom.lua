@@ -1,0 +1,74 @@
+item_nullifier_custom = class({})
+LinkLuaModifier( "modifier_item_nullifier_custom", "items/item_nullifier_custom/modifier_item_nullifier_custom", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier( "modifier_item_nullifier_custom_slow", "items/item_nullifier_custom/modifier_item_nullifier_custom_slow", LUA_MODIFIER_MOTION_HORIZONTAL )
+
+function item_nullifier_custom:OnCastPointEnd()
+    local caster = self:GetCaster()
+    local origin = caster:GetOrigin()
+	local point = self:GetCursorPosition()
+
+	local initial_duration = self:GetSpecialValueFor("initial_duration")
+	local duration = self:GetSpecialValueFor("duration")
+	local ability_damage = self:GetSpecialValueFor("ability_damage")
+
+	-- Dynamic data
+	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+    local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+    
+    local projectile = {
+		EffectName = 			"particles/nullifier_proj.vpcf",
+		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0,0,80),
+		fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+		fUniqueRadius =			self:GetSpecialValueFor("hitbox"),
+		Source = 				caster,
+		vVelocity = 			projectile_direction * projectile_speed,
+		UnitBehavior = 			PROJECTILES_DESTROY,
+		WallBehavior = 			PROJECTILES_DESTROY,
+		TreeBehavior = 			PROJECTILES_NOTHING,
+		GroundBehavior = 		PROJECTILES_NOTHING,
+		fGroundOffset = 		80,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		OnUnitHit = function(_self, unit)
+			unit:AddNewModifier(_self.Source, self, "modifier_item_nullifier_custom", { duration = duration })
+			unit:AddNewModifier(_self.Source, self, "modifier_item_nullifier_custom_slow", { duration = initial_duration })
+
+			local damage_table = {
+				victim = unit,
+				attacker = _self.Source,
+				damage = ability_damage,
+				damage_type = DAMAGE_TYPE_MAGICAL,
+			}
+			ApplyDamage( damage_table )
+		end,
+		OnFinish = function(_self, pos)
+			self:PlayEffectsOnFinish(pos)
+		end,
+	}
+
+	-- Cast projectile
+    Projectiles:CreateProjectile(projectile)
+    self:PlayEffectsOnCast()
+end
+
+function item_nullifier_custom:PlayEffectsOnFinish(pos)
+	local caster = self:GetCaster()
+	EmitSoundOnLocationWithCaster( pos, "DOTA_Item.Nullifier.Target", caster )
+
+	-- Create Particles
+	local particle_cast = "particles/items4_fx/nullifier_proj_impact.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
+	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+function item_nullifier_custom:PlayEffectsOnCast()
+	EmitSoundOn( "DOTA_Item.Nullifier.Cast", self:GetCaster() )
+end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Initialize( 
+    item_nullifier_custom,
+	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
+	{ movement_speed = 10, fixed_range = 1 }
+)

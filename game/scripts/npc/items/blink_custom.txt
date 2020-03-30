@@ -1,0 +1,26 @@
+"DOTAAbilities"
+{
+    "item_blink_custom"	
+	{	
+		"ID"							"2008"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_blink"	
+        "ScriptFile"                    "items/item_blink_custom/item_blink_custom.lua"
+
+		"ItemCost"						"1"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemStockMax"					"1"
+
+		"AbilityCastRange"				"750"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"12.0"	
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"					"350" }
+		}
+    }	
+}	

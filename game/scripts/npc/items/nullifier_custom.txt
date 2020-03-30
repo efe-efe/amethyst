@@ -1,0 +1,32 @@
+"DOTAAbilities"
+{
+    "item_nullifier_custom"	
+	{	
+		"ID"							"2011"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_nullifier"	
+        "ScriptFile"                    "items/item_nullifier_custom/item_nullifier_custom.lua"
+
+		"ItemCost"						"1"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemStockMax"					"1"
+
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"12.0"
+		"AbilityCastRange"				"1200"
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"projectile_speed"			"1700" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"initial_duration"			"1.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"tick_duration"				"0.3" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"100" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"90" }
+		}
+    }	
+}	

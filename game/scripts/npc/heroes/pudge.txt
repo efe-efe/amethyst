@@ -18,12 +18,10 @@
 		"Ability5"						"pudge_special_attack"
 		"Ability6"						"pudge_extra"           
 		"Ability7"						"pudge_ultimate"            
-		"Ability8"						"pudge_ex_counter"       
-		"Ability9"						"pudge_ex_special_attack"	
+		////"Ability8"						"pudge_ex_counter"       
+		//"Ability8"						"pudge_ex_special_attack"	
 		"Ability10"						"mount"					
 		"Ability11"						"charge"		
-		"Ability12"						"juggernaut_counter_recast"	
-		"Ability13"						"juggernaut_extra_recast"		
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------

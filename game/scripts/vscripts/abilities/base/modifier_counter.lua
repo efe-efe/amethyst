@@ -121,7 +121,6 @@ function modifier_counter:OnOrder(params)
     end
 end
 
-
 function modifier_counter:GetModifierIncomingDamage_Percentage( params )
     if IsServer() then
         -- Pure damage doesnt trigger the counter

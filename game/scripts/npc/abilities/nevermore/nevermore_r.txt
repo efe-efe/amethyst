@@ -15,7 +15,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"						"FIELD_FLOAT"		"cast_point"            "1.2" }
+			"01"{ "var_type"						"FIELD_FLOAT"		"cast_point"            "1.4" }
 			"02"{ "var_type"						"FIELD_INTEGER"		"radius"				"650" }
 			"03"{ "var_type"						"FIELD_INTEGER"		"reduction_ms"			"25" }
 			"04"{ "var_type"						"FIELD_INTEGER"		"slow_duration"			"5.0" }

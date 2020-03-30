@@ -2,7 +2,15 @@
 #base "items\mana_orb.txt"
 #base "items\shield_orb.txt"
 #base "items\death_orb.txt"
-
+#base "items\blink_custom.txt"
+#base "items\moon_custom.txt"
+#base "items\nullifier_custom.txt"
+#base "items\orchid_custom.txt"
+#base "items\atos_custom.txt"
+#base "items\phase_custom.txt"
+#base "items\basher_custom.txt"
+#base "items\shadow_blade_custom.txt"
+#base "items\meteor_custom.txt"
 
 "DOTAAbilities"
 {

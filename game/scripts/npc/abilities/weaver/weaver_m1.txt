@@ -18,7 +18,6 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "6" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"max_charges"				"2" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"extra_charges"				"4" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"1.2" }
 		}
 	}
 }

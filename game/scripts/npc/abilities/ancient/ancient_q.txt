@@ -6,6 +6,7 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"ancient_counter"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCooldown"				"7.0"
 
 		"AbilitySpecial"

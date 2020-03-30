@@ -35,7 +35,7 @@ function OnRightButtonPressed()
 // Handle Right Button events
 function OnRightButtonReleased()
 {
-    OnReleaseKey("m2")
+    OnReleaseKey("m2");
 }
 
 
@@ -110,6 +110,25 @@ function ExecuteAbility(index)
     }
 }
 
+function UseItem(itemSlot)
+{
+    var playerId = Players.GetLocalPlayer();
+    var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
+    heroIndex = Players.GetSelectedEntities( playerId )[0]; //DEBUG
+
+    if(heroIndex == -1){
+        $.Msg("[Custom Bindings] Invalid hero: The hero hasn't been asigned yet");
+    }
+    else{
+        GameEvents.SendCustomGameEventToServer("use_item", { 
+            entityIndex: heroIndex,
+            itemSlot: itemSlot
+        });
+    }
+}
+
+
+
 function SendMovementSignal( action, direction )
 {
     var playerId = Players.GetLocalPlayer();
@@ -125,8 +144,12 @@ function SendMovementSignal( action, direction )
 }
 
 Game.OnPressSpace = function(){    ExecuteAbility(MOBILITY_ABILITY_INDEX) }
-Game.OnPress1 = function(){        ExecuteAbility(EX_ABILITY_ONE_INDEX) }
-Game.OnPress2 = function(){        ExecuteAbility(EX_ABILITY_TWO_INDEX) }
+Game.OnPress1 = function(){        UseItem(0) }
+Game.OnPress2 = function(){        UseItem(1) }
+Game.OnPress3 = function(){        UseItem(2) }
+Game.OnPress4 = function(){        UseItem(3) }
+Game.OnPress5 = function(){        UseItem(4) }
+Game.OnPress6 = function(){        UseItem(5) }
 Game.OnPressQ = function(){        ExecuteAbility(COUNTER_INDEX) }
 Game.OnPressE = function(){        ExecuteAbility(SPECIAL_ATTACK_INDEX) }
 Game.OnPressR = function(){        ExecuteAbility(EX_ULTIMATE_INDEX) }

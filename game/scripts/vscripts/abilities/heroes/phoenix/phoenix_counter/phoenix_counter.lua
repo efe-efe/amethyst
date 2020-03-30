@@ -1,5 +1,5 @@
 phoenix_counter = class({})
-LinkLuaModifier( "modifier_generic_rooted_lua", "abilities/generic/modifier_generic_rooted_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -30,7 +30,7 @@ function phoenix_counter:OnSpellStart()
         enemy:AddNewModifier(
             caster,
             self,
-            "modifier_generic_rooted_lua",
+            "modifier_generic_root",
             { duration = duration }
         )
 

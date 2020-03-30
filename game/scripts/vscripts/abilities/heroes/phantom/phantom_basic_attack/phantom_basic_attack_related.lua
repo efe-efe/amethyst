@@ -7,13 +7,12 @@ function phantom_basic_attack_related:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
-	local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
+	local ability = caster:FindAbilityByName("phantom_extra")
 	local damage = ability:GetSpecialValueFor("ability_damage")
 
 	-- Extra data
 	local slow_duration = ability:GetSpecialValueFor("slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-	local should_lifesteal = caster:HasModifier("modifier_phantom_ex_basic_attack")
 
 	-- Dinamyc data
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -40,7 +39,6 @@ function phantom_basic_attack_related:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
 			ApplyDamage( damage_table )
-			--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, damage, nil )
 
 			if _self.Source == caster then
 				caster:GiveManaPercent(mana_gain_pct, unit)
@@ -53,12 +51,6 @@ function phantom_basic_attack_related:OnCastPointEnd()
 						{} -- kv
 					)
 				end
-				
-				if should_lifesteal then
-					local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
-					local heal = ability:GetSpecialValueFor( "heal" )
-					caster:Heal(heal, caster)
-				end
 			end
 
 			-- Add modifier
@@ -68,6 +60,10 @@ function phantom_basic_attack_related:OnCastPointEnd()
 				"modifier_generic_fading_slow", -- modifier name
 				{ duration = slow_duration } -- kv
 			)
+
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

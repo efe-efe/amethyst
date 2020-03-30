@@ -1,6 +1,6 @@
 modifier_phoenix_ex_counter = class({})
 LinkLuaModifier( "modifier_phoenix_ex_counter_mark", "abilities/heroes/phoenix/phoenix_ex_counter/modifier_phoenix_ex_counter_mark", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_rooted_lua", "abilities/generic/modifier_generic_rooted_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -73,7 +73,7 @@ function modifier_phoenix_ex_counter:OnIntervalThink()
             enemy:AddNewModifier(
                 self:GetParent(),
                 self:GetAbility(),
-                "modifier_generic_rooted_lua",
+                "modifier_generic_root",
                 { duration = self.root_duration_per_think * self.counter }
             )
     

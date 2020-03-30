@@ -1,5 +1,5 @@
 modifier_phoenix_ultimate = class({})
-LinkLuaModifier( "modifier_generic_rooted_lua", "abilities/generic/modifier_generic_rooted_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -91,7 +91,7 @@ function modifier_phoenix_ultimate:OnDestroy( kv )
 				unit:AddNewModifier(
 					self:GetParent(),
 					self:GetAbility(),
-					"modifier_generic_rooted_lua",
+					"modifier_generic_root",
 					{ duration = self.root_duration }
 				)
 		   end

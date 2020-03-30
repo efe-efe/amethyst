@@ -35,17 +35,7 @@ function modifier_pudge_counter:OnIntervalThink()
     )
 
     for _,enemy in pairs(enemies) do
-        if enemy:IsAmethyst() then
-            local damage_table = {
-                victim = enemy,
-                attacker = self.caster,
-                damage_type = DAMAGE_TYPE_PURE,
-                damage = self.damage_per_tick
-            }
-            ApplyDamage( damage_table )
-        else 
-            enemy:AddNewModifier(self.caster, self.ability, "modifier_pudge_counter_debuff", { duration = self.interval } )
-        end
+        enemy:AddNewModifier(self.caster, self.ability, "modifier_pudge_counter_debuff", { duration = self.interval } )
     end
 
     local current_health = self.caster:GetHealth()
@@ -90,4 +80,19 @@ function modifier_pudge_counter:PlayEffectsAoe()
     ParticleManager:SetParticleControl( effect_cast, 2, Vector( 255, 1, 1 ) )
     ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
+end
+
+
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_pudge_counter:DeclareFunctions()
+	local funcs = {
+		MODIFIER_PROPERTY_MANA_BONUS,
+	}
+
+	return funcs
+end
+
+function modifier_pudge_counter:GetModifierManaBonus()
+    return 25
 end

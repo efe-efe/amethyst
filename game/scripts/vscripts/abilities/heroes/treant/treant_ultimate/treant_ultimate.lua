@@ -30,7 +30,7 @@ function treant_ultimate:OnCastPointEnd( )
         enemy:AddNewModifier(
             caster, 
             self, 
-            "modifier_generic_rooted_lua", 
+            "modifier_generic_root", 
             { duration = root_duration }
         )
         enemy:AddNewModifier(

@@ -19,6 +19,14 @@ COLORS_RGB["ORANGE"] = {
     light: "rgba(255, 108, 0, 1.0)",
     dark: "rgba(219, 99, 11, 1.0)",
 }
+COLORS_RGB["BLUE"] = {
+    light: "rgba(27, 113, 230, 1.0)",
+    dark: "rgba(120, 156, 210, 1.0)",
+}
+COLORS_RGB["GRAY"] = {
+    light: "rgba(240, 240, 240, 1.0)",
+    dark: "rgba(120, 120, 120, 1.0)",
+}
 
 var Colors = {
     Gradient: function(color){

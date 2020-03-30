@@ -19,10 +19,7 @@ function modifier_vengeful_ultimate:OnAbilityFullyCast( params )
         local incoming_ability = params.ability
         local incoming_ability_name = incoming_ability:GetName() 
 
-		if 	incoming_ability_name == "item_death_orb" or
-            incoming_ability_name == "item_mana_orb" or
-            incoming_ability_name == "item_health_orb" or
-            incoming_ability_name == "item_shield_orb" or
+		if 	incoming_ability:IsItem() or
             incoming_ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE) 
 		then
 			return

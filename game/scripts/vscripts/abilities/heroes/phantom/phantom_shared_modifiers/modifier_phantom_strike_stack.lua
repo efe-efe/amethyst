@@ -25,7 +25,7 @@ function modifier_phantom_strike_stack:OnCreated( kv )
 	if IsServer() then
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
-		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 1)
+		self:GetParent():AddStacksVisual({ modifier = self })
 	end
 end
 
@@ -40,7 +40,7 @@ function modifier_phantom_strike_stack:OnRefresh( kv )
 			self:IncrementStackCount()
 			self:PlayEffects()
 
-			GameRules.GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
+			
 
 			if self:GetStackCount() == max_stack then
 				self:PlayEffectsCharged()
@@ -52,7 +52,7 @@ end
 function modifier_phantom_strike_stack:OnDestroy( kv )
 	if IsServer() then
 		self:StopEffects()
-		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 0)
+		
 	end
 end
 

@@ -1,0 +1,28 @@
+
+"DOTAAbilities"
+{
+    "item_shadow_blade_custom"	
+	{	
+		"ID"							"2015"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_invis_sword"	
+        "ScriptFile"                    "items/item_shadow_blade_custom/item_shadow_blade_custom.lua"
+
+		"ItemCost"						"1"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemStockMax"					"1"
+
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"15.0"	
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"ms_pct"					"50" }
+		}
+    }	
+}	

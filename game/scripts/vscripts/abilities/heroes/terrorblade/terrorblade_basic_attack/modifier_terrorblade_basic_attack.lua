@@ -43,7 +43,7 @@ function modifier_terrorblade_basic_attack:OnRefresh( kv )
 			if self:GetStackCount() == max_stack then
                 self:PlayEffectsCharged()
 
-                self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility() , "modifier_generic_rooted_lua", { duration = self.root_duration })
+                self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility() , "modifier_generic_root", { duration = self.root_duration })
                 self:Destroy()
 			end
 		end
@@ -53,7 +53,7 @@ end
 function modifier_terrorblade_basic_attack:OnDestroy( kv )
 	if IsServer() then
 		self:StopEffects()
-		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 0)
+		
 	end
 end
 

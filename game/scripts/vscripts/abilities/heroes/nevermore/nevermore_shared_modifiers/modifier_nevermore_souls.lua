@@ -23,7 +23,7 @@ function modifier_nevermore_souls:OnCreated()
 
 	if IsServer() then
 	    self:SetStackCount(1)
-		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 1)
+		self:GetParent():AddStacksVisual({ modifier = self })
     end
 end
 
@@ -35,7 +35,7 @@ function modifier_nevermore_souls:OnRefresh()
 		if self:GetStackCount() < self.max_stacks then
 			self.effects_cast_weapon = {}
 			self:IncrementStackCount()
-			GameRules.GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
+			
 
 			if self:GetStackCount() == self.max_stacks then
 				self:PlayEffectsCharged()
@@ -46,7 +46,6 @@ end
 
 function modifier_nevermore_souls:OnDestroy()
 	if IsServer() then
-		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 0)
 		self:StopEffects()
     end
 end

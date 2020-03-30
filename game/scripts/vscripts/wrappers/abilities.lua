@@ -101,6 +101,7 @@ function Abilities.BasicAttack( ability )
     function ability:OnCastPointEnd()
         if onCastPointEnd then onCastPointEnd(self) end
 
+        if self:HasCharges() then return end
         local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
         local attack_speed = ( 1 / attacks_per_second )
         self:StartCooldown( attack_speed )

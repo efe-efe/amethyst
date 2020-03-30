@@ -53,6 +53,10 @@ function ancient_basic_attack:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
 			ApplyDamage( damage_table )
+
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

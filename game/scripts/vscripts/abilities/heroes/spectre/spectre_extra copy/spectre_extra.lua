@@ -1,10 +1,5 @@
 spectre_extra = class({})
 LinkLuaModifier( "modifier_spectre_extra_thinker", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_spectre_extra", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra", LUA_MODIFIER_MOTION_NONE )
-
-function spectre_extra:HasPriority()
-    return true
-end
 
 --------------------------------------------------------------------------------
 function spectre_extra:OnCastPointEnd()
@@ -13,14 +8,6 @@ function spectre_extra:OnCastPointEnd()
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor( "radius" )
 	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-
-
-    caster:AddNewModifier(
-        caster,
-        self,
-        "modifier_spectre_extra",
-        { duration = delay_time }
-    )
 
 	CreateModifierThinker(
 		caster, --hCaster
@@ -43,8 +30,7 @@ end
 --------------------------------------------------------------------------------
 --Effects
 function spectre_extra:PlayEffects()
-    -- Get Resources
-    EmitSoundOn( "Hero_Spectre.Reality", self:GetCaster() )
+	EmitSoundOn("spectre_spec_redux_firstblood_02", self:GetCaster())
 
     local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
@@ -56,6 +42,6 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Initialize( 
 	spectre_extra,
-	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
+	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.0 },
 	{ movement_speed = 10 }
 )

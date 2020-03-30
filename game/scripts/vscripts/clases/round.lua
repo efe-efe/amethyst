@@ -1,7 +1,7 @@
-Round = Round or class({})
+Round = Round or class({}, nil, GameState)
 
-AMETHYST_SPAWN_TIME = 10.0
-AMETHYST_RESPAWN_TIME = 15.0
+local AMETHYST_SPAWN_TIME = 10.0
+local AMETHYST_RESPAWN_TIME = 15.0
 
 local PICKUPS_TIMER = 20.0
 local ROUND_TIMER = 30.0
@@ -36,6 +36,9 @@ function Round:constructor(players, callback)
     self.health_entities = Entities:FindAllByName("health_orb")
     self.mana_entities = Entities:FindAllByName("mana_orb")
     self.shield_entities = Entities:FindAllByName("shield_orb")
+
+    self.radiant_warmup_spawn = Entities:FindByName(nil, "radiant_warmup_spawn")
+    self.dire_warmup_spawn = Entities:FindByName(nil, "dire_warmup_spawn")
 
     if GetMapName() == "forest_map" or GetMapName() == "free_for_all" then
         self.amethyst_index = 1
@@ -141,14 +144,14 @@ function Round:Update()
 
         for _,pickup in ipairs(self.pickups) do
             if not pickup.entity then
-                self.pickups[_].timer = pickup.timer - 1
-                if self.pickups[_].timer <= 0 then
-                    self.pickups[_].entity = Pickup(pickup.type, pickup.origin, nil)
+                pickup.timer = pickup.timer - 1
+                if pickup.timer <= 0 then
+                    pickup.entity = Pickup(pickup.type, pickup.origin, nil)
                 end
             else
                 if not pickup.entity:Alive() then
-                    self.pickups[_].timer = PICKUPS_TIMER * 30
-                    self.pickups[_].entity = nil
+                    pickup.timer = PICKUPS_TIMER * 30
+                    pickup.entity = nil
                 end
             end
         end
@@ -184,6 +187,34 @@ function Round:EndRound()
     self:DestroyAmethyst()
     self:CleanLights()
     self:CleanArrows()
+
+    
+    for _,player in pairs(self.players) do
+        local target = nil
+
+        if player.alliance.name == "DOTA_ALLIANCE_RADIANT" then
+            target = self.radiant_warmup_spawn
+        end
+        if player.alliance.name == "DOTA_ALLIANCE_DIRE" then
+            target = self.dire_warmup_spawn
+        end
+
+        if not player.hero:IsAlive() then
+            player.hero:RespawnHero(false, false)
+        end
+
+        player.hero:SetAbsOrigin(target:GetOrigin())
+        player.hero:RemoveModifierByName("modifier_generic_displacement")
+        player.hero:SetGold(2, false)
+
+        for i = 0, 5 do
+            local item = player.hero:GetItemInSlot(i)
+            if item then player.hero:RemoveItem( item ) end
+        end
+        
+        player.hero:Reset()
+    end
+
 
     self:callback()
 end
@@ -276,25 +307,8 @@ end
 
 function Round:DestroyAmethyst()
     if self.amethyst ~= nil then
-        self.amethyst:Destroy()
+        self.amethyst:Destroy(true)
         self.amethyst = nil
     end 
 end
 
-function Round:UpdateGameTimer( time )
-    local minutes = math.floor(time / 60)
-    local seconds = time - (minutes * 60)
-    local m10 = math.floor(minutes / 10)
-    local m01 = minutes - (m10 * 10)
-    local s10 = math.floor(seconds / 10)
-    local s01 = seconds - (s10 * 10)
-    local broadcast_gametimer = 
-        {
-            timer_minute_10 = m10,
-            timer_minute_01 = m01,
-            timer_second_10 = s10,
-            timer_second_01 = s01,
-        }
-  
-    CustomGameEventManager:Send_ServerToAllClients( "countdown", broadcast_gametimer )
-end

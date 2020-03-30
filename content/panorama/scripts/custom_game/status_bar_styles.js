@@ -1,4 +1,9 @@
 var styles = {};
+styles["Generic"] = {
+    backgroundColor: "#F5E767",
+    textShadow: CreateTextShadow("#F5E767"),
+};
+
 styles["Ultimate"] = {
     backgroundColor: "#F5E767",
     textShadow: CreateTextShadow("#F5E767"),

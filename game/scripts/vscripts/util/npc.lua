@@ -2,6 +2,8 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.bFirstSpawnedPG = true
 
 	self.direction = {}
+	self.on_spawn_ends = {}
+	self.on_basic_attack_impact = {}
 	self.forced_direction = nil
 	self.direction.x = 0
 	self.direction.y = 0
@@ -16,6 +18,69 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.lifes = data.max_lifes
 
 	self.healing_reduction_pct = 0
+
+	self:SetMana(0)
+	self:SetTreshold(GameRules.GameMode.max_treshold)
+	self:AddNewModifier( self,  nil, "modifier_disable_right_click", { } )
+	self:AddNewModifier( self,  nil, "modifier_generic_movement", { } )
+	self:AddNewModifier( self,  nil, "modifier_treshold", { max_treshold = GameRules.GameMode.max_treshold })
+
+	for i = 0, 23 do
+		local ability = self:GetAbilityByIndex(i)
+		if ability then
+			if ability:GetAbilityType() ~= 2 then -- To not level up the talents
+				ability:SetLevel(1)
+			end
+		end
+	end
+end
+
+function CDOTA_BaseNPC:OnSpawnEnds()
+	for _,routine in pairs(self.on_spawn_ends) do
+		routine()
+	end
+end
+
+function CDOTA_BaseNPC:Reset()
+	self:SetMana(0)
+	self:SetHealth(self:GetMaxHealth())
+	self:SetTreshold(GameRules.GameMode.max_treshold)
+
+	for i = 0, 23 do
+		local ability = self:GetAbilityByIndex(i)
+		if ability then
+			ability:EndCooldown()	
+		end
+	end
+
+	for i = 0, 5 do
+		local item = self:GetItemInSlot(i)
+	
+		if item then
+			item:EndCooldown()
+		end
+	end
+
+	self:InterruptCastPoint()
+	self:Purge(true, true, false, true, false)
+	self:RemoveModifierByName("modifier_generic_displacement")
+end
+
+function CDOTA_BaseNPC:OnBasicAttackImpact(hTarget)
+	for _,routine in pairs(self.on_basic_attack_impact) do
+		if routine then
+			routine.method(routine.context, hTarget)
+		end
+	end
+end
+
+function CDOTA_BaseNPC:GetTreshold()
+	return self.treshold
+end
+
+function CDOTA_BaseNPC:SetTreshold(treshold)
+	self.treshold = treshold
+	GameRules.GameMode:UpdateHeroHealthBar( self )
 end
 
 function CDOTA_BaseNPC:InterruptCastPoint()
@@ -47,6 +112,11 @@ end
 
 function CDOTA_BaseNPC:GetAlliance()
 	local playerID = self:GetPlayerOwnerID()
+
+	if playerID == -1 then
+		return false
+	end
+
 	return GameRules.GameMode.players[playerID].alliance
 end
 
@@ -147,6 +217,40 @@ function CDOTA_BaseNPC:AddStatusBar( incoming_data ) --{ label, modifier, priori
 	CustomGameEventManager:Send_ServerToAllClients( "add_status", data )
 end
 
+function CDOTA_BaseNPC:AddCooldownVisual( incoming_data )
+	local data = {
+		heroIndex = self:GetEntityIndex(),
+        teamID = self:GetTeamNumber(),
+		modifierName = incoming_data.modifier:GetName(),
+	}
+	
+	table.insert(self.on_spawn_ends, function()
+		CustomGameEventManager:Send_ServerToAllClients( "add_cooldown", data )
+	end)
+end
+
+function CDOTA_BaseNPC:AddChargesVisual( incoming_data )
+	local data = {
+		heroIndex = self:GetEntityIndex(),
+        teamID = self:GetTeamNumber(),
+		modifierName = incoming_data.modifier:GetName(),
+	}
+	
+	table.insert(self.on_spawn_ends, function()
+		CustomGameEventManager:Send_ServerToAllClients( "add_charges", data )
+	end)
+end
+
+function CDOTA_BaseNPC:AddStacksVisual(incoming_data)
+	local data = {
+		heroIndex = self:GetEntityIndex(),
+        teamID = self:GetTeamNumber(),
+		modifierName = incoming_data.modifier:GetName(),
+	}
+
+	CustomGameEventManager:Send_ServerToAllClients( "add_stacks", data )
+end
+
 function CDOTA_BaseNPC:AddRecastVisual( incoming_data )
 	local data = {
 		heroIndex = self:GetEntityIndex(),
@@ -166,10 +270,6 @@ function CDOTA_BaseNPC:AddRecastVisual( incoming_data )
 	})
 
 	CustomGameEventManager:Send_ServerToAllClients( "add_recast", data )
-end
-
-function CDOTA_BaseNPC:IsAmethyst()
-    return self:Attribute_GetIntValue("middle_orb", 0) == 1 and true or false
 end
 
 function CDOTA_BaseNPC:IsBarrel()
@@ -196,7 +296,17 @@ end
 ]]
 
 function CDOTA_BaseNPC:GiveManaPercent( percentage, source )
-    if source ~= nil and (source:IsAmethyst() or source:IsObstacle()) then
+	local is_amethyst = false
+
+	if source and source.GetParentEntity then
+		local entity = source:GetParentEntity()
+
+		if instanceof(entity, Amethyst) then 
+			is_amethyst = true
+		end
+	end
+
+    if source and (is_amethyst or source:IsObstacle()) then
         return
     end
 

@@ -6,55 +6,18 @@
 		"ScriptFile"					"abilities/heroes/phantom/phantom_extra/phantom_extra"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"phantom_assassin_blur"
+		"AbilityTextureName"			"phantom_ex_basic_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
-
-		
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_rubick.vsndevts"
-		}
+		"AbilityCooldown"				"1.0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.0" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"8" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"fading_slow"			"100" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"slow_duration"			"2.0" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"max_stacks"       		"12" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"movement_speed_pct"	"80" }
-		}
-	}
-
-    "phantom_extra_mobility"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_extra/phantom_extra_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"phantom_extra"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.0"
-		"AbilityCastRange"				"250"
-
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_rubick.vsndevts"
-		}
-        
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"fading_slow"			"100" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"slow_duration"			"2.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"			    "140" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"6" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"25" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"slow_duration"				"1.0" }
 		}
 	}
 }

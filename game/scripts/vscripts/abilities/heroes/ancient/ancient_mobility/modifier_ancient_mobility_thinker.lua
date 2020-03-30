@@ -35,7 +35,7 @@ function modifier_ancient_mobility_thinker:OnIntervalThink()
             caster:AddNewModifier(caster, self:GetAbility(), "modifier_generic_fading_haste", { duration = self.duration })
         else
             if unit:HasModifier("modifier_ancient_special_attack") then 
-                unit:AddNewModifier(caster, self:GetAbility(), "modifier_generic_rooted_lua", { duration = self.duration })
+                unit:AddNewModifier(caster, self:GetAbility(), "modifier_generic_root", { duration = self.duration })
                 unit:RemoveModifierByName("modifier_ancient_special_attack")
             else
                 unit:AddNewModifier(caster, self:GetAbility(), "modifier_generic_fading_slow", { duration = self.duration })

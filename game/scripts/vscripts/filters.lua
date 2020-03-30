@@ -1,6 +1,6 @@
 Filters = Filters or class({})
 
-function Filters:Activate(GameMode, inst)
+function Filters:Activate(GameMode, this)
     function GameMode:GoldFilter(keys)
         local gold = keys.gold
         local playerID = keys.player_id_const
@@ -16,12 +16,16 @@ function Filters:Activate(GameMode, inst)
     function GameMode:HealingFilter(keys)
         local healing_target_index = keys.entindex_target_const
         local healing_target = EntIndexToHScript(healing_target_index)
+        local healing_reduction_pct = 0
+
+        if healing_target.healing_reduction_pct then
+            healing_reduction_pct = healing_target.healing_reduction_pct 
+        end
 
         -- Reduce incoming heal
-        local reduction =  1 - healing_target.healing_reduction_pct/100
+        local reduction =  1 - healing_reduction_pct/100
         if reduction <= 0 then reduction = 0.1 end
         keys.heal = math.floor(keys.heal * reduction)
-        --print(reduction .. " | " .. keys.heal)
 
         local healer_index
         if keys.entindex_healer_const then
@@ -33,7 +37,6 @@ function Filters:Activate(GameMode, inst)
             healing_ability_index = keys.entindex_inflictor_const
         end
 
-        -- Find the source of the heal - the healer
         local healer
         if healer_index then
             healer = EntIndexToHScript(healer_index)
@@ -52,35 +55,31 @@ function Filters:Activate(GameMode, inst)
         
         -- Check if is able to heal
         if healing_target:IsRealHero() then
-            local new_treshold = healing_target.iTreshold + keys.heal
-            if new_treshold > inst.iMaxTreshold then
-                keys.heal = inst.iMaxTreshold - healing_target.iTreshold
-                healing_target.iTreshold = inst.iMaxTreshold
+            local new_treshold = healing_target:GetTreshold() + keys.heal
+            if new_treshold > this.max_treshold then
+                keys.heal = this.max_treshold - healing_target:GetTreshold()
+                healing_target:SetTreshold(this.max_treshold)
             else
-                healing_target.iTreshold = new_treshold
+                healing_target:SetTreshold(new_treshold)
             end
-            --print("[HEAL] " .. healing_target:GetName() .. " = " .. healing_target.iTreshold)
             SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, healing_target, keys.heal, nil )
             
             local treshold_modifier = healing_target:FindModifierByName("modifier_treshold")
             treshold_modifier:SetStackCount(treshold_modifier:GetStackCount() + keys.heal)
 
-            --local health_bar = "(" .. healing_target.iTreshold .. "/" .. self.iMaxTreshold ..")"
-            --healing_target:SetCustomHealthLabel(health_bar, 255, 255, 255)
         end
 
-        
-        Timers:CreateTimer(0.1, function()
-            inst:UpdateHealthBar( healing_target:GetAlliance() )
-            inst:UpdateHeroHealthBar( healing_target )
-        end)
+        if healing_target:GetAlliance() then
+            Timers:CreateTimer(0.1, function()
+                this:UpdateHealthBar( healing_target:GetAlliance() )
+                this:UpdateHeroHealthBar( healing_target )
+            end)
+        end
 
         return true
     end
 
     function GameMode:DamageFilter(keys)
-        --PrintTable(keys)
-
         local attacker
         local victim
         if keys.entindex_attacker_const and keys.entindex_victim_const then
@@ -107,9 +106,9 @@ function Filters:Activate(GameMode, inst)
         end
         
         if victim:IsRealHero() then
-            victim.iTreshold = victim.iTreshold - damage_after_reductions
-            if victim.iTreshold < 0 then
-                victim.iTreshold = 0
+            victim:SetTreshold(victim:GetTreshold() - damage_after_reductions)
+            if victim:GetTreshold() < 0 then
+                victim:SetTreshold(0)
             end
 
             for i = 0, damage_after_reductions - 1 do
@@ -117,15 +116,23 @@ function Filters:Activate(GameMode, inst)
             end
             victim:AddNewModifier(victim, nil, "modifier_damage_fx", { duration = 0.1 })
             
-            Timers:CreateTimer(0.1, function()
-                inst:UpdateHealthBar( victim:GetAlliance() )
-                inst:UpdateHeroHealthBar( victim )
-            end)
+            if victim:GetAlliance() then
+                Timers:CreateTimer(0.1, function()
+                    this:UpdateHealthBar( victim:GetAlliance() )
+                    this:UpdateHeroHealthBar( victim )
+                end)
+            end
+    
+        end
+        
+        if victim.GetParentEntity then
+            local entity = victim:GetParentEntity()
 
-        elseif victim:IsAmethyst() then
-            Timers:CreateTimer(0.1, function()
-                inst:UpdateUnitHealthBar( victim )
-            end)
+            if instanceof(entity, UnitEntity) then 
+                Timers:CreateTimer(0.1, function()
+                    this:UpdateUnitHealthBar( victim )
+                end)
+            end
         end
         return true
     end

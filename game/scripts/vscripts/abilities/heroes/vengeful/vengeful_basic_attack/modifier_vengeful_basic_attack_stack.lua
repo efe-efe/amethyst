@@ -26,7 +26,7 @@ function modifier_vengeful_basic_attack_stack:OnCreated( kv )
 		self.attack_speed_bonus = 0.2 + self:GetParent():GetAttackAnimationPoint()--self:GetAbility():GetSpecialValueFor("attack_speed_bonus")
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
-		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 1)
+		self:GetParent():AddStacksVisual({ modifier = self })
 	end
 end
 
@@ -40,7 +40,7 @@ function modifier_vengeful_basic_attack_stack:OnRefresh( kv )
 			self.effects_cast_weapon = {}
 			self:IncrementStackCount()
 
-			GameRules.GameMode:UpdateHeroStacks(self:GetParent(), self:GetStackCount())
+			
 
 			if self:GetStackCount() == max_stack then
 				self:PlayEffectsCharged()
@@ -53,7 +53,7 @@ end
 function modifier_vengeful_basic_attack_stack:OnDestroy( kv )
 	if IsServer() then
 		self:StopEffects()
-		GameRules.GameMode:UpdateHeroStacks(self:GetParent(), 0)
+		
 	end
 end
 

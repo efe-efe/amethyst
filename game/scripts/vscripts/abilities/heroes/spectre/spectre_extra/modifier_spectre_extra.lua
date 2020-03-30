@@ -1,84 +1,118 @@
 modifier_spectre_extra = class({})
 
---------------------------------------------------------------------------------
+--- Misc 
+function modifier_spectre_extra:IsHidden()
+    return false
+end
+
 function modifier_spectre_extra:IsDebuff()
 	return false
 end
 
-function modifier_spectre_extra:IsHidden()
-	return true
+function modifier_spectre_extra:IsPurgable()
+    return false
 end
 
-function modifier_spectre_extra:IsPurgable()
-	return false
-end
+
 --------------------------------------------------------------------------------
 -- Initializations
 function modifier_spectre_extra:OnCreated( kv )
-	self.slow_duration = self:GetAbility():GetSpecialValueFor( "slow_duration" )
-		
+    self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
+
     if IsServer() then
-		self:PlayEffects()
-		self:GetParent():AddNoDraw()
-	end
-end
+        self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
+        local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
+        self.radius = 250
+        self.damage_done = 0
 
-function modifier_spectre_extra:OnDestroy( kv )
-	if IsServer() then
-		self:GetParent():RemoveNoDraw()
+        self:PlayEffectsOnCreated()
+        self:StartIntervalThink( think_interval )
 
-		self:GetParent():AddNewModifier(
-			self:GetParent(), -- player source
-			self:GetAbility(), -- ability source
-			"modifier_generic_fading_slow", -- modifier name
-			{ duration = self.slow_duration } -- kv
-		)
-
-		self:PlayEffectsOnDestroy()
-		self:StopEffects()
-	end
+        self:GetParent():AddStatusBar({
+			label = "Darkness", modifier = self, priority = 3, stylename="Darkness"
+		})
+    end
 end
 
 --------------------------------------------------------------------------------
--- Status Effects
-function modifier_spectre_extra:CheckState()
-	local state = {
-		[MODIFIER_STATE_INVULNERABLE] = true,
-		[MODIFIER_STATE_OUT_OF_GAME] = true,
-		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
-		[MODIFIER_STATE_COMMAND_RESTRICTED] = true,
-	}
-
-	return state
+-- Destroyer
+function modifier_spectre_extra:OnDestroy( kv )
+    if IsServer() then
+        self:GetParent():Heal( self.damage_done, self:GetParent() )
+        
+        self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
+        
+        self:StopEffects()
+    end
 end
 
-function modifier_spectre_extra:PlayEffects()
-	-- Get Resources
-	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner.vpcf"
+--------------------------------------------------------------------------------
+-- Interval Effects
+function modifier_spectre_extra:OnIntervalThink()
+    local enemies = self:GetCaster():FindUnitsInRadius( 
+        self:GetParent():GetOrigin(), 
+        self.radius, 
+        DOTA_UNIT_TARGET_TEAM_ENEMY, 
+        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+        DOTA_UNIT_TARGET_FLAG_NONE,
+        FIND_ANY_ORDER
+    )
 
-	-- Create Particle
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, self:GetParent() )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
+    for _,enemy in pairs(enemies) do
+        local damage = {
+            victim = enemy,
+            attacker = self:GetParent(),
+            damage = self.damage_per_second,
+            damage_type = DAMAGE_TYPE_PURE,
+        }
+        self.damage_done = self.damage_done + self.damage_per_second
+        self:PlayEffectsOnTarget(enemy)
+        ApplyDamage( damage )
+    end
+end
 
-	local effect_cast = ParticleManager:CreateParticle( "particles/units/heroes/hero_spectre/spectre_death.vpcf", PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+--------------------------------------------------------------------------------
+-- Modifier Effects
+function modifier_spectre_extra:DeclareFunctions()
+	local funcs = {
+		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
+	}
+
+	return funcs
+end
+
+function modifier_spectre_extra:GetModifierMoveSpeedBonus_Percentage()
+    return self.speed_buff_pct
+end
+
+--------------------------------------------------------------------------------
+-- Graphics & Animations
+function modifier_spectre_extra:PlayEffectsOnCreated( )
+    local parent = self:GetParent()
+    EmitSoundOn("Hero_Spectre.Haunt", parent)
+
+	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_blade_fury_abyssal.vpcf"
+	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, parent )
+    ParticleManager:SetParticleControl( self.effect_cast, 2, parent:GetOrigin() )
+    
+    
+    local particle_cast = "particles/econ/items/silencer/silencer_ti6/silencer_last_word_status_ti6_ring_mist.vpcf"
+	self.effect_cast_ring = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, parent )
+    ParticleManager:SetParticleControl( self.effect_cast_ring, 3, parent:GetOrigin() )
 end
 
 function modifier_spectre_extra:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    if self.effect_cast ~= nil then
+        ParticleManager:DestroyParticle( self.effect_cast, false )
+        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    end
+    if self.effect_cast_ring ~= nil then
+        ParticleManager:DestroyParticle( self.effect_cast_ring, false )
+        ParticleManager:ReleaseParticleIndex( self.effect_cast_ring )
+    end
 end
 
-function modifier_spectre_extra:PlayEffectsOnDestroy()
-	EmitSoundOn( "Hero_Spectre.Reality", self:GetParent() )
-    local particle_cast = "particles/econ/items/outworld_devourer/od_shards_exile_gold/od_shards_exile_prison_end_gold.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( 
-            particle_cast, 
-            PATTACH_WORLDORIGIN, 
-            nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+-- Graphics & Animations
+function modifier_spectre_extra:PlayEffectsOnTarget( hTarget )
+    EmitSoundOn("Hero_Spectre.Desolate", hTarget)
 end

@@ -67,7 +67,7 @@ function modifier_ancient_ex_mobility_thinker:OnIntervalThink()
                 unit:AddNewModifier(caster, self:GetAbility() , "modifier_generic_stunned", { duration = self.stun_duration })
             end
             --if unit:HasModifier("modifier_ancient_special_attack") then 
-                --unit:AddNewModifier(caster, self:GetAbility(), "modifier_generic_rooted_lua", { duration = self.duration })
+                --unit:AddNewModifier(caster, self:GetAbility(), "modifier_generic_root", { duration = self.duration })
                 --unit:RemoveModifierByName("modifier_ancient_special_attack")
             --else
                 local damage_table = {

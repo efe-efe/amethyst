@@ -80,4 +80,23 @@ function Initialize(){
     GameEvents.Subscribe( "add_player", AddPlayer );
     GameEvents.Subscribe( "update_hero_health_bar", UpdateHealthBar );
     GameEvents.Subscribe( "update_hero_mana_bar", UpdateManaBar );
+
+    var shopButton = $.GetContextPanel()
+        .GetParent()
+        .GetParent() // HUD root
+        .GetParent() // Custom UI root
+        .GetParent() // Game HUD
+        .FindChildTraverse('ShopButton')
+    
+    $.RegisterEventHandler('DOTAHUDToggleShop', shopButton, function () {
+        var pannel = $.GetContextPanel().FindChildrenWithClassTraverse("MainPanel")[0];
+
+        if(!Game.IsShopOpen()){
+            pannel.style.transitionDuration = "0.0s";
+            pannel.style.width = "67.5%;";
+        }else{
+            pannel.style.transitionDuration = "0.2s";
+            pannel.style.width = "100%;";
+        }
+    })
 })();

@@ -40,17 +40,7 @@ function modifier_ex_pudge_counter:OnIntervalThink()
     )
 
     for _,enemy in pairs(enemies) do
-        if enemy:IsAmethyst() then
-            local damage_table = {
-                victim = enemy,
-                attacker = self.caster,
-                damage_type = DAMAGE_TYPE_PURE,
-                damage = self.damage_per_tick
-            }
-            ApplyDamage( damage_table )
-        else 
-            enemy:AddNewModifier(self.caster, self.ability, "modifier_ex_pudge_counter_debuff", { duration = self.interval } )
-        end
+        enemy:AddNewModifier(self.caster, self.ability, "modifier_ex_pudge_counter_debuff", { duration = self.interval } )
     end
 
     local current_health = self.caster:GetHealth()

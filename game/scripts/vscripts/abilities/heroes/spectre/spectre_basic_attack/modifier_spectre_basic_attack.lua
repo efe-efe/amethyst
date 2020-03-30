@@ -30,7 +30,7 @@ function modifier_spectre_basic_attack:OnCreated( kv )
     if IsServer() then
 	    self.attack_speed_bonus = 0.2 + self:GetCaster():GetAttackAnimationPoint()--self:GetAbility():GetSpecialValueFor("attack_speed_bonus")
 
-        GameRules.GameMode:InitializeCooldown( self:GetParent(), self:GetName() )
+        self:GetParent():AddCooldownVisual({ modifier = self })
 		self:SetStackCount( self.max_charges )
 		self:CalculateCharge()
     end

@@ -45,13 +45,17 @@ function weaver_basic_attack:OnCastPointEnd()
 				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
 			
-			local damage = {
+			local damage_table = {
 				victim = unit,
 				attacker = _self.Source,
 				damage = attack_damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage )
+			ApplyDamage( damage_table )
+
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos, charged)

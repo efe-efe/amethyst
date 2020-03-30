@@ -7,6 +7,10 @@ function sniper_basic_attack:GetIntrinsicModifierName()
 	return "modifier_sniper_basic_attack_charges"
 end
 
+function sniper_basic_attack:HasCharges()
+	return true
+end
+
 function sniper_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
@@ -14,7 +18,6 @@ function sniper_basic_attack:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local modifier = caster:FindModifierByName("modifier_sniper_basic_attack_charges")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	-- Projectile
@@ -42,15 +45,16 @@ function sniper_basic_attack:OnCastPointEnd()
 				false, -- bool bFakeAttack
 				true -- bool bNeverMiss
 			)
+			
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}
 
-	modifier:DecrementStackCount()
-	modifier:CalculateCharge()
-	
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end

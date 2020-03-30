@@ -1,0 +1,26 @@
+"DOTAAbilities"
+{
+    "item_moon_custom"	
+	{	
+		"ID"							"2009"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_moon_shard"	
+        "ScriptFile"                    "items/item_moon_custom/item_moon_custom.lua"
+
+		"ItemCost"						"1"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemStockMax"					"1"
+
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"15.0"	
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"aspd"						"90" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
+		}
+    }	
+}	

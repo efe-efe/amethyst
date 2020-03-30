@@ -4,11 +4,15 @@ require('util/health')
 require('util/abilities')
 require('util/npc')
 
+require('clases/unit_entity')
+require('clases/game_state')
+require('clases/dummy_target')
 require('clases/pickup')
 require('clases/amethyst')
 require('clases/round')
 require('clases/alliance')
 require('clases/player')
+require('clases/warmup')
 
 require('libraries/timers') 
 require('libraries/projectiles') 
@@ -88,11 +92,12 @@ function GameMode:SetupRules()
     GameRules:SetPreGameTime( 0.0 )
     GameRules:SetGoldPerTick( 0 )
     GameRules:SetGoldTickTime( 0 )
-    GameRules:SetStartingGold( 0 )
+    GameRules:SetStartingGold( 2 )
     GameRules:SetCustomGameSetupAutoLaunchDelay( 10 )
     GameRules:SetStrategyTime( 0.0 )
     GameRules:SetShowcaseTime( 0.0 )
     GameRules:SetUseBaseGoldBountyOnHeroes(false)
+    GameRules:GetGameModeEntity():SetFixedRespawnTime( -1 ) 
 
     if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
@@ -151,7 +156,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_provides_vision", "abilities/generic/modifier_generic_provides_vision", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_knockback", "abilities/generic/modifier_generic_knockback", LUA_MODIFIER_MOTION_BOTH )
-    LinkLuaModifier("modifier_generic_rooted_lua", "abilities/generic/modifier_generic_rooted_lua", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_invencible", "abilities/generic/modifier_generic_invencible", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_displacement", "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH )
     LinkLuaModifier("modifier_generic_confused", "abilities/generic/modifier_generic_confused", LUA_MODIFIER_MOTION_NONE )
@@ -196,6 +201,28 @@ function GameMode:SetupPanoramaEventHooks()
             not caster:IsStunned()
         then
             caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
+        end
+    end)
+
+    CustomGameEventManager:RegisterListener('use_item', function(eventSourceIndex, args)
+        local caster = EntIndexToHScript(args.entityIndex)
+        local slot = args.itemSlot
+        local item = caster:GetItemInSlot(slot)
+
+        if item then
+            if  item:IsCooldownReady() and
+                item:IsActivated() and
+                item:IsOwnersManaEnough() and
+                not item:HasBehavior(DOTA_ABILITY_BEHAVIOR_PASSIVE) and
+                not item:IsInAbilityPhase() and
+                not caster:IsSilenced() and
+                not caster:HasFear() and
+                not caster:IsCommandRestricted() and
+                not caster:IsNightmared() and
+                not caster:IsStunned()
+            then
+                caster:CastAbilityImmediately(item, caster:GetEntityIndex())
+            end
         end
     end)
 
@@ -340,24 +367,36 @@ function GameMode:SetupMode()
     mode:SetBuybackEnabled( false )
     mode:SetDaynightCycleDisabled( true )
     mode:SetCameraDistanceOverride( 1350 )
+    mode:SetRecommendedItemsDisabled(true) -- Doesn't works :'(
 end
 
 function GameMode:Start()
     self.mouse_positions = {}
 
     self.state = STATE_NONE
-    self.iMaxTreshold = 30
+    self.max_treshold = 30
 
     self.alliances[DOTA_ALLIANCE_RADIANT] = Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS })
     self.alliances[DOTA_ALLIANCE_DIRE] = Alliance(DOTA_ALLIANCE_DIRE, { DOTA_TEAM_CUSTOM_1, DOTA_TEAM_CUSTOM_2 })
     self.alliances[DOTA_ALLIANCE_LEGION] = Alliance(DOTA_ALLIANCE_LEGION, { DOTA_TEAM_CUSTOM_3, DOTA_TEAM_CUSTOM_4 })
     self.alliances[DOTA_ALLIANCE_VOID] = Alliance(DOTA_ALLIANCE_VOID, { DOTA_TEAM_CUSTOM_5, DOTA_TEAM_CUSTOM_6 })
 
-    self:SetState(STATE_ROUND_IN_PROGRESS)
+    self.walls_ents = Entities:FindAllByName("wall_spawn")
+    self.walls = {} -- Created walls on the map
+    self:CreateWalls()
+
+    self:SetState(STATE_WARMUP)
+
+    self.warmup = Warmup(
+        self.players,
+        function(context) -- sent automatically if using self:Method() notation
+            self:OnWarmupEnd(context)
+        end
+    )
 
     self.round = Round(
         self.players,
-        function(context) 
+        function(context) -- sent automatically if using self:Method() notation
             self:OnRoundEnd(context)
         end
     )
@@ -370,26 +409,15 @@ function GameMode:Start()
         end
     end)
 
-    self.walls_ents = Entities:FindAllByName("wall_spawn")
-    self.walls = {} -- Created walls on the map
-    self:CreateWalls()
-    GameRules:GetGameModeEntity():SetFixedRespawnTime( -1 ) 
+    self:RegisterThinker(0.1, function()
+        if self.state == STATE_WARMUP and self.warmup then
+            self.warmup:Update()
+        end
+    end)
 
-    if GetMapName() == "free_for_all" then
-        nCOUNTDOWNTIMER = 99999
-        self.WIN_CONDITION = {
-            type = "AMETHYSTS",
-            number = 5,
-            difference = 3,
-        }
-
-        self.MAX_RESPAWN_TIME = 15.0 
-        self.RESPAWN_TIME_PER_DEATH = 3.0
-        self.BASE_RESPAWN_TIME = 9.0
-        self.MAX_LIFES = 3
-
-        GameRules:GetGameModeEntity():SetFixedRespawnTime( self.BASE_RESPAWN_TIME ) 
-    end
+    self:RegisterThinker(0.01, function()
+        CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
+    end)
 end
 
 function GameMode:RegisterThinker(period, callback)
@@ -456,13 +484,16 @@ function GameMode:OnGameRulesStateChange(keys)
     end
 end
 
+function GameMode:OnWarmupEnd(context)
+    local warmup = context
+    
+    self.warmup = nil
+    self:SetState(STATE_ROUND_IN_PROGRESS)
+    CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "Round Start!" } )
+end
+
 function GameMode:OnRoundEnd(context)
     local round = context
-
-    for _,player in pairs(self.players) do
-        player.hero:Kill(nil, player.hero)	
-        player.hero:RespawnHero(false, false)
-    end
 
     round:DestroyAllPickups() -- Remove death orbs
 
@@ -478,26 +509,27 @@ function GameMode:OnRoundEnd(context)
 
         if  round.winner.wins >= ROUNDS_TO_WIN or self:GetHighestWinsDifference(round.winner) >= ROUNDS_DIFFERENCE_TO_WIN then
             self:EndGame(round.winner.teams[1]) 
-        else
-            self.round = nil
-            self.round = Round(
-                self.players,
-                function(context) 
-                    self:OnRoundEnd(context)
-                end
-            )
+            return
         end
     else
         CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "DRAW!" } )
-
-        self.round = nil
-        self.round = Round(
-            self.players,
-            function(context) 
-                self:OnRoundEnd(context)
-            end
-        )
     end
+
+    self.round = nil
+
+    self:SetState(STATE_WARMUP)
+    self.warmup = Warmup(
+        self.players,
+        function(context) 
+            self:OnWarmupEnd(context)
+        end
+    )
+    self.round = Round(
+        self.players,
+        function(context) 
+            self:OnRoundEnd(context)
+        end
+    )
 end
 
 function GameMode:OnGameInProgress()
@@ -528,24 +560,8 @@ function GameMode:OnHeroInGame(keys)
         -- First time spawning
         -------------------------------
         if npc.bFirstSpawnedPG == nil then
-            
             npc:Initialize({ max_lifes = self.MAX_LIFES })
-            self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)
-
-            -- Basic modifiers
-            npc:AddNewModifier( npc,  nil, "modifier_disable_right_click", { } )
-            npc:AddNewModifier( npc,  nil, "modifier_generic_movement", { } )
-            npc:AddNewModifier( npc,  nil, "modifier_treshold", { max_treshold = self.iMaxTreshold })
-            
-            -- Level up 1 point to all spells
-            for i = 0, 23 do
-                local ability = npc:GetAbilityByIndex(i)
-                if ability then
-                    if ability:GetAbilityType() ~= 2 then -- To not level up the talents
-                        ability:SetLevel(1)
-                    end
-                end
-            end
+            --self.mouse_positions[npc:GetPlayerID()] = Vector(0,0,0)
 
             if not self:RegisterPlayer(npc) then
                 return false
@@ -558,24 +574,17 @@ function GameMode:OnHeroInGame(keys)
                 heroName = npc:GetName()
             }
             CustomGameEventManager:Send_ServerToAllClients( "add_player", data )
+            npc:OnSpawnEnds()
         end
     
         -------------------------------
         -- Always
         -------------------------------
         SafeDestroyModifier("modifier_generic_provides_vision", npc, nil)
-        npc:SetMana(0)
-        npc:FindModifierByName("modifier_treshold"):SetStackCount(self.iMaxTreshold)
+        --npc:SetMana(0)
+        npc:FindModifierByName("modifier_treshold"):SetStackCount(self.max_treshold) -- TODO: Determine if delete or not
         
-        if npc:FindAbilityByName("mount") then
-            npc:AddNewModifier(npc, npc:FindAbilityByName("mount"), "modifier_mount", {})
-        else
-            print("ERROR: UNIT DOESN'T HAS 'MOUNT' SPELL")
-        end
-
         PlayerResource:SetCameraTarget(playerID, nil)
-        npc:SetHealth(npc:GetMaxHealth())
-        npc.iTreshold = self.iMaxTreshold
         self:UpdateHeroHealthBar( npc )
         self:UpdateHeroManaBar( npc )
     end)
@@ -589,6 +598,9 @@ function GameMode:OnEntityKilled( keys )
 
         if instanceof(entity, Amethyst) then     
             entity:OnDeath({ killer = EntIndexToHScript( keys.entindex_attacker ) })
+        end
+        if instanceof(entity, DummyTarget) then     
+            entity:OnDeath()
         end
     else
         if killed:IsRealHero() then
@@ -654,8 +666,18 @@ function GameMode:OnEntityHurt(keys)
         local damagingAbility = nil
 
         if keys.entindex_inflictor ~= nil then
-        damagingAbility = EntIndexToHScript( keys.entindex_inflictor )
+            damagingAbility = EntIndexToHScript( keys.entindex_inflictor )
         end
+
+        local word_length = string.len(tostring(math.floor(keys.damage)))
+
+        local color =  Vector(250, 70, 70)
+        local effect_cast = ParticleManager:CreateParticle("particles/msg_damage.vpcf", PATTACH_WORLDORIGIN, nil)
+        ParticleManager:SetParticleControl( effect_cast, 0, entVictim:GetOrigin() )
+        ParticleManager:SetParticleControl( effect_cast, 1, Vector(0, keys.damage, 0) )
+        ParticleManager:SetParticleControl( effect_cast, 2, Vector(math.max(1, keys.damage / 10), word_length, 0) )
+        ParticleManager:SetParticleControl( effect_cast, 3, color )
+        ParticleManager:ReleaseParticleIndex( effect_cast )
     end
 end
 
@@ -726,7 +748,7 @@ function GameMode:UpdateCameras()
 end
 
 function GameMode:CreateWalls()
-    print("[AMETHYST] Creating Walls")
+    print("[AMETHYST] Creating walls")
     for _,wall_ent in pairs(self.walls_ents) do
         self:CreateWall(wall_ent)
     end
@@ -774,15 +796,6 @@ function GameMode:EndGame( victoryTeam )
 	GameRules:SetGameWinner( victoryTeam )
 end
 
-function GameMode:InitializeHeroCharges( hero, charges )
-    local data = {
-        teamID = hero:GetTeamNumber(),
-        heroIndex = hero:GetEntityIndex(),
-        charges = charges
-    }
-    CustomGameEventManager:Send_ServerToAllClients( "initialize_hero_charges", data )
-end
-
 function GameMode:UpdateHealthBar( alliance )
     local health_pct = 100 * alliance:GetCurrentHealth()/alliance:GetMaxHealth()
 
@@ -794,7 +807,7 @@ function GameMode:UpdateHealthBar( alliance )
 end
 
 function GameMode:UpdateHeroHealthBar( hero )
-    local potential_health = hero:GetHealth() + (self.iMaxTreshold - hero.iTreshold)
+    local potential_health = hero:GetHealth() + (self.max_treshold - hero:GetTreshold())
     local shield_modifier = hero:FindModifierByName("modifier_shield")
     local shield = 0
 

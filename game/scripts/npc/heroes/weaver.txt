@@ -16,8 +16,8 @@
 		"Ability5"						"sniper_special_attack"
 		"Ability6"						"sniper_extra"
 		"Ability7"						"weaver_ultimate"
-		"Ability8"						"sniper_ex_second_attack"
-		"Ability9"						"sniper_ex_mobility"	
+		//"Ability8"						"sniper_ex_second_attack"
+		//"Ability8"						"sniper_ex_mobility"	
 		"Ability10"						"mount"							
 		"Ability11"						"charge"
 		"Ability12"						"sniper_ultimate_projectile"
@@ -36,7 +36,7 @@
 		//-------------------------------------------------------------------------------------------------------------
 		"AttackDamageMin"			"8"										// Damage range min.
 		"AttackDamageMax"			"8"										// Damage range max.	
-		"AttackRate"				"0.0"									// Speed of attack.	
+		"AttackRate"				"1.2"									// Speed of attack.	
 		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
 		

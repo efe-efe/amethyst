@@ -16,16 +16,20 @@
         "02"{ "Key" "SPACE"     "Command"   "+SpaceKey" }
         "03"{ "Key" "1"         "Command"   "+1Key" }
         "04"{ "Key" "2"         "Command"   "+2Key" }
-        "05"{ "Key" "Q"         "Command"   "+QKey" }
-        "06"{ "Key" "E"         "Command"   "+EKey" }
-        "07"{ "Key" "F"         "Command"   "+FKey" }
-        "08"{ "Key" "R"         "Command"   "+RKey" }
-        "09"{ "Key" "C"         "Command"   "+CKey" }
-        "10"{ "Key" "Z"         "Command"   "+ZKey" }
+        "05"{ "Key" "3"         "Command"   "+3Key" }
+        "06"{ "Key" "4"         "Command"   "+4Key" }
+        "07"{ "Key" "5"         "Command"   "+5Key" }
+        "08"{ "Key" "6"         "Command"   "+6Key" }
+        "09"{ "Key" "Q"         "Command"   "+QKey" }
+        "10"{ "Key" "E"         "Command"   "+EKey" }
+        "11"{ "Key" "F"         "Command"   "+FKey" }
+        "12"{ "Key" "R"         "Command"   "+RKey" }
+        "13"{ "Key" "C"         "Command"   "+CKey" }
+        "14"{ "Key" "Z"         "Command"   "+ZKey" }
 
-        "11"{ "Key" "W"         "Command"   "+WKey" }
-        "12"{ "Key" "A"         "Command"   "+AKey" }
-        "13"{ "Key" "S"         "Command"   "+SKey" }
-        "14"{ "Key" "D"         "Command"   "+DKey" }
+        "15"{ "Key" "W"         "Command"   "+WKey" }
+        "16"{ "Key" "A"         "Command"   "+AKey" }
+        "17"{ "Key" "S"         "Command"   "+SKey" }
+        "18"{ "Key" "D"         "Command"   "+DKey" }
     }
 }

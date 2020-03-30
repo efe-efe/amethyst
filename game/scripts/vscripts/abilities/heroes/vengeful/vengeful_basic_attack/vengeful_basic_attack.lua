@@ -70,6 +70,10 @@ function vengeful_basic_attack:OnCastPointEnd()
 					ability = self
 				}
 				ApplyDamage( damage )
+
+				if _self.Source.OnBasicAttackImpact then
+					_self.Source:OnBasicAttackImpact(unit)
+				end
 			end
 		end,
 		OnFinish = function(_self, pos)

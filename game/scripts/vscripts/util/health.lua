@@ -1,11 +1,11 @@
 function PseudoHeal(base, heal, unit)
     unit:SetHealth(base + heal)
 
-    local new_treshold = unit.iTreshold + heal
-    if new_treshold > GameRules.GameMode.iMaxTreshold then
-        unit.iTreshold = GameRules.GameMode.iMaxTreshold
+    local new_treshold = unit:GetTreshold() + heal
+    if new_treshold > GameRules.GameMode.max_treshold then
+        unit:SetTreshold(GameRules.GameMode.max_treshold)
     else
-        unit.iTreshold = new_treshold
+        unit:SetTreshold(new_treshold)
     end
 
     for i = 0, heal - 1 do
@@ -13,5 +13,4 @@ function PseudoHeal(base, heal, unit)
     end
 
     SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, unit, heal, nil )
-    GameRules.GameMode:UpdateHeroHealthBar(unit)
 end

@@ -63,6 +63,10 @@ function phantom_basic_attack:OnCastPointEnd()
 			end
 
 			self:PlayEffectsOnImpact(unit)
+
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

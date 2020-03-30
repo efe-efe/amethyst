@@ -1,47 +1,18 @@
-Amethyst = Amethyst or class({})
+Amethyst = Amethyst or class({}, nil, UnitEntity)
 
 function Amethyst:constructor(origin)
-    self.origin = origin
+    getbase(Amethyst).constructor(self, origin, "npc_dota_creature_amethyst")
+    
     self.mana_bounty = 40
     self.heal_bounty = 20
-    self.destroyed = false
-
-    self:SetUnit(CreateUnitByName(
-        "npc_dota_creature_amethyst", --szUnitName
-        self.origin, --vLocation
-        true, --bFindClearSpace
-        nil, --hNPCOwner
-        nil, --hUnitOwner
-        DOTA_TEAM_NOTEAM
-    ))
 
     local unit = self:GetUnit()
-    unit:SetAbsOrigin(Vector(self.origin.x, self.origin.y, self.origin.z))
+    local data = { unitIndex = unit:GetEntityIndex() }
+
     unit:AddNewModifier(unit, nil, "modifier_generic_magic_immune", {})
-    local data = { unitIndex = self:GetUnit():GetEntityIndex() }
+
     CustomGameEventManager:Send_ServerToAllClients( "add_unit", data )    
     self:PlayEffectsOnSpawn()
-end
-
-function Amethyst:SetUnit(unit)
-	self.unit = unit
-
-    self.unit.GetParentEntity = function(unit)
-        return self
-    end
-end
-
-function Amethyst:GetUnit()
-    return self.unit
-end
-
-function Amethyst:Alive()
-    return not self.destroyed
-end
-
-function Amethyst:Destroy()
-    self.destroyed = true
-    UTIL_Remove(self:GetUnit())
 end
 
 function Amethyst:OnDeath(params)
@@ -70,7 +41,7 @@ function Amethyst:OnDeath(params)
 			end
 		end
 
-        self:PlayEffectsOnDeath(self:GetUnit())
+        self:PlayEffectsOnDeath()
         self:GetUnit():AddNoDraw()
 
         killer:GetAlliance().amethysts = killer:GetAlliance().amethysts + 1
@@ -82,7 +53,7 @@ function Amethyst:OnDeath(params)
     }
     CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
 
-    self.destroyed = true
+    self:Destroy()
 end
 
 function Amethyst:PlayEffectsOnSpawn()

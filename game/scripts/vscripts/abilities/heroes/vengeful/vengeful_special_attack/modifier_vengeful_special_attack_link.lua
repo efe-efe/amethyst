@@ -36,7 +36,7 @@ function modifier_vengeful_special_attack_link:OnDestroy()
             ApplyDamage( damage_table )
             self:PlayEffectsOnDestroy(self:GetParent())
 			self:GetParent():AddNewModifier(self:GetCaster(), self.ability , "modifier_generic_stunned", { duration = 0.1 })
-            self:GetParent():AddNewModifier(self:GetCaster(), self.ability , "modifier_generic_rooted_lua", { duration = self.root_duration })
+            self:GetParent():AddNewModifier(self:GetCaster(), self.ability , "modifier_generic_root", { duration = self.root_duration })
         end
     end
 end

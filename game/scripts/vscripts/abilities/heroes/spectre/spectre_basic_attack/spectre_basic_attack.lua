@@ -99,6 +99,10 @@ function spectre_basic_attack:OnCastPointEnd()
 				ApplyDamage( damage )
 			end
 			self:PlayEffectsOnImpact(unit, _self.current_position, charged)
+
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos, charged)

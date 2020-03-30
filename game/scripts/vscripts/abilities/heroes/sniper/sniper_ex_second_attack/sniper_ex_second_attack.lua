@@ -42,7 +42,7 @@ function sniper_ex_second_attack:OnCastPointEnd( pos )
 
 			ApplyDamage( damage )
 			-- Stun
-			unit:AddNewModifier(_self.Source, self , "modifier_generic_rooted_lua", { duration = root_duration })
+			unit:AddNewModifier(_self.Source, self , "modifier_generic_root", { duration = root_duration })
 	
 			self:PlayEffectsOnImpact(unit)
 		end,

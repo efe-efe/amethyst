@@ -94,12 +94,6 @@
 		}
 	}
 
-//consumable orbs idea
-//particles/econ/items/effigies/status_fx_effigies/ambientfx_effigy_wm16_lvl1_marker_mdl.vpcf
-
-//On damage recived idea
-//particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf
-//particles/status_fx/status_effect_shadow_shaman_ethershock.vpcf
 	//=================================================================================	
 	// Orb: Middle Orb timer
 	//=================================================================================
@@ -440,5 +434,51 @@
 			"BountyGain"				"0"
 			"XPGain"					"0"
 		}
+	}
+
+	"npc_dota_creature_dummy_target"
+	{
+		// General
+		//----------------------------------------------------------------
+		"Model"						"models/props_gameplay/dummy/dummy.vmdl"	// Model.
+		"BaseClass"					"npc_dota_creature"
+		"SoundSet"					"n_creep_Ranged"
+		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
+		"Level"						"1"
+		"ModelScale" 				"4"
+
+		// Abilities
+		//----------------------------------------------------------------
+		"Ability1"					""			// Ability 1
+		"Ability2"					""			// Ability 2
+		"Ability3"					""			// Ability 3
+		"Ability4"					""			// Ability 4
+
+		// Armor
+		//----------------------------------------------------------------
+		"ArmorPhysical"				"0"			// Physical protection.
+
+		// Attack
+		//----------------------------------------------------------------
+		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
+		"AutoAttacksByDefault"		"0"
+		"AttackAcquisitionRange"	"0"		// Range within a target can be acquired.
+		"AttackRange"				"0"		// Range within a target can be attacked.
+
+		// Bounds
+		//----------------------------------------------------------------
+		"RingRadius"				"300"
+
+		// Movement
+		//----------------------------------------------------------------
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"0"		// Speed.			
+
+		// Status
+		//----------------------------------------------------------------
+		"StatusHealth"				"70"		// Base health.
+		"StatusHealthRegen"			"0.0"		// Health regeneration rate.
+		"StatusMana"				"0"			// Base mana.
+		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
 	}
 }

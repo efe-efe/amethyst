@@ -6,9 +6,9 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 	local attack_damage = caster:GetAttackDamage()
-	
+
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
-	local stun_duration = caster:FindAbilityByName("juggernaut_ex_second_attack"):GetSpecialValueFor("stun_duration")
+	local stun_duration = 0.0--caster:FindAbilityByName("juggernaut_ex_second_attack"):GetSpecialValueFor("stun_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local perform_special = caster:HasModifier("modifier_juggernaut_ex_second_attack") and true or false
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -30,9 +30,9 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 		OnUnitHit = function(_self, unit)
 			if perform_special == true then
 				unit:AddNewModifier(_self.Source, self , "modifier_generic_stunned", { duration = stun_duration })
-				self:PlayEffectsBash(unit)
+				self:PlayEffectsOnImpactBash(unit)
 			else
-				self:PlayEffects_b(unit)
+				self:PlayEffectsOnImpact(unit)
 			end
 
 			local damage_table = {
@@ -67,34 +67,23 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 				end
 			end
 
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			if next(_self.rehit) == nil then
-				self:PlayEffects_c(pos)
+				self:PlayEffectsOnMiss(pos)
 			end
-			self:PlayEffects_a(pos)
 			self:PlayEffectsOnFinish( pos )
 		end,
 	}
-	-- Cast projectile
+
 	Projectiles:CreateProjectile(projectile)
 end
 
 --------------------------------------------------------------------------------
--- Misc
--- Add mana on attack modifier. Only first time upgraded
-function juggernaut_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
-end
-
---------------------------------------------------------------------------------
 -- Graphics & sounds
-
--- On Projectile Finish
 function juggernaut_basic_attack:PlayEffectsOnFinish( pos )
 	local caster = self:GetCaster()
 	local offset = 40
@@ -108,37 +97,26 @@ function juggernaut_basic_attack:PlayEffectsOnFinish( pos )
 	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
 	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
 	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+	particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_ti8_sword_crit_golden.vpcf"
+	effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
-
-function juggernaut_basic_attack:PlayEffects_a( pos )
-	local caster = self:GetCaster()
-	-- Create Particles
-	local particle_cast_a = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_ti8_sword_crit_golden.vpcf"
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_POINT, caster )
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
+function juggernaut_basic_attack:PlayEffectsOnImpact( hTarget )
+	EmitSoundOn( "Hero_Juggernaut.Attack", hTarget )
 end
 
--- On Projectile Hit enemy
-function juggernaut_basic_attack:PlayEffects_b( hTarget )
-	local sound_cast = "Hero_Juggernaut.Attack"
-	EmitSoundOn( sound_cast, hTarget )
+function juggernaut_basic_attack:PlayEffectsOnImpactBash( hTarget )
+	EmitSoundOn( "DOTA_Item.AbyssalBlade.Activate", hTarget )
+
+	local particle_cast = "particles/items_fx/abyssal_blade_crimson_jugger.vpcf"
+	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
--- On Projectile Hit enemy Special
-function juggernaut_basic_attack:PlayEffectsBash( hTarget )
-	local sound_cast = "DOTA_Item.AbyssalBlade.Activate"
-	EmitSoundOn( sound_cast, hTarget )
-
-	local particle_cast_a = "particles/items_fx/abyssal_blade_crimson_jugger.vpcf"
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-end
-
--- On Projectile miss
-function juggernaut_basic_attack:PlayEffects_c( pos )
-	local sound_cast = "Hero_Juggernaut.PreAttack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
+function juggernaut_basic_attack:PlayEffectsOnMiss( pos )
+	EmitSoundOnLocationWithCaster( pos, "Hero_Juggernaut.PreAttack", self:GetCaster() )
 end
 
 if IsClient() then require("wrappers/abilities") end

@@ -13,18 +13,18 @@ function nevermore_basic_attack:OnCastPointEnd()
 	-- Probable data
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
-	local ability = caster:FindAbilityByName("nevermore_ex_basic_attack")
-	local fading_slow_pct = ability:GetSpecialValueFor("fading_slow_pct")
-	local fading_slow_duration = ability:GetSpecialValueFor("fading_slow_duration")
+	--local ability = caster:FindAbilityByName("nevermore_ex_basic_attack")
+	--local fading_slow_pct = ability:GetSpecialValueFor("fading_slow_pct")
+	--local fading_slow_duration = ability:GetSpecialValueFor("fading_slow_duration")
 
 	local damage = caster:GetAverageTrueAttackDamage(caster) -- or self:GetSpecialValueFor("ability_damage")
 	local particle = "particles/mod_units/heroes/hero_nevermore/nevermore_base_attack.vpcf"
 	local slow = false
 
-	if caster:HasModifier("modifier_nevermore_ex_basic_attack") then
+	--[[if caster:HasModifier("modifier_nevermore_ex_basic_attack") then
 		particle = "particles/mod_units/heroes/hero_nevermore/sf_base_attack_desolation_desolator.vpcf"
 		slow = true 
-	end
+	end]]
 	
 	-- Projectile
 	local projectile = {
@@ -68,6 +68,10 @@ function nevermore_basic_attack:OnCastPointEnd()
 				)
 
 				self:PlayEffectsSoul(unit)
+			end
+
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
 			end
 		end,
 		OnFinish = function(_self, pos)
