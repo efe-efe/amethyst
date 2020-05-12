@@ -23,7 +23,7 @@ function phantom_mobility:OnCastPointEnd()
 	local direction = (point - self.origin):Normalized()
 	local distance = self:GetSpecialValueFor("min_range")
 
-    if caster:IsWalking() then
+    if caster:GetDirection().x ~= 0 or caster:GetDirection().y ~=0 then
         direction = caster:GetDirection()
     end
 

@@ -2,12 +2,10 @@ modifier_vengeful_basic_attack_stack = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_vengeful_basic_attack_stack:IsHidden()
-	return false
+function modifier_vengeful_basic_attack_stack:IsHidden() return false
 end
 
-function modifier_vengeful_basic_attack_stack:IsDebuff()
-	return false
+function modifier_vengeful_basic_attack_stack:IsDebuff() return false
 end
 
 function modifier_vengeful_basic_attack_stack:IsStunDebuff()

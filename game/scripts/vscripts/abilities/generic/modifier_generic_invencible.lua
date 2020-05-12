@@ -2,12 +2,10 @@ modifier_generic_invencible = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_generic_invencible:IsHidden()
-	return false
+function modifier_generic_invencible:IsHidden() return false
 end
 
-function modifier_generic_invencible:IsDebuff()
-	return false
+function modifier_generic_invencible:IsDebuff() return false
 end
 
 function modifier_generic_invencible:IsPurgable()

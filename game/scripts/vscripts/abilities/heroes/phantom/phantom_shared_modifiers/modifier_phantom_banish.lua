@@ -2,16 +2,13 @@ modifier_phantom_banish = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phantom_banish:IsHidden()
-	return false
+function modifier_phantom_banish:IsHidden() return false
 end
 
-function modifier_phantom_banish:IsDebuff()
-	return false
+function modifier_phantom_banish:IsDebuff() return false
 end
 
-function modifier_phantom_banish:IsPurgable()
-	return false
+function modifier_phantom_banish:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

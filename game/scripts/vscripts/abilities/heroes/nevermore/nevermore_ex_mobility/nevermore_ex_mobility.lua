@@ -24,7 +24,6 @@ function nevermore_ex_mobility:OnCastPointEnd()
 		false --bPhantomBlocker
     )
     
-    caster:AddNoDraw()
 	caster:AddNewModifier(caster, nil, "modifier_banish", {})
 	
 	self:PlayEffects()

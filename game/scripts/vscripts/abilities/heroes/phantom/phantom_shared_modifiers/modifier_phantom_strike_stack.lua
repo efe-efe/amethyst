@@ -2,12 +2,10 @@ modifier_phantom_strike_stack = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phantom_strike_stack:IsHidden()
-	return false
+function modifier_phantom_strike_stack:IsHidden() return false
 end
 
-function modifier_phantom_strike_stack:IsDebuff()
-	return false
+function modifier_phantom_strike_stack:IsDebuff() return false
 end
 
 function modifier_phantom_strike_stack:IsStunDebuff()

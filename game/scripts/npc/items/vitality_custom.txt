@@ -1,0 +1,24 @@
+
+"DOTAAbilities"
+{
+    "item_vitality_custom"	
+	{	
+		"ID"							"2024"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_vitality_booster"	
+        "ScriptFile"                    "items/item_vitality_custom/item_vitality_custom.lua"
+
+		"ItemCost"						"2"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" "0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"extra_health"				"20" }
+		}
+    }	
+}	

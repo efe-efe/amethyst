@@ -4,12 +4,10 @@ LinkLuaModifier( "modifier_vengeful_mobility_recast_ultimate", "abilities/heroes
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_vengeful_mobility_illusion:IsHidden()
-	return false
+function modifier_vengeful_mobility_illusion:IsHidden() return false
 end
 
-function modifier_vengeful_mobility_illusion:IsPurgable()
-	return false
+function modifier_vengeful_mobility_illusion:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

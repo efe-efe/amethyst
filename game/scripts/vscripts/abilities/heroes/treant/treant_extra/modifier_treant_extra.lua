@@ -2,12 +2,10 @@ modifier_treant_extra = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_treant_extra:IsHidden()
-	return false
+function modifier_treant_extra:IsHidden() return false
 end
 
-function modifier_treant_extra:IsDebuff()
-	return false
+function modifier_treant_extra:IsDebuff() return false
 end
 
 function modifier_treant_extra:IsPurgable()

@@ -66,7 +66,7 @@ function ancient_second_attack:OnCastPointEnd()
 
 			if unit:HasModifier("modifier_ancient_special_attack") then
 				local silence_duration = min_silence + stacks/200
-				unit:AddNewModifier(_self.Source, self, "modifier_generic_silenced", { duration = silence_duration })
+				unit:AddNewModifier(_self.Source, self, "modifier_generic_silence", { duration = silence_duration })
 				unit:RemoveModifierByName("modifier_ancient_special_attack")
 			end
 		end,

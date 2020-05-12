@@ -6,12 +6,10 @@ function modifier_wisp_basic_attack_link_negative:IsHidden()
 	return true
 end
 
-function modifier_wisp_basic_attack_link_negative:IsDebuff()
-	return false
+function modifier_wisp_basic_attack_link_negative:IsDebuff() return false
 end
 
-function modifier_wisp_basic_attack_link_negative:IsPurgable()
-	return false
+function modifier_wisp_basic_attack_link_negative:IsPurgable() return false
 end
 
 function modifier_wisp_basic_attack_link_negative:RemoveOnDeath()

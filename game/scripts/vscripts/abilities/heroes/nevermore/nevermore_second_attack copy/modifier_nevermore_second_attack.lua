@@ -2,8 +2,7 @@ modifier_nevermore_second_attack = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_nevermore_second_attack:IsHidden()
-	return false
+function modifier_nevermore_second_attack:IsHidden() return false
 end
 
 function modifier_nevermore_second_attack:IsDebuff()

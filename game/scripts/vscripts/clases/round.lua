@@ -11,11 +11,10 @@ function Round:constructor(players, callback)
     self.players = players
     self.callback = callback
     
-    self.amethyst = nil
     self.death_zone = nil
     self.winner = nil
-    self.amethyst_index = nil
 
+    self.amethyst = {}
     self.pickups = {}
     self.lights = {}
     self.arrows = {}
@@ -27,7 +26,6 @@ function Round:constructor(players, callback)
     self.ended = false
     self.is_trying_to_end = false
 
-    self.amethyst_timer = AMETHYST_SPAWN_TIME * 30
     self.light_spawn_time = AMETHYST_SPAWN_TIME / 5
     self.time_remianing_until_end = DRAW_TIME
     self.time_remaining = ROUND_TIMER * 30
@@ -39,12 +37,6 @@ function Round:constructor(players, callback)
 
     self.radiant_warmup_spawn = Entities:FindByName(nil, "radiant_warmup_spawn")
     self.dire_warmup_spawn = Entities:FindByName(nil, "dire_warmup_spawn")
-
-    if GetMapName() == "forest_map" or GetMapName() == "free_for_all" then
-        self.amethyst_index = 1
-    else
-        self.amethyst_index = RandomInt(1, 3)
-    end
 
     for i = 1, 5 do
         local temp = "orb_timer" .. tostring(i)
@@ -77,6 +69,13 @@ function Round:constructor(players, callback)
             entity = nil
         })
     end
+    self.amethyst = {
+        index = RandomInt(1, 3),
+        timer = AMETHYST_SPAWN_TIME * 30,
+        initial_time = AMETHYST_SPAWN_TIME * 30,
+        entity = nil,
+        effect = nil
+    }
 
     self:SpawnArrows()
 end
@@ -85,9 +84,9 @@ function Round:SpawnArrows()
     local particle_cast = "particles/ui_mouseactions/range_finder_directional.vpcf"
 
     for _,entity in pairs(self.amethyst_entities) do
-        if _ ~= self.amethyst_index then 
+        if _ ~= self.amethyst.index then 
             local origin = entity:GetOrigin()
-            local direction = (self.amethyst_entities[self.amethyst_index]:GetOrigin() - origin):Normalized()
+            local direction = (self.amethyst_entities[self.amethyst.index]:GetOrigin() - origin):Normalized()
             self.arrows[entity] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
             ParticleManager:SetParticleControl( self.arrows[entity], 0, origin )
             ParticleManager:SetParticleControl( self.arrows[entity], 2, origin + direction * Vector(128, 128, 0) )
@@ -107,33 +106,53 @@ function Round:Update()
     end
 
     if not self.ended then
-        if not self.amethyst then
-            self.amethyst_timer = self.amethyst_timer - 1
+        if not self.amethyst.effect then
+            self.amethyst.effect = ParticleManager:CreateParticle("particles/progress_circle/generic_progress_circle.vpcf", PATTACH_WORLDORIGIN, nil)
+            ParticleManager:SetParticleControlForward(self.amethyst.effect, 0, Vector(0, -1, 0))	
+            ParticleManager:SetParticleControl(self.amethyst.effect, 0, self.amethyst_entities[self.amethyst.index]:GetOrigin() - Vector(0, 0, 120))
+            ParticleManager:SetParticleControl(self.amethyst.effect, 1, Vector(250, 0, 1))
+            ParticleManager:SetParticleControl(self.amethyst.effect, 15, Vector(255, 26, 243))
+            ParticleManager:SetParticleControl(self.amethyst.effect, 16, Vector(1, 0, 0))
+        else
+            local percentage = (self.amethyst.initial_time - self.amethyst.timer)/self.amethyst.initial_time
 
-            if math.fmod(self.amethyst_timer/30, self.light_spawn_time) == 0 then
+            if percentage <= 1.0 then
+                ParticleManager:SetParticleControl(self.amethyst.effect, 1, Vector(250, percentage, 0))
+            end
+        end
+
+        if not self.amethyst.entity then
+            self.amethyst.timer = self.amethyst.timer - 1
+
+            if math.fmod(self.amethyst.timer/30, self.light_spawn_time) == 0 then
                 self:CreateLight() 
             end
 
-            if self.amethyst_timer <= 0 then
-                self.amethyst = Amethyst(self.amethyst_entities[self.amethyst_index]:GetOrigin())
+            if self.amethyst.timer <= 0 then
+                self.amethyst.entity = Amethyst(self.amethyst_entities[self.amethyst.index]:GetOrigin())
             end
         else
-            if not self.amethyst:Alive() then
-                self.amethyst = nil
+            if not self.amethyst.entity:Alive() then
+                self.amethyst.entity = nil
 
                 if not self.time_over then
                     local index = RandomInt(1, #self.amethyst_entities)
-                    if index == self.amethyst_index then
+                    if index == self.amethyst.index then
                         index = index + 1
 
                         if index > #self.amethyst_entities then
                             index = 1
                         end
                     end
-                    self.amethyst_index = index
+                    self.amethyst.index = index
                 end
+                
+                ParticleManager:DestroyParticle(self.amethyst.effect, false)
+                ParticleManager:ReleaseParticleIndex(self.amethyst.effect)
 
-                self.amethyst_timer = AMETHYST_RESPAWN_TIME * 30
+                self.amethyst.effect = nil
+                self.amethyst.timer = AMETHYST_RESPAWN_TIME * 30
+                self.amethyst.initial_time = AMETHYST_RESPAWN_TIME * 30
                 self.light_spawn_time = AMETHYST_RESPAWN_TIME / 5
 
                 self:CleanLights()
@@ -203,9 +222,9 @@ function Round:EndRound()
             player.hero:RespawnHero(false, false)
         end
 
-        player.hero:SetAbsOrigin(target:GetOrigin())
+        FindClearSpaceForUnit(player.hero, target:GetAbsOrigin(), true)
         player.hero:RemoveModifierByName("modifier_generic_displacement")
-        player.hero:SetGold(2, false)
+        player.hero:SetGold(10, false)
 
         for i = 0, 5 do
             local item = player.hero:GetItemInSlot(i)
@@ -262,7 +281,7 @@ end
 function Round:CreateLight()
     self.lights[#self.lights + 1] =CreateUnitByName(
         "npc_dota_creature_amethyst_timer", --szUnitName
-        self.light_entities[#self.lights + 1][self.amethyst_index]:GetOrigin(), --vLocation
+        self.light_entities[#self.lights + 1][self.amethyst.index]:GetOrigin(), --vLocation
         true, --bFindClearSpace
         nil, --hNPCOwner
         nil, --hUnitOwner
@@ -281,7 +300,7 @@ function Round:CreateDeathZone()
         nil, --hAbility
         "modifier_death_zone", --modifierName
         {}, --paramTable
-        self.amethyst_entities[self.amethyst_index]:GetOrigin(), --vOrigin
+        self.amethyst_entities[self.amethyst.index]:GetOrigin(), --vOrigin
         DOTA_TEAM_NOTEAM, --nTeamNumber
         false --bPhantomBlocker
     )
@@ -306,9 +325,15 @@ function Round:DestroyAllPickups()
 end
 
 function Round:DestroyAmethyst()
-    if self.amethyst ~= nil then
-        self.amethyst:Destroy(true)
-        self.amethyst = nil
+    if self.amethyst.entity then
+        self.amethyst.entity:Destroy(true)
+        self.amethyst.entity = nil
     end 
+
+    if self.amethyst.effect then
+        ParticleManager:DestroyParticle(self.amethyst.effect, false)
+        ParticleManager:ReleaseParticleIndex(self.amethyst.effect)
+        self.amethyst.effect = nil
+    end
 end
 

@@ -2,12 +2,10 @@ modifier_spectre_counter = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_spectre_counter:IsHidden()
-	return false
+function modifier_spectre_counter:IsHidden() return false
 end
 
-function modifier_spectre_counter:IsDebuff()
-	return false
+function modifier_spectre_counter:IsDebuff() return false
 end
 
 function modifier_spectre_counter:IsPurgable()

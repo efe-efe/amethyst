@@ -33,7 +33,7 @@ function Amethyst:OnDeath(params)
 
 		for _,unit in pairs(units) do
 			if unit:IsRealHero() then 
-				PseudoHeal(unit:GetHealth(), final_heal, unit)
+				TrueHeal(unit:GetHealth(), final_heal, unit)
 				unit:GiveMana(final_mana)
                 SendOverheadEventMessage( nil, OVERHEAD_ALERT_MANA_ADD, unit, final_mana, nil )
                 

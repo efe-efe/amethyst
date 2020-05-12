@@ -2,27 +2,43 @@
 {
 	"consumables"
 	{		
-        "item"      "item_blink_custom"	
-        "item"      "item_moon_custom"	
-        "item"      "item_nullifier_custom"		
-        "item"      "item_orchid_custom"		
-        "item"      "item_atos_custom"			
-        "item"      "item_phase_custom"
-		"item"		"item_basher_custom"
-		"item"		"item_shadow_blade_custom"
-		"item"		"item_meteor_custom"
+        "item"      "item_faerie_custom"
+        "item"      "item_mango_custom"	
+        "item"      "item_salve_custom"	
+        "item"      "item_clarity_custom"	
 	}
 
 	"attributes"
 	{
+        "item"      "item_moon_custom"	
+		"item"		"item_energy_custom"
+		"item"		"item_vitality_custom"
+		"item"		"item_boots_custom"
 	}
 
 	"weapons_armor"
 	{
+		"item"		"item_basher_custom"
+		"item"		"item_shadow_blade_custom"
+		"item"		"item_butterfly_custom"
+		"item"		"item_diffusal_custom"
+		"item"		"item_yasha_custom"
+		"item"		"item_sange_custom"
 	}
 			
 	"misc"
 	{
+        "item"      "item_blink_custom"	
+        "item"      "item_soul_custom"	
+		"item"		"item_mekansm_custom"		
+	}	
+		
+	"secretshop"
+	{			
+        "item"      "item_orchid_custom"		
+        "item"      "item_atos_custom"	
+		"item"		"item_meteor_custom"
+        "item"      "item_nullifier_custom"		
 	}	
 	
 	// Level 1 - Green Recipes
@@ -60,8 +76,5 @@
 	"sideshop2"
 	{
 	}
-	
-	"secretshop"
-	{							
-	}	
+
 }

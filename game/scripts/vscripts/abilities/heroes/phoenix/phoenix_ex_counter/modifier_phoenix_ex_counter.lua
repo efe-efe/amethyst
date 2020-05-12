@@ -4,12 +4,10 @@ LinkLuaModifier( "modifier_generic_root", "abilities/generic/modifier_generic_ro
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phoenix_ex_counter:IsHidden()
-	return false
+function modifier_phoenix_ex_counter:IsHidden() return false
 end
 
-function modifier_phoenix_ex_counter:IsPurgable()
-	return false
+function modifier_phoenix_ex_counter:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

@@ -1,0 +1,31 @@
+"DOTAAbilities"
+{
+    "item_butterfly_custom"	
+	{	
+		"ID"							"2016"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_butterfly"	
+        "ScriptFile"                    "items/item_butterfly_custom/item_butterfly_custom.lua"
+
+		"ItemCost"						"3"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" 				"0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"12.0"
+		"AbilityCastPoint"				"0.0"
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"0.3" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"ms_pct"				    "20" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"think_duration"			"0.6" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"aspd"				    	"50" }
+		}
+    }	
+}	

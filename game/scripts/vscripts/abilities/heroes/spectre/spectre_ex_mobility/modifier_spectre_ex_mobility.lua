@@ -5,12 +5,10 @@ function modifier_spectre_ex_mobility:IsHidden()
     return false
 end
 
-function modifier_spectre_ex_mobility:IsDebuff()
-	return false
+function modifier_spectre_ex_mobility:IsDebuff() return false
 end
 
-function modifier_spectre_ex_mobility:IsPurgable()
-    return false
+function modifier_spectre_ex_mobility:IsPurgable() return false
 end
 
 

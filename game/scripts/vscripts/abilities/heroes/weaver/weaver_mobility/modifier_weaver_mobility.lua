@@ -3,12 +3,10 @@ LinkLuaModifier( "modifier_weaver_mobility_mark", "abilities/heroes/weaver/weave
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_weaver_mobility:IsHidden()
-	return false
+function modifier_weaver_mobility:IsHidden() return false
 end
 
-function modifier_weaver_mobility:IsDebuff()
-	return false
+function modifier_weaver_mobility:IsDebuff() return false
 end
 
 function modifier_weaver_mobility:IsPurgable()

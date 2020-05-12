@@ -2,12 +2,10 @@ modifier_lich_ultimate = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_lich_ultimate:IsHidden()
-	return false
+function modifier_lich_ultimate:IsHidden() return false
 end
 
-function modifier_lich_ultimate:IsDebuff()
-	return false
+function modifier_lich_ultimate:IsDebuff() return false
 end
 
 function modifier_lich_ultimate:IsStunDebuff()

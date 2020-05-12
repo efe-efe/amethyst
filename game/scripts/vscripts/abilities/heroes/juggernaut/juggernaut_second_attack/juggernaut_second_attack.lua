@@ -1,7 +1,18 @@
 juggernaut_second_attack = class({})
-LinkLuaModifier( "modifier_juggernaut_second_attack", "abilities/heroes/juggernaut/juggernaut_second_attack/modifier_juggernaut_second_attack", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier( "modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL )
 
-function juggernaut_second_attack:OnSpellStart()
+function juggernaut_second_attack:GetCastPoint()
+	return self:GetSpecialValueFor("cast_point")
+end
+
+function juggernaut_second_attack:OnAbilityPhaseStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
+		duration = self:GetCastPoint(), 
+		translate = "odachi",
+		movement_speed = 40,
+	})
+	self:GetCaster():StartGestureWithPlaybackRate(self:GetCastAnimation(), 1.5)
+
 	local caster = self:GetCaster()
 	local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_crit_tgt.vpcf"
 
@@ -9,9 +20,31 @@ function juggernaut_second_attack:OnSpellStart()
     ParticleManager:SetParticleControl( effect_cast, 1, caster:GetOrigin() )
     ParticleManager:SetParticleControl( effect_cast, 3, caster:GetOrigin() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
+
+	return true
 end
 
-function juggernaut_second_attack:OnCastPointEnd( )
+function juggernaut_second_attack:GetCastAnimation() 
+	if self:GetCaster():HasModifier("modifier_juggernaut_basic_attack_stacks") and self:GetCaster():FindModifierByName("modifier_juggernaut_basic_attack_stacks"):GetStackCount() >= 4 then 
+		return ACT_DOTA_ATTACK
+	else
+		return ACT_DOTA_ATTACK_EVENT
+	end
+end
+
+function juggernaut_second_attack:OnAbilityPhaseInterrupted()
+	self:GetCaster():FadeGesture(self:GetCastAnimation())
+	self:GetCaster():RemoveModifierByName("modifier_casting")
+end
+
+function juggernaut_second_attack:OnSpellStart( )
+	self:GetCaster():FadeGesture(self:GetCastAnimation())
+	
+	local random_number = RandomInt(0, 4)
+	if random_number > 0 then
+		EmitSoundOn("juggernaut_jug_attack_0" .. random_number, self:GetCaster())
+	end
+
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -58,14 +91,11 @@ function juggernaut_second_attack:OnCastPointEnd( )
 				self:PlayEffectsOnImpact(unit)
 			end,
 			OnFinish = function(_self, pos)
-				if next(_self.rehit) == nil then
-					self:PlayEffectsOnFinish(pos)
-				end
+				self:PlayEffectsOnFinish(pos)
 			end,
 		}
 		Projectiles:CreateProjectile(projectile)
 	else
-		caster:AddNewModifier(caster, self, "modifier_juggernaut_second_attack", { duration = 0.3 })
 		local give_mana = false
 		local radius = 275 
 
@@ -98,27 +128,19 @@ function juggernaut_second_attack:OnCastPointEnd( )
 			caster:GiveManaPercent(mana_gain_pct, nil)
 		end
 
+		caster:AddNewModifier(caster, self, "modifier_juggernaut_spin_animation", { duration = 0.5 })
 		self:PlayEffectsAoe(radius)
 	end
 
 	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
-
 end
 
---------------------------------------------------------------------------------
--- Effects
--- On Projectile Hit enemy
 function juggernaut_second_attack:PlayEffectsOnImpact( hTarget )
-	-- Create Sound
-	local sound_cast_a = "Hero_Juggernaut.BladeDance.Arcana"
-	local sound_cast_b = "Hero_Juggernaut.BladeDance.Layer"
-	local sound_cast_c = "Hero_Juggernaut.Attack"
-	EmitSoundOn( sound_cast_a, hTarget )
-	EmitSoundOn( sound_cast_b, hTarget )
-	EmitSoundOn( sound_cast_c, hTarget )
+	EmitSoundOn( "Hero_Juggernaut.BladeDance.Arcana", hTarget )
+	EmitSoundOn( "Hero_Juggernaut.BladeDance.Layer", hTarget )
+	EmitSoundOn( "Hero_Juggernaut.Attack", hTarget )
 end
 
--- On Projectile Miss
 function juggernaut_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	local offset = 40
@@ -126,13 +148,10 @@ function juggernaut_second_attack:PlayEffectsOnFinish(pos)
 	local direction = (pos - origin):Normalized()
 	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
-	-- Create Sound
-	local sound_cast = "Hero_Juggernaut.BladeDance"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster( pos, "Hero_Juggernaut.BladeDance", caster )
 
 	local position_final = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * 20
 
-	-- Create Particles
 	local particle_cast_a = "particles/econ/items/chaos_knight/chaos_knight_ti9_weapon/chaos_knight_ti9_weapon_blur_crit_arc.vpcf"
 	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_POINT, caster )
     ParticleManager:SetParticleControl( 
@@ -156,12 +175,5 @@ function juggernaut_second_attack:PlayEffectsAoe( radius )
 	local particle_cast = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
     ParticleManager:SetParticleControl( effect_cast, 2, Vector( radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	juggernaut_second_attack,
-	{ activity = ACT_DOTA_ATTACK, translate = "odachi", rate = 1.5 },
-	{ movement_speed = 40 }
-)

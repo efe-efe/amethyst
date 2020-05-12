@@ -1,6 +1,6 @@
 item_blink_custom = class({})
 
-function item_blink_custom:OnCastPointEnd()
+function item_blink_custom:OnSpellStart()
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
@@ -26,10 +26,3 @@ function item_blink_custom:PlayEffects(mode)
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-    item_blink_custom,
-    nil,
-	{ movement_speed = 100, fixed_range = 1 }
-)

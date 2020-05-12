@@ -1,6 +1,21 @@
 item_basher_custom = class({})
 
-function item_basher_custom:OnCastPointEnd( point )
+function item_basher_custom:OnAbilityPhaseStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
+		duration = self:GetCastPoint(), 
+		movement_speed = 30,
+	})
+	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.0)
+    return true
+end
+
+function item_basher_custom:OnAbilityPhaseInterrupted()
+	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
+	self:GetCaster():RemoveModifierByName("modifier_casting")
+end
+
+function item_basher_custom:OnSpellStart()
+	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -44,14 +59,15 @@ function item_basher_custom:OnCastPointEnd( point )
 			self:PlayEffectsOnFinish( pos )
 		end,
 	}
-	-- Cast projectile
+
 	Projectiles:CreateProjectile(projectile)
+	self:PlayEffectsOnCast()
 end
 
+function item_basher_custom:PlayEffectsOnCast()
+	EmitSoundOn( "DOTA_Item.SkullBasher", self:GetCaster() )
+end
 
---------------------------------------------------------------------------------
--- Graphics & sounds
--- On Projectile Finish
 function item_basher_custom:PlayEffectsOnFinish( pos )
 	local caster = self:GetCaster()
 	local offset = 40
@@ -59,7 +75,6 @@ function item_basher_custom:PlayEffectsOnFinish( pos )
 	local direction = (pos - origin):Normalized()
 	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
-	-- Create Particles
 	local particle_cast = "particles/meele_swing_red/pa_arcana_attack_blinkb_red.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
@@ -75,9 +90,6 @@ function item_basher_custom:PlayEffectsOnFinish( pos )
 end
 
 function item_basher_custom:PlayEffectsOnImpact( hTarget )
-	local sound_cast = "DOTA_Item.SkullBasher"
-	EmitSoundOn( sound_cast, hTarget )
-
 	local particle_cast = "particles/econ/items/troll_warlord/troll_warlord_ti7_axe/troll_ti7_axe_bash_explosion.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
 	ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
@@ -87,10 +99,3 @@ end
 function item_basher_custom:PlayEffectsOnMiss( pos )
 	EmitSoundOnLocationWithCaster( pos, "Hero_Juggernaut.PreAttack", self:GetCaster() )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	item_basher_custom,
-	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
-	{ movement_speed = 30 }
-)

@@ -1,6 +1,6 @@
 
 phantom_ex_special_attack = class({})
-LinkLuaModifier( "modifier_generic_sleep_lua", "abilities/generic/modifier_generic_sleep_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_sleep", "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_phantom_ex_special_attack_charges", "abilities/heroes/phantom/phantom_ex_special_attack/modifier_phantom_ex_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ function phantom_ex_special_attack:OnCastPointEnd()
 			unit:AddNewModifier(
 				caster, -- player source
 				self, -- ability source
-				"modifier_generic_sleep_lua", -- modifier name
+				"modifier_generic_sleep", -- modifier name
 				{ duration = sleep_duration + (stacks * sleep_per_stack) } -- kv
 			)
 

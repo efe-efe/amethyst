@@ -86,22 +86,11 @@ function sky_basic_attack:OnCastPointEnd( pos )
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
-			-- perform the actual attack
-			_self.Source:PerformAttack(
-				unit, -- handle hTarget 
-				true, -- bool bUseCastAttackOrb, 
-				true, -- bool bProcessProcs,
-				true, -- bool bSkipCooldown
-				false, -- bool bIgnoreInvis
-				false, -- bool bUseProjectile
-				false, -- bool bFakeAttack
-				true -- bool bNeverMiss
-			)
 
 			--Apply charged weapon effects
 			if stacks > 0 then
 				--Silence enemy
-				unit:AddNewModifier(_self.Source, self , "modifier_generic_silenced", { duration = self.silence_duration})
+				unit:AddNewModifier(_self.Source, self , "modifier_generic_silence", { duration = self.silence_duration})
 				unit:AddNewModifier(_self.Source, self , "modifier_sky_basic_attack_debuff", { duration = self.silence_duration})
 
 				local damage = {
@@ -192,15 +181,4 @@ function sky_basic_attack:PlayEffects_d( pos )
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-end
-
-
---------------------------------------------------------------------------------
--- On First Upgrade Effects
-function sky_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
 end

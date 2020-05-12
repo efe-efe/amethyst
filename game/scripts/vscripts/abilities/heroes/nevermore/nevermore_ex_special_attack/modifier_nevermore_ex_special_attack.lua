@@ -3,12 +3,10 @@ LinkLuaModifier("modifier_nevermore_ex_special_attack_debuff", "abilities/heroes
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_nevermore_ex_special_attack:IsHidden()
-	return false
+function modifier_nevermore_ex_special_attack:IsHidden() return false
 end
 
-function modifier_nevermore_ex_special_attack:IsDebuff()
-	return false
+function modifier_nevermore_ex_special_attack:IsDebuff() return false
 end
 
 function modifier_nevermore_ex_special_attack:IsStunDebuff()

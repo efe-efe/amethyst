@@ -5,9 +5,10 @@ function phantom_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
-	local attack_damage = caster:GetAttackDamage()
+	local damage = caster:GetAverageTrueAttackDamage(caster)
 
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
+    local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	local projectile_speed = 2000
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
@@ -30,18 +31,19 @@ function phantom_basic_attack:OnCastPointEnd()
 			for k, v in pairs(_self.rehit) do counter = counter + 1 end
 			if counter > 1 then return end
 			-- perform the actual attack
-			caster:PerformAttack(
-				unit, -- handle hTarget 
-				true, -- bool bUseCastAttackOrb, 
-				true, -- bool bProcessProcs,
-				true, -- bool bSkipCooldown
-				false, -- bool bIgnoreInvis
-				false, -- bool bUseProjectile
-				false, -- bool bFakeAttack
-				true -- bool bNeverMiss
-			)
+			
+			local damage_table = {
+				victim = unit,
+				attacker = _self.Source,
+				damage = damage,
+				damage_type = DAMAGE_TYPE_PHYSICAL,
+				ability = self
+			}
+			ApplyDamage( damage_table )
 
 			if _self.Source == caster and not unit:IsObstacle() then 
+				caster:GiveManaPercent(mana_gain_pct, unit)
+
 				caster:AddNewModifier(
 					caster, -- player source
 					self, -- ability source
@@ -73,26 +75,10 @@ function phantom_basic_attack:OnCastPointEnd()
 		end,
 	}
 
-	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 
---------------------------------------------------------------------------------
--- Misc
--- Add mana on attack modifier. Only first time upgraded
-function phantom_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
-end
-
---------------------------------------------------------------------------------
--- Graphics & sounds
-
--- On Projectile Finish
 function phantom_basic_attack:PlayEffectsOnFinish( pos )
 	local caster = self:GetCaster()
 	local offset = 40
@@ -100,7 +86,6 @@ function phantom_basic_attack:PlayEffectsOnFinish( pos )
 	local direction = (pos - origin):Normalized()
 	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
-	-- Create Particles
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_blinkb.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
@@ -112,7 +97,6 @@ function phantom_basic_attack:PlayEffectsOnImpact( hTarget )
 	EmitSoundOn( "Hero_PhantomAssassin.Attack", hTarget )
 end
 
--- On Projectile miss
 function phantom_basic_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_PhantomAssassin.PreAttack", self:GetCaster() )
 end

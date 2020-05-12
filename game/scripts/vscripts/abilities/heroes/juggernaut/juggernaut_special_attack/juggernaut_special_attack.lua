@@ -1,7 +1,29 @@
 
 juggernaut_special_attack = class({})
 
-function juggernaut_special_attack:OnCastPointEnd()
+function juggernaut_special_attack:GetCastPoint()
+	return self:GetSpecialValueFor("cast_point")
+end
+
+function juggernaut_special_attack:OnAbilityPhaseStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
+		duration = self:GetCastPoint(), 
+		translate = "odachi",
+		movement_speed = 10,
+	})
+	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_TAUNT, 2.0)
+
+	return true
+end
+
+function juggernaut_special_attack:OnAbilityPhaseInterrupted()
+	self:GetCaster():FadeGesture(ACT_DOTA_TAUNT)
+	self:GetCaster():RemoveModifierByName("modifier_casting")
+end
+
+function juggernaut_special_attack:OnSpellStart()
+	self:GetCaster():FadeGesture(ACT_DOTA_TAUNT)
+
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
@@ -35,7 +57,7 @@ function juggernaut_special_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 
-			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow_new", { 
+			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
 				duration = fading_slow_duration,
 				max_slow_pct = fading_slow_pct 
 			})
@@ -53,15 +75,9 @@ function juggernaut_special_attack:OnCastPointEnd()
 	self:PlayEffectsOnCast()
 end
 
---------------------------------------------------------------------------------
--- Effects
--- On Projectile Finish
 function juggernaut_special_attack:PlayEffectsOnFinish( pos )
-	-- Create Sound
-	local sound_cast = "Hero_Juggernaut.Attack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
+	EmitSoundOnLocationWithCaster( pos, "Hero_Juggernaut.Attack", self:GetCaster() )
 	
-	-- Create Particles
 	local particle_cast = "particles/econ/items/arc_warden/arc_warden_ti9_immortal/arc_warden_ti9_wraith_impact_start.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
@@ -73,10 +89,3 @@ function juggernaut_special_attack:PlayEffectsOnCast()
 	EmitSoundOn("Hero_Juggernaut.ArcanaTrigger", self:GetCaster())	
 	EmitSoundOn( "Hero_Juggernaut.BladeDance", self:GetCaster() )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	juggernaut_special_attack,
-	{ activity = ACT_DOTA_TAUNT, rate = 1.3, translate = "odachi" },
-	{ movement_speed = 10, fixed_range = 1 }
-)

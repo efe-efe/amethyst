@@ -3,32 +3,38 @@
 {
     "item_meteor_custom"	
 	{	
-		"ID"							"2016"
+		"ID"							"2018"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_meteor_hammer"	
         "ScriptFile"                    "items/item_meteor_custom/item_meteor_custom.lua"
 
-		"ItemCost"						"1"
+		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"
 		"ItemQuality"					"consumable"
 		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
-		"ItemStockMax"					"1"
-
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE"
+		"ItemDroppable" 				"0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"12.0"
 		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
 
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+		}
+		
 		"AbilitySpecial"	
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.8" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"				    "250" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"duration"				    "2.0" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"damage_per_tick"			"5" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.5" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.5" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"1.0" }
 		}
     }	
 }	

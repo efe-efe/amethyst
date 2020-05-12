@@ -1,36 +1,16 @@
 modifier_juggernaut_ultimate_slashing = class({})
-LinkLuaModifier( "modifier_juggernaut_second_attack", "abilities/heroes/juggernaut/juggernaut_second_attack/modifier_juggernaut_second_attack", LUA_MODIFIER_MOTION_HORIZONTAL )
 
---- Misc 
-function modifier_juggernaut_ultimate_slashing:IsHidden()
-    return false
-end
+function modifier_juggernaut_ultimate_slashing:IsHidden()   return false end
+function modifier_juggernaut_ultimate_slashing:IsDebuff()   return false end
+function modifier_juggernaut_ultimate_slashing:IsPurgable() return false end
 
-function modifier_juggernaut_ultimate_slashing:IsDebuff()
-	return false
-end
-
-function modifier_juggernaut_ultimate_slashing:IsPurgable()
-    return false
-end
-
-
---------------------------------------------------------------------------------
--- Initializations
 function modifier_juggernaut_ultimate_slashing:OnCreated( params )
     self.radius = self:GetAbility():GetSpecialValueFor("find_radius")
 
-    --Initializers
     if IsServer() then
         self.damage_per_second = self:GetParent():GetAttackDamage()
         self.current_position = self:GetParent():GetOrigin()
         self.previous_position = self:GetParent():GetOrigin()
-
-        StartAnimation(self:GetParent(), {
-            duration=self:GetDuration() + 0.1, 
-            activity=ACT_DOTA_OVERRIDE_ABILITY_4, 
-            rate=1.5
-        })
 
         self:SetStackCount(params.aspd_buff)
 
@@ -53,14 +33,11 @@ end
 function modifier_juggernaut_ultimate_slashing:OnDestroy()
     if IsServer() then
         self:GetCaster():UnhideHealthBar()
-        self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_juggernaut_second_attack", {duration = 0.3})
+        self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_juggernaut_spin_animation", {duration = 0.3})
     end
 end
 
---------------------------------------------------------------------------------
--- Interval Effects
 function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
-
     local enemies = self:GetParent():FindUnitsInRadius(
         self:GetParent():GetOrigin(), 
         self.radius, 
@@ -113,47 +90,39 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
     end
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_juggernaut_ultimate_slashing:DeclareFunctions()
-	local funcs = {
+	return {
 		MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT,
+        MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
+        MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE,
 	}
-
-	return funcs
 end
 
 function modifier_juggernaut_ultimate_slashing:GetModifierAttackSpeedBonus_Constant()
 	return self:GetStackCount()
 end
 
---------------------------------------------------------------------------------
--- Status Effects
+function modifier_juggernaut_ultimate_slashing:GetOverrideAnimation(params)          return ACT_DOTA_OVERRIDE_ABILITY_4      end
+function modifier_juggernaut_ultimate_slashing:GetOverrideAnimationRate(params)      return 1.5                              end
+
 function modifier_juggernaut_ultimate_slashing:CheckState()
-	local state = {
+	return {
         [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
         [MODIFIER_STATE_INVULNERABLE] = true,
 		[MODIFIER_STATE_OUT_OF_GAME] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
-
-	return state
 end
 
---------------------------------------------------------------------------------
--- Graphics & Animations
 function modifier_juggernaut_ultimate_slashing:PlayEffects( hTarget )
     local particle_cast = "particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_tgt.vpcf"
-    -- create particle
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
     ParticleManager:ReleaseParticleIndex( effect_cast )
-    
     EmitSoundOn("Hero_Juggernaut.OmniSlash.Damage", hTarget)
 end
 
 function modifier_juggernaut_ultimate_slashing:PlayEffects_b( )
--- Play particle trail when moving
     local trail_pfx = ParticleManager:CreateParticle("particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_trail.vpcf", PATTACH_ABSORIGIN, self:GetCaster())
     ParticleManager:SetParticleControl(trail_pfx, 0, self.previous_position)
     ParticleManager:SetParticleControl(trail_pfx, 1, self.current_position)
@@ -162,7 +131,6 @@ end
 
 function modifier_juggernaut_ultimate_slashing:PlayEffectsAoe()
     local particle_cast = "particles/aoe_marker.vpcf"
-
     local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
     ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin())
     ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )

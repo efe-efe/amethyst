@@ -2,12 +2,10 @@ modifier_lich_mobility = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_lich_mobility:IsHidden()
-	return false
+function modifier_lich_mobility:IsHidden() return false
 end
 
-function modifier_lich_mobility:IsDebuff()
-	return false
+function modifier_lich_mobility:IsDebuff() return false
 end
 
 function modifier_lich_mobility:IsPurgable()

@@ -1,128 +1,87 @@
 .Tutorial
 {
-    height:75%;
-    width:100%;
+    z-index: 10;
+    height: 600px;
+    width: 380px;
+
+    margin-top: 170px;
+    margin-left: 170px;
+    padding: 10px;
 }
 
-#TutorialContent
+.Tutorial__Container
 {    
-    height:100%;
-    width:60%;
-	margin-top: 10%;
-    opacity: 0.98;
-    margin-left: 20%;
-    flow-children: down;
+    height: 100%;
+    width: 100%;
+    opacity: 0.95;
     border: 1px solid rgb(10, 11, 14);
     border-radius: 5px;
     background-color: #262A35;
+    padding: 50px 20px 20px 20px;
 
-    padding: 40px 50px;
-    opacity: 0.98;
+    flow-children: down;
 }
 
-#CloseTutorialLabel
-{
+.Tutorial__Image{
+    height: 250px;
+    width: 250px;
+    
+    margin-bottom: 30px;
+
+    align: center center;
+}
+
+.Tutorial__Title{
+    margin-bottom: 10px;
+
     font-size: 20px;
-    color: #cccccc;
-    background-color: rgb(59, 65, 83);
+    color: #ffffff;
 
-    border: 1px solid #cccccc;
-    padding: 4px 10px;
+    align: center center;
+}
+
+
+.Tutorial__Description{
+
+    font-size: 16px;
+    height: 100px;  
+    color: #cccccc;
+    align: center top;
     text-align: center;
-    border-radius: 999px;
 }
 
-#CloseTutorialLabel:hover,
-#OpenTutorial:hover
-{
-    background-color: rgb(101, 111, 139);
+.Button--Light{
+    height: 40px;
+    width: 100px;
+    align: center top;
 }
 
-.TutorialTitle
-{ 
-    flow-children: right;
-    width: 95%;
+.Button:hover{
+    background-color:  rgb(172, 148, 189);
 }
 
-#OpenTutorial{
-    margin-top: 770px;
-    margin-left: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #cccccc;
-    background-color: rgb(59, 65, 83);
-    border: 1px solid #cccccc;
-    padding: 4px 10px;
-    text-align: center;
-    border-radius: 999px;
+.Button{
+    height: 40px;
+    width: 150px;
+    align: center top;
+
+    background-color:  #937DA3;
+    border-radius: 1px;
 }
 
-.InfoRow
-{
-    flow-children: right;
-    width: 100%;
-
+.Button__Text{
+    align: center center;
+    color: #ffffff;
+    font-size: 17px;
 }
 
-#TutorialTitle
-{
-    font-size: 27px;
-    color: #cccccc;
-    width: 100%;
-    text-align: center;
-
-    margin-bottom: 20px;
+.Button--Light .Button__Text{
+    color: #ffffff;
+    align: center top;
+    align: center center;
+    font-size: 16px;
 }
 
-#WasdImage
-{
-    width: 200px;
-    height: 200px;
-    margin-right: 20px;
+.Button--Light:hover .Button__Text{
+    color: #c5c2c2;
 }
-
-#WasdText
-{
-    font-size: 23px;
-    color: #cccccc;
-    width: 100%;
-    vertical-align: center;
-}
-
-#SpacebarImage
-{
-    width: 200px;
-    height: 200px;
-    margin-left: 20px;
-}
-
-#SpacebarText
-{
-    font-size: 23px;
-    color: #cccccc;
-    width: 100%;
-    vertical-align: center;
-    text-align: right;
-}
-
-#SpacebarRow{
-    flow-children: left;
-}
-
-#MouseImage
-{
-    width: 170px;
-    height: 170px;
-    margin-right: 20px;
-}
-
-#MouseText
-{
-    margin-top: 20%;
-    font-size: 23px;
-    color: #cccccc;
-    width: 100%;
-    vertical-align: center;
-}
-
-

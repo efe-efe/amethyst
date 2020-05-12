@@ -2,12 +2,10 @@ modifier_nevermore_souls = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_nevermore_souls:IsHidden()
-	return false
+function modifier_nevermore_souls:IsHidden() return false
 end
 
-function modifier_nevermore_souls:IsDebuff()
-	return false
+function modifier_nevermore_souls:IsDebuff() return false
 end
 
 function modifier_nevermore_souls:IsPurgable()

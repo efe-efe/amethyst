@@ -2,12 +2,10 @@ modifier_treant_natures_punishment = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_treant_natures_punishment:IsHidden()
-	return false
+function modifier_treant_natures_punishment:IsHidden() return false
 end
 
-function modifier_treant_natures_punishment:IsDebuff()
-	return false
+function modifier_treant_natures_punishment:IsDebuff() return false
 end
 
 function modifier_treant_natures_punishment:IsStunDebuff()

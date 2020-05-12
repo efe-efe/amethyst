@@ -1,8 +1,7 @@
 modifier_nevermore_ex_special_attack_debuff = class({})
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_nevermore_ex_special_attack_debuff:IsHidden()
-	return false
+function modifier_nevermore_ex_special_attack_debuff:IsHidden() return false
 end
 
 function modifier_nevermore_ex_special_attack_debuff:IsDebuff()

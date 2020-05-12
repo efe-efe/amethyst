@@ -1,16 +1,14 @@
 modifier_wisp_ultimate = class({})
 
 --------------------------------------------------------------------------------
-function modifier_wisp_ultimate:IsDebuff()
-	return false
+function modifier_wisp_ultimate:IsDebuff() return false
 end
 
 function modifier_wisp_ultimate:IsHidden()
 	return true
 end
 
-function modifier_wisp_ultimate:IsPurgable()
-	return false
+function modifier_wisp_ultimate:IsPurgable() return false
 end
 --------------------------------------------------------------------------------
 -- Initializations

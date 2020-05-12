@@ -1,5 +1,5 @@
 tinker_counter = class({})
-LinkLuaModifier( "modifier_generic_pre_silence_lua", "abilities/generic/modifier_generic_pre_silence_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_pre_silence", "abilities/generic/modifier_generic_pre_silence", LUA_MODIFIER_MOTION_NONE )
 
 function tinker_counter:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("tinker_ex_counter")
@@ -139,7 +139,7 @@ function tinker_counter:Refract( source, targets, jumps )
 				unit:AddNewModifier(
 					source, -- player source
 					self, -- ability source
-					"modifier_generic_pre_silence_lua", -- modifier name
+					"modifier_generic_pre_silence", -- modifier name
 					{ duration = duration } -- kv
 				)
 
@@ -223,7 +223,7 @@ function tinker_counter:OnCastPointEnd( point )
 			unit:AddNewModifier(
 				_self.Source, -- player source
 				self, -- ability source
-				"modifier_generic_pre_silence_lua", -- modifier name
+				"modifier_generic_pre_silence", -- modifier name
 				{ duration = duration } -- kv
 			)
 

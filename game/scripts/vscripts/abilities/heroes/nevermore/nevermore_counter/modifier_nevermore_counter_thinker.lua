@@ -21,7 +21,6 @@ end
 
 function modifier_nevermore_counter_thinker:OnIntervalThink()
 	FindClearSpaceForUnit( self:GetCaster(), self.origin , true )
-	self:GetCaster():RemoveNoDraw()
 	self:GetCaster():RemoveModifierByName("modifier_banish")
 	
 	local enemies = self:GetCaster():FindUnitsInRadius(

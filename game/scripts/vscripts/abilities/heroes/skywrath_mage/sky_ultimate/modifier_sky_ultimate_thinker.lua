@@ -71,8 +71,8 @@ function modifier_sky_ultimate_thinker:OnIntervalThink()
 
         ApplyDamage( damage )
 
-        if enemy:HasModifier("modifier_generic_silenced") then
-            enemy:AddNewModifier(caster, self , "modifier_generic_silenced", { 
+        if enemy:HasModifier("modifier_generic_silence") then
+            enemy:AddNewModifier(caster, self , "modifier_generic_silence", { 
                 duration = self:GetRemainingTime()
             })
         end

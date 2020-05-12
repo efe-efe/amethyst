@@ -29,17 +29,6 @@ function terrorblade_basic_attack:OnCastPointEnd()
 			local counter = 0
 			for k, v in pairs(_self.rehit) do counter = counter + 1 end
 			if counter > 1 then return end
-			-- perform the actual attack
-			caster:PerformAttack(
-				unit, -- handle hTarget 
-				true, -- bool bUseCastAttackOrb, 
-				true, -- bool bProcessProcs,
-				true, -- bool bSkipCooldown
-				false, -- bool bIgnoreInvis
-				false, -- bool bUseProjectile
-				false, -- bool bFakeAttack
-				true -- bool bNeverMiss
-			)
 			unit:AddNewModifier(caster, self, "modifier_terrorblade_basic_attack", {})
 
 			self:PlayEffectsOnImpact(unit)
@@ -52,17 +41,6 @@ function terrorblade_basic_attack:OnCastPointEnd()
 	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
-end
-
---------------------------------------------------------------------------------
--- Misc
--- Add mana on attack modifier. Only first time upgraded
-function terrorblade_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
 end
 
 --------------------------------------------------------------------------------

@@ -1,15 +1,13 @@
 modifier_phantom_extra_visuals = class({})
 
-function modifier_phantom_extra_visuals:IsDebuff()
-	return false
+function modifier_phantom_extra_visuals:IsDebuff() return false
 end
 
 function modifier_phantom_extra_visuals:IsHidden()
 	return true
 end
 
-function modifier_phantom_extra_visuals:IsPurgable()
-	return false
+function modifier_phantom_extra_visuals:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

@@ -30,7 +30,6 @@ function phantom_counter:OnTrigger()
     caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
 	
 	caster:FindAbilityByName("phantom_special_attack"):EndCooldown()
-	caster:FindAbilityByName("phantom_ex_special_attack"):EndCooldown()
 	
     self:PlayEffectsOnTrigger()
 end

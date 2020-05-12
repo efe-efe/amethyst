@@ -6,8 +6,7 @@ function modifier_phantom_extra_movement:IsHidden()
 	return true
 end
 
-function modifier_phantom_extra_movement:IsPurgable()
-	return false
+function modifier_phantom_extra_movement:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

@@ -45,8 +45,6 @@
 #base "abilities\juggernaut\juggernaut_space.txt"
 #base "abilities\juggernaut\juggernaut_f.txt"
 #base "abilities\juggernaut\juggernaut_r.txt"
-#base "abilities\juggernaut\juggernaut_ex1.txt"
-#base "abilities\juggernaut\juggernaut_ex2.txt"
 
 #base "abilities\sniper\sniper_m1.txt"
 #base "abilities\sniper\sniper_m2.txt"
@@ -55,8 +53,6 @@
 #base "abilities\sniper\sniper_space.txt"
 #base "abilities\sniper\sniper_f.txt"
 #base "abilities\sniper\sniper_r.txt"
-#base "abilities\sniper\sniper_ex1.txt"
-#base "abilities\sniper\sniper_ex2.txt"
 
 #base "abilities\phantom\phantom_m1.txt"
 #base "abilities\phantom\phantom_m2.txt"
@@ -1195,30 +1191,6 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"bonus_movement_speed"		"500" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"fading_slow"				"50" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"slow_duration"				"2.0" }
-		}
-	}
-
-	"charge"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/common/mount/charge"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"charge"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
-		"AbilityCastPoint"				"0.1"
-		"AbilityCooldown"				"10"
-
-		"precache"
-		{
-			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"
-		}
-
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"33" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
 		}
 	}
 

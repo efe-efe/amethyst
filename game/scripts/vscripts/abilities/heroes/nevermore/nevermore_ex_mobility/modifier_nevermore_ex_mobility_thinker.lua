@@ -60,7 +60,6 @@ function modifier_nevermore_ex_mobility_thinker:OnIntervalThink()
         })
     end
     
-	self:GetCaster():RemoveNoDraw()
 	self:GetCaster():RemoveModifierByName("modifier_banish")
 	self:Destroy()
 end

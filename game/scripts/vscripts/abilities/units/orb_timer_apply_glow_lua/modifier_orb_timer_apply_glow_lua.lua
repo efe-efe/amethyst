@@ -1,16 +1,13 @@
 modifier_orb_timer_apply_glow_lua = class ({})
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_orb_timer_apply_glow_lua:IsHidden()
-	return false
+function modifier_orb_timer_apply_glow_lua:IsHidden() return false
 end
 
-function modifier_orb_timer_apply_glow_lua:IsDebuff()
-	return false
+function modifier_orb_timer_apply_glow_lua:IsDebuff() return false
 end
 
-function modifier_orb_timer_apply_glow_lua:IsPurgable()
-	return false
+function modifier_orb_timer_apply_glow_lua:IsPurgable() return false
 end
 --------------------------------------------------------------------------------
 -- Initialize

@@ -1,7 +1,7 @@
 item_shadow_blade_custom = class({})
 LinkLuaModifier( "modifier_item_shadow_blade_custom", "items/item_shadow_blade_custom/modifier_item_shadow_blade_custom", LUA_MODIFIER_MOTION_HORIZONTAL )
 
-function item_shadow_blade_custom:OnCastPointEnd()
+function item_shadow_blade_custom:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local duration = self:GetSpecialValueFor("duration")
@@ -26,10 +26,3 @@ function item_shadow_blade_custom:PlayEffects()
     effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-    item_shadow_blade_custom,
-    nil,
-	{ movement_speed = 100 }
-)

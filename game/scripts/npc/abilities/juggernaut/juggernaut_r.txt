@@ -7,11 +7,18 @@
 
 		"AbilityTextureName"			"juggernaut_omni_slash"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1500"
 		"AbilityManaCost"				"100"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
 
 		"AbilitySpecial"
 		{

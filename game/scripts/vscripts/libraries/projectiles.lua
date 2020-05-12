@@ -290,37 +290,35 @@ function Projectiles:CreateProjectile(projectile)
                                 print('[PROJECTILES] Projectile UnitTest Failure!: ' .. test)
                             elseif test then
 
-                                local is_slower = entity:FindModifierByName("modifier_generic_projectile_slower_lua")
-                                local is_reflector = entity:FindModifierByName("modifier_generic_projectile_reflector_lua")
-                                local is_enemy_blocker = entity:FindModifierByName("modifier_generic_projectile_enemy_blocker_lua")
+                                local is_slower = entity:FindModifierByName("modifier_generic_projectile_slower")
+                                local is_reflector = entity:HasModifier("modifier_generic_projectile_reflector") or entity:IsReflecting()
+                                local is_enemy_blocker = entity:FindModifierByName("modifier_generic_projectile_enemy_blocker")
 
-                                if is_reflector ~= nil then
-                                    if not is_reflector:IsNull() then
-                                        if projectile.bIsReflectable == true then
+                                if is_reflector then
+                                    if projectile.bIsReflectable == true then
 
-                                            local reflectedProjectile = projectile;
+                                        local reflectedProjectile = projectile;
 
-                                            reflectedProjectile.vSpawnOrigin = projectile.current_position;
-                                            reflectedProjectile.Source = entity;
-                                            reflectedProjectile.bIgnoreSource = true;
-                                            reflectedProjectile.nChangeMax = projectile.nChangeMax - 1;
-                                            reflectedProjectile.iVisionTeamNumber = entity:GetTeam();
-                                            reflectedProjectile.vVelocity = -projectile.currentVelocity * 30
-                                            
-                                            if entity:IsCountering() then
-                                                -- Deal damage to activate counters
-                                                local damage = {
-                                                    victim = entity,
-                                                    attacker = projectile.Source,
-                                                    damage = 1,
-                                                    damage_type = DAMAGE_TYPE_MAGICAL,
-                                                }
-                                                ApplyDamage( damage )
-                                            end
-
-                                            Projectiles:CreateProjectile( reflectedProjectile )
-                                            return
+                                        reflectedProjectile.vSpawnOrigin = projectile.current_position;
+                                        reflectedProjectile.Source = entity;
+                                        reflectedProjectile.bIgnoreSource = true;
+                                        reflectedProjectile.nChangeMax = projectile.nChangeMax - 1;
+                                        reflectedProjectile.iVisionTeamNumber = entity:GetTeam();
+                                        reflectedProjectile.vVelocity = -projectile.currentVelocity * 30
+                                        
+                                        if entity:IsCountering() then
+                                            -- Deal damage to activate counters
+                                            local damage = {
+                                                victim = entity,
+                                                attacker = projectile.Source,
+                                                damage = 1,
+                                                damage_type = DAMAGE_TYPE_MAGICAL,
+                                            }
+                                            ApplyDamage( damage )
                                         end
+
+                                        Projectiles:CreateProjectile( reflectedProjectile )
+                                        return
                                     end
                                 end
 

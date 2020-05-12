@@ -3,8 +3,7 @@ LinkLuaModifier( "modifier_wisp_basic_attack", "abilities/heroes/wisp/wisp_basic
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_wisp_basic_attack_link:IsHidden()
-    return true
+function modifier_wisp_basic_attack_link:isHidden() return true
 end
 
 function modifier_wisp_basic_attack_link:OnCreated()

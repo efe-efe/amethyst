@@ -1,37 +1,79 @@
 var COLORS_RGB = {}
 COLORS_RGB["LOCAL"] = {
-    light: "rgba(162, 249, 154, 1.0)",
-    dark: "rgba(51, 162, 40, 1.0)",
+    light: [162, 249, 154],
+    dark: [51, 162, 40]
 }
 COLORS_RGB["YELLOW"] = {
-    light: "rgba(249, 246, 154, 1.0)",
-    dark: "rgba(196, 192, 45, 1.0)",
+    light: [249, 246, 154],
+    dark: [196, 192, 42]
 }
 COLORS_RGB["LIGHTGREEN"] = {
-    light: "rgba(154, 249, 224, 1.0)",
-    dark: "rgba(78, 128, 114, 1.0)",
+    light: [154, 249, 224],
+    dark: [78, 128, 114]
 }
 COLORS_RGB["PINK"] = {
-    light: "rgba(197, 77, 168 ,1.0)",
-    dark: "rgba(92, 15, 73, 1.0)",
+    light: [197, 77, 168],
+    dark: [92, 15, 73]
 }
 COLORS_RGB["ORANGE"] = {
-    light: "rgba(255, 108, 0, 1.0)",
-    dark: "rgba(219, 99, 11, 1.0)",
+    light: [255, 108, 0],
+    dark: [219, 99, 11]
 }
 COLORS_RGB["BLUE"] = {
-    light: "rgba(27, 113, 230, 1.0)",
-    dark: "rgba(120, 156, 210, 1.0)",
+    light: [27, 113, 230],
+    dark: [120, 156, 210]
 }
 COLORS_RGB["GRAY"] = {
-    light: "rgba(240, 240, 240, 1.0)",
-    dark: "rgba(120, 120, 120, 1.0)",
+    light: [240, 240, 240],
+    dark: [120, 120, 120]
 }
 
 var Colors = {
-    Gradient: function(color){
-        var color_a = COLORS_RGB[color].light;
-        var color_b = COLORS_RGB[color].dark;
+    Gradient: function(color, opacity){
+        var m_opacity = opacity || "1.0";
+
+        var color_a = "rgba(" + COLORS_RGB[color].light[0] + "," + COLORS_RGB[color].light[1] + "," + COLORS_RGB[color].light[2] + "," + m_opacity + ")";
+        var color_b = "rgba(" + COLORS_RGB[color].dark[0] + "," + COLORS_RGB[color].dark[1] + "," + COLORS_RGB[color].dark[2] + "," + m_opacity + ")";
         return "gradient( linear, 0% 0%, 100% 0%, from( " + color_a + "), to( " + color_b + "));";
     }
+}
+
+var Modifiers = {
+    FindModifierByName(unit_index, name)
+    {
+        for (var i = 0; i < Entities.GetNumBuffs(unit_index); i++)
+        {
+            var buff_name = Buffs.GetName(unit_index, Entities.GetBuff(unit_index, i))
+            if (buff_name == name) {
+                return Entities.GetBuff(unit_index, i)
+            }
+        }
+        return false
+    }
+}
+
+function Clamp(num, min, max) {
+    return num < min ? min : num > max ? max : num;
+}
+
+function SubscribeToNetTableKey(table, key, loadNow, callback){
+    var listener = CustomNetTables.SubscribeNetTableListener(table, function(table, tableKey, data){
+        if (key == tableKey){
+            if (!data) {
+                return;
+            }
+
+            callback(data, false);
+        }
+    });
+
+    if (loadNow){
+        var data = CustomNetTables.GetTableValue(table, key);
+
+        if (data) {
+            callback(data, true);
+        }
+    }
+
+    return listener;
 }

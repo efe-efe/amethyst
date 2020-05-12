@@ -19,8 +19,8 @@
 		"Ability7"						"vengeful_ultimate"
 		////"Ability8"						"vengeful_ex_second_attack"
 		//"Ability8"						"vengeful_ex_counter"	
-		"Ability10"						"mount"							
-		"Ability11"						"charge"						
+									
+								
 		"Ability12"						"vengeful_mobility_swap"
 		
 

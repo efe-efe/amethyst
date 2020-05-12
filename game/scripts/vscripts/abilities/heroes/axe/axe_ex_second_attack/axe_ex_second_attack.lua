@@ -3,8 +3,7 @@ LinkLuaModifier( "modifier_axe_ex_second_attack_movement", "abilities/heroes/axe
 LinkLuaModifier( "modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
 
 
-function axe_ex_second_attack:IsHidden()
-    return true
+function axe_ex_second_attack:isHidden() return true
 end
 
 function axe_ex_second_attack:IsHiddenAbilityCastable()

@@ -4,23 +4,15 @@
         <include src="file://{resources}/scripts/custom_game/underscore-min.js" />
         <include src="file://{resources}/scripts/custom_game/status_bar_styles.js" />
         <include src="file://{resources}/scripts/custom_game/overhead.js" />
+        <include src="file://{resources}/scripts/custom_game/progress_bar.js" />
     </scripts>
     <styles>
         <include src="file://{resources}/styles/custom_game/overhead.css" />
+        <include src="file://{resources}/styles/custom_game/progress_bar.css" />
     </styles>
-    <snippets>
-
-        <snippet name="ProgressBar">
-            <Panel class="ProgressBar" hittest="false" hittestchildren="false">
-                <Panel class="ProgressBar__Background" id="ProgressBar__Background" hittest="false" hittestchildren="false">
-                    <Panel class="ProgressBar__Foreground" id="ProgressBar__Foreground" hittest="false" hittestchildren="false"/>
-                </Panel>
-            </Panel>
-        </snippet>
-    
+    <snippets>    
         <snippet name="OverHero"> 
             <Panel class="OverHero" hittest="false" hittestchildren="false">
-
 
                 <Panel class="OverHero__Top" hittest="false" hittestchildren="false">
                     <Panel id="Recast" class="Recast" hittest="false" hittestchildren="false" >
@@ -50,18 +42,7 @@
                     </Panel>
                     
                     <Panel class="Resources" hittest="false" hittestchildren="false">
-                        <Panel class="Resources__Health" hittest="false" hittestchildren="false">
-                                <Panel id="Healthbar__Container--NoShield" class="Healthbar__Container--NoShield">
-                                    <Panel class="Healthbar__Background" hittest="false" hittestchildren="false"/>
-                                    <Panel class="Healthbar__Foreground" hittest="false" hittestchildren="false"/>   
-                                </Panel>
-
-                                <Panel id="Healthbar__Container--WithShield" class="Healthbar__Container--WithShield">
-                                    <Panel id="Healthbar__Shield" class="Healthbar__Shield" hittest="false" hittestchildren="false" />
-                                    <Panel class="Healthbar__Foreground" hittest="false" hittestchildren="false"/>                           
-                                </Panel>
-                        </Panel>
-
+                        <Panel class="Resources__Health" id="Resources__Health" hittest="false" hittestchildren="false"/>
                         <Panel class="Resources__Mana" id="Resources__Mana" hittest="false" hittestchildren="false"/>
                         <Panel class="Resources__CastPoint" id="Resources__CastPoint" hittest="false" hittestchildren="false"/>
                     </Panel>
@@ -80,11 +61,9 @@
                 </Panel>
             </Panel>
         </snippet>
-
-        
     </snippets>
     <Panel class="Overhead" hittest="false">
-        <Panel id="OverheadContainer" hittest="false" class="Overhead__Container" />
+        <Panel id="Overhead__Container" hittest="false" class="Overhead__Container" />
     </Panel>
 </root>
 

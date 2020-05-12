@@ -2,16 +2,13 @@ modifier_axe_second_attack_buff = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_axe_second_attack_buff:IsHidden()
-	return false
+function modifier_axe_second_attack_buff:IsHidden() return false
 end
 
-function modifier_axe_second_attack_buff:IsDebuff()
-	return false
+function modifier_axe_second_attack_buff:IsDebuff() return false
 end
 
-function modifier_axe_second_attack_buff:IsPurgable()
-	return false
+function modifier_axe_second_attack_buff:IsPurgable() return false
 end
 
 -------------------------------------------------------------------------------

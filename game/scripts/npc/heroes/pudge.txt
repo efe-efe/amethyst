@@ -20,8 +20,8 @@
 		"Ability7"						"pudge_ultimate"            
 		////"Ability8"						"pudge_ex_counter"       
 		//"Ability8"						"pudge_ex_special_attack"	
-		"Ability10"						"mount"					
-		"Ability11"						"charge"		
+							
+				
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------

@@ -9,10 +9,6 @@
     flow-children: down;
 }
 
-.OverHero Panel{
-}
-
-
 .OverHero__Top{
     height: 60px;
     width: 100%;
@@ -21,6 +17,7 @@
 .OverHero__Middle{
     height: 30px;
     width: 100%;
+    margin-bottom: 2px;
 
 }
 
@@ -29,25 +26,6 @@
     width: 100%;
     flow-children: right;
     margin-bottom: 2px;
-}
-
-.ProgressBar{
-    height: 100%;
-    width: 100%;
-}
-
-.ProgressBar__Background{
-    height: 100%;
-    width: 100%;
-
-    background-color: rgba(36, 42, 53, 0.7);
-    border: 1px solid rgb(36, 42, 53);
-}
-
-.ProgressBar__Foreground{
-    height: 100%;
-
-    background-color: #FAFAFA;
 }
 
 .Recast{
@@ -183,6 +161,9 @@
     width: 100%;
 
     margin-bottom: 2px;
+
+    background-color:rgba(36, 42, 53, 0.2);
+    flow-children: right;
 }
 
 .Resources__Mana{
@@ -216,7 +197,7 @@
     opacity: 0.0;
 
     transition-property: opacity;
-    transition-duration: 0.1s;
+    transition-duration: 0.01s;
     border: 1px solid rgb(36, 42, 53);
     background-color: gradient( linear, 0% 0%, 0% 100%, from( rgba(201, 81, 253, 1.0) ), to( rgba(250, 117, 245, 1.0) ) );
 }
@@ -224,7 +205,7 @@
 .Cooldown{
     height: 18px;
     width: 100%;
-    margin-left: 5px;
+    margin-left: 6px;
 
     visibility: collapse;
 
@@ -250,374 +231,7 @@
 
     border: 1px solid rgb(0, 0, 0);
     box-shadow: inset 0 0 10px #000000;
-    background-color: gradient( linear, 0% 0%, 0% 100%, from( rgba(201, 81, 253, 1.0) ), to( rgba(250, 117, 245, 1.0) ) );  
+    background-color: gradient( linear, 0% 0%, 0% 100%, from( rgba(201, 81, 253, 1.0) ), to( rgb(255, 144, 251) ) );  
     clip: radial( 50% 50%, 0deg, 90deg );
 }
 
-
-
-.Healthbar__Container--WithShield{
-    height: 100%;
-    width: 100%;
-    visibility: collapse;
-
-    background-color: rgba(36, 42, 53, 0.9);
-    border: 1px solid rgb(36, 42, 53);
-}
-
-.Healthbar__Container--NoShield{
-    height: 100%;
-    width: 100%;
-    background-color: rgba(36, 42, 53, 0.9);
-    border: 1px solid rgb(36, 42, 53);
-}
-
-.Healthbar__Foreground{
-    height: 100%;
-    width: 100%;
-    background-color: green;
-}
-
-.Healthbar__Background{
-    width: 100%;
-    height: 100%;
-
-    background-color: #FAFAFA;
-    transition-property: width;
-    transition-duration: 0.5s;
-}
-
-.Healthbar__Shield{
-    width: 100%;
-    height: 100%;
-    background-color: rgb(204, 204, 204);
-    transition-property: width;
-    transition-duration: 0.5s;
-}
-
-/*
-#Status{
-    width: 100%;
-    height: 100%;
-    flow-children: down;
-
-}
-
-#Player{
-    width: 100%;
-    height: 100%;
-
-    transition-property: opacity;
-    transition-duration: 0.1s;
-}
-
-#Player .Player__Text{
-    width: 100%;
-    height: 50%;
-
-    text-align: center;
-    vertical-align: bottom;
-
-    font-size: 12px;
-    font-weight: bold;    
-    text-shadow: 0px 0px 8px 5.0 #333333b0;
-
-    text-transform: uppercase;
-    color: #FAFAFA;
-}
-
-#Status .Status__Text{
-    width: 100%;
-    height: 70%;
-}
-
-#Status .Status__Text--Normal{
-    width: 100%;
-    height: 100%;
-    
-    vertical-align: center;
-    
-    font-size: 16px;
-    font-weight: bold;
-    
-    font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim,MingLiU;
-
-    text-shadow: 0px 0px 3px 3.0 black;
-    text-transform: uppercase;
-    text-align: center;
-    color: #FAFAFA;
-}
-#Status .Status__Text--Glow{
-    width: 100%;
-    height: 100%;
-    font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim,MingLiU;
-
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-align: center;
-    color:rgba(255, 255, 255, 0.0);
-}
-
-#Status .Status__ProgressOuter{
-    width: 100%;
-    height: 20%;
-    margin-bottom: 10%;
-    margin: 0 16% 0 16%;
-    
-    background-color: rgba(36, 42, 53, 0.9);
-    border: 1px solid rgb(36, 42, 53);
-}
-
-#Status .Status__ProgressOuter .Status__ProgressOuterInner{
-    width: 100%;
-    height: 100%;
-    background-color: #ADC6DE;
-    //background-color: #FAFAFA; //--------- Set on js
-}
-
-.OverHero .Bottom .Left{
-    width: 14%;
-    margin-right: 2%;
-    height: 100%;
-    flow-children: down;
-}
-
-.OverHero .Bottom .Middle{
-    width: 64%;
-    margin-right: 2%;
-    height: 100%;
-    flow-children: down;
-}
-
-.OverHero .Bottom .Right{
-    height: 100%;
-    width: 14%;
-}
-
-#Charges{
-    width: 100%;
-    height: 100%;
-    padding: 10% 0;
-    opacity: 0.0;
-    
-    flow-children: right;
-}
-
-#Stacks{
-    width: 100%;
-    height: 80%;
-
-    flow-children: right;
-}
-
-#Cooldown{
-    width: 100%;
-    height: 80%;
-
-    opacity: 0.0;
-    padding: 4px 3px;
-}
-
-#Charges .Charge__Text{
-    width: 25%;
-    height: 100%;
-    margin: 0px;
-
-    align: center center;
-    text-align: center;
-    font-size: 18px;
-    color: rgb(221, 221, 221);
-
-    text-shadow:2px 2px 2px #000;
-}
-
-#Charges .Charge__Text.Number{
-    font-size: 16px;
-    width: 50%;
-}
-
-#Stacks .Stack{
-    width: 20%;
-    margin-right: 5%;
-    height: 100%;
-    opacity: 0.0;
-    
-    transition-property: opacity;
-    transition-duration: 0.1s;
-    border: 1px solid rgb(36, 42, 53);
-    background-color: gradient( linear, 0% 0%, 0% 100%, from( rgba(201, 81, 253, 1.0) ), to( rgba(250, 117, 245, 1.0) ) );
-}
-
-
-#Cooldown .Cooldown__Background{
-    width: 100%;
-    height: 100%;
-
-    border: 1px solid black;
-    border-radius: 50%;
-   
-	box-shadow:0 0 5px rgba(0, 0, 0, 1.0);
-    background-color: rgba(36, 42, 53, 0.8);
-}
-
-#Cooldown .Cooldown__Circle{
-    width: 100%;
-    height: 100%;
-
-    border-radius: 50%;
-
-    border: 1px solid rgb(0, 0, 0);
-    box-shadow: inset 0 0 10px #000000;
-    background-color: gradient( linear, 0% 0%, 0% 100%, from( rgba(201, 81, 253, 1.0) ), to( rgba(250, 117, 245, 1.0) ) );  
-    clip: radial( 50% 50%, 0deg, 90deg );
-}
-
-
-.OverHero .Bottom .Middle .Health
-{
-    width: 100%;
-    height: 50%;
-    margin-bottom: 7%;
-
-    background-color: rgba(36, 42, 53, 0.9);
-    border: 1px solid rgb(36, 42, 53);
-}
-
-.OverHero .Bottom .Middle .Health.Health--WithShield
-{
-    flow-children: right;
-}
-
-
-.OverHero .Bottom .Middle .Shield{
-    width: 100%;
-    height: 100%;
-    background-color: rgb(204, 204, 204);
-    transition-property: width;
-    transition-duration: 0.5s;
-}
-
-#Mana{
-    width: 100%;
-    height: 20%;
-    margin-bottom: 7%;
-
-    border: 1px solid rgb(36, 42, 53);
-    background-color: rgba(36, 42, 53, 0.7);
-}
-
-#CastPoint{
-    width: 100%;
-    height: 16%;
-    opacity: 0.0;
-
-    transition-property: opacity;
-    transition-duration: 0.5s;
-    background-color: rgba(36, 42, 53, 0.9);
-    border: 1px solid rgb(36, 42, 53);
-}
-
-.OverHero .Bottom .Middle .HealthInner{
-    height: 100%;
-    width: 100%;
-}
-
-.OverHero .Bottom .Middle .HealthInnerBack{
-    width: 100%;
-    height: 100%;
-
-    background-color: #FAFAFA;
-    transition-property: width;
-    transition-duration: 0.5s;
-}
-
-.OverHero .Bottom .Middle .ManaInner{
-    height: 100%;
-    width: 0%;
-
-    background-color: gradient( linear, 0% 0%, 100% 0%, from( rgba(27, 113, 210, 1.0) ), to( rgba(120, 156, 190, 1.0) ) );
-}
-
-
-#CastPoint .CastPointInner{
-    width: 100%;
-    height: 100%;
-
-    background-color: #FAFAFA;
-}
-
-
-
-
-
-
-
-
-.Overhead
-{
-    width: 100%;
-    height: 100%;
-}
-
-.Overhead__Container
-{
-    width: 100%;
-    height: 100%;
-}
-
-.OverHero{
-    height: 120px;
-    width: 160px;
-    flow-children: down;
-
-    transform: translate3d(-1px, -50px, 0px);
-}
-
-.OverHero__Top{
-    height: 50%;
-    width: 100%;
-}
-
-.OverHero__Middle{
-    height: 25%;
-    width: 100%;
-}
-
-.OverHero__Bottom{
-    height: 25%;
-    width: 100%;
-    flow-children: right;
-}
-
-#Recast{
-    height: 100%;
-    width: 100%;
-
-    flow-children: down;
-    margin: 0 35% 0 35%;
-
-    opacity: 0.0;
-
-    transition-property: opacity;
-    transition-duration: 0.2s;
-}
-
-#Recast Label{
-    height: 20%;
-    width: 100%;
-
-    text-align: center;
-    text-transform: uppercase;
-    text-align: center;
-    color: #FAFAFA;
-    font-size: 12px;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-}
-
-#Recast #Recast__Image{
-    border: 1px solid white;
-    border-radius: 100%;
-	box-shadow:0 0 5px rgba(0, 0, 0, 1.0);
-}
-*/

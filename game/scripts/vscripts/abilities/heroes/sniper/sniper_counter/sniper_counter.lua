@@ -1,50 +1,34 @@
 sniper_counter = class({})
 LinkLuaModifier( "modifier_sniper_counter", "abilities/heroes/sniper/sniper_counter/modifier_sniper_counter", LUA_MODIFIER_MOTION_NONE )
 
-function sniper_counter:OnCastPointEnd() 
-    local caster = self:GetCaster()
+function sniper_counter:OnSpellStart() 
     local duration = self:GetSpecialValueFor("duration")
 
-    caster:AddNewModifier(
-        caster,
+    self:GetCaster():AddNewModifier(
+        self:GetCaster(),
         self,
         "modifier_sniper_counter",
         { duration = duration }
     )
-    
-    self:PlayEffects()
 
-    local ability = caster:FindAbilityByName("sniper_second_attack")
-    --local ability_ex = caster:FindAbilityByName("sniper_ex_second_attack")
+    local ability = self:GetCaster():FindAbilityByName("sniper_second_attack")
     ability:EndCooldown()
-    --ability_ex:EndCooldown()
+    self:PlayEffects()
 end
 
 function sniper_counter:PlayEffects()
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 
-    -- Cast Sound
-    local sound_cast = "DOTA_Item.SmokeOfDeceit.Activate"
-    EmitSoundOn( sound_cast , caster )
+    EmitSoundOn("DOTA_Item.SmokeOfDeceit.Activate" , caster)
 
-    -- Cast particle
-    local particle_cast_a="particles/econ/items/vengeful/vs_ti8_immortal_shoulder/vs_ti8_immortal_magic_missle_end_smoke.vpcf"
-    local particle_cast_b="particles/econ/items/riki/riki_head_ti8/riki_smokebomb_ti8_start_ring.vpcf"
+    local particle_cast ="particles/econ/items/vengeful/vs_ti8_immortal_shoulder/vs_ti8_immortal_magic_missle_end_smoke.vpcf"
+    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    ParticleManager:SetParticleControl( effect_cast, 3, Vector(origin.x, origin.y, origin.z + 64) )
+    ParticleManager:SetParticleControl( effect_cast, 0, origin)
 
-    local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, nil )
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
-
-    ParticleManager:SetParticleControl( effect_cast_a, 3, Vector(origin.x, origin.y, origin.z + 64) )
-    ParticleManager:SetParticleControl( effect_cast_b, 0, origin)
-    
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    particle_cast = "particles/econ/items/riki/riki_head_ti8/riki_smokebomb_ti8_start_ring.vpcf"
+    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	sniper_counter,
-	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },
-	{ movement_speed = 100 }
-)

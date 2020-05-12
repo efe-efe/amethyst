@@ -1,7 +1,37 @@
 juggernaut_basic_attack = class({})
 LinkLuaModifier( "modifier_juggernaut_basic_attack_stacks", "abilities/heroes/juggernaut/juggernaut_basic_attack/modifier_juggernaut_basic_attack_stacks", LUA_MODIFIER_MOTION_NONE )
 
-function juggernaut_basic_attack:OnCastPointEnd( point )
+
+function juggernaut_basic_attack:GetCastPoint()
+	if IsServer() then
+		return self.BaseClass.GetCastPoint(self) + self:GetCaster():GetAttackAnimationPoint()
+	end
+end
+
+function juggernaut_basic_attack:GetCooldown(iLevel)
+	if IsServer() then
+        local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
+        local attack_speed = ( 1 / attacks_per_second )
+		
+		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
+	end
+end
+
+function juggernaut_basic_attack:OnAbilityPhaseStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
+		duration = self:GetCastPoint(), 
+		movement_speed = 80,
+	})
+	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 1.8)
+	return true
+end
+
+function juggernaut_basic_attack:OnAbilityPhaseInterrupted()
+	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK_EVENT)
+	self:GetCaster():RemoveModifierByName("modifier_casting")
+end
+
+function juggernaut_basic_attack:OnSpellStart( point )
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -82,8 +112,6 @@ function juggernaut_basic_attack:OnCastPointEnd( point )
 	Projectiles:CreateProjectile(projectile)
 end
 
---------------------------------------------------------------------------------
--- Graphics & sounds
 function juggernaut_basic_attack:PlayEffectsOnFinish( pos )
 	local caster = self:GetCaster()
 	local offset = 40
@@ -91,7 +119,6 @@ function juggernaut_basic_attack:PlayEffectsOnFinish( pos )
 	local direction = (pos - origin):Normalized()
 	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
-	-- Create Particles
 	local particle_cast = "particles/meele_swing_red/pa_arcana_attack_blinkb_red.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
@@ -118,11 +145,3 @@ end
 function juggernaut_basic_attack:PlayEffectsOnMiss( pos )
 	EmitSoundOnLocationWithCaster( pos, "Hero_Juggernaut.PreAttack", self:GetCaster() )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	juggernaut_basic_attack,
-	{ activity = ACT_DOTA_ATTACK_EVENT, rate = 1.8 },
-	{ movement_speed = 80 }
-)
-Abilities.BasicAttack( juggernaut_basic_attack )

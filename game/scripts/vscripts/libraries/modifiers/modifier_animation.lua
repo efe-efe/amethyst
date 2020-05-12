@@ -414,8 +414,7 @@ function modifier_animation:GetAttributes()
     return MODIFIER_ATTRIBUTE_PERMANENT + MODIFIER_ATTRIBUTE_IGNORE_INVULNERABLE --+ MODIFIER_ATTRIBUTE_MULTIPLE
 end
 
-function modifier_animation:IsHidden()
-    return true
+function modifier_animation:isHidden() return true
 end
 
 function modifier_animation:IsDebuff() 

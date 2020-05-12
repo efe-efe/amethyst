@@ -24,7 +24,6 @@ function nevermore_counter:OnTrigger( params )
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
     
-    caster:AddNoDraw()
     caster:AddNewModifier(caster, nil, "modifier_banish", {})
     caster:AddNewModifier(caster, self, "modifier_nevermore_counter_recast", { duration = duration })
 

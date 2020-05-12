@@ -8,10 +8,7 @@ function WrapFunction(name) {
 Game.EmptyCallback = function() {};
 
 (function() {
-    Game.AddCommand( "+ShiftKey", WrapFunction("OnPressShift"), "", 0 );
-    Game.AddCommand( "-ShiftKey", WrapFunction("OnReleaseShift"), "", 0 );
-
-    Game.AddCommand( "+ZKey", WrapFunction("OnPressZ"), "", 0 );
+    Game.AddCommand( "+ZKey", WrapFunction("EmptyCallback"), "", 0 );
     Game.AddCommand( "+CKey", WrapFunction("OnPressC"), "", 0 );
     Game.AddCommand( "+SpaceKey", WrapFunction("OnPressSpace"), "", 0 );
     Game.AddCommand( "+1Key", WrapFunction("OnPress1"), "", 0 );

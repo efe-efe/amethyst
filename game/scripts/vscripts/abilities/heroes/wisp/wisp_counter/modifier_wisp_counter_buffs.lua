@@ -2,12 +2,10 @@ modifier_wisp_counter_buffs = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_wisp_counter_buffs:IsHidden()
-	return false
+function modifier_wisp_counter_buffs:IsHidden() return false
 end
 
-function modifier_wisp_counter_buffs:IsDebuff()
-	return false
+function modifier_wisp_counter_buffs:IsDebuff() return false
 end
 
 function modifier_wisp_counter_buffs:IsPurgable()

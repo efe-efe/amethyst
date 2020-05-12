@@ -2,12 +2,10 @@ modifier_charge_buff = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_charge_buff:IsHidden()
-	return false
+function modifier_charge_buff:IsHidden() return false
 end
 
-function modifier_charge_buff:IsDebuff()
-	return false
+function modifier_charge_buff:IsDebuff() return false
 end
 
 function modifier_charge_buff:IsPurgable()

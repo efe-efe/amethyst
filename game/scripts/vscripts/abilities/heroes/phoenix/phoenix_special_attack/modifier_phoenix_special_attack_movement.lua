@@ -1,24 +1,21 @@
 modifier_phoenix_special_attack_movement = class({})
 LinkLuaModifier( "modifier_phoenix_special_attack_thinker_fire", "abilities/heroes/phoenix/phoenix_special_attack/modifier_phoenix_special_attack_thinker_fire", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_projectile_enemy_blocker_lua", "abilities/generic/modifier_generic_projectile_enemy_blocker_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_projectile_special_behavior_lua", "abilities/generic/modifier_generic_projectile_special_behavior_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_projectile_enemy_blocker", "abilities/generic/modifier_generic_projectile_enemy_blocker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_projectile_special_behavior", "abilities/generic/modifier_generic_projectile_special_behavior", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phoenix_special_attack_movement:IsHidden()
-	return false
+function modifier_phoenix_special_attack_movement:IsHidden() return false
 end
 
-function modifier_phoenix_special_attack_movement:IsDebuff()
-	return false
+function modifier_phoenix_special_attack_movement:IsDebuff() return false
 end
 
 function modifier_phoenix_special_attack_movement:IsStunDebuff()
 	return false
 end
 
-function modifier_phoenix_special_attack_movement:IsPurgable()
-	return false
+function modifier_phoenix_special_attack_movement:IsPurgable() return false
 end
 
 -- Status Effects
@@ -59,13 +56,13 @@ function modifier_phoenix_special_attack_movement:OnIntervalThink()
     blocker:AddNewModifier(
         self:GetParent(),
         self:GetAbility(),
-        "modifier_generic_projectile_special_behavior_lua",
+        "modifier_generic_projectile_special_behavior",
         { duration = self.duration }
     )
     blocker:AddNewModifier(
         self:GetParent(),
         self:GetAbility(),
-        "modifier_generic_projectile_enemy_blocker_lua",
+        "modifier_generic_projectile_enemy_blocker",
         { duration = self.duration }
     )
 

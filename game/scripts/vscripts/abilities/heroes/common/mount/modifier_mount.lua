@@ -2,12 +2,10 @@ modifier_mount = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_mount:IsHidden()
-	return false
+function modifier_mount:IsHidden() return false
 end
 
-function modifier_mount:IsDebuff()
-	return false
+function modifier_mount:IsDebuff() return false
 end
 
 function modifier_mount:IsPurgable()

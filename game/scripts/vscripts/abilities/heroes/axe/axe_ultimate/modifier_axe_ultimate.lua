@@ -2,12 +2,10 @@ modifier_axe_ultimate = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_axe_ultimate:IsHidden()
-	return false
+function modifier_axe_ultimate:IsHidden() return false
 end
 
-function modifier_axe_ultimate:IsDebuff()
-	return false
+function modifier_axe_ultimate:IsDebuff() return false
 end
 
 function modifier_axe_ultimate:IsPurgable()

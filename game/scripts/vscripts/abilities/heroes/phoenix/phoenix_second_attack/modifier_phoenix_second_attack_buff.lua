@@ -2,12 +2,10 @@ modifier_phoenix_second_attack_buff = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phoenix_second_attack_buff:IsHidden()
-	return false
+function modifier_phoenix_second_attack_buff:IsHidden() return false
 end
 
-function modifier_phoenix_second_attack_buff:IsDebuff()
-	return false
+function modifier_phoenix_second_attack_buff:IsDebuff() return false
 end
 
 function modifier_phoenix_second_attack_buff:IsStunDebuff()

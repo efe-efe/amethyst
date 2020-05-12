@@ -5,8 +5,7 @@ function modifier_treant_mobility_movement:IsHidden()
 	return true
 end
 
-function modifier_treant_mobility_movement:IsPurgable()
-	return false
+function modifier_treant_mobility_movement:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

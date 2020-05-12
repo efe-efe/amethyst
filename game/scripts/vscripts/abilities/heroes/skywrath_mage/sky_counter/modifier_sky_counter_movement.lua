@@ -14,8 +14,7 @@ function modifier_sky_counter_movement:IsStunDebuff()
 	return false
 end
 
-function modifier_sky_counter_movement:IsPurgable()
-	return false
+function modifier_sky_counter_movement:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

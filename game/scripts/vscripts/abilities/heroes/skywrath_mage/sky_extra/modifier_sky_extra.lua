@@ -2,12 +2,10 @@ modifier_sky_extra = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_sky_extra:IsHidden()
-	return false
+function modifier_sky_extra:IsHidden() return false
 end
 
-function modifier_sky_extra:IsDebuff()
-	return false
+function modifier_sky_extra:IsDebuff() return false
 end
 
 function modifier_sky_extra:IsPurgable()

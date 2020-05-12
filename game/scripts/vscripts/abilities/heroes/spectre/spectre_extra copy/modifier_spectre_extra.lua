@@ -1,16 +1,14 @@
 modifier_spectre_extra = class({})
 
 --------------------------------------------------------------------------------
-function modifier_spectre_extra:IsDebuff()
-	return false
+function modifier_spectre_extra:IsDebuff() return false
 end
 
 function modifier_spectre_extra:IsHidden()
 	return true
 end
 
-function modifier_spectre_extra:IsPurgable()
-	return false
+function modifier_spectre_extra:IsPurgable() return false
 end
 --------------------------------------------------------------------------------
 -- Initializations

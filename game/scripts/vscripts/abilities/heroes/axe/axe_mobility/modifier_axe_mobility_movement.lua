@@ -7,8 +7,7 @@ function modifier_axe_mobility_movement:IsHidden()
 	return true
 end
 
-function modifier_axe_mobility_movement:IsPurgable()
-	return false
+function modifier_axe_mobility_movement:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

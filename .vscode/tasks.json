@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile Panorama",
+            "type": "shell",
+            "command": "tsc -p content/panorama/scripts/custom_game/tsconfig.json",
+            "group": {
+                "kind": "build",
+                "isDefault": true,
+            },
+            "problemMatcher": []
+        }
+    ]
+}

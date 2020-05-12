@@ -4,7 +4,7 @@ Player = class({
     hero = nil,
     team = 0,
     alliance = nil,
-    cursor_position = Vector(0,0,0)
+    cursor_position = Vector(0,0,0),
 })
 
 function Player:constructor(id, userid)

@@ -2,16 +2,13 @@ modifier_wisp_mobility = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_wisp_mobility:IsHidden()
-	return false
+function modifier_wisp_mobility:IsHidden() return false
 end
 
-function modifier_wisp_mobility:IsDebuff()
-	return false
+function modifier_wisp_mobility:IsDebuff() return false
 end
 
-function modifier_wisp_mobility:IsPurgable()
-	return false
+function modifier_wisp_mobility:IsPurgable() return false
 end
 
 function modifier_wisp_mobility:OnCreated( kv )

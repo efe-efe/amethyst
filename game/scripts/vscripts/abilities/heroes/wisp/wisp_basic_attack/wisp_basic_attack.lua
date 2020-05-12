@@ -82,18 +82,6 @@ function wisp_basic_attack:OnCastPointEnd( point )
 					"modifier_wisp_basic_attack_link_negative",
 					{ duration = link_duration }
 				)
-
-				-- perform the actual attack
-				caster:PerformAttack(
-					unit, -- handle hTarget 
-					true, -- bool bUseCastAttackOrb, 
-					true, -- bool bProcessProcs,
-					true, -- bool bSkipCooldown
-					false, -- bool bIgnoreInvis
-					false, -- bool bUseProjectile
-					false, -- bool bFakeAttack
-					true -- bool bNeverMiss
-				)
 				self:PlayEffects_b(_self:GetPosition())
 			end
 			-- ALLIES
@@ -152,16 +140,4 @@ function wisp_basic_attack:PlayEffects_b( pos )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
 	
 	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
-
---------------------------------------------------------------------------------
--- Misc
--- Add mana on attack modifier. Only first time upgraded
-function wisp_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
 end

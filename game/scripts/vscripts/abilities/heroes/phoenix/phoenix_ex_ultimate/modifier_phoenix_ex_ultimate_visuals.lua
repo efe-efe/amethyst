@@ -6,8 +6,7 @@ function modifier_phoenix_ex_ultimate_visuals:IsHidden()
 	return true
 end
 
-function modifier_phoenix_ex_ultimate_visuals:IsPurgable()
-	return false
+function modifier_phoenix_ex_ultimate_visuals:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

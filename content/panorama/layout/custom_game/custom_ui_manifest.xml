@@ -21,7 +21,8 @@
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/unit_bar.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/custom_message.xml"/>
 		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/top_bar.xml"/>
-		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/heroes_status.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/alliances_status.xml"/>
+		<CustomUIElement type="Hud"					layoutfile="file://{resources}/layout/custom_game/hud.xml"/>
 
 		<CustomUIElement type="GameSetup"			layoutfile="file://{resources}/layout/custom_game/team_select.xml" />
 		<CustomUIElement type="FlyoutScoreboard"	layoutfile="file://{resources}/layout/custom_game/multiteam_flyout_scoreboard.xml" />

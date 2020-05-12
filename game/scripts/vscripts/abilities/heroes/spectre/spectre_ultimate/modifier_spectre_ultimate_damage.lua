@@ -2,12 +2,10 @@ modifier_spectre_ultimate_damage = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_spectre_ultimate_damage:IsHidden()
-	return false
+function modifier_spectre_ultimate_damage:IsHidden() return false
 end
 
-function modifier_spectre_ultimate_damage:IsDebuff()
-	return false
+function modifier_spectre_ultimate_damage:IsDebuff() return false
 end
 
 function modifier_spectre_ultimate_damage:IsPurgable()

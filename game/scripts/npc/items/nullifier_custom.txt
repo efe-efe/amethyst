@@ -7,16 +7,24 @@
 		"AbilityTextureName" 			"item_nullifier"	
         "ScriptFile"                    "items/item_nullifier_custom/item_nullifier_custom.lua"
 
-		"ItemCost"						"1"
+		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"
 		"ItemQuality"					"consumable"
 		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
-		"ItemStockMax"					"1"
+		"ItemDroppable" 				"0"
 
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"12.0"
 		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
 
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
 		"AbilitySpecial"	
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }

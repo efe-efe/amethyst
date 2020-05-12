@@ -32,7 +32,7 @@ function modifier_demon_special_attack_thinker:OnIntervalThink()
     )
 
     for _,enemy in pairs(enemies) do
-        enemy:AddNewModifier(caster, self:GetAbility(), "modifier_generic_confused", { duration = self.duration })
+        enemy:AddNewModifier(caster, self:GetAbility(), "modifier_generic_confuse", { duration = self.duration })
 
         local damage = {
             victim = enemy,

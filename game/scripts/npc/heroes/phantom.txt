@@ -20,8 +20,8 @@
 		"Ability7"						"phantom_ultimate"
 		//"Ability8"						"phantom_ex_basic_attack"
 		//"Ability8"						"phantom_ex_special_attack"	
-		"Ability10"						"mount"							
-		"Ability11"						"charge"						
+									
+								
 		"Ability12"						"phantom_counter_mobility"	
 		//"Ability13"						"phantom_extra_mobility"
 		"Ability14"						"phantom_basic_attack_related"

@@ -1,31 +1,15 @@
 modifier_shield = class({})
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_shield:IsHidden()
-	return false
-end
+function modifier_shield:IsHidden() return false end
+function modifier_shield:IsDebuff() return false end
+function modifier_shield:IsStunDebuff() return false end
 
-function modifier_shield:IsDebuff()
-	return false
-end
-
-function modifier_shield:IsStunDebuff()
-	return false
-end
-
---------------------------------------------------------------------------------
--- Initializations
 function modifier_shield:OnCreated( params )
     if IsServer() then
         self.sound_cast = params.sound_cast
 
         self:SetStackCount(params.damage_block)
         self:PlayEffects( self:GetDuration() )
-        GameRules.GameMode:UpdateHeroHealthBar( self:GetParent() )
-        self:GetParent():AddStatusBar({
-			label = "Shield", modifier = self, priority = 2, stylename="Shield"
-		}) 
 	end
 end
 
@@ -41,25 +25,19 @@ function modifier_shield:OnRefresh( params )
         self:SetDuration(new_duration, true)
         self:StopEffects()
         self:PlayEffects(new_duration)
-        GameRules.GameMode:UpdateHeroHealthBar( self:GetParent() )
     end
 end
 
 function modifier_shield:OnDestroy( kv )
     if IsServer() then
         self:StopEffects()
-        GameRules.GameMode:UpdateHeroHealthBar( self:GetParent() )
     end
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_shield:DeclareFunctions()
-	local funcs = {
+	return {
 		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
 	}
-
-	return funcs
 end
 
 function modifier_shield:GetModifierIncomingDamage_Percentage( params )
@@ -84,9 +62,6 @@ function modifier_shield:OnStackCountChanged( old )
 	end
 end
 
-
---------------------------------------------------------------------------------
--- Graphics & Sounds
 function modifier_shield:PlayEffects( duration )
     local particle_cast = "particles/items_fx/courier_shield.vpcf"
     if self.sound_cast ~= nil then
@@ -95,7 +70,6 @@ function modifier_shield:PlayEffects( duration )
     
     local origin = self:GetParent():GetOrigin()
 
-    -- Create Particles
     self.effect_cast = ParticleManager:CreateParticle( 
         particle_cast, 
         PATTACH_CUSTOMORIGIN, 
@@ -120,3 +94,14 @@ function modifier_shield:StopEffects()
         ParticleManager:ReleaseParticleIndex( self.effect_cast )
     end
 end
+
+function modifier_shield:GetTexture()
+    return "modifier_shield"
+end
+
+function modifier_shield:GetStatusLabel() return "Shield" end
+function modifier_shield:GetStatusPriority() return 2 end
+function modifier_shield:GetStatusStyle() return "Shield" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_shield)

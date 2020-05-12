@@ -112,7 +112,6 @@ function string.ends(str, ending)
   return ending == '' or string.sub(str, -string.len(ending)) == ending
 end
 
-
 function DuplicateTable(obj, seen)
   if type(obj) ~= 'table' then return obj end
   if seen and seen[obj] then return seen[obj] end
@@ -121,4 +120,53 @@ function DuplicateTable(obj, seen)
   s[obj] = res
   for k, v in pairs(obj) do res[DuplicateTable(k, s)] = DuplicateTable(v, s) end
   return res
+end
+
+function CalcPoint(origin, point, max_range, min_range)
+	local direction = (point - origin):Normalized()
+	local distance = (point - origin):Length2D()
+	local output_point = point
+	
+	if max_range then
+		if distance > max_range then
+			output_point = origin + direction * max_range
+		end
+	end
+
+	if min_range then
+		if distance < min_range then
+			output_point = origin + direction * min_range
+		end
+	end
+
+	return output_point
+end
+
+function CreateRadiusMarker(caster, origin, params)
+  local effect_cast
+
+  local particle_cast_enemy = "particles/mod_units/instant_aoe_marker.vpcf"
+  local particle_cast_ally = "particles/mod_units/heroes/hero_dark_willow/dw_ti8_immortal_cursed_crown_marker.vpcf"
+  
+  if params.show_all == 1 then
+      for _,alliance in pairs(GameRules.GameMode.alliances) do
+          for _,team in pairs(alliance.teams) do
+              if caster:GetTeam() == team then
+                  effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_ally, PATTACH_WORLDORIGIN, nil, team )
+              else
+                  effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_enemy, PATTACH_WORLDORIGIN, nil, team )
+              end
+                  ParticleManager:SetParticleControl( effect_cast, 0, origin )
+                  ParticleManager:SetParticleControl( effect_cast, 2, Vector( params.radius, params.radius , params.radius ) )
+                  ParticleManager:SetParticleControl( effect_cast, 4, origin)
+                  ParticleManager:ReleaseParticleIndex( effect_cast )
+          end
+      end
+  else
+      effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast_ally, PATTACH_WORLDORIGIN, nil, caster:GetPlayerOwner() )
+      ParticleManager:SetParticleControl( effect_cast, 0, origin )
+      ParticleManager:SetParticleControl( effect_cast, 2, Vector( params.radius, params.radius , params.radius ) )
+      ParticleManager:SetParticleControl( effect_cast, 4, origin)
+      ParticleManager:ReleaseParticleIndex( effect_cast )
+  end
 end

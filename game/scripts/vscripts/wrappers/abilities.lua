@@ -7,22 +7,21 @@ function Abilities.Initialize( ability, animation, warmup, recast )
     function ability:GetBehavior()
         return self.BaseClass.GetBehavior(self) + DOTA_ABILITY_BEHAVIOR_IMMEDIATE
     end
-    
+     
     function ability:OnSpellStart()
         local caster = self:GetCaster()
         local cast_point = self:GetSpecialValueFor("cast_point") ~= 0 and self:GetSpecialValueFor("cast_point") or self:GetCastPoint() 
 
         if animation or self.GetCastAnimation then
-            StartAnimation(caster, {
-                duration = animation and animation.duration or cast_point + 0.1, 
-                activity = animation and animation.activity or self:GetCastAnimation(), 
-                rate = animation and animation.rate or self:GetPlaybackRateOverride(),
-                translate = animation and animation.translate or nil,
-            })
+            caster:AddActivityModifier(animation and animation.translate or "")
+            caster:StartGestureWithPlaybackRate(
+                animation and animation.activity or self:GetCastAnimation(), 
+                animation and animation.rate or self:GetPlaybackRateOverride()
+            )
+            caster:ClearActivityModifiers()
         end
 
         local radius = nil
-
  
         if self:HasBehavior(DOTA_ABILITY_BEHAVIOR_AOE) then
             if self.GetRadius then
@@ -43,7 +42,7 @@ function Abilities.Initialize( ability, animation, warmup, recast )
             public = warmup.public or nil,
             disable_all = warmup.disable_all == false and 0 or 1,
             cancelable = self:GetAbilityType() == 1 and 0 or 1,
-            min_cast_point = min_cast_point,
+            min_cast_point = min_cast_point
         })
         
         -- Castbar (ULTIMATE)

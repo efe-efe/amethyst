@@ -1,36 +1,34 @@
 modifier_thinker_indicator = class({})
 
---------------------------------------------------------------------------------
--- Initializer
-function modifier_thinker_indicator:OnCreated( kv )
+function modifier_thinker_indicator:OnCreated(params)
     if IsServer() then
-        local thinker = kv.thinker
-
-        self.show_all = kv.show_all
-        self.radius = kv.radius
-        self.delay_time = kv.delay_time
-        self.draw_clock = kv.draw_clock 
+        print("poraqui")
+        local thinker = params.thinker
+        self.show_all = params.show_all
+        self.radius = params.radius
+        self.delay_time = params.delay_time
+        self.draw_clock = params.draw_clock 
         
-        local thinker_duration = kv.thinker_duration
+        local thinker_duration = params.thinker_duration
 
         self.caster = self:GetCaster()
         self.origin = self:GetParent():GetOrigin()
         self.effects_cast_aoe = {}
         self.effects_cast = {}
 
-        local params = {}
+        local m_params = {}
 
-        for k,v in pairs(kv) do
-            params[k] = v
+        for k,v in pairs(params) do
+            m_params[k] = v
         end
 
-        params["duration"] = thinker_duration
+        m_params["duration"] = thinker_duration
 
         CreateModifierThinker(
             self.caster, --hCaster
             self:GetAbility(), --hAbility
             thinker, --modifierName
-            params, --paramTable
+            m_params, --paramTable
             self.origin, --vOrigin
             self.caster:GetTeamNumber(), --nTeamNumber
             false --bPhantomBlocker
@@ -52,8 +50,6 @@ function modifier_thinker_indicator:OnCreated( kv )
     end
 end
 
---------------------------------------------------------------------------------
--- Destroyer
 function modifier_thinker_indicator:OnDestroy()
     if IsServer() then
         self:StopEffects()
@@ -61,8 +57,6 @@ function modifier_thinker_indicator:OnDestroy()
 	end
 end
 
---------------------------------------------------------------------------------
--- On Think
 function modifier_thinker_indicator:OnIntervalThink()
     if self.draw_clock ~= 1 then
         self:Destroy()
@@ -78,14 +72,10 @@ function modifier_thinker_indicator:OnIntervalThink()
     local y = self.origin.y + self.radius * math.sin(self.current_degree * math.pi/180)
     local target_point = Vector(x, y, self.origin.z)
 
-    --DebugDrawLine_vCol( self.origin, target_point, Vector(254, 255, 234), false, self.interval )
-    --DebugDrawCircle(target_point, Vector(234, 245, 254), 0.5, 3, true, self.delay_time - self.current_degree * self.interval)
     self:PlayEffectsDot(target_point, self.current_degree)
     self.current_degree = (self.current_degree + 20)
 end
 
---------------------------------------------------------------------------------
--- Graphics & Sounds
 function modifier_thinker_indicator:PlayEffects()                
     local particle_cast = "particles/econ/events/ti9/mekanism_recipient_b_ti9.vpcf"--ally
     local particle_cast_aoe = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
@@ -114,39 +104,6 @@ function modifier_thinker_indicator:PlayEffects()
                 ParticleManager:ReleaseParticleIndex( effect_cast )
             end
         end
-
-
-
-        --[[
-                for _,player in pairs(GameRules.GameMode.players) do
-            effect_cast = ParticleManager:CreateParticleForPlayer( 
-                particle_cast, 
-                PATTACH_WORLDORIGIN, 
-                player.hero, 
-                PlayerResource:GetPlayer(player.id) 
-            )
-            self.effects_cast_aoe[player.id] = ParticleManager:CreateParticleForPlayer( 
-                particle_cast_aoe, 
-                PATTACH_WORLDORIGIN, 
-                player.hero, 
-                PlayerResource:GetPlayer(player.id) 
-            )
-
-            ParticleManager:SetParticleControl( self.effects_cast_aoe[player.id], 0, self.origin)	-- line origin
-            ParticleManager:SetParticleControl( self.effects_cast_aoe[player.id], 1, Vector(self.radius, 1,1))
-
-            if player.alliance == caster_alliance then
-                ParticleManager:SetParticleControl( self.effects_cast_aoe[player.id], 15, Vector(70, 70, 250))
-            else
-                ParticleManager:SetParticleControl( self.effects_cast_aoe[player.id], 15, Vector(250, 70, 70))
-            end
-            
-            ParticleManager:SetParticleControl( effect_cast, 0, self.origin)	-- line origin
-            ParticleManager:SetParticleControl( effect_cast, 1, self.origin)	-- line origin
-            ParticleManager:ReleaseParticleIndex( effect_cast )
-        end
-
-        ]]
     else
 
         local parent_owner = self.caster:GetPlayerOwner()

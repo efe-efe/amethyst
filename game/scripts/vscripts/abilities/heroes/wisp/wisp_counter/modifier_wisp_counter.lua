@@ -3,16 +3,13 @@ LinkLuaModifier( "modifier_wisp_counter_buffs", "abilities/heroes/wisp/wisp_coun
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_wisp_counter:IsHidden()
-	return false
+function modifier_wisp_counter:IsHidden() return false
 end
 
-function modifier_wisp_counter:IsDebuff()
-	return false
+function modifier_wisp_counter:IsDebuff() return false
 end
 
-function modifier_wisp_counter:IsPurgable()
-	return false
+function modifier_wisp_counter:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

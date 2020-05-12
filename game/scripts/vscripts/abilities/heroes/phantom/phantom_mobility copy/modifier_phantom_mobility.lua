@@ -1,12 +1,10 @@
 modifier_phantom_mobility = class({})
 
 --------------------------------------------------------------------------------
-function modifier_phantom_mobility:IsDebuff()
-	return false
+function modifier_phantom_mobility:IsDebuff() return false
 end
 
-function modifier_phantom_mobility:IsHidden()
-	return false
+function modifier_phantom_mobility:IsHidden() return false
 end
 
 function modifier_phantom_mobility:IsPurgable()

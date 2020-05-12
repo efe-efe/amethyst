@@ -2,12 +2,10 @@ modifier_phantom_extra = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phantom_extra:IsHidden()
-	return false
+function modifier_phantom_extra:IsHidden() return false
 end
 
-function modifier_phantom_extra:IsDebuff()
-	return false
+function modifier_phantom_extra:IsDebuff() return false
 end
 
 function modifier_phantom_extra:IsStunDebuff()

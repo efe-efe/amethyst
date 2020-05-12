@@ -2,12 +2,10 @@ modifier_phantom_ex_basic_attack = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phantom_ex_basic_attack:IsHidden()
-	return false
+function modifier_phantom_ex_basic_attack:IsHidden() return false
 end
 
-function modifier_phantom_ex_basic_attack:IsDebuff()
-	return false
+function modifier_phantom_ex_basic_attack:IsDebuff() return false
 end
 
 function modifier_phantom_ex_basic_attack:IsStunDebuff()

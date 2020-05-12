@@ -1,21 +1,9 @@
 modifier_counter = class({})
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_counter:IsHidden()
-	return false
-end
+function modifier_counter:IsHidden() return false end
+function modifier_counter:IsDebuff() return false end
+function modifier_counter:IsPurgable() return false end
 
-function modifier_counter:IsDebuff()
-	return false
-end
-
-function modifier_counter:IsPurgable()
-	return false
-end
-
---------------------------------------------------------------------------------
--- Initializer
 function modifier_counter:OnCreated( kv )
     if IsServer() then
         self.movement_speed = kv.movement_speed
@@ -59,8 +47,6 @@ function modifier_counter:OnCreated( kv )
     end
 end
 
---------------------------------------------------------------------------------
--- Destroyer
 function modifier_counter:OnDestroy( kv )
     if IsServer() then
         
@@ -82,8 +68,6 @@ function modifier_counter:OnDestroy( kv )
     end
 end
 
---------------------------------------------------------------------------------
--- Status Effects
 function modifier_counter:CheckState()
     if self.movement_speed == 0 then
         return { [MODIFIER_STATE_ROOTED] = true }
@@ -92,8 +76,6 @@ function modifier_counter:CheckState()
     end
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_counter:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
@@ -151,8 +133,6 @@ function modifier_counter:OnAbilityFullyCast( params )
 	end
 end
 
---------------------------------------------------------------------------------
--- Graphics & Animations
 function modifier_counter:GetStatusEffectName()
 	return "particles/status_fx/status_effect_avatar.vpcf"
 end

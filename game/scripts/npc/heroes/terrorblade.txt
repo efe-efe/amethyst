@@ -19,8 +19,8 @@
 		"Ability7"						"phantom_ultimate"
 		//"Ability8"						"phantom_ex_basic_attack"
 		//"Ability8"						"phantom_ex_special_attack"	
-		"Ability10"						"mount"							
-		"Ability11"						"charge"						
+									
+								
 		"Ability12"						"terrorblade_extra_recast"
 		"Ability13"						"terrorblade_mobility_recast"
 		"Ability14"						"terrorblade_base"

@@ -81,18 +81,3 @@ function modifier_pudge_counter:PlayEffectsAoe()
     ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
-
---------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_pudge_counter:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_MANA_BONUS,
-	}
-
-	return funcs
-end
-
-function modifier_pudge_counter:GetModifierManaBonus()
-    return 25
-end

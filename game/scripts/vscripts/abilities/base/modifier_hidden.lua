@@ -1,7 +1,6 @@
 modifier_hidden = class({})
 
-function modifier_hidden:IsHidden()
-    return true
+function modifier_hidden:isHidden() return true
 end
 
 function modifier_hidden:CheckState()

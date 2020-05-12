@@ -9,8 +9,7 @@ function modifier_phoenix_special_attack_charges:DestroyOnExpire()
     return false
 end
 
-function modifier_phoenix_special_attack_charges:IsPurgable()
-    return false
+function modifier_phoenix_special_attack_charges:IsPurgable() return false
 end
 
 function modifier_phoenix_special_attack_charges:RemoveOnDeath()

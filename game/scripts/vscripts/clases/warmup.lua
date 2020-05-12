@@ -1,7 +1,8 @@
 Warmup = Warmup or class({}, nil, GameState)
 
-local WARMUP_TIME = 15.0
+local WARMUP_TIME = 1--20.0
 local DUMMY_TARGET_RESPAWN = 5.0
+local ADRENALINE_DURATION = 25.0
 
 function Warmup:constructor(players, callback)
     self.time_remaining = WARMUP_TIME * 10
@@ -21,7 +22,6 @@ function Warmup:constructor(players, callback)
             entity = DummyTarget(entity:GetOrigin()),
         })
     end
-    
 end
 
 function Warmup:Update()
@@ -46,16 +46,6 @@ function Warmup:Update()
                 end
             end
         end
-
-
-        for _,player in pairs(self.players) do
-            if player.hero:IsInRangeOfShop(0, true) then
-                CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(player.id), "open_shop", {})
-            else
-                CustomGameEventManager:Send_ServerToPlayer(PlayerResource:GetPlayer(player.id), "close_shop", {})
-            end
-        end
-
     else
         self:EndWarmup()
     end
@@ -74,12 +64,10 @@ function Warmup:EndWarmup()
             target = self.dire_spawn
         end
 
-        player.hero:SetAbsOrigin(target:GetAbsOrigin())
+        FindClearSpaceForUnit(player.hero, target:GetAbsOrigin(), true)
         player.hero:RemoveModifierByName("modifier_generic_displacement")
-        player.hero:AddNewModifier(player.hero, player.hero:FindAbilityByName("mount"), "modifier_mount", {})
         player.hero:Reset()
-
-
+        player.hero:AddNewModifier(player.hero, nil, "modifier_adrenaline", { duration = ADRENALINE_DURATION })
     end
 
     self:callback()

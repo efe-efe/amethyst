@@ -1,21 +1,34 @@
 sniper_extra = class({})
+LinkLuaModifier( "modifier_sniper_extra_displacement", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_displacement", LUA_MODIFIER_MOTION_BOTH )
+LinkLuaModifier( "modifier_sniper_extra_displacement_enemy", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_displacement_enemy", LUA_MODIFIER_MOTION_BOTH )
 
-function sniper_extra:HasPriority()
+function sniper_extra:GetCastPoint()
+	return self:GetSpecialValueFor("cast_point")
+end
+
+function sniper_extra:OnAbilityPhaseStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
+		duration = self:GetCastPoint(), 
+		movement_speed = 0,
+	})
+	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 0.4)
+    EmitSoundOn("Ability.AssassinateLoad", self:GetCaster())
     return true
 end
 
-function sniper_extra:OnSpellStart()
-    self:PlayEffectsOnPhase()
+function sniper_extra:OnAbilityPhaseInterrupted()
+	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
+	self:GetCaster():RemoveModifierByName("modifier_casting")
 end
 
-function sniper_extra:OnCastPointEnd()
-    -- Initialize variables
+function sniper_extra:OnSpellStart()
+    self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
+    
 	local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local point = self:GetCursorPosition()
     local knockback_distance = self:GetSpecialValueFor("knockback_distance")
     local damage = self:GetSpecialValueFor("damage_per_bullet")
-    local damage_on_collision = self:GetSpecialValueFor("damage_on_collision")
     
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
     local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
@@ -29,7 +42,6 @@ function sniper_extra:OnCastPointEnd()
     local projectile_direction_b = Vector(b_x, b_y, 0)
     local projectile_direction_c = Vector(c_x, c_y, 0)
 
-    -- Projectile
     local projectile_a = {
         EffectName = "particles/mod_units/heroes/hero_sniper/techies_base_attack.vpcf",
         vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,60),
@@ -44,57 +56,50 @@ function sniper_extra:OnCastPointEnd()
         fGroundOffset = 80,
         UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
         OnUnitHit = function(_self, unit) 
-
             local x = unit:GetOrigin().x - origin.x
             local y = unit:GetOrigin().y - origin.y
 
             local distance = knockback_distance - (unit:GetOrigin() - origin):Length2D()
             
-            unit:RemoveModifierByName("modifier_generic_displacement")
             unit:AddNewModifier(
                 _self.Source, -- player source
                 self, -- ability source
-                "modifier_generic_displacement", -- modifier name
+                "modifier_sniper_extra_displacement_enemy", -- modifier name
                 {
                     x = x,
                     y = y,
                     r = distance,
-                    speed = 1500,
+                    speed = (distance/0.35),
                     peak = 32,
-                    colliding = 1,
-                    damage_on_collision = damage_on_collision
-                } -- kv
+                }
             )
-            
-            --Damage
-            local damage = {
+
+            local damage_table = {
                 victim = unit,
                 attacker = _self.Source,
                 damage = damage,
                 damage_type = DAMAGE_TYPE_MAGICAL,
             }
-            ApplyDamage( damage )
+            ApplyDamage(damage_table)
         end,
         OnFinish = function(_self, pos)
-            self:PlayEffects_c(pos)
+            self:PlayEffectsOnFinish(pos)
         end,
     }
 
     local direction = -(point - origin):Normalized()
-    caster:RemoveModifierByName("modifier_generic_displacement")
+
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source
-        "modifier_generic_displacement", -- modifier name
+        "modifier_sniper_mobility_displacement", -- modifier name
         {
             x = direction.x,
             y = direction.y,
             r = knockback_distance,
-            speed = 1500,
-            peak = 64,
-            colliding = 1,
-            i_frame = 1,
-        } -- kv
+            speed = (knockback_distance/0.35),
+			peak = 64,
+        }
     )
 
     local projectile_b = DuplicateTable(projectile_a)
@@ -109,34 +114,17 @@ function sniper_extra:OnCastPointEnd()
     self:PlayEffectsOnCast()
 end
 
-function sniper_extra:PlayEffectsOnPhase()
-    EmitSoundOn( "Ability.AssassinateLoad", self:GetCaster() )
-end
-
 function sniper_extra:PlayEffectsOnCast()
     EmitSoundOn( "Hero_Techies.LandMine.Detonate", self:GetCaster() )
 end
 
--- On hit wall 
-function sniper_extra:PlayEffects_c( pos )
+function sniper_extra:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
-	
-	-- Cast Sound
-	local sound_cast = "Hero_Sniper.ProjectileImpact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster( pos, "Hero_Sniper.ProjectileImpact", caster )
 
-	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/techies_base_attack_explosion.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
     ParticleManager:SetParticleControl( effect_cast, 0, pos )
     ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	sniper_extra,
-	{ activity = ACT_DOTA_ATTACK, rate = 0.4 },
-	{ movement_speed = 0, fixed_range = 1 }
-)

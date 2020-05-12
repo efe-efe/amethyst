@@ -2,12 +2,10 @@ modifier_vengeful_ex_second_attack_illusion = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_vengeful_ex_second_attack_illusion:IsHidden()
-	return false
+function modifier_vengeful_ex_second_attack_illusion:IsHidden() return false
 end
 
-function modifier_vengeful_ex_second_attack_illusion:IsPurgable()
-	return false
+function modifier_vengeful_ex_second_attack_illusion:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

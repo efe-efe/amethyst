@@ -2,12 +2,10 @@ modifier_sky_ex_second_attack_debuff = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_sky_ex_second_attack_debuff:IsHidden()
-	return false
+function modifier_sky_ex_second_attack_debuff:IsHidden() return false
 end
 
-function modifier_sky_ex_second_attack_debuff:IsDebuff()
-	return false
+function modifier_sky_ex_second_attack_debuff:IsDebuff() return false
 end
 
 function modifier_sky_ex_second_attack_debuff:IsPurgable()

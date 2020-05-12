@@ -2,8 +2,7 @@ modifier_phoenix_second_attack_debuff = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phoenix_second_attack_debuff:IsHidden()
-	return false
+function modifier_phoenix_second_attack_debuff:IsHidden() return false
 end
 
 function modifier_phoenix_second_attack_debuff:IsDebuff()

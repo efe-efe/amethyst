@@ -1,11 +1,28 @@
 sniper_second_attack = class({})
 
-function sniper_second_attack:OnSpellStart()
-    EmitGlobalSound( "Ability.AssassinateLoad")
+function sniper_second_attack:GetCastPoint()
+	return self:GetSpecialValueFor("cast_point")
 end
 
-function sniper_second_attack:OnCastPointEnd()
-	-- Initialize variables
+function sniper_second_attack:OnAbilityPhaseStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
+		duration = self:GetCastPoint(), 
+		movement_speed = 0,
+	})
+	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_CAST_ABILITY_1, 1.1)
+
+    EmitGlobalSound("Ability.AssassinateLoad")
+	return true
+end
+
+function sniper_second_attack:OnAbilityPhaseInterrupted()
+	self:GetCaster():FadeGesture(ACT_DOTA_CAST_ABILITY_1)
+	self:GetCaster():RemoveModifierByName("modifier_casting")
+end
+
+function sniper_second_attack:OnSpellStart()
+	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
+
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -52,15 +69,13 @@ function sniper_second_attack:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}			
 			
-			-- Give Mana
 			if counter < 1 then
 				_self.Source:GiveManaPercent(mana_gain_pct, unit)
 			end
 	
 			ApplyDamage( damage_table )
-			-- Stun
+
 			unit:AddNewModifier(_self.Source, self , "modifier_generic_stunned", { duration = stun_duration})
-	
 			self:PlayEffectsOnHit(unit)
 		end,
 		OnFinish = function(_self, pos)
@@ -69,24 +84,18 @@ function sniper_second_attack:OnCastPointEnd()
 	}
 
     Projectiles:CreateProjectile(projectile)
-	StartAnimation(caster, {duration=0.2, activity=ACT_DOTA_ATTACK, rate=1.5})
-	
 	self:PlayEffectsOnCast()
 end
 
 
---------------------------------------------------------------------------------
--- Graphics & sounds
 function sniper_second_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Ability.Assassinate", self:GetCaster() )
 end
 
--- On hit wall 
 function sniper_second_attack:PlayEffectsOnFinish( pos )
 	local caster = self:GetCaster()
 	EmitSoundOnLocationWithCaster( pos, "Hero_Sniper.AssassinateDamage", caster )
 
-	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
@@ -95,15 +104,10 @@ function sniper_second_attack:PlayEffectsOnFinish( pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
---------------------------------------------------------------------------------
--- Graphics & sounds
 function sniper_second_attack:PlayEffectsOnHit( hTarget )
 	local caster = self:GetCaster()
-	
-	-- Cast Sound
 	EmitSoundOn( "Hero_Sniper.AssassinateDamage", caster )
 
-	-- Cast Particles
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
 
@@ -111,10 +115,3 @@ function sniper_second_attack:PlayEffectsOnHit( hTarget )
 	ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	sniper_second_attack,
-	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.3 },
-	{ movement_speed = 0, fixed_range = 1, public = 1 }
-)

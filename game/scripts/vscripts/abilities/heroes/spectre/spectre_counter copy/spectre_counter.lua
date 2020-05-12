@@ -23,7 +23,7 @@ function spectre_counter:OnCastPointEnd()
     caster:AddNewModifier(
         caster,
         self,
-        "modifier_generic_projectile_reflector_lua",
+        "modifier_generic_projectile_reflector",
         { duration = duration }
     )
 end

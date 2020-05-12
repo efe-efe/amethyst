@@ -6,6 +6,7 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"sniper_headshot"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -13,6 +14,12 @@
 		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
 
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
 		"precache"
 		{
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_techies.vsndevts"

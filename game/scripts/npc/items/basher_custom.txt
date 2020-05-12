@@ -7,22 +7,24 @@
 		"AbilityTextureName" 			"item_basher"	
         "ScriptFile"                    "items/item_basher_custom/item_basher_custom.lua"
 
-		"ItemCost"						"1"
+		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"
 		"ItemQuality"					"consumable"
 		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
-		"ItemStockMax"					"1"
+		"ItemDroppable" 				"0"
 
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCastRange"				"110"
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"12.0"	
+		"AbilityCastPoint"				"0.4"
 
 		"AbilitySpecial"	
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"duration"					"1.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"duration"					"1.2" }
 		}
     }	
 }	

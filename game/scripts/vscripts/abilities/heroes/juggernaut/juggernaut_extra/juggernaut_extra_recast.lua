@@ -1,6 +1,6 @@
 juggernaut_extra_recast = class({})
 
-function juggernaut_extra_recast:OnCastPointEnd()
+function juggernaut_extra_recast:OnSpellStart()
     local caster = self:GetCaster()
     local point = self:GetCursorPosition()
     
@@ -21,11 +21,3 @@ function juggernaut_extra_recast:PlayEffects( point )
     ParticleManager:SetParticleControl(effect_cast, 0, point)
     ParticleManager:SetParticleControl(effect_cast, 1, Vector(0,255,0))
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-    juggernaut_extra_recast,
-    nil,
-	{ movement_speed = 100 },
-	{ modifier_name = "modifier_juggernaut_extra_recast" }
-)

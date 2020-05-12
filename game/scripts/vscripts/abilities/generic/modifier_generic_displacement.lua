@@ -9,18 +9,8 @@ effects[1] = {
 effects[1].control_points[0] = "origin"
 effects[1].control_points[3] = "origin"
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_generic_displacement:IsHidden()
-	return false
-end
-
-function modifier_generic_displacement:IsPurgable()
-	return false
-end
-
---------------------------------------------------------------------------------
--- Initializations
+function modifier_generic_displacement:IsHidden() 		return false end
+function modifier_generic_displacement:IsPurgable() 	return false end
 function modifier_generic_displacement:OnCreated( params )
 	if IsServer() then
 		self.distance = params.r
@@ -92,9 +82,6 @@ function modifier_generic_displacement:OnCreated( params )
 	end
 end
 
-function modifier_generic_displacement:OnRefresh( params )
-end
-
 function modifier_generic_displacement:OnDestroy( params )
 	if IsServer() then
 		self:GetParent():InterruptMotionControllers( true )
@@ -115,8 +102,6 @@ function modifier_generic_displacement:OnDestroy( params )
 	end
 end
 
---------------------------------------------------------------------------------
--- Motion effects
 function modifier_generic_displacement:SyncTime( iDir, dt )
 	local actual_z = GetGroundPosition(self:GetParent():GetOrigin(), self:GetParent()).z
 
@@ -148,13 +133,13 @@ function modifier_generic_displacement:SyncTime( iDir, dt )
 	if self.colliding and actual_z - self.previous_origin.z > 32  then
 		--Damage
 		if self.damage_on_collision then
-			local damage = {
+			local damage_table = {
 				victim = self:GetParent(),
 				attacker = self:GetCaster(),
 				damage = self.damage_on_collision,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-			ApplyDamage( damage )
+			ApplyDamage( damage_table )
 		end
 
 		self:Destroy()
@@ -215,10 +200,8 @@ function modifier_generic_displacement:OnVerticalMotionInterrupted()
 	end
 end
 
---------------------------------------------------------------------------------
--- Status Effects
 function modifier_generic_displacement:CheckState()
-	local state = {
+	return {
 		[MODIFIER_STATE_ROOTED] = true,
 		[MODIFIER_STATE_COMMAND_RESTRICTED] = self.restricted,
 		[MODIFIER_STATE_SILENCED] = self.restricted,
@@ -226,11 +209,8 @@ function modifier_generic_displacement:CheckState()
 		[MODIFIER_STATE_INVULNERABLE] = self.i_frame,
 		[MODIFIER_STATE_OUT_OF_GAME] = self.i_frame,
 	}
-	return state
 end
 
---------------------------------------------------------------------------------
--- Graphics & Sounds
 function modifier_generic_displacement:PlayEffects()
 	local particle_cast = effects[self:GetStackCount()].particle
 	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
@@ -247,18 +227,13 @@ function modifier_generic_displacement:StopEffects()
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )    
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_generic_displacement:DeclareFunctions()
-	local funcs = {
+	return {
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
 		MODIFIER_PROPERTY_TRANSLATE_ACTIVITY_MODIFIERS
 	}
-
-	return funcs
 end
---------------------------------------------------------------------------------
--- Graphics & animations
+
 function modifier_generic_displacement:GetOverrideAnimation()
 	if self:GetStackCount() == 1 or self:GetStackCount() == 2 then
 		return ACT_DOTA_FLAIL

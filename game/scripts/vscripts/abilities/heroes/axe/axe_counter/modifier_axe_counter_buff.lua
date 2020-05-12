@@ -2,12 +2,10 @@ modifier_axe_counter_buff = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_axe_counter_buff:IsHidden()
-	return false
+function modifier_axe_counter_buff:IsHidden() return false
 end
 
-function modifier_axe_counter_buff:IsDebuff()
-	return false
+function modifier_axe_counter_buff:IsDebuff() return false
 end
 
 function modifier_axe_counter_buff:IsPurgable()

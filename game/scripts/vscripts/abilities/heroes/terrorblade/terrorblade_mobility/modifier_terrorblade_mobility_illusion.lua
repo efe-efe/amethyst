@@ -2,12 +2,10 @@ modifier_terrorblade_mobility_illusion = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_terrorblade_mobility_illusion:IsHidden()
-	return false
+function modifier_terrorblade_mobility_illusion:IsHidden() return false
 end
 
-function modifier_terrorblade_mobility_illusion:IsPurgable()
-	return false
+function modifier_terrorblade_mobility_illusion:IsPurgable() return false
 end
 
 function modifier_terrorblade_mobility_illusion:Model()

@@ -2,12 +2,10 @@ modifier_weaver_ultimate = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_weaver_ultimate:IsHidden()
-	return false
+function modifier_weaver_ultimate:IsHidden() return false
 end
 
-function modifier_weaver_ultimate:IsDebuff()
-	return false
+function modifier_weaver_ultimate:IsDebuff() return false
 end
 
 function modifier_weaver_ultimate:IsPurgable()

@@ -53,17 +53,6 @@ function lich_basic_attack:OnCastPointEnd()
 end
 
 --------------------------------------------------------------------------------
--- Misc
--- Add mana on attack modifier. Only first time upgraded
-function lich_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
-end
-
---------------------------------------------------------------------------------
 -- Graphics & sounds
 -- On Projectile Finish
 function lich_basic_attack:PlayEffectsOnFinish( pos )

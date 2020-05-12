@@ -1,43 +1,26 @@
 modifier_spectre_basic_attack = class({})
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_spectre_basic_attack:IsHidden()
-	return false
-end
+function modifier_spectre_basic_attack:IsHidden()           return  false    end
+function modifier_spectre_basic_attack:IsDebuff()           return  false    end
+function modifier_spectre_basic_attack:IsPurgable()         return  true     end
+function modifier_spectre_basic_attack:DestroyOnExpire()    return  false    end
 
-function modifier_spectre_basic_attack:IsDebuff()
-	return false
-end
-
-function modifier_spectre_basic_attack:IsPurgable()
-	return true
-end
-
-function modifier_spectre_basic_attack:DestroyOnExpire()
-	return false
-end
---------------------------------------------------------------------------------
--- Initializations
 function modifier_spectre_basic_attack:OnCreated( kv )
-    -- load data
-    self.damage_bonus_desolate = self:GetAbility():GetSpecialValueFor("damage_bonus_desolate")
     self.damage_bonus_charged = self:GetAbility():GetSpecialValueFor("damage_bonus_charged")
-    self.heal_desolate = self:GetAbility():GetSpecialValueFor("heal_desolate")
     self.charge_cooldown = self:GetAbility():GetSpecialValueFor("charge_cooldown")
     self.max_charges = 1
 
     if IsServer() then
 	    self.attack_speed_bonus = 0.2 + self:GetCaster():GetAttackAnimationPoint()--self:GetAbility():GetSpecialValueFor("attack_speed_bonus")
 
-        self:GetParent():AddCooldownVisual({ modifier = self })
-		self:SetStackCount( self.max_charges )
-		self:CalculateCharge()
+        if self:GetParent():IsRealHero() then
+            self:GetParent():AddCooldownVisual({ modifier = self })
+            self:SetStackCount( self.max_charges )
+            self:CalculateCharge()
+        end
     end
 end
 
---------------------------------------------------------------------------------
--- Interval Effects
 function modifier_spectre_basic_attack:OnIntervalThink()
 	self:IncrementStackCount()
 	self:StartIntervalThink(-1)
@@ -68,20 +51,13 @@ function modifier_spectre_basic_attack:CalculateCharge()
 	end
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_spectre_basic_attack:DeclareFunctions()
-	local funcs = {
+	return {
 		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
-        MODIFIER_EVENT_ON_ATTACK_LANDED,
 		MODIFIER_PROPERTY_ATTACK_POINT_CONSTANT,
 	}
-
-	return funcs
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_spectre_basic_attack:GetModifierAttackPointConstant()
     if self:GetStackCount() == 0 then return 0 end
     if IsServer() then     
@@ -94,37 +70,6 @@ function modifier_spectre_basic_attack:GetModifierPreAttack_BonusDamage()
     return self.damage_bonus_charged
 end
 
-function modifier_spectre_basic_attack:OnAttackLanded( params )
-	if IsServer() then
-		if params.attacker ~= self:GetParent() then return end
-        if params.attacker:GetTeamNumber() == params.target:GetTeamNumber() then return end
-        
-        local desolate = params.target:FindModifierByNameAndCaster( "modifier_spectre_desolate_lua", params.attacker )
-		
-        -- If have the debuff, adds extra attack and extends debuff duration
-        if desolate ~= nil then 
-            local damage = {
-                victim = params.target,
-                attacker = params.attacker,
-                damage = self.damage_bonus_desolate,
-                damage_type = DAMAGE_TYPE_PHYSICAL,
-            }
-    
-            ApplyDamage( damage )
-
-            if not params.target:IsObstacle() then
-                params.attacker:Heal( self.heal_desolate, params.attacker )
-            end
-            
-            self:PlayEffectsLifeSteal()
-        end
-	end
-end
-
-
-
---------------------------------------------------------------------------------
--- Graphics & Animations
 function modifier_spectre_basic_attack:PlayEffectsCharged()
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
 	local caster = self:GetParent()
@@ -145,7 +90,6 @@ end
 
 function modifier_spectre_basic_attack:PlayEffectsWeapon()
     if IsServer() then
-        -- Get Resources
         local caster = self:GetParent()
 
         local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_base_attack_c.vpcf"
@@ -175,14 +119,6 @@ function modifier_spectre_basic_attack:PlayEffectsWeapon()
             true 
         )
     end
-end
-
-function modifier_spectre_basic_attack:PlayEffectsLifeSteal( )
-	-- Create Particles
-	local particle_cast = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
 function modifier_spectre_basic_attack:StopEffectsWeapon()

@@ -1,8 +1,9 @@
 juggernaut_counter_recast = class({})
+LinkLuaModifier( "modifier_juggernaut_counter_countering", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_countering", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_juggernaut_counter_recast", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_recast", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_juggernaut_counter", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter", LUA_MODIFIER_MOTION_NONE )
 
-function juggernaut_counter_recast:OnCastPointEnd( pos )
+function juggernaut_counter_recast:OnSpellStart()
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
@@ -80,24 +81,11 @@ function juggernaut_counter_recast:OnCastPointEnd( pos )
 end
 
 function juggernaut_counter_recast:PlayEffectsOnTarget( hTarget )
-	local sound_cast_a = "Hero_Juggernaut.BladeDance.Arcana"
-	local sound_cast_b = "Hero_Juggernaut.BladeDance.Layer"
-	local sound_cast_c = "Hero_Juggernaut.Attack"
-	EmitSoundOn( sound_cast_a, hTarget )
-	EmitSoundOn( sound_cast_b, hTarget )
-	EmitSoundOn( sound_cast_c, hTarget )
+	EmitSoundOn( "Hero_Juggernaut.BladeDance.Arcana", hTarget )
+	EmitSoundOn( "Hero_Juggernaut.BladeDance.Layer", hTarget )
+	EmitSoundOn( "Hero_Juggernaut.Attack", hTarget )
 end
 
 function juggernaut_counter_recast:PlayEffectsOnMiss()
-	local sound_cast = "Hero_Juggernaut.Attack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn("Hero_Juggernaut.Attack", self:GetCaster())
 end
-
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	juggernaut_counter_recast,
-	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.0 },
-	{ movement_speed = 0, disable_all = false },
-	{ modifier_name = "modifier_juggernaut_counter_recast" }
-)

@@ -1,0 +1,36 @@
+"DOTAAbilities"
+{
+    "item_sange_custom"	
+	{	
+		"ID"							"2026"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_sange"	
+        "ScriptFile"                    "items/item_sange_custom/item_sange_custom.lua"
+
+		"ItemCost"						"3"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" 				"0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"12.0"
+		"AbilityCastRange"				"750"
+		"AbilityCastPoint"				"0.5"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"heal_per_tick"				"3" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"1.0" }
+		}
+    }	
+}	

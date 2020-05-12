@@ -1,16 +1,14 @@
 modifier_phoenix_ex_ultimate = class({})
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phoenix_ex_ultimate:IsDebuff()
-	return false
+function modifier_phoenix_ex_ultimate:IsDebuff() return false
 end
 
 function modifier_phoenix_ex_ultimate:IsStunDebuff()
 	return false
 end
 
-function modifier_phoenix_ex_ultimate:IsPurgable()
-	return false
+function modifier_phoenix_ex_ultimate:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

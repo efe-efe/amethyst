@@ -9,6 +9,6 @@ function item_death_orb:OnSpellStart()
     SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, caster, charges, nil )
 
     if charges == 100 then
-        PseudoHeal(caster:GetHealth(), heal, caster)
+        TrueHeal(caster:GetHealth(), heal, caster)
     end
 end

@@ -40,7 +40,6 @@ GetAbilityOriginalIndex
     If is special: 4
     If is extra: 5
     If is ultimate: 6
-    If is mount: 9
     
     If SPELLS_ORDER_TABLE[name] >     
 
@@ -59,4 +58,3 @@ SPELLS_ORDER_TABLE["ex_second"] = 8
 SPELLS_ORDER_TABLE["ex_mobility"] = 9
 SPELLS_ORDER_TABLE["ex_counter"] = 10
 SPELLS_ORDER_TABLE["ex_special"] = 11
-SPELLS_ORDER_TABLE["mount"] = 12

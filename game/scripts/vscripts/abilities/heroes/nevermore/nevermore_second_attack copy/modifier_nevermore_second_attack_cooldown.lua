@@ -2,12 +2,10 @@ modifier_nevermore_second_attack_cooldown = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_nevermore_second_attack_cooldown:IsHidden()
-	return false--CAMBIAR
+function modifier_nevermore_second_attack_cooldown:IsHidden() return false--CAMBIAR
 end
 
-function modifier_nevermore_second_attack_cooldown:IsDebuff()
-	return false
+function modifier_nevermore_second_attack_cooldown:IsDebuff() return false
 end
 
 function modifier_nevermore_second_attack_cooldown:IsPurgable()

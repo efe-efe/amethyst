@@ -6,9 +6,7 @@ function OnMessageReceived(data)
     $.Schedule( 5.0, function(){
         $('#CustomMessageText').style.opacity = 0.0;
     });
-
 }
-
 
 (function () {
     GameEvents.Subscribe( "custom_message", OnMessageReceived );

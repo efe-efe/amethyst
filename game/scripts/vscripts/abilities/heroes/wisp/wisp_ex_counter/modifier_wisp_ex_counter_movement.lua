@@ -15,8 +15,7 @@ function modifier_wisp_ex_counter_movement:IsStunDebuff()
 	return false
 end
 
-function modifier_wisp_ex_counter_movement:IsPurgable()
-	return false
+function modifier_wisp_ex_counter_movement:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

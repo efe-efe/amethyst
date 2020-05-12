@@ -1,0 +1,25 @@
+
+"DOTAAbilities"
+{
+    "item_energy_custom"	
+	{	
+		"ID"							"2022"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_energy_booster"	
+        "ScriptFile"                    "items/item_energy_custom/item_energy_custom.lua"
+
+		"ItemCost"						"2"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" "0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"extra_mana"						"25" }
+		}
+    }	
+}	

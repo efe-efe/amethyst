@@ -2,12 +2,10 @@ modifier_sky_second_attack_reducer = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_sky_second_attack_reducer:IsHidden()
-	return false
+function modifier_sky_second_attack_reducer:IsHidden() return false
 end
 
-function modifier_sky_second_attack_reducer:IsDebuff()
-	return false
+function modifier_sky_second_attack_reducer:IsDebuff() return false
 end
 
 function modifier_sky_second_attack_reducer:IsPurgable()

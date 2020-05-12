@@ -1,0 +1,29 @@
+"DOTAAbilities"
+{
+    "item_soul_custom"	
+	{	
+		"ID"							"2023"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_soul_ring"	
+        "ScriptFile"                    "items/item_soul_custom/item_soul_custom.lua"
+
+		"ItemCost"						"3"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" "0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"13.0"
+		"AbilityCastPoint"				"0.0"	
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"            "0.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"mana"				    "50" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"self_damage"           "20" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"            	"5.0" }
+		}
+    }	
+}	

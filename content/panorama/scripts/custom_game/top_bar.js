@@ -56,7 +56,7 @@ function ActivateBar( data ){
 
 (function Start(){
     Initialize();
-    GameEvents.Subscribe( "add_player", ActivateBar );
+    GameEvents.Subscribe( "add_hero", ActivateBar );
     GameEvents.Subscribe( "update_alliance_health_bar", UpdateHealthBar );
     GameEvents.Subscribe( "update_score", UpdateScore );
     GameEvents.Subscribe( "update_amethysts", UpdateAmethysts );

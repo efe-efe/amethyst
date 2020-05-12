@@ -14,8 +14,7 @@ function modifier_sky_special_attack_movement:IsStunDebuff()
 	return false
 end
 
-function modifier_sky_special_attack_movement:IsPurgable()
-	return false
+function modifier_sky_special_attack_movement:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

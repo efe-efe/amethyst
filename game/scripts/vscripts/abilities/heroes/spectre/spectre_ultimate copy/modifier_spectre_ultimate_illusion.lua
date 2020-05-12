@@ -2,12 +2,10 @@ modifier_spectre_ultimate_illusion = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_spectre_ultimate_illusion:IsHidden()
-	return false
+function modifier_spectre_ultimate_illusion:IsHidden() return false
 end
 
-function modifier_spectre_ultimate_illusion:IsPurgable()
-	return false
+function modifier_spectre_ultimate_illusion:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------
@@ -31,9 +29,6 @@ function modifier_spectre_ultimate_illusion:OnCreated( kv )
             false -- bool, can grow cache
         )
 
-        -- Destroy the disable attack modifier
-        SafeDestroyModifier("modifier_disable_right_click", parent, parent)
-        
         -- Attack the closests
         if enemies[1] then
             if enemies[1]:IsRealHero() then

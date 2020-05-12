@@ -1,66 +1,40 @@
 modifier_generic_fading_slow = class({})
 
--- Clasifications
---------------------------------------------------------------------------------
-function modifier_generic_fading_slow:IsDebuff()
-	return true
-end
+function modifier_generic_fading_slow:IsDebuff() return true end
 
---------------------------------------------------------------------------------
--- Initializations
-function modifier_generic_fading_slow:OnCreated( kv )
-    local duration = self:GetDuration()
-    self.max_fading_slow = self:GetAbility():GetSpecialValueFor("fading_slow")
-    self.fading_slow = -self:GetAbility():GetSpecialValueFor("fading_slow")
+function modifier_generic_fading_slow:OnCreated( params )
+    if IsServer() then
+        local duration = self:GetDuration()
+        local tick = 1/8
+        local ticks_number = duration / tick
 
-    local tick = 1/4
-    local ticks_number = duration / tick
-    self.counter = 0
-    self.speed_per_tick = self.max_fading_slow / ticks_number
-    self.effect_name = kv.effect_name or false
-    
-    self:StartIntervalThink( tick )
+        self.speed_per_tick = params.max_slow_pct / ticks_number
 
-    if IsServer() then 
-        self:GetParent():AddStatusBar({ label = "Fading slow", modifier = self, priority = 2, stylename="Slow" }) 
+        self:SetStackCount(params.max_slow_pct)
+        self:StartIntervalThink( tick )
     end
 end
 
---------------------------------------------------------------------------------
--- Interval Effects
 function modifier_generic_fading_slow:OnIntervalThink()
-    local new_fading_slow = self.fading_slow + self.speed_per_tick * self.counter
+    local new_fading_slow = self:GetStackCount() - self.speed_per_tick
 
-    if new_fading_slow > 0 then
-        self.fading_slow = 0
+    if new_fading_slow < 0 then
+        self:SetStackCount(0)
         return
     end
-    self.fading_slow = new_fading_slow
-    self.counter = self.counter + 1
+    self:SetStackCount(new_fading_slow)
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_generic_fading_slow:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-	}
-
-	return funcs
+	return { MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE, }
 end
 
 function modifier_generic_fading_slow:GetModifierMoveSpeedBonus_Percentage()
-    return self.fading_slow
+    return -self:GetStackCount()
 end
 
---------------------------------------------------------------------------------
---Graphics
 function modifier_generic_fading_slow:GetEffectName()
-    if self.effect_name == false then
-        return "particles/generic_gameplay/rune_haste.vpcf"
-    else
-        return self.effect_name
-    end
+    return "particles/generic_gameplay/rune_haste.vpcf"
 end
 
 function modifier_generic_fading_slow:GetEffectAttachType()
@@ -68,6 +42,12 @@ function modifier_generic_fading_slow:GetEffectAttachType()
 end
 
 function modifier_generic_fading_slow:GetTexture()
-	return "modifier_generic_fading_slow"
+	return "modifier_fading_slow"
 end
 
+function modifier_generic_fading_slow:GetStatusLabel() return "Fading slow" end
+function modifier_generic_fading_slow:GetStatusPriority() return 2 end
+function modifier_generic_fading_slow:GetStatusStyle() return "Slow" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_generic_fading_slow)

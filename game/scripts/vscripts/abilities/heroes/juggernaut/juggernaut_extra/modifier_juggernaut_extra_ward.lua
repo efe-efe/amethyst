@@ -1,21 +1,35 @@
 modifier_juggernaut_extra_ward = class({})
 
+function modifier_juggernaut_extra_ward:IsAura()
+	return true
+end
+function modifier_juggernaut_extra_ward:GetModifierAura()
+	return "modifier_juggernaut_extra"
+end
+function modifier_juggernaut_extra_ward:GetAuraRadius()
+	return self.radius
+end
+function modifier_juggernaut_extra_ward:GetAuraDuration()
+	return 0.5
+end
+function modifier_juggernaut_extra_ward:GetAuraSearchTeam()
+	return DOTA_UNIT_TARGET_TEAM_BOTH
+end
+function modifier_juggernaut_extra_ward:GetAuraEntityReject(hEntity)
+    if not self:GetCaster():IsAlly(hEntity) then
+        return true 
+    end
+    return false
+end
+function modifier_juggernaut_extra_ward:GetAuraSearchType()
+	return DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
+end
+
 function modifier_juggernaut_extra_ward:OnCreated()
     self.radius = self:GetAbility():GetSpecialValueFor("radius")
-    self.heal_per_second = self:GetAbility():GetSpecialValueFor("heal_per_second")
     if IsServer() then
-
         self:PlayEffectsOnCreated()
-        self:PlayEffectsAoe()
-        self:StartIntervalThink( 0.1 )
-
-        self.counter = 0.0
-
-        if IsServer() then 
-            self:GetParent():AddStatusBar({
-                label = "Ward", modifier = self, priority = 3, 
-            })
-        end
+        self:StartIntervalThink( 0.03 )
     end
 end
 
@@ -23,6 +37,9 @@ function modifier_juggernaut_extra_ward:OnDestroy()
     if IsServer() then
         ParticleManager:DestroyParticle(self.effect_cast, false)
         ParticleManager:ReleaseParticleIndex(self.effect_cast)
+
+        ParticleManager:DestroyParticle(self.effect_progress, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_progress)
 
         self:GetParent():Kill(nil, self:GetParent())
 
@@ -34,38 +51,17 @@ function modifier_juggernaut_extra_ward:OnDestroy()
     end
 end
 
---------------------------------------------------------------------------------
--- Interval Effects
 function modifier_juggernaut_extra_ward:OnIntervalThink()
-    self.counter = self.counter + 0.1
+    local percentage = ((self:GetDuration() - self:GetRemainingTime())/self:GetDuration()) + 0.03
 
-    if self.counter >= 1.0 then
-
-        local allies = self:GetCaster():FindUnitsInRadius(
-            self:GetParent():GetOrigin(), 
-            self.radius, 
-            DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
-            DOTA_UNIT_TARGET_FLAG_NONE,
-            FIND_ANY_ORDER
-        )
-    
-        -- Print units
-        for _,ally in pairs(allies) do		
-            ally:Heal(self.heal_per_second, self:GetCaster())
-        end
-
-        self.counter = 0.0
-    end
-
-    self:PlayEffectsAoe()
+    ParticleManager:SetParticleControl(self.effect_progress, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 16))
+    ParticleManager:SetParticleControl(self.effect_progress, 1, Vector(self.radius, percentage, 0))
 end
 
 function modifier_juggernaut_extra_ward:PlayEffectsOnCreated()
-    -- Play spawn particle
-    local eruption_pfx = ParticleManager:CreateParticle("particles/econ/items/juggernaut/bladekeeper_healing_ward/juggernaut_healing_ward_eruption_dc.vpcf", PATTACH_CUSTOMORIGIN, self:GetParent())
-    ParticleManager:SetParticleControl(eruption_pfx, 0, self:GetParent():GetAbsOrigin())
-    ParticleManager:ReleaseParticleIndex(eruption_pfx)
+    local effect_cast = ParticleManager:CreateParticle("particles/econ/items/juggernaut/bladekeeper_healing_ward/juggernaut_healing_ward_eruption_dc.vpcf", PATTACH_CUSTOMORIGIN, self:GetParent())
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     local particle_cast = "particles/econ/items/juggernaut/bladekeeper_healing_ward/juggernaut_healing_ward_dc.vpcf"
 
@@ -81,16 +77,11 @@ function modifier_juggernaut_extra_ward:PlayEffectsOnCreated()
         self:GetParent():GetAbsOrigin(), 
         true
     )
-
-end
-
-function modifier_juggernaut_extra_ward:PlayEffectsAoe()
-    local particle_cast = "particles/aoe_marker.vpcf"
-
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin())
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( 1, 255, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    
+    self.effect_progress = ParticleManager:CreateParticle("particles/progress_circle/generic_progress_circle.vpcf", PATTACH_WORLDORIGIN, self:GetParent())
+    ParticleManager:SetParticleControl(self.effect_progress, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 16))
+    ParticleManager:SetParticleControlForward(self.effect_progress, 0, Vector(0, -1, 0))	
+    ParticleManager:SetParticleControl(self.effect_progress, 1, Vector(self.radius, 0, 1))
+    ParticleManager:SetParticleControl(self.effect_progress, 15, Vector(1, 255, 1))
+    ParticleManager:SetParticleControl(self.effect_progress, 16, Vector(1, 0, 0))
 end

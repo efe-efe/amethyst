@@ -1,0 +1,112 @@
+.AlliancesStatus{
+    margin-top: 170px;
+}
+
+.AlliancesStatus, .AlliancesStatus__Container
+{
+    width: 100%;
+    height: 600px;
+
+    flow-children: right;
+}
+
+.AlliancesStatus__Left, .AlliancesStatus__Right{
+    height: 100%;
+    width: 150px;
+    flow-children: down;
+}
+
+.AlliancesStatus__Right{
+    align: right center;
+}
+
+.AlliancesStatus__Radiant, .AlliancesStatus__Dire, .AlliancesStatus__Void, .AlliancesStatus__Legion{
+    align: center center;
+    flow-children: down;
+
+    height: 50%;
+    padding-top: 10px;
+}
+
+.HeroStatus{
+    width: 102px;
+    margin-bottom: 10px;    
+
+    background-color: rgb(25, 27, 32);
+    opacity: 0.97;
+
+    transition-property: opacity;
+    transition-duration: 0.2s;
+
+    flow-children: down;
+}
+
+.HeroStatus__Top{
+    height: 55px;
+    width: 100%;
+}
+
+.HeroStatus__Middle{
+    height: 20px;
+    width: 100%;
+    margin-bottom: 2px;
+}
+
+.HeroStatus__Bottom{
+    width: 100%;
+}
+
+.HeroStatus__Image{
+    border: 1px solid rgb(36, 42, 53);
+}
+
+.HeroStatus__Resources{
+    height: 100%;
+    width: 100%;
+    flow-children: down;
+}
+
+.HeroStatus__Health{
+    height: 65%;
+    width: 100%;
+    background-color:rgba(36, 42, 53, 0.2);
+
+    margin-bottom: 5%;
+    flow-children: right;
+}
+.HeroStatus__Mana{
+    height: 30%;
+    width: 100%;
+    flow-children: right;
+}
+
+.Items{
+    width: 100%;
+    flow-children: down;
+}
+
+
+.Items__Row{
+    width: 100%;
+    height: 25px;
+    margin-bottom: 2px;
+
+    background-color:rgba(36, 42, 53, 0.2);
+    flow-children: right;
+
+}
+
+.Items__Item{
+    height: 100%;
+    width: 32%;
+    
+    border: 1px solid rgb(36, 42, 53);
+    background-color:rgba(36, 42, 53, 0.8);
+}
+
+
+.Items__Item--Center{
+    width: 32%;
+    margin-left: 2%;
+    margin-right: 2%;
+}

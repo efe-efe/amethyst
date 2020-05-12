@@ -1,8 +1,7 @@
 axe_ex_mobility = class({})
 LinkLuaModifier( "modifier_axe_ex_mobility_movement", "abilities/heroes/axe/axe_ex_mobility/modifier_axe_ex_mobility_movement", LUA_MODIFIER_MOTION_BOTH )
 
-function axe_ex_mobility:IsHidden()
-    return true
+function axe_ex_mobility:isHidden() return true
 end
 
 function axe_ex_mobility:IsHiddenAbilityCastable()

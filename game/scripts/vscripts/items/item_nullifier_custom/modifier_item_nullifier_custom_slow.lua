@@ -20,3 +20,9 @@ function modifier_item_nullifier_custom_slow:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
 
+function modifier_item_nullifier_custom_slow:GetStatusLabel() return "Nullifier" end
+function modifier_item_nullifier_custom_slow:GetStatusPriority() return 3 end
+function modifier_item_nullifier_custom_slow:GetStatusStyle() return "Nullifier" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_item_nullifier_custom_slow)

@@ -2,16 +2,13 @@ modifier_lich_banish = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_lich_banish:IsHidden()
-	return false
+function modifier_lich_banish:IsHidden() return false
 end
 
-function modifier_lich_banish:IsDebuff()
-	return false
+function modifier_lich_banish:IsDebuff() return false
 end
 
-function modifier_lich_banish:IsPurgable()
-	return false
+function modifier_lich_banish:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

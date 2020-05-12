@@ -7,7 +7,7 @@ function modifier_generic_hypnotize:OnCreated( params )
 
         self:StartIntervalThink(0.1)
 
-        self.parent:AddNewModifier(self:GetCaster(), nil, "modifier_generic_silenced", { duration = self:GetDuration() })
+        self.parent:AddNewModifier(self:GetCaster(), nil, "modifier_generic_silence", { duration = self:GetDuration() })
         self:GetParent():AddStatusBar({ label = "Hypnotize", modifier = self, priority = 5, stylename="Fear" }) 
     end
 end
@@ -15,7 +15,7 @@ end
 function modifier_generic_hypnotize:OnDestroy()
     if IsServer() then
         self:GetParent():UnforceDirection()
-        self.parent:RemoveModifierByName("modifier_generic_silenced")
+        self.parent:RemoveModifierByName("modifier_generic_silence")
     end
 end
 

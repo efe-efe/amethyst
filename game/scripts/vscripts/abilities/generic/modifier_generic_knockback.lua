@@ -6,8 +6,7 @@ function modifier_generic_knockback:IsHidden()
 	return true
 end
 
-function modifier_generic_knockback:IsPurgable()
-	return false
+function modifier_generic_knockback:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

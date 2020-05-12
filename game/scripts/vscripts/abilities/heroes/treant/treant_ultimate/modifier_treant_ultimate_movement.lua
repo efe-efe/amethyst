@@ -14,8 +14,7 @@ function modifier_treant_ultimate_movement:IsStunDebuff()
 	return false
 end
 
-function modifier_treant_ultimate_movement:IsPurgable()
-	return false
+function modifier_treant_ultimate_movement:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

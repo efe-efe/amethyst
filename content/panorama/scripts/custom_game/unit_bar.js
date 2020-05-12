@@ -1,7 +1,7 @@
 var mainPanel = $("#UnitBarsContainer");
 var unit_overhead_bars = {}
 
-var INTERVAL = 0.02;
+var INTERVAL = 0.01;
 
 function MainCycle( unitIndex ){
     if(!unit_overhead_bars[unitIndex]){ return }

@@ -2,26 +2,11 @@ modifier_cast_point = class({})
 
 local COOLDOWN_BY_CANCEL = 0.5
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_cast_point:IsHidden()
-	return true
-end
+function modifier_cast_point:IsHidden()			return true		end
+function modifier_cast_point:IsDebuff()			return true		end
+function modifier_cast_point:IsStunDebuff()		return false	end
+function modifier_cast_point:IsPurgable()		return false 	end
 
-function modifier_cast_point:IsDebuff()
-	return true
-end
-
-function modifier_cast_point:IsStunDebuff()
-	return false
-end
-
-function modifier_cast_point:IsPurgable()
-	return false
-end
-
----------------------------------------------------------------------------------
--- Initializer
 function modifier_cast_point:OnCreated(params)
 	self.ability = self:GetAbility()
 	self.parent = self:GetParent()
@@ -52,17 +37,12 @@ function modifier_cast_point:OnCreated(params)
 			})
 		end
 
-		GameRules.GameMode:InitializeCastPoint( self.parent, self:GetDuration(), self:GetName() )
-
 		self:StartCast()
 		self:StartIntervalThink( 0.01 )
 	end
 end
 
---------------------------------------------------------------------------------
--- When refreshed
 function modifier_cast_point:OnRefresh(params)
-	-- Stop previous Ability first
 	if IsServer() then
 		self:StopCast()
 	end
@@ -106,9 +86,8 @@ function modifier_cast_point:StartCast()
 		self.ability:SetInAbilityPhase(true)
 		self.parent:GiveMana(self.ability:GetManaCost(-1)) 
 				
-		local modifier = self.parent:FindModifierByName("modifier_generic_pre_silence_lua")
+		local modifier = self.parent:FindModifierByName("modifier_generic_pre_silence")
 		
-		-- Safe destroying CHECKEAR 
 		if modifier ~= nil then
 			if not modifier:IsNull() then
 				modifier:Destroy()
@@ -145,33 +124,14 @@ function modifier_cast_point:StopCast()
 	end
 end
 
---------------------------------------------------------------------------------
--- Destroyer
 function modifier_cast_point:OnDestroy(params)
 	if IsServer() then
-		--Destroyed before it duration ends
 		if self:GetRemainingTime() >= 0.05 then
-			GameRules.EndAnimation(self.parent)
+			self.parent:FadeGesture(ACT_DOTA_TAUNT)		
 			self:StopCast()
 		else
 			if self.ability.OnCastPointEnd ~= nil then
-				if self.ability:HasCharges() then
-					local charges_modifier_name = self.ability:GetIntrinsicModifierName()
-					local charges_modifier = self.ability:GetCaster():FindModifierByName(charges_modifier_name)
-					
-					if charges_modifier ~= nil then
-						if charges_modifier.OnSpellCast ~= nil then
-							charges_modifier:OnSpellCast()
-						else
-							print("[PSEUDO CAST POINT ERROR] Charges don't have OnSpellCast funcion")
-						end
-					end
-				else
-					self.ability:StartCooldown(self.ability:GetCooldown(0))
-				end
-
 				self.ability:PayManaCost()
-
 				self.ability:SetInAbilityPhase( false )
 				if self.disable_all then
 					self.parent:SetAllAbilitiesActivated( true )
@@ -186,20 +146,29 @@ function modifier_cast_point:OnDestroy(params)
 				if self.ability.OnRemovePseudoCastPoint ~= nil then
 					self.ability:OnRemovePseudoCastPoint()
 				end
+
+				if self.ability:HasCharges() then
+					local charges_modifier_name = self.ability:GetIntrinsicModifierName()
+					local charges_modifier = self.ability:GetCaster():FindModifierByName(charges_modifier_name)
+					
+					if charges_modifier ~= nil then
+						if charges_modifier.OnSpellCast ~= nil then
+							charges_modifier:OnSpellCast()
+						else
+							print("[PSEUDO CAST POINT ERROR] Charges don't have OnSpellCast funcion")
+						end
+					end
+				else
+					self.ability:StartCooldown(self.ability:GetCooldown(0))
+					if self.ability:IsItem() and self.ability:RequiresCharges() then
+    					self.ability:SpendCharge()
+					end
+				end
 			end
 		end
-
-		local order = 
-		{
-			OrderType = DOTA_UNIT_ORDER_STOP,
-			UnitIndex = self.parent:entindex()
-		}
-		ExecuteOrderFromTable(order)
 	end
 end
 
---------------------------------------------------------------------------------
--- Interval Effects
 function modifier_cast_point:OnIntervalThink()
 	if not self.parent:IsAlive() then
 		self:Destroy()
@@ -215,17 +184,12 @@ function modifier_cast_point:OnIntervalThink()
 	end
 end
 
-
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_cast_point:DeclareFunctions()
-	local funcs = {
+	return {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 		MODIFIER_EVENT_ON_ORDER,
 		MODIFIER_EVENT_ON_TAKEDAMAGE,
 	}
-
-	return funcs
 end
 
 function modifier_cast_point:GetModifierMoveSpeedBonus_Percentage()
@@ -256,8 +220,6 @@ function modifier_cast_point:OnTakeDamage( params )
 	end
 end
 
---------------------------------------------------------------------------------
--- Status Effects
 function modifier_cast_point:CheckState()
     if self.movement_speed == 0 then
         return { [MODIFIER_STATE_ROOTED] = true }
@@ -277,4 +239,3 @@ function modifier_cast_point:OnKeyReleased( key )
 		end]]
 	end
 end
-

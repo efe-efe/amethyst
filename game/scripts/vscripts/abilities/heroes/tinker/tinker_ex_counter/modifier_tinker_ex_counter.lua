@@ -2,16 +2,14 @@ modifier_tinker_ex_counter = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_tinker_ex_counter:IsHidden()
-	return false
+function modifier_tinker_ex_counter:IsHidden() return false
 end
 
 function modifier_tinker_ex_counter:IsDebuff()
 	return true
 end
 
-function modifier_tinker_ex_counter:IsPurgable()
-	return false
+function modifier_tinker_ex_counter:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

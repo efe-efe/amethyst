@@ -2,7 +2,22 @@ item_nullifier_custom = class({})
 LinkLuaModifier( "modifier_item_nullifier_custom", "items/item_nullifier_custom/modifier_item_nullifier_custom", LUA_MODIFIER_MOTION_HORIZONTAL )
 LinkLuaModifier( "modifier_item_nullifier_custom_slow", "items/item_nullifier_custom/modifier_item_nullifier_custom_slow", LUA_MODIFIER_MOTION_HORIZONTAL )
 
-function item_nullifier_custom:OnCastPointEnd()
+function item_nullifier_custom:OnAbilityPhaseStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
+		duration = self:GetCastPoint(), 
+		movement_speed = 10,
+	})
+	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.0)
+    return true
+end
+
+function item_nullifier_custom:OnAbilityPhaseInterrupted()
+	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
+	self:GetCaster():RemoveModifierByName("modifier_casting")
+end
+
+function item_nullifier_custom:OnSpellStart()
+	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -65,10 +80,3 @@ end
 function item_nullifier_custom:PlayEffectsOnCast()
 	EmitSoundOn( "DOTA_Item.Nullifier.Cast", self:GetCaster() )
 end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-    item_nullifier_custom,
-	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
-	{ movement_speed = 10, fixed_range = 1 }
-)

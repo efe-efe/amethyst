@@ -5,12 +5,10 @@ function modifier_vengeful_counter:IsHidden()
     return false
 end
 
-function modifier_vengeful_counter:IsDebuff()
-	return false
+function modifier_vengeful_counter:IsDebuff() return false
 end
 
-function modifier_vengeful_counter:IsPurgable()
-    return false
+function modifier_vengeful_counter:IsPurgable() return false
 end
 
 

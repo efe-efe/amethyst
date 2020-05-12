@@ -19,8 +19,8 @@
 		"Ability7"						"nevermore_ultimate"	
 		//"Ability8"						"nevermore_ex_basic_attack"					
 		//"Ability8"						"nevermore_ex_mobility"	
-		"Ability10"						"mount"							
-		"Ability11"						"charge"
+									
+		
 		"Ability12"						"nevermore_counter_recast"
 
 		//Vision

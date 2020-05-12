@@ -3,16 +3,14 @@ LinkLuaModifier( "modifier_generic_root", "abilities/generic/modifier_generic_ro
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_phoenix_ultimate:IsHidden()
-	return false
+function modifier_phoenix_ultimate:IsHidden() return false
 end
 
 function modifier_phoenix_ultimate:IsDebuff()
 	return true
 end
 
-function modifier_phoenix_ultimate:IsPurgable()
-	return false
+function modifier_phoenix_ultimate:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------
@@ -96,7 +94,7 @@ function modifier_phoenix_ultimate:OnDestroy( kv )
 				)
 		   end
 
-		   PseudoHeal(self.base_health, self.heal, self:GetParent())
+		   TrueHeal(self.base_health, self.heal, self:GetParent())
 		
 		   -- Gives mana
 			local mana_gain_final = self:GetParent():GetMaxMana() * self.mana_gain

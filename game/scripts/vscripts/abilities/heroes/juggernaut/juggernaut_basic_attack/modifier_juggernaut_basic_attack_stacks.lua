@@ -1,27 +1,11 @@
 modifier_juggernaut_basic_attack_stacks = class({})
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_juggernaut_basic_attack_stacks:IsHidden()
-	return false
-end
+function modifier_juggernaut_basic_attack_stacks:IsHidden() return false end
+function modifier_juggernaut_basic_attack_stacks:IsDebuff() return false end
+function modifier_juggernaut_basic_attack_stacks:IsStunDebuff() return false end
+function modifier_juggernaut_basic_attack_stacks:IsPurgable() return true end
 
-function modifier_juggernaut_basic_attack_stacks:IsDebuff()
-	return false
-end
-
-function modifier_juggernaut_basic_attack_stacks:IsStunDebuff()
-	return false
-end
-
-function modifier_juggernaut_basic_attack_stacks:IsPurgable()
-	return true
-end
-
---------------------------------------------------------------------------------
--- Initializations
 function modifier_juggernaut_basic_attack_stacks:OnCreated( kv )
-	-- references
 	if IsServer() then
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
@@ -49,7 +33,6 @@ end
 
 function modifier_juggernaut_basic_attack_stacks:OnDestroy( kv )
 	if IsServer() then
-		
 		self:StopEffects()
 	end
 end
@@ -80,7 +63,6 @@ function modifier_juggernaut_basic_attack_stacks:PlayEffectsCharged()
 	self:CreateGlow(5)
 end
 
-
 function modifier_juggernaut_basic_attack_stacks:CreateGlow(index)
 	local particle_cast = "particles/units/heroes/hero_invoker_kid/invoker_kid_forge_spirit_ambient_fire.vpcf"
 	local caster = self:GetParent()
@@ -92,7 +74,6 @@ function modifier_juggernaut_basic_attack_stacks:CreateGlow(index)
 	)
 end
 
-
 function modifier_juggernaut_basic_attack_stacks:StopEffects()
 	for _,efx in pairs(self.effects_cast_weapon) do
 		if efx ~= nil then
@@ -102,8 +83,6 @@ function modifier_juggernaut_basic_attack_stacks:StopEffects()
 	end
 end
 
---------------------------------------------------------------------------------
---Graphics
 function modifier_juggernaut_basic_attack_stacks:GetTexture()
 	return "juggernaut_blade_dance"
 end

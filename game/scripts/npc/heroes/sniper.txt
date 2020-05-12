@@ -17,12 +17,7 @@
 		"Ability5"						"sniper_special_attack"
 		"Ability6"						"sniper_extra"
 		"Ability7"						"sniper_ultimate"
-		//"Ability8"						"sniper_ex_second_attack"
-		//"Ability8"						"sniper_ex_mobility"	
-		"Ability10"						"mount"							
-		"Ability11"						"charge"
-		"Ability12"						"sniper_ultimate_projectile"
-
+		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
 		"VisionDaytimeRange"		"2000"
@@ -57,10 +52,9 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"155" 						// Base health.
+		"StatusHealth"				"155" 									// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
 	}   
 }

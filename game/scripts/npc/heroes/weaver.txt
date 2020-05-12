@@ -18,8 +18,6 @@
 		"Ability7"						"weaver_ultimate"
 		//"Ability8"						"sniper_ex_second_attack"
 		//"Ability8"						"sniper_ex_mobility"	
-		"Ability10"						"mount"							
-		"Ability11"						"charge"
 		"Ability12"						"sniper_ultimate_projectile"
 
 		//Vision

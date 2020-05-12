@@ -7,12 +7,10 @@ function modifier_tinker_ex_second_attack_thinker:IsHidden()
 	return true
 end
 
-function modifier_tinker_ex_second_attack_thinker:IsDebuff()
-	return false
+function modifier_tinker_ex_second_attack_thinker:IsDebuff() return false
 end
 
-function modifier_tinker_ex_second_attack_thinker:IsPurgable()
-	return false
+function modifier_tinker_ex_second_attack_thinker:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

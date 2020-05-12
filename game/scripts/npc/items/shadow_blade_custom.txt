@@ -3,19 +3,21 @@
 {
     "item_shadow_blade_custom"	
 	{	
-		"ID"							"2015"
+		"ID"							"2019"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_invis_sword"	
         "ScriptFile"                    "items/item_shadow_blade_custom/item_shadow_blade_custom.lua"
 
-		"ItemCost"						"1"
+		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"
 		"ItemQuality"					"consumable"
 		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
-		"ItemStockMax"					"1"
-
+		"ItemDroppable" "0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityManaCost"				"25"
-		"AbilityCooldown"				"15.0"	
+		"AbilityCooldown"				"15.0"
+		"AbilityCastPoint"				"0.0"	
 
 		"AbilitySpecial"	
 		{

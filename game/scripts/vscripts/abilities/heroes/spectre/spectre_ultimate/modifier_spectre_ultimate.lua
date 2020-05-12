@@ -3,8 +3,7 @@ LinkLuaModifier( "modifier_spectre_special_attack_debuff", "abilities/heroes/spe
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_spectre_ultimate:IsHidden()
-	return false
+function modifier_spectre_ultimate:IsHidden() return false
 end
 
 function modifier_spectre_ultimate:IsDebuff()

@@ -1,7 +1,7 @@
 sky_special_attack = class({})
 LinkLuaModifier( "modifier_sky_special_attack_thinker", "abilities/heroes/skywrath_mage/sky_special_attack/modifier_sky_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_projectile_slower_lua", "abilities/generic/modifier_generic_projectile_slower_lua", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_projectile_special_behavior_lua", "abilities/generic/modifier_generic_projectile_special_behavior_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_projectile_slower", "abilities/generic/modifier_generic_projectile_slower", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_generic_projectile_special_behavior", "abilities/generic/modifier_generic_projectile_special_behavior", LUA_MODIFIER_MOTION_NONE )
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -51,13 +51,13 @@ function sky_special_attack:OnCastPointEnd( point )
     bubble:AddNewModifier(
         caster,
         self,
-        "modifier_generic_projectile_special_behavior_lua",
+        "modifier_generic_projectile_special_behavior",
         { duration = duration }
     )
     bubble:AddNewModifier(
         caster,
         self,
-        "modifier_generic_projectile_slower_lua",
+        "modifier_generic_projectile_slower",
         { duration = duration }
     )
     --bubble:SetSize(Vector(point.x, point.y, 0), Vector(point.x, point.y, 0))	

@@ -2,16 +2,13 @@ modifier_spectre_banish = class({})
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_spectre_banish:IsHidden()
-	return false
+function modifier_spectre_banish:IsHidden() return false
 end
 
-function modifier_spectre_banish:IsDebuff()
-	return false
+function modifier_spectre_banish:IsDebuff() return false
 end
 
-function modifier_spectre_banish:IsPurgable()
-	return false
+function modifier_spectre_banish:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

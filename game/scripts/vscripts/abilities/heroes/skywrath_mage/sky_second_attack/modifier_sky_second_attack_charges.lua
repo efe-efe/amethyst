@@ -4,16 +4,13 @@ modifier_sky_second_attack_charges.cooldowns = {}
 
 --------------------------------------------------------------------------------
 -- Classifications
-function modifier_sky_second_attack_charges:IsHidden()
-	return false
+function modifier_sky_second_attack_charges:IsHidden() return false
 end
 
-function modifier_sky_second_attack_charges:IsDebuff()
-	return false
+function modifier_sky_second_attack_charges:IsDebuff() return false
 end
 
-function modifier_sky_second_attack_charges:IsPurgable()
-	return false
+function modifier_sky_second_attack_charges:IsPurgable() return false
 end
 
 function modifier_sky_second_attack_charges:DestroyOnExpire()

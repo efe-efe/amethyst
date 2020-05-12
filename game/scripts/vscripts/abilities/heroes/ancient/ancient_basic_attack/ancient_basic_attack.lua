@@ -2,7 +2,6 @@ ancient_basic_attack = class({})
 LinkLuaModifier( "modifier_ancient_basic_attack", "abilities/heroes/ancient/ancient_basic_attack/modifier_ancient_basic_attack", LUA_MODIFIER_MOTION_NONE )
 
 function ancient_basic_attack:OnCastPointEnd()   
-
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -65,17 +64,6 @@ function ancient_basic_attack:OnCastPointEnd()
 
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
-end
-
---------------------------------------------------------------------------------
--- Misc
--- Add mana on attack modifier. Only first time upgraded
-function ancient_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
 end
 
 --------------------------------------------------------------------------------

@@ -2,12 +2,10 @@ modifier_generic_fading_haste = class({})
 
 -- Clasifications
 --------------------------------------------------------------------------------
-function modifier_generic_fading_haste:IsDebuff()
-	return false
+function modifier_generic_fading_haste:IsDebuff() return false
 end
 
-function modifier_generic_fading_haste:IsHidden()
-	return false
+function modifier_generic_fading_haste:IsHidden() return false
 end
 
 --------------------------------------------------------------------------------

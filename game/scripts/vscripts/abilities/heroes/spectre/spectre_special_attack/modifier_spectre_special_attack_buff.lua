@@ -1,16 +1,13 @@
 modifier_spectre_special_attack_buff = class({})
 
 --------------------------------------------------------------------------------
-function modifier_spectre_special_attack_buff:IsDebuff()
-	return false
+function modifier_spectre_special_attack_buff:IsDebuff() return false
 end
 
-function modifier_spectre_special_attack_buff:IsHidden()
-	return false
+function modifier_spectre_special_attack_buff:IsHidden() return false
 end
 
-function modifier_spectre_special_attack_buff:IsPurgable()
-	return false
+function modifier_spectre_special_attack_buff:IsPurgable() return false
 end
 
 --------------------------------------------------------------------------------

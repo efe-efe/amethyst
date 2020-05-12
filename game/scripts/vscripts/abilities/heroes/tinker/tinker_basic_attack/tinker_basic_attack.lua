@@ -73,16 +73,6 @@ function tinker_basic_attack:OnCastPointEnd( pos )
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
-			caster:PerformAttack(
-				unit, -- handle hTarget 
-				true, -- bool bUseCastAttackOrb, 
-				true, -- bool bProcessProcs,
-				true, -- bool bSkipCooldown
-				false, -- bool bIgnoreInvis
-				false, -- bool bUseProjectile
-				false, -- bool bFakeAttack
-				true -- bool bNeverMiss
-			)
 
 			-- Reduce the cd of the special attack by 1
 			local special_attack = caster:FindAbilityByName("tinker_special_attack")
@@ -126,15 +116,4 @@ function tinker_basic_attack:PlayEffects_b( pos )
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
 	ParticleManager:SetParticleControl( effect_cast, 0, pos )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-end
-
---------------------------------------------------------------------------------
--- Misc
--- Add mana on attack modifier. Only first time upgraded
-function tinker_basic_attack:OnUpgrade()
-	if self:GetLevel()==1 then
-		local caster = self:GetCaster()
-		-- Gain mana
-		caster:AddNewModifier(caster, self , "modifier_mana_on_attack", {})
-	end
 end
