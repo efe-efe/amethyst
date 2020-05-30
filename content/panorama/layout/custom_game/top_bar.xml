@@ -38,13 +38,6 @@
                 <Panel id="TopBar__Legion" class="TopBar__Legion" hittest="false" hittestchildren="false"/>
             </Panel>
             <Panel id="TopBar__Middle" class="TopBar__Middle" hittest="false" hittestchildren="false">
-                <Panel id="TopBar__Score" class="TopBar__Score" hittest="false" hittestchildren="false">
-                    <Label id="TopBar__Score_Text" class="TopBar__Score_Text" html="true" text="0" />
-                    <Panel id="TopBar__Image_Container" class="TopBar__Image_Container" hittest="false" hittestchildren="false">
-                        <Image id="TopBar__Image" class="TopBar__Image" src="file://{images}/custom_game/sword.png" />
-                    </Panel>
-                    <Label id="TopBar__Score_Text" class="TopBar__Score_Text" html="true" text="0" />
-                </Panel>
                 <Panel id="TopBar__Clock" class="TopBar__Clock" hittest="false" hittestchildren="false">
                     <Label id="TopBar__Clock_Text" class="TopBar__Clock_Text" html="true" text="--:--" />
                 </Panel>
