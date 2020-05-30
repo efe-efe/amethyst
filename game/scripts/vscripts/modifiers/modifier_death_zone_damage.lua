@@ -5,7 +5,22 @@ function modifier_death_zone_damage:IsDebuff() return true end
 
 function modifier_death_zone_damage:OnCreated( kv )
     if IsServer() then
-        self:StartIntervalThink(1.0)      
+        self:StartIntervalThink(1.0)
+
+        self.effect_cast = ParticleManager:CreateParticle("particles/econ/items/ogre_magi/ogre_magi_arcana/ogre_magi_arcana_ignite_burn.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+
+        
+        self.effect_cast_b = ParticleManager:CreateParticle("particles/mod_units/heroes/hero_phoenix/phoenix_fire_spirit_burn.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    end
+end
+
+function modifier_death_zone_damage:OnDestroy()
+    if IsServer() then
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast)
+        
+        ParticleManager:DestroyParticle(self.effect_cast_b, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast_b)
     end
 end
 
