@@ -32,8 +32,6 @@ function OnLeftButtonPressed(){
 }
 
 function OnRightButtonPressed(){
-    $.Msg(CustomNetTables.GetAllTableValues("heroes"));
-
     ExecuteAbility(SECOND_ATTACK_INDEX, true);
 }
 
@@ -44,7 +42,7 @@ function OnRightButtonReleased(){
 GameUI.SetMouseCallback( function( eventName, arg ) {
 	var nMouseButton = arg
 
-	if ( GameUI.GetClickBehaviors() !== CLICK_BEHAVIORS.DOTA_CLICK_BEHAVIOR_NONE ){
+	if (GameUI.GetClickBehaviors() !== CLICK_BEHAVIORS.DOTA_CLICK_BEHAVIOR_NONE){
         return false;
     }
     if ( eventName === "pressed" ){
@@ -76,7 +74,10 @@ GameUI.SetMouseCallback( function( eventName, arg ) {
 function OnReleaseKey( key ){
     var playerId = Players.GetLocalPlayer();
     var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
-    heroIndex = Players.GetSelectedEntities( playerId )[0]; //DEBUG
+
+    if(Game.IsInToolsMode()){
+        heroIndex = Players.GetSelectedEntities(playerId)[0];
+    }
     
     GameEvents.SendCustomGameEventToServer("key_released", { 
         entityIndex: heroIndex,
@@ -88,7 +89,11 @@ function ExecuteAbility(index, showEffects)
 {
     var playerId = Players.GetLocalPlayer();
     var heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
-    heroIndex = Players.GetSelectedEntities(playerId)[0]; //DEBUG
+
+    if(Game.IsInToolsMode()){
+        heroIndex = Players.GetSelectedEntities(playerId)[0];
+    }
+
     var abilityIndex = Entities.GetAbility(heroIndex, index);
 
     if(heroIndex == -1){
@@ -132,7 +137,11 @@ function UseItem(itemSlot)
 {
     var playerId = Players.GetLocalPlayer();
     var heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
-    heroIndex = Players.GetSelectedEntities(playerId)[0]; //DEBUG
+
+    if(Game.IsInToolsMode()){
+        heroIndex = Players.GetSelectedEntities(playerId)[0];
+    }
+
     var abilityIndex = Entities.GetItemInSlot(heroIndex, itemSlot);
 
     if(heroIndex == -1){
@@ -177,8 +186,9 @@ function SendMovementSignal( action, direction )
     var playerId = Players.GetLocalPlayer();
     var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
     
-    //Debug
-    heroIndex = Players.GetSelectedEntities( playerId )[0];
+    if(Game.IsInToolsMode()){
+        heroIndex = Players.GetSelectedEntities(playerId)[0];
+    }
     
     GameEvents.SendCustomGameEventToServer(action, { 
         entityIndex: heroIndex,

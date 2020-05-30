@@ -36,6 +36,7 @@ styles["FairyDust"] = {     backgroundColor: PURPLE, textShadow: CreateTextShado
 styles["Desolate"] = {      backgroundColor: "#C655C4", color: "#C655C4" };
 styles["DancingBlades"] = { backgroundColor: "#DC8668", color: "#DC8668" };
 styles["Raze"] = {          backgroundColor: ORANGE, textShadow: CreateTextShadow("#DC8668"), color: "#E8C070" };
+styles["Desolation"] = {    backgroundColor: "#E55C34", textShadow: CreateTextShadow("#DC8668"), color: "#E8C070" };
 
 styles["Darkness"] = {
     backgroundColor: "#DC8668",
@@ -62,11 +63,6 @@ styles["Infection"] = {
     backgroundColor: "#E55C34",
     textShadow: CreateTextShadow("#DC8668"),
     color: "#1aed4e"
-}
-styles["Desolation"] = {
-    backgroundColor: "#E55C34",
-    textShadow: CreateTextShadow("#DC8668"),
-    color: "#E8C070"
 }
 
 function CreateTextShadow( color ){
