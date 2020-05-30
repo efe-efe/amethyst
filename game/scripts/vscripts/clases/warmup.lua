@@ -1,6 +1,6 @@
 Warmup = Warmup or class({}, nil, GameState)
 
-local WARMUP_TIME = 1--20.0
+local WARMUP_TIME = WARMUP_DURATION
 local DUMMY_TARGET_RESPAWN = 5.0
 local ADRENALINE_DURATION = 25.0
 
@@ -21,6 +21,10 @@ function Warmup:constructor(players, callback)
             timer = 0,
             entity = DummyTarget(entity:GetOrigin()),
         })
+    end
+
+    for _,player in pairs(self.players) do
+        player.hero:HeroLevelUp(true)
     end
 end
 
@@ -47,7 +51,9 @@ function Warmup:Update()
             end
         end
     else
-        self:EndWarmup()
+        if WARMUP_TIME ~= -1 then
+            self:EndWarmup()
+        end
     end
 end
 

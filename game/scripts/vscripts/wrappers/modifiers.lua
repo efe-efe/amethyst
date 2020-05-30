@@ -1,19 +1,23 @@
 Modifiers = {}
 
-function Modifiers.Recast( modifier, data )
-    
+function Modifiers.Recast(modifier)
     local onCreated =           modifier.OnCreated
     local onDestroy =           modifier.OnDestroy
+    local onRefresh =           modifier.OnRefresh
     local declareFunctions =    modifier.DeclareFunctions
     local getRecastAbility =    modifier.GetRecastAbility
+    local getRecastKey =        modifier.GetRecastKey
+    local getRecastCharges =    modifier.GetRecastCharges
     
-    function modifier:OnCreated( params )
+    function modifier:OnCreated(params)
         if IsServer() then
-            if data.charges then
-                self:SetStackCount(data.charges)
+            if self:GetRecastCharges() then
+                self:SetStackCount(self:GetRecastCharges())
             end
 
-            if data.keep_order ~= 1 then
+            if self:GetAbility() == self:GetRecastAbility() then
+                self:GetAbility():EndCooldown()
+            else 
                 self:GetParent():SwapAbilities(
                     self:GetAbility():GetName(), 
                     self:GetRecastAbility():GetName(), 
@@ -21,11 +25,11 @@ function Modifiers.Recast( modifier, data )
                     true
                 )
             end
-            
-            self:GetParent():AddRecastVisual({
-                key = data.key,
-                modifier = self,
-                abilityName = self:GetRecastAbility():GetName(),
+
+            self:GetParent():AddRecast({
+                key = self:GetRecastKey(),
+                modifier_name = self:GetName(),
+                ability_name = self:GetRecastAbility():GetName(),
             })
         end
         
@@ -34,7 +38,9 @@ function Modifiers.Recast( modifier, data )
 
     function modifier:OnDestroy()
         if IsServer() then
-            if data.keep_order ~= 1 then
+            if self:GetAbility() == self:GetRecastAbility() then
+                self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(self:GetAbility():GetLevel()))
+            else 
                 self:GetParent():SwapAbilities(
                     self:GetAbility():GetName(), 
                     self:GetRecastAbility():GetName(), 
@@ -42,8 +48,14 @@ function Modifiers.Recast( modifier, data )
                     false
                 )
             end
+            self:GetParent():RemoveRecast(self:GetName())
         end
         if onDestroy then onDestroy(self) end
+    end
+
+    function modifier:OnRefresh()
+        self:IncrementStackCount()
+        if onRefresh then onRefresh(self) end
     end
         
     function modifier:OnStackCountChanged(old)
@@ -75,22 +87,33 @@ function Modifiers.Recast( modifier, data )
             end
 
             if params.ability == self:GetRecastAbility() then
-                if data.charges then
+                if self:GetRecastCharges() then
                     self:DecrementStackCount()
                 end
             end
         end
     end
 
+    function modifier:GetRecastCharges()
+        if getRecastCharges then return getRecastCharges(self) end
+        return nil
+    end
+
     function modifier:GetRecastAbility()
         if getRecastAbility then return getRecastAbility(self) end
         return self:GetAbility()
     end
+
+    function modifier:GetRecastKey()
+        if getRecastKey then return getRecastKey(self) end
+        return "NO KEY"
+    end
     
     function modifier:GetStatusLabel() return "Recast" end
-    function modifier:GetStatusPriority() return 6 end
+    function modifier:GetStatusPriority() return 10 end
     function modifier:GetStatusStyle() return "Recast" end
-
+    function modifier:GetStatusScope() return STATUS_SCOPE_LOCAL end
+    
     if IsClient() then require("wrappers/modifiers") end
     Modifiers.Status(modifier)
 end
@@ -98,14 +121,14 @@ end
 CHARGES_TYPE_SYNC = 1
 CHARGES_TYPE_ASYNC = 2
 
--- TODO: What happens if the modifier has na OnIntervalThink function?
-function Modifiers.Charges(modifier, data)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
-    local onRefresh = modifier.OnRefresh
-    local getReplenishTime = modifier.GetReplenishTime
-    local getReplenishType = modifier.GetReplenishType
-    local getMaxCharges = modifier.GetMaxCharges
+-- TODO: What happens if the modifier has an OnIntervalThink function?
+function Modifiers.Charges(modifier)
+    local onCreated =           modifier.OnCreated
+    local onDestroy =           modifier.OnDestroy
+    local onRefresh =           modifier.OnRefresh
+    local getReplenishTime =    modifier.GetReplenishTime
+    local getReplenishType =    modifier.GetReplenishType
+    local getMaxCharges =       modifier.GetMaxCharges
 
     function modifier:IsHidden()            return false end
     function modifier:IsDebuff()            return false end
@@ -123,11 +146,9 @@ function Modifiers.Charges(modifier, data)
             end
             if self:GetReplenishType() == CHARGES_TYPE_SYNC then
                 self.replenish_time = self:GetReplenishTime()
-
-                if data.show_icon == 1 then
-                    self:GetParent():AddChargesVisual({ modifier = self })
-                end
             end
+
+            self:GetParent():AddModifierTracker(self:GetName(), MODIFIER_CHARGES)
         end
         if onCreated then onCreated(self, params) end
     end
@@ -137,6 +158,18 @@ function Modifiers.Charges(modifier, data)
             self:CalculateCharge()
         end
         if onRefresh then onRefresh(self, params) end
+    end
+
+    function modifier:AddCharge()
+        self:IncrementStackCount()
+        self:CalculateCharge()
+    end
+
+    function modifier:OnDestroy()
+        if IsServer() then
+            self:GetParent():RemoveModifierTracker(self:GetName(), MODIFIER_CHARGES)
+        end
+        if onDestroy then onDestroy(self, params) end
     end
 
     function modifier:CalculateCharge()
@@ -195,14 +228,6 @@ function Modifiers.Charges(modifier, data)
         end
     end
 
-    function modifier:OnStackCountChanged(old)
-        if IsServer() then
-            if data.show_icon == 1 then
-                GameRules.GameMode:UpdateHeroCharges(self:GetParent(), self:GetStackCount())
-            end
-        end
-    end
-
     function modifier:DeclareFunctions()
         local funcs = {}
 
@@ -212,20 +237,20 @@ function Modifiers.Charges(modifier, data)
             end
         end
 
-        table.insert(funcs, MODIFIER_EVENT_ON_ABILITY_EXECUTED)
+        table.insert(funcs, MODIFIER_EVENT_ON_ABILITY_FULLY_CAST)
         table.insert(funcs, MODIFIER_EVENT_ON_DEATH)
 
         return funcs
     end
     
-    function modifier:OnDeath( params )
+    function modifier:OnDeath(params)
         if IsServer() then
             if params.unit ~= self:GetParent() then return end
             self:SetStackCount(self:GetMaxCharges())
         end
     end
 
-    function modifier:OnAbilityExecuted(params)
+    function modifier:OnAbilityFullyCast(params)
         if IsServer() then
             if params.unit ~= self:GetParent() then
                 return
@@ -236,6 +261,11 @@ function Modifiers.Charges(modifier, data)
                 self:CalculateCharge()
             end
         end
+    end
+
+    function modifier:RefreshCharges()
+        self:SetStackCount(self:GetMaxCharges())
+        self:CalculateCharge()
     end
 
     function modifier:GetMaxCharges()
@@ -254,28 +284,39 @@ function Modifiers.Charges(modifier, data)
     end
 end
 
-function Modifiers.Banish( modifier, data )
+function Modifiers.Banish(modifier)
+    local onCreated =           modifier.OnCreated
+    local onDestroy =           modifier.OnDestroy
+    local checkState =          modifier.CheckState
+
     function modifier:OnCreated(params)
         if IsServer() then
-            if data.disable == 1 then
-                self:SetStackCount(1)
-            else
-                self:SetStackCount(0)
-            end
-            self:GetParent():AddNoDraw()
+            self:GetParent():SetModelScale(0.05)
         end
+        if onCreated then onCreated(self, params) end
     end
-    
+
+    function modifier:OnDestroy()
+        if IsServer() then
+            self:GetParent():SetModelScale(1.0)
+        end
+        if onDestroy then onDestroy(self, params) end
+    end
+
     function modifier:CheckState()
-        local state = {
-            [MODIFIER_STATE_COMMAND_RESTRICTED] = self:GetStackCount() == 1 and true or false,
-            [MODIFIER_STATE_NO_UNIT_COLLISION] = true,
-            [MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY] = true,
-            [MODIFIER_STATE_INVULNERABLE] = true,
-            [MODIFIER_STATE_OUT_OF_GAME] = true,
-        }
-    
-        return state
+        local states = {}
+
+        if checkState then
+            for _,state in pairs(checkState()) do
+                states[_] = state
+            end
+        end
+        
+        states[MODIFIER_STATE_NO_UNIT_COLLISION] = true
+        states[MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY] = true
+        states[MODIFIER_STATE_INVULNERABLE] = true
+        states[MODIFIER_STATE_OUT_OF_GAME] = true
+        return states
     end
 end
 
@@ -288,6 +329,8 @@ function Modifiers.Displacement(modifier)
     local onCollide =               modifier.OnCollide
     local getCollisionRadius =      modifier.GetCollisionRadius
     local getCollisionOffset =      modifier.GetCollisionOffset
+    local getCollisionUnitFilter =  modifier.GetCollisionUnitFilter
+
     local checkState =              modifier.CheckState
     
     function modifier:IsHidden()    return false end
@@ -352,7 +395,7 @@ function Modifiers.Displacement(modifier)
         local units = self:GetCaster():FindUnitsInRadius(
             origin, 
             self:GetCollisionRadius(), 
-            DOTA_UNIT_TARGET_TEAM_BOTH, 
+            self:GetCollisionUnitFilter(), 
             DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
             DOTA_UNIT_TARGET_FLAG_NONE,
             FIND_ANY_ORDER
@@ -374,6 +417,10 @@ function Modifiers.Displacement(modifier)
         end
 
         self.prev_origin = self:GetParent():GetAbsOrigin()
+
+        if self.GetOnThinkCallback then
+            self:GetOnThinkCallback()
+        end
     end
 
     function modifier:UpdateHorizontalMotion( me, dt )
@@ -417,6 +464,11 @@ function Modifiers.Displacement(modifier)
         if onCollide then onCollide(self, params) end
     end
 
+    function modifier:GetCollisionUnitFilter()
+        if getCollisionUnitFilter then return getCollisionUnitFilter(self) end
+        return DOTA_UNIT_TARGET_TEAM_BOTH
+    end
+
     function modifier:GetCollisionRadius()
         if getCollisionRadius then return getCollisionRadius(self) end
         return 80
@@ -431,24 +483,33 @@ end
 function Modifiers.Counter(modifier)
     local onCreated =                   modifier.OnCreated
     local onDestroy =                   modifier.OnDestroy
+    local onOrder =                     modifier.OnOrder
     local onTrigger =                   modifier.OnTrigger
     local declareFunctions =            modifier.DeclareFunctions
     local checkState =                  modifier.CheckState
     local getMovementSpeedPercentage =  modifier.GetMovementSpeedPercentage
-
+    local useDefaultVisuals =           modifier.UseDefaultVisuals
+    local getStatusEffectName =         modifier.GetStatusEffectName
+    
     function modifier:OnCreated(params)
         if IsServer() then
-            self.effect_cast = ParticleManager:CreateParticle("particles/items_fx/black_king_bar_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+            if self:UseDefaultVisuals() then
+                self.effect_cast = ParticleManager:CreateParticle("particles/items_fx/black_king_bar_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+            end
             self:GetParent():AddModifierTracker(self:GetName(), MODIFIER_COUNTER)
+            self:GetParent():DeactivateNonPriorityAbilities()
         end
         if onCreated then onCreated(self, params) end
     end
 
     function modifier:OnDestroy(params)
         if IsServer() then
-            ParticleManager:DestroyParticle(self.effect_cast, false)
-            ParticleManager:ReleaseParticleIndex( self.effect_cast )
+            if self:UseDefaultVisuals() then
+                ParticleManager:DestroyParticle(self.effect_cast, false)
+                ParticleManager:ReleaseParticleIndex(self.effect_cast)
+            end
             self:GetParent():RemoveModifierTracker(self:GetName(), MODIFIER_COUNTER)
+			self:GetParent():SetAllAbilitiesActivated(true)
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -461,6 +522,11 @@ function Modifiers.Counter(modifier)
         if getMovementSpeedPercentage then return getMovementSpeedPercentage(self) end
         return 0
     end  
+
+    function modifier:UseDefaultVisuals()
+        if useDefaultVisuals then return useDefaultVisuals(self) end
+        return true
+    end 
 
     function modifier:DeclareFunctions()
         local funcs = {}
@@ -479,8 +545,17 @@ function Modifiers.Counter(modifier)
     end
 
     function modifier:OnOrder(params)
+        if onOrder then 
+            onOrder(self, params) 
+            return
+        end
+
         if params.unit == self:GetParent() then
-            if params.order_type == DOTA_UNIT_ORDER_STOP or params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION then
+            if  params.order_type == DOTA_UNIT_ORDER_STOP or 
+                params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION or 
+                params.order_type == DOTA_UNIT_ORDER_CAST_POSITION or
+                params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
+            then
                 self:Destroy()
             end
         end
@@ -519,6 +594,7 @@ function Modifiers.Counter(modifier)
     end
 
     function modifier:GetStatusEffectName()
+        if getStatusEffectName then return getStatusEffectName(self) end
         return "particles/status_fx/status_effect_avatar.vpcf"
     end
 
@@ -572,28 +648,31 @@ THINKER_VISUALS_PUBLIC = 1
 THINKER_VISUALS_LOCAL = 2
 
 function Modifiers.Thinker(modifier)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
-    local getAOERadius = modifier.GetAOERadius
-    local getDelayTime = modifier.GetDelayTime
-    local onIntervalThink = modifier.OnIntervalThink
-
+    local onCreated =           modifier.OnCreated
+    local onDestroy =           modifier.OnDestroy
+    local getAOERadius =        modifier.GetAOERadius
+    local getDelayTime =        modifier.GetDelayTime
+    local onIntervalThink =     modifier.OnIntervalThink
+    local onDelayEnds =         modifier.OnDelayEnds
+    local getTimedActions =     modifier.GetTimedActions
+    
     function modifier:OnCreated(params)
-        if IsServer() then
-            self.origin = self:GetParent():GetAbsOrigin()
+        self.initialized = true
 
+        if IsServer() then
             if self:GetAOERadius() > 0 then
                 self:DrawVisuals()
             end
         end
+        
         if self:GetDelayTime() > 0 then
             self.initialized = false
             self.counter = 0
             
             self:StartIntervalThink(0.03)
-        else
-            if onCreated then onCreated(self, params) end
         end
+
+        if onCreated then onCreated(self, params) end
     end
 
     function modifier:OnDestroy(params)
@@ -608,21 +687,41 @@ function Modifiers.Thinker(modifier)
     function modifier:OnIntervalThink()
         if not self.initialized then
             local percentage = self.counter/(self:GetDelayTime() * 30)
-            
+        
             if IsServer() then
+                if self.GetFollowTarget then
+                    self:GetParent():SetAbsOrigin(self:GetFollowTarget():GetAbsOrigin())
+                end
+                
                 for _,effect in pairs(self.effects_cast_progress) do
+                    ParticleManager:SetParticleControl(effect, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 16))
                     ParticleManager:SetParticleControl(effect, 1, Vector(self:GetAOERadius(), percentage, 0))
+                end
+
+                if self:GetTimedActions()[self.counter/30] then
+                    self:GetTimedActions()[self.counter/30](self)
                 end
             end
 
             if percentage >= 1.0 then
                 self.initialized = true
-                if onCreated then onCreated(self, params) end
+                self:OnDelayEnds()
             end
             self.counter = self.counter + 1
+            
+            if self.OnIntervalThinkCustom then
+                self:OnIntervalThinkCustom()
+            end
+
         else
             if onIntervalThink then onIntervalThink(self) end
         end
+    end
+
+
+    function modifier:OnDelayEnds()
+        if onDelayEnds then return onDelayEnds(self) end
+        return nil
     end
 
     function modifier:GetAOERadius()
@@ -652,7 +751,7 @@ function Modifiers.Thinker(modifier)
                     self.effects_cast_progress[team] = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self:GetCaster(), team )
 
                     ParticleManager:SetParticleControlForward(self.effects_cast_progress[team], 0, Vector(0,-1,0))	
-                    ParticleManager:SetParticleControl(self.effects_cast_progress[team], 0, self.origin + Vector(0,0,16))
+                    ParticleManager:SetParticleControl(self.effects_cast_progress[team], 0, self:GetParent():GetAbsOrigin() + Vector(0,0,16))
                     ParticleManager:SetParticleControl(self.effects_cast_progress[team], 1, Vector(self:GetAOERadius(), percentage, 1))
                     ParticleManager:SetParticleControl(self.effects_cast_progress[team], 16, Vector(1, 0, 0))
                     
@@ -671,7 +770,7 @@ function Modifiers.Thinker(modifier)
 
             self.effects_cast_progress["1"] = ParticleManager:CreateParticleForPlayer(particle_cast, PATTACH_WORLDORIGIN, self:GetCaster(), parent_owner)
 
-            ParticleManager:SetParticleControl(self.effects_cast_progress["1"], 0, self.origin + Vector(0,0,16))
+            ParticleManager:SetParticleControl(self.effects_cast_progress["1"], 0, self:GetParent():GetAbsOrigin() + Vector(0,0,16))
             ParticleManager:SetParticleControl(self.effects_cast_progress["1"], 1, Vector(self:GetAOERadius(), percentage, 1))
             ParticleManager:SetParticleControl( self.effects_cast_progress["1"], 15, Vector(70, 70, 250))
         end
@@ -691,13 +790,19 @@ function Modifiers.Thinker(modifier)
     function modifier:IsInitialized()
         return self.initialized
     end
+
+    function modifier:GetTimedActions()
+        if getTimedActions then return getTimedActions(self) end
+        return {}
+    end
 end
 
 function Modifiers.Channeling(modifier)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
+    local onCreated =           modifier.OnCreated
+    local onDestroy =           modifier.OnDestroy
     local declareFunctions =    modifier.DeclareFunctions
-    local checkState =    modifier.CheckState
+    local checkState =          modifier.CheckState
+    local onOrder =             modifier.OnOrder
 
     function modifier:OnCreated(params)
         if IsServer() then
@@ -723,6 +828,7 @@ function Modifiers.Channeling(modifier)
         end
 
         table.insert(funcs, MODIFIER_EVENT_ON_ORDER)
+        table.insert(funcs, MODIFIER_EVENT_ON_STATE_CHANGED)
         return funcs
     end
 
@@ -734,6 +840,17 @@ function Modifiers.Channeling(modifier)
                 params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
             then
                 self:Destroy()
+            end
+        end
+        if onOrder then onOrder(self, params) end
+    end
+
+    function modifier:OnStateChanged(params)
+        if IsServer() then
+            if params.unit == self:GetParent() then
+                if self:GetParent():IsStunned() or self:GetParent():IsSilenced() then
+                    self:Destroy()
+                end
             end
         end
     end
@@ -750,7 +867,6 @@ function Modifiers.Channeling(modifier)
         states[MODIFIER_STATE_ROOTED] = true
         return states
     end
-
         
     function modifier:GetStatusLabel() return "Channeling" end
     function modifier:GetStatusPriority() return 4 end
@@ -770,15 +886,15 @@ STATUS_SCOPE_PUBLIC = 1
 STATUS_SCOPE_LOCAL = 2
 
 function Modifiers.Status(modifier)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
-    local getStatusLabel = modifier.GetStatusLabel
-    local getStatusStyle = modifier.GetStatusStyle
-    local getStatusPriority = modifier.GetStatusPriority
-    local getStatusTriggerType = modifier.GetStatusTriggerType
-    local getStatusContentType = modifier.GetStatusContentType
-    local getStatusScope = modifier.GetStatusScope
-    local getStatusEnabled = modifier.GetStatusEnabled
+    local onCreated =               modifier.OnCreated
+    local onDestroy =               modifier.OnDestroy
+    local getStatusLabel =          modifier.GetStatusLabel
+    local getStatusStyle =          modifier.GetStatusStyle
+    local getStatusPriority =       modifier.GetStatusPriority
+    local getStatusTriggerType =    modifier.GetStatusTriggerType
+    local getStatusContentType =    modifier.GetStatusContentType
+    local getStatusScope =          modifier.GetStatusScope
+    local getStatusEnabled =        modifier.GetStatusEnabled
 
     function modifier:OnCreated(params)
         if IsServer() then
@@ -832,4 +948,161 @@ function Modifiers.Status(modifier)
         if getStatusScope then return getStatusScope(self) end
         return STATUS_SCOPE_PUBLIC
     end
+end
+
+function Modifiers.Fear(modifier)
+    local onCreated = modifier.OnCreated
+    local onDestroy = modifier.OnDestroy
+    local checkState = modifier.CheckState
+    
+    function modifier:OnCreated(params)
+        if IsServer() then
+            self:GetParent():AddModifierTracker(self:GetName(), MODIFIER_FEAR)
+        end
+        if onCreated then onCreated(self, params) end
+    end
+
+    function modifier:OnDestroy(params)
+        if IsServer() then
+            self:GetParent():RemoveModifierTracker(self:GetName(), MODIFIER_FEAR)
+        end
+        if onDestroy then onDestroy(self, params) end
+    end
+    
+    function modifier:CheckState()
+        local states = {}
+
+        if checkState then
+            for _,state in pairs(checkState()) do
+                states[_] = state
+            end
+        end
+        
+        states[MODIFIER_STATE_SILENCED] = true
+        return states
+    end
+    
+    function modifier:GetStatusLabel() return "Fear" end
+    function modifier:GetStatusPriority() return 4 end
+    function modifier:GetStatusStyle() return "Fear" end
+
+    if IsClient() then require("wrappers/modifiers") end
+    Modifiers.Status(modifier)
+end
+
+function Modifiers.Cooldown(modifier)
+    local onCreated = modifier.OnCreated
+    local getReplenishTime = modifier.GetReplenishTime
+    
+    function modifier:DestroyOnExpire()
+        return false
+    end
+
+    function modifier:OnCreated(params)
+        if IsServer() then
+            self:StartCooldown()
+        end
+        if onCreated then onCreated(self, params) end
+    end
+
+    function modifier:OnIntervalThink()
+        self:Replenish()
+    end
+
+    function modifier:Replenish()
+        if IsServer() then
+            if not self:IsCooldownReady() then 
+                self:SetDuration(-1, true)
+                self:StartIntervalThink(-1)
+                self:SetStackCount(1)
+
+                if self.OnReplenish then
+                    self:OnReplenish()
+                end
+            end
+        end
+    end
+
+    function modifier:StartCooldown()
+        if IsServer() then
+            self:SetDuration(self:GetReplenishTime(), true)
+            self:StartIntervalThink(self:GetReplenishTime())
+            self:SetStackCount(0)
+
+            if self.OnCooldownStart then
+                self:OnCooldownStart()
+            end
+        end
+    end
+
+    function modifier:GetReplenishTime()
+        if getReplenishTime then return getReplenishTime(self) end
+        return 0
+    end
+
+    function modifier:IsCooldownReady()
+        return self:GetStackCount() > 0
+    end
+end
+
+
+function Modifiers.FadingSlow(modifier)
+    local onCreated =               modifier.OnCreated
+    local declareFunctions =        modifier.DeclareFunctions
+    local getMaxSlowPercentage =    modifier.GetMaxSlowPercentage
+
+    function modifier:OnCreated(params)
+        if onCreated then onCreated(self, params) end
+        
+        if IsServer() then
+            local duration = self:GetDuration()
+            local tick = 1/8
+            local ticks_number = duration / tick
+    
+            self.speed_per_tick = self:GetMaxSlowPercentage() / ticks_number
+    
+            self:SetStackCount(self:GetMaxSlowPercentage())
+            self:StartIntervalThink(tick)
+        end
+    end
+    
+    function modifier:OnIntervalThink()
+        local new_fading_slow = self:GetStackCount() - self.speed_per_tick
+    
+        if new_fading_slow < 0 then
+            self:SetStackCount(0)
+            return
+        end
+        self:SetStackCount(new_fading_slow)
+    end
+    
+    function modifier:DeclareFunctions()
+        local funcs = {}
+
+        if declareFunctions then
+            for _,func in pairs(declareFunctions()) do
+                table.insert(funcs, func)
+            end
+        end
+
+        table.insert(funcs, MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE)
+
+        return funcs
+    end
+
+    function modifier:GetModifierMoveSpeedBonus_Percentage()
+        return -self:GetStackCount()
+    end
+    
+    function modifier:GetMaxSlowPercentage()
+        if getMaxSlowPercentage then return getMaxSlowPercentage(self) end
+        return 100
+    end
+
+    function modifier:GetStatusLabel() return "Fading slow" end
+    function modifier:GetStatusPriority() return 2 end
+    function modifier:GetStatusStyle() return "Slow" end
+    
+    if IsClient() then require("wrappers/modifiers") end
+    Modifiers.Status(modifier)
 end

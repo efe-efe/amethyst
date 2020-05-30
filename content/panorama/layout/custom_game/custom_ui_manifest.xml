@@ -1,14 +1,13 @@
 <root>
 	<scripts>
+        <include src="file://{resources}/scripts/custom_game/util.js" />
         <include src="file://{resources}/scripts/custom_game/underscore-min.js" />
         <include src="file://{resources}/scripts/custom_game/key_binding.js" />
         <include src="file://{resources}/scripts/custom_game/custom_keys.js" />
         <include src="file://{resources}/scripts/custom_game/base.js" />
         <include src="file://{resources}/scripts/custom_game/camera.js" />
         <include src="file://{resources}/scripts/custom_game/mouse.js" />
-        <include src="file://{resources}/scripts/custom_game/hero_base.js" />
         <include src="file://{resources}/scripts/custom_game/alliances.js" />
-        <include src="file://{resources}/scripts/custom_game/triggers.js" />
 	</scripts>
 		
     <styles>

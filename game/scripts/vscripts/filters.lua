@@ -43,8 +43,7 @@ function Filters:Activate(GameMode, this)
         if order_type == DOTA_UNIT_ORDER_MOVE_TO_POSITION or order_type == DOTA_UNIT_ORDER_MOVE_TO_TARGET then
             return false
         end
-
-        
+       
         return true
     end
 
@@ -111,14 +110,6 @@ function Filters:Activate(GameMode, this)
             end
             SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, healing_target, keys.heal, nil )
         end
-
-        if healing_target:GetAlliance() then
-            Timers:CreateTimer(0.1, function()
-                this:UpdateHealthBar( healing_target:GetAlliance() )
-                --this:UpdateHeroHealthBar( healing_target )
-            end)
-        end
-
         return true
     end
 
@@ -155,20 +146,12 @@ function Filters:Activate(GameMode, this)
             end
 
             victim:AddNewModifier(victim, nil, "modifier_damage_fx", { duration = 0.1 })
-            
-            if victim:GetAlliance() then
-                Timers:CreateTimer(0.1, function()
-                    this:UpdateHealthBar( victim:GetAlliance() )
-                    --this:UpdateHeroHealthBar( victim )
-                end)
-            end
-    
         end
         
         if victim.GetParentEntity then
             local entity = victim:GetParentEntity()
 
-            if instanceof(entity, UnitEntity) then 
+            if instanceof(entity, Amethyst) then 
                 Timers:CreateTimer(0.1, function()
                     this:UpdateUnitHealthBar( victim )
                 end)

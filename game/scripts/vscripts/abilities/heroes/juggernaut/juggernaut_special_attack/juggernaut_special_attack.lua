@@ -1,29 +1,13 @@
 
 juggernaut_special_attack = class({})
+LinkLuaModifier( "modifier_juggernaut_special_attack_recast", "abilities/heroes/juggernaut/juggernaut_special_attack/modifier_juggernaut_special_attack_recast", LUA_MODIFIER_MOTION_NONE )
 
-function juggernaut_special_attack:GetCastPoint()
-	return self:GetSpecialValueFor("cast_point")
-end
-
-function juggernaut_special_attack:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		translate = "odachi",
-		movement_speed = 10,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_TAUNT, 2.0)
-
-	return true
-end
-
-function juggernaut_special_attack:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(ACT_DOTA_TAUNT)
-	self:GetCaster():RemoveModifierByName("modifier_casting")
-end
+function juggernaut_special_attack:GetCastAnimationCustom()		return ACT_DOTA_TAUNT end
+function juggernaut_special_attack:GetPlaybackRateOverride() 	return 2.0 end
+function juggernaut_special_attack:GetCastPointSpeed() 			return 10 end
+function juggernaut_special_attack:GetAnimationTranslate()		return "odachi" end
 
 function juggernaut_special_attack:OnSpellStart()
-	self:GetCaster():FadeGesture(ACT_DOTA_TAUNT)
-
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
@@ -36,7 +20,7 @@ function juggernaut_special_attack:OnSpellStart()
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_silencer/silencer_ti8_glaive.vpcf",
+		EffectName = "particles/mod_units/heroes/hero_silencer/silencer_ti8_glaive_2.vpcf",
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
@@ -63,6 +47,10 @@ function juggernaut_special_attack:OnSpellStart()
 			})
 
 			if _self.Source == caster then
+				if self:GetLevel() == 2 then
+					caster:FindAbilityByName("juggernaut_special_attack_recast"):SetTargetIndex(unit:GetEntityIndex())
+					caster:AddNewModifier(caster, self, "modifier_juggernaut_special_attack_recast", { duration = 1.0 })
+				end
 				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
 		end,
@@ -89,3 +77,6 @@ function juggernaut_special_attack:PlayEffectsOnCast()
 	EmitSoundOn("Hero_Juggernaut.ArcanaTrigger", self:GetCaster())	
 	EmitSoundOn( "Hero_Juggernaut.BladeDance", self:GetCaster() )
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(juggernaut_special_attack)

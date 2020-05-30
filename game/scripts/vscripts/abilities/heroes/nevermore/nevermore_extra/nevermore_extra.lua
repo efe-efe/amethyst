@@ -1,8 +1,13 @@
 nevermore_extra = class({})
 
---------------------------------------------------------------------------------
--- Ability Start
-function nevermore_extra:OnCastPointEnd()
+function nevermore_extra:GetCastAnimationCustom()		return ACT_DOTA_RAZE_2 end
+function nevermore_extra:GetPlaybackRateOverride() 		return 1.3 end
+function nevermore_extra:GetCastPointSpeed() 			return 0 end
+function nevermore_extra:GetFadeGestureOnCast()			return false end
+
+function nevermore_extra:OnSpellStart()
+	self:GetCaster():RemoveGesture(self:GetCastAnimationCustom())
+
 	local caster = self:GetCaster()
 	local heal_per_soul = self:GetSpecialValueFor("heal_per_soul")
 	local heal = self:GetSpecialValueFor("heal")
@@ -16,15 +21,13 @@ function nevermore_extra:OnCastPointEnd()
 
 	self:PlayEffects()
 	caster:Heal(heal + (heal_per_soul * stacks), caster)
+
 end
 
---------------------------------------------------------------------------------
--- Effects
 function nevermore_extra:PlayEffects()
 	local caster = self:GetCaster()
 	EmitSoundOn( "DOTA_Item.SoulRing.Activate", caster )
 
-	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )	
 	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
@@ -34,8 +37,4 @@ function nevermore_extra:PlayEffects()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	nevermore_extra,
-	{ activity = ACT_DOTA_RAZE_2, rate = 1.3 },
-	{ movement_speed = 10 }
-)
+Abilities.Castpoint(nevermore_extra)

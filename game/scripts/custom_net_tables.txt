@@ -2,7 +2,10 @@
 {
 	custom_net_tables =
 	[
+		"units",
 		"heroes",
-		"main"
+		"main",
+		"game_state",
+		"alliances",
 	]
 }

@@ -25,7 +25,7 @@ function modifier_sniper_shrapnel_thinker_custom:GetAuraSearchType()
 	return DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
 end
 
-function modifier_sniper_shrapnel_thinker_custom:OnCreated(params)
+function modifier_sniper_shrapnel_thinker_custom:OnDelayEnds()
     if IsServer() then
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
         self.radius = self:GetAbility():GetSpecialValueFor("radius")

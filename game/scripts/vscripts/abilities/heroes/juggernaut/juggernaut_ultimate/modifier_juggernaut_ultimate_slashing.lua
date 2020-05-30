@@ -17,16 +17,9 @@ function modifier_juggernaut_ultimate_slashing:OnCreated( params )
         local attacks_per_second = self:GetParent():GetAttacksPerSecond()
         local attack_speed = math.abs( 1 / attacks_per_second )
         
-        if IsServer() then 
-            self:GetParent():AddStatusBar({
-                label = "Ultimate", modifier = self, priority = 6, stylename="Ultimate"
-            })
-        end
-        
         self:OnIntervalThink()
         self:StartIntervalThink( attack_speed )
         self:GetCaster():HideHealthBar()
-
     end
 end
 
@@ -142,3 +135,6 @@ end
 function modifier_juggernaut_ultimate_slashing:GetEffectName()
 	return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf"
 end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Animation(modifier_juggernaut_ultimate_slashing)

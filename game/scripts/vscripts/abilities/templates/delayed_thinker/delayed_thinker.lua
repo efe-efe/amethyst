@@ -3,7 +3,7 @@ LinkLuaModifier( "modifier_ability_name_thinker", "abilities/heroes/hero_name/ab
 
 function ability_name:OnCastPointEnd()
 	local caster = self:GetCaster()
-	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
 

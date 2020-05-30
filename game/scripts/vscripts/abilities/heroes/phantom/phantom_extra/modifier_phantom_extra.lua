@@ -1,56 +1,34 @@
 modifier_phantom_extra = class({})
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_phantom_extra:IsHidden() return false
-end
+function modifier_phantom_extra:IsHidden() return false end
+function modifier_phantom_extra:IsDebuff() return false end
+function modifier_phantom_extra:IsStunDebuff() return false end
+function modifier_phantom_extra:IsPurgable() return true end
 
-function modifier_phantom_extra:IsDebuff() return false
-end
-
-function modifier_phantom_extra:IsStunDebuff()
-	return false
-end
-
-function modifier_phantom_extra:IsPurgable()
-	return true
-end
-
---------------------------------------------------------------------------------
--- Initializations
 function modifier_phantom_extra:OnCreated( kv )
-	-- references
     if IsServer() then
-        
-        local ability = self:GetParent():FindAbilityByName("phantom_basic_attack")
-
         self:GetParent():SwapAbilities(
             "phantom_basic_attack", 
             "phantom_basic_attack_related", 
             false, 
-            not ability:IsHidden()
+            true
         )
         
-        self:GetParent():AddStatusBar({
-            label = "dancing daggers", modifier = self, priority = 2, stylename="DancingBlades"
-        }) 
         self:PlayEffectsOnCast()
 	end
 end
 
 function modifier_phantom_extra:OnDestroy( kv )
     if IsServer() then
-        local ability = self:GetParent():FindAbilityByName("phantom_basic_attack_related")
-        
         self:GetParent():SwapAbilities(
             "phantom_basic_attack", 
             "phantom_basic_attack_related", 
-            not ability:IsHidden(),
+            true,
             false
         )
 
         local particle_cast = "particles/econ/events/ti5/blink_dagger_end_sparkles_end_lvl2_ti5.vpcf"
-        local origin = self:GetParent():GetOrigin()
+        local origin = self:GetParent():GetAbsOrigin()
         local effect_cast = ParticleManager:CreateParticle( 
             particle_cast, 
             PATTACH_CUSTOMORIGIN, 
@@ -82,7 +60,7 @@ end
 
 function modifier_phantom_extra:PlayEffectsOnCast()
     local particle_cast = "particles/econ/courier/courier_axolotl_ambient/courier_axolotl_ambient_lvl4_trail_steam.vpcf"
-    local origin = self:GetParent():GetOrigin()
+    local origin = self:GetParent():GetAbsOrigin()
 
     self.effect_cast_sparks = ParticleManager:CreateParticle( 
         particle_cast, 
@@ -106,5 +84,11 @@ function modifier_phantom_extra:StopEffects()
         ParticleManager:DestroyParticle( self.effect_cast_sparks, false )
         ParticleManager:ReleaseParticleIndex( self.effect_cast_sparks )
     end
-    
 end
+
+function modifier_phantom_extra:GetStatusLabel() return "Dancing Blades" end
+function modifier_phantom_extra:GetStatusPriority() return 2 end
+function modifier_phantom_extra:GetStatusStyle() return "DancingBlades" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_phantom_extra)

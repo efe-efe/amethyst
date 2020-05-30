@@ -1,7 +1,6 @@
 modifier_banish = class({})
 
-function modifier_banish:isHidden() return true
-end
+function modifier_banish:isHidden() return true end
 
 function modifier_banish:OnCreated(params)
     if IsServer() then

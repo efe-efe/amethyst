@@ -8,8 +8,9 @@ function modifier_juggernaut_extra_recast:GetRecastAbility()
 	end
 end
 
+function modifier_juggernaut_extra_recast:GetRecastKey()
+	return "R"
+end
+
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Recast( 
-	modifier_juggernaut_extra_recast,
-	{ key = "R" }
-)
+Modifiers.Recast(modifier_juggernaut_extra_recast)

@@ -3,10 +3,6 @@ modifier_nevermore_second_attack_debuff = class({})
 function modifier_nevermore_second_attack_debuff:OnCreated(params)
     if IsServer() then
         self:SetStackCount(1)
-
-        self:GetParent():AddStatusBar({
-			label = "Raze", modifier = self, priority = 4, stylename="Raze"
-		}) 
     end
 end
 
@@ -23,3 +19,10 @@ end
 function modifier_nevermore_second_attack_debuff:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
+
+function modifier_nevermore_second_attack_debuff:GetStatusLabel() return "Raze" end
+function modifier_nevermore_second_attack_debuff:GetStatusPriority() return 4 end
+function modifier_nevermore_second_attack_debuff:GetStatusStyle() return "Raze" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_nevermore_second_attack_debuff)

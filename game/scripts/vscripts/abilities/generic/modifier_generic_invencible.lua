@@ -1,7 +1,5 @@
 modifier_generic_invencible = class({})
 
---------------------------------------------------------------------------------
--- Classifications
 function modifier_generic_invencible:IsHidden() return false
 end
 
@@ -12,27 +10,17 @@ function modifier_generic_invencible:IsPurgable()
 	return true
 end
 
---------------------------------------------------------------------------------
--- Initializations
 function modifier_generic_invencible:OnCreated( kv )
     if IsServer() then
 		self:PlayEffects()
 		self:StartIntervalThink(0.05)
-		
-		self:GetParent():AddStatusBar({
-			label = "Invencible", modifier = self, priority = 3, stylename="Ultimate"
-		}) 
     end
 end
 
---------------------------------------------------------------------------------
--- Interval Effects
 function modifier_generic_invencible:OnIntervalThink()
 	self:GetParent():StrongPurge()
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_generic_invencible:DeclareFunctions()
 	local funcs = {
 		MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,

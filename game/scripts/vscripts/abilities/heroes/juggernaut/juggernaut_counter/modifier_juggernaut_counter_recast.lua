@@ -24,8 +24,13 @@ function modifier_juggernaut_counter_recast:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
 
+function modifier_juggernaut_counter_recast:GetRecastCharges()
+	return 1
+end
+
+function modifier_juggernaut_counter_recast:GetRecastKey()
+	return "Q"
+end
+
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Recast( 
-	modifier_juggernaut_counter_recast,
-	{ key = "Q", charges = 1 }
-)
+Modifiers.Recast(modifier_juggernaut_counter_recast)

@@ -3,7 +3,7 @@
         alliances: {
             DOTA_ALLIANCE_RADIANT: {
                 name: "DOTA_ALLIANCE_RADIANT",
-                color: "LIGHTGREEN",
+                color: "ORANGE",
                 teams: [DOTATeam_t.DOTA_TEAM_GOODGUYS, DOTATeam_t.DOTA_TEAM_BADGUYS],
             },
             DOTA_ALLIANCE_DIRE: {
@@ -13,7 +13,7 @@
             },
             DOTA_ALLIANCE_LEGION: {
                 name: "DOTA_ALLIANCE_LEGION",
-                color: "ORANGE",
+                color: "BLUE",
                 teams: [DOTATeam_t.DOTA_TEAM_CUSTOM_3, DOTATeam_t.DOTA_TEAM_CUSTOM_4]
             },
             DOTA_ALLIANCE_VOID: {

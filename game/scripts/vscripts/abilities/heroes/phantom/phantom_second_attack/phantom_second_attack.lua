@@ -1,6 +1,10 @@
 phantom_second_attack = class({})
 
-function phantom_second_attack:OnCastPointEnd()
+function phantom_second_attack:GetCastAnimationCustom()		return ACT_DOTA_ATTACK_EVENT end 
+function phantom_second_attack:GetPlaybackRateOverride() 	return 0.8 end
+function phantom_second_attack:GetCastPointSpeed() 			return 80 end
+
+function phantom_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -44,39 +48,30 @@ function phantom_second_attack:OnCastPointEnd()
 			
 			if _self.Source == caster then
 				if stacks == 3 then
-					local mobility = caster:FindAbilityByName("phantom_mobility")
 					local modifier = caster:FindModifierByName("modifier_phantom_mobility_charges")
 					modifier:IncrementStackCount()
 					modifier:CalculateCharge()
+
+					EmitSoundOn("DOTA_Item.MagicWand.Activate", caster)
 				end
 			end
 
-			--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
 			caster:GiveManaPercent(mana_gain_pct, unit)
-
 			self:PlayEffectsOnImpact(unit, stacks)
 		end,
 		OnFinish = function(_self, pos)
-			if _self.Source == caster then 
-			end
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}
 
 	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
-
-	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 
---------------------------------------------------------------------------------
--- Effects
 function phantom_second_attack:PlayEffectsOnImpact( hTarget, stacks )
-	-- Create Sound
 	EmitSoundOn( "Hero_PhantomAssassin.Arcana_Layer", hTarget )
 	
-	-- Create Particles
 	local caster = self:GetCaster()
 	local offset = 100
 	local origin = caster:GetOrigin()
@@ -102,11 +97,9 @@ function phantom_second_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_PhantomAssassin.Attack", self:GetCaster() )
 end
 
--- On Projectile Miss
 function phantom_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
-	-- Create Particles
 	local offset = 100
 	local origin = caster:GetOrigin()
 	local direction_normalized = (pos - origin):Normalized()
@@ -134,8 +127,4 @@ function phantom_second_attack:PlayEffectsOnFinish(pos)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	phantom_second_attack,
-	{ activity = ACT_DOTA_ATTACK_EVENT, rate = 0.8 },
-	{ movement_speed = 80 }
-)
+Abilities.Castpoint(phantom_second_attack)

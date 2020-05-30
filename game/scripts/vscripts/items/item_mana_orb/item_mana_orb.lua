@@ -7,4 +7,5 @@ function item_mana_orb:OnSpellStart()
     SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, caster, mana, nil )
     
     EmitSoundOn("DOTA_Item.ClarityPotion.Activate", caster)
+    self:SpendCharge()
 end

@@ -9,22 +9,18 @@ function modifier_juggernaut_basic_attack_stacks:OnCreated( kv )
 	if IsServer() then
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
-		self:GetParent():AddStacksVisual({ modifier = self })
 	end
 end
 
 function modifier_juggernaut_basic_attack_stacks:OnRefresh( kv )
-	-- references
-	local max_stack = 4--self:GetAbility():GetSpecialValueFor( "stack_limit" )
+	local max_stacks = self:GetAbility():GetSpecialValueFor("max_stacks")
 
 	if IsServer() then
-		if self:GetStackCount() < max_stack then
+		if self:GetStackCount() < max_stacks then
 			self.effects_cast_weapon = {}
 			self:IncrementStackCount()
 
-			
-
-			if self:GetStackCount() == max_stack then
+			if self:GetStackCount() == max_stacks then
 				self:PlayEffectsCharged()
 			end
 		end

@@ -1,35 +1,108 @@
-"AddonInfo"
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-    "maps"      "mad_moon_map"
-    "IsPlayable"  "1"
-
-    "mad_moon_map"
-    {
-        "MaxPlayers"                    "4"
-        "TeamCount"                     "4"
-    }
-    
-    "Default_Keys"
-    {
-        "01"{ "Key" "SHIFT"     "Command"   "+ShiftKey" }
-
-        "02"{ "Key" "SPACE"     "Command"   "+SpaceKey" }
-        "03"{ "Key" "1"         "Command"   "+1Key" }
-        "04"{ "Key" "2"         "Command"   "+2Key" }
-        "05"{ "Key" "3"         "Command"   "+3Key" }
-        "06"{ "Key" "4"         "Command"   "+4Key" }
-        "07"{ "Key" "5"         "Command"   "+5Key" }
-        "08"{ "Key" "6"         "Command"   "+6Key" }
-        "09"{ "Key" "Q"         "Command"   "+QKey" }
-        "10"{ "Key" "E"         "Command"   "+EKey" }
-        "11"{ "Key" "F"         "Command"   "+FKey" }
-        "12"{ "Key" "R"         "Command"   "+RKey" }
-        "13"{ "Key" "C"         "Command"   "+CKey" }
-        "14"{ "Key" "Z"         "Command"   "+ZKey" }
-
-        "15"{ "Key" "W"         "Command"   "+WKey" }
-        "16"{ "Key" "A"         "Command"   "+AKey" }
-        "17"{ "Key" "S"         "Command"   "+SKey" }
-        "18"{ "Key" "D"         "Command"   "+DKey" }
-    }
+	maps = 
+	[
+		"mad_moon_map",
+	]
+	IsPlayable = 1
+	Default_Keys = 
+	[
+		{
+			Key = "SHIFT"
+			Command = "+ShiftKey"
+		},
+		{
+			Key = "SPACE"
+			Command = "+SpaceKey"
+		},
+		{
+			Key = 1
+			Command = "+1Key"
+		},
+		{
+			Key = 2
+			Command = "+2Key"
+		},
+		{
+			Key = 3
+			Command = "+3Key"
+		},
+		{
+			Key = 4
+			Command = "+4Key"
+		},
+		{
+			Key = 5
+			Command = "+5Key"
+		},
+		{
+			Key = 6
+			Command = "+6Key"
+		},
+		{
+			Key = "Q"
+			Command = "+QKey"
+		},
+		{
+			Key = "E"
+			Command = "+EKey"
+		},
+		{
+			Key = "F"
+			Command = "+FKey"
+		},
+		{
+			Key = "R"
+			Command = "+RKey"
+		},
+		{
+			Key = "C"
+			Command = "+CKey"
+		},
+		{
+			Key = "Z"
+			Command = "+ZKey"
+		},
+		{
+			Key = "W"
+			Command = "+WKey"
+		},
+		{
+			Key = "A"
+			Command = "+AKey"
+		},
+		{
+			Key = "S"
+			Command = "+SKey"
+		},
+		{
+			Key = "D"
+			Command = "+DKey"
+		},
+	]
+	map_options = 
+	[
+		{
+			MaxPlayers = 4
+			TeamCount = 4
+			map = "mad_moon_map"
+		},
+	]
+	HideInTools = false
+	IsTemplate = false
+	CheckAFKPlayers = false
+	DefaultMap = "mad_moon_map"
+	DisableIK = false
+	EnablePickRules = false
+	EventGame = false
+	hero_picker = 
+	{
+	}
+	HeroGuidesSupported = true
+	ForceDefaultGuide = true
+	MinimalPrecache = false
+	MinPlayers = 1
+	MaxPlayers = 10
+	PenaltiesEnabled = false
+	TeamCount = -1
 }

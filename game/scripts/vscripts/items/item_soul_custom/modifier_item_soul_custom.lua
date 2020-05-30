@@ -32,11 +32,9 @@ function modifier_item_soul_custom:OnDestroy()
 end
 
 function modifier_item_soul_custom:DeclareFunctions()
-	local funcs = {
+	return {
         MODIFIER_EVENT_ON_SPENT_MANA
 	}
-
-	return funcs
 end
 
 function modifier_item_soul_custom:OnSpentMana(params)
@@ -45,3 +43,10 @@ function modifier_item_soul_custom:OnSpentMana(params)
     end
 end
 
+
+function modifier_item_soul_custom:GetStatusLabel() return "Sacrifice" end
+function modifier_item_soul_custom:GetStatusPriority() return 1 end
+function modifier_item_soul_custom:GetStatusStyle() return "Sacrifice" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_item_soul_custom)

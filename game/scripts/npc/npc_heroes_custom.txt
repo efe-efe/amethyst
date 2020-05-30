@@ -1,13 +1,9 @@
 #base "heroes\phantom.txt"
 #base "heroes\sniper.txt"
-#base "heroes\spectre.txt"
-#base "heroes\vengeful.txt"
-#base "heroes\ancient.txt"
-#base "heroes\weaver.txt"
-#base "heroes\terrorblade.txt"
 #base "heroes\juggernaut.txt"
-#base "heroes\pudge.txt"
 #base "heroes\nevermore.txt"
+#base "heroes\puck.txt"
+#base "heroes\spectre.txt"
 
 "DOTAHeroes"
 {   
@@ -73,7 +69,6 @@
 		"StatusHealth"				"170" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
 	}	
 
@@ -139,7 +134,6 @@
 		"StatusHealth"				"210" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
 	}
 
@@ -203,7 +197,6 @@
 		"StatusHealth"				"230" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
 	}
 
@@ -268,7 +261,6 @@
 		"StatusHealth"				"250" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
 	}
 
@@ -333,7 +325,6 @@
 		"StatusHealth"				"230" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
 	}
 
@@ -399,7 +390,6 @@
 		"StatusHealth"				"230" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
 	}
 
@@ -455,7 +445,6 @@
 		"StatusHealth"				"230" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
 	}
 
@@ -520,7 +509,6 @@
 		"StatusHealth"				"230" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
 	}
 
@@ -588,7 +576,6 @@
 		"StatusHealth"				"230" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
-		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
 	}
 

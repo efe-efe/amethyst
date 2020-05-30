@@ -24,7 +24,7 @@ function item_meteor_custom:OnSpellStart()
 	self:GetCaster():RemoveGesture(ACT_DOTA_GENERIC_CHANNEL_1)
 	
 	local caster = self:GetCaster()
-	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local delay_time = self:GetSpecialValueFor( "delay_time" )
 	local radius = self:GetSpecialValueFor("radius")
 
@@ -32,7 +32,7 @@ function item_meteor_custom:OnSpellStart()
 		caster, --hCaster
 		self, --hAbility
 		"modifier_item_meteor_custom_thinker", --modifierName
-		{}, --paramTable
+		{ duration = delay_time + 0.2 }, --paramTable
 		point, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker

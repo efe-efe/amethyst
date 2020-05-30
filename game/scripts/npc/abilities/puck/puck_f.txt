@@ -1,0 +1,29 @@
+"DOTAAbilities" {
+	"puck_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_extra/puck_extra"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"puck_waning_rift"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastRange" 				"0 850"
+		"AbilityCooldown"				"10.0"
+		"AbilityManaCost"				"25"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			    "0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"pre_silence_duration"      "1.0" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"silence_duration"          "1.5" }
+		}
+	}
+}

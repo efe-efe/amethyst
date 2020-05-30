@@ -7,7 +7,7 @@ function juggernaut_counter_recast:OnSpellStart()
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
-	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 	local ability = caster:FindAbilityByName("juggernaut_counter")
 	local damage = ability:GetSpecialValueFor("ability_damage")
 	

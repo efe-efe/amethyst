@@ -14,7 +14,7 @@ end
 
 
 function modifier_item_energy_custom:GetEffectName()
-	return "particles/econ/items/omniknight/omni_ti8_head/omniknight_repel_buff_ti8_glyph.vpcf"
+	return "particles/energy_effect/omniknight_repel_buff_ti8_glyph.vpcf"
 end
 
 function modifier_item_energy_custom:GetEffectAttachType()

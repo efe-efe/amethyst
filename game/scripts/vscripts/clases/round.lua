@@ -2,9 +2,10 @@ Round = Round or class({}, nil, GameState)
 
 local AMETHYST_SPAWN_TIME = 10.0
 local AMETHYST_RESPAWN_TIME = 15.0
+local GOLD_PER_ROUND = 2
 
 local PICKUPS_TIMER = 20.0
-local ROUND_TIMER = 30.0
+local ROUND_TIMER = ROUND_DURATION
 local DRAW_TIME = 3.0
 
 function Round:constructor(players, callback)
@@ -100,8 +101,10 @@ function Round:Update()
 
         self:UpdateGameTimer(math.floor(self.time_remaining/30))
         if self.time_remaining <= 0 then
-            self.time_over = true
-            self:CreateDeathZone()
+            if ROUND_TIMER ~= -1 then
+                self.time_over = true
+                self:CreateDeathZone()
+            end
         end
     end
 
@@ -224,13 +227,7 @@ function Round:EndRound()
 
         FindClearSpaceForUnit(player.hero, target:GetAbsOrigin(), true)
         player.hero:RemoveModifierByName("modifier_generic_displacement")
-        player.hero:SetGold(10, false)
-
-        for i = 0, 5 do
-            local item = player.hero:GetItemInSlot(i)
-            if item then player.hero:RemoveItem( item ) end
-        end
-        
+        player.hero:SetGold(player.hero:GetGold() + GOLD_PER_ROUND, false)
         player.hero:Reset()
     end
 

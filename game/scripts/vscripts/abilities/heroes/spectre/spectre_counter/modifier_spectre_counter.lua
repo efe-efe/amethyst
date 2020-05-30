@@ -1,83 +1,38 @@
 modifier_spectre_counter = class({})
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_spectre_counter:IsHidden() return false
-end
-
-function modifier_spectre_counter:IsDebuff() return false
-end
-
-function modifier_spectre_counter:IsPurgable()
-	return true
-end
-
---------------------------------------------------------------------------------
--- Initializations
-function modifier_spectre_counter:OnCreated( kv )
-	if IsServer() then 
-		self:GetParent():AddStatusBar({
-			label = "Invisible", modifier = self, priority = 3, 
-		})
+function modifier_spectre_counter:OnCreated(params)
+	if IsServer() then
+		local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_transversant_spectral_dagger_path_owner.vpcf"
+		self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 	end
 end
 
 function modifier_spectre_counter:OnDestroy()
 	if IsServer() then
-		self:PlayEffects()
+		ParticleManager:DestroyParticle(self.effect_cast, true)
+		ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	end
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
-function modifier_spectre_counter:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_INVISIBILITY_LEVEL,
-        MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
-	}
-
-	return funcs
+function modifier_spectre_counter:GetEffectName()
+    return "particles/generic_gameplay/rune_haste.vpcf"
 end
 
-function modifier_spectre_counter:GetModifierInvisibilityLevel()
-	return 1
+function modifier_spectre_counter:GetEffectAttachType()
+	return PATTACH_OVERHEAD_FOLLOW
 end
 
-function modifier_spectre_counter:OnAbilityFullyCast( params )
-	if IsServer() then
-		if params.unit ~= self:GetParent() then
-			return
-		end
-
-		if 	params.ability:GetName() == "item_death_orb" or
-			params.ability:GetName() == "item_mana_orb" or
-			params.ability:GetName() == "item_shield_orb" or
-			params.ability:GetName() == "item_health_orb"
-		then
-			return
-		end
-		self:Destroy()
-	end
+function modifier_spectre_counter:GetMaxSlowPercentage()
+	return self:GetAbility():GetSpecialValueFor("fading_slow_pct")
 end
 
-
---------------------------------------------------------------------------------
--- Status Effects
-function modifier_spectre_counter:CheckState()
-	local state = {
-        [MODIFIER_STATE_INVISIBLE] = true,
-        [MODIFIER_STATE_TRUESIGHT_IMMUNE] = false,
-	}
-
-	return state
+function modifier_spectre_counter:GetStatusEffectName()
+    return "particles/status_fx/status_effect_terrorblade_reflection.vpcf"
 end
 
-
-function modifier_spectre_counter:PlayEffects()
-    EmitSoundOn( "Hero_Spectre.Reality", self:GetParent() )
-
-    local particle_cast = "particles/econ/items/outworld_devourer/od_shards_exile_gold/od_shards_exile_prison_end_gold.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+function modifier_spectre_counter:GetEffectAttachType()
+	return PATTACH_ABSORIGIN_FOLLOW
 end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.FadingSlow(modifier_spectre_counter)

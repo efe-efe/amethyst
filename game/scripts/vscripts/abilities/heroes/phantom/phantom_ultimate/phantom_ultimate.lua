@@ -1,16 +1,19 @@
 phantom_ultimate = class({})
 
-function phantom_ultimate:OnSpellStart()
+function phantom_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_3 end
+function phantom_ultimate:GetPlaybackRateOverride()		return 0.7 end
+function phantom_ultimate:GetCastPointSpeed() 			return 0 end
+
+function phantom_ultimate:OnAbilityPhaseStart()
 	self:PlayEffectsOnCastPoint()
+    return true
 end
 
-function phantom_ultimate:OnStopPseudoCastPoint()
+function phantom_ultimate:OnAbilityPhaseInterrupted()
 	self:StopEffectsOnCastPoint()
 end
 
-
-function phantom_ultimate:OnCastPointEnd()
-    --Initialize variables
+function phantom_ultimate:OnSpellStart()
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -19,7 +22,6 @@ function phantom_ultimate:OnCastPointEnd()
     local damage = self:GetSpecialValueFor("ability_damage")
     local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 
-	-- load data
 	local projectile_name = "particles/mod_units/heroes/hero_luna/luna_base_attack.vpcf"
 	local projectile_start_radius = 70
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
@@ -57,7 +59,6 @@ function phantom_ultimate:OnCastPointEnd()
 
 			self:PlayEffectsOnCast(caster)
             FindClearSpaceForUnit( caster, unit:GetOrigin() , true )
-			--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
             self:PlayEffectsOnImpact(unit)
 		end,
         OnFinish = function(_self, pos)
@@ -66,29 +67,20 @@ function phantom_ultimate:OnCastPointEnd()
 	}
 
 	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
-	-- Cast projectile
 	Projectiles:CreateProjectile(projectile)
-	StartAnimation(caster, {
-		duration = 0.2, 
-		activity = ACT_DOTA_ATTACK_EVENT, 
-		rate = 3.0,
-	})
+	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 3.0)
 	self:StopEffectsOnCastPoint()
 end
 
--- On projectile finish
 function phantom_ultimate:PlayEffectsOnFinish(pos)
-	-- Cast Sound
     EmitSoundOn( "Hero_PhantomAssassin.Strike.End", self:GetCaster())
 	EmitSoundOn( "Hero_PhantomAssassin.Arcana_Layer", self:GetCaster() )
 end
 
--- On Projectile hit an enemy
 function phantom_ultimate:PlayEffectsOnImpact(hTarget)
     EmitSoundOn("Hero_PhantomAssassin.Spatter", hTarget)
     EmitSoundOn("Hero_PhantomAssassin.CoupDeGrace", hTarget)
 
-    -- Cast Particles
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_impact_dagger_arcana.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
     ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
@@ -101,9 +93,7 @@ function phantom_ultimate:PlayEffectsOnImpact(hTarget)
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
--- On spell start
 function phantom_ultimate:PlayEffectsOnCast( caster )
-    -- Cast Particles
     local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
@@ -113,7 +103,6 @@ end
 function phantom_ultimate:PlayEffectsOnCastPoint()
 	EmitGlobalSound("phantom_assassin_phass_ability_coupdegrace_03")
 
-	-- Cast Particles
 	local particle_cast = "particles/econ/items/monkey_king/arcana/water/mk_spring_arcana_water_channel_powertrails.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
@@ -133,8 +122,4 @@ function phantom_ultimate:StopEffectsOnCastPoint()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	phantom_ultimate,
-	{ activity = ACT_DOTA_CAST_ABILITY_3, rate = 0.7 },
-	{ movement_speed = 0, fixed_range = 1 }
-)
+Abilities.Castpoint(phantom_ultimate)

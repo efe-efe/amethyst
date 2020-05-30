@@ -2,6 +2,7 @@ modifier_item_orchid_custom = class({})
 
 function modifier_item_orchid_custom:OnCreated()
     self:SetStackCount(0)
+    self.effect_cast = ParticleManager:CreateParticle("particles/items2_fx/orchid.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 end
 
 function modifier_item_orchid_custom:OnDestroy()
@@ -14,6 +15,9 @@ function modifier_item_orchid_custom:OnDestroy()
         }
         ApplyDamage( damage_table )
         self:PlayEffectsOnDestroy()
+
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast)
     end
 end
 
@@ -29,6 +33,12 @@ function modifier_item_orchid_custom:GetModifierIncomingDamage_Percentage( param
     return 0
 end
 
+function modifier_item_orchid_custom:CheckState()
+	return { 
+        [MODIFIER_STATE_SILENCED] = true
+    }
+end
+
 function modifier_item_orchid_custom:PlayEffectsOnDestroy()
 	local particle_cast = "particles/items2_fx/orchid_pop.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
@@ -37,10 +47,15 @@ function modifier_item_orchid_custom:PlayEffectsOnDestroy()
 end
 
 function modifier_item_orchid_custom:GetEffectName()
-    return "particles/items2_fx/orchid.vpcf"
+	return "particles/generic_gameplay/generic_silenced.vpcf"
 end
-
 function modifier_item_orchid_custom:GetEffectAttachType()
-	return PATTACH_ABSORIGIN_FOLLOW
+	return PATTACH_OVERHEAD_FOLLOW
 end
 
+function modifier_item_orchid_custom:GetStatusLabel() return "Soul Burn" end
+function modifier_item_orchid_custom:GetStatusPriority() return 5 end
+function modifier_item_orchid_custom:GetStatusStyle() return "Silence" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_item_orchid_custom)

@@ -15,7 +15,7 @@ end
 function modifier_item_butterfly_custom:OnIntervalThink()
 	local caster = self:GetCaster()
 
-	caster:AddNewModifier(caster, self:GetAbility(), "modifier_item_butterfly_custom_banish", { duration = self.banish_duration, disable = 0 })
+	caster:AddNewModifier(caster, self:GetAbility(), "modifier_item_butterfly_custom_banish", { duration = self.banish_duration })
 	caster:AddNewModifier(caster, self:GetAbility(), "modifier_hide_bar", { duration = self.banish_duration })
 	self:PlayEffectsOnBanish()
 end
@@ -45,8 +45,6 @@ function modifier_item_butterfly_custom:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
 
--- 
-
 function modifier_item_butterfly_custom:PlayEffectsOnBanish()
     EmitSoundOn( "DOTA_Item.Butterfly", self:GetCaster()  )
 
@@ -56,6 +54,9 @@ function modifier_item_butterfly_custom:PlayEffectsOnBanish()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
+function modifier_item_butterfly_custom:GetStatusLabel() return "Flutter" end
+function modifier_item_butterfly_custom:GetStatusPriority() return 4 end
+function modifier_item_butterfly_custom:GetStatusStyle() return "Flutter" end
 
-
-
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_item_butterfly_custom)

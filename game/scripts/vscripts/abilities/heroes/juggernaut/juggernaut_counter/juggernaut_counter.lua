@@ -8,9 +8,9 @@ function juggernaut_counter:OnSpellStart()
     local duration = self:GetSpecialValueFor("counter_duration")
     
     caster:AddNewModifier(
-		caster, -- player source
-		self, -- ability source
-		"modifier_juggernaut_counter_countering", -- modifier name
-		{ duration = duration }
+      caster, -- player source
+      self, -- ability source
+      "modifier_juggernaut_counter_countering", -- modifier name
+      { duration = duration }
     )
 end

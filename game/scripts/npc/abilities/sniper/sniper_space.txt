@@ -3,7 +3,7 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/sniper/sniper_mobility/sniper_mobility"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"sniper_mobility"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -12,6 +12,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"800"
 		"AbilityCooldown"				"8.0"
+		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -26,8 +27,9 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.1" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"300" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"			"0.5" }
 		}
 	}
 }

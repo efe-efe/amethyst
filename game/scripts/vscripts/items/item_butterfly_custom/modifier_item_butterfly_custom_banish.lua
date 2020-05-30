@@ -2,7 +2,6 @@ modifier_item_butterfly_custom_banish = class({})
 
 function modifier_item_butterfly_custom_banish:OnDestroy()
 	if IsServer() then
-		self:GetParent():RemoveNoDraw()
 		self:PlayEffectsOnDestroy()
 	end
 end
@@ -18,8 +17,11 @@ function modifier_item_butterfly_custom_banish:PlayEffectsOnDestroy()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
+function modifier_item_butterfly_custom_banish:CheckState()
+    return {
+        [MODIFIER_STATE_COMMAND_RESTRICTED] = true,
+    }
+end
+
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Banish( 
-	modifier_item_butterfly_custom_banish,
-	{ disable = 0 }
-)
+Modifiers.Banish(modifier_item_butterfly_custom_banish)

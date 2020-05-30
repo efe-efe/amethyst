@@ -2,7 +2,7 @@ modifier_juggernaut_mobility = class({})
 
 function modifier_juggernaut_mobility:IsHidden()                return false    end
 function modifier_juggernaut_mobility:IsDebuff()	            return false    end
-function modifier_juggernaut_mobility:IsPurgable()              return false    end
+function modifier_juggernaut_mobility:IsPurgable()              return true     end
 function modifier_juggernaut_mobility:StatusEffectPriority()    return 2.0      end
 
 

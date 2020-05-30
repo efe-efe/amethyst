@@ -22,7 +22,7 @@
 		},
 		{
 			_class = "C_OP_InterpolateRadius"
-			m_flEndScale = 1.5
+			m_flEndScale = 0.7
 			m_flBias = 0.75
 		},
 		{

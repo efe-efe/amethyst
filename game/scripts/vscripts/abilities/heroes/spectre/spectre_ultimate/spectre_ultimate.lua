@@ -1,46 +1,27 @@
 spectre_ultimate = class({})
-LinkLuaModifier( "modifier_spectre_ultimate_thinker", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_spectre_ultimate", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_ultimate_thinker", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_ultimate_helper", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_helper", LUA_MODIFIER_MOTION_NONE)
+
+function spectre_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
+function spectre_ultimate:GetPlaybackRateOverride() 	return 0.6 end
+function spectre_ultimate:GetCastPointSpeed() 			return 0 end
 
 function spectre_ultimate:OnSpellStart()
-	EmitGlobalSound("Hero_Spectre.Haunt")
-end
-
---------------------------------------------------------------------------------
--- Ability Start
-function spectre_ultimate:OnCastPointEnd( )
-	-- unit identifier
-	local caster = self:GetCaster()
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
-	local duration = self:GetSpecialValueFor( "duration" )
-	local radius = self:GetSpecialValueFor( "radius" )
-	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-
-	CreateModifierThinker(
-		caster, --hCaster
-		self, --hAbility
-		"modifier_thinker_indicator", --modifierName
-		{ 
-			thinker = "modifier_spectre_ultimate_thinker",
-			show_all = 1,
-			radius = radius,
-			delay_time = delay_time,
-		}, --paramTable
-		point, --vOrigin
-		caster:GetTeamNumber(), --nTeamNumber
-		false --bPhantomBlocker
-	)
-end
-
---------------------------------------------------------------------------------
--- Graphics & sounds
-function spectre_ultimate:PlayEffectsOnCast(pos)
-	local caster = self:GetCaster()
-
+    local caster = self:GetCaster()
+    local duration = self:GetSpecialValueFor("duration")
+    local delay = self:GetSpecialValueFor("delay_time")
+    
+    CreateModifierThinker(
+        caster, --hCaster
+        self, --hAbility
+        "modifier_spectre_ultimate_thinker", --modifierName
+        { duration = delay + duration },
+        caster:GetAbsOrigin(), --vOrigin
+        caster:GetTeamNumber(), --nTeamNumber
+        false --bPhantomBlocker
+    )
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	spectre_ultimate,
-	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 0.6 },
-	{ movement_speed = 0 }
-)
+Abilities.Castpoint(spectre_ultimate)

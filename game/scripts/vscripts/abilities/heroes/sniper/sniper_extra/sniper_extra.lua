@@ -2,28 +2,16 @@ sniper_extra = class({})
 LinkLuaModifier( "modifier_sniper_extra_displacement", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_displacement", LUA_MODIFIER_MOTION_BOTH )
 LinkLuaModifier( "modifier_sniper_extra_displacement_enemy", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_displacement_enemy", LUA_MODIFIER_MOTION_BOTH )
 
-function sniper_extra:GetCastPoint()
-	return self:GetSpecialValueFor("cast_point")
-end
-
 function sniper_extra:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		movement_speed = 0,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 0.4)
     EmitSoundOn("Ability.AssassinateLoad", self:GetCaster())
     return true
 end
 
-function sniper_extra:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
-	self:GetCaster():RemoveModifierByName("modifier_casting")
-end
+function sniper_extra:GetCastAnimationCustom()		return ACT_DOTA_ATTACK end
+function sniper_extra:GetPlaybackRateOverride() 	return 0.4 end
+function sniper_extra:GetCastPointSpeed() 			return 0 end
 
 function sniper_extra:OnSpellStart()
-    self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
-    
 	local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local point = self:GetCursorPosition()
@@ -128,3 +116,6 @@ function sniper_extra:PlayEffectsOnFinish(pos)
     ParticleManager:SetParticleControl( effect_cast, 3, pos )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(sniper_extra)

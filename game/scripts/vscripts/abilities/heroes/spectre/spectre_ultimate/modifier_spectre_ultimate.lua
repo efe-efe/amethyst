@@ -1,69 +1,63 @@
 modifier_spectre_ultimate = class({})
-LinkLuaModifier( "modifier_spectre_special_attack_debuff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_debuff", LUA_MODIFIER_MOTION_NONE )
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_spectre_ultimate:IsHidden() return false
+function modifier_spectre_ultimate:OnCreated(params)
+    self.bonus_damage = self:GetAbility():GetSpecialValueFor("bonus_damage")
+
+    if IsServer() then
+        self.damage_table = {
+            victim = self:GetParent(),
+            attacker = self:GetCaster(),
+            damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
+            damage_type = DAMAGE_TYPE_PURE
+        }
+
+        if self:GetCaster():IsAlly(self:GetParent()) then
+            self:SetStackCount(1)
+        else
+            self:SetStackCount(2)
+        end
+    end
+end
+
+function modifier_spectre_ultimate:OnDestroy()
+    if self:IsDebuff() then
+        if self:GetStackCount() == 2 then
+            EmitSoundOn( "Hero_Spectre.DaggerImpact", self:GetParent() )
+            self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_spectre_special_attack_debuff", { 
+                duration = 5.0
+            })
+            self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_fading_slow", { 
+                duration = 5.0,
+                max_slow_pct = 50
+            })
+
+            if IsServer() then
+                ApplyDamage(self.damage_table)
+            end
+        end
+    end
 end
 
 function modifier_spectre_ultimate:IsDebuff()
-	return true
+    return self:GetStackCount() >= 2
 end
 
-function modifier_spectre_ultimate:IsPurgable()
-	return true
+function modifier_spectre_ultimate:DeclareFunctions()
+	return {
+		MODIFIER_PROPERTY_BONUS_VISION_PERCENTAGE,
+        MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
+	}
 end
 
-function modifier_spectre_ultimate:OnCreated( params )
-	if IsServer() then
-		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
-		self.aoe_origin = Vector(params.x, params.y, 0)
-		self.radius = params.radius
-		self.ability = self:GetCaster():FindAbilityByName("spectre_special_attack")
-		self.debuff_duration = 5.0
-
-		self.hit = false
-		self:StartIntervalThink(0.1)
-	end
+function modifier_spectre_ultimate:GetBonusVisionPercentage()
+    if self:IsDebuff() then
+        return -80
+    end
+    return 0
 end
 
-function modifier_spectre_ultimate:OnIntervalThink()
-	if (self.aoe_origin - self:GetParent():GetOrigin()):Length2D() > self.radius then
-		if self.hit == false then
-			self.hit = true
-			
-			EmitSoundOn( "Hero_Spectre.DaggerImpact", self:GetParent() )
-			local damage = {
-				victim = self:GetParent(),
-				attacker = self:GetCaster(),
-				damage = self.damage,
-				damage_type = DAMAGE_TYPE_PURE,
-			}
-			ApplyDamage( damage )
-
-			self:GetParent():AddNewModifier(self:GetCaster(), self.ability, "modifier_spectre_special_attack_debuff", { 
-				duration = self.debuff_duration
-			})
-			self:GetParent():AddNewModifier(self:GetCaster(), self.ability, "modifier_generic_fading_slow_new", { 
-				duration = self.debuff_duration,
-				max_slow_pct = 50
-			})
-		end
-	else
-		self.hit = false
-	end
+function modifier_spectre_ultimate:GetModifierPreAttack_BonusDamage()
+    if not self:IsDebuff() then
+        return self.bonus_damage
+    end
 end
-
---------------------------------------------------------------------------------
--- Graphics and animations
-function modifier_spectre_ultimate:GetEffectName()
-	return "particles/econ/items/bloodseeker/bloodseeker_ti7/bloodseeker_ti7_overhead_vision_model.vpcf"
-end
-
-function modifier_spectre_ultimate:GetEffectAttachType()
-	return PATTACH_OVERHEAD_FOLLOW
-end
-
-
-
-

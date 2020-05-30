@@ -1,28 +1,39 @@
 
 
 function CDOTA_BaseNPC:Initialize(data)
-	self.on_spawn_ends = 			{}
 	self.on_basic_attack_impact = 	{}
+	self.treshold = 				0
 
+	self.charges_modifiers =		{}
 	self.displacement_modifiers = 	{}
 	self.reflect_modifiers = 		{}
 	self.counter_modifiers = 		{}
 	self.animation_modifiers = 		{}
 	self.channeling_modifiers = 	{}
 	self.status_modifiers =			{}
+	self.fear_modifiers =			{}
+
+	self:AddNewModifier(self,  nil, "modifier_visible", {})
+	GameRules.GameMode:RegisterUnit(self)
+	self:SetTreshold(GameRules.GameMode.max_treshold)
 end
 
 function CDOTA_BaseNPC_Hero:Initialize(data)
 	self.direction = 				{}
-	self.on_spawn_ends = 			{}
 	self.on_basic_attack_impact = 	{}
 
+	self.charges_modifiers =		{}
 	self.displacement_modifiers = 	{}
 	self.reflect_modifiers = 		{}
 	self.counter_modifiers = 		{}
 	self.animation_modifiers = 		{}
 	self.channeling_modifiers = 	{}
 	self.status_modifiers = 		{}
+	self.recast_modifiers =			{}
+	self.fear_modifiers =			{}
+	self.stackbars_modifier =		nil
+	self.charges_modifier =			nil
+	self.cooldown_modifier =		nil
 	
 	self.forced_direction = 		nil
 	self.treshold = 				0
@@ -35,10 +46,12 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 	self.initialized = 				nil
 	self.healing_reduction_pct = 	0
 
+	--self:SetStashEnabled(false)	
 	self:SetDirection(0,0)
 	self:SetTreshold(GameRules.GameMode.max_treshold)
 	self:SetInitialized(true)
 	self:AddNewModifier(self,  nil, "modifier_hero_base", {})
+	self:AddNewModifier(self,  nil, "modifier_visible", {})
 
 	for i = 0, 23 do
 		local ability = self:GetAbilityByIndex(i)
@@ -48,12 +61,8 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 			end
 		end
 	end
-	self:OnSpawnEnds()
-end
-function CDOTA_BaseNPC:OnSpawnEnds()
-	for _,routine in pairs(self.on_spawn_ends) do
-		routine()
-	end
+
+	ConstructHero(self)
 end
 
 function CDOTA_BaseNPC:Reset()
@@ -68,6 +77,13 @@ function CDOTA_BaseNPC:Reset()
 			if ability:GetToggleState() then
 				ability:ToggleAbility()
 			end
+		end
+	end
+
+	for _,modifier_name in pairs(self.charges_modifiers) do
+		local modifier = self:FindModifierByName(modifier_name)
+		if modifier then
+			modifier:RefreshCharges()
 		end
 	end
 
@@ -211,51 +227,6 @@ function CDOTA_BaseNPC:FindUnitsInLine( start_pos, end_pos, radius, teamFilter, 
 	return filtered_units
 end
 
-function CDOTA_BaseNPC:AddCooldownVisual( incoming_data )
-	local data = {
-		heroIndex = self:GetEntityIndex(),
-        teamID = self:GetTeamNumber(),
-		modifierName = incoming_data.modifier:GetName(),
-	}
-	
-	table.insert(self.on_spawn_ends, function()
-		CustomGameEventManager:Send_ServerToAllClients( "add_cooldown", data )
-	end)
-end
-
-function CDOTA_BaseNPC:AddChargesVisual( incoming_data )
-	local data = {
-		heroIndex = self:GetEntityIndex(),
-        teamID = self:GetTeamNumber(),
-		modifierName = incoming_data.modifier:GetName(),
-	}
-	
-	table.insert(self.on_spawn_ends, function()
-		CustomGameEventManager:Send_ServerToAllClients( "add_charges", data )
-	end)
-end
-
-function CDOTA_BaseNPC:AddStacksVisual(incoming_data)
-	local data = {
-		heroIndex = self:GetEntityIndex(),
-        teamID = self:GetTeamNumber(),
-		modifierName = incoming_data.modifier:GetName(),
-	}
-
-	CustomGameEventManager:Send_ServerToAllClients( "add_stacks", data )
-end
-
-function CDOTA_BaseNPC:AddRecastVisual( incoming_data )
-	local data = {
-		heroIndex = self:GetEntityIndex(),
-		key = incoming_data.key,
-		modifierName = incoming_data.modifier:GetName(),
-		abilityName = incoming_data.abilityName,
-        teamID = self:GetTeamNumber(),
-	}
-	CustomGameEventManager:Send_ServerToAllClients( "add_recast", data )
-end
-
 function CDOTA_BaseNPC:IsBarrel()
     return self:Attribute_GetIntValue("barrel", 0) == 1 and true or false
 end
@@ -362,21 +333,43 @@ end
 
 function CDOTA_BaseNPC:AddStatus(data)
 	local status = {
-		priority = data.priority or 0,
 		label = data.label or "No Label",
-		style_name = data.style_name or "Generic",
-		content = data.content or nil,
-		trigger = data.trigger or "duration",
-		max_stacks = data.max_stacks or nil,
 		modifier_name = data.modifier_name,
+		priority = data.priority or 0,
+		trigger = data.trigger or STATUS_TRIGGER_DURATION,
+		content = data.content or STATUS_CONTENT_CLEAROUT,
+		style_name = data.style_name or "Generic",
+		max_stacks = data.max_stacks or nil,
+		scope = data.scope or STATUS_SCOPE_PUBLIC
 	}
+	
 	self.status_modifiers[status.modifier_name] = status
 end
+
+function CDOTA_BaseNPC:AddRecast(data)
+	local recast = {
+		key = data.key or "NO KEY",
+		modifier_name = data.modifier_name,
+		ability_name = data.ability_name,
+	}
+	self.recast_modifiers[recast.modifier_name] = recast
+end
+
+
+function CDOTA_BaseNPC:AddStackbars(modifier_name) self.stackbars_modifier = modifier_name end
+function CDOTA_BaseNPC:AddCharges(modifier_name) self.charges_modifier = modifier_name end
+function CDOTA_BaseNPC:AddCooldown(modifier_name) self.cooldown_modifier = modifier_name end
+
+function CDOTA_BaseNPC:RemoveStackbars() self.stackbars_modifier = nil end
+function CDOTA_BaseNPC:RemoveCharges() self.charges_modifier = nil end
+function CDOTA_BaseNPC:RemoveCooldown() self.cooldown_modifier = nil end
 
 function CDOTA_BaseNPC:RemoveStatus(modifier_name)
 	self.status_modifiers[modifier_name] = nil
 end
-
+function CDOTA_BaseNPC:RemoveRecast(modifier_name)
+	self.recast_modifiers[modifier_name] = nil
+end
 
 -- Modifiers
 MODIFIER_DISPLACEMENT = 1
@@ -384,6 +377,7 @@ MODIFIER_COUNTER = 2
 MODIFIER_REFLECT = 3
 MODIFIER_ANIMATION = 4
 MODIFIER_CHANNELING = 5 
+MODIFIER_CHARGES = 6 
 
 function CDOTA_BaseNPC:AddModifierTracker(modifier_name, type) 	
 	local key = nil
@@ -393,11 +387,11 @@ function CDOTA_BaseNPC:AddModifierTracker(modifier_name, type)
 	if type == MODIFIER_REFLECT then key = "reflect_modifiers" end
 	if type == MODIFIER_ANIMATION then key = "animation_modifiers" end
 	if type == MODIFIER_CHANNELING then key = "channeling_modifiers" end
-
+	if type == MODIFIER_CHARGES then key = "charges_modifiers" end
+	if type == MODIFIER_FEAR then key = "fear_modifiers" end
 
 	table.insert(self[key], modifier_name)
 end
-
 
 function CDOTA_BaseNPC:RemoveModifierTracker(modifier_name, type)
 	local key = nil
@@ -407,6 +401,8 @@ function CDOTA_BaseNPC:RemoveModifierTracker(modifier_name, type)
 	if type == MODIFIER_REFLECT then key = "reflect_modifiers" end
 	if type == MODIFIER_ANIMATION then key = "animation_modifiers" end
 	if type == MODIFIER_CHANNELING then key = "channeling_modifiers" end
+	if type == MODIFIER_CHARGES then key = "charges_modifiers" end
+	if type == MODIFIER_FEAR then key = "fear_modifiers" end
 
 	for _,m_modifier_name in pairs(self[key]) do
 		if m_modifier_name == modifier_name then
@@ -436,17 +432,49 @@ function CDOTA_BaseNPC:IsAnimating()
 	return self.animation_modifiers and #self.animation_modifiers > 0
 end
 
+function CDOTA_BaseNPC:IsFeared() 
+	return self.fear_modifiers and #self.fear_modifiers > 0
+end
+
 function CDOTA_BaseNPC:IsConfused()				return 	self:HasModifier("modifier_generic_confuse") 	end
-function CDOTA_BaseNPC:IsSilenced()				return 	self:HasModifier("modifier_generic_silence")	end
-function CDOTA_BaseNPC:IsFeared()				return 	self:HasModifier("modifier_generic_fear")		end
 function CDOTA_BaseNPC:IsCasting()				return 	self:HasModifier("modifier_cast_point")			end
 function CDOTA_BaseNPC:IsInitialized()			return 	self.initialized								end
 
-
 -- Getters
+
+function CDOTA_BaseNPC:GetDirection()
+	if self:IsFeared() then
+		local direction = (Vector(0,0,0) - self:GetAbsOrigin()):Normalized()
+		
+		return direction * -1
+	end
+	return self.direction
+end
+
+function CDOTA_BaseNPC:GetRawDirection()
+	return self.direction
+end
+
+function CDOTA_BaseNPC:GetShield()
+	local shield_modifier = self:FindModifierByName("modifier_shield")
+    local shield = 0
+
+    if shield_modifier ~= nil then
+        if not shield_modifier:IsNull() then
+            shield = shield_modifier:GetStackCount()
+        end
+	end
+	
+	return shield
+end
+
 function CDOTA_BaseNPC:GetTreshold()				return self.treshold				end
-function CDOTA_BaseNPC:GetDirection()				return self.direction				end
 function CDOTA_BaseNPC:GetStatus()					return self.status_modifiers		end
+function CDOTA_BaseNPC:GetStackbars()				return self.stackbars_modifier		end
+function CDOTA_BaseNPC:GetCharges()					return self.charges_modifier		end
+function CDOTA_BaseNPC:GetCooldown()				return self.cooldown_modifier		end
+function CDOTA_BaseNPC:GetRecast()					return self.recast_modifiers		end
+
 
 -- Setters
 function CDOTA_BaseNPC:SetInitialized(initialized)	
@@ -458,7 +486,7 @@ function CDOTA_BaseNPC:SetTreshold(treshold)
 end
 
 function CDOTA_BaseNPC:SetDirection(x, y)
-	local current_direction = self:GetDirection()
+	local current_direction = self:GetRawDirection()
 	local m_x = x or current_direction.x
 	local m_y = y or current_direction.y 
 	self.direction = Vector(m_x, m_y, self:GetForwardVector().z)

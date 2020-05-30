@@ -1,9 +1,26 @@
 spectre_mobility = class({})
 LinkLuaModifier( "modifier_spectre_banish", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_banish", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_spectre_mobility_charges", "abilities/heroes/spectre/spectre_mobility/modifier_spectre_mobility_charges", LUA_MODIFIER_MOTION_NONE )
 
-function spectre_mobility:OnCastPointEnd()
+function spectre_mobility:GetIntrinsicModifierName()
+	return "modifier_spectre_mobility_charges"
+end
+
+function spectre_mobility:GetCooldown()
+	if self:GetCaster():HasModifier("modifier_spectre_ultimate") then
+		if self:GetCaster():FindModifierByName("modifier_spectre_ultimate"):GetCaster() == self:GetCaster() then
+			return 1.0
+		else
+			return self.BaseClass.GetCooldown(self, self:GetLevel())
+		end
+	else
+		return self.BaseClass.GetCooldown(self, self:GetLevel())
+	end
+end
+
+function spectre_mobility:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 	local origin = caster:GetOrigin()
 	local min_range = self:GetSpecialValueFor( "min_range" )
 	local mana_gain_pct = self:GetSpecialValueFor( "mana_gain_pct" )
@@ -47,11 +64,7 @@ function spectre_mobility:OnCastPointEnd()
 
 			-- if at least 1 enemy
 			if charge == true then
-				-- Give Mana
-				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack")
-				modifier:IncrementStackCount()
-				modifier:StartIntervalThink(-1)
-				modifier:CalculateCharge()
+				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):Replenish()
 
 				if #enemies == 1 then
 					caster:GiveManaPercent(mana_gain_pct, enemies[1])    
@@ -64,11 +77,16 @@ function spectre_mobility:OnCastPointEnd()
             FindClearSpaceForUnit( caster, pos , true )
 		end,
 	}
-	-- Cast projectile
+
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
-
 	caster:AddNewModifier(caster, self, "modifier_spectre_banish", {})
+end
+
+function spectre_mobility:OnUpgrade()
+	if self:GetLevel() == 2 then
+		self:GetCaster():FindModifierByName("modifier_spectre_mobility_charges"):AddCharge()
+	end
 end
 
 function spectre_mobility:PlayEffectsOnCast()
@@ -83,9 +101,7 @@ function spectre_mobility:PlayEffectsOnCast()
     ParticleManager:ReleaseParticleIndex( effect_cast )
 end
 
---Arrive
 function spectre_mobility:PlayEffectsOnFinish( pos )
-	-- particles 1
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
@@ -107,10 +123,5 @@ function spectre_mobility:PlayEffectsOnImpact(hTarget)
 	EmitSoundOn( "Hero_Spectre.Attack", hTarget )
 end
 
-
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	spectre_mobility,
-    nil,
-	{ movement_speed = 100 }
-)
+Abilities.Castpoint(spectre_mobility)

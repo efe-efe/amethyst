@@ -4,6 +4,7 @@ function ProgressBar(id, parent, data){
 
     var foreground_color = data.foreground_color || "#FAFAFA";
     var background_color = data.background_color || "rgba(36, 42, 53, 0.8)";
+    var font_size = data.font_size || "12px";
     var delayed = data.delayed || false;
     var show_value = data.show_value || false;
 
@@ -69,7 +70,8 @@ function ProgressBar(id, parent, data){
     this.foreground_panel.style.width = "0%";
     this.delay_panel.style.visibility = delayed && "visible" || "collapse";
     this.text_panel.style.visibility = show_value && "visible" || "collapse";
-
+    this.text_panel.style.fontSize = font_size;
+    
     this.background_panel.style.backgroundColor = background_color;
     this.foreground_panel.style.backgroundColor = foreground_color;
 }

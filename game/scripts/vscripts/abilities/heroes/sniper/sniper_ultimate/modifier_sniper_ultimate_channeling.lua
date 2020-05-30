@@ -49,7 +49,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 			
 			ApplyDamage( damage_table )
 			
-            unit:AddNewModifier(_self.Source, ability, "modifier_sniper_ultimate_hit", { duration = 0.1 })
+            unit:AddNewModifier(_self.Source, ability, "modifier_sniper_ultimate_hit", { duration = 0.1 }) -- Avoid dealing hit and aoe damage at the same time
 			self:PlayEffectsTarget(_self.Source, unit, _self.current_position)
 		end,
         OnFinish = function(_self, pos)

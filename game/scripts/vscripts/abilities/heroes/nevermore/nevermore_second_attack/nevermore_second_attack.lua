@@ -1,33 +1,40 @@
 nevermore_second_attack = class({})
 LinkLuaModifier( "modifier_nevermore_second_attack_recast", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_recast", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_second_attack", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_nevermore_second_attack_recasts_counter", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_recasts_counter", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_nevermore_second_attack_debuff", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_debuff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_nevermore_second_attack_block_recast", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_block_recast", LUA_MODIFIER_MOTION_NONE )
 
+function nevermore_second_attack:GetCastAnimationCustom()		return ACT_DOTA_RAZE_2 end
+function nevermore_second_attack:GetPlaybackRateOverride() 		return 1.5 end
+function nevermore_second_attack:GetCastPointSpeed() 			return 10 end
 
-function nevermore_second_attack:OnCastPointEnd()
+function nevermore_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 
-	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-
-	-- Probable data
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local radius = self:GetSpecialValueFor("radius")
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
-	local recast_duration = self:GetSpecialValueFor("recast_duration")
+	local speed_per_stack = self:GetSpecialValueFor("speed_per_stack")
+    local recast_duration = self:GetSpecialValueFor("recast_duration")
+
+
+	local recasts_done = 0
+	if caster:HasModifier("modifier_nevermore_second_attack_recasts_counter") then
+		recasts_done = self:GetSpecialValueFor("recasts") - caster:FindModifierByName("modifier_nevermore_second_attack_recasts_counter"):GetStackCount()
+	end
 	
-	-- Projectile
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_nevermore/invoker_tornado_ti6.vpcf",
 		vSpawnOrigin = origin + Vector(0, 0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
+		vVelocity = projectile_direction * (projectile_speed + (speed_per_stack * recasts_done)),
 		UnitBehavior = PROJECTILES_DESTROY,
 		TreeBehavior = PROJECTILES_NOTHING,
 		WallBehavior = PROJECTILES_DESTROY,
@@ -56,11 +63,13 @@ function nevermore_second_attack:OnCastPointEnd()
 					should_recast = true
 				end
 
-				local stacks = SafeGetModifierStacks("modifier_nevermore_second_attack_debuff", enemy)
+				local debuff_stacks = 0
+				if enemy:HasModifier("modifier_nevermore_second_attack_debuff") then
+					debuff_stacks = enemy:FindModifierByName("modifier_nevermore_second_attack_debuff"):GetStackCount()
+				end
 
 				damage_table.victim = enemy
-				damage_table.damage = damage + stacks * damage_per_stack
-
+				damage_table.damage = damage + debuff_stacks * damage_per_stack
 
 				ApplyDamage( damage_table )
 
@@ -69,26 +78,18 @@ function nevermore_second_attack:OnCastPointEnd()
 	
 			if _self.Source == caster then
 				if should_recast then
-					local modifier = caster:AddNewModifier(
-						caster,
-						self,
-						"modifier_nevermore_second_attack",
-						{}
-					)
+					if not caster:HasModifier("modifier_nevermore_second_attack_block_recast") then
+						local modifier = caster:FindModifierByName("modifier_nevermore_second_attack_recasts_counter")
 
-					if modifier:GetStackCount() <= self:GetSpecialValueFor("recasts") then
-						caster:AddNewModifier(
-							caster,
-							self,
-							"modifier_nevermore_second_attack_recast",
-							{ duration = recast_duration }
-						)
-					else
-						caster:RemoveModifierByName("modifier_nevermore_second_attack")
+						if modifier == nil then
+							caster:AddNewModifier(caster, self, "modifier_nevermore_second_attack_recasts_counter", {})
+						else 
+							modifier:DecrementStackCount()
+						end
+						caster:GiveManaPercent(mana_gain_pct, unit)
 					end
-					caster:GiveManaPercent(mana_gain_pct, unit)
 				else
-					caster:RemoveModifierByName("modifier_nevermore_second_attack")
+					caster:RemoveModifierByName("modifier_nevermore_second_attack_recasts_counter")
 				end
 			end
 
@@ -116,9 +117,4 @@ function nevermore_second_attack:PlayEffectsRaze( pos, radius )
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	nevermore_second_attack,
-	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
-	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 },
-	{ modifier_name = "modifier_nevermore_second_attack_recast" }
-)
+Abilities.Castpoint(nevermore_second_attack)

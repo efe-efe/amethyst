@@ -3,17 +3,17 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_extra/juggernaut_extra"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"juggernaut_healing_ward"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityCastRange"				"250"
-		"AbilityCooldown"				"12.0"
+		"AbilityCooldown"				"12.0 8.0"
 		"AbilityManaCost"				"25"
+		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
-			"DisplayRange" 				"1"
 		}
 
 		"AbilitySpecial"

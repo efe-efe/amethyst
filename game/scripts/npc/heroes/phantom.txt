@@ -18,13 +18,7 @@
 		"Ability5"						"phantom_special_attack"
 		"Ability6"						"phantom_extra"
 		"Ability7"						"phantom_ultimate"
-		//"Ability8"						"phantom_ex_basic_attack"
-		//"Ability8"						"phantom_ex_special_attack"	
-									
-								
-		"Ability12"						"phantom_counter_mobility"	
-		//"Ability13"						"phantom_extra_mobility"
-		"Ability14"						"phantom_basic_attack_related"
+		"Ability8"						"phantom_basic_attack_related"
 		
 
 		//Vision
@@ -61,7 +55,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"170" 						// Base health.
+		"StatusHealth"				"200" 						// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		//"StatusMana"				"1000"

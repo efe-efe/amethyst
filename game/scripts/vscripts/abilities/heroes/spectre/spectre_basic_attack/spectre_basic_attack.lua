@@ -1,23 +1,37 @@
 spectre_basic_attack = class({})
 LinkLuaModifier( "modifier_spectre_desolate", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate/modifier_spectre_desolate", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_spectre_basic_attack", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_spectre_basic_attack_cooldown", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE )
 
 function spectre_basic_attack:GetIntrinsicModifierName()
-	return "modifier_spectre_basic_attack"
+	return "modifier_spectre_basic_attack_cooldown"
 end
 
+function spectre_basic_attack:GetCastPointOverride()
+	if IsServer() then
+		return self:GetCaster():GetAttackAnimationPoint()
+	end
+end
+
+function spectre_basic_attack:GetCooldown(iLevel)
+	if IsServer() then
+        local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
+        local attack_speed = ( 1 / attacks_per_second )
+		
+		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
+	end
+end
+
+function spectre_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK end
 function spectre_basic_attack:GetPlaybackRateOverride()
 	if IsServer() then 
-		local modifier = self:GetCaster():FindModifierByName("modifier_spectre_basic_attack")
-		local slow = modifier:GetStackCount() > 0 and 0.3 or 0.0 
+		local slow = self:GetCaster():FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady() and 0.3 or 0.0 
 
 		return 1.1 - slow
 	end
 end
+function spectre_basic_attack:GetCastPointSpeed() 		return 80 end
 
-function spectre_basic_attack:GetCastAnimation() return ACT_DOTA_ATTACK end
-
-function spectre_basic_attack:OnCastPointEnd()
+function spectre_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -36,9 +50,7 @@ function spectre_basic_attack:OnCastPointEnd()
 	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local offset = 50
 
-	local modifier = caster:FindModifierByName("modifier_spectre_basic_attack")
-	local charged = modifier:GetStackCount() > 0 and true or false 
-	local damage_bonus_ultimate = SafeGetModifierStacks("modifier_spectre_ultimate_damage", caster, caster)
+	local is_charged = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady()
 	
 	local projectile = {
 		vSpawnOrigin = origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
@@ -55,9 +67,9 @@ function spectre_basic_attack:OnCastPointEnd()
 		OnUnitHit = function(_self, unit)
 			local counter = 0
 			for k, v in pairs(_self.rehit) do counter = counter + 1 end
-			if counter > 1 and not charged then return end
+			if counter > 1 and not is_charged then return end
 
-			local final_damage = damage + damage_bonus_ultimate
+			local final_damage = damage
 			if unit:HasModifier("modifier_spectre_desolate") then
 				final_damage = final_damage + damage_bonus_desolate
 
@@ -76,7 +88,7 @@ function spectre_basic_attack:OnCastPointEnd()
 			}
 			ApplyDamage( damage_table )
 		
-			if charged then
+			if is_charged then
 				unit:AddNewModifier(_self.Source, self , "modifier_generic_silence", { duration = silence_duration })
 				unit:AddNewModifier(_self.Source, self , "modifier_spectre_desolate", { duration = desolate_duration })
 
@@ -89,25 +101,22 @@ function spectre_basic_attack:OnCastPointEnd()
 				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
 
-			self:PlayEffectsOnImpact(unit, _self.current_position, charged)
+			self:PlayEffectsOnImpact(unit, _self.current_position, is_charged)
 
 			if _self.Source.OnBasicAttackImpact then
 				_self.Source:OnBasicAttackImpact(unit)
 			end
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos, charged)
+			self:PlayEffectsOnFinish(pos, is_charged)
 		end,
 	}
-
-	modifier:DecrementStackCount()
-	modifier:CalculateCharge()
 
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 
-function spectre_basic_attack:PlayEffectsOnFinish( pos, charged )
+function spectre_basic_attack:PlayEffectsOnFinish( pos, is_charged )
 	local caster = self:GetCaster()
 	local offset = 50
 	local new_position = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * offset
@@ -118,7 +127,7 @@ function spectre_basic_attack:PlayEffectsOnFinish( pos, charged )
 	ParticleManager:SetParticleControlForward( effect_cast, 0, (pos - caster:GetOrigin()):Normalized())
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 
-	if charged then
+	if is_charged then
 		particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
 		effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
 		ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
@@ -136,8 +145,8 @@ function spectre_basic_attack:PlayEffectsOnCast( )
 	EmitSoundOn( "Hero_Spectre.PreAttack", self:GetCaster() )
 end
 
-function spectre_basic_attack:PlayEffectsOnImpact( hTarget, pos, charged )
-	if charged then
+function spectre_basic_attack:PlayEffectsOnImpact( hTarget, pos, is_charged )
+	if is_charged then
 		EmitSoundOn( "Hero_BountyHunter.Jinada", hTarget )
 		
 		local particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
@@ -171,9 +180,4 @@ function spectre_basic_attack:PlayEffectsLifeSteal()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.BasicAttack( spectre_basic_attack )
-Abilities.Initialize( 
-	spectre_basic_attack,
-	nil,
-	{ movement_speed = 80 }
-)
+Abilities.Castpoint(spectre_basic_attack)

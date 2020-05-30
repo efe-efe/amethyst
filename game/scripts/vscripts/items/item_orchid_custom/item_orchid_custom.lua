@@ -20,6 +20,7 @@ function item_orchid_custom:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
+	local damage = self:GetSpecialValueFor("ability_damage")
 
 	local duration = self:GetSpecialValueFor("duration")
 
@@ -41,7 +42,12 @@ function item_orchid_custom:OnSpellStart()
 		fGroundOffset = 		80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
-			unit:AddNewModifier(_self.Source, self, "modifier_generic_silence", { duration = duration })
+			ApplyDamage({
+				victim = unit,
+				attacker = _self.Source,
+				damage = damage,
+				damage_type = DAMAGE_TYPE_MAGICAL,
+			})
 			unit:AddNewModifier(_self.Source, self, "modifier_item_orchid_custom", { duration = duration })
 		end,
 		OnFinish = function(_self, pos)

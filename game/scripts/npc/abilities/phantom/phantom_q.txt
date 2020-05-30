@@ -3,35 +3,26 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
 
-		"AbilityTextureName"			"phantom_assassin_phantom_strike"
+		"AbilityTextureName"			"phantom_assassin_blur"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCooldown"				"7.0"
-		"AbilityDuration"				"1.5"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"heal"					    "16" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"as_speed"					"200" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"3.0" }
-		}
-	}
-
-    "phantom_counter_mobility"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter_mobility"
-		"MaxLevel"						"1"
-
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_AOE"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityCastRange"				"800"
-		"AbilityCastPoint"				"0.9"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+		}
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"			"1.5" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"buff_duration"				"3.0 4.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"heal"					    "16" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"as_speed"					"200" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"1.5" }
 		}
 	}
 }

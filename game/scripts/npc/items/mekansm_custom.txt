@@ -15,12 +15,11 @@
 
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityManaCost"				"25"
-		"AbilityCooldown"				"12.0"
+		"AbilityCooldown"				"20.0"
 		"AbilityCastPoint"				"0.7"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
-			"DisplayRange" 				"1"
 		}
 
 		"AbilitySpecial"	

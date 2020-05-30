@@ -5,7 +5,7 @@
         "BaseClass"                     "item_lua"
         "ID"                            "1253"
         "AbilityTextureName"            "item_mini_haste"
-        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+        "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_IGNORE_BACKSWING"
         "Model"							"models/props_gameplay/stout_shield.vmdl"
         "ScriptFile"                    "items/item_shield_orb/item_shield_orb.lua"
     }

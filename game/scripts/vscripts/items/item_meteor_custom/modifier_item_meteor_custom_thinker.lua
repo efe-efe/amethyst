@@ -1,6 +1,6 @@
 modifier_item_meteor_custom_thinker = class({})
 
-function modifier_item_meteor_custom_thinker:OnCreated()
+function modifier_item_meteor_custom_thinker:OnDelayEnds()
     if IsServer() then
         self.origin = self:GetParent():GetOrigin()
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
@@ -29,9 +29,6 @@ function modifier_item_meteor_custom_thinker:OnCreated()
 			enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_item_meteor_custom", { duration = self.duration })
 			enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_stunned", { duration = self.stun_duration} )
 		end
-
-		self:PlayEffects()
-		self:Destroy()
     end
 end
 
@@ -47,8 +44,8 @@ function modifier_item_meteor_custom_thinker:PlayEffects()
 
     local particle_cast = "particles/items4_fx/meteor_hammer_spell.vpcf"
     self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self.origin + Vector(500, 500, 1000))
-    ParticleManager:SetParticleControl( self.effect_cast, 1, self.origin )
+    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetAbsOrigin() + Vector(500, 500, 1000))
+    ParticleManager:SetParticleControl( self.effect_cast, 1, self:GetParent():GetAbsOrigin() )
     ParticleManager:SetParticleControl( self.effect_cast, 2, Vector(0.5,0,0) )
 	ParticleManager:ReleaseParticleIndex( self.effect_cast )    
 end
@@ -65,6 +62,12 @@ function modifier_item_meteor_custom_thinker:GetAOERadius()
     return self:GetAbility():GetSpecialValueFor("radius")
 end
 
+function modifier_item_meteor_custom_thinker:GetTimedActions()
+	local timed_actions = {}
+	timed_actions[0.3] = self.PlayEffects
+
+	return timed_actions
+end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Thinker(modifier_item_meteor_custom_thinker)

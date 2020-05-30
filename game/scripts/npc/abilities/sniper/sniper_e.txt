@@ -3,7 +3,7 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"sniper_shrapnel"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
@@ -12,10 +12,10 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1150"
 		"AbilityCooldown"				"7.0"
+		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
-			"DisplayRange" 				"1"
 		}
 
 		"AbilitySpecial"
@@ -26,6 +26,37 @@
 			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"35" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"debuff_linger"				"0.5" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.7" }
+		}
+	}
+
+	"sniper_special_attack_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack_recast"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"sniper_shrapnel"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"1150"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"1" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"35" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"debuff_linger"				"0.5" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
 			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.7" }
 		}

@@ -11,18 +11,21 @@ function modifier_casting:IsHidden() return true end
 function modifier_casting:OnCreated(params)
     if IsServer() then
 		self.movement_speed = params.movement_speed
+		self.ignore_activation_cycle = params.ignore_activation_cycle
 		
 		self.parent = self:GetParent()
 		self:StartIntervalThink(0.03)
-		
+
 		if params.translate then
 			self:SetStackCount(translate[params.translate])
 		end
 
-		for i = 0, 10 do
-			local ability = self.parent:GetAbilityByIndex(i)
-			if ability and ability ~= self:GetAbility() then
-				ability:SetActivated(false)
+		if not self.ignore_activation_cycle then
+			for i = 0, 10 do
+				local ability = self.parent:GetAbilityByIndex(i)
+				if ability and ability ~= self:GetAbility() then
+					ability:SetActivated(false)
+				end
 			end
 		end
 	end
@@ -30,10 +33,12 @@ end
 
 function modifier_casting:OnDestroy()
 	if IsServer() then
-		for i = 0, 10 do
-			local ability = self.parent:GetAbilityByIndex(i)
-			if ability and ability ~= self:GetAbility() then
-				ability:SetActivated(true)
+		if not self.ignore_activation_cycle then
+			for i = 0, 10 do
+				local ability = self.parent:GetAbilityByIndex(i)
+				if ability and ability ~= self:GetAbility() then
+					ability:SetActivated(true)
+				end
 			end
 		end
 	end

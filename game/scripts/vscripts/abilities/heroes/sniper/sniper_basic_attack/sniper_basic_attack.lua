@@ -5,29 +5,17 @@ function sniper_basic_attack:GetIntrinsicModifierName()
 	return "modifier_sniper_basic_attack_charges"
 end
 
-function sniper_basic_attack:GetCastPoint()
+function sniper_basic_attack:GetCastPointOverride()
 	if IsServer() then
 		return self.BaseClass.GetCastPoint(self) + self:GetCaster():GetAttackAnimationPoint()
 	end
 end
 
-function sniper_basic_attack:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		movement_speed = 10,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
-	return true
-end
-
-function sniper_basic_attack:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
-	self:GetCaster():RemoveModifierByName("modifier_casting")
-end
+function sniper_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK end
+function sniper_basic_attack:GetPlaybackRateOverride() 	return 1.5 end
+function sniper_basic_attack:GetCastPointSpeed() 		return 10 end
 
 function sniper_basic_attack:OnSpellStart()
-	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
-	
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -91,3 +79,6 @@ function sniper_basic_attack:PlayEffectsOnFinish( pos )
 	
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(sniper_basic_attack)

@@ -1,4 +1,6 @@
 
+require('settings')
+
 require('util/util')
 require('util/health')
 require('util/modifiers')
@@ -23,12 +25,14 @@ require('libraries/animations')
 require('wrappers/abilities')
 require('wrappers/modifiers')
 
+require('constructors')
+
 require('filters')
 require('targeting_indicator')
 
 THINK_PERIOD = 0.01
 ROUNDS_TO_WIN = 5
-ROUNDS_DIFFERENCE_TO_WIN = 5
+ROUNDS_DIFFERENCE_TO_WIN = 3
 
 _G.STATE_NONE = 0
 _G.STATE_ROUND_IN_PROGRESS = 1 
@@ -97,12 +101,13 @@ function GameMode:SetupRules()
     GameRules:SetPreGameTime( 0.0 )
     GameRules:SetGoldPerTick( 0 )
     GameRules:SetGoldTickTime( 0 )
-    GameRules:SetStartingGold( 10 )
+    GameRules:SetStartingGold( 4 )
     GameRules:SetCustomGameSetupAutoLaunchDelay( 10 )
     GameRules:SetStrategyTime( 0.0 )
     GameRules:SetShowcaseTime( 0.0 )
     GameRules:SetUseBaseGoldBountyOnHeroes(false)
     GameRules:GetGameModeEntity():SetFixedRespawnTime( -1 ) 
+	GameRules:GetGameModeEntity():SetLoseGoldOnDeath( false )
 
     if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
         GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
@@ -160,6 +165,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_confuse",                 "abilities/generic/modifier_generic_confuse", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_generic_hypnotize",               "abilities/generic/modifier_generic_hypnotize", LUA_MODIFIER_MOTION_NONE )
     
+    LinkLuaModifier("modifier_visible",                         "abilities/base/modifier_visible", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_casting",                         "abilities/base/modifier_casting", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_damage_fx",                       "abilities/base/modifier_damage_fx", LUA_MODIFIER_MOTION_NONE )
     LinkLuaModifier("modifier_hero_base",                       "abilities/base/modifier_hero_base", LUA_MODIFIER_MOTION_NONE )
@@ -258,7 +264,7 @@ function GameMode:SetupPanoramaEventHooks()
         if unit == nil then return end
         if unit.direction == nil then return end
 
-        local current_direction = unit:GetDirection()
+        local current_direction = unit:GetRawDirection()
 
         if args.direction == "right" then 
             if unit.first_right == false then unit.first_right = true end
@@ -287,7 +293,7 @@ function GameMode:SetupPanoramaEventHooks()
         if unit == nil then return end
         if unit.direction == nil then return end
 
-        local current_direction = unit:GetDirection()
+        local current_direction = unit:GetRawDirection()
 
         if args.direction == "right" then 
             if unit.first_right == false then return end
@@ -311,6 +317,7 @@ end
 function GameMode:SetupMode()
     self.thinkers = {}
     self.players = {}
+    self.units = {}
     self.alliances = {}
     self.round = nil
 
@@ -328,6 +335,7 @@ function GameMode:SetupMode()
     mode:SetDaynightCycleDisabled( true )
     mode:SetCameraDistanceOverride( 1350 )
     mode:SetRecommendedItemsDisabled(true) -- Doesn't works :'(
+    --mode:SetStashPurchasingDisabled(true)	
 end
 
 function GameMode:Start()
@@ -360,15 +368,7 @@ function GameMode:Start()
             self:OnRoundEnd(context)
         end
     )
-
-    self:RegisterThinker(0.01, function()
-        if self.state == STATE_ROUND_IN_PROGRESS and self.round then
-            self.round:Update()
-
-            CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
-        end
-    end)
-
+    
     self:RegisterThinker(0.1, function()
         if self.state == STATE_WARMUP and self.warmup then
             self.warmup:Update()
@@ -376,20 +376,73 @@ function GameMode:Start()
     end)
 
     self:RegisterThinker(0.01, function()
+        if self.state == STATE_ROUND_IN_PROGRESS and self.round then
+            self.round:Update()
+        end
+    end)
+
+    self:RegisterThinker(0.01, function()
+        for _,alliance in pairs(self.alliances) do
+            if next(alliance.players) ~= nil then
+                local data = {
+                    health = alliance:GetCurrentHealth(),
+                    max_health = alliance:GetMaxHealth(),
+                    shield = alliance:GetShield(),
+                    name = alliance:GetName(),
+                    amethysts = alliance:GetAmethyst(),
+                    score = alliance:GetScore(),
+                }
+                CustomNetTables:SetTableValue("alliances", alliance.name, data)
+            end
+        end
+    end)
+
+    self:RegisterThinker(0.01, function()
         for _,player in pairs(self.players) do
             local data = {
+                entity_index = player.hero:GetEntityIndex(),
                 teamID = player.hero:GetTeam(),
                 playerID = player.hero:GetPlayerOwnerID(),
+                alliance_name = player.hero:GetAlliance():GetName(),
                 name = player.hero:GetName(),
                 health = player.hero:GetHealth(),
                 max_health = player.hero:GetMaxHealth(),
                 treshold = player.hero:GetTreshold(),
+                shield = player.hero:GetShield(),
                 mana = player.hero:GetMana(),
                 max_mana = player.hero:GetMaxMana(),
                 status = player.hero:GetStatus(),
+                recast = player.hero:GetRecast(),
+                stackbars = player.hero:GetStackbars(),
+                charges = player.hero:GetCharges(),
+                cooldown = player.hero:GetCooldown(),
             }
-            CustomNetTables:SetTableValue("heroes", tostring(player.hero:GetEntityIndex()), data)
+            CustomNetTables:SetTableValue("heroes", "index_" .. data.entity_index, data)
         end
+
+        --[[
+        print("============================================================")
+        for _,unit in pairs(self.units) do
+            print(unit:GetEntityIndex(), unit:IsAlive() and "ALIVE" or "DEATH")
+            local data = {
+                unit_index = unit:GetEntityIndex(),
+                teamID = DOTA_TEAM_GOODGUYS,--unit:GetTeam(),
+                playerID = 0,--unit:GetPlayerOwnerID(),
+                name = unit:GetName(),
+                health = unit:GetHealth(),
+                max_health = unit:GetMaxHealth(),
+                treshold = unit:GetTreshold(),
+                mana = unit:GetMana(),
+                max_mana = unit:GetMaxMana(),
+                status = unit:GetStatus(),
+                recast = unit:GetRecast(),
+                stackbars = unit:GetStackbars(),
+                charges = unit:GetCharges(),
+                cooldown = unit:GetCooldown(),
+            }
+            CustomNetTables:SetTableValue("units", "index_" .. data.unit_index, data)
+        end
+        ]]
 
         CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
     end)
@@ -419,7 +472,7 @@ function GameMode:RegisterPlayer(hero)
     local team = hero:GetTeamNumber()
     local playerID = hero:GetPlayerOwnerID()
     local userID = playerID + 1
-
+    
     if playerID == -1 then
         hero:Destroy()
         print("ERROR: TRYING TO CREATE AN UNIT ON AN INVALID PLAYER")
@@ -447,8 +500,15 @@ function GameMode:RegisterPlayer(hero)
     end
 end
 
+function GameMode:RegisterUnit(unit)
+    table.insert(self.units, unit)
+end
+
+
 function GameMode:SetState(state)
     self.state = state
+
+    CustomNetTables:SetTableValue("game_state", "state", { state = state })
 end 
 
 function GameMode:OnGameRulesStateChange(keys)
@@ -463,6 +523,10 @@ function GameMode:OnWarmupEnd(context)
     local warmup = context
     
     self.warmup = nil
+    for _,alliance in pairs(self.alliances) do
+        alliance:SetAmethysts(0)
+    end
+
     self:SetState(STATE_ROUND_IN_PROGRESS)
     CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "Round Start!" } )
 end
@@ -474,13 +538,6 @@ function GameMode:OnRoundEnd(context)
 
     if round.winner then
         round.winner.wins = round.winner.wins + 1
-
-        local score = { 
-            good_guys = self.alliances[DOTA_ALLIANCE_RADIANT].wins,
-            bad_guys = self.alliances[DOTA_ALLIANCE_DIRE].wins,
-        }
-    
-        CustomGameEventManager:Send_ServerToAllClients( "update_score", score )
 
         if  round.winner.wins >= ROUNDS_TO_WIN or self:GetHighestWinsDifference(round.winner) >= ROUNDS_DIFFERENCE_TO_WIN then
             self:EndGame(round.winner.teams[1]) 
@@ -531,7 +588,6 @@ function GameMode:OnHeroInGame(keys)
         local playerID = npc:GetPlayerOwnerID()
         SafeDestroyModifier("modifier_generic_provides_vision", npc, nil)
         PlayerResource:SetCameraTarget(playerID, nil)
-        self:UpdateHeroManaBar(npc)
     end
 end
 
@@ -565,17 +621,10 @@ function GameMode:OnAmethystDestroy(killer)
     if killer ~= nil then
         local killer_alliance = killer.alliance
 
-        killer_alliance.amethysts = killer_alliance.amethysts + 1
+        killer_alliance.amethysts:SetAmethyst(killer_alliance:GetAmethyst() + 1)
         
-        local data = {
-            alliance = killer_alliance.name,
-            amethysts = killer_alliance.amethysts
-        }
-        CustomGameEventManager:Send_ServerToAllClients( "update_amethysts", data )
-
         if self.WIN_CONDITION.type == "AMETHYSTS" then
-            CustomGameEventManager:Send_ServerToAllClients( "update_score", data )
-            if killer_alliance.amethysts >= self.WIN_CONDITION.number then
+            if killer_alliance:GetAmethyst() >= self.WIN_CONDITION.number then
                 self:EndGame(killer_alliance.teams[1]) 
             end
         end
@@ -733,39 +782,6 @@ function GameMode:EndGame( victoryTeam )
 	GameRules:SetGameWinner( victoryTeam )
 end
 
-function GameMode:UpdateHealthBar( alliance )
-    local health_pct = 100 * alliance:GetCurrentHealth()/alliance:GetMaxHealth()
-
-    local data = {
-        health_pct = health_pct,
-        alliance = alliance.name
-    }
-    CustomGameEventManager:Send_ServerToAllClients( "update_alliance_health_bar", data )
-end
-
-function GameMode:UpdateHeroHealthBar( hero )
-    local potential_health = hero:GetHealth() + (self.max_treshold - hero:GetTreshold())
-    local shield_modifier = hero:FindModifierByName("modifier_shield")
-    local shield = 0
-
-    if shield_modifier~=nil then
-        if not shield_modifier:IsNull() then
-            shield = shield_modifier:GetStackCount()
-        end
-    end
-    
-    local data = {
-        teamID = hero:GetTeamNumber(),
-        heroIndex = hero:GetEntityIndex(),
-        shield = shield,
-        current_health = hero:GetHealth(),
-        max_health = hero:GetMaxHealth(),
-        potential_health = potential_health,
-    }
-
-    CustomGameEventManager:Send_ServerToAllClients( "update_hero_health_bar", data )
-end
-
 function GameMode:UpdateUnitHealthBar( unit )
     local data = {
         unitIndex = unit:GetEntityIndex(),
@@ -775,49 +791,3 @@ function GameMode:UpdateUnitHealthBar( unit )
 
     CustomGameEventManager:Send_ServerToAllClients( "update_unit_health_bar", data )
 end
-
-function GameMode:UpdateHeroManaBar( hero )
-    local data = {
-        teamID = hero:GetTeamNumber(),
-        heroIndex = hero:GetEntityIndex(),
-        percentage = hero:GetManaPercent()
-    }
-    CustomGameEventManager:Send_ServerToAllClients( "update_hero_mana_bar", data )
-end
-
-function GameMode:UpdateHeroStacks( hero, stacks )
-    local data = {
-        teamID = hero:GetTeamNumber(),
-        heroIndex = hero:GetEntityIndex(),
-        stacks = stacks
-    }
-    CustomGameEventManager:Send_ServerToAllClients( "update_hero_stacks", data )
-end
-
-function GameMode:UpdateHeroCharges( hero, charges )
-    local data = {
-        teamID = hero:GetTeamNumber(),
-        heroIndex = hero:GetEntityIndex(),
-        charges = charges
-    }
-    CustomGameEventManager:Send_ServerToAllClients( "update_hero_charges", data )
-end
-
-function GameMode:InitializeCastPoint( hero, duration )
-    local data = {
-        teamID = hero:GetTeamNumber(),
-        heroIndex = hero:GetEntityIndex(),
-        duration = duration,
-    }
-    CustomGameEventManager:Send_ServerToAllClients( "initialize_cast_point", data )
-end
-
-function GameMode:InitializeCooldown( hero, modifierName )
-    local data = {
-        teamID = hero:GetTeamNumber(),
-        heroIndex = hero:GetEntityIndex(),
-        modifierName = modifierName,
-    }
-    CustomGameEventManager:Send_ServerToAllClients( "initialize_hero_cooldown", data )
-end
-

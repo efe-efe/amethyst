@@ -1,28 +1,16 @@
 sniper_second_attack = class({})
 
-function sniper_second_attack:GetCastPoint()
-	return self:GetSpecialValueFor("cast_point")
-end
+function sniper_second_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
+function sniper_second_attack:GetPlaybackRateOverride() 	return 1.1 end
+function sniper_second_attack:GetCastPointSpeed() 			return 0 end
+function sniper_second_attack:GetTargetIndicator()			return "TARGET_INDICATOR_LINE" end
 
 function sniper_second_attack:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		movement_speed = 0,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_CAST_ABILITY_1, 1.1)
-
     EmitGlobalSound("Ability.AssassinateLoad")
 	return true
 end
 
-function sniper_second_attack:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(ACT_DOTA_CAST_ABILITY_1)
-	self:GetCaster():RemoveModifierByName("modifier_casting")
-end
-
 function sniper_second_attack:OnSpellStart()
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
-
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -85,6 +73,7 @@ function sniper_second_attack:OnSpellStart()
 
     Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
+	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
 end
 
 
@@ -115,3 +104,6 @@ function sniper_second_attack:PlayEffectsOnHit( hTarget )
 	ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(sniper_second_attack)

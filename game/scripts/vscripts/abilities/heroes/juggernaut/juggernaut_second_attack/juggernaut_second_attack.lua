@@ -1,18 +1,8 @@
 juggernaut_second_attack = class({})
 LinkLuaModifier( "modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL )
-
-function juggernaut_second_attack:GetCastPoint()
-	return self:GetSpecialValueFor("cast_point")
-end
+LinkLuaModifier( "modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_HORIZONTAL )
 
 function juggernaut_second_attack:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		translate = "odachi",
-		movement_speed = 40,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(self:GetCastAnimation(), 1.5)
-
 	local caster = self:GetCaster()
 	local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_crit_tgt.vpcf"
 
@@ -20,26 +10,21 @@ function juggernaut_second_attack:OnAbilityPhaseStart()
     ParticleManager:SetParticleControl( effect_cast, 1, caster:GetOrigin() )
     ParticleManager:SetParticleControl( effect_cast, 3, caster:GetOrigin() )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
-
 	return true
 end
 
-function juggernaut_second_attack:GetCastAnimation() 
+function juggernaut_second_attack:GetCastAnimationCustom() 
 	if self:GetCaster():HasModifier("modifier_juggernaut_basic_attack_stacks") and self:GetCaster():FindModifierByName("modifier_juggernaut_basic_attack_stacks"):GetStackCount() >= 4 then 
 		return ACT_DOTA_ATTACK
 	else
 		return ACT_DOTA_ATTACK_EVENT
 	end
 end
-
-function juggernaut_second_attack:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(self:GetCastAnimation())
-	self:GetCaster():RemoveModifierByName("modifier_casting")
-end
+function juggernaut_second_attack:GetPlaybackRateOverride() 	return 1.5 end
+function juggernaut_second_attack:GetCastPointSpeed() 			return 40 end
+function juggernaut_second_attack:GetAnimationTranslate()		return "odachi" end
 
 function juggernaut_second_attack:OnSpellStart( )
-	self:GetCaster():FadeGesture(self:GetCastAnimation())
-	
 	local random_number = RandomInt(0, 4)
 	if random_number > 0 then
 		EmitSoundOn("juggernaut_jug_attack_0" .. random_number, self:GetCaster())
@@ -82,8 +67,6 @@ function juggernaut_second_attack:OnSpellStart( )
 				}
 				ApplyDamage( damage_table )
 				
-				--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, unit, final_damage, nil )
-
 				if _self.Source == caster then
 					caster:GiveManaPercent(mana_gain_pct, unit)
 				end
@@ -120,7 +103,6 @@ function juggernaut_second_attack:OnSpellStart( )
 				damage_type = DAMAGE_TYPE_PURE,
 			}
 			ApplyDamage( damage_table )
-			--SendOverheadEventMessage(nil, OVERHEAD_ALERT_CRITICAL, enemy, final_damage, nil )
 			self:PlayEffectsOnImpact(enemy)
 		end
 
@@ -128,7 +110,7 @@ function juggernaut_second_attack:OnSpellStart( )
 			caster:GiveManaPercent(mana_gain_pct, nil)
 		end
 
-		caster:AddNewModifier(caster, self, "modifier_juggernaut_spin_animation", { duration = 0.5 })
+		caster:AddNewModifier(caster, self, "modifier_juggernaut_spin_animation", { duration = 0.3 })
 		self:PlayEffectsAoe(radius)
 	end
 
@@ -177,3 +159,6 @@ function juggernaut_second_attack:PlayEffectsAoe( radius )
     ParticleManager:SetParticleControl( effect_cast, 2, Vector( radius, 1, 1 ) )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(juggernaut_second_attack)

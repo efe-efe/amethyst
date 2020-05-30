@@ -41,6 +41,7 @@
 }
 
 .ProgressBar__Text{
+    align: center center;
     width: 100%;
     text-align: center;
 

@@ -3,18 +3,37 @@ phantom_basic_attack_related = class({})
 LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_basic_attack_related:OnCastPointEnd()
+function phantom_basic_attack_related:GetCastPointOverride()
+	if IsServer() then
+		return self:GetCaster():GetAttackAnimationPoint()
+	end
+end
+
+function phantom_basic_attack_related:GetCooldown(iLevel)
+	if IsServer() then
+        local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
+        local attack_speed = ( 1 / attacks_per_second )
+		
+		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
+	end
+end
+
+function phantom_basic_attack_related:GetCastAnimationCustom()		return ACT_DOTA_TELEPORT_END end
+function phantom_basic_attack_related:GetPlaybackRateOverride() 	return 2.0 end
+function phantom_basic_attack_related:GetCastPointSpeed() 			return 80 end
+function phantom_basic_attack_related:GetFadeGestureOnCast()		return false end
+
+function phantom_basic_attack_related:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 	local ability = caster:FindAbilityByName("phantom_extra")
 	local damage = ability:GetSpecialValueFor("ability_damage")
-
-	-- Extra data
-	local slow_duration = ability:GetSpecialValueFor("slow_duration")
+	
+	local fading_slow_pct = ability:GetSpecialValueFor("fading_slow_pct")
+	local fading_slow_duration = ability:GetSpecialValueFor("fading_slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
-	-- Dinamyc data
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
@@ -53,12 +72,11 @@ function phantom_basic_attack_related:OnCastPointEnd()
 				end
 			end
 
-			-- Add modifier
 			unit:AddNewModifier(
-				caster, -- player source
-				ability, -- ability source
+				caster,
+				self,
 				"modifier_generic_fading_slow", -- modifier name
-				{ duration = slow_duration } -- kv
+				{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct } -- kv
 			)
 
 			if _self.Source.OnBasicAttackImpact then
@@ -75,13 +93,9 @@ function phantom_basic_attack_related:OnCastPointEnd()
 end
 
 
---------------------------------------------------------------------------------
--- Effects
 function phantom_basic_attack_related:PlayEffectsOnFinish( pos )
-	-- Create Sound
 	EmitSoundOnLocationWithCaster( pos, "Hero_PhantomAssassin.Dagger.Target", self:GetCaster() )
-	
-	-- Create Particles
+
 	local particle_cast = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger_explosion.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
 	ParticleManager:SetParticleControl( effect_cast, 3, pos )
@@ -93,9 +107,4 @@ function phantom_basic_attack_related:PlayEffectsOnCast( )
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.BasicAttack( phantom_basic_attack_related )
-Abilities.Initialize( 
-	phantom_basic_attack_related,
-	{ activity = ACT_DOTA_TELEPORT_END, rate = 2.0 },
-	{ movement_speed = 80, fixed_range = 1}
-)
+Abilities.Castpoint(phantom_basic_attack_related)

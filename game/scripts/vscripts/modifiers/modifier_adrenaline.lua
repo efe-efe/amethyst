@@ -79,7 +79,7 @@ function modifier_adrenaline:StatusEffectPriority()
 end
 
 function modifier_adrenaline:GetStatusLabel() return "Adrenaline" end
-function modifier_adrenaline:GetStatusPriority() return 2 end
+function modifier_adrenaline:GetStatusPriority() return 3 end
 function modifier_adrenaline:GetStatusStyle() return "Adrenaline" end
 
 if IsClient() then require("wrappers/modifiers") end

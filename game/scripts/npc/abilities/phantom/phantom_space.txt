@@ -3,17 +3,17 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/phantom/phantom_mobility/phantom_mobility"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"phantom_mobility"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityCooldown"				"5.0"
-		"AbilityCastRange"				"300"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCooldown"				"5.0 4.0"
+		"AbilityCastRange"				"350"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"max_charges"               "3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
 		}
 	}
 }

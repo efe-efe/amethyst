@@ -1,32 +1,22 @@
 sniper_ultimate = class({})
 LinkLuaModifier("modifier_sniper_ultimate_channeling", "abilities/heroes/sniper/sniper_ultimate/modifier_sniper_ultimate_channeling", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_sniper_ultimate_displacement", "abilities/heroes/sniper/sniper_ultimate/modifier_sniper_ultimate_displacement", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_sniper_ultimate_hit", "abilities/heroes/sniper/sniper_ultimate/modifier_sniper_ultimate_hit", LUA_MODIFIER_MOTION_BOTH)
 
-function sniper_ultimate:GetCastPoint()
-	return self:GetSpecialValueFor("cast_point")
-end
+function sniper_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
+function sniper_ultimate:GetPlaybackRateOverride() 	    return 2.5 end
+function sniper_ultimate:GetCastPointSpeed() 			return 0 end
 
 function sniper_ultimate:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		movement_speed = 0,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_CAST_ABILITY_1, 2.5)
-
-
     self:PlayEffectsOnPhase()
     return true
 end
 
 function sniper_ultimate:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(ACT_DOTA_CAST_ABILITY_1)
-    self:GetCaster():RemoveModifierByName("modifier_casting")
-    
     self:StopEffectsOnPhase()
 end
 
 function sniper_ultimate:OnSpellStart()
-    self:GetCaster():RemoveModifierByName("modifier_casting")
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
     
@@ -37,12 +27,6 @@ function sniper_ultimate:OnSpellStart()
         { duration = duration }
     ) 
     self:PlayEffectsOnCast()
-end
-
-function sniper_ultimate:OnChannelingTick()
-    local caster = self:GetCaster()
-    local ability = caster:FindAbilityByName("sniper_ultimate_projectile")
-    caster:CastAbilityImmediately(ability, caster:GetEntityIndex())
 end
 
 function sniper_ultimate:PlayEffectsOnPhase()
@@ -56,3 +40,6 @@ end
 function sniper_ultimate:PlayEffectsOnCast()
     EmitGlobalSound("sniper_snip_laugh_08")
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(sniper_ultimate)

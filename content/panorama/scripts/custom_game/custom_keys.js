@@ -8,8 +8,6 @@ var COUNTER_INDEX = 3;
 var SPECIAL_ATTACK_INDEX = 4;
 var EX_ULTIMATE_INDEX = 5;
 var ULTIMATE_INDEX = 6;
-var EX_ABILITY_ONE_INDEX = 7; 
-var EX_ABILITY_TWO_INDEX = 8; 
 
 function OnLeftButtonPressed(){
     var entities = GameUI.FindScreenEntities( GameUI.GetCursorPosition() )
@@ -34,6 +32,8 @@ function OnLeftButtonPressed(){
 }
 
 function OnRightButtonPressed(){
+    $.Msg(CustomNetTables.GetAllTableValues("heroes"));
+
     ExecuteAbility(SECOND_ATTACK_INDEX, true);
 }
 
@@ -50,11 +50,10 @@ GameUI.SetMouseCallback( function( eventName, arg ) {
     if ( eventName === "pressed" ){
 		if ( nMouseButton === 0 ){
             OnLeftButtonPressed();
-            if(Game.IsInToolsMode()){
+            if(GameUI.IsControlDown()){
                 return false;
-            } else {
-                return true;
             }
+            return true;
 		}
 
 		if ( nMouseButton === 1 ){
@@ -172,8 +171,6 @@ function UseItem(itemSlot)
         }
     }
 }
-
-
 
 function SendMovementSignal( action, direction )
 {

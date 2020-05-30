@@ -1,6 +1,5 @@
 modifier_hero_base = class({})
 LinkLuaModifier("modifier_hero_movement", "abilities/base/modifier_hero_movement", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_hero_movement_running", "abilities/base/modifier_hero_movement_running", LUA_MODIFIER_MOTION_NONE)
 
 local DEBUG = false
 
@@ -34,6 +33,10 @@ function modifier_hero_base:OnIntervalThink()
 		speed = speed * 0.75
 	end
 
+	if self.parent:IsAnimating() then
+		self.parent:RemoveModifierByName("modifier_hero_movement")
+	end
+
 	if (direction.x ~= 0 or direction.y ~= 0) and self.parent:CanWalk() then
 		if not self:Move(direction, speed) then
 			local alternative_directions = self:AlternatieDirections(direction)
@@ -50,7 +53,6 @@ function modifier_hero_base:OnIntervalThink()
 		end
 	else
 		self.parent:RemoveModifierByName("modifier_hero_movement")
-		self.parent:RemoveModifierByName("modifier_hero_movement_running")
 	end
 
 	self:PickupItems()
@@ -124,11 +126,6 @@ function modifier_hero_base:Move(vDirection, iSpeed)
 		if not self.parent:IsAnimating() then
 			if not self.parent:HasModifier("modifier_hero_movement") then
 				self.parent:AddNewModifier(self.parent, nil, "modifier_hero_movement", {})
-			end
-			if self.parent:GetIdealSpeed() > 500 then
-				self.parent:AddNewModifier(self.parent, nil, "modifier_hero_movement_running", {})
-			else
-				self.parent:RemoveModifierByName("modifier_hero_movement_running")
 			end
 		end
 		self.parent:SetAbsOrigin(future_origin)

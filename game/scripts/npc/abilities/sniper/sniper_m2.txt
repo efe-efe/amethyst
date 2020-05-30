@@ -3,7 +3,7 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack/sniper_second_attack"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"sniper_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -12,6 +12,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1600"
 		"AbilityCooldown"				"6.0"
+		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -22,7 +23,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"1.6" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"32" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"32 38" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.5" }

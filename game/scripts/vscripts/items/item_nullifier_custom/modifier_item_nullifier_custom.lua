@@ -30,3 +30,18 @@ end
 function modifier_item_nullifier_custom:GetStatusEffectName()
 	return "particles/status_fx/status_effect_nullifier.vpcf"
 end
+
+function modifier_item_nullifier_custom:GetEffectName()
+	return "particles/items4_fx/nullifier_mute_debuff.vpcf"
+end
+
+function modifier_item_nullifier_custom:GetEffectAttachType()
+	return PATTACH_ABSORIGIN_FOLLOW
+end
+
+function modifier_item_nullifier_custom:GetStatusLabel() return "Nullify" end
+function modifier_item_nullifier_custom:GetStatusPriority() return 3 end
+function modifier_item_nullifier_custom:GetStatusStyle() return "Nullify" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_item_nullifier_custom)

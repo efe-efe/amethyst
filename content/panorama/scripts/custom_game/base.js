@@ -12,8 +12,8 @@ function ConfigureHud(){
 
 function SetTeamColors(){
     GameUI.CustomUIConfig().team_colors = {}
-    GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_GOODGUYS] = "#3dd296;"; // { 61, 210, 150 }	--		Teal
-    GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_BADGUYS ] = "#3dd296;"; // { 243, 201, 9 }		--		Yellow
+    GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_GOODGUYS] = "#ff6c00;"; // { 61, 210, 150 }	--		Teal
+    GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_BADGUYS ] = "#ff6c00;"; // { 243, 201, 9 }		--		Yellow
     GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_CUSTOM_1] = "#F3C909;"; // { 197, 77, 168 }	--		Teal
     GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_CUSTOM_2] = "#F3C909;"; // { 255, 108, 0 }		--		Yellow
     GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_CUSTOM_3] = "#c54da8;"; // { 197, 77, 168 }	--		Pink
@@ -47,21 +47,90 @@ function HideDefaults(){
     
 }
 
-function HideRest()
-{
-    var parent = $.GetContextPanel();
-    while( parent.GetParent() != null ) {
-        parent = parent.GetParent();
-    }
-    parent.FindChildTraverse("inventory_tpscroll_container");
+function ModifyHotkeyBox(top_panel) {
+    if(!ModifyHotkeyText(top_panel, "Ability0", "L-Mouse")){ return false; }
+    if(!ModifyHotkeyText(top_panel, "Ability1", "R-Mouse")){ return false; }
+    if(!ModifyHotkeyText(top_panel, "Ability2", "Space")){ return false; }
+    if(!ModifyHotkeyText(top_panel, "Ability3", "Q")){ return false; }
+    if(!ModifyHotkeyText(top_panel, "Ability4", "E")){ return false; }
+    if(!ModifyHotkeyText(top_panel, "Ability5", "R")){ return false; }
+    if(!ModifyHotkeyText(top_panel, "Ability6", "F")){ return false; }
+    return true;
+}
+
+function ModifyHotkeyText(top_panel, abilityName, text){
+    var abilityPanel = top_panel.FindChildTraverse(abilityName);
+    var hotkey = abilityPanel.FindChildTraverse("HotkeyText");
+
+    if(hotkey){
+        hotkey.text = text;
+        hotkey.GetParent().visible = true;
+
+        return true;
+    } 
+
+    return false;
+}
+
+function ModifyHotkeyBoxes(top_panel){
+    (function tic()
+    {
+        if(!ModifyHotkeyBox(top_panel)){
+            $.Schedule( 2.0, tic );
+        }
+    })();
+}
+
+function HideRest(top_panel){
+
+    var tp_scroll = top_panel.FindChildTraverse("inventory_tpscroll_container");
+    tp_scroll.style.visibility = "collapse";
+
+    var neutral_item = top_panel.FindChildTraverse("inventory_neutral_slot_container");
+    neutral_item.style.visibility = "collapse";
+
+    var talents = top_panel.FindChildTraverse("StatBranch");
+    talents.style.visibility = "collapse";
+
+    var guides = top_panel.FindChildTraverse("GuideFlyout");
+    guides.style.visibility = "collapse";
+
+
+    var right_flare = top_panel.FindChildTraverse("right_flare");
+    right_flare.style.width = "52px";
+    right_flare.style.marginRight = "42px";
+
+    /*
+    var inventory_slot_0 = top_panel.FindChildTraverse("inventory_slot_0");
+    inventory_slot_0.style.width = "150px";
+    inventory_slot_0.style.height = "150px"; 
+
+    var inventory_slot_2 = top_panel.FindChildTraverse("inventory_slot_2");
+    inventory_slot_2.style.visibility = "collapse";
+    
+    var inventory_slot_3 = top_panel.FindChildTraverse("inventory_slot_3");
+    inventory_slot_3.style.visibility = "collapse";
+    
+    var inventory_slot_4 = top_panel.FindChildTraverse("inventory_slot_4");
+    inventory_slot_4.style.visibility = "collapse";
+    
+    var inventory_slot_5 = top_panel.FindChildTraverse("inventory_slot_5");
+    inventory_slot_5.style.visibility = "collapse";
+    */
 }
 
 (function() {
+    var top_panel = $.GetContextPanel();
+    while(top_panel.GetParent() != null){
+        top_panel = top_panel.GetParent();
+    }
+
     ConfigureHud();
     HideDefaults();
     SetTeamColors();
     SetTeamIcons();
-    HideRest();
+    ModifyHotkeyBoxes(top_panel);
+    HideRest(top_panel);
 })();
 
 

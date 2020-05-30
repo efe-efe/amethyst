@@ -32,9 +32,14 @@ end
 function modifier_generic_silence:GetEffectName()
 	return "particles/generic_gameplay/generic_silenced.vpcf"
 end
-
 function modifier_generic_silence:GetEffectAttachType()
 	return PATTACH_OVERHEAD_FOLLOW
+end
+
+function modifier_generic_silence:CheckState()
+	return { 
+        [MODIFIER_STATE_SILENCED] = true
+    }
 end
 
 function modifier_generic_silence:GetStatusLabel() return "Silence" end

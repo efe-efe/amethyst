@@ -1,7 +1,27 @@
 phantom_basic_attack = class({})
 LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
 
-function phantom_basic_attack:OnCastPointEnd()
+function phantom_basic_attack:GetCastPointOverride()
+	if IsServer() then
+		return self:GetCaster():GetAttackAnimationPoint()
+	end
+end
+
+function phantom_basic_attack:GetCooldown(iLevel)
+	if IsServer() then
+        local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
+        local attack_speed = ( 1 / attacks_per_second )
+		
+		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
+	end
+end
+
+function phantom_basic_attack:GetCastAnimationCustom()		return ACT_DOTA_TELEPORT_END end
+function phantom_basic_attack:GetPlaybackRateOverride() 	return 1.5 end
+function phantom_basic_attack:GetCastPointSpeed() 			return 80 end
+function phantom_basic_attack:GetFadeGestureOnCast()		return false end
+
+function phantom_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
@@ -79,7 +99,7 @@ function phantom_basic_attack:OnCastPointEnd()
 	self:PlayEffectsOnCast()
 end
 
-function phantom_basic_attack:PlayEffectsOnFinish( pos )
+function phantom_basic_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	local offset = 40
 	local origin = caster:GetOrigin()
@@ -102,9 +122,4 @@ function phantom_basic_attack:PlayEffectsOnCast()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.BasicAttack( phantom_basic_attack )
-Abilities.Initialize( 
-	phantom_basic_attack,
-	{ activity = ACT_DOTA_TELEPORT_END, rate = 1.3 },
-	{ movement_speed = 80 }
-)
+Abilities.Castpoint(phantom_basic_attack)

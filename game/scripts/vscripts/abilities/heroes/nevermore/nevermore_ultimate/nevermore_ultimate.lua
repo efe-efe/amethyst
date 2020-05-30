@@ -1,28 +1,46 @@
 nevermore_ultimate = class({})
 LinkLuaModifier( "modifier_nevermore_ultimate", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_ultimate_attract", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate_attract", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_nevermore_ultimate_thinker", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
 
-function nevermore_ultimate:OnStopPseudoCastPoint()
-	self:StopEffectsOnCastPoint( false )
+function nevermore_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_6 end
+function nevermore_ultimate:GetPlaybackRateOverride() 	    return 1.0 end
+function nevermore_ultimate:GetCastPointSpeed() 			return 0 end
+
+function nevermore_ultimate:OnAbilityPhaseStart()
+	self.thinker = CreateModifierThinker(
+		self:GetCaster(), --hCaster
+		self, --hAbility
+		"modifier_nevermore_ultimate_thinker", --modifierName
+		{ duration = self:GetCastPoint() + 0.2 },
+		self:GetCaster():GetAbsOrigin(), --vOrigin
+		self:GetCaster():GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
+
+	local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_wings.vpcf"
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	EmitGlobalSound("Hero_Nevermore.ROS.Arcana.Cast")
+	return true
+end
+
+function nevermore_ultimate:OnAbilityPhaseInterrupted()
+	self.thinker:Destroy()
+	
+	ParticleManager:DestroyParticle(self.effect_cast, true)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
+	StopGlobalSound("Hero_Nevermore.ROS.Arcana.Cast")
 end
 
 function nevermore_ultimate:OnSpellStart()
 	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	self.radius = self:GetSpecialValueFor("radius")
-
-	caster:AddNewModifier(caster, self, "modifier_nevermore_ultimate_attract", { duration = self:GetSpecialValueFor("cast_point") })
-	self:PlayEffectsOnCastPoint()
-end
-
-function nevermore_ultimate:OnCastPointEnd()
-	local caster = self:GetCaster()
+	local origin = self:GetCaster():GetAbsOrigin()
 	local duration = self:GetSpecialValueFor("slow_duration")
 	local damage = self:GetSpecialValueFor("damage_per_soul")
+	local radius = self:GetSpecialValueFor("radius")
 
 	local lines = self:GetSpecialValueFor("base_lines")
 	local modifier = caster:FindModifierByNameAndCaster( "modifier_nevermore_souls", caster )
-	if modifier~=nil then
+	if modifier ~= nil then
 		lines = lines + modifier:GetStackCount()
 		modifier:Destroy()
 	end
@@ -44,8 +62,8 @@ function nevermore_ultimate:OnCastPointEnd()
 
         local projectile = {
             EffectName = "particles/mod_units/heroes/hero_nevermore/nevermore_base_attack.vpcf",
-            vSpawnOrigin = caster:GetOrigin() + Vector(0, 0, 80),
-            fDistance = self.radius,
+            vSpawnOrigin = caster:GetAbsOrigin() + Vector(0, 0, 80),
+            fDistance = radius,
             fStartRadius = width_start,
             fEndRadius = width_end,
             Source = caster,
@@ -82,36 +100,8 @@ function nevermore_ultimate:OnCastPointEnd()
         Projectiles:CreateProjectile(projectile)
     end
     
-	self:StopEffectsOnCastPoint( true )
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	self:PlayEffectsLines( lines )
-end
-
---------------------------------------------------------------------------------
--- Effects
-function nevermore_ultimate:PlayEffectsOnCastPoint()
-	local caster = self:GetCaster()
-	EmitGlobalSound("Hero_Nevermore.ROS.Arcana.Cast")
-
-	local particle_precast = "particles/units/heroes/hero_nevermore/nevermore_wings.vpcf"
-	self.effect_precast = ParticleManager:CreateParticle( particle_precast, PATTACH_ABSORIGIN_FOLLOW, caster )
-	
-	local particle_cast = "particles/units/heroes/hero_shadow_demon/shadow_demon_soul_catcher_v2_ground01.vpcf"
-	self.effect_cast_aoe = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, caster:GetOrigin() )
-	ParticleManager:SetParticleControl( self.effect_cast_aoe, 1, caster:GetOrigin() )
-	ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, caster:GetOrigin() )
-	ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0) )
-end
-
-function nevermore_ultimate:StopEffectsOnCastPoint( success )
-	if not success then
-		ParticleManager:DestroyParticle( self.effect_precast, true )
-		StopGlobalSound("Hero_Nevermore.ROS.Arcana.Cast")
-	end
-	ParticleManager:ReleaseParticleIndex( self.effect_precast )
-
-	ParticleManager:DestroyParticle( self.effect_cast_aoe, true )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast_aoe )
 end
 
 function nevermore_ultimate:PlayEffectsLines( lines )
@@ -119,10 +109,10 @@ function nevermore_ultimate:PlayEffectsLines( lines )
 	EmitSoundOn("Hero_Nevermore.ROS.Arcana", caster)
 
 	local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_requiemofsouls.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-	ParticleManager:SetParticleControl( effect_cast, 1, Vector( lines, 0, 0 ) )	-- Lines
-	ParticleManager:SetParticleControlForward( effect_cast, 2, caster:GetForwardVector() )		-- initial direction
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+	ParticleManager:SetParticleControl(effect_cast, 1, Vector(lines, 0, 0))	-- Lines
+	ParticleManager:SetParticleControlForward(effect_cast, 2, caster:GetForwardVector())		-- initial direction
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function nevermore_ultimate:PlayEffectsOnFinish( pos )
@@ -133,8 +123,4 @@ function nevermore_ultimate:PlayEffectsOnFinish( pos )
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	nevermore_ultimate,
-	{ activity = ACT_DOTA_CAST_ABILITY_6, rate = 1.2 },
-	{ movement_speed = 0 }
-)
+Abilities.Castpoint(nevermore_ultimate)

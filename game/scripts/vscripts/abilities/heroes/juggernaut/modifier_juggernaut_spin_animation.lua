@@ -31,3 +31,6 @@ end
 
 function modifier_juggernaut_spin_animation:GetOverrideAnimation() 		return ACT_DOTA_OVERRIDE_ABILITY_1 end
 function modifier_juggernaut_spin_animation:GetOverrideAnimationRate() 	return 1.5 end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Animation(modifier_juggernaut_spin_animation)

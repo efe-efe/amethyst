@@ -3,13 +3,15 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/spectre/spectre_basic_attack/spectre_basic_attack"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"spectre_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"110"
+		"LevelsBetweenUpgrades"			"0"
 		
 		"precache"
 		{
@@ -23,9 +25,9 @@
 			"03"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.5" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"heal_desolate"				"4" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_desolate"		"2" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_charged"		"6" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.4" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"charge_cooldown"			"8.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"charged_damage"			"6" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.4 0.9" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }
 			"09"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"8" }
 		}
 	}

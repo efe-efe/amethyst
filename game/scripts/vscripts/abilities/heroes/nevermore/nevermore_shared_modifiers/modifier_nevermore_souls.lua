@@ -1,19 +1,9 @@
 modifier_nevermore_souls = class({})
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_nevermore_souls:IsHidden() return false
-end
+function modifier_nevermore_souls:IsHidden() return false end
+function modifier_nevermore_souls:IsDebuff() return false end
+function modifier_nevermore_souls:IsPurgable() return true end
 
-function modifier_nevermore_souls:IsDebuff() return false
-end
-
-function modifier_nevermore_souls:IsPurgable()
-	return true
-end
-
---------------------------------------------------------------------------------
--- Initializer
 function modifier_nevermore_souls:OnCreated()
     self.damage_per_stack = self:GetAbility():GetSpecialValueFor( "damage_per_stack" )
 	self.max_stacks = self:GetAbility():GetSpecialValueFor( "max_stacks" )
@@ -21,19 +11,14 @@ function modifier_nevermore_souls:OnCreated()
 
 	if IsServer() then
 	    self:SetStackCount(1)
-		self:GetParent():AddStacksVisual({ modifier = self })
     end
 end
 
---------------------------------------------------------------------------------
--- Initializer
 function modifier_nevermore_souls:OnRefresh()
 	if IsServer() then
-
 		if self:GetStackCount() < self.max_stacks then
 			self.effects_cast_weapon = {}
 			self:IncrementStackCount()
-			
 
 			if self:GetStackCount() == self.max_stacks then
 				self:PlayEffectsCharged()
@@ -77,14 +62,11 @@ function modifier_nevermore_souls:StopEffects()
 		ParticleManager:ReleaseParticleIndex( self.effect_cast )
 	end
 end
---------------------------------------------------------------------------------
--- Modifier Effects
+
 function modifier_nevermore_souls:DeclareFunctions()
-	local funcs = {
+	return {
 		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE
 	}
-
-	return funcs
 end
 
 function modifier_nevermore_souls:GetModifierPreAttack_BonusDamage()

@@ -54,6 +54,7 @@ function item_nullifier_custom:OnSpellStart()
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 			ApplyDamage( damage_table )
+			unit:Purge(true, false, false, false, false)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

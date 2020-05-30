@@ -16,7 +16,7 @@
 		
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityManaCost"				"25"
-		"AbilityCooldown"				"15.0"
+		"AbilityCooldown"				"20.0"
 		"AbilityCastPoint"				"0.0"	
 
 		"AbilitySpecial"	

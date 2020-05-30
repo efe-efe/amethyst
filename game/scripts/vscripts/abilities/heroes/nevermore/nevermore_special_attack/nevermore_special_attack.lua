@@ -1,80 +1,45 @@
 nevermore_special_attack = class({})
-LinkLuaModifier( "modifier_nevermore_special_attack_thinker", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_special_attack_thinker", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_nevermore_special_attack_displacement", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack_displacement", LUA_MODIFIER_MOTION_BOTH)
 
-function nevermore_special_attack:GetRadius()
-	local radius = self:GetSpecialValueFor("radius")
-	local radius_per_stack = self:GetSpecialValueFor("radius_per_stack")
+function nevermore_special_attack:GetCastAnimationCustom()		return ACT_DOTA_RAZE_3 end
+function nevermore_special_attack:GetPlaybackRateOverride()		return 1.3 end
+function nevermore_special_attack:GetCastPointSpeed() 			return 10 end
+function nevermore_special_attack:GetFadeGestureOnCast()			return false end
 
-    return radius + 2 * radius_per_stack
-end
---[[
-function nevermore_special_attack:GetCastRange( vLocation, hTarget )
-	if IsServer() then
-		local stacks = 0
-		local range_per_stack = self:GetSpecialValueFor("range_per_stack")
-			
-		local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", self:GetCaster() )
-		if modifier~=nil then
-			stacks = stacks + modifier:GetStackCount()
-		end
+function nevermore_special_attack:OnAbilityPhaseStart()
+	self.effect_cast = ParticleManager:CreateParticle("particles/econ/items/sven/sven_warcry_ti5/sven_spell_warcry_ti_5.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 
-		return self.BaseClass.GetCastRange(self, vLocation, hTarget) + stacks * range_per_stack
-	end
+	local random_number = RandomInt(0, 3)
+	EmitSoundOn("nevermore_nev_cast_0" .. random_number, self:GetCaster())
+	EmitSoundOn( "Hero_Nevermore.Attack", self:GetCaster() )
+	
+	return true
 end
 
-]]
+function nevermore_special_attack:OnAbilityPhaseInterrupted()
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
+end
+
 function nevermore_special_attack:OnSpellStart()
-	--[[local radius = self:GetSpecialValueFor("radius")
-
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_target_indicator_permanent", {
-		radius = radius,
-	})]]
-end
-
-function nevermore_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local damage = self:GetSpecialValueFor("ability_damage")
-	local radius = self:GetSpecialValueFor("radius")
-	local delay_time = self:GetSpecialValueFor("delay_time")
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
-	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
-	local radius_per_stack = self:GetSpecialValueFor("radius_per_stack")
-	local point = CalcPoint(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_nevermore_special_attack_thinker", --modifierName
+		{ duration = self:GetSpecialValueFor("delay_time") + 0.2 }, --paramTable
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
 
-	local direction = (point - origin):Normalized()
-	local distance = self:GetCastRange(Vector(0,0,0), nil)
-	local points = {}
-	local offset = 128
-
-	points[0] = origin + Vector(direction.x * offset , direction.y * offset, 0 )
-	points[1] = origin + Vector(direction.x * (distance/2), direction.y * (distance/2), 0 )
-	points[2] = origin + Vector(direction.x * (distance), direction.y * (distance), 0 )
-
-	for i = 0, 2 do
-		CreateModifierThinker(
-			caster, --hCaster
-			self, --hAbility
-			"modifier_thinker_indicator", --modifierName
-			{ 
-				thinker = "modifier_nevermore_special_attack_thinker",
-				show_all = 1,
-				radius = radius + (radius_per_stack * i),
-				delay_time = (delay_time * i),
-				damage = damage + (damage_per_stack * i),
-				draw_clock = 1,
-			}, --paramTable
-			points[i], --vOrigin
-			caster:GetTeamNumber(), --nTeamNumber
-			false --bPhantomBlocker
-		)
-	
-	end
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	nevermore_special_attack,
-	{ activity = ACT_DOTA_RAZE_3, rate = 1.3 },
-	{ movement_speed = 10, fixed_range = 1}
-)
+Abilities.Castpoint(nevermore_special_attack)

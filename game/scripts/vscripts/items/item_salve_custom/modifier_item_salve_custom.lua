@@ -1,10 +1,9 @@
 modifier_item_salve_custom = class({})
 
-function modifier_item_salve_custom:OnCreated()
-    self.think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
-    self.heal_per_tick = self:GetAbility():GetSpecialValueFor("heal_per_tick")
-    
+function modifier_item_salve_custom:OnCreated(params)
     if IsServer() then
+        self.think_interval = params.think_interval
+        self.heal_per_tick = params.heal_per_tick
         self:StartIntervalThink( self.think_interval )
     end
 end
@@ -36,4 +35,9 @@ function modifier_item_salve_custom:GetStatusEffectName()
 	return "particles/items_fx/healing_flask.vpcf"
 end
 
+function modifier_item_salve_custom:GetStatusLabel() return "Healing Salve" end
+function modifier_item_salve_custom:GetStatusPriority() return 1 end
+function modifier_item_salve_custom:GetStatusStyle() return "Heal" end
 
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_item_salve_custom)

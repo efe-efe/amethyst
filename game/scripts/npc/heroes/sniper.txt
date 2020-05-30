@@ -17,6 +17,7 @@
 		"Ability5"						"sniper_special_attack"
 		"Ability6"						"sniper_extra"
 		"Ability7"						"sniper_ultimate"
+		"Ability8"						"sniper_special_attack_recast"
 		
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
@@ -52,7 +53,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"155" 									// Base health.
+		"StatusHealth"				"185" 									// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		"StatusManaRegen"			"0.0"	

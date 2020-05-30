@@ -1,90 +1,58 @@
 modifier_spectre_extra = class({})
 
---- Misc 
-function modifier_spectre_extra:IsHidden()
+function modifier_spectre_extra:IsHidden() return false end
+function modifier_spectre_extra:IsDebuff() return false end
+function modifier_spectre_extra:IsPurgable() return false end
+
+function modifier_spectre_extra:IsAura()
+	return true
+end
+function modifier_spectre_extra:GetModifierAura()
+	return "modifier_spectre_debuff"
+end
+function modifier_spectre_extra:GetAuraRadius()
+	return self.radius
+end
+function modifier_spectre_extra:GetAuraDuration()
+	return 0.0
+end
+function modifier_spectre_extra:GetAuraSearchTeam()
+	return DOTA_UNIT_TARGET_TEAM_BOTH
+end
+function modifier_spectre_extra:GetAuraEntityReject(hEntity)
+    if self:GetCaster():IsAlly(hEntity) then
+        return true 
+    end
     return false
 end
-
-function modifier_spectre_extra:IsDebuff() return false
+function modifier_spectre_extra:GetAuraSearchType()
+	return DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
 end
 
-function modifier_spectre_extra:IsPurgable() return false
-end
-
-
---------------------------------------------------------------------------------
--- Initializations
 function modifier_spectre_extra:OnCreated( kv )
     self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
+    self.radius = self:GetAbility():GetSpecialValueFor("radius")
 
     if IsServer() then
-        self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
-        local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
-        self.radius = 250
-        self.damage_done = 0
-
         self:PlayEffectsOnCreated()
-        self:StartIntervalThink( think_interval )
-
-        self:GetParent():AddStatusBar({
-			label = "Darkness", modifier = self, priority = 3, stylename="Darkness"
-		})
     end
 end
 
---------------------------------------------------------------------------------
--- Destroyer
 function modifier_spectre_extra:OnDestroy( kv )
     if IsServer() then
-        self:GetParent():Heal( self.damage_done, self:GetParent() )
-        
-        self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
-        
+        self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(self:GetAbility():GetLevel()))
         self:StopEffects()
     end
 end
 
---------------------------------------------------------------------------------
--- Interval Effects
-function modifier_spectre_extra:OnIntervalThink()
-    local enemies = self:GetCaster():FindUnitsInRadius( 
-        self:GetParent():GetOrigin(), 
-        self.radius, 
-        DOTA_UNIT_TARGET_TEAM_ENEMY, 
-        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-        DOTA_UNIT_TARGET_FLAG_NONE,
-        FIND_ANY_ORDER
-    )
-
-    for _,enemy in pairs(enemies) do
-        local damage = {
-            victim = enemy,
-            attacker = self:GetParent(),
-            damage = self.damage_per_second,
-            damage_type = DAMAGE_TYPE_PURE,
-        }
-        self.damage_done = self.damage_done + self.damage_per_second
-        self:PlayEffectsOnTarget(enemy)
-        ApplyDamage( damage )
-    end
-end
-
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_spectre_extra:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-	}
-
-	return funcs
+	return { MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE }
 end
 
 function modifier_spectre_extra:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
 end
 
---------------------------------------------------------------------------------
--- Graphics & Animations
 function modifier_spectre_extra:PlayEffectsOnCreated( )
     local parent = self:GetParent()
     EmitSoundOn("Hero_Spectre.Haunt", parent)
@@ -110,7 +78,9 @@ function modifier_spectre_extra:StopEffects()
     end
 end
 
--- Graphics & Animations
-function modifier_spectre_extra:PlayEffectsOnTarget( hTarget )
-    EmitSoundOn("Hero_Spectre.Desolate", hTarget)
-end
+function modifier_spectre_extra:GetStatusLabel() return "Darkness" end
+function modifier_spectre_extra:GetStatusPriority() return 1 end
+function modifier_spectre_extra:GetStatusStyle() return "Darkness" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_spectre_extra)

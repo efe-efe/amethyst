@@ -3,19 +3,27 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/spectre/spectre_mobility/spectre_mobility"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"spectre_desolate"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"AbilityCastRange"				"600"
 		"AbilityCooldown"				"8.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"6" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"          "2200" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"6" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"          "2200" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"max_charges"               "1 2" }
 		}
 	}
 }

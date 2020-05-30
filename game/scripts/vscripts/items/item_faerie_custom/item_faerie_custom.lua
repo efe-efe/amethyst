@@ -3,6 +3,7 @@ item_faerie_custom = class({})
 function item_faerie_custom:OnSpellStart()
     self:GetCaster():Heal(self:GetSpecialValueFor("heal"), self:GetCaster())
     self:PlayEffects()
+    self:SpendCharge()
 end
 
 function item_faerie_custom:PlayEffects()

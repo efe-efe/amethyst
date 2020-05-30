@@ -10,12 +10,10 @@ function modifier_item_diffusal_custom:OnDestroy()
 end
 
 function modifier_item_diffusal_custom:DeclareFunctions()
-	local funcs = {
+	return {
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
         MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
 	}
-
-	return funcs
 end
 
 function modifier_item_diffusal_custom:GetModifierIncomingDamage_Percentage( params )
@@ -31,11 +29,9 @@ function modifier_item_diffusal_custom:GetModifierMoveSpeedBonus_Percentage()
 end
 
 function modifier_item_diffusal_custom:CheckState()
-	local state = {
+	return {
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
-
-	return state
 end
 
 function modifier_item_diffusal_custom:PlayEffectsOnImpact(hTarget)
@@ -53,3 +49,10 @@ end
 function modifier_item_diffusal_custom:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
+
+function modifier_item_diffusal_custom:GetStatusLabel() return "Inhibit" end
+function modifier_item_diffusal_custom:GetStatusPriority() return 4 end
+function modifier_item_diffusal_custom:GetStatusStyle() return "Inhibit" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_item_diffusal_custom)

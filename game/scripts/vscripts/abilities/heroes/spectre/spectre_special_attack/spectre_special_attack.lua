@@ -1,19 +1,22 @@
 spectre_special_attack = class({})
 LinkLuaModifier( "modifier_spectre_special_attack_debuff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_debuff", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_spectre_special_attack_thinker", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier( "modifier_spectre_special_attack_buff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_buff", LUA_MODIFIER_MOTION_NONE )
 
-function spectre_special_attack:OnCastPointEnd( )
+function spectre_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
+function spectre_special_attack:GetPlaybackRateOverride()		return 0.7 end
+function spectre_special_attack:GetCastPointSpeed() 			return 20 end
+
+function spectre_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local origin = caster:GetOrigin()
-	local point = CalcPoint(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
-	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf" 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local hitbox = self:GetSpecialValueFor("hitbox")
 
-	-- Extra data
 	local path_duration = self:GetSpecialValueFor("path_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
@@ -51,7 +54,6 @@ function spectre_special_attack:OnCastPointEnd( )
 				{ duration = debuff_duration }
 			)
 
-			-- Give Mana
 			if _self.Source == caster then
 				caster:GiveManaPercent(mana_gain_pct, unit)
 			end
@@ -73,7 +75,6 @@ function spectre_special_attack:OnCastPointEnd( )
 		end
 	}
 
-	--THIS IS ONLY FOR VISUALS
 	local info = { 
 		Source = caster, 
 		Ability = self, 
@@ -102,27 +103,17 @@ function spectre_special_attack:OnCastPointEnd( )
 	self:PlayEffectsOnCast()
 end
 
---------------------------------------------------------------------------------
--- Graphics & sounds
-
--- On Ability start
 function spectre_special_attack:PlayEffectsOnCast()
 	EmitSoundOn( "Hero_Spectre.DaggerCast", self:GetCaster() )
 end
 
--- On Projectile hit an enemy
 function spectre_special_attack:PlayEffectsOnImpact(hTarget)
 	EmitSoundOn( "Hero_Spectre.DaggerImpact", hTarget )
 
 	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner_impact.vpcf"
 	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, hTarget )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
-	
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
-	spectre_special_attack,
-	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 0.7 },
-	{ movement_speed = 20, fixed_range = 1 }
-)
+Abilities.Castpoint(spectre_special_attack)

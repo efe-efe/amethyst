@@ -4,30 +4,21 @@ LinkLuaModifier( "modifier_juggernaut_ultimate_slashing", "abilities/heroes/jugg
 LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL )
 
-function juggernaut_ultimate:GetCastPoint()
-	return self:GetSpecialValueFor("cast_point")
-end
+function juggernaut_ultimate:GetCastAnimationCustom()		return ACT_DOTA_GENERIC_CHANNEL_1 end
+function juggernaut_ultimate:GetPlaybackRateOverride() 	    return 1.0 end
+function juggernaut_ultimate:GetCastPointSpeed() 			return 0 end
+function juggernaut_ultimate:GetAnimationTranslate()		return "sharp_blade" end
 
 function juggernaut_ultimate:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		translate = "sharp_blade",
-		movement_speed = 0,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_GENERIC_CHANNEL_1, 1.0)
     self:PlayEffectsOnPhase()
     return true
 end
 
 function juggernaut_ultimate:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(ACT_DOTA_GENERIC_CHANNEL_1)
-	self:GetCaster():RemoveModifierByName("modifier_casting")
 	StopGlobalSound( "juggernaut_jug_ability_omnislash_01" )
 end
 
 function juggernaut_ultimate:OnSpellStart()
-	self:GetCaster():FadeGesture(ACT_DOTA_GENERIC_CHANNEL_1)
-    
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -68,3 +59,6 @@ end
 function juggernaut_ultimate:PlayEffectsOnCast()
     EmitSoundOn("Hero_PhantomAssassin.Strike.End", self:GetCaster())
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(juggernaut_ultimate)

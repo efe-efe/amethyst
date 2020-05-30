@@ -1,34 +1,17 @@
 modifier_phantom_strike_stack = class({})
 
---------------------------------------------------------------------------------
--- Classifications
-function modifier_phantom_strike_stack:IsHidden() return false
-end
+function modifier_phantom_strike_stack:IsHidden() return false end
+function modifier_phantom_strike_stack:IsDebuff() return false end
+function modifier_phantom_strike_stack:IsPurgable() return true end
 
-function modifier_phantom_strike_stack:IsDebuff() return false
-end
-
-function modifier_phantom_strike_stack:IsStunDebuff()
-	return false
-end
-
-function modifier_phantom_strike_stack:IsPurgable()
-	return true
-end
-
---------------------------------------------------------------------------------
--- Initializations
 function modifier_phantom_strike_stack:OnCreated( kv )
-	-- references
 	if IsServer() then
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
-		self:GetParent():AddStacksVisual({ modifier = self })
 	end
 end
 
 function modifier_phantom_strike_stack:OnRefresh( kv )
-	-- references
 	local max_stack = 3--self:GetAbility():GetSpecialValueFor( "stack_limit" )
 
 	if IsServer() then
@@ -37,8 +20,6 @@ function modifier_phantom_strike_stack:OnRefresh( kv )
 			self.effects_cast_weapon = {}
 			self:IncrementStackCount()
 			self:PlayEffects()
-
-			
 
 			if self:GetStackCount() == max_stack then
 				self:PlayEffectsCharged()
@@ -50,12 +31,9 @@ end
 function modifier_phantom_strike_stack:OnDestroy( kv )
 	if IsServer() then
 		self:StopEffects()
-		
 	end
 end
 
---------------------------------------------------------------------------------
--- Graphics & Animations
 function modifier_phantom_strike_stack:GetTexture()
 	return "phantom_basic_attack"
 end

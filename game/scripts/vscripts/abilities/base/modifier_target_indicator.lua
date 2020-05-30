@@ -54,7 +54,7 @@ function modifier_target_indicator:OnIntervalThink()
 	local origin = self.parent:GetOrigin()
 	local ranges = self:GetRanges(self.fixed_range)
 
-    local point = CalcPoint(origin, mouse, ranges.max_range, ranges.min_range)
+    local point = Clamp(origin, mouse, ranges.max_range, ranges.min_range)
 
     self:UpdateEffects(origin, point)
 end

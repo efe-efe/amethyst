@@ -1,10 +1,9 @@
 juggernaut_basic_attack = class({})
 LinkLuaModifier( "modifier_juggernaut_basic_attack_stacks", "abilities/heroes/juggernaut/juggernaut_basic_attack/modifier_juggernaut_basic_attack_stacks", LUA_MODIFIER_MOTION_NONE )
 
-
-function juggernaut_basic_attack:GetCastPoint()
+function juggernaut_basic_attack:GetCastPointOverride()
 	if IsServer() then
-		return self.BaseClass.GetCastPoint(self) + self:GetCaster():GetAttackAnimationPoint()
+		return self:GetCaster():GetAttackAnimationPoint()
 	end
 end
 
@@ -17,30 +16,18 @@ function juggernaut_basic_attack:GetCooldown(iLevel)
 	end
 end
 
-function juggernaut_basic_attack:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		movement_speed = 80,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 1.8)
-	return true
-end
+function juggernaut_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK_EVENT end
+function juggernaut_basic_attack:GetPlaybackRateOverride() 	return 1.8 end
+function juggernaut_basic_attack:GetCastPointSpeed() 		return 80 end
 
-function juggernaut_basic_attack:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK_EVENT)
-	self:GetCaster():RemoveModifierByName("modifier_casting")
-end
-
-function juggernaut_basic_attack:OnSpellStart( point )
+function juggernaut_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 	local attack_damage = caster:GetAttackDamage()
 
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
-	local stun_duration = 0.0--caster:FindAbilityByName("juggernaut_ex_second_attack"):GetSpecialValueFor("stun_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-	local perform_special = caster:HasModifier("modifier_juggernaut_ex_second_attack") and true or false
 	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 	local offset = 80
 	local projectile_speed = 2000
@@ -58,12 +45,7 @@ function juggernaut_basic_attack:OnSpellStart( point )
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
-			if perform_special == true then
-				unit:AddNewModifier(_self.Source, self , "modifier_generic_stunned", { duration = stun_duration })
-				self:PlayEffectsOnImpactBash(unit)
-			else
-				self:PlayEffectsOnImpact(unit)
-			end
+			self:PlayEffectsOnImpact(unit)
 
 			local damage_table = {
 				victim = unit,
@@ -134,14 +116,9 @@ function juggernaut_basic_attack:PlayEffectsOnImpact( hTarget )
 	EmitSoundOn( "Hero_Juggernaut.Attack", hTarget )
 end
 
-function juggernaut_basic_attack:PlayEffectsOnImpactBash( hTarget )
-	EmitSoundOn( "DOTA_Item.AbyssalBlade.Activate", hTarget )
-
-	local particle_cast = "particles/items_fx/abyssal_blade_crimson_jugger.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
-end
-
 function juggernaut_basic_attack:PlayEffectsOnMiss( pos )
 	EmitSoundOnLocationWithCaster( pos, "Hero_Juggernaut.PreAttack", self:GetCaster() )
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(juggernaut_basic_attack)

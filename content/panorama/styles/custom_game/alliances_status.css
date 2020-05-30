@@ -47,7 +47,7 @@
 }
 
 .HeroStatus__Middle{
-    height: 20px;
+    height: 30px;
     width: 100%;
     margin-bottom: 2px;
 }
@@ -67,11 +67,10 @@
 }
 
 .HeroStatus__Health{
-    height: 65%;
+    height: 70%;
     width: 100%;
     background-color:rgba(36, 42, 53, 0.2);
 
-    margin-bottom: 5%;
     flow-children: right;
 }
 .HeroStatus__Mana{

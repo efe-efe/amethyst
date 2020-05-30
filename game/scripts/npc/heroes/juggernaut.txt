@@ -19,8 +19,9 @@
 		"Ability6"						"juggernaut_extra"           
 		"Ability7"						"juggernaut_ultimate"            
 		"Ability8"						"juggernaut_counter_recast"	
-		"Ability9"						"juggernaut_extra_recast"		
-		
+		"Ability9"						"juggernaut_extra_recast"	
+		"Ability10"						"juggernaut_special_attack_recast"		
+
 		//Vision
 		//-------------------------------------------------------------------------------------------------------------
 		"VisionDaytimeRange"		"2000"
@@ -36,7 +37,7 @@
 		"AttackDamageMin"			"9"										// Damage range min.
 		"AttackDamageMax"			"9"										// Damage range max.	
 		"AttackRate"				"0.35"									// Speed of attack.
-		"AttackAnimationPoint"		"0.1"	
+		"AttackAnimationPoint"		"0.25"	
 		"AttackRange"				"80"
 		
 		// Movement
@@ -55,7 +56,7 @@
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"170" 									// Base health.
+		"StatusHealth"				"200" 									// Base health.
 		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
 		"StatusMana"				"100"									// Base mana.
 		"StatusManaRegen"			"0.0"	

@@ -1,78 +1,51 @@
 modifier_generic_fading_haste = class({})
 
--- Clasifications
---------------------------------------------------------------------------------
-function modifier_generic_fading_haste:IsDebuff() return false
-end
+function modifier_generic_fading_haste:IsDebuff() return false end
 
-function modifier_generic_fading_haste:IsHidden() return false
-end
+function modifier_generic_fading_haste:OnCreated(params)
+    if IsServer() then
+        local duration = self:GetDuration()
+        local tick = 1/8
+        local ticks_number = duration / tick
 
---------------------------------------------------------------------------------
--- Initializations
-function modifier_generic_fading_haste:OnCreated( kv )
-    local duration = self:GetDuration()
-    self.max_fading_haste = self:GetAbility():GetSpecialValueFor("fading_haste")
-    self.fading_haste = 0
+        self.speed_per_tick = params.max_haste_pct / ticks_number
 
-    local tick = 1/4
-    local ticks_number = duration / tick
-    self.counter = 0
-    self.speed_per_tick = self.max_fading_haste / ticks_number
-    self.effect_name = kv.effect_name or false
-    
-    self:StartIntervalThink( tick )
-
-    if IsServer() then 
-		self:GetParent():AddStatusBar({
-			label = "Fading Haste", modifier = self, priority = 2, 
-		}) 
+        self:SetStackCount(params.max_haste_pct)
+        self:StartIntervalThink(tick)
     end
 end
 
---------------------------------------------------------------------------------
--- Interval Effects
 function modifier_generic_fading_haste:OnIntervalThink()
-    local new_fading_haste =  self.max_fading_haste - self.speed_per_tick * self.counter
+    local new_fading_haste = self:GetStackCount() - self.speed_per_tick
 
     if new_fading_haste < 0 then
-        self.fading_haste = 0
+        self:SetStackCount(0)
         return
     end
-
-    self.fading_haste = new_fading_haste
-    self.counter = self.counter + 1
+    self:SetStackCount(new_fading_haste)
 end
 
---------------------------------------------------------------------------------
--- Modifier Effects
 function modifier_generic_fading_haste:DeclareFunctions()
-	local funcs = {
-		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
-	}
-
-	return funcs
+	return { MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE, }
 end
 
 function modifier_generic_fading_haste:GetModifierMoveSpeedBonus_Percentage()
-    return self.fading_haste
+    return self:GetStackCount()
 end
 
---------------------------------------------------------------------------------
---Graphics
 function modifier_generic_fading_haste:GetEffectName()
-    if self.effect_name == false then
-        return "particles/generic_gameplay/rune_haste.vpcf"
-    else
-        return self.effect_name
-    end
+    return "particles/generic_gameplay/rune_haste.vpcf"
 end
 
 function modifier_generic_fading_haste:GetEffectAttachType()
 	return PATTACH_OVERHEAD_FOLLOW
 end
-
 function modifier_generic_fading_haste:GetTexture()
 	return "modifier_generic_fading_haste"
 end
 
+function modifier_generic_fading_haste:GetStatusLabel() return "Fading Haste" end
+function modifier_generic_fading_haste:GetStatusPriority() return 3 end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_generic_fading_haste)

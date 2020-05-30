@@ -1,29 +1,16 @@
 sniper_special_attack = class({})
 LinkLuaModifier("modifier_sniper_shrapnel_thinker_custom", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_thinker_custom", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_sniper_shrapnel_debuff", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_debuff", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_sniper_special_attack_recast", "abilities/heroes/sniper/sniper_special_attack/modifier_sniper_special_attack_recast", LUA_MODIFIER_MOTION_NONE)
 
-function sniper_special_attack:GetCastPoint()
-	return self:GetSpecialValueFor("cast_point")
-end
-
-function sniper_special_attack:OnAbilityPhaseStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
-		duration = self:GetCastPoint(), 
-		movement_speed = 10,
-	})
-	self:GetCaster():StartGestureWithPlaybackRate(ACT_DOTA_CAST_ABILITY_1, 1.5)
-	return true
-end
-
-function sniper_special_attack:OnAbilityPhaseInterrupted()
-	self:GetCaster():FadeGesture(ACT_DOTA_CAST_ABILITY_1)
-	self:GetCaster():RemoveModifierByName("modifier_casting")
-end
+function sniper_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
+function sniper_special_attack:GetPlaybackRateOverride() 	return 1.5 end
+function sniper_special_attack:GetCastPointSpeed() 			return 10 end
 
 function sniper_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CalcPoint(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-	local duration = self:GetSpecialValueFor( "duration" )
+	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local duration = self:GetSpecialValueFor("duration")
 
 	CreateModifierThinker(
 		caster, --hCaster
@@ -36,6 +23,10 @@ function sniper_special_attack:OnSpellStart()
 	)
 	
 	self:PlayEffects(point)
+
+	if self:GetLevel() == 2 then
+		caster:AddNewModifier(caster, self, "modifier_sniper_special_attack_recast", { duration = 2.0 })
+	end
 end
 
 function sniper_special_attack:PlayEffects(point)
@@ -55,3 +46,6 @@ function sniper_special_attack:PlayEffects(point)
 	ParticleManager:SetParticleControl( effect_cast, 1, point + Vector(0, 0, 2000) )
 	ParticleManager:ReleaseParticleIndex( effect_cast )
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(sniper_special_attack)

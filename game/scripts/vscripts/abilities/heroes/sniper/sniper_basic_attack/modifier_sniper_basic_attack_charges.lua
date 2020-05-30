@@ -4,12 +4,7 @@ function modifier_sniper_basic_attack_charges:GetMaxCharges()
 	return self:GetAbility():GetSpecialValueFor("max_charges")
 end
 
-function modifier_sniper_basic_attack_charges:GetReplenishType()
-	if IsServer() then
-		return CHARGES_TYPE_SYNC
-	end
-end
-
+function modifier_sniper_basic_attack_charges:GetReplenishType() return CHARGES_TYPE_SYNC end
 function modifier_sniper_basic_attack_charges:GetReplenishTime()
 	if IsServer() then
 		return (1/self:GetParent():GetAttacksPerSecond())
@@ -17,7 +12,4 @@ function modifier_sniper_basic_attack_charges:GetReplenishTime()
 end
 
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Charges( 
-	modifier_sniper_basic_attack_charges,
-	{ show_icon = 1 }
-)
+Modifiers.Charges(modifier_sniper_basic_attack_charges)

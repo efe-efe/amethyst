@@ -2,15 +2,16 @@ sniper_mobility = class({})
 LinkLuaModifier( "modifier_sniper_shrapnel_thinker_custom", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_thinker_custom", LUA_MODIFIER_MOTION_NONE )
 LinkLuaModifier( "modifier_sniper_mobility_displacement", "abilities/heroes/sniper/sniper_mobility/modifier_sniper_mobility_displacement", LUA_MODIFIER_MOTION_BOTH )
 
-function sniper_mobility:GetCastPoint()
-	return self:GetSpecialValueFor("cast_point")
-end
+function sniper_mobility:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
+function sniper_mobility:GetPlaybackRateOverride() 	return 2.0 end
 
 function sniper_mobility:OnSpellStart()
 	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
+	local origin = caster:GetAbsOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
-	local point = CalcPoint(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local radius = self:GetSpecialValueFor("radius")
+	local stun_duration = self:GetSpecialValueFor("stun_duration")
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
     local shrapnel = caster:FindAbilityByName("sniper_special_attack")
 
 	local direction = (point - origin):Normalized()
@@ -34,10 +35,25 @@ function sniper_mobility:OnSpellStart()
 		shrapnel, --hAbility
 		"modifier_sniper_shrapnel_thinker_custom", --modifierName
 		{ duration = shrapnel:GetSpecialValueFor( "duration" ) }, --paramTable
-		caster:GetOrigin(), --vOrigin
+		caster:GetAbsOrigin(), --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
 	)
+
+	if self:GetLevel() == 2 then
+		local enemies = caster:FindUnitsInRadius(
+			origin, 
+			radius, 
+			DOTA_UNIT_TARGET_TEAM_ENEMY, 
+			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+			DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
+			FIND_ANY_ORDER
+		)
+	
+		for _,enemy in pairs(enemies) do
+			enemy:AddNewModifier(caster, self , "modifier_generic_stunned", { duration = stun_duration })
+		end
+	end
 
     self:PlayEffectsOnCast()
 end
@@ -51,3 +67,6 @@ function sniper_mobility:PlayEffectsOnCast()
     ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin())
     ParticleManager:ReleaseParticleIndex( effect_cast )  
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(sniper_mobility)

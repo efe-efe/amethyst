@@ -143,9 +143,20 @@ function Projectiles:CreateProjectile(projectile)
         end
     end
 
-    function projectile:Destroy()
-        ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
-        Projectiles:RemoveTimer(projectile.ProjectileTimerName)
+    function projectile:Destroy(use_callback)
+        if use_callback then
+            ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
+            if projectile.OnFinish then
+                local status, out = pcall(projectile.OnFinish, projectile, projectile.current_position)
+                if not status then
+                    print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+                end
+            end
+            Projectiles:RemoveTimer(projectile.ProjectileTimerName)
+        else
+            ParticleManager:DestroyParticle(projectile.id, projectile.bDestroyImmediate)
+            Projectiles:RemoveTimer(projectile.ProjectileTimerName)
+        end
     end
 
     -- Logic of what is done every tick
