@@ -328,6 +328,7 @@ function GameMode:SetupMode()
     self:SetupEventHooks()
     self:SetupPanoramaEventHooks()
     self:SetupFilters()
+    self:SetupProjectiles()
     self:LinkModifiers()
 
 
@@ -337,6 +338,10 @@ function GameMode:SetupMode()
     mode:SetCameraDistanceOverride( 1350 )
     mode:SetRecommendedItemsDisabled(true) -- Doesn't works :'(
     --mode:SetStashPurchasingDisabled(true)	
+end
+
+function GameMode:SetupProjectiles()
+    Projectiles:Initialize()
 end
 
 function GameMode:Start()

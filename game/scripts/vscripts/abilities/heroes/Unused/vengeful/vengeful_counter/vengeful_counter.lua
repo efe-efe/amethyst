@@ -129,11 +129,11 @@ function vengeful_counter:OnCastPointEnd()
 						true, 
 						0.1
 					)]]
-					_self.currentVelocity = direction_to_owner * projectile_speed / 30
+					_self.current_velocity = direction_to_owner * projectile_speed / 30
 
 					if counter == 2 then
 						self:StopEffectsProjectile()
-						self:PlayEffectsProjectile(pos, _self.currentVelocity)
+						self:PlayEffectsProjectile(pos, _self.current_velocity)
 						counter = 0
 					end
 				end
