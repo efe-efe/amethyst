@@ -16,27 +16,27 @@
 			Command = "+SpaceKey"
 		},
 		{
-			Key = 1
+			Key = "1"
 			Command = "+1Key"
 		},
 		{
-			Key = 2
+			Key = "2"
 			Command = "+2Key"
 		},
 		{
-			Key = 3
+			Key = "3"
 			Command = "+3Key"
 		},
 		{
-			Key = 4
+			Key = "4"
 			Command = "+4Key"
 		},
 		{
-			Key = 5
+			Key = "5"
 			Command = "+5Key"
 		},
 		{
-			Key = 6
+			Key = "6"
 			Command = "+6Key"
 		},
 		{
@@ -98,11 +98,11 @@
 	hero_picker = 
 	{
 	}
-	HeroGuidesSupported = true
-	ForceDefaultGuide = true
+	HeroGuidesSupported = false
+	ForceDefaultGuide = false
 	MinimalPrecache = false
 	MinPlayers = 1
-	MaxPlayers = 10
+	MaxPlayers = 4
 	PenaltiesEnabled = false
 	TeamCount = -1
 }

@@ -166,7 +166,7 @@ function UseItem(itemSlot)
                 ShowEffects : true,
                 AbilityIndex : abilityIndex,
             };
-            Game.PrepareUnitOrders( order );
+            Game.PrepareUnitOrders(order);
         }
         if(abilityBehavior & DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_NO_TARGET){
             var order = {
@@ -176,7 +176,7 @@ function UseItem(itemSlot)
                 ShowEffects : true,
                 AbilityIndex : abilityIndex,
             };
-            Game.PrepareUnitOrders( order );
+            Game.PrepareUnitOrders(order);
         }
     }
 }
