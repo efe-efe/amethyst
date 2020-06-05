@@ -10,9 +10,15 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"110"
+		"AbilityCastRange"				"160"
 		"LevelsBetweenUpgrades"			"0"
 		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_ARC"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+
 		"precache"
 		{
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"
@@ -20,7 +26,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"160" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "6" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.5" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"heal_desolate"				"4" }

@@ -14,16 +14,22 @@
 		"ItemDroppable" 				"0"
 
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
-		"AbilityCastRange"				"110"
+		"AbilityCastRange"				"180"
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"20.0"	
 		"AbilityCastPoint"				"0.4"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_ARC"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
 
 		"AbilitySpecial"	
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"110" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"duration"					"1.2" }
 		}
     }	

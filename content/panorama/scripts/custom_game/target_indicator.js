@@ -6,6 +6,7 @@ var mouse_position_screen = null;
 var mouse_position = null;
 var particle_line = null;
 var particle_aoe = null;
+var particle_arc = null;
 
 let target_indicator_modifiers = [
     "modifier_sniper_ultimate_channeling",
@@ -57,9 +58,9 @@ function UpdateTargetIndicator(){
         }
     }
 
-
     if(active){
         var data = targetingIndicators[Abilities.GetAbilityName(active)];
+
         if(data){
             var heroOrigin = Entities.GetAbsOrigin(heroIndex)
             mouse_position_screen = GameUI.GetCursorPosition();
@@ -102,7 +103,7 @@ function UpdateTargetIndicator(){
 
                 var max_range = Abilities.GetCastRange(active);
                 var min_range = Abilities.GetSpecialValueFor(active, "min_range");
-                var radius = Abilities.GetSpecialValueFor(active, "radius")
+                var radius = Abilities.GetSpecialValueFor(active, "radius");
                 var length = 0;
                 var target = [];
                 
@@ -130,6 +131,33 @@ function UpdateTargetIndicator(){
                 Particles.SetParticleControl(particle_line, 1, target);
                 Particles.SetParticleControl(particle_line, 2, target_offset);
             }
+            if(data.Type == "TARGETING_INDICATOR_ARC"){
+                if(!particle_arc){
+                    particle_arc = Particles.CreateParticle("particles/targeting/half_circle.vpcf", ParticleAttachment_t.PATTACH_WORLDORIGIN, heroIndex);
+                }
+
+                var max_range = Abilities.GetCastRange(active);
+                var min_range = Abilities.GetSpecialValueFor(active, "min_range");
+                var radius = Abilities.GetSpecialValueFor(active, "radius");
+                var length = 0;
+                var target = [];
+                
+                if(data.Fixed == "1"){
+                    length = max_range;
+                } else {
+                    length = Clamp(Game.Length2D(mouse_position, heroOrigin), min_range, max_range);
+                }
+
+                var target = [
+                    heroOrigin[0] + (direction[0] * length),
+                    heroOrigin[1] + (direction[1] * length),
+                    heroOrigin[2] + (direction[2] * length)
+                ]
+
+                Particles.SetParticleControl(particle_arc, 0, heroOrigin)
+                Particles.SetParticleControl(particle_arc, 1, target)
+                Particles.SetParticleControl(particle_arc, 2, [radius, 0, 0])
+            }
         }
     } else {
         if(particle_line){
@@ -142,6 +170,12 @@ function UpdateTargetIndicator(){
             Particles.DestroyParticleEffect(particle_aoe, false)
             Particles.ReleaseParticleIndex(particle_aoe)
             particle_aoe = null
+        }
+
+        if(particle_arc){
+            Particles.DestroyParticleEffect(particle_arc, false)
+            Particles.ReleaseParticleIndex(particle_arc)
+            particle_arc = null
         }
     }
     

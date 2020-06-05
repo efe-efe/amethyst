@@ -22,7 +22,7 @@ end
 function modifier_spectre_counter_countering:OnTrigger(params)   
     if IsServer() then
         local modifier = self:GetParent():FindModifierByName("modifier_spectre_basic_attack_cooldown"):Replenish()
-        self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_spectre_counter_recast", { duration = 3.0 })
+        self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_spectre_counter_recast", { duration = 5.0 })
 
         if self:GetAbility():GetLevel() >= 2 then
             params.attacker:AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_spectre_counter", { duration = self.fading_slow_duration })

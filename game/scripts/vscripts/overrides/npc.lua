@@ -196,7 +196,7 @@ function CDOTA_BaseNPC:FindUnitsInRadius( origin, radius, teamFilter, typeFilter
 	return filtered_units
 end
 
-function CDOTA_BaseNPC:FindUnitsInLine( start_pos, end_pos, radius, teamFilter, typeFilter, flagFilter )
+function CDOTA_BaseNPC:FindUnitsInLine(start_pos, end_pos, radius, teamFilter, typeFilter, flagFilter)
 	local units = FindUnitsInLine(
 		self:GetTeamNumber(), -- int, your team number
 		start_pos, -- point, start position
@@ -206,6 +206,75 @@ function CDOTA_BaseNPC:FindUnitsInLine( start_pos, end_pos, radius, teamFilter, 
 		DOTA_UNIT_TARGET_TEAM_BOTH,
 		typeFilter,
 		flagFilter
+	)
+
+	local filtered_units = {}
+	local counter = 1
+	
+	for _,unit in pairs(units) do
+		if teamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and self:IsAlly(unit) then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not self:IsAlly(unit) then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		end
+	end
+	
+	return filtered_units
+end
+
+function CDOTA_BaseNPC:FindUnitsInCone(vDirection, fMinProjection, vCenterPos, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
+	local units = FindUnitsInCone(
+		self:GetTeamNumber(), 
+		vDirection, 
+		fMinProjection,
+		vCenterPos, 
+		fRadius, 
+		nil, 
+		nTeamFilter, 
+		nTypeFilter, 
+		nFlagFilter, 
+		nOrderFilter, 
+		false
+	)
+
+	local filtered_units = {}
+	local counter = 1
+	
+	for _,unit in pairs(units) do
+		if nTeamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and self:IsAlly(unit) then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not self:IsAlly(unit) then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
+			filtered_units[counter] = unit
+			counter = counter + 1
+		end
+	end
+	
+	return filtered_units
+end
+
+function CDOTA_BaseNPC:FindUnitsInCirclesProjection(vCenterPos, vStartPos, vEndPos, fStartRadius, fEndRadius, teamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
+	local units = FindUnitsInCone(
+		self:GetTeamNumber(), 
+		vCenterPos, 
+		vStartPos,
+		vEndPos,
+		fStartRadius, 
+		fEndRadius, 
+		nil, 
+		DOTA_UNIT_TARGET_TEAM_BOTH, 
+		nTypeFilter, 
+		nFlagFilter, 
+		nOrderFilter, 
+		false
 	)
 
 	local filtered_units = {}

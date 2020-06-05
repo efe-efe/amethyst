@@ -16,86 +16,73 @@ function phantom_basic_attack:GetCooldown(iLevel)
 	end
 end
 
-function phantom_basic_attack:GetCastAnimationCustom()		return ACT_DOTA_TELEPORT_END end
+function phantom_basic_attack:GetCastAnimationCustom()		return ACT_DOTA_SPAWN end
 function phantom_basic_attack:GetPlaybackRateOverride() 	return 1.5 end
 function phantom_basic_attack:GetCastPointSpeed() 			return 80 end
 function phantom_basic_attack:GetFadeGestureOnCast()		return false end
 
 function phantom_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local damage = caster:GetAverageTrueAttackDamage(caster)
 
+	local radius = self:GetSpecialValueFor("radius")
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
-	local projectile_speed = 2000
-	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
-	local offset = 50
+	local direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
-	local projectile = {
-		vSpawnOrigin = origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
-		OnUnitHit = function(_self, unit)
-			local counter = 0
-			for k, v in pairs(_self.rehit) do counter = counter + 1 end
-			if counter > 1 then return end
-			-- perform the actual attack
-			
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-				ability = self
-			}
-			ApplyDamage( damage_table )
+	local enemies = caster:FindUnitsInCone(
+		direction, 
+		0, 
+		origin, 
+		radius, 
+		DOTA_UNIT_TARGET_TEAM_ENEMY, 
+		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+		DOTA_UNIT_TARGET_FLAG_NONE, 
+		FIND_CLOSEST
+	)
 
-			if _self.Source == caster and not unit:IsObstacle() then 
-				caster:GiveManaPercent(mana_gain_pct, unit)
+	for _,enemy in pairs(enemies) do 
+		local damage_table = {
+			victim = enemy,
+			attacker = caster,
+			damage = damage,
+			damage_type = DAMAGE_TYPE_PHYSICAL,
+			ability = self
+		}
+		ApplyDamage( damage_table )
 
-				caster:AddNewModifier(
-					caster, -- player source
-					self, -- ability source
-					"modifier_phantom_strike_stack", -- modifier name
-					{} -- kv
-				)
+		caster:GiveManaPercent(mana_gain_pct, enemy)
+		caster:AddNewModifier(
+			caster, -- player source
+			self, -- ability source
+			"modifier_phantom_strike_stack", -- modifier name
+			{} -- kv
+		)
 
-				-- Reduce the cd of the second attack by 1
-				local second_attack = caster:FindAbilityByName("phantom_second_attack")
-				local second_attack_cd = second_attack:GetCooldownTimeRemaining()
-				local new_cd = second_attack_cd - cooldown_reduction
+		-- Reduce the cd of the second attack by 1
+		local second_attack = caster:FindAbilityByName("phantom_second_attack")
+		local second_attack_cd = second_attack:GetCooldownTimeRemaining()
+		local new_cd = second_attack_cd - cooldown_reduction
 
-				if (new_cd) < 0 then 
-					second_attack:EndCooldown()
-				else
-					second_attack:EndCooldown()
-					second_attack:StartCooldown(new_cd)
-				end
-			end
+		if (new_cd) < 0 then 
+			second_attack:EndCooldown()
+		else
+			second_attack:EndCooldown()
+			second_attack:StartCooldown(new_cd)
+		end
 
-			self:PlayEffectsOnImpact(unit)
+		if caster.OnBasicAttackImpact then
+			caster:OnBasicAttackImpact(enemy)
+		end
+		self:PlayEffectsOnImpact(enemy)
 
-			if _self.Source.OnBasicAttackImpact then
-				_self.Source:OnBasicAttackImpact(unit)
-			end
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
+		break
+	end
 
-	Projectiles:CreateProjectile(projectile)
+	self:PlayEffectsOnFinish(point)
 	self:PlayEffectsOnCast()
 end
 

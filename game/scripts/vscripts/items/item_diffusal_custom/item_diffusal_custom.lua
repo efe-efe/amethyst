@@ -18,50 +18,43 @@ end
 function item_diffusal_custom:OnSpellStart()
 	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local ability_damage = self:GetSpecialValueFor("ability_damage")
 	local duration = self:GetSpecialValueFor("duration")
+	local radius = self:GetSpecialValueFor("radius")
     
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
-	local offset = 80
-	local projectile_speed = 2000
+	local direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
 
-	local projectile = {
-		vSpawnOrigin = origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
-		OnUnitHit = function(_self, unit)
-            unit:AddNewModifier(_self.Source, self , "modifier_item_diffusal_custom", { duration = duration })
+	local enemies = caster:FindUnitsInCone(
+		direction, 
+		0, 
+		origin, 
+		radius, 
+		DOTA_UNIT_TARGET_TEAM_ENEMY, 
+		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+		DOTA_UNIT_TARGET_FLAG_NONE, 
+		FIND_CLOSEST
+	)
 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = ability_damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-				activate_counters = 1,
-			}
-            ApplyDamage( damage_table )
-            
-            self:PlayEffectsOnImpact(unit)
-		end,
-		OnFinish = function(_self, pos)
-			if next(_self.rehit) == nil then
-				self:PlayEffectsOnMiss(pos)
-			end
-			self:PlayEffectsOnFinish( pos )
-		end,
-	}
+	for _,enemy in pairs(enemies) do 
+		enemy:AddNewModifier(caster, self , "modifier_item_diffusal_custom", { duration = duration })
 
-	Projectiles:CreateProjectile(projectile)
+		local damage_table = {
+			victim = enemy,
+			attacker = caster,
+			damage = ability_damage,
+			damage_type = DAMAGE_TYPE_PHYSICAL,
+			activate_counters = 1,
+		}
+		ApplyDamage(damage_table)
+		
+		self:PlayEffectsOnImpact(enemy)
+		break
+	end
+	
+	self:PlayEffectsOnMiss(point)
+	self:PlayEffectsOnFinish(point)
 	self:PlayEffectsOnCast()
 end
 
