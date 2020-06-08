@@ -7,7 +7,7 @@ TIMERS_VERSION = "1.05"
       print ("Hello. I'm running immediately and then every second thereafter.")
       return 1.0
     end
-  )
+ )
 
   -- The same timer as above with a shorthand call 
   Timers(function()
@@ -24,7 +24,7 @@ TIMERS_VERSION = "1.05"
       print ("Hello. I'm running 5 seconds after you called me and then every second thereafter.")
       return 1.0
     end
-  )
+ )
 
   -- 10 second delayed, run once using gametime (respect pauses)
   Timers:CreateTimer({
@@ -72,7 +72,7 @@ TIMERS_VERSION = "1.05"
 TIMERS_THINK = 0.01
 
 if Timers == nil then
-  print ( '[Timers] creating Timers' )
+  print ('[Timers] creating Timers')
   Timers = {}
   setmetatable(Timers, {
     __call = function(t, ...)

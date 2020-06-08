@@ -1,5 +1,5 @@
 modifier_wisp_counter = class({})
-LinkLuaModifier( "modifier_wisp_counter_buffs", "abilities/heroes/wisp/wisp_counter/modifier_wisp_counter_buffs", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_wisp_counter_buffs", "abilities/heroes/wisp/wisp_counter/modifier_wisp_counter_buffs", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -24,7 +24,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_wisp_counter:OnCreated( kv )
+function modifier_wisp_counter:OnCreated(kv)
     if IsServer() then
         self.buff_duration = self:GetAbility():GetSpecialValueFor("buff_duration")
         -- Can't move
@@ -34,14 +34,14 @@ end
 
 --------------------------------------------------------------------------------
 -- On destroy
-function modifier_wisp_counter:OnDestroy( kv )
+function modifier_wisp_counter:OnDestroy(kv)
     if IsServer() then
     -- Can move again
         self:GetParent():SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
     end
 end
 
-function modifier_wisp_counter:GetModifierIncomingDamage_Percentage( params )
+function modifier_wisp_counter:GetModifierIncomingDamage_Percentage(params)
     if IsServer() then
 		local parent = self:GetParent()
         local attacker = params.attacker
@@ -53,7 +53,7 @@ function modifier_wisp_counter:GetModifierIncomingDamage_Percentage( params )
                 self:GetAbility(), -- ability source
                 "modifier_wisp_counter_buffs", -- modifier name
                 { duration = self.buff_duration } -- kv
-            )
+           )
             self:Destroy()
             return -100
         end

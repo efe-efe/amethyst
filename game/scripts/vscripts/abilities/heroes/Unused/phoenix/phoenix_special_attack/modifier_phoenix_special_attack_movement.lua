@@ -1,7 +1,7 @@
 modifier_phoenix_special_attack_movement = class({})
-LinkLuaModifier( "modifier_phoenix_special_attack_thinker_fire", "abilities/heroes/phoenix/phoenix_special_attack/modifier_phoenix_special_attack_thinker_fire", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_projectile_enemy_blocker", "abilities/generic/modifier_generic_projectile_enemy_blocker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_projectile_special_behavior", "abilities/generic/modifier_generic_projectile_special_behavior", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phoenix_special_attack_thinker_fire", "abilities/heroes/phoenix/phoenix_special_attack/modifier_phoenix_special_attack_thinker_fire", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_generic_projectile_enemy_blocker", "abilities/generic/modifier_generic_projectile_enemy_blocker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_generic_projectile_special_behavior", "abilities/generic/modifier_generic_projectile_special_behavior", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -33,38 +33,38 @@ end
 
 --------------------------------------------------------------------------------
 --Initializer
-function modifier_phoenix_special_attack_movement:OnCreated( kv )
+function modifier_phoenix_special_attack_movement:OnCreated(kv)
     self.duration = 4.0
     if IsServer() then
         -- Start Interval
-        self:StartIntervalThink( 0.1 )
+        self:StartIntervalThink(0.1)
     end
 end
 
 --------------------------------------------------------------------------------
 --On think
 function modifier_phoenix_special_attack_movement:OnIntervalThink()
-    local blocker = CreateUnitByName( 
+    local blocker = CreateUnitByName(
         "npc_dota_creature_phoenix_blocker", -- szUnitName
         self:GetParent():GetOrigin(), -- vLocation,
         false, -- bFindClearSpace,
         self:GetParent(), -- hNPCOwner,
         nil, -- hUnitOwner,
         self:GetParent():GetTeamNumber() -- iTeamNumber
-    )
+   )
     blocker:SetHullRadius(50)
     blocker:AddNewModifier(
         self:GetParent(),
         self:GetAbility(),
         "modifier_generic_projectile_special_behavior",
         { duration = self.duration }
-    )
+   )
     blocker:AddNewModifier(
         self:GetParent(),
         self:GetAbility(),
         "modifier_generic_projectile_enemy_blocker",
         { duration = self.duration }
-    )
+   )
 
 	CreateModifierThinker(
 		self:GetParent(), --hCaster
@@ -74,6 +74,6 @@ function modifier_phoenix_special_attack_movement:OnIntervalThink()
 		self:GetParent():GetOrigin(), --vOrigin
 		self:GetParent():GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
-    )
+   )
     
 end

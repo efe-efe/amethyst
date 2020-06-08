@@ -6,7 +6,7 @@ function sky_mobility:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-    self.radius =  self:GetSpecialValueFor( "radius" )
+    self.radius =  self:GetSpecialValueFor("radius")
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, { 
@@ -23,11 +23,11 @@ function sky_mobility:OnSpellStart()
             radius = self.radius,
             movement_speed = 10,
         }
-    )
+   )
 end
 
 --------------------------------------------------------------------------------
-function sky_mobility:OnCastPointEnd( point )
+function sky_mobility:OnCastPointEnd(point)
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
@@ -42,7 +42,7 @@ function sky_mobility:OnCastPointEnd( point )
     end
 
     -- teleport
-    FindClearSpaceForUnit( caster, point , true )
+    FindClearSpaceForUnit(caster, point , true)
 
     --Effects
     self:PlayEffects()
@@ -57,7 +57,7 @@ function sky_mobility:PlayEffects()
     EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

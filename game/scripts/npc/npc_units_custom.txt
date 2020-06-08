@@ -29,15 +29,15 @@
 
 		// Armor
 		//----------------------------------------------------------------
-		"ArmorPhysical"				"0"			// Physical protection.
+		"ArmorPhysical"				"0"			
 
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AutoAttacksByDefault"		"0"
-		"AttackDamageMin"			"0"		// Damage range min.
-		"AttackDamageMax"			"0"		// Damage range max.
-		"AttackRate"				"0.0"		// Speed of attack.
+		"AttackDamageMin"			"0"		
+		"AttackDamageMax"			"0"		
+		"AttackRate"				"0.0"		
 		"AttackAnimationPoint"		"0.0"		// Normalized time in animation cycle to attack.
 		"AttackAcquisitionRange"	"0"		// Range within a target can be acquired.
 		"AttackRange"				"0"		// Range within a target can be attacked.
@@ -62,9 +62,9 @@
 
 		// Status
 		//----------------------------------------------------------------
-		"StatusHealth"				"60"		// Base health.
-		"StatusHealthRegen"			"0.0"		// Health regeneration rate.
-		"StatusMana"				"0"			// Base mana.
+		"StatusHealth"				"60"		
+		"StatusHealthRegen"			"0.0"		
+		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
 		
 		// Vision
@@ -117,15 +117,15 @@
 
 		// Armor
 		//----------------------------------------------------------------
-		"ArmorPhysical"				"0"			// Physical protection.
+		"ArmorPhysical"				"0"			
 
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AutoAttacksByDefault"		"0"
-		"AttackDamageMin"			"0"		// Damage range min.
-		"AttackDamageMax"			"0"		// Damage range max.
-		"AttackRate"				"0.0"		// Speed of attack.
+		"AttackDamageMin"			"0"		
+		"AttackDamageMax"			"0"		
+		"AttackRate"				"0.0"		
 		"AttackAnimationPoint"		"0.0"		// Normalized time in animation cycle to attack.
 		"AttackAcquisitionRange"	"0"		// Range within a target can be acquired.
 		"AttackRange"				"0"		// Range within a target can be attacked.
@@ -150,9 +150,9 @@
 
 		// Status
 		//----------------------------------------------------------------
-		"StatusHealth"				"60"		// Base health.
-		"StatusHealthRegen"			"0.0"		// Health regeneration rate.
-		"StatusMana"				"0"			// Base mana.
+		"StatusHealth"				"60"		
+		"StatusHealthRegen"			"0.0"		
+		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
 		
 		// Vision
@@ -205,15 +205,15 @@
 
 		// Armor
 		//----------------------------------------------------------------
-		"ArmorPhysical"				"1"			// Physical protection.
+		"ArmorPhysical"				"1"			
 
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AutoAttacksByDefault"		"0"
-		"AttackDamageMin"			"0"		// Damage range min.
-		"AttackDamageMax"			"0"		// Damage range max.
-		"AttackRate"				"0.0"		// Speed of attack.
+		"AttackDamageMin"			"0"		
+		"AttackDamageMax"			"0"		
+		"AttackRate"				"0.0"		
 		"AttackAnimationPoint"		"0.9"		// Normalized time in animation cycle to attack.
 		"AttackAcquisitionRange"	"0"		// Range within a target can be acquired.
 		"AttackRange"				"0"		// Range within a target can be attacked.
@@ -239,9 +239,9 @@
 
 		// Status
 		//----------------------------------------------------------------
-		"StatusHealth"				"99999"		// Base health.
-		"StatusHealthRegen"			"999.0"		// Health regeneration rate.
-		"StatusMana"				"0"			// Base mana.
+		"StatusHealth"				"99999"		
+		"StatusHealthRegen"			"999.0"		
+		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
 		
 		// Vision
@@ -294,15 +294,15 @@
 
 		// Armor
 		//----------------------------------------------------------------
-		"ArmorPhysical"				"1"			// Physical protection.
+		"ArmorPhysical"				"1"			
 
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AutoAttacksByDefault"		"0"
-		"AttackDamageMin"			"0"		// Damage range min.
-		"AttackDamageMax"			"0"		// Damage range max.
-		"AttackRate"				"0.0"		// Speed of attack.
+		"AttackDamageMin"			"0"		
+		"AttackDamageMax"			"0"		
+		"AttackRate"				"0.0"		
 		"AttackAnimationPoint"		"0.9"		// Normalized time in animation cycle to attack.
 		"AttackAcquisitionRange"	"0"		// Range within a target can be acquired.
 		"AttackRange"				"0"		// Range within a target can be attacked.
@@ -328,9 +328,9 @@
 
 		// Status
 		//----------------------------------------------------------------
-		"StatusHealth"				"99999"		// Base health.
-		"StatusHealthRegen"			"999.0"		// Health regeneration rate.
-		"StatusMana"				"0"			// Base mana.
+		"StatusHealth"				"99999"		
+		"StatusHealthRegen"			"999.0"		
+		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
 		
 		// Vision
@@ -372,15 +372,15 @@
 
 		// Armor
 		//----------------------------------------------------------------
-		"ArmorPhysical"				"0"			// Physical protection.
+		"ArmorPhysical"				"0"			
 
 		// Attack
 		//----------------------------------------------------------------
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AutoAttacksByDefault"		"0"
-		"AttackDamageMin"			"0"		// Damage range min.
-		"AttackDamageMax"			"0"		// Damage range max.
-		"AttackRate"				"0.0"		// Speed of attack.
+		"AttackDamageMin"			"0"		
+		"AttackDamageMax"			"0"		
+		"AttackRate"				"0.0"		
 		"AttackAnimationPoint"		"0.0"		// Normalized time in animation cycle to attack.
 		"AttackAcquisitionRange"	"0"		// Range within a target can be acquired.
 		"AttackRange"				"0"		// Range within a target can be attacked.
@@ -404,9 +404,9 @@
 
 		// Status
 		//----------------------------------------------------------------
-		"StatusHealth"				"30"		// Base health.
-		"StatusHealthRegen"			"0.0"		// Health regeneration rate.
-		"StatusMana"				"0"			// Base mana.
+		"StatusHealth"				"30"		
+		"StatusHealthRegen"			"0.0"		
+		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
 		
 		// Vision
@@ -456,7 +456,7 @@
 
 		// Armor
 		//----------------------------------------------------------------
-		"ArmorPhysical"				"0"			// Physical protection.
+		"ArmorPhysical"				"0"			
 
 		// Attack
 		//----------------------------------------------------------------
@@ -476,9 +476,9 @@
 
 		// Status
 		//----------------------------------------------------------------
-		"StatusHealth"				"70"		// Base health.
-		"StatusHealthRegen"			"0.0"		// Health regeneration rate.
-		"StatusMana"				"0"			// Base mana.
+		"StatusHealth"				"70"		
+		"StatusHealthRegen"			"0.0"		
+		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
 	}
 }

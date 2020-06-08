@@ -17,10 +17,10 @@ function axe_basic_attack:OnSpellStart()
 	})
 end
 
-function axe_basic_attack:OnCastPointEnd( point )
+function axe_basic_attack:OnCastPointEnd(point)
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
+	local attack_speed = (1 / attacks_per_second)
 
 	-- Projectile data
     local projectile_name = ""
@@ -78,22 +78,22 @@ end
 -- Graphics & sounds
 
 -- On Projectile Hit enemy
-function axe_basic_attack:PlayEffects_a( hTarget )
+function axe_basic_attack:PlayEffects_a(hTarget)
 	local sound_cast = "Hero_PhantomAssassin.Attack"
-	EmitSoundOn( sound_cast, hTarget )
+	EmitSoundOn(sound_cast, hTarget)
 end
 
 -- On Spell start
-function axe_basic_attack:PlayEffects_b( )
+function axe_basic_attack:PlayEffects_b()
 	local caster = self:GetCaster()
 	
 	-- Create Sound
 	local sound_cast = "Hero_Axe.CounterHelix"
-	EmitSoundOn( sound_cast, caster )
+	EmitSoundOn(sound_cast, caster)
 
 	-- Create Particles
 	local particle_cast = "particles/econ/items/axe/axe_weapon_bloodchaser/axe_attack_blur_counterhelix_bloodchaser_b.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

@@ -14,10 +14,10 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_wisp_counter_buffs:OnCreated( kv )
-	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor( "speed_buff_pct" )
-	self.damage_reduction_pct = self:GetAbility():GetSpecialValueFor( "damage_reduction_pct" )
-	local total_heal = self:GetAbility():GetSpecialValueFor( "total_heal" )
+function modifier_wisp_counter_buffs:OnCreated(kv)
+	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
+	self.damage_reduction_pct = self:GetAbility():GetSpecialValueFor("damage_reduction_pct")
+	local total_heal = self:GetAbility():GetSpecialValueFor("total_heal")
 	local duration = self:GetDuration()
 	local think_interval = 0.5
 	local ticks = duration/think_interval
@@ -48,7 +48,7 @@ function modifier_wisp_counter_buffs:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
 end
 
-function modifier_wisp_counter_buffs:GetModifierIgnoreMovespeedLimit( params )
+function modifier_wisp_counter_buffs:GetModifierIgnoreMovespeedLimit(params)
     return 1
 end
 
@@ -59,12 +59,12 @@ function modifier_wisp_counter_buffs:PlayEffects()
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOn( "Hero_Wisp.Spirits.Destroy", caster )
+	EmitSoundOn("Hero_Wisp.Spirits.Destroy", caster)
 	
 	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 

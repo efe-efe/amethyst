@@ -32,7 +32,7 @@ function sniper_special_attack_recast:PlayEffects(point)
 	EmitSoundOn("Hero_Sniper.ShrapnelShoot", self:GetCaster())
 
 	local particle_cast = "particles/units/heroes/hero_sniper/sniper_shrapnel_launch.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
 		0,
@@ -42,8 +42,8 @@ function sniper_special_attack_recast:PlayEffects(point)
 		self:GetCaster():GetOrigin(), -- unknown
 		false -- unknown, true
 	)
-	ParticleManager:SetParticleControl( effect_cast, 1, point + Vector(0, 0, 2000) )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:SetParticleControl(effect_cast, 1, point + Vector(0, 0, 2000))
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

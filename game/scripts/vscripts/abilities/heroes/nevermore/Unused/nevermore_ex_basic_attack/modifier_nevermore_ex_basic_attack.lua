@@ -18,7 +18,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_nevermore_ex_basic_attack:OnCreated( params )
+function modifier_nevermore_ex_basic_attack:OnCreated(params)
     self.damage_per_soul = self:GetAbility():GetSpecialValueFor("damage_per_soul")
 
     if IsServer() then
@@ -30,17 +30,17 @@ function modifier_nevermore_ex_basic_attack:OnCreated( params )
 	end
 end
 
-function modifier_nevermore_ex_basic_attack:OnDestroy( kv )
+function modifier_nevermore_ex_basic_attack:OnDestroy(kv)
     if IsServer() then
         local particle_cast = "particles/econ/events/ti6/blink_dagger_end_ti6.vpcf"
         local origin = self:GetParent():GetOrigin()
-        local effect_cast = ParticleManager:CreateParticle( 
+        local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_CUSTOMORIGIN, 
             self:GetParent()
-        )
+       )
     
-        ParticleManager:SetParticleControlEnt( 
+        ParticleManager:SetParticleControlEnt(
             effect_cast, 
             0, 
             self:GetParent(), 
@@ -48,8 +48,8 @@ function modifier_nevermore_ex_basic_attack:OnDestroy( kv )
             "attach_hitloc", 
             origin, 
             true 
-        )
-        ParticleManager:SetParticleControlEnt( 
+       )
+        ParticleManager:SetParticleControlEnt(
             effect_cast, 
             1, 
             self:GetParent(), 
@@ -57,7 +57,7 @@ function modifier_nevermore_ex_basic_attack:OnDestroy( kv )
             "attach_hitloc", 
             origin, 
             true 
-        )
+       )
 
         self:StopEffects()
 	end
@@ -67,13 +67,13 @@ function modifier_nevermore_ex_basic_attack:PlayEffectsOnCast()
     local particle_cast = "particles/econ/courier/courier_axolotl_ambient/courier_axolotl_ambient_lvl3.vpcf"
     local origin = self:GetParent():GetOrigin()
 
-    self.effect_cast_sparks = ParticleManager:CreateParticle( 
+    self.effect_cast_sparks = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_CUSTOMORIGIN, 
         self:GetParent()
-    )
+   )
 
-    ParticleManager:SetParticleControlEnt( 
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast_sparks, 
         0, 
         self:GetParent(), 
@@ -81,13 +81,13 @@ function modifier_nevermore_ex_basic_attack:PlayEffectsOnCast()
         "attach_hitloc", 
         origin, 
         true 
-    )
+   )
 end
 
 function modifier_nevermore_ex_basic_attack:StopEffects()
     if self.effect_cast_sparks ~= nil then
-        ParticleManager:DestroyParticle( self.effect_cast_sparks, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast_sparks )
+        ParticleManager:DestroyParticle(self.effect_cast_sparks, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast_sparks)
     end
 end
 

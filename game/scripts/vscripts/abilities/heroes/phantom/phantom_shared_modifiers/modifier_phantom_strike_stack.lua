@@ -4,15 +4,15 @@ function modifier_phantom_strike_stack:IsHidden() return false end
 function modifier_phantom_strike_stack:IsDebuff() return false end
 function modifier_phantom_strike_stack:IsPurgable() return true end
 
-function modifier_phantom_strike_stack:OnCreated( kv )
+function modifier_phantom_strike_stack:OnCreated(kv)
 	if IsServer() then
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
 	end
 end
 
-function modifier_phantom_strike_stack:OnRefresh( kv )
-	local max_stack = 3--self:GetAbility():GetSpecialValueFor( "stack_limit" )
+function modifier_phantom_strike_stack:OnRefresh(kv)
+	local max_stack = 3--self:GetAbility():GetSpecialValueFor("stack_limit")
 
 	if IsServer() then
 		if self:GetStackCount() < max_stack then
@@ -28,7 +28,7 @@ function modifier_phantom_strike_stack:OnRefresh( kv )
 	end
 end
 
-function modifier_phantom_strike_stack:OnDestroy( kv )
+function modifier_phantom_strike_stack:OnDestroy(kv)
 	if IsServer() then
 		self:StopEffects()
 	end
@@ -43,8 +43,8 @@ function modifier_phantom_strike_stack:PlayEffectsCharged()
 	local caster = self:GetParent()
     local origin = caster:GetOrigin()
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, caster )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, caster)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -53,7 +53,7 @@ function modifier_phantom_strike_stack:PlayEffectsCharged()
 		origin, 
 		true 
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_phantom_strike_stack:PlayEffects()
@@ -70,13 +70,13 @@ function modifier_phantom_strike_stack:CreateGlow(index)
 	local particle_cast = "particles/econ/items/antimage/antimage_weapon_godeater/antimage_godeater_bracer_ambient.vpcf"
 	local caster = self:GetParent()
 	local origin = caster:GetOrigin()
-	self.effects_cast_weapon[index] = ParticleManager:CreateParticle( 
+	self.effects_cast_weapon[index] = ParticleManager:CreateParticle(
 		particle_cast, 
 		PATTACH_CUSTOMORIGIN, 
 		caster
 	)
 
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		self.effects_cast_weapon[index], 
 		0, 
 		caster, 
@@ -85,7 +85,7 @@ function modifier_phantom_strike_stack:CreateGlow(index)
 		origin, 
 		true 
 	)
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		self.effects_cast_weapon[index], 
 		1, 
 		caster, 
@@ -99,8 +99,8 @@ end
 function modifier_phantom_strike_stack:StopEffects()
 	for _,efx in pairs(self.effects_cast_weapon) do
 		if efx ~= nil then
-			ParticleManager:DestroyParticle( efx, false )
-			ParticleManager:ReleaseParticleIndex( efx )
+			ParticleManager:DestroyParticle(efx, false)
+			ParticleManager:ReleaseParticleIndex(efx)
 		end
 	end
 end

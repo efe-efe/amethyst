@@ -9,8 +9,8 @@ function terrorblade_second_attack:OnCastPointEnd()
 
     local speed = 1500
 	local offset = 100
-    local radius = self:GetSpecialValueFor( "radius" )
-    local damage = self:GetSpecialValueFor( "ability_damage" )
+    local radius = self:GetSpecialValueFor("radius")
+    local damage = self:GetSpecialValueFor("ability_damage")
     
     caster:SetForwardVector(direction)
     caster:AddNewModifier(
@@ -27,7 +27,7 @@ function terrorblade_second_attack:OnCastPointEnd()
             activity = ACT_DOTA_ATTACK,
             rate = 1.2,
         } -- kv
-    )
+   )
 
 	local projectile_speed = speed + 200
     local projectile = {
@@ -52,7 +52,7 @@ function terrorblade_second_attack:OnCastPointEnd()
                 damage_type = DAMAGE_TYPE_PHYSICAL,
             }
 
-            ApplyDamage( damage_table )
+            ApplyDamage(damage_table)
             self:PlayEffectsOnImpact(unit)
         end,
         OnFinish = function(_self, pos)
@@ -65,7 +65,7 @@ function terrorblade_second_attack:OnCastPointEnd()
 end
 
 function terrorblade_second_attack:OnDisplacementEnd()
-    self:StopEffects( )
+    self:StopEffects()
 end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
@@ -78,7 +78,7 @@ function terrorblade_second_attack:PlayEffectsOnCast()
 end
 
 -- On Projectile Finish
-function terrorblade_second_attack:PlayEffectsOnFinish( pos )
+function terrorblade_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	local offset = 120
 	local origin = caster:GetOrigin()
@@ -87,14 +87,14 @@ function terrorblade_second_attack:PlayEffectsOnFinish( pos )
 	
 	-- Create Particles
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_crit_blur.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-    ParticleManager:SetParticleControl( effect_cast, 1, final_position )
-    ParticleManager:SetParticleControlForward( effect_cast, 1, caster:GetForwardVector() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+    ParticleManager:SetParticleControl(effect_cast, 1, final_position)
+    ParticleManager:SetParticleControlForward(effect_cast, 1, caster:GetForwardVector())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 -- On Projectile Hit enemy
-function terrorblade_second_attack:PlayEffectsOnImpact( hTarget )
+function terrorblade_second_attack:PlayEffectsOnImpact(hTarget)
     EmitSoundOn("Hero_PhantomAssassin.Attack", hTarget)
 end
 
@@ -106,7 +106,7 @@ function terrorblade_second_attack:StopEffects()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	terrorblade_second_attack,
 	nil,
 	{ movement_speed = 0, fixed_range = 1 }

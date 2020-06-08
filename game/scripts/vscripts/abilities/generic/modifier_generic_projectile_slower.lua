@@ -1,10 +1,10 @@
 modifier_generic_projectile_slower = class({})
 
 
-function modifier_generic_projectile_slower:OnDestroy( kv )
+function modifier_generic_projectile_slower:OnDestroy(kv)
     if IsServer() then
 		if self:GetParent() ~= nil then
-            self:GetParent():ForceKill( false )
+            self:GetParent():ForceKill(false)
         end
 	end
 end

@@ -1,5 +1,5 @@
 phoenix_mobility= class({})
-LinkLuaModifier( "modifier_phoenix_mobility_movement", "abilities/heroes/phoenix/phoenix_mobility/modifier_phoenix_mobility_movement", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phoenix_mobility_movement", "abilities/heroes/phoenix/phoenix_mobility/modifier_phoenix_mobility_movement", LUA_MODIFIER_MOTION_NONE)
 
 function phoenix_mobility:OnSpellStart()
     local caster = self:GetCaster()
@@ -12,7 +12,7 @@ function phoenix_mobility:OnSpellStart()
 
 	local range	= self:GetSpecialValueFor("range")
 	local dashWidth		= 500
-	local ellipseCenter	= origin + forwardDir * ( range / 2 )
+	local ellipseCenter	= origin + forwardDir * (range / 2)
 
 	local startTime = GameRules:GetGameTime()
 
@@ -21,40 +21,40 @@ function phoenix_mobility:OnSpellStart()
         self,
         "modifier_phoenix_mobility_movement",
         { duration = dashDuration }
-    )
+   )
     
 	-- Swap abilities back to be able to stop
-	caster:SwapAbilities( 
+	caster:SwapAbilities(
 		"phoenix_mobility",
 		"phoenix_mobility_stop",
 		false,
 		true
 	)
 
-	caster:SetContextThink( DoUniqueString("updateIcarusDive"), function ( )
+	caster:SetContextThink(DoUniqueString("updateIcarusDive"), function ()
 
 		local elapsedTime = GameRules:GetGameTime() - startTime
 		local progress = elapsedTime / dashDuration
 
 		-- Interrupted
-		if not caster:HasModifier( "modifier_phoenix_mobility_movement" ) then
+		if not caster:HasModifier("modifier_phoenix_mobility_movement") then
 			return nil
 		end
 
 		-- Calculate potision
 		local theta = -2 * math.pi * progress
-		local x =  math.sin( theta ) * dashWidth * 0.5
-		local y = -math.cos( theta ) * range * 0.5
+		local x =  math.sin(theta) * dashWidth * 0.5
+		local y = -math.cos(theta) * range * 0.5
 
 		local pos = ellipseCenter + rightDir * x + forwardDir * y
 		local yaw = angles.y + 90 + progress * -360  
 
-		pos = GetGroundPosition( pos, caster )
-		caster:SetAbsOrigin( pos )
-		caster:SetAngles( angles.x, yaw, angles.z )
+		pos = GetGroundPosition(pos, caster)
+		caster:SetAbsOrigin(pos)
+		caster:SetAngles(angles.x, yaw, angles.z)
 
 		return 0.03
-	end, 0 )
+	end, 0)
 
 	self:PlayEffects()
 
@@ -63,5 +63,5 @@ end
 
 function phoenix_mobility:PlayEffects()
 	local sound_cast = "Hero_Phoenix.IcarusDive.Cast"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end

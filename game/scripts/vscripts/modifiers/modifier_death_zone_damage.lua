@@ -3,7 +3,7 @@ modifier_death_zone_damage = class({})
 function modifier_death_zone_damage:IsHidden() return false end
 function modifier_death_zone_damage:IsDebuff() return true end
 
-function modifier_death_zone_damage:OnCreated( kv )
+function modifier_death_zone_damage:OnCreated(kv)
     if IsServer() then
         EmitSoundOn("Hero_Phoenix.SuperNova.Cast", self:GetParent())
         ScreenShake(self:GetParent():GetAbsOrigin(), 100, 300, 0.45, 1000, 0, true)
@@ -37,21 +37,21 @@ function modifier_death_zone_damage:OnIntervalThink()
         victim = self:GetParent(),
         attacker = self:GetParent(),
     }
-    ApplyDamage( damage_table )
+    ApplyDamage(damage_table)
     self:PlayEffectsOnTarget(self:GetParent())
     self:Destroy()
 end
 
-function modifier_death_zone_damage:PlayEffectsOnTarget( hTarget )
+function modifier_death_zone_damage:PlayEffectsOnTarget(hTarget)
     local particle_cast = "particles/econ/items/lion/fish_stick_retro/fish_stick_spell_fish_retro_b.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
 --TODO
     local particle_cast_b = "particles/econ/items/zeus/arcana_chariot/zeus_tgw_screen_damage.vpcf"
     local effect_cast_b = ParticleManager:CreateParticleForPlayer(particle_cast_b, PATTACH_EYES_FOLLOW, hTarget, hTarget:GetPlayerOwner())
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 function modifier_death_zone_damage:GetTexture()

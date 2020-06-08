@@ -1,5 +1,5 @@
 modifier_terrorblade_extra_recast = class({})
-LinkLuaModifier( "modifier_terrorblade_extra", "abilities/heroes/terrorblade/terrorblade_extra/modifier_terrorblade_extra", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_terrorblade_extra", "abilities/heroes/terrorblade/terrorblade_extra/modifier_terrorblade_extra", LUA_MODIFIER_MOTION_NONE)
 
 function modifier_terrorblade_extra_recast:OnCreated()
 	if IsServer() then
@@ -41,8 +41,8 @@ end
 
 function modifier_terrorblade_extra_recast:PlayEffects()
 	local particle_cast = "particles/units/heroes/hero_slark/slark_shadow_dance.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-	ParticleManager:SetParticleControlEnt( 
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControlEnt(
 		self.effect_cast, 
 		1, 
 		self:GetParent(), 
@@ -53,15 +53,15 @@ function modifier_terrorblade_extra_recast:PlayEffects()
 	);
 end
 
-function modifier_terrorblade_extra_recast:PlayEffectsAoe( radius )
+function modifier_terrorblade_extra_recast:PlayEffectsAoe(radius)
     local particle_cast = "particles/aoe_marker.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast, PATTACH_WORLDORIGIN, nil, self:GetParent():GetPlayerOwner() )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin())
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( 255, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticleForPlayer(particle_cast, PATTACH_WORLDORIGIN, nil, self:GetParent():GetPlayerOwner())
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 2, Vector(255, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 3, Vector(0.1, 0, 0))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_terrorblade_extra_recast:StopEffects()
@@ -70,7 +70,7 @@ function modifier_terrorblade_extra_recast:StopEffects()
 end
 
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Recast( 
+Modifiers.Recast(
 	modifier_terrorblade_extra_recast,
 	{ ability_name = "terrorblade_extra_recast", key = "R" }
 )

@@ -10,7 +10,7 @@ var EX_ULTIMATE_INDEX = 5;
 var ULTIMATE_INDEX = 6;
 
 function OnLeftButtonPressed(){
-    var entities = GameUI.FindScreenEntities( GameUI.GetCursorPosition() )
+    var entities = GameUI.FindScreenEntities(GameUI.GetCursorPosition())
     entities.forEach(function(entity, i){
         if(i == 0){
             if(entity && entity.entityIndex){
@@ -39,14 +39,14 @@ function OnRightButtonReleased(){
     OnReleaseKey("m2");
 }
 
-GameUI.SetMouseCallback( function( eventName, arg ) {
+GameUI.SetMouseCallback(function(eventName, arg) {
 	var nMouseButton = arg
 
 	if (GameUI.GetClickBehaviors() !== CLICK_BEHAVIORS.DOTA_CLICK_BEHAVIOR_NONE){
         return false;
     }
-    if ( eventName === "pressed" ){
-		if ( nMouseButton === 0 ){
+    if (eventName === "pressed"){
+		if (nMouseButton === 0){
             OnLeftButtonPressed();
             if(GameUI.IsControlDown()){
                 return false;
@@ -54,26 +54,26 @@ GameUI.SetMouseCallback( function( eventName, arg ) {
             return true;
 		}
 
-		if ( nMouseButton === 1 ){
+		if (nMouseButton === 1){
 			OnRightButtonPressed();
 			return true;
         }
     }
     if (eventName === "released"){
-        if ( nMouseButton === 1 ){
+        if (nMouseButton === 1){
 			OnRightButtonReleased();
 			return true;
         }
     }
-	if ( eventName === "doublepressed" ){ 
+	if (eventName === "doublepressed"){ 
         return true;
     }
 	return false;
-} );
+});
 
-function OnReleaseKey( key ){
+function OnReleaseKey(key){
     var playerId = Players.GetLocalPlayer();
-    var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
+    var heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
 
     if(Game.IsInToolsMode()){
         heroIndex = Players.GetSelectedEntities(playerId)[0];
@@ -108,7 +108,7 @@ function ExecuteAbility(index, showEffects)
         var mouse_position_screen = GameUI.GetCursorPosition();
         var mouse_position = Game.ScreenXYToWorld(mouse_position_screen[0], mouse_position_screen[1])
 
-        var abilityBehavior = Abilities.GetBehavior( abilityIndex )
+        var abilityBehavior = Abilities.GetBehavior(abilityIndex)
         if(abilityBehavior & DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_POINT){
             var order = {
                 OrderType : dotaunitorder_t.DOTA_UNIT_ORDER_CAST_POSITION,
@@ -118,7 +118,7 @@ function ExecuteAbility(index, showEffects)
                 ShowEffects : showEffects,
                 AbilityIndex : abilityIndex,
             };
-            Game.PrepareUnitOrders( order );
+            Game.PrepareUnitOrders(order);
         }
         if(abilityBehavior & DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_NO_TARGET){
             var order = {
@@ -128,7 +128,7 @@ function ExecuteAbility(index, showEffects)
                 ShowEffects : showEffects,
                 AbilityIndex : abilityIndex,
             };
-            Game.PrepareUnitOrders( order );
+            Game.PrepareUnitOrders(order);
         }
     }
 }
@@ -156,7 +156,7 @@ function UseItem(itemSlot)
         var mouse_position_screen = GameUI.GetCursorPosition();
         var mouse_position = Game.ScreenXYToWorld(mouse_position_screen[0], mouse_position_screen[1])
 
-        var abilityBehavior = Abilities.GetBehavior( abilityIndex )
+        var abilityBehavior = Abilities.GetBehavior(abilityIndex)
         if(abilityBehavior & DOTA_ABILITY_BEHAVIOR.DOTA_ABILITY_BEHAVIOR_POINT){
             var order = {
                 OrderType : dotaunitorder_t.DOTA_UNIT_ORDER_CAST_POSITION,
@@ -181,10 +181,10 @@ function UseItem(itemSlot)
     }
 }
 
-function SendMovementSignal( action, direction )
+function SendMovementSignal(action, direction)
 {
     var playerId = Players.GetLocalPlayer();
-    var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
+    var heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
     
     if(Game.IsInToolsMode()){
         heroIndex = Players.GetSelectedEntities(playerId)[0];
@@ -208,17 +208,17 @@ Game.OnPressE = function(){        ExecuteAbility(SPECIAL_ATTACK_INDEX, true) }
 Game.OnPressR = function(){        ExecuteAbility(EX_ULTIMATE_INDEX, true) }
 Game.OnPressF = function(){        ExecuteAbility(ULTIMATE_INDEX, true) }
 Game.OnReleaseSpace = function(){   OnReleaseKey("space") }
-Game.OnPressW = function(){        SendMovementSignal( "move_unit", "up" ) }
-Game.OnReleaseW = function(){      SendMovementSignal( "stop_unit", "up" ) }
-Game.OnPressD = function(){        SendMovementSignal( "move_unit", "right" ) }
-Game.OnReleaseD = function(){      SendMovementSignal( "stop_unit", "right" ) }
-Game.OnPressA = function(){        SendMovementSignal( "move_unit", "left" ) }
-Game.OnReleaseA = function(){      SendMovementSignal( "stop_unit", "left" ) }
-Game.OnPressS = function(){        SendMovementSignal( "move_unit", "down" ) }
-Game.OnReleaseS = function(){      SendMovementSignal( "stop_unit", "down" ) }
+Game.OnPressW = function(){        SendMovementSignal("move_unit", "up") }
+Game.OnReleaseW = function(){      SendMovementSignal("stop_unit", "up") }
+Game.OnPressD = function(){        SendMovementSignal("move_unit", "right") }
+Game.OnReleaseD = function(){      SendMovementSignal("stop_unit", "right") }
+Game.OnPressA = function(){        SendMovementSignal("move_unit", "left") }
+Game.OnReleaseA = function(){      SendMovementSignal("stop_unit", "left") }
+Game.OnPressS = function(){        SendMovementSignal("move_unit", "down") }
+Game.OnReleaseS = function(){      SendMovementSignal("stop_unit", "down") }
 Game.OnPressC = function(){
     var playerId = Players.GetLocalPlayer();
-    var heroIndex = Players.GetPlayerHeroEntityIndex( playerId );
+    var heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
 
     var order = {
 		OrderType : dotaunitorder_t.DOTA_UNIT_ORDER_STOP,
@@ -227,5 +227,5 @@ Game.OnPressC = function(){
         TargetIndex : heroIndex
     };
     
-    Game.PrepareUnitOrders( order );
+    Game.PrepareUnitOrders(order);
 }

@@ -32,7 +32,7 @@ function modifier_thinker_indicator:OnCreated(params)
             self.origin, --vOrigin
             self.caster:GetTeamNumber(), --nTeamNumber
             false --bPhantomBlocker
-        )
+       )
 
         self:PlayEffects()
 
@@ -43,9 +43,9 @@ function modifier_thinker_indicator:OnCreated(params)
             
             local degree_interval = 360/20
             self.interval = self.delay_time/degree_interval
-            self:StartIntervalThink( self.interval )
+            self:StartIntervalThink(self.interval)
         else 
-            self:StartIntervalThink( self.delay_time )
+            self:StartIntervalThink(self.delay_time)
         end
     end
 end
@@ -53,7 +53,7 @@ end
 function modifier_thinker_indicator:OnDestroy()
     if IsServer() then
         self:StopEffects()
-		UTIL_Remove( self:GetParent() )
+		UTIL_Remove(self:GetParent())
 	end
 end
 
@@ -85,71 +85,71 @@ function modifier_thinker_indicator:PlayEffects()
     if self.show_all == 1 then
         for _,alliance in pairs(GameRules.GameMode.alliances) do
             for _,team in pairs(alliance.teams) do
-                effect_cast = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self.caster, _ )
-                self.effects_cast_aoe[team] = ParticleManager:CreateParticleForTeam( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, team )
+                effect_cast = ParticleManager:CreateParticleForTeam(particle_cast, PATTACH_WORLDORIGIN, self.caster, _)
+                self.effects_cast_aoe[team] = ParticleManager:CreateParticleForTeam(particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, team)
 
-                ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 0, self.origin)	-- line origin
-                ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 1, Vector(self.radius, 1,1))
+                ParticleManager:SetParticleControl(self.effects_cast_aoe[team], 0, self.origin)	-- line origin
+                ParticleManager:SetParticleControl(self.effects_cast_aoe[team], 1, Vector(self.radius, 1,1))
 
                 local alliance = GameRules.GameMode:FindAllianceByTeam(team)
 
                 if alliance == caster_alliance then
-                    ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(70, 70, 250))
+                    ParticleManager:SetParticleControl(self.effects_cast_aoe[team], 15, Vector(70, 70, 250))
                 else
-                    ParticleManager:SetParticleControl( self.effects_cast_aoe[team], 15, Vector(250, 70, 70))
+                    ParticleManager:SetParticleControl(self.effects_cast_aoe[team], 15, Vector(250, 70, 70))
                 end
 
-                ParticleManager:SetParticleControl( effect_cast, 0, self.origin)	-- line origin
-                ParticleManager:SetParticleControl( effect_cast, 1, self.origin)	-- line origin
-                ParticleManager:ReleaseParticleIndex( effect_cast )
+                ParticleManager:SetParticleControl(effect_cast, 0, self.origin)	-- line origin
+                ParticleManager:SetParticleControl(effect_cast, 1, self.origin)	-- line origin
+                ParticleManager:ReleaseParticleIndex(effect_cast)
             end
         end
     else
 
         local parent_owner = self.caster:GetPlayerOwner()
 
-        effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast, PATTACH_WORLDORIGIN, self.caster, parent_owner )
-        self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer( particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, parent_owner )
+        effect_cast = ParticleManager:CreateParticleForPlayer(particle_cast, PATTACH_WORLDORIGIN, self.caster, parent_owner)
+        self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer(particle_cast_aoe, PATTACH_WORLDORIGIN, self.caster, parent_owner)
 
-        ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, self.origin)	-- line origin
-        ParticleManager:SetParticleControl( self.effect_cast_aoe, 1, Vector(self.radius, 1,1))
-        ParticleManager:SetParticleControl( self.effect_cast_aoe, 15, Vector(70, 70, 250))
+        ParticleManager:SetParticleControl(self.effect_cast_aoe, 0, self.origin)	-- line origin
+        ParticleManager:SetParticleControl(self.effect_cast_aoe, 1, Vector(self.radius, 1,1))
+        ParticleManager:SetParticleControl(self.effect_cast_aoe, 15, Vector(70, 70, 250))
         
-        ParticleManager:SetParticleControl( effect_cast, 0, self.origin)	-- line origin
-        ParticleManager:SetParticleControl( effect_cast, 1, self.origin)	-- line origin
-        ParticleManager:ReleaseParticleIndex( effect_cast )
+        ParticleManager:SetParticleControl(effect_cast, 0, self.origin)	-- line origin
+        ParticleManager:SetParticleControl(effect_cast, 1, self.origin)	-- line origin
+        ParticleManager:ReleaseParticleIndex(effect_cast)
     end
 end
 
 function modifier_thinker_indicator:StopEffects()
 	if self.effect_cast_aoe ~= nil then
-		ParticleManager:DestroyParticle( self.effect_cast_aoe, false ) 
-		ParticleManager:ReleaseParticleIndex( self.effect_cast_aoe )
+		ParticleManager:DestroyParticle(self.effect_cast_aoe, false) 
+		ParticleManager:ReleaseParticleIndex(self.effect_cast_aoe)
     end
     
     for _,effect in pairs(self.effects_cast_aoe) do
         if effect ~= nil then
-            ParticleManager:DestroyParticle( effect, false ) 
-            ParticleManager:ReleaseParticleIndex( effect )
+            ParticleManager:DestroyParticle(effect, false) 
+            ParticleManager:ReleaseParticleIndex(effect)
         end
     end
 
 
     for _,effect in pairs(self.effects_cast) do
         if effect ~= nil then
-            ParticleManager:DestroyParticle( effect, false ) 
-            ParticleManager:ReleaseParticleIndex( effect )
+            ParticleManager:DestroyParticle(effect, false) 
+            ParticleManager:ReleaseParticleIndex(effect)
         end
     end
 end
 
 function modifier_thinker_indicator:PlayEffectsDot(pos, index)
     local particle_cast = "particles/drow_ti6_silence_arrow_ring.vpcf"
-    self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 0, pos)
-    ParticleManager:SetParticleControl( self.effects_cast[index], 1, pos )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 2, pos )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 3, pos )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 4, pos )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 5, pos )
+    self.effects_cast[index] = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 0, pos)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 1, pos)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 2, pos)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 3, pos)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 4, pos)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 5, pos)
 end

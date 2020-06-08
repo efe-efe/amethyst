@@ -1,9 +1,9 @@
 wisp_ultimate = class({})
-LinkLuaModifier( "modifier_wisp_ultimate_thinker", "abilities/heroes/wisp/wisp_ultimate/modifier_wisp_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_wisp_ultimate", "abilities/heroes/wisp/wisp_ultimate/modifier_wisp_ultimate", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_wisp_ultimate_thinker", "abilities/heroes/wisp/wisp_ultimate/modifier_wisp_ultimate_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_wisp_ultimate", "abilities/heroes/wisp/wisp_ultimate/modifier_wisp_ultimate", LUA_MODIFIER_MOTION_NONE)
 
 function wisp_ultimate:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+	return self:GetSpecialValueFor("radius")
 end
 
 
@@ -37,12 +37,12 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_ultimate:OnCastPointEnd( point )
+function wisp_ultimate:OnCastPointEnd(point)
     -- unit identifier
 	local caster = self:GetCaster()
-    local delay_time = self:GetSpecialValueFor( "delay_time" )
+    local delay_time = self:GetSpecialValueFor("delay_time")
     local max_range = self:GetSpecialValueFor("range")
-    local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link", caster )
+    local linked_unit = SafeGetModifierCaster("modifier_wisp_basic_attack_link", caster)
 
     -- Dissapear wisp modifier
 	caster:AddNewModifier(
@@ -58,7 +58,7 @@ function wisp_ultimate:OnCastPointEnd( point )
             self,
             "modifier_wisp_ultimate",
             { duration = delay_time }
-        )
+       )
     end
     
     CreateModifierThinker(
@@ -74,7 +74,7 @@ function wisp_ultimate:OnCastPointEnd( point )
 		point, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
-    )
+   )
 
     self:PlayEffects()
 end

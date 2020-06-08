@@ -1,6 +1,6 @@
 nevermore_special_attack = class({})
-LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_special_attack_movement", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack_movement", LUA_MODIFIER_MOTION_VERTICAL )
+LinkLuaModifier("modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_nevermore_special_attack_movement", "abilities/heroes/nevermore/nevermore_special_attack/modifier_nevermore_special_attack_movement", LUA_MODIFIER_MOTION_VERTICAL)
 
 function nevermore_special_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("nevermore_ex_special_attack")
@@ -25,7 +25,7 @@ function nevermore_special_attack:OnSpellStart()
 end
 
 
-function nevermore_special_attack:OnCastPointEnd( pos )
+function nevermore_special_attack:OnCastPointEnd(pos)
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -38,7 +38,7 @@ function nevermore_special_attack:OnCastPointEnd( pos )
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(pos.x-origin.x, pos.y-origin.y, 0)):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -75,7 +75,7 @@ function nevermore_special_attack:OnCastPointEnd( pos )
 			local mana_gain_final = caster:GetMaxMana() * mana_gain
 			caster:GiveMana(mana_gain_final)
 
-			self:TornadoLogic( _self.Source, unit )
+			self:TornadoLogic(_self.Source, unit)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)
@@ -97,26 +97,26 @@ end
 function nevermore_special_attack:PlayEffects_a()
 	-- Create Sound
 	local sound_cast = "Hero_Nevermore.Attack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 -- On Projectile impacts
-function nevermore_special_attack:PlayEffects_b( pos )
+function nevermore_special_attack:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 
 	-- Create Sound
 	local sound_cast = "Hero_Nevermore.Shadowraze.Arcana"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/econ/items/lanaya/lanaya_epit_trap/templar_assassin_epit_trap_explode.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
 
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function nevermore_special_attack:TornadoLogic( hSource, hTarget )
+function nevermore_special_attack:TornadoLogic(hSource, hTarget)
 	local damage = self:GetAbilityDamage()
 	local duration = self:GetSpecialValueFor("lift_duration")
 	local basic_attack = self:GetCaster():FindAbilityByName("nevermore_basic_attack")
@@ -128,7 +128,7 @@ function nevermore_special_attack:TornadoLogic( hSource, hTarget )
 		damage_type = DAMAGE_TYPE_MAGICAL,
 		ability = self,
 	}
-	ApplyDamage( damageTable )
+	ApplyDamage(damageTable)
 	
 	if not hTarget:IsRealHero() then return end
 
@@ -155,7 +155,7 @@ function nevermore_special_attack:TornadoLogic( hSource, hTarget )
 	)
 end
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	nevermore_special_attack,
 	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
 	{ movement_speed = 10 }

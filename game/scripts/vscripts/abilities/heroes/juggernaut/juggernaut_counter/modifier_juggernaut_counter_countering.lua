@@ -37,11 +37,11 @@ function modifier_juggernaut_counter_countering:GetOverrideAnimation() 		return 
 function modifier_juggernaut_counter_countering:GetOverrideAnimationRate() 	return 0.1 end
 
 function modifier_juggernaut_counter_countering:PlayEffectsOnTrigger()
-    EmitSoundOn( "juggernaut_jug_ability_bladefury_05" , self:GetParent())
+    EmitSoundOn("juggernaut_jug_ability_bladefury_05" , self:GetParent())
 
     local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger_sphere.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/modifiers") end

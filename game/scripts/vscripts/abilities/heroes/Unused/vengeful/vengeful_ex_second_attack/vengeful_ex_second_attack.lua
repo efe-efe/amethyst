@@ -16,7 +16,7 @@ function vengeful_ex_second_attack:OnCastPointEnd()
     local mana_gain_pct = ability:GetSpecialValueFor("mana_gain_pct")
 	
 	-- Dynamic data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = ability:GetSpecialValueFor("projectile_speed")
 	local projectile = {
 		EffectName = 			"particles/mod_units/heroes/hero_venge/vs_ti8_immortal_magic_missle.vpcf",
@@ -33,15 +33,15 @@ function vengeful_ex_second_attack:OnCastPointEnd()
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and unit ~= _self.Source and not unit:IsWall() end,
 		OnUnitHit = function(_self, unit)
 			if _self.Source:IsAlly(unit) then
-				unit:Heal(heal, _self.Source )
+				unit:Heal(heal, _self.Source)
 			else 
-				_self.Source:Heal(heal, _self.Source )
+				_self.Source:Heal(heal, _self.Source)
 
 				local unit_origin = unit:GetOrigin()
 				local source_origin = _self.Source:GetOrigin()
 				
-				FindClearSpaceForUnit( _self.Source, unit_origin , true )
-				FindClearSpaceForUnit( unit, source_origin , true )
+				FindClearSpaceForUnit(_self.Source, unit_origin , true)
+				FindClearSpaceForUnit(unit, source_origin , true)
 
 				if not string.ends(name, "_ultimate") then
 					if _self.Source == caster then
@@ -58,7 +58,7 @@ function vengeful_ex_second_attack:OnCastPointEnd()
 					ability = self,
 				}
 	
-				ApplyDamage( damage_table )
+				ApplyDamage(damage_table)
 			end
 
 		end,
@@ -83,11 +83,11 @@ function vengeful_ex_second_attack:PlayEffectsOnCast()
     ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function vengeful_ex_second_attack:PlayEffectsSwap( hTarget )
+function vengeful_ex_second_attack:PlayEffectsSwap(hTarget)
     local caster = self:GetCaster()
 	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_nether_swap.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, nil )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, nil)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -96,7 +96,7 @@ function vengeful_ex_second_attack:PlayEffectsSwap( hTarget )
 		caster:GetOrigin(), 
 		true 
 	);
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		1, 
 		hTarget, 
@@ -104,25 +104,25 @@ function vengeful_ex_second_attack:PlayEffectsSwap( hTarget )
 		"attach_hitloc", 
 		hTarget:GetOrigin(), 
 		true 
-    );
+   );
     
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     EmitSoundOn("Hero_VengefulSpirit.NetherSwap", caster)
     EmitSoundOn("Hero_VengefulSpirit.NetherSwap", hTarget)
 end
 
-function vengeful_ex_second_attack:PlayEffectsOnFinish( pos )
+function vengeful_ex_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
-	EmitSoundOnLocationWithCaster( pos, "Hero_VengefulSpirit.MagicMissileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_VengefulSpirit.MagicMissileImpact", caster)
 
 	-- Create Particles
 	local particle_cast = "particles/econ/items/vengeful/vs_ti8_immortal_shoulder/vs_ti8_immortal_magic_missle_end.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 vengeful_ex_second_attack_ultimate.OnCastPointEnd = vengeful_ex_second_attack.OnCastPointEnd
@@ -131,12 +131,12 @@ vengeful_ex_second_attack_ultimate.PlayEffectsSwap = vengeful_ex_second_attack.P
 vengeful_ex_second_attack_ultimate.PlayEffectsOnFinish = vengeful_ex_second_attack.PlayEffectsOnFinish
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_ex_second_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 0.8 },
 	{ movement_speed = 10, fixed_range = 1 }
 )
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_ex_second_attack_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 0.8 },
 	{ movement_speed = 10, fixed_range = 1 }

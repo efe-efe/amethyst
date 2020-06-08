@@ -23,7 +23,7 @@ function item_basher_custom:OnSpellStart()
 	local duration = self:GetSpecialValueFor("duration")
 	local radius = self:GetSpecialValueFor("radius")
     
-	local direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local enemies = caster:FindUnitsInCone(
 		direction, 
@@ -58,10 +58,10 @@ function item_basher_custom:OnSpellStart()
 end
 
 function item_basher_custom:PlayEffectsOnCast()
-	EmitSoundOn( "DOTA_Item.SkullBasher", self:GetCaster() )
+	EmitSoundOn("DOTA_Item.SkullBasher", self:GetCaster())
 end
 
-function item_basher_custom:PlayEffectsOnFinish( pos )
+function item_basher_custom:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	local offset = 40
 	local origin = caster:GetOrigin()
@@ -69,26 +69,26 @@ function item_basher_custom:PlayEffectsOnFinish( pos )
 	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
 	local particle_cast = "particles/meele_swing_red/pa_arcana_attack_blinkb_red.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
 	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
     
 
     particle_cast = "particles/units/heroes/hero_spirit_breaker/spirit_breaker_greater_bash.vpcf"
-	effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
+	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
 	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function item_basher_custom:PlayEffectsOnImpact( hTarget )
+function item_basher_custom:PlayEffectsOnImpact(hTarget)
 	local particle_cast = "particles/econ/items/troll_warlord/troll_warlord_ti7_axe/troll_ti7_axe_bash_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+	ParticleManager:SetParticleControl(effect_cast, 1, hTarget:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function item_basher_custom:PlayEffectsOnMiss( pos )
-	EmitSoundOnLocationWithCaster( pos, "Hero_Juggernaut.PreAttack", self:GetCaster() )
+function item_basher_custom:PlayEffectsOnMiss(pos)
+	EmitSoundOnLocationWithCaster(pos, "Hero_Juggernaut.PreAttack", self:GetCaster())
 end

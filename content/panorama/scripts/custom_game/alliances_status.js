@@ -99,8 +99,8 @@ HeroItems.prototype.Update = function(){
         if(i == 3){
             counter = 0;
         }
-        var item_index = Entities.GetItemInSlot( this.entity_index, i );
-        var item_name = "item_" + Items.GetAbilityTextureSF( item_index );
+        var item_index = Entities.GetItemInSlot(this.entity_index, i);
+        var item_name = "item_" + Items.GetAbilityTextureSF(item_index);
 
         var row;
 

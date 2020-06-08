@@ -23,7 +23,7 @@ function Modifiers.Recast(modifier)
                     self:GetRecastAbility():GetName(), 
                     false, 
                     true
-                )
+               )
             end
 
             self:GetParent():AddRecast({
@@ -46,7 +46,7 @@ function Modifiers.Recast(modifier)
                     self:GetRecastAbility():GetName(), 
                     true, 
                     false
-                )
+               )
             end
             self:GetParent():RemoveRecast(self:GetName())
         end
@@ -178,35 +178,35 @@ function Modifiers.Charges(modifier)
             if self:GetStackCount() >= self:GetMaxCharges() then
                 -- Stop charging
                 self:SetStackCount(self:GetMaxCharges())
-                self:SetDuration( -1, true )
-                self:StartIntervalThink( -1 )
+                self:SetDuration(-1, true)
+                self:StartIntervalThink(-1)
             else
                 -- If not charging
                 if self:GetRemainingTime() <= 0.05 then
                     -- Start charging
-                    local charge_time = self:GetAbility():GetCooldown( -1 )
-                    self:StartIntervalThink( charge_time )
-                    self:SetDuration( charge_time, true )
+                    local charge_time = self:GetAbility():GetCooldown(-1)
+                    self:StartIntervalThink(charge_time)
+                    self:SetDuration(charge_time, true)
                 end
 
                 -- Set on cooldown if no charges
                 if self:GetStackCount() == 0 then
-                    self:GetAbility():StartCooldown( self:GetRemainingTime() )
+                    self:GetAbility():StartCooldown(self:GetRemainingTime())
                 end
             end
         end
         if self:GetReplenishType() == CHARGES_TYPE_SYNC then
             if self:GetStackCount() == self:GetMaxCharges() then
                 -- Stop charging
-                self:SetDuration( -1, false )
-                self:StartIntervalThink( -1 )
+                self:SetDuration(-1, false)
+                self:StartIntervalThink(-1)
             end
             if self:GetStackCount() < self:GetMaxCharges() then
                 -- If not charging
                 if self:GetRemainingTime() <= 0.05 then
                     self.replenish_time = self:GetReplenishTime()
-                    self:StartIntervalThink( self.replenish_time )
-                    self:SetDuration( self.replenish_time, true )
+                    self:StartIntervalThink(self.replenish_time)
+                    self:SetDuration(self.replenish_time, true)
                 end
                 -- Set on cooldown if no charges
                 if self:GetStackCount() == 0 then
@@ -367,15 +367,14 @@ function Modifiers.Displacement(modifier)
 
     function modifier:OnDestroy()
         if IsServer() then
-            self.parent:InterruptMotionControllers( true )
-            FindClearSpaceForUnit( self.parent, self.parent:GetAbsOrigin() , true )
+            self.parent:InterruptMotionControllers(true)
+            FindClearSpaceForUnit(self.parent, self.parent:GetAbsOrigin(), true)
             self.parent:RemoveModifierTracker(self:GetName(), MODIFIER_DISPLACEMENT)
         end
         if onDestroy then onDestroy(self, params) end
     end
     
-    function modifier:SyncTime( iDir, dt )
-        local current_z = GetGroundPosition(self:GetParent():GetAbsOrigin(), self:GetParent()).z
+    function modifier:SyncTime(iDir, dt)
 
         -- check if already synced
         if self.motion_tick[1]==self.motion_tick[2] then
@@ -392,6 +391,8 @@ function Modifiers.Displacement(modifier)
         end
 
         local origin = self.parent:GetAbsOrigin() + Vector(self.direction.x, self.direction.y, 0) * self:GetCollisionOffset()
+        local current_z = GetGroundPosition(origin, self:GetParent()).z
+
         local units = self:GetCaster():FindUnitsInRadius(
             origin, 
             self:GetCollisionRadius(), 
@@ -399,7 +400,7 @@ function Modifiers.Displacement(modifier)
             DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
             DOTA_UNIT_TARGET_FLAG_NONE,
             FIND_ANY_ORDER
-        )
+       )
 
         if self.prev_origin then
             if current_z - self.prev_origin.z > 32  then
@@ -423,7 +424,7 @@ function Modifiers.Displacement(modifier)
         end
     end
 
-    function modifier:UpdateHorizontalMotion( me, dt )
+    function modifier:UpdateHorizontalMotion(me, dt)
         self:SyncTime(1, dt)
         local target = self.direction * self.hVelocity * self.elapsed_time
         self.parent:SetAbsOrigin(self.origin + target)
@@ -435,10 +436,10 @@ function Modifiers.Displacement(modifier)
         end
     end
 
-    function modifier:UpdateVerticalMotion( me, dt )
+    function modifier:UpdateVerticalMotion(me, dt)
         self:SyncTime(2, dt)
         local target = self.vVelocity * self.elapsed_time + 0.5 * self.gravity * self.elapsed_time * self.elapsed_time
-        self.parent:SetAbsOrigin( Vector( self.parent:GetAbsOrigin().x, self.parent:GetAbsOrigin().y, self.origin.z + target ) )
+        self.parent:SetAbsOrigin(Vector(self.parent:GetAbsOrigin().x, self.parent:GetAbsOrigin().y, self.origin.z + target))
     end
 
     function modifier:OnVerticalMotionInterrupted()
@@ -477,6 +478,10 @@ function Modifiers.Displacement(modifier)
     function modifier:GetCollisionOffset()
         if getCollisionOffset then return getCollisionOffset(self) end
         return 80
+    end
+
+    function modifier:GetDirection()
+        return self.direction
     end
 end
 
@@ -748,7 +753,7 @@ function Modifiers.Thinker(modifier)
         if self:GetVisualScope() == THINKER_VISUALS_PUBLIC then
             for _,alliance in pairs(GameRules.GameMode.alliances) do
                 for _,team in pairs(alliance.teams) do
-                    self.effects_cast_progress[team] = ParticleManager:CreateParticleForTeam( particle_cast, PATTACH_WORLDORIGIN, self:GetCaster(), team )
+                    self.effects_cast_progress[team] = ParticleManager:CreateParticleForTeam(particle_cast, PATTACH_WORLDORIGIN, self:GetCaster(), team)
 
                     ParticleManager:SetParticleControlForward(self.effects_cast_progress[team], 0, Vector(0,-1,0))	
                     ParticleManager:SetParticleControl(self.effects_cast_progress[team], 0, self:GetParent():GetAbsOrigin() + Vector(0,0,16))
@@ -758,9 +763,9 @@ function Modifiers.Thinker(modifier)
                     local alliance = GameRules.GameMode:FindAllianceByTeam(team)
 
                     if alliance == caster_alliance then
-                        ParticleManager:SetParticleControl( self.effects_cast_progress[team], 15, Vector(70, 70, 250))
+                        ParticleManager:SetParticleControl(self.effects_cast_progress[team], 15, Vector(70, 70, 250))
                     else
-                        ParticleManager:SetParticleControl( self.effects_cast_progress[team], 15, Vector(250, 70, 70))
+                        ParticleManager:SetParticleControl(self.effects_cast_progress[team], 15, Vector(250, 70, 70))
                     end
                 end
             end
@@ -772,7 +777,7 @@ function Modifiers.Thinker(modifier)
 
             ParticleManager:SetParticleControl(self.effects_cast_progress["1"], 0, self:GetParent():GetAbsOrigin() + Vector(0,0,16))
             ParticleManager:SetParticleControl(self.effects_cast_progress["1"], 1, Vector(self:GetAOERadius(), percentage, 1))
-            ParticleManager:SetParticleControl( self.effects_cast_progress["1"], 15, Vector(70, 70, 250))
+            ParticleManager:SetParticleControl(self.effects_cast_progress["1"], 15, Vector(70, 70, 250))
         end
     end
 

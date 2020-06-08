@@ -14,7 +14,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_vengeful_counter:OnCreated( params )
+function modifier_vengeful_counter:OnCreated(params)
     if IsServer() then
         local stacks = params.stacks
         self:SetStackCount(stacks)
@@ -26,15 +26,15 @@ end
 
 --------------------------------------------------------------------------------
 -- Destroyer
-function modifier_vengeful_counter:OnDestroy( kv )
+function modifier_vengeful_counter:OnDestroy(kv)
     if IsServer() then
     end
 end
 
-function modifier_vengeful_counter:OnRefresh( params )
+function modifier_vengeful_counter:OnRefresh(params)
     if IsServer() then
         local stacks = params.stacks
-        self:SetStackCount( self:GetStackCount() + stacks )
+        self:SetStackCount(self:GetStackCount() + stacks)
     end
 end
 

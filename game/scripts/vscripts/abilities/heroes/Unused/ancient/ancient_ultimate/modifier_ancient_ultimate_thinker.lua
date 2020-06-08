@@ -1,13 +1,13 @@
 modifier_ancient_ultimate_thinker = class({})
 
-function modifier_ancient_ultimate_thinker:OnCreated( params )
+function modifier_ancient_ultimate_thinker:OnCreated(params)
     if IsServer() then 
         self.initialized = false
 
         local delay_time = self:GetAbility():GetCooldown(0)
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
 
-        AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.radius, delay_time + 1.5, true )
+        AddFOWViewer(self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self.radius, delay_time + 1.5, true)
 
         self:StartIntervalThink(delay_time)
     end
@@ -22,7 +22,7 @@ function modifier_ancient_ultimate_thinker:OnIntervalThink()
         local point = self:GetParent():GetOrigin()
         
         local projectile_distance = (point - origin):Length2D()
-        local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+        local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
         local projectile_speed = 5000
         
         -- Extra data
@@ -53,7 +53,7 @@ function modifier_ancient_ultimate_thinker:OnIntervalThink()
                     DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
                     DOTA_UNIT_TARGET_FLAG_NONE,
                     FIND_ANY_ORDER
-                )
+               )
         
                 for _,enemy in pairs(enemies) do
                     local damage_table = {
@@ -62,7 +62,7 @@ function modifier_ancient_ultimate_thinker:OnIntervalThink()
                         damage = damage,
                         damage_type = DAMAGE_TYPE_PURE,
                     }
-                    ApplyDamage( damage_table )
+                    ApplyDamage(damage_table)
         
                 end
         
@@ -76,16 +76,16 @@ function modifier_ancient_ultimate_thinker:OnIntervalThink()
     end
 end
 
-function modifier_ancient_ultimate_thinker:PlayEffectsProjectileImpact( pos )
+function modifier_ancient_ultimate_thinker:PlayEffectsProjectileImpact(pos)
 	local caster = self:GetCaster()
 
 	-- Cast Sound
-	EmitSoundOn( "Hero_Ancient_Apparition.IceBlast.Target", caster )
+	EmitSoundOn("Hero_Ancient_Apparition.IceBlast.Target", caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_explode_ti5.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

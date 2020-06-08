@@ -27,7 +27,7 @@ function modifier_ex_pudge_counter_debuff:OnIntervalThink()
         damage_type = DAMAGE_TYPE_PURE,
     }
 
-    ApplyDamage( damage_table )
+    ApplyDamage(damage_table)
 end
 
 --------------------------------------------------------------------------------
@@ -46,6 +46,6 @@ function modifier_ex_pudge_counter_debuff:GetModifierMoveSpeedBonus_Percentage()
 end
 
 function modifier_ex_pudge_counter_debuff:PlayEffectsOnCreated()
-    local nFXIndex = ParticleManager:CreateParticle( "particles/econ/items/pudge/pudge_immortal_arm/pudge_immortal_arm_rot_recipient.vpcf", PATTACH_ABSORIGIN_FOLLOW, self.parent )
-    self:AddParticle( nFXIndex, false, false, -1, false, false )
+    local nFXIndex = ParticleManager:CreateParticle("particles/econ/items/pudge/pudge_immortal_arm/pudge_immortal_arm_rot_recipient.vpcf", PATTACH_ABSORIGIN_FOLLOW, self.parent)
+    self:AddParticle(nFXIndex, false, false, -1, false, false)
 end

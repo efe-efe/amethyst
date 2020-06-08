@@ -5,7 +5,7 @@ function modifier_item_meteor_custom:OnCreated()
         self.damage_per_tick = self:GetAbility():GetSpecialValueFor("damage_per_tick")
         self.think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
 
-        self:StartIntervalThink( self.think_interval )
+        self:StartIntervalThink(self.think_interval)
     end
 end
 

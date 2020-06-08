@@ -120,11 +120,11 @@ function CDOTA_BaseNPC:UnhideHealthBar()
 	self:RemoveModifierByName("modifier_hide_bar")
 end
 
-function CDOTA_BaseNPC:ForceDirection( direction )
+function CDOTA_BaseNPC:ForceDirection(direction)
 	self.forced_direction = direction
 end
 
-function CDOTA_BaseNPC:UnforceDirection( direction )
+function CDOTA_BaseNPC:UnforceDirection(direction)
 	self.forced_direction = nil
 end
 
@@ -145,7 +145,7 @@ function CDOTA_BaseNPC:GetAlliance()
 	return GameRules.GameMode.players[playerID].alliance
 end
 
-function CDOTA_BaseNPC:IsAlly( unit )
+function CDOTA_BaseNPC:IsAlly(unit)
 	local playerID = self:GetPlayerOwnerID()
 	local playerID_test = unit:GetPlayerOwnerID()
 
@@ -157,15 +157,15 @@ function CDOTA_BaseNPC:IsAlly( unit )
 end
 
 function CDOTA_BaseNPC:CanWalk()
-	return not ( self:IsStunned() or 
+	return not (self:IsStunned() or 
 	self:IsCommandRestricted() or 
 	self:IsRooted() or
 	self:IsNightmared() or
-	not self:IsAlive() )
+	not self:IsAlive())
 end
 
-function CDOTA_BaseNPC:FindUnitsInRadius( origin, radius, teamFilter, typeFilter, flagFilter, orderFilter  )
-    local units = FindUnitsInRadius( 
+function CDOTA_BaseNPC:FindUnitsInRadius(origin, radius, teamFilter, typeFilter, flagFilter, orderFilter )
+    local units = FindUnitsInRadius(
         self:GetTeamNumber(), -- int, your team number
         origin, -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -262,7 +262,7 @@ function CDOTA_BaseNPC:FindUnitsInCone(vDirection, fMinProjection, vCenterPos, f
 end
 
 function CDOTA_BaseNPC:FindUnitsInCirclesProjection(vCenterPos, vStartPos, vEndPos, fStartRadius, fEndRadius, teamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
-	local units = FindUnitsInCone(
+	local units = FindUnitsInCirclesProjection(
 		self:GetTeamNumber(), 
 		vCenterPos, 
 		vStartPos,
@@ -305,10 +305,10 @@ function CDOTA_BaseNPC:IsWall()
 end
 
 function CDOTA_BaseNPC:IsObstacle()
-    return ( self:IsBarrel() or self:IsWall() ) and true or false
+    return (self:IsBarrel() or self:IsWall()) and true or false
 end
 
-function CDOTA_BaseNPC:GiveManaPercent( percentage, source )
+function CDOTA_BaseNPC:GiveManaPercent(percentage, source)
 	local is_amethyst = false
 
 	if source and source.GetParentEntity then
@@ -356,13 +356,13 @@ function CDOTA_BaseNPC:IsWalking()
 	end
 end
 
-function CDOTA_BaseNPC:DeactivateAllAbilitiesWithExeption( spell )
+function CDOTA_BaseNPC:DeactivateAllAbilitiesWithExeption(spell)
 	if IsServer() then
 		for i = 0, 10 do
 			local ability = self:GetAbilityByIndex(i)
 			if ability then
                 if ability ~= spell then
-                    ability:SetActivated( false )
+                    ability:SetActivated(false)
                 end
 			end
 		end
@@ -378,16 +378,16 @@ function CDOTA_BaseNPC:DeactivateNonPriorityAbilities()
 				not ability:IsUltimate() and 
 				not ability:HasPriority() 
 			then
-				ability:SetActivated( false )
+				ability:SetActivated(false)
 			end
 		end
 	end
 end
 
-function CDOTA_BaseNPC:SetAllAbilitiesActivated( mode )
+function CDOTA_BaseNPC:SetAllAbilitiesActivated(mode)
 	if IsServer() then
 		for i = 0, 13 do
-			self:GetAbilityByIndex(i):SetActivated( mode )
+			self:GetAbilityByIndex(i):SetActivated(mode)
 		end
 	end
 end

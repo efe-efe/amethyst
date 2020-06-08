@@ -34,7 +34,7 @@ function Warmup:Update()
         self:UpdateGameTimer(math.floor(self.time_remaining/10))
 
         if self.time_remaining <= 30 and self.time_remaining > 0 then
-            CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = tostring(self.time_remaining/10) } )
+            CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = tostring(self.time_remaining/10) })
         end
 
         for _,dummy_target in ipairs(self.dummy_targets) do

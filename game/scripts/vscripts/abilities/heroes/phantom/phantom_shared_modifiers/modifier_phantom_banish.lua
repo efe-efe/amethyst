@@ -26,7 +26,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_phantom_banish:OnCreated( kv )
+function modifier_phantom_banish:OnCreated(kv)
 	if IsServer() then
 		self:GetParent():AddNoDraw()
 	end
@@ -34,7 +34,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Destroyer
-function modifier_phantom_banish:OnDestroy( kv )
+function modifier_phantom_banish:OnDestroy(kv)
 	if IsServer() then
 		self:GetParent():RemoveNoDraw()
 	end

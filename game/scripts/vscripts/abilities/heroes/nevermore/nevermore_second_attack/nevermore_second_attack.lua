@@ -1,8 +1,8 @@
 nevermore_second_attack = class({})
-LinkLuaModifier( "modifier_nevermore_second_attack_recast", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_recast", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_second_attack_recasts_counter", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_recasts_counter", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_second_attack_debuff", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_debuff", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_second_attack_block_recast", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_block_recast", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_second_attack_recast", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_nevermore_second_attack_recasts_counter", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_recasts_counter", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_nevermore_second_attack_debuff", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_debuff", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_nevermore_second_attack_block_recast", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_block_recast", LUA_MODIFIER_MOTION_NONE)
 
 function nevermore_second_attack:GetCastAnimationCustom()		return ACT_DOTA_RAZE_2 end
 function nevermore_second_attack:GetPlaybackRateOverride() 		return 1.5 end
@@ -14,7 +14,7 @@ function nevermore_second_attack:OnSpellStart()
 	local origin = caster:GetOrigin()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local radius = self:GetSpecialValueFor("radius")
 	local damage = self:GetSpecialValueFor("ability_damage")
@@ -71,7 +71,7 @@ function nevermore_second_attack:OnSpellStart()
 				damage_table.victim = enemy
 				damage_table.damage = damage + debuff_stacks * damage_per_stack
 
-				ApplyDamage( damage_table )
+				ApplyDamage(damage_table)
 
 				enemy:AddNewModifier(_self.Source, self, "modifier_nevermore_second_attack_debuff", { duration = recast_duration })
 			end
@@ -93,7 +93,7 @@ function nevermore_second_attack:OnSpellStart()
 				end
 			end
 
-			self:PlayEffectsRaze( pos, radius )
+			self:PlayEffectsRaze(pos, radius)
 		end,
 	}
 
@@ -102,18 +102,18 @@ function nevermore_second_attack:OnSpellStart()
 end
 
 function nevermore_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Nevermore.Attack", self:GetCaster() )
+	EmitSoundOn("Hero_Nevermore.Attack", self:GetCaster())
 end
 
-function nevermore_second_attack:PlayEffectsRaze( pos, radius )
+function nevermore_second_attack:PlayEffectsRaze(pos, radius)
 	local caster = self:GetCaster()
-    EmitSoundOnLocationWithCaster( pos, "Hero_Nevermore.Shadowraze", caster )
+    EmitSoundOnLocationWithCaster(pos, "Hero_Nevermore.Shadowraze", caster)
 	
     local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, pos )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, pos)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

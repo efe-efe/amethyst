@@ -2,7 +2,7 @@ modifier_sniper_ex_mobility = class({})
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_sniper_ex_mobility:OnCreated( kv )
+function modifier_sniper_ex_mobility:OnCreated(kv)
 	self.speed_debuff_pct = -self:GetAbility():GetSpecialValueFor("speed_debuff_pct")
 
 	if IsServer() then 

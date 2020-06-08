@@ -1,7 +1,7 @@
 vengeful_special_attack = class({})
 vengeful_special_attack_ultimate = class({})
-LinkLuaModifier( "modifier_vengeful_special_attack_link", "abilities/heroes/vengeful/vengeful_special_attack/modifier_vengeful_special_attack_link", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_vengeful_special_attack_link_ultimate", "abilities/heroes/vengeful/vengeful_special_attack/modifier_vengeful_special_attack_link", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_vengeful_special_attack_link", "abilities/heroes/vengeful/vengeful_special_attack/modifier_vengeful_special_attack_link", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_vengeful_special_attack_link_ultimate", "abilities/heroes/vengeful/vengeful_special_attack/modifier_vengeful_special_attack_link", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -17,7 +17,7 @@ function vengeful_special_attack:OnCastPointEnd()
 	local link_duration = ability:GetSpecialValueFor("link_duration")
 	
 	-- Dynamic data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = ability:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
@@ -42,7 +42,7 @@ function vengeful_special_attack:OnCastPointEnd()
 				ability = self,
 			}
 
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if not string.ends(self:GetAbilityName(), "_ultimate") then
 				if _self.Source == caster then
@@ -68,21 +68,21 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 
-function vengeful_special_attack:PlayEffectsOnFinish( pos )
+function vengeful_special_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
-	EmitSoundOnLocationWithCaster( pos, "Hero_VengefulSpirit.MagicMissileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_VengefulSpirit.MagicMissileImpact", caster)
 
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_magic_missle_end.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function vengeful_special_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_VengefulSpirit.MagicMissile", self:GetCaster() )
+	EmitSoundOn("Hero_VengefulSpirit.MagicMissile", self:GetCaster())
 end
 
 vengeful_special_attack_ultimate.OnCastPointEnd = vengeful_special_attack.OnCastPointEnd
@@ -90,12 +90,12 @@ vengeful_special_attack_ultimate.PlayEffectsOnFinish = vengeful_special_attack.P
 vengeful_special_attack_ultimate.PlayEffectsOnCast = vengeful_special_attack.PlayEffectsOnCast
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.0 },
 	{ movement_speed = 0, fixed_range = 1}
 )
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_special_attack_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.0 },
 	{ movement_speed = 0, fixed_range = 1}

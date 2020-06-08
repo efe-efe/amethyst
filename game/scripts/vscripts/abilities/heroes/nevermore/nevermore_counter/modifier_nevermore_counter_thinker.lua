@@ -22,7 +22,7 @@ end
 
 function modifier_nevermore_counter_thinker:OnDelayEnds()
 	if IsServer() then
-		FindClearSpaceForUnit(self:GetCaster(), self:GetParent():GetAbsOrigin() , true )
+		FindClearSpaceForUnit(self:GetCaster(), self:GetParent():GetAbsOrigin() , true)
 
 		local enemies = self:GetCaster():FindUnitsInRadius(
 			self:GetParent():GetOrigin(), 
@@ -51,34 +51,34 @@ function modifier_nevermore_counter_thinker:OnDelayEnds()
 end
 
 function modifier_nevermore_counter_thinker:PlayEffectsOnDraw()
-	EmitSoundOn("Hero_Nevermore.ROS_Flames", self:GetCaster() )
+	EmitSoundOn("Hero_Nevermore.ROS_Flames", self:GetCaster())
 
 	local particle_cast = "particles/econ/events/ti4/blink_dagger_end_ti4.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetAbsOrigin() )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetAbsOrigin())
 	
 	particle_cast = "particles/units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
-	effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )	
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetAbsOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 60, Vector(157, 0, 243) )
-	ParticleManager:SetParticleControl( effect_cast, 61, Vector(1, 0, 0) )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)	
+	ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetAbsOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 60, Vector(157, 0, 243))
+	ParticleManager:SetParticleControl(effect_cast, 61, Vector(1, 0, 0))
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	particle_cast = "particles/econ/items/outworld_devourer/od_ti8/od_ti8_santies_eclipse_area_shockwave.vpcf"
-	effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )	
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetAbsOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)	
+	ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetAbsOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 	
 	ScreenShake(self:GetCaster():GetAbsOrigin(), 100, 300, 0.45, 1000, 0, true)
 end
 
 function modifier_nevermore_counter_thinker:PlayEffects()
     local particle_cast = "particles/units/heroes/hero_shadow_demon/shadow_demon_soul_catcher_v2_ground01.vpcf"
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetAbsOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 1, self:GetParent():GetAbsOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 2, self:GetParent():GetAbsOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 3, Vector(self.radius, 0, 0) )
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 1, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 2, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 3, Vector(self.radius, 0, 0))
 end
 
 function modifier_nevermore_counter_thinker:StopEffects()

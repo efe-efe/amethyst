@@ -10,14 +10,14 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_spectre_ultimate_illusion:OnCreated( kv )
+function modifier_spectre_ultimate_illusion:OnCreated(kv)
     if IsServer() then
         -- references
         local parent = self:GetParent()
         local origin  = parent:GetOrigin()
 
         -- find enemies
-        local enemies = FindUnitsInRadius( 
+        local enemies = FindUnitsInRadius(
             parent:GetTeamNumber(), -- int, your team number
             origin, -- point, center point
             nil, -- handle, cacheUnit. (not known)
@@ -27,7 +27,7 @@ function modifier_spectre_ultimate_illusion:OnCreated( kv )
             0, -- int, flag filter
             FIND_CLOSEST, -- int, order filter
             false -- bool, can grow cache
-        )
+       )
 
         -- Attack the closests
         if enemies[1] then
@@ -38,18 +38,18 @@ function modifier_spectre_ultimate_illusion:OnCreated( kv )
     end
 end
 
-function modifier_spectre_ultimate_illusion:OnDestroy( kv )
+function modifier_spectre_ultimate_illusion:OnDestroy(kv)
     if IsServer() then
 				
-        self:GetCaster():SwapAbilities( 
+        self:GetCaster():SwapAbilities(
             "spectre_ultimate",
             "spectre_ultimate_recast",
             true,
             false
-        )
+       )
 
         if self:GetParent() ~= nil then
-            self:GetParent():ForceKill( false )
+            self:GetParent():ForceKill(false)
         end
 	end
 end

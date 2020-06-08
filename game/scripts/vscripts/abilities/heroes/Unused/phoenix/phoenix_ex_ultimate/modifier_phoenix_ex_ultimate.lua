@@ -45,7 +45,7 @@ function modifier_phoenix_ex_ultimate:OnIntervalThink()
 		DOTA_UNIT_TARGET_TEAM_BOTH,
 		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
 		0
-    )
+   )
 
     for _,unit in pairs(units) do
         if unit:GetTeamNumber() == self:GetCaster():GetTeamNumber() then
@@ -62,7 +62,7 @@ function modifier_phoenix_ex_ultimate:OnIntervalThink()
                 damage_type = DAMAGE_TYPE_PURE,
             }
     
-            ApplyDamage( damage )
+            ApplyDamage(damage)
         end
     end
 end

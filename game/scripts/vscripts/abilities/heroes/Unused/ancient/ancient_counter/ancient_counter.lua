@@ -1,6 +1,6 @@
 ancient_counter = class({})
-LinkLuaModifier( "modifier_ancient_counter_recast", "abilities/heroes/ancient/ancient_counter/modifier_ancient_counter_recast", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_ancient_basic_attack", "abilities/heroes/ancient/ancient_basic_attack/modifier_ancient_basic_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_counter_recast", "abilities/heroes/ancient/ancient_counter/modifier_ancient_counter_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_ancient_basic_attack", "abilities/heroes/ancient/ancient_basic_attack/modifier_ancient_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -19,7 +19,7 @@ function ancient_counter:OnCastPointEnd()
             duration = duration, 
             destroy_on_trigger = 1,
         }
-    )
+   )
 end
 
 function ancient_counter:OnTrigger()
@@ -35,7 +35,7 @@ function ancient_counter:OnTrigger()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
     
     for _,enemy in pairs(enemies) do
         local direction = (enemy:GetOrigin() - caster:GetOrigin()):Normalized()
@@ -54,39 +54,39 @@ function ancient_counter:OnTrigger()
                 peak = 50,
                 restricted = 1,
             } -- kv
-        )
+       )
     end
 
     caster:AddNewModifier(caster, self, "modifier_ancient_counter_recast", { duration = recast_duration })
     caster:AddNewModifier(caster, ability, "modifier_ancient_basic_attack", {})
 
 	ScreenShake(caster:GetOrigin(), 100, 300, 0.45, 1000, 0, true)
-    self:PlayEffectsOnTrigger( radius )
+    self:PlayEffectsOnTrigger(radius)
 end
 
-function ancient_counter:PlayEffectsOnTrigger( radius )
+function ancient_counter:PlayEffectsOnTrigger(radius)
     EmitSoundOn("Hero_Ancient_Apparition.ChillingTouch.Target", self:GetCaster())
 
 	local particle_cast = "particles/techies_blast_off_ringmodel.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_initial_explode_ti5.vpcf"
-    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
     
 	particle_cast = "particles/units/heroes/hero_ogre_magi/ogre_magi_unr_fireblast.vpcf"
-    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
     ancient_counter,
     nil, 
 	{ movement_speed = 100 }

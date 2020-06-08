@@ -1,5 +1,5 @@
 juggernaut_mobility = class({})
-LinkLuaModifier( "modifier_juggernaut_mobility", "abilities/heroes/juggernaut/juggernaut_mobility/modifier_juggernaut_mobility", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_juggernaut_mobility", "abilities/heroes/juggernaut/juggernaut_mobility/modifier_juggernaut_mobility", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_mobility:OnSpellStart()
     local caster = self:GetCaster()

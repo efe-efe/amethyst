@@ -1,5 +1,5 @@
 tinker_ex_counter = class({})
-LinkLuaModifier( "modifier_tinker_ex_counter", "abilities/heroes/tinker/tinker_ex_counter/modifier_tinker_ex_counter", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_tinker_ex_counter", "abilities/heroes/tinker/tinker_ex_counter/modifier_tinker_ex_counter", LUA_MODIFIER_MOTION_NONE)
 
 function tinker_ex_counter:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("tinker_counter")
@@ -23,7 +23,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function tinker_ex_counter:OnCastPointEnd( point )
+function tinker_ex_counter:OnCastPointEnd(point)
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 
@@ -32,7 +32,7 @@ function tinker_ex_counter:OnCastPointEnd( point )
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	local damage = self:GetAbilityDamage()
@@ -75,7 +75,7 @@ function tinker_ex_counter:OnCastPointEnd( point )
                 self,
                 "modifier_tinker_ex_counter",
                 { duration = duration }
-            )
+           )
 
 		end,
 		OnFinish = function(_self, pos)
@@ -97,21 +97,21 @@ end
 function tinker_ex_counter:PlayEffects_a()
 	-- Create Sound
 	local sound_cast = "Hero_Tinker.Heat-Seeking_Missile_Dud"
-	EmitSoundOn( sound_cast, self:GetCaster()  )
+	EmitSoundOn(sound_cast, self:GetCaster() )
 end
 
 
-function tinker_ex_counter:PlayEffects_b( pos )
+function tinker_ex_counter:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 	
 	-- Create Sound
 	local sound_cast = "Hero_Wisp.Spirits.Target"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_guardian_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 

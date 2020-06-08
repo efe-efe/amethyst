@@ -4,11 +4,11 @@ function modifier_sniper_counter:IsHidden() 	return 	false 	end
 function modifier_sniper_counter:IsDebuff() 	return 	false 	end
 function modifier_sniper_counter:IsPurgable() 	return 	true 	end
 
-function modifier_sniper_counter:OnCreated( kv )
+function modifier_sniper_counter:OnCreated(kv)
 	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 end
 
-function modifier_sniper_counter:OnDestroy( kv )
+function modifier_sniper_counter:OnDestroy(kv)
 	if IsServer() then 
 		self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
 	end

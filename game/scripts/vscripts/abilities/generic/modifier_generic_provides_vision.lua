@@ -19,5 +19,5 @@ function modifier_generic_provides_vision:OnCreated(params)
 end
 
 function modifier_generic_provides_vision:OnIntervalThink()
-	AddFOWViewer( self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self:GetParent():GetCurrentVisionRange(), 0.05, true )
+	AddFOWViewer(self:GetCaster():GetTeamNumber(), self:GetParent():GetOrigin(), self:GetParent():GetCurrentVisionRange(), 0.05, true)
 end

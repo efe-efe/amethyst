@@ -1,6 +1,6 @@
 vengeful_ex_counter = class({})
 vengeful_ex_counter_ultimate = class({})
-LinkLuaModifier( "modifier_vengeful_ex_counter", "abilities/heroes/vengeful/vengeful_ex_counter/modifier_vengeful_ex_counter", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_vengeful_ex_counter", "abilities/heroes/vengeful/vengeful_ex_counter/modifier_vengeful_ex_counter", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -21,7 +21,7 @@ function vengeful_ex_counter:OnCastPointEnd()
 	local duration_per_target = ability:GetSpecialValueFor("duration_per_target")
 	
 	-- Dynamic data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = ability:GetSpecialValueFor("projectile_speed")
 
 	--local targets = 0
@@ -52,7 +52,7 @@ function vengeful_ex_counter:OnCastPointEnd()
 
 			--targets = targets + 1
 			--_self.Source:Heal(heal_per_target, _self.Source)
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 			self:PlayEffectsOnImpact(unit)
 		end,
 		OnFinish = function(_self, pos)
@@ -70,45 +70,45 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 
-function vengeful_ex_counter:PlayEffectsOnFinish( pos, caster )
+function vengeful_ex_counter:PlayEffectsOnFinish(pos, caster)
 	-- Create Particles
 	local particle_cast = "particles/meteor_hammer_spell_ground_impact.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:SetParticleControl( effect_cast, 4, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:SetParticleControl(effect_cast, 4, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function vengeful_ex_counter:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_VengefulSpirit.WaveOfTerror", self:GetCaster() )
+	EmitSoundOn("Hero_VengefulSpirit.WaveOfTerror", self:GetCaster())
 end
 
 function vengeful_ex_counter:PlayEffectsOnReCast(caster)
-	EmitSoundOn( "Hero_VengefulSpirit.Death", caster )
+	EmitSoundOn("Hero_VengefulSpirit.Death", caster)
 end
 
 
 function vengeful_ex_counter:PlayEffectsOnImpactCaster(caster)
 	local particle_cast = "particles/items4_fx/meteor_hammer_spell_impact_ember.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 3, caster:GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 4, caster:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 3, caster:GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 4, caster:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function vengeful_ex_counter:PlayEffectsOnImpact(hTarget)
 	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_wave_of_terror_recipient.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, hTarget )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, hTarget)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function vengeful_ex_counter:PlayEffectsProjectile(pos, vel)
 	local particle_cast = "particles/econ/items/vengeful/vengeful_weapon_talon/vengeful_wave_of_terror_talon_child.vpcf"
-	self.effect_cast_projectile = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( self.effect_cast_projectile, 0, pos )
-	ParticleManager:SetParticleControl( self.effect_cast_projectile, 1, vel )
+	self.effect_cast_projectile = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(self.effect_cast_projectile, 0, pos)
+	ParticleManager:SetParticleControl(self.effect_cast_projectile, 1, vel)
 	ParticleManager:SetParticleControlForward(self.effect_cast_projectile, 0, vel:Normalized())
 
 end
@@ -116,7 +116,7 @@ end
 function vengeful_ex_counter:StopEffectsProjectile()
 	if self.effect_cast_projectile then
 		ParticleManager:DestroyParticle(self.effect_cast_projectile, false)
-		ParticleManager:ReleaseParticleIndex( self.effect_cast_projectile )
+		ParticleManager:ReleaseParticleIndex(self.effect_cast_projectile)
 	end
 end
 
@@ -130,12 +130,12 @@ vengeful_ex_counter_ultimate.PlayEffectsOnImpact = vengeful_ex_counter.PlayEffec
 vengeful_ex_counter_ultimate.PlayEffectsOnImpactCaster = vengeful_ex_counter.PlayEffectsOnImpactCaster
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_ex_counter,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },
 	{ movement_speed = 0, fixed_range = 1}
 )
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_ex_counter_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },
 	{ movement_speed = 0, fixed_range = 1}

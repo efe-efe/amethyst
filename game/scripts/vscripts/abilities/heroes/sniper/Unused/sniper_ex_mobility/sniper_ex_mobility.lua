@@ -1,5 +1,5 @@
 sniper_ex_mobility = class({})
-LinkLuaModifier( "modifier_sniper_ex_mobility_thinker", "abilities/heroes/sniper/sniper_ex_mobility/modifier_sniper_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_sniper_ex_mobility_thinker", "abilities/heroes/sniper/sniper_ex_mobility/modifier_sniper_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function sniper_ex_mobility:HasPriority()
     return true
@@ -25,7 +25,7 @@ function sniper_ex_mobility:OnCastPointEnd()
 		caster:GetOrigin(), --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
-    )
+   )
 
     caster:RemoveModifierByName("modifier_generic_displacement")
     caster:AddNewModifier(
@@ -40,18 +40,18 @@ function sniper_ex_mobility:OnCastPointEnd()
             peak = 400,
             i_frame = 1
         } -- kv
-    )
+   )
 
 
     
-    local enemies = caster:FindUnitsInRadius( 
+    local enemies = caster:FindUnitsInRadius(
         origin, 
         radius, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,enemy in pairs(enemies) do
 
@@ -70,7 +70,7 @@ function sniper_ex_mobility:OnCastPointEnd()
                 disable = 1,
                 stun = 1,
             } -- kv
-        )
+       )
     end
 
     self:PlayEffects()
@@ -78,18 +78,18 @@ end
 
 --------------------------------------------------------------------------------
 function sniper_ex_mobility:PlayEffects()
-    EmitSoundOn( "Hero_Techies.LandMine.Detonate", self:GetCaster() )
+    EmitSoundOn("Hero_Techies.LandMine.Detonate", self:GetCaster())
     
     local particle_cast = "particles/econ/courier/courier_cluckles/courier_cluckles_ambient_rocket_explosion.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin())
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
     
-    ParticleManager:ReleaseParticleIndex( effect_cast )    
+    ParticleManager:ReleaseParticleIndex(effect_cast)    
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	sniper_ex_mobility,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },
 	{ movement_speed = 50 }

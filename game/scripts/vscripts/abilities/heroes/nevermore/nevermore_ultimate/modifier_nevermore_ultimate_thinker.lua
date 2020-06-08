@@ -15,11 +15,11 @@ end
 
 function modifier_nevermore_ultimate_thinker:PlayEffects()
     local particle_cast = "particles/units/heroes/hero_shadow_demon/shadow_demon_soul_catcher_v2_ground01.vpcf"
-	self.effect_cast_aoe = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil)
-	ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, self:GetParent():GetAbsOrigin() )
-	ParticleManager:SetParticleControl( self.effect_cast_aoe, 1, self:GetParent():GetAbsOrigin() )
-	ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, self:GetParent():GetAbsOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
+	self.effect_cast_aoe = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(self.effect_cast_aoe, 0, self:GetParent():GetAbsOrigin())
+	ParticleManager:SetParticleControl(self.effect_cast_aoe, 1, self:GetParent():GetAbsOrigin())
+	ParticleManager:SetParticleControl(self.effect_cast_aoe, 2, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
 end
 
 function modifier_nevermore_ultimate_thinker:StopEffects()
@@ -37,7 +37,7 @@ function modifier_nevermore_ultimate_thinker:OnIntervalThinkCustom()
             DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
             DOTA_UNIT_TARGET_FLAG_NONE,
             FIND_ANY_ORDER
-        )
+       )
         for _,enemy in pairs(enemies) do
             local direction = (self:GetParent():GetOrigin() - enemy:GetOrigin()):Normalized()
             local point = enemy:GetAbsOrigin() + direction * 8

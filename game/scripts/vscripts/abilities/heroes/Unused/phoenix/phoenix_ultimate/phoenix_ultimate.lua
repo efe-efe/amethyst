@@ -1,5 +1,5 @@
 phoenix_ultimate = class({})
-LinkLuaModifier( "modifier_phoenix_ultimate", "abilities/heroes/phoenix/phoenix_ultimate/modifier_phoenix_ultimate", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phoenix_ultimate", "abilities/heroes/phoenix/phoenix_ultimate/modifier_phoenix_ultimate", LUA_MODIFIER_MOTION_NONE)
 
 function phoenix_ultimate:OnSpellStart()
     local caster = self:GetCaster()
@@ -15,5 +15,5 @@ function phoenix_ultimate:OnSpellStart()
             duration = duration,
             base_health = base_health
         }
-    )
+   )
 end

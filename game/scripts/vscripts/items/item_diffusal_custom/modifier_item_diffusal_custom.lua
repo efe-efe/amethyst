@@ -16,7 +16,7 @@ function modifier_item_diffusal_custom:DeclareFunctions()
 	}
 end
 
-function modifier_item_diffusal_custom:GetModifierIncomingDamage_Percentage( params )
+function modifier_item_diffusal_custom:GetModifierIncomingDamage_Percentage(params)
 	if IsServer() then
 		self:GetParent():ReduceMana(self.mana_per_tick)
 		self:PlayEffectsOnImpact(self:GetParent())	
@@ -38,8 +38,8 @@ function modifier_item_diffusal_custom:PlayEffectsOnImpact(hTarget)
 	EmitSoundOn("DOTA_Item.DiffusalBlade.Target", hTarget)
 
 	local particle_cast = "particles/generic_gameplay/generic_manaburn.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_item_diffusal_custom:GetEffectName()

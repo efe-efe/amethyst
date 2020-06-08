@@ -26,7 +26,7 @@ end
 
 function modifier_generic_silence:StopEffects()
 	ParticleManager:DestroyParticle(self.effect_cast, false)
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
 
 function modifier_generic_silence:GetEffectName()

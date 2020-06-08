@@ -19,9 +19,9 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_axe_second_attack_debuff:OnCreated( kv )
+function modifier_axe_second_attack_debuff:OnCreated(kv)
 	-- references
-	local damage = self:GetAbility():GetSpecialValueFor( "damage_per_second" )
+	local damage = self:GetAbility():GetSpecialValueFor("damage_per_second")
 	local interval = 1
 
 	if IsServer() then
@@ -34,27 +34,27 @@ function modifier_axe_second_attack_debuff:OnCreated( kv )
 		}
 		
 		self.damageTable.damage_type = DAMAGE_TYPE_MAGICAL
-		ApplyDamage( self.damageTable )
+		ApplyDamage(self.damageTable)
 		self.damageTable.damage_type = DAMAGE_TYPE_PURE
 
 		-- Start interval
-		self:StartIntervalThink( interval )
+		self:StartIntervalThink(interval)
 	end
 end
 
-function modifier_axe_second_attack_debuff:OnRefresh( kv )
+function modifier_axe_second_attack_debuff:OnRefresh(kv)
 	-- update value
-	local damage = self:GetAbility():GetSpecialValueFor( "damage_per_second" )
+	local damage = self:GetAbility():GetSpecialValueFor("damage_per_second")
 	
 	if IsServer() then
 		self.damageTable.damage = damage
 	end
 end
 
-function modifier_axe_second_attack_debuff:OnDestroy( kv )
+function modifier_axe_second_attack_debuff:OnDestroy(kv)
 	if IsServer() then
 		-- decrement buff stack
-		local modifier = self:GetCaster():FindModifierByName( "modifier_axe_second_attack_buff" )
+		local modifier = self:GetCaster():FindModifierByName("modifier_axe_second_attack_buff")
 		if modifier then
 			modifier:DecrementStackCount()
 		end
@@ -65,7 +65,7 @@ end
 -- Interval Effects
 function modifier_axe_second_attack_debuff:OnIntervalThink()
 	-- apply damage
-	ApplyDamage( self.damageTable )
+	ApplyDamage(self.damageTable)
 end
 
 
@@ -79,7 +79,7 @@ function modifier_axe_second_attack_debuff:DeclareFunctions()
 	return funcs
 end
 
-function modifier_axe_second_attack_debuff:OnDeath( params )
+function modifier_axe_second_attack_debuff:OnDeath(params)
 	if IsServer() then
 		if params.attacker~=self:GetParent() then return end
 		self:Destroy()

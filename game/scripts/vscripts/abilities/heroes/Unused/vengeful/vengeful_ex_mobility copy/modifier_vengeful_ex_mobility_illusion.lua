@@ -10,7 +10,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_vengeful_ex_second_attack_illusion:OnCreated( kv )
+function modifier_vengeful_ex_second_attack_illusion:OnCreated(kv)
     if IsServer() then
         ProgressBars:AddProgressBar(self:GetCaster(), self:GetName(), {
 			style = "Generic",
@@ -21,7 +21,7 @@ function modifier_vengeful_ex_second_attack_illusion:OnCreated( kv )
     end
 end
 
-function modifier_vengeful_ex_second_attack_illusion:OnDestroy( kv )
+function modifier_vengeful_ex_second_attack_illusion:OnDestroy(kv)
     if IsServer() then
 
         --Prevent trying to find a forgotten ability
@@ -36,17 +36,17 @@ function modifier_vengeful_ex_second_attack_illusion:OnDestroy( kv )
                 activate = true      
             end
 
-            self:GetCaster():SwapAbilities( 
+            self:GetCaster():SwapAbilities(
                 my_name,
                 name,
                 activate,
                 false
-            )
+           )
         end
             
         if self:GetParent() ~= nil then
-            self:GetParent():ForceKill( false )
-            UTIL_Remove( self:GetParent() )
+            self:GetParent():ForceKill(false)
+            UTIL_Remove(self:GetParent())
         end
 	end
 end

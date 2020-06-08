@@ -31,7 +31,7 @@ function puck_extra:OnSpellStart()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         enemy:AddNewModifier(caster, self, "modifier_puck_extra_debuff", { duration = pre_silence_duration })

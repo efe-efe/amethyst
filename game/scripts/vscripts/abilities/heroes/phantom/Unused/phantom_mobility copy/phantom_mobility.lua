@@ -1,5 +1,5 @@
 phantom_mobility = class({})
-LinkLuaModifier( "modifier_phantom_mobility", "abilities/heroes/phantom/phantom_mobility/modifier_phantom_mobility", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phantom_mobility", "abilities/heroes/phantom/phantom_mobility/modifier_phantom_mobility", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -16,7 +16,7 @@ function phantom_mobility:OnSpellStart()
 	})
 end
 
-function phantom_mobility:OnCastPointEnd( pos )
+function phantom_mobility:OnCastPointEnd(pos)
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
@@ -32,14 +32,14 @@ function phantom_mobility:OnCastPointEnd( pos )
     end
 
     -- teleport
-    FindClearSpaceForUnit( caster, pos , true )
+    FindClearSpaceForUnit(caster, pos , true)
 
     caster:AddNewModifier(
         caster,
         self,
         "modifier_phantom_mobility",
         {duration = buff_duration}
-    )
+   )
 
     local special_attack = caster:FindAbilityByName("phantom_special_attack")
     local ex_special_attack = caster:FindAbilityByName("phantom_ex_special_attack")
@@ -59,9 +59,9 @@ function phantom_mobility:PlayEffects_a()
     EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function phantom_mobility:PlayEffects_b()
@@ -73,6 +73,6 @@ function phantom_mobility:PlayEffects_b()
     EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

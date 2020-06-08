@@ -62,7 +62,7 @@ function modifier_wisp_basic_attack_link_negative:GetModifierIncomingDamage_Perc
             damage_flags = DOTA_DAMAGE_FLAG_REFLECTION,
 		}
 
-        ApplyDamage( damage )
+        ApplyDamage(damage)
         
         return 0
     end
@@ -85,30 +85,30 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Sounds
-function modifier_wisp_basic_attack_link_negative:PlayEffects( hTarget )
+function modifier_wisp_basic_attack_link_negative:PlayEffects(hTarget)
     -- Get Resources
     if IsServer() then
         -- Get Resources
         local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_tether.vpcf"
 
-        self.effect_cast = ParticleManager:CreateParticle( 
+        self.effect_cast = ParticleManager:CreateParticle(
             particle_cast,
             PATTACH_CUSTOMORIGIN, 
             nil
-        )
+       )
 
         local origin = self:GetCaster():GetOrigin()
 
-        ParticleManager:SetParticleControlEnt( 
+        ParticleManager:SetParticleControlEnt(
             self.effect_cast, 
             0, 
             self:GetCaster(), 
             PATTACH_POINT_FOLLOW, 
             "attach_hitloc", 
-            self:GetCaster():GetOrigin() + Vector( 0, 0, 96 ), 
+            self:GetCaster():GetOrigin() + Vector(0, 0, 96), 
             true 
-        );
-        ParticleManager:SetParticleControlEnt( 
+       );
+        ParticleManager:SetParticleControlEnt(
             self.effect_cast, 
             1, 
             hTarget, 
@@ -116,14 +116,14 @@ function modifier_wisp_basic_attack_link_negative:PlayEffects( hTarget )
             "attach_attack1", 
             hTarget:GetOrigin(), 
             true 
-        );
+       );
 
     end
 end
 
 function modifier_wisp_basic_attack_link_negative:StopEffects()
     if IsServer() then
-        ParticleManager:DestroyParticle( self.effect_cast, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast)
     end
 end

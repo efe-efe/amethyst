@@ -38,7 +38,7 @@ function modifier_cast_point:OnCreated(params)
 		end
 
 		self:StartCast()
-		self:StartIntervalThink( 0.01 )
+		self:StartIntervalThink(0.01)
 	end
 end
 
@@ -76,7 +76,7 @@ function modifier_cast_point:OnRefresh(params)
 		end
 
 		self:StartCast()
-		self:StartIntervalThink( 0.01 )
+		self:StartIntervalThink(0.01)
 	end
 end
 
@@ -110,7 +110,7 @@ function modifier_cast_point:StopCast()
 	if IsServer() then
 		self.ability:SetInAbilityPhase(false)
 		if self.disable_all then
-			self.parent:SetAllAbilitiesActivated( true )
+			self.parent:SetAllAbilitiesActivated(true)
 		end
 		if self.ability.OnStopPseudoCastPoint ~= nil then
 			self.ability:OnStopPseudoCastPoint()
@@ -132,13 +132,13 @@ function modifier_cast_point:OnDestroy(params)
 		else
 			if self.ability.OnCastPointEnd ~= nil then
 				self.ability:PayManaCost()
-				self.ability:SetInAbilityPhase( false )
+				self.ability:SetInAbilityPhase(false)
 				if self.disable_all then
-					self.parent:SetAllAbilitiesActivated( true )
+					self.parent:SetAllAbilitiesActivated(true)
 				end
 
 				if self.ability.force_position ~= nil then
-					self.ability:OnCastPointEnd( self.ability.force_position )
+					self.ability:OnCastPointEnd(self.ability.force_position)
 				else
 					self.ability:OnCastPointEnd()
 				end
@@ -178,9 +178,9 @@ function modifier_cast_point:OnIntervalThink()
 	local direction = (mouse - self.parent:GetOrigin()):Normalized()
 
 	if not self.parent:HasModifier("modifier_generic_displacement") then
-		self.parent:SetForwardVector(Vector(direction.x, direction.y, self.parent:GetForwardVector().z ))
+		self.parent:SetForwardVector(Vector(direction.x, direction.y, self.parent:GetForwardVector().z))
 	else
-		self.parent:FaceTowards(Vector(direction.x, direction.y, self.parent:GetForwardVector().z ))
+		self.parent:FaceTowards(Vector(direction.x, direction.y, self.parent:GetForwardVector().z))
 	end
 end
 
@@ -212,7 +212,7 @@ function modifier_cast_point:OnOrder(params)
 	end
 end
 
-function modifier_cast_point:OnTakeDamage( params )
+function modifier_cast_point:OnTakeDamage(params)
 	if IsServer() then
         if params.unit~=self:GetCaster() then return end
 		if self.cancel_on_damage ~= 1 then return end
@@ -228,7 +228,7 @@ function modifier_cast_point:CheckState()
     end
 end
 
-function modifier_cast_point:OnKeyReleased( key )
+function modifier_cast_point:OnKeyReleased(key)
 	if self.ability.CastOnRelease and self.ability.CastOnRelease() == true then
 		local new_duration = self.min_cast_point - (self:GetDuration() - self:GetRemainingTime())
 

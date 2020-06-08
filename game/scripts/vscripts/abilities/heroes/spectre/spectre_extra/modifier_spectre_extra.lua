@@ -29,7 +29,7 @@ function modifier_spectre_extra:GetAuraSearchType()
 	return DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
 end
 
-function modifier_spectre_extra:OnCreated( kv )
+function modifier_spectre_extra:OnCreated(kv)
     self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
     self.radius = self:GetAbility():GetSpecialValueFor("radius")
 
@@ -38,7 +38,7 @@ function modifier_spectre_extra:OnCreated( kv )
     end
 end
 
-function modifier_spectre_extra:OnDestroy( kv )
+function modifier_spectre_extra:OnDestroy(kv)
     if IsServer() then
         self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(self:GetAbility():GetLevel()))
         self:StopEffects()
@@ -53,28 +53,28 @@ function modifier_spectre_extra:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
 end
 
-function modifier_spectre_extra:PlayEffectsOnCreated( )
+function modifier_spectre_extra:PlayEffectsOnCreated()
     local parent = self:GetParent()
     EmitSoundOn("Hero_Spectre.Haunt", parent)
 
 	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_blade_fury_abyssal.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, parent )
-    ParticleManager:SetParticleControl( self.effect_cast, 2, parent:GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, parent)
+    ParticleManager:SetParticleControl(self.effect_cast, 2, parent:GetOrigin())
     
     
     local particle_cast = "particles/econ/items/silencer/silencer_ti6/silencer_last_word_status_ti6_ring_mist.vpcf"
-	self.effect_cast_ring = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, parent )
-    ParticleManager:SetParticleControl( self.effect_cast_ring, 3, parent:GetOrigin() )
+	self.effect_cast_ring = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, parent)
+    ParticleManager:SetParticleControl(self.effect_cast_ring, 3, parent:GetOrigin())
 end
 
 function modifier_spectre_extra:StopEffects()
     if self.effect_cast ~= nil then
-        ParticleManager:DestroyParticle( self.effect_cast, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast)
     end
     if self.effect_cast_ring ~= nil then
-        ParticleManager:DestroyParticle( self.effect_cast_ring, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast_ring )
+        ParticleManager:DestroyParticle(self.effect_cast_ring, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast_ring)
     end
 end
 

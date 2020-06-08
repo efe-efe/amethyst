@@ -46,12 +46,12 @@ function modifier_item_butterfly_custom:GetEffectAttachType()
 end
 
 function modifier_item_butterfly_custom:PlayEffectsOnBanish()
-    EmitSoundOn( "DOTA_Item.Butterfly", self:GetCaster()  )
+    EmitSoundOn("DOTA_Item.Butterfly", self:GetCaster() )
 
 	local particle_cast = "particles/butterfly_effect/pa_arcana_event_glitch.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, self:GetCaster() )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, self:GetCaster())
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_item_butterfly_custom:GetStatusLabel() return "Flutter" end

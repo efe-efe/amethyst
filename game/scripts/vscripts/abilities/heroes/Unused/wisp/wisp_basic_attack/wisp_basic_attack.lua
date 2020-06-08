@@ -1,7 +1,7 @@
 wisp_basic_attack = class ({})
-LinkLuaModifier( "modifier_wisp_basic_attack", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_wisp_basic_attack_link", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack_link", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_wisp_basic_attack_link_negative", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack_link_negative", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_wisp_basic_attack", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_wisp_basic_attack_link", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack_link", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_wisp_basic_attack_link_negative", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack_link_negative", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -22,10 +22,10 @@ function wisp_basic_attack:OnSpellStart()
 	)
 end
 
-function wisp_basic_attack:OnCastPointEnd( point )
+function wisp_basic_attack:OnCastPointEnd(point)
 	local caster = self:GetCaster()
 	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
+	local attack_speed = (1 / attacks_per_second)
 
 	-- Projectile Data
 	local projectile_name = "particles/mod_units/heroes/hero_wisp/wisp_base_attack.vpcf"
@@ -37,7 +37,7 @@ function wisp_basic_attack:OnCastPointEnd( point )
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	-- Extra data
 	local link_duration = self:GetSpecialValueFor("link_duration")
@@ -95,12 +95,12 @@ function wisp_basic_attack:OnCastPointEnd( point )
 
 				if _self.Source == caster then
 					if caster:GetMaxHealth() == caster:GetHealth() then
-						unit:Heal(heal * 2, _self.Source )
+						unit:Heal(heal * 2, _self.Source)
 					end
 				end
 			end
 			
-			_self.Source:Heal( heal, _self.Source )
+			_self.Source:Heal(heal, _self.Source)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffects_b(pos)
@@ -121,23 +121,23 @@ function wisp_basic_attack:PlayEffects_a()
 	local sound_cast = "Hero_Wisp.Attack"
 
 	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 -- On hit wall 
-function wisp_basic_attack:PlayEffects_b( pos )
+function wisp_basic_attack:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 	
 	-- Cast Sound
 	local sound_cast = "Hero_Wisp.ProjectileImpact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

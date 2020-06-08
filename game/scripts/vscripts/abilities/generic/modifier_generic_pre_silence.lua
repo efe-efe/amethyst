@@ -1,5 +1,5 @@
 modifier_generic_pre_silence = class({})
-LinkLuaModifier( "modifier_generic_silence", "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_generic_silence", "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE)
 
 function modifier_generic_pre_silence:IsHidden()
     return false
@@ -43,7 +43,7 @@ function modifier_generic_pre_silence:OnDestroy()
                 self:GetAbility(),
                 "modifier_generic_silence",
                 { duration = silence_duration }
-            )
+           )
         end
     end
 end
@@ -55,17 +55,17 @@ function modifier_generic_pre_silence:PlayEffects_a()
 
     -- Create particles
     local particle_cast = "particles/econ/items/silencer/silencer_ti6/silencer_last_word_status_ti6.vpcf"
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
+    ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())
 end
 
 function modifier_generic_pre_silence:StopEffects_a()
     -- Destroy particles
     if self.effect_cast == nil then return end
 
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
 
 function modifier_generic_pre_silence:PlayEffects_b()
@@ -75,8 +75,8 @@ function modifier_generic_pre_silence:PlayEffects_b()
 
     -- Create particles
     local particle_cast = "particles/econ/items/silencer/silencer_ti6/silencer_last_word_dmg_ti6.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetParent())
 
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

@@ -4,6 +4,7 @@ local translate = {
 	["odachi"] = 1,
 	["sharp_blade"] = 2,
 	["aggressive"] = 3,
+	["attack_close_range"] = 4,
 }
 
 function modifier_casting:IsHidden() return true end	

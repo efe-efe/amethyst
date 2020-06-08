@@ -2,9 +2,9 @@ function SafeDestroyModifier(modifier_name, unit, caster)
     -- Find and destroy modifier
     local modifier = nil
     if caster == nil then
-        modifier = unit:FindModifierByName( modifier_name )
+        modifier = unit:FindModifierByName(modifier_name)
     else
-        modifier = unit:FindModifierByNameAndCaster( modifier_name, caster )
+        modifier = unit:FindModifierByNameAndCaster(modifier_name, caster)
     end
 
     -- Safe destroying
@@ -18,9 +18,9 @@ end
 function SafeGetModifierStacks(modifier_name, unit, caster)
     local modifier = nil
     if caster == nil then
-        modifier = unit:FindModifierByName( modifier_name )
+        modifier = unit:FindModifierByName(modifier_name)
     else
-        modifier = unit:FindModifierByNameAndCaster( modifier_name, caster )
+        modifier = unit:FindModifierByNameAndCaster(modifier_name, caster)
     end
     local stacks = 0
 
@@ -36,7 +36,7 @@ end
 
 function SafeGetModifierCaster(modifier_name, unit)
     -- Find and destroy modifier
-    local modifier = unit:FindModifierByName( modifier_name)
+    local modifier = unit:FindModifierByName(modifier_name)
     local caster = nil
 
     -- Safe destroying

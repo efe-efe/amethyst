@@ -10,9 +10,9 @@ function modifier_phantom_mobility_displacement:OnDestroy()
 	if IsServer() then 
 		local trail_pfx = ParticleManager:CreateParticle("particles/phantom/mobility_trail.vpcf", PATTACH_ABSORIGIN, self:GetParent())
 		ParticleManager:SetParticleControl(trail_pfx, 0, self.origin)
-		ParticleManager:SetParticleControl(trail_pfx, 1, self:GetParent():GetAbsOrigin() )
-		ParticleManager:SetParticleControl(trail_pfx, 60, Vector(188,7,229) )
-		ParticleManager:SetParticleControl(trail_pfx, 61, Vector(1,0,0) )
+		ParticleManager:SetParticleControl(trail_pfx, 1, self:GetParent():GetAbsOrigin())
+		ParticleManager:SetParticleControl(trail_pfx, 60, Vector(188,7,229))
+		ParticleManager:SetParticleControl(trail_pfx, 61, Vector(1,0,0))
 		ParticleManager:ReleaseParticleIndex(trail_pfx)
 	end
 end

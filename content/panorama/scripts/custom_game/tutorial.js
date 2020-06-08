@@ -34,7 +34,7 @@ function SetPage(m_page){
 }
 
 function OnSetPage(){
-    if(page > data.length - 1 ){
+    if(page > data.length - 1){
         Close();
         return;
     }

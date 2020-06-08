@@ -1,5 +1,5 @@
 axe_extra = class({})
-LinkLuaModifier( "modifier_axe_extra", "abilities/heroes/axe/axe_extra/modifier_axe_extra", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_axe_extra", "abilities/heroes/axe/axe_extra/modifier_axe_extra", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -27,7 +27,7 @@ function axe_extra:OnCastPointEnd()
         self,
         "modifier_axe_extra",
         { duration = duration }
-    )
+   )
 
     self:PlayEffects()
 end

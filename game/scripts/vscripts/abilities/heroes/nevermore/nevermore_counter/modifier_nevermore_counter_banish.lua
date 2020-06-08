@@ -13,7 +13,7 @@ function modifier_nevermore_counter_banish:OnDestroy()
             point, --vOrigin
             self:GetParent():GetTeamNumber(), --nTeamNumber
             false --bPhantomBlocker
-        )
+       )
     
         self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_nevermore_counter_banish_no_indicator", { duration = delay })
     end

@@ -1,5 +1,5 @@
 modifier_wisp_ex_counter_movement = class({})
-LinkLuaModifier( "modifier_wisp_ex_counter_thinker", "abilities/heroes/wisp/wisp_ex_counter/modifier_wisp_ex_counter_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_wisp_ex_counter_thinker", "abilities/heroes/wisp/wisp_ex_counter/modifier_wisp_ex_counter_thinker", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -20,7 +20,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_wisp_ex_counter_movement:OnCreated( kv )
+function modifier_wisp_ex_counter_movement:OnCreated(kv)
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -37,7 +37,7 @@ function modifier_wisp_ex_counter_movement:OnCreated( kv )
 	end
 end
 
-function modifier_wisp_ex_counter_movement:OnRefresh( kv )
+function modifier_wisp_ex_counter_movement:OnRefresh(kv)
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -52,10 +52,10 @@ function modifier_wisp_ex_counter_movement:OnRefresh( kv )
 	end	
 end
 
-function modifier_wisp_ex_counter_movement:OnDestroy( kv )
+function modifier_wisp_ex_counter_movement:OnDestroy(kv)
 	if IsServer() then
 		local caster = self:GetCaster()
-		caster:InterruptMotionControllers( true )
+		caster:InterruptMotionControllers(true)
 		
 		CreateModifierThinker(
             caster, --hCaster
@@ -76,7 +76,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Motion Effects
-function modifier_wisp_ex_counter_movement:UpdateHorizontalMotion( me, dt )
+function modifier_wisp_ex_counter_movement:UpdateHorizontalMotion(me, dt)
 	local pos = self:GetParent():GetOrigin()
 	
 	-- stop if already past distance
@@ -89,7 +89,7 @@ function modifier_wisp_ex_counter_movement:UpdateHorizontalMotion( me, dt )
 	local target = pos + self.direction * (self.speed*dt)
 
 	-- change position
-	self:GetParent():SetOrigin( target )
+	self:GetParent():SetOrigin(target)
 end
 
 function modifier_wisp_ex_counter_movement:OnHorizontalMotionInterrupted()

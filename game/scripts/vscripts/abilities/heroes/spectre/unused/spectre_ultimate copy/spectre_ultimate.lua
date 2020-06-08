@@ -1,9 +1,9 @@
 spectre_ultimate = class({})
-LinkLuaModifier( "modifier_spectre_ultimate_illusion", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_illusion", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_spectre_ultimate_illusion", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_illusion", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function spectre_ultimate:OnCastPointEnd( )
+function spectre_ultimate:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -11,7 +11,7 @@ function spectre_ultimate:OnCastPointEnd( )
 	local damage = self:GetAbilityDamage()
 	
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local illusion_duration = self:GetSpecialValueFor("illusion_duration")
 
@@ -35,24 +35,24 @@ function spectre_ultimate:OnCastPointEnd( )
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 			
 			-- Callback
-			local modifyIllusion = function ( illusion )
+			local modifyIllusion = function (illusion)
 				-- set facing
-				illusion:SetForwardVector( unit:GetForwardVector() )
+				illusion:SetForwardVector(unit:GetForwardVector())
 
 				-- clean item slots
 				for slot=0,5 do
 					-- remove anything in current slot
 					local iItem = illusion:GetItemInSlot(slot)
-					if iItem then illusion:RemoveItem( illusion:GetItemInSlot(slot) ) end
+					if iItem then illusion:RemoveItem(illusion:GetItemInSlot(slot)) end
 				end
 
 				-- make illusion
 				illusion:MakeIllusion()
-				illusion:SetOwner( _self.Source )
-				illusion:SetPlayerID( _self.Source:GetPlayerID() )
+				illusion:SetOwner(_self.Source)
+				illusion:SetPlayerID(_self.Source:GetPlayerID())
 
 				--Add illusion modifier
 				illusion:AddNewModifier(
@@ -66,7 +66,7 @@ function spectre_ultimate:OnCastPointEnd( )
 					local swap = caster:FindAbilityByName("spectre_ultimate_recast")
 					swap.illusion_index = illusion:GetEntityIndex()
 					
-					caster:SwapAbilities( 
+					caster:SwapAbilities(
 						"spectre_ultimate",
 						"spectre_ultimate_recast",
 						false,
@@ -133,10 +133,10 @@ function spectre_ultimate:PlayEffectsOnLaunch()
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death_mist.vpcf"
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 	EmitGlobalSound("spectre_spec_ability_haunt_01")
 end
 
@@ -145,18 +145,18 @@ function spectre_ultimate:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	-- Cast Sound
     local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particles 
 	local particle_cast = "particles/econ/items/death_prophet/death_prophet_ti9/death_prophet_silence_ti9_ground_smoke.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	spectre_ultimate,
 	{ activity = ACT_DOTA_ATTACK, rate = 0.4 },
 	{ movement_speed = 0, fixed_range = 1 }

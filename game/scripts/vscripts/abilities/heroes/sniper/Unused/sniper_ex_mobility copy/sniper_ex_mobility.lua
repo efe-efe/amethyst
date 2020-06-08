@@ -1,5 +1,5 @@
 sniper_ex_mobility = class({})
-LinkLuaModifier( "modifier_sniper_ex_mobility_thinker", "abilities/heroes/sniper/sniper_ex_mobility/modifier_sniper_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_sniper_ex_mobility_thinker", "abilities/heroes/sniper/sniper_ex_mobility/modifier_sniper_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function sniper_ex_mobility:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("sniper_mobility")
@@ -13,7 +13,7 @@ function sniper_ex_mobility:OnSpellStart()
 	local cast_point = self:GetCastPoint()
     local radius = self:GetSpecialValueFor("radius")
 
-    EmitGlobalSound( "Ability.AssassinateLoad")
+    EmitGlobalSound("Ability.AssassinateLoad")
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, {duration=0.5, activity=ACT_DOTA_CAST_ABILITY_1, rate=1.5})
@@ -29,12 +29,12 @@ function sniper_ex_mobility:OnSpellStart()
 	)
 end
 
-function sniper_ex_mobility:OnCastPointEnd( point )
+function sniper_ex_mobility:OnCastPointEnd(point)
     -- Initialize variables
 	local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local damage = self:GetSpecialValueFor("damage")
-	local duration = self:GetSpecialValueFor( "duration" )
+	local duration = self:GetSpecialValueFor("duration")
 
 	-- Projectile data
 	local projectile_name = "particles/mod_units/heroes/hero_sniper/techies_base_attack.vpcf"
@@ -42,7 +42,7 @@ function sniper_ex_mobility:OnCastPointEnd( point )
 	local projectile_end_radius = 80--self:GetSpecialValueFor("hitbox")
 	local projectile_distance = (origin - point):Length2D()
 	local projectile_speed = 1700--self:GetSpecialValueFor("projectile_speed")
-    local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, -100 )):Normalized()
+    local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, -100)):Normalized()
 
     -- Projectile
     local projectile = {
@@ -84,7 +84,7 @@ function sniper_ex_mobility:OnCastPointEnd( point )
                 damage = damage,
                 damage_type = DAMAGE_TYPE_MAGICAL,
             }
-            ApplyDamage( damage )
+            ApplyDamage(damage)
         end,
         OnFinish = function(_self, pos)
             -- Effect thinker
@@ -96,13 +96,13 @@ function sniper_ex_mobility:OnCastPointEnd( point )
                 pos, --vOrigin
                 _self.Source:GetTeamNumber(), --nTeamNumber
                 false --bPhantomBlocker
-            )
+           )
             self:PlayEffects_b(pos)
         end,
     }
 
     Projectiles:CreateProjectile(projectile)
-    self:PlayEffects_a( pos )
+    self:PlayEffects_a(pos)
     
     -- Put CD on the alternate version of the ability
 	local alternate_version = caster:FindAbilityByName("sniper_mobility")
@@ -111,25 +111,25 @@ function sniper_ex_mobility:OnCastPointEnd( point )
 end
 
 --------------------------------------------------------------------------------
-function sniper_ex_mobility:PlayEffects_a( point )
+function sniper_ex_mobility:PlayEffects_a(point)
 	-- Cast Sound
 	local sound_cast = "Hero_Sniper.ShrapnelShoot"
-    EmitSoundOn( sound_cast, self:GetCaster() )
+    EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 -- On hit wall 
-function sniper_ex_mobility:PlayEffects_b( pos )
+function sniper_ex_mobility:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 	
 	-- Cast Sound
 	local sound_cast = "Hero_Sniper.AssassinateDamage"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/econ/items/storm_spirit/strom_spirit_ti8/storm_spirit_ti8_overload_flash.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
 	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 

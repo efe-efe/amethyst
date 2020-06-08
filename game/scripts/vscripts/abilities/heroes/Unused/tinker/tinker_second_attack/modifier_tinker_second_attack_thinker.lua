@@ -11,7 +11,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializer
-function modifier_tinker_second_attack_thinker:OnCreated( kv )
+function modifier_tinker_second_attack_thinker:OnCreated(kv)
     self.radius = self:GetAbility():GetSpecialValueFor("radius")
     self.projectile_speed = self:GetAbility():GetSpecialValueFor("projectile_speed")
     local max_range = self:GetAbility():GetSpecialValueFor("projectile_range")
@@ -56,7 +56,7 @@ function modifier_tinker_second_attack_thinker:OnIntervalThink()
 		0,	-- int, flag filter
 		FIND_CLOSEST,	-- int, order filter
 		false	-- bool, can grow cache
-    )
+   )
     
     if #enemies > 0 then
 
@@ -75,7 +75,7 @@ function modifier_tinker_second_attack_thinker:OnIntervalThink()
         }
         for i=1,math.min(self.targets,#enemies) do
             info.Target = enemies[i]
-            ProjectileManager:CreateTrackingProjectile( info )
+            ProjectileManager:CreateTrackingProjectile(info)
         end
         self:Destroy()
     end
@@ -83,15 +83,15 @@ function modifier_tinker_second_attack_thinker:OnIntervalThink()
     self:PlayEffects(self.pos)
 end
 
-function modifier_tinker_second_attack_thinker:PlayEffects( pos )
+function modifier_tinker_second_attack_thinker:PlayEffects(pos)
     EmitSoundOn("Hero_Techies.LandMine.Priming", self:GetCaster())
     local particle_cast = "particles/econ/events/darkmoon_2017/darkmoon_generic_aoe.vpcf"
 	
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
 	
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-	ParticleManager:SetParticleControl( effect_cast, 2, Vector( 1, 1, 1 ) )
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+	ParticleManager:SetParticleControl(effect_cast, 2, Vector(1, 1, 1))
 
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

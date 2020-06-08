@@ -20,7 +20,7 @@ function spectre_ultimate:OnSpellStart()
         caster:GetAbsOrigin(), --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
-    )
+   )
 end
 
 if IsClient() then require("wrappers/abilities") end

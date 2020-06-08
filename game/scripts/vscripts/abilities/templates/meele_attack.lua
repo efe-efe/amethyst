@@ -1,5 +1,5 @@
 ability_name = class({})
-LinkLuaModifier( "modifier_ability_name", "abilities/heroes/hero_name/ability_name/modifier_ability_name", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ability_name", "abilities/heroes/hero_name/ability_name/modifier_ability_name", LUA_MODIFIER_MOTION_NONE)
 
 function ability_name:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -11,7 +11,7 @@ function ability_name:OnCastPointEnd()
 	
 	local offset = 80
 	local projectile_speed = 2000
-	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
+	local projectile_direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
 	local projectile = {
 		vSpawnOrigin =		origin + Vector(projectile_direction.x * offset, projectile_direction.y * offset, 0),
@@ -42,18 +42,18 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function ability_name:PlayEffectsOnFinish( pos )
+function ability_name:PlayEffectsOnFinish(pos)
 end
 
-function ability_name:PlayEffectsOnCast( )
+function ability_name:PlayEffectsOnCast()
 end
 
-function ability_name:PlayEffectsOnImpact( hTarget, pos )
+function ability_name:PlayEffectsOnImpact(hTarget, pos)
 end
 
 if IsClient() then require("wrappers/abilities") end
---Abilities.BasicAttack( ability_name )
-Abilities.Initialize( 
+--Abilities.BasicAttack(ability_name)
+Abilities.Initialize(
 	ability_name,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.5 },
 	{ movement_speed = 80, hide_indicator = 1 }

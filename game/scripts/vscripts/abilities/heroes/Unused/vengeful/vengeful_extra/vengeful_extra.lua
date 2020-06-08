@@ -1,7 +1,7 @@
 vengeful_extra = class({})
 vengeful_extra_ultimate = class({})
 
-LinkLuaModifier( "modifier_vengeful_extra_thinker", "abilities/heroes/vengeful/vengeful_extra/modifier_vengeful_extra_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_vengeful_extra_thinker", "abilities/heroes/vengeful/vengeful_extra/modifier_vengeful_extra_thinker", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -9,8 +9,8 @@ function vengeful_extra:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local ability = caster:FindAbilityByName("vengeful_extra")
-    local delay_time = ability:GetSpecialValueFor( "delay_time" )
-	local radius = ability:GetSpecialValueFor( "radius" )
+    local delay_time = ability:GetSpecialValueFor("delay_time")
+	local radius = ability:GetSpecialValueFor("radius")
 	
     CreateModifierThinker(
 		caster, --hCaster
@@ -33,12 +33,12 @@ vengeful_extra_ultimate.OnCastPointEnd = vengeful_extra.OnCastPointEnd
 
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_extra,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.5 },
 	{ movement_speed = 10 }
 )
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_extra_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.5 },
 	{ movement_speed = 10 }

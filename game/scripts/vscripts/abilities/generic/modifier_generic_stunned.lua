@@ -22,7 +22,7 @@ function modifier_generic_stunned:DeclareFunctions()
 	}
 end
 
-function modifier_generic_stunned:GetOverrideAnimation( params )
+function modifier_generic_stunned:GetOverrideAnimation(params)
 	return ACT_DOTA_DISABLED
 end
 

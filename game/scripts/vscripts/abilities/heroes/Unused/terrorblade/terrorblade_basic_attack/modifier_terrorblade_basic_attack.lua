@@ -18,7 +18,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_terrorblade_basic_attack:OnCreated( kv )
+function modifier_terrorblade_basic_attack:OnCreated(kv)
     self.root_duration = self:GetAbility():GetSpecialValueFor("root_duration")
 
 	if IsServer() then
@@ -27,9 +27,9 @@ function modifier_terrorblade_basic_attack:OnCreated( kv )
 	end
 end
 
-function modifier_terrorblade_basic_attack:OnRefresh( kv )
+function modifier_terrorblade_basic_attack:OnRefresh(kv)
 	-- references
-	local max_stack = 3--self:GetAbility():GetSpecialValueFor( "stack_limit" )
+	local max_stack = 3--self:GetAbility():GetSpecialValueFor("stack_limit")
 
 	if IsServer() then
 		if self:GetStackCount() < max_stack then
@@ -48,7 +48,7 @@ function modifier_terrorblade_basic_attack:OnRefresh( kv )
 	end
 end
 
-function modifier_terrorblade_basic_attack:OnDestroy( kv )
+function modifier_terrorblade_basic_attack:OnDestroy(kv)
 	if IsServer() then
 		self:StopEffects()
 		
@@ -66,8 +66,8 @@ function modifier_terrorblade_basic_attack:PlayEffectsCharged()
 	local caster = self:GetParent()
     local origin = caster:GetOrigin()
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, caster )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, caster)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -76,7 +76,7 @@ function modifier_terrorblade_basic_attack:PlayEffectsCharged()
 		origin, 
 		true 
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_terrorblade_basic_attack:PlayEffects()
@@ -93,13 +93,13 @@ function modifier_terrorblade_basic_attack:CreateGlow(index)
 	local particle_cast = "particles/econ/items/antimage/antimage_weapon_godeater/antimage_godeater_bracer_ambient.vpcf"
 	local caster = self:GetParent()
 	local origin = caster:GetOrigin()
-	self.effects_cast_weapon[index] = ParticleManager:CreateParticle( 
+	self.effects_cast_weapon[index] = ParticleManager:CreateParticle(
 		particle_cast, 
 		PATTACH_CUSTOMORIGIN, 
 		caster
 	)
 
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		self.effects_cast_weapon[index], 
 		0, 
 		caster, 
@@ -108,7 +108,7 @@ function modifier_terrorblade_basic_attack:CreateGlow(index)
 		origin, 
 		true 
 	)
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		self.effects_cast_weapon[index], 
 		1, 
 		caster, 
@@ -122,8 +122,8 @@ end
 function modifier_terrorblade_basic_attack:StopEffects()
 	for _,efx in pairs(self.effects_cast_weapon) do
 		if efx ~= nil then
-			ParticleManager:DestroyParticle( efx, false )
-			ParticleManager:ReleaseParticleIndex( efx )
+			ParticleManager:DestroyParticle(efx, false)
+			ParticleManager:ReleaseParticleIndex(efx)
 		end
 	end
 end

@@ -1,6 +1,6 @@
 wisp_special_attack = class({})
-LinkLuaModifier( "modifier_wisp_special_attack_thinker", "abilities/heroes/wisp/wisp_special_attack/modifier_wisp_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_wisp_special_attack_thinker", "abilities/heroes/wisp/wisp_special_attack/modifier_wisp_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 function wisp_special_attack:GetAlternateVersion()
@@ -13,7 +13,7 @@ end
 function wisp_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-    self.radius = self:GetSpecialValueFor( "radius" )
+    self.radius = self:GetSpecialValueFor("radius")
 
 	-- Animation and pseudo cast point
 	caster:AddNewModifier(
@@ -30,10 +30,10 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_special_attack:OnCastPointEnd( point )
+function wisp_special_attack:OnCastPointEnd(point)
 	-- unit identifier
 	local caster = self:GetCaster()
-    local delay_time = self:GetSpecialValueFor( "delay_time" )
+    local delay_time = self:GetSpecialValueFor("delay_time")
 
     CreateModifierThinker(
 		caster, --hCaster
@@ -48,7 +48,7 @@ function wisp_special_attack:OnCastPointEnd( point )
 		point, --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
-    )
+   )
 
     -- Put CD on the alternate version of the ability
     local ex_version = caster:FindAbilityByName("wisp_ex_special_attack")
@@ -62,20 +62,20 @@ function wisp_special_attack:PlayEffects()
     -- Get Resources
     local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_relocate_marker_ti7_endpoint_core_flare.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_ABSORIGIN_FOLLOW, 
         self:GetCaster()
-    )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+   )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     -- Get Resources
     local particle_cast2 = "particles/mod_units/heroes/hero_wisp/wisp_tether_hit.vpcf"
 
-    local effect_cast2 = ParticleManager:CreateParticle( 
+    local effect_cast2 = ParticleManager:CreateParticle(
         particle_cast2, 
         PATTACH_ABSORIGIN_FOLLOW,
         self:GetCaster()
-    )
-    ParticleManager:ReleaseParticleIndex( effect_cast2 )
+   )
+    ParticleManager:ReleaseParticleIndex(effect_cast2)
 end

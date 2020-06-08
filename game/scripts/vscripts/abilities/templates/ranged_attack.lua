@@ -1,5 +1,5 @@
 ability_name = class({})
-LinkLuaModifier( "modifier_ability_name", "abilities/heroes/hero_name/ability_name/modifier_ability_name", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ability_name", "abilities/heroes/hero_name/ability_name/modifier_ability_name", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 --Passive Modifier
@@ -14,7 +14,7 @@ function ability_name:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	-- Probable data
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
@@ -42,7 +42,7 @@ function ability_name:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 				ability = self
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			
 			if _self.Source == caster then 
@@ -59,25 +59,25 @@ function ability_name:OnCastPointEnd()
 end
 
 function ability_name:PlayEffectsOnCast()
-	EmitSoundOn( "CAST_SOUND", self:GetCaster() )
+	EmitSoundOn("CAST_SOUND", self:GetCaster())
 end
 
-function ability_name:PlayEffectsOnFinish( pos )
+function ability_name:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "IMPACT_SOUND", caster )
+	EmitSoundOnLocationWithCaster(pos, "IMPACT_SOUND", caster)
 
 	-- Create Particle
 	local particle_cast = "IMPACT_PARTICLE"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	--ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	--ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
---Abilities.BasicAttack( ability_name )
-Abilities.Initialize( 
+--Abilities.BasicAttack(ability_name)
+Abilities.Initialize(
 	ability_name,
 	{ activity = ACT_DOTA_RUN, rate = 1.0 },
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }

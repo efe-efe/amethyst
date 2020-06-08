@@ -80,12 +80,12 @@ Health.prototype.Update = function(){
         this.progress_panel_health.SetBorder({right: "0"});
         this.progress_panel_shield.SetBorder({left: "0"});
 
-        health_total_width = 100 * ( this.health )/(this.max_health + this.shield);
+        health_total_width = 100 * (this.health)/(this.max_health + this.shield);
         health_panel_width = 100;
         health_progress = 100;
         
         var shield_total_width = 100 * (this.max_health + this.shield - this.health)/(this.max_health + this.shield)
-        var shield_panel_width = 100 * ( this.shield + (30 - this.treshold) )/(this.max_health + this.shield - this.health);
+        var shield_panel_width = 100 * (this.shield + (30 - this.treshold))/(this.max_health + this.shield - this.health);
         var shield_progress = 100 * this.shield/(this.shield + (30 - this.treshold));
         
         this.progress_panel_shield.SetTotalWidth(shield_total_width);
@@ -102,7 +102,7 @@ Health.prototype.Update = function(){
 }
 Health.prototype.OnCreated = function(panel){
     this.panel = panel.FindChildTraverse(this.panel_name);
-    this.progress_panel_health = new ProgressBar("Health", this.panel, { foreground_color: Colors.Gradient(this.color), delayed: true, show_value: this.show_value } )
+    this.progress_panel_health = new ProgressBar("Health", this.panel, { foreground_color: Colors.Gradient(this.color), delayed: true, show_value: this.show_value })
     this.progress_panel_shield = new ProgressBar("Shield", this.panel, { foreground_color: Colors.Gradient("GRAY") })
 }
 
@@ -123,8 +123,8 @@ Mana.prototype.Update = function(){
         return;
     }
 
-    this.mana = Entities.GetMana( this.entity_index )
-    this.max_mana = Entities.GetMaxMana( this.entity_index )
+    this.mana = Entities.GetMana(this.entity_index)
+    this.max_mana = Entities.GetMaxMana(this.entity_index)
 
     var cells = this.max_mana/this.mana_per_cell
     var iterator = 0;
@@ -136,7 +136,7 @@ Mana.prototype.Update = function(){
         iterator++;
     }
 
-    while(this.progress_panels.length > cells ){
+    while(this.progress_panels.length > cells){
         this.progress_panels[this.progress_panels.length - 1].SetVisibility("collapse")
         this.progress_panels.pop();
     }
@@ -152,7 +152,7 @@ Mana.prototype.Update = function(){
     var mana_tmp = 0;
 
     for(var i = 0; i <= this.mana; i ++){
-        if(mana_tmp == this.mana_per_cell ){
+        if(mana_tmp == this.mana_per_cell){
             this.progress_panels[panel_iterator].SetProgress(100);
             this.progress_panels[panel_iterator].SetForegroundColor(Colors.Gradient("BLUE"));
             mana_tmp = 0;
@@ -222,7 +222,7 @@ var Colors = {
 
         var color_a = "rgba(" + COLORS_RGB[color].light[0] + "," + COLORS_RGB[color].light[1] + "," + COLORS_RGB[color].light[2] + "," + m_opacity + ")";
         var color_b = "rgba(" + COLORS_RGB[color].dark[0] + "," + COLORS_RGB[color].dark[1] + "," + COLORS_RGB[color].dark[2] + "," + m_opacity + ")";
-        return "gradient( linear, 0% 0%, 100% 0%, from( " + color_a + "), to( " + color_b + "));";
+        return "gradient(linear, 0% 0%, 100% 0%, from(" + color_a + "), to(" + color_b + "));";
     }
 }
 

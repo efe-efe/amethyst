@@ -5,14 +5,14 @@ function modifier_juggernaut_basic_attack_stacks:IsDebuff() return false end
 function modifier_juggernaut_basic_attack_stacks:IsStunDebuff() return false end
 function modifier_juggernaut_basic_attack_stacks:IsPurgable() return true end
 
-function modifier_juggernaut_basic_attack_stacks:OnCreated( kv )
+function modifier_juggernaut_basic_attack_stacks:OnCreated(kv)
 	if IsServer() then
 		self.effects_cast_weapon = {}
 		self:SetStackCount(1)
 	end
 end
 
-function modifier_juggernaut_basic_attack_stacks:OnRefresh( kv )
+function modifier_juggernaut_basic_attack_stacks:OnRefresh(kv)
 	local max_stacks = self:GetAbility():GetSpecialValueFor("max_stacks")
 
 	if IsServer() then
@@ -27,7 +27,7 @@ function modifier_juggernaut_basic_attack_stacks:OnRefresh( kv )
 	end
 end
 
-function modifier_juggernaut_basic_attack_stacks:OnDestroy( kv )
+function modifier_juggernaut_basic_attack_stacks:OnDestroy(kv)
 	if IsServer() then
 		self:StopEffects()
 	end
@@ -38,8 +38,8 @@ function modifier_juggernaut_basic_attack_stacks:PlayEffectsCharged()
 	local caster = self:GetParent()
     local origin = caster:GetOrigin()
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, caster )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, caster)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -48,7 +48,7 @@ function modifier_juggernaut_basic_attack_stacks:PlayEffectsCharged()
 		origin, 
 		true 
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	
 	self:CreateGlow(0)
@@ -63,7 +63,7 @@ function modifier_juggernaut_basic_attack_stacks:CreateGlow(index)
 	local particle_cast = "particles/units/heroes/hero_invoker_kid/invoker_kid_forge_spirit_ambient_fire.vpcf"
 	local caster = self:GetParent()
 	local origin = caster:GetOrigin()
-	self.effects_cast_weapon[index] = ParticleManager:CreateParticle( 
+	self.effects_cast_weapon[index] = ParticleManager:CreateParticle(
 		particle_cast, 
 		PATTACH_ABSORIGIN_FOLLOW, 
 		caster
@@ -73,8 +73,8 @@ end
 function modifier_juggernaut_basic_attack_stacks:StopEffects()
 	for _,efx in pairs(self.effects_cast_weapon) do
 		if efx ~= nil then
-			ParticleManager:DestroyParticle( efx, false )
-			ParticleManager:ReleaseParticleIndex( efx )
+			ParticleManager:DestroyParticle(efx, false)
+			ParticleManager:ReleaseParticleIndex(efx)
 		end
 	end
 end

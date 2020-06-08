@@ -3,20 +3,20 @@ var unit_overhead_bars = {}
 
 var INTERVAL = 0.01;
 
-function MainCycle( unitIndex ){
+function MainCycle(unitIndex){
     if(!unit_overhead_bars[unitIndex]){ return }
-    UpdateBarCycle( unitIndex );
+    UpdateBarCycle(unitIndex);
     $.Schedule(INTERVAL, function(){ MainCycle(unitIndex) });
 }
 
-function UpdateBarCycle( unitIndex )
+function UpdateBarCycle(unitIndex)
 {
-    if(!UpdateBarVisibilityCycle( unitIndex )){ return; }
-    UpdateBarPositionCycle( unitIndex );
+    if(!UpdateBarVisibilityCycle(unitIndex)){ return; }
+    UpdateBarPositionCycle(unitIndex);
 }
 
-function UpdateBarVisibilityCycle( unitIndex ){
-    if(!Entities.IsAlive( unitIndex )){
+function UpdateBarVisibilityCycle(unitIndex){
+    if(!Entities.IsAlive(unitIndex)){
         unit_overhead_bars[unitIndex].panel.style.opacity = "0.0";
         return false;
     } else {
@@ -25,7 +25,7 @@ function UpdateBarVisibilityCycle( unitIndex ){
     }
 }
 
-function UpdateBarPositionCycle( unitIndex ){
+function UpdateBarPositionCycle(unitIndex){
     var origin = Entities.GetAbsOrigin(unitIndex);
     var hpOffset = Entities.GetHealthBarOffset(unitIndex);
 
@@ -46,7 +46,7 @@ function UpdateBarPositionCycle( unitIndex ){
         if(
             unit_overhead_bars[unitIndex].panel.actuallayoutwidth ==  0 &&
             unit_overhead_bars[unitIndex].panel.actuallayoutheight ==  0
-        ){
+       ){
             unit_overhead_bars[unitIndex].panel.style.position = "-1000px -1000px 0px;";
             return true;
         }
@@ -57,7 +57,7 @@ function UpdateBarPositionCycle( unitIndex ){
     return true
 }
 
-function AddUnit( data ){
+function AddUnit(data){
     var unitIndex = data.unitIndex;
     
     unit_overhead_bars[unitIndex] = {}
@@ -69,7 +69,7 @@ function AddUnit( data ){
     MainCycle(unitIndex);
 }
 
-function UpdateHealthBar( data ){
+function UpdateHealthBar(data){
     var unitIndex = data.unitIndex;
     var current_health = data.current_health;
     var max_health = data.max_health;
@@ -90,8 +90,8 @@ function UpdateHealthBar( data ){
 }
 
 (function(){
-    GameEvents.Subscribe( "add_unit", AddUnit );
-    GameEvents.Subscribe( "update_unit_health_bar", UpdateHealthBar );
+    GameEvents.Subscribe("add_unit", AddUnit);
+    GameEvents.Subscribe("update_unit_health_bar", UpdateHealthBar);
 })();
 
 

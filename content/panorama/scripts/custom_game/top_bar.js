@@ -7,7 +7,7 @@ var ROUNDS_DIFFERENCE_TO_WIN = 3
 
 function AddAllianceBar(alliance_name){
     var local_player_team =         Players.GetTeam(Game.GetLocalPlayerID());
-    var local_player_alliance =     GameUI.CustomUIConfig().Alliances.FindAllianceNameByTeam( local_player_team );
+    var local_player_alliance =     GameUI.CustomUIConfig().Alliances.FindAllianceNameByTeam(local_player_team);
 
     var color = "LOCAL";
     var alliance_panel_name = "";
@@ -215,7 +215,7 @@ CustomNetTables.SubscribeNetTableListener("alliances", function(table, key, data
 });
 
 
-function UpdateTime( data ){
+function UpdateTime(data){
     $("#TopBar__Clock_Text").text = data.timer_minute_10.toString() + data.timer_minute_01.toString() + ":" + data.timer_second_10.toString() + data.timer_second_01.toString();
 }
 

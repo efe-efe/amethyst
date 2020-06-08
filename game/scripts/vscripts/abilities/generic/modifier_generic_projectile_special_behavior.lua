@@ -1,7 +1,7 @@
 modifier_generic_projectile_special_behavior = class({})
 
 
-function modifier_generic_projectile_special_behavior:OnDestroy( kv )
+function modifier_generic_projectile_special_behavior:OnDestroy(kv)
 	if IsServer() then
 		self:GetParent():Kill(nil, nil)
 	end

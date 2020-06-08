@@ -1,5 +1,5 @@
 vengeful_basic_attack = class({})
-LinkLuaModifier( "modifier_vengeful_basic_attack_stack", "abilities/heroes/vengeful/vengeful_basic_attack/modifier_vengeful_basic_attack_stack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_vengeful_basic_attack_stack", "abilities/heroes/vengeful/vengeful_basic_attack/modifier_vengeful_basic_attack_stack", LUA_MODIFIER_MOTION_NONE)
 
 function vengeful_basic_attack:GetPlaybackRateOverride()
 	if IsServer() then 
@@ -21,7 +21,7 @@ function vengeful_basic_attack:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local extra_damage = self:GetSpecialValueFor("extra_damage")
 	local modifier = caster:FindModifierByName("modifier_vengeful_basic_attack_stack")
@@ -69,7 +69,7 @@ function vengeful_basic_attack:OnCastPointEnd()
 					damage_type = DAMAGE_TYPE_PHYSICAL,
 					ability = self
 				}
-				ApplyDamage( damage )
+				ApplyDamage(damage)
 
 				if _self.Source.OnBasicAttackImpact then
 					_self.Source:OnBasicAttackImpact(unit)
@@ -93,25 +93,25 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 function vengeful_basic_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_VengefulSpirit.Attack", self:GetCaster() )
+	EmitSoundOn("Hero_VengefulSpirit.Attack", self:GetCaster())
 end
 
-function vengeful_basic_attack:PlayEffectsOnFinish( pos, charged )
+function vengeful_basic_attack:PlayEffectsOnFinish(pos, charged)
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_VengefulSpirit.ProjectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_VengefulSpirit.ProjectileImpact", caster)
 
 	-- Create Particle
 	local particle_cast = charged and "particles/items4_fx/meteor_hammer_spell_impact_ember.vpcf" or "particles/units/heroes/hero_vengeful/vengeful_base_attack_end_flash.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.BasicAttack( vengeful_basic_attack )
-Abilities.Initialize( 
+Abilities.BasicAttack(vengeful_basic_attack)
+Abilities.Initialize(
 	vengeful_basic_attack,
 	nil,
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }

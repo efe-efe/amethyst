@@ -1,9 +1,9 @@
 treant_ultimate = class({})
-LinkLuaModifier( "modifier_treant_ultimate_movement", "abilities/heroes/treant/treant_ultimate/modifier_treant_ultimate_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_treant_ultimate_movement", "abilities/heroes/treant/treant_ultimate/modifier_treant_ultimate_movement", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function treant_ultimate:OnCastPointEnd( )
+function treant_ultimate:OnCastPointEnd()
 	-- unit identifier
 	local caster = self:GetCaster()
     local root_duration = self:GetSpecialValueFor("root_duration")
@@ -11,7 +11,7 @@ function treant_ultimate:OnCastPointEnd( )
     local damage = self:GetAbilityDamage()
 
     -- Find enemies
-    local enemies = FindUnitsInRadius( 
+    local enemies = FindUnitsInRadius(
         caster:GetTeamNumber(), -- int, your team number
         caster:GetOrigin(), -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -21,7 +21,7 @@ function treant_ultimate:OnCastPointEnd( )
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         local direction = (caster:GetOrigin() - enemy:GetOrigin()):Normalized()
@@ -32,7 +32,7 @@ function treant_ultimate:OnCastPointEnd( )
             self, 
             "modifier_generic_root", 
             { duration = root_duration }
-        )
+       )
         enemy:AddNewModifier(
             caster, -- player source
             self, -- ability source
@@ -44,7 +44,7 @@ function treant_ultimate:OnCastPointEnd( )
                 speed = 100,
                 duration = root_duration 
             } -- kv
-        )
+       )
 
         local damage_table = {
             victim = enemy,
@@ -52,7 +52,7 @@ function treant_ultimate:OnCastPointEnd( )
             damage = damage,
             damage_type = DAMAGE_TYPE_PURE,
         }
-        ApplyDamage( damage_table )
+        ApplyDamage(damage_table)
 
     end
 
@@ -69,16 +69,16 @@ function treant_ultimate:PlayEffectsOnTrigger()
 
 
     local particle_cast_b = "particles/units/heroes/hero_treant/treant_overgrowth_cast.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 
     local particle_cast_c = "particles/units/heroes/hero_witchdoctor/witchdoctor_maledict.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, thinker )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, thinker)
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	treant_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_5, rate = 0.9 },
 	{ movement_speed = 0 }

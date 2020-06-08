@@ -14,7 +14,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_weaver_ultimate:OnCreated( kv )
+function modifier_weaver_ultimate:OnCreated(kv)
 	if IsServer() then
 		self.counter = 0
 		self.origins = {}
@@ -24,7 +24,7 @@ function modifier_weaver_ultimate:OnCreated( kv )
 	end
 end
 
-function modifier_weaver_ultimate:OnDestroy( kv )
+function modifier_weaver_ultimate:OnDestroy(kv)
 end
 
 function modifier_weaver_ultimate:OnIntervalThink()
@@ -42,10 +42,10 @@ function modifier_weaver_ultimate:OnIntervalThink()
 	end
 end
 
-function modifier_weaver_ultimate:PlayEffects( pos )
+function modifier_weaver_ultimate:PlayEffects(pos)
 	local particle_cast = "particles/econ/events/ti9/hero_levelup_ti9_flash_hit_rings.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

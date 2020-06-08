@@ -2,7 +2,7 @@ modifier_juggernaut_ultimate_displacement = class({})
 
 function modifier_juggernaut_ultimate_displacement:OnCreated(params)
 	self.slashing_duration = self:GetAbility():GetSpecialValueFor("duration")
-	self.aspd_per_stack =  self:GetAbility():GetSpecialValueFor( "aspd_per_stack" )
+	self.aspd_per_stack =  self:GetAbility():GetSpecialValueFor("aspd_per_stack")
 	if IsServer() then
 		self.stacks = 0
 		if self:GetParent():HasModifier("modifier_juggernaut_basic_attack_stacks") then
@@ -42,7 +42,7 @@ function modifier_juggernaut_ultimate_displacement:OnCollide(params)
 	end
 end
 
-function modifier_juggernaut_ultimate_displacement:PlayEffectsOnImpact( hTarget )
+function modifier_juggernaut_ultimate_displacement:PlayEffectsOnImpact(hTarget)
     EmitSoundOn("Hero_PhantomAssassin.Attack", hTarget)
 end
 

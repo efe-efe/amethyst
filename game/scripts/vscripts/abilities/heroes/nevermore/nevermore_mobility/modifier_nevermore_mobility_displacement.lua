@@ -14,9 +14,9 @@ function modifier_nevermore_mobility_displacement:OnCreated(params)
 
     if IsServer() then
         local particle_cast = "particles/econ/items/shadow_fiend/sf_desolation/sf_desolation_scratch.vpcf"
-        local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+        local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
         ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin()) 
-        ParticleManager:ReleaseParticleIndex( effect_cast )
+        ParticleManager:ReleaseParticleIndex(effect_cast)
     end
 end
 
@@ -56,7 +56,7 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                                     self:GetParent():FindAbilityByName("nevermore_basic_attack"),
                                     "modifier_nevermore_souls",
                                     {}
-                                )
+                               )
 
                                 self:PlayEffectsOnImpact(unit)
                             end
@@ -83,21 +83,21 @@ end
 
 function modifier_nevermore_mobility_displacement:GetOnThinkCallback()
     local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetAbsOrigin())
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector(250, 1, 1 ))
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(250, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_nevermore_mobility_displacement:PlayEffectsOnDestroy()
     local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetAbsOrigin())
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( 250, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(250, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function modifier_nevermore_mobility_displacement:PlayEffectsOnImpact( hTarget )
+function modifier_nevermore_mobility_displacement:PlayEffectsOnImpact(hTarget)
     EmitSoundOn("Hero_Nevermore.ProjectileImpact", hTarget)
 
 	local info = {

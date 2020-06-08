@@ -1,5 +1,5 @@
 lich_counter = class({})
-LinkLuaModifier( "modifier_lich_banish", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_banish", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_lich_banish", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_banish", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -19,12 +19,12 @@ function lich_counter:OnCastPointEnd()
             activity = ACT_DOTA_CAST_ABILITY_4,
             rate = 0.4
         } -- kv
-    )
+   )
 end
 
 --------------------------------------------------------------------------------
 -- On Trigger
-function lich_counter:OnTrigger( params )
+function lich_counter:OnTrigger(params)
     local caster = self:GetCaster()
     local ability = caster:FindAbilityByName("lich_counter_mobility")
     
@@ -39,13 +39,13 @@ function lich_counter:PlayEffectsOnTrigger()
     local caster = self:GetCaster()
 
     -- Create Particles
-    local effect_cast = ParticleManager:CreateParticle("particles/econ/events/nexon_hero_compendium_2014/blink_dagger_start_nexon_hero_cp_2014.vpcf", PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle("particles/econ/events/nexon_hero_compendium_2014/blink_dagger_start_nexon_hero_cp_2014.vpcf", PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
     lich_counter,
     nil, 
 	{ movement_speed = 0, hide_indicator = 1 }

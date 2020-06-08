@@ -1,5 +1,5 @@
 nevermore_basic_attack = class({})
-LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE)
 
 function nevermore_basic_attack:GetCastPointOverride()
 	if IsServer() then
@@ -10,7 +10,7 @@ end
 function nevermore_basic_attack:GetCooldown(iLevel)
 	if IsServer() then
         local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
-        local attack_speed = ( 1 / attacks_per_second )
+        local attack_speed = (1 / attacks_per_second)
 		
 		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
 	end
@@ -26,7 +26,7 @@ function nevermore_basic_attack:OnSpellStart()
 	local origin = caster:GetOrigin()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
@@ -54,7 +54,7 @@ function nevermore_basic_attack:OnSpellStart()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 				ability = self
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if _self.Source == caster and not unit:IsObstacle() then
 				caster:GiveManaPercent(mana_gain_pct, unit)
@@ -92,21 +92,21 @@ function nevermore_basic_attack:OnSpellStart()
 end
 
 function nevermore_basic_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Nevermore.Attack", self:GetCaster() )
+	EmitSoundOn("Hero_Nevermore.Attack", self:GetCaster())
 end
 
-function nevermore_basic_attack:PlayEffectsOnFinish( pos )
+function nevermore_basic_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
-	EmitSoundOnLocationWithCaster( pos, "Hero_Nevermore.ProjectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Nevermore.ProjectileImpact", caster)
 
 	local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_base_attack_impact.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function nevermore_basic_attack:PlayEffectsSoul( hTarget )
+function nevermore_basic_attack:PlayEffectsSoul(hTarget)
 	local info = {
 		Target = self:GetCaster(),
 		Source = hTarget,

@@ -9,7 +9,7 @@ function phantom_ex_basic_attack:OnCastPointEnd()
         self,
         "modifier_phantom_ex_basic_attack",
         {}
-    )
+   )
 
     self:PlayEffects()
 end
@@ -20,13 +20,13 @@ function phantom_ex_basic_attack:PlayEffects()
 
     -- Create Particles
     local particle_cast = "particles/units/heroes/hero_demonartist/demonartist_spiritwalk_buff_start_rope.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, caster:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+	ParticleManager:SetParticleControl(effect_cast, 3, caster:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	phantom_ex_basic_attack,
 	{ activity = ACT_DOTA_TELEPORT_END, rate = 0.7 },
 	{ movement_speed = 100 }

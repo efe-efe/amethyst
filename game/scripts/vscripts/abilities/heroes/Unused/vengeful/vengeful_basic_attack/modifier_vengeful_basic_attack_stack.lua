@@ -18,7 +18,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_vengeful_basic_attack_stack:OnCreated( kv )
+function modifier_vengeful_basic_attack_stack:OnCreated(kv)
 	-- references
 	if IsServer() then
 		self.attack_speed_bonus = 0.2 + self:GetParent():GetAttackAnimationPoint()--self:GetAbility():GetSpecialValueFor("attack_speed_bonus")
@@ -28,9 +28,9 @@ function modifier_vengeful_basic_attack_stack:OnCreated( kv )
 	end
 end
 
-function modifier_vengeful_basic_attack_stack:OnRefresh( kv )
+function modifier_vengeful_basic_attack_stack:OnRefresh(kv)
 	-- references
-	local max_stack = self:GetAbility():GetSpecialValueFor( "max_stacks" )
+	local max_stack = self:GetAbility():GetSpecialValueFor("max_stacks")
 
 	if IsServer() then
 		if self:GetStackCount() < max_stack then
@@ -48,7 +48,7 @@ function modifier_vengeful_basic_attack_stack:OnRefresh( kv )
 	end
 end
 
-function modifier_vengeful_basic_attack_stack:OnDestroy( kv )
+function modifier_vengeful_basic_attack_stack:OnDestroy(kv)
 	if IsServer() then
 		self:StopEffects()
 		
@@ -84,8 +84,8 @@ function modifier_vengeful_basic_attack_stack:PlayEffectsCharged()
 	local caster = self:GetParent()
     local origin = caster:GetOrigin()
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, caster )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, caster)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -94,7 +94,7 @@ function modifier_vengeful_basic_attack_stack:PlayEffectsCharged()
 		origin, 
 		true 
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_vengeful_basic_attack_stack:PlayEffects()
@@ -107,13 +107,13 @@ function modifier_vengeful_basic_attack_stack:CreateGlow(index)
 	local particle_cast = "particles/econ/items/vengeful/vengeful_echoes_eyrie/vengeful_ambient_head_flames_motenai.vpcf"
 	local caster = self:GetParent()
 	local origin = caster:GetOrigin()
-	self.effects_cast_weapon[index] = ParticleManager:CreateParticle( 
+	self.effects_cast_weapon[index] = ParticleManager:CreateParticle(
 		particle_cast, 
 		PATTACH_CUSTOMORIGIN, 
 		caster
 	)
 
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		self.effects_cast_weapon[index], 
 		0, 
 		caster, 
@@ -122,7 +122,7 @@ function modifier_vengeful_basic_attack_stack:CreateGlow(index)
 		origin, 
 		true 
 	)
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		self.effects_cast_weapon[index], 
 		1, 
 		caster, 
@@ -135,14 +135,14 @@ end
 
 function modifier_vengeful_basic_attack_stack:StopEffects()
 	if self.effect_cast ~= nil then
-		ParticleManager:DestroyParticle( self.effect_cast, false )
-		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+		ParticleManager:DestroyParticle(self.effect_cast, false)
+		ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	end
 
 	for _,efx in pairs(self.effects_cast_weapon) do
 		if efx ~= nil then
-			ParticleManager:DestroyParticle( efx, false )
-			ParticleManager:ReleaseParticleIndex( efx )
+			ParticleManager:DestroyParticle(efx, false)
+			ParticleManager:ReleaseParticleIndex(efx)
 		end
 	end
 

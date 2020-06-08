@@ -9,7 +9,7 @@ PROJECTILES_FOLLOW = 3
 SPEED_FACTOR = 1.0
 
 if Projectiles == nil then
-    print ( '[PROJECTILES] creating Projectiles' )
+    print ('[PROJECTILES] creating Projectiles')
     Projectiles = {}
     Projectiles.__index = Projectiles
 end
@@ -230,7 +230,7 @@ function Projectiles:CreateProjectile(projectile)
             else
                 if projectile.bUseFindUnitsInRadius ~= nil then
                     if projectile.bUseFindUnitsInRadius then
-                        ents = FindUnitsInRadius( 
+                        ents = FindUnitsInRadius(
                             DOTA_TEAM_NOTEAM, -- int, your team number
                             framehalf, -- point, center point
                             nil, -- handle, cacheUnit. (not known)
@@ -240,7 +240,7 @@ function Projectiles:CreateProjectile(projectile)
                             DOTA_UNIT_TARGET_FLAG_NONE, -- int, flag filter
                             FIND_ANY_ORDER, -- int, order filter
                             false -- bool, can grow cache
-                        )
+                       )
                     else
                         ents = Entities:FindAllInSphere(framehalf, framerad)
                     end
@@ -258,7 +258,7 @@ function Projectiles:CreateProjectile(projectile)
                             projectile.iFlagFilter,
                             FIND_ANY_ORDER, 
                             false
-                        )
+                       )
                     end
                 end
             end
@@ -287,7 +287,7 @@ function Projectiles:CreateProjectile(projectile)
                         entity:IsAlive() and 
                         (not    projectile.bIgnoreSource or 
                                 (projectile.bIgnoreSource and entity ~= projectile.Source)
-                        ) --[[and 
+                       ) --[[and 
                         nozCheck]] and 
                         zCheck 
                     then
@@ -325,10 +325,10 @@ function Projectiles:CreateProjectile(projectile)
                                                 damage = 1,
                                                 damage_type = DAMAGE_TYPE_MAGICAL,
                                             }
-                                            ApplyDamage( damage )
+                                            ApplyDamage(damage)
                                         end
 
-                                        Projectiles:CreateProjectile( reflectedProjectile )
+                                        Projectiles:CreateProjectile(reflectedProjectile)
                                         return
                                     end
                                 end
@@ -341,7 +341,7 @@ function Projectiles:CreateProjectile(projectile)
                                         damage = 1,
                                         damage_type = DAMAGE_TYPE_MAGICAL,
                                     }
-                                    ApplyDamage( damage )
+                                    ApplyDamage(damage)
 
                                     if projectile.OnFinish then
                                         local status, out = pcall(projectile.OnFinish, projectile, subpos)

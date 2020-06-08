@@ -10,7 +10,7 @@ end
 function puck_basic_attack:GetCooldown(iLevel)
 	if IsServer() then
         local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
-        local attack_speed = ( 1 / attacks_per_second )
+        local attack_speed = (1 / attacks_per_second)
 		
 		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
 	end
@@ -32,7 +32,7 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 	local caster = self:GetCaster()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
     local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
@@ -68,7 +68,7 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 				ability = self
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if is_charged then
 				unit:AddNewModifier(_self.Source, nil, "modifier_generic_fading_slow", { duration = fading_slow_duration, max_slow_pct = fading_slow_pct })
@@ -98,16 +98,16 @@ end
 function puck_basic_attack:PlayEffectsOnFinish(pos, is_charged)
 	local caster = self:GetCaster()
 
-	EmitSoundOnLocationWithCaster( pos, "Hero_Puck.ProjectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Puck.ProjectileImpact", caster)
 
 	local particle_cast = "particles/units/heroes/hero_puck/puck_base_attack_explosion.vpcf"
 	if is_charged then
 		particle_cast = "particles/econ/items/puck/puck_alliance_set/puck_base_attack_explosion_aproset.vpcf"
 	end
 	
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

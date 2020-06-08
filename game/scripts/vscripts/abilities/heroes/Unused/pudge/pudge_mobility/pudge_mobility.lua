@@ -42,7 +42,7 @@ function pudge_mobility:OnDisplacementEnd()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         local damage_table = {
@@ -51,7 +51,7 @@ function pudge_mobility:OnDisplacementEnd()
             damage = self:GetSpecialValueFor("ability_damage"),
             damage_type = DAMAGE_TYPE_PURE,
         }
-		ApplyDamage( damage_table )
+		ApplyDamage(damage_table)
 		
 		enemy:AddNewModifier(self:GetCaster(), self, "modifier_generic_fading_slow_new", { 
 			duration = fading_slow_duration,
@@ -66,16 +66,16 @@ function pudge_mobility:PlayEffectsOnDisplacementEnd()
 	EmitSoundOn("Hero_EarthShaker.Fissure", self:GetCaster())
 
 	local particle_cast = "particles/econ/events/ti8/blink_dagger_ti8_end.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetCaster())
 
 	ParticleManager:DestroyParticle(self.effect_cast, false)
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 
 	particle_cast = "particles/econ/items/earthshaker/earthshaker_arcana/earthshaker_arcana_aftershock_v2.vpcf"
-    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 2, self:GetCaster():GetOrigin() )
+    effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast, 2, self:GetCaster():GetOrigin())
 	
-	CreateRadiusMarker( self:GetCaster(), self:GetCaster():GetOrigin(), {
+	CreateRadiusMarker(self:GetCaster(), self:GetCaster():GetOrigin(), {
 		show_all = 1,
 		radius = self.radius
 	})
@@ -84,18 +84,18 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 function pudge_mobility:PlayEffectsOnCast()
-	EmitSoundOn( "Hero.Pudge.Arcana.Streak", self:GetCaster() )
+	EmitSoundOn("Hero.Pudge.Arcana.Streak", self:GetCaster())
 
 	local particle_cast = "particles/red_blink/blink_dagger_ti8_start.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetCaster())
 
 	self.effect_cast = ParticleManager:CreateParticle("particles/econ/items/pudge/pudge_tassles_of_black_death/pudge_black_death_rot.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
-	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(250,0,0) )
+	ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(250,0,0))
 
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	pudge_mobility,
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 2.0 },
 	{ movement_speed = 0}

@@ -1,8 +1,8 @@
 tinker_ultimate = class({})
-LinkLuaModifier( "modifier_tinker_ultimate", "abilities/heroes/tinker/tinker_ultimate/modifier_tinker_ultimate", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_tinker_ultimate", "abilities/heroes/tinker/tinker_ultimate/modifier_tinker_ultimate", LUA_MODIFIER_MOTION_NONE)
 
 function tinker_ultimate:GetAOERadius()
-	return self:GetSpecialValueFor( "hitbox" )
+	return self:GetSpecialValueFor("hitbox")
 end
 
 --------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ function tinker_ultimate:OnSpellStart()
 
 	-- play effects
 	local sound_cast = "tinker_tink_laugh_04"
-	EmitGlobalSound( sound_cast )
+	EmitGlobalSound(sound_cast)
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, { duration=1.0, activity=ACT_DOTA_CAST_ABILITY_3, rate=1.0 })
@@ -33,7 +33,7 @@ function tinker_ultimate:OnSpellStart()
 	})
 end
 
-function tinker_ultimate:OnCastPointEnd( pos )
+function tinker_ultimate:OnCastPointEnd(pos)
 	-- load data
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
@@ -50,7 +50,7 @@ function tinker_ultimate:OnCastPointEnd( pos )
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, origin.z )):Normalized()
+	local projectile_direction = (Vector(pos.x-origin.x, pos.y-origin.y, origin.z)):Normalized()
 
 	-- Projectile
 	local projectile = {
@@ -85,7 +85,7 @@ function tinker_ultimate:OnCastPointEnd( pos )
 		fRehitDelay = 1.0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
-			local modifier = unit:FindModifierByName( "modifier_tinker_ultimate" )
+			local modifier = unit:FindModifierByName("modifier_tinker_ultimate")
 			local final_damage = damage
 
 			-- Safe destroying
@@ -104,7 +104,7 @@ function tinker_ultimate:OnCastPointEnd( pos )
 				ability = self
 			}
 			
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 
 			unit:AddNewModifier(
 				_self.Source,
@@ -125,17 +125,17 @@ function tinker_ultimate:OnCastPointEnd( pos )
 end
 
 --------------------------------------------------------------------------------
-function tinker_ultimate:PlayEffects_a( source, target )
+function tinker_ultimate:PlayEffects_a(source, target)
 	-- Get Resources
 	local particle_cast = "particles/items_fx/dagon.vpcf"
 	local sound_cast = "DOTA_Item.Dagon.Activate"
 	local sound_target = "DOTA_Item.Dagon5.Target"
 
 	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, source )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, source)
 
 	local attach = "attach_attack1"
-	if source:ScriptLookupAttachment( "attach_attack2" )~=0 then attach = "attach_attack2" end
+	if source:ScriptLookupAttachment("attach_attack2")~=0 then attach = "attach_attack2" end
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
 		0,
@@ -155,26 +155,26 @@ function tinker_ultimate:PlayEffects_a( source, target )
 		Vector(0,0,0), -- unknown
 		true -- unknown, true
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster() )
-	EmitSoundOn( sound_target, target )
+	EmitSoundOn(sound_cast, self:GetCaster())
+	EmitSoundOn(sound_target, target)
 end
 
 
 --------------------------------------------------------------------------------
-function tinker_ultimate:PlayEffects_b( source, point )
+function tinker_ultimate:PlayEffects_b(source, point)
 	-- Get Resources
 	local particle_cast = "particles/items_fx/dagon.vpcf"
 	local sound_cast = "DOTA_Item.Dagon.Activate"
 	local sound_target = "DOTA_Item.Dagon5.Target"
 
 	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, source )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, source)
 
 	local attach = "attach_attack1"
-	if source:ScriptLookupAttachment( "attach_attack2" )~=0 then attach = "attach_attack2" end
+	if source:ScriptLookupAttachment("attach_attack2")~=0 then attach = "attach_attack2" end
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
 		0,
@@ -184,10 +184,10 @@ function tinker_ultimate:PlayEffects_b( source, point )
 		Vector(0,0,0), -- unknown
 		true -- unknown, true
 	)
-	ParticleManager:SetParticleControl( effect_cast, 1, point )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:SetParticleControl(effect_cast, 1, point)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	-- Create Sound
-	EmitSoundOn( sound_cast, source )
-	EmitSoundOnLocationWithCaster( point, sound_target, source )
+	EmitSoundOn(sound_cast, source)
+	EmitSoundOnLocationWithCaster(point, sound_target, source)
 end

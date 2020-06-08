@@ -25,7 +25,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_phoenix_special_attack_charges:OnCreated( kv )
+function modifier_phoenix_special_attack_charges:OnCreated(kv)
     --Initializers
     if IsServer() then
         
@@ -46,18 +46,18 @@ end
 function modifier_phoenix_special_attack_charges:CalculateCharge()
 	if self:GetStackCount()>=self.max_charges then
 		-- stop charging
-		self:SetDuration( -1, false )
-		self:StartIntervalThink( -1 )
+		self:SetDuration(-1, false)
+		self:StartIntervalThink(-1)
 	else
 		-- if not charging
 		if self:GetRemainingTime() <= 0.05 then
-			self:StartIntervalThink( self.replenish_time )
-			self:SetDuration( self.replenish_time, true )
+			self:StartIntervalThink(self.replenish_time)
+			self:SetDuration(self.replenish_time, true)
 		end
 
 		-- set on cooldown if no charges
 		if self:GetStackCount()==0 then
-			self:GetAbility():StartCooldown( self:GetRemainingTime() )
+			self:GetAbility():StartCooldown(self:GetRemainingTime())
 		end
 	end
 end

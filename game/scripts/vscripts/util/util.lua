@@ -1,6 +1,6 @@
 
 function PrintTable(t, indent, done)
-	--print ( string.format ('PrintTable type %s', type(keys)) )
+	--print (string.format ('PrintTable type %s', type(keys)))
 	if type(t) ~= "table" then return end
 
 	done = done or {}
@@ -46,7 +46,7 @@ end
 function CountdownTimer()
 	nCOUNTDOWNTIMER = nCOUNTDOWNTIMER - 1
 	local t = nCOUNTDOWNTIMER
-	--print( t )
+	--print(t)
 	local minutes = math.floor(t / 60)
 	local seconds = t - (minutes * 60)
 	local m10 = math.floor(minutes / 10)
@@ -61,7 +61,7 @@ function CountdownTimer()
 			timer_second_01 = s01,
 		}
 
-	--CustomGameEventManager:Send_ServerToAllClients( "countdown", broadcast_gametimer )
+	--CustomGameEventManager:Send_ServerToAllClients("countdown", broadcast_gametimer)
 end
 
 function array_sub(t1, t2)
@@ -167,6 +167,8 @@ function FindUnitsInCirclesProjection(nTeamNumber, vCenterPos, vStartPos, vEndPo
 		bCanGrowCache	-- bool, can grow cache
 	)
 
+	DebugDrawCircle(vStartPos, Vector(255,0,0), 5, fStartRadius, false, 1.0)
+	DebugDrawCircle(vEndPos, Vector(255,255,0), 5, fEndRadius, false, 1.0)
 
 	-- Filter within cone
 	local targets = {}
@@ -238,21 +240,21 @@ function CreateRadiusMarker(caster, origin, params)
 		for _,alliance in pairs(GameRules.GameMode.alliances) do
 			for _,team in pairs(alliance.teams) do
 				if caster:GetTeam() == team then
-					effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_ally, PATTACH_WORLDORIGIN, nil, team )
+					effect_cast = ParticleManager:CreateParticleForTeam(particle_cast_ally, PATTACH_WORLDORIGIN, nil, team)
 				else
-					effect_cast = ParticleManager:CreateParticleForTeam( particle_cast_enemy, PATTACH_WORLDORIGIN, nil, team )
+					effect_cast = ParticleManager:CreateParticleForTeam(particle_cast_enemy, PATTACH_WORLDORIGIN, nil, team)
 				end
-					ParticleManager:SetParticleControl( effect_cast, 0, origin )
-					ParticleManager:SetParticleControl( effect_cast, 2, Vector( params.radius, params.radius , params.radius ) )
-					ParticleManager:SetParticleControl( effect_cast, 4, origin)
-					ParticleManager:ReleaseParticleIndex( effect_cast )
+					ParticleManager:SetParticleControl(effect_cast, 0, origin)
+					ParticleManager:SetParticleControl(effect_cast, 2, Vector(params.radius, params.radius , params.radius))
+					ParticleManager:SetParticleControl(effect_cast, 4, origin)
+					ParticleManager:ReleaseParticleIndex(effect_cast)
 			end
 		end
 	else
-		effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast_ally, PATTACH_WORLDORIGIN, nil, caster:GetPlayerOwner() )
-		ParticleManager:SetParticleControl( effect_cast, 0, origin )
-		ParticleManager:SetParticleControl( effect_cast, 2, Vector( params.radius, params.radius , params.radius ) )
-		ParticleManager:SetParticleControl( effect_cast, 4, origin)
-		ParticleManager:ReleaseParticleIndex( effect_cast )
+		effect_cast = ParticleManager:CreateParticleForPlayer(particle_cast_ally, PATTACH_WORLDORIGIN, nil, caster:GetPlayerOwner())
+		ParticleManager:SetParticleControl(effect_cast, 0, origin)
+		ParticleManager:SetParticleControl(effect_cast, 2, Vector(params.radius, params.radius , params.radius))
+		ParticleManager:SetParticleControl(effect_cast, 4, origin)
+		ParticleManager:ReleaseParticleIndex(effect_cast)
 	end
 end

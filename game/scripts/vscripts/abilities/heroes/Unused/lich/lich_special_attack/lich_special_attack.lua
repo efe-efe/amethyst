@@ -1,5 +1,5 @@
 lich_special_attack = class({})
-LinkLuaModifier( "modifier_lich_special_attack_thinker", "abilities/heroes/lich/lich_special_attack/modifier_lich_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_lich_special_attack_thinker", "abilities/heroes/lich/lich_special_attack/modifier_lich_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -11,10 +11,10 @@ function lich_special_attack:OnCastPointEnd()
     self:CreateShard(point, nil)
 end
 
-function lich_special_attack:CreateShard( origin, knockback )
+function lich_special_attack:CreateShard(origin, knockback)
     local caster = self:GetCaster()
-    local radius = self:GetSpecialValueFor( "radius" )
-    local delay_time = self:GetSpecialValueFor( "delay_time" )
+    local radius = self:GetSpecialValueFor("radius")
+    local delay_time = self:GetSpecialValueFor("delay_time")
 
     CreateModifierThinker(
 		caster, --hCaster
@@ -33,17 +33,17 @@ function lich_special_attack:CreateShard( origin, knockback )
 	)
 end
 
-function lich_special_attack:ConsumeDebuffs( base_damage, origin, radius, knockback )
+function lich_special_attack:ConsumeDebuffs(base_damage, origin, radius, knockback)
     local caster = self:GetCaster()
-	local heal = self:GetSpecialValueFor( "heal" )
-	local extra_damage = self:GetSpecialValueFor( "extra_damage" )
-	local silence_duration = self:GetSpecialValueFor( "silence_duration" )
-	local fading_slow_duration = self:GetSpecialValueFor( "fading_slow_duration" )
-    local mana_gain_pct = self:GetSpecialValueFor( "mana_gain_pct" )/100
+	local heal = self:GetSpecialValueFor("heal")
+	local extra_damage = self:GetSpecialValueFor("extra_damage")
+	local silence_duration = self:GetSpecialValueFor("silence_duration")
+	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
+    local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")/100
     local m_radius = radius or self:GetSpecialValueFor("radius")
 	
     -- find enemies
-    local enemies = FindUnitsInRadius( 
+    local enemies = FindUnitsInRadius(
         caster:GetTeamNumber(), -- int, your team number
         origin, -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -53,7 +53,7 @@ function lich_special_attack:ConsumeDebuffs( base_damage, origin, radius, knockb
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     local damageTable = {
         attacker = caster,
@@ -103,40 +103,40 @@ function lich_special_attack:ConsumeDebuffs( base_damage, origin, radius, knockb
     end
     
     if knockback then
-        self:PlayEffectsKnockback( m_radius, origin )
+        self:PlayEffectsKnockback(m_radius, origin)
     end
 	self:PlayEffectsOnConsumeDebuffs(m_radius, origin)
 end
 
-function lich_special_attack:PlayEffectsOnConsumeDebuffs( radius, origin )
+function lich_special_attack:PlayEffectsOnConsumeDebuffs(radius, origin)
     local caster = self:GetCaster()
-    EmitSoundOn( "Ability.FrostNova" , caster )
+    EmitSoundOn("Ability.FrostNova" , caster)
 
     -- Create particles
     local particle_cast = "particles/econ/items/lich/frozen_chains_ti6/lich_frozenchains_frostnova.vpcf"
     
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, origin )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( 1, 1, radius ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, origin)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(1, 1, radius))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function lich_special_attack:PlayEffectsKnockback(radius, origin)
     -- Create particles
     local particle_cast = "particles/econ/items/death_prophet/death_prophet_ti9/death_prophet_silence_ti9.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, origin )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 0, 0 ) )
-    ParticleManager:SetParticleControl( effect_cast, 5, origin )
-    ParticleManager:SetParticleControl( effect_cast, 6, origin )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, origin)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, 0, 0))
+    ParticleManager:SetParticleControl(effect_cast, 5, origin)
+    ParticleManager:SetParticleControl(effect_cast, 6, origin)
+    ParticleManager:ReleaseParticleIndex(effect_cast)
     
 end
 
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	lich_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },
 	{ movement_speed = 10 }

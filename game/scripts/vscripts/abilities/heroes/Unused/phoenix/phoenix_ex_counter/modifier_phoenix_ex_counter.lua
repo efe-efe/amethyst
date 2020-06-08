@@ -1,6 +1,6 @@
 modifier_phoenix_ex_counter = class({})
-LinkLuaModifier( "modifier_phoenix_ex_counter_mark", "abilities/heroes/phoenix/phoenix_ex_counter/modifier_phoenix_ex_counter_mark", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phoenix_ex_counter_mark", "abilities/heroes/phoenix/phoenix_ex_counter/modifier_phoenix_ex_counter_mark", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -47,7 +47,7 @@ function modifier_phoenix_ex_counter:OnIntervalThink()
 
     self:PlayEffects()
     
-    local enemies = FindUnitsInRadius( 
+    local enemies = FindUnitsInRadius(
         self:GetParent():GetTeamNumber(), -- int, your team number
         self:GetParent():GetOrigin(), -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -57,7 +57,7 @@ function modifier_phoenix_ex_counter:OnIntervalThink()
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         if not enemy:HasModifier("modifier_phoenix_ex_counter_mark") then
@@ -66,14 +66,14 @@ function modifier_phoenix_ex_counter:OnIntervalThink()
                 self:GetAbility(),
                 "modifier_phoenix_ex_counter_mark",
                 { duration = self.root_duration_per_think * self.instances }
-            )
+           )
 
             enemy:AddNewModifier(
                 self:GetParent(),
                 self:GetAbility(),
                 "modifier_generic_root",
                 { duration = self.root_duration_per_think * self.counter }
-            )
+           )
     
 
             local damage = {
@@ -83,7 +83,7 @@ function modifier_phoenix_ex_counter:OnIntervalThink()
                 damage_type = DAMAGE_TYPE_PURE,
             }
 
-            ApplyDamage( damage )
+            ApplyDamage(damage)
         end
     end
 end
@@ -91,13 +91,13 @@ end
 function modifier_phoenix_ex_counter:PlayEffects()
     -- Create Sound
 	local sound_cast = "Hero_Phoenix.FireSpirits.Launch"
-    EmitSoundOn( sound_cast, self:GetCaster() )
+    EmitSoundOn(sound_cast, self:GetCaster())
     
     local particle_cast_b = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast_b, 2, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    ParticleManager:SetParticleControl(effect_cast_b, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast_b, 2, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 

@@ -1,11 +1,11 @@
 builder_check_area_lua = class({})
 
-LinkLuaModifier( "modifier_builder_check_area_thinker_lua", "abilities/heroes/builder/builder_check_area_lua/modifier_builder_check_area_thinker_lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_builder_check_area_thinker_lua", "abilities/heroes/builder/builder_check_area_lua/modifier_builder_check_area_thinker_lua", LUA_MODIFIER_MOTION_NONE)
 
 -- Set AOE indicator
 --------------------------------------------------------------------------------
 function builder_check_area_lua:GetAOERadius()
-	return self:GetSpecialValueFor( "radius" )
+	return self:GetSpecialValueFor("radius")
 end
 
 --------------------------------------------------------------------------------
@@ -23,5 +23,5 @@ function builder_check_area_lua:OnSpellStart()
         point, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
-    )
+   )
 end

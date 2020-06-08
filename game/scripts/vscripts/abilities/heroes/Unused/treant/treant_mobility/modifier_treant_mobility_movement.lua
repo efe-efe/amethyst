@@ -10,7 +10,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_treant_mobility_movement:OnCreated( kv )
+function modifier_treant_mobility_movement:OnCreated(kv)
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -24,28 +24,28 @@ function modifier_treant_mobility_movement:OnCreated( kv )
 	end
 end
 
-function modifier_treant_mobility_movement:OnRefresh( kv )
+function modifier_treant_mobility_movement:OnRefresh(kv)
 end
 
-function modifier_treant_mobility_movement:OnDestroy( kv )
+function modifier_treant_mobility_movement:OnDestroy(kv)
 	if IsServer() then
-		self:GetParent():InterruptMotionControllers( true )
+		self:GetParent():InterruptMotionControllers(true)
 
 		SafeDestroyModifier("modifier_treant_mobility", self:GetCaster(), self:GetCaster())
 
 		local particle_cast = "particles/econ/items/antimage/antimage_ti7_golden/antimage_blink_start_ti7_golden.vpcf"
         -- Create Particles
-        local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-        ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-        ParticleManager:SetParticleControl( effect_cast, 1, self:GetCaster():GetOrigin() )
-        ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
-        ParticleManager:ReleaseParticleIndex( effect_cast )
+        local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+        ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+        ParticleManager:SetParticleControl(effect_cast, 1, self:GetCaster():GetOrigin())
+        ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+        ParticleManager:ReleaseParticleIndex(effect_cast)
 
 
 	end
 end
 
-function modifier_treant_mobility_movement:UpdateHorizontalMotion( me, dt )
+function modifier_treant_mobility_movement:UpdateHorizontalMotion(me, dt)
 	local pos = self:GetParent():GetOrigin()
 	
 	-- stop if already past distance
@@ -58,7 +58,7 @@ function modifier_treant_mobility_movement:UpdateHorizontalMotion( me, dt )
 	local target = pos + self.direction * (self.speed*dt)
 
 	-- change position
-	self:GetParent():SetOrigin( target )
+	self:GetParent():SetOrigin(target)
 end
 
 function modifier_treant_mobility_movement:OnHorizontalMotionInterrupted()

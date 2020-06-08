@@ -31,7 +31,7 @@ function nevermore_ex_special_attack:OnCastPointEnd()
         self,
         "modifier_nevermore_ex_special_attack",
         {}
-    )
+   )
 
     self:PlayEffects()
     
@@ -46,7 +46,7 @@ function nevermore_ex_special_attack:PlayEffects()
 
     -- Create Particles
     local particle_cast = "particles/econ/items/doom/doom_ti8_immortal_arms/doom_ti8_immortal_devour_ring.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 

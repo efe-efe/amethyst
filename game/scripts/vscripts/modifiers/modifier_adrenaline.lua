@@ -4,7 +4,7 @@ function modifier_adrenaline:IsHidden() return false end
 function modifier_adrenaline:IsDebuff() return false end
 function modifier_adrenaline:IsPurgable() return true end
 
-function modifier_adrenaline:OnCreated( params )
+function modifier_adrenaline:OnCreated(params)
 	self.speed_buff_pct = 20
 	self.slow_duration = 2.0
 end
@@ -23,7 +23,7 @@ function modifier_adrenaline:DeclareFunctions()
 	}
 end
 
-function modifier_adrenaline:OnTakeDamage( params )
+function modifier_adrenaline:OnTakeDamage(params)
 	if IsServer() then
         if params.unit ~= self:GetCaster() then return end
 
@@ -36,7 +36,7 @@ function modifier_adrenaline:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct
 end
 
-function modifier_adrenaline:OnAbilityExecuted( params )
+function modifier_adrenaline:OnAbilityExecuted(params)
 	if IsServer() then
 		if params.unit ~= self:GetParent() then return end
 		if 	params.ability:GetName() == "item_death_orb" or
@@ -66,8 +66,8 @@ function modifier_adrenaline:PlayEffects()
     EmitSoundOn("DOTA_Item.Sheepstick.Activate", self:GetParent())
 	local particle_cast = "particles/units/heroes/hero_lion/lion_spell_voodoo.vpcf"
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetParent())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_adrenaline:GetStatusEffectName()

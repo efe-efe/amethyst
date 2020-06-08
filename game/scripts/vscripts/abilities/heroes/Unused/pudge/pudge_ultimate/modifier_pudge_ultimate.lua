@@ -38,7 +38,7 @@ function modifier_pudge_ultimate:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         local damage_table = {
@@ -47,7 +47,7 @@ function modifier_pudge_ultimate:OnIntervalThink()
             damage = self.damage,
             damage_type = DAMAGE_TYPE_PURE,
         }
-        ApplyDamage( damage_table )
+        ApplyDamage(damage_table)
 
         enemy:AddNewModifier(self.parent, self:GetAbility(), "modifier_generic_fading_slow_new", { 
             duration = self.fading_slow_duration,
@@ -62,32 +62,32 @@ function modifier_pudge_ultimate:OnIntervalThink()
     self.counter = self.counter + 2
 end
 
-function modifier_pudge_ultimate:PlayEffects( index, origin )
-    EmitSoundOnLocationWithCaster( origin, "Hero_Pudge.Dismember", self:GetCaster())
-    EmitSoundOnLocationWithCaster( origin, "Hero_Pudge.DismemberSwings", self:GetCaster())
+function modifier_pudge_ultimate:PlayEffects(index, origin)
+    EmitSoundOnLocationWithCaster(origin, "Hero_Pudge.Dismember", self:GetCaster())
+    EmitSoundOnLocationWithCaster(origin, "Hero_Pudge.DismemberSwings", self:GetCaster())
 
     
     local particle_cast = "particles/econ/items/pudge/pudge_arcana/pudge_arcana_dismember_default.vpcf"
-    self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 0, origin )
+    self.effects_cast[index] = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 0, origin)
 end
 
-function modifier_pudge_ultimate:PlayEffectsAoe( index, origin)
-    local effect_cast = ParticleManager:CreateParticle( "particles/aoe_marker.vpcf", PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, origin)
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( 255, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+function modifier_pudge_ultimate:PlayEffectsAoe(index, origin)
+    local effect_cast = ParticleManager:CreateParticle("particles/aoe_marker.vpcf", PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, origin)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 2, Vector(255, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 3, Vector(0.1, 0, 0))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
-    self.effects_cast[index] = ParticleManager:CreateParticle( "particles/grimstroke_ink_swell_aoe.vpcf", PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 0, origin )
-    ParticleManager:SetParticleControl( self.effects_cast[index], 1, Vector(self.radius, self.radius, self.radius) )
+    self.effects_cast[index] = ParticleManager:CreateParticle("particles/grimstroke_ink_swell_aoe.vpcf", PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 0, origin)
+    ParticleManager:SetParticleControl(self.effects_cast[index], 1, Vector(self.radius, self.radius, self.radius))
 end
 
 function modifier_pudge_ultimate:StopEffects()
     for _,effect_cast in pairs(self.effects_cast) do
-        ParticleManager:DestroyParticle( effect_cast, false )
-        ParticleManager:ReleaseParticleIndex( effect_cast )    
+        ParticleManager:DestroyParticle(effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(effect_cast)    
     end
 end

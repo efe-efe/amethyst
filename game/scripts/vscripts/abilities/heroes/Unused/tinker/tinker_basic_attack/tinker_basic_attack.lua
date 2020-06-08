@@ -21,7 +21,7 @@ function tinker_basic_attack:OnSpellStart()
 	)
 end
 
-function tinker_basic_attack:OnCastPointEnd( pos )
+function tinker_basic_attack:OnCastPointEnd(pos)
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -36,10 +36,10 @@ function tinker_basic_attack:OnCastPointEnd( pos )
 	
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, -80 )):Normalized()
+	local projectile_direction = (Vector(pos.x-origin.x, pos.y-origin.y, -80)):Normalized()
 
 	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
+	local attack_speed = (1 / attacks_per_second)
 
 	-- Projectile
 	local projectile = {
@@ -101,19 +101,19 @@ end
 function tinker_basic_attack:PlayEffects_a()
 	-- Create Sound
 	local sound_cast = "Hero_Tinker.Attack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
-function tinker_basic_attack:PlayEffects_b( pos )
+function tinker_basic_attack:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 	
 	-- Create Sound
 	local sound_cast = "Hero_Tinker.ProjectileImpact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_tinker/tinker_base_attack_impact_burst.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 end

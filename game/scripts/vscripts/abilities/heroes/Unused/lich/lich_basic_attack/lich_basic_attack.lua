@@ -1,5 +1,5 @@
 lich_basic_attack = class({})
-LinkLuaModifier( "modifier_lich_frost", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_frost", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_lich_frost", "abilities/heroes/lich/lich_shared_modifiers/modifier_lich_frost", LUA_MODIFIER_MOTION_NONE)
 
 function lich_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -11,7 +11,7 @@ function lich_basic_attack:OnCastPointEnd()
 	local heal = self:GetSpecialValueFor("heal")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")/100
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
+	local projectile_direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_lich/lich_base_attack.vpcf",
@@ -33,7 +33,7 @@ function lich_basic_attack:OnCastPointEnd()
 				damage = damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			unit:AddNewModifier(_self.Source, self, "modifier_lich_frost", { duration = frost_duration })
 			_self.Source:Heal(heal, _self.Source)
@@ -55,31 +55,31 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 -- On Projectile Finish
-function lich_basic_attack:PlayEffectsOnFinish( pos )
+function lich_basic_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_lich/lich_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function lich_basic_attack:PlayEffectsOnCast( )
+function lich_basic_attack:PlayEffectsOnCast()
 	local sound_cast = "Hero_Lich.Attack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 -- On Projectile Hit enemy
-function lich_basic_attack:PlayEffectsOnImpact( hTarget, pos )
+function lich_basic_attack:PlayEffectsOnImpact(hTarget, pos)
 	local sound_cast = "Hero_Lich.ProjectileImpact"
-	EmitSoundOn( sound_cast, hTarget )
+	EmitSoundOn(sound_cast, hTarget)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	lich_basic_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.5 },
 	{ movement_speed = 10, hide_indicator = 1 }
 )
-Abilities.BasicAttack( lich_basic_attack )
+Abilities.BasicAttack(lich_basic_attack)

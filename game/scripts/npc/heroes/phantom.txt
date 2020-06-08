@@ -4,7 +4,7 @@
 	{
 		// General
 		//-------------------------------------------------------------------------------------------------------------
-		"override_hero"				"npc_dota_hero_phantom_assassin"			// Hero to override
+		"override_hero"				"npc_dota_hero_phantom_assassin"			
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AttributePrimary"			"DOTA_ATTRIBUTE_STRENGTH"
 		
@@ -28,14 +28,14 @@
 
 		// Armor
 		//-------------------------------------------------------------------------------------------------------------
-		"ArmorPhysical"				"0"										// Physical protection.
-		"MagicalResistance"			"0"										// Magical protection.
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
 
 		// Attack
 		//-------------------------------------------------------------------------------------------------------------
-		"AttackDamageMin"			"8"										// Damage range min.
-		"AttackDamageMax"			"8"										// Damage range max.	
-		"AttackRate"				"0.4"									// Speed of attack.
+		"AttackDamageMin"			"8"										
+		"AttackDamageMax"			"8"											
+		"AttackRate"				"0.4"									
 		"AttackAnimationPoint"		"0.2"	
 		"AttackRange"				"80"
 		
@@ -46,18 +46,18 @@
 
 		// Attributes
 		//-------------------------------------------------------------------------------------------------------------
-		"AttributeBaseStrength"		"0"										// Base strength
-		"AttributeStrengthGain"		"0"										// Strength bonus per level.
-		"AttributeBaseIntelligence"	"0"										// Base intelligence
-		"AttributeIntelligenceGain"	"0"										// Intelligence bonus per level.
-		"AttributeBaseAgility"		"0"										// Base agility
-		"AttributeAgilityGain"		"0"										// Agility bonus per level.
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
 		
 		// Status
 		//-------------------------------------------------------------------------------------------------------------
-		"StatusHealth"				"200" 						// Base health.
-		"StatusHealthRegen"			"0.0"									// Health regeneration rate.
-		"StatusMana"				"100"									// Base mana.
+		"StatusHealth"				"200" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
 		//"StatusMana"				"1000"
 		"StatusManaRegen"			"0.0"	
 	}

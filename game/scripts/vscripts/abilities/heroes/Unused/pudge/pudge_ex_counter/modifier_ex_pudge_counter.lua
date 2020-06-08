@@ -1,5 +1,5 @@
 modifier_ex_pudge_counter = class({})
-LinkLuaModifier( "modifier_ex_pudge_counter_debuff", "abilities/heroes/pudge/pudge_ex_counter/modifier_ex_pudge_counter_debuff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ex_pudge_counter_debuff", "abilities/heroes/pudge/pudge_ex_counter/modifier_ex_pudge_counter_debuff", LUA_MODIFIER_MOTION_NONE)
 
 function modifier_ex_pudge_counter:OnCreated()
     if IsServer() then
@@ -30,17 +30,17 @@ end
 function modifier_ex_pudge_counter:OnIntervalThink()
     self.origin = self.caster:GetOrigin()
 
-    local enemies = self.caster:FindUnitsInRadius( 
+    local enemies = self.caster:FindUnitsInRadius(
         self.origin, 
         self.radius, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,enemy in pairs(enemies) do
-        enemy:AddNewModifier(self.caster, self.ability, "modifier_ex_pudge_counter_debuff", { duration = self.interval } )
+        enemy:AddNewModifier(self.caster, self.ability, "modifier_ex_pudge_counter_debuff", { duration = self.interval })
     end
 
     local current_health = self.caster:GetHealth()
@@ -57,7 +57,7 @@ function modifier_ex_pudge_counter:OnIntervalThink()
         damage_table.damage = self.self_damage_per_tick
     end
 
-    ApplyDamage( damage_table )
+    ApplyDamage(damage_table)
 
     self:PlayEffectsAoe()
 end
@@ -80,14 +80,14 @@ end
 -- Graphics & Sounds
 
 function modifier_ex_pudge_counter:PlayEffectsOnCreated()
-    EmitSoundOn( "Hero_Pudge.Rot", self.caster )
+    EmitSoundOn("Hero_Pudge.Rot", self.caster)
     local particle_cast = "particles/econ/items/pudge/pudge_immortal_arm/pudge_immortal_arm_rot.vpcf"
-    self.effect_cast_self = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.caster )
-    ParticleManager:SetParticleControl( self.effect_cast_self, 1, Vector(self.radius, 0,0) )
+    self.effect_cast_self = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.caster)
+    ParticleManager:SetParticleControl(self.effect_cast_self, 1, Vector(self.radius, 0,0))
 
     particle_cast = "particles/econ/items/pudge/pudge_immortal_arm/pudge_immortal_arm_rot_gold.vpcf"
-    self.effect_cast_self_b = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.caster )
-    ParticleManager:SetParticleControl( self.effect_cast_self_b, 1, Vector(self.radius, 0,0) )
+    self.effect_cast_self_b = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.caster)
+    ParticleManager:SetParticleControl(self.effect_cast_self_b, 1, Vector(self.radius, 0,0))
 end
 
 function modifier_ex_pudge_counter:StopEffectsOnCreated()
@@ -97,16 +97,16 @@ function modifier_ex_pudge_counter:StopEffectsOnCreated()
     
     ParticleManager:DestroyParticle(self.effect_cast_self_b, false)
     ParticleManager:ReleaseParticleIndex(self.effect_cast_self_b)
-    StopSoundOn( "Hero_Pudge.Rot", self.caster )
+    StopSoundOn("Hero_Pudge.Rot", self.caster)
 end
 
 function modifier_ex_pudge_counter:PlayEffectsAoe()
     local particle_cast = "particles/aoe_marker.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self.origin )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( 255, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self.origin)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 2, Vector(255, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 3, Vector(0.1, 0, 0))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

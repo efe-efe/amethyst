@@ -1,6 +1,6 @@
 modifier_phantom_counter = class({})
 
-function modifier_phantom_counter:OnCreated( kv )
+function modifier_phantom_counter:OnCreated(kv)
 	self.as_speed = self:GetAbility():GetSpecialValueFor("as_speed")
 end
 

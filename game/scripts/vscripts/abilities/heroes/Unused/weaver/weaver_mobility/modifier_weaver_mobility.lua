@@ -1,5 +1,5 @@
 modifier_weaver_mobility = class({})
-LinkLuaModifier( "modifier_weaver_mobility_mark", "abilities/heroes/weaver/weaver_mobility/modifier_weaver_mobility_mark", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_weaver_mobility_mark", "abilities/heroes/weaver/weaver_mobility/modifier_weaver_mobility_mark", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -15,7 +15,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_weaver_mobility:OnCreated( kv )
+function modifier_weaver_mobility:OnCreated(kv)
 	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 	self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
 	self.radius = 150
@@ -30,7 +30,7 @@ function modifier_weaver_mobility:OnCreated( kv )
 	end
 end
 
-function modifier_weaver_mobility:OnDestroy( kv )
+function modifier_weaver_mobility:OnDestroy(kv)
 	if IsServer() then 
 		self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
 	end
@@ -44,7 +44,7 @@ function modifier_weaver_mobility:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
     
 	for _,enemy in pairs(enemies) do
 		if not enemy:HasModifier("modifier_weaver_mobility_mark") then
@@ -54,7 +54,7 @@ function modifier_weaver_mobility:OnIntervalThink()
 				damage = self.damage,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 			enemy:AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_weaver_mobility_mark", { duration =  self:GetDuration() })
 			self:PlayEffectsDamage(enemy)
 
@@ -108,7 +108,7 @@ end
 function modifier_weaver_mobility:PlayEffectsDamage(hTarget)
 	local particle_cast = "particles/mod_units/heroes/hero_weaver/weaver_shukuchi_damage.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-    --ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )  
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+    --ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)  
 end

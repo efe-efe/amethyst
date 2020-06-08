@@ -10,7 +10,7 @@ function modifier_terrorblade_special_attack_recast:OnDestroy()
 end
 
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Recast( 
+Modifiers.Recast(
 	modifier_terrorblade_special_attack_recast,
 	{ ability_name = "terrorblade_special_attack_recast", key = "E" }
 )

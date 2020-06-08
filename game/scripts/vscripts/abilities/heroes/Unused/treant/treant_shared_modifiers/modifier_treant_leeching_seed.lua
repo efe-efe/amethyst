@@ -2,7 +2,7 @@ modifier_treant_leeching_seed = class({})
 
 --------------------------------------------------------------------------------
 -- Initializer
-function modifier_treant_leeching_seed:OnCreated( kv )
+function modifier_treant_leeching_seed:OnCreated(kv)
     if IsServer() then
         local heal_damage = self:GetAbility():GetSpecialValueFor("heal_damage")
         local duration = self:GetDuration()
@@ -10,7 +10,7 @@ function modifier_treant_leeching_seed:OnCreated( kv )
         self.heal_damage_per_tick = heal_damage/duration
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
 
-        self:StartIntervalThink( 1.0 )
+        self:StartIntervalThink(1.0)
         self:PlayEffectsOnCast()
         
         ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
@@ -50,7 +50,7 @@ function modifier_treant_leeching_seed:OnIntervalThink()
         
         ApplyDamage(damageTable)
 
-        local allies = FindUnitsInRadius( 
+        local allies = FindUnitsInRadius(
             caster:GetTeamNumber(), -- int, your team number
             victim:GetOrigin(), -- point, center point
             nil, -- handle, cacheUnit. (not known)
@@ -60,7 +60,7 @@ function modifier_treant_leeching_seed:OnIntervalThink()
             0, -- int, flag filter
             0, -- int, order filter
             false -- bool, can grow cache
-        )
+       )
     
         for _,ally in pairs(allies) do
             ally:Heal(self.heal_damage_per_tick, caster)
@@ -72,7 +72,7 @@ function modifier_treant_leeching_seed:OnIntervalThink()
 	end
 end
 
-function modifier_treant_leeching_seed:PlayEffects( enemy, ally )
+function modifier_treant_leeching_seed:PlayEffects(enemy, ally)
 	-- Get Resources
 	local projectile_name = "particles/units/heroes/hero_treant/treant_leech_seed_projectile.vpcf"
 
@@ -95,13 +95,13 @@ function modifier_treant_leeching_seed:PlayEffectsTick()
     EmitSoundOn("Hero_Treant.LeechSeed.Tick", self:GetParent())
 
     local effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_treant/treant_leech_seed_damage_pulse.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent()) 
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_treant_leeching_seed:PlayEffectsOnCast()
     -- Create Particles
-    local effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_treant/treant_leech_seed.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:SetParticleControl( effect_cast, 1, self:GetParent():GetOrigin())
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetOrigin())  
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_treant/treant_leech_seed.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    ParticleManager:SetParticleControl(effect_cast, 1, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetParent():GetOrigin())  
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

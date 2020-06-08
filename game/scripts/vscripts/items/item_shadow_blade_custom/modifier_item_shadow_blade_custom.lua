@@ -4,7 +4,7 @@ function modifier_item_shadow_blade_custom:IsHidden() return false end
 function modifier_item_shadow_blade_custom:IsDebuff() return false end
 function modifier_item_shadow_blade_custom:IsPurgable() return true end
 
-function modifier_item_shadow_blade_custom:OnCreated( kv )
+function modifier_item_shadow_blade_custom:OnCreated(kv)
     self.ms_pct = self:GetAbility():GetSpecialValueFor("ms_pct")
 	
     if IsServer() then 
@@ -24,13 +24,13 @@ function modifier_item_shadow_blade_custom:OnBasicAttackImpact(hTarget)
             damage = ability_damage,
             damage_type = DAMAGE_TYPE_PHYSICAL,
         }
-        ApplyDamage( damage_table )
+        ApplyDamage(damage_table)
 
         self:Destroy()
     end
 end
 
-function modifier_item_shadow_blade_custom:OnDestroy( kv )
+function modifier_item_shadow_blade_custom:OnDestroy(kv)
 	if IsServer() then 
         self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
         self:GetParent().on_basic_attack_impact["modifier_item_shadow_blade_custom"] = nil

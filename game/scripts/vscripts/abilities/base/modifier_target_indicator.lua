@@ -9,7 +9,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializer
-function modifier_target_indicator:OnCreated( params )
+function modifier_target_indicator:OnCreated(params)
 	self.parent = self:GetParent()
 
     if IsServer() then
@@ -18,13 +18,13 @@ function modifier_target_indicator:OnCreated( params )
 		self.fixed_range = params.fixed_range
 
         self:PlayEffects()
-        self:StartIntervalThink( 0.01 )
+        self:StartIntervalThink(0.01)
     end
 end
 
 --------------------------------------------------------------------------------
 -- Refresh
-function modifier_target_indicator:OnRefresh( params )
+function modifier_target_indicator:OnRefresh(params)
 	self.parent = self:GetParent()
 
     if IsServer() then
@@ -34,7 +34,7 @@ function modifier_target_indicator:OnRefresh( params )
 	
         self:StopEffects()
         self:PlayEffects()
-        self:StartIntervalThink( 0.01 )
+        self:StartIntervalThink(0.01)
     end
 end
 
@@ -69,58 +69,58 @@ function modifier_target_indicator:PlayEffects()
 
 	if self.public then
 		if self.no_target ~= 1 then
-			self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, self.parent)
+			self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, self.parent)
 		end
 		if self.radius ~= nil then
-            self.effect_cast_aoe = ParticleManager:CreateParticle( particle_cast_aoe, PATTACH_WORLDORIGIN, self.parent)
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, mouse)
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, mouse)
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
+            self.effect_cast_aoe = ParticleManager:CreateParticle(particle_cast_aoe, PATTACH_WORLDORIGIN, self.parent)
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 0, mouse)
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 2, mouse)
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
 		end
 	else
 		if self.no_target ~= 1 then
-			self.effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast, PATTACH_WORLDORIGIN, self.parent, player_owner )
+			self.effect_cast = ParticleManager:CreateParticleForPlayer(particle_cast, PATTACH_WORLDORIGIN, self.parent, player_owner)
 		end
 		if self.radius ~= nil then
-			self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer( particle_cast_aoe, PATTACH_WORLDORIGIN, self.parent, player_owner )
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, mouse)
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, mouse)
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
+			self.effect_cast_aoe = ParticleManager:CreateParticleForPlayer(particle_cast_aoe, PATTACH_WORLDORIGIN, self.parent, player_owner)
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 0, mouse)
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 2, mouse)
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 3, Vector(self.radius, 0, 0))
 		end
 	end
 end
 
 function modifier_target_indicator:StopEffects()
 	if self.effect_cast ~= nil then
-		ParticleManager:DestroyParticle( self.effect_cast, false ) 
-		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+		ParticleManager:DestroyParticle(self.effect_cast, false) 
+		ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	end
 
 	if self.effect_cast_aoe ~= nil then
-		ParticleManager:DestroyParticle( self.effect_cast_aoe, false ) 
-		ParticleManager:ReleaseParticleIndex( self.effect_cast_aoe )
+		ParticleManager:DestroyParticle(self.effect_cast_aoe, false) 
+		ParticleManager:ReleaseParticleIndex(self.effect_cast_aoe)
 	end
 end
 
 
 function modifier_target_indicator:UpdateEffects(origin, point)
 	if self.no_target ~= 1 then
-		ParticleManager:SetParticleControl( self.effect_cast, 7, Vector(point.x, point.y, 128)) -- aoe
-		ParticleManager:SetParticleControl( self.effect_cast, 0, origin)	-- line origin
-		ParticleManager:SetParticleControl( self.effect_cast, 2, origin)	-- line end
+		ParticleManager:SetParticleControl(self.effect_cast, 7, Vector(point.x, point.y, 128)) -- aoe
+		ParticleManager:SetParticleControl(self.effect_cast, 0, origin)	-- line origin
+		ParticleManager:SetParticleControl(self.effect_cast, 2, origin)	-- line end
 	end
 	if self.radius ~= nil then
 		if self.no_target == 1 then
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, self.parent:GetOrigin())	-- line origin
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, self.parent:GetOrigin())	-- line origin
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 0, self.parent:GetOrigin())	-- line origin
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 2, self.parent:GetOrigin())	-- line origin
 		else
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 0, point)
-			ParticleManager:SetParticleControl( self.effect_cast_aoe, 2, point)	
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 0, point)
+			ParticleManager:SetParticleControl(self.effect_cast_aoe, 2, point)	
 		end
 	end
 end
 
-function modifier_target_indicator:GetRanges( fixed )
+function modifier_target_indicator:GetRanges(fixed)
 	local ranges = {
 		min_range = 0,
 		max_range = 0,

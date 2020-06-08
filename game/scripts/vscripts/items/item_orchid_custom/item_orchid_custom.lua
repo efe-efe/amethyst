@@ -1,5 +1,5 @@
 item_orchid_custom = class({})
-LinkLuaModifier( "modifier_item_orchid_custom", "items/item_orchid_custom/modifier_item_orchid_custom", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_item_orchid_custom", "items/item_orchid_custom/modifier_item_orchid_custom", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 function item_orchid_custom:OnAbilityPhaseStart()
 	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
@@ -25,7 +25,7 @@ function item_orchid_custom:OnSpellStart()
 	local duration = self:GetSpecialValueFor("duration")
 
 	-- Dynamic data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
     local projectile_speed = self:GetSpecialValueFor("projectile_speed")
     
     local projectile = {
@@ -61,15 +61,15 @@ end
 
 function item_orchid_custom:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
-	EmitSoundOnLocationWithCaster( pos, "DOTA_Item.Orchid.Activate", caster )
+	EmitSoundOnLocationWithCaster(pos, "DOTA_Item.Orchid.Activate", caster)
 
 	local particle_cast = "particles/orchid_proj_impact.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function item_orchid_custom:PlayEffectsOnCast()
-	EmitSoundOn( "DOTA_Item.Orchid.Activate", self:GetCaster() )
+	EmitSoundOn("DOTA_Item.Orchid.Activate", self:GetCaster())
 end

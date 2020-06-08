@@ -16,7 +16,7 @@ end
 
 
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Recast( 
+Modifiers.Recast(
 	modifier_terrorblade_mobility_recast,
 	{ ability_name = "terrorblade_mobility_recast", key = "SPACE" }
 )

@@ -30,7 +30,7 @@ function antimage_basic_attack:OnSpellStart()
 	)
 end
 
-function antimage_basic_attack:OnCastPointEnd( point )
+function antimage_basic_attack:OnCastPointEnd(point)
 	local caster = self:GetCaster()
 	local offset = 10
 
@@ -42,13 +42,13 @@ function antimage_basic_attack:OnCastPointEnd( point )
 	local projectile_speed = 3000
 
 	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
+	local attack_speed = (1 / attacks_per_second)
 	
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
 	local direction_normalized = (point - origin):Normalized()
 	local initial_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	--logic
 	local projectile = {
@@ -108,33 +108,33 @@ function antimage_basic_attack:PlayEffects_a(pos)
 
 	-- Create Particles
 	local particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-	ParticleManager:SetParticleControl( effect_cast, 2, caster:GetOrigin())
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+	ParticleManager:SetParticleControl(effect_cast, 2, caster:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	local particle_cast_b = "particles/units/heroes/hero_nyx_assassin/nyx_assassin_vendetta_swipe.vpcf"
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast_b, 0, new_position)
-	ParticleManager:SetParticleControlForward( effect_cast_b, 0, (pos - caster:GetOrigin()):Normalized())
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast_b, 0, new_position)
+	ParticleManager:SetParticleControlForward(effect_cast_b, 0, (pos - caster:GetOrigin()):Normalized())
+	ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 -- On Projectile hit enemy
 -------------------------
-function antimage_basic_attack:PlayEffects_b( hTarget )
+function antimage_basic_attack:PlayEffects_b(hTarget)
 	-- Create Sound
 	local sound_cast = "Hero_BountyHunter.Jinada"
-	EmitSoundOn( sound_cast, hTarget )
+	EmitSoundOn(sound_cast, hTarget)
    
 	-- Create Particles
 	local particle_cast_a = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
 	local particle_cast_b = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
 
-	--local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_POINT, hTarget )
+	--local effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_POINT, hTarget)
 	
-	--ParticleManager:ReleaseParticleIndex( effect_cast_a )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	--ParticleManager:ReleaseParticleIndex(effect_cast_a)
+	ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 	
 -- On Projectile Miss
@@ -142,11 +142,11 @@ end
 function antimage_basic_attack:PlayEffects_c(pos)
 	-- Create Sound
 	local sound_cast = "Hero_Spectre.PreAttack"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, self:GetCaster())
 end
 
 -- On Projectile finish (NON CHARGED)
-function antimage_basic_attack:PlayEffects_d( pos )
+function antimage_basic_attack:PlayEffects_d(pos)
 	
 	local caster = self:GetCaster()
 	local offset = 50
@@ -154,21 +154,21 @@ function antimage_basic_attack:PlayEffects_d( pos )
 
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos)
-	ParticleManager:SetParticleControlForward( effect_cast, 0, (pos - caster:GetOrigin() ):Normalized())
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControlForward(effect_cast, 0, (pos - caster:GetOrigin()):Normalized())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	local particle_cast_b = "particles/units/heroes/hero_nyx_assassin/nyx_assassin_vendetta_swipe.vpcf"
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast_b, 0, new_position)
-	ParticleManager:SetParticleControlForward( effect_cast_b, 0, (pos - caster:GetOrigin()):Normalized())
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast_b, 0, new_position)
+	ParticleManager:SetParticleControlForward(effect_cast_b, 0, (pos - caster:GetOrigin()):Normalized())
+	ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 -- On Projectile hit enemy (NON CHARGED)
-function antimage_basic_attack:PlayEffects_e( hTarget )
+function antimage_basic_attack:PlayEffects_e(hTarget)
 	-- Create Sound
 	local sound_cast = "Hero_Spectre.Attack"
-	EmitSoundOn( sound_cast, hTarget )
+	EmitSoundOn(sound_cast, hTarget)
 end

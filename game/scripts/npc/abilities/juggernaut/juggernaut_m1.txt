@@ -13,9 +13,7 @@
 		"AbilityCastRange"				"150"
 
 		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_ARC"
-			"DisplayRange" 				"1"
-			"Fixed"						"1"
+			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
 		}
 		
 		"AbilitySpecial"

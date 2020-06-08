@@ -13,7 +13,7 @@ function puck_special_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local projectile = {
 		EffectName = "particles/econ/items/puck/puck_merry_wanderer/puck_illusory_orb_merry_wanderer.vpcf",
@@ -36,7 +36,7 @@ function puck_special_attack:OnSpellStart()
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if _self.Source == caster then
                 caster:GiveManaPercent(mana_gain_pct, unit)
@@ -54,14 +54,14 @@ function puck_special_attack:OnSpellStart()
 	self:PlayEffectsOnCast()
 end
 
-function puck_special_attack:PlayEffectsOnFinish( pos )
+function puck_special_attack:PlayEffectsOnFinish(pos)
 	StopSoundOn("Hero_Puck.Illusory_Orb", self:GetCaster())
 	
 	local particle_cast = "particles/econ/items/puck/puck_merry_wanderer/puck_illusory_orb_explode_merry_wanderer.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function puck_special_attack:PlayEffectsOnCast()

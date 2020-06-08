@@ -1,6 +1,6 @@
 terrorblade_mobility = class({})
-LinkLuaModifier( "modifier_terrorblade_mobility_illusion", "abilities/heroes/terrorblade/terrorblade_mobility/modifier_terrorblade_mobility_illusion", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_terrorblade_mobility_recast", "abilities/heroes/terrorblade/terrorblade_mobility/modifier_terrorblade_mobility_recast", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_terrorblade_mobility_illusion", "abilities/heroes/terrorblade/terrorblade_mobility/modifier_terrorblade_mobility_illusion", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_terrorblade_mobility_recast", "abilities/heroes/terrorblade/terrorblade_mobility/modifier_terrorblade_mobility_recast", LUA_MODIFIER_MOTION_NONE)
 
 function terrorblade_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -30,7 +30,7 @@ function terrorblade_mobility:OnCastPointEnd()
             activity = ACT_DOTA_CAST_ABILITY_3,
             rate = 1.2,
         } -- kv
-    )
+   )
 
     self:PlayEffectsOnCast()
 end
@@ -39,11 +39,11 @@ function terrorblade_mobility:IllusionLogic()
     local caster = self:GetCaster()
     local illusion_duration = self:GetSpecialValueFor("duration")
 
-    local illusion = CreateIllusions( caster, caster, {
+    local illusion = CreateIllusions(caster, caster, {
         duration = illusion_duration,
         outgoing_damage = -100, 
         incoming_damage = 0,
-    }, 1, 0, false, true )
+    }, 1, 0, false, true)
 
 
     illusion[1]:AddNewModifier(caster, self, "modifier_terrorblade_mobility_illusion", {})
@@ -52,7 +52,7 @@ function terrorblade_mobility:IllusionLogic()
 end
 
 function terrorblade_mobility:OnDisplacementEnd()
-    self:StopEffects( origin )
+    self:StopEffects(origin)
 end
 
 function terrorblade_mobility:PlayEffectsOnCast()
@@ -70,7 +70,7 @@ function terrorblade_mobility:StopEffects()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	terrorblade_mobility,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 2.0 },
 	{ movement_speed = 100 }

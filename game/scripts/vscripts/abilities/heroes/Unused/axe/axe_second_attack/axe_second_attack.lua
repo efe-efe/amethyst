@@ -1,5 +1,5 @@
 axe_second_attack = class({})
-LinkLuaModifier( "modifier_axe_second_attack_thinker", "abilities/heroes/axe/axe_second_attack/modifier_axe_second_attack_thinker", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_axe_second_attack_thinker", "abilities/heroes/axe/axe_second_attack/modifier_axe_second_attack_thinker", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 function axe_second_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("axe_ex_second_attack")
@@ -10,7 +10,7 @@ end
 function axe_second_attack:OnSpellStart()
 	
 	local sound_cast = "Hero_Axe.BerserkersCall.Item.Shoutmask"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Initialize variables
 	local caster = self:GetCaster()
@@ -32,9 +32,9 @@ function axe_second_attack:OnSpellStart()
 	})
 end
 
-function axe_second_attack:OnCastPointEnd( point )
+function axe_second_attack:OnCastPointEnd(point)
 	local caster = self:GetCaster()
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
+	local delay_time = self:GetSpecialValueFor("delay_time")
 
 	CreateModifierThinker(
 		caster, --hCaster

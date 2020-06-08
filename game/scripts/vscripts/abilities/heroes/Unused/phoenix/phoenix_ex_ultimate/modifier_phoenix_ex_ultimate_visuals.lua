@@ -34,14 +34,14 @@ end
 
 function modifier_phoenix_ex_ultimate_visuals:OnIntervalThink()
     local target = self:GetParent():GetOrigin() + self:GetParent():GetForwardVector():Normalized() * self.range 
-    ParticleManager:SetParticleControl( self.effect_cast, 1, target )
+    ParticleManager:SetParticleControl(self.effect_cast, 1, target)
 end
 
 function modifier_phoenix_ex_ultimate_visuals:PlayEffects(target)
     local particle_cast = "particles/econ/items/phoenix/phoenix_solar_forge/phoenix_sunray_solar_forge.vpcf"
     
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:SetParticleControlEnt( 
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         0, 
         self:GetParent(), 
@@ -49,12 +49,12 @@ function modifier_phoenix_ex_ultimate_visuals:PlayEffects(target)
         "attach_hitloc", 
         self:GetParent():GetAbsOrigin(), 
         true 
-    )
-    ParticleManager:SetParticleControl( self.effect_cast, 1, target )
+   )
+    ParticleManager:SetParticleControl(self.effect_cast, 1, target)
 end
 
 function modifier_phoenix_ex_ultimate_visuals:StopEffects()
     EmitSoundOn("Hero_Phoenix.SunRay.Stop", self:GetParent())
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

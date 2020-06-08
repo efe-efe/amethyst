@@ -14,7 +14,7 @@ function modifier_item_nullifier_custom:DeclareFunctions()
 	return funcs
 end
 
-function modifier_item_nullifier_custom:GetModifierIncomingDamage_Percentage( params )
+function modifier_item_nullifier_custom:GetModifierIncomingDamage_Percentage(params)
     if IsServer() then
         self:GetParent():AddNewModifier(
             self:GetCaster(), 

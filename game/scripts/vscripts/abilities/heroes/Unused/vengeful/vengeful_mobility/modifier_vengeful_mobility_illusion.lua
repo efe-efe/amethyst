@@ -1,6 +1,6 @@
 modifier_vengeful_mobility_illusion = class({})
-LinkLuaModifier( "modifier_vengeful_mobility_recast", "abilities/heroes/vengeful/vengeful_mobility/modifier_vengeful_mobility_recast", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_vengeful_mobility_recast_ultimate", "abilities/heroes/vengeful/vengeful_mobility/modifier_vengeful_mobility_recast", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_vengeful_mobility_recast", "abilities/heroes/vengeful/vengeful_mobility/modifier_vengeful_mobility_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_vengeful_mobility_recast_ultimate", "abilities/heroes/vengeful/vengeful_mobility/modifier_vengeful_mobility_recast", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -12,7 +12,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_vengeful_mobility_illusion:OnCreated( kv )
+function modifier_vengeful_mobility_illusion:OnCreated(kv)
     if IsServer() then
         local ability = self:GetParent():FindAbilityByName("vengeful_mobility")
         local illusion_duration = ability:GetSpecialValueFor("duration")
@@ -23,7 +23,7 @@ function modifier_vengeful_mobility_illusion:OnCreated( kv )
     end
 end
 
-function modifier_vengeful_mobility_illusion:OnDestroy( kv )
+function modifier_vengeful_mobility_illusion:OnDestroy(kv)
     if IsServer() then
 
         --Prevent trying to find a forgotten ability
@@ -40,19 +40,19 @@ function modifier_vengeful_mobility_illusion:OnDestroy( kv )
                 activate = true      
             end
 
-            self:GetCaster():SwapAbilities( 
+            self:GetCaster():SwapAbilities(
                 my_name,
                 name,
                 true,--activate,
                 false
-            )
-            SafeDestroyModifier( modifier_name, self:GetCaster(), self:GetCaster() )
+           )
+            SafeDestroyModifier(modifier_name, self:GetCaster(), self:GetCaster())
         end
 
 
         if self:GetParent() ~= nil then
-            self:GetParent():ForceKill( false )
-            UTIL_Remove( self:GetParent() )
+            self:GetParent():ForceKill(false)
+            UTIL_Remove(self:GetParent())
         end
 	end
 end

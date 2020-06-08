@@ -1,6 +1,6 @@
 modifier_generic_hypnotize = class({})
 
-function modifier_generic_hypnotize:OnCreated( params )
+function modifier_generic_hypnotize:OnCreated(params)
     if IsServer() then
         self.caster = self:GetCaster()
         self.parent = self:GetParent()
@@ -27,9 +27,9 @@ function modifier_generic_hypnotize:OnIntervalThink()
         x,
         y,
         self.parent:GetForwardVector().z
-    )
+   )
 
-    self.parent:ForceDirection( direction )
+    self.parent:ForceDirection(direction)
 end
 
 --------------------------------------------------------------------------------

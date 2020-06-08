@@ -6,6 +6,7 @@ var mouse_position_screen = null;
 var mouse_position = null;
 var particle_line = null;
 var particle_aoe = null;
+var particle_half_circle = null;
 var particle_arc = null;
 
 let target_indicator_modifiers = [
@@ -154,9 +155,36 @@ function UpdateTargetIndicator(){
                     heroOrigin[2] + (direction[2] * length)
                 ]
 
-                Particles.SetParticleControl(particle_arc, 0, heroOrigin)
-                Particles.SetParticleControl(particle_arc, 1, target)
-                Particles.SetParticleControl(particle_arc, 2, [radius, 0, 0])
+                Particles.SetParticleControl(particle_half_circle, 0, heroOrigin)
+                Particles.SetParticleControl(particle_half_circle, 1, target)
+                Particles.SetParticleControl(particle_half_circle, 2, [radius, 0, 0])
+            }
+            if(data.Type == "TARGETING_INDICATOR_HALF_CIRCLE"){
+                if(!particle_half_circle){
+                    particle_half_circle = Particles.CreateParticle("particles/targeting/half_circle.vpcf", ParticleAttachment_t.PATTACH_WORLDORIGIN, heroIndex);
+                }
+
+                var max_range = Abilities.GetCastRange(active);
+                var min_range = Abilities.GetSpecialValueFor(active, "min_range");
+                var radius = Abilities.GetSpecialValueFor(active, "radius");
+                var length = 0;
+                var target = [];
+                
+                if(data.Fixed == "1"){
+                    length = max_range;
+                } else {
+                    length = Clamp(Game.Length2D(mouse_position, heroOrigin), min_range, max_range);
+                }
+
+                var target = [
+                    heroOrigin[0] + (direction[0] * length),
+                    heroOrigin[1] + (direction[1] * length),
+                    heroOrigin[2] + (direction[2] * length)
+                ]
+
+                Particles.SetParticleControl(particle_half_circle, 0, heroOrigin)
+                Particles.SetParticleControl(particle_half_circle, 1, target)
+                Particles.SetParticleControl(particle_half_circle, 2, [radius, 0, 0])
             }
         }
     } else {
@@ -172,10 +200,10 @@ function UpdateTargetIndicator(){
             particle_aoe = null
         }
 
-        if(particle_arc){
-            Particles.DestroyParticleEffect(particle_arc, false)
-            Particles.ReleaseParticleIndex(particle_arc)
-            particle_arc = null
+        if(particle_half_circle){
+            Particles.DestroyParticleEffect(particle_half_circle, false)
+            Particles.ReleaseParticleIndex(particle_half_circle)
+            particle_half_circle = null
         }
     }
     

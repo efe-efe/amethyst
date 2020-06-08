@@ -64,10 +64,10 @@ end
 function modifier_spectre_counter_countering:PlayEffectsOnTrigger()
     EmitSoundOn("Hero_Spectre.Reality", self:GetParent())
     local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetAbsOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetAbsOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetParent():GetAbsOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_spectre_counter_countering:GetStatusEffectName()

@@ -1,6 +1,6 @@
 nevermore_ultimate = class({})
-LinkLuaModifier( "modifier_nevermore_ultimate", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_ultimate_thinker", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_ultimate", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_nevermore_ultimate_thinker", "abilities/heroes/nevermore/nevermore_ultimate/modifier_nevermore_ultimate_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function nevermore_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_6 end
 function nevermore_ultimate:GetPlaybackRateOverride() 	    return 1.0 end
@@ -39,7 +39,7 @@ function nevermore_ultimate:OnSpellStart()
 	local radius = self:GetSpecialValueFor("radius")
 
 	local lines = self:GetSpecialValueFor("base_lines")
-	local modifier = caster:FindModifierByNameAndCaster( "modifier_nevermore_souls", caster )
+	local modifier = caster:FindModifierByNameAndCaster("modifier_nevermore_souls", caster)
 	if modifier ~= nil then
 		lines = lines + modifier:GetStackCount()
 		modifier:Destroy()
@@ -57,7 +57,7 @@ function nevermore_ultimate:OnSpellStart()
 		local facing_angle_deg = initial_angle_deg + delta_angle * i
 		if facing_angle_deg>360 then facing_angle_deg = facing_angle_deg - 360 end
 		local facing_angle = math.rad(facing_angle_deg)
-		local facing_vector = Vector( math.cos(facing_angle), math.sin(facing_angle), 0 ):Normalized()
+		local facing_vector = Vector(math.cos(facing_angle), math.sin(facing_angle), 0):Normalized()
 		local velocity = facing_vector * line_speed
 
         local projectile = {
@@ -82,14 +82,14 @@ function nevermore_ultimate:OnSpellStart()
                     damage_type = DAMAGE_TYPE_PURE,
                     ability = self,
                 }
-                ApplyDamage( damage_table )
+                ApplyDamage(damage_table)
 				
                 unit:AddNewModifier(
                     _self.Source,
                     self,
                     "modifier_nevermore_ultimate",
                     { duration = duration }
-                )
+               )
 
                 self:PlayEffectsOnFinish(_self.current_position)
             end,
@@ -101,10 +101,10 @@ function nevermore_ultimate:OnSpellStart()
     end
     
 	ParticleManager:ReleaseParticleIndex(self.effect_cast)
-	self:PlayEffectsLines( lines )
+	self:PlayEffectsLines(lines)
 end
 
-function nevermore_ultimate:PlayEffectsLines( lines )
+function nevermore_ultimate:PlayEffectsLines(lines)
 	local caster = self:GetCaster()
 	EmitSoundOn("Hero_Nevermore.ROS.Arcana", caster)
 
@@ -115,11 +115,11 @@ function nevermore_ultimate:PlayEffectsLines( lines )
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function nevermore_ultimate:PlayEffectsOnFinish( pos )
+function nevermore_ultimate:PlayEffectsOnFinish(pos)
 	local particle_cast = "particles/mod_units/heroes/hero_nevermore/sf_base_attack_desolation_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

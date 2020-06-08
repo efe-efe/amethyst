@@ -1,5 +1,5 @@
 modifier_phantom_extra = class({})
-LinkLuaModifier( "modifier_phantom_extra_visuals", "abilities/heroes/phantom/phantom_extra/modifier_phantom_extra_visuals", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_phantom_extra_visuals", "abilities/heroes/phantom/phantom_extra/modifier_phantom_extra_visuals", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 function modifier_phantom_extra:OnCreated(params)
     self.movement_speed_pct = self:GetAbility():GetSpecialValueFor("movement_speed_pct")
@@ -39,12 +39,12 @@ end
 function modifier_phantom_extra:OnDestroy()
     if IsServer() then
         self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
-        self:GetParent():SwapAbilities( 
+        self:GetParent():SwapAbilities(
             "phantom_extra",
             "phantom_extra_mobility",
             true,
             false
-        )
+       )
         self:StopEffects()
     end
 end
@@ -103,15 +103,15 @@ end
 -- Graphics & sounds
 function modifier_phantom_extra:PlayEffects(index)
     local particle_cast = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_active_blur_smoke_light.vpcf"
-    self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+    self.effects_cast[index] = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 end
 
 function modifier_phantom_extra:PlayEffectsWeapon()
     EmitSoundOn("Hero_Rubick.Telekinesis.Cast", self:GetParent())
 
     local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_death_lines.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent() )
-    ParticleManager:SetParticleControlEnt( 
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent())
+    ParticleManager:SetParticleControlEnt(
         effect_cast, 
         0, 
         self:GetParent(), 
@@ -119,8 +119,8 @@ function modifier_phantom_extra:PlayEffectsWeapon()
         "attach_attack1", 
         self:GetParent():GetOrigin(), 
         true 
-    )
-    ParticleManager:SetParticleControlEnt( 
+   )
+    ParticleManager:SetParticleControlEnt(
         effect_cast, 
         3, 
         self:GetParent(), 
@@ -128,18 +128,18 @@ function modifier_phantom_extra:PlayEffectsWeapon()
         "attach_attack1", 
         self:GetParent():GetOrigin(), 
         true 
-    )
+   )
 end
 
 function modifier_phantom_extra:PlayEffectsAoe()
     local particle_cast = "particles/aoe_marker.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticleForPlayer( particle_cast, PATTACH_WORLDORIGIN, nil, self:GetParent():GetPlayerOwner() )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin())
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.ability:GetCastRange(Vector(0,0,0), nil), 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( 255, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticleForPlayer(particle_cast, PATTACH_WORLDORIGIN, nil, self:GetParent():GetPlayerOwner())
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.ability:GetCastRange(Vector(0,0,0), nil), 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 2, Vector(255, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 3, Vector(0.1, 0, 0))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_phantom_extra:StopEffects()

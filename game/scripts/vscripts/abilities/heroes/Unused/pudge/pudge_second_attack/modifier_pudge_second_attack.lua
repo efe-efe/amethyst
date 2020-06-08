@@ -8,7 +8,7 @@ function modifier_pudge_second_attack:OnCreated(params)
         self.counter = 0
         self.index = 0
         self:SetStackCount(0)
-		self:StartIntervalThink( 0.01 )
+		self:StartIntervalThink(0.01)
 	end
 end
 
@@ -33,8 +33,8 @@ end
 
 function modifier_pudge_second_attack:PlayEffects(index)
     local particle_cast = "particles/units/heroes/hero_demonartist/demonartist_soulchain_debuff.vpcf"
-    self.effects_cast[index] = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent() )
-    ParticleManager:SetParticleControlEnt( 
+    self.effects_cast[index] = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent())
+    ParticleManager:SetParticleControlEnt(
         self.effects_cast[index], 
         0, 
         self:GetParent(), 
@@ -42,8 +42,8 @@ function modifier_pudge_second_attack:PlayEffects(index)
         "attach_hitloc", 
         self:GetParent():GetOrigin(), 
         true 
-    )
-    ParticleManager:SetParticleControlEnt( 
+   )
+    ParticleManager:SetParticleControlEnt(
         self.effects_cast[index], 
         2, 
         self:GetParent(), 
@@ -51,7 +51,7 @@ function modifier_pudge_second_attack:PlayEffects(index)
         "attach_hitloc", 
         self:GetParent():GetOrigin(), 
         true 
-    )
+   )
 end
 
 function modifier_pudge_second_attack:StopEffects()

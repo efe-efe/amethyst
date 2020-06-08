@@ -22,7 +22,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 	local point = self:GetAbility():GetCursorPosition()
     local ability = self:GetAbility()
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	-- Extra data
 	local projectile = {
@@ -47,20 +47,20 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}			
 			
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 			
             unit:AddNewModifier(_self.Source, ability, "modifier_sniper_ultimate_hit", { duration = 0.1 }) -- Avoid dealing hit and aoe damage at the same time
 			self:PlayEffectsTarget(_self.Source, unit, _self.current_position)
 		end,
         OnFinish = function(_self, pos)
-            local enemies = caster:FindUnitsInRadius( 
+            local enemies = caster:FindUnitsInRadius(
                 pos, 
                 self.radius, 
                 DOTA_UNIT_TARGET_TEAM_ENEMY, 
                 DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
                 DOTA_UNIT_TARGET_FLAG_NONE,
                 FIND_ANY_ORDER
-            )
+           )
             
             for _,enemy in pairs(enemies) do
                 local damage = {
@@ -71,7 +71,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
                 }
             
                 if not enemy:HasModifier("modifier_sniper_ultimate_hit") then
-                    ApplyDamage( damage )
+                    ApplyDamage(damage)
                 end
                 
                 local x = enemy:GetOrigin().x - pos.x
@@ -88,14 +88,14 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
                         speed = (self.radius/0.15),
                         peak = 0,
                     }
-                )
+               )
             end
         
             CreateRadiusMarker(caster, pos, {
                 show_all = 1,
                 radius = self.radius
             })
-            self:PlayEffectsExplosion( pos )
+            self:PlayEffectsExplosion(pos)
 			self:PlayEffectsProjectileImpact(_self.Source, pos)
 		end,
 	}
@@ -109,80 +109,80 @@ function modifier_sniper_ultimate_channeling:OnDestroy()
     if IsServer() then
         self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
 
-        local effect_cast = ParticleManager:CreateParticle( 
+        local effect_cast = ParticleManager:CreateParticle(
             "particles/mod_units/heroes/hero_sniper/techies_base_attack_smokeburst.vpcf", 
             PATTACH_CUSTOMORIGIN, 
             nil
-        )
-        ParticleManager:SetParticleControlEnt( 
+       )
+        ParticleManager:SetParticleControlEnt(
             effect_cast, 
             7, 
             self:GetCaster(), 
             PATTACH_POINT_FOLLOW, 
             "attach_attack1", 
-            self:GetCaster():GetOrigin() + Vector( 0, 0, 96 ), 
+            self:GetCaster():GetOrigin() + Vector(0, 0, 96), 
             true 
-        )
-        ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+        ParticleManager:ReleaseParticleIndex(effect_cast)
 
-        effect_cast = ParticleManager:CreateParticle( 
+        effect_cast = ParticleManager:CreateParticle(
             "particles/mod_units/heroes/hero_sniper/techies_base_attack_explosion.vpcf", 
             PATTACH_CUSTOMORIGIN, 
             nil
-        )
-        ParticleManager:SetParticleControlEnt( 
+       )
+        ParticleManager:SetParticleControlEnt(
             effect_cast, 
             0, 
             self:GetCaster(), 
             PATTACH_POINT_FOLLOW, 
             "attach_attack1", 
-            self:GetCaster():GetOrigin() + Vector( 0, 0, 96 ), 
+            self:GetCaster():GetOrigin() + Vector(0, 0, 96), 
             true 
-        )
-        ParticleManager:SetParticleControlEnt( 
+       )
+        ParticleManager:SetParticleControlEnt(
             effect_cast, 
             3, 
             self:GetCaster(), 
             PATTACH_POINT_FOLLOW, 
             "attach_attack1", 
-            self:GetCaster():GetOrigin() + Vector( 0, 0, 96 ), 
+            self:GetCaster():GetOrigin() + Vector(0, 0, 96), 
             true 
-        )
-        ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+        ParticleManager:ReleaseParticleIndex(effect_cast)
     end
 end
 
-function modifier_sniper_ultimate_channeling:PlayEffectsProjectileImpact( source, pos )
+function modifier_sniper_ultimate_channeling:PlayEffectsProjectileImpact(source, pos)
 	local caster = source
-	EmitSoundOn( "Hero_Sniper.AssassinateDamage", caster )
+	EmitSoundOn("Hero_Sniper.AssassinateDamage", caster)
 
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 end
 
-function modifier_sniper_ultimate_channeling:PlayEffectsTarget( source, hTarget, pos )
+function modifier_sniper_ultimate_channeling:PlayEffectsTarget(source, hTarget, pos)
 	local caster = source
-	EmitSoundOnLocationWithCaster( pos, "Hero_Sniper.AssassinateDamage", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.AssassinateDamage", caster)
 
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
 
-	ParticleManager:SetParticleControl( effect_cast, 0, hTarget:GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:SetParticleControl(effect_cast, 0, hTarget:GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 1, hTarget:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 
-function modifier_sniper_ultimate_channeling:PlayEffectsExplosion( pos )
+function modifier_sniper_ultimate_channeling:PlayEffectsExplosion(pos)
     local particle_cast = "particles/econ/items/techies/techies_arcana/techies_suicide_arcana.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, pos )
-    ParticleManager:SetParticleControl( effect_cast, 3, pos )
-    ParticleManager:ReleaseParticleIndex( effect_cast )    
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, pos)
+    ParticleManager:SetParticleControl(effect_cast, 3, pos)
+    ParticleManager:ReleaseParticleIndex(effect_cast)    
 end
 
 function modifier_sniper_ultimate_channeling:GetStatusLabel() return "Ultimate" end

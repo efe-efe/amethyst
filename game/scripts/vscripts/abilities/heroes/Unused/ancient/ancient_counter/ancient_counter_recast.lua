@@ -11,7 +11,7 @@ function ancient_counter_recast:OnCastPointEnd()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	
 	-- Dinamyc data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
@@ -63,7 +63,7 @@ function ancient_counter_recast:OnCastPointEnd()
 				damage = final_damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
@@ -80,38 +80,38 @@ end
 
 --------------------------------------------------------------------------------
 -- Effects
-function ancient_counter_recast:PlayEffectsOnThink( pos )
+function ancient_counter_recast:PlayEffectsOnThink(pos)
 	local particle_cast = "particles/base_attacks/ranged_tower_good_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function ancient_counter_recast:PlayEffectsOnFinish(pos)
-	EmitSoundOnLocationWithCaster( pos, "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetCaster() )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetCaster())
 	
 	local particle_cast = "particles/base_attacks/ranged_tower_good_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function ancient_counter_recast:PlayEffectsOnCast( )
-	EmitSoundOn( "Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster() )
+function ancient_counter_recast:PlayEffectsOnCast()
+	EmitSoundOn("Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster())
 end
 
-function ancient_counter_recast:PlayEffectsConsume( hTarget )
+function ancient_counter_recast:PlayEffectsConsume(hTarget)
 	 local particle_cast = "particles/econ/items/meepo/meepo_colossal_crystal_chorus/meepo_divining_rod_poof_end_explosion_ring.vpcf"
 
-	 local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	 ParticleManager:SetParticleControl( effect_cast, 0, hTarget:GetOrigin() )
-	 ParticleManager:SetParticleControl( effect_cast, 6, Vector(0, 245, 240) )
-	 ParticleManager:ReleaseParticleIndex( effect_cast )
+	 local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	 ParticleManager:SetParticleControl(effect_cast, 0, hTarget:GetOrigin())
+	 ParticleManager:SetParticleControl(effect_cast, 6, Vector(0, 245, 240))
+	 ParticleManager:ReleaseParticleIndex(effect_cast)
 	 
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	ancient_counter_recast,
 	{ activity = ACT_DOTA_TELEPORT_END, rate = 2.0 },
 	{ movement_speed = 80, fixed_range = 1 },

@@ -10,7 +10,7 @@ function modifier_vengeful_ultimate:DeclareFunctions()
 	return funcs
 end
 
-function modifier_vengeful_ultimate:OnAbilityFullyCast( params )
+function modifier_vengeful_ultimate:OnAbilityFullyCast(params)
     if IsServer() then
         local parent = self:GetParent()
         if params.unit ~= parent then return end
@@ -35,8 +35,8 @@ function modifier_vengeful_ultimate:OnAbilityFullyCast( params )
             self:ForgetSpell()
         end
 
-        ultimate.current_ability = parent:AddAbility( incoming_ability_name .. "_ultimate" )
-        ultimate.current_ability:SetLevel( 1 )
+        ultimate.current_ability = parent:AddAbility(incoming_ability_name .. "_ultimate")
+        ultimate.current_ability:SetLevel(1)
         if ultimate.current_ability.OnAdded then
             ultimate.current_ability:OnAdded()
         end
@@ -46,7 +46,7 @@ function modifier_vengeful_ultimate:OnAbilityFullyCast( params )
             "vengeful_ultimate", 
             true, 
             false
-        )
+       )
 	end
 end
 
@@ -60,14 +60,14 @@ function modifier_vengeful_ultimate:ForgetSpell()
             ultimate.current_ability:OnRemoved()
         end
 
-        parent:SwapAbilities( 
+        parent:SwapAbilities(
             "vengeful_ultimate",
             ultimate.current_ability:GetAbilityName(), 
             true, 
             false 
-        )
+       )
 
-		parent:RemoveAbility( ultimate.current_ability:GetAbilityName() )
+		parent:RemoveAbility(ultimate.current_ability:GetAbilityName())
 		ultimate.current_ability = nil
 	end
 end

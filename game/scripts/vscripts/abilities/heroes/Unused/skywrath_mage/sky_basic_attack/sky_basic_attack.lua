@@ -1,6 +1,6 @@
 sky_basic_attack = class({})
-LinkLuaModifier( "modifier_sky_basic_attack", "abilities/heroes/skywrath_mage/sky_basic_attack/modifier_sky_basic_attack", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_sky_basic_attack_debuff", "abilities/heroes/skywrath_mage/sky_basic_attack/modifier_sky_basic_attack_debuff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_sky_basic_attack", "abilities/heroes/skywrath_mage/sky_basic_attack/modifier_sky_basic_attack", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_sky_basic_attack_debuff", "abilities/heroes/skywrath_mage/sky_basic_attack/modifier_sky_basic_attack_debuff", LUA_MODIFIER_MOTION_NONE)
 
 function sky_basic_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("sky_ex_basic_attack")
@@ -31,7 +31,7 @@ function sky_basic_attack:OnSpellStart()
 	})
 end
 
-function sky_basic_attack:OnCastPointEnd( pos )
+function sky_basic_attack:OnCastPointEnd(pos)
 	local caster = self:GetCaster()
 
 	-- Projectile data
@@ -43,7 +43,7 @@ function sky_basic_attack:OnCastPointEnd( pos )
 	local damage_bonus_charged = self:GetSpecialValueFor("damage_bonus")
 
 	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
+	local attack_speed = (1 / attacks_per_second)
 
 	local modifier = caster:FindModifierByName("modifier_sky_basic_attack")
 	local stacks = modifier:GetStackCount() 
@@ -53,7 +53,7 @@ function sky_basic_attack:OnCastPointEnd( pos )
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(pos.x-origin.x, pos.y-origin.y, 0)):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -100,7 +100,7 @@ function sky_basic_attack:OnCastPointEnd( pos )
 					damage_type = DAMAGE_TYPE_PHYSICAL,
 				}
 		
-				ApplyDamage( damage )
+				ApplyDamage(damage)
 			end
 		end,
 		OnFinish = function(_self, pos)
@@ -135,50 +135,50 @@ function sky_basic_attack:PlayEffects_a()
 
 	-- Create Sound
 	local sound_cast = "Hero_SkywrathMage.ConcussiveShot.Cast"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_concussive_shot_cast.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 1, caster:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 1, caster:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function sky_basic_attack:PlayEffects_b( pos )
+function sky_basic_attack:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 
 	-- Create Sound
 	local sound_cast = "Hero_SkywrathMage.ConcussiveShot.Target"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_concussive_shot_impact.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 -- Non Charged
 function sky_basic_attack:PlayEffects_c()
 	-- Create Sound
 	local sound_cast = "Hero_SkywrathMage.Attack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
-function sky_basic_attack:PlayEffects_d( pos )
+function sky_basic_attack:PlayEffects_d(pos)
 	local caster = self:GetCaster()
 	
 	-- Create Sound
 	local sound_cast = "Hero_SkywrathMage.ProjectileImpact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 end

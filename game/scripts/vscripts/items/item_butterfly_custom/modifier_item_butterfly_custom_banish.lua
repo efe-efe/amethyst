@@ -7,14 +7,14 @@ function modifier_item_butterfly_custom_banish:OnDestroy()
 end
 
 function modifier_item_butterfly_custom_banish:PlayEffectsOnDestroy()
-    EmitSoundOn( "Hero_PhantomAssassin.Blur.Break", self:GetCaster()  )
+    EmitSoundOn("Hero_PhantomAssassin.Blur.Break", self:GetCaster() )
 
     local particle_cast = "particles/butterfly_effect/pa_arcana_event_glitch.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
 
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_item_butterfly_custom_banish:CheckState()

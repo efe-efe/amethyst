@@ -1,6 +1,6 @@
 sky_second_attack = class({})
-LinkLuaModifier( "modifier_sky_second_attack_thinker", "abilities/heroes/skywrath_mage/sky_second_attack/modifier_sky_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_sky_second_attack_charges", "abilities/heroes/skywrath_mage/sky_second_attack/modifier_sky_second_attack_charges", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_sky_second_attack_thinker", "abilities/heroes/skywrath_mage/sky_second_attack/modifier_sky_second_attack_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_sky_second_attack_charges", "abilities/heroes/skywrath_mage/sky_second_attack/modifier_sky_second_attack_charges", LUA_MODIFIER_MOTION_NONE)
 
 function sky_second_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("sky_ex_second_attack")
@@ -25,13 +25,13 @@ function sky_second_attack:OnSpellStart()
 		"modifier_cast_point_old", 
 		{ 
 			duration = cast_point,
-			radius = self:GetSpecialValueFor( "radius" ),
+			radius = self:GetSpecialValueFor("radius"),
 			movement_speed = 10,
 		}
 	)
 end
 
-function sky_second_attack:OnCastPointEnd( point )
+function sky_second_attack:OnCastPointEnd(point)
 	local caster = self:GetCaster()
 
 	CreateModifierThinker(
@@ -58,8 +58,8 @@ function sky_second_attack:OnRemovePseudoCastPoint()
 		if reducer~=nil then
 			if not reducer:IsNull() then
 				charges.reduction = charges.reduction + 1.0
-				if charges.reduction > self:GetCooldown( -1 ) then
-					charges.reduction = self:GetCooldown( -1 )
+				if charges.reduction > self:GetCooldown(-1) then
+					charges.reduction = self:GetCooldown(-1)
 				end
 				reducer:Destroy()
 			end

@@ -1,5 +1,5 @@
 tinker_counter = class({})
-LinkLuaModifier( "modifier_generic_pre_silence", "abilities/generic/modifier_generic_pre_silence", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_generic_pre_silence", "abilities/generic/modifier_generic_pre_silence", LUA_MODIFIER_MOTION_NONE)
 
 function tinker_counter:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("tinker_ex_counter")
@@ -10,7 +10,7 @@ end
 function tinker_counter:OnAbilityPhaseStart()
 	-- effects
 	local sound_cast = "Hero_Tinker.LaserAnim"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 
 	return true -- if success
 end
@@ -32,7 +32,7 @@ function tinker_counter:OnSpellStart()
 	})
 end
 
-function tinker_counter:Refract( source, targets, jumps )
+function tinker_counter:Refract(source, targets, jumps)
 	-- load data
 	local jump_range = self:GetSpecialValueFor("bounce_range")
 
@@ -77,7 +77,7 @@ function tinker_counter:Refract( source, targets, jumps )
 		local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 		local projectile_distance = self:GetSpecialValueFor("projectile_range")
 		local projectile_speed = 8000
-		local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, -80 )):Normalized()
+		local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, -80)):Normalized()
 
 		-- Projectile
 		local projectile = {
@@ -134,7 +134,7 @@ function tinker_counter:Refract( source, targets, jumps )
 					ability = self
 				}
 				
-				ApplyDamage( damage )
+				ApplyDamage(damage)
 
 				unit:AddNewModifier(
 					source, -- player source
@@ -143,8 +143,8 @@ function tinker_counter:Refract( source, targets, jumps )
 					{ duration = duration } -- kv
 				)
 
-				table.insert( targets, next_target )
-				self:Refract( source, targets, jumps+1 )
+				table.insert(targets, next_target)
+				self:Refract(source, targets, jumps+1)
 
 				self:PlayEffects_a(targets[jumps], next_target)
 				_self.Destroy()
@@ -158,7 +158,7 @@ function tinker_counter:Refract( source, targets, jumps )
 end
 
 
-function tinker_counter:OnCastPointEnd( point )
+function tinker_counter:OnCastPointEnd(point)
 	-- load data
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
@@ -174,7 +174,7 @@ function tinker_counter:OnCastPointEnd( point )
 
 	-- Dinamyc data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, -80 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, -80)):Normalized()
 
 	-- Projectile
 	local projectile = {
@@ -218,7 +218,7 @@ function tinker_counter:OnCastPointEnd( point )
 				ability = self
 			}
 			
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 
 			unit:AddNewModifier(
 				_self.Source, -- player source
@@ -233,8 +233,8 @@ function tinker_counter:OnCastPointEnd( point )
 
 			-- get targets
 			local targets = {}
-			table.insert( targets, unit )
-			self:Refract( _self.Source, targets, 1 )
+			table.insert(targets, unit)
+			self:Refract(_self.Source, targets, 1)
 
 			self:PlayEffects_a(_self.Source, unit)
 		end,
@@ -253,17 +253,17 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & animation
-function tinker_counter:PlayEffects_a( source, target )
+function tinker_counter:PlayEffects_a(source, target)
 	-- Get Resources
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_laser.vpcf"
 	local sound_cast = "Hero_Tinker.Laser"
 	local sound_target = "Hero_Tinker.LaserImpact"
 
 	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, source )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, source)
 
 	local attach = "attach_attack1"
-	if source:ScriptLookupAttachment( "attach_attack2" )~=0 then attach = "attach_attack2" end
+	if source:ScriptLookupAttachment("attach_attack2")~=0 then attach = "attach_attack2" end
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
 		9,
@@ -283,24 +283,24 @@ function tinker_counter:PlayEffects_a( source, target )
 		Vector(0,0,0), -- unknown
 		true -- unknown, true
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster() )
-	EmitSoundOn( sound_target, target )
+	EmitSoundOn(sound_cast, self:GetCaster())
+	EmitSoundOn(sound_target, target)
 end
 
-function tinker_counter:PlayEffects_b( source, point )
+function tinker_counter:PlayEffects_b(source, point)
 	-- Get Resources
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_laser.vpcf"
 	local sound_cast = "Hero_Tinker.Laser"
 	local sound_target = "Hero_Tinker.LaserImpact"
 
 	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, source )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, source)
 
 	local attach = "attach_attack1"
-	if source:ScriptLookupAttachment( "attach_attack2" )~=0 then attach = "attach_attack2" end
+	if source:ScriptLookupAttachment("attach_attack2")~=0 then attach = "attach_attack2" end
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
 		9,
@@ -310,10 +310,10 @@ function tinker_counter:PlayEffects_b( source, point )
 		Vector(0,0,0), -- unknown
 		true -- unknown, true
 	)
-	ParticleManager:SetParticleControl( effect_cast, 1, point )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:SetParticleControl(effect_cast, 1, point)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	-- Create Sound
-	EmitSoundOn( sound_cast, source )
-	EmitSoundOnLocationWithCaster( point, sound_target, source )
+	EmitSoundOn(sound_cast, source)
+	EmitSoundOnLocationWithCaster(point, sound_target, source)
 end

@@ -18,7 +18,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_phantom_ex_basic_attack:OnCreated( kv )
+function modifier_phantom_ex_basic_attack:OnCreated(kv)
 	-- references
     if IsServer() then
         
@@ -29,7 +29,7 @@ function modifier_phantom_ex_basic_attack:OnCreated( kv )
             "phantom_basic_attack_related", 
             false, 
             not ability:IsHidden()
-        )
+       )
         
         self:GetParent():AddStatusBar({
             label = "dancing daggers", modifier = self, priority = 2, stylename="DancingBlades"
@@ -38,7 +38,7 @@ function modifier_phantom_ex_basic_attack:OnCreated( kv )
 	end
 end
 
-function modifier_phantom_ex_basic_attack:OnDestroy( kv )
+function modifier_phantom_ex_basic_attack:OnDestroy(kv)
     if IsServer() then
         local ability = self:GetParent():FindAbilityByName("phantom_basic_attack_related")
         
@@ -47,17 +47,17 @@ function modifier_phantom_ex_basic_attack:OnDestroy( kv )
             "phantom_basic_attack_related", 
             not ability:IsHidden(),
             false
-        )
+       )
 
         local particle_cast = "particles/econ/events/ti5/blink_dagger_end_sparkles_end_lvl2_ti5.vpcf"
         local origin = self:GetParent():GetOrigin()
-        local effect_cast = ParticleManager:CreateParticle( 
+        local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_CUSTOMORIGIN, 
             self:GetParent()
-        )
+       )
     
-        ParticleManager:SetParticleControlEnt( 
+        ParticleManager:SetParticleControlEnt(
             effect_cast, 
             0, 
             self:GetParent(), 
@@ -65,8 +65,8 @@ function modifier_phantom_ex_basic_attack:OnDestroy( kv )
             "attach_hitloc", 
             origin, 
             true 
-        )
-        ParticleManager:SetParticleControlEnt( 
+       )
+        ParticleManager:SetParticleControlEnt(
             effect_cast, 
             1, 
             self:GetParent(), 
@@ -74,7 +74,7 @@ function modifier_phantom_ex_basic_attack:OnDestroy( kv )
             "attach_hitloc", 
             origin, 
             true 
-        )
+       )
 
         self:StopEffects()
 	end
@@ -84,13 +84,13 @@ function modifier_phantom_ex_basic_attack:PlayEffectsOnCast()
     local particle_cast = "particles/econ/courier/courier_axolotl_ambient/courier_axolotl_ambient_lvl4_trail_steam.vpcf"
     local origin = self:GetParent():GetOrigin()
 
-    self.effect_cast_sparks = ParticleManager:CreateParticle( 
+    self.effect_cast_sparks = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_CUSTOMORIGIN, 
         self:GetParent()
-    )
+   )
 
-    ParticleManager:SetParticleControlEnt( 
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast_sparks, 
         0, 
         self:GetParent(), 
@@ -98,13 +98,13 @@ function modifier_phantom_ex_basic_attack:PlayEffectsOnCast()
         "attach_hitloc", 
         origin, 
         true 
-    )
+   )
 end
 
 function modifier_phantom_ex_basic_attack:StopEffects()
     if self.effect_cast_sparks ~= nil then
-        ParticleManager:DestroyParticle( self.effect_cast_sparks, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast_sparks )
+        ParticleManager:DestroyParticle(self.effect_cast_sparks, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast_sparks)
     end
     
 end

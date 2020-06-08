@@ -1,6 +1,6 @@
 axe_ex_second_attack = class({})
-LinkLuaModifier( "modifier_axe_ex_second_attack_movement", "abilities/heroes/axe/axe_ex_second_attack/modifier_axe_ex_second_attack_movement", LUA_MODIFIER_MOTION_BOTH )
-LinkLuaModifier( "modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_axe_ex_second_attack_movement", "abilities/heroes/axe/axe_ex_second_attack/modifier_axe_ex_second_attack_movement", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE)
 
 
 function axe_ex_second_attack:isHidden() return true
@@ -33,7 +33,7 @@ function axe_ex_second_attack:OnSpellStart()
 end
 
 --------------------------------------------------------------------------------
-function axe_ex_second_attack:OnCastPointEnd( pos )
+function axe_ex_second_attack:OnCastPointEnd(pos)
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local knockback_distance = self:GetSpecialValueFor("knockback_distance")
@@ -41,7 +41,7 @@ function axe_ex_second_attack:OnCastPointEnd( pos )
     local stun_duration = self:GetSpecialValueFor("stun_duration")
     
     --Find enemies to damage
-    local enemies = FindUnitsInRadius( 
+    local enemies = FindUnitsInRadius(
         caster:GetTeamNumber(), -- int, your team number
         origin, -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -51,7 +51,7 @@ function axe_ex_second_attack:OnCastPointEnd( pos )
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         --Knockback
@@ -69,14 +69,14 @@ function axe_ex_second_attack:OnCastPointEnd( pos )
                 r = knockback_distance,
                 speed = 2000,
             } -- kv
-        )
+       )
 
         enemy:AddNewModifier(
             caster, -- player source
             self, -- ability source
             "modifier_generic_stunned", -- modifier name
             { duration = stun_duration } -- kv
-        )
+       )
         
 
         local damage = {
@@ -86,7 +86,7 @@ function axe_ex_second_attack:OnCastPointEnd( pos )
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 
-		ApplyDamage( damage )
+		ApplyDamage(damage)
     end
 
     self:PlayEffects()
@@ -107,12 +107,12 @@ function axe_ex_second_attack:PlayEffects()
 	local particle_cast = "particles/econ/items/earthshaker/earthshaker_arcana/earthshaker_arcana_echoslam_start_warp.vpcf"
     local particle_cast_b = "particles/econ/items/earthshaker/earthshaker_arcana/earthshaker_arcana_aftershock_v2_shockwave.vpcf"
     
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN, caster )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN, caster)
 
-    ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast_b, 0, caster:GetOrigin() )
+    ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast_b, 0, caster:GetOrigin())
 
-    ParticleManager:ReleaseParticleIndex( effect_cast )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end

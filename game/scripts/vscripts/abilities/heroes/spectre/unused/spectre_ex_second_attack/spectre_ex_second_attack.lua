@@ -1,5 +1,5 @@
 spectre_ex_second_attack = class({})
-LinkLuaModifier( "modifier_spectre_ex_second_attack", "abilities/heroes/spectre/spectre_ex_second_attack/modifier_spectre_ex_second_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_spectre_ex_second_attack", "abilities/heroes/spectre/spectre_ex_second_attack/modifier_spectre_ex_second_attack", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -50,27 +50,27 @@ function spectre_ex_second_attack:PlayEffects()
 	local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start_embers.vpcf"
 	local origin = self:GetCaster():GetOrigin()
 	
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:SetParticleControlEnt( effect_cast, 1, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_hitloc", origin, true );
-	ParticleManager:SetParticleControlEnt( effect_cast, 3, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_hitloc", origin, true );
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControlEnt(effect_cast, 1, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_hitloc", origin, true);
+	ParticleManager:SetParticleControlEnt(effect_cast, 3, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_hitloc", origin, true);
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 end
 
 function spectre_ex_second_attack:PlayEffectsOnPhase()
-	EmitSoundOn( "Hero_Spectre.Haunt", self:GetCaster())
+	EmitSoundOn("Hero_Spectre.Haunt", self:GetCaster())
 	local particle_cast = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rope.vpcf"
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 15, Vector(128, 32, 108) )
-	ParticleManager:SetParticleControl( effect_cast, 16, Vector(1, 0, 0) )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast, 15, Vector(128, 32, 108))
+	ParticleManager:SetParticleControl(effect_cast, 16, Vector(1, 0, 0))
 
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	spectre_ex_second_attack,
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.0 },
 	{ movement_speed = 50 }

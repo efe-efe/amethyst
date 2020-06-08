@@ -24,8 +24,8 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_axe_ultimate:OnCreated( kv )
-	self.movement_speed = self:GetAbility():GetSpecialValueFor( "movement_speed" )
+function modifier_axe_ultimate:OnCreated(kv)
+	self.movement_speed = self:GetAbility():GetSpecialValueFor("movement_speed")
 
 	if IsServer() then
 		ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {

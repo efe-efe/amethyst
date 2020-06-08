@@ -1,5 +1,5 @@
 phoenix_counter = class({})
-LinkLuaModifier( "modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -11,11 +11,11 @@ function phoenix_counter:OnSpellStart()
     local extra_radius = self:GetSpecialValueFor("extra_radius")
     local damage = self:GetAbilityDamage()
 
-    if caster:HasModifier( "modifier_phoenix_mobility_movement" ) then
+    if caster:HasModifier("modifier_phoenix_mobility_movement") then
         self.radius = self.radius + extra_radius
     end
 
-    local enemies = FindUnitsInRadius( 
+    local enemies = FindUnitsInRadius(
         caster:GetTeamNumber(), -- int, your team number
         caster:GetOrigin(), -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -25,14 +25,14 @@ function phoenix_counter:OnSpellStart()
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
     for _,enemy in pairs(enemies) do
         enemy:AddNewModifier(
             caster,
             self,
             "modifier_generic_root",
             { duration = duration }
-        )
+       )
 
         local damage_table = {
             victim = enemy,
@@ -41,7 +41,7 @@ function phoenix_counter:OnSpellStart()
             damage_type = DAMAGE_TYPE_MAGICAL,
         }
 
-        ApplyDamage( damage_table )
+        ApplyDamage(damage_table)
     end
 
     self:PlayEffects()
@@ -58,14 +58,14 @@ function phoenix_counter:PlayEffects()
     EmitSoundOn("Hero_Phoenix.Death", caster)
     
 	local particle_cast_b = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, caster )
-    ParticleManager:SetParticleControl( effect_cast_b, 0, origin )
-    ParticleManager:SetParticleControl( effect_cast_b, 2, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, caster)
+    ParticleManager:SetParticleControl(effect_cast_b, 0, origin)
+    ParticleManager:SetParticleControl(effect_cast_b, 2, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 
 	local particle_cast_c = "particles/econ/items/monkey_king/arcana/fire/monkey_king_spring_arcana_fire.vpcf"
-    local effect_cast_c = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast_c, 0, origin )
-	ParticleManager:SetParticleControl( effect_cast_c, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast_c )
+    local effect_cast_c = ParticleManager:CreateParticle(particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast_c, 0, origin)
+	ParticleManager:SetParticleControl(effect_cast_c, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast_c)
 end

@@ -12,5 +12,5 @@ function phantom_counter:OnSpellStart()
 		self,
         "modifier_phantom_counter_countering", 
 		{ duration = duration }
-    )
+   )
 end

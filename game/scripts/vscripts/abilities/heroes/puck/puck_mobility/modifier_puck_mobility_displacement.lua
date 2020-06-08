@@ -22,15 +22,15 @@ function modifier_puck_mobility_displacement:OnDestroy()
 			self:GetParent():FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
 		end
 
-		ParticleManager:DestroyParticle( self.effect_cast_trail, false )
-		ParticleManager:ReleaseParticleIndex( self.effect_cast_trail )
+		ParticleManager:DestroyParticle(self.effect_cast_trail, false)
+		ParticleManager:ReleaseParticleIndex(self.effect_cast_trail)
 
-		ParticleManager:DestroyParticle( self.effect_cast_dust, false )
-		ParticleManager:ReleaseParticleIndex( self.effect_cast_dust )
+		ParticleManager:DestroyParticle(self.effect_cast_dust, false)
+		ParticleManager:ReleaseParticleIndex(self.effect_cast_dust)
 
 		local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start_embers.vpcf"
 		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
-		ParticleManager:ReleaseParticleIndex( effect_cast )
+		ParticleManager:ReleaseParticleIndex(effect_cast)
 	end
 end
 

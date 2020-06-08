@@ -33,7 +33,7 @@ function modifier_vengeful_special_attack_link:OnDestroy()
 				ability = self:GetAbility(),
 			}
 
-            ApplyDamage( damage_table )
+            ApplyDamage(damage_table)
             self:PlayEffectsOnDestroy(self:GetParent())
 			self:GetParent():AddNewModifier(self:GetCaster(), self.ability , "modifier_generic_stunned", { duration = 0.1 })
             self:GetParent():AddNewModifier(self:GetCaster(), self.ability , "modifier_generic_root", { duration = self.root_duration })
@@ -64,7 +64,7 @@ function modifier_vengeful_special_attack_link:DeclareFunctions()
 end
 
 
-function modifier_vengeful_special_attack_link:OnDeath( params )
+function modifier_vengeful_special_attack_link:OnDeath(params)
     if IsServer() then 
         if params.unit == self:GetCaster() then 
             self:Destroy()
@@ -74,7 +74,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Sounds
-function modifier_vengeful_special_attack_link:PlayEffects( hTarget )
+function modifier_vengeful_special_attack_link:PlayEffects(hTarget)
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 
@@ -84,16 +84,16 @@ function modifier_vengeful_special_attack_link:PlayEffects( hTarget )
 
     self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, nil)
 
-    ParticleManager:SetParticleControlEnt( 
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         0, 
         caster, 
         PATTACH_POINT_FOLLOW, 
         "attach_hitloc", 
-        origin + Vector( 0, 0, 96 ), 
+        origin + Vector(0, 0, 96), 
         true 
-    );
-    ParticleManager:SetParticleControlEnt( 
+   );
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         1, 
         hTarget, 
@@ -101,7 +101,7 @@ function modifier_vengeful_special_attack_link:PlayEffects( hTarget )
         "attach_hitloc", 
         hTarget:GetOrigin(), 
         true 
-    );
+   );
 end
 
 function modifier_vengeful_special_attack_link:PlayEffectsOnDestroy(hTarget)
@@ -111,8 +111,8 @@ function modifier_vengeful_special_attack_link:PlayEffectsOnDestroy(hTarget)
 end
 
 function modifier_vengeful_special_attack_link:StopEffects()
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
 
 modifier_vengeful_special_attack_link_ultimate.OnCreated = modifier_vengeful_special_attack_link.OnCreated

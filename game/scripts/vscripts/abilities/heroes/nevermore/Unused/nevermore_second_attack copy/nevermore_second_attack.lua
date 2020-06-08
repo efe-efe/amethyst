@@ -1,5 +1,5 @@
 nevermore_second_attack = class({})
-LinkLuaModifier( "modifier_nevermore_second_attack", "abilities/heroes/hero_name/nevermore_second_attack/modifier_nevermore_second_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_second_attack", "abilities/heroes/hero_name/nevermore_second_attack/modifier_nevermore_second_attack", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 --Passive Modifier
@@ -14,7 +14,7 @@ function nevermore_second_attack:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	-- Probable data
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
@@ -57,7 +57,7 @@ function nevermore_second_attack:OnCastPointEnd()
 					damage_type = DAMAGE_TYPE_MAGICAL,
 					ability = this,
 				}
-				ApplyDamage( damageTable )
+				ApplyDamage(damageTable)
 			end
 	
 			--[[
@@ -84,7 +84,7 @@ function nevermore_second_attack:OnCastPointEnd()
 				SafeDestroyModifier("modifier_nevermore_second_attack_cooldown", caster, caster)
 			end
 			]]
-			self:PlayEffectsRaze( pos, radius )
+			self:PlayEffectsRaze(pos, radius)
 			
 			if _self.Source == caster then 
 				caster:GiveManaPercent(mana_gain_pct, unit)
@@ -97,23 +97,23 @@ function nevermore_second_attack:OnCastPointEnd()
 end
 
 function nevermore_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "CAST_SOUND", self:GetCaster() )
+	EmitSoundOn("CAST_SOUND", self:GetCaster())
 end
 
-function nevermore_second_attack:PlayEffectsRaze( pos, radius )
+function nevermore_second_attack:PlayEffectsRaze(pos, radius)
 	local caster = self:GetCaster()
-    EmitSoundOnLocationWithCaster( pos, "Hero_Nevermore.Shadowraze", caster )
+    EmitSoundOnLocationWithCaster(pos, "Hero_Nevermore.Shadowraze", caster)
 	
     local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, pos )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, pos)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
---Abilities.BasicAttack( nevermore_second_attack )
-Abilities.Initialize( 
+--Abilities.BasicAttack(nevermore_second_attack)
+Abilities.Initialize(
 	nevermore_second_attack,
 	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }
@@ -121,13 +121,13 @@ Abilities.Initialize(
 
 --[[
 nevermore_second_attack = class({})
-LinkLuaModifier( "modifier_nevermore_second_attack_thinker", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_second_attack_thinker", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function nevermore_second_attack:OnCastPointEnd( point )
+function nevermore_second_attack:OnCastPointEnd(point)
 	local caster = self:GetCaster()
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
+	local delay_time = self:GetSpecialValueFor("delay_time")
 	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	CreateModifierThinker(

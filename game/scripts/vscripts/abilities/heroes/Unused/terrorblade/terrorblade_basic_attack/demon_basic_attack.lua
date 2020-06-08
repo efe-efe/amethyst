@@ -1,5 +1,5 @@
 demon_basic_attack = class({})
-LinkLuaModifier( "modifier_terrorblade_basic_attack", "abilities/heroes/terrorblade/terrorblade_basic_attack/modifier_terrorblade_basic_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_terrorblade_basic_attack", "abilities/heroes/terrorblade/terrorblade_basic_attack/modifier_terrorblade_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
 function demon_basic_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -9,7 +9,7 @@ function demon_basic_attack:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
@@ -38,7 +38,7 @@ function demon_basic_attack:OnCastPointEnd()
 					damage_type = DAMAGE_TYPE_PHYSICAL,
 					ability = self
 				}
-				ApplyDamage( damage )
+				ApplyDamage(damage)
 
 				unit:AddNewModifier(caster, self, "modifier_terrorblade_basic_attack", {})
 			end
@@ -55,25 +55,25 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 function demon_basic_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Terrorblade_Morphed.Attack", self:GetCaster() )
+	EmitSoundOn("Hero_Terrorblade_Morphed.Attack", self:GetCaster())
 end
 
-function demon_basic_attack:PlayEffectsOnFinish( pos )
+function demon_basic_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_Terrorblade_Morphed.projectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Terrorblade_Morphed.projectileImpact", caster)
 
 	-- Create Particle
 	local particle_cast = "particles/units/heroes/hero_terrorblade/terrorblade_metamorphosis_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.BasicAttack( demon_basic_attack )
-Abilities.Initialize( 
+Abilities.BasicAttack(demon_basic_attack)
+Abilities.Initialize(
 	demon_basic_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.3 },
 	{ movement_speed = 10, fixed_range = 1 }

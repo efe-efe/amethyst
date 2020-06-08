@@ -1,6 +1,6 @@
 modifier_terrorblade_base = class({})
-LinkLuaModifier( "modifier_terrorblade_normal", "abilities/heroes/terrorblade/terrorblade_base/modifier_terrorblade_normal", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_terrorblade_demon", "abilities/heroes/terrorblade/terrorblade_base/modifier_terrorblade_demon", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_terrorblade_normal", "abilities/heroes/terrorblade/terrorblade_base/modifier_terrorblade_normal", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_terrorblade_demon", "abilities/heroes/terrorblade/terrorblade_base/modifier_terrorblade_demon", LUA_MODIFIER_MOTION_NONE)
 
 function modifier_terrorblade_base:OnCreated()
     self.state = "NORMAL" --demon

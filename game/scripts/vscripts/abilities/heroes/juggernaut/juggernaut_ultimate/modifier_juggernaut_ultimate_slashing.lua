@@ -4,7 +4,7 @@ function modifier_juggernaut_ultimate_slashing:IsHidden()   return false end
 function modifier_juggernaut_ultimate_slashing:IsDebuff()   return false end
 function modifier_juggernaut_ultimate_slashing:IsPurgable() return false end
 
-function modifier_juggernaut_ultimate_slashing:OnCreated( params )
+function modifier_juggernaut_ultimate_slashing:OnCreated(params)
     self.radius = self:GetAbility():GetSpecialValueFor("find_radius")
 
     if IsServer() then
@@ -15,10 +15,10 @@ function modifier_juggernaut_ultimate_slashing:OnCreated( params )
         self:SetStackCount(params.aspd_buff)
 
         local attacks_per_second = self:GetParent():GetAttacksPerSecond()
-        local attack_speed = math.abs( 1 / attacks_per_second )
+        local attack_speed = math.abs(1 / attacks_per_second)
         
         self:OnIntervalThink()
-        self:StartIntervalThink( attack_speed )
+        self:StartIntervalThink(attack_speed)
         self:GetCaster():HideHealthBar()
     end
 end
@@ -38,7 +38,7 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
         FIND_ANY_ORDER
-    )
+   )
 
     local filtered_enemies = {}
     local counter = 0
@@ -62,7 +62,7 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
             damage = self.damage_per_second,
             damage_type = DAMAGE_TYPE_PURE,
         }
-        ApplyDamage( damage_table )
+        ApplyDamage(damage_table)
 
         FindClearSpaceForUnit(self:GetParent(), target:GetAbsOrigin() + RandomVector(128), false)
 
@@ -108,14 +108,14 @@ function modifier_juggernaut_ultimate_slashing:CheckState()
 	}
 end
 
-function modifier_juggernaut_ultimate_slashing:PlayEffects( hTarget )
+function modifier_juggernaut_ultimate_slashing:PlayEffects(hTarget)
     local particle_cast = "particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_tgt.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+    ParticleManager:ReleaseParticleIndex(effect_cast)
     EmitSoundOn("Hero_Juggernaut.OmniSlash.Damage", hTarget)
 end
 
-function modifier_juggernaut_ultimate_slashing:PlayEffects_b( )
+function modifier_juggernaut_ultimate_slashing:PlayEffects_b()
     local trail_pfx = ParticleManager:CreateParticle("particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_trail.vpcf", PATTACH_ABSORIGIN, self:GetCaster())
     ParticleManager:SetParticleControl(trail_pfx, 0, self.previous_position)
     ParticleManager:SetParticleControl(trail_pfx, 1, self.current_position)
@@ -124,12 +124,12 @@ end
 
 function modifier_juggernaut_ultimate_slashing:PlayEffectsAoe()
     local particle_cast = "particles/aoe_marker.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin())
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( 255, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 3, Vector(0.1, 0, 0) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 2, Vector(255, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 3, Vector(0.1, 0, 0))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_juggernaut_ultimate_slashing:GetEffectName()

@@ -24,9 +24,9 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_axe_extra:OnCreated( kv )
+function modifier_axe_extra:OnCreated(kv)
     if IsServer() then
-        self.damage_reduction = -self:GetAbility():GetSpecialValueFor( "damage_reduction" )
+        self.damage_reduction = -self:GetAbility():GetSpecialValueFor("damage_reduction")
         self:PlayEffects()
 
         ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
@@ -40,13 +40,13 @@ end
 
 --------------------------------------------------------------------------------
 -- Destructor
-function modifier_axe_extra:OnDestroy( kv )
+function modifier_axe_extra:OnDestroy(kv)
     if IsServer() then
         self:StopEffects()
     end
 end
 
-function modifier_axe_extra:GetModifierIncomingDamage_Percentage( params )
+function modifier_axe_extra:GetModifierIncomingDamage_Percentage(params)
 	return self.damage_reduction
 end
 
@@ -54,14 +54,14 @@ function modifier_axe_extra:PlayEffects()
     local caster = self:GetParent()
     -- Create Particle
     local particle_cast = "particles/units/heroes/hero_medusa/medusa_mana_shield.vpcf"
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-    ParticleManager:SetParticleControl( self.effect_cast, 0 , caster:GetOrigin())
-    ParticleManager:SetParticleControl( self.effect_cast, 1 , caster:GetOrigin())
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+    ParticleManager:SetParticleControl(self.effect_cast, 0 , caster:GetOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 1 , caster:GetOrigin())
 end
 
 function modifier_axe_extra:StopEffects()
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
 
 -- Graphics & Animations

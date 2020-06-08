@@ -8,17 +8,17 @@ function vengeful_mobility_swap:OnCastPointEnd()
     -- unit identifier
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
-	local radius = self:GetSpecialValueFor( "radius" )
-    local illusion = EntIndexToHScript( self.illusion_index )
+	local delay_time = self:GetSpecialValueFor("delay_time")
+	local radius = self:GetSpecialValueFor("radius")
+    local illusion = EntIndexToHScript(self.illusion_index)
 	
 	local ability_name = string.ends(self:GetAbilityName(), "_ultimate") and "vengeful_mobility_ultimate" or "vengeful_mobility"
 	local ability = caster:FindAbilityByName(ability_name)
 
     if illusion then
         self:PlayEffectsOnCast(illusion)
-        FindClearSpaceForUnit( caster, illusion:GetOrigin() , true )
-        FindClearSpaceForUnit( illusion, origin , true )
+        FindClearSpaceForUnit(caster, illusion:GetOrigin() , true)
+        FindClearSpaceForUnit(illusion, origin , true)
         
 		Timers:CreateTimer(0.001, function()
 			if illusion then
@@ -34,11 +34,11 @@ function vengeful_mobility_swap:OnCastPointEnd()
     end
 end
 
-function vengeful_mobility_swap:PlayEffectsOnCast( hTarget )
+function vengeful_mobility_swap:PlayEffectsOnCast(hTarget)
     local caster = self:GetCaster()
 	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_nether_swap.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, nil )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, nil)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -47,7 +47,7 @@ function vengeful_mobility_swap:PlayEffectsOnCast( hTarget )
 		caster:GetOrigin(), 
 		true 
 	);
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		1, 
 		hTarget, 
@@ -55,9 +55,9 @@ function vengeful_mobility_swap:PlayEffectsOnCast( hTarget )
 		"attach_hitloc", 
 		hTarget:GetOrigin(), 
 		true 
-    );
+   );
     
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     EmitSoundOn("Hero_VengefulSpirit.NetherSwap", caster)
     EmitSoundOn("Hero_VengefulSpirit.NetherSwap", hTarget)
@@ -67,12 +67,12 @@ vengeful_mobility_swap_ultimate.OnCastPointEnd = vengeful_mobility_swap.OnCastPo
 vengeful_mobility_swap_ultimate.PlayEffectsOnCast = vengeful_mobility_swap.PlayEffectsOnCast
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_mobility_swap,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
 	{ movement_speed = 10 }
 )
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_mobility_swap_ultimate,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
 	{ movement_speed = 10 }

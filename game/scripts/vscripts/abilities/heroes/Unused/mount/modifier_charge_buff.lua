@@ -14,8 +14,8 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_charge_buff:OnCreated( kv )
-	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor( "speed_buff_pct" )
+function modifier_charge_buff:OnCreated(kv)
+	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 	
 	if IsServer() then
 		self:GetParent():AddStatusBar({

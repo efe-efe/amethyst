@@ -1,15 +1,15 @@
 juggernaut_second_attack = class({})
-LinkLuaModifier( "modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL )
-LinkLuaModifier( "modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL)
+LinkLuaModifier("modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 function juggernaut_second_attack:OnAbilityPhaseStart()
 	local caster = self:GetCaster()
 	local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_crit_tgt.vpcf"
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-    ParticleManager:SetParticleControl( effect_cast, 1, caster:GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, caster:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+    ParticleManager:SetParticleControl(effect_cast, 1, caster:GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, caster:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 	return true
 end
 
@@ -24,7 +24,7 @@ function juggernaut_second_attack:GetPlaybackRateOverride() 	return 1.5 end
 function juggernaut_second_attack:GetCastPointSpeed() 			return 40 end
 function juggernaut_second_attack:GetAnimationTranslate()		return "odachi" end
 
-function juggernaut_second_attack:OnSpellStart( )
+function juggernaut_second_attack:OnSpellStart()
 	local random_number = RandomInt(0, 4)
 	if random_number > 0 then
 		EmitSoundOn("juggernaut_jug_attack_0" .. random_number, self:GetCaster())
@@ -39,9 +39,9 @@ function juggernaut_second_attack:OnSpellStart( )
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local radius = self:GetSpecialValueFor("radius")
 	
-	local direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
+	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
-	local final_damage = damage + ( stacks * damage_per_stack )
+	local final_damage = damage + (stacks * damage_per_stack)
 
 	if stacks <= 3 then
 		local enemies = caster:FindUnitsInCone(
@@ -62,7 +62,7 @@ function juggernaut_second_attack:OnSpellStart( )
 				damage = final_damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 			caster:GiveManaPercent(mana_gain_pct, enemy)
 			
 			self:PlayEffectsOnImpact(enemy)
@@ -94,7 +94,7 @@ function juggernaut_second_attack:OnSpellStart( )
 				damage = final_damage,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 			self:PlayEffectsOnImpact(enemy)
 		end
 
@@ -109,10 +109,10 @@ function juggernaut_second_attack:OnSpellStart( )
 	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
 end
 
-function juggernaut_second_attack:PlayEffectsOnImpact( hTarget )
-	EmitSoundOn( "Hero_Juggernaut.BladeDance.Arcana", hTarget )
-	EmitSoundOn( "Hero_Juggernaut.BladeDance.Layer", hTarget )
-	EmitSoundOn( "Hero_Juggernaut.Attack", hTarget )
+function juggernaut_second_attack:PlayEffectsOnImpact(hTarget)
+	EmitSoundOn("Hero_Juggernaut.BladeDance.Arcana", hTarget)
+	EmitSoundOn("Hero_Juggernaut.BladeDance.Layer", hTarget)
+	EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
 end
 
 function juggernaut_second_attack:PlayEffectsOnFinish(pos)
@@ -122,34 +122,34 @@ function juggernaut_second_attack:PlayEffectsOnFinish(pos)
 	local direction = (pos - origin):Normalized()
 	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
-	EmitSoundOnLocationWithCaster( pos, "Hero_Juggernaut.BladeDance", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Juggernaut.BladeDance", caster)
 
 	local position_final = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * 20
 
 	local particle_cast_a = "particles/econ/items/chaos_knight/chaos_knight_ti9_weapon/chaos_knight_ti9_weapon_blur_crit_arc.vpcf"
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_POINT, caster )
-    ParticleManager:SetParticleControl( 
+	local effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_POINT, caster)
+    ParticleManager:SetParticleControl(
 		effect_cast_a, 
 		0, 
 		Vector(position_final.x, position_final.y, caster:GetOrigin().z - 100)
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
+	ParticleManager:ReleaseParticleIndex(effect_cast_a)
 
 	particle_cast = "particles/meele_swing_red/pa_arcana_attack_blinkb_red.vpcf"
-	effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
+	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
 	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function juggernaut_second_attack:PlayEffectsAoe( radius )
+function juggernaut_second_attack:PlayEffectsAoe(radius)
 	local caster = self:GetCaster()
 	EmitSoundOn("juggernaut_jugsc_arc_ability_bladefury_12", caster)
 
 	local particle_cast = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( radius, 1, 1 ) )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+    ParticleManager:SetParticleControl(effect_cast, 2, Vector(radius, 1, 1))
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

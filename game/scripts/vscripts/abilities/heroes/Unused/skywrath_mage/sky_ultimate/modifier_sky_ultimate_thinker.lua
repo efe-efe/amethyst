@@ -1,5 +1,5 @@
 modifier_sky_ultimate_thinker = class({})
-LinkLuaModifier( "modifier_sky_special_attack_movement", "abilities/heroes/skywrath_mage/sky_special_attack/modifier_sky_special_attack_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_sky_special_attack_movement", "abilities/heroes/skywrath_mage/sky_special_attack/modifier_sky_special_attack_movement", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 --------------------------------------------------------------------------------
 
@@ -8,23 +8,23 @@ function modifier_sky_ultimate_thinker:IsHidden()
 end
 --------------------------------------------------------------------------------
 
-function modifier_sky_ultimate_thinker:OnCreated( kv )
+function modifier_sky_ultimate_thinker:OnCreated(kv)
     if IsServer() then
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
-        self.damage_heal_per_think = self:GetAbility():GetSpecialValueFor( "damage_heal_per_think" )
-        self.think_interval = self:GetAbility():GetSpecialValueFor( "think_interval" )
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
+        self.damage_heal_per_think = self:GetAbility():GetSpecialValueFor("damage_heal_per_think")
+        self.think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
         self:PlayEffects()
 
         -- Start Interval
-        self:StartIntervalThink( self.think_interval )        
+        self:StartIntervalThink(self.think_interval)        
     end
 end
 
 function modifier_sky_ultimate_thinker:OnDestroy()
     if IsServer() then
         local sound_cast = "Hero_SkywrathMage.MysticFlare"
-		StopSoundOn( sound_cast, self:GetCaster() )
-		UTIL_Remove( self:GetParent() )
+		StopSoundOn(sound_cast, self:GetCaster())
+		UTIL_Remove(self:GetParent())
 	end
 end
 
@@ -35,7 +35,7 @@ function modifier_sky_ultimate_thinker:OnIntervalThink()
     local caster = self:GetCaster()
 
     --Find enemies to damage
-    local enemies = FindUnitsInRadius( 
+    local enemies = FindUnitsInRadius(
         caster:GetTeamNumber(), -- int, your team number
         thinker_origin, -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -45,10 +45,10 @@ function modifier_sky_ultimate_thinker:OnIntervalThink()
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     --Find allies to heal
-    local allies = FindUnitsInRadius( 
+    local allies = FindUnitsInRadius(
         caster:GetTeamNumber(), -- int, your team number
         thinker_origin, -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -58,7 +58,7 @@ function modifier_sky_ultimate_thinker:OnIntervalThink()
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     --Damage enemies
     for _,enemy in pairs(enemies) do
@@ -69,7 +69,7 @@ function modifier_sky_ultimate_thinker:OnIntervalThink()
             damage_type = DAMAGE_TYPE_MAGICAL,
         }
 
-        ApplyDamage( damage )
+        ApplyDamage(damage)
 
         if enemy:HasModifier("modifier_generic_silence") then
             enemy:AddNewModifier(caster, self , "modifier_generic_silence", { 
@@ -96,14 +96,14 @@ function modifier_sky_ultimate_thinker:PlayEffects()
 	local particle_cast = "particles/econ/items/skywrath_mage/skywrath_mage_weapon_empyrean/skywrath_mage_mystic_flare_ambient_empyrean_gold.vpcf"
     
     -- particles 1
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, self:GetDuration(), self.think_interval ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, self:GetDuration(), self.think_interval))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	-- buff particle
 	self:AddParticle(
@@ -113,7 +113,7 @@ function modifier_sky_ultimate_thinker:PlayEffects()
 		-1, -- iPriority
 		false, -- bHeroEffect
 		false -- bOverheadEffect
-    )
+   )
     
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+    EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), sound_cast, self:GetCaster())
 end

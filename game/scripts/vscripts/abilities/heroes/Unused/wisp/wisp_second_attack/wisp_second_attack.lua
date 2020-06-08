@@ -21,7 +21,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_second_attack:OnCastPointEnd( pos )
+function wisp_second_attack:OnCastPointEnd(pos)
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -31,7 +31,7 @@ function wisp_second_attack:OnCastPointEnd( pos )
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(pos.x-origin.x, pos.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	local damage = self:GetAbilityDamage()
@@ -76,7 +76,7 @@ function wisp_second_attack:OnCastPointEnd( pos )
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 			
 			-- Give Mana
 			local mana_gain_final = caster:GetMaxMana() * mana_gain
@@ -97,31 +97,31 @@ end
 function wisp_second_attack:PlayEffects_a()
 	-- Create Sound
 	local sound_cast = "Hero_Wisp.TeleportOut"
-	EmitSoundOn( sound_cast, self:GetCaster()  )
+	EmitSoundOn(sound_cast, self:GetCaster() )
 
 	-- Create Particles
 	local particle_cast_a = "particles/econ/items/wisp/wisp_relocate_marker_ti7_out_embers.vpcf"
 	local particle_cast_b = "particles/econ/items/wisp/wisp_guardian_explosion_ti7.vpcf"
 
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	ParticleManager:ReleaseParticleIndex(effect_cast_a)
+	ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 
-function wisp_second_attack:PlayEffects_b( pos )
+function wisp_second_attack:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 	
 	-- Create Sound
 	local sound_cast = "Hero_Wisp.Spirits.Target"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_guardian_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 

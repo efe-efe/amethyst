@@ -19,25 +19,25 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_nevermore_ex_special_attack:OnCreated( kv )
-    self.armor_duration = self:GetAbility():GetSpecialValueFor( "armor_duration" )
+function modifier_nevermore_ex_special_attack:OnCreated(kv)
+    self.armor_duration = self:GetAbility():GetSpecialValueFor("armor_duration")
 	-- references
     if IsServer() then
-        local charges = self:GetAbility():GetSpecialValueFor( "charges" )
+        local charges = self:GetAbility():GetSpecialValueFor("charges")
 
 		self:SetStackCount(charges)
 	end
 end
 
-function modifier_nevermore_ex_special_attack:OnRefresh( kv )
+function modifier_nevermore_ex_special_attack:OnRefresh(kv)
 	-- references
 	if IsServer() then
-        local charges = self:GetAbility():GetSpecialValueFor( "charges" )
+        local charges = self:GetAbility():GetSpecialValueFor("charges")
 		self:SetStackCount(charges)
 	end
 end
 
-function modifier_nevermore_ex_special_attack:OnDestroy( kv )
+function modifier_nevermore_ex_special_attack:OnDestroy(kv)
 end
 
 --------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ function modifier_nevermore_ex_special_attack:OnAbilityFullyCast(params)
 end
 
 
-function modifier_nevermore_ex_special_attack:GetModifierProcAttack_BonusDamage_Physical( params )
+function modifier_nevermore_ex_special_attack:GetModifierProcAttack_BonusDamage_Physical(params)
 	if IsServer() then
         if self:GetParent():PassivesDisabled() then return end
             params.target:AddNewModifier(
@@ -70,7 +70,7 @@ function modifier_nevermore_ex_special_attack:GetModifierProcAttack_BonusDamage_
                 self:GetAbility(),
                 "modifier_nevermore_ex_special_attack_debuff",
                 { duration = self.armor_duration }
-            ) 
+           ) 
         return 0
 	end
 end

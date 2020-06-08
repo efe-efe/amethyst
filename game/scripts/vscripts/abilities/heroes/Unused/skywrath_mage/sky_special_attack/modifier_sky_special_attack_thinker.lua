@@ -1,5 +1,5 @@
 modifier_sky_special_attack_thinker = class({})
-LinkLuaModifier( "modifier_sky_special_attack_movement", "abilities/heroes/skywrath_mage/sky_special_attack/modifier_sky_special_attack_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_sky_special_attack_movement", "abilities/heroes/skywrath_mage/sky_special_attack/modifier_sky_special_attack_movement", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 --Clasifications
 --------------------------------------------------------------------------------
@@ -10,20 +10,20 @@ end
 
 --Initializer
 --------------------------------------------------------------------------------
-function modifier_sky_special_attack_thinker:OnCreated( kv )
+function modifier_sky_special_attack_thinker:OnCreated(kv)
     if IsServer() then
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
 
         self:PlayEffects()
 
         -- Start Interval
-        self:StartIntervalThink( 0.2 )        
+        self:StartIntervalThink(0.2)        
     end
 end
 
 function modifier_sky_special_attack_thinker:OnDestroy()
 	if IsServer() then
-		UTIL_Remove( self:GetParent() )
+		UTIL_Remove(self:GetParent())
 	end
 end
 
@@ -35,7 +35,7 @@ function modifier_sky_special_attack_thinker:OnIntervalThink()
     
     local ent = Entities:FindAllInSphere(thinker_origin, self.radius)
 
-    local enemies = FindUnitsInRadius( 
+    local enemies = FindUnitsInRadius(
         thinker:GetTeamNumber(), -- int, your team number
         thinker_origin, -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -45,7 +45,7 @@ function modifier_sky_special_attack_thinker:OnIntervalThink()
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         local x = enemy:GetOrigin().x - thinker_origin.x
@@ -63,7 +63,7 @@ function modifier_sky_special_attack_thinker:OnIntervalThink()
                 y = y,
                 r = distance,
             } -- kv
-        )
+       )
     end
 end
 
@@ -73,14 +73,14 @@ function modifier_sky_special_attack_thinker:PlayEffects()
 	local particle_cast = "particles/units/heroes/hero_skywrath_mage/skywrath_mage_mystic_flare_ambient.vpcf"
     
     -- particles 1
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, self:GetDuration(), 10 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, self:GetDuration(), 10))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	-- buff particle
 	self:AddParticle(
@@ -90,7 +90,7 @@ function modifier_sky_special_attack_thinker:PlayEffects()
 		-1, -- iPriority
 		false, -- bHeroEffect
 		false -- bOverheadEffect
-    )
+   )
     
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+    EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), sound_cast, self:GetCaster())
 end

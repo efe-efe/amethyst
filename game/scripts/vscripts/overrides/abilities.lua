@@ -84,7 +84,7 @@ function CDOTABaseAbility:GetAlternateName()
 end
 
 function CDOTABaseAbility:GetRelatedAbility()
-	local ability = self:GetCaster():FindAbilityByName( self:GetName() .. "_related" )
+	local ability = self:GetCaster():FindAbilityByName(self:GetName() .. "_related")
 	if ability ~= nil then
 		return ability
 	else 

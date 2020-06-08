@@ -11,7 +11,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_generic_knockback:OnCreated( kv )
+function modifier_generic_knockback:OnCreated(kv)
 	if IsServer() then
 		-- creation data (default)
 			-- kv.distance (0)
@@ -72,19 +72,19 @@ function modifier_generic_knockback:OnCreated( kv )
 	end
 end
 
-function modifier_generic_knockback:OnRefresh( kv )
+function modifier_generic_knockback:OnRefresh(kv)
 	
 end
 
-function modifier_generic_knockback:OnDestroy( kv )
+function modifier_generic_knockback:OnDestroy(kv)
 	if IsServer() then
-		self:GetParent():InterruptMotionControllers( true )
+		self:GetParent():InterruptMotionControllers(true)
 	end
 end
 
 --------------------------------------------------------------------------------
 -- Motion effects
-function modifier_generic_knockback:SyncTime( iDir, dt )
+function modifier_generic_knockback:SyncTime(iDir, dt)
 	-- check if sync is not required
 	if self.both<2 then
 		self.elapsedTime = self.elapsedTime + dt
@@ -109,7 +109,7 @@ function modifier_generic_knockback:SyncTime( iDir, dt )
 	end
 end
 
-function modifier_generic_knockback:UpdateHorizontalMotion( me, dt )
+function modifier_generic_knockback:UpdateHorizontalMotion(me, dt)
 	self:SyncTime(1, dt)
 	local parent = self:GetParent()
 	
@@ -117,7 +117,7 @@ function modifier_generic_knockback:UpdateHorizontalMotion( me, dt )
 	local target = self.direction*self.hVelocity*self.elapsedTime
 
 	-- change position
-	parent:SetOrigin( self.origin + target )
+	parent:SetOrigin(self.origin + target)
 end
 
 function modifier_generic_knockback:OnHorizontalMotionInterrupted()
@@ -126,7 +126,7 @@ function modifier_generic_knockback:OnHorizontalMotionInterrupted()
 	end
 end
 
-function modifier_generic_knockback:UpdateVerticalMotion( me, dt )
+function modifier_generic_knockback:UpdateVerticalMotion(me, dt)
 	self:SyncTime(2, dt)
 	local parent = self:GetParent()
 
@@ -134,7 +134,7 @@ function modifier_generic_knockback:UpdateVerticalMotion( me, dt )
 	local target = self.vVelocity*self.elapsedTime + 0.5*self.gravity*self.elapsedTime*self.elapsedTime
 
 	-- change height
-	parent:SetOrigin( Vector( parent:GetOrigin().x, parent:GetOrigin().y, self.origin.z+target ) )
+	parent:SetOrigin(Vector(parent:GetOrigin().x, parent:GetOrigin().y, self.origin.z+target))
 end
 
 function modifier_generic_knockback:OnVerticalMotionInterrupted()
@@ -153,7 +153,7 @@ function modifier_generic_knockback:DeclareFunctions()
 	return funcs
 end
 
-function modifier_generic_knockback:GetOverrideAnimation( params )
+function modifier_generic_knockback:GetOverrideAnimation(params)
 	--if self.stun or self.flail then
 		return ACT_DOTA_FLAIL
 	--end

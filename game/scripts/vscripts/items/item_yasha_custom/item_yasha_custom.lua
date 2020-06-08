@@ -1,5 +1,5 @@
 item_yasha_custom = class({})
-LinkLuaModifier( "modifier_item_yasha_custom", "items/item_yasha_custom/modifier_item_yasha_custom", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_item_yasha_custom", "items/item_yasha_custom/modifier_item_yasha_custom", LUA_MODIFIER_MOTION_NONE)
 
 function item_yasha_custom:OnAbilityPhaseStart()
 	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
@@ -23,11 +23,11 @@ function item_yasha_custom:OnSpellStart()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local duration = self:GetSpecialValueFor("duration")
 	
-	FindClearSpaceForUnit( caster, point , true )
+	FindClearSpaceForUnit(caster, point , true)
 
 	local new_origin = caster:GetOrigin()
 
-	local enemies = caster:FindUnitsInLine( 
+	local enemies = caster:FindUnitsInLine(
 		new_origin, 
 		origin, 
 		100, 
@@ -43,7 +43,7 @@ function item_yasha_custom:OnSpellStart()
 			damage = damage,
 			damage_type = DAMAGE_TYPE_PHYSICAL,
 		}
-		ApplyDamage( damage_table )
+		ApplyDamage(damage_table)
 		self:PlayEffectsOnTarget(enemy)
 	end
 
@@ -59,26 +59,26 @@ end
 
 function item_yasha_custom:PlayEffectsOnCast(origin, final)
     local particle_cast = "particles/yasha_effect/void_spirit_astral_step.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, origin )
-	ParticleManager:SetParticleControl( effect_cast, 1, final )
-	ParticleManager:ReleaseParticleIndex( effect_cast )    
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, origin)
+	ParticleManager:SetParticleControl(effect_cast, 1, final)
+	ParticleManager:ReleaseParticleIndex(effect_cast)    
 end
 
-function item_yasha_custom:PlayEffectsOnTarget( hTarget )
-	EmitSoundOn( "Hero_Juggernaut.BladeDance.Arcana", hTarget )
-	EmitSoundOn( "Hero_Juggernaut.BladeDance.Layer", hTarget )
-	EmitSoundOn( "Hero_Juggernaut.Attack", hTarget )
+function item_yasha_custom:PlayEffectsOnTarget(hTarget)
+	EmitSoundOn("Hero_Juggernaut.BladeDance.Arcana", hTarget)
+	EmitSoundOn("Hero_Juggernaut.BladeDance.Layer", hTarget)
+	EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
 end
 
 function item_yasha_custom:PlayEffectsOnMiss()
-	EmitSoundOn( "Hero_Juggernaut.Attack", self:GetCaster() )
+	EmitSoundOn("Hero_Juggernaut.Attack", self:GetCaster())
 end
 
 function item_yasha_custom:PlayEffectsOnHit()
     EmitSoundOn("DOTA_Item.PhaseBoots.Activate", self:GetCaster())
 
 	local particle_cast = "particles/econ/events/ti8/phase_boots_ti8.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

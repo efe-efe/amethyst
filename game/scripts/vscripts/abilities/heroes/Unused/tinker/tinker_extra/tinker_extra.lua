@@ -2,13 +2,13 @@ tinker_extra = class({})
 
 --------------------------------------------------------------------------------
 -- Ability Channeling
-function tinker_extra:OnSpellStart(  )
+function tinker_extra:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 
 	-- stop effects
 	local sound_cast = "DOTA_Item.SoulRing.Activate"
-	StopSoundOn( sound_cast, self:GetCaster() )
+	StopSoundOn(sound_cast, self:GetCaster())
 	
 	-- Animation and pseudo cast point
 	StartAnimation(self:GetCaster(), {
@@ -29,10 +29,10 @@ function tinker_extra:PlayEffects()
 	local sound_cast = "Hero_Tinker.RearmStart"
 
 	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 function tinker_extra:OnCastPointEnd()
@@ -50,12 +50,12 @@ function tinker_extra:OnCastPointEnd()
         damage_type = DAMAGE_TYPE_PURE,
         ability = self
     }
-    ApplyDamage( damage )
+    ApplyDamage(damage)
 
 	local sound_cast = "DOTA_Item.SoulRing.Activate"
 	
-	SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, caster, mana_gain, nil )
+	SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, caster, mana_gain, nil)
 
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 

@@ -7,11 +7,11 @@ function modifier_treant_mobility:OnCreated()
 
         local particle_cast = "particles/econ/items/earthshaker/earthshaker_arcana/earthshaker_arcana_blink_start_v2.vpcf"
         -- Create Particles
-        local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-        ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-        ParticleManager:SetParticleControl( effect_cast, 1, self:GetCaster():GetOrigin() )
-        ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
-        ParticleManager:ReleaseParticleIndex( effect_cast )
+        local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+        ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+        ParticleManager:SetParticleControl(effect_cast, 1, self:GetCaster():GetOrigin())
+        ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+        ParticleManager:ReleaseParticleIndex(effect_cast)
 
 		self:GetParent():AddNoDraw()
         self:StartIntervalThink(0.03)
@@ -45,14 +45,14 @@ function modifier_treant_mobility:PlayEffects()
     local particle_cast = "particles/units/heroes/hero_treant/treant_overgrowth_vine_bushes.vpcf"
    
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     particle_cast = "particles/units/heroes/hero_furion/furion_wrath_of_nature_growth_fallback_low.vpcf"
     -- Create Particles
-	effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 4, caster:GetOrigin() + Vector(0,0,128) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 4, caster:GetOrigin() + Vector(0,0,128))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

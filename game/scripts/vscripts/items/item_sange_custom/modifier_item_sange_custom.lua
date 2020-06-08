@@ -6,7 +6,7 @@ function modifier_item_sange_custom:OnCreated()
     
     if IsServer() then
         self:OnIntervalThink()
-        self:StartIntervalThink( self.think_interval )
+        self:StartIntervalThink(self.think_interval)
     end
 end
 

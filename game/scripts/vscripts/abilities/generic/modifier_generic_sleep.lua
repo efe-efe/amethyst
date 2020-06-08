@@ -10,7 +10,7 @@ function modifier_generic_sleep:IsStunDebuff()
 	return true
 end
 
-function modifier_generic_sleep:OnCreated( params )
+function modifier_generic_sleep:OnCreated(params)
 	if IsServer() then 
 		self:GetParent():AddStatusBar({
 			label = "Sleep", modifier = self, priority = 3, stylename="Sleep"
@@ -41,7 +41,7 @@ function modifier_generic_sleep:DeclareFunctions()
 	return funcs
 end
 
-function modifier_generic_sleep:OnTakeDamage( params )
+function modifier_generic_sleep:OnTakeDamage(params)
 	if not IsServer() then return end
 		-- filter
 		if params.unit==self:GetParent() then

@@ -1,6 +1,6 @@
 item_nullifier_custom = class({})
-LinkLuaModifier( "modifier_item_nullifier_custom", "items/item_nullifier_custom/modifier_item_nullifier_custom", LUA_MODIFIER_MOTION_HORIZONTAL )
-LinkLuaModifier( "modifier_item_nullifier_custom_slow", "items/item_nullifier_custom/modifier_item_nullifier_custom_slow", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_item_nullifier_custom", "items/item_nullifier_custom/modifier_item_nullifier_custom", LUA_MODIFIER_MOTION_HORIZONTAL)
+LinkLuaModifier("modifier_item_nullifier_custom_slow", "items/item_nullifier_custom/modifier_item_nullifier_custom_slow", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 function item_nullifier_custom:OnAbilityPhaseStart()
 	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_casting", { 
@@ -27,7 +27,7 @@ function item_nullifier_custom:OnSpellStart()
 	local ability_damage = self:GetSpecialValueFor("ability_damage")
 
 	-- Dynamic data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
     local projectile_speed = self:GetSpecialValueFor("projectile_speed")
     
     local projectile = {
@@ -53,7 +53,7 @@ function item_nullifier_custom:OnSpellStart()
 				damage = ability_damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 			unit:Purge(true, false, false, false, false)
 		end,
 		OnFinish = function(_self, pos)
@@ -68,16 +68,16 @@ end
 
 function item_nullifier_custom:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
-	EmitSoundOnLocationWithCaster( pos, "DOTA_Item.Nullifier.Target", caster )
+	EmitSoundOnLocationWithCaster(pos, "DOTA_Item.Nullifier.Target", caster)
 
 	-- Create Particles
 	local particle_cast = "particles/items4_fx/nullifier_proj_impact.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function item_nullifier_custom:PlayEffectsOnCast()
-	EmitSoundOn( "DOTA_Item.Nullifier.Cast", self:GetCaster() )
+	EmitSoundOn("DOTA_Item.Nullifier.Cast", self:GetCaster())
 end

@@ -9,7 +9,7 @@ PROJECTILES_FOLLOW = 3
 SPEED_FACTOR = 1.0
 
 if Projectiles == nil then
-    print ( '[PROJECTILES] creating Projectiles' )
+    print ('[PROJECTILES] creating Projectiles')
     Projectiles = {}
 end
 
@@ -192,7 +192,7 @@ function Projectiles:CreateProjectile(projectile)
                     projectile.iFlagFilter,
                     FIND_ANY_ORDER, 
                     false
-                )
+               )
             end
 
             for index = 1, tot do
@@ -216,7 +216,7 @@ function Projectiles:CreateProjectile(projectile)
                         entity:IsAlive() and 
                         (not    projectile.bIgnoreSource or 
                                 (projectile.bIgnoreSource and entity ~= projectile.Source)
-                        ) --[[and 
+                       ) --[[and 
                         nozCheck]] and 
                         zCheck 
                     then
@@ -254,10 +254,10 @@ function Projectiles:CreateProjectile(projectile)
                                                 damage = 1,
                                                 damage_type = DAMAGE_TYPE_MAGICAL,
                                             }
-                                            ApplyDamage( damage )
+                                            ApplyDamage(damage)
                                         end
 
-                                        Projectiles:CreateProjectile( reflectedProjectile )
+                                        Projectiles:CreateProjectile(reflectedProjectile)
                                         return
                                     end
                                 end
@@ -270,7 +270,7 @@ function Projectiles:CreateProjectile(projectile)
                                         damage = 1,
                                         damage_type = DAMAGE_TYPE_MAGICAL,
                                     }
-                                    ApplyDamage( damage )
+                                    ApplyDamage(damage)
                                     projectile:Destroy(false)
                                     return
                                 end
@@ -357,7 +357,11 @@ function Projectiles:CreateProjectile(projectile)
                 -- ON HIT AN WALL
                 if projectile.WallBehavior ~= PROJECTILES_NOTHING and groundConnect then--ground.z > projectile.prevPos.z then
                     local normal = Projectiles:CalcNormal(ground, projectile.Source, 32)
-                    if normal.z < .6 then
+                   
+                    --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(255,255,255), true, 1)
+                    --print(normal.z)
+
+                    if normal.z < .8 then
                         local vec = Vector(GridNav:GridPosToWorldCenterX(GridNav:WorldToGridPosX(subpos.x)), GridNav:GridPosToWorldCenterY(GridNav:WorldToGridPosY(subpos.y)), ground.z)
                         local status, action = pcall(projectile.OnWallHit, projectile, vec)
                         if not status then

@@ -24,10 +24,10 @@ function modifier_phantom_counter_countering:PlayEffectsOnTrigger()
     EmitSoundOn("Hero_PhantomAssassin.Blur", self:GetParent())
 
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetAbsOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetAbsOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetParent():GetAbsOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_phantom_counter_countering:GetMovementSpeedPercentage() return 0 end

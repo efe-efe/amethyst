@@ -12,18 +12,18 @@ function modifier_wisp_ultimate:IsPurgable() return false
 end
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_wisp_ultimate:OnCreated( kv )
+function modifier_wisp_ultimate:OnCreated(kv)
     if IsServer() then
 		self:PlayEffects()
 		self:GetParent():AddNoDraw()
 	end
 end
 
-function modifier_wisp_ultimate:OnRefresh( kv )
+function modifier_wisp_ultimate:OnRefresh(kv)
 	
 end
 
-function modifier_wisp_ultimate:OnDestroy( kv )
+function modifier_wisp_ultimate:OnDestroy(kv)
 	if IsServer() then
 		self:GetParent():RemoveNoDraw()
 		self:StopEffects()
@@ -48,11 +48,11 @@ function modifier_wisp_ultimate:PlayEffects()
 	local particle_cast = "particles/econ/items/wisp/wisp_relocate_marker_ti7_endpoint.vpcf"
 
 	-- Create Particle
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, self:GetParent() )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, self:GetParent())
+	ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())
 end
 
 function modifier_wisp_ultimate:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

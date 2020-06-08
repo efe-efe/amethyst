@@ -29,7 +29,7 @@ function modifier_spectre_ultimate_thinker:OnDelayEnds()
 
         local particle_cast = "particles/fv_chronosphere_aeons.vpcf"
 
-        self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil)
+        self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
         ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())
         ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(self.radius, self.radius, 1))
     end

@@ -1,5 +1,5 @@
 charge = class({})
-LinkLuaModifier( "modifier_charge_buff", "abilities/heroes/common/mount/modifier_charge_buff.lua", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_charge_buff", "abilities/heroes/common/mount/modifier_charge_buff.lua", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -19,12 +19,12 @@ function charge:OnSpellStart()
             movement_speed = 100,
             cancel_on_damage = 1,
         }
-    )
+   )
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function charge:OnCastPointEnd(  )
+function charge:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("duration")
 
@@ -36,17 +36,17 @@ function charge:OnCastPointEnd(  )
         {
             duration = duration,
         }
-    )
+   )
     self:PlayEffectsOnCast()
 end
 
 
 function charge:PlayEffectsOnCast()
     local particle_cast = "particles/units/heroes/hero_dark_seer/dark_seer_surge_start.vpcf"
-    local effect_cast =  ParticleManager:CreateParticle( 
+    local effect_cast =  ParticleManager:CreateParticle(
         particle_cast,
         PATTACH_ABSORIGIN_FOLLOW, 
         self:GetCaster()
-    )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+   )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

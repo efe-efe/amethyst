@@ -1,5 +1,5 @@
 weaver_ultimate = class({})
-LinkLuaModifier( "modifier_weaver_ultimate", "abilities/heroes/weaver/weaver_ultimate/modifier_weaver_ultimate", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_weaver_ultimate", "abilities/heroes/weaver/weaver_ultimate/modifier_weaver_ultimate", LUA_MODIFIER_MOTION_NONE)
 
 function weaver_ultimate:GetIntrinsicModifierName()
     return "modifier_weaver_ultimate"
@@ -35,7 +35,7 @@ function weaver_ultimate:OnCastPointEnd()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
     
     for _,enemy in pairs(enemies) do
         enemy:AddNewModifier(caster, self, "modifier_generic_stunned", { duration = stun_duration })
@@ -45,7 +45,7 @@ function weaver_ultimate:OnCastPointEnd()
             damage = damage,
             damage_type = DAMAGE_TYPE_PURE,
         }
-        ApplyDamage( damage )
+        ApplyDamage(damage)
     end
 
     self:PlayEffects(origin, location, radius)
@@ -57,23 +57,23 @@ function weaver_ultimate:PlayEffects(origin, target, radius)
 
     -- Cast Sound
     local sound_cast = "Hero_Weaver.TimeLapse"
-    EmitSoundOn( sound_cast , caster )
+    EmitSoundOn(sound_cast , caster)
 
     -- Cast particle
     local particle_cast = "particles/units/heroes/hero_weaver/weaver_timelapse.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-    ParticleManager:SetParticleControl( effect_cast, 0, origin)
-    ParticleManager:SetParticleControl( effect_cast, 2, target)
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+    ParticleManager:SetParticleControl(effect_cast, 0, origin)
+    ParticleManager:SetParticleControl(effect_cast, 2, target)
+    ParticleManager:ReleaseParticleIndex(effect_cast)
     
 	particle_cast = "particles/call_modified/axe_beserkers_call_owner_shoutmask.vpcf"
-    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector( radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+    ParticleManager:SetParticleControl(effect_cast, 2, Vector(radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	weaver_ultimate,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },
 	{ movement_speed = 100 }

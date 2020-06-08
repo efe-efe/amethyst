@@ -1,6 +1,6 @@
 modifier_generic_confuse = class({})
 
-function modifier_generic_confuse:OnCreated( params )
+function modifier_generic_confuse:OnCreated(params)
     if IsServer() then
         self:GetParent():AddStatusBar({ label = "Confused", modifier = self, priority = 1, stylename="Confused" }) 
     end

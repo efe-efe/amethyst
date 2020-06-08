@@ -14,7 +14,7 @@ function tinker_mobility:OnSpellStart()
 	})
 end
 
-function tinker_mobility:OnCastPointEnd( point )
+function tinker_mobility:OnCastPointEnd(point)
     --Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
@@ -29,7 +29,7 @@ function tinker_mobility:OnCastPointEnd( point )
     end
 
     -- teleport
-    FindClearSpaceForUnit( caster, point , true )
+    FindClearSpaceForUnit(caster, point , true)
 
     --Effects
     self:PlayEffects_b()
@@ -44,9 +44,9 @@ function tinker_mobility:PlayEffects_a()
     EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function tinker_mobility:PlayEffects_b()
@@ -58,6 +58,6 @@ function tinker_mobility:PlayEffects_b()
     EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

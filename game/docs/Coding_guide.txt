@@ -95,7 +95,7 @@ Saving a modifier
 
     When creating a modifier with "Base_NPC:AddNewModifier()", the function actually returns the modifier itself, so you can save it as following:
 
-    local modifier = self:GetCaster():AddNewModifier( params )
+    local modifier = self:GetCaster():AddNewModifier(params)
 
     And then do things like  "modifier:Destroy()"
 
@@ -107,7 +107,7 @@ The methods "Base_NPC:GetAttackSpeed()" and "Base_NPC:GetAttacksPerSecond()" don
 
 The method "Base_NPC:GetAttackSpeed()" should return the attack speed of a unit in seconds, meaning that the return value is the time it takes for the unit from the begining to the end of the attack. On the other side, the method "Base_NPC:GetAttacksPerSecond()" should return the number of attacks a unit can perform in one second. 
 
-In reality, the first one is broken, and returns the same value than the second (attacks per second). So, you have to use the next simple formula: "AttackSpeed = ( 1 / AttacksPerSecond )"
+In reality, the first one is broken, and returns the same value than the second (attacks per second). So, you have to use the next simple formula: "AttackSpeed = (1 / AttacksPerSecond)"
 
 
 //=================================================================================	

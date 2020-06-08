@@ -12,7 +12,7 @@ function phoenix_ex_special_attack:OnSpellStart()
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	local damage = self:GetAbilityDamage()
@@ -56,7 +56,7 @@ function phoenix_ex_special_attack:OnSpellStart()
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 
 			self:PlayEffects_b(_self:GetPosition())
 			_self.Destroy()
@@ -80,21 +80,21 @@ end
 function phoenix_ex_special_attack:PlayEffects_a()
 	-- Create Sound
 	local sound_cast = "Hero_Phoenix.Attack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 
-function phoenix_ex_special_attack:PlayEffects_b( pos )
+function phoenix_ex_special_attack:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 	
 	-- Create Sound
 	local sound_cast = "Hero_Phoenix.ProjectileImpact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Create Particles
 	local particle_cast = "particles/econ/items/bristleback/ti7_head_nasal_goo/bristleback_ti7_crimson_nasal_goo_impact_fire.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 

@@ -15,8 +15,8 @@ end
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_ancient_basic_attack:OnCreated()
-    self.ms_pct_per_stack = self:GetAbility():GetSpecialValueFor( "ms_pct_per_stack" )
-    self.max_stacks = self:GetAbility():GetSpecialValueFor( "max_stacks" )
+    self.ms_pct_per_stack = self:GetAbility():GetSpecialValueFor("ms_pct_per_stack")
+    self.max_stacks = self:GetAbility():GetSpecialValueFor("max_stacks")
     self.duration = self:GetAbility():GetSpecialValueFor("duration")
 
     if IsServer() then
@@ -28,8 +28,8 @@ function modifier_ancient_basic_attack:OnCreated()
 end
 
 function modifier_ancient_basic_attack:OnRefresh()
-    self.ms_pct_per_stack = self:GetAbility():GetSpecialValueFor( "ms_pct_per_stack" )
-    self.max_stacks = self:GetAbility():GetSpecialValueFor( "max_stacks" )
+    self.ms_pct_per_stack = self:GetAbility():GetSpecialValueFor("ms_pct_per_stack")
+    self.max_stacks = self:GetAbility():GetSpecialValueFor("max_stacks")
     self.duration = self:GetAbility():GetSpecialValueFor("duration")
 
     if IsServer() then
@@ -49,7 +49,7 @@ function modifier_ancient_basic_attack:OnIntervalThink()
     self:DecrementStackCount()
 end
 
-function modifier_ancient_basic_attack:OnStackCountChanged( old )
+function modifier_ancient_basic_attack:OnStackCountChanged(old)
 	if IsServer() then
 		if self:GetStackCount() < 1 then
 			self:Destroy()

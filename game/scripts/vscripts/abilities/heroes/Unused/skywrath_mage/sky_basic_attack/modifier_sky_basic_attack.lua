@@ -18,7 +18,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_sky_basic_attack:OnCreated( kv )
+function modifier_sky_basic_attack:OnCreated(kv)
     -- load data
     self.damage_bonus = self:GetAbility():GetSpecialValueFor("damage_bonus")
     self.charge_cooldown = self:GetAbility():GetSpecialValueFor("charge_cooldown")
@@ -26,7 +26,7 @@ function modifier_sky_basic_attack:OnCreated( kv )
     self.max_charges = 1
 
     if IsServer() then
-		self:SetStackCount( self.max_charges )
+		self:SetStackCount(self.max_charges)
 		self:CalculateCharge()
     end
 end
@@ -44,22 +44,22 @@ end
 function modifier_sky_basic_attack:CalculateCharge()
 	if self:GetStackCount() == self.max_charges then
 		-- stop charging
-		self:SetDuration( -1, false )
-		self:StartIntervalThink( -1 )
+		self:SetDuration(-1, false)
+		self:StartIntervalThink(-1)
         self:PlayEffects_a()
         self:PlayEffects_b()
     elseif self:GetStackCount() > self.max_charges then
 		-- stop charging
-		self:SetStackCount( self.max_charges )
-		self:SetDuration( -1, false )
-		self:StartIntervalThink( -1 )
+		self:SetStackCount(self.max_charges)
+		self:SetDuration(-1, false)
+		self:StartIntervalThink(-1)
 	else
 		-- if not charging
 		if self:GetRemainingTime() <= 0.05 then
 			-- start charging
 			local charge_time = self.charge_cooldown
-			self:StartIntervalThink( charge_time )
-			self:SetDuration( charge_time, true )
+			self:StartIntervalThink(charge_time)
+			self:SetDuration(charge_time, true)
             self:StopEffects_b()
 		end
 	end
@@ -77,7 +77,7 @@ function modifier_sky_basic_attack:DeclareFunctions()
 	return funcs
 end
 
-function modifier_sky_basic_attack:OnAbilityFullyCast( params )
+function modifier_sky_basic_attack:OnAbilityFullyCast(params)
 	if IsServer() then
 		if params.unit ~= self:GetParent() then
 			return
@@ -107,11 +107,11 @@ function modifier_sky_basic_attack:PlayEffects_a()
     local origin = self:GetCaster():GetOrigin()
 
 	-- Create Sound
-	EmitSoundOn( sound_cast, self:GetCaster()  )
+	EmitSoundOn(sound_cast, self:GetCaster() )
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_sky_basic_attack:PlayEffects_b()
@@ -120,28 +120,28 @@ function modifier_sky_basic_attack:PlayEffects_b()
         local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_overcharge_c.vpcf"
         local origin = self:GetParent():GetOrigin()
         
-        self.effect_cast = ParticleManager:CreateParticle( 
+        self.effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_CUSTOMORIGIN, 
             self:GetParent()
-        )
+       )
 
-        ParticleManager:SetParticleControlEnt( 
+        ParticleManager:SetParticleControlEnt(
             self.effect_cast, 
             0, 
             self:GetParent(), 
             PATTACH_POINT_FOLLOW, 
             "attach_attack1", 
-            origin + Vector( 0, 0, 96 ), 
+            origin + Vector(0, 0, 96), 
             true 
-        )
+       )
     end
 end
 
 function modifier_sky_basic_attack:StopEffects_b()
     if IsServer() then
-        ParticleManager:DestroyParticle( self.effect_cast, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast)
     end
 end
 

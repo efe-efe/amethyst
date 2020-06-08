@@ -10,7 +10,7 @@ function modifier_generic_invencible:IsPurgable()
 	return true
 end
 
-function modifier_generic_invencible:OnCreated( kv )
+function modifier_generic_invencible:OnCreated(kv)
     if IsServer() then
 		self:PlayEffects()
 		self:StartIntervalThink(0.05)
@@ -29,14 +29,14 @@ function modifier_generic_invencible:DeclareFunctions()
 	return funcs
 end
 
-function modifier_generic_invencible:GetModifierIncomingDamage_Percentage( params )
+function modifier_generic_invencible:GetModifierIncomingDamage_Percentage(params)
 	return -100
 end
 
 function modifier_generic_invencible:PlayEffects()
 	local particle_cast = "particles/econ/items/monkey_king/arcana/fire/mk_arcana_fire_spring_ring_radial.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 -- Graphics & Animations

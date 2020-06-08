@@ -19,7 +19,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_treant_ultimate_movement:OnCreated( kv )
+function modifier_treant_ultimate_movement:OnCreated(kv)
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -34,7 +34,7 @@ function modifier_treant_ultimate_movement:OnCreated( kv )
 	end
 end
 
-function modifier_treant_ultimate_movement:OnRefresh( kv )
+function modifier_treant_ultimate_movement:OnRefresh(kv)
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -49,15 +49,15 @@ function modifier_treant_ultimate_movement:OnRefresh( kv )
 	end	
 end
 
-function modifier_treant_ultimate_movement:OnDestroy( kv )
+function modifier_treant_ultimate_movement:OnDestroy(kv)
 	if IsServer() then
-		self:GetParent():InterruptMotionControllers( true )
+		self:GetParent():InterruptMotionControllers(true)
 	end
 end
 
 --------------------------------------------------------------------------------
 -- Motion Effects
-function modifier_treant_ultimate_movement:UpdateHorizontalMotion( me, dt )
+function modifier_treant_ultimate_movement:UpdateHorizontalMotion(me, dt)
 	local pos = self:GetParent():GetOrigin()
 	
 	-- stop if already past distance
@@ -70,7 +70,7 @@ function modifier_treant_ultimate_movement:UpdateHorizontalMotion( me, dt )
 	local target = pos + self.direction * (self.speed*dt)
 
 	-- change position
-	self:GetParent():SetOrigin( target )
+	self:GetParent():SetOrigin(target)
 end
 
 function modifier_treant_ultimate_movement:OnHorizontalMotionInterrupted()

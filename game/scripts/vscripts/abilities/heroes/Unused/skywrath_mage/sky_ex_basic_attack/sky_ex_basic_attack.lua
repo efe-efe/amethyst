@@ -28,12 +28,12 @@ function sky_ex_basic_attack:OnSpellStart()
             movement_speed = 10,
             no_target = 1,
         }
-    )
+   )
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_ex_basic_attack:OnCastPointEnd( point )
+function sky_ex_basic_attack:OnCastPointEnd(point)
     self:PlayEffects()
 end
 
@@ -48,7 +48,7 @@ function sky_ex_basic_attack:PlayEffects()
     EmitSoundOn(sound_cast, self:GetCaster())
 
     -- Create Particles
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

@@ -13,7 +13,7 @@ function nevermore_extra:OnSpellStart()
 	local heal = self:GetSpecialValueFor("heal")
 	local stacks = 0
 
-	local modifier = self:GetCaster():FindModifierByNameAndCaster( "modifier_nevermore_souls", caster )
+	local modifier = self:GetCaster():FindModifierByNameAndCaster("modifier_nevermore_souls", caster)
 	if modifier~=nil then
 		stacks = modifier:GetStackCount() + stacks
 		modifier:Destroy()
@@ -26,14 +26,14 @@ end
 
 function nevermore_extra:PlayEffects()
 	local caster = self:GetCaster()
-	EmitSoundOn( "DOTA_Item.SoulRing.Activate", caster )
+	EmitSoundOn("DOTA_Item.SoulRing.Activate", caster)
 
 	local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster )	
-	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 60, Vector(68, 243, 0) )
-	ParticleManager:SetParticleControl( effect_cast, 61, Vector(1, 0, 0) )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)	
+	ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 60, Vector(68, 243, 0))
+	ParticleManager:SetParticleControl(effect_cast, 61, Vector(1, 0, 0))
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

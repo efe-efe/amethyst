@@ -1,5 +1,5 @@
 terrorblade_extra = class({})
-LinkLuaModifier( "modifier_terrorblade_extra_recast", "abilities/heroes/terrorblade/terrorblade_extra/modifier_terrorblade_extra_recast", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_terrorblade_extra_recast", "abilities/heroes/terrorblade/terrorblade_extra/modifier_terrorblade_extra_recast", LUA_MODIFIER_MOTION_NONE)
 
 function terrorblade_extra:OnCastPointEnd()
     local caster = self:GetCaster()
@@ -9,7 +9,7 @@ function terrorblade_extra:OnCastPointEnd()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
     terrorblade_extra,
 	nil,
 	{ movement_speed = 100 },

@@ -4,18 +4,18 @@ function modifier_shield:IsHidden() return false end
 function modifier_shield:IsDebuff() return false end
 function modifier_shield:IsStunDebuff() return false end
 
-function modifier_shield:OnCreated( params )
+function modifier_shield:OnCreated(params)
     if IsServer() then
         self.sound_cast = params.sound_cast
 
         self:SetStackCount(params.damage_block)
-        self:PlayEffects( self:GetDuration() )
+        self:PlayEffects(self:GetDuration())
 	end
 end
 
-function modifier_shield:OnRefresh( params )
+function modifier_shield:OnRefresh(params)
     if IsServer() then
-        self:SetStackCount( self:GetStackCount() + params.damage_block )
+        self:SetStackCount(self:GetStackCount() + params.damage_block)
 
         local new_duration = self:GetRemainingTime()
         if self:GetRemainingTime() < params.duration then
@@ -28,7 +28,7 @@ function modifier_shield:OnRefresh( params )
     end
 end
 
-function modifier_shield:OnDestroy( kv )
+function modifier_shield:OnDestroy(kv)
     if IsServer() then
         self:StopEffects()
     end
@@ -40,7 +40,7 @@ function modifier_shield:DeclareFunctions()
 	}
 end
 
-function modifier_shield:GetModifierIncomingDamage_Percentage( params )
+function modifier_shield:GetModifierIncomingDamage_Percentage(params)
     local shield_points = self:GetStackCount() - params.damage
     
     -- If shield is over
@@ -54,7 +54,7 @@ function modifier_shield:GetModifierIncomingDamage_Percentage( params )
     return -100
 end
 
-function modifier_shield:OnStackCountChanged( old )
+function modifier_shield:OnStackCountChanged(old)
     if IsServer() then
 		if self:GetStackCount() < 0 then
 			self:Destroy()
@@ -62,7 +62,7 @@ function modifier_shield:OnStackCountChanged( old )
 	end
 end
 
-function modifier_shield:PlayEffects( duration )
+function modifier_shield:PlayEffects(duration)
     local particle_cast = "particles/items_fx/courier_shield.vpcf"
     if self.sound_cast ~= nil then
         EmitSoundOn(self.sound_cast, self:GetCaster())
@@ -70,13 +70,13 @@ function modifier_shield:PlayEffects( duration )
     
     local origin = self:GetParent():GetOrigin()
 
-    self.effect_cast = ParticleManager:CreateParticle( 
+    self.effect_cast = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_CUSTOMORIGIN, 
         self:GetParent()
-    )
+   )
 
-    ParticleManager:SetParticleControlEnt( 
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         0, 
         self:GetParent(), 
@@ -84,14 +84,14 @@ function modifier_shield:PlayEffects( duration )
         "attach_hitloc", 
         origin, 
         true 
-    )
-    ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(duration, 0,0) )
+   )
+    ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(duration, 0,0))
 end
 
 function modifier_shield:StopEffects()
     if self.effect_cast then
-        ParticleManager:DestroyParticle( self.effect_cast, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast)
     end
 end
 

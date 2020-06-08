@@ -11,7 +11,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_nevermore_special_attack_movement:OnCreated( kv )
+function modifier_nevermore_special_attack_movement:OnCreated(kv)
 	if IsServer() then
 		-- references
 		self.distance = 600
@@ -48,10 +48,10 @@ function modifier_nevermore_special_attack_movement:OnCreated( kv )
 	end
 end
 
-function modifier_nevermore_special_attack_movement:OnRefresh( kv )
+function modifier_nevermore_special_attack_movement:OnRefresh(kv)
 end
 
-function modifier_nevermore_special_attack_movement:OnDestroy( kv )
+function modifier_nevermore_special_attack_movement:OnDestroy(kv)
 	if IsServer() then
 		--Quits the animation
 		local order = 
@@ -60,13 +60,13 @@ function modifier_nevermore_special_attack_movement:OnDestroy( kv )
 			UnitIndex = self:GetParent():entindex()
 		}
 		ExecuteOrderFromTable(order)
-		self:GetParent():InterruptMotionControllers( true )
+		self:GetParent():InterruptMotionControllers(true)
 		self:StopEffects()
 	end
 end
 
 
-function modifier_nevermore_special_attack_movement:UpdateVerticalMotion( me, dt )
+function modifier_nevermore_special_attack_movement:UpdateVerticalMotion(me, dt)
 	local pos = self:GetParent():GetOrigin()
 
 	if self.elapsedTime > self:GetDuration() * 0.8 then	
@@ -76,7 +76,7 @@ function modifier_nevermore_special_attack_movement:UpdateVerticalMotion( me, dt
 	end
 
 	-- set position
-	local target = pos + self.direction * ( self.speed * dt )
+	local target = pos + self.direction * (self.speed * dt)
 
 	self.elapsedTime = self.elapsedTime + dt
 
@@ -87,12 +87,12 @@ function modifier_nevermore_special_attack_movement:UpdateVerticalMotion( me, dt
 	--print("================================================================")
 	-- stop if already past distance
 	if target.z >= self.distance then
-		self:GetParent():SetOrigin( Vector( target.x, target.y, self.distance ))
+		self:GetParent():SetOrigin(Vector(target.x, target.y, self.distance))
 		return
 	end
 
 	-- change position
-	self:GetParent():SetOrigin( target )
+	self:GetParent():SetOrigin(target)
 end
 
 function modifier_nevermore_special_attack_movement:OnVerticalMotionInterrupted()
@@ -135,24 +135,24 @@ function modifier_nevermore_special_attack_movement:GetOverrideAnimationRate()
 end
 
 
-function modifier_nevermore_special_attack_movement:PlayEffects( )
+function modifier_nevermore_special_attack_movement:PlayEffects()
 	local caster = self:GetCaster()
 	local targetOrigin = self:GetParent():GetOrigin()
 
 	-- Create Sound
 	local sound_cast = "Hero_Nevermore.Shadowraze"
-	EmitSoundOnLocationWithCaster( targetOrigin, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(targetOrigin, sound_cast, caster)
 
 
 	-- Create particle
 	local particle_cast = "particles/mod_units/heroes/hero_nevermore/invoker_tornado_ti6_funnel.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, targetOrigin )
-	ParticleManager:SetParticleControl( self.effect_cast, 3, targetOrigin )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(self.effect_cast, 0, targetOrigin)
+	ParticleManager:SetParticleControl(self.effect_cast, 3, targetOrigin)
 end
 
 
 function modifier_nevermore_special_attack_movement:StopEffects()
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex(self.effect_cast )
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

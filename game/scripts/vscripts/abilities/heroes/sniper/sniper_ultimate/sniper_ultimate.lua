@@ -25,7 +25,7 @@ function sniper_ultimate:OnSpellStart()
         self, 
         "modifier_sniper_ultimate_channeling", 
         { duration = duration }
-    ) 
+   ) 
     self:PlayEffectsOnCast()
 end
 

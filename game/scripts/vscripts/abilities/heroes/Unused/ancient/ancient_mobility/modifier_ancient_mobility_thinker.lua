@@ -6,14 +6,14 @@ function modifier_ancient_mobility_thinker:OnCreated()
         self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
         self:PlayEffects()
-        self:StartIntervalThink( self.delay_time )
+        self:StartIntervalThink(self.delay_time)
     end
 end
 
 function modifier_ancient_mobility_thinker:OnDestroy()
     if IsServer() then
         self:StopEffects()
-		UTIL_Remove( self:GetParent() )
+		UTIL_Remove(self:GetParent())
 	end
 end
 
@@ -28,7 +28,7 @@ function modifier_ancient_mobility_thinker:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,unit in pairs(units) do
         if caster:IsAlly(unit) then
@@ -51,27 +51,27 @@ function modifier_ancient_mobility_thinker:PlayEffects()
     EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.IceVortex.lp", self:GetCaster())
     local particle_cast = "particles/units/heroes/hero_ancient_apparition/ancient_ice_vortex.vpcf"
     
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 5, Vector(self.radius,self.radius,self.radius) )
+    ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(self.radius,self.radius,self.radius))
 end
 
 function modifier_ancient_mobility_thinker:PlayEffectsTrigger()
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetParent() )
+    EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetParent())
 
     local particle_cast = "particles/techies_blast_off_ringmodel.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )    
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)    
 end
 
 
 function modifier_ancient_mobility_thinker:StopEffects()
     StopSoundOn("Hero_Ancient_Apparition", nil)
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )    
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)    
 end
 

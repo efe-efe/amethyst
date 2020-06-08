@@ -9,15 +9,15 @@ end
 
 --------------------------------------------------------------------------------
 --Initializer
-function modifier_phoenix_special_attack_thinker:OnCreated( kv )
-    self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
-    self.damage_per_think = self:GetAbility():GetSpecialValueFor( "damage_per_think" )
-    self.heal_per_think = self:GetAbility():GetSpecialValueFor( "heal_per_think" )
-    local think_interval = self:GetAbility():GetSpecialValueFor( "think_interval" )
+function modifier_phoenix_special_attack_thinker:OnCreated(kv)
+    self.radius = self:GetAbility():GetSpecialValueFor("radius")
+    self.damage_per_think = self:GetAbility():GetSpecialValueFor("damage_per_think")
+    self.heal_per_think = self:GetAbility():GetSpecialValueFor("heal_per_think")
+    local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
 
     if IsServer() then
         -- Start Interval
-        self:StartIntervalThink( think_interval )
+        self:StartIntervalThink(think_interval)
         self:PlayEffects()
     end
 end
@@ -25,7 +25,7 @@ end
 function modifier_phoenix_special_attack_thinker:OnDestroy()
     if IsServer() then
         self:StopEffects()
-		UTIL_Remove( self:GetParent() )
+		UTIL_Remove(self:GetParent())
 	end
 end
 
@@ -38,7 +38,7 @@ function modifier_phoenix_special_attack_thinker:OnIntervalThink()
     
     local ent = Entities:FindAllInSphere(thinker_origin, self.radius)
 
-    local units = FindUnitsInRadius( 
+    local units = FindUnitsInRadius(
         thinker:GetTeamNumber(), -- int, your team number
         thinker_origin, -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -48,7 +48,7 @@ function modifier_phoenix_special_attack_thinker:OnIntervalThink()
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     for _,unit in pairs(units) do
         if unit:GetTeamNumber() == self:GetCaster():GetTeamNumber() then
@@ -61,7 +61,7 @@ function modifier_phoenix_special_attack_thinker:OnIntervalThink()
                 damage_type = DAMAGE_TYPE_PURE,
             }
     
-            ApplyDamage( damage )
+            ApplyDamage(damage)
         end
     end
 end
@@ -71,18 +71,18 @@ function modifier_phoenix_special_attack_thinker:PlayEffects()
     -- Create particles
     local particle_cast_a = "particles/mod_units/heroes/hero_phoenix/monkey_king_furarmy_ring.vpcf"
     
-    self.effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, nil )
+    self.effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_WORLDORIGIN, nil)
     
-    ParticleManager:SetParticleControl( self.effect_cast_a, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast_a, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:SetParticleControl( self.effect_cast_a, 2, Vector( 1, 1, 1 ) )
+    ParticleManager:SetParticleControl(self.effect_cast_a, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast_a, 1, Vector(self.radius, 1, 1))
+    ParticleManager:SetParticleControl(self.effect_cast_a, 2, Vector(1, 1, 1))
     
 end
 
 function modifier_phoenix_special_attack_thinker:StopEffects()
     
     ParticleManager:DestroyParticle(self.effect_cast_a, false)
-    ParticleManager:ReleaseParticleIndex( self.effect_cast_a )
+    ParticleManager:ReleaseParticleIndex(self.effect_cast_a)
 end
 
 --particles/units/heroes/hero_mars/mars_arena_of_blood_heal.vpcf

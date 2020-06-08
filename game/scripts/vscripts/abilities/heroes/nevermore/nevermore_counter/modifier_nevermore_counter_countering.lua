@@ -40,14 +40,14 @@ function modifier_nevermore_counter_countering:PlayEffectsOnTrigger()
     EmitSoundOn("Hero_Nevermore.RequiemOfSouls", self:GetParent())
 
 	local particle_cast = "particles/econ/events/ti9/blink_dagger_ti9_start_lvl2.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
     
 	local particle_cast_b = "particles/econ/events/ti9/phase_boots_ti9_body_magic.vpcf"
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast_b, 0, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 if IsClient() then require("wrappers/modifiers") end

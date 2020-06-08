@@ -61,7 +61,7 @@ function modifier_hero_base:OnCreated(params)
 
 	if IsServer() then
 		self.previous_speed = self:GetParent():GetIdealSpeed() / 100
-		self:StartIntervalThink( 0.01 )
+		self:StartIntervalThink(0.01)
 	end
 end
 
@@ -74,7 +74,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Helpers
-function modifier_hero_base:ItemsPickup( hUnit )
+function modifier_hero_base:ItemsPickup(hUnit)
 	local drop_items = Entities:FindAllByClassnameWithin("dota_item_drop", hUnit:GetOrigin(), hUnit:GetHullRadius() * 2.5)
 	for _,drop_item in pairs(drop_items) do
 		
@@ -187,12 +187,12 @@ function modifier_hero_base:Move()
 		if current_animation_modifier == nil then
 			self.frame = self.frame + 0.01
 			if self.frame >= 0.1 then
-				self:Animate( speed, self.parent )
+				self:Animate(speed, self.parent)
 			end
 		elseif current_animation_modifier == "walking" then
 			-- Check for running annimation
 			if self.previous_speed ~= speed then
-				self:Animate( speed, self.parent )
+				self:Animate(speed, self.parent)
 				self.previous_speed = speed
 			end
 		end
@@ -208,7 +208,7 @@ function modifier_hero_base:Move()
 	end
 end
 
-function modifier_hero_base:Animate( speed, hUnit )
+function modifier_hero_base:Animate(speed, hUnit)
 	--[[if speed > 5 then 
 		StartAnimation(hUnit, {
 			duration=100,
@@ -306,7 +306,7 @@ function modifier_hero_base:GetCollidingWithObjects(test_position)
 		return false
 	end
 
-	local units = FindUnitsInRadius( 
+	local units = FindUnitsInRadius(
 		self.parent:GetTeamNumber(), -- int, your team number
 		test_position, -- point, center point
 		nil, -- handle, cacheUnit. (not known)
@@ -358,7 +358,7 @@ function modifier_hero_base:DeclareFunctions()
 	}
 end
 
-function modifier_hero_base:GetModifierIgnoreMovespeedLimit( params )
+function modifier_hero_base:GetModifierIgnoreMovespeedLimit(params)
     return 1
 end
 
@@ -377,10 +377,10 @@ end
 
 function modifier_hero_base:Aoe(radius, color, duration, origin)
     local particle_cast = "particles/aoe_marker.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, origin )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 1, 1 ) )
-    ParticleManager:SetParticleControl( effect_cast, 2, color )
-    ParticleManager:SetParticleControl( effect_cast, 3, Vector(duration, 0, 0) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, origin)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, 1, 1))
+    ParticleManager:SetParticleControl(effect_cast, 2, color)
+    ParticleManager:SetParticleControl(effect_cast, 3, Vector(duration, 0, 0))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

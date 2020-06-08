@@ -3,14 +3,14 @@ modifier_axe_special_attack_buff = class({})
 --------------------------------------------------------------------------------
 -- Initializer
 function modifier_axe_special_attack_buff:OnCreated()
-    self.aspd_per_stack = self:GetAbility():GetSpecialValueFor( "aspd_per_stack" )
-    self.damage_reduction = -self:GetAbility():GetSpecialValueFor( "damage_reduction" )
+    self.aspd_per_stack = self:GetAbility():GetSpecialValueFor("aspd_per_stack")
+    self.damage_reduction = -self:GetAbility():GetSpecialValueFor("damage_reduction")
     
     if IsServer() then
 
-        local think_interval = 0.3--self:GetAbility():GetSpecialValueFor( "think_interval" )
+        local think_interval = 0.3--self:GetAbility():GetSpecialValueFor("think_interval")
         -- Start Interval
-        self:StartIntervalThink( think_interval )   
+        self:StartIntervalThink(think_interval)   
 
         ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
             style = "Call",
@@ -36,7 +36,7 @@ function modifier_axe_special_attack_buff:OnDestroy()
 end
 
 
-function modifier_axe_special_attack_buff:OnAttackLanded( params )
+function modifier_axe_special_attack_buff:OnAttackLanded(params)
 	if IsServer() then
 		if params.target~=self:GetParent() then return end
 		--if self:GetCaster():PassivesDisabled() then return end
@@ -60,7 +60,7 @@ function modifier_axe_special_attack_buff:DeclareFunctions()
 	return funcs
 end
 
-function modifier_axe_special_attack_buff:GetModifierIncomingDamage_Percentage( params )
+function modifier_axe_special_attack_buff:GetModifierIncomingDamage_Percentage(params)
 	return self.damage_reduction
 end
 

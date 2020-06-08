@@ -4,7 +4,7 @@ function modifier_item_clarity_custom:OnCreated(params)
     if IsServer() then
         self.think_interval = params.think_interval
         self.mana_per_tick = params.mana_per_tick
-        self:StartIntervalThink( self.think_interval )
+        self:StartIntervalThink(self.think_interval)
     end
 end
 
@@ -16,7 +16,7 @@ function modifier_item_clarity_custom:DeclareFunctions()
 	return { MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE, }
 end
 
-function modifier_item_clarity_custom:GetModifierIncomingDamage_Percentage( params )
+function modifier_item_clarity_custom:GetModifierIncomingDamage_Percentage(params)
 	if IsServer() then
 		self:Destroy()	
         return 0

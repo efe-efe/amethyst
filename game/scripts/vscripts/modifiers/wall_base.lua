@@ -1,6 +1,6 @@
 wall_base = class({})
 
-function wall_base:OnCreated( params )
+function wall_base:OnCreated(params)
 	if IsServer() then
 		if params.fow_blocker then
 			self.fow_blocker = EntIndexToHScript(params.fow_blocker)
@@ -44,14 +44,14 @@ function wall_base:DeclareFunctions()
 	return funcs
 end
 
-function wall_base:GetModifierIncomingDamage_Percentage( params )
+function wall_base:GetModifierIncomingDamage_Percentage(params)
 	if self.invulnerable then
 		return -100
 	end
 	return 0 
 end
 
-function wall_base:OnDeath( params )
+function wall_base:OnDeath(params)
 	if IsServer() then 		
 		if params.unit ~= self:GetParent() then return end
         self:PlayEffectsOnDeath()
@@ -71,18 +71,18 @@ function wall_base:PlayEffectsOnDeath()
 	local particle_cast_a = "particles/box_destroy.vpcf"
 	local particle_cast_b = "particles/world_destruction_fx/tree_destruction_snow_b.vpcf"
 
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_WORLDORIGIN, parent )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_WORLDORIGIN, parent )
+	local effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_WORLDORIGIN, parent)
+	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_WORLDORIGIN, parent)
 	
-	ParticleManager:SetParticleControl( effect_cast_a, 0, origin )
-	ParticleManager:SetParticleControl( effect_cast_a, 1, origin )
-	ParticleManager:SetParticleControl( effect_cast_a, 2, origin )
-	ParticleManager:SetParticleControl( effect_cast_a, 4, origin )
-	ParticleManager:SetParticleControl( effect_cast_a, 5, origin )
+	ParticleManager:SetParticleControl(effect_cast_a, 0, origin)
+	ParticleManager:SetParticleControl(effect_cast_a, 1, origin)
+	ParticleManager:SetParticleControl(effect_cast_a, 2, origin)
+	ParticleManager:SetParticleControl(effect_cast_a, 4, origin)
+	ParticleManager:SetParticleControl(effect_cast_a, 5, origin)
 
-    ParticleManager:SetParticleControl( effect_cast_b, 0, origin)
-    ParticleManager:SetParticleControl( effect_cast_b, 5, origin)
+    ParticleManager:SetParticleControl(effect_cast_b, 0, origin)
+    ParticleManager:SetParticleControl(effect_cast_b, 5, origin)
 
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	ParticleManager:ReleaseParticleIndex(effect_cast_a)
+	ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end

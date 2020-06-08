@@ -15,7 +15,7 @@ function modifier_sniper_extra_displacement_enemy:OnCollide(params)
                 damage = self.damage_on_collision,
                 damage_type = DAMAGE_TYPE_MAGICAL,
             }
-            ApplyDamage( damage_table )
+            ApplyDamage(damage_table)
             
             self:Destroy()
 		end

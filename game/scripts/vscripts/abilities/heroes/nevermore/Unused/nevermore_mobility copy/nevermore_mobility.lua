@@ -1,8 +1,8 @@
 nevermore_mobility = class({})
-LinkLuaModifier( "modifier_nevermore_mobility_movement", "abilities/heroes/nevermore/nevermore_mobility/modifier_nevermore_mobility_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
-LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_mobility_movement", "abilities/heroes/nevermore/nevermore_mobility/modifier_nevermore_mobility_movement", LUA_MODIFIER_MOTION_HORIZONTAL)
+LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -19,7 +19,7 @@ function nevermore_mobility:OnSpellStart()
 	})
 end
 
-function nevermore_mobility:OnCastPointEnd( pos )
+function nevermore_mobility:OnCastPointEnd(pos)
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
 	local damage = self:GetAbilityDamage()
@@ -56,7 +56,7 @@ function nevermore_mobility:OnCastPointEnd( pos )
             r = difference,
             speed = speed,
         } -- kv
-    )
+   )
 
     -- Initialize variables
 	local offset = 100
@@ -117,7 +117,7 @@ function nevermore_mobility:OnCastPointEnd( pos )
                 damage_type = DAMAGE_TYPE_PURE,
             }
 
-            ApplyDamage( damage_table )
+            ApplyDamage(damage_table)
 
             if unit:IsRealHero() then 
                 _self.Source:AddNewModifier(
@@ -125,14 +125,14 @@ function nevermore_mobility:OnCastPointEnd( pos )
                     basic_attack,
                     "modifier_nevermore_souls",
                     {}
-                )
+               )
                 
                 _self.Source:AddNewModifier(
                     _self.Source,
                     basic_attack,
                     "modifier_nevermore_souls",
                     {}
-                )
+               )
             end
 
             -- Add modifier
@@ -141,7 +141,7 @@ function nevermore_mobility:OnCastPointEnd( pos )
                 self, -- ability source
                 "modifier_generic_fading_slow", -- modifier name
                 { duration = slow_duration } -- kv
-            )
+           )
 
             -- Give Mana
 			if counter == 1 then
@@ -172,11 +172,11 @@ function nevermore_mobility:PlayEffects_a()
 end
 
 -- On Projectile Finish
-function nevermore_mobility:PlayEffects_b( pos )
+function nevermore_mobility:PlayEffects_b(pos)
 end
 
 -- On Projectile Hit enemy
-function nevermore_mobility:PlayEffects_c( hTarget )
+function nevermore_mobility:PlayEffects_c(hTarget)
     -- Cast Sound
     local sound_cast = "Hero_Nevermore.ProjectileImpact"
     EmitSoundOn(sound_cast, hTarget)
@@ -200,7 +200,7 @@ function nevermore_mobility:PlayEffects_c( hTarget )
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	nevermore_mobility,
 	{ activity = ACT_DOTA_RAZE_2, rate = 1.5 },
 	{ movement_speed = 10 }

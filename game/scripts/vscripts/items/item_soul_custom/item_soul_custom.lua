@@ -1,5 +1,5 @@
 item_soul_custom = class({})
-LinkLuaModifier( "modifier_item_soul_custom", "items/item_soul_custom/modifier_item_soul_custom", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_item_soul_custom", "items/item_soul_custom/modifier_item_soul_custom", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 function item_soul_custom:OnSpellStart()
     local caster = self:GetCaster()
@@ -20,7 +20,7 @@ function item_soul_custom:OnSpellStart()
     else
         damage_table.damage = damage
     end
-    ApplyDamage( damage_table )
+    ApplyDamage(damage_table)
 
     Timers:CreateTimer(0.03, function()
         caster:GiveMana(self:GetSpecialValueFor("mana"))
@@ -30,10 +30,10 @@ function item_soul_custom:OnSpellStart()
 end
 
 function item_soul_custom:PlayEffects()
-    EmitSoundOn( "DOTA_Item.SoulRing.Activate", self:GetCaster()  )
+    EmitSoundOn("DOTA_Item.SoulRing.Activate", self:GetCaster() )
 
     local particle_cast = "particles/items2_fx/soul_ring.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector(5,0,0) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(5,0,0))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

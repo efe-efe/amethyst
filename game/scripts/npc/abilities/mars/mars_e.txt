@@ -1,0 +1,34 @@
+"DOTAAbilities" {
+	"mars_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/mars/mars_special_attack/mars_special_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"mars_spear"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1200"
+		"AbilityCooldown"				"8.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"stun_duration"             "1.5" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"extra_damage"             	"10" }
+		}
+	}
+}

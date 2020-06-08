@@ -1,6 +1,6 @@
 GameState = GameState or class({})
 
-function GameState:UpdateGameTimer( time )
+function GameState:UpdateGameTimer(time)
     local minutes = math.floor(time / 60)
     local seconds = time - (minutes * 60)
     local m10 = math.floor(minutes / 10)
@@ -15,5 +15,5 @@ function GameState:UpdateGameTimer( time )
             timer_second_01 = s01,
         }
   
-    CustomGameEventManager:Send_ServerToAllClients( "countdown", broadcast_gametimer )
+    CustomGameEventManager:Send_ServerToAllClients("countdown", broadcast_gametimer)
 end

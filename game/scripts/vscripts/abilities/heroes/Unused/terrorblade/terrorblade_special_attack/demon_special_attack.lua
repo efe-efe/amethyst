@@ -1,10 +1,10 @@
 demon_special_attack = class({})
-LinkLuaModifier( "modifier_demon_special_attack_thinker", "abilities/heroes/terrorblade/terrorblade_special_attack/modifier_demon_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_demon_special_attack_thinker", "abilities/heroes/terrorblade/terrorblade_special_attack/modifier_demon_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function demon_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
+	local delay_time = self:GetSpecialValueFor("delay_time")
 	local radius = self:GetSpecialValueFor("radius")
 
 	CreateModifierThinker(
@@ -24,17 +24,17 @@ function demon_special_attack:OnCastPointEnd()
 	)
 
 	-- effects
-	self:PlayEffects( )
+	self:PlayEffects()
 end
 
 --------------------------------------------------------------------------------
-function demon_special_attack:PlayEffects( )
+function demon_special_attack:PlayEffects()
 	local sound_cast = "Hero_Terrorblade.Metamorphosis"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	demon_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.5 },
 	{ movement_speed = 10 }

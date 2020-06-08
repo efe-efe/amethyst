@@ -12,8 +12,8 @@ function modifier_spectre_extra:IsPurgable() return false
 end
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_spectre_extra:OnCreated( kv )
-	self.slow_duration = self:GetAbility():GetSpecialValueFor( "slow_duration" )
+function modifier_spectre_extra:OnCreated(kv)
+	self.slow_duration = self:GetAbility():GetSpecialValueFor("slow_duration")
 		
     if IsServer() then
 		self:PlayEffects()
@@ -21,7 +21,7 @@ function modifier_spectre_extra:OnCreated( kv )
 	end
 end
 
-function modifier_spectre_extra:OnDestroy( kv )
+function modifier_spectre_extra:OnDestroy(kv)
 	if IsServer() then
 		self:GetParent():RemoveNoDraw()
 
@@ -55,28 +55,28 @@ function modifier_spectre_extra:PlayEffects()
 	local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_ti7_crimson_spectral_dagger_path_owner.vpcf"
 
 	-- Create Particle
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, self:GetParent() )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, self:GetParent())
+	ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())
 
-	local effect_cast = ParticleManager:CreateParticle( "particles/units/heroes/hero_spectre/spectre_death.vpcf", PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_spectre/spectre_death.vpcf", PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 3, self:GetParent():GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_spectre_extra:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
 
 function modifier_spectre_extra:PlayEffectsOnDestroy()
-	EmitSoundOn( "Hero_Spectre.Reality", self:GetParent() )
+	EmitSoundOn("Hero_Spectre.Reality", self:GetParent())
     local particle_cast = "particles/econ/items/outworld_devourer/od_shards_exile_gold/od_shards_exile_prison_end_gold.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

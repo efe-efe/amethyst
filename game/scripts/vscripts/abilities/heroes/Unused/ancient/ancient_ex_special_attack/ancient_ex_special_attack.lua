@@ -1,7 +1,7 @@
 ancient_ex_special_attack = class({})
 
-LinkLuaModifier( "modifier_ancient_ex_special_attack_charges", "abilities/heroes/ancient/ancient_ex_special_attack/modifier_ancient_ex_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_ancient_ex_special_attack_thinker", "abilities/heroes/ancient/ancient_ex_special_attack/modifier_ancient_ex_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_ex_special_attack_charges", "abilities/heroes/ancient/ancient_ex_special_attack/modifier_ancient_ex_special_attack_charges", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_ancient_ex_special_attack_thinker", "abilities/heroes/ancient/ancient_ex_special_attack/modifier_ancient_ex_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Passive Modifier
@@ -33,10 +33,10 @@ function ancient_ex_special_attack:OnCastPointEnd()
 		if i == 0 then
 			target_points[0] = new_origin + Vector(direction.x, direction.y, 0) * offset
 		else 
-			local a_x = ( (direction.x * math.cos(angle * i)) - (direction.y * math.sin(angle * i)) )
-			local a_y = ( (direction.x * math.sin(angle * i)) + (direction.y * math.cos(angle * i)) )
-			local b_x = ( (direction.x * math.cos(-angle * i)) - (direction.y * math.sin(-angle * i)) )
-			local b_y = ( (direction.x * math.sin(-angle * i)) + (direction.y * math.cos(-angle * i)) ) 
+			local a_x = ((direction.x * math.cos(angle * i)) - (direction.y * math.sin(angle * i)))
+			local a_y = ((direction.x * math.sin(angle * i)) + (direction.y * math.cos(angle * i)))
+			local b_x = ((direction.x * math.cos(-angle * i)) - (direction.y * math.sin(-angle * i)))
+			local b_y = ((direction.x * math.sin(-angle * i)) + (direction.y * math.cos(-angle * i))) 
 
 			target_points[0] = new_origin + Vector(a_x, a_y, 0) * offset
 			target_points[1] = new_origin + Vector(b_x, b_y, 0) * offset
@@ -61,12 +61,12 @@ function ancient_ex_special_attack:OnCastPointEnd()
 	self:PlayEffectsOnCast()
 end
 
-function ancient_ex_special_attack:PlayEffectsOnCast( )
-	EmitSoundOn( "Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster() )
+function ancient_ex_special_attack:PlayEffectsOnCast()
+	EmitSoundOn("Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	ancient_ex_special_attack,
 	{ activity = ACT_DOTA_ICE_VORTEX, rate = 0.8 },
 	{ movement_speed = 80 }
@@ -84,9 +84,9 @@ local caster = self:GetCaster()
 	local direction = (point - origin):Normalized() 
 	local angle = 0.6
 
-    DebugDrawLine_vCol( origin, point, Vector(254, 255, 234), false, 10 )
-    DebugDrawLine_vCol( point, point + Vector(direction.y , -direction.x , 0) * 200, Vector(254, 255, 234), false, 10 )
-    DebugDrawLine_vCol( point, point - Vector(direction.y , -direction.x , 0) * 200, Vector(254, 255, 234), false, 10 )
+    DebugDrawLine_vCol(origin, point, Vector(254, 255, 234), false, 10)
+    DebugDrawLine_vCol(point, point + Vector(direction.y , -direction.x , 0) * 200, Vector(254, 255, 234), false, 10)
+    DebugDrawLine_vCol(point, point - Vector(direction.y , -direction.x , 0) * 200, Vector(254, 255, 234), false, 10)
 
 
 	for i = 0, 2 do

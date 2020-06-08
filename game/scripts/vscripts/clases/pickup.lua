@@ -36,16 +36,16 @@ function Pickup:constructor(type, origin, scale)
     self.drop = nil
     self.picked = false
 
-    self:SetItem(CreateItem( PICKUP_ITEM_NAMES[self.type], nil, nil ))
+    self:SetItem(CreateItem(PICKUP_ITEM_NAMES[self.type], nil, nil))
 
     local item = self:GetItem()
     item:SetCastOnPickup(true)
-    item:LaunchLootInitialHeight( false, 0, 50, 0.5, self.origin )
-    self.drop = CreateItemOnPositionForLaunch( self.origin, item )
-    ParticleManager:CreateParticle( PICKUP_PARTICLES[self.type], PATTACH_ABSORIGIN_FOLLOW, self.drop )
+    item:LaunchLootInitialHeight(false, 0, 50, 0.5, self.origin)
+    self.drop = CreateItemOnPositionForLaunch(self.origin, item)
+    ParticleManager:CreateParticle(PICKUP_PARTICLES[self.type], PATTACH_ABSORIGIN_FOLLOW, self.drop)
     
     if self.scale ~= nil then
-        self.drop:SetModelScale( self.scale )	
+        self.drop:SetModelScale(self.scale)	
     end
 end
 
@@ -76,6 +76,6 @@ function Pickup:Destroy()
     end
 
     if self.drop ~= nil and not self.drop:IsNull() then
-        UTIL_Remove( self.drop )
+        UTIL_Remove(self.drop)
     end
 end

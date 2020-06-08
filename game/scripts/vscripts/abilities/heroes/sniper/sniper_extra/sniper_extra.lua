@@ -1,6 +1,6 @@
 sniper_extra = class({})
-LinkLuaModifier( "modifier_sniper_extra_displacement", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_displacement", LUA_MODIFIER_MOTION_BOTH )
-LinkLuaModifier( "modifier_sniper_extra_displacement_enemy", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_displacement_enemy", LUA_MODIFIER_MOTION_BOTH )
+LinkLuaModifier("modifier_sniper_extra_displacement", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_displacement", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_sniper_extra_displacement_enemy", "abilities/heroes/sniper/sniper_extra/modifier_sniper_extra_displacement_enemy", LUA_MODIFIER_MOTION_BOTH)
 
 function sniper_extra:OnAbilityPhaseStart()
     EmitSoundOn("Ability.AssassinateLoad", self:GetCaster())
@@ -19,14 +19,14 @@ function sniper_extra:OnSpellStart()
     local damage = self:GetSpecialValueFor("damage_per_bullet")
     
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-    local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+    local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
     local a_x = projectile_direction.x
     local a_y = projectile_direction.y
-    local b_x = ( (a_x * math.cos(50)) - (a_y * math.sin(50)) )
-    local b_y = ( (a_x * math.sin(50)) + (a_y * math.cos(50)) )
-    local c_x = ( (a_x * math.cos(-50)) - (a_y * math.sin(-50)) )
-    local c_y = ( (a_x * math.sin(-50)) + (a_y * math.cos(-50)) )
+    local b_x = ((a_x * math.cos(50)) - (a_y * math.sin(50)))
+    local b_y = ((a_x * math.sin(50)) + (a_y * math.cos(50)))
+    local c_x = ((a_x * math.cos(-50)) - (a_y * math.sin(-50)))
+    local c_y = ((a_x * math.sin(-50)) + (a_y * math.cos(-50)))
     local projectile_direction_b = Vector(b_x, b_y, 0)
     local projectile_direction_c = Vector(c_x, c_y, 0)
 
@@ -60,7 +60,7 @@ function sniper_extra:OnSpellStart()
                     speed = (distance/0.35),
                     peak = 32,
                 }
-            )
+           )
 
             local damage_table = {
                 victim = unit,
@@ -88,7 +88,7 @@ function sniper_extra:OnSpellStart()
             speed = (knockback_distance/0.35),
 			peak = 64,
         }
-    )
+   )
 
     local projectile_b = DuplicateTable(projectile_a)
     local projectile_c = DuplicateTable(projectile_a)
@@ -103,18 +103,18 @@ function sniper_extra:OnSpellStart()
 end
 
 function sniper_extra:PlayEffectsOnCast()
-    EmitSoundOn( "Hero_Techies.LandMine.Detonate", self:GetCaster() )
+    EmitSoundOn("Hero_Techies.LandMine.Detonate", self:GetCaster())
 end
 
 function sniper_extra:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
-	EmitSoundOnLocationWithCaster( pos, "Hero_Sniper.ProjectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.ProjectileImpact", caster)
 
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/techies_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-    ParticleManager:SetParticleControl( effect_cast, 0, pos )
-    ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+    ParticleManager:SetParticleControl(effect_cast, 0, pos)
+    ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

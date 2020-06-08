@@ -1,7 +1,7 @@
 terrorblade_mobility_recast = class({})
 terrorblade_mobility_recast.illusion_index = nil
 
-function terrorblade_mobility_recast:SetIllusionIndex( illusion_index )
+function terrorblade_mobility_recast:SetIllusionIndex(illusion_index)
 	self.illusion_index = illusion_index
 end
 
@@ -14,11 +14,11 @@ function terrorblade_mobility_recast:OnCastPointEnd()
 	local origin = caster:GetOrigin()
 	local ability = caster:FindAbilityByName("terrorblade_mobility")
 	local damage = ability:GetSpecialValueFor("ability_damage")
-    local illusion = EntIndexToHScript( self:GetIllusionIndex() )
+    local illusion = EntIndexToHScript(self:GetIllusionIndex())
 	
     if illusion then
 		local counter = 0
-		local enemies = caster:FindUnitsInLine( 
+		local enemies = caster:FindUnitsInLine(
 			origin, 
 			illusion:GetOrigin(), 
 			100, 
@@ -35,7 +35,7 @@ function terrorblade_mobility_recast:OnCastPointEnd()
 				damage = damage,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 		end
 
 		self:PlayEffectsOnCast(illusion)
@@ -56,9 +56,9 @@ end
 
 function terrorblade_mobility_recast:PlayEffectsProjectile(pos, vel)
 	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_wave_of_terror_orig.vpcf"
-	self.effect_cast_projectile = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( self.effect_cast_projectile, 0, pos )
-	ParticleManager:SetParticleControl( self.effect_cast_projectile, 1, vel )
+	self.effect_cast_projectile = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(self.effect_cast_projectile, 0, pos)
+	ParticleManager:SetParticleControl(self.effect_cast_projectile, 1, vel)
 	ParticleManager:SetParticleControlForward(self.effect_cast_projectile, 0, vel:Normalized())
 
 end
@@ -66,7 +66,7 @@ end
 function terrorblade_mobility_recast:StopEffectsProjectile()
 	if self.effect_cast_projectile then
 		ParticleManager:DestroyParticle(self.effect_cast_projectile, false)
-		ParticleManager:ReleaseParticleIndex( self.effect_cast_projectile )
+		ParticleManager:ReleaseParticleIndex(self.effect_cast_projectile)
 	end
 end
 
@@ -80,11 +80,11 @@ end
 
 
 
-function terrorblade_mobility_recast:PlayEffectsOnCast( hTarget )
+function terrorblade_mobility_recast:PlayEffectsOnCast(hTarget)
     local caster = self:GetCaster()
 	local particle_cast = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, nil )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, nil)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -93,7 +93,7 @@ function terrorblade_mobility_recast:PlayEffectsOnCast( hTarget )
 		caster:GetOrigin(), 
 		true 
 	);
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		1, 
 		hTarget, 
@@ -101,8 +101,8 @@ function terrorblade_mobility_recast:PlayEffectsOnCast( hTarget )
 		"attach_hitloc", 
 		hTarget:GetOrigin(), 
 		true 
-    );
-	ParticleManager:SetParticleControlEnt( 
+   );
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		2, 
 		hTarget, 
@@ -110,8 +110,8 @@ function terrorblade_mobility_recast:PlayEffectsOnCast( hTarget )
 		"attach_hitloc", 
 		hTarget:GetOrigin(), 
 		true 
-    );
-	ParticleManager:SetParticleControlEnt( 
+   );
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		3, 
 		hTarget, 
@@ -119,17 +119,17 @@ function terrorblade_mobility_recast:PlayEffectsOnCast( hTarget )
 		"attach_hitloc", 
 		hTarget:GetOrigin(), 
 		true 
-    );
-	ParticleManager:SetParticleControl( effect_cast, 16, Vector(0,0,0) )
+   );
+	ParticleManager:SetParticleControl(effect_cast, 16, Vector(0,0,0))
 
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     EmitSoundOn("Hero_Terrorblade.Metamorphosis", caster)
 end
 
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	terrorblade_mobility_recast,
 	{ activity = ACT_DOTA_CAST_ABILITY_3, rate = 0.9 },
 	{ movement_speed = 100 },

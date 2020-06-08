@@ -41,24 +41,24 @@ if GameMode == nil then
     GameMode = class({})
 end
 
-function Precache( context )
+function Precache(context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_oracle.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_silencer.vsndevts", context)
     PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_furion.vsndevts", context)
     PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_phoenix.vsndevts", context)
-	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context )
+	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context)
     
-	PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", context )
-	PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf", context )
-	PrecacheResource("particle", "particles/base_attacks/ranged_badguy_persistent_glow_green.vpcf", context )
-	PrecacheResource("particle", "particles/units/heroes/hero_wisp/wisp_overcharge_c.vpcf", context )
-	PrecacheResource("particle", "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf", context )
-	PrecacheResource("particle", "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf", context )
+	PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf", context)
+	PrecacheResource("particle", "particles/base_attacks/ranged_badguy_persistent_glow_green.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_wisp/wisp_overcharge_c.vpcf", context)
+	PrecacheResource("particle", "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf", context)
     
-	PrecacheResource("particle", "particles/items_fx/arcane_boots_recipient.vpcf", context )
-	PrecacheResource("particle", "particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf", context )
-	PrecacheResource("particle", "particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf", context )
+	PrecacheResource("particle", "particles/items_fx/arcane_boots_recipient.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf", context)
+	PrecacheResource("particle", "particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf", context)
 
     local heroes = LoadKeyValues("scripts/npc/npc_heroes_custom.txt")
     --local mounts = LoadKeyValues("scripts/npc/mounts.txt")
@@ -98,37 +98,37 @@ function GameMode:OnThink()
 end
 
 function GameMode:SetupRules()
-    GameRules:SetSameHeroSelectionEnabled( true )
-    GameRules:SetPreGameTime( 0.0 )
-    GameRules:SetGoldPerTick( 0 )
-    GameRules:SetGoldTickTime( 0 )
-    GameRules:SetStartingGold( 4 )
-    GameRules:SetCustomGameSetupAutoLaunchDelay( 10 )
-    GameRules:SetStrategyTime( 0.0 )
-    GameRules:SetShowcaseTime( 0.0 )
+    GameRules:SetSameHeroSelectionEnabled(true)
+    GameRules:SetPreGameTime(0.0)
+    GameRules:SetGoldPerTick(0)
+    GameRules:SetGoldTickTime(0)
+    GameRules:SetStartingGold(4)
+    GameRules:SetCustomGameSetupAutoLaunchDelay(10)
+    GameRules:SetStrategyTime(0.0)
+    GameRules:SetShowcaseTime(0.0)
     GameRules:SetUseBaseGoldBountyOnHeroes(false)
-    GameRules:GetGameModeEntity():SetFixedRespawnTime( -1 ) 
-	GameRules:GetGameModeEntity():SetLoseGoldOnDeath( false )
+    GameRules:GetGameModeEntity():SetFixedRespawnTime(-1) 
+	GameRules:GetGameModeEntity():SetLoseGoldOnDeath(false)
 
     if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 1 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 1 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_2, 1 )
-        GameRules:SetHeroRespawnEnabled( false )
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 1)
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 1)
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_1, 1)
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_2, 1)
+        GameRules:SetHeroRespawnEnabled(false)
     elseif GetMapName() == "free_for_all" then
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 1 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 0 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_1, 1 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_3, 1 )
-        GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_CUSTOM_5, 1 )
-        GameRules:SetHeroRespawnEnabled( true )
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 1)
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 0)
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_1, 1)
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_3, 1)
+        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_5, 1)
+        GameRules:SetHeroRespawnEnabled(true)
     end
     print('[AMETHYST] GameRules set')
 end
 
 function GameMode:SetupEventHooks()
-    ListenToGameEvent( "dota_item_picked_up", Dynamic_Wrap(self, "OnItemPickUp"), self )
+    ListenToGameEvent("dota_item_picked_up", Dynamic_Wrap(self, "OnItemPickUp"), self)
     ListenToGameEvent('npc_spawned', Dynamic_Wrap(self, 'OnHeroInGame'), self)
     ListenToGameEvent('entity_killed', Dynamic_Wrap(self, 'OnEntityKilled'), self)
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(self, 'OnGameRulesStateChange'), self)
@@ -143,46 +143,46 @@ function GameMode:SetupFilters()
     mode:SetModifyGoldFilter(Dynamic_Wrap(GameMode, 'GoldFilter'), GameMode)
     mode:SetHealingFilter(Dynamic_Wrap(GameMode, 'HealingFilter'), GameMode)
     mode:SetDamageFilter(Dynamic_Wrap(GameMode, "DamageFilter"), GameMode)
-    mode:SetExecuteOrderFilter(Dynamic_Wrap(GameMode, "ExecuteOrderFilter" ), GameMode)
+    mode:SetExecuteOrderFilter(Dynamic_Wrap(GameMode, "ExecuteOrderFilter"), GameMode)
     print('[AMETHYST] Filters set')
 end
 
 function GameMode:LinkModifiers()
-    LinkLuaModifier("modifier_death_zone",                      "modifiers/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("wall_base",                                "modifiers/wall_base.lua", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_adrenaline",                      "modifiers/modifier_adrenaline.lua", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_death_zone",                      "modifiers/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("wall_base",                                "modifiers/wall_base.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_adrenaline",                      "modifiers/modifier_adrenaline.lua", LUA_MODIFIER_MOTION_NONE)
     
-    LinkLuaModifier("modifier_generic_fear",                    "abilities/generic/modifier_generic_fear", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_silence",                 "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE ) -- Should Delete
-    LinkLuaModifier("modifier_generic_projectile_reflector",    "abilities/generic/modifier_generic_projectile_reflector", LUA_MODIFIER_MOTION_NONE ) -- Should Delete
-    LinkLuaModifier("modifier_generic_fading_slow",             "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_fading_haste",            "abilities/generic/modifier_generic_fading_haste", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_stunned",                 "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE ) -- Should Delete
-    LinkLuaModifier("modifier_generic_provides_vision",         "abilities/generic/modifier_generic_provides_vision", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_knockback",               "abilities/generic/modifier_generic_knockback", LUA_MODIFIER_MOTION_BOTH )
-    LinkLuaModifier("modifier_generic_root",                    "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE ) -- Should Delete
-    LinkLuaModifier("modifier_generic_invencible",              "abilities/generic/modifier_generic_invencible", LUA_MODIFIER_MOTION_NONE ) -- Should Delete
-    LinkLuaModifier("modifier_generic_displacement",            "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH ) -- Should Delete
-    LinkLuaModifier("modifier_generic_confuse",                 "abilities/generic/modifier_generic_confuse", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_generic_hypnotize",               "abilities/generic/modifier_generic_hypnotize", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_generic_fear",                    "abilities/generic/modifier_generic_fear", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_generic_silence",                 "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE) -- Should Delete
+    LinkLuaModifier("modifier_generic_projectile_reflector",    "abilities/generic/modifier_generic_projectile_reflector", LUA_MODIFIER_MOTION_NONE) -- Should Delete
+    LinkLuaModifier("modifier_generic_fading_slow",             "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_generic_fading_haste",            "abilities/generic/modifier_generic_fading_haste", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_generic_stunned",                 "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE) -- Should Delete
+    LinkLuaModifier("modifier_generic_provides_vision",         "abilities/generic/modifier_generic_provides_vision", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_generic_knockback",               "abilities/generic/modifier_generic_knockback", LUA_MODIFIER_MOTION_BOTH)
+    LinkLuaModifier("modifier_generic_root",                    "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE) -- Should Delete
+    LinkLuaModifier("modifier_generic_invencible",              "abilities/generic/modifier_generic_invencible", LUA_MODIFIER_MOTION_NONE) -- Should Delete
+    LinkLuaModifier("modifier_generic_displacement",            "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH) -- Should Delete
+    LinkLuaModifier("modifier_generic_confuse",                 "abilities/generic/modifier_generic_confuse", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_generic_hypnotize",               "abilities/generic/modifier_generic_hypnotize", LUA_MODIFIER_MOTION_NONE)
     
-    LinkLuaModifier("modifier_visible",                         "abilities/base/modifier_visible", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_casting",                         "abilities/base/modifier_casting", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_damage_fx",                       "abilities/base/modifier_damage_fx", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_hero_base",                       "abilities/base/modifier_hero_base", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_shield",                          "abilities/base/modifier_shield", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_channeling",                      "abilities/base/modifier_channeling", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_cast_point",                      "abilities/base/modifier_cast_point", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_thinker_indicator",               "abilities/base/modifier_thinker_indicator", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_counter",                         "abilities/base/modifier_counter", LUA_MODIFIER_MOTION_NONE )
-    LinkLuaModifier("modifier_following_aoe_indicator",         "abilities/base/modifier_following_aoe_indicator", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_visible",                         "abilities/base/modifier_visible", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_casting",                         "abilities/base/modifier_casting", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_damage_fx",                       "abilities/base/modifier_damage_fx", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_hero_base",                       "abilities/base/modifier_hero_base", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_shield",                          "abilities/base/modifier_shield", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_channeling",                      "abilities/base/modifier_channeling", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_cast_point",                      "abilities/base/modifier_cast_point", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_thinker_indicator",               "abilities/base/modifier_thinker_indicator", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_counter",                         "abilities/base/modifier_counter", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_following_aoe_indicator",         "abilities/base/modifier_following_aoe_indicator", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_target_indicator",                "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_target_indicator_permanent",      "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_hide_bar",                        "abilities/base/modifier_hide_bar", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_hidden",                          "abilities/base/modifier_hidden", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_banish",                          "abilities/base/modifier_banish", LUA_MODIFIER_MOTION_NONE)
     
-    LinkLuaModifier( "modifier_mount",                          "abilities/heroes/common/mount/modifier_mount.lua", LUA_MODIFIER_MOTION_NONE )
+    LinkLuaModifier("modifier_mount",                          "abilities/heroes/common/mount/modifier_mount.lua", LUA_MODIFIER_MOTION_NONE)
 
     print('[AMETHYST] Useful modifiers linked')
 end
@@ -215,20 +215,20 @@ function GameMode:SetupPanoramaEventHooks()
                         end
 
                         if mode == "press" then
-                            caster:SwapAbilities( 
+                            caster:SwapAbilities(
                                 ability:GetAbilityName(),
                                 swapeable_ability:GetAbilityName(),
                                 false,
                                 true
-                            )
+                           )
                         elseif mode == "release" then
                             if not swapeable_ability:IsEx() then
-                                caster:SwapAbilities( 
+                                caster:SwapAbilities(
                                     swapeable_ability:GetAbilityName(),
                                     ability:GetAbilityName(),
                                     true,
                                     false
-                                )
+                               )
                             end
                         end
                     end
@@ -251,7 +251,7 @@ function GameMode:SetupPanoramaEventHooks()
 
         if modifier ~= nil then
             if not modifier:IsNull() then
-                modifier:OnKeyReleased( args.key )
+                modifier:OnKeyReleased(args.key)
             end
         end
     end)
@@ -333,9 +333,9 @@ function GameMode:SetupMode()
 
 
     local mode = GameRules:GetGameModeEntity()
-    mode:SetBuybackEnabled( false )
-    mode:SetDaynightCycleDisabled( true )
-    mode:SetCameraDistanceOverride( 1350 )
+    mode:SetBuybackEnabled(false)
+    mode:SetDaynightCycleDisabled(true)
+    mode:SetCameraDistanceOverride(1350)
     mode:SetRecommendedItemsDisabled(true) -- Doesn't works :'(
     --mode:SetStashPurchasingDisabled(true)	
 end
@@ -366,14 +366,14 @@ function GameMode:Start()
         function(context) -- sent automatically if using self:Method() notation
             self:OnWarmupEnd(context)
         end
-    )
+   )
 
     self.round = Round(
         self.players,
         function(context) -- sent automatically if using self:Method() notation
             self:OnRoundEnd(context)
         end
-    )
+   )
     
     self:RegisterThinker(0.1, function()
         if self.state == STATE_WARMUP and self.warmup then
@@ -534,7 +534,7 @@ function GameMode:OnWarmupEnd(context)
     end
 
     self:SetState(STATE_ROUND_IN_PROGRESS)
-    CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "Round Start!" } )
+    CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = "Round Start!" })
 end
 
 function GameMode:OnRoundEnd(context)
@@ -550,7 +550,7 @@ function GameMode:OnRoundEnd(context)
             return
         end
     else
-        CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "DRAW!" } )
+        CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = "DRAW!" })
     end
 
     self.round = nil
@@ -561,13 +561,13 @@ function GameMode:OnRoundEnd(context)
         function(context) 
             self:OnWarmupEnd(context)
         end
-    )
+   )
     self.round = Round(
         self.players,
         function(context) 
             self:OnRoundEnd(context)
         end
-    )
+   )
 end
 
 function GameMode:OnGameInProgress()
@@ -597,14 +597,14 @@ function GameMode:OnHeroInGame(keys)
     end
 end
 
-function GameMode:OnEntityKilled( keys )
-    local killed = EntIndexToHScript( keys.entindex_killed )
+function GameMode:OnEntityKilled(keys)
+    local killed = EntIndexToHScript(keys.entindex_killed)
 
     if killed.GetParentEntity then
         local entity = killed:GetParentEntity()
 
         if instanceof(entity, Amethyst) then     
-            entity:OnDeath({ killer = EntIndexToHScript( keys.entindex_attacker ) })
+            entity:OnDeath({ killer = EntIndexToHScript(keys.entindex_attacker) })
         end
         if instanceof(entity, DummyTarget) then     
             entity:OnDeath()
@@ -618,8 +618,8 @@ function GameMode:OnEntityKilled( keys )
     end
 end
 
-function GameMode:OnItemPickUp( event )
-	local entity = EntIndexToHScript( event.ItemEntityIndex ):GetParentEntity()
+function GameMode:OnItemPickUp(event)
+	local entity = EntIndexToHScript(event.ItemEntityIndex):GetParentEntity()
     entity:OnPickedUp()
 end
 
@@ -666,18 +666,18 @@ function GameMode:OnEntityHurt(keys)
         local damagingAbility = nil
 
         if keys.entindex_inflictor ~= nil then
-            damagingAbility = EntIndexToHScript( keys.entindex_inflictor )
+            damagingAbility = EntIndexToHScript(keys.entindex_inflictor)
         end
 
         local word_length = string.len(tostring(math.floor(keys.damage)))
 
         local color =  Vector(250, 70, 70)
         local effect_cast = ParticleManager:CreateParticle("particles/msg_damage.vpcf", PATTACH_WORLDORIGIN, nil)
-        ParticleManager:SetParticleControl( effect_cast, 0, entVictim:GetOrigin() )
-        ParticleManager:SetParticleControl( effect_cast, 1, Vector(0, keys.damage, 0) )
-        ParticleManager:SetParticleControl( effect_cast, 2, Vector(math.max(1, keys.damage / 10), word_length, 0) )
-        ParticleManager:SetParticleControl( effect_cast, 3, color )
-        ParticleManager:ReleaseParticleIndex( effect_cast )
+        ParticleManager:SetParticleControl(effect_cast, 0, entVictim:GetOrigin())
+        ParticleManager:SetParticleControl(effect_cast, 1, Vector(0, keys.damage, 0))
+        ParticleManager:SetParticleControl(effect_cast, 2, Vector(math.max(1, keys.damage / 10), word_length, 0))
+        ParticleManager:SetParticleControl(effect_cast, 3, color)
+        ParticleManager:ReleaseParticleIndex(effect_cast)
     end
 end
 
@@ -697,7 +697,7 @@ function GameMode:GetHighestWinsDifference(alliance)
     return difference
 end
 
-function GameMode:FindNextAliveAlly( alliance )
+function GameMode:FindNextAliveAlly(alliance)
     for _,player in pairs(alliance.players) do
         if player.hero:IsAlive() then
             return player.hero
@@ -721,7 +721,7 @@ function GameMode:UpdateCameras()
     for _,player in pairs(self.players) do
         local hero = player.hero
         if not hero:IsAlive() then
-            local alive_ally = self:FindNextAliveAlly( player.alliance )
+            local alive_ally = self:FindNextAliveAlly(player.alliance)
 
             if alive_ally ~= nil then
                 PlayerResource:SetCameraTarget(hero:GetPlayerID(), alive_ally)
@@ -730,7 +730,7 @@ function GameMode:UpdateCameras()
                     nil,
                     "modifier_generic_provides_vision",
                     {}
-                )
+               )
             else 
                 local alive_hero = self:FindNextAliveHero()
                 if alive_hero ~= nil then
@@ -740,7 +740,7 @@ function GameMode:UpdateCameras()
                         nil,
                         "modifier_generic_provides_vision",
                         {}
-                    )
+                   )
                 end
             end
         end
@@ -754,7 +754,7 @@ function GameMode:CreateBarrels()
     end
 end
 
-function GameMode:CreateBarrel( ent )
+function GameMode:CreateBarrel(ent)
     local fow_blocker = SpawnEntityFromTableSynchronous("point_simple_obstruction", {origin = ent:GetOrigin(), block_fow = true})
     self.barrels[ent] = CreateUnitByName(
         "npc_dota_creature_wall", --szUnitName
@@ -763,13 +763,13 @@ function GameMode:CreateBarrel( ent )
         nil, --hNPCOwner
         nil, --hUnitOwner
         DOTA_TEAM_NOTEAM
-    )
+   )
     self.barrels[ent]:Attribute_SetIntValue("barrel", 1)
     self.barrels[ent]:SetHullRadius(65)
     self.barrels[ent]:AddNewModifier(self.barrels[ent], nil, "wall_base", { fow_blocker = fow_blocker:GetEntityIndex() })
 end
 
-function GameMode:CreateDeathOrb( hero )
+function GameMode:CreateDeathOrb(hero)
     local current_mana = hero:GetMana()
     local mana_given = NearestValue({ 25, 50, 75, 100 }, current_mana)
     local entity = Pickup(PickupTypes.DEATH, hero:GetOrigin(), (mana_given/100) + 0.25)
@@ -784,16 +784,16 @@ function GameMode:CreateDeathOrb( hero )
     entity:GetItem():SetPurchaser(hero)
 end
 
-function GameMode:EndGame( victoryTeam )
-	GameRules:SetGameWinner( victoryTeam )
+function GameMode:EndGame(victoryTeam)
+	GameRules:SetGameWinner(victoryTeam)
 end
 
-function GameMode:UpdateUnitHealthBar( unit )
+function GameMode:UpdateUnitHealthBar(unit)
     local data = {
         unitIndex = unit:GetEntityIndex(),
         current_health = unit:GetHealth(),
         max_health = unit:GetMaxHealth()
     }
 
-    CustomGameEventManager:Send_ServerToAllClients( "update_unit_health_bar", data )
+    CustomGameEventManager:Send_ServerToAllClients("update_unit_health_bar", data)
 end

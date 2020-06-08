@@ -14,7 +14,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_juggernaut_ex_second_attack:OnCreated( kv )
+function modifier_juggernaut_ex_second_attack:OnCreated(kv)
 	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 	
 	if IsServer() then 
@@ -41,7 +41,7 @@ function modifier_juggernaut_ex_second_attack:GetModifierInvisibilityLevel()
 	return 1
 end
 
-function modifier_juggernaut_ex_second_attack:GetModifierIgnoreMovespeedLimit( params )
+function modifier_juggernaut_ex_second_attack:GetModifierIgnoreMovespeedLimit(params)
     return 1
 end
 
@@ -49,7 +49,7 @@ function modifier_juggernaut_ex_second_attack:GetModifierMoveSpeedBonus_Percenta
     return self.speed_buff_pct
 end
 
-function modifier_juggernaut_ex_second_attack:OnAbilityFullyCast( params )
+function modifier_juggernaut_ex_second_attack:OnAbilityFullyCast(params)
 	if IsServer() then
 		if params.unit ~= self:GetParent() then
 			return

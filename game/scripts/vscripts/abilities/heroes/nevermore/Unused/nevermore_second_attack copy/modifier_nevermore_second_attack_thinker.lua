@@ -1,12 +1,12 @@
 modifier_nevermore_second_attack_thinker = class({})
-LinkLuaModifier( "modifier_nevermore_second_attack_cooldown", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_cooldown", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_second_attack_cooldown", "abilities/heroes/nevermore/nevermore_second_attack/modifier_nevermore_second_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Initializer
-function modifier_nevermore_second_attack_thinker:OnCreated( kv )
+function modifier_nevermore_second_attack_thinker:OnCreated(kv)
     if IsServer() then
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
-        self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
+        self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
         self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")/100
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
         self.damage = self:GetAbility():GetAbilityDamage()
@@ -14,7 +14,7 @@ function modifier_nevermore_second_attack_thinker:OnCreated( kv )
         self.stack_duration = self:GetAbility():GetSpecialValueFor("stack_duration")
 
         -- Start Interval
-        self:StartIntervalThink( self.delay_time )
+        self:StartIntervalThink(self.delay_time)
     end
 end
 
@@ -37,7 +37,7 @@ function modifier_nevermore_second_attack_thinker:OnIntervalThink()
             DOTA_UNIT_TARGET_FLAG_NONE,
             FIND_ANY_ORDER,
             false
-        )
+       )
 
         -- for each affected enemies
         for _,enemy in pairs(enemies) do
@@ -56,7 +56,7 @@ function modifier_nevermore_second_attack_thinker:OnIntervalThink()
                 damage_type = DAMAGE_TYPE_MAGICAL,
                 ability = this,
             }
-            ApplyDamage( damageTable )
+            ApplyDamage(damageTable)
         end
 
         if #enemies > 0 then
@@ -71,7 +71,7 @@ function modifier_nevermore_second_attack_thinker:OnIntervalThink()
                 self:GetAbility(),
                 "modifier_nevermore_second_attack_cooldown",
                 { duration = self.stack_duration }
-            )
+           )
             local cooldownStacks = cooldownModifier:GetStackCount()
             
             if cooldownStacks < 3 then
@@ -85,7 +85,7 @@ function modifier_nevermore_second_attack_thinker:OnIntervalThink()
         end
 
         -- Effects
-        self:PlayEffects( thinker_origin )
+        self:PlayEffects(thinker_origin)
         
 
 	    self:Destroy()
@@ -94,7 +94,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Sounds
-function modifier_nevermore_second_attack_thinker:PlayEffects( position )
+function modifier_nevermore_second_attack_thinker:PlayEffects(position)
     local caster = self:GetCaster()
     
     -- get resources
@@ -102,12 +102,12 @@ function modifier_nevermore_second_attack_thinker:PlayEffects( position )
     local sound_cast = "Hero_Nevermore.Shadowraze"
 
     -- create particle
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, position )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, position)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
     
     -- create sound
-    EmitSoundOnLocationWithCaster( position, sound_cast, caster )
+    EmitSoundOnLocationWithCaster(position, sound_cast, caster)
 end
     

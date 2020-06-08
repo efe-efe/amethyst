@@ -7,7 +7,7 @@ function builder_attack:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	-- Projectile
 	local projectile = {
@@ -43,8 +43,8 @@ function builder_attack:OnCastPointEnd()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.BasicAttack( builder_attack )
-Abilities.Initialize( 
+Abilities.BasicAttack(builder_attack)
+Abilities.Initialize(
 	builder_attack,
     { activity = ACT_DOTA_ATTACK, rate = 1.3 },
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }

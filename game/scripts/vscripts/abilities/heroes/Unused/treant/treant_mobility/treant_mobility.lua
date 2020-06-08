@@ -1,16 +1,16 @@
 treant_mobility = class({})
-LinkLuaModifier( "modifier_treant_mobility", "abilities/heroes/treant/treant_mobility/modifier_treant_mobility", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_treant_mobility_movement", "abilities/heroes/treant/treant_mobility/modifier_treant_mobility_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
-LinkLuaModifier( "modifier_treant_mobility_knockback", "abilities/heroes/treant/treant_mobility/modifier_treant_mobility_knockback", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_treant_mobility", "abilities/heroes/treant/treant_mobility/modifier_treant_mobility", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_treant_mobility_movement", "abilities/heroes/treant/treant_mobility/modifier_treant_mobility_movement", LUA_MODIFIER_MOTION_HORIZONTAL)
+LinkLuaModifier("modifier_treant_mobility_knockback", "abilities/heroes/treant/treant_mobility/modifier_treant_mobility_knockback", LUA_MODIFIER_MOTION_NONE)
 
-function treant_mobility:OnCastPointEnd( )
+function treant_mobility:OnCastPointEnd()
     local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
-    local direction = ( point - origin ):Normalized()
+    local direction = (point - origin):Normalized()
 
     local distance = self:GetCastRange(Vector(0,0,0), nil)
-    local heal = self:GetSpecialValueFor( "heal" )
+    local heal = self:GetSpecialValueFor("heal")
     local knockback_duration = self:GetSpecialValueFor("knockback_duration")
 	local damage = self:GetAbilityDamage()
     local speed = 1800
@@ -23,7 +23,7 @@ function treant_mobility:OnCastPointEnd( )
         self, 
         "modifier_treant_mobility", 
         {}
-    )
+   )
 
     caster:AddNewModifier(
         caster, -- player source
@@ -35,7 +35,7 @@ function treant_mobility:OnCastPointEnd( )
             r = distance,
             speed = speed,
         } -- kv
-    )
+   )
 
     -- load data
 	local projectile_speed = speed + 150
@@ -62,7 +62,7 @@ function treant_mobility:OnCastPointEnd( )
                     damage_type = DAMAGE_TYPE_PURE,
                 }
     
-                ApplyDamage( damage_table )
+                ApplyDamage(damage_table)
                 
                 unit:AddNewModifier(
                     caster, -- player source
@@ -71,7 +71,7 @@ function treant_mobility:OnCastPointEnd( )
                     { 
                         duration = knockback_duration,
                     } -- kv
-                )
+               )
 
                 -- Add modifier
                 unit:AddNewModifier(
@@ -87,16 +87,16 @@ function treant_mobility:OnCastPointEnd( )
                         disable = 1,
                         invulnerable = 1
                     } -- kv
-                )
+               )
                 
-                SafeDestroyModifier("modifier_treant_mobility_movement", caster, caster )
+                SafeDestroyModifier("modifier_treant_mobility_movement", caster, caster)
                 
                 _self.OnFinish()
                 _self.Destroy()
 			end
 			-- ALLIES
 			if unit:GetTeamNumber() == _self.Source:GetTeamNumber() then
-				unit:Heal(heal, _self.Source )
+				unit:Heal(heal, _self.Source)
             end
         end,
         OnFinish = function(_self, pos)
@@ -107,7 +107,7 @@ function treant_mobility:OnCastPointEnd( )
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	treant_mobility,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.1 },
 	{ movement_speed = 0, fixed_range = 1 }

@@ -1,10 +1,10 @@
 ancient_ex_mobility = class({})
-LinkLuaModifier( "modifier_ancient_ex_mobility_thinker", "abilities/heroes/ancient/ancient_ex_mobility/modifier_ancient_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_ex_mobility_thinker", "abilities/heroes/ancient/ancient_ex_mobility/modifier_ancient_ex_mobility_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function ancient_ex_mobility:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
+	local delay_time = self:GetSpecialValueFor("delay_time")
 	local radius = self:GetSpecialValueFor("radius")
 
 	CreateModifierThinker(
@@ -24,17 +24,17 @@ function ancient_ex_mobility:OnCastPointEnd()
 	)
 
 	-- effects
-	self:PlayEffects( )
+	self:PlayEffects()
 end
 
 --------------------------------------------------------------------------------
-function ancient_ex_mobility:PlayEffects( )
+function ancient_ex_mobility:PlayEffects()
 	local sound_cast = "Hero_Ancient_Apparition.IceVortexCast"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	ancient_ex_mobility,
 	nil,
 	{ movement_speed = 10 }

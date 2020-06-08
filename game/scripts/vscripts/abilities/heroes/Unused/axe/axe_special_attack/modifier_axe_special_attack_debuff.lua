@@ -6,7 +6,7 @@ function modifier_axe_special_attack_debuff:OnCreated()
         self.ability = self:GetParent():GetAbilityByIndex(1)
 
         -- Start Interval
-        self:StartIntervalThink( 0.1 )   
+        self:StartIntervalThink(0.1)   
         self:OnIntervalThink()
 
         ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {

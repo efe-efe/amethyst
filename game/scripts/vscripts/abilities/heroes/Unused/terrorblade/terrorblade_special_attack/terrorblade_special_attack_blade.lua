@@ -19,9 +19,9 @@ function terrorblade_special_attack_blade:OnCreated()
             "attach_hitloc", 
             self:GetParent():GetAbsOrigin(), 
             true
-        )
+       )
 
-        self:StartIntervalThink( 1.0 )
+        self:StartIntervalThink(1.0)
     end
 end
 

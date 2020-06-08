@@ -38,7 +38,7 @@ function modifier_lich_frost:DeclareFunctions()
 	return funcs
 end
 
-function modifier_lich_frost:GetModifierHPRegenAmplify_Percentage( params )
+function modifier_lich_frost:GetModifierHPRegenAmplify_Percentage(params)
 	return -self.frost_heal_pct
 end
 
@@ -47,9 +47,9 @@ end
 function modifier_lich_frost:PlayEffectsTimer()
     local particle_cast = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
 
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
-	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(self.radius, 1,1))
-	ParticleManager:SetParticleControl( self.effect_cast, 15, Vector(20, 75, 215))
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(self.radius, 1,1))
+	ParticleManager:SetParticleControl(self.effect_cast, 15, Vector(20, 75, 215))
 end
 
 function modifier_lich_frost:StopEffectsTimer()

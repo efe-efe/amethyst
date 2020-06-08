@@ -1,5 +1,5 @@
 sky_counter = class({})
-LinkLuaModifier( "modifier_sky_counter_movement", "abilities/heroes/skywrath_mage/sky_counter/modifier_sky_counter_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_sky_counter_movement", "abilities/heroes/skywrath_mage/sky_counter/modifier_sky_counter_movement", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -23,13 +23,13 @@ function sky_counter:OnSpellStart()
             can_walk = 0,
             no_target = 1,
         }
-    )
+   )
 end
 
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_counter:OnCastPointEnd( point )
+function sky_counter:OnCastPointEnd(point)
     
     --load data
     local caster = self:GetCaster()
@@ -46,11 +46,11 @@ function sky_counter:OnCastPointEnd( point )
             activity = ACT_DOTA_SPAWN,
             rate = 0.1
         } -- kv
-    )
+   )
 end
 
 
-function sky_counter:OnTrigger( params )
+function sky_counter:OnTrigger(params)
     local caster = self:GetCaster()
     local buff_duration = self:GetSpecialValueFor("buff_duration")
     local heal_amount = self:GetSpecialValueFor("heal_amount")
@@ -64,7 +64,7 @@ function sky_counter:OnTrigger( params )
         caster:Heal(heal_amount, caster)
 
          -- Find enemies
-         local enemies = FindUnitsInRadius( 
+         local enemies = FindUnitsInRadius(
             caster:GetTeamNumber(), -- int, your team number
             caster:GetOrigin(), -- point, center point
             nil, -- handle, cacheUnit. (not known)
@@ -74,7 +74,7 @@ function sky_counter:OnTrigger( params )
             0, -- int, flag filter
             0, -- int, order filter
             false -- bool, can grow cache
-        )
+       )
 
         for _,enemy in pairs(enemies) do
             --Knockback
@@ -91,7 +91,7 @@ function sky_counter:OnTrigger( params )
                     y = y,
                     r = distance,
                 } -- kv
-            )
+           )
 
             --Damage
             local damageTable = {
@@ -129,14 +129,14 @@ function sky_counter:PlayEffectsOnCounterStart()
     EmitSoundOn(sound_cast, self:GetCaster())
 
     -- Create Particles
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 end
 
 
 function sky_counter:StopEffectsOnCounterStart()
     if IsServer() then
-        ParticleManager:DestroyParticle( self.effect_cast, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast)
     end
 end
 
@@ -151,12 +151,12 @@ function sky_counter:PlayEffectsOnTrigger()
     EmitSoundOn(sound_cast, self:GetCaster())
     
     -- particles 1
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( knockback_radius, 0.4 , 0 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(knockback_radius, 0.4 , 0))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

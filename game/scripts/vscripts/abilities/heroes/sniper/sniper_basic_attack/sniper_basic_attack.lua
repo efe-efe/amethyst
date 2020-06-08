@@ -1,5 +1,5 @@
 sniper_basic_attack = class({})
-LinkLuaModifier( "modifier_sniper_basic_attack_charges", "abilities/heroes/sniper/sniper_basic_attack/modifier_sniper_basic_attack_charges", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_sniper_basic_attack_charges", "abilities/heroes/sniper/sniper_basic_attack/modifier_sniper_basic_attack_charges", LUA_MODIFIER_MOTION_NONE)
 
 function sniper_basic_attack:GetIntrinsicModifierName()
 	return "modifier_sniper_basic_attack_charges"
@@ -23,7 +23,7 @@ function sniper_basic_attack:OnSpellStart()
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local projectile = {
 		EffectName = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack.vpcf",
@@ -46,7 +46,7 @@ function sniper_basic_attack:OnSpellStart()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 				ability = self
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if _self.Source == caster and not unit:IsObstacle() then 
 				caster:GiveManaPercent(mana_gain_pct, unit)
@@ -66,18 +66,18 @@ function sniper_basic_attack:OnSpellStart()
 end
 
 function sniper_basic_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Sniper.MKG_attack", self:GetCaster() )
+	EmitSoundOn("Hero_Sniper.MKG_attack", self:GetCaster())
 end
 
-function sniper_basic_attack:PlayEffectsOnFinish( pos )
+function sniper_basic_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
-	EmitSoundOnLocationWithCaster( pos, "Hero_Sniper.ProjectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.ProjectileImpact", caster)
 
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

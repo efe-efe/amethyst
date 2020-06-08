@@ -1,5 +1,5 @@
 item_clarity_custom = class({})
-LinkLuaModifier( "modifier_item_clarity_custom", "items/item_clarity_custom/modifier_item_clarity_custom", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_item_clarity_custom", "items/item_clarity_custom/modifier_item_clarity_custom", LUA_MODIFIER_MOTION_NONE)
 
 function item_clarity_custom:OnSpellStart()
     self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_item_clarity_custom", {
@@ -12,5 +12,5 @@ function item_clarity_custom:OnSpellStart()
 end
 
 function item_clarity_custom:PlayEffects()
-    EmitSoundOn( "DOTA_Item.ClarityPotion.Activate", self:GetCaster()  )
+    EmitSoundOn("DOTA_Item.ClarityPotion.Activate", self:GetCaster() )
 end

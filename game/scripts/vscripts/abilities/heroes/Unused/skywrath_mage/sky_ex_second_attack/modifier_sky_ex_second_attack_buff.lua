@@ -13,7 +13,7 @@ function modifier_sky_ex_second_attack_buff:IsPurgable()
 end
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_sky_ex_second_attack_buff:OnCreated( kv )
+function modifier_sky_ex_second_attack_buff:OnCreated(kv)
 	self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
 end
 

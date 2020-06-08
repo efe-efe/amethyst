@@ -3,7 +3,7 @@ modifier_vengeful_mobility_recast_ultimate = class({})
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_vengeful_mobility_recast:OnCreated( kv )
+function modifier_vengeful_mobility_recast:OnCreated(kv)
     if IsServer() then
         self:GetParent():AddRecastVisual({
             key = "Space",
@@ -15,7 +15,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_vengeful_mobility_recast_ultimate:OnCreated( kv )
+function modifier_vengeful_mobility_recast_ultimate:OnCreated(kv)
     if IsServer() then
         self:GetParent():AddRecastVisual({
             key = "F",

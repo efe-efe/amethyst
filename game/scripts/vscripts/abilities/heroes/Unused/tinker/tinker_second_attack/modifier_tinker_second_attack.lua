@@ -2,15 +2,15 @@ modifier_tinker_second_attack = class({})
 
 -------------------------------------------------------------------------------
 -- Initializations
-function modifier_tinker_second_attack:OnCreated( kv )
+function modifier_tinker_second_attack:OnCreated(kv)
 	-- references
 	if IsServer() then
-		self:SetStackCount( 1 )	
+		self:SetStackCount(1)	
 	end
 end
 
-function modifier_tinker_second_attack:OnRefresh( kv )
-    local max_stacks = self:GetAbility():GetSpecialValueFor( "max_stacks" )
+function modifier_tinker_second_attack:OnRefresh(kv)
+    local max_stacks = self:GetAbility():GetSpecialValueFor("max_stacks")
     
 	if IsServer() then
         -- increase stack
@@ -21,7 +21,7 @@ function modifier_tinker_second_attack:OnRefresh( kv )
 	end		
 end
 
-function modifier_tinker_second_attack:OnStackCountChanged( old )
+function modifier_tinker_second_attack:OnStackCountChanged(old)
 	if IsServer() then
 		if self:GetStackCount()<1 then
 			self:Destroy()

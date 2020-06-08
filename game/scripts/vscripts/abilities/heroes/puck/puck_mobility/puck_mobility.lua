@@ -22,11 +22,11 @@ function puck_mobility:OnSpellStart()
             speed = (distance/1.5),
 			peak = 300,
         }
-    )
+   )
 
     local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start_embers.vpcf"
     local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     EmitSoundOn("puck_puck_laugh_01", caster)
 end

@@ -13,19 +13,19 @@ function tempTable:GetATEmptyKey()
 	return i
 end
 
-function tempTable:AddATValue( value )
+function tempTable:AddATValue(value)
 	local i = self:GetATEmptyKey()
 	self.table[i] = value
 	return i
 end
 
-function tempTable:RetATValue( key )
+function tempTable:RetATValue(key)
 	local ret = self.table[key]
 	self.table[key] = nil
 	return ret
 end
 
-function tempTable:GetATValue( key )
+function tempTable:GetATValue(key)
 	return self.table[key]
 end
 

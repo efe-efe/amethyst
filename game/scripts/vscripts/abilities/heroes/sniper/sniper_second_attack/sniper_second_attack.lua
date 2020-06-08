@@ -16,7 +16,7 @@ function sniper_second_attack:OnSpellStart()
 	local point = self:GetCursorPosition()
 	local damage = self:GetSpecialValueFor("ability_damage")
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local stun_duration = self:GetSpecialValueFor("stun_duration")
@@ -61,7 +61,7 @@ function sniper_second_attack:OnSpellStart()
 				_self.Source:GiveManaPercent(mana_gain_pct, unit)
 			end
 	
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			unit:AddNewModifier(_self.Source, self , "modifier_generic_stunned", { duration = stun_duration})
 			self:PlayEffectsOnHit(unit)
@@ -78,31 +78,31 @@ end
 
 
 function sniper_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Ability.Assassinate", self:GetCaster() )
+	EmitSoundOn("Ability.Assassinate", self:GetCaster())
 end
 
-function sniper_second_attack:PlayEffectsOnFinish( pos )
+function sniper_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
-	EmitSoundOnLocationWithCaster( pos, "Hero_Sniper.AssassinateDamage", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.AssassinateDamage", caster)
 
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
 	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function sniper_second_attack:PlayEffectsOnHit( hTarget )
+function sniper_second_attack:PlayEffectsOnHit(hTarget)
 	local caster = self:GetCaster()
-	EmitSoundOn( "Hero_Sniper.AssassinateDamage", caster )
+	EmitSoundOn("Hero_Sniper.AssassinateDamage", caster)
 
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
 
-	ParticleManager:SetParticleControl( effect_cast, 0, hTarget:GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:SetParticleControl(effect_cast, 0, hTarget:GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 1, hTarget:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

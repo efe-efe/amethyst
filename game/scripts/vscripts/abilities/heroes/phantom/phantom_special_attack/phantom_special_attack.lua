@@ -1,8 +1,8 @@
 
 phantom_special_attack = class({})
-LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_phantom_special_attack_charges", "abilities/heroes/phantom/phantom_special_attack/modifier_phantom_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_phantom_special_attack_charges", "abilities/heroes/phantom/phantom_special_attack/modifier_phantom_special_attack_charges", LUA_MODIFIER_MOTION_NONE)
 
 function phantom_special_attack:GetIntrinsicModifierName()
 	return "modifier_phantom_special_attack_charges"
@@ -24,7 +24,7 @@ function phantom_special_attack:OnSpellStart()
 	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
 	local should_lifesteal = caster:HasModifier("modifier_phantom_ex_basic_attack")
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
@@ -47,7 +47,7 @@ function phantom_special_attack:OnSpellStart()
 				damage = damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if _self.Source == caster then
 				caster:GiveManaPercent(mana_gain_pct, unit)
@@ -62,7 +62,7 @@ function phantom_special_attack:OnSpellStart()
 				end
 				if should_lifesteal then
 					local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
-					local heal = ability:GetSpecialValueFor( "heal" )
+					local heal = ability:GetSpecialValueFor("heal")
 					caster:Heal(heal, caster)
 				end
 			end
@@ -89,17 +89,17 @@ function phantom_special_attack:OnUpgrade()
 	end
 end
 
-function phantom_special_attack:PlayEffectsOnFinish( pos )
-	EmitSoundOnLocationWithCaster( pos, "Hero_PhantomAssassin.Dagger.Target", self:GetCaster() )
+function phantom_special_attack:PlayEffectsOnFinish(pos)
+	EmitSoundOnLocationWithCaster(pos, "Hero_PhantomAssassin.Dagger.Target", self:GetCaster())
 	
 	local particle_cast = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function phantom_special_attack:PlayEffectsOnCast( )
-	EmitSoundOn( "Hero_PhantomAssassin.Dagger.Cast", self:GetCaster() )
+function phantom_special_attack:PlayEffectsOnCast()
+	EmitSoundOn("Hero_PhantomAssassin.Dagger.Cast", self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end

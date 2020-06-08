@@ -1,5 +1,5 @@
 modifier_wisp_ultimate_thinker = class({})
-LinkLuaModifier( "modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -9,15 +9,15 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializer
-function modifier_wisp_ultimate_thinker:OnCreated( kv )
+function modifier_wisp_ultimate_thinker:OnCreated(kv)
     if IsServer() then
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
         self.damage = self:GetAbility():GetAbilityDamage()
-        self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
+        self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
         self.stun_duration =  self:GetAbility():GetSpecialValueFor("stun_duration")
 
         -- Start Interval
-        self:StartIntervalThink( self.delay_time )
+        self:StartIntervalThink(self.delay_time)
 
         self:PlayEffects()
     end
@@ -32,17 +32,17 @@ function modifier_wisp_ultimate_thinker:OnIntervalThink()
         local caster = self:GetCaster()
         local old_origin = caster:GetOrigin()
 
-        local linked_unit = SafeGetModifierCaster( "modifier_wisp_basic_attack_link", caster )
+        local linked_unit = SafeGetModifierCaster("modifier_wisp_basic_attack_link", caster)
 
         -- teleport
-        FindClearSpaceForUnit( caster, point , true )
+        FindClearSpaceForUnit(caster, point , true)
         
         if linked_unit ~= nil then
-            FindClearSpaceForUnit( linked_unit, point , true )
+            FindClearSpaceForUnit(linked_unit, point , true)
         end
 
         -- find enemies
-        local enemies = FindUnitsInRadius( 
+        local enemies = FindUnitsInRadius(
             self:GetParent():GetTeamNumber(), -- int, your team number
             point, -- point, center point
             nil, -- handle, cacheUnit. (not known)
@@ -52,7 +52,7 @@ function modifier_wisp_ultimate_thinker:OnIntervalThink()
             0, -- int, flag filter
             0, -- int, order filter
             false -- bool, can grow cache
-        )
+       )
 
         local damageTable = {
             -- victim = target,
@@ -73,7 +73,7 @@ function modifier_wisp_ultimate_thinker:OnIntervalThink()
                 self:GetAbility(),
                 "modifier_generic_stunned",
                 { duration = self.stun_duration }
-            )
+           )
 		end
 
 		self:PlayEffects2()
@@ -89,20 +89,20 @@ function modifier_wisp_ultimate_thinker:PlayEffects()
 	local particle_cast = "particles/econ/items/earthshaker/earthshaker_totem_ti6/earthshaker_totem_ti6_cast_glyph.vpcf"
 	local sound_cast = "Hero_Wisp.TeleportOut"
 
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_WORLDORIGIN, 
         self:GetCaster()
-    )
+   )
 
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
-    EmitSoundOn( 
+    EmitSoundOn(
         sound_cast, 
         self:GetCaster() 
-    )
+   )
 end
 
 function modifier_wisp_ultimate_thinker:PlayEffects2()
@@ -111,27 +111,27 @@ function modifier_wisp_ultimate_thinker:PlayEffects2()
     
     -- particles 1
     local particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_explode_ti5.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
  
     -- particles 2
     local particle_cast2 = "particles/econ/items/zeus/arcana_chariot/zeus_arcana_thundergods_wrath_start_bolt_parent.vpcf"
-    local effect_cast2 = ParticleManager:CreateParticle( 
+    local effect_cast2 = ParticleManager:CreateParticle(
             particle_cast2, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast2, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 1, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 2, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 5, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast2 )
+       )
+    ParticleManager:SetParticleControl(effect_cast2, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast2, 1, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast2, 2, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast2, 5, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast2)
 
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+    EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), sound_cast, self:GetCaster())
 end

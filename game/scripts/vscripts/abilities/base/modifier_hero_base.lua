@@ -102,7 +102,7 @@ function modifier_hero_base:Move(vDirection, iSpeed)
 
 	if GridNav:IsTraversable(test_origin) then
 		if not self.parent:IsPhased() then
-			local units = FindUnitsInRadius( 
+			local units = FindUnitsInRadius(
 				self.parent:GetTeamNumber(), -- int, your team number
 				test_origin, -- point, center point
 				nil, -- handle, cacheUnit. (not known)

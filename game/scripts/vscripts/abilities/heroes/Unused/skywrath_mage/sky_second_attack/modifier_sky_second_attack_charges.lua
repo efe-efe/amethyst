@@ -18,29 +18,29 @@ function modifier_sky_second_attack_charges:DestroyOnExpire()
 end
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_sky_second_attack_charges:OnCreated( kv )
+function modifier_sky_second_attack_charges:OnCreated(kv)
 	-- references
-	self.max_charges = self:GetAbility():GetSpecialValueFor( "max_charges" ) -- special value
+	self.max_charges = self:GetAbility():GetSpecialValueFor("max_charges") -- special value
 	self.reduction = 0.0
 
 	self.cooldowns[self:GetParent()] = {0.0, 0.0, 0.0}
 
 	if IsServer() then
-		self:SetStackCount( self.max_charges )
+		self:SetStackCount(self.max_charges)
 		self:CalculateCharge()
 	end
 end
 
-function modifier_sky_second_attack_charges:OnRefresh( kv )
+function modifier_sky_second_attack_charges:OnRefresh(kv)
 	-- references
-	self.max_charges = self:GetAbility():GetSpecialValueFor( "max_charges" ) -- special value
+	self.max_charges = self:GetAbility():GetSpecialValueFor("max_charges") -- special value
 
 	if IsServer() then
 		self:CalculateCharge()
 	end
 end
 
-function modifier_sky_second_attack_charges:OnDestroy( kv )
+function modifier_sky_second_attack_charges:OnDestroy(kv)
 
 end
 
@@ -59,20 +59,20 @@ function modifier_sky_second_attack_charges:CalculateCharge()
 	self:GetAbility():EndCooldown()
 	if self:GetStackCount()>=self.max_charges then
 		-- stop charging
-		self:SetDuration( -1, false )
-		self:StartIntervalThink( -1 )
+		self:SetDuration(-1, false)
+		self:StartIntervalThink(-1)
 	else
 		-- if not charging
 		if self:GetRemainingTime() <= 0.05 then
 			-- start charging
-			local charge_time = self:GetAbility():GetCooldown( -1 ) - self.cooldowns[self:GetParent()][self:GetStackCount() + 1]
-			self:StartIntervalThink( charge_time )
-			self:SetDuration( charge_time, true )
+			local charge_time = self:GetAbility():GetCooldown(-1) - self.cooldowns[self:GetParent()][self:GetStackCount() + 1]
+			self:StartIntervalThink(charge_time)
+			self:SetDuration(charge_time, true)
 		end
 
 		-- set on cooldown if no charges
 		if self:GetStackCount()==0 then
-			self:GetAbility():StartCooldown( self:GetRemainingTime() )
+			self:GetAbility():StartCooldown(self:GetRemainingTime())
 		end
 	end
 end

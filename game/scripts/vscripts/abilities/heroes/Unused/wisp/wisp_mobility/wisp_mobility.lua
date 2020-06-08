@@ -1,7 +1,7 @@
 wisp_mobility = class({})
 wisp_mobility_back = class({})
-LinkLuaModifier( "modifier_wisp_mobility_thinker", "abilities/heroes/wisp/wisp_mobility/modifier_wisp_mobility_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_wisp_mobility", "abilities/heroes/wisp/wisp_mobility/modifier_wisp_mobility", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_wisp_mobility_thinker", "abilities/heroes/wisp/wisp_mobility/modifier_wisp_mobility_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_wisp_mobility", "abilities/heroes/wisp/wisp_mobility/modifier_wisp_mobility", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Shared data
@@ -27,7 +27,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function wisp_mobility:OnCastPointEnd( point )
+function wisp_mobility:OnCastPointEnd(point)
 	-- unit identifier
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -46,7 +46,7 @@ function wisp_mobility:OnCastPointEnd( point )
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
 	)
-	modifier = thinker:FindModifierByName( "modifier_wisp_mobility_thinker" )
+	modifier = thinker:FindModifierByName("modifier_wisp_mobility_thinker")
 
 	-- Add the modifier that swap back the abilities on destroy
 	caster:AddNewModifier(
@@ -54,17 +54,17 @@ function wisp_mobility:OnCastPointEnd( point )
 		self, -- ability source
 		"modifier_wisp_mobility", -- modifier name
 		{ duration = back_duration }
-    )
+   )
 
 	-- teleport
-	FindClearSpaceForUnit( caster, point, true )
+	FindClearSpaceForUnit(caster, point, true)
 
 	-- Play effects
     self:PlayEffectsOrigin()
-    self:PlayEffectsArrival( point )
+    self:PlayEffectsArrival(point)
 	
 	-- Put the back ability on the mobility slot
-	caster:SwapAbilities( 
+	caster:SwapAbilities(
 		self:GetAbilityName(),
 		"wisp_mobility_back",
 		false,
@@ -78,11 +78,11 @@ function wisp_mobility:OnCastPointEnd( point )
 	}
 
 	--share data
-	local wisp_mobility_back = caster:FindAbilityByName( "wisp_mobility_back" )
+	local wisp_mobility_back = caster:FindAbilityByName("wisp_mobility_back")
 	wisp_mobility_back.origins = self.origins
 end
 
-function wisp_mobility:RemoveOrigin( origin )
+function wisp_mobility:RemoveOrigin(origin)
 
 	if self.origins[origin].modifier~=nil then
 		if not self.origins[origin].modifier:IsNull() then
@@ -98,22 +98,22 @@ end
 -- Graphics & Sounds
 function wisp_mobility:PlayEffectsOrigin()
 	-- Create Sound
-	EmitSoundOn( "Hero_Wisp.TeleportIn", self:GetCaster()  )
+	EmitSoundOn("Hero_Wisp.TeleportIn", self:GetCaster() )
 	
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_relocate_teleport.vpcf"
 
 	-- At original position
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetCaster())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function wisp_mobility:PlayEffectsArrival( point )
+function wisp_mobility:PlayEffectsArrival(point)
 	local particle_cast = "particles/econ/items/wisp/wisp_relocate_teleport_ti7.vpcf"
 
 	-- At arrival position
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 0, point )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast, 0, point)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 --------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ function wisp_mobility_back:OnSpellStart()
 	if not origin then return end
 
 	-- teletransport
-	FindClearSpaceForUnit( caster, origin.position, true )
+	FindClearSpaceForUnit(caster, origin.position, true)
 
 	-- destroy the origin
 	if not self.origins[caster].modifier:IsNull() then
@@ -142,5 +142,5 @@ function wisp_mobility_back:OnSpellStart()
 	end
 	self.origins[caster] = nil
 
-    EmitSoundOn( "Hero_Wisp.TeleportOut", self:GetCaster()  )
+    EmitSoundOn("Hero_Wisp.TeleportOut", self:GetCaster() )
 end

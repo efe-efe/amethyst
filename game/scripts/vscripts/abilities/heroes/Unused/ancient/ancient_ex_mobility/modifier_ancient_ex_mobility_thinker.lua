@@ -1,5 +1,5 @@
 modifier_ancient_ex_mobility_thinker = class({})
-LinkLuaModifier( "modifier_ancient_ex_mobility", "abilities/heroes/ancient/ancient_ex_mobility/modifier_ancient_ex_mobility", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_ex_mobility", "abilities/heroes/ancient/ancient_ex_mobility/modifier_ancient_ex_mobility", LUA_MODIFIER_MOTION_NONE)
 
 function modifier_ancient_ex_mobility_thinker:OnCreated()
     if IsServer() then
@@ -25,8 +25,8 @@ function modifier_ancient_ex_mobility_thinker:OnCreated()
             self:GetParent():GetOrigin(), --vOrigin
             self:GetCaster():GetTeamNumber(), --nTeamNumber
             false --bPhantomBlocker
-        )
-        self:StartIntervalThink( self.think_interval )
+       )
+        self:StartIntervalThink(self.think_interval)
         self:PlayEffects()
     end
 end
@@ -34,7 +34,7 @@ end
 function modifier_ancient_ex_mobility_thinker:OnDestroy()
     if IsServer() then
         self:StopEffects()
-		UTIL_Remove( self:GetParent() )
+		UTIL_Remove(self:GetParent())
 	end
 end
 
@@ -48,7 +48,7 @@ function modifier_ancient_ex_mobility_thinker:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     local final_heal = self.heal
     local final_damage = self.ability_damage
@@ -77,7 +77,7 @@ function modifier_ancient_ex_mobility_thinker:OnIntervalThink()
                     damage_type = DAMAGE_TYPE_PURE,
                 }
     
-                ApplyDamage( damage_table )
+                ApplyDamage(damage_table)
             --end
         end
         unit:AddNewModifier(caster, self:GetAbility(), "modifier_ancient_ex_mobility", { duration = self.think_interval })
@@ -97,39 +97,39 @@ function modifier_ancient_ex_mobility_thinker:PlayEffects()
     EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.IceVortex.lp", self:GetCaster())
     local particle_cast = "particles/econ/items/ancient_apparition/ancient_apparation_ti8/ancient_ice_vortex_ti8.vpcf"
     
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 5, Vector(self.radius,self.radius,self.radius) )
+    ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(self.radius,self.radius,self.radius))
 end
 
 function modifier_ancient_ex_mobility_thinker:PlayEffectsTrigger()
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetParent() )
+    EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetParent())
 
     local particle_cast = "particles/techies_blast_off_ringmodel.vpcf"
 
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )    
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)    
 end
 
 function modifier_ancient_ex_mobility_thinker:PlayEffectsLastTick()
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.IceVortex.TI8", self:GetParent() )
+    EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.IceVortex.TI8", self:GetParent())
     local particle_cast = "particles/econ/items/ancient_apparition/aa_blast_ti_5/ancient_apparition_ice_blast_sphere_final_explosion_smoke_ti5.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
 
 
     particle_cast = "particles/earthshaker_arcana_echoslam_start_v2_ring_rope.vpcf"
-    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
+    effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
     
 end
 
 function modifier_ancient_ex_mobility_thinker:StopEffects()
     StopSoundOn("Hero_Ancient_Apparition", nil)
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )    
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)    
 end
 

@@ -13,18 +13,18 @@ end
 
 -------------------------------------------------------------------------------
 -- Initializations
-function modifier_axe_second_attack_buff:OnCreated( kv )
+function modifier_axe_second_attack_buff:OnCreated(kv)
 	-- references
-	self.bonus = self:GetAbility():GetSpecialValueFor( "speed_bonus" )
+	self.bonus = self:GetAbility():GetSpecialValueFor("speed_bonus")
 
 	if IsServer() then
-		self:SetStackCount( 1 )	
+		self:SetStackCount(1)	
 	end
 end
 
-function modifier_axe_second_attack_buff:OnRefresh( kv )
+function modifier_axe_second_attack_buff:OnRefresh(kv)
 	-- references
-	self.bonus = self:GetAbility():GetSpecialValueFor( "speed_bonus" )
+	self.bonus = self:GetAbility():GetSpecialValueFor("speed_bonus")
 
 	if IsServer() then
 		-- increase stack
@@ -32,11 +32,11 @@ function modifier_axe_second_attack_buff:OnRefresh( kv )
 	end		
 end
 
-function modifier_axe_second_attack_buff:OnDestroy( kv )
+function modifier_axe_second_attack_buff:OnDestroy(kv)
 
 end
 
-function modifier_axe_second_attack_buff:OnStackCountChanged( old )
+function modifier_axe_second_attack_buff:OnStackCountChanged(old)
 	if IsServer() then
 		if self:GetStackCount()<1 then
 			self:Destroy()

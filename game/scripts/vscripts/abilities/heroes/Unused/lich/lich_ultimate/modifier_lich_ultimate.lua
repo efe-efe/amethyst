@@ -18,14 +18,14 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_lich_ultimate:OnCreated( kv )
+function modifier_lich_ultimate:OnCreated(kv)
 	-- references
 	if IsServer() then
 		self:SetStackCount(1)
 	end
 end
 
-function modifier_lich_ultimate:OnRefresh( kv )
+function modifier_lich_ultimate:OnRefresh(kv)
 	if IsServer() then
 		self:IncrementStackCount()
 	end

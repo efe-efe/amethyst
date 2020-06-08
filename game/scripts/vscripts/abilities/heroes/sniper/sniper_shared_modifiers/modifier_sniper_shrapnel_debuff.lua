@@ -5,7 +5,7 @@ function modifier_sniper_shrapnel_debuff:IsHidden() 	return 	false 	end
 function modifier_sniper_shrapnel_debuff:IsDebuff() 	return 	true 	end
 function modifier_sniper_shrapnel_debuff:IsPurgable() 	return 	false 	end
 
-function modifier_sniper_shrapnel_debuff:OnCreated( kv )
+function modifier_sniper_shrapnel_debuff:OnCreated(kv)
 	self.slow_pct = -self:GetAbility():GetSpecialValueFor("slow_pct")
 	self.damage_per_think = self:GetAbility():GetSpecialValueFor("damage_per_think")
 	self.think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
@@ -18,12 +18,12 @@ function modifier_sniper_shrapnel_debuff:OnCreated( kv )
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 
-		self:StartIntervalThink( self.think_interval )  
+		self:StartIntervalThink(self.think_interval)  
 	end
 end
 
 function modifier_sniper_shrapnel_debuff:OnIntervalThink()
-	ApplyDamage( self.damage_table )
+	ApplyDamage(self.damage_table)
 end
 
 function modifier_sniper_shrapnel_debuff:DeclareFunctions()

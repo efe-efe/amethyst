@@ -1,6 +1,6 @@
 sniper_mobility = class({})
-LinkLuaModifier( "modifier_sniper_shrapnel_thinker_custom", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_thinker_custom", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_sniper_mobility_displacement", "abilities/heroes/sniper/sniper_mobility/modifier_sniper_mobility_displacement", LUA_MODIFIER_MOTION_BOTH )
+LinkLuaModifier("modifier_sniper_shrapnel_thinker_custom", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_thinker_custom", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_sniper_mobility_displacement", "abilities/heroes/sniper/sniper_mobility/modifier_sniper_mobility_displacement", LUA_MODIFIER_MOTION_BOTH)
 
 function sniper_mobility:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
 function sniper_mobility:GetPlaybackRateOverride() 	return 2.0 end
@@ -34,7 +34,7 @@ function sniper_mobility:OnSpellStart()
 		caster, --hCaster
 		shrapnel, --hAbility
 		"modifier_sniper_shrapnel_thinker_custom", --modifierName
-		{ duration = shrapnel:GetSpecialValueFor( "duration" ) }, --paramTable
+		{ duration = shrapnel:GetSpecialValueFor("duration") }, --paramTable
 		caster:GetAbsOrigin(), --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
@@ -59,13 +59,13 @@ function sniper_mobility:OnSpellStart()
 end
 
 function sniper_mobility:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Techies.LandMine.Detonate", self:GetCaster() )	
+	EmitSoundOn("Hero_Techies.LandMine.Detonate", self:GetCaster())	
 
 	local particle_cast = "particles/econ/courier/courier_cluckles/courier_cluckles_ambient_rocket_explosion.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin())
-    ParticleManager:ReleaseParticleIndex( effect_cast )  
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)  
 end
 
 if IsClient() then require("wrappers/abilities") end

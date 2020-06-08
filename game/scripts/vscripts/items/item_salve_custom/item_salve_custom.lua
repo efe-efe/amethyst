@@ -1,5 +1,5 @@
 item_salve_custom = class({})
-LinkLuaModifier( "modifier_item_salve_custom", "items/item_salve_custom/modifier_item_salve_custom", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_item_salve_custom", "items/item_salve_custom/modifier_item_salve_custom", LUA_MODIFIER_MOTION_NONE)
 
 function item_salve_custom:OnSpellStart()
     self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_item_salve_custom", {
@@ -12,5 +12,5 @@ function item_salve_custom:OnSpellStart()
 end
 
 function item_salve_custom:PlayEffects()
-    EmitSoundOn( "DOTA_Item.HealingSalve.Activate", self:GetCaster()  )
+    EmitSoundOn("DOTA_Item.HealingSalve.Activate", self:GetCaster() )
 end

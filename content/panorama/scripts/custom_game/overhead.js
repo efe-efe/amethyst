@@ -110,7 +110,7 @@ Overhead.prototype.UpdatePosition = function(){
         if(
             this.panel.actuallayoutwidth ==  0 &&
             this.panel.actuallayoutheight ==  0
-        ){
+       ){
             this.panel.style.position = "-1000px -1000px 0px;";
             return true;
         }
@@ -123,7 +123,7 @@ Overhead.prototype.UpdatePosition = function(){
 Overhead.prototype.UpdateVisibility = function(){
     var hide = Modifiers.FindModifierByName(this.entity_index, "modifier_hide_bar")
 
-    if(!Entities.IsAlive(this.entity_index) || !IsVisibleByLocal(this.entity_index) || hide != false ){
+    if(!Entities.IsAlive(this.entity_index) || !IsVisibleByLocal(this.entity_index) || hide != false){
         this.panel.style.opacity = "0.0";
     } else {
         this.panel.style.opacity = "1.0";
@@ -178,23 +178,23 @@ Cooldown.prototype = Object.create(Component.prototype);
 Cooldown.prototype.constructor = Cooldown;
 Cooldown.prototype.Update = function(){
     var modifier_index = Modifiers.FindModifierByName(this.entity_index, this.modifier_name)
-    var duration = Buffs.GetDuration( this.entity_index, modifier_index );
+    var duration = Buffs.GetDuration(this.entity_index, modifier_index);
     var foreground_panel = this.panel.FindChildTraverse("Cooldown__Foreground");
 
     if(duration == -1){
-        foreground_panel.style.clip = "radial( 50% 50%, 0deg, " + 360 + "deg )";
+        foreground_panel.style.clip = "radial(50% 50%, 0deg, " + 360 + "deg)";
         foreground_panel.style.backgroundColor = "rgb(162, 249, 154)";
         return;
     }
 
-    var remaining = Buffs.GetRemainingTime( this.entity_index, modifier_index );
+    var remaining = Buffs.GetRemainingTime(this.entity_index, modifier_index);
     var progress_ratio = 1;
     if (remaining && duration) {progress_ratio = remaining/duration};
     if (isNaN(progress_ratio)) { progress_ratio = 1; }
     progress_ratio = 1 - progress_ratio;
     var degree = 360 * progress_ratio
 
-    foreground_panel.style.clip = "radial( 50% 50%, 0deg, " + degree + "deg )";
+    foreground_panel.style.clip = "radial(50% 50%, 0deg, " + degree + "deg)";
     foreground_panel.style.backgroundColor = "rgb(238, 53, 0)";
     
     if(degree == 360){
@@ -220,8 +220,8 @@ CastPoint.prototype.Update = function(){
     var modifier_index = Modifiers.FindModifierByName(this.entity_index, this.modifier_name)
 
     if(modifier_index){
-        var duration = Buffs.GetDuration( this.entity_index, modifier_index );
-        var remaining = Buffs.GetRemainingTime( this.entity_index, modifier_index );
+        var duration = Buffs.GetDuration(this.entity_index, modifier_index);
+        var remaining = Buffs.GetRemainingTime(this.entity_index, modifier_index);
 
         var progress_ratio = 1;
         if (remaining && duration) {progress_ratio = remaining/duration};
@@ -260,7 +260,7 @@ Status.prototype.constructor = Status;
 Status.prototype.Update = function(){
     var current_status = null;        
     var local_player_id = Game.GetLocalPlayerID();
-    var local_player_team = Players.GetTeam( local_player_id );
+    var local_player_team = Players.GetTeam(local_player_id);
 
     var all_data = {};
     
@@ -301,7 +301,7 @@ Status.prototype.Update = function(){
     var modifier_index = Modifiers.FindModifierByName(this.entity_index, modifier_name)
     
     if(modifier_index){
-        var progress_ratio = GetProgressRatio( this.entity_index, modifier_index, content, trigger, max_stacks );
+        var progress_ratio = GetProgressRatio(this.entity_index, modifier_index, content, trigger, max_stacks);
         
         var text_panel = this.panel.FindChildTraverse("Status__Text--Normal");
         var text_panel_glow = this.panel.FindChildTraverse("Status__Text--Glow");
@@ -409,14 +409,14 @@ function Update(){
     $.Schedule(INTERVAL, function(){ Update(); });
 }
 
-function GetProgressRatio( entity_index, modifier_index, content, trigger, max_stacks ){
+function GetProgressRatio(entity_index, modifier_index, content, trigger, max_stacks){
     var progress_ratio = 1;
     var content = content;
     var trigger = trigger;
 
     if(trigger == STATUS_TRIGGER_DURATION){
-        var duration = Buffs.GetDuration( entity_index, modifier_index );
-        var remaining = Buffs.GetRemainingTime( entity_index, modifier_index );
+        var duration = Buffs.GetDuration(entity_index, modifier_index);
+        var remaining = Buffs.GetRemainingTime(entity_index, modifier_index);
         if (remaining && duration){ progress_ratio = remaining/duration };
         if (isNaN(progress_ratio)){ progress_ratio = 1; }
         if (content == STATUS_CONTENT_FILLUP){progress_ratio = 1 - progress_ratio;}

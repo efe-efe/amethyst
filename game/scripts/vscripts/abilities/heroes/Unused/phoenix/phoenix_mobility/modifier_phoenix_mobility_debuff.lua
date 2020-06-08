@@ -20,10 +20,10 @@ end
 --------------------------------------------------------------------------------
 -- Initialization
 function modifier_phoenix_mobility_debuff:OnCreated()
-    self.damage_per_second = self:GetAbility():GetSpecialValueFor( "damage_per_second" )
+    self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
 
 	if IsServer() then
-		self:StartIntervalThink( 1.0 )
+		self:StartIntervalThink(1.0)
 		self:OnIntervalThink()
 		self:PlayEffects(self:GetParent())
 	end
@@ -49,24 +49,24 @@ function modifier_phoenix_mobility_debuff:OnIntervalThink()
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 
-		ApplyDamage( damage )
+		ApplyDamage(damage)
 	end
 end
 
-function modifier_phoenix_mobility_debuff:PlayEffects( hTarget )
+function modifier_phoenix_mobility_debuff:PlayEffects(hTarget)
 	-- get resources
 	local particle_cast = "particles/mod_units/heroes/hero_phoenix/phoenix_fire_spirit_burn.vpcf"
 
 	-- create particle
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, hTarget:GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+	ParticleManager:SetParticleControl(self.effect_cast, 0, hTarget:GetOrigin())
 end
 
 
-function modifier_phoenix_mobility_debuff:StopEffects( )
+function modifier_phoenix_mobility_debuff:StopEffects()
 	if self.effect_cast ~= nil then
-		ParticleManager:DestroyParticle( self.effect_cast, false )
-		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+		ParticleManager:DestroyParticle(self.effect_cast, false)
+		ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	end
 end
 

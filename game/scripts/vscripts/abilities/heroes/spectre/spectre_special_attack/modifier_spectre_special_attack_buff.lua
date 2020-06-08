@@ -4,7 +4,7 @@ function modifier_spectre_special_attack_buff:IsDebuff() return false end
 function modifier_spectre_special_attack_buff:IsHidden() return false end
 function modifier_spectre_special_attack_buff:IsPurgable() return false end
 
-function modifier_spectre_special_attack_buff:OnCreated( kv )
+function modifier_spectre_special_attack_buff:OnCreated(kv)
 	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
 
 	if IsServer() then
@@ -41,8 +41,8 @@ end
 
 function modifier_spectre_special_attack_buff:PlayEffects()
 	local particle_cast = "particles/econ/items/lifestealer/lifestealer_immortal_backbone/lifestealer_immortal_backbone_rage_swirl.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent() )
-    ParticleManager:SetParticleControlEnt( 
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent())
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         2, 
         self:GetParent(), 
@@ -50,10 +50,10 @@ function modifier_spectre_special_attack_buff:PlayEffects()
         "attach_hitloc", 
         self:GetParent():GetOrigin(), 
         true 
-    )
+   )
 end
 
 function modifier_spectre_special_attack_buff:StopEffects()
 	ParticleManager:DestroyParticle(self.effect_cast, false)
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

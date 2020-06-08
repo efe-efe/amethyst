@@ -7,7 +7,7 @@ function pudge_extra:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	-- Probable data
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
@@ -37,7 +37,7 @@ function pudge_extra:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 				ability = self
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
             _self.Source:Heal(heal, _self.Source)
 
@@ -64,35 +64,35 @@ function pudge_extra:OnCastPointEnd()
         damage_table.damage = self_damage
     end
 
-    ApplyDamage( damage_table )
+    ApplyDamage(damage_table)
 
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 
 function pudge_extra:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Pudge.AttackSpecial", self:GetCaster() )
+	EmitSoundOn("Hero_Pudge.AttackSpecial", self:GetCaster())
 end
 
-function pudge_extra:PlayEffectsOnFinish( pos )
+function pudge_extra:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_Pudge.AttackHookImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Pudge.AttackHookImpact", caster)
 
 	-- Create Particle
 	local particle_cast = "particles/econ/items/centaur/centaur_ti9/centaur_double_edge_ti9_bloodspray_src.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-    ParticleManager:SetParticleControl( effect_cast, 2, pos )
-    ParticleManager:SetParticleControl( effect_cast, 4, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+    ParticleManager:SetParticleControl(effect_cast, 2, pos)
+    ParticleManager:SetParticleControl(effect_cast, 4, pos)
 
-    ParticleManager:SetParticleControl( effect_cast, 5, pos )
+    ParticleManager:SetParticleControl(effect_cast, 5, pos)
 
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	pudge_extra,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.0 },
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }

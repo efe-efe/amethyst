@@ -1,0 +1,18 @@
+"DOTAAbilities" {
+    "mars_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/mars/mars_counter/mars_counter"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"mars_bulwark"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"9.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0" }
+		}
+	}
+}

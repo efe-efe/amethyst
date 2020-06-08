@@ -65,6 +65,6 @@ styles["Infection"] = {
     color: "#1aed4e"
 }
 
-function CreateTextShadow( color ){
+function CreateTextShadow(color){
     return "0px 0px 30px 8.0 " + color + ";"
 }

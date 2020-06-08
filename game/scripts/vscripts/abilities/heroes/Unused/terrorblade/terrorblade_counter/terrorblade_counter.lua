@@ -15,7 +15,7 @@ function terrorblade_counter:OnCastPointEnd()
             duration = duration, 
             destroy_on_trigger = 1,
         }
-    )
+   )
 end
 
 function terrorblade_counter:OnTrigger()
@@ -32,7 +32,7 @@ function terrorblade_counter:OnTrigger()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
     
     for _,enemy in pairs(enemies) do
         if base:GetState() == "NORMAL" then
@@ -54,20 +54,20 @@ function terrorblade_counter:OnTrigger()
 end
 
 function terrorblade_counter:PlayEffectsOnTrigger(radius)
-    EmitSoundOn( "Hero_Terrorblade.Metamorphosis.Scepter", self:GetCaster() )
+    EmitSoundOn("Hero_Terrorblade.Metamorphosis.Scepter", self:GetCaster())
 
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_terrorblade/terrorblade_scepter.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector(radius,radius,radius) )
-    ParticleManager:SetParticleControl( effect_cast, 2, Vector(radius,radius,radius) )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius,radius,radius))
+    ParticleManager:SetParticleControl(effect_cast, 2, Vector(radius,radius,radius))
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
     terrorblade_counter,
     nil, 
 	{ movement_speed = 100 }

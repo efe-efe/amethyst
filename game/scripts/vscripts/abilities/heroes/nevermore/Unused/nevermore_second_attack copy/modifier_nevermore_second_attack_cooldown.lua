@@ -42,7 +42,7 @@ end
 
 
 
-function modifier_nevermore_second_attack_cooldown:OnStackCountChanged( old )
+function modifier_nevermore_second_attack_cooldown:OnStackCountChanged(old)
 	if IsServer() then
 		if self:GetStackCount() < 1 then
 			self:Destroy()
@@ -58,7 +58,7 @@ function modifier_nevermore_second_attack_cooldown:PlayEffects(number)
 	end
 
 	-- create particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

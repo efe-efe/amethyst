@@ -1,13 +1,13 @@
 ancient_second_attack = class({})
-LinkLuaModifier( "modifier_ancient_second_attack", "abilities/heroes/ancient/ancient_second_attack/modifier_ancient_second_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_second_attack", "abilities/heroes/ancient/ancient_second_attack/modifier_ancient_second_attack", LUA_MODIFIER_MOTION_NONE)
 
 function ancient_second_attack:OnSpellStart()
-	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_ancient_second_attack", {} )
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_ancient_second_attack", {})
 	EmitSoundOn("Hero_Ancient_Apparition.ColdFeetCast", self:GetCaster())
 end
 
 
-function ancient_second_attack:GetCastRange( vLocation, hTarget )
+function ancient_second_attack:GetCastRange(vLocation, hTarget)
 	local stacks = SafeGetModifierStacks("modifier_ancient_second_attack", self:GetCaster(), self:GetCaster())
     return self.BaseClass.GetCastRange(self, vLocation, hTarget) + stacks * 6
 end
@@ -32,7 +32,7 @@ function ancient_second_attack:OnCastPointEnd()
     local min_silence = self:GetSpecialValueFor("min_silence")
 	
 	-- Dynamic data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
@@ -56,7 +56,7 @@ function ancient_second_attack:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if not string.ends(name, "_ultimate") then
 				if _self.Source == caster then
@@ -83,28 +83,28 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function ancient_second_attack:PlayEffectsOnFinish( pos )
+function ancient_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
-	EmitSoundOnLocationWithCaster( pos, "Hero_Ancient_Apparition.ChillingTouch.Target", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Ancient_Apparition.ChillingTouch.Target", caster)
 
 	-- Create Particles
 	local particle_cast = "particles/units/heroes/hero_ancient_apparition/ancient_apparition_chilling_touch_projectile_hit.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function ancient_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster() )
+	EmitSoundOn("Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster())
 end
 
 function ancient_second_attack:CastOnRelease() return true end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	ancient_second_attack,
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.0 },
 	{ movement_speed = 50, fixed_range = 1}

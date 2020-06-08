@@ -4,7 +4,7 @@ function modifier_item_salve_custom:OnCreated(params)
     if IsServer() then
         self.think_interval = params.think_interval
         self.heal_per_tick = params.heal_per_tick
-        self:StartIntervalThink( self.think_interval )
+        self:StartIntervalThink(self.think_interval)
     end
 end
 
@@ -20,7 +20,7 @@ function modifier_item_salve_custom:DeclareFunctions()
 	return funcs
 end
 
-function modifier_item_salve_custom:GetModifierIncomingDamage_Percentage( params )
+function modifier_item_salve_custom:GetModifierIncomingDamage_Percentage(params)
 	if IsServer() then
 		self:Destroy()	
         return 0

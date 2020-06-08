@@ -1,3 +1,659 @@
+	"npc_dota_hero_ember_spirit_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_ember_spirit"			
+		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
+		"AttributePrimary"			"DOTA_ATTRIBUTE_STRENGTH"
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"juggernaut_basic_attack"
+		"Ability2"						"juggernaut_second_attack"
+		"Ability3"						"juggernaut_mobility"
+		"Ability4"						"juggernaut_counter"
+		"Ability5"						"juggernaut_special_attack"
+		"Ability6"						"juggernaut_extra"           
+		"Ability7"						"juggernaut_ultimate"            
+		////"Ability8"						"juggernaut_ex_second_attack"       
+		"Ability9"						"juggernaut_ex_special_attack"	
+							
+				
+		"Ability12"						"juggernaut_counter_recast"	
+		"Ability13"						"juggernaut_extra_recast"		
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"9"										
+		"AttackDamageMax"			"9"											
+		"AttackRate"				"0.35"									
+		"AttackAnimationPoint"		"0.1"	
+		"AttackRange"				"80"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"1.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"170" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"	
+	}	
+
+    //=================================================================================================================
+	// HERO: Wisp
+	//=================================================================================================================
+	"npc_dota_hero_wisp_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_wisp"			
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"wisp_counter"             	
+		"Ability2"						"wisp_basic_attack"             
+		"Ability3"						"wisp_special_attack"							
+		"Ability4"						"wisp_second_attack"
+		"Ability5"						"wisp_extra"					
+		"Ability6"						"wisp_ultimate"
+		"Ability7"						"wisp_mobility"	
+		//"Ability8"						"wisp_ex_counter"					
+		"Ability9"						"wisp_ex_special_attack"			
+										
+				
+		"Ability12"						"wisp_mobility_back"					
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+		
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"10"									
+		"AttackDamageMax"			"10"											
+		"AttackRate"				"0.2"									
+		"AttackAnimationPoint"		"0.3"	
+		"AttackRange"				"900"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"210" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
+	}
+
+	//=================================================================================================================
+	// HERO: Skywrath Mage
+	//=================================================================================================================
+	"npc_dota_hero_skywrath_mage_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_skywrath_mage"			
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"sky_counter"		
+		"Ability2"						"sky_basic_attack"             
+		"Ability3"						"sky_special_attack"
+		"Ability4"						"sky_second_attack"							
+		"Ability5"						"sky_extra"					
+		"Ability6"						"sky_ultimate"
+		"Ability7"						"sky_mobility"	
+		//"Ability8"						"sky_ex_basic_attack"	
+		"Ability9"						"sky_ex_second_attack"	
+							
+					
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+		
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"15"									
+		"AttackDamageMax"			"15"											
+		"AttackRate"				"0.6"										
+		"AttackAnimationPoint"		"0.35"	
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
+	}
+
+	//=================================================================================================================
+	// HERO: Axe
+	//=================================================================================================================
+	"npc_dota_hero_axe_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_axe"			
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"axe_counter"
+		"Ability2"						"axe_basic_attack"
+		"Ability3"						"axe_special_attack"
+		"Ability4"						"axe_second_attack"
+		"Ability5"						"axe_extra"
+		"Ability6"						"axe_ultimate"
+		"Ability7"						"axe_mobility"
+		//"Ability8"						"axe_ex_second_attack"
+		"Ability9"						"axe_ex_mobility"	
+								
+			
+
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"8"										
+		"AttackDamageMax"			"8"												
+		"AttackRate"				"0.8"									
+		"AttackAnimationPoint"		"0.1"	
+		"AttackRange"				"80"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"250" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"	
+	}
+
+   //=================================================================================================================
+	// HERO: Tinker
+	//=================================================================================================================
+	"npc_dota_hero_tinker_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_tinker"			
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"tinker_counter"             	
+		"Ability2"						"tinker_basic_attack"             
+		"Ability3"						"tinker_special_attack"							
+		"Ability4"						"tinker_second_attack"
+		"Ability5"						"tinker_extra"					
+		"Ability6"						"tinker_ultimate"
+		"Ability7"						"tinker_mobility"					
+		//"Ability8"						"tinker_ex_counter"	
+		"Ability9"						"tinker_ex_second_attack"		
+							
+				
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+		
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"13"									
+		"AttackDamageMax"			"13"											
+		"AttackRate"				"0.3"									
+		"AttackAnimationPoint"		"0.2"	
+		"AttackRange"				"900"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"									// Mana regeneration rate.
+	}
+
+	//=================================================================================================================
+	// HERO: Phoenix
+	//=================================================================================================================
+	"npc_dota_hero_phoenix_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_phoenix"			
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"phoenix_counter"
+		"Ability2"						"phoenix_basic_attack"
+		"Ability3"						"phoenix_special_attack"
+		"Ability4"						"phoenix_second_attack"
+		"Ability5"						"phoenix_ex_ultimate"
+		"Ability6"						"phoenix_ultimate"             
+		"Ability7"						"phoenix_mobility"                    	
+		//"Ability8"						"phoenix_ex_counter"             
+		"Ability9"						"phoenix_ex_special_attack" 	
+					    				
+		
+		"Ability12"						"phoenix_mobility_stop"
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"9"										
+		"AttackDamageMax"			"9"											
+		"AttackRate"				"0.25"									
+		"AttackAnimationPoint"		"0.3"	
+		"AttackRange"				"80"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"	
+	}
+
+	//=================================================================================================================
+	// HERO: Crystal Maiden
+	//=================================================================================================================
+	"npc_dota_hero_crystal_maiden_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_crystal_maiden"			
+		"Model"						"models/heroes/crystal_maiden/crystal_maiden_arcana.vmdl"
+
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+
+
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"11"										
+		"AttackDamageMax"			"11"											
+		"AttackRate"				"0.4"										
+		"AttackAnimationPoint"		"0.3"	
+		"AttackRange"				"80"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"	
+	}
+
+	//=================================================================================================================
+	// HERO: Lich
+	//=================================================================================================================
+	"npc_dota_hero_treant_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"					"npc_dota_hero_treant"			
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"treant_counter"
+		"Ability2"						"treant_basic_attack"
+		"Ability3"						"treant_special_attack"
+		"Ability4"						"treant_second_attack"
+		"Ability5"						"treant_extra"
+		"Ability6"						"treant_ultimate"           
+		"Ability7"						"treant_mobility"            
+		//"Ability8"						"treant_ex_special_attack"       
+		"Ability9"						"treant_ex_second_attack"	
+							
+				
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"15"										
+		"AttackDamageMax"			"15"											
+		"AttackRate"				"0.4"									
+		"AttackAnimationPoint"		"0.3"	
+		"AttackRange"				"80"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"1.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"	
+	}
+
+	//=================================================================================================================
+	// HERO: Lich
+	//=================================================================================================================
+	"npc_dota_hero_lich_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"					"npc_dota_hero_lich"			
+		
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"lich_counter"
+		"Ability2"						"lich_basic_attack"
+		"Ability3"						"lich_special_attack"
+		"Ability4"						"lich_second_attack"
+		"Ability5"						"lich_extra"
+		"Ability6"						"lich_ultimate"           
+		"Ability7"						"lich_mobility"    
+		//"Ability8"						"lich_ex_special_attack"	        
+		"Ability9"						"lich_ex_second_attack"       
+							
+			
+		"Ability12"						"lich_counter_mobility"	
+		"Ability13"						"lich_extra_mobility"
+		"Ability14"						"lich_ultimate_mobility"
+		
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"2000"
+		"VisionNighttimeRange"		"2000"
+
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"13"										
+		"AttackDamageMax"			"13"											
+		"AttackRate"				"0.4"									
+		"AttackAnimationPoint"		"0.3"	
+		"AttackRange"				"80"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"380"
+		"MovementTurnRate"			"1.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"230" 						
+		"StatusHealthRegen"			"0.0"									
+		"StatusMana"				"100"									
+		"StatusManaRegen"			"0.0"	
+	}
+
+
+	//=================================================================================================================
+	// HERO: Builder
+	//=================================================================================================================
+	"npc_dota_hero_techies_lua"
+	{
+		// General
+		//-------------------------------------------------------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_techies"			
+		"Model"						"models/creeps/neutral_creeps/n_creep_satyr_a/n_creep_satyr_a.vmdl"
+
+		// Abilities
+		//-------------------------------------------------------------------------------------------------------------
+		"AbilityLayout"					"9"
+		"Ability1"						"builder_attack"
+		"Ability2"						"builder_create_block"
+		"Ability3"						"builder_mobility"
+
+		//Vision
+		//-------------------------------------------------------------------------------------------------------------
+		"VisionDaytimeRange"		"9999"
+		"VisionNighttimeRange"		"9999"
+
+		// Armor
+		//-------------------------------------------------------------------------------------------------------------
+		"ArmorPhysical"				"0"										
+		"MagicalResistance"			"0"										
+
+		// Attack
+		//-------------------------------------------------------------------------------------------------------------
+		"AttackDamageMin"			"100"										
+		"AttackDamageMax"			"100"											
+		"AttackRate"				"0.2"										
+		"AttackAnimationPoint"		"0.2"	
+		"AttackRange"				"80"
+		
+		// Movement
+		//-------------------------------------------------------------------------------------------------------------
+		"MovementSpeed"				"1000"
+		"MovementTurnRate"			"2.0"
+		
+		// Attributes
+		//-------------------------------------------------------------------------------------------------------------
+		"AttributeBaseStrength"		"0"										
+		"AttributeStrengthGain"		"0"										
+		"AttributeBaseIntelligence"	"0"										
+		"AttributeIntelligenceGain"	"0"										
+		"AttributeBaseAgility"		"0"										
+		"AttributeAgilityGain"		"0"										
+		
+		// Status
+		//-------------------------------------------------------------------------------------------------------------
+		"StatusHealth"				"200" 						
+		"StatusHealthRegen"			"5.0"									
+		"StatusMana"				"100"									
+		//"StatusMana"				"1000"
+		"StatusManaRegen"			"0.0"	
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//=================================================================================================================
 	// Skywrath Mage
 	//=================================================================================================================

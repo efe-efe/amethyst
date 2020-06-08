@@ -20,11 +20,11 @@ end
 --------------------------------------------------------------------------------
 -- Initialization
 function modifier_phoenix_basic_attack:OnCreated()
-    self.hp_per_second = self:GetAbility():GetSpecialValueFor( "hp_per_second" )
+    self.hp_per_second = self:GetAbility():GetSpecialValueFor("hp_per_second")
 	self.radius = 350
 
 	if IsServer() then
-		self:StartIntervalThink( 1.0 )
+		self:StartIntervalThink(1.0)
 		self:PlayEffects(self:GetParent())
 	end
 end
@@ -43,13 +43,13 @@ end
 function modifier_phoenix_basic_attack:OnIntervalThink()
 	if IsServer() then
 		local particle_cast = "particles/econ/events/darkmoon_2017/darkmoon_generic_aoe.vpcf"
-		local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-		ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-		ParticleManager:SetParticleControl( effect_cast, 1, Vector(self.radius, 1, 1) )
-		ParticleManager:SetParticleControl( effect_cast, 2, Vector(1, 1, 1) )
-		ParticleManager:SetParticleControl( effect_cast, 3, Vector(255, 255, 255) )
-		ParticleManager:SetParticleControl( effect_cast, 4, Vector(255, 250, 1) )
-		ParticleManager:ReleaseParticleIndex( effect_cast )
+		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+		ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+		ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+		ParticleManager:SetParticleControl(effect_cast, 2, Vector(1, 1, 1))
+		ParticleManager:SetParticleControl(effect_cast, 3, Vector(255, 255, 255))
+		ParticleManager:SetParticleControl(effect_cast, 4, Vector(255, 250, 1))
+		ParticleManager:ReleaseParticleIndex(effect_cast)
 
 		local damage = {
 			victim = self:GetParent(),
@@ -58,9 +58,9 @@ function modifier_phoenix_basic_attack:OnIntervalThink()
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 
-		ApplyDamage( damage )
+		ApplyDamage(damage)
 
-		local units = FindUnitsInRadius( 
+		local units = FindUnitsInRadius(
 			self:GetCaster():GetTeamNumber(), -- int, your team number
 			self:GetCaster():GetOrigin(), -- point, center point
 			nil, -- handle, cacheUnit. (not known)
@@ -70,7 +70,7 @@ function modifier_phoenix_basic_attack:OnIntervalThink()
 			0, -- int, flag filter
 			0, -- int, order filter
 			false -- bool, can grow cache
-	   )
+	  )
 	
 	   for _,unit in pairs(units) do
 			unit:Heal(self.hp_per_second, self:GetCaster())
@@ -78,20 +78,20 @@ function modifier_phoenix_basic_attack:OnIntervalThink()
 	end
 end
 
-function modifier_phoenix_basic_attack:PlayEffects( hTarget )
+function modifier_phoenix_basic_attack:PlayEffects(hTarget)
 	-- get resources
 	local particle_cast = "particles/mod_units/heroes/hero_phoenix/phoenix_fire_spirit_burn.vpcf"
 
 	-- create particle
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, hTarget:GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+	ParticleManager:SetParticleControl(self.effect_cast, 0, hTarget:GetOrigin())
 end
 
 
-function modifier_phoenix_basic_attack:StopEffects( )
+function modifier_phoenix_basic_attack:StopEffects()
 	if self.effect_cast ~= nil then
-		ParticleManager:DestroyParticle( self.effect_cast, false )
-		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+		ParticleManager:DestroyParticle(self.effect_cast, false)
+		ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	end
 end
 

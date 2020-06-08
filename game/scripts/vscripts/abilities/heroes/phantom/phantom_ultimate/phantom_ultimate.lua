@@ -25,7 +25,7 @@ function phantom_ultimate:OnSpellStart()
 	local projectile_name = "particles/mod_units/heroes/hero_luna/luna_base_attack.vpcf"
 	local projectile_start_radius = 70
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = 4000
 	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 
@@ -46,7 +46,7 @@ function phantom_ultimate:OnSpellStart()
 		fGroundOffset = 80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
-			local final_damage = damage + ( stacks * damage_per_stack )
+			local final_damage = damage + (stacks * damage_per_stack)
 
 			local damage_table = {
 				victim = unit,
@@ -55,10 +55,10 @@ function phantom_ultimate:OnSpellStart()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
 			
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			self:PlayEffectsOnCast(caster)
-            FindClearSpaceForUnit( caster, unit:GetOrigin() , true )
+            FindClearSpaceForUnit(caster, unit:GetOrigin() , true)
             self:PlayEffectsOnImpact(unit)
 		end,
         OnFinish = function(_self, pos)
@@ -73,8 +73,8 @@ function phantom_ultimate:OnSpellStart()
 end
 
 function phantom_ultimate:PlayEffectsOnFinish(pos)
-    EmitSoundOn( "Hero_PhantomAssassin.Strike.End", self:GetCaster())
-	EmitSoundOn( "Hero_PhantomAssassin.Arcana_Layer", self:GetCaster() )
+    EmitSoundOn("Hero_PhantomAssassin.Strike.End", self:GetCaster())
+	EmitSoundOn("Hero_PhantomAssassin.Arcana_Layer", self:GetCaster())
 end
 
 function phantom_ultimate:PlayEffectsOnImpact(hTarget)
@@ -82,42 +82,42 @@ function phantom_ultimate:PlayEffectsOnImpact(hTarget)
     EmitSoundOn("Hero_PhantomAssassin.CoupDeGrace", hTarget)
 
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_impact_dagger_arcana.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-    ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
-    ParticleManager:SetParticleControlForward( effect_cast, 1, hTarget:GetForwardVector() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+    ParticleManager:SetParticleControl(effect_cast, 1, hTarget:GetOrigin())
+    ParticleManager:SetParticleControlForward(effect_cast, 1, hTarget:GetForwardVector())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 	
 	particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf"
-	effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, self:GetCaster():GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function phantom_ultimate:PlayEffectsOnCast( caster )
+function phantom_ultimate:PlayEffectsOnCast(caster)
     local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, caster:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function phantom_ultimate:PlayEffectsOnCastPoint()
 	EmitGlobalSound("phantom_assassin_phass_ability_coupdegrace_03")
 
 	local particle_cast = "particles/econ/items/monkey_king/arcana/water/mk_spring_arcana_water_channel_powertrails.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	particle_cast = "particles/econ/items/wisp/wisp_relocate_channel_ti7.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetCaster():GetOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 1, self:GetCaster():GetOrigin() )
-	ParticleManager:SetParticleControl( self.effect_cast, 3, self:GetCaster():GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 1, self:GetCaster():GetOrigin())
+	ParticleManager:SetParticleControl(self.effect_cast, 3, self:GetCaster():GetOrigin())
 end
 
 function phantom_ultimate:StopEffectsOnCastPoint()
 	if self.effect_cast ~= nil then
 		ParticleManager:DestroyParticle(self.effect_cast, false)
-		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+		ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	end
 end
 

@@ -3,9 +3,9 @@ demon_second_attack = class({})
 
 function demon_second_attack:OnSpellStart()
 	local particle_cast = "particles/units/heroes/hero_winter_wyvern/wyvern_winters_curse_ring_spiral.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 
@@ -17,7 +17,7 @@ function demon_second_attack:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
@@ -46,7 +46,7 @@ function demon_second_attack:OnCastPointEnd()
 					damage_type = DAMAGE_TYPE_MAGICAL,
 					ability = self
 				}
-				ApplyDamage( damage )
+				ApplyDamage(damage)
 			end
 		end,
 		OnFinish = function(_self, pos)
@@ -61,24 +61,24 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 function demon_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Terrorblade.morph_Death", self:GetCaster() )
+	EmitSoundOn("Hero_Terrorblade.morph_Death", self:GetCaster())
 end
 
-function demon_second_attack:PlayEffectsOnFinish( pos )
+function demon_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_Terrorblade_Morphed.projectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Terrorblade_Morphed.projectileImpact", caster)
 
 	-- Create Particle
 	local particle_cast = "particles/units/heroes/hero_terrorblade/terrorblade_metamorphosis_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	demon_second_attack,
 	{ activity = ACT_DOTA_ATTACK2, rate = 0.9 },
 	{ movement_speed = 10, fixed_range = 1 }

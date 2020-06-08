@@ -1,7 +1,7 @@
 
 phantom_ex_special_attack = class({})
-LinkLuaModifier( "modifier_generic_sleep", "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_phantom_ex_special_attack_charges", "abilities/heroes/phantom/phantom_ex_special_attack/modifier_phantom_ex_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_generic_sleep", "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_phantom_ex_special_attack_charges", "abilities/heroes/phantom/phantom_ex_special_attack/modifier_phantom_ex_special_attack_charges", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Passive Modifier
@@ -26,7 +26,7 @@ function phantom_ex_special_attack:OnCastPointEnd()
 	local should_lifesteal = caster:HasModifier("modifier_phantom_ex_basic_attack")
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 
 	local projectile = {
@@ -50,7 +50,7 @@ function phantom_ex_special_attack:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
 	
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 	
 			-- Add modifier
 			unit:AddNewModifier(
@@ -62,7 +62,7 @@ function phantom_ex_special_attack:OnCastPointEnd()
 
 			if should_lifesteal then
 				local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
-				local heal = ability:GetSpecialValueFor( "heal" )
+				local heal = ability:GetSpecialValueFor("heal")
 				caster:Heal(heal, caster)
 			end
 		end,
@@ -77,25 +77,25 @@ end
 
 --------------------------------------------------------------------------------
 -- Effects
-function phantom_ex_special_attack:PlayEffectsOnFinish( pos )
+function phantom_ex_special_attack:PlayEffectsOnFinish(pos)
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_PhantomAssassin.Dagger.Target", self:GetCaster() )
+	EmitSoundOnLocationWithCaster(pos, "Hero_PhantomAssassin.Dagger.Target", self:GetCaster())
 	
 	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 -- On ability start
-function phantom_ex_special_attack:PlayEffectsOnCast( )
-	EmitSoundOn( "Hero_PhantomAssassin.Dagger.Cast", self:GetCaster() )
+function phantom_ex_special_attack:PlayEffectsOnCast()
+	EmitSoundOn("Hero_PhantomAssassin.Dagger.Cast", self:GetCaster())
 end
 
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	phantom_ex_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_3, rate = 1.3 },
 	{ movement_speed = 0, fixed_range = 1}

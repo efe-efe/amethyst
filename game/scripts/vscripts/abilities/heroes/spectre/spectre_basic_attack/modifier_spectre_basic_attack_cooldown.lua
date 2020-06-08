@@ -58,8 +58,8 @@ function modifier_spectre_basic_attack_cooldown:PlayEffectsCharged()
 	local caster = self:GetParent()
     local origin = caster:GetOrigin()
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, caster )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, caster)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -68,7 +68,7 @@ function modifier_spectre_basic_attack_cooldown:PlayEffectsCharged()
 		origin, 
 		true 
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_spectre_basic_attack_cooldown:PlayEffectsWeapon()
@@ -77,13 +77,13 @@ function modifier_spectre_basic_attack_cooldown:PlayEffectsWeapon()
 
         local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_base_attack_c.vpcf"
         local origin = caster:GetOrigin()
-        self.effect_cast = ParticleManager:CreateParticle( 
+        self.effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_CUSTOMORIGIN, 
             caster
-        )
+       )
 
-        ParticleManager:SetParticleControlEnt( 
+        ParticleManager:SetParticleControlEnt(
             self.effect_cast, 
             0, 
             caster, 
@@ -91,8 +91,8 @@ function modifier_spectre_basic_attack_cooldown:PlayEffectsWeapon()
             "attach_attack1", 
             origin, 
             true 
-        )
-        ParticleManager:SetParticleControlEnt( 
+       )
+        ParticleManager:SetParticleControlEnt(
             self.effect_cast, 
             3, 
             caster, 
@@ -100,15 +100,15 @@ function modifier_spectre_basic_attack_cooldown:PlayEffectsWeapon()
             "attach_attack1", 
             origin, 
             true 
-        )
+       )
     end
 end
 
 function modifier_spectre_basic_attack_cooldown:StopEffectsWeapon()
     if IsServer() then
         if self.effect_cast then
-            ParticleManager:DestroyParticle( self.effect_cast, false )
-            ParticleManager:ReleaseParticleIndex( self.effect_cast )
+            ParticleManager:DestroyParticle(self.effect_cast, false)
+            ParticleManager:ReleaseParticleIndex(self.effect_cast)
         end
     end
 end

@@ -1,7 +1,7 @@
 sky_special_attack = class({})
-LinkLuaModifier( "modifier_sky_special_attack_thinker", "abilities/heroes/skywrath_mage/sky_special_attack/modifier_sky_special_attack_thinker", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_projectile_slower", "abilities/generic/modifier_generic_projectile_slower", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_generic_projectile_special_behavior", "abilities/generic/modifier_generic_projectile_special_behavior", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_sky_special_attack_thinker", "abilities/heroes/skywrath_mage/sky_special_attack/modifier_sky_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_generic_projectile_slower", "abilities/generic/modifier_generic_projectile_slower", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_generic_projectile_special_behavior", "abilities/generic/modifier_generic_projectile_special_behavior", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -9,7 +9,7 @@ function sky_special_attack:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-    self.radius =  self:GetSpecialValueFor( "radius" )
+    self.radius =  self:GetSpecialValueFor("radius")
 
 	-- Animation and pseudo cast point
 	StartAnimation(caster, { 
@@ -26,25 +26,25 @@ function sky_special_attack:OnSpellStart()
             radius = self.radius,
             movement_speed = 10,
         }
-    )
+   )
 end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_special_attack:OnCastPointEnd( point )
+function sky_special_attack:OnCastPointEnd(point)
 
 	-- unit identifier
 	local caster = self:GetCaster()
-    local duration = self:GetSpecialValueFor( "duration" )
+    local duration = self:GetSpecialValueFor("duration")
     
-    local bubble = CreateUnitByName( 
+    local bubble = CreateUnitByName(
         "npc_dota_creature_skywrath_mage_bubble", -- szUnitName
         point, -- vLocation,
         false, -- bFindClearSpace,
         caster, -- hNPCOwner,
         nil, -- hUnitOwner,
         caster:GetTeamNumber() -- iTeamNumber
-    )
+   )
 
     bubble:SetHullRadius(self.radius)
     bubble:Attribute_SetIntValue("dummy", 1)
@@ -53,13 +53,13 @@ function sky_special_attack:OnCastPointEnd( point )
         self,
         "modifier_generic_projectile_special_behavior",
         { duration = duration }
-    )
+   )
     bubble:AddNewModifier(
         caster,
         self,
         "modifier_generic_projectile_slower",
         { duration = duration }
-    )
+   )
     --bubble:SetSize(Vector(point.x, point.y, 0), Vector(point.x, point.y, 0))	
 
     CreateModifierThinker(
@@ -70,5 +70,5 @@ function sky_special_attack:OnCastPointEnd( point )
         point, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
-    )
+   )
 end

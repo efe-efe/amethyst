@@ -11,7 +11,7 @@ function modifier_ancient_extra_thinker:OnCreated()
         self.ability_damage = self:GetAbility():GetSpecialValueFor("ability_damage")
         self.extra_damage = self:GetAbility():GetSpecialValueFor("extra_damage")
         
-        self:StartIntervalThink( self.delay_time )
+        self:StartIntervalThink(self.delay_time)
         self:PlayEffects()
     end
 end
@@ -19,7 +19,7 @@ end
 function modifier_ancient_extra_thinker:OnDestroy()
     if IsServer() then
         self:StopEffects()
-		UTIL_Remove( self:GetParent() )
+		UTIL_Remove(self:GetParent())
 	end
 end
 
@@ -34,7 +34,7 @@ function modifier_ancient_extra_thinker:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     local enemies_small_radius = caster:FindUnitsInRadius(
         self:GetParent():GetOrigin(), 
@@ -43,7 +43,7 @@ function modifier_ancient_extra_thinker:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,enemy in pairs(enemies_big_radius) do
         local continue = true
@@ -62,7 +62,7 @@ function modifier_ancient_extra_thinker:OnIntervalThink()
 				damage = self.ability_damage,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-			ApplyDamage( damage )
+			ApplyDamage(damage)
         end
     end
 
@@ -74,7 +74,7 @@ function modifier_ancient_extra_thinker:OnIntervalThink()
             damage = self.ability_damage + self.extra_damage,
             damage_type = DAMAGE_TYPE_PURE,
         }
-        ApplyDamage( damage )
+        ApplyDamage(damage)
     end
 
     self:PlayEffectsOnProc()
@@ -84,28 +84,28 @@ function modifier_ancient_extra_thinker:PlayEffects()
     EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), "Hero_Ancient_Apparition.IceVortex.lp", self:GetCaster())
     local particle_cast = "particles/ancient_ice_vortex.vpcf"
     
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 5, Vector(self.radius,self.radius,self.radius) )
+    ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(self.radius,self.radius,self.radius))
 end
 
 function modifier_ancient_extra_thinker:PlayEffectsOnProc()
     local thinker = self:GetParent()
     -- Create particles
 	local particle_cast = "particles/units/heroes/hero_treant/treant_overgrowth_hero_glow.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, thinker )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, thinker)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     local particle_cast_b = "particles/econ/items/crystal_maiden/crystal_maiden_cowl_of_ice/maiden_crystal_nova_n_cowlofice.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, thinker )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, thinker)
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 function modifier_ancient_extra_thinker:StopEffects()
     StopSoundOn("Hero_Ancient_Apparition", nil)
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )    
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)    
 end
 

@@ -22,7 +22,7 @@ end
 function modifier_spectre_ultimate:OnDestroy()
     if self:IsDebuff() then
         if self:GetStackCount() == 2 then
-            EmitSoundOn( "Hero_Spectre.DaggerImpact", self:GetParent() )
+            EmitSoundOn("Hero_Spectre.DaggerImpact", self:GetParent())
             self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_spectre_special_attack_debuff", { 
                 duration = 5.0
             })

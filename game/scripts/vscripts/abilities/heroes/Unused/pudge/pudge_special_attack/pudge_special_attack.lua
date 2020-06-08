@@ -13,15 +13,15 @@ function pudge_special_attack:OnCastPointEnd()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local damage = self:GetSpecialValueFor("ability_damage")
 	
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local distance = (point - origin):Length2D()
 	local duration = (distance / projectile_speed) * 2.2
 	local hitbox = self:GetSpecialValueFor("hitbox")
 
     if caster and caster:IsHero() then
-		local hHook = caster:GetTogglableWearable( DOTA_LOADOUT_TYPE_WEAPON )
+		local hHook = caster:GetTogglableWearable(DOTA_LOADOUT_TYPE_WEAPON)
 		if hHook ~= nil then
-			hHook:AddEffects( EF_NODRAW )
+			hHook:AddEffects(EF_NODRAW)
 		end
     end
 
@@ -48,7 +48,7 @@ function pudge_special_attack:OnCastPointEnd()
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 				ability = self
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			local source_direction = (_self.Source:GetOrigin() - unit:GetOrigin()):Normalized()
 			local source_distance = (_self.Source:GetOrigin() - unit:GetOrigin()):Length2D()
@@ -79,7 +79,7 @@ function pudge_special_attack:OnCastPointEnd()
 			StopSoundOn("Hero_Pudge.AttackHookExtend", self:GetCaster())
 			
 			if next(_self.rehit) == nil then
-				ParticleManager:SetParticleControlEnt( self.effect_cast, 1, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_weapon_chain_rt", self:GetCaster():GetOrigin() , true);
+				ParticleManager:SetParticleControlEnt(self.effect_cast, 1, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_weapon_chain_rt", self:GetCaster():GetOrigin() , true);
 			end
 
 			local projectile_direction = projectile_direction * -1
@@ -97,9 +97,9 @@ function pudge_special_attack:OnCastPointEnd()
 				bIsReflectable = false,
 				fGroundOffset = 80,
 				OnFinish = function(_self, pos)
-					local hHook = caster:GetTogglableWearable( DOTA_LOADOUT_TYPE_WEAPON )
+					local hHook = caster:GetTogglableWearable(DOTA_LOADOUT_TYPE_WEAPON)
 					if hHook ~= nil then
-						hHook:RemoveEffects( EF_NODRAW )
+						hHook:RemoveEffects(EF_NODRAW)
 					end
 				end,
 			}
@@ -112,38 +112,38 @@ function pudge_special_attack:OnCastPointEnd()
 	self:PlayEffectsOnCast(projectile_speed, distance, hitbox, duration, Vector(point.x, point.y, 0))
 end
 
-function pudge_special_attack:PlayEffectsOnCast( speed, distance, hitbox, duration, direction )
+function pudge_special_attack:PlayEffectsOnCast(speed, distance, hitbox, duration, direction)
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	EmitSoundOn( "Hero_Pudge.AttackHookExtend", caster )
+	EmitSoundOn("Hero_Pudge.AttackHookExtend", caster)
 
 	local particle_cast = "particles/units/heroes/hero_pudge/pudge_meathook.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, caster )
-	ParticleManager:SetParticleAlwaysSimulate( self.effect_cast )
-	ParticleManager:SetParticleControlEnt( self.effect_cast, 0, caster, PATTACH_POINT_FOLLOW, "attach_weapon_chain_rt", origin, true )
-	ParticleManager:SetParticleControl( self.effect_cast, 1, direction )
-	ParticleManager:SetParticleControl( self.effect_cast, 2, Vector( speed, distance, hitbox ) )
-	ParticleManager:SetParticleControl( self.effect_cast, 3, Vector( duration, 0,0 ) )
-	ParticleManager:SetParticleControl( self.effect_cast, 4, Vector( 1, 0, 0 ) )
-	ParticleManager:SetParticleControl( self.effect_cast, 5, Vector( 1, 0, 0 ) )
-	ParticleManager:SetParticleControlEnt( self.effect_cast, 7, caster, PATTACH_CUSTOMORIGIN, nil, origin, true )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, caster)
+	ParticleManager:SetParticleAlwaysSimulate(self.effect_cast)
+	ParticleManager:SetParticleControlEnt(self.effect_cast, 0, caster, PATTACH_POINT_FOLLOW, "attach_weapon_chain_rt", origin, true)
+	ParticleManager:SetParticleControl(self.effect_cast, 1, direction)
+	ParticleManager:SetParticleControl(self.effect_cast, 2, Vector(speed, distance, hitbox))
+	ParticleManager:SetParticleControl(self.effect_cast, 3, Vector(duration, 0,0))
+	ParticleManager:SetParticleControl(self.effect_cast, 4, Vector(1, 0, 0))
+	ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(1, 0, 0))
+	ParticleManager:SetParticleControlEnt(self.effect_cast, 7, caster, PATTACH_CUSTOMORIGIN, nil, origin, true)
 end
 
-function pudge_special_attack:PlayEffectsOnImpact( distance, speed, hTarget )
-	EmitSoundOn( "Hero_Pudge.AttackHookImpact", hTarget )
+function pudge_special_attack:PlayEffectsOnImpact(distance, speed, hTarget)
+	EmitSoundOn("Hero_Pudge.AttackHookImpact", hTarget)
 
 	local new_duration = (distance / speed) * 2
-	ParticleManager:SetParticleControl( self.effect_cast, 3, Vector( new_duration, 0,0 ) )
-	ParticleManager:SetParticleControlEnt( self.effect_cast, 1, hTarget, PATTACH_POINT_FOLLOW, "attach_hitloc", hTarget:GetOrigin(), true )
-	ParticleManager:SetParticleControl( self.effect_cast, 4, Vector( 0, 0, 0 ) )
-	ParticleManager:SetParticleControl( self.effect_cast, 5, Vector( 1, 0, 0 ) )
+	ParticleManager:SetParticleControl(self.effect_cast, 3, Vector(new_duration, 0,0))
+	ParticleManager:SetParticleControlEnt(self.effect_cast, 1, hTarget, PATTACH_POINT_FOLLOW, "attach_hitloc", hTarget:GetOrigin(), true)
+	ParticleManager:SetParticleControl(self.effect_cast, 4, Vector(0, 0, 0))
+	ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(1, 0, 0))
 	    
-    local effect_cast = ParticleManager:CreateParticle( "particles/units/heroes/hero_pudge/pudge_meathook_impact.vpcf", PATTACH_ABSORIGIN_FOLLOW, hTarget )
+    local effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_pudge/pudge_meathook_impact.vpcf", PATTACH_ABSORIGIN_FOLLOW, hTarget)
     ParticleManager:ReleaseParticleIndex(effect_cast)  
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	pudge_special_attack,
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 2.0 },
 	{ movement_speed = 30, fixed_range = 1 }

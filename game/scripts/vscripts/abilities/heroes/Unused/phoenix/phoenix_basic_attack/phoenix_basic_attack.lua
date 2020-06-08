@@ -1,5 +1,5 @@
 phoenix_basic_attack = class({})
-LinkLuaModifier( "modifier_phoenix_basic_attack", "abilities/heroes/phoenix/phoenix_basic_attack/modifier_phoenix_basic_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phoenix_basic_attack", "abilities/heroes/phoenix/phoenix_basic_attack/modifier_phoenix_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -14,7 +14,7 @@ function phoenix_basic_attack:OnSpellStart()
 	caster:AddNewModifier(caster, self , "modifier_cast_point_old", { duration = cast_point})
 end
 
-function phoenix_basic_attack:OnCastPointEnd( pos )
+function phoenix_basic_attack:OnCastPointEnd(pos)
 	local caster = self:GetCaster()
 	self:SetActivated(true)
 
@@ -26,14 +26,14 @@ function phoenix_basic_attack:OnCastPointEnd( pos )
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local attacks_per_second = caster:GetAttacksPerSecond()
-	local attack_speed = ( 1 / attacks_per_second )
+	local attack_speed = (1 / attacks_per_second)
 
 	-- Extra data
 	local duration = self:GetSpecialValueFor("duration")
 
 	-- Dynamic data
 	local origin = caster:GetOrigin()
-	local projectile_direction = (Vector( pos.x-origin.x, pos.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(pos.x-origin.x, pos.y-origin.y, 0)):Normalized()
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -97,23 +97,23 @@ end
 function phoenix_basic_attack:PlayEffects_a()
 	-- Create Sound
 	local sound_cast = "Hero_Phoenix.Attack"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 -- On Projectile impacts
-function phoenix_basic_attack:PlayEffects_b( pos )
+function phoenix_basic_attack:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 
 	-- Create Sound
 	local sound_cast = "Hero_Phoenix.ProjectileImpact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_phoenix/phoenix_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

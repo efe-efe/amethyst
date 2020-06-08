@@ -21,7 +21,7 @@ function modifier_mount:RandomModel()
 	end
 	]]
 
-    local random_number = RandomInt( 1, 100 )
+    local random_number = RandomInt(1, 100)
     local model 
     if random_number <= 5 then
 		model = "models/items/hex/sheep_hex/sheep_hex_gold.vmdl"
@@ -70,45 +70,45 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_mount:OnCreated( kv )
+function modifier_mount:OnCreated(kv)
 	-- references
-	self.base_speed = self:GetAbility():GetSpecialValueFor( "bonus_movement_speed" )
-	self.slow_duration = self:GetAbility():GetSpecialValueFor( "slow_duration" )
+	self.base_speed = self:GetAbility():GetSpecialValueFor("bonus_movement_speed")
+	self.slow_duration = self:GetAbility():GetSpecialValueFor("slow_duration")
 	self.model = self:RandomModel()
 
 	if IsServer() then
 		-- play effects
-		self:PlayEffects( )
+		self:PlayEffects()
 	end
 end
 
-function modifier_mount:OnRefresh( kv )
+function modifier_mount:OnRefresh(kv)
 	-- references
-	self.base_speed = self:GetAbility():GetSpecialValueFor( "bonus_movement_speed" )
+	self.base_speed = self:GetAbility():GetSpecialValueFor("bonus_movement_speed")
 	self.model = self:RandomModel()
 	if IsServer() then
 		-- play effects
-		self:PlayEffects( )
+		self:PlayEffects()
 	end
 end
 
-function modifier_mount:OnDestroy( kv )
+function modifier_mount:OnDestroy(kv)
 	if IsServer() then
 		local caster = self:GetCaster()
 		-- play effects
 		-- Swap abilities back to be able to stop
 
 		--[[
-		caster:SwapAbilities( 
+		caster:SwapAbilities(
 			"mount",
 			"charge",
 			true,
 			false
 		)
 
-		SafeDestroyModifier("modifier_charge_buff", caster, caster )
+		SafeDestroyModifier("modifier_charge_buff", caster, caster)
 		]]
-		self:PlayEffects( )
+		self:PlayEffects()
 	end
 end
 
@@ -126,7 +126,7 @@ function modifier_mount:DeclareFunctions()
 	return funcs
 end
 
-function modifier_mount:OnTakeDamage( params )
+function modifier_mount:OnTakeDamage(params)
 	if IsServer() then
         if params.unit~=self:GetCaster() then return end
 
@@ -143,7 +143,7 @@ function modifier_mount:GetModifierModelChange()
 	return self.model
 end
 
-function modifier_mount:OnAbilityExecuted( params )
+function modifier_mount:OnAbilityExecuted(params)
 	if IsServer() then
 		if params.unit~=self:GetParent() then return end
 		if 	params.ability:GetName() == "item_death_orb" or
@@ -158,7 +158,7 @@ function modifier_mount:OnAbilityExecuted( params )
 	end
 end
 
-function modifier_mount:OnAttack( params )
+function modifier_mount:OnAttack(params)
 	if IsServer() then
 		if params.attacker~=self:GetParent() then return end
 
@@ -168,12 +168,12 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Animations
-function modifier_mount:PlayEffects( bStart )
+function modifier_mount:PlayEffects(bStart)
 	local sound_cast = "DOTA_Item.Sheepstick.Activate"
 	local particle_cast = "particles/units/heroes/hero_lion/lion_spell_voodoo.vpcf"
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetParent())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
-    EmitSoundOn( sound_cast, self:GetParent() )
+    EmitSoundOn(sound_cast, self:GetParent())
 end

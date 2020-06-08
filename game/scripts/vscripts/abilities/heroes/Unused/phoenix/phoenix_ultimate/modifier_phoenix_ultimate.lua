@@ -1,5 +1,5 @@
 modifier_phoenix_ultimate = class({})
-LinkLuaModifier( "modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_generic_root", "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -15,7 +15,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_phoenix_ultimate:OnCreated( kv )
+function modifier_phoenix_ultimate:OnCreated(kv)
 	-- references
 	self.model = "models/heroes/phoenix/phoenix_egg.vmdl"
 	self.radius = self:GetAbility():GetSpecialValueFor("radius")
@@ -42,7 +42,7 @@ function modifier_phoenix_ultimate:OnCreated( kv )
 end
 
 function modifier_phoenix_ultimate:OnIntervalThink()
-   local units = FindUnitsInRadius( 
+   local units = FindUnitsInRadius(
 		self:GetParent():GetTeamNumber(), -- int, your team number
 		self:GetParent():GetOrigin(), -- point, center point
 		nil, -- handle, cacheUnit. (not known)
@@ -52,7 +52,7 @@ function modifier_phoenix_ultimate:OnIntervalThink()
 		0, -- int, flag filter
 		0, -- int, order filter
 		false -- bool, can grow cache
-   )
+  )
 
    for _,unit in pairs(units) do
 		local damage = {
@@ -62,18 +62,18 @@ function modifier_phoenix_ultimate:OnIntervalThink()
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 
-		ApplyDamage( damage )
+		ApplyDamage(damage)
    end
 end
 
-function modifier_phoenix_ultimate:OnDestroy( kv )
+function modifier_phoenix_ultimate:OnDestroy(kv)
 	if IsServer() then
 		-- play effects
         self:StopEffects()
         self:PlayEffects_c()
         
 		if self:GetRemainingTime() < 0.05 then
-			local units = FindUnitsInRadius( 
+			local units = FindUnitsInRadius(
 				self:GetParent():GetTeamNumber(), -- int, your team number
 				self:GetParent():GetOrigin(), -- point, center point
 				nil, -- handle, cacheUnit. (not known)
@@ -83,7 +83,7 @@ function modifier_phoenix_ultimate:OnDestroy( kv )
 				0, -- int, flag filter
 				0, -- int, order filter
 				false -- bool, can grow cache
-		   )
+		  )
 		
 		   for _,unit in pairs(units) do
 				unit:AddNewModifier(
@@ -137,38 +137,38 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Animations
-function modifier_phoenix_ultimate:PlayEffects_a( )
+function modifier_phoenix_ultimate:PlayEffects_a()
     local sound_cast = "Hero_Phoenix.SuperNova.Cast"
     EmitSoundOn(sound_cast, self:GetParent())
     
 	local particle_cast = "particles/units/heroes/hero_phoenix/phoenix_supernova_start.vpcf"
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetParent())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
 end
 
-function modifier_phoenix_ultimate:PlayEffects_b( )
+function modifier_phoenix_ultimate:PlayEffects_b()
     local sound_cast = "Hero_Phoenix.SuperNova.Begin"
     EmitSoundOn(sound_cast, self:GetParent())
 
 	local particle_cast = "particles/mod_units/heroes/hero_phoenix/phoenix_supernova_egg.vpcf"
 
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
-	ParticleManager:SetParticleControl( self.effect_cast, 1, self:GetParent():GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetParent())
+	ParticleManager:SetParticleControl(self.effect_cast, 1, self:GetParent():GetOrigin())
 end
 
-function modifier_phoenix_ultimate:StopEffects( )
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
+function modifier_phoenix_ultimate:StopEffects()
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
 
-function modifier_phoenix_ultimate:PlayEffects_c( )
+function modifier_phoenix_ultimate:PlayEffects_c()
     -- Create Sounds
     local sound_cast = "Hero_Phoenix.SuperNova.Explode"
     EmitSoundOn(sound_cast, self:GetParent())
     
     -- Create particles
 	local particle_cast = "particles/units/heroes/hero_phoenix/phoenix_supernova_reborn.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetParent())
 end

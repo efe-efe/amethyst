@@ -12,7 +12,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_tinker_ex_second_attack_buff:OnCreated( kv )
+function modifier_tinker_ex_second_attack_buff:OnCreated(kv)
 	self.speed_buff = self:GetAbility():GetSpecialValueFor("speed_buff")
 end
 

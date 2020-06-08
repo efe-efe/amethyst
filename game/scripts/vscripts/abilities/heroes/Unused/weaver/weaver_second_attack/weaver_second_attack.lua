@@ -1,5 +1,5 @@
 weaver_second_attack = class({})
-LinkLuaModifier( "modifier_weaver_second_attack_thinker", "abilities/heroes/weaver/weaver_second_attack/modifier_weaver_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_weaver_second_attack_thinker", "abilities/heroes/weaver/weaver_second_attack/modifier_weaver_second_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function weaver_second_attack:OnCastPointEnd()
     local caster = self:GetCaster()
@@ -40,7 +40,7 @@ function weaver_second_attack:OnCastPointEnd()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	weaver_second_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.8 },
 	{ movement_speed = 80 }

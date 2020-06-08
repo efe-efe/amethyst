@@ -8,8 +8,8 @@ function modifier_puck_mobility_debuff:OnCreated(params)
 end
 
 function modifier_puck_mobility_debuff:OnDestroy()
-    ParticleManager:DestroyParticle( self.effect_cast_dust, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast_dust )
+    ParticleManager:DestroyParticle(self.effect_cast_dust, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast_dust)
 end
 
 function modifier_puck_mobility_debuff:DeclareFunctions()

@@ -1,5 +1,5 @@
 tinker_ex_second_attack = class({})
-LinkLuaModifier( "modifier_tinker_ex_second_attack_thinker", "abilities/heroes/tinker/tinker_ex_second_attack/modifier_tinker_ex_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_tinker_ex_second_attack_thinker", "abilities/heroes/tinker/tinker_ex_second_attack/modifier_tinker_ex_second_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function tinker_ex_second_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("tinker_second_attack")
@@ -25,7 +25,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function tinker_ex_second_attack:OnCastPointEnd( point )
+function tinker_ex_second_attack:OnCastPointEnd(point)
 	-- unit identifier
 	local caster = self:GetCaster()
 
@@ -55,7 +55,7 @@ function tinker_ex_second_attack:PlayEffects()
 	local sound_cast = "Hero_Tinker.March_of_the_Machines.Cast"
 
 	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
 		0,
@@ -65,8 +65,8 @@ function tinker_ex_second_attack:PlayEffects()
 		Vector(0,0,0), -- unknown
 		true -- unknown, true
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	-- Create Sound
-	EmitSoundOnLocationForAllies( self:GetCaster():GetOrigin(), sound_cast, self:GetCaster() )
+	EmitSoundOnLocationForAllies(self:GetCaster():GetOrigin(), sound_cast, self:GetCaster())
 end

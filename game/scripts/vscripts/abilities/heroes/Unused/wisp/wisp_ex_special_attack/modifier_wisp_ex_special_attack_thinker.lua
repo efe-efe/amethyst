@@ -1,5 +1,5 @@
 modifier_wisp_ex_special_attack_thinker = class({})
-LinkLuaModifier( "modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_generic_stunned", "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 
@@ -9,16 +9,16 @@ end
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ex_special_attack_thinker:OnCreated( kv )
+function modifier_wisp_ex_special_attack_thinker:OnCreated(kv)
     if IsServer() then
         self.damage = self:GetAbility():GetAbilityDamage()
 
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
-        self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
-        self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
+        self.disable_duration = self:GetAbility():GetSpecialValueFor("disable_duration")
+        self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
         
         -- Start Interval
-        self:StartIntervalThink( self.delay_time )
+        self:StartIntervalThink(self.delay_time)
 
         self:PlayEffects()
     end
@@ -29,7 +29,7 @@ end
 function modifier_wisp_ex_special_attack_thinker:OnIntervalThink()
     if IsServer() then
         -- find enemies
-        local enemies = FindUnitsInRadius( 
+        local enemies = FindUnitsInRadius(
             self:GetParent():GetTeamNumber(), -- int, your team number
             self:GetParent():GetOrigin(), -- point, center point
             nil, -- handle, cacheUnit. (not known)
@@ -39,7 +39,7 @@ function modifier_wisp_ex_special_attack_thinker:OnIntervalThink()
             0, -- int, flag filter
             0, -- int, order filter
             false -- bool, can grow cache
-        )
+       )
 
         local damageTable = {
 		    -- victim = target,
@@ -55,12 +55,12 @@ function modifier_wisp_ex_special_attack_thinker:OnIntervalThink()
             ApplyDamage(damageTable)
 
             -- stun
-            enemy:AddNewModifier( 
+            enemy:AddNewModifier(
                 self:GetCaster(), -- player source
                 self:GetAbility(), -- ability source
                 "modifier_generic_stunned", -- modifier name
                 { duration = self.disable_duration } -- kv
-            )
+           )
 		end
 
         -- effects
@@ -77,20 +77,20 @@ function modifier_wisp_ex_special_attack_thinker:PlayEffects()
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_relocate_teleport.vpcf"
 	local sound_cast = "Ability.PreLightStrikeArray"
 
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_WORLDORIGIN, 
         self:GetCaster()
-    )
+   )
 
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
-    EmitSoundOn( 
+    EmitSoundOn(
         sound_cast, 
         self:GetCaster() 
-    )
+   )
 end
 
 function modifier_wisp_ex_special_attack_thinker:PlayEffects2()
@@ -99,28 +99,28 @@ function modifier_wisp_ex_special_attack_thinker:PlayEffects2()
 	local particle_cast = "particles/units/heroes/hero_chen/chen_holy_persuasion_a.vpcf"
     
     -- particles 1
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     -- particles 2
 			
     local particle_cast2 = "particles/units/heroes/hero_lina/lina_spell_light_strike_array_impact_sparks.vpcf"
     
-    local effect_cast2 = ParticleManager:CreateParticle( 
+    local effect_cast2 = ParticleManager:CreateParticle(
             particle_cast2, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast2, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast2, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast2 )
+       )
+    ParticleManager:SetParticleControl(effect_cast2, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast2, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast2)
 
 
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+    EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), sound_cast, self:GetCaster())
 end

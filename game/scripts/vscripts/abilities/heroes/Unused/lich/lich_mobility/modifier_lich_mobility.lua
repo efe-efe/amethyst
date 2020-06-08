@@ -14,10 +14,10 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_lich_mobility:OnCreated( kv )
+function modifier_lich_mobility:OnCreated(kv)
     if IsServer() then
-        self.duration = self:GetAbility():GetSpecialValueFor( "duration" )
-        self.damage_block = self:GetAbility():GetSpecialValueFor( "damage_block" )
+        self.duration = self:GetAbility():GetSpecialValueFor("duration")
+        self.damage_block = self:GetAbility():GetSpecialValueFor("damage_block")
 
         if IsServer() then
             ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
@@ -47,7 +47,7 @@ function modifier_lich_mobility:DeclareFunctions()
 	return funcs
 end
 
-function modifier_lich_mobility:GetModifierIncomingDamage_Percentage( params )
+function modifier_lich_mobility:GetModifierIncomingDamage_Percentage(params)
     self.damage_block =  self.damage_block - params.damage
 
     if self.damage_block <= 0 then
@@ -72,13 +72,13 @@ end
 -- On activated
 function modifier_lich_mobility:PlayEffects()
     -- Create Particles
-    self.effect_cast = ParticleManager:CreateParticle( 
+    self.effect_cast = ParticleManager:CreateParticle(
         "particles/units/heroes/hero_lich/lich_ice_age.vpcf", 
         PATTACH_CUSTOMORIGIN, 
         self:GetParent()
-    )
+   )
 
-    ParticleManager:SetParticleControlEnt( 
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         1, 
         self:GetParent(), 
@@ -86,11 +86,11 @@ function modifier_lich_mobility:PlayEffects()
         "attach_origin", 
         self:GetParent():GetOrigin(), 
         true 
-    )
-    ParticleManager:SetParticleControl( self.effect_cast, 2, Vector(250, 250, 250) )
+   )
+    ParticleManager:SetParticleControl(self.effect_cast, 2, Vector(250, 250, 250))
 end
 
 function modifier_lich_mobility:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

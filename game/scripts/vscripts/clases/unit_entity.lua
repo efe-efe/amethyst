@@ -11,7 +11,7 @@ function UnitEntity:constructor(origin, name)
         nil, --hNPCOwner
         nil, --hUnitOwner
         DOTA_TEAM_NOTEAM
-    ))   
+   ))   
     
     self:GetUnit():SetAbsOrigin(self.origin)
 end

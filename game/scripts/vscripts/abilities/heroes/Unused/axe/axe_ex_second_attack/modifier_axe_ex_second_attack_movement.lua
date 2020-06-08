@@ -11,7 +11,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_axe_ex_second_attack_movement:OnCreated( kv )
+function modifier_axe_ex_second_attack_movement:OnCreated(kv)
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -43,18 +43,18 @@ function modifier_axe_ex_second_attack_movement:OnCreated( kv )
 	end
 end
 
-function modifier_axe_ex_second_attack_movement:OnRefresh( kv )
+function modifier_axe_ex_second_attack_movement:OnRefresh(kv)
 end
 
-function modifier_axe_ex_second_attack_movement:OnDestroy( kv )
+function modifier_axe_ex_second_attack_movement:OnDestroy(kv)
 	if IsServer() then
-		self:GetParent():InterruptMotionControllers( true )
+		self:GetParent():InterruptMotionControllers(true)
 	end
 end
 
 --------------------------------------------------------------------------------
 -- Motion effects
-function modifier_axe_ex_second_attack_movement:SyncTime( iDir, dt )
+function modifier_axe_ex_second_attack_movement:SyncTime(iDir, dt)
 	-- check if already synced
 	if self.motionTick[1]==self.motionTick[2] then
 		self.motionTick[0] = self.motionTick[0] + 1
@@ -70,7 +70,7 @@ function modifier_axe_ex_second_attack_movement:SyncTime( iDir, dt )
 	end
 end
 
-function modifier_axe_ex_second_attack_movement:UpdateHorizontalMotion( me, dt )
+function modifier_axe_ex_second_attack_movement:UpdateHorizontalMotion(me, dt)
 	self:SyncTime(1, dt)
 	local parent = self:GetParent()
 	
@@ -78,7 +78,7 @@ function modifier_axe_ex_second_attack_movement:UpdateHorizontalMotion( me, dt )
 	local target = self.direction*self.hVelocity*self.elapsedTime
 
 	-- change position
-	parent:SetOrigin( self.origin + target )
+	parent:SetOrigin(self.origin + target)
 end
 
 function modifier_axe_ex_second_attack_movement:OnHorizontalMotionInterrupted()
@@ -87,7 +87,7 @@ function modifier_axe_ex_second_attack_movement:OnHorizontalMotionInterrupted()
 	end
 end
 
-function modifier_axe_ex_second_attack_movement:UpdateVerticalMotion( me, dt )
+function modifier_axe_ex_second_attack_movement:UpdateVerticalMotion(me, dt)
 	self:SyncTime(2, dt)
 	local parent = self:GetParent()
 
@@ -95,7 +95,7 @@ function modifier_axe_ex_second_attack_movement:UpdateVerticalMotion( me, dt )
 	local target = self.vVelocity*self.elapsedTime + 0.5*self.gravity*self.elapsedTime*self.elapsedTime
 
 	-- change height
-	parent:SetOrigin( Vector( parent:GetOrigin().x, parent:GetOrigin().y, self.origin.z+target ) )
+	parent:SetOrigin(Vector(parent:GetOrigin().x, parent:GetOrigin().y, self.origin.z+target))
 end
 
 function modifier_axe_ex_second_attack_movement:OnVerticalMotionInterrupted()

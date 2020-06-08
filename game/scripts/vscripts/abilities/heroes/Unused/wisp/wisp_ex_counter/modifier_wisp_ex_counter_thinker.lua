@@ -8,16 +8,16 @@ end
 
 --------------------------------------------------------------------------------
 
-function modifier_wisp_ex_counter_thinker:OnCreated( kv )
+function modifier_wisp_ex_counter_thinker:OnCreated(kv)
     if IsServer() then
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
-        self.damage = self:GetAbility():GetSpecialValueFor( "damage" )
-        self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
-        self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
-        self.heal = self:GetAbility():GetSpecialValueFor( "heal" )
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
+        self.damage = self:GetAbility():GetSpecialValueFor("damage")
+        self.disable_duration = self:GetAbility():GetSpecialValueFor("disable_duration")
+        self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
+        self.heal = self:GetAbility():GetSpecialValueFor("heal")
         
         -- Start Interval
-        self:StartIntervalThink( self.delay_time )
+        self:StartIntervalThink(self.delay_time)
 
         self:PlayEffects()
     end
@@ -28,7 +28,7 @@ end
 function modifier_wisp_ex_counter_thinker:OnIntervalThink()
     if IsServer() then
         -- find enemies
-        local allies = FindUnitsInRadius( 
+        local allies = FindUnitsInRadius(
             self:GetParent():GetTeamNumber(), -- int, your team number
             self:GetParent():GetOrigin(), -- point, center point
             nil, -- handle, cacheUnit. (not known)
@@ -38,7 +38,7 @@ function modifier_wisp_ex_counter_thinker:OnIntervalThink()
             0, -- int, flag filter
             0, -- int, order filter
             false -- bool, can grow cache
-        )
+       )
 
 		for _,ally in pairs(allies) do
             ally:Heal(self.heal , self:GetParent())
@@ -58,35 +58,35 @@ function modifier_wisp_ex_counter_thinker:PlayEffects()
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_relocate_teleport.vpcf"
 	local sound_cast = "Hero_Omniknight.Purification"
 
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_WORLDORIGIN, 
         self:GetCaster()
-    )
+   )
 
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
-    EmitSoundOn( 
+    EmitSoundOn(
         sound_cast, 
         self:GetCaster() 
-    )
+   )
 end
 
 function modifier_wisp_ex_counter_thinker:PlayEffects2()
     -- Create Sound
     --local sound_cast = "Ability.LightStrikeArray"
-    --EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+    --EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), sound_cast, self:GetCaster())
 
     -- particles 2
     local particle_cast = "particles/units/heroes/hero_omniknight/omniknight_purification.vpcf"
     
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end

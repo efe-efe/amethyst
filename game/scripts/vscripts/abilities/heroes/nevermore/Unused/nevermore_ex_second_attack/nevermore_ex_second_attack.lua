@@ -1,5 +1,5 @@
 nevermore_ex_second_attack = class({})
-LinkLuaModifier( "modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE)
 
 function nevermore_ex_second_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("nevermore_second_attack")
@@ -25,7 +25,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function nevermore_ex_second_attack:OnCastPointEnd( pos )
+function nevermore_ex_second_attack:OnCastPointEnd(pos)
 	-- unit identifier
 	local caster = self:GetCaster()
 	
@@ -56,7 +56,7 @@ function nevermore_ex_second_attack:OnCastPointEnd( pos )
 			damage_type = DAMAGE_TYPE_MAGICAL,
 			ability = this,
 		}
-		ApplyDamage( damageTable )
+		ApplyDamage(damageTable)
 	end
 
 	if #enemies > 0 then
@@ -75,14 +75,14 @@ function nevermore_ex_second_attack:OnCastPointEnd( pos )
 	end
 
 	-- Effects
-	self:PlayEffects( pos, radius )    
+	self:PlayEffects(pos, radius)    
     -- Put CD on the alternate of the ability
 	local alternate_version = caster:FindAbilityByName("nevermore_second_attack")
 	alternate_version:StartCooldown(self:GetCooldown(0))
 
 end
 
-function nevermore_ex_second_attack:PlayEffects( position, radius )
+function nevermore_ex_second_attack:PlayEffects(position, radius)
 	local caster = self:GetCaster()
 	local new_position = Vector(position.x, position.y, self.point.z)
 	
@@ -91,16 +91,16 @@ function nevermore_ex_second_attack:PlayEffects( position, radius )
 	local sound_cast = "Hero_Nevermore.Shadowraze"
 
 	-- create particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, new_position )
-	ParticleManager:SetParticleControl( effect_cast, 1, Vector( radius, 1, 1 ) )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, new_position)
+	ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, 1, 1))
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 	
 	-- create sound
-	EmitSoundOnLocationWithCaster( new_position, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(new_position, sound_cast, caster)
 end
 
-function nevermore_ex_second_attack:PlayEffects_b( target )
+function nevermore_ex_second_attack:PlayEffects_b(target)
 	-- Get Resources
 	local projectile_name = "particles/units/heroes/hero_nevermore/nevermore_necro_souls.vpcf"
 

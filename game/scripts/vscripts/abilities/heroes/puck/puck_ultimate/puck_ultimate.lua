@@ -19,7 +19,7 @@ function puck_ultimate:OnSpellStart()
         point, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
-    )
+   )
 
     EmitSoundOn("Hero_Puck.Dream_Coil", caster)
 end

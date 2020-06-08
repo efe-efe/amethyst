@@ -19,11 +19,11 @@ function modifier_terrorblade_mobility_illusion:Model()
     end
 end
 
-function modifier_terrorblade_mobility_illusion:OnDestroy( kv )
+function modifier_terrorblade_mobility_illusion:OnDestroy(kv)
     if IsServer() then
         if self:GetParent() ~= nil then
-            self:GetParent():ForceKill( false )
-            UTIL_Remove( self:GetParent() )
+            self:GetParent():ForceKill(false)
+            UTIL_Remove(self:GetParent())
         end
 	end
 end

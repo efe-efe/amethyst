@@ -13,7 +13,7 @@ function modifier_item_orchid_custom:OnDestroy()
             damage = self:GetStackCount(),
             damage_type = DAMAGE_TYPE_PURE
         }
-        ApplyDamage( damage_table )
+        ApplyDamage(damage_table)
         self:PlayEffectsOnDestroy()
 
         ParticleManager:DestroyParticle(self.effect_cast, false)
@@ -28,8 +28,8 @@ function modifier_item_orchid_custom:DeclareFunctions()
 	}
 end
 
-function modifier_item_orchid_custom:GetModifierIncomingDamage_Percentage( params )
-    self:SetStackCount( self:GetStackCount() + params.damage )
+function modifier_item_orchid_custom:GetModifierIncomingDamage_Percentage(params)
+    self:SetStackCount(self:GetStackCount() + params.damage)
     return 0
 end
 
@@ -41,9 +41,9 @@ end
 
 function modifier_item_orchid_custom:PlayEffectsOnDestroy()
 	local particle_cast = "particles/items2_fx/orchid_pop.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
-	ParticleManager:SetParticleControl( effect_cast, 1, Vector(self:GetStackCount() * 100) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetParent())
+	ParticleManager:SetParticleControl(effect_cast, 1, Vector(self:GetStackCount() * 100))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_item_orchid_custom:GetEffectName()

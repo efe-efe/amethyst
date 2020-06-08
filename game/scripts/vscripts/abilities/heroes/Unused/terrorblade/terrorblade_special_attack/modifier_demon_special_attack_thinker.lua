@@ -8,13 +8,13 @@ function modifier_demon_special_attack_thinker:OnCreated()
         self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
         
         self:PlayEffectsOnCast()
-        self:StartIntervalThink( self.delay_time )
+        self:StartIntervalThink(self.delay_time)
     end
 end
 
 function modifier_demon_special_attack_thinker:OnDestroy()
     if IsServer() then
-		UTIL_Remove( self:GetParent() )
+		UTIL_Remove(self:GetParent())
 	end
 end
 
@@ -29,7 +29,7 @@ function modifier_demon_special_attack_thinker:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         enemy:AddNewModifier(caster, self:GetAbility(), "modifier_generic_confuse", { duration = self.duration })
@@ -40,7 +40,7 @@ function modifier_demon_special_attack_thinker:OnIntervalThink()
             damage = self.damage,
             damage_type = DAMAGE_TYPE_PURE,
         }
-        ApplyDamage( damage )
+        ApplyDamage(damage)
 
         self:PlayEffects(enemy)
     end
@@ -54,8 +54,8 @@ function modifier_demon_special_attack_thinker:PlayEffects(hTarget)
     EmitSoundOn("Hero_Terrorblade.Reflection", hTarget)
 
     local particle_cast = "particles/units/heroes/hero_terrorblade/terrorblade_reflection_cast.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, nil )
-	ParticleManager:SetParticleControlEnt( 
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, nil)
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		0, 
 		caster, 
@@ -64,7 +64,7 @@ function modifier_demon_special_attack_thinker:PlayEffects(hTarget)
 		caster:GetOrigin(), 
 		true 
 	);
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
 		effect_cast, 
 		1, 
 		hTarget, 
@@ -72,19 +72,19 @@ function modifier_demon_special_attack_thinker:PlayEffects(hTarget)
 		"attach_hitloc", 
 		hTarget:GetOrigin(), 
 		true 
-    );
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+   );
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_demon_special_attack_thinker:PlayEffectsOnCast()
     local particle_cast = "particles/units/heroes/hero_shadow_demon/shadow_demon_disruption_refract.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
     ParticleManager:ReleaseParticleIndex(effect_cast)
     
     particle_cast = "particles/units/heroes/hero_shadow_demon/shadow_demon_soul_catcher_v2_ground01.vpcf"
-    effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:SetParticleControl( effect_cast, 1, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 2, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 3, Vector(self.radius, 0, 0) )
+    effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    ParticleManager:SetParticleControl(effect_cast, 1, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 2, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, Vector(self.radius, 0, 0))
     ParticleManager:ReleaseParticleIndex(effect_cast)
 end

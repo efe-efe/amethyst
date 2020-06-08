@@ -18,9 +18,9 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_nevermore_ex_special_attack_debuff:OnCreated( kv )
+function modifier_nevermore_ex_special_attack_debuff:OnCreated(kv)
 	-- references
-	self.armor = -self:GetAbility():GetSpecialValueFor( "armor" ) -- special value
+	self.armor = -self:GetAbility():GetSpecialValueFor("armor") -- special value
 
 	if IsServer() then
 		self:SetStackCount(1)
@@ -29,9 +29,9 @@ end
 
 --------------------------------------------------------------------------------
 -- Refresh
-function modifier_nevermore_ex_special_attack_debuff:OnRefresh( kv )
+function modifier_nevermore_ex_special_attack_debuff:OnRefresh(kv)
 	-- references
-	self.armor = -self:GetAbility():GetSpecialValueFor( "armor" ) -- special value
+	self.armor = -self:GetAbility():GetSpecialValueFor("armor") -- special value
 
 	if IsServer() then
 		self:IncrementStackCount()

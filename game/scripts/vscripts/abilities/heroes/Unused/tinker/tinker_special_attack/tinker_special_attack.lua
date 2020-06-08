@@ -2,13 +2,13 @@ tinker_special_attack = class({})
 
 --------------------------------------------------------------------------------
 -- Ability Channeling
-function tinker_special_attack:OnSpellStart(  )
+function tinker_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
 
 	-- stop effects
 	local sound_cast = "Hero_Tinker.Rearm"
-	StopSoundOn( sound_cast, self:GetCaster() )
+	StopSoundOn(sound_cast, self:GetCaster())
 	
 	StartAnimation(self:GetCaster(), {
 		duration = cast_point + 0.1, 
@@ -25,12 +25,12 @@ function tinker_special_attack:OnSpellStart(  )
 	})
 end
 
-function tinker_special_attack:OnCastPointEnd( point )
+function tinker_special_attack:OnCastPointEnd(point)
 	local caster = self:GetCaster()
 
 	-- find all refreshable abilities
 	for i=0,caster:GetAbilityCount()-1 do
-		local ability = caster:GetAbilityByIndex( i )
+		local ability = caster:GetAbilityByIndex(i)
 		if ability and ability:GetAbilityType()~=DOTA_ABILITY_TYPE_ATTRIBUTES then
 			if ability ~= self then
 				ability:RefreshCharges()
@@ -41,7 +41,7 @@ function tinker_special_attack:OnCastPointEnd( point )
 
 
 	local sound_cast = "Hero_Tinker.Rearm"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 	-- effects
 end
 
@@ -53,9 +53,9 @@ function tinker_special_attack:PlayEffects()
 	local sound_cast = "Hero_Tinker.RearmStart"
 
 	-- Create Particle
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 

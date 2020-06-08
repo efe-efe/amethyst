@@ -13,7 +13,7 @@ function modifier_weaver_basic_attack_charges:GetReplenishTime()
 end
 
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Charges( 
+Modifiers.Charges(
 	modifier_weaver_basic_attack_charges,
 	{ show_icon = 1 }
 )

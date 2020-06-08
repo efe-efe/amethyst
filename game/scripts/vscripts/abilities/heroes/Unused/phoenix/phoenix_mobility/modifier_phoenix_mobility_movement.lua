@@ -1,5 +1,5 @@
 modifier_phoenix_mobility_movement = class({})
-LinkLuaModifier( "modifier_phoenix_mobility_debuff", "abilities/heroes/phoenix/phoenix_mobility/modifier_phoenix_mobility_debuff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phoenix_mobility_debuff", "abilities/heroes/phoenix/phoenix_mobility/modifier_phoenix_mobility_debuff", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -30,7 +30,7 @@ end
 function modifier_phoenix_mobility_movement:OnDestroy()
 	if IsServer() then
 		-- Swap abilities back to normality
-		self:GetParent():SwapAbilities( 
+		self:GetParent():SwapAbilities(
 			"phoenix_mobility",
 			"phoenix_mobility_stop",
 			true,
@@ -55,7 +55,7 @@ end
 
 
 function modifier_phoenix_mobility_movement:OnIntervalThink()
-	local enemies = FindUnitsInRadius( 
+	local enemies = FindUnitsInRadius(
         self:GetParent():GetTeamNumber(), -- int, your team number
         self:GetParent():GetOrigin(), -- point, center point
         nil, -- handle, cacheUnit. (not known)
@@ -65,7 +65,7 @@ function modifier_phoenix_mobility_movement:OnIntervalThink()
         0, -- int, flag filter
         0, -- int, order filter
         false -- bool, can grow cache
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         if not enemy:HasModifier("modifier_phoenix_mobility_debuff") then
@@ -74,7 +74,7 @@ function modifier_phoenix_mobility_movement:OnIntervalThink()
                 self:GetAbility(),
                 "modifier_phoenix_mobility_debuff",
                 { duration = self.fire_duration }
-            )
+           )
         end
 	end
 end

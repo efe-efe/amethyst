@@ -19,12 +19,12 @@ end
 --------------------------------------------------------------------------------
 -- Initialization
 function modifier_phoenix_second_attack_buff:OnCreated()
-    self.hp_per_second = self:GetAbility():GetSpecialValueFor( "hp_per_second" )
-    self.stack_bonus = self:GetAbility():GetSpecialValueFor( "stack_bonus" )
+    self.hp_per_second = self:GetAbility():GetSpecialValueFor("hp_per_second")
+    self.stack_bonus = self:GetAbility():GetSpecialValueFor("stack_bonus")
 
 	if IsServer() then
 		self:SetStackCount(1)
-		self:StartIntervalThink( 1.0 )
+		self:StartIntervalThink(1.0)
 		self:OnIntervalThink()
 		self:PlayEffects(self:GetParent())
 	end
@@ -34,12 +34,12 @@ end
 -- Initialization
 function modifier_phoenix_second_attack_buff:OnRefresh()
 
-    self.hp_per_second = self:GetAbility():GetSpecialValueFor( "hp_per_second" )
-    self.stack_bonus = self:GetAbility():GetSpecialValueFor( "stack_bonus" )
+    self.hp_per_second = self:GetAbility():GetSpecialValueFor("hp_per_second")
+    self.stack_bonus = self:GetAbility():GetSpecialValueFor("stack_bonus")
 	
 	if IsServer() then
 		self:IncrementStackCount()
-		self:StartIntervalThink( 1.0 )
+		self:StartIntervalThink(1.0)
 		self:OnIntervalThink()
 	end
 end
@@ -61,19 +61,19 @@ function modifier_phoenix_second_attack_buff:OnIntervalThink()
 	end
 end
 
-function modifier_phoenix_second_attack_buff:PlayEffects( hTarget )
+function modifier_phoenix_second_attack_buff:PlayEffects(hTarget)
 	-- get resources
 	local particle_cast = "particles/units/heroes/hero_warlock/warlock_shadow_word_buff.vpcf"
 
 	-- create particle
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
-	ParticleManager:SetParticleControl( self.effect_cast, 0, hTarget:GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
+	ParticleManager:SetParticleControl(self.effect_cast, 0, hTarget:GetOrigin())
 end
 
 
-function modifier_phoenix_second_attack_buff:StopEffects( )
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+function modifier_phoenix_second_attack_buff:StopEffects()
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end
 
 --------------------------------------------------------------------------------

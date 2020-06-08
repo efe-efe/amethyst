@@ -22,7 +22,7 @@ function item_atos_custom:OnSpellStart()
 
 	local duration = self:GetSpecialValueFor("duration")
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
     local projectile_speed = self:GetSpecialValueFor("projectile_speed")
     
     local projectile = {
@@ -53,22 +53,22 @@ end
 
 function item_atos_custom:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
-	EmitSoundOnLocationWithCaster( pos, "DOTA_Item.RodOfAtos.Cast", caster )
+	EmitSoundOnLocationWithCaster(pos, "DOTA_Item.RodOfAtos.Cast", caster)
 
 	local particle_cast = "particles/items2_fx/rod_of_atos_attack_impact.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function item_atos_custom:PlayEffectsOnImpact(target)
 	local particle_cast = "particles/items2_fx/rod_of_atos_impact.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, target )
-	ParticleManager:SetParticleControl( effect_cast, 1, target:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, target)
+	ParticleManager:SetParticleControl(effect_cast, 1, target:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function item_atos_custom:PlayEffectsOnCast()
-	EmitSoundOn( "DOTA_Item.RodOfAtos.Target", self:GetCaster() )
+	EmitSoundOn("DOTA_Item.RodOfAtos.Target", self:GetCaster())
 end

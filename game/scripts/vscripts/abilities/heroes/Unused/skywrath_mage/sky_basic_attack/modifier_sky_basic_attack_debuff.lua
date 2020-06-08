@@ -21,7 +21,7 @@ function modifier_sky_basic_attack_debuff:OnCreated()
 
     if IsServer() then
         local particle_cast = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_ancient_seal_debuff.vpcf"
-        self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+        self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
     end
 end
 

@@ -6,14 +6,14 @@ function sniper_ex_second_attack:OnSpellStart()
 	self:PlayEffectsOnPhase()
 end
 
-function sniper_ex_second_attack:OnCastPointEnd( pos )
+function sniper_ex_second_attack:OnCastPointEnd(pos)
 	-- Initialize variables
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
 	local damage = self:GetSpecialValueFor("ability_damage")
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local root_duration = self:GetSpecialValueFor("root_duration")
@@ -40,7 +40,7 @@ function sniper_ex_second_attack:OnCastPointEnd( pos )
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}			
 
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 			-- Stun
 			unit:AddNewModifier(_self.Source, self , "modifier_generic_root", { duration = root_duration })
 	
@@ -60,48 +60,48 @@ end
 -- Graphics & sounds
 
 function sniper_ex_second_attack:PlayEffectsOnPhase()
-    EmitGlobalSound( "Ability.AssassinateLoad")
+    EmitGlobalSound("Ability.AssassinateLoad")
 end
 
 function sniper_ex_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Ability.Assassinate", self:GetCaster() )
+	EmitSoundOn("Ability.Assassinate", self:GetCaster())
 end
 
 -- On hit wall 
-function sniper_ex_second_attack:PlayEffectsOnFinish( pos )
+function sniper_ex_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	
 	-- Cast Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_Sniper.AssassinateDamage", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.AssassinateDamage", caster)
 
 	-- Cast Particle
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
 	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function sniper_ex_second_attack:PlayEffectsOnImpact( hTarget )
+function sniper_ex_second_attack:PlayEffectsOnImpact(hTarget)
 	local caster = self:GetCaster()
 	-- Cast Sound
-	EmitSoundOn( "Hero_Sniper.AssassinateDamage", caster )
+	EmitSoundOn("Hero_Sniper.AssassinateDamage", caster)
 
 	-- Cast Particles
 	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
 
-	ParticleManager:SetParticleControl( effect_cast, 0, hTarget:GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast, 1, hTarget:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:SetParticleControl(effect_cast, 0, hTarget:GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast, 1, hTarget:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	sniper_ex_second_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 0.8 },
 	{ movement_speed = 0, fixed_range = 1, public = 1 }

@@ -11,7 +11,7 @@ effects[1].control_points[3] = "origin"
 
 function modifier_generic_displacement:IsHidden() 		return false end
 function modifier_generic_displacement:IsPurgable() 	return false end
-function modifier_generic_displacement:OnCreated( params )
+function modifier_generic_displacement:OnCreated(params)
 	if IsServer() then
 		self.distance = params.r
 		self.direction = Vector(params.x,params.y,0):Normalized()
@@ -82,11 +82,11 @@ function modifier_generic_displacement:OnCreated( params )
 	end
 end
 
-function modifier_generic_displacement:OnDestroy( params )
+function modifier_generic_displacement:OnDestroy(params)
 	if IsServer() then
-		self:GetParent():InterruptMotionControllers( true )
+		self:GetParent():InterruptMotionControllers(true)
 		GameRules.EndAnimation(self:GetParent())
-		FindClearSpaceForUnit( self:GetParent(), self:GetParent():GetOrigin() , true )
+		FindClearSpaceForUnit(self:GetParent(), self:GetParent():GetOrigin() , true)
 
 		if self.i_frame then
 			self:GetParent():UnhideHealthBar()
@@ -102,7 +102,7 @@ function modifier_generic_displacement:OnDestroy( params )
 	end
 end
 
-function modifier_generic_displacement:SyncTime( iDir, dt )
+function modifier_generic_displacement:SyncTime(iDir, dt)
 	local actual_z = GetGroundPosition(self:GetParent():GetOrigin(), self:GetParent()).z
 
 	if not self.called_callback_on_half then
@@ -139,7 +139,7 @@ function modifier_generic_displacement:SyncTime( iDir, dt )
 				damage = self.damage_on_collision,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 		end
 
 		self:Destroy()
@@ -166,7 +166,7 @@ function modifier_generic_displacement:SyncTime( iDir, dt )
 	self.previous_origin = self:GetParent():GetOrigin()
 end
 
-function modifier_generic_displacement:UpdateHorizontalMotion( me, dt )
+function modifier_generic_displacement:UpdateHorizontalMotion(me, dt)
 	self:SyncTime(1, dt)
 	local parent = self:GetParent()
 	
@@ -174,7 +174,7 @@ function modifier_generic_displacement:UpdateHorizontalMotion( me, dt )
 	local target = self.direction*self.hVelocity*self.elapsedTime
 
 	-- change position
-	parent:SetOrigin( self.origin + target )
+	parent:SetOrigin(self.origin + target)
 end
 
 function modifier_generic_displacement:OnHorizontalMotionInterrupted()
@@ -183,7 +183,7 @@ function modifier_generic_displacement:OnHorizontalMotionInterrupted()
 	end
 end
 
-function modifier_generic_displacement:UpdateVerticalMotion( me, dt )
+function modifier_generic_displacement:UpdateVerticalMotion(me, dt)
 	self:SyncTime(2, dt)
 	local parent = self:GetParent()
 
@@ -191,7 +191,7 @@ function modifier_generic_displacement:UpdateVerticalMotion( me, dt )
 	local target = self.vVelocity * self.elapsedTime + 0.5 * self.gravity * self.elapsedTime * self.elapsedTime
 
 	-- change height
-	parent:SetOrigin( Vector( parent:GetOrigin().x, parent:GetOrigin().y, self.origin.z+target ) )
+	parent:SetOrigin(Vector(parent:GetOrigin().x, parent:GetOrigin().y, self.origin.z+target))
 end
 
 function modifier_generic_displacement:OnVerticalMotionInterrupted()
@@ -213,18 +213,18 @@ end
 
 function modifier_generic_displacement:PlayEffects()
 	local particle_cast = effects[self:GetStackCount()].particle
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
 	
 	for _,cp in pairs(effects[self:GetStackCount()].control_points) do
 		if cp == "origin" then
-			ParticleManager:SetParticleControl( self.effect_cast, _, self:GetParent():GetOrigin())
+			ParticleManager:SetParticleControl(self.effect_cast, _, self:GetParent():GetOrigin())
 		end
 	end
 end
 
 function modifier_generic_displacement:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )    
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)    
 end
 
 function modifier_generic_displacement:DeclareFunctions()
@@ -240,7 +240,7 @@ function modifier_generic_displacement:GetOverrideAnimation()
 	end
 end
 
-function modifier_generic_displacement:GetActivityTranslationModifiers(...)
+function modifier_generic_displacement:GetActivityTranslationModifiers()
 	if self:GetStackCount() == 2 then
 		return "forcestaff_friendly"
 	end

@@ -12,7 +12,7 @@ function spectre_ex_second_attack_projectile:OnCastPointEnd()
 	local damage = ability:GetSpecialValueFor("ability_damage")
 	local heal = ability:GetSpecialValueFor("heal")
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	-- logic
@@ -36,7 +36,7 @@ function spectre_ex_second_attack_projectile:OnCastPointEnd()
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 			_self.Source:Heal(heal, _self.Source)
 		end,
 		OnFinish = function(_self, pos)
@@ -50,7 +50,7 @@ function spectre_ex_second_attack_projectile:OnCastPointEnd()
 end
 
 function spectre_ex_second_attack_projectile:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Spectre.DaggerCast", self:GetCaster() )
+	EmitSoundOn("Hero_Spectre.DaggerCast", self:GetCaster())
 end
 
 --Impact
@@ -60,16 +60,16 @@ function spectre_ex_second_attack_projectile:PlayEffects(pos)
 	local particle_cast = "particles/units/heroes/hero_spectre/spectre_ambient_endcap.vpcf"
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, self:GetCaster())
 
 	-- Create Particles
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	spectre_ex_second_attack_projectile,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.3 },
 	{ movement_speed = 100, fixed_range = 1, disable_all = false }

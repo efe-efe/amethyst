@@ -1,6 +1,6 @@
 sky_ex_second_attack = class({})
-LinkLuaModifier( "modifier_sky_ex_second_attack_buff", "abilities/heroes/skywrath_mage/sky_ex_second_attack/modifier_sky_ex_second_attack_buff", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_sky_ex_second_attack_debuff", "abilities/heroes/skywrath_mage/sky_ex_second_attack/modifier_sky_ex_second_attack_debuff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_sky_ex_second_attack_buff", "abilities/heroes/skywrath_mage/sky_ex_second_attack/modifier_sky_ex_second_attack_buff", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_sky_ex_second_attack_debuff", "abilities/heroes/skywrath_mage/sky_ex_second_attack/modifier_sky_ex_second_attack_debuff", LUA_MODIFIER_MOTION_NONE)
 
 function sky_ex_second_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("sky_second_attack")
@@ -25,7 +25,7 @@ function sky_ex_second_attack:OnSpellStart()
 		"modifier_cast_point_old", 
 		{ 
 			duration = cast_point,
-			radius = self:GetSpecialValueFor( "hitbox" ),
+			radius = self:GetSpecialValueFor("hitbox"),
 			movement_speed = 10,
 			fixed_range = 1;
 		}
@@ -34,7 +34,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_ex_second_attack:OnCastPointEnd( point )
+function sky_ex_second_attack:OnCastPointEnd(point)
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 
@@ -43,7 +43,7 @@ function sky_ex_second_attack:OnCastPointEnd( point )
 	local projectile_start_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_distance = self:GetSpecialValueFor("projectile_range")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	local buff_duration = self:GetSpecialValueFor("buff_duration")
@@ -105,7 +105,7 @@ function sky_ex_second_attack:OnCastPointEnd( point )
 					damage_type = DAMAGE_TYPE_MAGICAL,
 				}
 		
-				ApplyDamage( damage )
+				ApplyDamage(damage)
 		
 				--slow
 				unit:AddNewModifier(
@@ -136,46 +136,46 @@ end
 function sky_ex_second_attack:PlayEffects_a()
 	-- Create Sound
 	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Cast"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
-function sky_ex_second_attack:PlayEffects_b( pos )
+function sky_ex_second_attack:PlayEffects_b(pos)
 	local caster = self:GetCaster()
 	
 	-- Create Sound
 	local sound_cast = "Hero_SkywrathMage.ArcaneBolt.Impact"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	-- Cast Particles
 	local particle_cast_a = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt_hit.vpcf"
 	local particle_cast_b = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt_launch.vpcf"
 
-	local effect_cast_a = ParticleManager:CreateParticle( particle_cast_a, PATTACH_ABSORIGIN, caster )
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN, caster )
+	local effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_ABSORIGIN, caster)
+	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN, caster)
 
-	ParticleManager:SetParticleControl( effect_cast_a, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast_a, 3, pos )
-	ParticleManager:SetParticleControl( effect_cast_b, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast_b, 9, pos )
+	ParticleManager:SetParticleControl(effect_cast_a, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast_a, 3, pos)
+	ParticleManager:SetParticleControl(effect_cast_b, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast_b, 9, pos)
 
-	ParticleManager:ReleaseParticleIndex( effect_cast_a )
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	ParticleManager:ReleaseParticleIndex(effect_cast_a)
+	ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
-function sky_ex_second_attack:PlayEffects_c( hTarget, pos )
+function sky_ex_second_attack:PlayEffects_c(hTarget, pos)
 	-- Create Sound
 	local sound_cast = "Hero_Omniknight.GuardianAngel"
-	EmitSoundOn( sound_cast, hTarget )
+	EmitSoundOn(sound_cast, hTarget)
 
 	-- Cast Particles
 	local particle_cast = "particles/mod_units/heroes/hero_skywrath_mage/skywrath_mage_arcane_bolt_launch.vpcf"
 	
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
 
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 9, pos )
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 9, pos)
 
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 

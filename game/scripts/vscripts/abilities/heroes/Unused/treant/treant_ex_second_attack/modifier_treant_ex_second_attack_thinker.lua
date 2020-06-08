@@ -2,17 +2,17 @@ modifier_treant_ex_second_attack_thinker = class({})
 
 --------------------------------------------------------------------------------
 -- Initializer
-function modifier_treant_ex_second_attack_thinker:OnCreated( kv )
+function modifier_treant_ex_second_attack_thinker:OnCreated(kv)
     if IsServer() then
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
         self.damage = self:GetAbility():GetAbilityDamage()
-        self.disable_duration = self:GetAbility():GetSpecialValueFor( "disable_duration" )
-        self.delay_time = self:GetAbility():GetSpecialValueFor( "delay_time" )
+        self.disable_duration = self:GetAbility():GetSpecialValueFor("disable_duration")
+        self.delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
         self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")/100
         self.stun_per_stack = self:GetAbility():GetSpecialValueFor("stun_per_stack")
 
         -- Start Interval
-        self:StartIntervalThink( self.delay_time )
+        self:StartIntervalThink(self.delay_time)
         self:PlayEffectsOnCreated()
     end
 end
@@ -22,7 +22,7 @@ end
 function modifier_treant_ex_second_attack_thinker:OnIntervalThink()
     if IsServer() then
         -- find enemies
-        local enemies = FindUnitsInRadius( 
+        local enemies = FindUnitsInRadius(
             self:GetParent():GetTeamNumber(), -- int, your team number
             self:GetParent():GetOrigin(), -- point, center point
             nil, -- handle, cacheUnit. (not known)
@@ -32,7 +32,7 @@ function modifier_treant_ex_second_attack_thinker:OnIntervalThink()
             0, -- int, flag filter
             0, -- int, order filter
             false -- bool, can grow cache
-        )
+       )
 
         local damageTable = {
 		    -- victim = target,
@@ -74,38 +74,38 @@ end
 function modifier_treant_ex_second_attack_thinker:PlayEffectsOnCreated()
     local thinker = self:GetParent()
     -- Create sound
-    EmitSoundOn( "Hero_Treant.LeechSeed.Cast", thinker )
+    EmitSoundOn("Hero_Treant.LeechSeed.Cast", thinker)
     
     -- Create particles
 	local particle_cast = "particles/units/heroes/hero_treant/treant_eyesintheforest.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, thinker )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector(self.radius, 1, 1) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, thinker)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
 
     local particle_cast_b = "particles/econ/items/treant_protector/ti7_shoulder/treant_ti7_crimson_livingarmor_seedlings_parent.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, thinker )
-    ParticleManager:SetParticleControl( effect_cast_b, 1, thinker:GetOrigin())
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, thinker)
+    ParticleManager:SetParticleControl(effect_cast_b, 1, thinker:GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 
 
     local particle_cast_c = "particles/units/heroes/hero_witchdoctor/witchdoctor_maledict.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, thinker )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, thinker)
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end
 
 function modifier_treant_ex_second_attack_thinker:PlayEffectsOnImpact()
     local thinker = self:GetParent()
     -- Create sound
-    EmitSoundOn( "Hero_Treant.Attack" , thinker )
+    EmitSoundOn("Hero_Treant.Attack" , thinker)
 
     -- Create particles
 	local particle_cast = "particles/units/heroes/hero_treant/treant_overgrowth_hero_glow.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, thinker )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, thinker)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
     local particle_cast_b = "particles/units/heroes/hero_arc_warden/arc_warden_tempest_cast.vpcf"
-    local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, thinker )
-    ParticleManager:ReleaseParticleIndex( effect_cast_b )
+    local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, thinker)
+    ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end

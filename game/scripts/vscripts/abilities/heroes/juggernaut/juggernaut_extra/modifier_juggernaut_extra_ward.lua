@@ -29,7 +29,7 @@ function modifier_juggernaut_extra_ward:OnCreated()
     self.radius = self:GetAbility():GetSpecialValueFor("radius")
     if IsServer() then
         self:PlayEffectsOnCreated()
-        self:StartIntervalThink( 0.03 )
+        self:StartIntervalThink(0.03)
     end
 end
 
@@ -76,7 +76,7 @@ function modifier_juggernaut_extra_ward:PlayEffectsOnCreated()
         "attach_hitloc", 
         self:GetParent():GetAbsOrigin(), 
         true
-    )
+   )
     
     self.effect_progress = ParticleManager:CreateParticle("particles/progress_circle/generic_progress_circle.vpcf", PATTACH_WORLDORIGIN, self:GetParent())
     ParticleManager:SetParticleControl(self.effect_progress, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 16))

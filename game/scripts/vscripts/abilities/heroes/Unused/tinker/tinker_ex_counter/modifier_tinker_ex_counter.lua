@@ -14,35 +14,35 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_tinker_ex_counter:OnCreated( kv )
+function modifier_tinker_ex_counter:OnCreated(kv)
 	-- references
-	self.base_speed = 300--self:GetAbility():GetSpecialValueFor( "movespeed" )
+	self.base_speed = 300--self:GetAbility():GetSpecialValueFor("movespeed")
 	self.model = "models/items/hex/sheep_hex/sheep_hex_gold.vmdl"
 
 	if IsServer() then
 		-- play effects
-		self:PlayEffects( true )
+		self:PlayEffects(true)
 
 		-- instantly destroy illusions
 		if self:GetParent():IsIllusion() then
-			self:GetParent():Kill( self:GetAbility(), self:GetCaster() )
+			self:GetParent():Kill(self:GetAbility(), self:GetCaster())
 		end
 	end
 end
 
-function modifier_tinker_ex_counter:OnRefresh( kv )
+function modifier_tinker_ex_counter:OnRefresh(kv)
 	-- references
-	self.base_speed = self:GetAbility():GetSpecialValueFor( "movespeed" )
+	self.base_speed = self:GetAbility():GetSpecialValueFor("movespeed")
 	if IsServer() then
 		-- play effects
-		self:PlayEffects( true )
+		self:PlayEffects(true)
 	end
 end
 
-function modifier_tinker_ex_counter:OnDestroy( kv )
+function modifier_tinker_ex_counter:OnDestroy(kv)
 	if IsServer() then
 		-- play effects
-		self:PlayEffects( false )
+		self:PlayEffects(false)
 	end
 end
 
@@ -80,14 +80,14 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Animations
-function modifier_tinker_ex_counter:PlayEffects( bStart )
+function modifier_tinker_ex_counter:PlayEffects(bStart)
 	local sound_cast = "DOTA_Item.Sheepstick.Activate"
 	local particle_cast = "particles/units/heroes/hero_lion/lion_spell_voodoo.vpcf"
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, self:GetParent() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetParent())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 	if bStart then
-		EmitSoundOn( sound_cast, self:GetParent() )
+		EmitSoundOn(sound_cast, self:GetParent())
 	end
 end

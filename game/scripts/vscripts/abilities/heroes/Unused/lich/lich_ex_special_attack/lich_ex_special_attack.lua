@@ -13,7 +13,7 @@ function lich_ex_special_attack:OnCastPointEnd()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	lich_ex_special_attack,
 	{ activity = ACT_DOTA_CAST_ABILITY_2, rate = 1.0 },
 	{ movement_speed = 10 }

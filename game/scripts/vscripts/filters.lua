@@ -10,7 +10,7 @@ function Filters:Activate(GameMode, this)
                 filter_table.position_x,
                 filter_table.position_y,
                 filter_table.position_z
-            )
+           )
             local current_range = (point - caster:GetAbsOrigin()):Length2D()
             local direction = (point - caster:GetAbsOrigin()):Normalized()
             local max_range = ability:GetCastRange(Vector(0,0,0), nil)
@@ -108,7 +108,7 @@ function Filters:Activate(GameMode, this)
             else
                 healing_target:SetTreshold(new_treshold)
             end
-            SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, healing_target, keys.heal, nil )
+            SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, healing_target, keys.heal, nil)
         end
         return true
     end
@@ -153,7 +153,7 @@ function Filters:Activate(GameMode, this)
 
             if instanceof(entity, Amethyst) then 
                 Timers:CreateTimer(0.1, function()
-                    this:UpdateUnitHealthBar( victim )
+                    this:UpdateUnitHealthBar(victim)
                 end)
             end
         end

@@ -11,13 +11,13 @@ function modifier_orb_timer_apply_glow_lua:IsPurgable() return false
 end
 --------------------------------------------------------------------------------
 -- Initialize
-function modifier_orb_timer_apply_glow_lua:OnCreated( kv )
+function modifier_orb_timer_apply_glow_lua:OnCreated(kv)
 	self:PlayEffects()
 end
 
 --------------------------------------------------------------------------------
 -- Destroyer
-function modifier_orb_timer_apply_glow_lua:OnDestroy( kv )
+function modifier_orb_timer_apply_glow_lua:OnDestroy(kv)
 	self:StopEffects()
 end
 
@@ -38,13 +38,13 @@ function modifier_orb_timer_apply_glow_lua:PlayEffects()
 	local particle_cast = "particles/dev/new_heroes/new_hero_aoe_ring_embers.vpcf"
 
 	-- Create Particles
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(20, 1, 1) )
-	ParticleManager:SetParticleControl( self.effect_cast, 15, Vector(148, 0, 59) )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(20, 1, 1))
+	ParticleManager:SetParticleControl(self.effect_cast, 15, Vector(148, 0, 59))
 
 end
 
 function modifier_orb_timer_apply_glow_lua:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

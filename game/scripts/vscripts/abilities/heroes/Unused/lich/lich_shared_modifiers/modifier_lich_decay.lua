@@ -38,7 +38,7 @@ function modifier_lich_decay:DeclareFunctions()
 	return funcs
 end
 
-function modifier_lich_decay:GetModifierIncomingDamage_Percentage( params )
+function modifier_lich_decay:GetModifierIncomingDamage_Percentage(params)
 	return self.decay_damage_pct
 end
 
@@ -47,9 +47,9 @@ end
 function modifier_lich_decay:PlayEffectsTimer()
     local particle_cast = "particles/dev/new_heroes/new_hero_aoe_ring_rope.vpcf"
 
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
-	ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(self.radius, 1,1))
-	ParticleManager:SetParticleControl( self.effect_cast, 15, Vector(175, 75, 175) )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(self.radius, 1,1))
+	ParticleManager:SetParticleControl(self.effect_cast, 15, Vector(175, 75, 175))
 end
 
 function modifier_lich_decay:StopEffectsTimer()

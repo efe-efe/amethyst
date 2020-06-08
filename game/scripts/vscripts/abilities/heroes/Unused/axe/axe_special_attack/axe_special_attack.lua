@@ -1,13 +1,13 @@
 axe_special_attack = class({})
-LinkLuaModifier( "modifier_axe_special_attack_debuff", "abilities/heroes/axe/axe_special_attack/modifier_axe_special_attack_debuff", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_axe_special_attack_buff", "abilities/heroes/axe/axe_special_attack/modifier_axe_special_attack_buff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_axe_special_attack_debuff", "abilities/heroes/axe/axe_special_attack/modifier_axe_special_attack_debuff", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_axe_special_attack_buff", "abilities/heroes/axe/axe_special_attack/modifier_axe_special_attack_buff", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
 function axe_special_attack:OnSpellStart()
 
 	local sound_cast = "Hero_Axe.BerserkersCall.Item.Shoutmask"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Initialize variables
 	local caster = self:GetCaster()
@@ -78,7 +78,7 @@ function axe_special_attack:OnCastPointEnd()
 	-- play effects
 	if #enemies>0 then
 		local sound_cast = "Hero_Axe.Berserkers_Call"
-		EmitSoundOn( sound_cast, self:GetCaster() )
+		EmitSoundOn(sound_cast, self:GetCaster())
 
 		-- Give Mana
 		local mana_gain_final = self:GetCaster():GetMaxMana() * mana_gain
@@ -90,18 +90,18 @@ end
 
 function axe_special_attack:OnStopPseudoCastPoint()
 	local sound_cast = "Hero_Axe.BerserkersCall.Item.Shoutmask"
-	StopSoundOn( sound_cast, self:GetCaster() )
+	StopSoundOn(sound_cast, self:GetCaster())
 end
 
 --------------------------------------------------------------------------------
 function axe_special_attack:PlayEffects()
 	-- Create Sound 
 	local sound_cast = "Hero_Axe.Berserkers_Call"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 
 	-- Create Particle
 	local particle_cast = "particles/econ/items/axe/axe_ti9_immortal/axe_ti9_beserkers_call_owner.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
 		1,
@@ -111,14 +111,14 @@ function axe_special_attack:PlayEffects()
 		Vector(0,0,0), -- unknown
 		true -- unknown, true
 	)
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
 
 	-- Create Particles
 	local particle_cast_b = "particles/econ/items/axe/axe_ti9_immortal/axe_ti9_call.vpcf"
-	local effect_cast_b = ParticleManager:CreateParticle( particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 	
-	ParticleManager:SetParticleControl( effect_cast_b, 0, self:GetCaster():GetOrigin() )
-	ParticleManager:SetParticleControl( effect_cast_b, 2, Vector(self.radius, self.radius, self.radius))
-	ParticleManager:ReleaseParticleIndex( effect_cast_b )
+	ParticleManager:SetParticleControl(effect_cast_b, 0, self:GetCaster():GetOrigin())
+	ParticleManager:SetParticleControl(effect_cast_b, 2, Vector(self.radius, self.radius, self.radius))
+	ParticleManager:ReleaseParticleIndex(effect_cast_b)
 end

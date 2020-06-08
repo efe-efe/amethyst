@@ -28,22 +28,22 @@ function UpdatePosition()
     (function tic()
     {
         var player_id = Players.GetLocalPlayer();
-        var hero = Players.GetPlayerHeroEntityIndex( player_id );
+        var hero = Players.GetPlayerHeroEntityIndex(player_id);
         var hero_origin = Entities.GetAbsOrigin(hero);
         
         if(!hero_origin){ 
-            hero = Players.GetPlayerHeroEntityIndex( player_id );
-            $.Schedule( 0.01, tic ); return; 
+            hero = Players.GetPlayerHeroEntityIndex(player_id);
+            $.Schedule(0.01, tic); return; 
         }
 
         if(initialized == false){
-            GameUI.SetCameraTargetPosition( hero_origin, 0.0 );
+            GameUI.SetCameraTargetPosition(hero_origin, 0.0);
             initialized = true;
-            $.Schedule( 0.01, tic ); return; 
+            $.Schedule(0.01, tic); return; 
         }
 
-        var hero_screen_x = Game.WorldToScreenX( hero_origin[0], hero_origin[1], hero_origin[2] );	
-        var hero_screen_y = Game.WorldToScreenY( hero_origin[0], hero_origin[1], hero_origin[2] );
+        var hero_screen_x = Game.WorldToScreenX(hero_origin[0], hero_origin[1], hero_origin[2]);	
+        var hero_screen_y = Game.WorldToScreenY(hero_origin[0], hero_origin[1], hero_origin[2]);
         var mouse_position = GameUI.GetCursorPosition();
         var camera_position = [];
 
@@ -54,25 +54,25 @@ function UpdatePosition()
 
         var camera_position_lerp = CAMERA_POSITION_LERP_INITIAL;
 
-        if( hero_screen_x == -1 && hero_screen_y == -1 ){
+        if(hero_screen_x == -1 && hero_screen_y == -1){
             camera_position = hero_origin
             camera_position_lerp = CAMERA_POSITION_LERP_FAST
         } else { 
 
-            if( hero_screen_x < 0 ){
+            if(hero_screen_x < 0){
                 hero_screen_x = 0
                 camera_position_lerp = CAMERA_POSITION_LERP_FAST
             }
-            if( hero_screen_x > sw ){
+            if(hero_screen_x > sw){
                 hero_screen_x = sw
                 camera_position_lerp = CAMERA_POSITION_LERP_FAST
             }
 
-            if( hero_screen_y < 0 ){
+            if(hero_screen_y < 0){
                 hero_screen_y = 0
                 camera_position_lerp = CAMERA_POSITION_LERP_FAST
             }
-            if( hero_screen_y > sh ){
+            if(hero_screen_y > sh){
                 hero_screen_y = sh
                 camera_position_lerp = CAMERA_POSITION_LERP_FAST
             }
@@ -87,21 +87,21 @@ function UpdatePosition()
         }
 
         // Smooth camera distance changes
-        if ( camera_distance_actual < camera_distance ){
+        if (camera_distance_actual < camera_distance){
             camera_distance_actual = camera_distance_actual + camera_distance_lerp;
-        } else if( camera_distance_actual > camera_distance ) {
+        } else if(camera_distance_actual > camera_distance) {
             camera_distance_actual = camera_distance_actual - camera_distance_lerp;
         }
 
-        GameUI.SetCameraTargetPosition( camera_position, camera_position_lerp );
-        GameUI.SetCameraLookAtPositionHeightOffset( camera_distance_actual );
+        GameUI.SetCameraTargetPosition(camera_position, camera_position_lerp);
+        GameUI.SetCameraLookAtPositionHeightOffset(camera_distance_actual);
 
-        $.Schedule( 0.01, tic );
+        $.Schedule(0.01, tic);
     })();
 }
 
 (function() {
     UpdatePosition();
-    GameEvents.Subscribe( "change_distance_offset", ChangeDistanceOffset );
+    GameEvents.Subscribe("change_distance_offset", ChangeDistanceOffset);
 })();
 

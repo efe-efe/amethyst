@@ -1,5 +1,5 @@
 axe_mobility = class({})
-LinkLuaModifier( "modifier_axe_mobility_movement", "abilities/heroes/axe/axe_mobility/modifier_axe_mobility_movement", LUA_MODIFIER_MOTION_BOTH )
+LinkLuaModifier("modifier_axe_mobility_movement", "abilities/heroes/axe/axe_mobility/modifier_axe_mobility_movement", LUA_MODIFIER_MOTION_BOTH)
 
 function axe_mobility:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("axe_ex_mobility")
@@ -11,7 +11,7 @@ function axe_mobility:OnSpellStart()
 	-- Initialize variables
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-    self.radius = self:GetSpecialValueFor( "radius" )
+    self.radius = self:GetSpecialValueFor("radius")
     local max_range = self:GetSpecialValueFor("range")
 
 	-- Animation and pseudo cast point
@@ -28,7 +28,7 @@ function axe_mobility:OnSpellStart()
 	})
 end
 
-function axe_mobility:OnCastPointEnd( point )
+function axe_mobility:OnCastPointEnd(point)
     local caster = self:GetCaster()    
     local origin = caster:GetOrigin()
     local difference = (point - origin):Length2D()
@@ -47,7 +47,7 @@ function axe_mobility:OnCastPointEnd( point )
             r = difference,
             speed = speed,
         } -- kv
-    )
+   )
 
     CreateModifierThinker(
 		caster, --hCaster

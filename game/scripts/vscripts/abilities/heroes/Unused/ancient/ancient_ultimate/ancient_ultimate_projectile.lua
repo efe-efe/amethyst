@@ -1,7 +1,7 @@
 ancient_ultimate_projectile = class({})
-LinkLuaModifier( "modifier_ancient_ultimate_thinker", "abilities/heroes/ancient/ancient_ultimate/modifier_ancient_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_ultimate_thinker", "abilities/heroes/ancient/ancient_ultimate/modifier_ancient_ultimate_thinker", LUA_MODIFIER_MOTION_NONE)
 
-function ancient_ultimate_projectile:OnCastPointEnd( )
+function ancient_ultimate_projectile:OnCastPointEnd()
 	-- Initialize variables
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
@@ -28,11 +28,11 @@ function ancient_ultimate_projectile:OnCastPointEnd( )
 end
 
 function ancient_ultimate_projectile:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Ancient_Apparition.IceBlastRelease.Cast", self:GetCaster() )
+	EmitSoundOn("Hero_Ancient_Apparition.IceBlastRelease.Cast", self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	ancient_ultimate_projectile,
 	{ activity = ACT_DOTA_GENERIC_CHANNEL_1, rate = 1.0 },
 	{ movement_speed = 0, disable_all = false },

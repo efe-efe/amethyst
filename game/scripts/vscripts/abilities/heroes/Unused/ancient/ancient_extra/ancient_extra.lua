@@ -1,11 +1,11 @@
 ancient_extra = class({})
-LinkLuaModifier( "modifier_ancient_extra_thinker", "abilities/heroes/ancient/ancient_extra/modifier_ancient_extra_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_extra_thinker", "abilities/heroes/ancient/ancient_extra/modifier_ancient_extra_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function ancient_extra:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-	local duration = self:GetSpecialValueFor( "duration" )
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
+	local duration = self:GetSpecialValueFor("duration")
+	local delay_time = self:GetSpecialValueFor("delay_time")
 	local radius = self:GetSpecialValueFor("radius")
 	local stun_radius = self:GetSpecialValueFor("stun_radius")
 	
@@ -41,17 +41,17 @@ function ancient_extra:OnCastPointEnd()
 	)
 
 	-- effects
-	self:PlayEffects( )
+	self:PlayEffects()
 end
 
 --------------------------------------------------------------------------------
-function ancient_extra:PlayEffects( )
+function ancient_extra:PlayEffects()
 	local sound_cast = "Hero_Ancient_Apparition.IceVortexCast"
-	EmitSoundOn( sound_cast, self:GetCaster() )
+	EmitSoundOn(sound_cast, self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	ancient_extra,
 	{ activity = ACT_DOTA_ICE_VORTEX, rate = 1.0 },
 	{ movement_speed = 10 }

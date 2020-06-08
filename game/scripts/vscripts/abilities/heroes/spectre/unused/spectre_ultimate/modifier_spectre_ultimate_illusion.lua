@@ -1,6 +1,6 @@
 modifier_spectre_ultimate_illusion = class({})
 
-function modifier_spectre_ultimate_illusion:OnCreated( params )
+function modifier_spectre_ultimate_illusion:OnCreated(params)
     if IsServer() then
 		self.aoe_origin = Vector(params.x, params.y, 0)
         self.radius = params.radius
@@ -34,13 +34,13 @@ function modifier_spectre_ultimate_illusion:PlayEffects()
     local particle_cast = "particles/econ/courier/courier_roshan_darkmoon/courier_roshan_darkmoon.vpcf"
     local caster = self:GetParent()
     local origin = caster:GetOrigin()
-    self.effects = ParticleManager:CreateParticle( 
+    self.effects = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_CUSTOMORIGIN, 
         nil
-    )
+   )
 
-    ParticleManager:SetParticleControlEnt( 
+    ParticleManager:SetParticleControlEnt(
         self.effects, 
         0, 
         caster, 
@@ -48,8 +48,8 @@ function modifier_spectre_ultimate_illusion:PlayEffects()
         "attach_hitloc", 
         origin, 
         true 
-    )
-    ParticleManager:SetParticleControlEnt( 
+   )
+    ParticleManager:SetParticleControlEnt(
         self.effects, 
         1, 
         caster, 
@@ -57,7 +57,7 @@ function modifier_spectre_ultimate_illusion:PlayEffects()
         "attach_hitloc", 
         origin, 
         true 
-    )
+   )
 end
 
 function modifier_spectre_ultimate_illusion:StopEffects()

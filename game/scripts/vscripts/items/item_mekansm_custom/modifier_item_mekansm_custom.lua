@@ -5,7 +5,7 @@ function modifier_item_mekansm_custom:OnCreated()
     self.heal_per_tick = self:GetAbility():GetSpecialValueFor("heal_per_tick")
     
     if IsServer() then
-        self:StartIntervalThink( self.think_interval )
+        self:StartIntervalThink(self.think_interval)
     end
 end
 

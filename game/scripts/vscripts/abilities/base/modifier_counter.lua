@@ -4,7 +4,7 @@ function modifier_counter:IsHidden() return false end
 function modifier_counter:IsDebuff() return false end
 function modifier_counter:IsPurgable() return false end
 
-function modifier_counter:OnCreated( kv )
+function modifier_counter:OnCreated(kv)
     if IsServer() then
         self.movement_speed = kv.movement_speed
         self.sound = kv.sound
@@ -47,11 +47,11 @@ function modifier_counter:OnCreated( kv )
     end
 end
 
-function modifier_counter:OnDestroy( kv )
+function modifier_counter:OnDestroy(kv)
     if IsServer() then
         
         if self.disable ~= 0 then
-			self.caster:SetAllAbilitiesActivated( true )
+			self.caster:SetAllAbilitiesActivated(true)
         end
         
         if self.sound ~= nil then 
@@ -103,11 +103,11 @@ function modifier_counter:OnOrder(params)
     end
 end
 
-function modifier_counter:GetModifierIncomingDamage_Percentage( params )
+function modifier_counter:GetModifierIncomingDamage_Percentage(params)
     if IsServer() then
         -- Pure damage doesnt trigger the counter
         if params.damage_type ~= DAMAGE_TYPE_PURE then
-            self.ability:OnTrigger( params )
+            self.ability:OnTrigger(params)
 
             Timers:CreateTimer(0.001, function()
                 self.caster:StrongPurge()
@@ -122,7 +122,7 @@ function modifier_counter:GetModifierIncomingDamage_Percentage( params )
 	end
 end
 
-function modifier_counter:OnAbilityFullyCast( params )
+function modifier_counter:OnAbilityFullyCast(params)
 	if IsServer() then
 		if params.unit ~= self.caster then
 			return
@@ -138,10 +138,10 @@ function modifier_counter:GetStatusEffectName()
 end
 
 function modifier_counter:PlayEffectsAura()
-    self.effect_cast = ParticleManager:CreateParticle( "particles/items_fx/black_king_bar_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+    self.effect_cast = ParticleManager:CreateParticle("particles/items_fx/black_king_bar_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 end
 
 function modifier_counter:StopEffectsAura()
     ParticleManager:DestroyParticle(self.effect_cast, false)
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

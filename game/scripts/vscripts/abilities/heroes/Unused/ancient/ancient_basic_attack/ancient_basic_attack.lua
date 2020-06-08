@@ -1,5 +1,5 @@
 ancient_basic_attack = class({})
-LinkLuaModifier( "modifier_ancient_basic_attack", "abilities/heroes/ancient/ancient_basic_attack/modifier_ancient_basic_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_basic_attack", "abilities/heroes/ancient/ancient_basic_attack/modifier_ancient_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
 function ancient_basic_attack:OnCastPointEnd()   
 	local caster = self:GetCaster()
@@ -10,7 +10,7 @@ function ancient_basic_attack:OnCastPointEnd()
 	
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
     -- Projectile
 	local projectile = {
@@ -51,7 +51,7 @@ function ancient_basic_attack:OnCastPointEnd()
 				damage = final_damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if _self.Source.OnBasicAttackImpact then
 				_self.Source:OnBasicAttackImpact(unit)
@@ -70,25 +70,25 @@ end
 -- Graphics & sounds
 
 function ancient_basic_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Ancient_Apparition.Attack", self:GetCaster() )
+	EmitSoundOn("Hero_Ancient_Apparition.Attack", self:GetCaster())
 end
 
-function ancient_basic_attack:PlayEffectsOnFinish( pos )
+function ancient_basic_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_Ancient_Apparition.ProjectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Ancient_Apparition.ProjectileImpact", caster)
 
 	-- Create Particle
 	local particle_cast = "particles/units/heroes/hero_ancient_apparition/ancient_apparition_base_attack_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.BasicAttack( ancient_basic_attack )
-Abilities.Initialize( 
+Abilities.BasicAttack(ancient_basic_attack)
+Abilities.Initialize(
     ancient_basic_attack,
     { activity = ACT_DOTA_ATTACK, rate = 1.3 },
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }

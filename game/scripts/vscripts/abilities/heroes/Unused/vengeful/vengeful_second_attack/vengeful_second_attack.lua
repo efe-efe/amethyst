@@ -1,12 +1,12 @@
 vengeful_second_attack = class({})
 vengeful_second_attack_ultimate = class({})
-LinkLuaModifier( "modifier_vengeful_second_attack", "abilities/heroes/vengeful/vengeful_second_attack/modifier_vengeful_second_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_vengeful_second_attack", "abilities/heroes/vengeful/vengeful_second_attack/modifier_vengeful_second_attack", LUA_MODIFIER_MOTION_NONE)
 
 function vengeful_second_attack:OnSpellStart()
 	local particle_cast = "particles/monkey_king_spring_cast_spiral_ember.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 3, self:GetCaster():GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ function vengeful_second_attack:OnCastPointEnd()
     local mana_gain_pct = ability:GetSpecialValueFor("mana_gain_pct")
 	
 	-- Dynamic data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = ability:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
@@ -49,7 +49,7 @@ function vengeful_second_attack:OnCastPointEnd()
 				ability = self,
 			}
 
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if not string.ends(name, "_ultimate") then
 				if _self.Source == caster then
@@ -70,21 +70,21 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & sounds
-function vengeful_second_attack:PlayEffectsOnFinish( pos )
+function vengeful_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
-	EmitSoundOnLocationWithCaster( pos, "Hero_VengefulSpirit.MagicMissileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_VengefulSpirit.MagicMissileImpact", caster)
 
 	-- Create Particles
 	local particle_cast = "particles/econ/items/vengeful/vs_ti8_immortal_shoulder/vs_ti8_immortal_magic_missle_crimson_end.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function vengeful_second_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_VengefulSpirit.MagicMissile", self:GetCaster() )
+	EmitSoundOn("Hero_VengefulSpirit.MagicMissile", self:GetCaster())
 end
 
 vengeful_second_attack_ultimate.OnSpellStart = vengeful_second_attack.OnSpellStart
@@ -98,12 +98,12 @@ local animation = { activity = ACT_DOTA_SPAWN, rate = 2.0 }
 local warmup = { movement_speed = 80, fixed_range = 1 }
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_second_attack,
 	animation,
 	warmup
 )
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_second_attack_ultimate,
 	animation,
 	warmup

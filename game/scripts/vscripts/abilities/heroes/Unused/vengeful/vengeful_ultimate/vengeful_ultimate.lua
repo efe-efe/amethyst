@@ -1,5 +1,5 @@
 vengeful_ultimate = class({})
-LinkLuaModifier( "modifier_vengeful_ultimate", "abilities/heroes/vengeful/vengeful_ultimate/modifier_vengeful_ultimate", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_vengeful_ultimate", "abilities/heroes/vengeful/vengeful_ultimate/modifier_vengeful_ultimate", LUA_MODIFIER_MOTION_NONE)
 
 vengeful_ultimate.current_ability = nil
 
@@ -25,7 +25,7 @@ function vengeful_ultimate:PlayEffectsOnCast()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	vengeful_ultimate,
     nil,
 	{ movement_speed = 100 }

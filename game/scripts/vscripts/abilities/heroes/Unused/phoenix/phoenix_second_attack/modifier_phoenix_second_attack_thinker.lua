@@ -1,6 +1,6 @@
 modifier_phoenix_second_attack_thinker = class({})
-LinkLuaModifier( "modifier_phoenix_second_attack_buff", "abilities/heroes/phoenix/phoenix_second_attack/modifier_phoenix_second_attack_buff", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_phoenix_second_attack_debuff", "abilities/heroes/phoenix/phoenix_second_attack/modifier_phoenix_second_attack_debuff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phoenix_second_attack_buff", "abilities/heroes/phoenix/phoenix_second_attack/modifier_phoenix_second_attack_buff", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_phoenix_second_attack_debuff", "abilities/heroes/phoenix/phoenix_second_attack/modifier_phoenix_second_attack_debuff", LUA_MODIFIER_MOTION_NONE)
 
 --Clasifications
 --------------------------------------------------------------------------------
@@ -10,16 +10,16 @@ end
 
 -- Initializer
 --------------------------------------------------------------------------------
-function modifier_phoenix_second_attack_thinker:OnCreated( kv )
+function modifier_phoenix_second_attack_thinker:OnCreated(kv)
     if IsServer() then
-        self.radius = self:GetAbility():GetSpecialValueFor( "radius" )
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
         self.mana_gain = self:GetAbility():GetSpecialValueFor("mana_gain")/100
         
         local caster = self:GetCaster()
 
         -- Start Interval
-        self:StartIntervalThink( 0.1 )
+        self:StartIntervalThink(0.1)
     end
 end
 
@@ -29,7 +29,7 @@ function modifier_phoenix_second_attack_thinker:OnIntervalThink()
     local ability = self:GetAbility()
     if IsServer() then
         -- find enemies
-        local units = FindUnitsInRadius( 
+        local units = FindUnitsInRadius(
             self:GetParent():GetTeamNumber(), -- int, your team number
             self:GetParent():GetOrigin(), -- point, center point
             nil, -- handle, cacheUnit. (not known)
@@ -39,7 +39,7 @@ function modifier_phoenix_second_attack_thinker:OnIntervalThink()
             0, -- int, flag filter
             0, -- int, order filter
             false -- bool, can grow cache
-        )
+       )
 
         -- Heal allys
         for _,unit in pairs(units) do
@@ -50,14 +50,14 @@ function modifier_phoenix_second_attack_thinker:OnIntervalThink()
                     self:GetAbility(),
                     "modifier_phoenix_second_attack_buff",
                     { duration = self.duration }
-                )
+               )
             else
                 unit:AddNewModifier(
                     self:GetCaster(),
                     self:GetAbility(),
                     "modifier_phoenix_second_attack_debuff",
                     { duration = self.duration }
-                )
+               )
             end
         end
 
@@ -84,14 +84,14 @@ function modifier_phoenix_second_attack_thinker:PlayEffects()
 	local particle_cast = "particles/mod_units/heroes/hero_phoenix/phoenix_fire_spirit_ground.vpcf"
     
     -- particles 1
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
             particle_cast, 
             PATTACH_WORLDORIGIN, 
             nil 
-        )
-    ParticleManager:SetParticleControl( effect_cast, 0, self:GetParent():GetOrigin() )
-    ParticleManager:SetParticleControl( effect_cast, 1, Vector( self.radius, 1, 1 ) )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+       )
+    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 
-    EmitSoundOnLocationWithCaster( self:GetParent():GetOrigin(), sound_cast, self:GetCaster() )
+    EmitSoundOnLocationWithCaster(self:GetParent():GetOrigin(), sound_cast, self:GetCaster())
 end

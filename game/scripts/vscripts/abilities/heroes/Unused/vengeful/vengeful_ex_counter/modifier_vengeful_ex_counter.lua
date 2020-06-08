@@ -12,13 +12,13 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_vengeful_ex_counter:OnCreated( kv )
+function modifier_vengeful_ex_counter:OnCreated(kv)
 	if IsServer() then
 		self:PlayEffects()
 	end
 end
 
-function modifier_vengeful_ex_counter:OnStackCountChanged( old )
+function modifier_vengeful_ex_counter:OnStackCountChanged(old)
 	if IsServer() then
 		if self:GetStackCount() <= old then
 			return
@@ -62,8 +62,8 @@ end
 
 function modifier_vengeful_ex_counter:PlayEffects()
 	local particle_cast = "particles/econ/items/lifestealer/lifestealer_immortal_backbone/lifestealer_immortal_backbone_rage_swirl.vpcf"
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent() )
-    ParticleManager:SetParticleControlEnt( 
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, self:GetParent())
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         2, 
         self:GetParent(), 
@@ -71,10 +71,10 @@ function modifier_vengeful_ex_counter:PlayEffects()
         "attach_hitloc", 
         self:GetParent():GetOrigin(), 
         true 
-    )
+   )
 end
 
 function modifier_vengeful_ex_counter:StopEffects()
 	ParticleManager:DestroyParticle(self.effect_cast, false)
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

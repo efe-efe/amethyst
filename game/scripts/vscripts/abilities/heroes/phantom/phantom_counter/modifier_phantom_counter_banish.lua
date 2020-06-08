@@ -18,12 +18,12 @@ function modifier_phantom_counter_banish:OnDestroy()
 end
 
 function modifier_phantom_counter_banish:PlayEffectsOnCast()
-    EmitSoundOn( "Hero_PhantomAssassin.Blur.Break", self:GetParent()  )
+    EmitSoundOn("Hero_PhantomAssassin.Blur.Break", self:GetParent() )
 
     local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
-    ParticleManager:SetParticleControl( effect_cast, 3, self:GetParent():GetAbsOrigin() )
-    ParticleManager:ReleaseParticleIndex( effect_cast )
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetParent():GetAbsOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_phantom_counter_banish:CheckState()

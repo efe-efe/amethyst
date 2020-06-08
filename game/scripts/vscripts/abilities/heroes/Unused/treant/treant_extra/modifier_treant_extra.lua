@@ -14,12 +14,12 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_treant_extra:OnCreated( kv )
-    self.damage_bonus_pct = self:GetAbility():GetSpecialValueFor( "damage_bonus_pct" )
+function modifier_treant_extra:OnCreated(kv)
+    self.damage_bonus_pct = self:GetAbility():GetSpecialValueFor("damage_bonus_pct")
 
     if IsServer() then
-        self.duration = self:GetAbility():GetSpecialValueFor( "duration" )
-        self.damage_block = self:GetAbility():GetSpecialValueFor( "damage_block" )
+        self.duration = self:GetAbility():GetSpecialValueFor("duration")
+        self.damage_block = self:GetAbility():GetSpecialValueFor("damage_block")
         
         if IsServer() then
             ProgressBars:AddProgressBar(self:GetParent(), self:GetName(), {
@@ -34,7 +34,7 @@ function modifier_treant_extra:OnCreated( kv )
 end
 --------------------------------------------------------------------------
 ---- Destroyer
-function modifier_treant_extra:OnDestroy( kv )
+function modifier_treant_extra:OnDestroy(kv)
     if IsServer() then
         self:StopEffects()
     end
@@ -51,7 +51,7 @@ function modifier_treant_extra:DeclareFunctions()
 	return funcs
 end
 
-function modifier_treant_extra:GetModifierIncomingDamage_Percentage( params )
+function modifier_treant_extra:GetModifierIncomingDamage_Percentage(params)
     self.damage_block =  self.damage_block - params.damage
 
     if self.damage_block <= 0 then
@@ -79,6 +79,6 @@ function modifier_treant_extra:PlayEffects()
 end
 
 function modifier_treant_extra:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

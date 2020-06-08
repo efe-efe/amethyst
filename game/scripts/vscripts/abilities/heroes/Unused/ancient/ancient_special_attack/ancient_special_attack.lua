@@ -1,7 +1,7 @@
 ancient_special_attack = class({})
 
-LinkLuaModifier( "modifier_ancient_special_attack_charges", "abilities/heroes/ancient/ancient_special_attack/modifier_ancient_special_attack_charges", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_ancient_special_attack", "abilities/heroes/ancient/ancient_special_attack/modifier_ancient_special_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ancient_special_attack_charges", "abilities/heroes/ancient/ancient_special_attack/modifier_ancient_special_attack_charges", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_ancient_special_attack", "abilities/heroes/ancient/ancient_special_attack/modifier_ancient_special_attack", LUA_MODIFIER_MOTION_NONE)
 
 
 
@@ -18,13 +18,13 @@ end
 
 function ancient_special_attack:OnSpellStart()
 	local particle_cast = "particles/units/heroes/hero_keeper_of_the_light/keeper_chakra_magic.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( 
+    local effect_cast = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_CUSTOMORIGIN, 
         self:GetCaster()
-    )
+   )
 
-    ParticleManager:SetParticleControlEnt( 
+    ParticleManager:SetParticleControlEnt(
         effect_cast, 
         0, 
         self:GetCaster(), 
@@ -33,7 +33,7 @@ function ancient_special_attack:OnSpellStart()
         self:GetCaster():GetOrigin(), 
         true 
 	)
-	ParticleManager:SetParticleControlEnt( 
+	ParticleManager:SetParticleControlEnt(
         effect_cast, 
         1, 
         self:GetCaster(), 
@@ -41,8 +41,8 @@ function ancient_special_attack:OnSpellStart()
         "attach_hitloc", 
         self:GetCaster():GetOrigin(), 
         true 
-    )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+   )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 
@@ -59,7 +59,7 @@ function ancient_special_attack:OnCastPointEnd()
 	local knockback_distance = self:GetSpecialValueFor("knockback_distance")
 	
 	-- Dinamyc data
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
@@ -111,7 +111,7 @@ function ancient_special_attack:OnCastPointEnd()
 				damage = final_damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
@@ -128,38 +128,38 @@ end
 
 --------------------------------------------------------------------------------
 -- Effects
-function ancient_special_attack:PlayEffectsOnThink( pos )
+function ancient_special_attack:PlayEffectsOnThink(pos)
 	local particle_cast = "particles/base_attacks/ranged_tower_good_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function ancient_special_attack:PlayEffectsOnFinish(pos)
-	EmitSoundOnLocationWithCaster( pos, "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetCaster() )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Ancient_Apparition.ChillingTouch.Target", self:GetCaster())
 	
 	local particle_cast = "particles/base_attacks/ranged_tower_good_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function ancient_special_attack:PlayEffectsOnCast( )
-	EmitSoundOn( "Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster() )
+function ancient_special_attack:PlayEffectsOnCast()
+	EmitSoundOn("Hero_Ancient_Apparition.ChillingTouch.Cast", self:GetCaster())
 end
 
-function ancient_special_attack:PlayEffectsConsume( hTarget )
+function ancient_special_attack:PlayEffectsConsume(hTarget)
 	 local particle_cast = "particles/econ/items/meepo/meepo_colossal_crystal_chorus/meepo_divining_rod_poof_end_explosion_ring.vpcf"
 
-	 local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	 ParticleManager:SetParticleControl( effect_cast, 0, hTarget:GetOrigin() )
-	 ParticleManager:SetParticleControl( effect_cast, 6, Vector(0, 245, 240) )
-	 ParticleManager:ReleaseParticleIndex( effect_cast )
+	 local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	 ParticleManager:SetParticleControl(effect_cast, 0, hTarget:GetOrigin())
+	 ParticleManager:SetParticleControl(effect_cast, 6, Vector(0, 245, 240))
+	 ParticleManager:ReleaseParticleIndex(effect_cast)
 	 
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	ancient_special_attack,
 	{ activity = ACT_DOTA_TELEPORT_END, rate = 1.0 },
 	{ movement_speed = 80, fixed_range = 1}

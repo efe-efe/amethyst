@@ -1,5 +1,5 @@
 spectre_ultimate = class({})
-LinkLuaModifier( "modifier_spectre_ultimate_thinker", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_spectre_ultimate_thinker", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function spectre_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
 function spectre_ultimate:GetPlaybackRateOverride() 	return 0.6 end

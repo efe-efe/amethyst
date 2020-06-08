@@ -31,7 +31,7 @@ function modifier_nevermore_special_attack_thinker:OnDelayEnds(params)
             DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
             DOTA_UNIT_TARGET_FLAG_NONE,
             FIND_ANY_ORDER
-        )
+       )
 
         local give_mana = false
         for _,enemy in pairs(enemies) do

@@ -14,10 +14,10 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_sky_extra:OnCreated( kv )
+function modifier_sky_extra:OnCreated(kv)
     if IsServer() then
-        self.duration = self:GetAbility():GetSpecialValueFor( "duration" )
-        self.damage_block = self:GetAbility():GetSpecialValueFor( "damage_block" )
+        self.duration = self:GetAbility():GetSpecialValueFor("duration")
+        self.damage_block = self:GetAbility():GetSpecialValueFor("damage_block")
         
         self:PlayEffects()
 
@@ -33,13 +33,13 @@ function modifier_sky_extra:OnCreated( kv )
 end
 --------------------------------------------------------------------------
 ---- Destroyer
-function modifier_sky_extra:OnDestroy( kv )
+function modifier_sky_extra:OnDestroy(kv)
     if IsServer() then
         self:StopEffects()
     end
 end
 
-function modifier_sky_extra:GetModifierIncomingDamage_Percentage( params )
+function modifier_sky_extra:GetModifierIncomingDamage_Percentage(params)
     self.damage_block =  self.damage_block - params.damage
 
     if self.damage_block <= 0 then
@@ -74,13 +74,13 @@ function modifier_sky_extra:PlayEffects()
     local origin = self:GetParent():GetOrigin()
 
     -- Create Particles
-    self.effect_cast = ParticleManager:CreateParticle( 
+    self.effect_cast = ParticleManager:CreateParticle(
         particle_cast, 
         PATTACH_CUSTOMORIGIN, 
         self:GetParent()
-    )
+   )
 
-    ParticleManager:SetParticleControlEnt( 
+    ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         0, 
         self:GetParent(), 
@@ -88,11 +88,11 @@ function modifier_sky_extra:PlayEffects()
         "attach_hitloc", 
         origin, 
         true 
-    )
-    ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(self.duration, 0,0) )
+   )
+    ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(self.duration, 0,0))
 end
 
 function modifier_sky_extra:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )
+	ParticleManager:DestroyParticle(self.effect_cast, false)
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 end

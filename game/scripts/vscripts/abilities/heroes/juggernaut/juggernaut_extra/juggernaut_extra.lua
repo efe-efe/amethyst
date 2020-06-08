@@ -1,7 +1,7 @@
 juggernaut_extra = class({})
-LinkLuaModifier( "modifier_juggernaut_extra_ward", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_ward", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_juggernaut_extra_recast", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_recast", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_juggernaut_extra", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_juggernaut_extra_ward", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_ward", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_extra_recast", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_extra", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_extra:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_2 end
 function juggernaut_extra:GetPlaybackRateOverride() 	return 1.0 end
@@ -19,7 +19,7 @@ function juggernaut_extra:OnSpellStart()
         caster, 
         caster, 
         caster:GetTeam()
-    )
+   )
 
 	healing_ward:SetControllableByPlayer(caster:GetPlayerID(), true)
     Timers:CreateTimer(0.1, function()

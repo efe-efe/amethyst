@@ -20,7 +20,7 @@ function spectre_counter_recast:OnSpellStart()
 
 	local damage = self:GetSpecialValueFor("ability_damage")
 	
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
@@ -43,19 +43,19 @@ function spectre_counter_recast:OnSpellStart()
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
 		end,
 		OnThinkBegin = function(_self, pos)
-			local effect_cast = ParticleManager:CreateParticle( "particles/units/heroes/hero_grimstroke/grimstroke_cast_soulchain.vpcf", PATTACH_WORLDORIGIN, nil )
-			ParticleManager:SetParticleControl( effect_cast, 0, pos )
-			ParticleManager:SetParticleControl( effect_cast, 1, pos )
-			ParticleManager:SetParticleControl( effect_cast, 2, pos )
-			ParticleManager:SetParticleControl( effect_cast, 60, Vector(155, 7, 229) )
-			ParticleManager:SetParticleControl( effect_cast, 61, Vector(1, 0, 0) )
-			ParticleManager:ReleaseParticleIndex( effect_cast )
+			local effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_grimstroke/grimstroke_cast_soulchain.vpcf", PATTACH_WORLDORIGIN, nil)
+			ParticleManager:SetParticleControl(effect_cast, 0, pos)
+			ParticleManager:SetParticleControl(effect_cast, 1, pos)
+			ParticleManager:SetParticleControl(effect_cast, 2, pos)
+			ParticleManager:SetParticleControl(effect_cast, 60, Vector(155, 7, 229))
+			ParticleManager:SetParticleControl(effect_cast, 61, Vector(1, 0, 0))
+			ParticleManager:ReleaseParticleIndex(effect_cast)
 		end,
 	}
 
@@ -65,34 +65,34 @@ function spectre_counter_recast:OnSpellStart()
 end
 
 function spectre_counter_recast:PlayEffectsOnPhase()
-	EmitSoundOn( "Hero_Spectre.Haunt", self:GetCaster())
+	EmitSoundOn("Hero_Spectre.Haunt", self:GetCaster())
 	local particle_cast = "particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rope.vpcf"
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
-	ParticleManager:SetParticleControl( effect_cast, 15, Vector(128, 32, 108) )
-	ParticleManager:SetParticleControl( effect_cast, 16, Vector(1, 0, 0) )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast, 15, Vector(128, 32, 108))
+	ParticleManager:SetParticleControl(effect_cast, 16, Vector(1, 0, 0))
 
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function spectre_counter_recast:PlayEffectsOnFinish( pos )
+function spectre_counter_recast:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
     local sound_cast = "Hero_Nevermore.RequiemOfSouls.Damage"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, caster )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, caster)
 
 	local particle_cast = "particles/units/heroes/hero_arc_warden/arc_warden_wraith_cast.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
 	
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:SetParticleControl( effect_cast, 1, pos )
-	ParticleManager:SetParticleControl( effect_cast, 2, pos )
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:SetParticleControl(effect_cast, 2, pos)
 
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function spectre_counter_recast:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Nevermore.Raze_Flames", self:GetCaster() )
+	EmitSoundOn("Hero_Nevermore.Raze_Flames", self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end

@@ -11,7 +11,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_nevermore_mobility_movement:OnCreated( kv )
+function modifier_nevermore_mobility_movement:OnCreated(kv)
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -33,10 +33,10 @@ function modifier_nevermore_mobility_movement:OnCreated( kv )
 	end
 end
 
-function modifier_nevermore_mobility_movement:OnRefresh( kv )
+function modifier_nevermore_mobility_movement:OnRefresh(kv)
 end
 
-function modifier_nevermore_mobility_movement:OnDestroy( kv )
+function modifier_nevermore_mobility_movement:OnDestroy(kv)
 	if IsServer() then
 		
 		--Quits the animation
@@ -47,12 +47,12 @@ function modifier_nevermore_mobility_movement:OnDestroy( kv )
 		}
 		ExecuteOrderFromTable(order)
 		
-		self:GetParent():InterruptMotionControllers( true )
+		self:GetParent():InterruptMotionControllers(true)
 	end
 end
 
 
-function modifier_nevermore_mobility_movement:UpdateHorizontalMotion( me, dt )
+function modifier_nevermore_mobility_movement:UpdateHorizontalMotion(me, dt)
 	local pos = self:GetParent():GetOrigin()
 	local distance =  (pos-self.origin):Length2D()
 	-- stop if already past distance
@@ -70,7 +70,7 @@ function modifier_nevermore_mobility_movement:UpdateHorizontalMotion( me, dt )
 	local target = pos + self.direction * (self.speed*dt)
 
 	-- change position
-	self:GetParent():SetOrigin( target )
+	self:GetParent():SetOrigin(target)
 end
 
 function modifier_nevermore_mobility_movement:OnHorizontalMotionInterrupted()
@@ -106,9 +106,9 @@ end
 function modifier_nevermore_mobility_movement:PlayEffects()
 	local caster = self:GetParent()
     local particle_cast = "particles/econ/items/shadow_fiend/sf_desolation/sf_desolation_scratch.vpcf"
-    local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
     ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin()) 
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 

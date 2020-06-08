@@ -1,5 +1,5 @@
 weaver_basic_attack = class({})
-LinkLuaModifier( "modifier_weaver_basic_attack_charges", "abilities/heroes/weaver/weaver_basic_attack/modifier_weaver_basic_attack_charges", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_weaver_basic_attack_charges", "abilities/heroes/weaver/weaver_basic_attack/modifier_weaver_basic_attack_charges", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Passive Modifier
@@ -19,7 +19,7 @@ function weaver_basic_attack:OnCastPointEnd()
 
 	-- Projectile data
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local extra_damage = self:GetSpecialValueFor("extra_damage")
 	local modifier = caster:FindModifierByName("modifier_weaver_basic_attack_stack")
@@ -51,7 +51,7 @@ function weaver_basic_attack:OnCastPointEnd()
 				damage = attack_damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
 			if _self.Source.OnBasicAttackImpact then
 				_self.Source:OnBasicAttackImpact(unit)
@@ -69,25 +69,25 @@ end
 --------------------------------------------------------------------------------
 -- Graphics & sounds
 function weaver_basic_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_Weaver.Attack", self:GetCaster() )
+	EmitSoundOn("Hero_Weaver.Attack", self:GetCaster())
 end
 
-function weaver_basic_attack:PlayEffectsOnFinish( pos, charged )
+function weaver_basic_attack:PlayEffectsOnFinish(pos, charged)
 	local caster = self:GetCaster()
 
 	-- Create Sound
-	EmitSoundOnLocationWithCaster( pos, "Hero_Weaver.ProjectileImpact", caster )
+	EmitSoundOnLocationWithCaster(pos, "Hero_Weaver.ProjectileImpact", caster)
 
 	-- Create Particle
 	local particle_cast = charged and "particles/items4_fx/meteor_hammer_spell_impact_ember.vpcf" or "particles/units/heroes/hero_vengeful/vengeful_base_attack_end_flash.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, caster )
-	ParticleManager:SetParticleControl( effect_cast, 3, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.BasicAttack( weaver_basic_attack )
-Abilities.Initialize( 
+Abilities.BasicAttack(weaver_basic_attack)
+Abilities.Initialize(
 	weaver_basic_attack,
 	{ activity = ACT_DOTA_ATTACK, rate = 1.8 },
 	{ movement_speed = 10, hide_indicator = 1, fixed_range = 1 }

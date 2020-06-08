@@ -6,7 +6,7 @@ function modifier_juggernaut_mobility:IsPurgable()              return true     
 function modifier_juggernaut_mobility:StatusEffectPriority()    return 2.0      end
 
 
-function modifier_juggernaut_mobility:OnCreated( kv )
+function modifier_juggernaut_mobility:OnCreated(kv)
     self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
     self.parent = self:GetParent()
 
@@ -15,7 +15,7 @@ function modifier_juggernaut_mobility:OnCreated( kv )
         local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
 
-        self:StartIntervalThink( think_interval )
+        self:StartIntervalThink(think_interval)
         self:PlayEffects()
     end
 end
@@ -28,7 +28,7 @@ function modifier_juggernaut_mobility:OnIntervalThink()
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
         DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
         FIND_ANY_ORDER
-    )
+   )
 
     for _,enemy in pairs(enemies) do
         local damage = {
@@ -38,13 +38,13 @@ function modifier_juggernaut_mobility:OnIntervalThink()
             damage_type = DAMAGE_TYPE_PURE,
         }
         self:PlayEffects3(enemy)
-        ApplyDamage( damage )
+        ApplyDamage(damage)
         
         EmitSoundOn("Hero_Juggernaut.Impact ", enemy)
     end
 end
 
-function modifier_juggernaut_mobility:OnDestroy( kv )
+function modifier_juggernaut_mobility:OnDestroy(kv)
     if IsServer() then
         self:StopEffects()
         EmitSoundOn("Hero_Juggernaut.BladeFuryStop", self.parent)
@@ -84,22 +84,22 @@ function modifier_juggernaut_mobility:CheckState()
     }
 end
 
-function modifier_juggernaut_mobility:PlayEffects( )
+function modifier_juggernaut_mobility:PlayEffects()
 	EmitSoundOn("Hero_Juggernaut.BladeFuryStart", self.parent)
 
 	local particle_cast = "particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf"
 
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent )
-    ParticleManager:SetParticleControl( self.effect_cast, 5, Vector( 200, 1, 1 ) )
-    ParticleManager:SetParticleControl( self.effect_cast, 2, self.parent:GetOrigin() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent)
+    ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(200, 1, 1))
+    ParticleManager:SetParticleControl(self.effect_cast, 2, self.parent:GetOrigin())
     
 end
 
 function modifier_juggernaut_mobility:StopEffects()
     StopSoundOn("Hero_Juggernaut.BladeFuryStart", self.parent)
 
-    ParticleManager:DestroyParticle( self.effect_cast, false )
-    ParticleManager:ReleaseParticleIndex( self.effect_cast )
+    ParticleManager:DestroyParticle(self.effect_cast, false)
+    ParticleManager:ReleaseParticleIndex(self.effect_cast)
 
     
     local particle_cast = "particles/econ/items/axe/axe_ti9_immortal/axe_ti9_beserkers_call_owner_aoe_dome.vpcf"
@@ -107,7 +107,7 @@ function modifier_juggernaut_mobility:StopEffects()
     ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function modifier_juggernaut_mobility:PlayEffects3( hTarget )
+function modifier_juggernaut_mobility:PlayEffects3(hTarget)
     EmitSoundOn("Hero_Spectre.Desolate", hTarget)
 end
 

@@ -1,6 +1,6 @@
 modifier_vengeful_second_attack = class({})
 
-function modifier_vengeful_second_attack:OnCreated( params )
+function modifier_vengeful_second_attack:OnCreated(params)
 
     if IsServer() then
         local ability = self:GetCaster():FindAbilityByName("vengeful_second_attack")
@@ -22,7 +22,7 @@ function modifier_vengeful_second_attack:DeclareFunctions()
 	return funcs
 end
 
-function modifier_vengeful_second_attack:GetModifierIncomingDamage_Percentage( params )
+function modifier_vengeful_second_attack:GetModifierIncomingDamage_Percentage(params)
     if IsServer() then
         if params.attacker ~= self:GetCaster() then return 0 end
         if params.inflictor then
@@ -34,7 +34,7 @@ function modifier_vengeful_second_attack:GetModifierIncomingDamage_Percentage( p
                     damage_type = DAMAGE_TYPE_PURE,
                 }
     
-                ApplyDamage( damage_table )
+                ApplyDamage(damage_table)
                 self:Destroy()
                 self:PlayEffectsExplosion()
             end
@@ -47,7 +47,7 @@ function modifier_vengeful_second_attack:PlayEffectsExplosion()
     local parent = self:GetParent()
 
 	local particle_cast = "particles/econ/items/templar_assassin/templar_assassin_butterfly/templar_assassin_trap_explosion_shock_butterfly.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN, parent )
-	ParticleManager:SetParticleControl( effect_cast, 1, parent:GetOrigin() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, parent)
+	ParticleManager:SetParticleControl(effect_cast, 1, parent:GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

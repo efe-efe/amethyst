@@ -24,10 +24,10 @@ function modifier_item_meteor_custom_thinker:OnDelayEnds()
 				damage = self.ability_damage,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 			
 			enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_item_meteor_custom", { duration = self.duration })
-			enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_stunned", { duration = self.stun_duration} )
+			enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_stunned", { duration = self.stun_duration})
 		end
     end
 end
@@ -35,23 +35,23 @@ end
 function modifier_item_meteor_custom_thinker:OnDestroy()
 	if IsServer() then
 		self:StopEffects()
-		UTIL_Remove( self:GetParent() )
+		UTIL_Remove(self:GetParent())
 	end
 end
 
 function modifier_item_meteor_custom_thinker:PlayEffects()
-	EmitSoundOn( "DOTA_Item.MeteorHammer.Impact", self:GetCaster() )
+	EmitSoundOn("DOTA_Item.MeteorHammer.Impact", self:GetCaster())
 
     local particle_cast = "particles/items4_fx/meteor_hammer_spell.vpcf"
-    self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( self.effect_cast, 0, self:GetParent():GetAbsOrigin() + Vector(500, 500, 1000))
-    ParticleManager:SetParticleControl( self.effect_cast, 1, self:GetParent():GetAbsOrigin() )
-    ParticleManager:SetParticleControl( self.effect_cast, 2, Vector(0.5,0,0) )
-	ParticleManager:ReleaseParticleIndex( self.effect_cast )    
+    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetAbsOrigin() + Vector(500, 500, 1000))
+    ParticleManager:SetParticleControl(self.effect_cast, 1, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(self.effect_cast, 2, Vector(0.5,0,0))
+	ParticleManager:ReleaseParticleIndex(self.effect_cast)    
 end
 
 function modifier_item_meteor_custom_thinker:StopEffects()
-	ParticleManager:DestroyParticle( self.effect_cast, false )
+	ParticleManager:DestroyParticle(self.effect_cast, false)
 end
 
 function modifier_item_meteor_custom_thinker:GetDelayTime()

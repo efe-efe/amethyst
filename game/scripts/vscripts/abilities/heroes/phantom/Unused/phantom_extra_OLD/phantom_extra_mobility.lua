@@ -1,7 +1,7 @@
 phantom_extra_mobility = class({})
-LinkLuaModifier( "modifier_phantom_extra_movement", "abilities/heroes/phantom/phantom_extra/modifier_phantom_extra_movement", LUA_MODIFIER_MOTION_HORIZONTAL )
+LinkLuaModifier("modifier_phantom_extra_movement", "abilities/heroes/phantom/phantom_extra/modifier_phantom_extra_movement", LUA_MODIFIER_MOTION_HORIZONTAL)
 
-function phantom_extra_mobility:GetCastRange( vLocation, hTarget )
+function phantom_extra_mobility:GetCastRange(vLocation, hTarget)
     local stacks = SafeGetModifierStacks("modifier_phantom_extra", self:GetCaster(), self:GetCaster())
     local range_per_stack = 30
 
@@ -14,7 +14,7 @@ function phantom_extra_mobility:OnCastPointEnd()
 	local origin = caster:GetOrigin()
     local point =  self:GetCursorPosition()
     local ability = caster:FindAbilityByName("phantom_extra")
-    local base_damage = ability:GetSpecialValueFor( "ability_damage" )
+    local base_damage = ability:GetSpecialValueFor("ability_damage")
     local stacks = SafeGetModifierStacks("modifier_phantom_extra", caster, caster)
     local direction = (point - origin):Normalized()
 	local distance = self:GetCastRange(Vector(0,0,0), nil)
@@ -22,8 +22,8 @@ function phantom_extra_mobility:OnCastPointEnd()
 
     local speed = 2000
 	local offset = 100
-    local radius = self:GetSpecialValueFor( "radius" )
-    local slow_duration = self:GetSpecialValueFor( "slow_duration" )
+    local radius = self:GetSpecialValueFor("radius")
+    local slow_duration = self:GetSpecialValueFor("slow_duration")
 
     caster:AddNewModifier(
         caster, -- player source
@@ -35,7 +35,7 @@ function phantom_extra_mobility:OnCastPointEnd()
             r = distance,
             speed = (distance/0.3),
         } -- kv
-    )
+   )
 
 	local projectile_speed = speed + 200
 
@@ -61,7 +61,7 @@ function phantom_extra_mobility:OnCastPointEnd()
                 damage_type = DAMAGE_TYPE_PHYSICAL,
             }
 
-            ApplyDamage( damage_table )
+            ApplyDamage(damage_table)
 
             -- Add modifier
             unit:AddNewModifier(
@@ -69,7 +69,7 @@ function phantom_extra_mobility:OnCastPointEnd()
                 self, -- ability source
                 "modifier_generic_fading_slow", -- modifier name
                 { duration = slow_duration } -- kv
-            )
+           )
 
             self:PlayEffectsOnImpact(unit)
         end,
@@ -93,7 +93,7 @@ function phantom_extra_mobility:PlayEffectsOnCast()
 end
 
 -- On Projectile Finish
-function phantom_extra_mobility:PlayEffectsOnFinish( pos )
+function phantom_extra_mobility:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	local offset = 120
 	local origin = caster:GetOrigin()
@@ -102,20 +102,20 @@ function phantom_extra_mobility:PlayEffectsOnFinish( pos )
 	
 	-- Create Particles
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_crit_blur.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-    ParticleManager:SetParticleControl( effect_cast, 1, final_position )
-    ParticleManager:SetParticleControlForward( effect_cast, 1, caster:GetForwardVector() )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+    ParticleManager:SetParticleControl(effect_cast, 1, final_position)
+    ParticleManager:SetParticleControlForward(effect_cast, 1, caster:GetForwardVector())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 -- On Projectile Hit enemy
-function phantom_extra_mobility:PlayEffectsOnImpact( hTarget )
+function phantom_extra_mobility:PlayEffectsOnImpact(hTarget)
     -- Cast Sound
     EmitSoundOn("Hero_PhantomAssassin.Attack", hTarget)
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	phantom_extra_mobility,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.5 },
 	{ movement_speed = 0, fixed_range = 1 }

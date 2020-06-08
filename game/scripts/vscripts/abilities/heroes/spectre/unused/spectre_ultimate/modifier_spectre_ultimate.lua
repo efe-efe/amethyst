@@ -1,11 +1,11 @@
 modifier_spectre_ultimate = class({})
-LinkLuaModifier( "modifier_spectre_special_attack_debuff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_debuff", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_spectre_special_attack_debuff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_debuff", LUA_MODIFIER_MOTION_NONE)
 
 function modifier_spectre_ultimate:IsHidden() return false end
 function modifier_spectre_ultimate:IsDebuff() return true end
 function modifier_spectre_ultimate:IsPurgable() return true end
 
-function modifier_spectre_ultimate:OnCreated( params )
+function modifier_spectre_ultimate:OnCreated(params)
 	if IsServer() then
 		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
 		self.aoe_origin = Vector(params.x, params.y, 0)
@@ -23,14 +23,14 @@ function modifier_spectre_ultimate:OnIntervalThink()
 		if self.hit == false then
 			self.hit = true
 			
-			EmitSoundOn( "Hero_Spectre.DaggerImpact", self:GetParent() )
+			EmitSoundOn("Hero_Spectre.DaggerImpact", self:GetParent())
 			local damage = {
 				victim = self:GetParent(),
 				attacker = self:GetCaster(),
 				damage = self.damage,
 				damage_type = DAMAGE_TYPE_PURE,
 			}
-			ApplyDamage( damage )
+			ApplyDamage(damage)
 
 			self:GetParent():AddNewModifier(self:GetCaster(), self.ability, "modifier_spectre_special_attack_debuff", { 
 				duration = self.debuff_duration

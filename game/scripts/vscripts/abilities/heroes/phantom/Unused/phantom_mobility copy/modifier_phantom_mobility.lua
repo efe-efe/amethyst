@@ -13,7 +13,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_phantom_mobility:OnCreated( kv )
+function modifier_phantom_mobility:OnCreated(kv)
 	self.attack_speed_bonus = self:GetAbility():GetSpecialValueFor("attack_speed_bonus")
 end
 

@@ -22,9 +22,9 @@
                 teams: [DOTATeam_t.DOTA_TEAM_CUSTOM_5, DOTATeam_t.DOTA_TEAM_CUSTOM_6]
             }
         },
-        FindAllianceNameByTeam: function( team ){
-            for (var property in GameUI.CustomUIConfig().Alliances.alliances ){
-                for( var i = 0; i < GameUI.CustomUIConfig().Alliances.alliances[property].teams.length; i++){
+        FindAllianceNameByTeam: function(team){
+            for (var property in GameUI.CustomUIConfig().Alliances.alliances){
+                for(var i = 0; i < GameUI.CustomUIConfig().Alliances.alliances[property].teams.length; i++){
                     if(GameUI.CustomUIConfig().Alliances.alliances[property].teams[i] == team){
                         return property;
                     }

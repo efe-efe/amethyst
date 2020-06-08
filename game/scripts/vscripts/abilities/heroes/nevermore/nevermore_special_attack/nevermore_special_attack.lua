@@ -12,7 +12,7 @@ function nevermore_special_attack:OnAbilityPhaseStart()
 
 	local random_number = RandomInt(0, 3)
 	EmitSoundOn("nevermore_nev_cast_0" .. random_number, self:GetCaster())
-	EmitSoundOn( "Hero_Nevermore.Attack", self:GetCaster() )
+	EmitSoundOn("Hero_Nevermore.Attack", self:GetCaster())
 	
 	return true
 end

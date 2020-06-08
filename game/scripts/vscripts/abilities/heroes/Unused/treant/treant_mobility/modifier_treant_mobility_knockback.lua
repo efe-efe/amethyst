@@ -19,7 +19,7 @@ function modifier_treant_mobility_knockback:PlayEffectsRoot()
     local particle_cast = "particles/econ/items/dark_willow/dark_willow_chakram_immortal/dark_willow_chakram_immortal_bramble_root.vpcf"
    
 	-- Create Particles
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent() )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 end
 
 function modifier_treant_mobility_knockback:StopEffectsRoot()

@@ -1,5 +1,5 @@
 treant_special_attack = class({})
-LinkLuaModifier( "modifier_treant_leeching_seed", "abilities/heroes/treant/treant_shared_modifiers/modifier_treant_leeching_seed", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_treant_leeching_seed", "abilities/heroes/treant/treant_shared_modifiers/modifier_treant_leeching_seed", LUA_MODIFIER_MOTION_NONE)
 
 function treant_special_attack:OnCastPointEnd()
 	local caster = self:GetCaster()
@@ -13,7 +13,7 @@ function treant_special_attack:OnCastPointEnd()
     local mana_gain = self:GetSpecialValueFor("mana_gain")/100
     local leeching_duration = self:GetSpecialValueFor("leeching_duration")
 
-	local projectile_direction = (Vector( point.x-origin.x, point.y-origin.y, 0 )):Normalized()
+	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local damage = self:GetAbilityDamage()
 
@@ -37,7 +37,7 @@ function treant_special_attack:OnCastPointEnd()
 				damage = damage,
 				damage_type = DAMAGE_TYPE_PHYSICAL,
 			}
-			ApplyDamage( damage_table )
+			ApplyDamage(damage_table)
 
             unit:AddNewModifier(caster, self, "modifier_treant_leeching_seed", { duration = leeching_duration }) 
 
@@ -59,24 +59,24 @@ end
 
 --------------------------------------------------------------------------------
 -- Effects
-function treant_special_attack:PlayEffectsOnFinish( pos )
+function treant_special_attack:PlayEffectsOnFinish(pos)
 	-- Create Sound
 	local sound_cast = "Hero_Treant.LeechSeed.Target"
-	EmitSoundOnLocationWithCaster( pos, sound_cast, self:GetCaster() )
+	EmitSoundOnLocationWithCaster(pos, sound_cast, self:GetCaster())
 	
 	-- Create Particles
 	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_guardian_explosion.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-	ParticleManager:SetParticleControl( effect_cast, 0, pos )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+	ParticleManager:SetParticleControl(effect_cast, 0, pos)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function treant_special_attack:PlayEffectsOnLaunch( )
-    EmitSoundOn( "Hero_Treant.NaturesGuise.On", self:GetCaster() )
+function treant_special_attack:PlayEffectsOnLaunch()
+    EmitSoundOn("Hero_Treant.NaturesGuise.On", self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	treant_special_attack,
 	{ activity = ACT_DOTA_ATTACK2, rate = 1.0 },
 	{ movement_speed = 10, fixed_range = 1 }

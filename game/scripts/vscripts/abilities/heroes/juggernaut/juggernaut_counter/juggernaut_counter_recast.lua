@@ -1,7 +1,7 @@
 juggernaut_counter_recast = class({})
-LinkLuaModifier( "modifier_juggernaut_counter_countering", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_countering", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_juggernaut_counter_recast", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_recast", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_juggernaut_counter", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_juggernaut_counter_countering", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_countering", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_counter_recast", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_counter", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_counter_recast:OnSpellStart()
     local caster = self:GetCaster()
@@ -11,11 +11,11 @@ function juggernaut_counter_recast:OnSpellStart()
 	local ability = caster:FindAbilityByName("juggernaut_counter")
 	local damage = ability:GetSpecialValueFor("ability_damage")
 	
-	FindClearSpaceForUnit( caster, point , true )
+	FindClearSpaceForUnit(caster, point , true)
 
 	local new_origin = caster:GetOrigin()
 
-	local enemies = caster:FindUnitsInLine( 
+	local enemies = caster:FindUnitsInLine(
 		new_origin, 
 		origin, 
 		100, 
@@ -43,7 +43,7 @@ function juggernaut_counter_recast:OnSpellStart()
 			damage = damage,
 			damage_type = DAMAGE_TYPE_PHYSICAL,
 		}
-		ApplyDamage( damage_table )
+		ApplyDamage(damage_table)
 		
 		self:PlayEffectsOnTarget(enemy)
 	end
@@ -74,16 +74,16 @@ function juggernaut_counter_recast:OnSpellStart()
 	ability:StartCooldown(ability:GetCooldown(0))
 
 	local particle_cast = "particles/mod_units/heroes/hero_juggernaut/void_spirit_astral_step.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-    ParticleManager:SetParticleControl( effect_cast, 0, origin )
-	ParticleManager:SetParticleControl( effect_cast, 1, new_origin )
-	ParticleManager:ReleaseParticleIndex( effect_cast )    
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, origin)
+	ParticleManager:SetParticleControl(effect_cast, 1, new_origin)
+	ParticleManager:ReleaseParticleIndex(effect_cast)    
 end
 
-function juggernaut_counter_recast:PlayEffectsOnTarget( hTarget )
-	EmitSoundOn( "Hero_Juggernaut.BladeDance.Arcana", hTarget )
-	EmitSoundOn( "Hero_Juggernaut.BladeDance.Layer", hTarget )
-	EmitSoundOn( "Hero_Juggernaut.Attack", hTarget )
+function juggernaut_counter_recast:PlayEffectsOnTarget(hTarget)
+	EmitSoundOn("Hero_Juggernaut.BladeDance.Arcana", hTarget)
+	EmitSoundOn("Hero_Juggernaut.BladeDance.Layer", hTarget)
+	EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
 end
 
 function juggernaut_counter_recast:PlayEffectsOnMiss()

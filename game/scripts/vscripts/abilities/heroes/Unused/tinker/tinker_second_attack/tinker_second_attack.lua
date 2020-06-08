@@ -1,7 +1,7 @@
 
 tinker_second_attack = class({})
-LinkLuaModifier( "modifier_tinker_second_attack", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack", LUA_MODIFIER_MOTION_NONE )
-LinkLuaModifier( "modifier_tinker_second_attack_thinker", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_tinker_second_attack", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_tinker_second_attack_thinker", "abilities/heroes/tinker/tinker_second_attack/modifier_tinker_second_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function tinker_second_attack:GetAlternateVersion()
     return self:GetCaster():FindAbilityByName("tinker_ex_second_attack")
@@ -22,7 +22,7 @@ function tinker_second_attack:OnSpellStart()
 	})
 end
 
-function tinker_second_attack:OnCastPointEnd( pos )
+function tinker_second_attack:OnCastPointEnd(pos)
 	local caster = self:GetCaster()
 	local direction = (pos - caster:GetOrigin()):Normalized()
 	local duration = 0.9
@@ -50,7 +50,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Projectile
-function tinker_second_attack:OnProjectileHit_ExtraData( target, location, extraData )
+function tinker_second_attack:OnProjectileHit_ExtraData(target, location, extraData)
 	local mana_gain = self:GetSpecialValueFor("mana_gain")/100
 	local stacks_duration = self:GetSpecialValueFor("stacks_duration")
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
@@ -58,7 +58,7 @@ function tinker_second_attack:OnProjectileHit_ExtraData( target, location, extra
 	local stacks = 0
 
 	if target ~=nil then
-		if target:TriggerSpellAbsorb( self ) then return end
+		if target:TriggerSpellAbsorb(self) then return end
 		stacks = SafeGetModifierStacks("modifier_tinker_second_attack", target, caster)
 	
 		-- Apply damage
@@ -69,7 +69,7 @@ function tinker_second_attack:OnProjectileHit_ExtraData( target, location, extra
 			damage_type = DAMAGE_TYPE_MAGICAL,
 			ability = self
 		}
-		ApplyDamage( damage )
+		ApplyDamage(damage)
 
 		target:AddNewModifier(
 			caster,
@@ -83,19 +83,19 @@ function tinker_second_attack:OnProjectileHit_ExtraData( target, location, extra
 		caster:GiveMana(mana_gain_final)    
 
 		-- effects
-		self:PlayEffects( target )
+		self:PlayEffects(target)
 	end
 end
 
 --------------------------------------------------------------------------------
 -- Effects
-function tinker_second_attack:PlayEffects( target )
+function tinker_second_attack:PlayEffects(target)
 	local particle_cast = "particles/units/heroes/hero_tinker/tinker_missle_explosion.vpcf"
 	local sound_cast = "Hero_Tinker.Heat-Seeking_Missile.Impact"
 
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, target )
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, target)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 
-	EmitSoundOn( sound_cast, target )
+	EmitSoundOn(sound_cast, target)
 end
 

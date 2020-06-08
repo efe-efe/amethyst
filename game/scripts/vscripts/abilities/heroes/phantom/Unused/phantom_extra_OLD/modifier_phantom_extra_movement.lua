@@ -11,7 +11,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_phantom_extra_movement:OnCreated( kv )
+function modifier_phantom_extra_movement:OnCreated(kv)
 	if IsServer() then
         -- references
 		self.distance = kv.r
@@ -25,7 +25,7 @@ function modifier_phantom_extra_movement:OnCreated( kv )
 	end
 end
 
-function modifier_phantom_extra_movement:OnDestroy( kv )
+function modifier_phantom_extra_movement:OnDestroy(kv)
 	if IsServer() then
 		
 		--Quits the animation
@@ -35,12 +35,12 @@ function modifier_phantom_extra_movement:OnDestroy( kv )
 			UnitIndex = self:GetParent():entindex()
 		}
 		ExecuteOrderFromTable(order)
-		self:GetParent():InterruptMotionControllers( true )
+		self:GetParent():InterruptMotionControllers(true)
 	end
 end
 
 
-function modifier_phantom_extra_movement:UpdateHorizontalMotion( me, dt )
+function modifier_phantom_extra_movement:UpdateHorizontalMotion(me, dt)
 	local pos = self:GetParent():GetOrigin()
 	
 	-- stop if already past distance
@@ -53,7 +53,7 @@ function modifier_phantom_extra_movement:UpdateHorizontalMotion( me, dt )
 	local target = pos + self.direction * (self.speed*dt)
 
 	-- change position
-	self:GetParent():SetOrigin( target )
+	self:GetParent():SetOrigin(target)
 end
 
 function modifier_phantom_extra_movement:OnHorizontalMotionInterrupted()

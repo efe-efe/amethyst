@@ -1,5 +1,5 @@
 sky_ultimate = class({})
-LinkLuaModifier( "modifier_sky_ultimate_thinker", "abilities/heroes/skywrath_mage/sky_ultimate/modifier_sky_ultimate_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_sky_ultimate_thinker", "abilities/heroes/skywrath_mage/sky_ultimate/modifier_sky_ultimate_thinker", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Ability Start
@@ -7,7 +7,7 @@ function sky_ultimate:OnSpellStart()
 	-- unit identifier
 	local caster = self:GetCaster()
 	local cast_point = self:GetCastPoint()
-	self.radius = self:GetSpecialValueFor( "radius" )
+	self.radius = self:GetSpecialValueFor("radius")
 
     -- Animation and pseudo cast point
 	StartAnimation(caster, {
@@ -37,7 +37,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Ability Start
-function sky_ultimate:OnCastPointEnd( point )
+function sky_ultimate:OnCastPointEnd(point)
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
 
@@ -64,7 +64,7 @@ end
 function sky_ultimate:OnAbilityPhaseInterrupted()	
     -- stop effects 
 	local sound_cast = "skywrath_mage_drag_mystic_flare_01"
-	StopGlobalSound( sound_cast )
+	StopGlobalSound(sound_cast)
 	return true -- if success
 end
 

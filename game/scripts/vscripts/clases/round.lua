@@ -88,9 +88,9 @@ function Round:SpawnArrows()
         if _ ~= self.amethyst.index then 
             local origin = entity:GetOrigin()
             local direction = (self.amethyst_entities[self.amethyst.index]:GetOrigin() - origin):Normalized()
-            self.arrows[entity] = ParticleManager:CreateParticle( particle_cast, PATTACH_WORLDORIGIN, nil )
-            ParticleManager:SetParticleControl( self.arrows[entity], 0, origin )
-            ParticleManager:SetParticleControl( self.arrows[entity], 2, origin + direction * Vector(128, 128, 0) )
+            self.arrows[entity] = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+            ParticleManager:SetParticleControl(self.arrows[entity], 0, origin)
+            ParticleManager:SetParticleControl(self.arrows[entity], 2, origin + direction * Vector(128, 128, 0))
         end
     end
 end
@@ -263,7 +263,7 @@ end
 
 function Round:CleanLights()
     for _,light in pairs(self.lights) do
-        UTIL_Remove( light )
+        UTIL_Remove(light)
     end
     self.lights = {}
 end
@@ -283,14 +283,14 @@ function Round:CreateLight()
         nil, --hNPCOwner
         nil, --hUnitOwner
         DOTA_TEAM_NOTEAM
-    )
+   )
     
     local particle_cast = "particles/mod_units/units/middle_orb/rune_arcane.vpcf"
-    ParticleManager:CreateParticle( particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.lights[#self.lights] )
+    ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.lights[#self.lights])
 end
 
 function Round:CreateDeathZone()    
-    CustomGameEventManager:Send_ServerToAllClients( "custom_message", { text = "Death Zone has initiated!" } )
+    CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = "Death Zone has initiated!" })
 
     self.death_zone = CreateModifierThinker(
         nil, --hCaster
@@ -300,7 +300,7 @@ function Round:CreateDeathZone()
         self.amethyst_entities[self.amethyst.index]:GetOrigin(), --vOrigin
         DOTA_TEAM_NOTEAM, --nTeamNumber
         false --bPhantomBlocker
-    )
+   )
 end
 
 function Round:DestroyDeathZone()

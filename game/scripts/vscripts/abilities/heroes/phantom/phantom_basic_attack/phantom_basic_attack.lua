@@ -1,5 +1,5 @@
 phantom_basic_attack = class({})
-LinkLuaModifier( "modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE)
 
 function phantom_basic_attack:GetCastPointOverride()
 	if IsServer() then
@@ -10,7 +10,7 @@ end
 function phantom_basic_attack:GetCooldown(iLevel)
 	if IsServer() then
         local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
-        local attack_speed = ( 1 / attacks_per_second )
+        local attack_speed = (1 / attacks_per_second)
 		
 		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
 	end
@@ -31,7 +31,7 @@ function phantom_basic_attack:OnSpellStart()
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
-	local direction = ( Vector( point.x - origin.x, point.y - origin.y, 0)):Normalized()
+	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
 	local enemies = caster:FindUnitsInCone(
 		direction, 
@@ -52,7 +52,7 @@ function phantom_basic_attack:OnSpellStart()
 			damage_type = DAMAGE_TYPE_PHYSICAL,
 			ability = self
 		}
-		ApplyDamage( damage_table )
+		ApplyDamage(damage_table)
 
 		caster:GiveManaPercent(mana_gain_pct, enemy)
 		caster:AddNewModifier(
@@ -94,18 +94,18 @@ function phantom_basic_attack:PlayEffectsOnFinish(pos)
 	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
 	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_blinkb.vpcf"
-	local effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_POINT, caster )
-	ParticleManager:SetParticleControl( effect_cast, 0, final_position )
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
 	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
-	ParticleManager:ReleaseParticleIndex( effect_cast )
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function phantom_basic_attack:PlayEffectsOnImpact( hTarget )
-	EmitSoundOn( "Hero_PhantomAssassin.Attack", hTarget )
+function phantom_basic_attack:PlayEffectsOnImpact(hTarget)
+	EmitSoundOn("Hero_PhantomAssassin.Attack", hTarget)
 end
 
 function phantom_basic_attack:PlayEffectsOnCast()
-	EmitSoundOn( "Hero_PhantomAssassin.PreAttack", self:GetCaster() )
+	EmitSoundOn("Hero_PhantomAssassin.PreAttack", self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end

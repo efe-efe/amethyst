@@ -1,10 +1,10 @@
 ability_name = class({})
-LinkLuaModifier( "modifier_ability_name_thinker", "abilities/heroes/hero_name/ability_name/modifier_ability_name_thinker", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_ability_name_thinker", "abilities/heroes/hero_name/ability_name/modifier_ability_name_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function ability_name:OnCastPointEnd()
 	local caster = self:GetCaster()
 	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-	local delay_time = self:GetSpecialValueFor( "delay_time" )
+	local delay_time = self:GetSpecialValueFor("delay_time")
 	local radius = self:GetSpecialValueFor("radius")
 
 	CreateModifierThinker(
@@ -26,7 +26,7 @@ function ability_name:OnCastPointEnd()
 end
 
 if IsClient() then require("wrappers/abilities") end
-Abilities.Initialize( 
+Abilities.Initialize(
 	ability_name,
 	{ activity = ACT_DOTA_CAST_ABILITY_1, rate = 1.0 },
 	{ movement_speed = 10 }

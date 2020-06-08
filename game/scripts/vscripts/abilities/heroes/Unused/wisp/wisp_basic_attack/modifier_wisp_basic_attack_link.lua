@@ -1,5 +1,5 @@
 modifier_wisp_basic_attack_link = class({})
-LinkLuaModifier( "modifier_wisp_basic_attack", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack", LUA_MODIFIER_MOTION_NONE )
+LinkLuaModifier("modifier_wisp_basic_attack", "abilities/heroes/wisp/wisp_basic_attack/modifier_wisp_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
 --------------------------------------------------------------------------------
 -- Classifications
@@ -17,7 +17,7 @@ function modifier_wisp_basic_attack_link:OnCreated()
             self:GetAbility(),
             "modifier_wisp_basic_attack",
             { duration = self:GetDuration() }
-        )
+       )
     end
     
     self:StartIntervalThink(0.1)
@@ -36,7 +36,7 @@ function modifier_wisp_basic_attack_link:OnRefresh()
             self:GetAbility(),
             "modifier_wisp_basic_attack",
             { duration = self:GetDuration() }
-        )
+       )
     end
     
     self:StartIntervalThink(0.1)
@@ -71,29 +71,29 @@ end
 
 --------------------------------------------------------------------------------
 -- Graphics & Sounds
-function modifier_wisp_basic_attack_link:PlayEffects( hTarget )
+function modifier_wisp_basic_attack_link:PlayEffects(hTarget)
     -- Get Resources
     if IsServer() then
         local particle_cast = "particles/econ/items/wisp/wisp_tether_ti7.vpcf"
 
-        self.effect_cast = ParticleManager:CreateParticle( 
+        self.effect_cast = ParticleManager:CreateParticle(
             particle_cast,
             PATTACH_CUSTOMORIGIN, 
             nil
-        )
+       )
 
         local origin = self:GetCaster():GetOrigin()
 
-        ParticleManager:SetParticleControlEnt( 
+        ParticleManager:SetParticleControlEnt(
             self.effect_cast, 
             0, 
             self:GetCaster(), 
             PATTACH_POINT_FOLLOW, 
             "attach_hitloc", 
-            self:GetCaster():GetOrigin() + Vector( 0, 0, 96 ), 
+            self:GetCaster():GetOrigin() + Vector(0, 0, 96), 
             true 
-        );
-        ParticleManager:SetParticleControlEnt( 
+       );
+        ParticleManager:SetParticleControlEnt(
             self.effect_cast, 
             1, 
             hTarget, 
@@ -101,13 +101,13 @@ function modifier_wisp_basic_attack_link:PlayEffects( hTarget )
             "attach_attack1", 
             hTarget:GetOrigin(), 
             true 
-        );
+       );
     end
 end
 
 function modifier_wisp_basic_attack_link:StopEffects()
     if IsServer() then
-        ParticleManager:DestroyParticle( self.effect_cast, false )
-        ParticleManager:ReleaseParticleIndex( self.effect_cast )
+        ParticleManager:DestroyParticle(self.effect_cast, false)
+        ParticleManager:ReleaseParticleIndex(self.effect_cast)
     end
 end

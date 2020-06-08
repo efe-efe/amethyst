@@ -18,7 +18,7 @@ end
 
 --------------------------------------------------------------------------------
 -- Initializations
-function modifier_treant_natures_punishment:OnCreated( kv )
+function modifier_treant_natures_punishment:OnCreated(kv)
     self.healing_reduction_pct = self:GetAbility():GetSpecialValueFor("healing_reduction_pct")
 
 	-- references
@@ -28,9 +28,9 @@ function modifier_treant_natures_punishment:OnCreated( kv )
 	end
 end
 
-function modifier_treant_natures_punishment:OnRefresh( kv )
+function modifier_treant_natures_punishment:OnRefresh(kv)
 	-- references
-	local max_stack = self:GetAbility():GetSpecialValueFor( "stack_limit" )
+	local max_stack = self:GetAbility():GetSpecialValueFor("stack_limit")
 
 	if IsServer() then
 		if self:GetStackCount()<max_stack then
@@ -48,7 +48,7 @@ function modifier_treant_natures_punishment:OnRemoved()
 end
 
 
-function modifier_treant_natures_punishment:OnStackCountChanged( old )
+function modifier_treant_natures_punishment:OnStackCountChanged(old)
     if IsServer() then
         local new = self:GetStackCount()
 
@@ -64,21 +64,21 @@ function modifier_treant_natures_punishment:OnStackCountChanged( old )
 	end
 end
 
-function modifier_treant_natures_punishment:OnDestroy( kv )
+function modifier_treant_natures_punishment:OnDestroy(kv)
 	self:StopEffects()
 end
 
-function modifier_treant_natures_punishment:PlayEffects( second )
+function modifier_treant_natures_punishment:PlayEffects(second)
     local particle_cast = "particles/units/heroes/hero_abaddon/abaddon_curse_counter_stack.vpcf"
 
-	self.effect_cast = ParticleManager:CreateParticle( particle_cast, PATTACH_OVERHEAD_FOLLOW, self:GetParent() )
-    ParticleManager:SetParticleControl( self.effect_cast, 1, Vector(0, self:GetStackCount(), 0) )
+	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_OVERHEAD_FOLLOW, self:GetParent())
+    ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(0, self:GetStackCount(), 0))
 end
 
 function modifier_treant_natures_punishment:StopEffects()
 	if self.effect_cast ~= nil then
-		ParticleManager:DestroyParticle( self.effect_cast, false )
-		ParticleManager:ReleaseParticleIndex( self.effect_cast )
+		ParticleManager:DestroyParticle(self.effect_cast, false)
+		ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	end
 end
 
