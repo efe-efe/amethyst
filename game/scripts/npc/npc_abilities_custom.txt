@@ -52,6 +52,8 @@
 #base "abilities\mars\mars_q.txt"
 #base "abilities\mars\mars_space.txt"
 #base "abilities\mars\mars_r.txt"
+#base "abilities\mars\mars_f.txt"
+#base "abilities\mars\mars_arena_of_blood_lua.txt"
 
 "DOTAAbilities"
 {

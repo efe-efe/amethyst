@@ -24,6 +24,42 @@ function modifier_juggernaut_counter_countering:OnTrigger(params)
 	end
 end
 
+function modifier_juggernaut_counter_countering:OnProjectileHitCustom(params)
+	if IsServer() then
+		PrintTable(params)
+		local projectile = params.projectile
+
+		if projectile.bIsReflectable == true then
+
+			projectile:SetVelocity(projectile:GetVelocity():Normalized() * -1, projectile:GetPosition())
+			--[[
+			local reflectedProjectile = projectile;
+			reflectedProjectile.vSpawnOrigin = projectile.current_position;
+			reflectedProjectile.Source = entity;
+			reflectedProjectile.bIgnoreSource = true;
+			reflectedProjectile.nChangeMax = projectile.nChangeMax - 1;
+			reflectedProjectile.iVisionTeamNumber = entity:GetTeam();
+			reflectedProjectile.vVelocity = -projectile.current_velocity * 30
+			
+			if entity:IsCountering() then
+				-- Deal damage to activate counters
+				local damage = {
+					victim = entity,
+					attacker = projectile.Source,
+					damage = 1,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+				}
+				ApplyDamage(damage)
+			end
+
+			Projectiles:CreateProjectile(reflectedProjectile)
+			]]
+		end
+
+		return false
+	end
+end
+
 function modifier_juggernaut_counter_countering:GetMovementSpeedPercentage() return 0 end
 
 function modifier_juggernaut_counter_countering:DeclareFunctions()
@@ -46,4 +82,4 @@ end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_juggernaut_counter_countering)
-Modifiers.Reflect(modifier_juggernaut_counter_countering)
+Modifiers.OnProjectileHit(modifier_juggernaut_counter_countering)

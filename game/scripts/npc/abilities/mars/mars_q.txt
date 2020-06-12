@@ -6,7 +6,7 @@
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"mars_bulwark"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
 		"AbilityCooldown"				"9.0"
 		"LevelsBetweenUpgrades"			"0"
 

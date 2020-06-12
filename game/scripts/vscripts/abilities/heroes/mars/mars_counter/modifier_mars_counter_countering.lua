@@ -3,7 +3,6 @@ modifier_mars_counter_countering = class({})
 function modifier_mars_counter_countering:OnCreated(params)
     if IsServer() then
         self.effect_cast = ParticleManager:CreateParticle("particles/spectre/spectre_counter.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
-
     end
 end
 

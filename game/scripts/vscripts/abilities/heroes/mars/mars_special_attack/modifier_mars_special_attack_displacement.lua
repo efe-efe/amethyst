@@ -54,7 +54,7 @@ function modifier_mars_special_attack_displacement:PlayEffectsOnImpact()
 end
 
 function modifier_mars_special_attack_displacement:GetCollisionOffset()
-	return 120
+	return 50
 end
 
 if IsClient() then require("wrappers/modifiers") end

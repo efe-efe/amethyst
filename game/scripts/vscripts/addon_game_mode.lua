@@ -165,6 +165,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_displacement",            "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH) -- Should Delete
     LinkLuaModifier("modifier_generic_confuse",                 "abilities/generic/modifier_generic_confuse", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_hypnotize",               "abilities/generic/modifier_generic_hypnotize", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_generic_sleep",                   "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier("modifier_visible",                         "abilities/base/modifier_visible", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_casting",                         "abilities/base/modifier_casting", LUA_MODIFIER_MOTION_NONE)

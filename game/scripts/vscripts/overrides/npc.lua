@@ -12,7 +12,8 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.channeling_modifiers = 	{}
 	self.status_modifiers =			{}
 	self.fear_modifiers =			{}
-
+	self.translate_modifiers = 		{}
+	self.on_projectile_hit_modifiers = {}
 	self:AddNewModifier(self,  nil, "modifier_visible", {})
 	GameRules.GameMode:RegisterUnit(self)
 	self:SetTreshold(GameRules.GameMode.max_treshold)
@@ -31,6 +32,8 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 	self.status_modifiers = 		{}
 	self.recast_modifiers =			{}
 	self.fear_modifiers =			{}
+	self.translate_modifiers = 		{}
+	self.on_projectile_hit_modifiers = {}
 	self.stackbars_modifier =		nil
 	self.charges_modifier =			nil
 	self.cooldown_modifier =		nil
@@ -107,6 +110,21 @@ function CDOTA_BaseNPC:OnBasicAttackImpact(hTarget)
 		end
 	end
 end
+
+function CDOTA_BaseNPC:OnProjectileHit(projectile, entity)
+	local keep_processing = true
+
+	for _,modifier_name in pairs(entity:GetOnProjectileHit()) do
+		local modifier_handle = entity:FindModifierByName(modifier_name)
+		
+		if not modifier_handle:OnProjectileHitCustom({ projectile = projectile, target = entity }) then
+			keep_processing = false
+		end
+	end
+
+	return keep_processing
+end
+
 
 function CDOTA_BaseNPC:InterruptCastPoint()
 	self:RemoveModifierByName("modifier_cast_point")
@@ -447,8 +465,10 @@ MODIFIER_REFLECT = 3
 MODIFIER_ANIMATION = 4
 MODIFIER_CHANNELING = 5 
 MODIFIER_CHARGES = 6 
+MODIFIER_TRANSLATE = 7 
+MODIFIER_ON_PROJECTILE_HIT = 7 
 
-function CDOTA_BaseNPC:AddModifierTracker(modifier_name, type) 	
+function CDOTA_BaseNPC:AddModifierTracker(data, type) 	
 	local key = nil
 
 	if type == MODIFIER_DISPLACEMENT then key = "displacement_modifiers" end
@@ -458,11 +478,13 @@ function CDOTA_BaseNPC:AddModifierTracker(modifier_name, type)
 	if type == MODIFIER_CHANNELING then key = "channeling_modifiers" end
 	if type == MODIFIER_CHARGES then key = "charges_modifiers" end
 	if type == MODIFIER_FEAR then key = "fear_modifiers" end
+	if type == MODIFIER_TRANSLATE then key = "translate_modifiers" end
+	if type == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
 
-	table.insert(self[key], modifier_name)
+	table.insert(self[key], data)
 end
 
-function CDOTA_BaseNPC:RemoveModifierTracker(modifier_name, type)
+function CDOTA_BaseNPC:RemoveModifierTracker(data, type)
 	local key = nil
 	
 	if type == MODIFIER_DISPLACEMENT then key = "displacement_modifiers" end
@@ -472,9 +494,10 @@ function CDOTA_BaseNPC:RemoveModifierTracker(modifier_name, type)
 	if type == MODIFIER_CHANNELING then key = "channeling_modifiers" end
 	if type == MODIFIER_CHARGES then key = "charges_modifiers" end
 	if type == MODIFIER_FEAR then key = "fear_modifiers" end
+	if type == MODIFIER_TRANSLATE then key = "on_projectile_hit_modifiers" end
 
-	for _,m_modifier_name in pairs(self[key]) do
-		if m_modifier_name == modifier_name then
+	for _,m_data in pairs(self[key]) do
+		if m_data == data then
 			self[key][_] = nil
 		end
 	end
@@ -537,13 +560,14 @@ function CDOTA_BaseNPC:GetShield()
 	return shield
 end
 
-function CDOTA_BaseNPC:GetTreshold()				return self.treshold				end
-function CDOTA_BaseNPC:GetStatus()					return self.status_modifiers		end
-function CDOTA_BaseNPC:GetStackbars()				return self.stackbars_modifier		end
-function CDOTA_BaseNPC:GetCharges()					return self.charges_modifier		end
-function CDOTA_BaseNPC:GetCooldown()				return self.cooldown_modifier		end
-function CDOTA_BaseNPC:GetRecast()					return self.recast_modifiers		end
-
+function CDOTA_BaseNPC:GetTreshold()				return self.treshold						end
+function CDOTA_BaseNPC:GetStatus()					return self.status_modifiers				end
+function CDOTA_BaseNPC:GetStackbars()				return self.stackbars_modifier				end
+function CDOTA_BaseNPC:GetCharges()					return self.charges_modifier				end
+function CDOTA_BaseNPC:GetCooldown()				return self.cooldown_modifier				end
+function CDOTA_BaseNPC:GetRecast()					return self.recast_modifiers				end
+function CDOTA_BaseNPC:GetTranslate()				return self.translate_modifiers				end
+function CDOTA_BaseNPC:GetOnProjectileHit()			return self.on_projectile_hit_modifiers		end
 
 -- Setters
 function CDOTA_BaseNPC:SetInitialized(initialized)	

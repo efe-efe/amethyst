@@ -70,7 +70,7 @@ end
 
 function Projectiles:CalcNormal(pos, unit, scale)
     local m_scale = scale or 1
-    local nscale = -1 * scale
+    local nscale = -1 * m_scale
     local zl = GetGroundPosition(pos + Vector(nscale,0,0), unit).z
     local zr = GetGroundPosition(pos + Vector(scale,0,0), unit).z
     local zu = GetGroundPosition(pos + Vector(0,scale,0), unit).z
@@ -98,6 +98,7 @@ function Projectiles:CreateProjectile(projectile)
     end
 
     function projectile:SetVelocity(newVel, newPos)
+        print("SetVelocity(newVel, newPos)", newVel, newPos, projectile.changes)
         if projectile.changes > 0 then
             projectile.changes = projectile.changes - 1
             projectile.current_velocity = newVel / 30
@@ -229,7 +230,6 @@ function Projectiles:CreateProjectile(projectile)
                             if not status then
                                 print('[PROJECTILES] Projectile UnitTest Failure!: ' .. test)
                             elseif test then
-
                                 local is_slower = entity:FindModifierByName("modifier_generic_projectile_slower")
                                 local is_reflector = entity:HasModifier("modifier_generic_projectile_reflector") or entity:IsReflecting()
                                 local is_enemy_blocker = entity:FindModifierByName("modifier_generic_projectile_enemy_blocker")
@@ -262,19 +262,6 @@ function Projectiles:CreateProjectile(projectile)
                                     end
                                 end
 
-                                if entity:IsCountering() then
-                                    -- Deal damage to activate counters
-                                    local damage = {
-                                        victim = entity,
-                                        attacker = projectile.Source,
-                                        damage = 1,
-                                        damage_type = DAMAGE_TYPE_MAGICAL,
-                                    }
-                                    ApplyDamage(damage)
-                                    projectile:Destroy(false)
-                                    return
-                                end
-
                                 if entity:IsWall() then
                                     if projectile.Source:IsAlly(entity) then
                                         return
@@ -304,15 +291,38 @@ function Projectiles:CreateProjectile(projectile)
                                     else
                                         projectile.rehit[entity:entindex()] = current_time + 10000
                                     end
-
-                                    local status, action = pcall(projectile.OnUnitHit, projectile, entity)
-                                    if not status then
-                                        print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
+                                        
+                                    local keep_processing = true
+                                    print("IM HERE2")
+                                    if entity.OnProjectileHit then
+                                        print("IM HERE")
+                                        keep_processing = entity:OnProjectileHit(projectile, entity)
                                     end
 
-                                    if projectile.UnitBehavior == PROJECTILES_DESTROY then
-                                        projectile:Destroy(false)
-                                        return
+                                    if entity:IsCountering() then
+                                        -- Deal damage to activate counters
+                                        local damage = {
+                                            victim = entity,
+                                            attacker = projectile.Source,
+                                            damage = 1,
+                                            damage_type = DAMAGE_TYPE_MAGICAL,
+                                        }
+                                        ApplyDamage(damage)
+                                        --projectile:Destroy(false)
+                                        --return
+                                    end
+
+                                    if keep_processing then
+                                        print("keep_processingkeep_processingkeep_processingkeep_processingkeep_processingkeep_processingkeep_processingkeep_processingkeep_processing")
+                                        local status, action = pcall(projectile.OnUnitHit, projectile, entity)
+                                        if not status then
+                                            print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
+                                        end
+
+                                        if projectile.UnitBehavior == PROJECTILES_DESTROY then
+                                            projectile:Destroy(false)
+                                            return
+                                        end
                                     end
                                 end
                             end
@@ -357,9 +367,7 @@ function Projectiles:CreateProjectile(projectile)
                 -- ON HIT AN WALL
                 if projectile.WallBehavior ~= PROJECTILES_NOTHING and groundConnect then--ground.z > projectile.prevPos.z then
                     local normal = Projectiles:CalcNormal(ground, projectile.Source, 32)
-                   
                     --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(255,255,255), true, 1)
-                    --print(normal.z)
 
                     if normal.z < .8 then
                         local vec = Vector(GridNav:GridPosToWorldCenterX(GridNav:WorldToGridPosX(subpos.x)), GridNav:GridPosToWorldCenterY(GridNav:WorldToGridPosY(subpos.y)), ground.z)
@@ -372,7 +380,6 @@ function Projectiles:CreateProjectile(projectile)
                             projectile:Destroy(false)
                             return
                         elseif projectile.WallBehavior == PROJECTILES_BOUNCE and projectile.changes > 0 and current_time >= projectile.changeTime then
-                            --local normal = Projectiles:CalcNormal(ground, projectile.Source)
                             --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(255,255,255), true, 1)
                             normal.z = 0
                             normal = normal:Normalized()

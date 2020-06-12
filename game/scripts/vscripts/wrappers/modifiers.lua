@@ -391,7 +391,6 @@ function Modifiers.Displacement(modifier)
         end
 
         local origin = self.parent:GetAbsOrigin() + Vector(self.direction.x, self.direction.y, 0) * self:GetCollisionOffset()
-        local current_z = GetGroundPosition(origin, self:GetParent()).z
 
         local units = self:GetCaster():FindUnitsInRadius(
             origin, 
@@ -402,8 +401,15 @@ function Modifiers.Displacement(modifier)
             FIND_ANY_ORDER
        )
 
+        local z_left = GetGroundPosition(origin + Vector(-1, 0, 0), self:GetParent()).z
+        local z_right = GetGroundPosition(origin + Vector(1, 0, 0), self:GetParent()).z
+        local z_up = GetGroundPosition(origin + Vector(0, 1, 0), self:GetParent()).z
+        local z_down = GetGroundPosition(origin + Vector(0, -1, 0), self:GetParent()).z
+        local normal = Vector(z_left - z_right, z_down - z_up, 2):Normalized()
+        --DebugDrawLine_vCol(origin, origin + normal * 500, Vector(255,255,255), true, 3)
+
         if self.prev_origin then
-            if current_z - self.prev_origin.z > 32  then
+            if normal.z < .8 then
                 self:OnCollide({
                     type = WALL_COLLISION,
                 })
@@ -611,6 +617,30 @@ function Modifiers.Counter(modifier)
     Modifiers.Status(modifier)
 end
 
+function Modifiers.OnProjectileHit(modifier)
+    local onCreated = modifier.OnCreated
+    local onDestroy = modifier.OnDestroy
+    local onProjectileHitCustom = modifier.OnProjectileHitCustom
+
+    function modifier:OnProjectileHitCustom(params)
+        if onProjectileHitCustom then onProjectileHitCustom(self, params) end
+    end
+
+    function modifier:OnCreated(params)
+        if IsServer() then
+            self:GetParent():AddModifierTracker(self:GetName(), MODIFIER_ON_PROJECTILE_HIT)
+        end
+        if onCreated then onCreated(self, params) end
+    end
+
+    function modifier:OnDestroy(params)
+        if IsServer() then
+            self:GetParent():RemoveModifierTracker(self:GetName(), MODIFIER_ON_PROJECTILE_HIT)
+        end
+        if onDestroy then onDestroy(self, params) end
+    end
+end
+
 function Modifiers.Reflect(modifier)
     local onCreated = modifier.OnCreated
     local onDestroy = modifier.OnDestroy
@@ -646,6 +676,45 @@ function Modifiers.Animation(modifier)
             self:GetParent():RemoveModifierTracker(self:GetName(), MODIFIER_ANIMATION)
         end
         if onDestroy then onDestroy(self, params) end
+    end
+end
+
+function Modifiers.Translate(modifier)
+    local onCreated = modifier.OnCreated
+    local onDestroy = modifier.OnDestroy
+    local getWeight = modifier.GetWeight
+    local getTranslation = modifier.GetTranslation
+    
+    function modifier:OnCreated(params)
+        if IsServer() then
+            self:GetParent():AddModifierTracker(self:GetName(), MODIFIER_TRANSLATE)
+            if self:GetParent():HasModifier("modifier_hero_movement") then
+                self:GetParent():RemoveModifierByName("modifier_hero_movement")
+                self:GetParent():AddNewModifier(self:GetParent(), nil, "modifier_hero_movement", {})
+            end
+        end
+        if onCreated then onCreated(self, params) end
+    end
+
+    function modifier:OnDestroy(params)
+        if IsServer() then
+            self:GetParent():RemoveModifierTracker(self:GetName(), MODIFIER_TRANSLATE)
+            if self:GetParent():HasModifier("modifier_hero_movement") then
+                self:GetParent():RemoveModifierByName("modifier_hero_movement")
+                self:GetParent():AddNewModifier(self:GetParent(), nil, "modifier_hero_movement", {})
+            end
+        end
+        if onDestroy then onDestroy(self, params) end
+    end
+
+    function modifier:GetWeight()
+        if getWeight then return getWeight(self) end
+        return 1
+    end
+
+    function modifier:GetTranslation()
+        if getTranslation then return getTranslation(self) end
+        return ""
     end
 end
 
