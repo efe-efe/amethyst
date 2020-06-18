@@ -19,7 +19,7 @@ function mars_second_attack:OnSpellStart()
 	local enemies = caster:FindUnitsInLine(
 		point, 
 		origin + direction * 50, 
-		100, 
+		80, 
 		DOTA_UNIT_TARGET_TEAM_ENEMY, 
 		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
 		DOTA_UNIT_TARGET_FLAG_NONE

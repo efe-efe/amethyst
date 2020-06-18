@@ -105,17 +105,12 @@ function modifier_mars_arena_of_blood_lua_wall_aura:GetModifierMoveSpeed_Limit( 
 		limit = 0
 	else
 		-- interpolate between max
-		limit = self:Interpolate( wall_distance/self.width, self.MIN_SPEED, self.MAX_SPEED )
+		limit = Interpolate( wall_distance/self.width, self.MIN_SPEED, self.MAX_SPEED )
 	end
 
 	return limit
 end
 
---------------------------------------------------------------------------------
--- Helper
-function modifier_mars_arena_of_blood_lua_wall_aura:Interpolate( value, min, max )
-	return value*(max-min) + min
-end
 
 --------------------------------------------------------------------------------
 -- Aura Effects

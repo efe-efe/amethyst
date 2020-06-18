@@ -98,7 +98,6 @@ function Projectiles:CreateProjectile(projectile)
     end
 
     function projectile:SetVelocity(newVel, newPos)
-        print("SetVelocity(newVel, newPos)", newVel, newPos, projectile.changes)
         if projectile.changes > 0 then
             projectile.changes = projectile.changes - 1
             projectile.current_velocity = newVel / 30
@@ -111,6 +110,22 @@ function Projectiles:CreateProjectile(projectile)
             
             ParticleManager:SetParticleControl(projectile.id, projectile.iVelocityCP, newVel)
         end
+    end
+
+    function projectile:SetSource(source)
+        projectile.Source = source
+    end
+
+    function projectile:SetVisionTeam(team)
+        projectile.iVisionTeamNumber = team
+    end
+
+    function projectile:ResetDistanceTraveled()
+        projectile.distanceTraveled = 0
+    end
+
+    function projectile:ResetRehit()
+        projectile.rehit = {}
     end
 
     function projectile:Destroy(bImmediate)
@@ -292,28 +307,12 @@ function Projectiles:CreateProjectile(projectile)
                                         projectile.rehit[entity:entindex()] = current_time + 10000
                                     end
                                         
-                                    local keep_processing = true
-                                    print("IM HERE2")
+                                    local continue = true
                                     if entity.OnProjectileHit then
-                                        print("IM HERE")
-                                        keep_processing = entity:OnProjectileHit(projectile, entity)
+                                        continue = entity:OnProjectileHit(projectile, entity)
                                     end
 
-                                    if entity:IsCountering() then
-                                        -- Deal damage to activate counters
-                                        local damage = {
-                                            victim = entity,
-                                            attacker = projectile.Source,
-                                            damage = 1,
-                                            damage_type = DAMAGE_TYPE_MAGICAL,
-                                        }
-                                        ApplyDamage(damage)
-                                        --projectile:Destroy(false)
-                                        --return
-                                    end
-
-                                    if keep_processing then
-                                        print("keep_processingkeep_processingkeep_processingkeep_processingkeep_processingkeep_processingkeep_processingkeep_processingkeep_processing")
+                                    if continue then
                                         local status, action = pcall(projectile.OnUnitHit, projectile, entity)
                                         if not status then
                                             print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
@@ -470,7 +469,8 @@ function Projectiles:SetValues(projectile)
 
     if projectile.bIsSlowable == nil then projectile.bIsSlowable = true end
     if projectile.bIsReflectable == nil then projectile.bIsReflectable = true end
-    if projectile.bisReflectableByAllies == nil then projectile.bisReflectableByAllies = true end
+    if projectile.bIsReflectableByAllies == nil then projectile.bIsReflectableByAllies = true end
+    if projectile.bIsDestructible == nil then projectile.bIsDestructible = true end
     
     projectile.iFlagFilter =        projectile.iFlagFilter or DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES 
 

@@ -7,7 +7,7 @@
 "DOTAUnits"
 {
 	
-	"npc_dota_mars_arena_of_blood_lua_soldier"
+	"npc_dota_mars_ultimate_soldier"
 	{
 		// General
 		//----------------------------------------------------------------

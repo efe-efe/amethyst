@@ -30,7 +30,7 @@ function mars_special_attack:OnSpellStart()
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
-		OnUnitHit = function(_self, unit) 
+		OnUnitHit = function(_self, unit)
 			local counter = 0
 			for k, v in pairs(_self.rehit) do counter = counter + 1 end
 			if counter > 1 then return end

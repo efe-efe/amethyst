@@ -595,7 +595,7 @@ function Projectiles:Initialize(projectile)
 
     if projectile.bIsSlowable == nil then projectile.bIsSlowable = true end
     if projectile.bIsReflectable == nil then projectile.bIsReflectable = true end
-    if projectile.bisReflectableByAllies == nil then projectile.bisReflectableByAllies = true end
+    if projectile.bIsReflectableByAllies == nil then projectile.bIsReflectableByAllies = true end
     
     projectile.iFlagFilter =        projectile.iFlagFilter or DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES 
 

@@ -88,18 +88,6 @@ function modifier_mars_arena_of_blood_lua_spear_aura:OnCreated( kv )
 	end
 end
 
-function modifier_mars_arena_of_blood_lua_spear_aura:OnRefresh( kv )
-	
-end
-
-function modifier_mars_arena_of_blood_lua_spear_aura:OnRemoved()
-end
-
-function modifier_mars_arena_of_blood_lua_spear_aura:OnDestroy()
-end
-
---------------------------------------------------------------------------------
--- Aura Effects
 function modifier_mars_arena_of_blood_lua_spear_aura:IsAura()
 	return self.owner
 end
@@ -128,23 +116,23 @@ function modifier_mars_arena_of_blood_lua_spear_aura:GetAuraSearchFlags()
 	return 0
 end
 function modifier_mars_arena_of_blood_lua_spear_aura:GetAuraEntityReject( unit )
-	if not IsServer() then return end
+	if IsServer() then
+		-- check flying
+		if unit:HasFlyMovementCapability() then return true end
 
-	-- check flying
-	if unit:HasFlyMovementCapability() then return true end
+		-- check if already own this aura
+		if unit:FindModifierByNameAndCaster( "modifier_mars_arena_of_blood_lua_spear_aura", self:GetCaster() ) then
+			return true
+		end
 
-	-- check if already own this aura
-	if unit:FindModifierByNameAndCaster( "modifier_mars_arena_of_blood_lua_spear_aura", self:GetCaster() ) then
-		return true
+		-- check distance
+		local distance = (unit:GetOrigin() - self.aura_origin):Length2D()
+		if (distance - self.spear_radius) < 0 then
+			return true
+		end
+
+		return false
 	end
-
-	-- check distance
-	local distance = (unit:GetOrigin()-self.aura_origin):Length2D()
-	if (distance-self.spear_radius)<0 then
-		return true
-	end
-
-	return false
 end
 
 --------------------------------------------------------------------------------

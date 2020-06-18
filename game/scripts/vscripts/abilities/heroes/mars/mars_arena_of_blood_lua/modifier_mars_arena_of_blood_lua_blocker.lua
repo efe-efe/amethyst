@@ -71,6 +71,7 @@ function modifier_mars_arena_of_blood_lua_blocker:CheckState()
 		[MODIFIER_STATE_STUNNED] = true,
 		[MODIFIER_STATE_UNSELECTABLE] = true,
 		[MODIFIER_STATE_UNTARGETABLE] = true,
+		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
 
 	return state
@@ -99,13 +100,9 @@ function modifier_mars_arena_of_blood_lua_blocker:OnIntervalThink()
 		local enemy = enemies[1]
 		local range = math.max( self.parent:GetRangeToUnit( enemy ), self.fade_min )
 		range = math.min( range, self.fade_max )-self.fade_min
-		alpha = self:Interpolate( range/self.fade_range, 255, 0 )
+		alpha = Interpolate( range/self.fade_range, 255, 0 )
 	end
 
 	-- set alpha based on distance
 	self.parent:SetRenderAlpha( alpha )
-end
-
-function modifier_mars_arena_of_blood_lua_blocker:Interpolate( value, min, max )
-	return value*(max-min) + min
 end

@@ -26,37 +26,21 @@ end
 
 function modifier_juggernaut_counter_countering:OnProjectileHitCustom(params)
 	if IsServer() then
-		PrintTable(params)
 		local projectile = params.projectile
 
+		self:OnTrigger({})
+		
 		if projectile.bIsReflectable == true then
-
-			projectile:SetVelocity(projectile:GetVelocity():Normalized() * -1, projectile:GetPosition())
-			--[[
-			local reflectedProjectile = projectile;
-			reflectedProjectile.vSpawnOrigin = projectile.current_position;
-			reflectedProjectile.Source = entity;
-			reflectedProjectile.bIgnoreSource = true;
-			reflectedProjectile.nChangeMax = projectile.nChangeMax - 1;
-			reflectedProjectile.iVisionTeamNumber = entity:GetTeam();
-			reflectedProjectile.vVelocity = -projectile.current_velocity * 30
+			projectile:SetVelocity(projectile:GetVelocity() * -1, projectile:GetPosition())
+			projectile:SetSource(self:GetParent())
+			projectile:SetVisionTeam(self:GetParent():GetTeam())
+			projectile:ResetDistanceTraveled()
+			projectile:ResetRehit()
 			
-			if entity:IsCountering() then
-				-- Deal damage to activate counters
-				local damage = {
-					victim = entity,
-					attacker = projectile.Source,
-					damage = 1,
-					damage_type = DAMAGE_TYPE_MAGICAL,
-				}
-				ApplyDamage(damage)
-			end
-
-			Projectiles:CreateProjectile(reflectedProjectile)
-			]]
+			return false
 		end
 
-		return false
+		return true
 	end
 end
 

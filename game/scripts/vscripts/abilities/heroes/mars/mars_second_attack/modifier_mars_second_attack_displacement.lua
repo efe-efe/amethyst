@@ -36,10 +36,22 @@ end
 
 function modifier_mars_second_attack_displacement:OnCollide(params)
 	if IsServer() then
+		if params.type == UNIT_COLLISION then
+			for _,unit in pairs(params.units) do
+				if unit:GetName() == "npc_dota_phantomassassin_gravestone" then
+					self:Destroy()
+				end
+			end
+		end
+
 		if params.type == WALL_COLLISION then
 			self:Destroy()
 		end
 	end
+end
+
+function modifier_mars_second_attack_displacement:GetCollisionTargetFilter()
+	return DOTA_UNIT_TARGET_ALL
 end
 
 if IsClient() then require("wrappers/modifiers") end

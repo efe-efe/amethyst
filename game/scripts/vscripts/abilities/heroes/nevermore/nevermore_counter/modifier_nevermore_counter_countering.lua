@@ -24,6 +24,15 @@ function modifier_nevermore_counter_countering:OnTrigger(params)
 	end
 end
 
+function modifier_nevermore_counter_countering:OnProjectileHitCustom(params)
+	if IsServer() then
+		self:OnTrigger({})
+		if params.projectile.bIsDestructible then
+			params.projectile:Destroy(true)
+		end
+	end
+end
+
 function modifier_nevermore_counter_countering:GetMovementSpeedPercentage() return 0 end
 
 function modifier_nevermore_counter_countering:DeclareFunctions()
@@ -52,3 +61,4 @@ end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_nevermore_counter_countering)
+Modifiers.OnProjectileHit(modifier_nevermore_counter_countering)

@@ -61,6 +61,15 @@ function modifier_spectre_counter_countering:OnOrder(params)
     end
 end
 
+function modifier_spectre_counter_countering:OnProjectileHitCustom(params)
+	if IsServer() then
+		self:OnTrigger({})
+		if params.projectile.bIsDestructible then
+			params.projectile:Destroy(true)
+		end
+	end
+end
+
 function modifier_spectre_counter_countering:PlayEffectsOnTrigger()
     EmitSoundOn("Hero_Spectre.Reality", self:GetParent())
     local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
@@ -79,3 +88,4 @@ function modifier_spectre_counter_countering:UseDefaultVisuals() return false en
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_spectre_counter_countering)
+Modifiers.OnProjectileHit(modifier_spectre_counter_countering)

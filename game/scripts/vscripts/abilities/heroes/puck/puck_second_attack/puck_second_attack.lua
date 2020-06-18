@@ -21,7 +21,6 @@ function puck_second_attack:OnSpellStart()
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
         Source = caster,
-        bIsReflectable = false,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,
 		TreeBehavior = PROJECTILES_NOTHING,

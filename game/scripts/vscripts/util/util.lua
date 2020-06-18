@@ -189,8 +189,8 @@ function FindUnitsInCirclesProjection(nTeamNumber, vCenterPos, vStartPos, vEndPo
 		local fUnitRadius = (vUnitPos - vProjection):Length2D()
 
 		-- calculate interpolated search radius at projected vector
-		local fInterpRadius = (fProjection/distance) * (fEndRadius - fStartRadius) + fStartRadius
-
+		local fInterpRadius = Interpolate((fProjection/distance), fEndRadius, fStartRadius)
+		
 		-- if unit is within distance, add them
 		if fUnitRadius <= fInterpRadius then
 			table.insert(targets, unit)
@@ -198,6 +198,10 @@ function FindUnitsInCirclesProjection(nTeamNumber, vCenterPos, vStartPos, vEndPo
 	end
 
 	return targets
+end
+
+function Interpolate(value, min, max)
+	return value * (max - min) + min
 end
 
 function DuplicateTable(obj, seen)

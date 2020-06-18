@@ -4,7 +4,7 @@ local translate = {
 	["bulwark"] = 1,
 }
 
-function modifier_hero_movement:IsHidden()                  return false    end--true    end
+function modifier_hero_movement:IsHidden()                  return true     end
 function modifier_hero_movement:IsDebuff()                  return false    end
 function modifier_hero_movement:IsPurgable()                return false    end
 function modifier_hero_movement:StatusEffectPriority()      return 1.0      end

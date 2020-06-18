@@ -108,7 +108,7 @@ function modifier_hero_base:Move(vDirection, iSpeed)
 				nil, -- handle, cacheUnit. (not known)
 				5, -- float, radius. or use FIND_UNITS_EVERYWHERE
 				DOTA_UNIT_TARGET_TEAM_BOTH, -- int, team filter
-				DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,	-- int, type filter
+				DOTA_UNIT_TARGET_ALL,	-- int, type filter
 				DOTA_UNIT_TARGET_FLAG_NONE, -- int, flag filter
 				FIND_ANY_ORDER, -- int, order filter
 				false -- bool, can grow cache

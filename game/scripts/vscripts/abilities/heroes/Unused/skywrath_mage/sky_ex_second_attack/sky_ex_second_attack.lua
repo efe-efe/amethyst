@@ -71,7 +71,7 @@ function sky_ex_second_attack:OnCastPointEnd(point)
 		bZCheck = false,
 		bGroundLock = true,
 		bProvidesVision = true,
-		bisReflectableByAllies = false,
+		bIsReflectableByAllies = false,
 		iVisionRadius = 200,
 		iVisionTeamNumber = caster:GetTeam(),
 		bFlyingVision = false,

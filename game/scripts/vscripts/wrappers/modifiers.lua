@@ -324,12 +324,14 @@ UNIT_COLLISION = 1
 WALL_COLLISION = 2
 
 function Modifiers.Displacement(modifier)
-    local onCreated =               modifier.OnCreated
-    local onDestroy =               modifier.OnDestroy
-    local onCollide =               modifier.OnCollide
-    local getCollisionRadius =      modifier.GetCollisionRadius
-    local getCollisionOffset =      modifier.GetCollisionOffset
-    local getCollisionUnitFilter =  modifier.GetCollisionUnitFilter
+    local onCreated =                   modifier.OnCreated
+    local onDestroy =                   modifier.OnDestroy
+    local onCollide =                   modifier.OnCollide
+    local getCollisionRadius =          modifier.GetCollisionRadius
+    local getCollisionOffset =          modifier.GetCollisionOffset
+    local getCollisionTeamFilter =      modifier.GetCollisionTeamFilter
+    local getCollisionTargetFilter =    modifier.GetCollisionTargetFilter
+
 
     local checkState =              modifier.CheckState
     
@@ -395,8 +397,8 @@ function Modifiers.Displacement(modifier)
         local units = self:GetCaster():FindUnitsInRadius(
             origin, 
             self:GetCollisionRadius(), 
-            self:GetCollisionUnitFilter(), 
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+            self:GetCollisionTeamFilter(), 
+            self:GetCollisionTargetFilter(), 
             DOTA_UNIT_TARGET_FLAG_NONE,
             FIND_ANY_ORDER
        )
@@ -406,10 +408,16 @@ function Modifiers.Displacement(modifier)
         local z_up = GetGroundPosition(origin + Vector(0, 1, 0), self:GetParent()).z
         local z_down = GetGroundPosition(origin + Vector(0, -1, 0), self:GetParent()).z
         local normal = Vector(z_left - z_right, z_down - z_up, 2):Normalized()
-        --DebugDrawLine_vCol(origin, origin + normal * 500, Vector(255,255,255), true, 3)
 
+        local ground = GetGroundPosition(origin, self.parent)
+        local ground_connect = true
+        
         if self.prev_origin then
-            if normal.z < .8 then
+            ground_connect = ground.z > self.prev_origin.z
+        end
+
+        if self.origin then
+            if normal.z < .8 and ground_connect then
                 self:OnCollide({
                     type = WALL_COLLISION,
                 })
@@ -471,11 +479,17 @@ function Modifiers.Displacement(modifier)
         if onCollide then onCollide(self, params) end
     end
 
-    function modifier:GetCollisionUnitFilter()
-        if getCollisionUnitFilter then return getCollisionUnitFilter(self) end
+    function modifier:GetCollisionTeamFilter()
+        if getCollisionTeamFilter then return getCollisionTeamFilter(self) end
         return DOTA_UNIT_TARGET_TEAM_BOTH
     end
 
+
+    function modifier:GetCollisionTargetFilter()
+        if getCollisionTargetFilter then return getCollisionTargetFilter(self) end
+        return DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
+    end
+    
     function modifier:GetCollisionRadius()
         if getCollisionRadius then return getCollisionRadius(self) end
         return 80

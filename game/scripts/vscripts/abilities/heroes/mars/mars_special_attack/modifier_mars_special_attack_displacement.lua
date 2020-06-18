@@ -26,7 +26,22 @@ end
 
 function modifier_mars_special_attack_displacement:OnCollide(params)
 	if IsServer() then
+		local stun = false
+
+		if params.type == UNIT_COLLISION then
+			for _,unit in pairs(params.units) do
+				if unit:GetName() == "npc_dota_phantomassassin_gravestone" then
+					stun = true
+					break
+				end
+			end
+		end
+
 		if params.type == WALL_COLLISION then
+			stun = true
+		end
+
+		if stun then
 			local damage_table = {
 				victim = self:GetParent(),
 				attacker = self:GetCaster(),
@@ -55,6 +70,10 @@ end
 
 function modifier_mars_special_attack_displacement:GetCollisionOffset()
 	return 50
+end
+
+function modifier_mars_special_attack_displacement:GetCollisionTargetFilter()
+	return DOTA_UNIT_TARGET_ALL
 end
 
 if IsClient() then require("wrappers/modifiers") end

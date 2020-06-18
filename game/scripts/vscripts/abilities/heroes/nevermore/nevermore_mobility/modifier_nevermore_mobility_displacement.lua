@@ -77,7 +77,7 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
 	end
 end
 
-function modifier_nevermore_mobility_displacement:GetCollisionUnitFilter()
+function modifier_nevermore_mobility_displacement:GetCollisionTeamFilter()
     return DOTA_UNIT_TARGET_TEAM_ENEMY
 end
 

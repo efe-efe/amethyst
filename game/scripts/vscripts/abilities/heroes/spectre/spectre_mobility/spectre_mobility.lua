@@ -24,6 +24,7 @@ function spectre_mobility:OnSpellStart()
 	local origin = caster:GetOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
+	local damage = self:GetSpecialValueFor("ability_damage")
 	self.radius = self:GetSpecialValueFor("radius")
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
@@ -60,6 +61,15 @@ function spectre_mobility:OnSpellStart()
 				if not enemy:IsObstacle() then
 					charge = true
 				end
+
+				local damage_table = {
+					victim = enemy,
+					attacker = _self.Source,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_PURE,
+					ability = self
+				}
+				ApplyDamage(damage_table)
 			end
 
 			-- if at least 1 enemy

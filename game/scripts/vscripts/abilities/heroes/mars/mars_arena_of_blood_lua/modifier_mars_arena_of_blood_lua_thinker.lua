@@ -137,7 +137,7 @@ function modifier_mars_arena_of_blood_lua_thinker:SummonBlockers()
 
 		-- create unit async (to avoid high think time)
 		local unit = CreateUnitByNameAsync(
-			"npc_dota_mars_arena_of_blood_lua_soldier",
+			"npc_dota_mars_ultimate_soldier",
 			location,
 			false,
 			caster,

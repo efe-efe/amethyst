@@ -28,24 +28,14 @@ Control motion Modifiers
 To use a "TrackedProjectile" as a "LinearProjectile"
 //=================================================================================
 
-First: Copy the intended particle to use on the "dota 2 beta\content\dota_addons\dotarite2\particles\mod_units\" directory
-
-    * Its important to use a name different from "units" (on the example is used "mod_units")
-    * Be sure to use the ".vpcf" and not the ".vpcf_c."
-
-Second: Open the particle on the Valve's Particle Editor
-    
-    * On this process, the ".vpcf_c" files will be created on the "dota 2 beta\game\dota_addons\dotarite2\particles\mod_units\"
-    directory.
-
-Third: With the particle selected:
-    
-    a) On the menu of the left, select the category "Base Properties" 
-        a.a) Remove the OPERATOR "C_OP_MaxVelocity"
-        a.b) Remove the FORCE "C_OP_AttractToControlPoint"
-    b) Again, on the menu of the left, click the (+) button next to "initializers", add the Initializer "Velocity set from control point" 
-    c) Select the initializer you just have created
-    d) Set the "control point number" field to "1"
+    a) Open the particle on the Valve's Particle Editor
+    b) On the menu of the left, select the category "Base Properties" 
+        b.a) Remove the OPERATOR "C_OP_MaxVelocity"
+        b.b) Remove the FORCE "C_OP_AttractToControlPoint"
+    c) Again, on the menu of the left, click the (+) button next to the "initializers" label, and add the Initializer "Velocity set from control point" 
+    d) Select the initializer you just have created
+    e) Set the "control point number" field to "1"
+    f) Save the particle in a new directory (the original particle is prevented from being override)
 
 //=================================================================================	
 About "IsServer()"

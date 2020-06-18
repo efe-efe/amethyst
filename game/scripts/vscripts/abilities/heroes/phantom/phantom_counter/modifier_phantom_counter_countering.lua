@@ -20,6 +20,15 @@ function modifier_phantom_counter_countering:OnTrigger(params)
 	end
 end
 
+function modifier_phantom_counter_countering:OnProjectileHitCustom(params)
+	if IsServer() then
+		self:OnTrigger({})
+		if params.projectile.bIsDestructible then
+			params.projectile:Destroy(true)
+		end
+	end
+end
+
 function modifier_phantom_counter_countering:PlayEffectsOnTrigger()
     EmitSoundOn("Hero_PhantomAssassin.Blur", self:GetParent())
 
@@ -44,3 +53,4 @@ function modifier_phantom_counter_countering:GetOverrideAnimationRate() 	return 
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_phantom_counter_countering)
+Modifiers.OnProjectileHit(modifier_phantom_counter_countering)
