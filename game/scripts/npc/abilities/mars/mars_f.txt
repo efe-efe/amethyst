@@ -13,6 +13,7 @@
 		"AbilityCastRange" 				"250"
 		"AbilityCooldown"				"8.0"
 		"LevelsBetweenUpgrades"			"0"
+		"AbilityManaCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"

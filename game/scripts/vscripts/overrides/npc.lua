@@ -466,7 +466,7 @@ MODIFIER_ANIMATION = 4
 MODIFIER_CHANNELING = 5 
 MODIFIER_CHARGES = 6 
 MODIFIER_TRANSLATE = 7 
-MODIFIER_ON_PROJECTILE_HIT = 7 
+MODIFIER_ON_PROJECTILE_HIT = 8 
 
 function CDOTA_BaseNPC:AddModifierTracker(data, type) 	
 	local key = nil
@@ -494,7 +494,9 @@ function CDOTA_BaseNPC:RemoveModifierTracker(data, type)
 	if type == MODIFIER_CHANNELING then key = "channeling_modifiers" end
 	if type == MODIFIER_CHARGES then key = "charges_modifiers" end
 	if type == MODIFIER_FEAR then key = "fear_modifiers" end
-	if type == MODIFIER_TRANSLATE then key = "on_projectile_hit_modifiers" end
+	if type == MODIFIER_TRANSLATE then key = "translate_modifiers" end
+	if type == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
+
 
 	for _,m_data in pairs(self[key]) do
 		if m_data == data then

@@ -63,7 +63,7 @@ function modifier_mars_ultimate_soldier:OnIntervalThink()
 		self.parent:SetRenderAlpha(alpha)
 	end
 
-	local enemies = self.parent:FindUnitsInRadius(
+	local enemies = self.caster:FindUnitsInRadius(
 		self.origin, 
 		self.radius, 
 		DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -83,7 +83,7 @@ function modifier_mars_ultimate_soldier:OnIntervalThink()
 			ApplyDamage(damage_table)
 			local direction = (self.thinker_origin - enemy:GetAbsOrigin()):Normalized()
 			
-			if not enemy:HasModifier("modifier_generic_stunned") then
+			if not enemy:HasModifier("modifier_generic_stunned") and not enemy:HasModifier("modifier_mars_special_attack_displacement") then
 				enemy:AddNewModifier(
 					self.caster, -- player source
 					self:GetAbility(), -- ability source

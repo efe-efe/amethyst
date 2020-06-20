@@ -34,6 +34,10 @@ function modifier_hero_movement:OnCreated(params)
     end
 end
 
+function modifier_hero_movement:OnRefresh(params)
+    print("REFRESHING")
+end
+
 function modifier_hero_movement:DeclareFunctions() 
     return {
         MODIFIER_PROPERTY_OVERRIDE_ANIMATION,

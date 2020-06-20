@@ -2,7 +2,10 @@ modifier_mars_counter_countering = class({})
 
 function modifier_mars_counter_countering:OnCreated(params)
     if IsServer() then
-        self.effect_cast = ParticleManager:CreateParticle("particles/spectre/spectre_counter.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+        self:GetParent():StartGesture(ACT_DOTA_OVERRIDE_ABILITY_3)
+        self.effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_mars/mars_arena_of_blood_heal.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+
+        self:StartIntervalThink(0.03)
     end
 end
 
@@ -16,6 +19,13 @@ function modifier_mars_counter_countering:OnDestroy()
     end
 end
 
+function modifier_mars_counter_countering:OnIntervalThink()
+    local mouse = self:GetAbility():GetCursorPosition()
+	local direction = (mouse - self:GetParent():GetAbsOrigin()):Normalized()
+
+	self:GetParent():FaceTowardsCustom(Vector(direction.x, direction.y, self:GetParent():GetForwardVector().z))
+end
+
 function modifier_mars_counter_countering:OnTrigger(params)   
     if IsServer() then
         self:PlayEffectsOnTrigger()
@@ -26,9 +36,13 @@ end
 function modifier_mars_counter_countering:DeclareFunctions()
     return {
         MODIFIER_EVENT_ON_ABILITY_EXECUTED,
+        MODIFIER_PROPERTY_TRANSLATE_ACTIVITY_MODIFIERS
     }
 end
 
+function modifier_mars_counter_countering:GetActivityTranslationModifiers(params)
+    return "bulwark"
+end
 
 function modifier_mars_counter_countering:OnAbilityExecuted(params)
     if IsServer() then
@@ -53,20 +67,48 @@ function modifier_mars_counter_countering:OnOrder(params)
 end
 
 function modifier_mars_counter_countering:PlayEffectsOnTrigger()
-    EmitSoundOn("Hero_Spectre.Reality", self:GetParent())
-    local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
-    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
-    ParticleManager:SetParticleControl(effect_cast, 3, self:GetParent():GetAbsOrigin())
-    ParticleManager:ReleaseParticleIndex(effect_cast)
+    EmitSoundOn("Hero_Mars.Shield.Block", self:GetParent())
+    EmitSoundOn("Hero_Mars.Block_Projectile", self:GetParent())
+    
+	local effect_cast =  ParticleManager:CreateParticle("particles/units/heroes/hero_mars/mars_shield_of_mars.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControlForward(effect_cast, 0, self:GetParent():GetForwardVector())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_mars_counter_countering:GetStatusEffectName()
-    return "particles/status_fx/status_effect_terrorblade_reflection.vpcf"
+    return "particles/econ/items/effigies/status_fx_effigies/status_effect_effigy_gold_lvl2_dire.vpcf"
 end
 
 function modifier_mars_counter_countering:GetMovementSpeedPercentage() return 50 end
 function modifier_mars_counter_countering:UseDefaultVisuals() return false end
+function modifier_mars_counter_countering:GetTranslation() return "bulwark" end
+
+function modifier_mars_counter_countering:OnProjectileHitCustom(params)
+	if IsServer() then
+		local projectile = params.projectile
+
+		
+        if projectile.bIsReflectable == true then
+            local direction = projectile:GetVelocity():Normalized() 
+            local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
+
+            if projection <= -0.9 then
+                projectile:SetVelocity(projectile:GetVelocity() * -1, projectile:GetPosition())
+                projectile:SetSource(self:GetParent())
+                projectile:SetVisionTeam(self:GetParent():GetTeam())
+                projectile:ResetDistanceTraveled()
+                projectile:ResetRehit()
+                self:OnTrigger({})
+                
+                return false
+            end
+		end
+
+		return true
+	end
+end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_mars_counter_countering)
+Modifiers.OnProjectileHit(modifier_mars_counter_countering)
+--Modifiers.Translate(modifier_mars_counter_countering)

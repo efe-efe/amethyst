@@ -3,7 +3,7 @@ LinkLuaModifier("modifier_mars_counter_countering", "abilities/heroes/mars/mars_
 
 function mars_counter:OnSpellStart()
     local caster = self:GetCaster()
-    local duration = 5.0--self:GetSpecialValueFor("counter_duration")
+    local duration = self:GetSpecialValueFor("counter_duration")
 
     caster:AddNewModifier(
 		caster, -- player source

@@ -704,7 +704,9 @@ function Modifiers.Translate(modifier)
             self:GetParent():AddModifierTracker(self:GetName(), MODIFIER_TRANSLATE)
             if self:GetParent():HasModifier("modifier_hero_movement") then
                 self:GetParent():RemoveModifierByName("modifier_hero_movement")
+                print("REMOVED")
                 self:GetParent():AddNewModifier(self:GetParent(), nil, "modifier_hero_movement", {})
+                print("ADDED")
             end
         end
         if onCreated then onCreated(self, params) end
