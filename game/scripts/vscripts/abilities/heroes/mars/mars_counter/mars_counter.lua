@@ -5,6 +5,9 @@ function mars_counter:OnSpellStart()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("counter_duration")
 
+    EmitSoundOn("Hero_Mars.Shield.Block", caster)
+    EmitSoundOn("Hero_Mars.Block_Projectile", caster)
+
     caster:AddNewModifier(
 		caster, -- player source
 		self, -- ability source
