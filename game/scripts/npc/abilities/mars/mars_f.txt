@@ -11,7 +11,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"250"
-		"AbilityCooldown"				"8.0"
+		"AbilityCooldown"				"12.0"
 		"LevelsBetweenUpgrades"			"0"
 		"AbilityManaCost"				"25"
 

@@ -13,6 +13,7 @@ let target_indicator_modifiers = [
     "modifier_sniper_ultimate_channeling",
     "modifier_phantom_counter_banish",
     "modifier_nevermore_counter_banish",
+    "modifier_mars_counter_countering",
 ]
 
 function UpdateTargetIndicator(){

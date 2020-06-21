@@ -50,9 +50,7 @@ function modifier_mars_counter_countering:OnAbilityExecuted(params)
             return
         end
 
-        if params.ability ~= self:GetParent():FindAbilityByName("spectre_counter_recast") then
-            self:Destroy()
-        end
+        self:Destroy()
     end
 end
 
@@ -107,7 +105,7 @@ function modifier_mars_counter_countering:OnProjectileHitCustom(params)
             local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
 
             if projection <= -0.8 then
-                projectile:SetVelocity(projectile:GetVelocity() * -1, projectile:GetPosition())
+                projectile:SetVelocity(self:GetParent():GetForwardVector() * projectile:GetVelocity():Length2D(), projectile:GetPosition())
                 projectile:SetSource(self:GetParent())
                 projectile:SetVisionTeam(self:GetParent():GetTeam())
                 projectile:ResetDistanceTraveled()
