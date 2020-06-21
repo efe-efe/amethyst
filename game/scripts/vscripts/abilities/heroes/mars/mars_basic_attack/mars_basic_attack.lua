@@ -1,4 +1,5 @@
 mars_basic_attack = class({})
+LinkLuaModifier("modifier_mars_basic_attack_stacks", "abilities/heroes/mars/mars_basic_attack/modifier_mars_basic_attack_stacks", LUA_MODIFIER_MOTION_NONE)
 
 function mars_basic_attack:GetCastPointOverride()
 	if IsServer() then
@@ -55,6 +56,13 @@ function mars_basic_attack:OnSpellStart()
 
 		if not enemy:IsObstacle() then 
 			caster:GiveManaPercent(mana_gain_pct, enemy)
+
+			caster:AddNewModifier(
+				caster, -- player source
+				self, -- ability source
+				"modifier_mars_basic_attack_stacks", -- modifier name
+				{} -- kv
+			)
 		end
 
 		if caster.OnBasicAttackImpact then

@@ -13,6 +13,10 @@ function mars_special_attack:OnSpellStart()
 	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
 	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
+	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
+
+	local stacks = SafeGetModifierStacks("modifier_mars_basic_attack_stacks", caster, caster)
+	local final_damage = damage + (stacks * damage_per_stack)
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
@@ -38,7 +42,7 @@ function mars_special_attack:OnSpellStart()
 			local damage_table = {
 				victim = unit,
 				attacker = caster,
-				damage = damage,
+				damage = final_damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 			ApplyDamage(damage_table)
@@ -65,6 +69,8 @@ function mars_special_attack:OnSpellStart()
 
     ExecuteOrderFromTable({ OrderType = DOTA_UNIT_ORDER_STOP, UnitIndex = caster:entindex() })
 	Projectiles:CreateProjectile(projectile)
+	SafeDestroyModifier("modifier_mars_basic_attack_stacks", caster, caster)
+
 	self:PlayEffectsOnCast()
 end
 

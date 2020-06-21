@@ -16,6 +16,9 @@ local constructors = {
     end,
     ["npc_dota_hero_spectre"] = function(hTarget)
         hTarget:AddCooldown("modifier_spectre_basic_attack_cooldown")
+    end,
+    ["npc_dota_hero_mars"] = function(hTarget)
+        hTarget:AddStackbars("modifier_mars_basic_attack_stacks")
     end
 }
 
