@@ -40,7 +40,7 @@ function modifier_mars_ultimate_thinker:OnDelayEnds()
         local caster = self:GetCaster()
         local origin = self:GetParent():GetAbsOrigin()
         local vector = origin + Vector(self.radius, 0, 0)
-        local count = 28
+        local count = 32
 
         local angle_diff = 360/count
 

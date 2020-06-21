@@ -506,15 +506,16 @@ function Modifiers.Displacement(modifier)
 end
 
 function Modifiers.Counter(modifier)
-    local onCreated =                   modifier.OnCreated
-    local onDestroy =                   modifier.OnDestroy
-    local onOrder =                     modifier.OnOrder
-    local onTrigger =                   modifier.OnTrigger
-    local declareFunctions =            modifier.DeclareFunctions
-    local checkState =                  modifier.CheckState
-    local getMovementSpeedPercentage =  modifier.GetMovementSpeedPercentage
-    local useDefaultVisuals =           modifier.UseDefaultVisuals
-    local getStatusEffectName =         modifier.GetStatusEffectName
+    local onCreated =                               modifier.OnCreated
+    local onDestroy =                               modifier.OnDestroy
+    local onOrder =                                 modifier.OnOrder
+    local onTrigger =                               modifier.OnTrigger
+    local declareFunctions =                        modifier.DeclareFunctions
+    local checkState =                              modifier.CheckState
+    local getMovementSpeedPercentage =              modifier.GetMovementSpeedPercentage
+    local useDefaultVisuals =                       modifier.UseDefaultVisuals
+    local getStatusEffectName =                     modifier.GetStatusEffectName
+    local getModifierIncomingDamage_Percentage =    modifier.GetModifierIncomingDamage_Percentage
     
     function modifier:OnCreated(params)
         if IsServer() then
@@ -595,11 +596,15 @@ function Modifiers.Counter(modifier)
     
     function modifier:GetModifierIncomingDamage_Percentage(params)
         if IsServer() then
-            if params.damage_type ~= DAMAGE_TYPE_PURE then
-                self:OnTrigger(params)
-                return -100
+            if getModifierIncomingDamage_Percentage then
+                return getModifierIncomingDamage_Percentage(self, params)
+            else 
+                if params.damage_type ~= DAMAGE_TYPE_PURE then
+                    self:OnTrigger(params)
+                    return -100
+                end
+                return 0
             end
-            return 0
         end
     end
 
@@ -637,7 +642,7 @@ function Modifiers.OnProjectileHit(modifier)
     local onProjectileHitCustom = modifier.OnProjectileHitCustom
 
     function modifier:OnProjectileHitCustom(params)
-        if onProjectileHitCustom then onProjectileHitCustom(self, params) end
+        if onProjectileHitCustom then return onProjectileHitCustom(self, params) end
     end
 
     function modifier:OnCreated(params)

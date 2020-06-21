@@ -5,7 +5,7 @@
 		"ScriptFile"					"abilities/heroes/mars/mars_extra/mars_extra"
 		"MaxLevel"						"2"
 
-		"AbilityTextureName"			"mars_gods_rebuke"
+		"AbilityTextureName"			"mars_extra"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -22,7 +22,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"2.0" }

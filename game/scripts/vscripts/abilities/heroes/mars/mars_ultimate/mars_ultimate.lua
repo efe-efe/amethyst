@@ -12,7 +12,7 @@ function mars_ultimate:GetCastPointSpeed() 			return 0 end
 function mars_ultimate:OnAbilityPhaseStart()
     local caster = self:GetCaster()
     local delay = self:GetCastPoint()
-    local duration = 5.0--self:GetSpecialValueFor("duration")
+    local duration = self:GetSpecialValueFor("duration")
 
     self.thinker = CreateModifierThinker(
         caster, --hCaster

@@ -10,8 +10,8 @@ function modifier_mars_ultimate_soldier:OnCreated(params)
 		self.caster = self:GetCaster()
 		self.origin = self.parent:GetOrigin()
 		self.thinker_origin = Vector(params.x, params.y, self.origin.z)
-		self.damage = 8
-		self.knockback_distance = 250
+		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
+		self.knockback_distance = self:GetAbility():GetSpecialValueFor("knockback_distance")
 		
 		self.counter = 0
 		self.rate = 1.0

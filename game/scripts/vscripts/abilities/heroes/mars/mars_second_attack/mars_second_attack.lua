@@ -12,7 +12,9 @@ function mars_second_attack:OnSpellStart()
 	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local direction = (point - origin):Normalized()
 	local radius = self:GetSpecialValueFor("radius")
-	local damage = self:GetSpecialValueFor("ability_damage")
+	local multiplier = self:GetSpecialValueFor("multiplier")
+	local damage = caster:GetAverageTrueAttackDamage(caster) * multiplier
+
 	local knockback_distance = self:GetSpecialValueFor("knockback_distance")
 	direction.z = 0
 

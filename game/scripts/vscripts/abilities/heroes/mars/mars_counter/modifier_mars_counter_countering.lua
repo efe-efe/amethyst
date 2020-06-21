@@ -56,6 +56,21 @@ function modifier_mars_counter_countering:OnAbilityExecuted(params)
     end
 end
 
+function modifier_mars_counter_countering:GetModifierIncomingDamage_Percentage(params)
+    if IsServer() then
+        if params.damage_type ~= DAMAGE_TYPE_PURE then
+            local direction =  self:GetParent():GetAbsOrigin() - params.attacker:GetAbsOrigin()
+            local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
+            
+            if projection <= -0.8 then
+                self:OnTrigger(params)
+                return -100
+            end
+        end
+        return 0
+    end
+end
+
 function modifier_mars_counter_countering:OnOrder(params)
     if params.unit == self:GetParent() then
         if  params.order_type == DOTA_UNIT_ORDER_STOP or 
@@ -86,20 +101,18 @@ function modifier_mars_counter_countering:GetTranslation() return "bulwark" end
 function modifier_mars_counter_countering:OnProjectileHitCustom(params)
 	if IsServer() then
 		local projectile = params.projectile
-
 		
         if projectile.bIsReflectable == true then
             local direction = projectile:GetVelocity():Normalized() 
             local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
 
-            if projection <= -0.9 then
+            if projection <= -0.8 then
                 projectile:SetVelocity(projectile:GetVelocity() * -1, projectile:GetPosition())
                 projectile:SetSource(self:GetParent())
                 projectile:SetVisionTeam(self:GetParent():GetTeam())
                 projectile:ResetDistanceTraveled()
                 projectile:ResetRehit()
                 self:OnTrigger({})
-                
                 return false
             end
 		end
@@ -111,4 +124,3 @@ end
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_mars_counter_countering)
 Modifiers.OnProjectileHit(modifier_mars_counter_countering)
---Modifiers.Translate(modifier_mars_counter_countering)

@@ -20,10 +20,10 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.8" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"			    "550" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"                "80" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"aspd_per_stack"		"12.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"8" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"				"4.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"			    "550" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"	"250" }
 		}
 	}
 }
