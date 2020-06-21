@@ -1,1 +1,0 @@
-modifier_weaver_mobility_mark = class({})
