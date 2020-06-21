@@ -19,7 +19,7 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0 3.0" }
 		}
 	}
 }

@@ -3,7 +3,7 @@ modifier_mars_special_attack_displacement = class({})
 function modifier_mars_special_attack_displacement:OnCreated(params)
 	if IsServer() then
 		self.extra_damage = self:GetAbility():GetSpecialValueFor("extra_damage")
-		self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
+		self.debuff_duration = self:GetAbility():GetSpecialValueFor("debuff_duration")
 	end
 end
 
@@ -50,7 +50,11 @@ function modifier_mars_special_attack_displacement:OnCollide(params)
 			}
 			ApplyDamage(damage_table)
 
-			self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_stunned", { duration = self.stun_duration })
+			if self:GetAbility():GetLevel() >= 2 then
+				self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_stunned", { duration = self.debuff_duration })
+			else 
+				self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_root", { duration = self.debuff_duration })
+			end
 
 			self:PlayEffectsOnImpact()
 			self:Destroy()

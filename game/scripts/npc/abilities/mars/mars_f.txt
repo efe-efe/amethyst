@@ -25,7 +25,7 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"2.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"1.0 2.0" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
 		}
 	}

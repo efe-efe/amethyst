@@ -27,7 +27,7 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"stun_duration"             "1.5" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"1.5" }
 			"07"{ "var_type"	"FIELD_INTEGER"		"extra_damage"             	"8" }
 			"08"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"4" }
 		}
