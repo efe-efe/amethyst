@@ -29,7 +29,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 		EffectName = "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf",
 		vSpawnOrigin = origin + Vector(0,0, 96),
 		fDistance = self.projectile_distance,
-		fUniqueRadius = self.hitbox,
+		fStartRadius = self.hitbox,
 		fEndRadius = projectile_end_radius,
 		Source = caster,
 		vVelocity = projectile_direction * self.projectile_speed,

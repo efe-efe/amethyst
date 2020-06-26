@@ -531,7 +531,6 @@ function CDOTA_BaseNPC:IsFeared()
 end
 
 function CDOTA_BaseNPC:IsConfused()				return 	self:HasModifier("modifier_generic_confuse") 	end
-function CDOTA_BaseNPC:IsCasting()				return 	self:HasModifier("modifier_cast_point")			end
 function CDOTA_BaseNPC:IsInitialized()			return 	self.initialized								end
 
 -- Getters

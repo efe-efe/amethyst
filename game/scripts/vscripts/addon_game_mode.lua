@@ -154,7 +154,6 @@ function GameMode:LinkModifiers()
     
     LinkLuaModifier("modifier_generic_fear",                    "abilities/generic/modifier_generic_fear", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_silence",                 "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE) -- Should Delete
-    LinkLuaModifier("modifier_generic_projectile_reflector",    "abilities/generic/modifier_generic_projectile_reflector", LUA_MODIFIER_MOTION_NONE) -- Should Delete
     LinkLuaModifier("modifier_generic_fading_slow",             "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_fading_haste",            "abilities/generic/modifier_generic_fading_haste", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_stunned",                 "abilities/generic/modifier_generic_stunned", LUA_MODIFIER_MOTION_NONE) -- Should Delete
@@ -173,8 +172,6 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_hero_base",                       "abilities/base/modifier_hero_base", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_shield",                          "abilities/base/modifier_shield", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_channeling",                      "abilities/base/modifier_channeling", LUA_MODIFIER_MOTION_NONE)
-    LinkLuaModifier("modifier_cast_point",                      "abilities/base/modifier_cast_point", LUA_MODIFIER_MOTION_NONE)
-    LinkLuaModifier("modifier_thinker_indicator",               "abilities/base/modifier_thinker_indicator", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_counter",                         "abilities/base/modifier_counter", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_following_aoe_indicator",         "abilities/base/modifier_following_aoe_indicator", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_target_indicator",                "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
@@ -248,7 +245,7 @@ function GameMode:SetupPanoramaEventHooks()
         
     CustomGameEventManager:RegisterListener('key_released', function(eventSourceIndex, args)
         local unit = EntIndexToHScript(args.entityIndex)
-        local modifier = unit:FindModifierByName("modifier_cast_point")
+        --local modifier = unit:FindModifierByName("modifier_cast_point")
 
         if modifier ~= nil then
             if not modifier:IsNull() then

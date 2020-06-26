@@ -3,12 +3,6 @@ modifier_generic_sleep = class({})
 function modifier_generic_sleep:IsDebuff() return true end
 function modifier_generic_sleep:IsStunDebuff() return true end
 
-function modifier_generic_sleep:OnCreated(params)
-	if IsServer() then 
-		self:GetParent():InterruptCastPoint()
-	end
-end
-
 function modifier_generic_sleep:CheckState()
 	return {
 		[MODIFIER_STATE_STUNNED] = true,

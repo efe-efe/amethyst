@@ -48,7 +48,7 @@ function modifier_hero_base:OnIntervalThink()
 			end
 		end
 
-		if not self.parent:HasModifier("modifier_casting") and not self.parent:HasModifier("modifier_mars_counter_countering") then --not self.parent:IsCasting() then
+		if not self.parent:HasModifier("modifier_casting") and not self.parent:HasModifier("modifier_mars_counter_countering") then 
 			self.parent:FaceTowardsCustom(direction)
 		end
 	else

@@ -26,7 +26,7 @@ function spectre_special_attack:OnSpellStart()
 	local projectile = {
 		vSpawnOrigin = origin,
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fUniqueRadius = hitbox,
+		fStartRadius = hitbox,
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,

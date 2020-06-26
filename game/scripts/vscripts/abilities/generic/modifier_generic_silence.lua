@@ -6,9 +6,7 @@ function modifier_generic_silence:IsPurgable() return true end
 
 function modifier_generic_silence:OnCreated()
 	if IsServer() then
-		self:GetParent():InterruptCastPoint()
 		SafeDestroyModifier("modifier_channeling", self:GetParent())
-
 		self:PlayEffects()
 	end
 end

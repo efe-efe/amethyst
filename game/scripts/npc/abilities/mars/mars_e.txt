@@ -25,7 +25,7 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"60" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"40" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"1.5" }
 			"07"{ "var_type"	"FIELD_INTEGER"		"extra_damage"             	"8" }

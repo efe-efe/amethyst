@@ -23,7 +23,7 @@ function juggernaut_special_attack:OnSpellStart()
 		EffectName = "particles/mod_units/heroes/hero_silencer/silencer_ti8_glaive_2.vpcf",
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
+		fStartRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,

@@ -9,7 +9,6 @@ function modifier_generic_fear:OnCreated(params)
        )
 
         self:GetParent():ForceDirection(direction)
-        self:GetParent():InterruptCastPoint()
         self:GetParent():AddNewModifier(self:GetCaster(), nil, "modifier_generic_silence", { duration = self:GetDuration() })
         self:GetParent():AddStatusBar({ label = "Fear", modifier = self, priority = 5, stylename="Fear" }) 
     end

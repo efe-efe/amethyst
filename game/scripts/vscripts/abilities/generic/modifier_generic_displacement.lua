@@ -24,7 +24,6 @@ function modifier_generic_displacement:OnCreated(params)
 		self.i_frame = params.i_frame == 1 and true or false
 		self.colliding = params.colliding == 1 and true or false
 		self.collide_with_ent = params.collide_with_ent == 1 and true or false
-		self.interrupt = params.interrupt == nil and true or false
 		self.damage_on_collision = params.damage_on_collision or nil
 		self.called_callback_on_half = false
 
@@ -72,10 +71,6 @@ function modifier_generic_displacement:OnCreated(params)
 		if self.effect then
 			self:SetStackCount(self.effect)
 			self:PlayEffects()
-		end
-
-		if self.interrupt then
-			self:GetParent():InterruptCastPoint()
 		end
 
 		self:SetStackCount(activity)

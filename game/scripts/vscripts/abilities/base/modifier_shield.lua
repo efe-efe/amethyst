@@ -74,8 +74,7 @@ function modifier_shield:PlayEffects(duration)
         particle_cast, 
         PATTACH_CUSTOMORIGIN, 
         self:GetParent()
-   )
-
+    )
     ParticleManager:SetParticleControlEnt(
         self.effect_cast, 
         0, 
@@ -84,7 +83,7 @@ function modifier_shield:PlayEffects(duration)
         "attach_hitloc", 
         origin, 
         true 
-   )
+    )
     ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(duration, 0,0))
 end
 

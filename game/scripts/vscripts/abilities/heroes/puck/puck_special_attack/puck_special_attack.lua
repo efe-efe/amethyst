@@ -19,7 +19,7 @@ function puck_special_attack:OnSpellStart()
 		EffectName = "particles/econ/items/puck/puck_merry_wanderer/puck_illusory_orb_merry_wanderer.vpcf",
 		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
+		fStartRadius = self:GetSpecialValueFor("hitbox"),
         Source = caster,
 		bIsReflectable = false,
 		bIsDestructible = false,

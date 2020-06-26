@@ -18,14 +18,18 @@ function mars_special_attack:OnSpellStart()
 	local stacks = SafeGetModifierStacks("modifier_mars_basic_attack_stacks", caster, caster)
 	local final_damage = damage + (stacks * damage_per_stack)
 
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local projectile_particle = "particles/units/heroes/hero_mars/mars_spear.vpcf"
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_origin = caster:GetAbsOrigin() + projectile_direction * 80 + Vector(0,0,80)
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local projectile_hitbox = self:GetSpecialValueFor("hitbox")
+	local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
 
 	local projectile = {
-		EffectName = "particles/units/heroes/hero_mars/mars_spear.vpcf",
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
+		EffectName = projectile_particle,
+		vSpawnOrigin = projectile_origin,
+		fDistance = projectile_distance,
+		fStartRadius = projectile_hitbox,
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,

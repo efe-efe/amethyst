@@ -176,11 +176,6 @@ function Projectiles:CreateProjectile(projectile)
             local radius = projectile.radius
             local radiusSq = radius * radius
             local current_velocity = projectile.current_velocity
-            
-            -- Debug draw
-            if projectile.draw then
-                Projectiles:DebugDraw(projectile, current_position, radius)
-            end
 
             -- Frame and sub-frame collision checks
             local subpos = current_position
@@ -208,7 +203,7 @@ function Projectiles:CreateProjectile(projectile)
                     projectile.iFlagFilter,
                     FIND_ANY_ORDER, 
                     false
-               )
+                )
             end
 
             for index = 1, tot do
@@ -245,38 +240,6 @@ function Projectiles:CreateProjectile(projectile)
                             if not status then
                                 print('[PROJECTILES] Projectile UnitTest Failure!: ' .. test)
                             elseif test then
-                                local is_slower = entity:FindModifierByName("modifier_generic_projectile_slower")
-                                local is_reflector = entity:HasModifier("modifier_generic_projectile_reflector") or entity:IsReflecting()
-                                local is_enemy_blocker = entity:FindModifierByName("modifier_generic_projectile_enemy_blocker")
-
-                                if is_reflector then
-                                    if projectile.bIsReflectable == true then
-
-                                        local reflectedProjectile = projectile;
-
-                                        reflectedProjectile.vSpawnOrigin = projectile.current_position;
-                                        reflectedProjectile.Source = entity;
-                                        reflectedProjectile.bIgnoreSource = true;
-                                        reflectedProjectile.nChangeMax = projectile.nChangeMax - 1;
-                                        reflectedProjectile.iVisionTeamNumber = entity:GetTeam();
-                                        reflectedProjectile.vVelocity = -projectile.current_velocity * 30
-                                        
-                                        if entity:IsCountering() then
-                                            -- Deal damage to activate counters
-                                            local damage = {
-                                                victim = entity,
-                                                attacker = projectile.Source,
-                                                damage = 1,
-                                                damage_type = DAMAGE_TYPE_MAGICAL,
-                                            }
-                                            ApplyDamage(damage)
-                                        end
-
-                                        Projectiles:CreateProjectile(reflectedProjectile)
-                                        return
-                                    end
-                                end
-
                                 if entity:IsWall() then
                                     if projectile.Source:IsAlly(entity) then
                                         return
@@ -285,43 +248,27 @@ function Projectiles:CreateProjectile(projectile)
                                         return
                                     end
                                 end
-
-                                if is_slower ~= nil then
-                                    if not is_slower:IsNull() then
-                                        if projectile.bIsSlowable == true then
-                                            local slow_percent = entity:GetAttackAnimationPoint()
-                                            projectile:SetVelocity(projectile.vVelocity * (1 - slow_percent))
-                                        end
-                                    end
-                                elseif is_enemy_blocker ~= nil then
-                                    if not is_enemy_blocker:IsNull() then
-                                        if projectile.Source:GetTeamNumber() ~= entity:GetTeamNumber() then
-                                            projectile:Destroy(false)
-                                            return
-                                        end
-                                    end
+                             
+                                if projectile.bMultipleHits then
+                                    projectile.rehit[entity:entindex()] = current_time + projectile.fRehitDelay
                                 else
-                                    if projectile.bMultipleHits then
-                                        projectile.rehit[entity:entindex()] = current_time + projectile.fRehitDelay
-                                    else
-                                        projectile.rehit[entity:entindex()] = current_time + 10000
-                                    end
-                                        
-                                    local continue = true
-                                    if entity.OnProjectileHit then
-                                        continue = entity:OnProjectileHit(projectile, entity)
+                                    projectile.rehit[entity:entindex()] = current_time + 10000
+                                end
+                                    
+                                local continue = true
+                                if entity.OnProjectileHit then
+                                    continue = entity:OnProjectileHit(projectile, entity)
+                                end
+
+                                if continue then
+                                    local status, action = pcall(projectile.OnUnitHit, projectile, entity)
+                                    if not status then
+                                        print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
                                     end
 
-                                    if continue then
-                                        local status, action = pcall(projectile.OnUnitHit, projectile, entity)
-                                        if not status then
-                                            print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
-                                        end
-
-                                        if projectile.UnitBehavior == PROJECTILES_DESTROY then
-                                            projectile:Destroy(false)
-                                            return
-                                        end
+                                    if projectile.UnitBehavior == PROJECTILES_DESTROY then
+                                        projectile:Destroy(false)
+                                        return
                                     end
                                 end
                             end
@@ -449,6 +396,11 @@ function Projectiles:CreateProjectile(projectile)
             projectile.distanceTraveled = projectile.distanceTraveled + velLength
             projectile.current_position = current_position + current_velocity
 
+            -- Debug draw
+            if projectile.draw then
+                Projectiles:DebugDraw(projectile)
+            end
+            
             return current_time
         end
     })
@@ -474,8 +426,8 @@ function Projectiles:SetValues(projectile)
     
     projectile.iFlagFilter =        projectile.iFlagFilter or DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES 
 
-    projectile.fStartRadius =       projectile.fStartRadius or projectile.fUniqueRadius or 100
-    projectile.fEndRadius =         projectile.fEndRadius or projectile.fUniqueRadius or  100
+    projectile.fStartRadius =       projectile.fStartRadius or 100
+    projectile.fEndRadius =         projectile.fEndRadius or projectile.fStartRadius or  100
 
     projectile.iPositionCP =                    projectile.iPositionCP or 0
     projectile.iVelocityCP =                    projectile.iVelocityCP or 1
@@ -599,16 +551,17 @@ function Projectiles:CreateParticle(projectile, position)
     end
 end
 
-function Projectiles:DebugDraw(projectile, position, radius)
+function Projectiles:DebugDraw(projectile, color)
     local alpha = 1
-    local color = Vector(200,0,0)
+    local color = color and color or Vector(200,0,0)
+    local position = projectile.current_position
+    local radius = projectile.radius
     
-    if type(projectile.draw) == "table" then
-        alpha = projectile.draw.alpha or alpha
-        color = projectile.draw.color or color
+    if projectile.bZCheck then
+        DebugDrawSphere(position, color, alpha, radius, true, .01)
+    else
+        DebugDrawCircle(position, Vector(255,0,0), 5, radius, false, 0.03)
     end
-
-    DebugDrawSphere(position, color, alpha, radius, true, .01)
 end
 
 function Projectiles:ProvideVision(projectile)

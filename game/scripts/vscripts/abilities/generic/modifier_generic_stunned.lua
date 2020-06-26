@@ -3,12 +3,6 @@ modifier_generic_stunned = class({})
 function modifier_generic_stunned:IsDebuff() return true end
 function modifier_generic_stunned:IsStunDebuff() return true end
 
-function modifier_generic_stunned:OnCreated()
-	if IsServer() then
-		self:GetParent():InterruptCastPoint()
-	end
-end
-
 function modifier_generic_stunned:CheckState()
 	return {
 		[MODIFIER_STATE_COMMAND_RESTRICTED] = true,

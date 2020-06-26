@@ -2,8 +2,8 @@ modifier_mars_counter_countering = class({})
 
 function modifier_mars_counter_countering:OnCreated(params)
     if IsServer() then
+		self.effects_cast_weapon = {}
         self:GetParent():StartGesture(ACT_DOTA_OVERRIDE_ABILITY_3)
-        self.effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_mars/mars_arena_of_blood_heal.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 
         self:StartIntervalThink(0.03)
     end
@@ -11,8 +11,7 @@ end
 
 function modifier_mars_counter_countering:OnDestroy()
     if IsServer() then
-        ParticleManager:DestroyParticle(self.effect_cast, false)
-        ParticleManager:ReleaseParticleIndex(self.effect_cast)
+        self:StopEffects()
 
         local effect_cast = ParticleManager:CreateParticle("particles/econ/items/ogre_magi/ogre_ti8_immortal_weapon/ogre_ti8_immortal_bloodlust_buff_circle_outer_pulse.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
         ParticleManager:ReleaseParticleIndex(effect_cast)
@@ -22,6 +21,7 @@ end
 function modifier_mars_counter_countering:OnIntervalThink()
     local mouse = self:GetAbility():GetCursorPosition()
 	local direction = (mouse - self:GetParent():GetAbsOrigin()):Normalized()
+    self:PlayEffectsOnCast()
 
 	self:GetParent():FaceTowardsCustom(Vector(direction.x, direction.y, self:GetParent():GetForwardVector().z))
 end
@@ -77,6 +77,21 @@ function modifier_mars_counter_countering:OnOrder(params)
             self:Destroy()
         end
     end
+end
+
+function modifier_mars_counter_countering:StopEffects()
+	for _,efx in pairs(self.effects_cast_weapon) do
+		if efx ~= nil then
+			ParticleManager:DestroyParticle(efx, false)
+			ParticleManager:ReleaseParticleIndex(efx)
+		end
+    end
+end
+
+function modifier_mars_counter_countering:PlayEffectsOnCast()
+	local effect_cast =  ParticleManager:CreateParticle("particles/units/heroes/hero_mars/mars_shield_of_mars.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControlForward(effect_cast, 0, self:GetParent():GetForwardVector())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_mars_counter_countering:PlayEffectsOnTrigger()

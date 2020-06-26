@@ -34,7 +34,7 @@ function spectre_mobility:OnSpellStart()
 		EffectName = "particles/econ/items/shadow_demon/sd_ti7_shadow_poison/sd_ti7_shadow_poison_proj.vpcf",
 		vSpawnOrigin = origin + Vector(0,0,80),
 		fDistance =  (point - origin):Length2D(),
-		fUniqueRadius = self:GetSpecialValueFor("hitbox"),
+		fStartRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,

@@ -106,12 +106,3 @@ Lua abilities
 
     * The ability name on the "DataDriven" text file, and the name on the "lua_ability" script file has to be equals.
     * As the names has to be equal, is usual to use "heroname_abilityname" naming, to avoid conflics when two abilities has the same name for different heroes. Anyway, if you want to keep shorter names, you have to be sure that every ability has an unique name.
-
-
-//=================================================================================	
-Cast Point
-//=================================================================================
-
-Why to use modifier_cast_point_old instead of the built in one?
-    * Built in one force the caster to go to the initial cast position in order to execute the spell
-    * To prevent that the spell should be immediate, and in that case, the cast point is ignored
