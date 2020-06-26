@@ -83,7 +83,6 @@ function spectre_basic_attack:OnSpellStart()
 		ApplyDamage(damage_table)
 	
 		if is_charged then
-			print("desolate_duration", desolate_duration)
 			enemy:AddNewModifier(caster, self, "modifier_generic_silence", { duration = silence_duration })
 			enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = desolate_duration })
 
