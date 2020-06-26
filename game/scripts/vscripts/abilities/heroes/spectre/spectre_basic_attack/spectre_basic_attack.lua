@@ -1,5 +1,5 @@
 spectre_basic_attack = class({})
-LinkLuaModifier("modifier_spectre_desolate", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate/modifier_spectre_desolate", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_desolate_custom", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_custom/modifier_spectre_desolate_custom", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_basic_attack_cooldown", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
 
 function spectre_basic_attack:GetIntrinsicModifierName()
@@ -64,7 +64,7 @@ function spectre_basic_attack:OnSpellStart()
 
 	for _,enemy in pairs(enemies) do 
 		local final_damage = damage
-		if enemy:HasModifier("modifier_spectre_desolate") then
+		if enemy:HasModifier("modifier_spectre_desolate_custom") then
 			final_damage = final_damage + damage_bonus_desolate
 
 			if not enemy:IsObstacle() then
@@ -83,8 +83,9 @@ function spectre_basic_attack:OnSpellStart()
 		ApplyDamage(damage_table)
 	
 		if is_charged then
-			enemy:AddNewModifier(caster, self , "modifier_generic_silence", { duration = silence_duration })
-			enemy:AddNewModifier(caster, self , "modifier_spectre_desolate", { duration = desolate_duration })
+			print("desolate_duration", desolate_duration)
+			enemy:AddNewModifier(caster, self, "modifier_generic_silence", { duration = silence_duration })
+			enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = desolate_duration })
 
 			if not enemy:IsObstacle() then
 				caster:Heal(heal_charged, caster)
@@ -101,7 +102,7 @@ function spectre_basic_attack:OnSpellStart()
 			caster:OnBasicAttackImpact(enemy)
 		end
 
-		if not is_charged then 
+		if not is_charged then
 			break
 		end
 	end

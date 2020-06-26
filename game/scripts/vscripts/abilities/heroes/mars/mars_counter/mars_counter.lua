@@ -3,7 +3,7 @@ LinkLuaModifier("modifier_mars_counter_countering", "abilities/heroes/mars/mars_
 
 function mars_counter:OnSpellStart()
     local caster = self:GetCaster()
-    local duration = 5--self:GetSpecialValueFor("counter_duration")
+    local duration = self:GetSpecialValueFor("counter_duration")
 
     EmitSoundOn("Hero_Mars.Shield.Block", caster)
     EmitSoundOn("Hero_Mars.Block_Projectile", caster)
