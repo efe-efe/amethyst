@@ -4,13 +4,6 @@ function modifier_spectre_desolate_custom:IsDebuff() return true end
 function modifier_spectre_desolate_custom:IsHidden() return false end
 function modifier_spectre_desolate_custom:IsPurgable() return true end
 
-function modifier_spectre_desolate_custom:OnCreated()
-	print("IM CREATED")
-	if IsServer() then
-		print("IM CREATED")
-	end
-end
-
 function modifier_spectre_desolate_custom:GetEffectName()
 	return "particles/units/heroes/hero_spectre/spectre_desolate_debuff.vpcf"
 end
