@@ -9,7 +9,14 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCooldown"				"9.0"
 		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastRange" 				"500" //only for direction showing
 
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
 		"precache"
 		{
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"

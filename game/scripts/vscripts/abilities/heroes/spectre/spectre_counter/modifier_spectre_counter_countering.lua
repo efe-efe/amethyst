@@ -4,7 +4,17 @@ function modifier_spectre_counter_countering:OnCreated(params)
     self.fading_slow_duration = self:GetAbility():GetSpecialValueFor("fading_slow_duration")
     if IsServer() then
         self.effect_cast = ParticleManager:CreateParticle("particles/spectre/spectre_counter.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+
+        self:StartIntervalThink(0.03)
     end
+end
+
+function modifier_spectre_counter_countering:OnIntervalThink()
+    local mouse = self:GetAbility():GetCursorPosition()
+	local direction = (mouse - self:GetParent():GetAbsOrigin()):Normalized()
+    self:PlayEffectsOnCast()
+
+	self:GetParent():FaceTowardsCustom(Vector(direction.x, direction.y, self:GetParent():GetForwardVector().z))
 end
 
 function modifier_spectre_counter_countering:OnDestroy()
@@ -61,13 +71,43 @@ function modifier_spectre_counter_countering:OnOrder(params)
     end
 end
 
+function modifier_spectre_counter_countering:GetModifierIncomingDamage_Percentage(params)
+    if IsServer() then
+        if params.damage_type ~= DAMAGE_TYPE_PURE then
+            local direction =  self:GetParent():GetAbsOrigin() - params.attacker:GetAbsOrigin()
+            local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
+            
+            if projection <= -0.8 then
+                self:OnTrigger(params)
+                return -100
+            end
+        end
+        return 0
+    end
+end
+
 function modifier_spectre_counter_countering:OnProjectileHitCustom(params)
 	if IsServer() then
-		self:OnTrigger({})
-		if params.projectile.bIsDestructible then
-			params.projectile:Destroy(true)
-		end
+		local projectile = params.projectile
+        local direction = projectile:GetVelocity():Normalized() 
+        local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
+
+        if projection <= -0.8 then
+            if params.projectile.bIsDestructible then
+                params.projectile:Destroy(true)
+            end
+            self:OnTrigger({})
+            return false
+        end
+
+		return true
 	end
+end
+
+function modifier_spectre_counter_countering:PlayEffectsOnCast()
+	local effect_cast =  ParticleManager:CreateParticle("particles/spectre/spectre_counter_shield.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+	ParticleManager:SetParticleControlForward(effect_cast, 0, self:GetParent():GetForwardVector())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_spectre_counter_countering:PlayEffectsOnTrigger()
