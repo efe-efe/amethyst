@@ -21,11 +21,11 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			    "0.3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"15" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"400" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"initial_stun_duration"		"0.3" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"snap_stun_duration"		"1.0" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"snap_stun_duration"		"0.5" }
 		}
 	}
 }
