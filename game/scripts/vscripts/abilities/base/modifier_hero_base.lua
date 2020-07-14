@@ -26,12 +26,8 @@ function modifier_hero_base:OnCreated()
 end
 
 function modifier_hero_base:OnIntervalThink()
-	local direction = self.parent:GetDirection()
+	local direction = self.parent:GetDirection():Normalized()
 	local speed = self.parent:GetIdealSpeed() / 25
-
-	if direction.x ~= 0 and direction.y ~= 0 then
-		speed = speed * 0.75
-	end
 
 	if self.parent:IsAnimating() then
 		self.parent:RemoveModifierByName("modifier_hero_movement")

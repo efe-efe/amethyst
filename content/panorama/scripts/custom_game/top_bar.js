@@ -200,12 +200,12 @@ function Update(){
 }
 
 /* Initialization */
-all_alliances_data = CustomNetTables.GetAllTableValues("alliances");
-for (let key in all_alliances_data){
-    let data = all_alliances_data[key];
-    
-    AddAllianceBar(data.name);
-}
+var table_data = CustomNetTables.GetAllTableValues("alliances");
+
+table_data.forEach(object => {
+    all_alliances_data[object.key] = object.value;
+    AddAllianceBar(all_alliances_data[object.key].name);
+})
 
 CustomNetTables.SubscribeNetTableListener("alliances", function(table, key, data){
     if(!all_alliances_data[key]){
@@ -213,7 +213,6 @@ CustomNetTables.SubscribeNetTableListener("alliances", function(table, key, data
     }
     all_alliances_data[key] = data;
 });
-
 
 function UpdateTime(data){
     $("#TopBar__Clock_Text").text = data.timer_minute_10.toString() + data.timer_minute_01.toString() + ":" + data.timer_second_10.toString() + data.timer_second_01.toString();

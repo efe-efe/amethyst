@@ -433,14 +433,12 @@ function GetProgressRatio(entity_index, modifier_index, content, trigger, max_st
 }
 
 /* Initialization */
-all_heroes_data = CustomNetTables.GetAllTableValues("heroes");
+var table_data = CustomNetTables.GetAllTableValues("heroes");
 
-for (let key in all_heroes_data) {
-    let data = all_heroes_data[key];
-    let settings = { type: OVERHEAD_TYPE_HERO };
-
-    AddOverhead(data, settings);
-}
+table_data.forEach(object => {
+    all_heroes_data[object.key] = object.value;
+    AddOverhead(all_heroes_data[object.key], { type: OVERHEAD_TYPE_HERO });
+})
 
 CustomNetTables.SubscribeNetTableListener("heroes", function(table, key, data){
     if(!all_heroes_data[key]){

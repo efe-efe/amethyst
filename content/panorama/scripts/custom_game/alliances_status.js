@@ -134,12 +134,12 @@ function PrepareData(data){
 }
  
 /* Initialization */
-all_heroes_data = CustomNetTables.GetAllTableValues("heroes");
+var table_data = CustomNetTables.GetAllTableValues("heroes");
 
-for (let key in all_heroes_data) {
-    let data = all_heroes_data[key];
-    AddHeroStatus(PrepareData(data))
-}
+table_data.forEach(object => {
+    all_heroes_data[object.key] = object.value;
+    AddOverhead(PrepareData(all_heroes_data[object.key]));
+})
 
 CustomNetTables.SubscribeNetTableListener("heroes", function(table, key, data){
     if(!all_heroes_data[key]){
