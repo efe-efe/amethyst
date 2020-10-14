@@ -1,6 +1,9 @@
 # Node
 node_modules
 
+/content/panorama/scripts/custom_game/**/*.js
+/content/panorama/styles/custom_game/**/*.css
+
 # Cache crap that Valve autogenerates
 *.bin
 

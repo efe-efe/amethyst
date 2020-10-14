@@ -1,0 +1,2 @@
+
+Start-Process -FilePath "$env:comspec" -ArgumentList "/k", "mklink", "/j", "`"content/panorama/scripts/custom_game/shared`"","`"C:\Users\Zyuro\Documents\Dotakit\content`""
