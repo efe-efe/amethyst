@@ -1,0 +1,77 @@
+.hero-overhead{
+    &__top{
+        width: 100%;
+        height: 60px;
+    }
+
+    &__mid{
+        width: 100%;
+        height: 30px;
+        margin-bottom: 2px;
+    }
+
+    &__bot{
+        width: 100%;
+        height: 26px;
+        flow-children: right;
+    }
+}
+
+.hero-overhead-charges{
+    height: 100%;
+    width: 30px;
+}
+
+.hero-overhead-resources{
+    height: 30px;
+    width: 100px;
+    flow-children: down;
+    margin-right: 2px;
+
+    &__health{
+        width: 100%;
+        height: 11px;
+
+        margin-bottom: 2px;
+        flow-children: right;
+    }
+    
+    &__mana{
+        width: 100%;
+        height: 5px;
+
+        flow-children: right;
+        
+        margin-bottom: 2px;
+    }
+
+    &__castpoint{
+        opacity: 0.0;
+        width: 100%;
+        height: 6px;
+        
+        transition-property: opacity;
+        transition-duration: 0.3s;
+    }
+}
+
+.hero-overhead-ammo{
+    height: 100%;
+    width: 30px;
+
+    
+    &__stackbars{
+        height: 100%;
+        width: 100%;
+    }
+    
+    &__cooldown{
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.switch-panel{
+    height: 100%;
+    width: 100%;
+}

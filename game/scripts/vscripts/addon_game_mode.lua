@@ -37,6 +37,18 @@ ROUNDS_DIFFERENCE_TO_WIN = 3
 _G.STATE_NONE = 0
 _G.STATE_ROUND_IN_PROGRESS = 1 
 
+local Custom_ActionTypes = {
+    MOVEMENT = 0,
+    ABILITY = 1,
+} 
+
+local Custom_ActionModes = {
+    START = 0,
+    STOP = 1,
+}
+
+
+
 if GameMode == nil then
     GameMode = class({})
 end
@@ -186,60 +198,12 @@ function GameMode:LinkModifiers()
 end
 
 function GameMode:SetupPanoramaEventHooks()
-    CustomGameEventManager:RegisterListener('swap_abilities', function(eventSourceIndex, args)
-        local caster = EntIndexToHScript(args.entityIndex)
-        local mode = args.mode
-
-        for i = 0, 6 do
-            local ability = caster:GetAbilityByIndex(i)
-            if ability then
-                if ability:GetAbilityType() ~= 2 then -- ignore talents
-                    local ex_name =  ability:GetAlternateName()
-                    local alternate_version = caster:FindAbilityByName(ex_name)
-
-                    if alternate_version ~= nil then
-                        local swapeable_ability = alternate_version
-
-                        if swapeable_ability:GetAbilityIndex() ~= swapeable_ability:GetAbilityOriginalIndex() then
-                            if swapeable_ability:GetAbilityIndex() ~= ability:GetAbilityOriginalIndex() then
-                                swapeable_ability = swapeable_ability:GetRelatedAbility()
-                            end
-                        end
-
-                        if swapeable_ability == nil then
-                            print("[SWAP] ERROR: ability " .. ability:GetAbilityName() .. " related bug!")
-                            print("[SWAP] Possible reasons: The abilities are in the wrong order on the hero layout")
-                            return
-                        end
-
-                        if mode == "press" then
-                            caster:SwapAbilities(
-                                ability:GetAbilityName(),
-                                swapeable_ability:GetAbilityName(),
-                                false,
-                                true
-                           )
-                        elseif mode == "release" then
-                            if not swapeable_ability:IsEx() then
-                                caster:SwapAbilities(
-                                    swapeable_ability:GetAbilityName(),
-                                    ability:GetAbilityName(),
-                                    true,
-                                    false
-                               )
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end)
-
     CustomGameEventManager:RegisterListener('update_mouse_position', function(eventSourceIndex, args)
         local position = Vector(args.x, args.y, args.z)
+        local playerId = args.playerId
 
-        if self.players and self.players[args.playerID] then
-            self.players[args.playerID]:UpdateCursorPosition(position)
+        if self.players and self.players[playerId] then
+            self.players[playerId]:UpdateCursorPosition(position)
         end
     end)
         
@@ -254,61 +218,29 @@ function GameMode:SetupPanoramaEventHooks()
         end
     end)
 
-    CustomGameEventManager:RegisterListener('move_unit', function(eventSourceIndex, args)
-        local direction = args.direction
+    CustomGameEventManager:RegisterListener('custom_action', function(eventSourceIndex, event)
+        local playerId = event.playerId
 
-        local unit = EntIndexToHScript(args.entityIndex)
+        if self.players and self.players[playerId] then
+            local player = self.players[playerId]
+            local hero = player.hero
 
-        --Not initialized yet
-        if unit == nil then return end
-        if unit.direction == nil then return end
+            local type = event.payload.type;
+            local mode = event.payload.mode;
+            
+            if(type == Custom_ActionTypes.MOVEMENT) then
+                local currentDirection = hero:GetRawDirection()
+                local incomingDirection = event.payload.direction;
+                local vector = Vector(incomingDirection['0'], incomingDirection['1'], 0);
 
-        local current_direction = unit:GetRawDirection()
+                if(mode == Custom_ActionModes.STOP) then
+                    vector = vector * (-1);
+                end
 
-        if args.direction == "right" then 
-            if unit.first_right == false then unit.first_right = true end
-            unit:SetDirection(current_direction.x + 1, nil)
-        end
-
-        if args.direction == "left" then 
-            if unit.first_left == false then unit.first_left = true end
-            unit:SetDirection(current_direction.x - 1, nil)
-        end
-        if args.direction == "up" then 
-            if unit.first_up == false then unit.first_up = true end
-            unit:SetDirection(nil, current_direction.y + 1)
-        end
-        if args.direction == "down" then 
-            if unit.first_down == false then unit.first_down = true end
-            unit:SetDirection(nil, current_direction.y - 1)
-        end
-    end)
-
-    CustomGameEventManager:RegisterListener('stop_unit', function(eventSourceIndex, args)
-        local direction = args.direction
-        local unit = EntIndexToHScript(args.entityIndex)
-        
-        --Not initialized yet
-        if unit == nil then return end
-        if unit.direction == nil then return end
-
-        local current_direction = unit:GetRawDirection()
-
-        if args.direction == "right" then 
-            if unit.first_right == false then return end
-            unit:SetDirection(current_direction.x - 1, nil)
-        end
-        if args.direction == "left" then 
-            if unit.first_left == false then return end
-            unit:SetDirection(current_direction.x + 1, nil)
-        end
-        if args.direction == "up" then 
-            if unit.first_up == false then return end
-            unit:SetDirection(nil, current_direction.y - 1)
-        end
-        if args.direction == "down" then 
-            if unit.first_down == false then return end
-            unit:SetDirection(nil, current_direction.y + 1)
+                local newDirection = currentDirection + (vector);
+                newDirection.z = hero:GetForwardVector().z;
+                hero:SetDirection(newDirection.x, newDirection.y);
+            end
         end
     end)
 end
@@ -404,49 +336,26 @@ function GameMode:Start()
     self:RegisterThinker(0.01, function()
         for _,player in pairs(self.players) do
             local data = {
-                entity_index = player.hero:GetEntityIndex(),
-                teamID = player.hero:GetTeam(),
-                playerID = player.hero:GetPlayerOwnerID(),
-                alliance_name = player.hero:GetAlliance():GetName(),
+                entityIndex = player.hero:GetEntityIndex(),
+                teamId = player.hero:GetTeam(),
+                playerId = player.hero:GetPlayerOwnerID(),
+                allianceName = player.hero:GetAlliance():GetName(),
                 name = player.hero:GetName(),
                 health = player.hero:GetHealth(),
-                max_health = player.hero:GetMaxHealth(),
+                maxHealth = player.hero:GetMaxHealth(),
                 treshold = player.hero:GetTreshold(),
                 shield = player.hero:GetShield(),
                 mana = player.hero:GetMana(),
-                max_mana = player.hero:GetMaxMana(),
+                maxMana = player.hero:GetMaxMana(),
                 status = player.hero:GetStatus(),
                 recast = player.hero:GetRecast(),
                 stackbars = player.hero:GetStackbars(),
                 charges = player.hero:GetCharges(),
                 cooldown = player.hero:GetCooldown(),
             }
-            CustomNetTables:SetTableValue("heroes", "index_" .. data.entity_index, data)
+            CustomNetTables:SetTableValue("heroes", tostring(_), data)
         end
-
-        --[[
-        print("============================================================")
-        for _,unit in pairs(self.units) do
-            print(unit:GetEntityIndex(), unit:IsAlive() and "ALIVE" or "DEATH")
-            local data = {
-                unit_index = unit:GetEntityIndex(),
-                teamID = DOTA_TEAM_GOODGUYS,--unit:GetTeam(),
-                playerID = 0,--unit:GetPlayerOwnerID(),
-                name = unit:GetName(),
-                health = unit:GetHealth(),
-                max_health = unit:GetMaxHealth(),
-                treshold = unit:GetTreshold(),
-                mana = unit:GetMana(),
-                max_mana = unit:GetMaxMana(),
-                status = unit:GetStatus(),
-                recast = unit:GetRecast(),
-                stackbars = unit:GetStackbars(),
-                charges = unit:GetCharges(),
-                cooldown = unit:GetCooldown(),
-            }
-            CustomNetTables:SetTableValue("units", "index_" .. data.unit_index, data)
-        end
-        ]]
+        
 
         CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
     end)

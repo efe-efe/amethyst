@@ -1,0 +1,221 @@
+import CameraController from './shared/camera/cameraController';
+import Command from './shared/commands/commands';
+import Key, { GetKeyByKeyCode } from './shared/commands/key';
+import Action, { GetActionByActionCode } from './shared/commands/actions';
+import LayoutController from './shared/layout/layoutController';
+import HeroController from './heroController';
+import './shared/mouse/mousePositionController';
+import HeroOverhead from './heroOverhead/heroOverhead';
+import './targetIndicator';
+import HeroStatus from './heroStatus';
+import AllianceBar from './allianceBar';
+
+(function(){
+
+    new CameraController;
+
+    const layout = LayoutController.GetInstance();
+    
+    const allKeys = [
+        new Key('W'),
+        new Key('A'),
+        new Key('S'),
+        new Key('D'),
+        new Key('R'),
+        new Key('E'),
+        new Key('F'),
+        new Key('Q'),
+        new Key('C'),
+        new Key('Space', 'SPACE'),
+        new Key('MOUSE_1', 'LMB'),
+        new Key('MOUSE_2', 'RMB')
+    ];
+    
+    enum CUSTOM_HeroActionCodes {
+        MOVE_UP,
+        MOVE_LEFT,
+        MOVE_DOWN,
+        MOVE_RIGHT,
+        BASIC_ATTACK,
+        SECOND_ATTACK,
+        MOBILITY,
+        COUNTER,
+        SPECIAL_ATTACK,
+        EXTRA,
+        ULTIMATE,
+        CANCEL,
+    }
+    
+    class AbilityAction extends Action{
+        slotIndex: number;
+        showEffects: boolean;
+    
+        constructor(name: string, actionCode: CUSTOM_HeroActionCodes, slotIndex: number, showEffects = true){
+            super(name, actionCode);
+            this.slotIndex = slotIndex;
+            this.showEffects = showEffects;
+        }
+    
+        OnStart(): void{
+            HeroController.CastAbility(this.slotIndex, this.showEffects);
+        }
+    
+        OnEnd(): void {
+            HeroController.StopCastAbility(this.slotIndex);
+        }
+    }
+    
+    class MovementAction extends Action{
+        OnStart(): void{
+            const direction = this.GetDirectionFromActionCode(this.actionCode);
+            HeroController.StartMoving(direction);
+        }
+    
+        OnEnd(): void {
+            const direction = this.GetDirectionFromActionCode(this.actionCode);
+            HeroController.StopMoving(direction);
+        }
+    
+        GetDirectionFromActionCode(actionCode: CUSTOM_HeroActionCodes): number[]{
+            let direction = [0, 0];
+            
+            if(actionCode == CUSTOM_HeroActionCodes.MOVE_UP){
+                direction = [0, 1];
+            }
+            if(actionCode == CUSTOM_HeroActionCodes.MOVE_DOWN){
+                direction = [0, -1];
+            }
+            if(actionCode == CUSTOM_HeroActionCodes.MOVE_LEFT){
+                direction = [-1, 0];
+            }
+            if(actionCode == CUSTOM_HeroActionCodes.MOVE_RIGHT){
+                direction = [1, 0];
+            }
+    
+            return direction;
+        }
+    }
+    
+    class CancelAction extends Action{
+        OnStart(): void{
+            HeroController.Cancel();
+        }
+    }
+    
+    const allActions = [
+        new MovementAction('Move up', CUSTOM_HeroActionCodes.MOVE_UP),
+        new MovementAction('Move down', CUSTOM_HeroActionCodes.MOVE_DOWN),
+        new MovementAction('Move left', CUSTOM_HeroActionCodes.MOVE_LEFT),
+        new MovementAction('Move right', CUSTOM_HeroActionCodes.MOVE_RIGHT),
+        new AbilityAction('Basic attack', CUSTOM_HeroActionCodes.BASIC_ATTACK, 0, false),
+        new AbilityAction('Second attack', CUSTOM_HeroActionCodes.SECOND_ATTACK, 1),
+        new AbilityAction('Mobility', CUSTOM_HeroActionCodes.MOBILITY, 2),
+        new AbilityAction('Counter', CUSTOM_HeroActionCodes.COUNTER, 3),
+        new AbilityAction('Special attack', CUSTOM_HeroActionCodes.SPECIAL_ATTACK, 4),
+        new AbilityAction('Extra attack', CUSTOM_HeroActionCodes.EXTRA, 5),
+        new AbilityAction('Ultimate', CUSTOM_HeroActionCodes.ULTIMATE, 6),
+        new CancelAction('Cancel', CUSTOM_HeroActionCodes.CANCEL)
+    ];
+    
+    const CreateCommandByKeyAndActionCodes = (keyCode: string, actionCode: CUSTOM_HeroActionCodes, isAbility = false): Command => {
+        const key = GetKeyByKeyCode(allKeys, keyCode)!;
+        const action = GetActionByActionCode(allActions, actionCode)!;
+    
+        if(isAbility){
+            const actionAsSpell = action as AbilityAction;
+            layout.ChangeAbilityTextBySlotIndex(key.text, actionAsSpell.slotIndex);
+        }
+    
+        return new Command(key, action);
+    };
+    
+    const allCommands: Command[] = [
+        CreateCommandByKeyAndActionCodes('W', CUSTOM_HeroActionCodes.MOVE_UP),
+        CreateCommandByKeyAndActionCodes('A', CUSTOM_HeroActionCodes.MOVE_LEFT),
+        CreateCommandByKeyAndActionCodes('S', CUSTOM_HeroActionCodes.MOVE_DOWN),
+        CreateCommandByKeyAndActionCodes('D', CUSTOM_HeroActionCodes.MOVE_RIGHT),
+        CreateCommandByKeyAndActionCodes('R', CUSTOM_HeroActionCodes.ULTIMATE, true),
+        CreateCommandByKeyAndActionCodes('F', CUSTOM_HeroActionCodes.EXTRA, true),
+        CreateCommandByKeyAndActionCodes('E', CUSTOM_HeroActionCodes.SPECIAL_ATTACK, true),
+        CreateCommandByKeyAndActionCodes('Q', CUSTOM_HeroActionCodes.COUNTER, true),
+        CreateCommandByKeyAndActionCodes('C', CUSTOM_HeroActionCodes.CANCEL),
+        CreateCommandByKeyAndActionCodes('Space', CUSTOM_HeroActionCodes.MOBILITY, true),
+        CreateCommandByKeyAndActionCodes('MOUSE_1', CUSTOM_HeroActionCodes.BASIC_ATTACK, true),
+        CreateCommandByKeyAndActionCodes('MOUSE_2', CUSTOM_HeroActionCodes.SECOND_ATTACK, true),
+    ];
+    
+    layout.SetDefaultUI();
+    
+    const heroOverheads: any = {};
+    const heroStatus: any = {};
+    const allianceBars: any = {};
+
+    const tableName = 'heroes' as never;
+    CustomNetTables.SubscribeNetTableListener(tableName, (table: never, key: string | number | symbol, value: any) => {
+        const entityIndex = value.entityIndex as EntityIndex;
+        
+        if(!heroOverheads[entityIndex]){
+            heroOverheads[entityIndex] = new HeroOverhead(value);
+        } else {
+            heroOverheads[entityIndex].UpdateData(value);   
+        }
+
+        if(!heroStatus[entityIndex]){
+            let container: Panel | null;
+
+            if(value.allianceName == 'DOTA_ALLIANCE_RADIANT'){
+                container = $('#alliances-status').FindChildTraverse('alliances-status__radiant');
+            }
+            if(value.allianceName == 'DOTA_ALLIANCE_DIRE'){
+                container = $('#alliances-status').FindChildTraverse('alliances-status__dire');
+            }
+            if(value.allianceName == 'DOTA_ALLIANCE_LEGION'){
+                container = $('#alliances-status').FindChildTraverse('alliances-status__legion');
+            }
+            if(value.allianceName == 'DOTA_ALLIANCE_VOID'){
+                container = $('#alliances-status').FindChildTraverse('alliances-status__void');
+            }
+        
+            heroStatus[entityIndex] = new HeroStatus(value, container!);
+        } else {
+            heroStatus[entityIndex].UpdateData(value);   
+        }
+    });
+
+    const tableNameAlliance = 'alliances' as never;
+    CustomNetTables.SubscribeNetTableListener(tableNameAlliance, (table: never, key: string | number | symbol, value: any) => {
+        const allianceName = value.name as string;
+        
+        if(!allianceBars[allianceName]){
+            const topBarContainerPanel =  $('#top-bar');
+            let topBarPanel: Panel | null = null;
+
+            if(allianceName == 'DOTA_ALLIANCE_RADIANT'){
+                topBarPanel = topBarContainerPanel.FindChildTraverse('top-bar__radiant');
+            }
+            if(allianceName == 'DOTA_ALLIANCE_DIRE'){
+                topBarPanel = topBarContainerPanel.FindChildTraverse('top-bar__dire');
+            }
+            if(allianceName == 'DOTA_ALLIANCE_LEGION'){
+                topBarPanel = topBarContainerPanel.FindChildTraverse('top-bar__legion');
+            }
+            if(allianceName == 'DOTA_ALLIANCE_VOID'){
+                topBarPanel = topBarContainerPanel.FindChildTraverse('top-bar__void');
+            }
+        
+            if(topBarPanel){
+                allianceBars[allianceName] = new AllianceBar(topBarPanel, value);
+            }
+
+        } else {
+            allianceBars[allianceName].UpdateData(value);   
+        }
+    });
+
+        
+    function UpdateTime(data: any): void{
+        const clockPanel = $('#top-bar__clock-text') as LabelPanel;
+        clockPanel.text = data.timer_minute_10.toString() + data.timer_minute_01.toString() + ':' + data.timer_second_10.toString() + data.timer_second_01.toString();
+    }
+    GameEvents.Subscribe('countdown', UpdateTime);
+})();

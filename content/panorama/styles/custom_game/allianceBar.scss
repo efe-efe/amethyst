@@ -1,0 +1,88 @@
+.alliance-bar
+{
+    width: 400px;
+    height: 100%;
+    padding: 0 5px;
+
+    flow-children: down;
+    
+    &__health{
+        height: 30px;
+        width: 100%;
+    
+        margin-bottom: 5px;
+        flow-children: right;
+
+        background-color: rgba(36, 42, 53, 0.5);
+    }
+
+    &__bottom{
+        height: 20px;
+        width: 100%;
+        flow-children: right;
+    }
+    
+    &__amethysts{
+        height: 100%;
+        width: 33%;
+    
+        background-color: rgba(36, 42, 53, 0.5);
+        flow-children: right;
+    }
+
+    &__amethysts-image-container{
+        height: 100%;
+        width: 50%;
+    }
+
+    &__amethysts-image{
+        height: 12px;
+        width: 12px;
+        align: right center;
+    }
+
+    &__amethysts-text{
+        width: 50%;
+        color: #f9f9f9;
+        font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim,MingLiU;
+        font-size: 14px;
+        align: center center;
+    }
+    
+    &__score-container{
+        height: 100%;
+        width: 65%;
+    
+        background-color: rgba(36, 42, 53, 0.5);
+        align: right center;
+    }
+    
+    &__score-points{
+        height: 100%;
+    
+        align: center center;
+        flow-children: right;
+    }
+    
+    &__score-point{
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        align: center center;
+        border: 1px solid white;
+    }
+    
+    &__score-point--active{
+        visibility: visible;
+        opacity: 1.0;
+    }
+    
+    &__score-point--inactive{
+        visibility: visible;
+        opacity: 0.1;
+    }
+    
+    &__score-point--disabled{
+        visibility: collapse;
+    }
+}

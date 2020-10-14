@@ -1,8 +1,49 @@
 <root>
-    <scripts>
-        <include src="file://{resources}/scripts/custom_game/util.js"/>
-        <include src="file://{resources}/scripts/custom_game/target_indicator.js" />
-    </scripts>
-    <Panel class="HudPanel" hittest="false">
+    <styles>
+        <include src="file://{resources}/styles/custom_game/main.css" />
+        <include src="file://{resources}/styles/custom_game/overhead.css" />
+        <include src="file://{resources}/styles/custom_game/progressBar.css" />
+        <include src="file://{resources}/styles/custom_game/heroOverhead/heroOverhead.css" />
+        <include src="file://{resources}/styles/custom_game/heroOverhead/charges.css" />
+        <include src="file://{resources}/styles/custom_game/heroOverhead/player.css" />
+        <include src="file://{resources}/styles/custom_game/heroOverhead/recast.css" />
+        <include src="file://{resources}/styles/custom_game/heroOverhead/status.css" />
+        <include src="file://{resources}/styles/custom_game/heroOverhead/cooldown.css" />
+        <include src="file://{resources}/styles/custom_game/heroOverhead/stacks.css" />
+        <include src="file://{resources}/styles/custom_game/allianceStatus.css" />
+        <include src="file://{resources}/styles/custom_game/heroStatus.css" />
+        <include src="file://{resources}/styles/custom_game/topBar.css" />
+        <include src="file://{resources}/styles/custom_game/allianceBar.css" />
+    </styles>
+	<scripts>
+        <include src="file://{resources}/scripts/custom_game/bundle.js" />
+	</scripts>
+    <Panel class="main" hittest="false">
+        <Panel id="alliances-status" class="alliances-status" hittest="false">
+            <Panel id="alliances-status__left" class="alliances-status__left" hittest="false">
+                <Panel class="alliances-status__radiant" id="alliances-status__radiant" hittest="false"/>
+                <Panel class="alliances-status__legion" id="alliances-status__legion" hittest="false"/>
+            </Panel>
+            <Panel id="alliances-status__right" class="alliances-status__right" hittest="false">
+                <Panel class="alliances-status__dire" id="alliances-status__dire" hittest="false"/>
+                <Panel class="alliances-status__void" id="alliances-status__void" hittest="false"/>
+            </Panel>
+        </Panel>
+
+        <Panel id="top-bar" class="top-bar" hittest="false" >
+            <Panel id="top-bar__left" class="top-bar__left">
+                <Panel id="top-bar__radiant" class="top-bar__radiant" hittest="false" hittestchildren="false"/>
+                <Panel id="top-bar__legion" class="top-bar__legion" hittest="false" hittestchildren="false"/>
+            </Panel>
+            <Panel id="top-bar__middle" class="top-bar__middle" hittest="false" hittestchildren="false">
+                <Panel id="top-bar__clock" class="top-bar__clock" hittest="false" hittestchildren="false">
+                    <Label id="top-bar__clock-text" class="top-bar__clock-text" html="true" text="--:--" />
+                </Panel>
+            </Panel>
+            <Panel id="top-bar__right" class="top-bar__right">
+                <Panel id="top-bar__dire" class="top-bar__dire" hittest="false" hittestchildren="false"/>
+                <Panel id="top-bar__void" class="top-bar__void" hittest="false" hittestchildren="false"/>
+            </Panel>
+        </Panel>
     </Panel>
 </root>
