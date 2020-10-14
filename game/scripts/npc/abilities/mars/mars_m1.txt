@@ -10,7 +10,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"180"
+		"AbilityCastRange"				"230"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
@@ -18,7 +18,7 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"230" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"max_stacks"             	"3" }
 		}

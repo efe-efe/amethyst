@@ -5,6 +5,8 @@ function puck_special_attack_recast:GetCastPointSpeed()    return 0 end
 function puck_special_attack_recast:OnSpellStart()
     FindClearSpaceForUnit(self:GetCaster(), self.projectile.current_position, true)
     EmitSoundOn("Hero_Puck.EtherealJaunt", self:GetCaster())
+    
+	StopSoundOn("Hero_Puck.Illusory_Orb", self:GetCaster())
     self.projectile:Destroy(true)
 end
 

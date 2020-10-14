@@ -42,7 +42,6 @@ end
 function modifier_puck_counter_banish:GetStatusLabel() return "Phase Shift" end
 function modifier_puck_counter_banish:GetStatusPriority() return 4 end
 function modifier_puck_counter_banish:GetStatusStyle() return "PhaseShift" end
-function modifier_puck_counter_banish:GetStatusScope() return STATUS_SCOPE_LOCAL end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Banish(modifier_puck_counter_banish)
