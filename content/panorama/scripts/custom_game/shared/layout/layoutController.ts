@@ -63,6 +63,14 @@ export default class LayoutController{
         }
     }
 
+    private CollapsePanelByClass(className: string): void{
+        const panel = this.mainPanel.FindChildrenWithClassTraverse(className)[0];
+
+        if(panel){
+            panel.style.visibility = 'collapse';
+        }
+    }
+
     public SetPanelMargin(panelName: string, margins: any): void{
         const panel = this.mainPanel.FindChildTraverse(panelName);
 
@@ -89,15 +97,20 @@ export default class LayoutController{
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ACTION_MINIMAP, false);
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ENDGAME, false);
         GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS, false);
+        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_ITEMS, false);
+        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_SHOP, false);
 
         this.CollapsePanel('inventory_tpscroll_container');
         this.CollapsePanel('inventory_neutral_slot_container');
+        this.CollapsePanelByClass('AbilityInsetShadowRight');
         this.CollapsePanel('StatBranch');
         this.CollapsePanel('health_mana');
 
         const rightFlarePanel = this.mainPanel.FindChildTraverse('right_flare')!;
         rightFlarePanel.style.width = '52px';
-        rightFlarePanel.style.marginRight = '42px';
+        rightFlarePanel.style.height = '97px';
+        rightFlarePanel.style.marginRight = '244px';
+
 
         const centerWithStatsPanel = this.mainPanel.FindChildTraverse('center_with_stats')!;
         centerWithStatsPanel.style.horizontalAlign = 'left';

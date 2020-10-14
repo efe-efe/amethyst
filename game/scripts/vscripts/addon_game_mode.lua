@@ -47,8 +47,6 @@ local Custom_ActionModes = {
     STOP = 1,
 }
 
-
-
 if GameMode == nil then
     GameMode = class({})
 end
@@ -114,7 +112,7 @@ function GameMode:SetupRules()
     GameRules:SetPreGameTime(0.0)
     GameRules:SetGoldPerTick(0)
     GameRules:SetGoldTickTime(0)
-    GameRules:SetStartingGold(4)
+    GameRules:SetStartingGold(0)
     GameRules:SetCustomGameSetupAutoLaunchDelay(10)
     GameRules:SetStrategyTime(0.0)
     GameRules:SetShowcaseTime(0.0)

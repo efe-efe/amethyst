@@ -48,15 +48,7 @@ function Filters:Activate(GameMode, this)
     end
 
     function GameMode:GoldFilter(keys)
-        local gold = keys.gold
-        local playerID = keys.player_id_const
-        local reason = keys.reason_const
-
-        if reason == DOTA_ModifyGold_HeroKill then
-            return false
-        end
-
-        return true
+        return false
     end
 
     function GameMode:HealingFilter(keys)

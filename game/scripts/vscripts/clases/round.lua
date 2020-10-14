@@ -2,7 +2,6 @@ Round = Round or class({}, nil, GameState)
 
 local AMETHYST_SPAWN_TIME = 10.0
 local AMETHYST_RESPAWN_TIME = 15.0
-local GOLD_PER_ROUND = 2
 
 local PICKUPS_TIMER = 20.0
 local ROUND_TIMER = ROUND_DURATION
@@ -227,7 +226,6 @@ function Round:EndRound()
 
         FindClearSpaceForUnit(player.hero, target:GetAbsOrigin(), true)
         player.hero:RemoveModifierByName("modifier_generic_displacement")
-        player.hero:SetGold(player.hero:GetGold() + GOLD_PER_ROUND, false)
         player.hero:Reset()
     end
 
