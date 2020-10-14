@@ -7,7 +7,7 @@
 		
 		"AbilityTextureName"			"puck_phase_shift"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityCooldown"				"5.0"
+		"AbilityCooldown"				"6.0"
 		"LevelsBetweenUpgrades"			"0"
 
 		"AbilitySpecial"

@@ -9,7 +9,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
-		"AbilityCastRange" 				"0 850"
+		"AbilityCastRange" 				"0 600"
 		"AbilityCooldown"				"12.0"
 		"AbilityManaCost"				"25"
 		"LevelsBetweenUpgrades"			"0"
