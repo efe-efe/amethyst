@@ -1,5 +1,27 @@
 Abilities = {}
 
+function Abilities.Tie(ability, abilityName)
+    local onSpellStart = ability.OnSpellStart
+    local onUpgrade = ability.OnUpgrade
+
+    function ability:OnSpellStart()
+        if onSpellStart then onSpellStart(self) end
+
+        local otherAbility = self:GetCaster():FindAbilityByName(abilityName)
+        otherAbility:StartCooldown(otherAbility:GetCooldown(0))
+    end
+
+    function ability:OnUpgrade()
+        if onUpgrade then onUpgrade(self) end
+
+        local otherAbility = self:GetCaster():FindAbilityByName(abilityName)
+
+        if otherAbility:GetLevel() < self:GetLevel() then
+            otherAbility:UpgradeAbility(true)
+        end
+    end
+end
+
 function Abilities.Castpoint(ability)
     local getCastPoint = ability.GetCastPoint
     local onAbilityPhaseStart = ability.OnAbilityPhaseStart

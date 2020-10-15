@@ -13,7 +13,10 @@
 		"Ability5"						"sniper_special_attack"
 		"Ability6"						"sniper_extra"
 		"Ability7"						"sniper_ultimate"
-		"Ability8"						"sniper_special_attack_recast"
+		"Ability8"						"sniper_ex_second_attack"
+		"Ability10"						"sniper_ex_special_attack"
+		"Ability11"						"sniper_special_attack_recast"
+		
 		
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"

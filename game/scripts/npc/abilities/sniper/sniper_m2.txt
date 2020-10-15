@@ -32,4 +32,38 @@
 			"08"{ "var_type"	"FIELD_INTEGER"		"min_damage"				"14" }
 		}
 	}
+
+	
+    "sniper_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack/sniper_second_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"sniper_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"1600"
+		"AbilityCooldown"				"6.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"25 30" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"root_duration"				"1.0" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"reduction_per_hit"			"35" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"min_damage"				"14" }
+		}
+	}
 }
