@@ -322,6 +322,7 @@ end
 
 UNIT_COLLISION = 1
 WALL_COLLISION = 2
+TREE_COLLISION = 2
 
 function Modifiers.Displacement(modifier)
     local onCreated =                   modifier.OnCreated
@@ -394,6 +395,8 @@ function Modifiers.Displacement(modifier)
 
         local origin = self.parent:GetAbsOrigin() + Vector(self.direction.x, self.direction.y, 0) * self:GetCollisionOffset()
 
+        local trees = GridNav:GetAllTreesAroundPoint(origin, (self:GetCollisionRadius()/2), true)
+
         local units = self:GetCaster():FindUnitsInRadius(
             origin, 
             self:GetCollisionRadius(), 
@@ -428,6 +431,12 @@ function Modifiers.Displacement(modifier)
             self:OnCollide({
                 units = units,
                 type = UNIT_COLLISION,
+            })
+        end
+
+        if #trees >= 1 then
+            self:OnCollide({
+                type = TREE_COLLISION,
             })
         end
 

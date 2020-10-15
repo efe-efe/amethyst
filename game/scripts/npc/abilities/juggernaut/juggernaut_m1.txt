@@ -11,10 +11,6 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"220"
-
-		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
-		}
 		
 		"AbilitySpecial"
 		{

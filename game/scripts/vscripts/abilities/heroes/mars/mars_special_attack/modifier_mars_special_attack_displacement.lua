@@ -37,7 +37,7 @@ function modifier_mars_special_attack_displacement:OnCollide(params)
 			end
 		end
 
-		if params.type == WALL_COLLISION then
+		if params.type == WALL_COLLISION or params.type == TREE_COLLISION then
 			stun = true
 		end
 
