@@ -26,6 +26,8 @@ import AllianceBar from './allianceBar';
         new Key('F'),
         new Key('Q'),
         new Key('C'),
+        new Key('1'),
+        new Key('2'),
         new Key('Space', 'SPACE'),
         new Key('MOUSE_1', 'LMB'),
         new Key('MOUSE_2', 'RMB')
@@ -43,6 +45,8 @@ import AllianceBar from './allianceBar';
         SPECIAL_ATTACK,
         EXTRA,
         ULTIMATE,
+        EX_ONE,
+        EX_TWO,
         CANCEL,
     }
     
@@ -114,6 +118,8 @@ import AllianceBar from './allianceBar';
         new AbilityAction('Special attack', CUSTOM_HeroActionCodes.SPECIAL_ATTACK, 4),
         new AbilityAction('Extra attack', CUSTOM_HeroActionCodes.EXTRA, 5),
         new AbilityAction('Ultimate', CUSTOM_HeroActionCodes.ULTIMATE, 6),
+        new AbilityAction('EX one', CUSTOM_HeroActionCodes.EX_ONE, 7),
+        new AbilityAction('EX two', CUSTOM_HeroActionCodes.EX_TWO, 8),
         new CancelAction('Cancel', CUSTOM_HeroActionCodes.CANCEL)
     ];
     
@@ -139,6 +145,8 @@ import AllianceBar from './allianceBar';
         CreateCommandByKeyAndActionCodes('E', CUSTOM_HeroActionCodes.SPECIAL_ATTACK, true),
         CreateCommandByKeyAndActionCodes('Q', CUSTOM_HeroActionCodes.COUNTER, true),
         CreateCommandByKeyAndActionCodes('C', CUSTOM_HeroActionCodes.CANCEL),
+        CreateCommandByKeyAndActionCodes('1', CUSTOM_HeroActionCodes.EX_ONE, true),
+        CreateCommandByKeyAndActionCodes('2', CUSTOM_HeroActionCodes.EX_TWO, true),
         CreateCommandByKeyAndActionCodes('Space', CUSTOM_HeroActionCodes.MOBILITY, true),
         CreateCommandByKeyAndActionCodes('MOUSE_1', CUSTOM_HeroActionCodes.BASIC_ATTACK, true),
         CreateCommandByKeyAndActionCodes('MOUSE_2', CUSTOM_HeroActionCodes.SECOND_ATTACK, true),

@@ -1,0 +1,12 @@
+<root>
+    <styles>
+      <include src="file://{resources}/styles/custom_game/heroSelection.css" />
+    </styles>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/heroSelection.js" />
+    </scripts>
+  <Panel class="IamTheCustomDude">
+    <Panel id="IamTheCustomDude"> 
+    </Panel>
+  </Panel>
+</root>
