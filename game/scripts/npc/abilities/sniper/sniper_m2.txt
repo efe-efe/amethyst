@@ -40,13 +40,14 @@
 		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack/sniper_second_attack"
 		"MaxLevel"						"2"
 
-		"AbilityTextureName"			"sniper_second_attack"
+		"AbilityTextureName"			"sniper_ex_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1600"
 		"AbilityCooldown"				"6.0"
+		"AbilityManaCost"				"25"
 		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {

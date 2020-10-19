@@ -5,7 +5,7 @@
 		"ScriptFile"					"abilities/heroes/sniper/sniper_basic_attack/sniper_basic_attack"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"sniper_basic_attack"
+		"AbilityTextureName"			"sniper_assassinate"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	

@@ -5,6 +5,7 @@ LinkLuaModifier("modifier_sniper_shrapnel_thinker_custom", "abilities/heroes/sni
 LinkLuaModifier("modifier_sniper_shrapnel_debuff", "abilities/heroes/sniper/sniper_shared_modifiers/modifier_sniper_shrapnel_debuff", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_sniper_special_attack_recast", "abilities/heroes/sniper/sniper_special_attack/modifier_sniper_special_attack_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_sniper_ex_special_attack_thinker", "abilities/heroes/sniper/sniper_special_attack/modifier_sniper_ex_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_sniper_ex_special_attack_debuff", "abilities/heroes/sniper/sniper_special_attack/modifier_sniper_ex_special_attack_debuff", LUA_MODIFIER_MOTION_NONE)
 
 function sniper_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
 function sniper_special_attack:GetPlaybackRateOverride() 	return 1.5 end

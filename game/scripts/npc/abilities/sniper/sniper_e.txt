@@ -68,7 +68,7 @@
 		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack"
 		"MaxLevel"						"2"
 
-		"AbilityTextureName"			"sniper_shrapnel"
+		"AbilityTextureName"			"sniper_ex_special_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -76,6 +76,7 @@
 		"AbilityCastRange"				"1150"
 		"AbilityCooldown"				"7.0"
 		"LevelsBetweenUpgrades"			"0"
+		"AbilityManaCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -84,13 +85,15 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"2" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"35" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"debuff_linger"				"0.5" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"3" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"initial_damage"			"20" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.3" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"80" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"debuff_linger"				"0.1" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.7" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.3" }
 		}
 	}
 }

@@ -115,6 +115,7 @@ function sniper_second_attack:OnAbilityPhaseStart()
     EmitGlobalSound("Ability.AssassinateLoad")
 	return true
 end
+
 function sniper_ex_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -129,7 +130,7 @@ function sniper_ex_second_attack:OnSpellStart()
 	local min_damage = self:GetSpecialValueFor("min_damage")
 
 	local projectile = {
-		EffectName = "particles/sniper/sniper_second_attack.vpcf",
+		EffectName = "particles/sniper/sniper_ex_second_attack.vpcf",
 		vSpawnOrigin = origin + Vector(0, 0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
