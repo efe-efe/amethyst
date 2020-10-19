@@ -1,8 +1,8 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf26:version{26288658-411e-4f14-b698-2e1e5d00dec6} -->
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf27:version{36c3961f-02a4-4c52-bf8f-6e3147d7d142} -->
 {
 	_class = "CParticleSystemDefinition"
 	m_bShouldHitboxesFallbackToRenderBounds = false
-	m_nMaxParticles = 1
+	m_nMaxParticles = 8
 	m_flConstantRadius = 1.0
 	m_nConstantSequenceNumber = 6
 	m_bShouldSort = false
@@ -12,10 +12,11 @@
 			_class = "C_OP_RenderDeferredLight"
 			m_flStartFalloff = 0.1
 			m_flRadiusScale = 200.0
+			m_hTexture = resource:"materials/particle/sparks/sparks.vtex"
 			m_vecColorScale = 
 			{
 				m_nType = "PVEC_TYPE_LITERAL_COLOR"
-				m_LiteralColor = [ 148, 179, 255 ]
+				m_LiteralColor = [ 255, 255, 255 ]
 			}
 		},
 	]
@@ -66,16 +67,17 @@
 	m_Children = 
 	[
 		{
-			m_ChildRef = resource:"particles/items4_fx/nullifier_proj_trail.vpcf"
-		},
-		{
-			m_ChildRef = resource:"particles/orchid_proj_core.vpcf"
-		},
-		{
 			m_bEndCap = true
-			m_ChildRef = resource:"particles/orchid_proj_impact.vpcf"
+			m_ChildRef = resource:"particles/items2_fx/rod_of_atos_attack_impact.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/items2_fx/rod_of_atos_attack_trail.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/items2_fx/rod_of_atos_attack_core.vpcf"
 		},
 	]
+	m_nBehaviorVersion = 5
 	m_controlPointConfigurations = 
 	[
 		{
@@ -85,25 +87,24 @@
 				{
 					m_iAttachType = "PATTACH_WORLDORIGIN"
 					m_vecOffset = [ 0.0, 0.0, 0.0 ]
-					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
 					m_entityName = "self"
 				},
 				{
 					m_iControlPoint = 1
 					m_iAttachType = "PATTACH_WORLDORIGIN"
-					m_vecOffset = [ 1000.0, 0.0, 0.0 ]
-					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
 					m_entityName = "self"
 				},
 				{
 					m_iControlPoint = 3
 					m_iAttachType = "PATTACH_WORLDORIGIN"
 					m_vecOffset = [ 0.0, 0.0, 0.0 ]
-					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ null, null, null ]
 					m_entityName = "self"
 				},
 			]
 		},
 	]
-	m_nBehaviorVersion = 5
 }

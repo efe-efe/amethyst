@@ -40,7 +40,7 @@ function modifier_nevermore_souls:PlayEffectsCharged()
 end
 
 function modifier_nevermore_souls:CreateGlow(index)
-	local particle_cast = "particles/nevermore_m1_aura.vpcf"
+	local particle_cast = "particles/nevermore/nevermore_basic_attack_aura.vpcf"
 	self.effects_cast_weapon[index] = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 
 	if index == 0 then

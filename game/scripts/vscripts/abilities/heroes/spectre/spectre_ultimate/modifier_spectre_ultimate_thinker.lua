@@ -27,7 +27,7 @@ function modifier_spectre_ultimate_thinker:OnDelayEnds()
     if IsServer() then
         self:GetCaster():FindAbilityByName("spectre_mobility"):EndCooldown()
 
-        local particle_cast = "particles/fv_chronosphere_aeons.vpcf"
+        local particle_cast = "particles/spectre/spectre_ultimate.vpcf"
 
         self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
         ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())

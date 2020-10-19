@@ -31,7 +31,7 @@ function item_nullifier_custom:OnSpellStart()
     local projectile_speed = self:GetSpecialValueFor("projectile_speed")
     
     local projectile = {
-		EffectName = 			"particles/nullifier_proj.vpcf",
+		EffectName = 			"particles/nullifier/nullifier_proj.vpcf",
 		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0,0,80),
 		fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius =			self:GetSpecialValueFor("hitbox"),
