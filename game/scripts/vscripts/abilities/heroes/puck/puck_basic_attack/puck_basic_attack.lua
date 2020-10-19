@@ -100,9 +100,9 @@ function puck_basic_attack:PlayEffectsOnFinish(pos, is_charged)
 
 	EmitSoundOnLocationWithCaster(pos, "Hero_Puck.ProjectileImpact", caster)
 
-	local particle_cast = "particles/units/heroes/hero_puck/puck_base_attack_explosion.vpcf"
+	local particle_cast = "particles/puck/puck_base_attack_explosion.vpcf"
 	if is_charged then
-		particle_cast = "particles/econ/items/puck/puck_alliance_set/puck_base_attack_explosion_aproset.vpcf"
+		particle_cast = "particles/puck/puck_base_attack_alternative_explosion.vpcf"
 	end
 	
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
