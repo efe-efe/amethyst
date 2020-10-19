@@ -25,7 +25,7 @@ function sniper_second_attack:OnSpellStart()
 	local min_damage = self:GetSpecialValueFor("min_damage")
 
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf",
+		EffectName = "particles/sniper/sniper_second_attack.vpcf",
 		vSpawnOrigin = origin + Vector(0, 0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
@@ -84,7 +84,7 @@ function sniper_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.AssassinateDamage", caster)
 
-	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
+	local particle_cast = "particles/units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
 	ParticleManager:SetParticleControl(effect_cast, 0, pos)
 	ParticleManager:SetParticleControl(effect_cast, 1, pos)
@@ -96,7 +96,7 @@ function sniper_second_attack:PlayEffectsOnHit(hTarget)
 	local caster = self:GetCaster()
 	EmitSoundOn("Hero_Sniper.AssassinateDamage", caster)
 
-	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
+	local particle_cast = "particles/units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
 
 	ParticleManager:SetParticleControl(effect_cast, 0, hTarget:GetOrigin())
@@ -129,7 +129,7 @@ function sniper_ex_second_attack:OnSpellStart()
 	local min_damage = self:GetSpecialValueFor("min_damage")
 
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf",
+		EffectName = "particles/sniper/sniper_second_attack.vpcf",
 		vSpawnOrigin = origin + Vector(0, 0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),

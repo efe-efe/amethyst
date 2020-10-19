@@ -73,7 +73,7 @@ function juggernaut_counter_recast:OnSpellStart()
 
 	ability:StartCooldown(ability:GetCooldown(0))
 
-	local particle_cast = "particles/mod_units/heroes/hero_juggernaut/void_spirit_astral_step.vpcf"
+	local particle_cast = "particles/juggernaut/juggernaut_counter_recast.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     ParticleManager:SetParticleControl(effect_cast, 0, origin)
 	ParticleManager:SetParticleControl(effect_cast, 1, new_origin)

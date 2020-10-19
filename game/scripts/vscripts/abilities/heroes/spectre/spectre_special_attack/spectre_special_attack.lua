@@ -13,7 +13,7 @@ function spectre_special_attack:OnSpellStart()
 	local origin = caster:GetOrigin()
 	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
-	local projectile_name = "particles/mod_units/heroes/hero_spectre/spectre_ti7_crimson_spectral_dagger.vpcf" 
+	local projectile_name = "particles/spectre/spectre_special_attack.vpcf" 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local hitbox = self:GetSpecialValueFor("hitbox")
 

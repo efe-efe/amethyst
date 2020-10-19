@@ -237,8 +237,8 @@ end
 function CreateRadiusMarker(caster, origin, params)
 	local effect_cast
 
-	local particle_cast_enemy = "particles/mod_units/instant_aoe_marker.vpcf"
-	local particle_cast_ally = "particles/mod_units/heroes/hero_dark_willow/dw_ti8_immortal_cursed_crown_marker.vpcf"
+    local particle_cast = "particles/aoe_marker/aoe_marker_enemy.vpcf"
+	local particle_cast_ally = "particles/aoe_marker/aoe_marker_ally.vpcf"
 	
 	if params.show_all == 1 then
 		for _,alliance in pairs(GameRules.GameMode.alliances) do

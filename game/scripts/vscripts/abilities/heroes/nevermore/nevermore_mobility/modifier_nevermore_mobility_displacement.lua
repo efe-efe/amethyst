@@ -82,15 +82,11 @@ function modifier_nevermore_mobility_displacement:GetCollisionTeamFilter()
 end
 
 function modifier_nevermore_mobility_displacement:GetOnThinkCallback()
-    local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
-    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
-    ParticleManager:SetParticleControl(effect_cast, 1, Vector(250, 1, 1))
-    ParticleManager:ReleaseParticleIndex(effect_cast)
+    self:PlayEffectsOnDestroy()
 end
 
 function modifier_nevermore_mobility_displacement:PlayEffectsOnDestroy()
-    local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
+    local particle_cast = "particles/nevermore/nevermore_mobility.vpcf"
     local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
     ParticleManager:SetParticleControl(effect_cast, 1, Vector(250, 1, 1))

@@ -33,7 +33,7 @@ function nevermore_basic_attack:OnSpellStart()
 	local damage = caster:GetAverageTrueAttackDamage(caster)
 
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_nevermore/nevermore_base_attack.vpcf",
+		EffectName = "particles/nevermore/nevermore_basic_attack.vpcf",
 		vSpawnOrigin = origin + Vector(0, 0, 96),
 		fDistance = self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),

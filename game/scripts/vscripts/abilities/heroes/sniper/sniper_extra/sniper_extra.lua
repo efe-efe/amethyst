@@ -31,7 +31,7 @@ function sniper_extra:OnSpellStart()
     local projectile_direction_c = Vector(c_x, c_y, 0)
 
     local projectile_a = {
-        EffectName = "particles/mod_units/heroes/hero_sniper/techies_base_attack.vpcf",
+        EffectName = "particles/sniper/sniper_extra.vpcf",
         vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,60),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
         fStartRadius = self:GetSpecialValueFor("hitbox"),
@@ -110,7 +110,7 @@ function sniper_extra:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.ProjectileImpact", caster)
 
-	local particle_cast = "particles/mod_units/heroes/hero_sniper/techies_base_attack_explosion.vpcf"
+	local particle_cast = "particles/units/heroes/hero_techies/techies_base_attack_explosion.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
     ParticleManager:SetParticleControl(effect_cast, 0, pos)
     ParticleManager:SetParticleControl(effect_cast, 3, pos)

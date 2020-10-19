@@ -22,7 +22,7 @@ function phantom_ultimate:OnSpellStart()
     local damage = self:GetSpecialValueFor("ability_damage")
     local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 
-	local projectile_name = "particles/mod_units/heroes/hero_luna/luna_base_attack.vpcf"
+	local projectile_name = "particles/phantom/phantom_ultimate.vpcf"
 	local projectile_start_radius = 70
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
@@ -31,7 +31,7 @@ function phantom_ultimate:OnSpellStart()
 
 	local projectile = {
 		EffectName = projectile_name,
-		vSpawnOrigin = {unit=caster, attach="attach_attack1", offset=Vector(0,0,0)},
+		vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = projectile_start_radius,
 		fEndRadius = projectile_end_radius,
@@ -109,9 +109,7 @@ function phantom_ultimate:PlayEffectsOnCastPoint()
 
 	particle_cast = "particles/econ/items/wisp/wisp_relocate_channel_ti7.vpcf"
 	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
-	ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetCaster():GetOrigin())
-    ParticleManager:SetParticleControl(self.effect_cast, 1, self:GetCaster():GetOrigin())
-	ParticleManager:SetParticleControl(self.effect_cast, 3, self:GetCaster():GetOrigin())
+	ParticleManager:SetParticleControlEnt(self.effect_cast, 1, self:GetCaster(), PATTACH_ABSORIGIN_FOLLOW, 'attach_hitloc', self:GetCaster():GetAbsOrigin(), false);
 end
 
 function phantom_ultimate:StopEffectsOnCastPoint()

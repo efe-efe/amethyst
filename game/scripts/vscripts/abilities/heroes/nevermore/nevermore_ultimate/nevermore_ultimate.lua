@@ -61,7 +61,7 @@ function nevermore_ultimate:OnSpellStart()
 		local velocity = facing_vector * line_speed
 
         local projectile = {
-            EffectName = "particles/mod_units/heroes/hero_nevermore/nevermore_base_attack.vpcf",
+            EffectName = "particles/nevermore/nevermore_basic_attack.vpcf",
             vSpawnOrigin = caster:GetAbsOrigin() + Vector(0, 0, 80),
             fDistance = radius,
             fStartRadius = width_start,
@@ -116,7 +116,7 @@ function nevermore_ultimate:PlayEffectsLines(lines)
 end
 
 function nevermore_ultimate:PlayEffectsOnFinish(pos)
-	local particle_cast = "particles/mod_units/heroes/hero_nevermore/sf_base_attack_desolation_explosion.vpcf"
+	local particle_cast = "particles/econ/items/shadow_fiend/sf_desolation/sf_base_attack_desolation_explosion.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, self:GetCaster())
 	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	ParticleManager:ReleaseParticleIndex(effect_cast)

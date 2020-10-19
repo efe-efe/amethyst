@@ -100,7 +100,6 @@ function CDOTA_BaseNPC:Reset()
 
 	self:InterruptCastPoint()
 	self:Purge(true, true, false, true, false)
-	self:RemoveModifierByName("modifier_generic_displacement")
 end
 
 function CDOTA_BaseNPC:OnBasicAttackImpact(hTarget)

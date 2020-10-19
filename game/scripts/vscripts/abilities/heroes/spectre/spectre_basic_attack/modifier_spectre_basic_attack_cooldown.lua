@@ -54,7 +54,7 @@ function modifier_spectre_basic_attack_cooldown:OnCooldownStart()
 end
 
 function modifier_spectre_basic_attack_cooldown:PlayEffectsCharged()
-	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
+	local particle_cast = "particles/units/heroes/hero_wisp/wisp_death.vpcf"
 	local caster = self:GetParent()
     local origin = caster:GetOrigin()
 

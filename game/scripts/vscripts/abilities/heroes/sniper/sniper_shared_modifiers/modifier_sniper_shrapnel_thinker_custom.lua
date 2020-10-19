@@ -47,7 +47,7 @@ end
 function modifier_sniper_shrapnel_thinker_custom:PlayEffects()
     EmitSoundOn("Hero_Sniper.MKG_ShrapnelShatter", self:GetParent())
 
-    local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_shrapnel.vpcf"
+    local particle_cast = "particles/units/heroes/hero_sniper/sniper_shrapnel.vpcf"
     self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetAbsOrigin())
     ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(self.radius,0,0))

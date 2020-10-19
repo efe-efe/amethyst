@@ -71,7 +71,6 @@ function Warmup:EndWarmup()
         end
 
         FindClearSpaceForUnit(player.hero, target:GetAbsOrigin(), true)
-        player.hero:RemoveModifierByName("modifier_generic_displacement")
         player.hero:Reset()
         player.hero:AddNewModifier(player.hero, nil, "modifier_adrenaline", { duration = ADRENALINE_DURATION })
     end

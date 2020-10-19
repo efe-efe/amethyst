@@ -28,7 +28,7 @@ function nevermore_extra:PlayEffects()
 	local caster = self:GetCaster()
 	EmitSoundOn("DOTA_Item.SoulRing.Activate", caster)
 
-	local particle_cast = "particles/mod_units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
+	local particle_cast = "particles/units/heroes/hero_nevermore/nevermore_shadowraze.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)	
 	ParticleManager:SetParticleControl(effect_cast, 0, caster:GetOrigin())
 	ParticleManager:SetParticleControl(effect_cast, 60, Vector(68, 243, 0))

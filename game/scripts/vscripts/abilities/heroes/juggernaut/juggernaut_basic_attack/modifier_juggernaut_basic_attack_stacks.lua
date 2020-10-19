@@ -34,7 +34,7 @@ function modifier_juggernaut_basic_attack_stacks:OnDestroy(kv)
 end
 
 function modifier_juggernaut_basic_attack_stacks:PlayEffectsCharged()
-	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
+	local particle_cast = "particles/units/heroes/hero_wisp/wisp_death.vpcf"
 	local caster = self:GetParent()
     local origin = caster:GetOrigin()
 

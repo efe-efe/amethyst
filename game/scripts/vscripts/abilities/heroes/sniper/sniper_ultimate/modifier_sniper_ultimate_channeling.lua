@@ -26,8 +26,8 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 
 	-- Extra data
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_sniper/sniper_assassinate.vpcf",
-		vSpawnOrigin = origin + Vector(0,0, 96),
+		EffectName = "particles/sniper/sniper_ultimate.vpcf",
+		vSpawnOrigin = origin + Vector(projectile_direction.x + 30, projectile_direction.y + 30, 96),
 		fDistance = self.projectile_distance,
 		fStartRadius = self.hitbox,
 		fEndRadius = projectile_end_radius,
@@ -37,7 +37,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 		TreeBehavior = PROJECTILES_NOTHING,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
+        fGroundOffset = 80,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
 			local damage_table = {
@@ -110,7 +110,7 @@ function modifier_sniper_ultimate_channeling:OnDestroy()
         self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
 
         local effect_cast = ParticleManager:CreateParticle(
-            "particles/mod_units/heroes/hero_sniper/techies_base_attack_smokeburst.vpcf", 
+            "particles/units/heroes/hero_techies/techies_base_attack_smokeburst.vpcf", 
             PATTACH_CUSTOMORIGIN, 
             nil
        )
@@ -126,7 +126,7 @@ function modifier_sniper_ultimate_channeling:OnDestroy()
         ParticleManager:ReleaseParticleIndex(effect_cast)
 
         effect_cast = ParticleManager:CreateParticle(
-            "particles/mod_units/heroes/hero_sniper/techies_base_attack_explosion.vpcf", 
+            "particles/units/heroes/hero_techies/techies_base_attack_explosion.vpcf", 
             PATTACH_CUSTOMORIGIN, 
             nil
        )
@@ -156,7 +156,7 @@ function modifier_sniper_ultimate_channeling:PlayEffectsProjectileImpact(source,
 	local caster = source
 	EmitSoundOn("Hero_Sniper.AssassinateDamage", caster)
 
-	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
+	local particle_cast = "particles/units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
 	ParticleManager:SetParticleControl(effect_cast, 0, pos)
 	ParticleManager:SetParticleControl(effect_cast, 1, pos)
@@ -168,7 +168,7 @@ function modifier_sniper_ultimate_channeling:PlayEffectsTarget(source, hTarget, 
 	local caster = source
 	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.AssassinateDamage", caster)
 
-	local particle_cast = "particles/mod_units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
+	local particle_cast = "particles/units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
 
 	ParticleManager:SetParticleControl(effect_cast, 0, hTarget:GetOrigin())

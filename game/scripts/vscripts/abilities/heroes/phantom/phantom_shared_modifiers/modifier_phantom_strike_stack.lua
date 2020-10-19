@@ -39,7 +39,7 @@ function modifier_phantom_strike_stack:GetTexture()
 end
 
 function modifier_phantom_strike_stack:PlayEffectsCharged()
-	local particle_cast = "particles/mod_units/heroes/hero_wisp/wisp_death.vpcf"
+	local particle_cast = "particles/units/heroes/hero_wisp/wisp_death.vpcf"
 	local caster = self:GetParent()
     local origin = caster:GetOrigin()
 

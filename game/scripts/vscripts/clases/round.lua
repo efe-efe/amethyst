@@ -225,7 +225,6 @@ function Round:EndRound()
         end
 
         FindClearSpaceForUnit(player.hero, target:GetAbsOrigin(), true)
-        player.hero:RemoveModifierByName("modifier_generic_displacement")
         player.hero:Reset()
     end
 
@@ -283,7 +282,7 @@ function Round:CreateLight()
         DOTA_TEAM_NOTEAM
    )
     
-    local particle_cast = "particles/mod_units/units/middle_orb/rune_arcane.vpcf"
+    local particle_cast = "particles/generic_gameplay/rune_arcane.vpcf"
     ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.lights[#self.lights])
 end
 

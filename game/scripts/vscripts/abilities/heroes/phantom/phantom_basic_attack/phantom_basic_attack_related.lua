@@ -38,8 +38,8 @@ function phantom_basic_attack_related:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger.vpcf",
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+		EffectName = "particles/phantom/phantom_special_attack.vpcf",
+		vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
 		fDistance =	self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
@@ -96,7 +96,7 @@ end
 function phantom_basic_attack_related:PlayEffectsOnFinish(pos)
 	EmitSoundOnLocationWithCaster(pos, "Hero_PhantomAssassin.Dagger.Target", self:GetCaster())
 
-	local particle_cast = "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_stifling_dagger_explosion.vpcf"
+	local particle_cast = "particles/phantom/phantom_special_attack_explosion.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
 	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	ParticleManager:ReleaseParticleIndex(effect_cast)

@@ -171,7 +171,6 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_knockback",               "abilities/generic/modifier_generic_knockback", LUA_MODIFIER_MOTION_BOTH)
     LinkLuaModifier("modifier_generic_root",                    "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE) -- Should Delete
     LinkLuaModifier("modifier_generic_invencible",              "abilities/generic/modifier_generic_invencible", LUA_MODIFIER_MOTION_NONE) -- Should Delete
-    LinkLuaModifier("modifier_generic_displacement",            "abilities/generic/modifier_generic_displacement", LUA_MODIFIER_MOTION_BOTH) -- Should Delete
     LinkLuaModifier("modifier_generic_confuse",                 "abilities/generic/modifier_generic_confuse", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_hypnotize",               "abilities/generic/modifier_generic_hypnotize", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_sleep",                   "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE)
@@ -183,9 +182,6 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_shield",                          "abilities/base/modifier_shield", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_channeling",                      "abilities/base/modifier_channeling", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_counter",                         "abilities/base/modifier_counter", LUA_MODIFIER_MOTION_NONE)
-    LinkLuaModifier("modifier_following_aoe_indicator",         "abilities/base/modifier_following_aoe_indicator", LUA_MODIFIER_MOTION_NONE)
-    LinkLuaModifier("modifier_target_indicator",                "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
-    LinkLuaModifier("modifier_target_indicator_permanent",      "abilities/base/modifier_target_indicator", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_hide_bar",                        "abilities/base/modifier_hide_bar", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_hidden",                          "abilities/base/modifier_hidden", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_banish",                          "abilities/base/modifier_banish", LUA_MODIFIER_MOTION_NONE)

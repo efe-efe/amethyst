@@ -96,7 +96,7 @@ function phantom_second_attack:PlayEffectsOnFinish(pos)
 	local direction_normalized = (pos - origin):Normalized()
 	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
 
-	local particle_cast_a = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_a.vpcf"
+	local particle_cast_a = "particles/phantom/phantom_second_attack_a.vpcf"
 	local particle_cast_b = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_b.vpcf"
 	local particle_cast_c = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_c.vpcf"
 

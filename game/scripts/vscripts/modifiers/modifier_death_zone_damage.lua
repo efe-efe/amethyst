@@ -12,7 +12,7 @@ function modifier_death_zone_damage:OnCreated(kv)
         self:PlayEffectsOnTarget(self:GetParent())
 
         self.effect_cast = ParticleManager:CreateParticle("particles/econ/items/ogre_magi/ogre_magi_arcana/ogre_magi_arcana_ignite_burn.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
-        self.effect_cast_b = ParticleManager:CreateParticle("particles/mod_units/heroes/hero_phoenix/phoenix_fire_spirit_burn.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+        self.effect_cast_b = ParticleManager:CreateParticle("particles/units/heroes/hero_phoenix/phoenix_fire_spirit_burn.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
         self.effect_cast_c = ParticleManager:CreateParticle("particles/econ/events/ti10/radiance_ti10.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
     end
 end

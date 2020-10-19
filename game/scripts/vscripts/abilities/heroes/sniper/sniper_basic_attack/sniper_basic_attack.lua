@@ -26,7 +26,7 @@ function sniper_basic_attack:OnSpellStart()
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local projectile = {
-		EffectName = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack.vpcf",
+		EffectName = "particles/sniper/sniper_basic_attack.vpcf",
 		vSpawnOrigin = origin + Vector(0,0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
@@ -73,7 +73,7 @@ function sniper_basic_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.ProjectileImpact", caster)
 
-	local particle_cast = "particles/mod_units/heroes/hero_sniper/hero_gyrocopter_gyrotechnics/gyro_base_attack_explosion.vpcf"
+	local particle_cast = "particles/sniper/sniper_basic_attack_explosion.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
 	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	

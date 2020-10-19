@@ -17,7 +17,7 @@ function modifier_phantom_counter:GetEffectAttachType()
 end
 
 function modifier_phantom_counter:GetStatusEffectName()
-	return "particles/mod_units/heroes/hero_phantom_assassin/phantom_assassin_active_blur.vpcf"
+	return "particles/units/heroes/hero_phantom_assassin/phantom_assassin_active_blur.vpcf"
 end
 
 function modifier_phantom_counter:GetStatusLabel() return "Attack speed" end

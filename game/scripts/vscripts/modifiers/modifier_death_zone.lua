@@ -123,7 +123,7 @@ function modifier_death_zone:PlayEffectsMeteor()
 end
 
 function modifier_death_zone:PlayEffectsAoe(radius, z_offset)
-    local particle_cast = "particles/mod_units/instant_aoe_marker.vpcf"
+    local particle_cast = "particles/aoe_marker/aoe_marker_enemy.vpcf"
     local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     
     ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin()  + Vector(0, 0, z_offset))

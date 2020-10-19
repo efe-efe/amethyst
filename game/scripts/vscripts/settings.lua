@@ -2,6 +2,6 @@ ROUND_DURATION = 30.0
 WARMUP_DURATION =  15.0
 
 if IsInToolsMode() then
-    ROUND_DURATION = 1
+    ROUND_DURATION = -1
     WARMUP_DURATION = 1
 end
