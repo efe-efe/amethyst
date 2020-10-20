@@ -27,7 +27,7 @@ function phantom_basic_attack_related:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
-	local ability = caster:FindAbilityByName("phantom_extra")
+	local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
 	local damage = ability:GetSpecialValueFor("ability_damage")
 	
 	local fading_slow_pct = ability:GetSpecialValueFor("fading_slow_pct")

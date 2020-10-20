@@ -7,6 +7,7 @@ local constructors = {
     end,
     ["npc_dota_hero_phantom_assassin"] = function(hTarget)
         hTarget:AddStackbars("modifier_phantom_strike_stack")
+        hTarget:AddCharges("modifier_phantom_special_attack_charges")
     end,
     ["npc_dota_hero_nevermore"] = function(hTarget)
         hTarget:AddStackbars("modifier_nevermore_souls")

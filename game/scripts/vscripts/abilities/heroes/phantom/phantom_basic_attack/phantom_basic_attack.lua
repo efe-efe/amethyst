@@ -1,5 +1,7 @@
 phantom_basic_attack = class({})
+phantom_ex_basic_attack = class({})
 LinkLuaModifier("modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_phantom_ex_basic_attack", "abilities/heroes/phantom/phantom_basic_attack/modifier_phantom_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
 function phantom_basic_attack:GetCastPointOverride()
 	if IsServer() then
@@ -54,13 +56,17 @@ function phantom_basic_attack:OnSpellStart()
 		}
 		ApplyDamage(damage_table)
 
+		
 		caster:GiveManaPercent(mana_gain_pct, enemy)
-		caster:AddNewModifier(
-			caster, -- player source
-			self, -- ability source
-			"modifier_phantom_strike_stack", -- modifier name
-			{} -- kv
-		)
+
+		if not enemy:IsObstacle() then
+			caster:AddNewModifier(
+				caster, -- player source
+				self, -- ability source
+				"modifier_phantom_strike_stack", -- modifier name
+				{} -- kv
+			)
+		end
 
 		-- Reduce the cd of the second attack by 1
 		local second_attack = caster:FindAbilityByName("phantom_second_attack")
@@ -106,6 +112,29 @@ end
 
 function phantom_basic_attack:PlayEffectsOnCast()
 	EmitSoundOn("Hero_PhantomAssassin.PreAttack", self:GetCaster())
+end
+
+function phantom_ex_basic_attack:OnSpellStart()
+    local caster = self:GetCaster()
+    local duration = self:GetSpecialValueFor("duration")
+
+    caster:AddNewModifier(
+        caster,
+        self,
+        "modifier_phantom_ex_basic_attack",
+        { duration = duration }
+   )
+
+    self:PlayEffects()
+end
+
+function phantom_ex_basic_attack:PlayEffects()
+    EmitSoundOn("Hero_PhantomAssassin.Blur", self:GetCaster())
+
+    local particle_cast = "particles/econ/events/ti5/blink_dagger_end_sparkles_end_lvl2_ti5.vpcf"
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, self:GetCaster())
+	ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

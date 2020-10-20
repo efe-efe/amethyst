@@ -1,26 +1,40 @@
 phantom_extra = class({})
+LinkLuaModifier("modifier_phantom_extra_displacement", "abilities/heroes/phantom/phantom_extra/modifier_phantom_extra_displacement", LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_phantom_extra", "abilities/heroes/phantom/phantom_extra/modifier_phantom_extra", LUA_MODIFIER_MOTION_NONE)
 
+function phantom_extra:GetCastAnimationCustom()		return ACT_DOTA_ATTACK_EVENT end
+function phantom_extra:GetPlaybackRateOverride()    return 0.7 end
+function phantom_extra:GetCastPointSpeed() 			return 0 end
+
 function phantom_extra:OnSpellStart()
-    local caster = self:GetCaster()
-    local duration = self:GetSpecialValueFor("duration")
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+	local point = self:GetCursorPosition()
+
+	local direction = (point - origin):Normalized()
+    local distance = self:GetCastRange(Vector(0,0,0), nil)
 
     caster:AddNewModifier(
-        caster,
-        self,
-        "modifier_phantom_extra",
-        { duration = duration }
+        caster, -- player source
+        self, -- ability source
+        "modifier_phantom_extra_displacement", -- modifier name
+        {
+            x = direction.x,
+            y = direction.y,
+            r = distance,
+            speed = distance/0.20,
+            peak = 30,
+        }
    )
 
-    self:PlayEffects()
+    self:PlayEffectsOnCast()
 end
 
-
-function phantom_extra:PlayEffects()
-    EmitSoundOn("Hero_PhantomAssassin.Blur", self:GetCaster())
-
-    local particle_cast = "particles/econ/events/ti5/blink_dagger_end_sparkles_end_lvl2_ti5.vpcf"
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, self:GetCaster())
-	ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
-	ParticleManager:ReleaseParticleIndex(effect_cast)
+function phantom_extra:PlayEffectsOnCast()
+    EmitSoundOn("Hero_PhantomAssassin.Strike.Start", self:GetCaster())
+    local effect_cast = ParticleManager:CreateParticle("particles/blink_purple.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
+
+if IsClient() then require("wrappers/abilities") end
+Abilities.Castpoint(phantom_extra)

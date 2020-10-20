@@ -25,4 +25,60 @@
 			"05"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"1.5" }
 		}
 	}
+
+    "phantom_ex_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"phantom_ex_counter"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"7.0"
+		"AbilityCastRange"				"800"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityManaCost"				"25"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"			"50" }
+		}
+	}
+
+	"phantom_ex_counter_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"phantom_ex_counter_recast"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1200"
+		"AbilityCooldown"				"5.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"2.0" }
+		}
+	}
 }

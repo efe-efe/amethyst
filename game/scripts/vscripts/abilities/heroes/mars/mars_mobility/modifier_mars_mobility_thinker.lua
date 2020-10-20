@@ -55,7 +55,6 @@ function modifier_mars_mobility_thinker:PlayEffectsOnDraw()
 	ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetAbsOrigin())
 	ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 5, 1))
     ParticleManager:ReleaseParticleIndex(effect_cast)
-    
 
 	particle_cast = "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"
 	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)	

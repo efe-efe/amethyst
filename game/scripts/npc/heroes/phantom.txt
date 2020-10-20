@@ -14,7 +14,10 @@
 		"Ability5"						"phantom_special_attack"
 		"Ability6"						"phantom_extra"
 		"Ability7"						"phantom_ultimate"
-		"Ability8"						"phantom_basic_attack_related"
+		"Ability8"						"phantom_ex_basic_attack"
+		"Ability9"						"phantom_ex_counter"
+		"Ability10"						"phantom_basic_attack_related"
+		"Ability11"						"phantom_ex_counter_recast"
 
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"
