@@ -1,0 +1,25 @@
+"DOTAAbilities" {
+	"storm_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_mobility/storm_mobility"
+		"MaxLevel"						"2"
+		
+		"AbilityTextureName"			"storm_spirit_static_remnant"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"6.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.4" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"18" }
+			"03"{ "var_type"			"FIELD_INTEGER"		"radius"			"200" }
+			"04"{ "var_type"			"FIELD_INTEGER"		"mana_gain_pct"		"10" }
+		}
+	}
+}

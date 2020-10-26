@@ -1,9 +1,31 @@
 export default class LayoutController{
     private static instance: LayoutController;
-    private mainPanel: Panel;
+    private topPanel: Panel;
+    private dimmerPanel: Panel;
 
     private constructor(){
-        this.mainPanel = this.GetTopPanel();
+        let topPanel = $.GetContextPanel();
+        while(topPanel.GetParent() != null){
+            const upperPanel = topPanel.GetParent();
+            if(upperPanel){
+                topPanel = upperPanel;
+            }
+        }
+
+        this.topPanel = topPanel;
+        this.dimmerPanel = $.CreatePanelWithProperties('Panel', this.topPanel, 'customDimmer', {
+            class: 'customDimmer',
+            hittest: 'false',
+            hittestchildren: 'false',
+        });
+
+        this.dimmerPanel.style.height = '100%';
+        this.dimmerPanel.style.width = '100%';
+        this.dimmerPanel.style.backgroundColor = 'rgb(0, 0, 0)';
+        this.dimmerPanel.style.opacity = '0.0';
+        this.dimmerPanel.style.transitionProperty = 'opacity';
+        this.dimmerPanel.style.transitionDuration = '0.5s';
+        this.dimmerPanel.style.zIndex = -1;
     }
 
     public static GetInstance(): LayoutController {
@@ -14,17 +36,16 @@ export default class LayoutController{
         return LayoutController.instance;
     }
 
+    public ShowDimmer(): void{
+        this.dimmerPanel.style.opacity = '0.85';
+    }
+
+    public HideDimmer(): void{
+        this.dimmerPanel.style.opacity = '0.0';
+    }
 
     public GetTopPanel(): Panel{
-        let topPanel = $.GetContextPanel();
-        while(topPanel.GetParent() != null){
-            const upperPanel = topPanel.GetParent();
-            if(upperPanel){
-                topPanel = upperPanel;
-            }
-        }
-
-        return topPanel;
+        return this.topPanel;
     }
 
     public ChangeAbilityTextBySlotIndex(text: string, slotIndex: number): void{
@@ -33,7 +54,7 @@ export default class LayoutController{
     }
 
     private ChangeAbilityTextByBoxName(text: string, boxName: string): void{
-        const abilityPanel = this.mainPanel.FindChildTraverse(boxName);
+        const abilityPanel = this.topPanel.FindChildTraverse(boxName);
     
         if(abilityPanel){
             const hotkey = abilityPanel.FindChildTraverse('HotkeyText') as LabelPanel;
@@ -56,15 +77,15 @@ export default class LayoutController{
     }
 
     public CollapsePanel(panelName: string): void{
-        const panel = this.mainPanel.FindChildTraverse(panelName);
+        const panel = this.topPanel.FindChildTraverse(panelName);
 
         if(panel){
             panel.style.visibility = 'collapse';
         }
     }
 
-    private CollapsePanelByClass(className: string): void{
-        const panel = this.mainPanel.FindChildrenWithClassTraverse(className)[0];
+    public CollapsePanelByClass(className: string): void{
+        const panel = this.topPanel.FindChildrenWithClassTraverse(className)[0];
 
         if(panel){
             panel.style.visibility = 'collapse';
@@ -72,7 +93,7 @@ export default class LayoutController{
     }
 
     public SetPanelMargin(panelName: string, margins: any): void{
-        const panel = this.mainPanel.FindChildTraverse(panelName);
+        const panel = this.topPanel.FindChildTraverse(panelName);
 
         if(panel){
             if(margins.bottom){
@@ -88,44 +109,5 @@ export default class LayoutController{
                 panel.style.marginLeft = margins.left;
             }
         }
-    }
-
-    public SetDefaultUI(): void{
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD, false);
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ACTION_MINIMAP, false);
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ENDGAME, false);
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS, false);
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_ITEMS, false);
-        GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_SHOP, false);
-
-        this.CollapsePanel('inventory_tpscroll_container');
-        this.CollapsePanel('inventory_neutral_slot_container');
-        this.CollapsePanelByClass('AbilityInsetShadowRight');
-        this.CollapsePanel('StatBranch');
-        this.CollapsePanel('health_mana');
-
-        const rightFlarePanel = this.mainPanel.FindChildTraverse('right_flare')!;
-        rightFlarePanel.style.width = '52px';
-        rightFlarePanel.style.height = '97px';
-        rightFlarePanel.style.marginRight = '244px';
-
-
-        const centerWithStatsPanel = this.mainPanel.FindChildTraverse('center_with_stats')!;
-        centerWithStatsPanel.style.horizontalAlign = 'left';
-        centerWithStatsPanel.style.marginLeft = '80px';
-
-        const buffContainerPanel = this.mainPanel.FindChildTraverse('BuffContainer')!;
-        buffContainerPanel.style.width = '40%';
-
-        const abilitiesAndStatsBranchPanel = this.mainPanel.FindChildTraverse('AbilitiesAndStatBranch')!;
-        abilitiesAndStatsBranchPanel.style.marginBottom = '-15px';
-
-        const centerBgPanel = this.mainPanel.FindChildTraverse('center_bg')!;
-        centerBgPanel.style.height = '80px';
-
-        this.SetPanelMargin('debuffs', { bottom: '95px' });
-        this.SetPanelMargin('buffs', { bottom: '95px' });
     }
 }

@@ -2,7 +2,6 @@ Abilities = {}
 
 function Abilities.Tie(ability, abilityName, shareCooldowns)
     local onSpellStart = ability.OnSpellStart
-    local onUpgrade = ability.OnUpgrade
 
     function ability:OnSpellStart()
         if onSpellStart then onSpellStart(self) end
@@ -10,16 +9,6 @@ function Abilities.Tie(ability, abilityName, shareCooldowns)
         if (shareCooldowns ~= false) then
             local otherAbility = self:GetCaster():FindAbilityByName(abilityName)
             otherAbility:StartCooldown(otherAbility:GetCooldown(0))
-        end
-    end
-
-    function ability:OnUpgrade()
-        if onUpgrade then onUpgrade(self) end
-
-        local otherAbility = self:GetCaster():FindAbilityByName(abilityName)
-
-        if otherAbility:GetLevel() < self:GetLevel() then
-            otherAbility:UpgradeAbility(true)
         end
     end
 end

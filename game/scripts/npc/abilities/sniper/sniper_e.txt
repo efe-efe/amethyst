@@ -89,7 +89,7 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"initial_damage"			"20" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.3" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"50 80" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"debuff_linger"				"0.1" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }

@@ -46,4 +46,33 @@
 		}
 	}
 	
+	"juggernaut_ex_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"juggernaut_swift_slash"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCooldown"				"10.0"
+		"AbilityCastRange"				"900"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityManaCost"				"25"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"					"350" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5 3.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"ms_pct"					"20" }
+		}
+	}
 }

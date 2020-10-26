@@ -20,6 +20,8 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0 3.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"meele_damage"			"10" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"meele_stun_duration"		"0.5" }
 		}
 	}
 }

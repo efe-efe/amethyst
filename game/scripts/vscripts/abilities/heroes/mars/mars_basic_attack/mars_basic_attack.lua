@@ -1,5 +1,8 @@
 mars_basic_attack = class({})
+mars_ex_basic_attack = class({})
+
 LinkLuaModifier("modifier_mars_basic_attack_stacks", "abilities/heroes/mars/mars_basic_attack/modifier_mars_basic_attack_stacks", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_mars_ex_basic_attack", "abilities/heroes/mars/mars_basic_attack/modifier_mars_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
 function mars_basic_attack:GetCastPointOverride()
 	if IsServer() then
@@ -23,6 +26,8 @@ function mars_basic_attack:GetAnimationTranslate() 		return "attack_close_range"
 
 function mars_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
+	caster:SetHullRadius(70)
+
 	local origin = caster:GetOrigin()
 	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
     local attack_damage = caster:GetAttackDamage()
@@ -103,5 +108,25 @@ function mars_basic_attack:PlayEffectsOnMiss(pos)
 	EmitSoundOnLocationWithCaster(pos, "Hero_Juggernaut.PreAttack", self:GetCaster())
 end
 
+
+function mars_ex_basic_attack:GetCastAnimationCustom()		return ACT_DOTA_TAUNT end
+function mars_ex_basic_attack:GetPlaybackRateOverride()		return 1.0 end
+function mars_ex_basic_attack:GetCastPointSpeed() 			return 10 end
+function mars_ex_basic_attack:GetAnimationTranslate() 		return "ti10_taunt" end
+
+function mars_ex_basic_attack:OnSpellStart()
+	local caster = self:GetCaster()
+	local heal = self:GetSpecialValueFor('heal')
+	local duration = self:GetSpecialValueFor('duration')
+	caster:Heal(heal, caster)
+	caster:AddNewModifier(caster, self, 'modifier_mars_ex_basic_attack', { duration = duration })
+
+	EmitSoundOn("DOTA_Item.FaerieSpark.Activate", caster)
+	EmitSoundOn("mars_mars_attack_20", caster)
+	 
+	EFX('particles/econ/taunts/bane/taunt_purple/bane_taunt_purple_food_end_left.vpcf', PATTACH_ABSORIGIN_FOLLOW, caster, {release = true})
+end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(mars_basic_attack)
+Abilities.Castpoint(mars_ex_basic_attack)

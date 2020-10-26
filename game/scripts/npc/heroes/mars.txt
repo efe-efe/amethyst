@@ -13,10 +13,10 @@
 		"Ability4"						"mars_counter"
 		"Ability5"						"mars_special_attack"
 		"Ability6"						"mars_extra"           
-		"Ability7"						"mars_ultimate"            
-		"Ability8"						"juggernaut_counter_recast"	
-		"Ability9"						"juggernaut_extra_recast"	
-		"Ability10"						"juggernaut_special_attack_recast"	
+		"Ability7"						"mars_ultimate"          
+		"Ability8"						"mars_ex_basic_attack"             
+		"Ability9"						"mars_ex_second_attack"	        
+		"Ability10"						"mars_extra_recast"	
 
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"
@@ -43,6 +43,8 @@
 		"StatusHealth"				"200" 									
 		"StatusHealthRegen"			"0.0"									
 		"StatusMana"				"100"									
-		"StatusManaRegen"			"0.0"	
+		"StatusManaRegen"			"0.0"
+
+		"RingRadius"			"100"	
 	}	
 }

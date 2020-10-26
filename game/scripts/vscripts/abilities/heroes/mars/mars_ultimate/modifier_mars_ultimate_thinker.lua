@@ -40,6 +40,7 @@ function modifier_mars_ultimate_thinker:OnDelayEnds()
         local caster = self:GetCaster()
         local origin = self:GetParent():GetAbsOrigin()
         local vector = origin + Vector(self.radius, 0, 0)
+        local soldierRadius = self:GetAbility():GetSpecialValueFor('soldier_radius')
         local count = 32
 
         local angle_diff = 360/count
@@ -57,12 +58,15 @@ function modifier_mars_ultimate_thinker:OnDelayEnds()
                 unit:AddNewModifier(
                     caster, -- player source
                     self:GetAbility(), -- ability source
-                    "modifier_mars_ultimate_soldier", -- modifier name
+                    "modifier_mars_soldier", -- modifier name
                     {
                         duration = self:GetDuration(),
                         model = i % 2 == 0,
-                        x = origin.x,
-                        y = origin.y
+                        fade = 1,
+                        marker = 0,
+                        x = direction.x,
+                        y = direction.y,
+                        radius = soldierRadius,
                     } -- kv
                 )
             end

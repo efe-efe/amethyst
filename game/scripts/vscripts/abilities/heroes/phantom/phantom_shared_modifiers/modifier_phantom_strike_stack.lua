@@ -22,7 +22,7 @@ function modifier_phantom_strike_stack:OnRefresh(kv)
 			self:PlayEffects()
 
 			if self:GetStackCount() == max_stack then
-				self:PlayEffectsCharged()
+				ReplenishEFX(self:GetParent())
 			end
 		end
 	end
@@ -36,24 +36,6 @@ end
 
 function modifier_phantom_strike_stack:GetTexture()
 	return "phantom_basic_attack"
-end
-
-function modifier_phantom_strike_stack:PlayEffectsCharged()
-	local particle_cast = "particles/units/heroes/hero_wisp/wisp_death.vpcf"
-	local caster = self:GetParent()
-    local origin = caster:GetOrigin()
-
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, caster)
-	ParticleManager:SetParticleControlEnt(
-		effect_cast, 
-		0, 
-		caster, 
-		PATTACH_POINT_FOLLOW, 
-		"attach_attack1", 
-		origin, 
-		true 
-	)
-	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_phantom_strike_stack:PlayEffects()

@@ -1,19 +1,18 @@
-import CameraController from './shared/camera/cameraController';
 import Command from './shared/commands/commands';
 import Key, { GetKeyByKeyCode } from './shared/commands/key';
 import Action, { GetActionByActionCode } from './shared/commands/actions';
 import LayoutController from './shared/layout/layoutController';
-import HeroController from './heroController';
+import HeroController from './shared/heroController';
+import './shared/camera/cameraController';
 import './shared/mouse/mousePositionController';
+
 import HeroOverhead from './heroOverhead/heroOverhead';
 import './targetIndicator';
 import HeroStatus from './heroStatus';
 import AllianceBar from './allianceBar';
+import { tables } from './shared/util';
 
 (function(){
-
-    new CameraController;
-
     const layout = LayoutController.GetInstance();
     
     const allKeys = [
@@ -152,14 +151,52 @@ import AllianceBar from './allianceBar';
         CreateCommandByKeyAndActionCodes('MOUSE_2', CUSTOM_HeroActionCodes.SECOND_ATTACK, true),
     ];
     
-    layout.SetDefaultUI();
+
     
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_FLYOUT_SCOREBOARD, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ACTION_MINIMAP, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_ENDGAME, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_ITEMS, false);
+    GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_SHOP, false);
+
+    layout.CollapsePanel('inventory_tpscroll_container');
+    layout.CollapsePanel('inventory_neutral_slot_container');
+    layout.CollapsePanelByClass('AbilityInsetShadowRight');
+    layout.CollapsePanel('StatBranch');
+    layout.CollapsePanel('health_mana');
+
+    const rightFlarePanel = layout.GetTopPanel().FindChildTraverse('right_flare')!;
+    rightFlarePanel.style.width = '52px';
+    rightFlarePanel.style.height = '97px';
+    rightFlarePanel.style.marginRight = '244px';
+
+
+    const centerWithStatsPanel = layout.GetTopPanel().FindChildTraverse('center_with_stats')!;
+    centerWithStatsPanel.style.horizontalAlign = 'left';
+    centerWithStatsPanel.style.marginLeft = '80px';
+
+    const buffContainerPanel = layout.GetTopPanel().FindChildTraverse('BuffContainer')!;
+    buffContainerPanel.style.width = '40%';
+
+    const abilitiesAndStatsBranchPanel = layout.GetTopPanel().FindChildTraverse('AbilitiesAndStatBranch')!;
+    abilitiesAndStatsBranchPanel.style.marginBottom = '-15px';
+
+    const centerBgPanel = layout.GetTopPanel().FindChildTraverse('center_bg')!;
+    centerBgPanel.style.height = '80px';
+
+    layout.SetPanelMargin('debuffs', { bottom: '95px' });
+    layout.SetPanelMargin('buffs', { bottom: '95px' });
+
     const heroOverheads: any = {};
     const heroStatus: any = {};
     const allianceBars: any = {};
 
-    const tableName = 'heroes' as never;
-    CustomNetTables.SubscribeNetTableListener(tableName, (table: never, key: string | number | symbol, value: any) => {
+    const tableNameHeroes = 'heroes' as never;
+    
+    tables.subscribeToNetTableAndLoadNow(tableNameHeroes, (table: never, key: string | number | symbol, value: any) => {
         const entityIndex = value.entityIndex as EntityIndex;
         
         if(!heroOverheads[entityIndex]){
@@ -191,7 +228,7 @@ import AllianceBar from './allianceBar';
     });
 
     const tableNameAlliance = 'alliances' as never;
-    CustomNetTables.SubscribeNetTableListener(tableNameAlliance, (table: never, key: string | number | symbol, value: any) => {
+    tables.subscribeToNetTableAndLoadNow(tableNameAlliance, (table: never, key: string | number | symbol, value: any) => {
         const allianceName = value.name as string;
         
         if(!allianceBars[allianceName]){

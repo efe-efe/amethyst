@@ -5,6 +5,8 @@ local translate = {
 	["sharp_blade"] = 2,
 	["aggressive"] = 3,
 	["attack_close_range"] = 4,
+	["ti10_taunt"] = 5,
+	["overload"] = 6,
 }
 
 function modifier_casting:IsHidden() return true end	

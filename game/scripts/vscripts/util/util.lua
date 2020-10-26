@@ -234,31 +234,127 @@ function Clamp(origin, point, max_range, min_range)
 	return output_point
 end
 
-function CreateRadiusMarker(caster, origin, params)
-	local effect_cast
 
-    local particle_cast = "particles/aoe_marker/aoe_marker_enemy.vpcf"
-	local particle_cast_ally = "particles/aoe_marker/aoe_marker_ally.vpcf"
+RADIUS_SCOPE_PUBLIC = 1
+RADIUS_SCOPE_LOCAL = 2
+
+local RED = Vector(255, 1, 1)
+local GREEN = Vector(1, 255, 1)
+
+function CreateTimedRadiusMarker(caster, origin, radius, delay, duration, scope)
+	return CreateModifierThinker(
+        caster, --hCaster
+        nil, --hAbility
+        "radius_marker_thinker", --modifierName
+        { 
+			afterDelay = duration,
+			radius = radius,
+			delay = delay,
+			scope = scope,
+		},
+        origin, --vOrigin
+        caster:GetTeamNumber(), --nTeamNumber
+        false --bPhantomBlocker
+   	)
+end
+
+function CreateRadiusMarker(caster, origin, radius, scope, duration)
+	local effect_cast
+	local color = GREEN
+	local particle_cast = "particles/aoe_marker.vpcf"
 	
-	if params.show_all == 1 then
+	if scope == RADIUS_SCOPE_PUBLIC then
 		for _,alliance in pairs(GameRules.GameMode.alliances) do
 			for _,team in pairs(alliance.teams) do
 				if caster:GetTeam() == team then
-					effect_cast = ParticleManager:CreateParticleForTeam(particle_cast_ally, PATTACH_WORLDORIGIN, nil, team)
+					color = GREEN
 				else
-					effect_cast = ParticleManager:CreateParticleForTeam(particle_cast_enemy, PATTACH_WORLDORIGIN, nil, team)
+					color = RED
 				end
-					ParticleManager:SetParticleControl(effect_cast, 0, origin)
-					ParticleManager:SetParticleControl(effect_cast, 2, Vector(params.radius, params.radius , params.radius))
-					ParticleManager:SetParticleControl(effect_cast, 4, origin)
-					ParticleManager:ReleaseParticleIndex(effect_cast)
+				effect_cast = ParticleManager:CreateParticleForTeam(particle_cast, PATTACH_WORLDORIGIN, nil, team)
+				RadiusMarkerEfx(effect_cast, origin, radius, color, duration)
 			end
 		end
 	else
-		effect_cast = ParticleManager:CreateParticleForPlayer(particle_cast_ally, PATTACH_WORLDORIGIN, nil, caster:GetPlayerOwner())
-		ParticleManager:SetParticleControl(effect_cast, 0, origin)
-		ParticleManager:SetParticleControl(effect_cast, 2, Vector(params.radius, params.radius , params.radius))
-		ParticleManager:SetParticleControl(effect_cast, 4, origin)
-		ParticleManager:ReleaseParticleIndex(effect_cast)
+		effect_cast = ParticleManager:CreateParticleForPlayer(particle_cast, PATTACH_WORLDORIGIN, nil, caster:GetPlayerOwner())
+		color = GREEN
+		RadiusMarkerEfx(effect_cast, origin, radius, color, duration)
 	end
+end
+
+function RadiusMarkerEfx(effect_cast, origin, radius, color, duration)
+	ParticleManager:SetParticleControl(effect_cast, 0, origin)
+	ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, 1 , 1))
+	ParticleManager:SetParticleControl(effect_cast, 2, color)
+    ParticleManager:SetParticleControl(effect_cast, 3, Vector(duration, 0, 0))
+	ParticleManager:ReleaseParticleIndex(effect_cast)
+end
+
+function EFX(path, attach, parent, options)
+    if parent and parent.GetUnit then
+        parent = parent:GetUnit()
+    end
+
+    local index = ParticleManager:CreateParticle(path, attach, parent)
+
+    for i = 0, 16 do
+        local cp = options["cp"..tostring(i)]
+        local cpf = options["cp"..tostring(i).."f"]
+
+        if cp then
+            -- Probably vector
+            if type(cp) == "userdata" then
+                ParticleManager:SetParticleControl(index, i, cp)
+            end
+
+            -- Entity
+            if type(cp) == "table" then
+                if cp.ent and cp.ent.GetUnit then
+                    cp.ent = cp.ent:GetUnit()
+                end
+
+                cp.ent = cp.ent or parent
+
+                if not cp.attach then
+                    cp.attach = PATTACH_POINT_FOLLOW
+                end
+
+                ParticleManager:SetParticleControlEnt(index, i, cp.ent, cp.attach, cp.point, cp.ent:GetAbsOrigin(), true)
+            end
+        end
+
+        if cpf then
+            ParticleManager:SetParticleControlForward(index, i, cpf)
+        end
+    end
+
+    if options.release then
+        ParticleManager:ReleaseParticleIndex(index)
+    else
+        return index
+    end
+end
+
+function DEFX(index, force)
+    force = force ~= nil
+
+    ParticleManager:DestroyParticle(index, force)
+    ParticleManager:ReleaseParticleIndex(index)
+end
+
+function ReplenishEFX(parent)
+	local particle_cast = "particles/units/heroes/hero_wisp/wisp_death.vpcf"
+    local origin = parent:GetAbsOrigin()
+
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, parent)
+	ParticleManager:SetParticleControlEnt(
+		effect_cast, 
+		0, 
+		parent, 
+		PATTACH_POINT_FOLLOW, 
+		"attach_attack1", 
+		origin, 
+		true 
+	)
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

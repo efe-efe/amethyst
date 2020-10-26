@@ -24,6 +24,7 @@
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"				"4.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"			    "550" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"	"250" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"soldier_radius"		"150" }
 		}
 	}
 }

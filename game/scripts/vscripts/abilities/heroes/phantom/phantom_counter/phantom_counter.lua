@@ -51,9 +51,10 @@ function phantom_ex_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetAbsOrigin()
-	local damage = self:GetSpecialValueFor("ability_damage")
 
-	local sleep_duration = self:GetSpecialValueFor("sleep_duration")
+	local ability = caster:FindAbilityByName('phantom_ex_counter')
+	local sleep_duration = ability:GetSpecialValueFor("sleep_duration")
+	local damage = ability:GetSpecialValueFor("ability_damage")
 
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")

@@ -91,10 +91,8 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
                )
             end
         
-            CreateRadiusMarker(caster, pos, {
-                show_all = 1,
-                radius = self.radius
-            })
+            CreateRadiusMarker(caster, pos, self.radius, RADIUS_SCOPE_PUBLIC, 0.1)
+            ScreenShake(pos, 100, 300, 0.45, 1000, 0, true)
             self:PlayEffectsExplosion(pos)
 			self:PlayEffectsProjectileImpact(_self.Source, pos)
 		end,

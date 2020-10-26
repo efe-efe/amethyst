@@ -37,11 +37,7 @@ function item_mekansm_custom:OnSpellStart()
         self:PlayEffectsTarget(ally)
     end
 
-    CreateRadiusMarker(caster, caster:GetOrigin(), { 
-        show_all = 1,
-        radius = radius,
-    })
-    
+    CreateRadiusMarker(caster, caster:GetOrigin(), radius, RADIUS_SCOPE_PUBLIC, 0.1)
     self:PlayEffects()
 end
 

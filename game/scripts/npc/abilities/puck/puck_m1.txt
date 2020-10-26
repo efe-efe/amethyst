@@ -29,4 +29,23 @@
 			"06"{ "var_type"	"FIELD_INTEGER"		"charged_damage"			"4" }
 		}
 	}
+
+	
+	"puck_ex_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack/puck_basic_attack"
+		"MaxLevel"						"2"
+		
+		"AbilityTextureName"			"puck_ex_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"6.0 3.0"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.1" }
+		}
+	}
 }

@@ -50,7 +50,14 @@ function CDOTABaseAbility:HasBehavior(behavior)
 end
 
 function CDOTABaseAbility:GetCursorPosition()
-	local position = GameRules.GameMode.players[self:GetCaster():GetPlayerID()].cursor_position
+	local caster = self:GetCaster();
+	local playerId = caster:GetPlayerOwnerID();
+
+	if IsInToolsMode() then
+		playerId = Entities:GetLocalPlayer():GetPlayerID();
+	end
+
+	local position = GameRules.GameMode.players[playerId].cursor_position
 
 	return position
 end

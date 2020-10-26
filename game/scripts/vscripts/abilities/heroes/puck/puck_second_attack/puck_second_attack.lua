@@ -62,7 +62,6 @@ function puck_second_attack:OnSpellStart()
 end
 
 function puck_second_attack:PlayEffectsOnFinish(pos)
-	StopSoundOn("Hero_Puck.Illusory_Orb", self:GetCaster())
 	
 	local particle_cast = "particles/econ/items/puck/puck_merry_wanderer/puck_illusory_orb_explode_merry_wanderer.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
@@ -72,7 +71,7 @@ function puck_second_attack:PlayEffectsOnFinish(pos)
 end
 
 function puck_second_attack:PlayEffectsOnCast()
-	EmitSoundOn("Hero_Puck.Illusory_Orb", self:GetCaster())
+	EmitSoundOn("Hero_Oracle.FortunesEnd.Target", self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end

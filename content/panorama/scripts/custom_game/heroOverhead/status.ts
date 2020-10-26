@@ -157,6 +157,7 @@ styles['Desolate'] = {      backgroundColor: '#C655C4', color: '#C655C4' };
 styles['DancingBlades'] = { backgroundColor: '#DC8668', color: '#DC8668' };
 styles['Raze'] = {          backgroundColor: ORANGE, textShadow: CreateTextShadow('#DC8668'), color: '#E8C070' };
 styles['Desolation'] = {    backgroundColor: '#E55C34', textShadow: CreateTextShadow('#DC8668'), color: '#E8C070' };
+styles['StormUnleashed'] = {backgroundColor: BLUE, textShadow: CreateTextShadow(LIGHT_BLUE), color: SKY_BLUE };
 
 function CreateTextShadow(color: string){
     return '0px 0px 30px 8.0 ' + color + ';';

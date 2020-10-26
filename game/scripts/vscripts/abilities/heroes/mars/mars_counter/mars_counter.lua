@@ -1,5 +1,6 @@
 mars_counter = class({})
 LinkLuaModifier("modifier_mars_counter_countering", "abilities/heroes/mars/mars_counter/modifier_mars_counter_countering", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_mars_counter_displacement", "abilities/heroes/mars/mars_counter/modifier_mars_counter_displacement", LUA_MODIFIER_MOTION_BOTH)
 
 function mars_counter:OnSpellStart()
     local caster = self:GetCaster()

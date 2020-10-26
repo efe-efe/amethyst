@@ -1,4 +1,5 @@
 puck_basic_attack = class({})
+puck_ex_basic_attack = class({})
 LinkLuaModifier("modifier_puck_basic_attack_cooldown", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
 
 function puck_basic_attack:GetCastPointOverride()
@@ -88,11 +89,14 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 	}
 
 	Projectiles:CreateProjectile(projectile)
-	self:PlayEffectsOnCast()
+	self:PlayEffectsOnCast(is_charged)
 end
 
-function puck_basic_attack:PlayEffectsOnCast()
+function puck_basic_attack:PlayEffectsOnCast(isCharged)
 	EmitSoundOn("Hero_Puck.Attack", self:GetCaster())
+	if isCharged then
+		EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", self:GetCaster())
+	end
 end
 
 function puck_basic_attack:PlayEffectsOnFinish(pos, is_charged)
@@ -110,5 +114,22 @@ function puck_basic_attack:PlayEffectsOnFinish(pos, is_charged)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
+function puck_ex_basic_attack:GetCastAnimationCustom()	    return ACT_DOTA_CAST_ABILITY_2 end
+function puck_ex_basic_attack:GetPlaybackRateOverride() 	return 1.0 end
+function puck_ex_basic_attack:GetCastPointSpeed() 		    return 100 end
+function puck_ex_basic_attack:OnSpellStart()
+	self:GetCaster():FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
+
+	EFX("particles/puck/puck_ex_base_attack.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+		release = true
+	})
+
+	EmitSoundOn('Hero_Puck.EtherealJaunt', self:GetCaster())
+	EmitSoundOn('Hero_Oracle.FatesEdict.Cast', self:GetCaster())
+end
+
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(puck_basic_attack)
+Abilities.Castpoint(puck_ex_basic_attack)
+

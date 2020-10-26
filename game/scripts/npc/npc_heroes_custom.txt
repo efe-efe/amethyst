@@ -5,6 +5,7 @@
 #base "heroes\puck.txt"
 #base "heroes\spectre.txt"
 #base "heroes\mars.txt"
+#base "heroes\storm.txt"
 
 "DOTAHeroes"
 {   

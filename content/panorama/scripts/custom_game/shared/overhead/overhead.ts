@@ -12,7 +12,9 @@ export default class Overhead{
         const layout = LayoutController.GetInstance();
         const basePanel = layout.GetTopPanel().FindChildrenWithClassTraverse('main')[0];
 
-        this.containerPanel = panels.createPanelSimple(basePanel, 'overhead'); 
+        this.containerPanel = panels.createPanelSimple(basePanel, 'overhead');
+        this.containerPanel.style.width = '160px'; 
+        this.containerPanel.style.flowChildren = 'down';
         this.Update();
     }
 

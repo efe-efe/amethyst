@@ -2,6 +2,8 @@ modifier_mars_counter_countering = class({})
 
 function modifier_mars_counter_countering:OnCreated(params)
     if IsServer() then
+        self.meele_damage = self:GetAbility():GetSpecialValueFor('meele_damage')
+        
 		self.effects_cast_weapon = {}
         self:GetParent():StartGesture(ACT_DOTA_OVERRIDE_ABILITY_3)
 
@@ -61,12 +63,44 @@ function modifier_mars_counter_countering:GetModifierIncomingDamage_Percentage(p
             local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
             
             if projection <= -0.8 then
+                params.attacker:AddNewModifier(self:GetParent(), self:GetAbility(), 'modifier_mars_counter_displacement', {
+                    x = direction.x * -1,
+                    y = direction.y * -1,
+                    r = 300,
+                    speed = 150/0.1,
+                    peak = 50,
+                })
+                    
+                local damage_table = {
+                    victim = params.attacker,
+                    attacker = self:GetParent(),
+                    damage = self.meele_damage,
+                    damage_type = DAMAGE_TYPE_PURE,
+                }
+                ApplyDamage(damage_table)
+
+                self:PlayEffectsMeele(params.attacker)
                 self:OnTrigger(params)
                 return -100
             end
         end
         return 0
     end
+end
+
+function modifier_mars_counter_countering:PlayEffectsMeele(hTarget)
+    local efx = EFX("particles/mars/mars_second_attack_light.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), {})
+
+    ParticleManager:SetParticleControlEnt(
+        efx, 
+        1, 
+        hTarget, 
+        PATTACH_POINT_FOLLOW, 
+        "attach_hitloc", 
+        hTarget:GetAbsOrigin(), 
+        true 
+    )
+    ParticleManager:ReleaseParticleIndex(efx)
 end
 
 function modifier_mars_counter_countering:OnOrder(params)

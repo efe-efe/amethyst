@@ -1,9 +1,10 @@
 mars_ultimate = class({})
+LinkLuaModifier("modifier_mars_soldier", "abilities/heroes/mars/modifier_mars_soldier", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_mars_soldier_debuff", "abilities/heroes/mars/modifier_mars_soldier_debuff", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_mars_soldier_displacement", "abilities/heroes/mars/modifier_mars_soldier_displacement", LUA_MODIFIER_MOTION_BOTH)
+
 LinkLuaModifier("modifier_mars_ultimate_thinker", "abilities/heroes/mars/mars_ultimate/modifier_mars_ultimate_thinker", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_mars_ultimate_soldier", "abilities/heroes/mars/mars_ultimate/modifier_mars_ultimate_soldier", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_mars_ultimate_area_check", "abilities/heroes/mars/mars_ultimate/modifier_mars_ultimate_area_check", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_mars_ultimate_displacement", "abilities/heroes/mars/mars_ultimate/modifier_mars_ultimate_displacement", LUA_MODIFIER_MOTION_BOTH)
-LinkLuaModifier("modifier_mars_ultimate_debuff", "abilities/heroes/mars/mars_ultimate/modifier_mars_ultimate_debuff", LUA_MODIFIER_MOTION_NONE)
 
 function mars_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end 
 function mars_ultimate:GetPlaybackRateOverride()    return 1.0 end

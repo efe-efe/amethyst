@@ -22,7 +22,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0 6.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }

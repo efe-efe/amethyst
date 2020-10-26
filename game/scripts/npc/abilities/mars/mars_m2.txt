@@ -10,24 +10,54 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange" 				"400"
+		"AbilityCastRange" 				"200"
 		"AbilityCooldown"				"8.0"
 		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_LINE"
-			"DisplayRange" 				"1"
-			"Fixed"						"1"
+			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
 		}
 		
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"multiplier"				"2 2.5" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"250" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"80" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.5" }
+		}
+	}
+
+	
+	"mars_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/mars/mars_second_attack/mars_second_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"mars_ex_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"250"
+		"AbilityCooldown"				"12.0"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityManaCost"				"25"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"1.0 2.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
 		}
 	}
 }

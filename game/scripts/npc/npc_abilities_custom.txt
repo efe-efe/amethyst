@@ -54,6 +54,13 @@
 #base "abilities\mars\mars_r.txt"
 #base "abilities\mars\mars_f.txt"
 
+#base "abilities\storm\storm_m1.txt"
+#base "abilities\storm\storm_f.txt"
+#base "abilities\storm\storm_e.txt"
+#base "abilities\storm\storm_q.txt"
+#base "abilities\storm\storm_r.txt"
+#base "abilities\storm\storm_space.txt"
+
 "DOTAAbilities"
 {
 	"orb_timer_apply_glow_lua"

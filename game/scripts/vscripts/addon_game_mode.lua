@@ -161,6 +161,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_death_zone",                      "modifiers/modifier_death_zone.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("wall_base",                                "modifiers/wall_base.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_adrenaline",                      "modifiers/modifier_adrenaline.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("radius_marker_thinker",                    "modifiers/radius_marker_thinker.lua", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier("modifier_generic_fear",                    "abilities/generic/modifier_generic_fear", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_silence",                 "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE) -- Should Delete
@@ -213,7 +214,7 @@ function GameMode:SetupPanoramaEventHooks()
     end)
 
     CustomGameEventManager:RegisterListener('custom_action', function(eventSourceIndex, event)
-        local playerId = event.playerId
+        local playerId = event.playerID
 
         if self.players and self.players[playerId] then
             local player = self.players[playerId]

@@ -74,7 +74,9 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
 
         self:PlayEffects(target)
         self:PlayEffects_b()
-        self:PlayEffectsAoe()
+
+        CreateRadiusMarker(self:GetParent(), self:GetParent():GetAbsOrigin(), self.radius, RADIUS_SCOPE_PUBLIC, 0.1)
+		ScreenShake(self:GetParent():GetAbsOrigin(), 100, 300, 0.45, 1000, 0, true)
 
         self.previous_position = self.current_position
 
@@ -120,16 +122,6 @@ function modifier_juggernaut_ultimate_slashing:PlayEffects_b()
     ParticleManager:SetParticleControl(trail_pfx, 0, self.previous_position)
     ParticleManager:SetParticleControl(trail_pfx, 1, self.current_position)
     ParticleManager:ReleaseParticleIndex(trail_pfx)
-end
-
-function modifier_juggernaut_ultimate_slashing:PlayEffectsAoe()
-    local particle_cast = "particles/aoe_marker.vpcf"
-    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetOrigin())
-    ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
-    ParticleManager:SetParticleControl(effect_cast, 2, Vector(255, 1, 1))
-    ParticleManager:SetParticleControl(effect_cast, 3, Vector(0.1, 0, 0))
-    ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function modifier_juggernaut_ultimate_slashing:GetEffectName()

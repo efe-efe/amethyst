@@ -26,7 +26,7 @@
 			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"800 1200" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
 		}
 	}
 	
@@ -46,4 +46,58 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
 		}
 	}
+
+	"puck_ex_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_special_attack/puck_special_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"puck_ex_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1500"
+		"AbilityCooldown"				"8.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"explosion_damage"			"20" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"400" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"150" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"09"{ "var_type"	"FIELD_FLOAT"		"root_duration"				"2.0" }
+		}
+	}
+
+	
+	"puck_ex_special_attack_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_special_attack/puck_special_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"puck_ex_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
+		}
+	}
+	
 }

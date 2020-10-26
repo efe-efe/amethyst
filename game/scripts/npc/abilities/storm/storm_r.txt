@@ -1,0 +1,20 @@
+"DOTAAbilities" {
+	"storm_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_ultimate/storm_ultimate"
+		"MaxLevel"						"2"
+		
+		"AbilityTextureName"			"storm_ultimate"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"12.0"
+		"AbilityManaCost"				"100"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.7" }
+			"02"{ "var_type"			"FIELD_FLOAT"		"duration"			"10.0" }
+		}
+	}
+}

@@ -1,0 +1,52 @@
+"DOTAAbilities" {
+	"storm_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_special_attack/storm_special_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"storm_spirit_electric_vortex"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1200"
+		"AbilityCooldown"				"8.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"18 23" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+		}
+	}
+
+	"storm_special_attack_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_special_attack/storm_special_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"storm_spirit_electric_vortex"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastRange" 				"9999"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
+		}
+	}
+}

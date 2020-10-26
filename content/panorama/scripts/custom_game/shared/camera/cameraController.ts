@@ -1,4 +1,5 @@
 export default class CameraController{
+    private static instance: CameraController;
     private thinkInterval = 0.01;
     private LERP_INITIAL = 0.10;
     private LERP_FAST = 0.05;
@@ -12,8 +13,16 @@ export default class CameraController{
     private heroOrigin = Entities.GetAbsOrigin(this.hero);
     private initialized = false;
 
-    constructor(){
+    private constructor(){
         this.Update();
+    }
+
+    public static GetInstance(): CameraController {
+        if (!CameraController.instance) {
+            CameraController.instance = new CameraController();
+        }
+
+        return CameraController.instance;
     }
 
     private Update(): void{
@@ -26,6 +35,14 @@ export default class CameraController{
                 this.Update();
             }); 
             return; 
+        }
+
+            
+        if(Game.IsInToolsMode()){
+            const heroIndex = Players.GetSelectedEntities(this.playerId)[0];
+            if(heroIndex){
+                this.heroOrigin = Entities.GetAbsOrigin(heroIndex);
+            }
         }
 
         if(this.initialized === false){
@@ -127,3 +144,5 @@ export default class CameraController{
         GameUI.SetCameraLookAtPositionHeightOffset(this.cameraDistanceActual);
     }
 }
+
+CameraController.GetInstance();

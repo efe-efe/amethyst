@@ -16,6 +16,7 @@
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
 		}
 
 		"AbilitySpecial"

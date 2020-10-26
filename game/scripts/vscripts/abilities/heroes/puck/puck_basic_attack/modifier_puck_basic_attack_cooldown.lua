@@ -42,6 +42,12 @@ function modifier_puck_basic_attack_cooldown:OnAbilityFullyCast(params)
     end
 end
 
+function modifier_puck_basic_attack_cooldown:OnReplenish()
+    if IsServer() then
+        ReplenishEFX(self:GetParent())
+    end
+end
+
 function modifier_puck_basic_attack_cooldown:GetReplenishTime()
     return self:GetAbility():GetSpecialValueFor("replenish_time")
 end

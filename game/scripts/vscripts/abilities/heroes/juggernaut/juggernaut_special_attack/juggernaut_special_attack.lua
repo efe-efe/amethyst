@@ -21,7 +21,7 @@ function juggernaut_special_attack:OnSpellStart()
 
 	local projectile = {
 		EffectName = "particles/juggernaut/juggernaut_special_attack.vpcf",
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,

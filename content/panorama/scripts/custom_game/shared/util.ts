@@ -1,3 +1,13 @@
+export type Color = {
+    light: [number, number, number];
+    dark: [number, number, number];
+}
+
+type GenericData = {
+    key: string | number | symbol;
+    value: never;
+}
+
 export default {
     isEmptyObject(object: any): boolean{
         return Object.keys(object).length == 0;
@@ -9,12 +19,6 @@ export default {
         }
     }
 };
-
-export type Color = {
-    light: [number, number, number];
-    dark: [number, number, number];
-}
-
 export const colors = {
     local: {
         light: [162, 249, 154],
@@ -90,6 +94,15 @@ export const panels = {
 };
 
 export const tables = {
+    subscribeToNetTableAndLoadNow(tableName: never, callback: (tableName: never, key: string | number | symbol, value: never) => void): void{
+        CustomNetTables.SubscribeNetTableListener(tableName, callback);
+        const data = CustomNetTables.GetAllTableValues(tableName);
+
+        data.forEach((d) => {
+            const parsedD = d  as GenericData;
+            callback(tableName, parsedD.key, parsedD.value);
+        });
+    },
     subscribeToNetTableKey(table: never, key: string, loadNow: boolean, callback: any): NetTableListenerID | undefined{
         const listener = CustomNetTables.SubscribeNetTableListener(table, function(table, tableKey, data){
             if (key == tableKey){
@@ -97,7 +110,7 @@ export const tables = {
                     return;
                 }
 
-                callback(data, false);
+                callback(data);
             }
         });
         
@@ -105,7 +118,7 @@ export const tables = {
             const data = CustomNetTables.GetTableValue(table, key);
 
             if (data) {
-                callback(data, true);
+                callback(data);
             }
         }
 

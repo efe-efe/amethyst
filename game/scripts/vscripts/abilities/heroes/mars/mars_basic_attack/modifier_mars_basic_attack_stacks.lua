@@ -34,22 +34,7 @@ function modifier_mars_basic_attack_stacks:OnDestroy(kv)
 end
 
 function modifier_mars_basic_attack_stacks:PlayEffectsCharged()
-	local particle_cast = "particles/units/heroes/hero_wisp/wisp_death.vpcf"
-	local caster = self:GetParent()
-    local origin = caster:GetOrigin()
-
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, caster)
-	ParticleManager:SetParticleControlEnt(
-		effect_cast, 
-		0, 
-		caster, 
-		PATTACH_POINT_FOLLOW, 
-		"attach_attack1", 
-		origin, 
-		true 
-	)
-	ParticleManager:ReleaseParticleIndex(effect_cast)
-
+	ReplenishEFX(self:GetParent())
 	
 	self:CreateGlow(0)
 	self:CreateGlow(1)

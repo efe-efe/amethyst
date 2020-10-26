@@ -7,7 +7,7 @@ function puck_special_attack_recast:OnSpellStart()
     EmitSoundOn("Hero_Puck.EtherealJaunt", self:GetCaster())
     
 	StopSoundOn("Hero_Puck.Illusory_Orb", self:GetCaster())
-    self.projectile:Destroy(true)
+    self.projectile:Destroy(false)
 end
 
 function puck_special_attack_recast:SetProjectile(projectile)

@@ -1,1 +1,0 @@
-modifier_mars_ultimate_debuff = class({})

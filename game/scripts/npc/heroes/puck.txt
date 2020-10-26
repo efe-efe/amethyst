@@ -13,7 +13,10 @@
 		"Ability5"						"puck_special_attack"
 		"Ability6"						"puck_extra"
 		"Ability7"						"puck_ultimate"
-		"Ability8"						"puck_special_attack_recast"
+		"Ability8"						"puck_ex_basic_attack"
+		"Ability9"						"puck_ex_special_attack"
+		"Ability10"						"puck_special_attack_recast"
+		"Ability11"						"puck_ex_special_attack_recast"
 		
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"

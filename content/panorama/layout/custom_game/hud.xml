@@ -1,7 +1,6 @@
 <root>
     <styles>
         <include src="file://{resources}/styles/custom_game/main.css" />
-        <include src="file://{resources}/styles/custom_game/overhead.css" />
         <include src="file://{resources}/styles/custom_game/progressBar.css" />
         <include src="file://{resources}/styles/custom_game/heroOverhead/heroOverhead.css" />
         <include src="file://{resources}/styles/custom_game/heroOverhead/charges.css" />

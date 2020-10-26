@@ -31,7 +31,12 @@ export default class HeroController{
     
     static CastAbility(slotIndex: number, showEffects = true): void{
         const playerId = Players.GetLocalPlayer();
-        const heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
+        let heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
+
+        if(Game.IsInToolsMode()){
+            heroIndex = Players.GetSelectedEntities(playerId)[0];
+        }
+
         const abilityEntityIndex = Entities.GetAbility(heroIndex, slotIndex);
 
         if(!Abilities.IsInAbilityPhase(abilityEntityIndex)){

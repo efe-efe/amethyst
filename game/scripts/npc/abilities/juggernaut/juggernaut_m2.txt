@@ -27,4 +27,34 @@
 			"05"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"2 4" }
 		}
 	}
+
+    "juggernaut_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_second_attack/juggernaut_second_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"juggernaut_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"250"
+		"AbilityCooldown"				"7.0"
+		"AbilityManaCost"				"25"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"0.5 0.8" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.3" }
+		}
+	}
 }

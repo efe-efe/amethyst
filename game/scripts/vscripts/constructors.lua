@@ -20,7 +20,11 @@ local constructors = {
     end,
     ["npc_dota_hero_mars"] = function(hTarget)
         hTarget:AddStackbars("modifier_mars_basic_attack_stacks")
-    end
+        hTarget:SetHullRadius(90)
+    end,
+    ["npc_dota_hero_storm_spirit"] = function(hTarget)
+        hTarget:AddCooldown("modifier_storm_basic_attack_cooldown")
+    end,
 }
 
 function ConstructHero(hTarget)

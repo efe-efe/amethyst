@@ -46,8 +46,10 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"			"50" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5 2.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"			"50" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"2.0" }
 		}
 	}
 
@@ -75,10 +77,8 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"2.0" }
 		}
 	}
 }
