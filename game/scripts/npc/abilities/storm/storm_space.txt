@@ -18,8 +18,37 @@
 		{
 			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.4" }
 			"02"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"18" }
-			"03"{ "var_type"			"FIELD_INTEGER"		"radius"			"200" }
+			"03"{ "var_type"			"FIELD_INTEGER"		"radius"			"200 250" }
 			"04"{ "var_type"			"FIELD_INTEGER"		"mana_gain_pct"		"10" }
+			"05"{ "var_type"			"FIELD_FLOAT"		"duration"			"5.0" }
+		}
+	}
+	
+	"storm_ex_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_mobility/storm_mobility"
+		"MaxLevel"						"2"
+		
+		"AbilityTextureName"			"storm_ex_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCooldown"				"6.0"
+		"AbilityManaCost"				"25"
+		"AbilityCastRange" 				"1200"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.4" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"15" }
+			"03"{ "var_type"			"FIELD_INTEGER"		"radius"			"250" }
+			"05"{ "var_type"			"FIELD_FLOAT"		"duration"			"3.0" }
+			"06"{ "var_type"			"FIELD_FLOAT"		"delay"				"0.4" }
+			"07"{ "var_type"			"FIELD_FLOAT"		"sleep_duration"	"2.0 2.5" }
 		}
 	}
 }

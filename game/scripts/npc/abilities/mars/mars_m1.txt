@@ -20,7 +20,6 @@
 		}
 	}
 
-	
 	"mars_ex_basic_attack"
 	{
 		"BaseClass"						"ability_lua"

@@ -1,8 +1,13 @@
 storm_special_attack = class({})
+storm_ex_special_attack = class({})
 storm_special_attack_recast = class({})
+
 LinkLuaModifier("modifier_storm_special_attack_recast", "abilities/heroes/storm/storm_special_attack/modifier_storm_special_attack_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_storm_special_attack_displacement", "abilities/heroes/storm/storm_special_attack/modifier_storm_special_attack_displacement", LUA_MODIFIER_MOTION_BOTH)
-LinkLuaModifier("modifier_storm_special_attack_thinker", "abilities/heroes/storm/storm_special_attack/modifier_storm_special_attack_thinker", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_storm_special_attack", "abilities/heroes/storm/storm_special_attack/modifier_storm_special_attack", LUA_MODIFIER_MOTION_NONE)
+
+LinkLuaModifier("modifier_storm_ex_special_attack_displacement", "abilities/heroes/storm/storm_special_attack/modifier_storm_ex_special_attack_displacement", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_storm_ex_special_attack", "abilities/heroes/storm/storm_special_attack/modifier_storm_ex_special_attack", LUA_MODIFIER_MOTION_NONE)
 
 function storm_special_attack:GetCastAnimationCustom()		return ACT_DOTA_ATTACK end
 function storm_special_attack:GetPlaybackRateOverride() 	    return 1.5 end
@@ -21,7 +26,7 @@ function storm_special_attack:OnSpellStart()
 
 	local projectile = {
 		EffectName = "particles/storm/storm_special_attack.vpcf",
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
         Source = caster,
@@ -31,7 +36,6 @@ function storm_special_attack:OnSpellStart()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		draw = true,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {
@@ -47,18 +51,9 @@ function storm_special_attack:OnSpellStart()
                 caster:GiveManaPercent(mana_gain_pct, unit)
 				
 				if unit:IsAlive() then
-					CreateModifierThinker(
-						caster, --hCaster
-						self, --hAbility
-						"modifier_storm_special_attack_thinker", --modifierName
-						{ duration = 5.0 },
-						unit:GetAbsOrigin(), --vOrigin
-						caster:GetTeamNumber(), --nTeamNumber
-						false --bPhantomBlocker
-					)
-					
-					--caster:FindAbilityByName("storm_special_attack_recast"):SetTargetIndex(unit:GetEntityIndex())
-					--caster:AddNewModifier(caster, self, "modifier_storm_special_attack_recast", { duration = 2.5 })
+					unit:AddNewModifier(caster, self, 'modifier_storm_special_attack', { duration = 1.0 })
+					caster:FindAbilityByName("storm_special_attack_recast"):SetTargetIndex(unit:GetEntityIndex())
+					caster:AddNewModifier(caster, self, "modifier_storm_special_attack_recast", { duration = 1.0 })
 				end
 			end
 		end,
@@ -85,8 +80,6 @@ function storm_special_attack:PlayEffectsOnCast()
 	EmitSoundOn("Hero_StormSpirit.Attack", self:GetCaster())
 end
 
-
-
 function storm_special_attack_recast:GetCastAnimationCustom()		return ACT_DOTA_ATTACK end
 function storm_special_attack_recast:GetPlaybackRateOverride() 	    return 1.5 end
 function storm_special_attack_recast:GetCastPointSpeed() 			return 50 end
@@ -95,16 +88,18 @@ function storm_special_attack_recast:GetAnimationTranslate() 		return "overload"
 function storm_special_attack_recast:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetAbsOrigin()
-	local point = self:GetCursorPosition()
     local target_entity = EntIndexToHScript(self.target_index)
-	local direction = (point - target_entity:GetAbsOrigin()):Normalized()
-	local distance = (point - target_entity:GetAbsOrigin()):Length2D()
+    local targetOrigin = target_entity:GetAbsOrigin()
+	local direction = (origin - targetOrigin):Normalized()
+	local distance = (origin - targetOrigin):Length2D()
+	local final_point = targetOrigin + direction * distance
 
+	target_entity:RemoveModifierByName('modifier_storm_special_attack')
     target_entity:AddNewModifier(caster, self, 'modifier_storm_special_attack_displacement', {
         x = direction.x,
         y = direction.y,
-        originX = point.x,
-        originY = point.y,
+        originX = final_point.x,
+        originY = final_point.y,
         r = distance,
         speed = distance/1.0,
         peak = 1,
@@ -117,6 +112,46 @@ function storm_special_attack_recast:SetTargetIndex(target_index)
     self.target_index = target_index
 end
 
+
+function storm_ex_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_4 end
+function storm_ex_special_attack:GetPlaybackRateOverride()      return 1.0 end
+function storm_ex_special_attack:GetCastPointSpeed() 			return 0 end
+
+function storm_ex_special_attack:OnSpellStart()
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+    local min_range = self:GetSpecialValueFor("min_range")
+    local speed = self:GetSpecialValueFor("speed")
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+
+	local direction = (point - origin):Normalized()
+    local distance = (point - origin):Length2D()
+
+    caster:AddNewModifier(
+        caster, -- player source
+        self, -- ability source
+        "modifier_storm_ex_special_attack_displacement", -- modifier name
+        {
+            x = direction.x,
+            y = direction.y,
+            r = distance,
+            speed = speed,
+            peak = 1,
+        }
+    )
+
+    local random_number = RandomInt(1, 32)
+    local sound_name = 'stormspirit_ss_ability_lightning_'
+    if random_number < 10 then
+        sound_name = sound_name .. '0' .. random_number
+    else 
+        sound_name = sound_name ..random_number 
+    end
+    EmitSoundOn(sound_name, caster)
+    self:EndCooldown()
+end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(storm_special_attack)
 Abilities.Castpoint(storm_special_attack_recast)
+Abilities.Castpoint(storm_ex_special_attack)

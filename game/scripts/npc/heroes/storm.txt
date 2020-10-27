@@ -7,14 +7,14 @@
 
 		"AbilityLayout"					"9"
 		"Ability1"						"storm_basic_attack"
-		"Ability2"						"sniper_second_attack"
+		"Ability2"						"storm_second_attack"
 		"Ability3"						"storm_mobility"
 		"Ability4"						"storm_counter"
 		"Ability5"						"storm_special_attack"
 		"Ability6"						"storm_extra"
 		"Ability7"						"storm_ultimate"
-		"Ability8"						"sniper_ex_second_attack"
-		"Ability9"						"sniper_ex_special_attack"
+		"Ability8"						"storm_ex_special_attack"
+		"Ability9"						"storm_ex_mobility"
 		"Ability10"						"storm_special_attack_recast"
 		
 		

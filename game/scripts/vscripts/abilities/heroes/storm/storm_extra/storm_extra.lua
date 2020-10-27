@@ -1,6 +1,6 @@
 storm_extra = class({})
 LinkLuaModifier("modifier_storm_extra_displacement", "abilities/heroes/storm/storm_extra/modifier_storm_extra_displacement", LUA_MODIFIER_MOTION_BOTH)
-LinkLuaModifier("modifier_storm_extra", "abilities/heroes/storm/storm_extra/modifier_storm_extra", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_storm_extra", "abilities/heroes/storm/storm_extra/modifier_storm_extra", LUA_MODIFIER_MOTION_NONE)
 
 function storm_extra:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_4 end
 function storm_extra:GetPlaybackRateOverride()      return 1.0 end

@@ -55,6 +55,7 @@
 #base "abilities\mars\mars_f.txt"
 
 #base "abilities\storm\storm_m1.txt"
+#base "abilities\storm\storm_m2.txt"
 #base "abilities\storm\storm_f.txt"
 #base "abilities\storm\storm_e.txt"
 #base "abilities\storm\storm_q.txt"

@@ -1,7 +1,7 @@
 modifier_storm_ultimate = class({})
 
 function modifier_storm_ultimate:OnCreated(params)
-    self.mana_regen = 25--self:GetAbility():GetSpecialValueFor("mana_regen")
+    self.mana_regen = self:GetAbility():GetSpecialValueFor("mana_regen")
     if IsServer() then
         self:PlayEffectsOnCast()
     end

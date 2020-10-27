@@ -79,7 +79,7 @@ function modifier_storm_extra_displacement:OnDestroy()
 		StopSoundOn("Hero_StormSpirit.BallLightning.Loop", self.parent)
 		self:PlayEffectsOnDestroy()
 
-		self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
+		self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(self:GetAbility():GetLevel()))
 	end
 end
 
