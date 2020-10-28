@@ -1,0 +1,32 @@
+"DOTAAbilities" {
+	"nevermore_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_special_attack/nevermore_special_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"nevermore_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastRange" 				"1200"
+		"AbilityCooldown"				"8.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			    "0.4" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20 24" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"5" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"lift_duration"				"1.0" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.8" }
+		}
+	}
+}

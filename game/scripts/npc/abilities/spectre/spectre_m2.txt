@@ -35,4 +35,41 @@
 			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
 		}
 	}
+
+	"spectre_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_second_attack/spectre_second_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"spectre_reality"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"5.0"
+		"AbilityManaCost"				"25"
+		"LevelsBetweenUpgrades"			"0"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000 2500" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+		}
+	}
 }

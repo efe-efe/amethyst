@@ -28,5 +28,35 @@
 			"07"{ "var_type"	"FIELD_INTEGER"		"max_charges"               "1 2" }
 		}
 	}
+
+	"spectre_ex_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_mobility/spectre_mobility"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"spectre_haunt_single"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"12 18" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"delay"						"0.5" }
+		}
+	}
 }
 	

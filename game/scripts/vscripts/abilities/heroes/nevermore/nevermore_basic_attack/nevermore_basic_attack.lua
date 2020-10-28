@@ -20,6 +20,10 @@ function nevermore_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK 
 function nevermore_basic_attack:GetPlaybackRateOverride() 	return 1.5 end
 function nevermore_basic_attack:GetCastPointSpeed() 		return 10 end
 
+function nevermore_basic_attack:GetIntrinsicModifierName()
+	return 'modifier_nevermore_souls'
+end
+
 function nevermore_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
@@ -67,12 +71,7 @@ function nevermore_basic_attack:OnSpellStart()
 					end
 				end
 				if not is_amethyst then
-					caster:AddNewModifier(
-						caster,
-						self,
-						"modifier_nevermore_souls",
-						{}
-					)
+					caster:FindModifierByName('modifier_nevermore_souls'):IncrementStackCount()
 					self:PlayEffectsSoul(unit)
 				end
 			end

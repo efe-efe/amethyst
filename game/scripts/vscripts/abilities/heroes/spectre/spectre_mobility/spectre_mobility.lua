@@ -1,6 +1,9 @@
 spectre_mobility = class({})
+spectre_ex_mobility = class({})
+
 LinkLuaModifier("modifier_spectre_banish", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_banish", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_mobility_charges", "abilities/heroes/spectre/spectre_mobility/modifier_spectre_mobility_charges", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_mobility_thinker", "abilities/heroes/spectre/spectre_mobility/modifier_spectre_mobility_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function spectre_mobility:GetIntrinsicModifierName()
 	return "modifier_spectre_mobility_charges"
@@ -20,9 +23,9 @@ end
 
 function spectre_mobility:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
-	local origin = caster:GetOrigin()
+	local origin = caster:GetAbsOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local damage = self:GetSpecialValueFor("ability_damage")
 	self.radius = self:GetSpecialValueFor("radius")
@@ -112,26 +115,56 @@ function spectre_mobility:PlayEffectsOnCast()
 end
 
 function spectre_mobility:PlayEffectsOnFinish(pos)
-	local particle_cast = "particles/units/heroes/hero_spectre/spectre_death.vpcf"
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-	ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
-	ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
-	ParticleManager:ReleaseParticleIndex(effect_cast)
+	EFX('particles/units/heroes/hero_spectre/spectre_death.vpcf', PATTACH_WORLDORIGIN, self:GetCaster(), {
+		cp0 = self:GetCaster():GetAbsOrigin(),
+		cp3 = self:GetCaster():GetAbsOrigin(),
+		release = true,
+	})
 
-	local particle_cast2 = "particles/sweep_generic/sweep_3.vpcf"
-	local effect_cast2 = ParticleManager:CreateParticle(particle_cast2, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
-	ParticleManager:ReleaseParticleIndex(effect_cast2)
-	
-	local particle_cast_c = "particles/econ/items/dark_willow/dark_willow_ti8_immortal_head/dw_crimson_ti8_immortal_cursed_crownmarker.vpcf"
-	local effect_cast_c = ParticleManager:CreateParticle(particle_cast_c, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
-	ParticleManager:SetParticleControl(effect_cast_c, 2, Vector(self.radius, 1, 1))
-	ParticleManager:ReleaseParticleIndex(effect_cast_c)
-    
+	EFX('particles/sweep_generic/sweep_3.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+		release = true,
+	})
+	EFX('particles/spectre/spectre_mobility.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+		cp2 = Vector(self.radius, 1, 1),
+		release = true,
+	})
 end
 
 function spectre_mobility:PlayEffectsOnImpact(hTarget)
 	EmitSoundOn("Hero_Spectre.Attack", hTarget)
 end
 
+
+function spectre_ex_mobility:GetCastAnimationCustom()	return ACT_DOTA_ATTACK end
+function spectre_ex_mobility:GetPlaybackRateOverride() return 1.0 end
+function spectre_ex_mobility:GetCastPointSpeed() 		return 0 end
+
+function spectre_ex_mobility:OnSpellStart()
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+	local min_range = self:GetSpecialValueFor("min_range")
+	local delay = self:GetSpecialValueFor("delay")
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	
+	EFX('particles/units/heroes/hero_spectre/spectre_death.vpcf', PATTACH_WORLDORIGIN, self:GetCaster(), {
+		cp0 = self:GetCaster():GetAbsOrigin(),
+		cp3 = self:GetCaster():GetAbsOrigin(),
+		release = true,
+	})
+
+	EFX('particles/econ/items/outworld_devourer/od_shards_exile_gold/od_shards_exile_prison_start_gold.vpcf', PATTACH_WORLDORIGIN, caster, {
+		cp0 = origin,
+		cp1 = origin,
+		release = true,
+	})
+	EmitSoundOn("Hero_Spectre.HauntCast", caster)
+
+	caster:AddNewModifier(caster, self, "modifier_spectre_banish", {})
+	CreateModifierThinker(caster, self, 'modifier_spectre_mobility_thinker', { duration = delay }, point, caster:GetTeam(), false)
+end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(spectre_mobility)
+Abilities.Castpoint(spectre_ex_mobility)
+Abilities.Tie(spectre_mobility, 'spectre_ex_mobility')
+Abilities.Tie(spectre_ex_mobility, 'spectre_mobility')

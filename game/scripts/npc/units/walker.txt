@@ -1,0 +1,21 @@
+"DOTAUnits"
+{
+	"walker"
+	{
+		"Model"						"models/props_gameplay/dummy/dummy.vmdl"	// Model.
+		"BaseClass"					"npc_dota_creature"
+		"SoundSet"					"n_creep_Ranged"
+		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
+		"Level"						"1"
+		"ModelScale" 				"4"
+
+		"Ability1"					"passive_shoot"			// Ability 1
+		"Ability2"					"passive_walk"			// Ability 2
+		"Ability3"					""			// Ability 3
+		"Ability4"					""			// Ability 4
+
+		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
+		"TeamName"					"DOTA_TEAM_NEUTRALS"
+	}
+}
+	

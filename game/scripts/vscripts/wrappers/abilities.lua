@@ -35,7 +35,7 @@ function Abilities.Castpoint(ability)
             self:GetCaster():StartGestureWithPlaybackRate(self:GetCastAnimationCustom(), self:GetPlaybackRateOverride())
         end
         
-        if onAbilityPhaseStart then onAbilityPhaseStart(self) end
+        if onAbilityPhaseStart then return onAbilityPhaseStart(self) end
         return true
     end
 

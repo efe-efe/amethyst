@@ -96,7 +96,7 @@ function modifier_spectre_counter_countering:OnProjectileHitCustom(params)
             if params.projectile.bIsDestructible then
                 params.projectile:Destroy(true)
             end
-            self:OnTrigger({})
+            self:OnTrigger({ attacker = params.projectile.Source })
             return false
         end
 

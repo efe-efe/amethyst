@@ -24,20 +24,37 @@ export default class Stacks{
 
         if(modifierIndex){
             modifierIndex = modifierIndex as BuffID;
-            
-            const ammount = Buffs.GetStackCount(this.entityIndex, modifierIndex);
-            for(let i = 0; i < ammount; i++){
-                this.panel.GetChild(i)!.style.opacity = '1.0';
+            const stacks = Buffs.GetStackCount(this.entityIndex, modifierIndex);
+
+
+            for(let i = 0; i < 4; i++){
+                if(i < stacks){
+                    this.FillStack(i);
+                } else {
+                    this.EmptyStack(i);
+                }
             }
         } else {
             for(let i = 0; i < 4; i++){
-                this.panel.GetChild(i)!.style.opacity = '0.0';
+                this.EmptyStack(i);
             }
         }
 
         $.Schedule(0.03, () => {
             this.Update();
         });
+    }
+
+    ChangeStackState(index: number, full: boolean): void{
+        this.panel.GetChild(index)!.SetHasClass('stacks__stack--empty', !full);
+    }
+
+    EmptyStack(index: number): void{
+        this.ChangeStackState(index, false);
+    }
+
+    FillStack(index: number): void{
+        this.ChangeStackState(index, true);
     }
 
     GetPanel(): Panel{

@@ -37,69 +37,66 @@ function nevermore_ultimate:OnSpellStart()
 	local duration = self:GetSpecialValueFor("slow_duration")
 	local damage = self:GetSpecialValueFor("damage_per_soul")
 	local radius = self:GetSpecialValueFor("radius")
+	local base_damage = self:GetSpecialValueFor("base_damage")
+	local damage_per_soul = self:GetSpecialValueFor("damage_per_soul") 
 
-	local lines = self:GetSpecialValueFor("base_lines")
-	local modifier = caster:FindModifierByNameAndCaster("modifier_nevermore_souls", caster)
-	if modifier ~= nil then
-		lines = lines + modifier:GetStackCount()
-		modifier:Destroy()
-	end
+	local damage_table = {
+		attacker = caster,
+		damage_type = DAMAGE_TYPE_PURE,
+	}
 
-	local width_start = self:GetSpecialValueFor("line_width_start")
-	local width_end = self:GetSpecialValueFor("line_width_end")
-	local line_speed = self:GetSpecialValueFor("line_speed")
-	
+	local modifier = self:GetCaster():FindModifierByName('modifier_nevermore_souls')
+	local souls = modifier:GetStackCount()
+	modifier:SetStackCount(0)
+
+	local lines = 5 + (souls * 3)
+	damage_table.damage = (base_damage + (souls * damage_per_soul))/2
+
 	local initial_angle_deg = caster:GetAnglesAsVector().y
 	local delta_angle = 360/lines
 
 	for i = 0, lines - 1 do
-		-- Determine velocity
 		local facing_angle_deg = initial_angle_deg + delta_angle * i
 		if facing_angle_deg>360 then facing_angle_deg = facing_angle_deg - 360 end
 		local facing_angle = math.rad(facing_angle_deg)
 		local facing_vector = Vector(math.cos(facing_angle), math.sin(facing_angle), 0):Normalized()
-		local velocity = facing_vector * line_speed
+		local velocity = facing_vector * 1800
 
         local projectile = {
             EffectName = "particles/nevermore/nevermore_basic_attack.vpcf",
             vSpawnOrigin = caster:GetAbsOrigin() + Vector(0, 0, 80),
             fDistance = radius,
-            fStartRadius = width_start,
-            fEndRadius = width_end,
             Source = caster,
             vVelocity = velocity,
             UnitBehavior = PROJECTILES_NOTHING,
             TreeBehavior = PROJECTILES_NOTHING,
-            WallBehavior = PROJECTILES_DESTROY,
+            WallBehavior = PROJECTILES_NOTHING,
             GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 80,
             UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
-            OnUnitHit = function(_self, unit) 
-                local damage_table = {
-                    victim = unit,
-                    attacker = _self.Source,
-                    damage = damage,
-                    damage_type = DAMAGE_TYPE_PURE,
-                    ability = self,
-                }
-                ApplyDamage(damage_table)
-				
-                unit:AddNewModifier(
-                    _self.Source,
-                    self,
-                    "modifier_nevermore_ultimate",
-                    { duration = duration }
-               )
-
-                self:PlayEffectsOnFinish(_self.current_position)
-            end,
             OnFinish = function(_self, pos)
                self:PlayEffectsOnFinish(pos)
             end,
         }
         Projectiles:CreateProjectile(projectile)
-    end
-    
+	end
+
+	ApplyCallbackForUnitsInArea(caster, origin, radius/2, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)
+		damage_table.victim = enemy
+		ApplyDamage(damage_table)
+		EmitSoundOn("Hero_Spectre.Attack", enemy)
+	end)
+
+	ApplyCallbackForUnitsInArea(caster, origin, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)
+		damage_table.victim = enemy
+		ApplyDamage(damage_table)
+		EmitSoundOn("Hero_Spectre.Attack", enemy)
+	end)
+
+	CreateRadiusMarker(caster, origin, radius/2, RADIUS_SCOPE_PUBLIC, 0.1)
+	CreateRadiusMarker(caster, origin, radius, RADIUS_SCOPE_PUBLIC, 0.1)
+	ScreenShake(origin, 100, 300, 0.45, 1000, 0, true)
+
 	ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	self:PlayEffectsLines(lines)
 end

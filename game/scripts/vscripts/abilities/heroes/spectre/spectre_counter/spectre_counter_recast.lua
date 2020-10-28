@@ -61,6 +61,13 @@ function spectre_counter_recast:OnSpellStart()
 
 	Projectiles:CreateProjectile(projectile)
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_CAST_ABILITY_1, 2.0)
+
+	local modifier = caster:FindModifierByName('modifier_spectre_counter_recast')
+	if modifier then
+		if modifier:GetStackCount() >= 1 then
+			modifier:SetDuration(5.0, true)
+		end
+	end
 	self:PlayEffectsOnCast()
 end
 

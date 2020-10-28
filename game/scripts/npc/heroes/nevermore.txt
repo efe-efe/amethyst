@@ -13,6 +13,8 @@
 		"Ability5"						"nevermore_special_attack"					
 		"Ability6"						"nevermore_extra"
 		"Ability7"						"nevermore_ultimate"	
+		"Ability8"						"nevermore_ex_counter"	
+		"Ability9"						"nevermore_ex_special_attack"	
 
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"

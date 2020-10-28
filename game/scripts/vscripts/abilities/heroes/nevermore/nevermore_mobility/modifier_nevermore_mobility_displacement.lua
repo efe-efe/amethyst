@@ -50,15 +50,10 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                         end
 
                         if not is_amethyst then
+                            local modifier = self:GetParent():FindModifierByName('modifier_nevermore_souls')
                             for i = 0, 1 do
-                                self:GetParent():AddNewModifier(
-                                    self:GetParent(),
-                                    self:GetParent():FindAbilityByName("nevermore_basic_attack"),
-                                    "modifier_nevermore_souls",
-                                    {}
-                               )
-
                                 self:PlayEffectsOnImpact(unit)
+                                modifier:IncrementStackCount()
                             end
                         end
                         if self.counter == 1 then

@@ -358,3 +358,20 @@ function ReplenishEFX(parent)
 	)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
+
+function ApplyCallbackForUnitsInArea(caster, origin, radius, team, callback)
+	local enemies = caster:FindUnitsInRadius(
+		origin, 
+		radius, 
+		team, 
+		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+		DOTA_UNIT_TARGET_FLAG_NONE,
+		FIND_ANY_ORDER
+	)
+
+	for _, enemy in pairs(enemies) do 
+		callback(enemy)
+	end
+
+	return enemies
+end

@@ -1,78 +1,58 @@
 modifier_nevermore_special_attack_thinker = class({})
 
 function modifier_nevermore_special_attack_thinker:OnCreated(params)
+    self.caster = self:GetCaster()
     self.radius = self:GetAbility():GetSpecialValueFor("radius")
+    local delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
+    self.origin = self:GetParent():GetAbsOrigin()
     self.mana_gain_pct = self:GetAbility():GetSpecialValueFor("mana_gain_pct")
-    self.lift_duration = self:GetAbility():GetSpecialValueFor("lift_duration")
+    self.damage_per_stack = self:GetAbility():GetSpecialValueFor("damage_per_stack")
+    self.stacks_duration = self:GetAbility():GetSpecialValueFor("stacks_duration")
     self.damage_table = {
-        attacker = self:GetCaster(),
+        attacker = self.caster,
         damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
         damage_type = DAMAGE_TYPE_PURE,
     }
     
     if IsServer() then
-        local particle_cast = "particles/nevermore/nevermore_special_attack.vpcf"
-        local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
-        ParticleManager:ReleaseParticleIndex(effect_cast)
-
-        
-        particle_cast = "particles/nevermore/nevermore_special_attack_glow.vpcf"
-        effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
-        ParticleManager:ReleaseParticleIndex(effect_cast)
+        CreateTimedRadiusMarker(self.caster, self.origin, self.radius, self:GetDuration(), 0.2, RADIUS_SCOPE_PUBLIC)
+        self:StartIntervalThink(delay_time)
     end
 end
 
-function modifier_nevermore_special_attack_thinker:OnDelayEnds(params)
-    if IsServer() then
-        local enemies = self:GetCaster():FindUnitsInRadius(
-            self:GetParent():GetOrigin(), 
-            self.radius, 
-            DOTA_UNIT_TARGET_TEAM_ENEMY, 
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-            DOTA_UNIT_TARGET_FLAG_NONE,
-            FIND_ANY_ORDER
-       )
+function modifier_nevermore_special_attack_thinker:OnIntervalThink()
+    local give_mana = false
 
-        local give_mana = false
-        for _,enemy in pairs(enemies) do
-            self.damage_table.victim = enemy
-            ApplyDamage(self.damage_table)
+    ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+        local modifier = unit:FindModifierByName('modifier_nevermore_special_attack_stacks') 
+        local stacks = 0
 
-            enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_nevermore_special_attack_displacement", {
-                x = 1,
-                y = 1,
-                r = 1,
-                speed = (1/self.lift_duration),
-                peak = 400,
-            })
-
-            if not enemy:IsObstacle() then
-                give_mana = true
-            end
+        if modifier then
+            stacks = modifier:GetStackCount()
         end
 
-        if give_mana then
-            self:GetCaster():GiveManaPercent(self.mana_gain_pct)    
-        end
-        
-        local particle_cast = "particles/econ/items/monkey_king/arcana/fire/monkey_king_spring_arcana_fire.vpcf"
-        local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-        ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
-        ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, 1, 1))
-        ParticleManager:ReleaseParticleIndex(effect_cast)
+        self.damage_table.victim = unit
+        self.damage_table.damage = self.damage_table.damage + (self.damage_per_stack * stacks)
+        ApplyDamage(self.damage_table)
 
-        EmitSoundOn("Hero_Nevermore.Shadowraze", self:GetCaster())
-        EmitSoundOn("Hero_Nevermore.Raze_Flames", self:GetCaster())
+        unit:AddNewModifier(self.caster, self:GetAbility(), 'modifier_nevermore_special_attack_stacks', { duration = self.stacks_duration })
+
+        if not unit:IsObstacle() then
+            give_mana = true
+        end
+    end)
+
+    if give_mana then
+        self.caster:GiveManaPercent(self.mana_gain_pct)    
     end
-end
 
-function modifier_nevermore_special_attack_thinker:GetDelayTime()
-    return self:GetAbility():GetSpecialValueFor("delay_time")
-end
+    EmitSoundOnLocationWithCaster(self.origin, "Hero_Nevermore.Shadowraze", self.caster)
 
-function modifier_nevermore_special_attack_thinker:GetAOERadius()
-    return self:GetAbility():GetSpecialValueFor("radius")
-end
+    EFX('particles/units/heroes/hero_nevermore/nevermore_shadowraze.vpcf', PATTACH_WORLDORIGIN, nil, {
+        cp0 = self.origin,
+        cp1 = Vector(self.radius, 1, 1),
+        release = true
+    })
 
-if IsClient() then require("wrappers/modifiers") end
-Modifiers.Thinker(modifier_nevermore_special_attack_thinker)
+    self:Destroy()
+end

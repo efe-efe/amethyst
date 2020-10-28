@@ -14,12 +14,13 @@ function puck_second_attack:OnSpellStart()
 	
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local hitbox = self:GetSpecialValueFor("hitbox")
 
 	local projectile = {
 		EffectName = "particles/puck/puck_second_attack_projectile.vpcf",
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+		vSpawnOrigin = origin + Vector(projectile_direction.x * hitbox, projectile_direction.y * hitbox, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
+		fStartRadius = hitbox,
         Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,

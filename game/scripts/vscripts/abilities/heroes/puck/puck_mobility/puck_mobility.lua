@@ -19,8 +19,8 @@ function puck_mobility:OnSpellStart()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = (distance/1.5),
-			peak = 300,
+            speed = (distance/1.0),
+			peak = 250,
         }
    )
 

@@ -20,19 +20,21 @@ function modifier_spectre_ultimate:OnCreated(params)
 end
 
 function modifier_spectre_ultimate:OnDestroy()
-    if self:IsDebuff() then
-        if self:GetStackCount() == 2 then
-            EmitSoundOn("Hero_Spectre.DaggerImpact", self:GetParent())
-            self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_spectre_special_attack_debuff", { 
-                duration = 5.0
-            })
-            self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_fading_slow", { 
-                duration = 5.0,
-                max_slow_pct = 50
-            })
+    if IsServer() then
+        if self:IsDebuff() then
+            if self:GetStackCount() == 2 then
+                EmitSoundOn("Hero_Spectre.DaggerImpact", self:GetParent())
+                self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_spectre_special_attack_debuff", { 
+                    duration = 5.0
+                })
+                self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_fading_slow", { 
+                    duration = 5.0,
+                    max_slow_pct = 50
+                })
 
-            if IsServer() then
-                ApplyDamage(self.damage_table)
+                if IsServer() then
+                    ApplyDamage(self.damage_table)
+                end
             end
         end
     end

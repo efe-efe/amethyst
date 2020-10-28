@@ -69,7 +69,9 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 end
 
 function CDOTA_BaseNPC:Reset()
-	self:SetMana(0)
+	if not IsInToolsMode() then
+		self:SetMana(0)
+	end
 	self:SetHealth(self:GetMaxHealth())
 	self:SetTreshold(GameRules.GameMode.max_treshold)
 

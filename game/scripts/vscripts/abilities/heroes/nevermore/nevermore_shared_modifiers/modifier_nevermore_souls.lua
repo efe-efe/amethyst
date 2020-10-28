@@ -3,6 +3,7 @@ modifier_nevermore_souls = class({})
 function modifier_nevermore_souls:IsHidden() return false end
 function modifier_nevermore_souls:IsDebuff() return false end
 function modifier_nevermore_souls:IsPurgable() return true end
+function modifier_nevermore_souls:RemoveOnDeath() return false end
 
 function modifier_nevermore_souls:OnCreated()
     self.damage_per_stack = self:GetAbility():GetSpecialValueFor("damage_per_stack")
@@ -10,27 +11,27 @@ function modifier_nevermore_souls:OnCreated()
 	self.effects_cast_weapon = {}
 
 	if IsServer() then
-	    self:SetStackCount(1)
+	    self:SetStackCount(0)
     end
 end
 
-function modifier_nevermore_souls:OnRefresh()
+function modifier_nevermore_souls:OnStackCountChanged(iStackCount)
 	if IsServer() then
-		if self:GetStackCount() < self.max_stacks then
-			self.effects_cast_weapon = {}
-			self:IncrementStackCount()
-
-			if self:GetStackCount() == self.max_stacks then
-				self:PlayEffectsCharged()
-			end
+		if self:GetStackCount() > self.max_stacks then
+			self:SetStackCount(self.max_stacks)
+			return
 		end
-    end
-end
 
-function modifier_nevermore_souls:OnDestroy()
-	if IsServer() then
-		self:StopEffects()
-    end
+		if self:GetStackCount() <= 0 then
+			self:StopEffects()
+			return
+		end
+
+		if self:GetStackCount() == self.max_stacks then
+			self:StopEffects()
+			self:PlayEffectsCharged()
+		end
+	end
 end
 
 function modifier_nevermore_souls:PlayEffectsCharged()
@@ -61,6 +62,8 @@ function modifier_nevermore_souls:StopEffects()
 		ParticleManager:DestroyParticle(self.effect_cast, false)
 		ParticleManager:ReleaseParticleIndex(self.effect_cast)
 	end
+
+	self.effects_cast_weapon = {}
 end
 
 function modifier_nevermore_souls:DeclareFunctions()

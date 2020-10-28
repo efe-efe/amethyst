@@ -48,7 +48,7 @@ function puck_extra:PlayEffectsOnCast()
 	EmitSoundOn("puck_puck_ability_rift_0" .. random_number, self:GetCaster())
     	
 	local particle_cast = "particles/econ/items/puck/puck_fairy_wing/puck_waning_rift_fairy_wing.vpcf"
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), 0.1)
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 	ParticleManager:SetParticleControl(effect_cast, 1, Vector(self.radius, self.radius, self.radius))
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end

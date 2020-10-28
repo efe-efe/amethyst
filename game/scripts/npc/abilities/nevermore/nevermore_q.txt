@@ -19,10 +19,35 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"18" }
 			"02"{ "var_type"	"FIELD_FLOAT" 		"counter_duration"		"1.5" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"banish_duration"		"0.8" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"banish_duration"		"0.4" }
 			"04"{ "var_type"	"FIELD_FLOAT" 		"fear_duration"			"1.5" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"radius"                "250 300" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"0.8" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"radius"                "250 350" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"0.4" }
+		}
+	}
+	
+    "nevermore_ex_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_counter/nevermore_counter"
+		"MaxLevel"						"2"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityTextureName"			"nevermore_ex_counter"
+		"AbilityCooldown"				"9.0"
+		"AbilityManaCost" 				"25"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT" 		"cast_point"			"0.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"10" }
+			"03"{ "var_type"	"FIELD_FLOAT" 		"fear_duration"			"1.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"                "250 350" }
 		}
 	}
 }
