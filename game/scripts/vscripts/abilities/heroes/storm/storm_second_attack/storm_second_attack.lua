@@ -1,8 +1,9 @@
 storm_second_attack = class({})
 
 function storm_second_attack:GetCastAnimationCustom()		return ACT_DOTA_ATTACK end
-function storm_second_attack:GetPlaybackRateOverride() 	    return 0.3 end
-function storm_second_attack:GetCastPointSpeed() 			return 0 end
+function storm_second_attack:GetPlaybackRateOverride() 	    return 1.5 end
+function storm_second_attack:GetCastPointSpeed() 			return 10 end
+function storm_second_attack:GetAnimationTranslate() 		return "overload" end
 
 function storm_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
@@ -15,7 +16,7 @@ function storm_second_attack:OnSpellStart()
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local projectile = {
-		EffectName = "particles/storm/storm_second_attack.vpcf",
+		EffectName = "particles/storm/storm_special_attack.vpcf",
 		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
@@ -47,14 +48,14 @@ function storm_second_attack:OnSpellStart()
 	}
 
     local projectile = Projectiles:CreateProjectile(projectile)
-	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 2.0)
 	self:PlayEffectsOnCast()
 end
 
 function storm_second_attack:PlayEffectsOnFinish(pos)
 	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.ProjectileImpact", caster)
+	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.StaticRemnantExplode", caster)
 	
-	local particle_cast = "particles/units/heroes/hero_stormspirit/stormspirit_base_attack_explosion.vpcf"
+	local particle_cast = "particles/storm/storm_basic_attack_explosion.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
 	ParticleManager:SetParticleControl(effect_cast, 0, pos)
 	ParticleManager:SetParticleControl(effect_cast, 3, pos)

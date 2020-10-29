@@ -50,7 +50,6 @@ export default class AllianceBar{
     }
 
     public UpdateData(allianceData: AllianceData): void{
-        $.Msg(allianceData);
         this.UpdateAmethysts(allianceData.amethysts);
         this.health.Update(allianceData.health, 30, allianceData.max_health, allianceData.shield);
 

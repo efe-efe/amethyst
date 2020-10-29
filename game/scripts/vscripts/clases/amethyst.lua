@@ -9,8 +9,6 @@ function Amethyst:constructor(origin)
     local unit = self:GetUnit()
     local data = { unitIndex = unit:GetEntityIndex() }
 
-    unit:AddNewModifier(unit, nil, "modifier_generic_magic_immune", {})
-
     CustomGameEventManager:Send_ServerToAllClients("add_unit", data)    
     self:PlayEffectsOnSpawn()
 end

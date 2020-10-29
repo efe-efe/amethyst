@@ -37,6 +37,7 @@ function mars_extra:OnSpellStart()
 			} -- kv
 		)
 		
+		unit:SetModelScale(1.3)
 		EFX("particles/units/heroes/hero_invoker_kid/invoker_kid_forge_spirit_ambient.vpcf", PATTACH_ABSORIGIN_FOLLOW, unit, {
 			release = true
 		})

@@ -1,13 +1,13 @@
+import './targetIndicator';
+import './shared/camera/cameraController';
+import './shared/mouse/mousePositionController';
+
 import Command from './shared/commands/commands';
 import Key, { GetKeyByKeyCode } from './shared/commands/key';
 import Action, { GetActionByActionCode } from './shared/commands/actions';
 import LayoutController from './shared/layout/layoutController';
 import HeroController from './shared/heroController';
-import './shared/camera/cameraController';
-import './shared/mouse/mousePositionController';
-
 import HeroOverhead from './heroOverhead/heroOverhead';
-import './targetIndicator';
 import HeroStatus from './heroStatus';
 import AllianceBar from './allianceBar';
 import { tables } from './shared/util';
@@ -150,8 +150,6 @@ import { tables } from './shared/util';
         CreateCommandByKeyAndActionCodes('MOUSE_1', CUSTOM_HeroActionCodes.BASIC_ATTACK, true),
         CreateCommandByKeyAndActionCodes('MOUSE_2', CUSTOM_HeroActionCodes.SECOND_ATTACK, true),
     ];
-    
-
     
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);

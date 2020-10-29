@@ -18,8 +18,8 @@ end
 
 function storm_basic_attack:GetCastAnimationCustom()	    return ACT_DOTA_ATTACK end
 function storm_basic_attack:GetPlaybackRateOverride() 		return 1.5 end
-function storm_basic_attack:GetCastPointSpeed() 		    return 0 end
-function storm_basic_attack:GetFadeGestureOnCast()			return false end
+function storm_basic_attack:GetCastPointSpeed() 		    return 10 end
+function storm_basic_attack:GetAnimationTranslate() 		return "overload" end
 
 function storm_basic_attack:GetIntrinsicModifierName()
 	return "modifier_storm_basic_attack_cooldown"
@@ -126,7 +126,7 @@ end
 function storm_basic_attack:PlayEffectsOnCast(isCharged)
 	EmitSoundOn("Hero_StormSpirit.Attack", self:GetCaster())
 	if isCharged then
-		EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", self:GetCaster())
+		EmitSoundOn("Hero_StormSpirit.StaticRemnantExplode", self:GetCaster())
 	end
 end
 

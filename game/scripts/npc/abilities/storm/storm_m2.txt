@@ -5,7 +5,7 @@
 		"ScriptFile"					"abilities/heroes/storm/storm_second_attack/storm_second_attack"
 		"MaxLevel"						"2"
 
-		"AbilityTextureName"			"storm_spirit_electric_vortex"
+		"AbilityTextureName"			"storm_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -22,9 +22,9 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"1.2" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"25 30" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"18 24" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
 		}

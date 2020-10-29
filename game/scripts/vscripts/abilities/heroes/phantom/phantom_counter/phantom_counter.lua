@@ -28,18 +28,26 @@ function phantom_ex_counter:OnSpellStart()
 		self,
         "modifier_phantom_ex_counter_recast", 
 		{ duration = duration }
-	   )
+	)
 	   
-	   self:PlayEffectsOnCast()
+	self:PlayEffectsOnCast()
 end
 
 function phantom_ex_counter:PlayEffectsOnCast()
-    EmitSoundOn("Hero_PhantomAssassin.Blur.Break", self:GetCaster() )
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+	EmitSoundOn("Hero_PhantomAssassin.Blur.Break", caster)
 
-    local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf"
-    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
-    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetAbsOrigin())
-    ParticleManager:ReleaseParticleIndex(effect_cast)
+	EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster, {
+		cp3 = origin,
+		release = true
+	})
+	
+	EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf", PATTACH_WORLDORIGIN, nil, {
+		cp0 = origin,
+		cp3 = origin,
+		release = true
+	})
 end
 
 function phantom_ex_counter_recast:GetCastAnimationCustom()		return ACT_DOTA_TELEPORT_END end 

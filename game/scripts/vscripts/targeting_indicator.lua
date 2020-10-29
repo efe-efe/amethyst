@@ -13,14 +13,6 @@ function TargetingIndicator:Load()
         end
     end
 
-    
-    local items_kv = LoadKeyValues("scripts/npc/npc_items_custom.txt")
-    for key, item in pairs(items_kv) do
-        if item.TargetingIndicator then
-            targetingIndicators[key] = item.TargetingIndicator
-        end
-    end
-
     CustomNetTables:SetTableValue("main", "targetingIndicators", targetingIndicators)
 end
 

@@ -10,7 +10,6 @@ function modifier_mars_soldier:OnCreated(params)
 		self.caster = self:GetCaster()
 		self.origin = self.parent:GetOrigin()
 
-
 		self.searchOrigin = self.origin + Vector(params.x, params.y, 0) * self.radius
 		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
 		self.knockback_distance = self:GetAbility():GetSpecialValueFor("knockback_distance")
