@@ -23,7 +23,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
 		}
@@ -51,7 +51,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
 		}

@@ -1,4 +1,4 @@
-import './targetIndicator';
+//import './targetIndicator';
 import './shared/camera/cameraController';
 import './shared/mouse/mousePositionController';
 

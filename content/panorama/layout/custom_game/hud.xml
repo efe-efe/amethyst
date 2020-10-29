@@ -16,6 +16,7 @@
     </styles>
 	<scripts>
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
+        <include src="file://{resources}/scripts/custom_game/target_indicator.js" />
 	</scripts>
     <Panel class="main" hittest="false">
         <Panel id="alliances-status" class="alliances-status" hittest="false">

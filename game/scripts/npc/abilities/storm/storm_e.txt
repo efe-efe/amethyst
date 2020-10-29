@@ -22,7 +22,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"15" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7 14" }

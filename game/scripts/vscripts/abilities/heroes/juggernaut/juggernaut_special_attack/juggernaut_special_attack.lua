@@ -48,8 +48,10 @@ function juggernaut_special_attack:OnSpellStart()
 
 			if _self.Source == caster then
 				if self:GetLevel() == 2 then
-					caster:FindAbilityByName("juggernaut_special_attack_recast"):SetTargetIndex(unit:GetEntityIndex())
-					caster:AddNewModifier(caster, self, "modifier_juggernaut_special_attack_recast", { duration = 1.0 })
+					if unit:IsAlive() then
+						caster:FindAbilityByName("juggernaut_special_attack_recast"):SetTargetIndex(unit:GetEntityIndex())
+						caster:AddNewModifier(caster, self, "modifier_juggernaut_special_attack_recast", { duration = 1.0 })
+					end
 				end
 				caster:GiveManaPercent(mana_gain_pct, unit)
 			end

@@ -277,8 +277,11 @@ import { tables, modifiers, math } from './shared/util';
     
     const tableName = 'main' as never;
     tables.subscribeToNetTableKey(tableName, 'targetingIndicators', true, function(data: any){
+        $.Msg('UPDATING');
         targetingIndicators = data;
     });
+
+    $.Msg(targetingIndicators);
     
     if(Game.IsInToolsMode()){
         UpdateTargetIndicatorTools();

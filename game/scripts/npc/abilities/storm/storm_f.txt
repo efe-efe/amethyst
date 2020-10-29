@@ -28,7 +28,7 @@
 			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"07"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"50" }
 			"08"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.0" }
-			"09"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"10" }
+			"09"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"8" }
 		}
 	}
 }
