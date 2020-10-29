@@ -6,14 +6,13 @@ LinkLuaModifier("modifier_storm_special_attack_efx", "abilities/heroes/storm/sto
 LinkLuaModifier("modifier_storm_ex_special_attack_displacement", "abilities/heroes/storm/storm_special_attack/modifier_storm_ex_special_attack_displacement", LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_storm_ex_special_attack", "abilities/heroes/storm/storm_special_attack/modifier_storm_ex_special_attack", LUA_MODIFIER_MOTION_NONE)
 
-function storm_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST2_STATUE end
-function storm_special_attack:GetPlaybackRateOverride() 	    return 2.0 end
+function storm_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_2 end
+function storm_special_attack:GetPlaybackRateOverride()		return 2.0 end
 function storm_special_attack:GetCastPointSpeed() 			return 10 end
 
 function storm_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = self:GetCursorPosition()
 	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	local damage = self:GetSpecialValueFor("ability_damage")
@@ -29,7 +28,7 @@ function storm_special_attack:OnSpellStart()
 		false --bPhantomBlocker
 	)
 
-	self:PlayEffectsOnCast()
+	self:PlayEffectsOnCast(caster, origin, point)
     EmitSoundOn('Hero_StormSpirit.ElectricVortexCast', caster)
 end
 
@@ -43,8 +42,21 @@ function storm_special_attack:PlayEffectsOnFinish(pos)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function storm_special_attack:PlayEffectsOnCast()
-	EmitSoundOn("Hero_StormSpirit.Attack", self:GetCaster())
+function storm_special_attack:PlayEffectsOnCast(caster, origin, point)
+	local efx = EFX("particles/storm/storm_special_attack_launch.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster, {
+		cp1 = point + Vector(0, 0, 2000)
+	})
+	ParticleManager:SetParticleControlEnt(
+		efx,
+		0,
+		caster,
+		PATTACH_POINT_FOLLOW,
+		"attach_attack1",
+		origin, -- unknown
+		false -- unknown, true
+	)
+	ParticleManager:ReleaseParticleIndex(efx)
+	EmitSoundOn("Hero_StormSpirit.Attack", caster)
 end
 
 function storm_ex_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_4 end

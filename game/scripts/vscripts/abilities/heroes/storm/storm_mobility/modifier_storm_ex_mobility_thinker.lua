@@ -67,7 +67,7 @@ function modifier_storm_ex_mobility_thinker:OnDestroy()
 end
 
 function modifier_storm_ex_mobility_thinker:PlayEffectsOnCreated()
-    EFX("particles/units/heroes/hero_zeus/zeus_cloud_strike.vpcf", PATTACH_WORLDORIGIN, nil, {
+    EFX("particles/storm/storm_ex_mobility_strike.vpcf", PATTACH_WORLDORIGIN, nil, {
         cp0 = self.origin,
         cp1 = self.origin + Vector(0, 0, 1000),
         cp2 = self.origin,

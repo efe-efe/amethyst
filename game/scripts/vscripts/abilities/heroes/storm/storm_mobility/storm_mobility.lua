@@ -32,6 +32,7 @@ function storm_ex_mobility:GetCastPointSpeed() 			return 10 end
 
 function storm_ex_mobility:OnSpellStart()
     local caster = self:GetCaster()
+    local origin = caster:GetAbsOrigin()
     local duration = self:GetSpecialValueFor("duration")
     local point = Clamp(caster:GetAbsOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
@@ -44,6 +45,20 @@ function storm_ex_mobility:OnSpellStart()
         caster:GetTeamNumber(), --nTeamNumber
         true --bPhantomBlocker
     )      
+
+    
+	local efx = EFX("particles/storm/storm_ex_mobility_launch.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster, {
+		cp1 = point + Vector(0, 0, 2000)
+	})
+	ParticleManager:SetParticleControlEnt(
+		efx,
+		0,
+		caster,
+		PATTACH_POINT_FOLLOW,
+		"attach_attack1",
+		origin, -- unknown
+		false -- unknown, true
+	)
 
     EmitSoundOn("Hero_StormSpirit.StaticRemnantPlant", caster)
 end
