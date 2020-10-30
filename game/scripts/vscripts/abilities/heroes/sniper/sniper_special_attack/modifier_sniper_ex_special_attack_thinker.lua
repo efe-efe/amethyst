@@ -32,6 +32,7 @@ function modifier_sniper_ex_special_attack_thinker:OnDelayEnds()
         self.debuff_linger = self:GetAbility():GetSpecialValueFor("debuff_linger")
         self.initial_damage = self:GetAbility():GetSpecialValueFor("initial_damage")
         self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
+        self.direction = (self:GetParent():GetAbsOrigin() - self:GetCaster():GetAbsOrigin()):Normalized()
 
         local enemies = self:GetCaster():FindUnitsInRadius(
             self:GetParent():GetAbsOrigin(), 
@@ -86,10 +87,11 @@ end
 function modifier_sniper_ex_special_attack_thinker:PlayEffectsAoe()
     EmitSoundOn("Hero_Sniper.MKG_ShrapnelShatter", self:GetParent())
 
-    local particle_cast = "particles/sniper/sniper_ex_special_attack.vpcf"
+    local particle_cast = "particles/econ/items/sniper/sniper_fall20_immortal/sniper_fall20_immortal_shrapnel.vpcf"
     self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetAbsOrigin())
     ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(self.radius,0,0))
+	ParticleManager:SetParticleControlForward(self.effect_cast, 2, self.direction + Vector(0, 0, 0.1))
 end
 
 function modifier_sniper_ex_special_attack_thinker:StopEffects()

@@ -39,7 +39,6 @@ function Pickup:constructor(type, origin, scale)
     self:SetItem(CreateItem(PICKUP_ITEM_NAMES[self.type], nil, nil))
 
     local item = self:GetItem()
-    item:SetCastOnPickup(true)
     item:LaunchLootInitialHeight(false, 0, 50, 0.5, self.origin)
     self.drop = CreateItemOnPositionForLaunch(self.origin, item)
     ParticleManager:CreateParticle(PICKUP_PARTICLES[self.type], PATTACH_ABSORIGIN_FOLLOW, self.drop)
@@ -65,7 +64,7 @@ function Pickup:GetItem()
     return self.item
 end
 
-function Pickup:OnPickedUp()
+function Pickup:OnPickedUp(event)
     UTIL_Remove(self:GetItem()) -- otherwise it pollutes the player inventory
     self.picked = true
 end

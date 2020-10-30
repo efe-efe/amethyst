@@ -66,18 +66,19 @@ end
 
 function modifier_hero_base:PickupItems()
 	local drop_items = Entities:FindAllByClassnameWithin("dota_item_drop", self.parent:GetAbsOrigin(), self.parent:GetHullRadius() * 2.5)
-	for _,drop_item in pairs(drop_items) do
+	for _,drop in pairs(drop_items) do
 		
-		local item = drop_item:GetContainedItem()
+		local item = drop:GetContainedItem()
 		local owner = item:GetPurchaser()
 		
 		--Only pickup items owned by teammates
-		if owner ~= nil then
-			if self.parent:IsAlly(owner) then
-				self.parent:PickupDroppedItem(drop_item)
-			end
-		else
-			self.parent:PickupDroppedItem(drop_item)
+		if owner == nil or (owner ~= nil and self.parent:IsAlly(owner)) then
+			self.parent:AddItem(item)
+			item:OnSpellStart()
+
+			local entity = item:GetParentEntity()
+			entity:OnPickedUp()
+			UTIL_Remove(drop)
 		end
 	end
 end

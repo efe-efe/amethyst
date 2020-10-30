@@ -26,17 +26,16 @@ function sniper_special_attack:OnSpellStart()
 		false --bPhantomBlocker
 	)
 	
-	self:PlayEffects(point)
+	self:PlayEffects(point, 'particles/units/heroes/hero_sniper/sniper_shrapnel_launch.vpcf')
 
 	if self:GetLevel() == 2 then
 		caster:AddNewModifier(caster, self, "modifier_sniper_special_attack_recast", { duration = 2.0 })
 	end
 end
 
-function sniper_special_attack:PlayEffects(point)
+function sniper_special_attack:PlayEffects(point, particle_cast)
 	EmitSoundOn("Hero_Sniper.ShrapnelShoot", self:GetCaster())
 
-	local particle_cast = "particles/units/heroes/hero_sniper/sniper_shrapnel_launch.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 	ParticleManager:SetParticleControlEnt(
 		effect_cast,
@@ -71,7 +70,7 @@ function sniper_ex_special_attack:OnSpellStart()
 		false --bPhantomBlocker
 	)
 	
-	self:PlayEffects(point)
+	self:PlayEffects(point, 'particles/econ/items/sniper/sniper_fall20_immortal/sniper_fall20_immortal_shrapnel_launch.vpcf')
 end
 
 if IsClient() then require("wrappers/abilities") end

@@ -67,7 +67,7 @@ function sniper_second_attack:OnSpellStart()
 			self:PlayEffectsOnHit(unit)
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
+			self:PlayEffectsOnFinish(pos, 'particles/units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf')
 		end,
 	}
 
@@ -80,14 +80,14 @@ function sniper_second_attack:PlayEffectsOnCast()
 	EmitSoundOn("Ability.Assassinate", self:GetCaster())
 end
 
-function sniper_second_attack:PlayEffectsOnFinish(pos)
+function sniper_second_attack:PlayEffectsOnFinish(pos, particle_cast)
 	local caster = self:GetCaster()
 	EmitSoundOnLocationWithCaster(pos, "Hero_Sniper.AssassinateDamage", caster)
 
-	local particle_cast = "particles/units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
 	ParticleManager:SetParticleControl(effect_cast, 0, pos)
 	ParticleManager:SetParticleControl(effect_cast, 1, pos)
+	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
@@ -130,7 +130,7 @@ function sniper_ex_second_attack:OnSpellStart()
 	local min_damage = self:GetSpecialValueFor("min_damage")
 
 	local projectile = {
-		EffectName = "particles/sniper/sniper_ex_second_attack.vpcf",
+		EffectName = "particles/sniper/sniper_ex_second_attack_new.vpcf",
 		vSpawnOrigin = origin + Vector(0, 0, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
@@ -168,7 +168,7 @@ function sniper_ex_second_attack:OnSpellStart()
 			self:PlayEffectsOnHit(unit)
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
+			self:PlayEffectsOnFinish(pos, 'particles/econ/items/sniper/sniper_fall20_immortal/sniper_fall20_immortal_base_attack_impact.vpcf')
 		end,
 	}
 

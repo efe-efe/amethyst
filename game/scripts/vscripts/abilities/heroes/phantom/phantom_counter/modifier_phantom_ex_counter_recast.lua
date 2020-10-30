@@ -6,6 +6,22 @@ function modifier_phantom_ex_counter_recast:IsPurgable() 	return 	true 	end
 
 function modifier_phantom_ex_counter_recast:OnCreated(kv)
 	self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
+
+	if IsServer() then
+		self.efx = EFX('particles/econ/items/phantom_assassin/pa_fall20_immortal_shoulders/pa_fall20_blur_ambient.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), {
+		})
+	end
+end
+
+function modifier_phantom_ex_counter_recast:OnDestroy()
+	if IsServer() then
+		DEFX(self.efx, false)
+
+		EFX('particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), {
+			cp3 = self:GetParent():GetAbsOrigin(),
+			release = true,
+		})
+	end
 end
 
 function modifier_phantom_ex_counter_recast:DeclareFunctions()

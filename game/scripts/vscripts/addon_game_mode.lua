@@ -138,7 +138,6 @@ function GameMode:SetupRules()
 end
 
 function GameMode:SetupEventHooks()
-    ListenToGameEvent("dota_item_picked_up", Dynamic_Wrap(self, "OnItemPickUp"), self)
     ListenToGameEvent('npc_spawned', Dynamic_Wrap(self, 'OnHeroInGame'), self)
     ListenToGameEvent('entity_killed', Dynamic_Wrap(self, 'OnEntityKilled'), self)
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(self, 'OnGameRulesStateChange'), self)
@@ -518,11 +517,6 @@ function GameMode:OnEntityKilled(keys)
             self:UpdateCameras()
         end
     end
-end
-
-function GameMode:OnItemPickUp(event)
-	local entity = EntIndexToHScript(event.ItemEntityIndex):GetParentEntity()
-    entity:OnPickedUp()
 end
 
 function GameMode:OnAmethystDestroy(killer)

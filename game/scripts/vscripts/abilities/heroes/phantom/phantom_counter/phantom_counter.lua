@@ -43,7 +43,7 @@ function phantom_ex_counter:PlayEffectsOnCast()
 		release = true
 	})
 	
-	EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf", PATTACH_WORLDORIGIN, nil, {
+	EFX("particles/econ/items/phantom_assassin/pa_fall20_immortal_shoulders/pa_fall20_blur_start.vpcf", PATTACH_WORLDORIGIN, nil, {
 		cp0 = origin,
 		cp3 = origin,
 		release = true

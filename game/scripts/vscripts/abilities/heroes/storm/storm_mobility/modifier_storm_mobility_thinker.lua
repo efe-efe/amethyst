@@ -68,10 +68,20 @@ function modifier_storm_mobility_thinker:OnDestroy()
 end
 
 function modifier_storm_mobility_thinker:PlayEffectsOnCreated()
+    self.efx = ParticleManager:CreateParticle('particles/units/heroes/hero_stormspirit/stormspirit_static_remnant.vpcf', PATTACH_WORLDORIGIN, self:GetCaster())
+    ParticleManager:SetParticleControl(self.efx, 0, self.origin)
+
+    --[[
     self.efx = EFX('particles/units/heroes/hero_stormspirit/stormspirit_static_remnant.vpcf', PATTACH_WORLDORIGIN, self:GetCaster(), {
         cp0 = self.origin,
         cp2 = Vector(RandomInt(37, 52), 1, 100),
         cp11 = self.origin,
     })
+    ]]
+
     ParticleManager:SetParticleControlEnt(self.efx, 1, self:GetCaster(), PATTACH_POINT_FOLLOW, "attach_hitloc", self.origin, true)
+    ParticleManager:SetParticleControl(self.efx, 2, Vector(RandomInt(37, 52), 1, 100) )
+    ParticleManager:SetParticleControl(self.efx, 11, self.origin)
+    
+	ParticleManager:SetParticleControlForward(self.efx, 0, self:GetCaster():GetForwardVector())
 end
