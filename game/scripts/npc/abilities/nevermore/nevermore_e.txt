@@ -10,6 +10,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastPoint"				"0.4"
 		"AbilityCastRange" 				"1200"
 		"AbilityCooldown"				"8.0"
 		"LevelsBetweenUpgrades"			"0"
@@ -20,7 +21,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			    "0.4" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"170" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
@@ -43,11 +43,11 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCooldown"				"12"
 		"AbilityManaCost"				"25"
+		"AbilityCastPoint"				"0.5"
 		"LevelsBetweenUpgrades"			"0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.5" }
 			"02"{ "var_type"			"FIELD_INTEGER"		"heal"				"2 5" }
 			"03"{ "var_type"			"FIELD_INTEGER"		"heal_per_soul"		"4" }
 		}

@@ -52,16 +52,15 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack/phantom_basic_attack"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"phantom_ex_basic_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"10"
-		"LevelsBetweenUpgrades"			"0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.0" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"6" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0 6.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }

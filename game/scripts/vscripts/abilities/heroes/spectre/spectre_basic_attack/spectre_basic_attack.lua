@@ -6,7 +6,7 @@ function spectre_basic_attack:GetIntrinsicModifierName()
 	return "modifier_spectre_basic_attack_cooldown"
 end
 
-function spectre_basic_attack:GetCastPointOverride()
+function spectre_basic_attack:GetCastPoint()
 	if IsServer() then
 		return self:GetCaster():GetAttackAnimationPoint()
 	end

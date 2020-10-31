@@ -12,6 +12,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"1200"
 		"AbilityCooldown"				"8.0"
+		"AbilityCastPoint"				"0.5"
 		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {
@@ -22,7 +23,6 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"40" }

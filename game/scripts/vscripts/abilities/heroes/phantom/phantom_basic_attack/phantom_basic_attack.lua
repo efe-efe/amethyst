@@ -3,7 +3,7 @@ phantom_ex_basic_attack = class({})
 LinkLuaModifier("modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_phantom_ex_basic_attack", "abilities/heroes/phantom/phantom_basic_attack/modifier_phantom_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
-function phantom_basic_attack:GetCastPointOverride()
+function phantom_basic_attack:GetCastPoint()
 	if IsServer() then
 		return self:GetCaster():GetAttackAnimationPoint()
 	end

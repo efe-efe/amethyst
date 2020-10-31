@@ -4,11 +4,11 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"spectre_dispersion"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCooldown"				"9.0"
-		"LevelsBetweenUpgrades"			"0"
 		"AbilityCastRange" 				"500" //only for direction showing
 
 		"TargetingIndicator" {
@@ -42,6 +42,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
 		
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -57,7 +58,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"15" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }

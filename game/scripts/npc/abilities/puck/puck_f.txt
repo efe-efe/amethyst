@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/puck/puck_extra/puck_extra"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"puck_waning_rift"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
@@ -12,7 +13,7 @@
 		"AbilityCastRange" 				"0 600"
 		"AbilityCooldown"				"12.0"
 		"AbilityManaCost"				"25"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.1"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -21,7 +22,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			    "0.1" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"pre_silence_duration"      "1.0" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"silence_duration"          "1.5" }

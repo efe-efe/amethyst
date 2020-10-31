@@ -1,7 +1,7 @@
 juggernaut_basic_attack = class({})
 LinkLuaModifier("modifier_juggernaut_basic_attack_stacks", "abilities/heroes/juggernaut/juggernaut_basic_attack/modifier_juggernaut_basic_attack_stacks", LUA_MODIFIER_MOTION_NONE)
 
-function juggernaut_basic_attack:GetCastPointOverride()
+function juggernaut_basic_attack:GetCastPoint()
 	if IsServer() then
 		return self:GetCaster():GetAttackAnimationPoint()
 	end

@@ -4,7 +4,7 @@ mars_ex_basic_attack = class({})
 LinkLuaModifier("modifier_mars_basic_attack_stacks", "abilities/heroes/mars/mars_basic_attack/modifier_mars_basic_attack_stacks", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_mars_ex_basic_attack", "abilities/heroes/mars/mars_basic_attack/modifier_mars_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
-function mars_basic_attack:GetCastPointOverride()
+function mars_basic_attack:GetCastPoint()
 	if IsServer() then
 		return self:GetCaster():GetAttackAnimationPoint()
 	end
@@ -120,7 +120,8 @@ function mars_ex_basic_attack:OnSpellStart()
 	local duration = self:GetSpecialValueFor('duration')
 	caster:Heal(heal, caster)
 	caster:AddNewModifier(caster, self, 'modifier_mars_ex_basic_attack', { duration = duration })
-
+	
+	EmitSoundOn("DOTA_Item.Cheese.Activate", caster)
 	EmitSoundOn("DOTA_Item.FaerieSpark.Activate", caster)
 	EmitSoundOn("mars_mars_attack_20", caster)
 	 

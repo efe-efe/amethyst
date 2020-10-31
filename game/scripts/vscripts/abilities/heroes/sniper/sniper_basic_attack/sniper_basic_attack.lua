@@ -5,7 +5,7 @@ function sniper_basic_attack:GetIntrinsicModifierName()
 	return "modifier_sniper_basic_attack_charges"
 end
 
-function sniper_basic_attack:GetCastPointOverride()
+function sniper_basic_attack:GetCastPoint()
 	if IsServer() then
 		return self.BaseClass.GetCastPoint(self) + self:GetCaster():GetAttackAnimationPoint()
 	end

@@ -4,13 +4,14 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/spectre/spectre_mobility/spectre_mobility"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"spectre_desolate"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"AbilityCastRange"				"600"
 		"AbilityCooldown"				"8.0"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.1"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -19,7 +20,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"6" }
@@ -34,6 +34,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/spectre/spectre_mobility/spectre_mobility"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"spectre_haunt_single"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
@@ -41,7 +42,7 @@
 		"AbilityCastRange"				"1200"
 		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.2"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -50,7 +51,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"12 18" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }

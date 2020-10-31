@@ -11,6 +11,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"AbilityManaCost"				"100"
 		"AbilityCastRange"				"1600"
+		"AbilityCastPoint"				"0.6"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -20,7 +21,6 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.6" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"14" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"170" }

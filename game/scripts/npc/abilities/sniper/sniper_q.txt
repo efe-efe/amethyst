@@ -4,15 +4,14 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/sniper/sniper_counter/sniper_counter"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 		
 		"AbilityTextureName"			"sniper_counter"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCooldown"				"8.0"
-		"LevelsBetweenUpgrades"			"0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.0" }
 			"02"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
 			"03"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "20 40" }
 		}

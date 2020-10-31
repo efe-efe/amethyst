@@ -5,13 +5,14 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/phantom/phantom_extra/phantom_extra"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"phantom_extra"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"10"
-		"LevelsBetweenUpgrades"			"0"
 		"AbilityCastRange"				"700"
+		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -21,7 +22,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0 6.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }

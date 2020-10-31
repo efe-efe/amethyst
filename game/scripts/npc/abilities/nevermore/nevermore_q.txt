@@ -36,6 +36,7 @@
 		"AbilityTextureName"			"nevermore_ex_counter"
 		"AbilityCooldown"				"9.0"
 		"AbilityManaCost" 				"25"
+		"AbilityCastPoint"				"0.5"
 		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {
@@ -44,7 +45,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT" 		"cast_point"			"0.5" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"10" }
 			"03"{ "var_type"	"FIELD_FLOAT" 		"fear_duration"			"1.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"                "250 350" }

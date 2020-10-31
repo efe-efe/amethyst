@@ -12,14 +12,14 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityManaCost"				"100"
-
+		"AbilityCastPoint"				"0.3"
+		
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
 		}
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"bonus_damage"				"7" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"700" }

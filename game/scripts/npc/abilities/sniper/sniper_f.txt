@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/sniper/sniper_extra/sniper_extra"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"sniper_headshot"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -13,7 +14,7 @@
 		"AbilityCastRange"				"600"
 		"AbilityCooldown"				"8.0 6.0"
 		"AbilityManaCost"				"25"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -28,7 +29,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"600" }

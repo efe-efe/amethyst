@@ -42,10 +42,6 @@
 		"AbilityCooldown"				"6.0 3.0"
 		"LevelsBetweenUpgrades"			"0"
 		"AbilityManaCost"				"25"
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.1" }
-		}
+		"AbilityCastPoint"				"0.1"
 	}
 }

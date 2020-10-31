@@ -31,11 +31,11 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCooldown"				"12 6"
 		"AbilityManaCost"				"25"
+		"AbilityCastPoint"				"0.5"
 		"LevelsBetweenUpgrades"			"0"
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.5" }
 			"02"{ "var_type"			"FIELD_INTEGER"		"heal"				"10" }
 			"03"{ "var_type"			"FIELD_FLOAT"		"duration"			"4.5" }
 			"04"{ "var_type"			"FIELD_INTEGER"		"heal_per_tick"		"4" }

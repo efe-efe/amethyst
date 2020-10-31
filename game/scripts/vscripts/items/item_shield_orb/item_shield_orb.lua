@@ -6,5 +6,6 @@ function item_shield_orb:OnSpellStart()
 
     caster:AddNewModifier(caster, nil, "modifier_shield", { duration = 5.0, damage_block = damage_block })
 
-    EmitSoundOn("DOTA_Item.ClarityPotion.Activate", caster)
+    EmitSoundOn("Hero_Sven.GodsStrength.Attack", caster)
+    EmitSoundOn("Hero_Abaddon.AphoticShield.Cast", caster)
 end

@@ -74,14 +74,5 @@ function Abilities.Castpoint(ability)
         if getIgnoreActivationCycle then return getIgnoreActivationCycle(self) end
         return nil
     end
-
-
-    function ability:GetCastPoint()
-        if self.GetCastPointOverride then
-            return self:GetCastPointOverride()
-        end
-
-        return self:GetSpecialValueFor("cast_point")
-    end
 end
 

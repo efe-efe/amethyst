@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/storm/storm_special_attack/storm_special_attack"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"storm_spirit_electric_vortex"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -12,7 +13,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"1200"
 		"AbilityCooldown"				"8.0"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.2"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -21,7 +22,6 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
@@ -37,13 +37,14 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/storm/storm_special_attack/storm_special_attack"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"storm_ex_special_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"12"
-		"LevelsBetweenUpgrades"			"0"
 		"AbilityCastRange"				"1500"
+		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -52,7 +53,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"			        "550" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"speed"		                "2000 2500" }

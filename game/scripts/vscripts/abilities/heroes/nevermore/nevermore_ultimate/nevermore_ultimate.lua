@@ -11,7 +11,7 @@ function nevermore_ultimate:OnAbilityPhaseStart()
 		self:GetCaster(), --hCaster
 		self, --hAbility
 		"modifier_nevermore_ultimate_thinker", --modifierName
-		{ duration = self:GetCastPoint() + 0.2 },
+		{ duration = self:GetCastPoint() },
 		self:GetCaster():GetAbsOrigin(), --vOrigin
 		self:GetCaster():GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker

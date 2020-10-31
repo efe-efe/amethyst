@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"puck_mobility"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -11,7 +12,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"800"
 		"AbilityCooldown"				"10.0"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.1"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -20,7 +21,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"			"0.1" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"		"3.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"speed_debuff_pct"		"25" }

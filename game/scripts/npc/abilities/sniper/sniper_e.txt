@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"sniper_shrapnel"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
@@ -12,7 +13,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1150"
 		"AbilityCooldown"				"7.0"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -20,7 +21,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"2" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"35" }
@@ -36,6 +36,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack_recast"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"sniper_shrapnel"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
@@ -43,7 +44,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1150"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -51,7 +52,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"1" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"35" }
@@ -67,6 +67,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"sniper_ex_special_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
@@ -75,8 +76,8 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1150"
 		"AbilityCooldown"				"7.0"
-		"LevelsBetweenUpgrades"			"0"
 		"AbilityManaCost"				"25"
+		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -84,7 +85,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"3" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"initial_damage"			"20" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.3" }

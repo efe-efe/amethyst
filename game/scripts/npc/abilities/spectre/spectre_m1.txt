@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/spectre/spectre_basic_attack/spectre_basic_attack"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"spectre_basic_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -11,7 +12,6 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"220"
-		"LevelsBetweenUpgrades"			"0"
 
 		"precache"
 		{

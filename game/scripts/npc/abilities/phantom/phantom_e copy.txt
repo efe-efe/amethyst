@@ -11,9 +11,9 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"1200"
-		"AbilityCooldown"				"5.0"
-		//"AbilityCharges"                "2 3"
-		//"AbilityChargeRestoreTime"		"5.0"
+		//"AbilityCooldown"				"5.0"
+		"AbilityCharges"                "2 3"
+		"AbilityChargeRestoreTime"		"5.0"
 		"AbilityCastPoint"				"0.2"
 		
 		"LevelsBetweenUpgrades"			"0"

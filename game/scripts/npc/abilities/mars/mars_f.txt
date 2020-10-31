@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/mars/mars_extra/mars_extra"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"mars_extra"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -12,8 +13,8 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"2500"
 		"AbilityCooldown"				"12.0"
-		"LevelsBetweenUpgrades"			"0"
 		"AbilityManaCost"				"25"
+		"AbilityCastPoint"				"0.2"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -22,10 +23,9 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
 		}
 	}
 
@@ -34,6 +34,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/mars/mars_extra/mars_extra"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"mars_extra"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
@@ -41,7 +42,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"2500"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.2"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -50,10 +51,9 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
 		}
 	}
 }

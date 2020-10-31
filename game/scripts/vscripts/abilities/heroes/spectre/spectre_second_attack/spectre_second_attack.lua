@@ -7,6 +7,7 @@ function spectre_second_attack:GetCastPointSpeed() 			return 0 end
 
 function spectre_second_attack:OnAbilityPhaseStart()
 	self:PlayEffectsOnPhase()
+	return true
 end
 
 function spectre_second_attack:OnSpellStart()

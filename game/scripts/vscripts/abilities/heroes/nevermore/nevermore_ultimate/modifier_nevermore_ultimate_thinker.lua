@@ -3,13 +3,28 @@ modifier_nevermore_ultimate_thinker = class({})
 function modifier_nevermore_ultimate_thinker:OnCreated(params)
     self.radius = self:GetAbility():GetSpecialValueFor("radius")
     if IsServer() then
+        self.caster = self:GetCaster()
+        self.origin = self.caster:GetAbsOrigin()
+        print(self:GetDuration())
+        self.radius_marker_modifier = CreateTimedRadiusMarker(self.caster, self.origin, self.radius, self:GetDuration(), 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
+
         self:PlayEffects()
+        self:StartIntervalThink(0.03)
     end
 end
 
 function modifier_nevermore_ultimate_thinker:OnDestroy()
     if IsServer() then
+        
+        if self.radius_marker_modifier ~= nil then
+            if not self.radius_marker_modifier:IsNull() then
+                self.radius_marker_modifier:Destroy()
+            end
+        end
+        
         self:StopEffects()
+
+        UTIL_Remove(self:GetParent())
     end
 end
 
@@ -28,10 +43,10 @@ function modifier_nevermore_ultimate_thinker:StopEffects()
 end
 
 
-function modifier_nevermore_ultimate_thinker:OnIntervalThinkCustom()
+function modifier_nevermore_ultimate_thinker:OnIntervalThink()
     if IsServer() then
         local enemies = self:GetCaster():FindUnitsInRadius(
-            self:GetParent():GetOrigin(), 
+            self.origin, 
             self.radius, 
             DOTA_UNIT_TARGET_TEAM_ENEMY, 
             DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
@@ -39,20 +54,10 @@ function modifier_nevermore_ultimate_thinker:OnIntervalThinkCustom()
             FIND_ANY_ORDER
        )
         for _,enemy in pairs(enemies) do
-            local direction = (self:GetParent():GetOrigin() - enemy:GetOrigin()):Normalized()
+            local direction = (self.origin - enemy:GetOrigin()):Normalized()
             local point = enemy:GetAbsOrigin() + direction * 8
             enemy:SetAbsOrigin(point)
+            FindClearSpaceForUnit(enemy, enemy:GetAbsOrigin(), true)
         end
     end
 end
-
-function modifier_nevermore_ultimate_thinker:GetDelayTime()
-    return self:GetAbility():GetCastPoint()
-end
-
-function modifier_nevermore_ultimate_thinker:GetAOERadius()
-    return self:GetAbility():GetSpecialValueFor("radius")
-end
-
-if IsClient() then require("wrappers/modifiers") end
-Modifiers.Thinker(modifier_nevermore_ultimate_thinker)

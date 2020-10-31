@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/phantom/phantom_second_attack/phantom_second_attack"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"phantom_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -12,7 +13,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"240"
 		"AbilityCooldown"				"5.0"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.4"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
@@ -20,7 +21,6 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"8 12" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"240" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }

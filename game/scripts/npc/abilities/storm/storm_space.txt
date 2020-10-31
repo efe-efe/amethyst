@@ -4,11 +4,12 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/storm/storm_mobility/storm_mobility"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 		
 		"AbilityTextureName"			"storm_spirit_static_remnant"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCooldown"				"6.0"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.4"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -16,11 +17,10 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.4" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"16" }
-			"03"{ "var_type"			"FIELD_INTEGER"		"radius"			"200 300" }
-			"04"{ "var_type"			"FIELD_INTEGER"		"mana_gain_pct"		"10" }
-			"05"{ "var_type"			"FIELD_FLOAT"		"duration"			"5.0" }
+			"01"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"16" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"200 300" }
+			"03"{ "var_type"			"FIELD_INTEGER"		"mana_gain_pct"		"10" }
+			"04"{ "var_type"			"FIELD_FLOAT"		"duration"			"5.0" }
 		}
 	}
 	
@@ -29,13 +29,14 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/storm/storm_mobility/storm_mobility"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 		
 		"AbilityTextureName"			"storm_ex_mobility"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCooldown"				"6.0"
 		"AbilityManaCost"				"25"
 		"AbilityCastRange" 				"1200"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.4"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -43,12 +44,11 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_FLOAT"		"cast_point"		"0.4" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"16" }
-			"03"{ "var_type"			"FIELD_INTEGER"		"radius"			"250" }
-			"05"{ "var_type"			"FIELD_FLOAT"		"duration"			"3.0" }
-			"06"{ "var_type"			"FIELD_FLOAT"		"delay"				"0.4" }
-			"07"{ "var_type"			"FIELD_FLOAT"		"sleep_duration"	"2.0 2.5" }
+			"01"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"16" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"250" }
+			"03"{ "var_type"			"FIELD_FLOAT"		"duration"			"3.0" }
+			"04"{ "var_type"			"FIELD_FLOAT"		"delay"				"0.4" }
+			"05"{ "var_type"			"FIELD_FLOAT"		"sleep_duration"	"2.0 2.5" }
 		}
 	}
 }

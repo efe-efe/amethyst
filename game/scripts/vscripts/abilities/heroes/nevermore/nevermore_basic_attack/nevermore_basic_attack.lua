@@ -1,7 +1,7 @@
 nevermore_basic_attack = class({})
 LinkLuaModifier("modifier_nevermore_souls", "abilities/heroes/nevermore/nevermore_shared_modifiers/modifier_nevermore_souls", LUA_MODIFIER_MOTION_NONE)
 
-function nevermore_basic_attack:GetCastPointOverride()
+function nevermore_basic_attack:GetCastPoint()
 	if IsServer() then
 		return self.BaseClass.GetCastPoint(self) + self:GetCaster():GetAttackAnimationPoint()
 	end

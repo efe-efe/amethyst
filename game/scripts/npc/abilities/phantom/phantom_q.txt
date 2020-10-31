@@ -31,12 +31,12 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"phantom_ex_counter"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityCooldown"				"7.0"
 		"AbilityCastRange"				"800"
-		"LevelsBetweenUpgrades"			"0"
 		"AbilityManaCost"				"25"
 
 		"TargetingIndicator" {
@@ -58,6 +58,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"phantom_ex_counter_recast"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_POINT"
@@ -66,7 +67,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"1200"
 		"AbilityCooldown"				"5.0"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.1"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -76,9 +77,8 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 		}
 	}
 }

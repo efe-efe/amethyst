@@ -12,6 +12,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"200"
 		"AbilityCooldown"				"8.0"
+		"AbilityCastPoint"				"0.3"
 		"LevelsBetweenUpgrades"			"0"
 
 		"TargetingIndicator" {
@@ -20,7 +21,6 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"multiplier"				"2 2.5" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
@@ -44,6 +44,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"250"
 		"AbilityCooldown"				"12.0"
+		"AbilityCastPoint"				"0.3"
 		"LevelsBetweenUpgrades"			"0"
 		"AbilityManaCost"				"25"
 
@@ -53,7 +54,6 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"1.0 2.0" }

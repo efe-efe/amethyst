@@ -49,11 +49,11 @@ function mars_second_attack:OnSpellStart()
 		})
 	end
 
-    self:PlayEffectsCone(direction, radius)
+    self:PlayEffectsCone(direction, radius, nil, 'particles/units/heroes/hero_mars/mars_shield_bash.vpcf')
 end
 
-function mars_second_attack:PlayEffectsCone(direction, radius, color)
-	local effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_mars/mars_shield_bash.vpcf", PATTACH_WORLDORIGIN, self:GetCaster())
+function mars_second_attack:PlayEffectsCone(direction, radius, color, particle_cast)
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, self:GetCaster())
 	ParticleManager:SetParticleControl(effect_cast, 0, self:GetCaster():GetOrigin())
 	ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, radius, radius))
 
@@ -116,7 +116,7 @@ function mars_ex_second_attack:OnSpellStart()
 		})
 	end
 
-    self:PlayEffectsCone(direction, radius, Vector(244, 49, 255))
+    self:PlayEffectsCone(direction, radius, Vector(244, 49, 255), 'particles/econ/items/mars/mars_fall20_immortal_shield/mars_fall20_immortal_shield_bash.vpcf')
 end
 
 if IsClient() then require("wrappers/abilities") end

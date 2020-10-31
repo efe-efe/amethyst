@@ -4,6 +4,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/puck/puck_second_attack/puck_second_attack"
 		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"puck_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -12,7 +13,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"1200"
 		"AbilityCooldown"				"8.0"
-		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.2"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -22,7 +23,6 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.2" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"18 23" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"100" }

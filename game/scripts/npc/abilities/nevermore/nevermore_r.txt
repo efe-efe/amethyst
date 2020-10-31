@@ -11,6 +11,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"AbilityManaCost"				"100"
+		"AbilityCastPoint"				"1.4"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -18,7 +19,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"						"FIELD_FLOAT"		"cast_point"            "1.4" }
 			"02"{ "var_type"						"FIELD_INTEGER"		"radius"				"650" }
 			"03"{ "var_type"						"FIELD_INTEGER"		"reduction_ms"			"25" }
 			"04"{ "var_type"						"FIELD_INTEGER"		"slow_duration"			"5.0" }

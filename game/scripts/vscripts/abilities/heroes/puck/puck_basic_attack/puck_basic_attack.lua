@@ -2,7 +2,7 @@ puck_basic_attack = class({})
 puck_ex_basic_attack = class({})
 LinkLuaModifier("modifier_puck_basic_attack_cooldown", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
 
-function puck_basic_attack:GetCastPointOverride()
+function puck_basic_attack:GetCastPoint()
 	if IsServer() then
 		return self.BaseClass.GetCastPoint(self) + self:GetCaster():GetAttackAnimationPoint()
 	end

@@ -12,6 +12,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"AbilityCastRange"				"850"
 		"AbilityCooldown"				"8.0"
+		"AbilityCastPoint"				"0.4"
 		"LevelsBetweenUpgrades"			"0"
 
 
@@ -23,7 +24,6 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"16" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
