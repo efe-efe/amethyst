@@ -72,7 +72,7 @@ function modifier_hero_base:PickupItems()
 		local owner = item:GetPurchaser()
 		
 		--Only pickup items owned by teammates
-		if owner == nil or (owner ~= nil and self.parent:IsAlly(owner)) then
+		if owner == nil or (owner ~= nil and self.parent:IsAlly(owner) and self.parent ~= owner) then
 			self.parent:AddItem(item)
 			item:OnSpellStart()
 

@@ -5,7 +5,6 @@ function modifier_nevermore_ultimate_thinker:OnCreated(params)
     if IsServer() then
         self.caster = self:GetCaster()
         self.origin = self.caster:GetAbsOrigin()
-        print(self:GetDuration())
         self.radius_marker_modifier = CreateTimedRadiusMarker(self.caster, self.origin, self.radius, self:GetDuration(), 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
 
         self:PlayEffects()
