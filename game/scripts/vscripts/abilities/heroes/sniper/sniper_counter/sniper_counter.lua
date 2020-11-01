@@ -22,7 +22,7 @@ function sniper_counter:PlayEffects()
 
     EmitSoundOn("DOTA_Item.SmokeOfDeceit.Activate" , caster)
 
-    local particle_cast ="particles/econ/items/vengeful/vs_ti8_immortal_shoulder/vs_ti8_immortal_magic_missle_end_smoke.vpcf"
+    local particle_cast ="particles/sniper/sniper_counter.vpcf"
     local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
     ParticleManager:SetParticleControl(effect_cast, 3, Vector(origin.x, origin.y, origin.z + 64))
     ParticleManager:SetParticleControl(effect_cast, 0, origin)
