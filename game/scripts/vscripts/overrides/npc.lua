@@ -78,6 +78,9 @@ function CDOTA_BaseNPC:Reset()
 	for i = 0, 23 do
 		local ability = self:GetAbilityByIndex(i)
 		if ability then
+			--[[if ability:GetMaxAbilityCharges() then
+				ability:SetCurrentAbilityCharges(ability:GetMaxAbilityCharges())
+			end]]
 			ability:EndCooldown()
 			if ability:GetToggleState() then
 				ability:ToggleAbility()

@@ -1,10 +1,10 @@
 
-function CDOTABaseAbility:GetMaxCharges()
-	local kv = LoadKeyValues("scripts/npc/npc_abilities_custom.txt")
-	local spell_kv = kv[self:GetName()]
-	local charges = spell_kv['AbilityCharges']
-	PrintTable('spell_kv', spell_kv)
-	print('charges',charges)
+function CDOTABaseAbility:GetMaxAbilityCharges()
+	return GetCurrentLevelValue(self, 'AbilityCharges')
+end
+
+function CDOTABaseAbility:GetAbilityChargeRestoreTime()
+	return GetCurrentLevelValue(self, 'AbilityChargeRestoreTime')
 end
 
 function CDOTABaseAbility:HasBehavior(behavior)

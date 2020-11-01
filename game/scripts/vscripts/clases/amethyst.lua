@@ -33,8 +33,7 @@ function Amethyst:OnDeath(params)
 			if unit:IsRealHero() then 
 				TrueHeal(unit:GetHealth(), final_heal, unit)
 				unit:GiveMana(final_mana)
-                SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, unit, final_mana, nil)
-                
+                SendOverheadManaMessage(unit, final_mana)
                 self:PlayEffectsOnTarget(unit)
 			end
 		end

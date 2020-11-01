@@ -10,6 +10,8 @@ function modifier_shield:OnCreated(params)
 
         self:SetStackCount(params.damage_block)
         self:PlayEffects(self:GetDuration())
+
+        SendOverheadShieldMessage(self:GetParent(), params.damage_block)
 	end
 end
 
@@ -25,6 +27,7 @@ function modifier_shield:OnRefresh(params)
         self:SetDuration(new_duration, true)
         self:StopEffects()
         self:PlayEffects(new_duration)
+        SendOverheadShieldMessage(self:GetParent(), params.damage_block)
     end
 end
 

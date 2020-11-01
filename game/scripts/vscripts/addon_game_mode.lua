@@ -567,15 +567,7 @@ function GameMode:OnEntityHurt(keys)
             damagingAbility = EntIndexToHScript(keys.entindex_inflictor)
         end
 
-        local word_length = string.len(tostring(math.floor(keys.damage)))
-
-        local color =  Vector(250, 70, 70)
-        local effect_cast = ParticleManager:CreateParticle("particles/msg_damage.vpcf", PATTACH_WORLDORIGIN, nil)
-        ParticleManager:SetParticleControl(effect_cast, 0, entVictim:GetOrigin())
-        ParticleManager:SetParticleControl(effect_cast, 1, Vector(0, keys.damage, 0))
-        ParticleManager:SetParticleControl(effect_cast, 2, Vector(math.max(1, keys.damage / 10), word_length, 0))
-        ParticleManager:SetParticleControl(effect_cast, 3, color)
-        ParticleManager:ReleaseParticleIndex(effect_cast)
+        SendOverheadDamageMessage(entVictim, keys.damage)
     end
 end
 

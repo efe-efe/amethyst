@@ -8,5 +8,6 @@ function TrueHeal(base, heal, unit)
         unit:SetTreshold(new_treshold)
     end
 
-    SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, unit, heal, nil)
+    SendOverheadHealMessage(unit, heal)
+    --SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, unit, heal, nil)
 end

@@ -100,7 +100,8 @@ function Filters:Activate(GameMode, this)
             else
                 healing_target:SetTreshold(new_treshold)
             end
-            SendOverheadEventMessage(nil, OVERHEAD_ALERT_HEAL, healing_target, keys.heal, nil)
+            
+            SendOverheadHealMessage(healing_target, keys.heal)
         end
         return true
     end

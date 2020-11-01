@@ -241,6 +241,65 @@ RADIUS_SCOPE_LOCAL = 2
 local RED = Vector(255, 1, 1)
 local GREEN = Vector(1, 255, 1)
 
+function GetCurrentLevelValue(ability, key)
+	local ability_key_values = ability:GetAbilityKeyValues()
+	local value = nil
+
+	if ability_key_values then
+		local m_value = ability_key_values[key]
+
+		if m_value then
+			if type(m_value) == 'number' then
+				value = m_value
+			else
+				value = tonumber(string.split(m_value, ' ')[ability:GetLevel()])
+			end
+		end
+	end
+
+	return value
+end
+
+function SendOverheadDamageMessage(unit, value)
+	local word_length = string.len(tostring(math.floor(value)))
+	local color =  Vector(250, 70, 70)
+
+	OverheadMessageEFX(unit, value, word_length, color, 0)
+end
+
+function SendOverheadHealMessage(unit, value)
+	local word_length = string.len(tostring(math.floor(value))) + 1
+	local color =  Vector(70, 250, 70)
+
+	OverheadMessageEFX(unit, value, word_length, color, 0)
+end
+
+function SendOverheadManaMessage(unit, value)
+	local word_length = string.len(tostring(math.floor(value))) + 1
+	local color =  Vector(27, 113, 230)
+
+	OverheadMessageEFX(unit, value, word_length, color, 0)
+end
+
+function SendOverheadShieldMessage(unit, value)
+	local word_length = string.len(tostring(math.floor(value))) + 1
+	local color =  Vector(255, 255, 255)
+
+	OverheadMessageEFX(unit, value, word_length, color, 7)
+end
+
+function OverheadMessageEFX(unit, value, word_length, color, shield)
+	local duration = math.max(1, value / 10)
+
+	EFX('particles/msg_damage.vpcf', PATTACH_WORLDORIGIN, nil, {
+		cp0 = unit:GetAbsOrigin(),
+		cp1 = Vector(0, value, shield),
+		cp2 = Vector(duration, word_length, 0),
+		cp3 = color,
+		release = true,
+	})
+end
+
 function CreateTimedRadiusMarker(caster, origin, radius, delay, duration, scope)
 	return CreateModifierThinker(
         caster, --hCaster

@@ -6,7 +6,7 @@ function item_death_orb:OnSpellStart()
     local heal = 24
 
     caster:GiveMana(charges)
-    SendOverheadEventMessage(nil, OVERHEAD_ALERT_MANA_ADD, caster, charges, nil)
+    SendOverheadManaMessage(caster, charges)
 
     if charges == 100 then
         TrueHeal(caster:GetHealth(), heal, caster)
