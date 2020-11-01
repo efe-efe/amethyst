@@ -26,8 +26,6 @@ function mars_basic_attack:GetAnimationTranslate() 		return "attack_close_range"
 
 function mars_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	caster:SetHullRadius(70)
-
 	local origin = caster:GetOrigin()
 	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
     local attack_damage = caster:GetAttackDamage()
