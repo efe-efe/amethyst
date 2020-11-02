@@ -7,6 +7,7 @@ function spectre_counter_recast:GetIgnoreActivationCycle() 		return true end
 
 function spectre_counter_recast:OnAbilityPhaseStart()
 	self:PlayEffectsOnPhase()
+	return true
 end
 
 function spectre_counter_recast:HasPriority()

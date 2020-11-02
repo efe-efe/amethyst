@@ -38,6 +38,12 @@ function mars_extra:OnSpellStart()
 		)
 		
 		unit:SetModelScale(1.3)
+		
+		EFX("particles/mars/mars_extra.vpcf", PATTACH_ABSORIGIN_FOLLOW, unit, {
+			cp1 = unit:GetAbsOrigin(),
+			release = true
+		})
+
 		EFX("particles/units/heroes/hero_invoker_kid/invoker_kid_forge_spirit_ambient.vpcf", PATTACH_ABSORIGIN_FOLLOW, unit, {
 			release = true
 		})

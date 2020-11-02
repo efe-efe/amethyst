@@ -107,7 +107,7 @@ function spectre_basic_attack:OnSpellStart()
 	end
 
 	self:PlayEffectsOnFinish(direction, is_charged)
-	self:PlayEffectsOnCast()
+	self:PlayEffectsOnCast(is_charged)
 end
 
 function spectre_basic_attack:PlayEffectsOnFinish(direction, is_charged)
@@ -134,8 +134,12 @@ function spectre_basic_attack:PlayEffectsOnFinish(direction, is_charged)
 	end
 end
 
-function spectre_basic_attack:PlayEffectsOnCast()
+function spectre_basic_attack:PlayEffectsOnCast(is_charged)
 	EmitSoundOn("Hero_Spectre.PreAttack", self:GetCaster())
+
+	if is_charged then
+		EmitSoundOn('Hero_Sven.Layer.GodsStrength', self:GetCaster())
+	end
 end
 
 function spectre_basic_attack:PlayEffectsOnImpact(hTarget, pos, is_charged)
