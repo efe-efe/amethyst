@@ -58,6 +58,7 @@
 		"AbilityCastRange" 				"1500"
 		"AbilityCooldown"				"8.0"
 		"AbilityCastPoint"				"0.4"
+		"AbilityManaCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"

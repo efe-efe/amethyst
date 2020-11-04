@@ -40,6 +40,11 @@ export default class HeroController{
         const abilityEntityIndex = Entities.GetAbility(heroIndex, slotIndex);
 
         if(!Abilities.IsInAbilityPhase(abilityEntityIndex)){
+            if(!showEffects){
+                if(!Abilities.IsCooldownReady(abilityEntityIndex)){
+                    return;
+                }
+            }
             const mousePositionScreen = GameUI.GetCursorPosition();
             const mousePosition = Game.ScreenXYToWorld(mousePositionScreen[0], mousePositionScreen[1]);
     

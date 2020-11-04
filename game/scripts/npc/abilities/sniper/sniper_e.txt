@@ -22,10 +22,10 @@
 		"AbilitySpecial"
 		{
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"2" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.5" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"35" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"debuff_linger"				"0.5" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"230" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
 			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.7" }
 		}
@@ -53,10 +53,10 @@
 		"AbilitySpecial"
 		{
 			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"1" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"35" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"debuff_linger"				"0.5" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
 			"08"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.7" }
 		}

@@ -55,7 +55,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
         OnFinish = function(_self, pos)
             local enemies = caster:FindUnitsInRadius(
                 pos, 
-                self.radius, 
+                self.radius + 50, 
                 DOTA_UNIT_TARGET_TEAM_ENEMY, 
                 DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
                 DOTA_UNIT_TARGET_FLAG_NONE,
@@ -74,16 +74,15 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
                     ApplyDamage(damage)
                 end
                 
-                local x = enemy:GetOrigin().x - pos.x
-                local y = enemy:GetOrigin().y - pos.y
+                local knockback_direction = _self:GetVelocity():Normalized()
         
                 enemy:AddNewModifier(
                     caster,
                     self,
                     "modifier_sniper_ultimate_displacement",
                     {
-                        x = x,
-                        y = y,
+                        x = knockback_direction.x,
+                        y = knockback_direction.y,
                         r = self.radius,
                         speed = (self.radius/0.15),
                         peak = 0,
@@ -91,7 +90,6 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
                )
             end
         
-            CreateRadiusMarker(caster, pos, self.radius, RADIUS_SCOPE_PUBLIC, 0.1)
             ScreenShake(pos, 100, 300, 0.45, 1000, 0, true)
             self:PlayEffectsExplosion(pos)
 			self:PlayEffectsProjectileImpact(_self.Source, pos)

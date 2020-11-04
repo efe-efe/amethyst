@@ -23,7 +23,7 @@
 		{
 			"02"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"14" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"170" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"100" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"28" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
 			"07"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
