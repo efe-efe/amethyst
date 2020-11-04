@@ -38,7 +38,7 @@ export default class HeroStatus{
             this.mana = new Mana(this.manaPanel, heroData.mana, heroData.maxMana);
         }
 
-        this.health = new Health(this.healthPanel, this.color, true);
+        this.health = new Health(this.healthPanel, this.color, '13px', true);
         imagePanel.heroname = heroData.name;
 
         this.UpdateData(heroData);

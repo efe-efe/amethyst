@@ -131,6 +131,10 @@ export default class ProgressBar{
         return parseInt(this.foregroundPanel.style.width.split('%')[0], 10);
     }
 
+    GetParent(): Panel{
+        return this.parent;
+    }
+
     /*
     SetCellWidth(width: number): void{
         if(width == this.cellWidth){

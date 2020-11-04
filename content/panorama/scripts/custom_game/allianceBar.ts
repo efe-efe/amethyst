@@ -45,7 +45,7 @@ export default class AllianceBar{
         amethystsImagePanel.SetImage('file://{images}/custom_game/amethyst.png');
         this.amethystsTextPanel.text = 'X0';
 
-        this.health = new Health(this.healthPanel, this.color, true, true);
+        this.health = new Health(this.healthPanel, this.color, '15px', true, true);
         this.UpdateData(allianceData);
     }
 

@@ -1,24 +1,38 @@
 import ProgressBar from '../progressBar';
-import { colors, Color } from '../shared/util';
+import { colors, Color, panels } from '../shared/util';
 
 export default class Health{
     healthProgressBar: ProgressBar;
     shieldProgressBar: ProgressBar;
+    healthPanel: Panel;
+    valuePanel: LabelPanel;
     color: Color;
     showValue: boolean;
     usePercentage: boolean;
 
-    constructor(container: Panel, color: Color, showValue = false, usePercentage = false){
+    constructor(container: Panel, color: Color, fontSize = '13px',showValue = false, usePercentage = false){
         this.color = color;
         this.showValue = showValue;
         this.usePercentage = usePercentage;
 
-        this.healthProgressBar = new ProgressBar('health__progress-bar', container, { 
+        this.healthPanel =  panels.createPanelSimple(container, 'health');
+        this.valuePanel = panels.createPanelSimple(container, 'health__value', 'Label') as LabelPanel;
+
+        this.healthProgressBar = new ProgressBar('health__progress-bar', this.healthPanel, { 
             foreground_color: colors.Gradient(this.color), 
             delayed: true, 
-            show_value: this.showValue 
         });
-        this.shieldProgressBar = new ProgressBar('shield__progress-bar', container, { foreground_color: colors.Gradient(colors.gray) });
+        this.shieldProgressBar = new ProgressBar('shield__progress-bar', this.healthPanel, { foreground_color: colors.Gradient(colors.gray) });
+        
+        this.healthPanel.style.flowChildren = 'right';
+        this.healthPanel.style.height = '100%';
+        this.healthPanel.style.width = '100%';
+
+        this.valuePanel.style.align = 'center center';
+        this.valuePanel.style.textShadow = '0px 0px 8px 7.0 #000000b0';
+        this.valuePanel.style.color = '#FAFAFA';
+        this.valuePanel.style.fontSize = fontSize;
+        this.valuePanel.style.fontFamily = 'Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim,MingLiU';
     }
 
     Update(health: number, treshold: number, maxHealth: number, shield: number): void{
@@ -68,6 +82,6 @@ export default class Health{
         if(this.usePercentage){
             value = Math.floor(100 * potentialHealth/maxHealth).toString() + '%';
         }
-        this.healthProgressBar.SetValue(value);
+        this.valuePanel.text = value;
     }
 }

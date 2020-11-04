@@ -11,13 +11,12 @@
         width: 100%;
     
         margin-bottom: 5px;
-        flow-children: right;
 
         background-color: rgba(36, 42, 53, 0.5);
     }
 
     &__bottom{
-        height: 20px;
+        height: 30px;
         width: 100%;
         flow-children: right;
     }
@@ -36,8 +35,9 @@
     }
 
     &__amethysts-image{
-        height: 12px;
-        width: 12px;
+        height: 20px;
+        width: 20px;
+        margin-right: 5px;
         align: right center;
     }
 
@@ -45,7 +45,7 @@
         width: 50%;
         color: #f9f9f9;
         font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim,MingLiU;
-        font-size: 14px;
+        font-size: 16px;
         align: center center;
     }
     
@@ -65,8 +65,8 @@
     }
     
     &__score-point{
-        width: 16px;
-        height: 16px;
+        width: 20px;
+        height: 20px;
         border-radius: 50%;
         align: center center;
         border: 1px solid white;
