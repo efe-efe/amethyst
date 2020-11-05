@@ -53,6 +53,8 @@ function Abilities.Castpoint(ability)
             end
         end
         if onSpellStart then onSpellStart(self) end
+
+        self:GetCaster():Stop()
     end
 
     function ability:GetCastPointSpeed()
