@@ -205,7 +205,6 @@ function GameMode:SetupPanoramaEventHooks()
         
     CustomGameEventManager:RegisterListener('key_released', function(eventSourceIndex, args)
         local unit = EntIndexToHScript(args.entityIndex)
-        --local modifier = unit:FindModifierByName("modifier_cast_point")
 
         if modifier ~= nil then
             if not modifier:IsNull() then

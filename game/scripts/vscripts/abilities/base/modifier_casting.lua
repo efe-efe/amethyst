@@ -44,6 +44,12 @@ function modifier_casting:OnDestroy()
 				end
 			end
 		end
+
+		if self:GetRemainingTime() > 0.05 then
+			if not self:GetAbility():IsBasicAttack() then
+				self:GetAbility():StartCooldown(0.5)
+			end
+		end
 	end
 end
 

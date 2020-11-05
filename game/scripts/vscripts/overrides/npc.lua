@@ -131,7 +131,7 @@ end
 
 
 function CDOTA_BaseNPC:InterruptCastPoint()
-	self:RemoveModifierByName("modifier_cast_point")
+	self:RemoveModifierByName("modifier_casting")
 end
 
 function CDOTA_BaseNPC:HideHealthBar()
