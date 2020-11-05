@@ -54,6 +54,9 @@ function phantom_second_attack:OnSpellStart()
 		break
 	end
 
+	if #enemies > 0 then
+		ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
+	end
 	
 	self:PlayEffectsOnFinish(point)
 	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
@@ -85,6 +88,10 @@ function phantom_second_attack:PlayEffectsOnImpact(hTarget, stacks)
 end
 
 function phantom_second_attack:PlayEffectsOnCast()
+	EFX('particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_crit.vpcf', PATTACH_ABSORIGIN, self:GetCaster(), {
+		release = true
+	})
+
 	EmitSoundOn("Hero_PhantomAssassin.Attack", self:GetCaster())
 end
 

@@ -106,15 +106,19 @@ function spectre_basic_attack:OnSpellStart()
 		end
 	end
 
+	if #enemies > 0 then
+		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
+	end
+
 	self:PlayEffectsOnFinish(direction, is_charged)
-	self:PlayEffectsOnCast(is_charged)
+	self:PlayEffectsOnCast(is_charged, direction, radius)
 end
 
 function spectre_basic_attack:PlayEffectsOnFinish(direction, is_charged)
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
 
-	local particle_cast = "particles/units/heroes/hero_nyx_assassin/nyx_assassin_vendetta_swipe.vpcf"
+	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_blinkb.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
 	ParticleManager:SetParticleControl(effect_cast, 0, origin)
 	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)
@@ -123,7 +127,15 @@ function spectre_basic_attack:PlayEffectsOnFinish(direction, is_charged)
 	if is_charged then
 		particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_crimson_blade_fury_abyssal_start.vpcf"
 		effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
-		ParticleManager:SetParticleControl(effect_cast, 2, origin)
+		ParticleManager:SetParticleControlEnt(
+			effect_cast, 
+			2, 
+			caster, 
+			PATTACH_POINT_FOLLOW, 
+			"attach_hitloc", 
+			origin, 
+			true 
+		)
 		ParticleManager:ReleaseParticleIndex(effect_cast)
 		
 		particle_cast = "particles/econ/items/dragon_knight/dk_immortal_dragon/dragon_knight_dragon_tail_dragonform_iron_dragon.vpcf"
@@ -134,10 +146,20 @@ function spectre_basic_attack:PlayEffectsOnFinish(direction, is_charged)
 	end
 end
 
-function spectre_basic_attack:PlayEffectsOnCast(is_charged)
+function spectre_basic_attack:PlayEffectsOnCast(is_charged, direction, radius)
 	EmitSoundOn("Hero_Spectre.PreAttack", self:GetCaster())
 
 	if is_charged then
+		local caster = self:GetCaster()
+		local origin = caster:GetAbsOrigin()
+		local effect_cast = ParticleManager:CreateParticle('particles/spectre/spectre_basic_attack_charged.vpcf', PATTACH_WORLDORIGIN, caster)
+		ParticleManager:SetParticleControl(effect_cast, 0, origin)
+		ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, radius, radius))
+		ParticleManager:SetParticleControl(effect_cast, 60, Vector(145, 10, 80))
+		ParticleManager:SetParticleControl(effect_cast, 61, Vector(1, 0, 0))
+		ParticleManager:SetParticleControlForward(effect_cast, 0, direction)
+		ParticleManager:ReleaseParticleIndex(effect_cast)
+
 		EmitSoundOn('Hero_Sven.Layer.GodsStrength', self:GetCaster())
 	end
 end
@@ -151,6 +173,10 @@ function spectre_basic_attack:PlayEffectsOnImpact(hTarget, pos, is_charged)
 		ParticleManager:ReleaseParticleIndex(effect_cast)
 	else
 		EmitSoundOn("Hero_Spectre.Attack", hTarget)
+		
+		EFX('particles/phantom/phantom_basic_attack.vpcf', PATTACH_ABSORIGIN, hTarget, {
+			release = true
+		})
 
 		local caster = self:GetCaster()
 		local offset = 50
@@ -161,12 +187,6 @@ function spectre_basic_attack:PlayEffectsOnImpact(hTarget, pos, is_charged)
 		ParticleManager:SetParticleControl(effect_cast, 0, pos)
 		ParticleManager:SetParticleControlForward(effect_cast, 0, (pos - caster:GetOrigin()):Normalized())
 		ParticleManager:ReleaseParticleIndex(effect_cast)
-	
-		local particle_cast_b = "particles/units/heroes/hero_nyx_assassin/nyx_assassin_vendetta_swipe.vpcf"
-		local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_WORLDORIGIN, nil)
-		ParticleManager:SetParticleControl(effect_cast_b, 0, new_position)
-		ParticleManager:SetParticleControlForward(effect_cast_b, 0, (pos - caster:GetOrigin()):Normalized())
-		ParticleManager:ReleaseParticleIndex(effect_cast_b)
 	end
 end
 

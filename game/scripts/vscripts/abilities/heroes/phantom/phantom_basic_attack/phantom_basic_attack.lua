@@ -88,6 +88,10 @@ function phantom_basic_attack:OnSpellStart()
 		break
 	end
 
+	if #enemies > 0 then
+		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
+	end
+
 	self:PlayEffectsOnFinish(point)
 	self:PlayEffectsOnCast()
 end
@@ -107,6 +111,10 @@ function phantom_basic_attack:PlayEffectsOnFinish(pos)
 end
 
 function phantom_basic_attack:PlayEffectsOnImpact(hTarget)
+	EFX('particles/phantom/phantom_basic_attack.vpcf', PATTACH_ABSORIGIN, hTarget, {
+		release = true
+	})
+
 	EmitSoundOn("Hero_PhantomAssassin.Attack", hTarget)
 end
 

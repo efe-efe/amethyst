@@ -84,6 +84,10 @@ function juggernaut_basic_attack:OnSpellStart()
 		break
 	end
 
+	if #enemies > 0 then
+		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
+	end
+
 	self:PlayEffectsOnMiss(point)
 	self:PlayEffectsOnFinish(point)
 end
@@ -107,6 +111,10 @@ function juggernaut_basic_attack:PlayEffectsOnFinish(pos)
 end
 
 function juggernaut_basic_attack:PlayEffectsOnImpact(hTarget)
+	EFX('particles/units/heroes/hero_bounty_hunter/bounty_hunter_jinda_slow.vpcf', PATTACH_ABSORIGIN, hTarget, {
+		release = true
+	})
+
 	EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
 end
 
