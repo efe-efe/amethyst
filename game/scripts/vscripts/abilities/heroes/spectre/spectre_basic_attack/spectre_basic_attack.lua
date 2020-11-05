@@ -29,7 +29,7 @@ function spectre_basic_attack:GetPlaybackRateOverride()
 		return 1.1 - slow
 	end
 end
-function spectre_basic_attack:GetCastPointSpeed() 		return 80 end
+function spectre_basic_attack:GetCastPointSpeed() 		return self:GetSpecialValueFor('cast_point_speed_pct') end
 
 function spectre_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()

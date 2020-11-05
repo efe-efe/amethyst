@@ -18,7 +18,7 @@ end
 
 function juggernaut_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK_EVENT end
 function juggernaut_basic_attack:GetPlaybackRateOverride() 	return 1.8 end
-function juggernaut_basic_attack:GetCastPointSpeed() 		return 80 end
+function juggernaut_basic_attack:GetCastPointSpeed() 		return self:GetSpecialValueFor('cast_point_speed_pct') end
 
 function juggernaut_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()

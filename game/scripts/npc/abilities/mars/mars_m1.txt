@@ -14,9 +14,10 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"230" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"max_stacks"             	"3" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"cast_point_speed_pct"		"80" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"230" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"max_stacks"             	"3" }
 		}
 	}
 

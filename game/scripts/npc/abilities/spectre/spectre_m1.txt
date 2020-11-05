@@ -20,15 +20,16 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"220" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "6" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.5" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"heal_desolate"				"4" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_desolate"		"2" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"charged_damage"			"6" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.4 0.9" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }
-			"09"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"8" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"cast_point_speed_pct"		"85" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"220" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "6" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.5" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"heal_desolate"				"4" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_desolate"		"2" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"charged_damage"			"6" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.4 0.9" }
+			"09"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }
+			"10"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"8" }
 		}
 	}
 }

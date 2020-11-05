@@ -21,7 +21,7 @@ end
 
 function mars_basic_attack:GetCastAnimationCustom()	    return ACT_DOTA_ATTACK end
 function mars_basic_attack:GetPlaybackRateOverride() 	return 2.0 end
-function mars_basic_attack:GetCastPointSpeed() 		    return 50 end
+function mars_basic_attack:GetCastPointSpeed() 		    return self:GetSpecialValueFor('cast_point_speed_pct') end
 function mars_basic_attack:GetAnimationTranslate() 		return "attack_close_range" end
 
 function mars_basic_attack:OnSpellStart()
