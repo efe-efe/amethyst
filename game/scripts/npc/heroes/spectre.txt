@@ -40,7 +40,7 @@
 		"AttributeBaseAgility"		"0"										
 		"AttributeAgilityGain"		"0"										
 		
-		"StatusHealth"				"170" 						
+		"StatusHealth"				"200" 						
 		"StatusHealthRegen"			"0.0"									
 		"StatusMana"				"100"									
 		"StatusManaRegen"			"0.0"	
