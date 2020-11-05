@@ -110,8 +110,12 @@ function modifier_storm_extra_displacement:DeclareFunctions()
 	}
 end
 
-function modifier_storm_extra_displacement:GetOverrideAnimation() 		return ACT_DOTA_OVERRIDE_ABILITY_4 end
+function modifier_storm_extra_displacement:CheckState()
+	return { [MODIFIER_STATE_ROOTED] = true }
+end
 
+function modifier_storm_extra_displacement:GetOverrideAnimation() 		return ACT_DOTA_OVERRIDE_ABILITY_4 end
+function modifier_storm_extra_displacement:GetIsCommandRestricted()		return false end
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Displacement(modifier_storm_extra_displacement)
 Modifiers.Animation(modifier_storm_extra_displacement)

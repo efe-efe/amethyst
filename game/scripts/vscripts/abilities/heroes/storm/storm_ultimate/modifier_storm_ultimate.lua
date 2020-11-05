@@ -8,6 +8,15 @@ function modifier_storm_ultimate:OnCreated(params)
 end
 
 
+function modifier_storm_ultimate:OnDestroy()
+    if IsServer() then
+        self:GetParent():SetMana(0.0)
+        EFX('particles/units/heroes/hero_nyx_assassin/nyx_assassin_mana_burn.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), { 
+            release = true 
+        })
+    end
+end
+
 function modifier_storm_ultimate:PlayEffectsOnCast()
     EFX("particles/units/heroes/hero_zeus/zeus_cloud_strike.vpcf", PATTACH_WORLDORIGIN, nil, {
         cp0 = self:GetParent():GetAbsOrigin(),

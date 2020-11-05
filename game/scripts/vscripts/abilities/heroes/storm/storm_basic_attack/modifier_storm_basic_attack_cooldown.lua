@@ -20,9 +20,6 @@ function modifier_storm_basic_attack_cooldown:OnAbilityFullyCast(params)
             self:StartCooldown()
             DEFX(self.efx)
         else
-            if params.ability == self:GetParent():FindAbilityByName('storm_counter') then
-                return
-            end
 			self:Replenish()
         end
     end

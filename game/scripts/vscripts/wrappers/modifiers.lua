@@ -332,6 +332,7 @@ function Modifiers.Displacement(modifier)
     local getCollisionOffset =          modifier.GetCollisionOffset
     local getCollisionTeamFilter =      modifier.GetCollisionTeamFilter
     local getCollisionTargetFilter =    modifier.GetCollisionTargetFilter
+    local getIsCommandRestricted =      modifier.GetIsCommandRestricted
 
 
     local checkState =              modifier.CheckState
@@ -480,7 +481,7 @@ function Modifiers.Displacement(modifier)
             end
         end
         
-        states[MODIFIER_STATE_COMMAND_RESTRICTED] = true
+        states[MODIFIER_STATE_COMMAND_RESTRICTED] = self:GetIsCommandRestricted()
         return states
     end
 
@@ -511,6 +512,11 @@ function Modifiers.Displacement(modifier)
 
     function modifier:GetDirection()
         return self.direction
+    end
+
+    function modifier:GetIsCommandRestricted()
+        if getIsCommandRestricted then return getIsCommandRestricted(self) end
+        return true
     end
 end
 

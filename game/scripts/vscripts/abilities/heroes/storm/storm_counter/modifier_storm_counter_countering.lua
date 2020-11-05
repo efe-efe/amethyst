@@ -86,10 +86,25 @@ function modifier_storm_counter_countering:GetOverrideAnimationRate() 	return 0.
 function modifier_storm_counter_countering:PlayEffectsOnTrigger()
     EmitSoundOn("stormspirit_ss_laugh_04" , self:GetParent())
 
-	EFX("particles/units/heroes/hero_void_spirit/voidspirit_overload_discharge.vpcf", PATTACH_WORLDORIGIN, caster, {
+	EFX("particles/units/heroes/hero_void_spirit/voidspirit_overload_discharge.vpcf", PATTACH_WORLDORIGIN, self:GetParent(), {
 		cp0 = self:GetParent():GetAbsOrigin(),
 		release = true,
 	})
+	
+	local efx = EFX("particles/units/heroes/hero_keeper_of_the_light/keeper_of_the_light_chakra_magic.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), {
+		cp1 = self:GetParent():GetAbsOrigin(),
+	})
+
+	ParticleManager:SetParticleControlEnt(
+        efx, 
+        1, 
+        self:GetParent(), 
+        PATTACH_POINT_FOLLOW, 
+        "attach_hitloc", 
+        self:GetParent():GetAbsOrigin(), 
+		true
+	)
+	ParticleManager:ReleaseParticleIndex(efx)
 end
 
 if IsClient() then require("wrappers/modifiers") end

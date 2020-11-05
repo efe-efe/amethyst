@@ -11,13 +11,15 @@ function storm_mobility:GetCastPointSpeed() 			return 50 end
 function storm_mobility:OnSpellStart()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
+    local origin = caster:GetAbsOrigin()
+    local groundPosition = GetGroundPosition(origin, caster)
     
     local thinker = CreateModifierThinker(
         caster, --hCaster
         self, --hAbility
         "modifier_storm_mobility_thinker", --modifierName
         { duration = duration },
-        caster:GetAbsOrigin(), --vOrigin
+        groundPosition,
         caster:GetTeamNumber(), --nTeamNumber
         true --bPhantomBlocker
     )
