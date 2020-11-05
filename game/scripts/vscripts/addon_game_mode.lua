@@ -576,10 +576,12 @@ function GameMode:GetHighestWinsDifference(alliance)
 
     for _,m_alliance in pairs(self.alliances) do
         if m_alliance ~= alliance then
-            local m_difference = alliance.wins - m_alliance.wins
+            if next(m_alliance.players) ~= nil then
+                local m_difference = alliance.wins - m_alliance.wins
 
-            if m_difference > difference then
-                difference = m_difference 
+                if m_difference > difference then
+                    difference = m_difference 
+                end
             end
         end
     end 
