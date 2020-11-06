@@ -88,40 +88,28 @@ function phantom_second_attack:PlayEffectsOnImpact(hTarget, stacks)
 end
 
 function phantom_second_attack:PlayEffectsOnCast()
-	EFX('particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_crit.vpcf', PATTACH_ABSORIGIN, self:GetCaster(), {
-		release = true
-	})
-
 	EmitSoundOn("Hero_PhantomAssassin.Attack", self:GetCaster())
 end
 
 function phantom_second_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
-	local offset = 100
+	local offset = 50
 	local origin = caster:GetOrigin()
-	local direction_normalized = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction_normalized.x * offset, direction_normalized.y * offset, 0)
+	local direction = (pos - origin):Normalized()
+	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
-	local particle_cast_a = "particles/phantom/phantom_second_attack_a.vpcf"
-	local particle_cast_b = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_b.vpcf"
-	local particle_cast_c = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_c.vpcf"
-
-	local effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_POINT, caster)
-	local effect_cast_b = ParticleManager:CreateParticle(particle_cast_b, PATTACH_POINT, caster)
-	local effect_cast_c = ParticleManager:CreateParticle(particle_cast_c, PATTACH_POINT, caster)
-
-	ParticleManager:SetParticleControl(effect_cast_a, 1, final_position)
-	ParticleManager:SetParticleControl(effect_cast_b, 1, final_position)
-	ParticleManager:SetParticleControl(effect_cast_c, 1, final_position)
-
-	ParticleManager:SetParticleControlForward(effect_cast_a, 1, (origin - final_position):Normalized())
-	ParticleManager:SetParticleControlForward(effect_cast_b, 1, (origin - final_position):Normalized())
-	ParticleManager:SetParticleControlForward(effect_cast_c, 1, (origin - final_position):Normalized())
-
-	ParticleManager:ReleaseParticleIndex(effect_cast_a)
-	ParticleManager:ReleaseParticleIndex(effect_cast_b)
-	ParticleManager:ReleaseParticleIndex(effect_cast_c)
+	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_c.vpcf"
+	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+	ParticleManager:SetParticleControl(effect_cast, 1, final_position)
+	ParticleManager:SetParticleControlForward(effect_cast, 1, (origin - final_position):Normalized())
+	ParticleManager:ReleaseParticleIndex(effect_cast)
+	
+	particle_cast = "particles/phantom/phantom_second_attack.vpcf"
+	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
+	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
+	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

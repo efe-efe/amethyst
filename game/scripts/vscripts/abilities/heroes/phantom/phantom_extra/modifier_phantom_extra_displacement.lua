@@ -37,6 +37,8 @@ function modifier_phantom_extra_displacement:OnCollide(params)
 					"modifier_phantom_extra", -- modifier name
 					{ duration = 1.0 } -- kv
 				)
+				
+				self:PlayEffectsOnImpact(target)
 			end
 		end
 	end
@@ -71,6 +73,8 @@ function modifier_phantom_extra_displacement:OnDestroy()
 					"modifier_phantom_extra", -- modifier name
 					{ duration = 1.0 } -- kv
 				)
+
+				self:PlayEffectsOnImpact(enemy)
 			end
 		end
 		
@@ -79,6 +83,13 @@ function modifier_phantom_extra_displacement:OnDestroy()
 		ParticleManager:SetParticleControl(trail_pfx, 1, self:GetParent():GetAbsOrigin())
 		ParticleManager:ReleaseParticleIndex(trail_pfx)
 	end
+end
+
+function modifier_phantom_extra_displacement:PlayEffectsOnImpact(hTarget)
+	EFX('particles/phantom/phantom_basic_attack.vpcf', PATTACH_ABSORIGIN, hTarget, {
+		release = true
+	})
+	EmitSoundOn("Hero_PhantomAssassin.Attack", hTarget)
 end
 
 function modifier_phantom_extra_displacement:DeclareFunctions()
