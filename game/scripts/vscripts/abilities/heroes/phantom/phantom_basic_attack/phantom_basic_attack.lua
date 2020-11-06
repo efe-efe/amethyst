@@ -46,7 +46,13 @@ function phantom_basic_attack:OnSpellStart()
 		FIND_CLOSEST
 	)
 
-	for _,enemy in pairs(enemies) do 
+	local should_shake = false
+
+	for _,enemy in pairs(enemies) do
+		if enemy:IsRealHero() then
+			should_shake = true
+		end
+
 		local damage_table = {
 			victim = enemy,
 			attacker = caster,
@@ -88,7 +94,7 @@ function phantom_basic_attack:OnSpellStart()
 		break
 	end
 
-	if #enemies > 0 then
+	if should_shake then
 		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
 	end
 

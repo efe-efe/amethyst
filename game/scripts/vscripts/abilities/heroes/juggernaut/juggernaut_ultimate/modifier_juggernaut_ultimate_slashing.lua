@@ -111,6 +111,10 @@ function modifier_juggernaut_ultimate_slashing:CheckState()
 end
 
 function modifier_juggernaut_ultimate_slashing:PlayEffects(hTarget)
+	EFX('particles/juggernaut/juggernaut_basic_attack_impact.vpcf', PATTACH_ABSORIGIN, hTarget, {
+		release = true
+    })
+    
     local particle_cast = "particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_tgt.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, hTarget)
     ParticleManager:ReleaseParticleIndex(effect_cast)

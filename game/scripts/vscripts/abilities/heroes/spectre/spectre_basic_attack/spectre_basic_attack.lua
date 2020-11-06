@@ -62,7 +62,13 @@ function spectre_basic_attack:OnSpellStart()
 		FIND_CLOSEST
 	)
 
+	local should_shake = false
+
 	for _,enemy in pairs(enemies) do 
+		if enemy:IsRealHero() then
+			should_shake = true
+		end
+
 		local final_damage = damage
 		if enemy:HasModifier("modifier_spectre_desolate_custom") then
 			final_damage = final_damage + damage_bonus_desolate
@@ -106,7 +112,7 @@ function spectre_basic_attack:OnSpellStart()
 		end
 	end
 
-	if #enemies > 0 then
+	if should_shake or is_charged then
 		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
 	end
 

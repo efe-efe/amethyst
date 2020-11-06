@@ -42,7 +42,13 @@ function juggernaut_basic_attack:OnSpellStart()
 		FIND_CLOSEST
 	)
 
+	local should_shake = false
+
 	for _,enemy in pairs(enemies) do 
+		if enemy:IsRealHero() then
+			should_shake = true
+		end
+
 		self:PlayEffectsOnImpact(enemy)
 
 		local damage_table = {
@@ -84,7 +90,7 @@ function juggernaut_basic_attack:OnSpellStart()
 		break
 	end
 
-	if #enemies > 0 then
+	if should_shake then
 		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
 	end
 
@@ -111,7 +117,7 @@ function juggernaut_basic_attack:PlayEffectsOnFinish(pos)
 end
 
 function juggernaut_basic_attack:PlayEffectsOnImpact(hTarget)
-	EFX('particles/units/heroes/hero_bounty_hunter/bounty_hunter_jinda_slow.vpcf', PATTACH_ABSORIGIN, hTarget, {
+	EFX('particles/juggernaut/juggernaut_basic_attack_impact.vpcf', PATTACH_ABSORIGIN, hTarget, {
 		release = true
 	})
 

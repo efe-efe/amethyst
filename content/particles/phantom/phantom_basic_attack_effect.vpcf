@@ -61,7 +61,7 @@
 			{
 				m_nType = "PF_TYPE_LITERAL"
 				m_nMapType = "PF_MAP_TYPE_DIRECT"
-				m_flLiteralValue = 45.0
+				m_flLiteralValue = 60.0
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
 				m_nVectorAttribute = 6
@@ -150,7 +150,6 @@
 			_class = "C_OP_InterpolateRadius"
 			m_flEndScale = 0.0
 			m_flBias = 0.35
-			m_flStartScale = 0.35
 		},
 		{
 			_class = "C_OP_FadeOutSimple"

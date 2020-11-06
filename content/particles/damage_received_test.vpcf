@@ -1,4 +1,4 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf25:version{7bca2d8d-3a14-4a76-bd41-f483fdf78d50} -->
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf31:version{593cd181-a1d6-4c6f-9a8c-0534e8d44db0} -->
 {
 	_class = "CParticleSystemDefinition"
 	m_bShouldHitboxesFallbackToRenderBounds = false
@@ -7,41 +7,89 @@
 	m_flConstantRadius = 0.0
 	m_ConstantColor = [ 0, 0, 0, 255 ]
 	m_nConstantSequenceNumber = 1
-	m_Operators = 
+	m_nBehaviorVersion = 10
+	m_controlPointConfigurations = 
 	[
 		{
-			_class = "C_OP_EndCapTimedDecay"
-			m_flDecayTime = 0.5
-		},
-		{
-			_class = "C_OP_LerpEndCapScalar"
-			m_flOutput = 0.0
-			m_nFieldOutput = "4"
-			m_flLerpTime = 0.5
+			m_name = "preview"
 		},
 	]
 	m_Initializers = 
 	[
 		{
 			_class = "C_INIT_StatusEffect"
+			m_flDetail2Scale = 1.0
 			m_flColorWarpIntensity = 1.0
-			m_specularColor = [ 255, 255, 255, 255 ]
-			m_rimLightColor = [ 255, 255, 255, 255 ]
+			m_flDetail2BlendFactor = 1.0
+			m_nDetail2Combo = "DETAIL_2_COMBO_ADD_SELF_ILLUM"
+			m_flEnvMapIntensity = 0.0
+			m_flAmbientScale = 0.0
+			m_flRimLightScale = 0.0
+			m_flSpecularScale = 0.0
+			m_flDiffuseWarpBlendToFull = 0.0
+			m_flSpecularExponent = 0.0
+			m_flSpecularExponentBlendToFull = 0.0
+			m_flSpecularBlendToFull = 0.0
+			m_flReflectionsTintByBaseBlendToNone = 0.0
+			m_flMetalnessBlendToFull = 0.0
+			m_flSelfIllumBlendToFull = 0.0
+			m_specularColor = [ 255, 255, 255 ]
+			m_rimLightColor = [ 255, 255, 255 ]
 		},
 	]
-	m_nBehaviorVersion = 10
+	m_Operators = 
+	[
+		{
+			_class = "C_OP_RampScalarLinearSimple"
+			m_Rate = 90.0
+			m_flEndTime = 340282346638528859811704183484516925440.0
+			m_nField = "5"
+		},
+		{
+			_class = "C_OP_FadeInSimple"
+			m_nOpEndCapState = "PARTICLE_ENDCAP_ENDCAP_OFF"
+			m_flFadeInTime = 0.5
+		},
+		{
+			_class = "C_OP_RampScalarLinearSimple"
+			m_nOpEndCapState = "PARTICLE_ENDCAP_ENDCAP_ON"
+			m_nField = "7"
+			m_Rate = -2.0
+			m_flEndTime = 9999.0
+		},
+		{
+			_class = "C_OP_OscillateScalar"
+			m_flEndTime_max = 999999.0
+			m_flEndTime_min = 999999.0
+			m_bProportional = false
+			m_FrequencyMax = 11.0
+			m_FrequencyMin = 9.0
+			m_RateMax = 50.0
+			m_RateMin = -50.0
+		},
+		{
+			_class = "C_OP_OscillateScalarSimple"
+			m_Frequency = 8.0
+			m_Rate = -15.0
+			m_nField = "3"
+		},
+		{
+			_class = "C_OP_OscillateScalarSimple"
+			m_flOscMult = 4.0
+			m_Frequency = 11.0
+			m_Rate = 25.0
+		},
+		{
+			_class = "C_OP_AlphaDecay"
+			m_nOpEndCapState = "PARTICLE_ENDCAP_ENDCAP_ON"
+		},
+	]
 	m_Renderers = 
 	[
 		{
 			_class = "C_OP_RenderStatusEffect"
-			m_pTextureColorWarp = resource:"materials/models/heroes/statuseffects/colorwarp_frosty_effigy_dire.vtex"
-			m_pTextureDetail2 = resource:"materials/particle/particle_whitebox.vtex"
-		},
-	]
-	m_controlPointConfigurations = 
-	[
-		{
-			m_name = "preview"
+			m_pTextureDetail2 = resource:"materials/models/heroes/statuseffects/electric.vtex"
+			m_pTextureColorWarp = resource:"materials/models/heroes/statuseffects/colorwarp_goldenglow.vtex"
 		},
 	]
 }
