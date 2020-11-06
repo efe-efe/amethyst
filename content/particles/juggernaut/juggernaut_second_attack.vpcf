@@ -67,7 +67,7 @@
 	m_Children = 
 	[
 		{
-			m_ChildRef = resource:"particles/meele_swing_red/pa_arcana_attack_blink_blurb.vpcf"
+			m_ChildRef = resource:"particles/juggernaut/juggernaut_second_attack_efect.vpcf"
 		},
 		{
 			m_flDelay = 0.1

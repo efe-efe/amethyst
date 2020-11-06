@@ -23,7 +23,7 @@ function juggernaut_second_attack:GetCastAnimationCustom()
 end
 function juggernaut_second_attack:GetPlaybackRateOverride() 	return 1.5 end
 function juggernaut_second_attack:GetCastPointSpeed() 			return 40 end
-function juggernaut_second_attack:GetAnimationTranslate()		return "odachi" end
+function juggernaut_second_attack:GetAnimationTranslate()		return "ti8" end
 
 function juggernaut_second_attack:OnSpellStart()
 	local random_number = RandomInt(0, 4)
@@ -70,6 +70,11 @@ function juggernaut_second_attack:OnSpellStart()
 	
 			break
 		end
+		
+		if #enemies > 0 then
+			ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
+		end
+		
 		self:PlayEffectsOnFinish(point)
 	else
 		local give_mana = false
@@ -111,6 +116,10 @@ function juggernaut_second_attack:OnSpellStart()
 end
 
 function juggernaut_second_attack:PlayEffectsOnImpact(hTarget)
+	EFX('particles/units/heroes/hero_bounty_hunter/bounty_hunter_jinda_slow.vpcf', PATTACH_ABSORIGIN, hTarget, {
+		release = true
+	})
+
 	EmitSoundOn("Hero_Juggernaut.BladeDance.Arcana", hTarget)
 	EmitSoundOn("Hero_Juggernaut.BladeDance.Layer", hTarget)
 	EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
@@ -127,7 +136,7 @@ function juggernaut_second_attack:PlayEffectsOnFinish(pos)
 
 	local position_final = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * 20
 
-	local particle_cast_a = "particles/econ/items/chaos_knight/chaos_knight_ti9_weapon/chaos_knight_ti9_weapon_blur_crit_arc.vpcf"
+	--[[local particle_cast_a = "particles/econ/items/chaos_knight/chaos_knight_ti9_weapon/chaos_knight_ti9_weapon_blur_crit_arc.vpcf"
 	local effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_POINT, caster)
     ParticleManager:SetParticleControl(
 		effect_cast_a, 
@@ -135,8 +144,9 @@ function juggernaut_second_attack:PlayEffectsOnFinish(pos)
 		Vector(position_final.x, position_final.y, caster:GetOrigin().z - 100)
 	)
 	ParticleManager:ReleaseParticleIndex(effect_cast_a)
+	]]
 
-	particle_cast = "particles/meele_swing_red/pa_arcana_attack_blinkb_red.vpcf"
+	particle_cast = "particles/juggernaut/juggernaut_second_attack.vpcf"
 	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
 	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
 	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	

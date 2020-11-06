@@ -5,6 +5,8 @@ LinkLuaModifier("modifier_juggernaut_counter_countering", "abilities/heroes/jugg
 LinkLuaModifier("modifier_juggernaut_counter_recast", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_counter", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_ex_counter", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_ex_counter_recast", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_ex_counter_slashes", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter_slashes", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_counter:OnSpellStart()
     local caster = self:GetCaster()
@@ -71,6 +73,26 @@ function juggernaut_ex_counter:OnSpellStart()
    if #filtered_enemies > 0 then
       local modifier = caster:AddNewModifier(caster, self, 'modifier_juggernaut_ex_counter', { duration = duration })
       modifier:SetStackCount(#filtered_enemies)
+
+      if self:GetLevel() >= 2 then
+         local modifier = caster:AddNewModifier(
+            caster,
+            self,
+            "modifier_juggernaut_ex_counter_slashes",
+            {}
+         )
+         
+         if modifier:GetStackCount() < self:GetSpecialValueFor("recasts") then
+            caster:AddNewModifier(
+               caster,
+               self,
+               "modifier_juggernaut_ex_counter_recast",
+               { duration = 5.0 }
+            )
+         else
+            caster:RemoveModifierByName("modifier_juggernaut_ex_counter_slashes")
+         end
+      end
    end
 
    self:PlayEffects(origin, new_origin)
