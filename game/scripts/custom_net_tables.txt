@@ -5,7 +5,6 @@
 		"units",
 		"heroes",
 		"main",
-		"game_state",
 		"alliances",
 	]
 }

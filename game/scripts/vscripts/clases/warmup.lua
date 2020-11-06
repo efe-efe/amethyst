@@ -22,10 +22,6 @@ function Warmup:constructor(players, callback)
             entity = DummyTarget(entity:GetOrigin()),
         })
     end
-
-    for _,player in pairs(self.players) do
-        player.hero:HeroLevelUp(true)
-    end
 end
 
 function Warmup:Update()

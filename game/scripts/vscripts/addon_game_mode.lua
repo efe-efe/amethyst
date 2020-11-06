@@ -36,6 +36,7 @@ ROUNDS_DIFFERENCE_TO_WIN = 3
 
 _G.STATE_NONE = 0
 _G.STATE_ROUND_IN_PROGRESS = 1 
+_G.STATE_WARMUP = 2 
 
 local Custom_ActionTypes = {
     MOVEMENT = 0,
@@ -238,6 +239,26 @@ function GameMode:SetupPanoramaEventHooks()
             end
         end
     end)
+    
+    CustomGameEventManager:RegisterListener('refund_points', function(eventSourceIndex, event)
+        local playerId = event.playerID
+
+        if self.players and self.players[playerId] then
+            local player = self.players[playerId]
+            local hero = player.hero
+
+            for i = 0, 23 do
+                local ability = hero:GetAbilityByIndex(i)
+                if ability then
+                    if ability:GetAbilityType() ~= 2 then -- To not level up the talents
+                        ability:SetLevel(1)
+                    end
+                end
+            end
+
+            hero:SetAbilityPoints(3)
+        end
+    end)
 end
 
 function GameMode:SetupMode()
@@ -416,7 +437,7 @@ end
 function GameMode:SetState(state)
     self.state = state
 
-    CustomNetTables:SetTableValue("game_state", "state", { state = state })
+    CustomNetTables:SetTableValue("main", "gameState", { gameState = state })
 end 
 
 function GameMode:OnGameRulesStateChange(keys)

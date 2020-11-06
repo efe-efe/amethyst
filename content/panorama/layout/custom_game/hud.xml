@@ -13,12 +13,22 @@
         <include src="file://{resources}/styles/custom_game/heroStatus.css" />
         <include src="file://{resources}/styles/custom_game/topBar.css" />
         <include src="file://{resources}/styles/custom_game/allianceBar.css" />
+        <include src="file://{resources}/styles/custom_game/refunder.css" />
     </styles>
 	<scripts>
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
         <include src="file://{resources}/scripts/custom_game/targetIndicator.js" />
 	</scripts>
     <Panel class="main" hittest="false">
+    
+        <Panel id="refunder" class="refunder">
+            <Panel id="refunder__efx" class="refunder__efx">
+                <DOTAScenePanel id="refunder__efx-scene" class="refunder__efx-scene" hittest="false" map="scenes/hud/levelupburst" camera="camera_1"/>
+            </Panel>
+            <Button id="refunder__button" class="refunder__button">
+                <Label id="refunder__button-text" class="refunder__button-text" text='REFUND POINTS'/>
+            </Button>
+        </Panel>
         <Panel id="alliances-status" class="alliances-status" hittest="false">
             <Panel id="alliances-status__left" class="alliances-status__left" hittest="false">
                 <Panel class="alliances-status__radiant" id="alliances-status__radiant" hittest="false"/>

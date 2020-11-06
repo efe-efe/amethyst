@@ -1,0 +1,41 @@
+.refunder{
+    visibility: collapse;
+    width: 170px;
+    align: center bottom;
+
+    margin-bottom: 170px;
+    margin-right: 1500px;
+
+    flow-children: none;
+
+    &__efx{
+        height: 150px;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    &__efx-scene{
+        height: 100%;
+        width: 100%;
+    }
+
+    &__button{
+        align: center bottom;
+        height: 50px;
+        width: 100%;
+        background-image: url("s2r://panorama/images/hud/reborn/levelup_button_psd.vtex");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: 50% 50%;
+        color: rgb(63, 40, 6);
+
+        &:hover{
+            color: rgb(250, 219, 174);
+        }
+    }
+
+    &__button-text{
+        font-weight: bold;
+        align: center center;
+    }
+}

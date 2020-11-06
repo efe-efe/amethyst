@@ -193,7 +193,6 @@ import { tables } from './shared/util';
     const allianceBars: any = {};
 
     const tableNameHeroes = 'heroes' as never;
-    
     tables.subscribeToNetTableAndLoadNow(tableNameHeroes, (table: never, key: string | number | symbol, value: any) => {
         const entityIndex = value.entityIndex as EntityIndex;
         
@@ -255,10 +254,44 @@ import { tables } from './shared/util';
         }
     });
 
-        
+    
+    const tableNameMain = 'main' as never;
+    tables.subscribeToNetTableKey(tableNameMain, 'gameState', true, function(data: any){
+        const refunderButton = $('#refunder') as Button;
+
+        if(data.gameState == 1){
+            refunderButton.style.visibility = 'collapse';
+        }
+        if(data.gameState == 2){
+            refunderButton.style.visibility = 'visible';
+        }
+    });
+
     function UpdateTime(data: any): void{
         const clockPanel = $('#top-bar__clock-text') as LabelPanel;
         clockPanel.text = data.timer_minute_10.toString() + data.timer_minute_01.toString() + ':' + data.timer_second_10.toString() + data.timer_second_01.toString();
     }
     GameEvents.Subscribe('countdown', UpdateTime);
+
+
+    const refunderButton = $('#refunder__button') as Button;
+    refunderButton.SetPanelEvent('onactivate', () => {
+        let playerId = Players.GetLocalPlayer();
+
+        if(Game.IsInToolsMode()){
+            const selectedEntity = Players.GetSelectedEntities(playerId)[0];
+            if(selectedEntity){
+                playerId = Entities.GetPlayerOwnerID(selectedEntity);
+            }
+        }
+
+        GameEvents.SendCustomGameEventToServer('refund_points', {
+            playerId
+            playerID: playerId, //Idk why this has to be this way...
+
+        } as never);
+
+        const refunderButton = $('#refunder') as Button;
+        refunderButton.style.visibility = 'collapse';
+    });
 })();

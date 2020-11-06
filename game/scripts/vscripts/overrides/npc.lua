@@ -65,6 +65,7 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 		end
 	end
 
+	self:SetAbilityPoints(3)
 	ConstructHero(self)
 end
 

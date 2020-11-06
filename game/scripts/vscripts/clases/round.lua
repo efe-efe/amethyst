@@ -209,7 +209,6 @@ function Round:EndRound()
     self:CleanLights()
     self:CleanArrows()
 
-    
     for _,player in pairs(self.players) do
         local target = nil
 
