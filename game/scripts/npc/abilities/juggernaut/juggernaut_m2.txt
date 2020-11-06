@@ -17,6 +17,10 @@
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
+			"ModifierType"				"TARGETING_INDICATOR_AOE"
+			"ModifierName"				"modifier_juggernaut_basic_attack_stacks"
+			"ModifierStacks"			"4"
+			"ModifierLength"			"0"
 		}
 		
 		"AbilitySpecial"
