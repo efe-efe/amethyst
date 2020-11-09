@@ -20,6 +20,7 @@ end
 
 function modifier_spectre_special_attack_buff:CheckState()
 	local state = {
+		[MODIFIER_STATE_INVISIBLE] = self:GetAbility():GetLevel() >=2 and not self:GetParent():FindModifierByName('modifier_casting'),
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 		[MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY] = true
 	}
@@ -28,12 +29,23 @@ function modifier_spectre_special_attack_buff:CheckState()
 end
 
 function modifier_spectre_special_attack_buff:DeclareFunctions()
-	local funcs = {
+	return {
+		MODIFIER_PROPERTY_INVISIBILITY_LEVEL,
 		MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE,
 	}
-
-	return funcs
 end
+
+
+function modifier_spectre_special_attack_buff:GetModifierInvisibilityLevel()
+	if IsServer() then
+		if self:GetAbility():GetLevel() >=2 and not self:GetParent():FindModifierByName('modifier_casting') then
+			return 2
+		end
+
+		return 0
+	end
+end
+
 
 function modifier_spectre_special_attack_buff:GetModifierMoveSpeedBonus_Percentage()
     return self.speed_buff_pct

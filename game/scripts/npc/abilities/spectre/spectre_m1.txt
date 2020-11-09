@@ -26,10 +26,10 @@
 			"04"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.5" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"heal_desolate"				"4" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"damage_bonus_desolate"		"2" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"charged_damage"			"6" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.4 0.9" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"charged_damage"			"6 12" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.7 1.4" }
 			"09"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }
-			"10"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"8" }
+			"10"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"8 16" }
 		}
 	}
 }

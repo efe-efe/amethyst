@@ -94,6 +94,11 @@ function spectre_mobility:OnSpellStart()
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 	caster:AddNewModifier(caster, self, "modifier_spectre_banish", {})
+
+	local alternative_spell = self:GetCaster():FindAbilityByName('spectre_ex_mobility')
+	if alternative_spell:GetLevel() < 2 then
+		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
+	end
 end
 
 function spectre_mobility:OnUpgrade()
@@ -161,10 +166,13 @@ function spectre_ex_mobility:OnSpellStart()
 
 	caster:AddNewModifier(caster, self, "modifier_spectre_banish", {})
 	CreateModifierThinker(caster, self, 'modifier_spectre_mobility_thinker', { duration = delay }, point, caster:GetTeam(), false)
+	
+	if self:GetLevel() < 2 then
+		local alternative_spell = self:GetCaster():FindAbilityByName('spectre_mobility')
+		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
+	end
 end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(spectre_mobility)
 Abilities.Castpoint(spectre_ex_mobility)
-Abilities.Tie(spectre_mobility, 'spectre_ex_mobility')
-Abilities.Tie(spectre_ex_mobility, 'spectre_mobility')

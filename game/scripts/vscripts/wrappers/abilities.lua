@@ -1,15 +1,13 @@
 Abilities = {}
 
-function Abilities.Tie(ability, abilityName, shareCooldowns)
+function Abilities.Tie(ability, abilityName)
     local onSpellStart = ability.OnSpellStart
 
     function ability:OnSpellStart()
         if onSpellStart then onSpellStart(self) end
 
-        if (shareCooldowns ~= false) then
-            local otherAbility = self:GetCaster():FindAbilityByName(abilityName)
-            otherAbility:StartCooldown(otherAbility:GetCooldown(0))
-        end
+        local otherAbility = self:GetCaster():FindAbilityByName(abilityName)
+        otherAbility:StartCooldown(otherAbility:GetCooldown(0))
     end
 end
 

@@ -11,7 +11,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityCastRange"				"1000 1500"
+		"AbilityCastRange"				"1000 3000"
 		"AbilityCooldown"				"7.0"
 		"AbilityCastPoint"				"0.5"
 
@@ -23,14 +23,14 @@
 		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2300" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"7" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"buff_duration"				"0.2" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"3.5" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"path_duration"				"3.0" }
-			"09"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"			"35" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2300" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"7" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"buff_duration"				"0.2" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"3.5" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"path_duration"				"3.0" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"			"35" }
 		}
 	}
 }

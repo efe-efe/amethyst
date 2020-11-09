@@ -29,10 +29,10 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"25 30" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"25 50" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "9" }
 		}
 	}
 
