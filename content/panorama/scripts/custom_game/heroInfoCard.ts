@@ -6,7 +6,7 @@ import { HeroData } from './types';
 
 const alliances = Alliances.GetInstance();
 
-export default class HeroStatus{
+export default class HeroInfoCard{
     containerPanel: Panel;
     topPanel: Panel;
     midPanel: Panel;

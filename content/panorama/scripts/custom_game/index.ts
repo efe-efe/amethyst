@@ -8,7 +8,7 @@ import Action, { GetActionByActionCode } from './shared/commands/actions';
 import LayoutController from './shared/layout/layoutController';
 import HeroController from './shared/heroController';
 import HeroOverhead from './heroOverhead/heroOverhead';
-import HeroStatus from './heroStatus';
+import HeroInfoCard from './heroInfoCard';
 import AllianceBar from './allianceBar';
 import { tables } from './shared/util';
 
@@ -189,7 +189,7 @@ import { tables } from './shared/util';
     layout.SetPanelMargin('buffs', { bottom: '95px' });
 
     const heroOverheads: any = {};
-    const heroStatus: any = {};
+    const heroInfoCards: any = {};
     const allianceBars: any = {};
 
     const tableNameHeroes = 'heroes' as never;
@@ -202,7 +202,7 @@ import { tables } from './shared/util';
             heroOverheads[entityIndex].UpdateData(value);   
         }
 
-        if(!heroStatus[entityIndex]){
+        if(!heroInfoCards[entityIndex]){
             let container: Panel | null;
 
             if(value.allianceName == 'DOTA_ALLIANCE_RADIANT'){
@@ -218,9 +218,9 @@ import { tables } from './shared/util';
                 container = $('#alliances-status').FindChildTraverse('alliances-status__void');
             }
         
-            heroStatus[entityIndex] = new HeroStatus(value, container!);
+            heroInfoCards[entityIndex] = new HeroInfoCard(value, container!);
         } else {
-            heroStatus[entityIndex].UpdateData(value);   
+            heroInfoCards[entityIndex].UpdateData(value);   
         }
     });
 

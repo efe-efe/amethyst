@@ -10,7 +10,7 @@
         <include src="file://{resources}/styles/custom_game/heroOverhead/cooldown.css" />
         <include src="file://{resources}/styles/custom_game/heroOverhead/stacks.css" />
         <include src="file://{resources}/styles/custom_game/allianceStatus.css" />
-        <include src="file://{resources}/styles/custom_game/heroStatus.css" />
+        <include src="file://{resources}/styles/custom_game/heroInfoCard.css" />
         <include src="file://{resources}/styles/custom_game/topBar.css" />
         <include src="file://{resources}/styles/custom_game/allianceBar.css" />
         <include src="file://{resources}/styles/custom_game/refunder.css" />
