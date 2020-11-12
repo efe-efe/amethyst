@@ -97,6 +97,8 @@ function spectre_special_attack:OnSpellStart()
 		fExpireTime = GameRules:GetGameTime() + 8.0, 
 			
 		bProvidesVision = true, 
+		iVisionTeamNumber = caster:GetTeamNumber(),
+		iVisionRadius = hitbox,
 	} 
 	Projectiles:CreateProjectile(projectile)
 	ProjectileManager:CreateLinearProjectile(info) 

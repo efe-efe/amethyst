@@ -14,6 +14,11 @@ end
 
 function modifier_spectre_special_attack_buff:OnDestroy()
 	if IsServer() then
+		EFX('particles/units/heroes/hero_spectre/spectre_death.vpcf', PATTACH_WORLDORIGIN, self:GetParent(), {
+			cp0 = self:GetParent():GetAbsOrigin(),
+			cp3 = self:GetParent():GetAbsOrigin(),
+			release = true,
+		})
 		self:StopEffects()
 	end
 end

@@ -27,10 +27,9 @@ end
 
 function modifier_spectre_special_attack_thinker:OnCreated(params)
     self.buff_duration = self:GetAbility():GetSpecialValueFor("buff_duration")
-	self.radius = 100
-
+    self.radius = 100
+    
     if IsServer() then
-        self:StartIntervalThink(0.05)
         self:PlayEffects()
     end
 end
@@ -38,6 +37,7 @@ end
 function modifier_spectre_special_attack_thinker:OnDestroy()
     if IsServer() then
         self:StopEffects()
+        UTIL_Remove(self:GetParent())
     end
 end
 
