@@ -54,7 +54,9 @@ function modifier_hero_base:OnIntervalThink()
 		self.parent:RemoveModifierByName("modifier_hero_movement")
 	end
 
-	self:PickupItems()
+	if self.parent:IsAlive() then
+		self:PickupItems()
+	end
 
 	if IsInToolsMode() and DEBUG then
 		local mouse = GameRules.GameMode.players[self.parent:GetPlayerID()].cursor_position

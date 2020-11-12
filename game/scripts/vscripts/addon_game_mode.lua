@@ -156,6 +156,7 @@ function GameMode:SetupFilters()
     mode:SetHealingFilter(Dynamic_Wrap(GameMode, 'HealingFilter'), GameMode)
     mode:SetDamageFilter(Dynamic_Wrap(GameMode, "DamageFilter"), GameMode)
     mode:SetExecuteOrderFilter(Dynamic_Wrap(GameMode, "ExecuteOrderFilter"), GameMode)
+    mode:SetModifyExperienceFilter(Dynamic_Wrap(GameMode, "ModifyExperienceFilter"), GameMode)
     print('[AMETHYST] Filters set')
 end
 
@@ -424,9 +425,10 @@ function GameMode:OnRoundEnd(context)
     round:DestroyAllPickups() -- Remove death orbs
 
     if round.winner then
-        round.winner.wins = round.winner.wins + 1
+        local new_score = round.winner:GetScore() + 1
+        round.winner:SetScore(new_score)
 
-        if  round.winner.wins >= ROUNDS_TO_WIN or self:GetHighestWinsDifference(round.winner) >= ROUNDS_DIFFERENCE_TO_WIN then
+        if  round.winner:GetScore() >= ROUNDS_TO_WIN or self:GetHighestWinsDifference(round.winner) >= ROUNDS_DIFFERENCE_TO_WIN then
             self:EndGame(round.winner.teams[1]) 
             return
         end

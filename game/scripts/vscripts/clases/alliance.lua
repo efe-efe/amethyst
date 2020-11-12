@@ -87,6 +87,12 @@ function Alliance:GetScore()
     return self.wins
 end
 
+function Alliance:SetScore(nScore)
+    self.wins = nScore
+    self:SendDataToClient()
+end
+
+
 function Alliance:SetAmethysts(amethysts)
     self.amethysts = amethysts
 end
