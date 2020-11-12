@@ -14,6 +14,7 @@ end
 
 function Player:SetHero(hero)
     self.hero = hero
+	hero:SendDataToClient()
 end
 
 function Player:SetTeam(i)

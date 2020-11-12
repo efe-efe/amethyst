@@ -1,5 +1,5 @@
 function TrueHeal(base, heal, unit)
-    unit:SetHealth(base + heal)
+    unit:SetHealthCustom(base + heal)
 
     local new_treshold = unit:GetTreshold() + heal
     if new_treshold > GameRules.GameMode.max_treshold then

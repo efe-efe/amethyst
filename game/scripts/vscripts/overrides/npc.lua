@@ -69,11 +69,59 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 	ConstructHero(self)
 end
 
+function CDOTA_BaseNPC:SendDataToClient()
+	print('SendDataToClient: Not implemented yet!')
+end
+
+function CDOTA_BaseNPC_Hero:SendDataToClient()
+	local allianceName = "NOT_ALLIANCE"
+
+	if self:GetAlliance() then
+		allianceName = self:GetAlliance():GetName() 
+	end
+
+	local data = {
+		entityIndex = self:GetEntityIndex(),
+		teamId = self:GetTeam(),
+		playerId = self:GetPlayerOwnerID(),
+		allianceName = allianceName,
+		name = self:GetName(),
+		health = self:GetHealth(),
+		maxHealth = self:GetMaxHealth(),
+		treshold = self:GetTreshold(),
+		shield = self:GetShield(),
+		mana = self:GetMana(),
+		maxMana = self:GetMaxMana(),
+		status = self:GetStatus(),
+		recast = self:GetRecast(),
+		stackbars = self:GetStackbars(),
+		charges = self:GetCharges(),
+		cooldown = self:GetCooldown(),
+	}
+	CustomNetTables:SetTableValue("heroes", tostring(self:GetPlayerID()), data)
+end
+
+function CDOTA_BaseNPC:SetManaCustom(fMana)
+	self:SetMana(fMana)
+	self:SendDataToClient()
+end
+
+function CDOTA_BaseNPC:SetHealthCustom(fHealth)
+	self:SetHealth(fHealth)
+	self:SendDataToClient()
+	
+	local alliance = self:GetAlliance()
+	if alliance then
+		alliance:SendDataToClient()
+	end
+end 
+	
 function CDOTA_BaseNPC:Reset()
 	if not IsInToolsMode() then
-		self:SetMana(0)
+		self:SetManaCustom(0)
+        self:GetParent():SendDataToClient()
 	end
-	self:SetHealth(self:GetMaxHealth())
+	self:SetHealthCustom(self:GetMaxHealth())
 	self:SetTreshold(GameRules.GameMode.max_treshold)
 
 	for i = 0, 23 do
@@ -165,7 +213,13 @@ function CDOTA_BaseNPC:GetAlliance()
 		return false
 	end
 
-	return GameRules.GameMode.players[playerID].alliance
+	local player_object = GameRules.GameMode.players[playerID]
+	
+	if player_object then
+		return player_object.alliance
+	end
+
+	return nil
 end
 
 function CDOTA_BaseNPC:IsAlly(unit)
@@ -582,6 +636,11 @@ end
 
 function CDOTA_BaseNPC:SetTreshold(treshold)	
 	self.treshold = treshold
+end
+
+function CDOTA_BaseNPC_Hero:SetTreshold(treshold)	
+	self.treshold = treshold
+	self:SendDataToClient()
 end
 
 function CDOTA_BaseNPC:SetDirection(x, y)

@@ -183,9 +183,19 @@ end
 
 function modifier_hero_base:DeclareFunctions()
     return {
-        MODIFIER_PROPERTY_DISABLE_AUTOATTACK,
+		MODIFIER_EVENT_ON_MANA_GAINED,
+		MODIFIER_EVENT_ON_SPENT_MANA,
+		MODIFIER_PROPERTY_DISABLE_AUTOATTACK,
 		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
     }
+end
+
+function modifier_hero_base:OnManaGained(event)
+	self:GetParent():SendDataToClient()
+end
+
+function modifier_hero_base:OnSpentMana(event)
+	self:GetParent():SendDataToClient()
 end
 
 function modifier_hero_base:GetDisableAutoAttack()						return true	end

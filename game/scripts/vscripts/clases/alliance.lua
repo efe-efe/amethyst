@@ -19,6 +19,21 @@ function Alliance:constructor(number, teams)
     self.players = {}
     self.amethysts = 0
     self.wins = 0
+    self.active = false
+end
+
+function Alliance:SendDataToClient()
+    if self.active then
+        local data = {
+            health = self:GetCurrentHealth(),
+            max_health = self:GetMaxHealth(),
+            shield = self:GetShield(),
+            name = self.name,
+            amethysts = self.amethysts,
+            score = self.wins,
+        }
+        CustomNetTables:SetTableValue("alliances", self.name, data)
+    end
 end
 
 function Alliance:GetCurrentHealth()
@@ -57,6 +72,11 @@ end
 
 function Alliance:AddPlayer(player)
     table.insert(self.players, player)
+    if not self.active then
+        self.active = true
+    end
+    
+    self:SendDataToClient()
 end
 
 function Alliance:GetName()

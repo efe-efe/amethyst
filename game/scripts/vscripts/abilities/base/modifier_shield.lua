@@ -31,9 +31,15 @@ function modifier_shield:OnRefresh(params)
     end
 end
 
-function modifier_shield:OnDestroy(kv)
+function modifier_shield:OnDestroy()
     if IsServer() then
         self:StopEffects()
+        self:GetParent():SendDataToClient()
+        local alliance = self:GetParent():GetAlliance()
+
+        if alliance then
+            alliance:SendDataToClient()
+        end
     end
 end
 
@@ -59,6 +65,12 @@ end
 
 function modifier_shield:OnStackCountChanged(old)
     if IsServer() then
+        self:GetParent():SendDataToClient()
+        local alliance = self:GetParent():GetAlliance()
+
+        if alliance then
+            alliance:SendDataToClient()
+        end
 		if self:GetStackCount() < 0 then
 			self:Destroy()
         end

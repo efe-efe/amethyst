@@ -331,48 +331,6 @@ function GameMode:Start()
         if self.state == STATE_ROUND_IN_PROGRESS and self.round then
             self.round:Update()
         end
-    end)
-
-    self:RegisterThinker(0.01, function()
-        for _,alliance in pairs(self.alliances) do
-            if next(alliance.players) ~= nil then
-                local data = {
-                    health = alliance:GetCurrentHealth(),
-                    max_health = alliance:GetMaxHealth(),
-                    shield = alliance:GetShield(),
-                    name = alliance:GetName(),
-                    amethysts = alliance:GetAmethyst(),
-                    score = alliance:GetScore(),
-                }
-                CustomNetTables:SetTableValue("alliances", alliance.name, data)
-            end
-        end
-    end)
-
-    self:RegisterThinker(0.01, function()
-        for _,player in pairs(self.players) do
-            local data = {
-                entityIndex = player.hero:GetEntityIndex(),
-                teamId = player.hero:GetTeam(),
-                playerId = player.hero:GetPlayerOwnerID(),
-                allianceName = player.hero:GetAlliance():GetName(),
-                name = player.hero:GetName(),
-                health = player.hero:GetHealth(),
-                maxHealth = player.hero:GetMaxHealth(),
-                treshold = player.hero:GetTreshold(),
-                shield = player.hero:GetShield(),
-                mana = player.hero:GetMana(),
-                maxMana = player.hero:GetMaxMana(),
-                status = player.hero:GetStatus(),
-                recast = player.hero:GetRecast(),
-                stackbars = player.hero:GetStackbars(),
-                charges = player.hero:GetCharges(),
-                cooldown = player.hero:GetCooldown(),
-            }
-            CustomNetTables:SetTableValue("heroes", tostring(_), data)
-        end
-        
-
         CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
     end)
 end

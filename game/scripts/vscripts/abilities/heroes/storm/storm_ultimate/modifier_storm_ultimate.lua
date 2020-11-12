@@ -10,7 +10,7 @@ end
 
 function modifier_storm_ultimate:OnDestroy()
     if IsServer() then
-        self:GetParent():SetMana(0.0)
+        self:GetParent():SetManaCustom(0.0)
         EFX('particles/units/heroes/hero_nyx_assassin/nyx_assassin_mana_burn.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), { 
             release = true 
         })

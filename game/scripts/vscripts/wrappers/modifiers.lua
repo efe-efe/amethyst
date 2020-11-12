@@ -1019,6 +1019,7 @@ function Modifiers.Status(modifier)
                     scope = self:GetStatusScope()
                 })
             end
+            self:GetParent():SendDataToClient()
         end
         if onCreated then onCreated(self, params) end
     end
@@ -1026,6 +1027,7 @@ function Modifiers.Status(modifier)
     function modifier:OnDestroy(params)
         if IsServer() then		
             self:GetParent():RemoveStatus(self:GetName())
+            self:GetParent():SendDataToClient()
         end
         if onDestroy then onDestroy(self, params) end
     end
