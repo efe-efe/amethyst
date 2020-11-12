@@ -144,14 +144,6 @@ function CDOTA_BaseNPC:Reset()
 		end
 	end
 
-	for i = 0, 5 do
-		local item = self:GetItemInSlot(i)
-	
-		if item then
-			item:EndCooldown()
-		end
-	end
-
 	self:InterruptCastPoint()
 	self:Purge(true, true, false, true, false)
 end
