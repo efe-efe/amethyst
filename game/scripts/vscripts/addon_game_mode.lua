@@ -649,7 +649,7 @@ function GameMode:CreateDeathOrb(hero)
     table.insert(self.round.pickups, {
         origin = hero:GetOrigin(),
         type = PickupTypes.DEATH,
-        timer = 0,
+        timer = -1,
         entity = entity
     })
     entity:GetItem():SetCurrentCharges(mana_given)

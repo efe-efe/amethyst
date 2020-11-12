@@ -3,7 +3,7 @@ Round = Round or class({}, nil, GameState)
 local AMETHYST_SPAWN_TIME = 10.0
 local AMETHYST_RESPAWN_TIME = 15.0
 
-local PICKUPS_TIMER = 20.0
+local PICKUPS_TIMER = PICKUPS_CREATION_TIME
 local ROUND_TIMER = ROUND_DURATION
 local DRAW_TIME = 3.0
 
@@ -164,15 +164,18 @@ function Round:Update()
         end
 
         for _,pickup in ipairs(self.pickups) do
-            if not pickup.entity then
-                pickup.timer = pickup.timer - 1
-                if pickup.timer <= 0 then
-                    pickup.entity = Pickup(pickup.type, pickup.origin, nil)
-                end
-            else
-                if not pickup.entity:Alive() then
-                    pickup.timer = PICKUPS_TIMER * 30
-                    pickup.entity = nil
+            if pickup.timer ~= -1 then
+                if not pickup.entity then
+                    if pickup.timer == 0 then
+                        pickup.entity = Pickup(pickup.type, pickup.origin, nil)
+                    else
+                        pickup.timer = pickup.timer - 1
+                    end
+                else
+                    if not pickup.entity:Alive() then
+                        pickup.timer = PICKUPS_TIMER * 30
+                        pickup.entity = nil
+                    end
                 end
             end
         end
