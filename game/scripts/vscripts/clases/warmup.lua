@@ -69,6 +69,19 @@ function Warmup:EndWarmup()
         FindClearSpaceForUnit(player.hero, target:GetAbsOrigin(), true)
         player.hero:Reset()
         player.hero:AddNewModifier(player.hero, nil, "modifier_adrenaline", { duration = ADRENALINE_DURATION })
+
+        for i = 0, 8 do
+            if player.hero:GetAbilityPoints() == 0 then
+                break
+            end
+
+            local ability = player.hero:GetAbilityByIndex(i)
+            if ability then
+                if ability:GetLevel() < ability:GetMaxLevel() then
+                    player.hero:UpgradeAbility(ability)
+                end
+            end
+        end
     end
 
     self:callback()
