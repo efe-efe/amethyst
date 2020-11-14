@@ -31,6 +31,7 @@ function Modifiers.Recast(modifier)
                 modifier_name = self:GetName(),
                 ability_name = self:GetRecastAbility():GetName(),
             })
+            self:GetParent():SendDataToClient()
         end
         
         if onCreated then onCreated(self, params) end
@@ -49,6 +50,7 @@ function Modifiers.Recast(modifier)
                )
             end
             self:GetParent():RemoveRecast(self:GetName())
+            self:GetParent():SendDataToClient()
         end
         if onDestroy then onDestroy(self) end
     end
