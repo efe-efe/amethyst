@@ -25,6 +25,13 @@ function juggernaut_ex_counter:GetPlaybackRateOverride() 	return 2.0 end
 function juggernaut_ex_counter:GetCastPointSpeed() 			return 10 end
 function juggernaut_ex_counter:GetAnimationTranslate()		return "odachi" end
 
+function juggernaut_ex_counter:GetManaCost(iLevel)
+   if self:GetCaster():HasModifier('modifier_juggernaut_ex_counter_recast') then
+       return 0
+   end
+   return self.BaseClass.GetManaCost( self, iLevel )
+end
+
 function juggernaut_ex_counter:OnSpellStart()
    local caster = self:GetCaster()
    local origin = caster:GetOrigin()
