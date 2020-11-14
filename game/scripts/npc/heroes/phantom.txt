@@ -18,6 +18,7 @@
 		"Ability9"						"phantom_ex_counter"
 		"Ability10"						"phantom_basic_attack_related"
 		"Ability11"						"phantom_ex_counter_recast"
+		"Ability12"						"phantom_counter_recast"
 
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"

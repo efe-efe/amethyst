@@ -12,6 +12,8 @@ function modifier_phantom_extra_displacement:OnCreated(params)
 			damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
 			damage_type = DAMAGE_TYPE_PURE,
 		}
+
+		self.recast = false
 	end
 end
 
@@ -28,6 +30,7 @@ function modifier_phantom_extra_displacement:OnCollide(params)
 			end
 
 			if target then
+				self.recast = true
 				self.damage_table.victim = target
 				ApplyDamage(self.damage_table)
 				
@@ -46,7 +49,7 @@ end
 
 function modifier_phantom_extra_displacement:OnDestroy()
 	if IsServer() then
-		local enemies = self:GetCaster():FindUnitsInRadius(
+		local enemies = self:GetParent():FindUnitsInRadius(
 			self:GetParent():GetOrigin(), 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -57,24 +60,51 @@ function modifier_phantom_extra_displacement:OnDestroy()
 
 		for _,enemy in pairs(enemies) do
 			if not enemy:HasModifier('modifier_phantom_extra') then
+				self.recast = true
 				self.damage_table.victim = enemy
 				ApplyDamage(self.damage_table)
 				
 				enemy:AddNewModifier(
-					self:GetCaster(), -- player source
+					self:GetParent(), -- player source
 					self:GetAbility(), -- ability source
 					"modifier_generic_fading_slow", -- modifier name
 					{ duration = self.fading_slow_duration, max_slow_pct = self.fading_slow_pct } -- kv
 				)
 
 				enemy:AddNewModifier(
-					self:GetCaster(), -- player source
+					self:GetParent(), -- player source
 					self:GetAbility(), -- ability source
 					"modifier_phantom_extra", -- modifier name
 					{ duration = 1.0 } -- kv
 				)
 
 				self:PlayEffectsOnImpact(enemy)
+			end
+		end
+
+		if self:GetAbility():GetLevel() >= 2 then
+			print('here0')
+			if self.recast then
+				print('here')
+				if self:GetParent():HasModifier('modifier_phantom_extra_slashes') then
+					print('here2')
+					self:GetParent():RemoveModifierByName('modifier_phantom_extra_slashes')
+				else
+					print('here3')
+					local modifier = self:GetParent():AddNewModifier(
+						self:GetParent(),
+						self:GetAbility(),
+						"modifier_phantom_extra_slashes",
+						{ duration = 3.0 }
+					)
+				
+					self:GetParent():AddNewModifier(
+						self:GetParent(),
+						self:GetAbility(),
+						"modifier_phantom_extra_recast",
+						{ duration = 3.0 }
+					)
+				end
 			end
 		end
 		

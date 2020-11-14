@@ -23,24 +23,12 @@ end
 function modifier_juggernaut_ex_counter_recast:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
-
-function modifier_juggernaut_ex_counter_recast:DeclareFunctions()
-	return {
-		MODIFIER_PROPERTY_MANACOST_PERCENTAGE,
-	}
-end
-
 function modifier_juggernaut_ex_counter_recast:GetRecastCharges()
 	return 1
 end
 
 function modifier_juggernaut_ex_counter_recast:GetRecastKey()
 	return "1"
-end
-
-
-function modifier_juggernaut_ex_counter_recast:GetModifierPercentageManacost()
-	return 100
 end
 
 if IsClient() then require("wrappers/modifiers") end

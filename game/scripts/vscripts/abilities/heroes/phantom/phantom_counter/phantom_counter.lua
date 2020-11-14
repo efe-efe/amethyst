@@ -1,10 +1,12 @@
 phantom_counter = class({})
+phantom_counter_recast = class({})
 phantom_ex_counter = class({})
 phantom_ex_counter_recast = class({})
 
 LinkLuaModifier("modifier_phantom_counter_banish", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter_banish", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_phantom_counter_countering", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter_countering", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_phantom_counter", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_phantom_counter_recast", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_phantom_ex_counter_recast", "abilities/heroes/phantom/phantom_counter/modifier_phantom_ex_counter_recast", LUA_MODIFIER_MOTION_NONE)
 
 function phantom_counter:OnSpellStart()
@@ -16,7 +18,18 @@ function phantom_counter:OnSpellStart()
 		self,
         "modifier_phantom_counter_countering", 
 		{ duration = duration }
-   )
+   	)
+
+	local alternative_spell = self:GetCaster():FindAbilityByName('phantom_ex_counter')
+	if alternative_spell:GetLevel() < 2 then
+		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
+	end
+end
+
+function phantom_counter_recast:OnSpellStart()
+    local caster = self:GetCaster()
+    local banish_duration = self:GetSpecialValueFor("banish_duration")
+	caster:AddNewModifier(caster, self, "modifier_phantom_counter_banish", { duration = banish_duration })
 end
 
 function phantom_ex_counter:OnSpellStart()
@@ -31,6 +44,11 @@ function phantom_ex_counter:OnSpellStart()
 	)
 	   
 	self:PlayEffectsOnCast()
+	
+	local alternative_spell = self:GetCaster():FindAbilityByName('phantom_counter')
+	if self:GetLevel() < 2 then
+		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
+	end
 end
 
 function phantom_ex_counter:PlayEffectsOnCast()
@@ -59,9 +77,13 @@ function phantom_ex_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetAbsOrigin()
+	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
 
 	local ability = caster:FindAbilityByName('phantom_ex_counter')
+	local duration_per_stack = ability:GetSpecialValueFor("duration_per_stack")
 	local sleep_duration = ability:GetSpecialValueFor("sleep_duration")
+	sleep_duration =  sleep_duration + (duration_per_stack * stacks)
+
 	local damage = ability:GetSpecialValueFor("ability_damage")
 
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
@@ -113,6 +135,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 	}
 
 	Projectiles:CreateProjectile(projectile)
+	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 	self:PlayEffectsOnCast()
 end
 
@@ -131,5 +154,3 @@ end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(phantom_ex_counter_recast)
-Abilities.Tie(phantom_counter, 'phantom_ex_counter')
-Abilities.Tie(phantom_ex_counter, 'phantom_counter')
