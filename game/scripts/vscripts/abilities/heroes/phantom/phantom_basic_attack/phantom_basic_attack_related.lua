@@ -2,6 +2,8 @@
 phantom_basic_attack_related = class({})
 LinkLuaModifier("modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_phantom_bleed", "abilities/heroes/phantom/modifier_phantom_bleed", LUA_MODIFIER_MOTION_NONE)
+
 
 function phantom_basic_attack_related:GetCastPoint()
 	if IsServer() then
@@ -28,6 +30,7 @@ function phantom_basic_attack_related:OnSpellStart()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
 	local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
+	local bleed_duration = ability:GetSpecialValueFor("bleed_duration")
 	local damage = ability:GetSpecialValueFor("ability_damage")
 	
 	local fading_slow_pct = ability:GetSpecialValueFor("fading_slow_pct")
@@ -73,11 +76,20 @@ function phantom_basic_attack_related:OnSpellStart()
 			end
 
 			unit:AddNewModifier(
-				caster,
+				_self.Source,
 				self,
 				"modifier_generic_fading_slow", -- modifier name
 				{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct } -- kv
 			)
+
+			if ability:GetLevel() >= 2 then
+				unit:AddNewModifier(
+					_self.Source,
+					ability,
+					'modifier_phantom_bleed',
+					{ duration = bleed_duration }
+				)
+			end
 
 			if _self.Source.OnBasicAttackImpact then
 				_self.Source:OnBasicAttackImpact(unit)

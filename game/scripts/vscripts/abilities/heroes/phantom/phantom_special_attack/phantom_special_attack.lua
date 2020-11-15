@@ -5,6 +5,7 @@ phantom_ex_special_attack = class({})
 LinkLuaModifier("modifier_phantom_strike_stack", "abilities/heroes/phantom/phantom_shared_modifiers/modifier_phantom_strike_stack", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_phantom_special_attack_charges", "abilities/heroes/phantom/phantom_special_attack/modifier_phantom_special_attack_charges", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_phantom_bleed", "abilities/heroes/phantom/modifier_phantom_bleed", LUA_MODIFIER_MOTION_NONE)
 
 function phantom_special_attack:GetIntrinsicModifierName()
 	return "modifier_phantom_special_attack_charges"
@@ -20,6 +21,8 @@ function phantom_special_attack:OnSpellStart()
 	local point = self:GetCursorPosition()
     local origin = caster:GetAbsOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
+	local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
+	local bleed_duration = ability:GetSpecialValueFor("bleed_duration")
 
 	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
@@ -64,11 +67,20 @@ function phantom_special_attack:OnSpellStart()
 			end
 
 			unit:AddNewModifier(
-				caster, -- player source
+				_self.Source, -- player source
 				self, -- ability source
 				"modifier_generic_fading_slow", -- modifier name
 				{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct } -- kv
 			)
+			
+			if ability:GetLevel() >= 2 then
+				unit:AddNewModifier(
+					_self.Source,
+					ability,
+					'modifier_phantom_bleed',
+					{ duration = bleed_duration }
+				)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
