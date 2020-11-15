@@ -19,7 +19,7 @@ function phantom_basic_attack:GetCooldown(iLevel)
 end
 
 function phantom_basic_attack:GetCastAnimationCustom()		return ACT_DOTA_SPAWN end
-function phantom_basic_attack:GetPlaybackRateOverride() 	return 1.5 end
+function phantom_basic_attack:GetPlaybackRateOverride() 	return 1.7 end
 function phantom_basic_attack:GetCastPointSpeed() 			return self:GetSpecialValueFor('cast_point_speed_pct') end
 function phantom_basic_attack:GetFadeGestureOnCast()		return false end
 
