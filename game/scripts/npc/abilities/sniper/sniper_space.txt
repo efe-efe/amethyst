@@ -29,7 +29,7 @@
 		{
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"			"0.5" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"			"1.0" }
 		}
 	}
 }

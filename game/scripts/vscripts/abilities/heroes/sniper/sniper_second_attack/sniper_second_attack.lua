@@ -120,22 +120,28 @@ function sniper_ex_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
-	local damage = self:GetSpecialValueFor("ability_damage")
-
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local projectile_origin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+	self:ThrowProjectile(origin + Vector(0, 0, 96), projectile_direction, true, caster)
 
+	self:PlayEffectsOnCast()
+	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
+end
+
+function sniper_ex_second_attack:ThrowProjectile(vOrigin, vDirection, bFirstTime, hSource)
+	local damage = self:GetSpecialValueFor("ability_damage")
+	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local root_duration = self:GetSpecialValueFor("root_duration")
 	local reduction_per_hit = self:GetSpecialValueFor("reduction_per_hit")/100
 	local min_damage = self:GetSpecialValueFor("min_damage")
 
 	local projectile = {
 		EffectName = "particles/sniper/sniper_ex_second_attack_new.vpcf",
-		vSpawnOrigin = origin + Vector(0, 0, 96),
+		vSpawnOrigin = vOrigin,
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
+		Source = hSource,
+		vVelocity = vDirection * projectile_speed,
 		UnitBehavior = PROJECTILES_NOTHING,
 		TreeBehavior = PROJECTILES_NOTHING,
 		WallBehavior = PROJECTILES_DESTROY,
@@ -168,13 +174,16 @@ function sniper_ex_second_attack:OnSpellStart()
 			self:PlayEffectsOnHit(unit)
 		end,
 		OnFinish = function(_self, pos)
+			if self:GetLevel() >= 2 and bFirstTime then
+				local new_direction = ((_self.Source:GetAbsOrigin() + Vector(0, 0, 96)) - pos):Normalized()
+				local projectile_origin = pos + Vector(new_direction.x * 45, new_direction.y * 45, 0)
+				self:ThrowProjectile(projectile_origin, new_direction, false, _self.Source)
+			end
 			self:PlayEffectsOnFinish(pos, 'particles/econ/items/sniper/sniper_fall20_immortal/sniper_fall20_immortal_base_attack_impact.vpcf')
 		end,
 	}
 
     Projectiles:CreateProjectile(projectile)
-	self:PlayEffectsOnCast()
-	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
 end
 
 if IsClient() then require("wrappers/abilities") end
