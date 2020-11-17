@@ -119,7 +119,6 @@ end
 function CDOTA_BaseNPC:Reset()
 	if not IsInToolsMode() then
 		self:SetManaCustom(0)
-        self:GetParent():SendDataToClient()
 	end
 	self:SetHealthCustom(self:GetMaxHealth())
 	self:SetTreshold(GameRules.GameMode.max_treshold)
