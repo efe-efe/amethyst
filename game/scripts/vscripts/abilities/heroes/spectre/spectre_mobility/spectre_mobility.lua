@@ -95,7 +95,7 @@ function spectre_mobility:OnSpellStart()
 	self:PlayEffectsOnCast()
 	caster:AddNewModifier(caster, self, "modifier_spectre_banish", {})
 
-	local alternative_spell = self:GetCaster():FindAbilityByName('spectre_ex_mobility')
+	local alternative_spell = caster:FindAbilityByName('spectre_ex_mobility')
 	if alternative_spell:GetLevel() < 2 then
 		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
 	end
@@ -168,7 +168,7 @@ function spectre_ex_mobility:OnSpellStart()
 	CreateModifierThinker(caster, self, 'modifier_spectre_mobility_thinker', { duration = delay }, point, caster:GetTeam(), false)
 	
 	if self:GetLevel() < 2 then
-		local alternative_spell = self:GetCaster():FindAbilityByName('spectre_mobility')
+		local alternative_spell = caster:FindAbilityByName('spectre_mobility')
 		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
 	end
 end

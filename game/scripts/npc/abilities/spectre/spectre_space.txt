@@ -51,11 +51,11 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"heal"						"12 18" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"delay"						"0.5" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal"						"12 18" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"delay"						"0.5" }
 		}
 	}
 }
