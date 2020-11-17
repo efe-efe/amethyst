@@ -46,7 +46,7 @@ function modifier_sniper_ex_special_attack_thinker:OnDelayEnds()
         for _,enemy in pairs(enemies) do
             local damage = {
                 victim = enemy,
-                attacker = self.parent,
+                attacker = self:GetParent(),
                 damage = self.initial_damage,
                 damage_type = DAMAGE_TYPE_PURE,
             }
