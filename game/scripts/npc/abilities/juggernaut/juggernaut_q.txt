@@ -73,6 +73,7 @@
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"ms_pct"					"20" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"recasts"					"3" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"max_stacks"				"5" }
 		}
 	}
 }

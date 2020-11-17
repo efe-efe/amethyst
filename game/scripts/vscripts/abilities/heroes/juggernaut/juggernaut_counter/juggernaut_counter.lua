@@ -78,8 +78,10 @@ function juggernaut_ex_counter:OnSpellStart()
    end
 
    if #filtered_enemies > 0 then
-      local modifier = caster:AddNewModifier(caster, self, 'modifier_juggernaut_ex_counter', { duration = duration })
-      modifier:SetStackCount(#filtered_enemies)
+      local modifier = caster:AddNewModifier(caster, self, 'modifier_juggernaut_ex_counter', { 
+         duration = duration,
+         stacks =  #filtered_enemies
+      })
 
       if self:GetLevel() >= 2 then
          local modifier = caster:AddNewModifier(
