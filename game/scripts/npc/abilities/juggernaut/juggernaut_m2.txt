@@ -57,7 +57,7 @@
 		{
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"0.5 0.8" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"0.5 1.0" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.3" }
 		}
 	}

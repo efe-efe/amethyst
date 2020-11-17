@@ -87,10 +87,14 @@ end
 function modifier_juggernaut_mobility:PlayEffects()
 	EmitSoundOn("Hero_Juggernaut.BladeFuryStart", self.parent)
 
-	local particle_cast = "particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf"
+    local particle_cast = "particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf"
+    
+    if self:GetAbility():GetLevel() >= 2 then
+        particle_cast = 'particles/econ/items/juggernaut/jugg_sword_jade/juggernaut_blade_fury_jade.vpcf'
+    end
 
 	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent)
-    ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(200, 1, 1))
+    ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(self.radius, 1, 1))
     ParticleManager:SetParticleControl(self.effect_cast, 2, self.parent:GetOrigin())
     
 end
@@ -124,6 +128,30 @@ function modifier_juggernaut_mobility:GetStatusLabel() return "Blade Fury" end
 function modifier_juggernaut_mobility:GetStatusPriority() return 4 end
 function modifier_juggernaut_mobility:GetStatusStyle() return "BladeFury" end
 
+function modifier_juggernaut_mobility:OnProjectileHitCustom(params)
+    if IsServer() then
+        if self:GetAbility():GetLevel() < 2 then
+            return true
+        end
+
+		local projectile = params.projectile
+
+		if projectile.bIsReflectable == true then
+			projectile:SetVelocity(projectile:GetVelocity() * -1, projectile:GetPosition())
+			projectile:SetSource(self:GetParent())
+			projectile:SetVisionTeam(self:GetParent():GetTeam())
+			projectile:ResetDistanceTraveled()
+			projectile:ResetRehit()
+            EmitSoundOn("Hero_Juggernaut.Attack", self:GetParent())
+
+			return false
+		end
+
+		return true
+	end
+end
+
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Animation(modifier_juggernaut_mobility)
 Modifiers.Status(modifier_juggernaut_mobility)
+Modifiers.OnProjectileHit(modifier_juggernaut_mobility)
