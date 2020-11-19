@@ -101,6 +101,11 @@ function CDOTA_BaseNPC_Hero:SendDataToClient()
 	CustomNetTables:SetTableValue("heroes", tostring(self:GetPlayerID()), data)
 end
 
+function CDOTA_BaseNPC:GiveManaCustom(fMana)
+	self:GiveMana(fMana)
+	self:SendDataToClient()
+end
+
 function CDOTA_BaseNPC:SetManaCustom(fMana)
 	self:SetMana(fMana)
 	self:SendDataToClient()
@@ -391,7 +396,7 @@ function CDOTA_BaseNPC:GiveManaPercent(percentage, source)
         return
     end
 
-    self:GiveMana(self:GetMaxMana() * percentage/100)
+    self:GiveManaCustom(self:GetMaxMana() * percentage/100)
 end
 
 function CDOTA_BaseNPC:StrongPurge()

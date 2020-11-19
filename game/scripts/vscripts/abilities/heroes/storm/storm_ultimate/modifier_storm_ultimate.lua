@@ -2,11 +2,17 @@ modifier_storm_ultimate = class({})
 
 function modifier_storm_ultimate:OnCreated(params)
     self.mana_regen = self:GetAbility():GetSpecialValueFor("mana_regen")
+    self.mana_per_tick = self.mana_regen/5
     if IsServer() then
         self:PlayEffectsOnCast()
+        self:StartIntervalThink(0.2)
     end
 end
 
+function modifier_storm_ultimate:OnIntervalThink()
+    self:GetParent():GiveManaCustom(self.mana_per_tick)
+    SendOverheadManaMessage(self:GetParent(), self.mana_per_tick)
+end
 
 function modifier_storm_ultimate:OnDestroy()
     if IsServer() then
@@ -28,16 +34,6 @@ end
 
 function modifier_storm_ultimate:GetEffectName()
     return "particles/storm/storm_ultimate.vpcf"
-end
-
-function modifier_storm_ultimate:DeclareFunctions()
-	return {
-		MODIFIER_PROPERTY_MANA_REGEN_CONSTANT,
-	}
-end
-
-function modifier_storm_ultimate:GetModifierConstantManaRegen()
-    return self.mana_regen
 end
 
 function modifier_storm_ultimate:GetStatusLabel() return "Storm Unleashed" end

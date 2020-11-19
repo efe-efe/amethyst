@@ -1,7 +1,7 @@
 item_mango_custom = class({})
 
 function item_mango_custom:OnSpellStart()
-    self:GetCaster():GiveMana(self:GetSpecialValueFor("mana"))
+    self:GetCaster():GiveManaCustom(self:GetSpecialValueFor("mana"))
     self:PlayEffects()
     self:SpendCharge()
 end
