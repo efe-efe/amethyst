@@ -38,7 +38,7 @@
 		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_second_attack/juggernaut_second_attack"
 		"MaxLevel"						"2"
 
-		"AbilityTextureName"			"juggernaut_second_attack"
+		"AbilityTextureName"			"juggernaut_ex_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	

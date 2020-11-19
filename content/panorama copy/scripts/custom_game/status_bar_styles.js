@@ -37,14 +37,11 @@ styles["Desolate"] = {      backgroundColor: "#C655C4", color: "#C655C4" };
 styles["DancingBlades"] = { backgroundColor: "#DC8668", color: "#DC8668" };
 styles["Raze"] = {          backgroundColor: ORANGE, textShadow: CreateTextShadow("#DC8668"), color: "#E8C070" };
 styles["Desolation"] = {    backgroundColor: "#E55C34", textShadow: CreateTextShadow("#DC8668"), color: "#E8C070" };
+styles["Sleep"] = {         backgroundColor: "#CB8CFF", textShadow: CreateTextShadow("#CB8CFF") };
 
 styles["Darkness"] = {
     backgroundColor: "#DC8668",
     color: "#DC8668"
-}
-styles["Sleep"] = {
-    backgroundColor: "#E55C34",
-    textShadow: CreateTextShadow("#E55C34"),
 }
 styles["Chill"] = {
     backgroundColor: "#9ccee6",
