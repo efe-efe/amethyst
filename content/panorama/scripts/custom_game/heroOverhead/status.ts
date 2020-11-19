@@ -132,7 +132,7 @@ styles['Heal'] = {          backgroundColor: LIGHT_GREEN, color: LIGHT_GREEN, };
 styles['Mana'] = {          backgroundColor: LIGHT_BLUE, color: LIGHT_BLUE, };
 styles['Ultimate'] = {      backgroundColor: '#F5E767', textShadow: CreateTextShadow('#F5E767'), };
 styles['Recast'] = {        backgroundColor: '#ADC6DE', textShadow: CreateTextShadow('#ADC6DE'), };
-styles['Silence'] = {       backgroundColor: '#C655C4', textShadow: CreateTextShadow('#FFBF20'), };
+styles['Silence'] = {       backgroundColor: '#C5FAFF', textShadow: CreateTextShadow('#FFBF20'), };
 styles['Adrenaline'] = {    backgroundColor: '#CEDCFF', color: '#CEDCFF' };
 styles['Shield'] = {        backgroundColor: '#E8C070', };
 styles['Counter'] = {       backgroundColor: '#9DBDEC', textShadow: CreateTextShadow('#9DBDEC'), };
@@ -163,8 +163,8 @@ styles['Darkness'] = {
     color: '#DC8668'
 };
 styles['Sleep'] = {
-    backgroundColor: '#E55C34',
-    textShadow: CreateTextShadow('#E55C34'),
+    backgroundColor: '#CB8CFF',
+    textShadow: CreateTextShadow('#CB8CFF'),
 };
 
 function CreateTextShadow(color: string){

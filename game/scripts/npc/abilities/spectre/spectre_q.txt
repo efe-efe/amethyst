@@ -27,6 +27,7 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"	"3.0" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"		"50" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"ability_damage"		"22" }
 		}
 	}
 
@@ -36,7 +37,7 @@
 		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter_recast"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"spectre_second_attack"
+		"AbilityTextureName"			"spectre_counter_recast"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
@@ -58,9 +59,8 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"15" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 		}
 	}
 }

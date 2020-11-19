@@ -1,7 +1,7 @@
 spectre_counter_recast = class({})
 
 function spectre_counter_recast:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
-function spectre_counter_recast:GetPlaybackRateOverride()	    return 0.25 end
+function spectre_counter_recast:GetPlaybackRateOverride()	    return 1.0 end
 function spectre_counter_recast:GetCastPointSpeed() 			return 0 end
 function spectre_counter_recast:GetIgnoreActivationCycle() 		return true end
 
@@ -18,8 +18,9 @@ function spectre_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
+    local ability = caster:FindAbilityByName('spectre_counter')
 
-	local damage = self:GetSpecialValueFor("ability_damage")
+	local damage = ability:GetSpecialValueFor("ability_damage")
 	
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
@@ -61,14 +62,6 @@ function spectre_counter_recast:OnSpellStart()
 	}
 
 	Projectiles:CreateProjectile(projectile)
-	caster:StartGestureWithPlaybackRate(ACT_DOTA_CAST_ABILITY_1, 2.0)
-
-	local modifier = caster:FindModifierByName('modifier_spectre_counter_recast')
-	if modifier then
-		if modifier:GetStackCount() >= 1 then
-			modifier:SetDuration(5.0, true)
-		end
-	end
 	self:PlayEffectsOnCast()
 end
 

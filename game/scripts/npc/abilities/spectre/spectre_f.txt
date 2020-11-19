@@ -3,7 +3,8 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/spectre/spectre_extra/spectre_extra"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"spectre_extra"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
@@ -18,11 +19,11 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"3" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"40" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.4" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"3 5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"40" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.4" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
 		}
 	}
 }
