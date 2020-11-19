@@ -9,7 +9,7 @@ function modifier_juggernaut_extra_recast:GetRecastAbility()
 end
 
 function modifier_juggernaut_extra_recast:GetRecastKey()
-	return "R"
+	return "F"
 end
 
 if IsClient() then require("wrappers/modifiers") end
