@@ -29,9 +29,9 @@ function modifier_puck_extra_debuff:OnOrder(params)
     end
 end
 
-function modifier_puck_extra_debuff:GetStatusLabel() return "Waning Rift" end
+function modifier_puck_extra_debuff:GetStatusLabel() return "SpellBlock" end
 function modifier_puck_extra_debuff:GetStatusPriority() return 4 end
-function modifier_puck_extra_debuff:GetStatusStyle() return "WaningRift" end
+function modifier_puck_extra_debuff:GetStatusStyle() return "SpellBlock" end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Status(modifier_puck_extra_debuff)
