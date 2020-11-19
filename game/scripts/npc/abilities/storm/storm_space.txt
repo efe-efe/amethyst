@@ -45,7 +45,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"16" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"250" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"175" }
 			"03"{ "var_type"			"FIELD_FLOAT"		"duration"			"3.0" }
 			"04"{ "var_type"			"FIELD_FLOAT"		"delay"				"0.4" }
 			"05"{ "var_type"			"FIELD_FLOAT"		"sleep_duration"	"2.0 2.5" }
