@@ -20,28 +20,8 @@ end
 function modifier_phantom_extra_displacement:OnCollide(params)
 	if IsServer() then
 		if params.type == UNIT_COLLISION then
-			local target = nil
-
 			for _,unit in pairs(params.units) do
-				if not self:GetParent():IsAlly(unit) and not unit:HasModifier('modifier_phantom_extra') then
-					target = unit
-					break
-				end
-			end
-
-			if target then
-				self.recast = true
-				self.damage_table.victim = target
-				ApplyDamage(self.damage_table)
-				
-				target:AddNewModifier(
-					self:GetCaster(), -- player source
-					self:GetAbility(), -- ability source
-					"modifier_phantom_extra", -- modifier name
-					{ duration = 1.0 } -- kv
-				)
-				
-				self:PlayEffectsOnImpact(target)
+				self:OnImpact(unit)
 			end
 		end
 	end
@@ -60,37 +40,15 @@ function modifier_phantom_extra_displacement:OnDestroy()
 
 		for _,enemy in pairs(enemies) do
 			if not enemy:HasModifier('modifier_phantom_extra') then
-				self.recast = true
-				self.damage_table.victim = enemy
-				ApplyDamage(self.damage_table)
-				
-				enemy:AddNewModifier(
-					self:GetParent(), -- player source
-					self:GetAbility(), -- ability source
-					"modifier_generic_fading_slow", -- modifier name
-					{ duration = self.fading_slow_duration, max_slow_pct = self.fading_slow_pct } -- kv
-				)
-
-				enemy:AddNewModifier(
-					self:GetParent(), -- player source
-					self:GetAbility(), -- ability source
-					"modifier_phantom_extra", -- modifier name
-					{ duration = 1.0 } -- kv
-				)
-
-				self:PlayEffectsOnImpact(enemy)
+				self:OnImpact(enemy)
 			end
 		end
 
 		if self:GetAbility():GetLevel() >= 2 then
-			print('here0')
 			if self.recast then
-				print('here')
 				if self:GetParent():HasModifier('modifier_phantom_extra_slashes') then
-					print('here2')
 					self:GetParent():RemoveModifierByName('modifier_phantom_extra_slashes')
 				else
-					print('here3')
 					local modifier = self:GetParent():AddNewModifier(
 						self:GetParent(),
 						self:GetAbility(),
@@ -115,6 +73,33 @@ function modifier_phantom_extra_displacement:OnDestroy()
 	end
 end
 
+function modifier_phantom_extra_displacement:OnImpact(hTarget)
+	if not self.recast then
+		self.recast = true
+	end
+
+	if not hTarget:HasModifier('modifier_phantom_extra') then
+		self.damage_table.victim = hTarget
+		ApplyDamage(self.damage_table)
+
+		hTarget:AddNewModifier(
+			self:GetParent(), -- player source
+			self:GetAbility(), -- ability source
+			"modifier_generic_fading_slow", -- modifier name
+			{ duration = self.fading_slow_duration, max_slow_pct = self.fading_slow_pct } -- kv
+		)
+
+		hTarget:AddNewModifier(
+			self:GetCaster(), -- player source
+			self:GetAbility(), -- ability source
+			"modifier_phantom_extra", -- modifier name
+			{ duration = 0.1 } -- kv
+		)
+		
+		self:PlayEffectsOnImpact(hTarget)
+	end
+end
+
 function modifier_phantom_extra_displacement:PlayEffectsOnImpact(hTarget)
 	EFX('particles/phantom/phantom_basic_attack.vpcf', PATTACH_ABSORIGIN, hTarget, {
 		release = true
@@ -131,6 +116,10 @@ end
 
 function modifier_phantom_extra_displacement:GetOverrideAnimation() 		return ACT_DOTA_CAST_ABILITY_2 end
 function modifier_phantom_extra_displacement:GetOverrideAnimationRate() 	return 1.5 end
+
+function modifier_phantom_extra_displacement:GetCollisionTeamFilter()
+	return DOTA_UNIT_TARGET_TEAM_ENEMY
+end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Displacement(modifier_phantom_extra_displacement)
