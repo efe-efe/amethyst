@@ -87,8 +87,7 @@ export const panels = {
     createPanelSimple(container: Panel, className: string, type = 'Panel'): Panel{
         return $.CreatePanelWithProperties(type, container, className, {
             class: className,
-            hittest: 'false',
-            hittestchildren: 'false',
+            hittest: 'true',
         });
     }
 };
