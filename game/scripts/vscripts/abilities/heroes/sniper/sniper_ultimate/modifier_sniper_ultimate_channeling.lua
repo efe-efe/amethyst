@@ -27,7 +27,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 	-- Extra data
 	local projectile = {
 		EffectName = "particles/sniper/sniper_ultimate_new.vpcf",
-		vSpawnOrigin = origin + Vector(projectile_direction.x + 50, projectile_direction.y + 50, 96),
+		vSpawnOrigin = origin + Vector(projectile_direction.x * 100, projectile_direction.y * 100, 96),
 		fDistance = self.projectile_distance,
 		fStartRadius = self.hitbox,
 		fEndRadius = projectile_end_radius,
