@@ -17,6 +17,10 @@ function Player:SetHero(hero)
 	hero:SendDataToClient()
 end
 
+function Player:GetId()
+    return self.id
+end
+
 function Player:SetTeam(i)
     self.team = i
 end

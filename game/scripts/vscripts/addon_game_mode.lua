@@ -2,7 +2,6 @@
 require('settings')
 
 require('util/util')
-require('util/health')
 require('util/modifiers')
 
 require('overrides/npc')
@@ -145,6 +144,7 @@ function GameMode:SetupEventHooks()
     ListenToGameEvent('entity_killed', Dynamic_Wrap(self, 'OnEntityKilled'), self)
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(self, 'OnGameRulesStateChange'), self)
     ListenToGameEvent('entity_hurt', Dynamic_Wrap(self, 'OnEntityHurt'), self)
+    ListenToGameEvent('dota_player_learned_ability', Dynamic_Wrap(self, 'OnLearnedAbilityEvent'), self)
     print('[AMETHYST] Event hooks set')
 end
 
@@ -258,6 +258,7 @@ function GameMode:SetupPanoramaEventHooks()
             end
 
             hero:SetAbilityPoints(3)
+            hero:SendDataToClient()
         end
     end)
 end
@@ -399,12 +400,20 @@ function GameMode:SetState(state)
     CustomNetTables:SetTableValue("main", "gameState", { gameState = state })
 end 
 
-function GameMode:OnGameRulesStateChange(keys)
+function GameMode:OnGameRulesStateChange(event)
     local state = GameRules:State_Get()
     
     if state == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
         self:OnGameInProgress()
     end
+end
+
+function GameMode:OnLearnedAbilityEvent(event)
+    local playerId = event.PlayerID
+    local player = self.players[playerId]
+    local hero = player.hero
+    
+    player.hero:SendDataToClient()
 end
 
 function GameMode:OnWarmupEnd(context)
@@ -438,13 +447,20 @@ function GameMode:OnRoundEnd(context)
 
     self.round = nil
 
+    for _,player in pairs(self.players) do
+        local hero = player.hero
+        local playerId = player:GetId()
+        SafeDestroyModifier("modifier_generic_provides_vision", hero, nil)
+        PlayerResource:SetCameraTarget(playerId, nil)
+    end
+
     self:SetState(STATE_WARMUP)
     self.warmup = Warmup(
         self.players,
         function(context) 
             self:OnWarmupEnd(context)
         end
-   )
+    )
     self.round = Round(
         self.players,
         function(context) 
@@ -473,11 +489,6 @@ function GameMode:OnHeroInGame(keys)
     end
 
     -- Always
-    if npc:IsRealHero() then
-        local playerID = npc:GetPlayerOwnerID()
-        SafeDestroyModifier("modifier_generic_provides_vision", npc, nil)
-        PlayerResource:SetCameraTarget(playerID, nil)
-    end
 end
 
 function GameMode:OnEntityKilled(keys)

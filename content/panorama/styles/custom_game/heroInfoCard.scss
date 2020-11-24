@@ -1,49 +1,89 @@
 
-.hero-status{
-    width: 102px;
+.hero-info-card{
     margin-bottom: 10px;    
 
-    background-color: rgb(25, 27, 32);
     opacity: 0.97;
 
-    transition-property: opacity;
-    transition-duration: 0.2s;
+    flow-children: right;
 
+    &--right{
+        flow-children: left;
+    }
+}
+
+.hero-info-card__left{
+    width: 102px;
+    background-color: rgb(25, 27, 32);
+    
     flow-children: down;
 }
 
-.hero-status__top{
+.hero-info-card__right{
+    height: 100%;
+    padding: 5px 5px;
+
+    flow-children: right;
+}
+
+
+.hero-info-card__top{
     height: 55px;
     width: 100%;
 }
 
-.hero-status__mid{
+.hero-info-card__mid{
     height: 30px;
     width: 100%;
     margin-bottom: 2px;
 }
 
-.hero-status__bot{
+.hero-info-card__bot{
     width: 100%;
 }
 
-.hero-status__image{
+.hero-info-card__image{
     border: 1px solid rgb(36, 42, 53);
 }
 
-.hero-status-resources{
+.hero-info-card-resources{
     height: 100%;
     width: 100%;
     flow-children: down;
 }
 
-.hero-status-resources__health{
+.hero-info-card-resources__health{
     height: 70%;
     width: 100%;
     background-color:rgba(36, 42, 53, 0.2);
 }
-.hero-status-resources__mana{
+
+.hero-info-card-resources__mana{
     height: 30%;
     width: 100%;
     flow-children: right;
+}
+
+
+.hero-info-card__ability{
+    height: 35px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 100%;
+    box-shadow:0 0 5px rgba(0, 0, 0, 1.0);
+    margin-right: 5px;
+
+    transition-property: width;
+    transition-duration: 0.25s;
+}
+
+
+.hero-info-card__ability-text{
+    width: 100%;
+    height: 20px;
+
+    text-align: center;
+    text-transform: uppercase;
+    text-align: center;
+    color: #FAFAFA;
+    font-size: 14px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }

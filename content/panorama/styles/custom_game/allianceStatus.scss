@@ -9,12 +9,14 @@
 
 .alliances-status__left, .alliances-status__right{
     height: 100%;
-    width: 150px;
     flow-children: down;
+    margin-left: 10px;
 }
 
 .alliances-status__right{
     align: right center;
+    margin-left: 0;
+    margin-right: 10px;
 }
 
 .alliances-status__radiant, .alliances-status__dire, .alliances-status__void, .alliances-status__legion{

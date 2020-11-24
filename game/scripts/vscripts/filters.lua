@@ -105,11 +105,16 @@ function Filters:Activate(GameMode, this)
             end
             
             SendOverheadHealMessage(healing_target, tFilter.heal)
-            healing_target:SendDataToClient()
+            Timers:CreateTimer(0.05, function()
+                healing_target:SendDataToClient()
+            end)
             
             local healing_team = healing_target:GetTeam()
             local healing_alliance = GameRules.GameMode:FindAllianceByTeam(healing_team)
-            healing_alliance:SendDataToClient()
+
+            Timers:CreateTimer(0.05, function()
+                healing_alliance:SendDataToClient()
+            end)
         end
         return true
     end
@@ -147,12 +152,16 @@ function Filters:Activate(GameMode, this)
             end
 
             victim:AddNewModifier(victim, nil, "modifier_damage_fx", { duration = 0.1 })
-            victim:SendDataToClient()
+            Timers:CreateTimer(0.05, function()
+                victim:SendDataToClient()
+            end)
             
             
             local victim_team = victim:GetTeam()
             local victim_alliance = GameRules.GameMode:FindAllianceByTeam(victim_team)
-            victim_alliance:SendDataToClient()
+            Timers:CreateTimer(0.05, function()
+                victim_alliance:SendDataToClient()
+            end)
         end
         
         if victim.GetParentEntity then

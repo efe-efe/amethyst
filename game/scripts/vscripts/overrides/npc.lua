@@ -97,6 +97,7 @@ function CDOTA_BaseNPC_Hero:SendDataToClient()
 		stackbars = self:GetStackbars(),
 		charges = self:GetCharges(),
 		cooldown = self:GetCooldown(),
+		abilities = self:GetAbilities(),
 	}
 	CustomNetTables:SetTableValue("heroes", tostring(self:GetPlayerID()), data)
 end
@@ -624,6 +625,21 @@ function CDOTA_BaseNPC:GetCooldown()				return self.cooldown_modifier				end
 function CDOTA_BaseNPC:GetRecast()					return self.recast_modifiers				end
 function CDOTA_BaseNPC:GetTranslate()				return self.translate_modifiers				end
 function CDOTA_BaseNPC:GetOnProjectileHit()			return self.on_projectile_hit_modifiers		end
+
+function CDOTA_BaseNPC:GetAbilities()
+	local abilities = {}
+
+	for i = 0, 8 do
+		local ability = self:GetAbilityByIndex(i)
+		table.insert(abilities, {
+			name = ability:GetName(),
+			level = ability:GetLevel(),
+		})
+	end
+
+	return abilities
+end
+
 
 -- Setters
 function CDOTA_BaseNPC:SetInitialized(initialized)	
