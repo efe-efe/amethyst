@@ -275,6 +275,13 @@ import { tables } from './shared/util';
 
 
     const refunderButton = $('#refunder__button') as Button;
+    const refunderPanel = $('#refunder');
+    const customHotkeysPanel = $('#custom-hotkeys');
+    const customHotkeysButton = $('#custom-hotkeys__button') as Button;
+    const customHotkeysAllRowsPanel = $('#custom-hotkeys__all-rows');
+    const customHotkeysTextPanel = $('#custom-hotkeys__button-text') as LabelPanel;
+    let customHotkeysShowing = true;
+
     refunderButton.SetPanelEvent('onactivate', () => {
         let playerId = Players.GetLocalPlayer();
 
@@ -291,7 +298,28 @@ import { tables } from './shared/util';
 
         } as never);
 
-        const refunderButton = $('#refunder') as Button;
-        refunderButton.style.visibility = 'collapse';
+        refunderPanel.style.visibility = 'collapse';
+    });
+
+    customHotkeysPanel.SetPanelEvent('onmouseover', () => {
+        customHotkeysPanel.style.opacity = '1.0';
+    });
+    customHotkeysPanel.SetPanelEvent('onmouseout', () => {
+        customHotkeysPanel.style.opacity = '0.5';
+    });
+
+    customHotkeysButton.SetPanelEvent('onactivate', () => {
+        
+        if(customHotkeysShowing){
+            customHotkeysPanel.style.width = '140px';
+            customHotkeysAllRowsPanel.style.height = '0px';
+            customHotkeysTextPanel.text = 'SHOW HOTKEYS';
+            customHotkeysShowing = false;
+        } else {
+            customHotkeysPanel.style.width = '340px';
+            customHotkeysAllRowsPanel.style.height = '410px';
+            customHotkeysTextPanel.text = 'HIDE HOTKEYS';
+            customHotkeysShowing = true;
+        }
     });
 })();

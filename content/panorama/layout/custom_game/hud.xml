@@ -14,13 +14,14 @@
         <include src="file://{resources}/styles/custom_game/topBar.css" />
         <include src="file://{resources}/styles/custom_game/allianceBar.css" />
         <include src="file://{resources}/styles/custom_game/refunder.css" />
+        <include src="file://{resources}/styles/custom_game/customHotkeys.css" />
     </styles>
 	<scripts>
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
         <include src="file://{resources}/scripts/custom_game/targetIndicator.js" />
 	</scripts>
     <Panel class="main" hittest="false">
-    
+
         <Panel id="refunder" class="refunder">
             <Panel id="refunder__efx" class="refunder__efx">
                 <DOTAScenePanel id="refunder__efx-scene" class="refunder__efx-scene" hittest="false" map="scenes/hud/levelupburst" camera="camera_1"/>
@@ -53,6 +54,156 @@
             <Panel id="top-bar__right" class="top-bar__right">
                 <Panel id="top-bar__dire" class="top-bar__dire" hittest="false" hittestchildren="false"/>
                 <Panel id="top-bar__void" class="top-bar__void" hittest="false" hittestchildren="false"/>
+            </Panel>
+        </Panel>
+        
+        <Panel id="custom-hotkeys" class="custom-hotkeys">
+            <Button id="custom-hotkeys__button" class="custom-hotkeys__button">
+                <Label id="custom-hotkeys__button-text" class="custom-hotkeys__button-text" text='HIDE HOTKEYS'/>
+            </Button>
+
+            <Panel id="custom-hotkeys__all-rows" class="custom-hotkeys__all-rows" hittest="false" >
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkeys-row" hittest="false" >
+                            <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                                <Label class="custom-hotkeys__hotkey-text" text='W'/>
+                            </Panel>
+                            <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                                <Label class="custom-hotkeys__hotkey-text" text='A'/>
+                            </Panel>
+                            <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                                <Label class="custom-hotkeys__hotkey-text" text='S'/>
+                            </Panel>
+                            <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                                <Label class="custom-hotkeys__hotkey-text" text='D'/>
+                            </Panel>
+                        </Panel>
+                    </Panel>
+                    
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='WALK'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
+
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey custom-hotkeys__hotkey--wide" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-text" text='SPACEBAR'/>
+                        </Panel>
+                    </Panel>
+                    
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='MOBILITY ABILITY'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
+
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey custom-hotkeys__hotkey--wide" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-text" text='MOUSE 1'/>
+                        </Panel>
+                    </Panel>
+
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='BASIC ATTACK'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
+
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey custom-hotkeys__hotkey--wide" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-text" text='MOUSE 2'/>
+                        </Panel>
+                    </Panel>
+
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='SECONDARY ATTACK'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
+
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-text" text='Q'/>
+                        </Panel>
+                    </Panel>
+
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='COUNTER'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
+                    
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-text" text='E'/>
+                        </Panel>
+                    </Panel>
+
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='SPECIAL ATTACK'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
+                    
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-text" text='F'/>
+                        </Panel>
+                    </Panel>
+
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='EXTRA ATTACK'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
+                    
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-text" text='R'/>
+                        </Panel>
+                    </Panel>
+
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='ULTIMATE'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
+
+                <Panel class="custom-hotkeys__row" hittest="false" >
+                    <Panel class="custom-hotkeys__row-left" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkeys-row" hittest="false" >
+                            <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                                <Label class="custom-hotkeys__hotkey-text" text='1'/>
+                            </Panel>
+                            <Panel class="custom-hotkeys__hotkey" hittest="false" >
+                                <Label class="custom-hotkeys__hotkey-text" text='2'/>
+                            </Panel>
+                        </Panel>
+                    </Panel>
+
+                    <Panel class="custom-hotkeys__row-right" hittest="false" >
+                        <Panel class="custom-hotkeys__hotkey-definition" hittest="false" >
+                            <Label class="custom-hotkeys__hotkey-definition-text" text='EX-ABILITIES'/>
+                        </Panel>
+                    </Panel>
+                </Panel>
             </Panel>
         </Panel>
     </Panel>
