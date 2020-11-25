@@ -4,8 +4,6 @@ import { Color, colors, panels } from './shared/util';
 import { AllianceData } from './types';
 
 const alliances = Alliances.GetInstance();
-const ROUNDS_TO_WIN = 5;
-const ROUNDS_DIFFERENCE_TO_WIN = 3;
 
 export default class AllianceBar{
     panel: Panel;
@@ -36,7 +34,7 @@ export default class AllianceBar{
 
         this.scorePointsPanel = panels.createPanelSimple(scoreContainerPanel, 'alliance-bar__score-points');
 
-        for(let i = 0; i < ROUNDS_TO_WIN; i++){
+        for(let i = 0; i < 5; i++){
             const pointPanel = panels.createPanelSimple(this.scorePointsPanel, 'alliance-bar__score-point');
             pointPanel.SetHasClass('alliance-bar__score-point--disabled', true);
             pointPanel.style.backgroundColor = colors.Gradient(this.color);
@@ -53,15 +51,18 @@ export default class AllianceBar{
         this.UpdateAmethysts(allianceData.amethysts);
         this.health.Update(allianceData.health, 30, allianceData.max_health, allianceData.shield);
 
-        for(let i = 0; i < ROUNDS_DIFFERENCE_TO_WIN; i++){
-            this.scorePointsPanel.GetChild(i)!.SetHasClass('alliance-bar__score-point--disabled', false);
-            this.scorePointsPanel.GetChild(i)!.SetHasClass('alliance-bar__score-point--inactive', true);
-        }
-        
-
         for(let i = 0; i < allianceData.score ; i++){
             this.scorePointsPanel.GetChild(i)!.SetHasClass('alliance-bar__score-point--inactive', false);
             this.scorePointsPanel.GetChild(i)!.SetHasClass('alliance-bar__score-point--active', true);
+        }
+    }
+
+    public UpdateMaxScore(maxScore: number): void{
+        for(let i = 0; i < maxScore; i++){
+            if(!this.scorePointsPanel.GetChild(i)!.BHasClass('alliance-bar__score-point--active')){
+                this.scorePointsPanel.GetChild(i)!.SetHasClass('alliance-bar__score-point--disabled', false);
+                this.scorePointsPanel.GetChild(i)!.SetHasClass('alliance-bar__score-point--inactive', true);
+            }
         }
     }
 

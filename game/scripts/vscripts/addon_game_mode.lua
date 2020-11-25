@@ -335,6 +335,8 @@ function GameMode:Start()
         end
         CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
     end)
+
+    CustomNetTables:SetTableValue("main", "maxScore", { max_score = ROUNDS_DIFFERENCE_TO_WIN })
 end
 
 function GameMode:RegisterThinker(period, callback)
@@ -430,6 +432,9 @@ end
 
 function GameMode:OnRoundEnd(context)
     local round = context
+    local max_score = ROUNDS_DIFFERENCE_TO_WIN
+    local allinaces_with_one_point = 0
+    local allinaces_with_two_points = 0
 
     round:DestroyAllPickups() -- Remove death orbs
 
@@ -444,6 +449,23 @@ function GameMode:OnRoundEnd(context)
     else
         CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = "DRAW!" })
     end
+
+    for _,alliance in pairs(self.alliances) do
+        if alliance:GetScore() == 1 then
+            allinaces_with_one_point = allinaces_with_one_point + 1
+        elseif alliance:GetScore() > 1 then
+            allinaces_with_one_point = allinaces_with_one_point + 1
+            allinaces_with_two_points = allinaces_with_two_points + 1
+        end
+    end
+
+    if allinaces_with_two_points >= 2 then
+        max_score = 5
+    elseif allinaces_with_one_point >= 2 then
+        max_score = 4
+    end
+    
+    CustomNetTables:SetTableValue("main", "maxScore", { max_score = max_score })
 
     self.round = nil
 

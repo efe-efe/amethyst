@@ -13,6 +13,21 @@ import AllianceBar from './allianceBar';
 import { tables } from './shared/util';
 
 (function(){
+    const clockPanel = $('#top-bar__clock-text') as LabelPanel;
+    const refunderButton = $('#refunder__button') as Button;
+    const refunderPanel = $('#refunder');
+    const customHotkeysPanel = $('#custom-hotkeys');
+    const customHotkeysButton = $('#custom-hotkeys__button') as Button;
+    const customHotkeysAllRowsPanel = $('#custom-hotkeys__all-rows');
+    const customHotkeysTextPanel = $('#custom-hotkeys__button-text') as LabelPanel;
+    
+    const heroOverheads: any = {};
+    const heroInfoCards: any = {};
+    const allianceBars: any = {};
+
+    let customHotkeysShowing = true;
+    let maxScore = 3;
+
     const layout = LayoutController.GetInstance();
     
     const allKeys = [
@@ -171,7 +186,6 @@ import { tables } from './shared/util';
     rightFlarePanel.style.height = '97px';
     rightFlarePanel.style.marginRight = '244px';
 
-
     const centerWithStatsPanel = layout.GetTopPanel().FindChildTraverse('center_with_stats')!;
     centerWithStatsPanel.style.horizontalAlign = 'left';
     centerWithStatsPanel.style.marginLeft = '80px';
@@ -187,10 +201,6 @@ import { tables } from './shared/util';
 
     layout.SetPanelMargin('debuffs', { bottom: '95px' });
     layout.SetPanelMargin('buffs', { bottom: '95px' });
-
-    const heroOverheads: any = {};
-    const heroInfoCards: any = {};
-    const allianceBars: any = {};
 
     const tableNameHeroes = 'heroes' as never;
     tables.subscribeToNetTableAndLoadNow(tableNameHeroes, (table: never, key: string | number | symbol, value: any) => {
@@ -247,6 +257,7 @@ import { tables } from './shared/util';
         
             if(topBarPanel){
                 allianceBars[allianceName] = new AllianceBar(topBarPanel, value);
+                allianceBars[allianceName].UpdateMaxScore(maxScore);
             }
 
         } else {
@@ -254,7 +265,6 @@ import { tables } from './shared/util';
         }
     });
 
-    
     const tableNameMain = 'main' as never;
     tables.subscribeToNetTableKey(tableNameMain, 'gameState', true, function(data: any){
         const refunderButton = $('#refunder') as Button;
@@ -267,20 +277,20 @@ import { tables } from './shared/util';
         }
     });
 
+    tables.subscribeToNetTableKey(tableNameMain, 'maxScore', true, function(data: any){
+        maxScore = data.max_score;
+
+        for(const allianceName in allianceBars){
+            const allianceBar = allianceBars[allianceName];
+            allianceBar.UpdateMaxScore(maxScore);
+        }
+    });
+
+
     function UpdateTime(data: any): void{
-        const clockPanel = $('#top-bar__clock-text') as LabelPanel;
         clockPanel.text = data.timer_minute_10.toString() + data.timer_minute_01.toString() + ':' + data.timer_second_10.toString() + data.timer_second_01.toString();
     }
     GameEvents.Subscribe('countdown', UpdateTime);
-
-
-    const refunderButton = $('#refunder__button') as Button;
-    const refunderPanel = $('#refunder');
-    const customHotkeysPanel = $('#custom-hotkeys');
-    const customHotkeysButton = $('#custom-hotkeys__button') as Button;
-    const customHotkeysAllRowsPanel = $('#custom-hotkeys__all-rows');
-    const customHotkeysTextPanel = $('#custom-hotkeys__button-text') as LabelPanel;
-    let customHotkeysShowing = true;
 
     refunderButton.SetPanelEvent('onactivate', () => {
         let playerId = Players.GetLocalPlayer();
