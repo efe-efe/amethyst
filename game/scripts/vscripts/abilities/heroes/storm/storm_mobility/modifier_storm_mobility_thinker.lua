@@ -45,6 +45,10 @@ function modifier_storm_mobility_thinker:OnIntervalThink()
 
     if give_mana then
         self:GetCaster():GiveManaPercent(self.mana_gain_pct)
+        if self:GetCaster():HasModifier('modifier_storm_ultimate') then
+            local extra_mana_pct = self.mana_gain_pct * (self:GetCaster():FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
+            self:GetCaster():GiveManaPercentAndInform(extra_mana_pct)
+        end
     end
 
     if #enemies > 0 then

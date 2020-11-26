@@ -293,6 +293,7 @@ function Modifiers.Banish(modifier)
 
     function modifier:OnCreated(params)
         if IsServer() then
+            self.original_scale = self:GetParent():GetModelScale()
             self:GetParent():SetModelScale(0.05)
         end
         if onCreated then onCreated(self, params) end
@@ -300,7 +301,7 @@ function Modifiers.Banish(modifier)
 
     function modifier:OnDestroy()
         if IsServer() then
-            self:GetParent():SetModelScale(1.0)
+            self:GetParent():SetModelScale(self.original_scale)
         end
         if onDestroy then onDestroy(self, params) end
     end

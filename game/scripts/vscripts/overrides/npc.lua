@@ -382,22 +382,37 @@ function CDOTA_BaseNPC:IsObstacle()
     return (self:IsBarrel() or self:IsWall()) and true or false
 end
 
-function CDOTA_BaseNPC:GiveManaPercent(percentage, source)
-	local is_amethyst = false
+function CDOTA_BaseNPC:GiveManaPercent(iPercentage, hSource)
+	if (not hSource) or (hSource:ProvidesMana()) then
+		local mana = self:GetMaxMana() * iPercentage/100, inform
+		self:GiveManaCustom(mana)
+		return mana
+	end
+	return false
+end
 
-	if source and source.GetParentEntity then
-		local entity = source:GetParentEntity()
+
+function CDOTA_BaseNPC:ProvidesMana()
+	if self and self.GetParentEntity then
+		local entity = self:GetParentEntity()
 
 		if instanceof(entity, Amethyst) then 
-			is_amethyst = true
+			return false
 		end
 	end
 
-    if source and (is_amethyst or source:IsObstacle()) then
-        return
-    end
+    if self:IsObstacle() then
+        return false
+	end
 
-    self:GiveManaCustom(self:GetMaxMana() * percentage/100)
+	return true
+end
+
+function CDOTA_BaseNPC:GiveManaPercentAndInform(iPercentage, hSource)
+	local mana = self:GiveManaPercent(iPercentage, hSource)
+	if mana then
+		SendOverheadManaMessage(self, mana)
+	end
 end
 
 function CDOTA_BaseNPC:StrongPurge()
