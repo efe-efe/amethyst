@@ -27,25 +27,18 @@ end
 function modifier_storm_extra_displacement:OnCollide(params)
 	if IsServer() then
 		if params.type == UNIT_COLLISION then
-			local target = nil
-
 			for _,unit in pairs(params.units) do
-				if not self.parent:IsAlly(unit) and not unit:HasModifier('modifier_storm_extra') then
-					target = unit
-					break
+				if not unit:HasModifier('modifier_storm_extra') then
+					self.damage_table.victim = unit
+					ApplyDamage(self.damage_table)
+					
+					unit:AddNewModifier(
+						self:GetCaster(), -- player source
+						self:GetAbility(), -- ability source
+						"modifier_storm_extra", -- modifier name
+						{ duration = 0.1 } -- kv
+					)
 				end
-			end
-
-			if target then
-				self.damage_table.victim = target
-				ApplyDamage(self.damage_table)
-				
-				target:AddNewModifier(
-					self:GetCaster(), -- player source
-					self:GetAbility(), -- ability source
-					"modifier_storm_extra", -- modifier name
-					{ duration = 1.0 } -- kv
-				)
 			end
 		end
 	end
@@ -114,8 +107,14 @@ function modifier_storm_extra_displacement:CheckState()
 	return { [MODIFIER_STATE_ROOTED] = true }
 end
 
+
+function modifier_storm_extra_displacement:GetCollisionTeamFilter()
+	return DOTA_UNIT_TARGET_TEAM_ENEMY
+end
+
 function modifier_storm_extra_displacement:GetOverrideAnimation() 		return ACT_DOTA_OVERRIDE_ABILITY_4 end
 function modifier_storm_extra_displacement:GetIsCommandRestricted()		return false end
+
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Displacement(modifier_storm_extra_displacement)
 Modifiers.Animation(modifier_storm_extra_displacement)
