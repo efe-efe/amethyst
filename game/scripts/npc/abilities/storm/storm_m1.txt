@@ -39,6 +39,7 @@
 		
 		"AbilityTextureName"			"storm_ex_basic_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityManaCost"				"25"
 
 		"AbilitySpecial"
 		{
