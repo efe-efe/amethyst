@@ -10,8 +10,6 @@
 		"AbilityCooldown"				"5.0 4.0"
 		"AbilityCastRange"				"350"
 		"LevelsBetweenUpgrades"			"0"
-		//"AbilityCharges"                "3"
-		//"AbilityChargeRestoreTime"		"5.0"
 
 		"AbilitySpecial"
 		{
