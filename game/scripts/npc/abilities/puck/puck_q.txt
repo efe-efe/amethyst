@@ -12,7 +12,7 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"			"FIELD_FLOAT"		"max_charges"       "2" }
+			"02"{ "var_type"			"FIELD_FLOAT"		"max_charges"       "1 2" }
 			"03"{ "var_type"			"FIELD_FLOAT"		"banish_duration"	"0.75" }
 		}
 	}

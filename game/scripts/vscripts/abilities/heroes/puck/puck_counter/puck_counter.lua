@@ -15,8 +15,9 @@ function puck_counter:OnSpellStart()
 	caster:AddNewModifier(caster, self, "modifier_puck_counter_banish", { duration = banish_duration })
 
 	if self:GetLevel() >= 2 then
-		local ability = caster:FindAbilityByName("puck_basic_attack")
-		ability:LaunchProjectile(self:GetCaster():GetOrigin(), ability:GetCursorPosition())
+		caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
 	end
+	local ability = caster:FindAbilityByName("puck_basic_attack")
+	ability:LaunchProjectile(self:GetCaster():GetOrigin(), ability:GetCursorPosition())
 end
 

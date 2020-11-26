@@ -39,9 +39,9 @@
 		
 		"AbilityTextureName"			"puck_ex_basic_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityCooldown"				"6.0 3.0"
+		"AbilityCooldown"				"0.0 2.0"
 		"LevelsBetweenUpgrades"			"0"
-		"AbilityManaCost"				"25"
+		"AbilityManaCost"				"25 0"
 		"AbilityCastPoint"				"0.1"
 	}
 }
