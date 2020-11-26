@@ -1,4 +1,5 @@
 storm_second_attack = class({})
+LinkLuaModifier("modifier_storm_second_attack", "abilities/heroes/storm/storm_second_attack/modifier_storm_second_attack", LUA_MODIFIER_MOTION_NONE)
 
 function storm_second_attack:GetCastAnimationCustom()		return ACT_DOTA_ATTACK end
 function storm_second_attack:GetPlaybackRateOverride() 	    return 1.5 end
@@ -11,6 +12,7 @@ function storm_second_attack:OnSpellStart()
     local origin = caster:GetOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
+	local duration = self:GetSpecialValueFor("duration")
 	
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
@@ -44,6 +46,10 @@ function storm_second_attack:OnSpellStart()
 					local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
 					caster:GiveManaPercentAndInform(extra_mana_pct, unit)
 				end
+			end
+
+			if self:GetLevel() >= 2 then
+				unit:AddNewModifier(_self.Source, self, 'modifier_storm_second_attack', { duration = duration })
 			end
 		end,
 		OnFinish = function(_self, pos)

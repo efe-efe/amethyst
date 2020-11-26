@@ -23,10 +23,14 @@
 		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"15 20" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.2" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"damage_per_tick"			"4" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"1.0" }
 		}
 	}
 }

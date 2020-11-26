@@ -6,6 +6,15 @@ function storm_extra:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_4 en
 function storm_extra:GetPlaybackRateOverride()      return 1.0 end
 function storm_extra:GetCastPointSpeed() 			return 0 end
 
+function storm_extra:OnAbilityPhaseStart()
+    if self:GetCaster():HasModifier('modifier_storm_extra_displacement') then
+        return false
+    end
+
+    return true
+end
+
+
 function storm_extra:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()

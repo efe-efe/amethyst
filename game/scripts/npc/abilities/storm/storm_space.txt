@@ -18,9 +18,10 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"16" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"200 300" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"230" }
 			"03"{ "var_type"			"FIELD_INTEGER"		"mana_gain_pct"		"10" }
 			"04"{ "var_type"			"FIELD_FLOAT"		"duration"			"5.0" }
+			"05"{ "var_type"			"FIELD_INTEGER"		"max_charges"		"1 2" }
 		}
 	}
 	

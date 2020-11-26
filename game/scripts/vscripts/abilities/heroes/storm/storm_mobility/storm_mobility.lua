@@ -3,10 +3,23 @@ storm_ex_mobility = class({})
 
 LinkLuaModifier("modifier_storm_mobility_thinker", "abilities/heroes/storm/storm_mobility/modifier_storm_mobility_thinker", LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_storm_ex_mobility_thinker", "abilities/heroes/storm/storm_mobility/modifier_storm_ex_mobility_thinker", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_storm_mobility_charges", "abilities/heroes/storm/storm_mobility/modifier_storm_mobility_charges", LUA_MODIFIER_MOTION_BOTH)
+
+function storm_mobility:GetIntrinsicModifierName()
+	return "modifier_storm_mobility_charges"
+end
 
 function storm_mobility:GetCastAnimationCustom()		return ACT_DOTA_SPAWN end
 function storm_mobility:GetPlaybackRateOverride()       return 1.5 end
 function storm_mobility:GetCastPointSpeed() 			return 50 end
+
+function storm_mobility:GetCastPoint()
+    if self:GetCaster():HasModifier('modifier_storm_extra_displacement') then
+        return 0.0
+    end
+
+    return self.BaseClass.GetCastPoint(self)
+end
 
 function storm_mobility:OnSpellStart()
     local caster = self:GetCaster()
