@@ -23,10 +23,10 @@
 		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"800 1200" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1100" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
 		}
 	}
 	
@@ -68,14 +68,14 @@
 		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"explosion_damage"			"20" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"400" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
-			"06"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"150" }
-			"08"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
-			"09"{ "var_type"	"FIELD_FLOAT"		"root_duration"				"2.0" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"explosion_damage"			"20" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"800" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"150" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"root_duration"				"2.0" }
 		}
 	}
 

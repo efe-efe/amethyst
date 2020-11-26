@@ -3,6 +3,7 @@ puck_special_attack_recast = class({})
 function puck_special_attack_recast:GetCastPointSpeed()    return 0 end
 
 function puck_special_attack_recast:OnSpellStart()
+	self:GetCaster():RemoveModifierByName('modifier_puck_ex_special_attack_recast')
     FindClearSpaceForUnit(self:GetCaster(), self.projectile.current_position, true)
     EmitSoundOn("Hero_Puck.EtherealJaunt", self:GetCaster())
     
