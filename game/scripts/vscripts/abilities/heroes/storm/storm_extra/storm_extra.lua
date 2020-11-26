@@ -14,7 +14,6 @@ function storm_extra:OnAbilityPhaseStart()
     return true
 end
 
-
 function storm_extra:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
@@ -24,6 +23,12 @@ function storm_extra:OnSpellStart()
 
 	local direction = (point - origin):Normalized()
     local distance = (point - origin):Length2D()
+    local level = 0
+
+    if caster:HasModifier('modifier_storm_ex_basic_attack') then
+        local modifier = caster:FindModifierByName('modifier_storm_ex_basic_attack')
+        level = modifier:GetLevel()
+    end
 
     caster:AddNewModifier(
         caster, -- player source
@@ -35,6 +40,7 @@ function storm_extra:OnSpellStart()
             r = distance,
             speed = speed,
             peak = 1,
+            level = level
         }
     )
 

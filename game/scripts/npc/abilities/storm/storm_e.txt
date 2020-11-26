@@ -31,34 +31,4 @@
 			"08"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
 		}
 	}
-	
-    "storm_ex_special_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/storm/storm_special_attack/storm_special_attack"
-		"MaxLevel"						"2"
-		"LevelsBetweenUpgrades"			"0"
-
-		"AbilityTextureName"			"storm_ex_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityManaCost"				"25"
-		"AbilityCooldown"				"12"
-		"AbilityCastRange"				"1500"
-		"AbilityCastPoint"				"0.3"
-
-		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_AOE"
-			"DisplayRange" 				"1"
-		}
-
-		"AbilitySpecial"
-		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"			        "550" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"speed"		                "2000 2500" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"ally_heal"					"10" }
-		}
-	}
 }

@@ -1,1 +1,0 @@
-modifier_storm_ex_special_attack = class({})

@@ -1,5 +1,7 @@
 storm_basic_attack = class({})
+storm_ex_basic_attack = class({})
 LinkLuaModifier("modifier_storm_basic_attack_cooldown", "abilities/heroes/storm/storm_basic_attack/modifier_storm_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_storm_ex_basic_attack", "abilities/heroes/storm/storm_basic_attack/modifier_storm_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 
 function storm_basic_attack:GetCastPoint()
 	if IsServer() then
@@ -153,6 +155,12 @@ function storm_basic_attack:PlayEffectsOnFinish(pos, is_charged)
 	end
 end
 
+function storm_ex_basic_attack:OnSpellStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, 'modifier_storm_ex_basic_attack', {})
+    EmitSoundOn("Hero_StormSpirit.StaticRemnantPlant", self:GetCaster())
+end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(storm_basic_attack)
+Abilities.Castpoint(storm_ex_basic_attack)
 

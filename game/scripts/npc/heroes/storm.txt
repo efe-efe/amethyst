@@ -13,7 +13,7 @@
 		"Ability5"						"storm_special_attack"
 		"Ability6"						"storm_extra"
 		"Ability7"						"storm_ultimate"
-		"Ability8"						"storm_ex_special_attack"
+		"Ability8"						"storm_ex_basic_attack"
 		"Ability9"						"storm_ex_mobility"
 		
 		

@@ -1,10 +1,6 @@
 storm_special_attack = class({})
-storm_ex_special_attack = class({})
 LinkLuaModifier("modifier_storm_special_attack_thinker", "abilities/heroes/storm/storm_special_attack/modifier_storm_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_storm_special_attack_efx", "abilities/heroes/storm/storm_special_attack/modifier_storm_special_attack_efx", LUA_MODIFIER_MOTION_NONE)
-
-LinkLuaModifier("modifier_storm_ex_special_attack_displacement", "abilities/heroes/storm/storm_special_attack/modifier_storm_ex_special_attack_displacement", LUA_MODIFIER_MOTION_BOTH)
-LinkLuaModifier("modifier_storm_ex_special_attack", "abilities/heroes/storm/storm_special_attack/modifier_storm_ex_special_attack", LUA_MODIFIER_MOTION_NONE)
 
 function storm_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_2 end
 function storm_special_attack:GetPlaybackRateOverride()		return 2.0 end
@@ -59,46 +55,5 @@ function storm_special_attack:PlayEffectsOnCast(caster, origin, point)
 	EmitSoundOn("Hero_StormSpirit.Attack", caster)
 end
 
-function storm_ex_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_4 end
-function storm_ex_special_attack:GetPlaybackRateOverride()      return 1.0 end
-function storm_ex_special_attack:GetCastPointSpeed() 			return 0 end
-
-function storm_ex_special_attack:OnSpellStart()
-	local caster = self:GetCaster()
-	local origin = caster:GetAbsOrigin()
-    local min_range = self:GetSpecialValueFor("min_range")
-    local speed = self:GetSpecialValueFor("speed")
-	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
-
-	local direction = (point - origin):Normalized()
-    local distance = (point - origin):Length2D()
-
-    caster:AddNewModifier(
-        caster, -- player source
-        self, -- ability source
-        "modifier_storm_ex_special_attack_displacement", -- modifier name
-        {
-            x = direction.x,
-            y = direction.y,
-            r = distance,
-            speed = speed,
-            peak = 1,
-        }
-    )
-
-    local random_number = RandomInt(1, 32)
-    local sound_name = 'stormspirit_ss_ability_lightning_'
-    if random_number < 10 then
-        sound_name = sound_name .. '0' .. random_number
-    else 
-        sound_name = sound_name ..random_number 
-    end
-    EmitSoundOn(sound_name, caster)
-    self:EndCooldown()
-end
-
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(storm_special_attack)
-Abilities.Castpoint(storm_ex_special_attack)
-Abilities.Tie(storm_special_attack, 'storm_ex_special_attack')
-Abilities.Tie(storm_ex_special_attack, 'storm_special_attack')

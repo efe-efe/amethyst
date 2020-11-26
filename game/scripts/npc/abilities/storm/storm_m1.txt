@@ -30,4 +30,22 @@
 			"08"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
 		}
 	}
+
+	"storm_ex_basic_attack"{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_basic_attack/storm_basic_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+		
+		"AbilityTextureName"			"storm_ex_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_level"			"7" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"aoe_heal"					"5" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"1.0" }
+		}
+	}
 }
