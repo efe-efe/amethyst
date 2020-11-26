@@ -14,7 +14,7 @@
 		"AbilitySpecial"
 		{
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain"                 "50" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain"                 "25" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"counter_duration"			"1.5" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"250" }
