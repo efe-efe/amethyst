@@ -5,10 +5,13 @@ export default class Mana{
     progressBars: ProgressBar[] = []
     manaPerCell = 25;
     container: Panel;
+    maxMana: number;
 
     constructor(container: Panel, mana: number, maxMana: number){
         this.container = container;
+        this.maxMana = maxMana;
 
+        this.UpdateCells();
         this.Update(mana, maxMana);
     }
 
@@ -16,49 +19,59 @@ export default class Mana{
         /*if(!IsVisibleByLocal(this.entity_index)){
             return;
         }*/
-    
-        const cells = maxMana/this.manaPerCell;
-        let iterator = 0;
-    
-        while(this.progressBars.length < cells){
-            const progressBar = new ProgressBar('mana__progress-bar__' + iterator, this.container, { foreground_color: colors.Gradient(colors.blue) });
-            this.progressBars.push(progressBar);
-    
-            iterator++;
+
+        if(maxMana != this.maxMana){
+            this.maxMana = maxMana;
+            this.UpdateCells();
         }
     
-        while(this.progressBars.length > cells){
-            this.progressBars[this.progressBars.length - 1].SetVisibility('collapse');
-            this.progressBars.pop();
+        const fixedMana = parseInt(mana.toFixed(), 10);
+        const fullPanels = Math.floor(fixedMana/this.manaPerCell);
+        const missingMana = fixedMana % this.manaPerCell;
+        const missingManaPercent = parseInt((missingMana * 100/this.manaPerCell).toFixed(), 10);
+
+        for(let i = 0; i < fullPanels; i ++){
+            this.progressBars[i].SetProgress(100);
+            this.progressBars[i].SetForegroundColor(colors.Gradient(colors.blue));
         }
-        for(let i = 0; i < this.progressBars.length; i++){
-            const width = (100 * this.manaPerCell)/maxMana;
-            this.progressBars[i].SetTotalWidth(width);
-            if(i > 0){
-                this.progressBars[i].SetBorder({left: 0});
-            }
-        }
-    
-        let panelIterator = 0;
-        let manaTmp = 0;
-    
-        for(let i = 0; i <= mana; i ++){
-            if(manaTmp == this.manaPerCell){
-                this.progressBars[panelIterator].SetProgress(100);
-                this.progressBars[panelIterator].SetForegroundColor(colors.Gradient(colors.blue));
-                manaTmp = 0;
-                panelIterator++;
-            }
-            if(manaTmp < this.manaPerCell && i == mana && i != maxMana){
-                this.progressBars[panelIterator].SetProgress(manaTmp * 4);
-                this.progressBars[panelIterator].SetForegroundColor(colors.Gradient(colors.gray));
-    
-                for(let j = panelIterator + 1; j < this.progressBars.length; j ++){
-                    this.progressBars[j].SetProgress(0);
+
+        for(let i = fullPanels; i <= this.progressBars.length; i ++){
+            if(this.progressBars[i]){
+                if(i == fullPanels){
+                    this.progressBars[i].SetForegroundColor(colors.Gradient(colors.gray));
+                    this.progressBars[i].SetProgress(missingManaPercent);
+                } else {
+                    this.progressBars[i].SetProgress(0);
                 }
             }
-    
-            manaTmp++;
         }
+    }
+
+    UpdateCells(): void{
+        const cells = this.maxMana/this.manaPerCell;
+
+        while(this.progressBars.length < cells){
+            this.AddCell();
+        }
+
+        while(this.progressBars.length > cells){
+            this.RemoveCell();
+        }
+    }
+
+    AddCell(): void{
+        const index = this.progressBars.length;
+        const progressBar = new ProgressBar('mana__progress-bar__' + index, this.container, { foreground_color: colors.Gradient(colors.blue) });
+        const width = (100 * this.manaPerCell)/this.maxMana;
+        progressBar.SetTotalWidth(width);
+        if(index > 0){
+            progressBar.SetBorder({left: 0});
+        }
+        this.progressBars.push(progressBar);
+    }
+
+    RemoveCell(): void{
+        this.progressBars[this.progressBars.length - 1].SetVisibility('collapse');
+        this.progressBars.pop();
     }
 }
