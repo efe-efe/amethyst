@@ -258,7 +258,7 @@ function GameMode:SetupPanoramaEventHooks()
                 end
             end
 
-            hero:SetAbilityPoints(3)
+            hero:SetAbilityPoints(ABILITY_POINTS)
             hero:SendDataToClient()
         end
     end)
