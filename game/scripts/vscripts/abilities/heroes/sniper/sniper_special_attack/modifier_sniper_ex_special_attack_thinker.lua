@@ -4,7 +4,7 @@ function modifier_sniper_ex_special_attack_thinker:IsAura()
 	return self:IsInitialized()
 end
 function modifier_sniper_ex_special_attack_thinker:GetModifierAura()
-	return "modifier_sniper_ex_special_attack_debuff"
+	return "modifier_sniper_ex_special_attack_buff"
 end
 function modifier_sniper_ex_special_attack_thinker:GetAuraRadius()
 	return self.radius
@@ -17,9 +17,9 @@ function modifier_sniper_ex_special_attack_thinker:GetAuraSearchTeam()
 end
 function modifier_sniper_ex_special_attack_thinker:GetAuraEntityReject(hEntity)
     if self:GetCaster():IsAlly(hEntity) then
-        return true 
+        return false 
     end
-    return false
+    return true
 end
 function modifier_sniper_ex_special_attack_thinker:GetAuraSearchType()
 	return DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
@@ -34,7 +34,7 @@ function modifier_sniper_ex_special_attack_thinker:OnDelayEnds()
         self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
         self.direction = (self:GetParent():GetAbsOrigin() - self:GetCaster():GetAbsOrigin()):Normalized()
 
-        local enemies = self:GetCaster():FindUnitsInRadius(
+        --[[local enemies = self:GetCaster():FindUnitsInRadius(
             self:GetParent():GetAbsOrigin(), 
             self.radius, 
             DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -55,6 +55,7 @@ function modifier_sniper_ex_special_attack_thinker:OnDelayEnds()
             
             ApplyDamage(damage)
         end
+        ]]
         
         AddFOWViewer(self:GetCaster():GetTeamNumber(), self:GetParent():GetAbsOrigin(), self.radius, self.duration, false)
         self:PlayEffectsOnCreated()
@@ -85,18 +86,17 @@ function modifier_sniper_ex_special_attack_thinker:PlayEffectsOnCreated()
 end
 
 function modifier_sniper_ex_special_attack_thinker:PlayEffectsAoe()
+    local parent_origin = self:GetParent():GetAbsOrigin()
     EmitSoundOn("Hero_Sniper.MKG_ShrapnelShatter", self:GetParent())
 
-    local particle_cast = "particles/econ/items/sniper/sniper_fall20_immortal/sniper_fall20_immortal_shrapnel.vpcf"
-    self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-    ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetAbsOrigin())
-    ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(self.radius,0,0))
-	ParticleManager:SetParticleControlForward(self.effect_cast, 2, self.direction + Vector(0, 0, 0.1))
+    self.efx = ParticleManager:CreateParticle('particles/sniper/sniper_ex_special_attack.vpcf', PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(self.efx, 0, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(self.efx, 1, Vector(self.radius,0,0))
 end
 
 function modifier_sniper_ex_special_attack_thinker:StopEffects()
-	ParticleManager:DestroyParticle(self.effect_cast, false)
-	ParticleManager:ReleaseParticleIndex(self.effect_cast)
+	ParticleManager:DestroyParticle(self.efx, false)
+	ParticleManager:ReleaseParticleIndex(self.efx)
 
 	StopSoundOn("Hero_Sniper.MKG_ShrapnelShatter", self:GetParent())
 end

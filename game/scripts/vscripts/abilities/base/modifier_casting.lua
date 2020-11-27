@@ -7,7 +7,8 @@ local translate = {
 	["attack_close_range"] = 4,
 	["ti10_taunt"] = 5,
 	["overload"] = 6,
-	["ti8"] = 7
+	["ti8"] = 7,
+	["overkilled"] = 7
 }
 
 function modifier_casting:IsHidden() return true end	

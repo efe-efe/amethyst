@@ -1,9 +1,34 @@
 sniper_second_attack = class({})
 sniper_ex_second_attack = class({})
 
-function sniper_second_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
-function sniper_second_attack:GetPlaybackRateOverride() 	return 1.1 end
-function sniper_second_attack:GetCastPointSpeed() 			return 0 end
+function sniper_second_attack:GetCastAnimationCustom() 
+	if self:GetLevel() >= 2 then
+		return ACT_DOTA_DIE
+	end
+	return ACT_DOTA_CAST_ABILITY_1 
+end
+
+function sniper_second_attack:GetAnimationTranslate() 	
+	if self:GetLevel() >= 2 then
+		return "overkilled"
+	end	
+	return
+end
+
+function sniper_second_attack:GetPlaybackRateOverride() 	
+	if self:GetLevel() >= 2 then
+		return 1.0
+	end	
+	return 0.5
+end
+
+function sniper_second_attack:GetCastPointSpeed()
+	if self:GetLevel() >= 2 then
+		return 100
+	end
+	return 0 
+end
+
 
 function sniper_second_attack:OnAbilityPhaseStart()
     EmitGlobalSound("Ability.AssassinateLoad")

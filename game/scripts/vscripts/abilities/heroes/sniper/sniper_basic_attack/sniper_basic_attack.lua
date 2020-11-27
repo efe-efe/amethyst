@@ -13,7 +13,9 @@ end
 
 function sniper_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK end
 function sniper_basic_attack:GetPlaybackRateOverride() 	return 1.5 end
-function sniper_basic_attack:GetCastPointSpeed() 		return 10 end
+function sniper_basic_attack:GetCastPointSpeed()
+	return 10
+end
 
 function sniper_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()

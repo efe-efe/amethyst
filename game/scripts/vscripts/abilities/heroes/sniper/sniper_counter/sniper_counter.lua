@@ -13,6 +13,9 @@ function sniper_counter:OnSpellStart()
 
     local ability = self:GetCaster():FindAbilityByName("sniper_second_attack")
     ability:EndCooldown()
+
+    ability = self:GetCaster():FindAbilityByName("sniper_ex_second_attack")
+    ability:EndCooldown()
     self:PlayEffects()
 end
 

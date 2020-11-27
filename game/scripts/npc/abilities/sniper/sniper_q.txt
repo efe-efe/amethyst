@@ -13,7 +13,7 @@
 		"AbilitySpecial"
 		{
 			"02"{ "var_type"			"FIELD_FLOAT"		"duration"			"2.5" }
-			"03"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "20 40" }
+			"03"{ "var_type"			"FIELD_INTEGER"		"speed_buff_pct"    "20 60" }
 		}
 	}
 }

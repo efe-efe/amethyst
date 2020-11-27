@@ -12,8 +12,8 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"600"
-		"AbilityCooldown"				"8.0 6.0"
-		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25 0"
 		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {
