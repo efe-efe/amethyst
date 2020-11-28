@@ -17,25 +17,35 @@ end
 
 function sniper_second_attack:GetPlaybackRateOverride() 	
 	if self:GetLevel() >= 2 then
-		return 1.0
+		return 0.6
 	end	
 	return 0.5
 end
 
 function sniper_second_attack:GetCastPointSpeed()
 	if self:GetLevel() >= 2 then
-		return 100
+		return 60
 	end
 	return 0 
 end
 
-
 function sniper_second_attack:OnAbilityPhaseStart()
-    EmitGlobalSound("Ability.AssassinateLoad")
+	EmitGlobalSound("Ability.AssassinateLoad")
+	
+	self.efx = ParticleManager:CreateParticle('particles/econ/items/wisp/wisp_relocate_channel_ti7.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
+	ParticleManager:SetParticleControlEnt(self.efx, 1, self:GetCaster(), PATTACH_ABSORIGIN_FOLLOW, 'attach_hitloc', self:GetCaster():GetAbsOrigin(), false)
+
 	return true
 end
 
+function sniper_second_attack:OnAbilityPhaseInterrupted()
+	DEFX(self.efx, true)
+end
+
 function sniper_second_attack:OnSpellStart()
+	if self.efx then
+		DEFX(self.efx, false)
+	end
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
@@ -96,9 +106,15 @@ function sniper_second_attack:OnSpellStart()
 		end,
 	}
 
+	EFX('particles/sniper/sniper_second_attack_endcap_model.vpcf', PATTACH_ABSORIGIN_FOLLOW, caster, {
+		cp1 = origin + projectile_direction * 100,
+		cp1f = caster:GetForwardVector(),
+		release = true
+	})
+
     Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
-	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
+	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 3.0)
 end
 
 function sniper_second_attack:PlayEffectsOnCast()
@@ -129,17 +145,21 @@ function sniper_second_attack:PlayEffectsOnHit(hTarget)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-sniper_ex_second_attack.GetCastAnimationCustom = sniper_second_attack.GetCastAnimationCustom
-sniper_ex_second_attack.GetPlaybackRateOverride = sniper_second_attack.GetPlaybackRateOverride
-sniper_ex_second_attack.GetCastPointSpeed = sniper_second_attack.GetCastPointSpeed
+function sniper_ex_second_attack:GetCastAnimationCustom()
+	return ACT_DOTA_CAST_ABILITY_1
+end
+
+function sniper_ex_second_attack:GetPlaybackRateOverride()
+	return 0.5
+end
+
+function sniper_ex_second_attack:GetCastPointSpeed()
+	return 0
+end
+
 sniper_ex_second_attack.PlayEffectsOnCast = sniper_second_attack.PlayEffectsOnCast
 sniper_ex_second_attack.PlayEffectsOnFinish = sniper_second_attack.PlayEffectsOnFinish
 sniper_ex_second_attack.PlayEffectsOnHit = sniper_second_attack.PlayEffectsOnHit
-
-function sniper_second_attack:OnAbilityPhaseStart()
-    EmitGlobalSound("Ability.AssassinateLoad")
-	return true
-end
 
 function sniper_ex_second_attack:OnSpellStart()
 	local caster = self:GetCaster()

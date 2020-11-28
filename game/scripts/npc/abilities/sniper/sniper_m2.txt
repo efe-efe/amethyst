@@ -13,7 +13,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1600"
 		"AbilityCooldown"				"6.0"
-		"AbilityCastPoint"				"1.6 0.8"
+		"AbilityCastPoint"				"1.4 1.2"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -23,7 +23,7 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"32 38" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"38 32" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.5" }
@@ -59,10 +59,10 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"25" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"root_duration"				"1.5" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"root_duration"				"1.0" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"reduction_per_hit"			"35" }
 			"07"{ "var_type"	"FIELD_INTEGER"		"min_damage"				"14" }
 		}

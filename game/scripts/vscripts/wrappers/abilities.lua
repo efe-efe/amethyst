@@ -42,6 +42,8 @@ function Abilities.Castpoint(ability)
             self:GetCaster():FadeGesture(self:GetCastAnimationCustom())
         end
         self:GetCaster():RemoveModifierByName("modifier_casting")
+        
+        if onAbilityPhaseInterrupted then return onAbilityPhaseInterrupted(self) end
     end
 
     function ability:OnSpellStart()

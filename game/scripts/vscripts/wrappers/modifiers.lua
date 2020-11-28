@@ -206,9 +206,7 @@ function Modifiers.Charges(modifier)
             if self:GetStackCount() < self:GetMaxCharges() then
                 -- If not charging
                 if self:GetRemainingTime() <= 0.05 then
-                    self.replenish_time = self:GetReplenishTime()
-                    self:StartIntervalThink(self.replenish_time)
-                    self:SetDuration(self.replenish_time, true)
+                    self:ResetCooldown()
                 end
                 -- Set on cooldown if no charges
                 if self:GetStackCount() == 0 then
@@ -216,6 +214,11 @@ function Modifiers.Charges(modifier)
                 end
             end
         end
+    end
+
+    function modifier:ResetCooldown()
+        self:StartIntervalThink(self.replenish_time)
+        self:SetDuration(self.replenish_time, true)
     end
 
     function modifier:OnIntervalThink()

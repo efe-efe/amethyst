@@ -10,7 +10,7 @@ function modifier_sniper_ex_special_attack_thinker:GetAuraRadius()
 	return self.radius
 end
 function modifier_sniper_ex_special_attack_thinker:GetAuraDuration()
-	return self.debuff_linger
+	return self.buff_linger
 end
 function modifier_sniper_ex_special_attack_thinker:GetAuraSearchTeam()
 	return DOTA_UNIT_TARGET_TEAM_BOTH
@@ -29,33 +29,7 @@ function modifier_sniper_ex_special_attack_thinker:OnDelayEnds()
     if IsServer() then
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
-        self.debuff_linger = self:GetAbility():GetSpecialValueFor("debuff_linger")
-        self.initial_damage = self:GetAbility():GetSpecialValueFor("initial_damage")
-        self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
-        self.direction = (self:GetParent():GetAbsOrigin() - self:GetCaster():GetAbsOrigin()):Normalized()
-
-        --[[local enemies = self:GetCaster():FindUnitsInRadius(
-            self:GetParent():GetAbsOrigin(), 
-            self.radius, 
-            DOTA_UNIT_TARGET_TEAM_ENEMY, 
-            DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-            DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
-            FIND_ANY_ORDER
-        )
-
-        for _,enemy in pairs(enemies) do
-            local damage = {
-                victim = enemy,
-                attacker = self:GetParent(),
-                damage = self.initial_damage,
-                damage_type = DAMAGE_TYPE_PURE,
-            }
-
-            enemy:AddNewModifier(self:GetCaster(), self:GetAbility(), 'modifier_generic_stunned', { duration = self.stun_duration })
-            
-            ApplyDamage(damage)
-        end
-        ]]
+        self.buff_linger = self:GetAbility():GetSpecialValueFor("buff_linger")
         
         AddFOWViewer(self:GetCaster():GetTeamNumber(), self:GetParent():GetAbsOrigin(), self.radius, self.duration, false)
         self:PlayEffectsOnCreated()
