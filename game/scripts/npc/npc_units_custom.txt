@@ -130,7 +130,7 @@
 
 		// Status
 		//----------------------------------------------------------------
-		"StatusHealth"				"60"		
+		"StatusHealth"				"100"		
 		"StatusHealthRegen"			"0.0"		
 		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
