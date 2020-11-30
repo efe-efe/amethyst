@@ -608,7 +608,9 @@ function CDOTA_BaseNPC:IsInitialized()			return 	self.initialized								end
 
 function CDOTA_BaseNPC:GetDirection()
 	if self:IsFeared() then
-		local direction = (Vector(0,0,0) - self:GetAbsOrigin()):Normalized()
+		local fear_modifier_name = self.fear_modifiers[1]
+		local fear_origin = self:FindModifierByName(fear_modifier_name):GetAbsOrigin()
+		local direction = (fear_origin - self:GetAbsOrigin()):Normalized()
 		
 		return direction * -1
 	end

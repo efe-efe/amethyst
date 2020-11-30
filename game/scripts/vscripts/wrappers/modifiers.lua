@@ -1086,6 +1086,12 @@ function Modifiers.Fear(modifier)
         end
         if onDestroy then onDestroy(self, params) end
     end
+
+    function modifier:GetAbsOrigin()
+        if IsServer() then
+            return self:GetCaster():GetAbsOrigin()
+        end
+    end
     
     function modifier:CheckState()
         local states = {}
