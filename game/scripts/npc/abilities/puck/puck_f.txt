@@ -7,10 +7,11 @@
 		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"puck_waning_rift"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
-		"AbilityCastRange" 				"0 600"
+		"AbilityCastRange" 				"600"
 		"AbilityCooldown"				"12.0"
 		"AbilityManaCost"				"25"
 		"AbilityCastPoint"				"0.1"
@@ -22,9 +23,9 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"pre_silence_duration"      "1.0" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"silence_duration"          "1.5" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"pre_silence_duration"      "1.0" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"silence_duration"          "1.0" }
 		}
 	}
 }

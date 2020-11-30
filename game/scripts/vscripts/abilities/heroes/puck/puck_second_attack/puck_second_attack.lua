@@ -39,9 +39,9 @@ function puck_second_attack:OnSpellStart()
 			}
 			ApplyDamage(damage_table)
 
-			if unit:HasModifier("modifier_puck_mobility_debuff") then
+			if unit:HasModifier("modifier_puck_fairy_dust") then
 				unit:AddNewModifier(_self.Source, self, "modifier_generic_silence", { duration = silence_duration })
-				unit:RemoveModifierByName("modifier_puck_mobility_debuff")
+				unit:RemoveModifierByName("modifier_puck_fairy_dust")
 
 				EmitSoundOn("Hero_Puck.EtherealJaunt", unit)
 				local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start_embers.vpcf"

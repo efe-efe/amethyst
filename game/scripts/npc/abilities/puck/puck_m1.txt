@@ -3,7 +3,8 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack/puck_basic_attack"
-		"MaxLevel"						"1"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"puck_basic_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
@@ -24,8 +25,8 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"2.0" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"80" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"fairy_dust_duration"		"2.0" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"fairy_dust_slow_pct"		"20" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"charged_damage"			"4" }
 		}
 	}

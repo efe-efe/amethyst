@@ -1,6 +1,7 @@
 puck_basic_attack = class({})
 puck_ex_basic_attack = class({})
 LinkLuaModifier("modifier_puck_basic_attack_cooldown", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_puck_fairy_dust", "abilities/heroes/puck/modifier_puck_fairy_dust", LUA_MODIFIER_MOTION_NONE)
 
 function puck_basic_attack:GetCastPoint()
 	if IsServer() then
@@ -36,8 +37,8 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-    local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
-    local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
+    local fairy_dust_duration = self:GetSpecialValueFor("fairy_dust_duration")
+    local fairy_dust_slow_pct = self:GetSpecialValueFor("fairy_dust_slow_pct")
 
 	local is_charged = caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):IsCooldownReady()
 	
@@ -72,11 +73,14 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 			ApplyDamage(damage_table)
 
 			if is_charged then
-				unit:AddNewModifier(_self.Source, nil, "modifier_generic_fading_slow", { duration = fading_slow_duration, max_slow_pct = fading_slow_pct })
+				unit:AddNewModifier(_self.Source, nil, "modifier_puck_fairy_dust", { duration = fairy_dust_duration, slow_pct = fairy_dust_slow_pct })
 			end
 
 			if _self.Source == caster and not unit:IsObstacle() then
 				caster:GiveManaPercent(mana_gain_pct, unit)
+				if self:GetLevel() >=2 then
+					caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
+				end
 			end
 
 			if _self.Source.OnBasicAttackImpact then

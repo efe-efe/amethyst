@@ -1,6 +1,6 @@
-modifier_puck_mobility_displacement = class({})
+modifier_puck_deletedis_displacement = class({})
 
-function modifier_puck_mobility_displacement:OnCreated(params)
+function modifier_puck_deletedis_displacement:OnCreated(params)
 	self.debuff_duration = self:GetAbility():GetSpecialValueFor("debuff_duration")
 	EmitSoundOn("Hero_Puck.Phase_Shift", self:GetParent())
 
@@ -9,12 +9,12 @@ function modifier_puck_mobility_displacement:OnCreated(params)
 		local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_trail_embers.vpcf"
 		self.effect_cast_trail = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 
-		local particle_cast = "particles/puck/puck_mobility_trail.vpcf"
+		local particle_cast = "particles/puck/puck_deletedis_trail.vpcf"
 		self.effect_cast_dust = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 	end
 end
 
-function modifier_puck_mobility_displacement:OnDestroy()
+function modifier_puck_deletedis_displacement:OnDestroy()
 	StopSoundOn("Hero_Puck.Phase_Shift", self:GetParent())
 
 	if IsServer() then
@@ -34,15 +34,15 @@ function modifier_puck_mobility_displacement:OnDestroy()
 	end
 end
 
-function modifier_puck_mobility_displacement:OnCollide(params)
+function modifier_puck_deletedis_displacement:OnCollide(params)
     if IsServer() then
 		if params.type == UNIT_COLLISION then
 			for _,unit in pairs(params.units) do
-				if not self:GetParent():IsAlly(unit) and not unit:HasModifier("modifier_puck_mobility_debuff") then
+				if not self:GetParent():IsAlly(unit) and not unit:HasModifier("modifier_puck_deletedis_debuff") then
 					unit:AddNewModifier(
 						self:GetParent(), -- player source
 						self:GetAbility(), -- ability source
-						"modifier_puck_mobility_debuff", -- modifier name
+						"modifier_puck_deletedis_debuff", -- modifier name
 						{ duration = self.debuff_duration }
 					)
 				end
@@ -52,21 +52,21 @@ function modifier_puck_mobility_displacement:OnCollide(params)
 end
 
 
-function modifier_puck_mobility_displacement:GetStatusEffectName()
+function modifier_puck_deletedis_displacement:GetStatusEffectName()
     return "particles/status_fx/status_effect_combo_breaker.vpcf"
 end
 
-function modifier_puck_mobility_displacement:DeclareFunctions()
+function modifier_puck_deletedis_displacement:DeclareFunctions()
 	return {
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE,
 	}
 end
 
-function modifier_puck_mobility_displacement:GetOverrideAnimation() 		return ACT_DOTA_GENERIC_CHANNEL_1 end
-function modifier_puck_mobility_displacement:GetOverrideAnimationRate() 	return 1.8 end
+function modifier_puck_deletedis_displacement:GetOverrideAnimation() 		return ACT_DOTA_GENERIC_CHANNEL_1 end
+function modifier_puck_deletedis_displacement:GetOverrideAnimationRate() 	return 1.8 end
 
-function modifier_puck_mobility_displacement:CheckState()
+function modifier_puck_deletedis_displacement:CheckState()
 	return {
         [MODIFIER_STATE_NO_HEALTH_BAR] = true,
 		[MODIFIER_STATE_INVULNERABLE] = true,
@@ -76,5 +76,5 @@ function modifier_puck_mobility_displacement:CheckState()
 end
 
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Displacement(modifier_puck_mobility_displacement)
-Modifiers.Animation(modifier_puck_mobility_displacement)
+Modifiers.Displacement(modifier_puck_deletedis_displacement)
+Modifiers.Animation(modifier_puck_deletedis_displacement)

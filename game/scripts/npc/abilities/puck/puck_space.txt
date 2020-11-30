@@ -1,29 +1,94 @@
 "DOTAAbilities" {
-    "puck_mobility"
+	"puck_mobility"
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
-		"AbilityTextureName"			"puck_mobility"
+		"AbilityTextureName"			"puck_illusory_orb"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"800"
-		"AbilityCooldown"				"10.0"
-		"AbilityCastPoint"				"0.1"
+		"AbilityCastRange" 				"2000"
+		"AbilityCooldown"				"8.0"
+		"AbilityCastPoint"				"0.2"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
 			"DisplayRange" 				"1"
+			"Fixed"						"1"
 		}
-
+		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"		"3.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"speed_debuff_pct"		"25" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"15" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"damage_aoe"				"7" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1100" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 		}
 	}
+	
+	"puck_mobility_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility_recast"
+		"MaxLevel"						"1"
+
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityTextureName"			"puck_ethereal_jaunt"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+	}
+
+	"puck_ex_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"puck_ex_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"2000"
+		"AbilityCooldown"				"8.0"
+		"AbilityCastPoint"				"0.4"
+		"AbilityManaCost"				"25"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"damage"				"10" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"damage_aoe"			"5" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"		"1100" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"fear_duration"			"1.5" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"hitbox"				"150" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
+		}
+	}
+
+	
+	"puck_ex_mobility_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"puck_ex_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+	}
+	
 }

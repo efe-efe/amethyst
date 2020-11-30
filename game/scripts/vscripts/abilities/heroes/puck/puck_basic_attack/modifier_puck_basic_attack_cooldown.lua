@@ -27,12 +27,6 @@ function modifier_puck_basic_attack_cooldown:OnAbilityFullyCast(params)
         if  params.ability == counter or
             params.ability == self:GetAbility()
         then
-            if  params.ability == counter and
-                counter:GetLevel() < 2
-            then
-                return
-            end
-
             if self:GetRemainingTime() > 0 then
                 return
             end

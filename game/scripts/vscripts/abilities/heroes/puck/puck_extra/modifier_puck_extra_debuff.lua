@@ -16,6 +16,13 @@ function modifier_puck_extra_debuff:OnOrder(params)
             params.order_type == DOTA_UNIT_ORDER_CAST_POSITION or
             params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
         then
+            if self:GetAbility():GetLevel() >= 2 then
+                self:GetAbility():EndCooldown()
+                EFX("particles/puck/puck_ex_base_attack.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+                    release = true
+                })
+            end
+
             self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_silence", { duration = self.silence_duration })
 
             EmitSoundOn("Hero_Puck.IIllusory_Orb_Damage", self:GetParent())

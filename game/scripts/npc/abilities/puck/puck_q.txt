@@ -8,12 +8,12 @@
 		
 		"AbilityTextureName"			"puck_phase_shift"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityCooldown"				"6.0"
+		"AbilityCooldown"				"6.0 5.0"
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"			"FIELD_FLOAT"		"max_charges"       "1 2" }
-			"03"{ "var_type"			"FIELD_FLOAT"		"banish_duration"	"0.75" }
+			"01"{ "var_type"			"FIELD_FLOAT"		"max_charges"       "2" }
+			"02"{ "var_type"			"FIELD_FLOAT"		"banish_duration"	"0.75" }
 		}
 	}
 }

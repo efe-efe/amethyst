@@ -6,91 +6,33 @@
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
-		"AbilityTextureName"			"puck_illusory_orb"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityTextureName"			"puck_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange" 				"2000"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastRange" 				"1200"
 		"AbilityCooldown"				"8.0"
-		"AbilityCastPoint"				"0.2"
-
-		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_LINE"
-			"DisplayRange" 				"1"
-			"Fixed"						"1"
-		}
-		
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1100" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
-		}
-	}
-	
-	"puck_special_attack_recast"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_special_attack/puck_special_attack_recast"
-		"MaxLevel"						"1"
-
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityTextureName"			"puck_ethereal_jaunt"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityCastPoint"				"0.1"
-	}
-
-	"puck_ex_special_attack"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_special_attack/puck_special_attack"
-		"MaxLevel"						"2"
-		"LevelsBetweenUpgrades"			"0"
-
-		"AbilityTextureName"			"puck_ex_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange" 				"1500"
-		"AbilityCooldown"				"8.0"
-		"AbilityCastPoint"				"0.4"
-		"AbilityManaCost"				"25"
 
 		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_LINE"
+			"Type" 						"TARGETING_INDICATOR_AOE"
 			"DisplayRange" 				"1"
-			"Fixed"						"1"
 		}
-		
+
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"explosion_damage"			"20" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"800" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"150" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"root_duration"				"2.0" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius_small"				"100" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"delay"						"0.8" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"delay_small"				"0.4" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"damage"					"10 20" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"damage_small"				"10" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.75" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"fairy_dust_duration"		"2.0" }
+			"09"{ "var_type"	"FIELD_INTEGER"		"fairy_dust_slow_pct"		"30" }
+			"10"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.75" }
+			"11"{ "var_type"	"FIELD_FLOAT"		"stun_duration_small"		"1.0" }
 		}
 	}
-
-	
-	"puck_ex_special_attack_recast"
-	{
-		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_special_attack/puck_special_attack"
-		"MaxLevel"						"1"
-
-		"AbilityTextureName"			"puck_ex_special_attack"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastPoint"				"0.2"
-	}
-	
 }

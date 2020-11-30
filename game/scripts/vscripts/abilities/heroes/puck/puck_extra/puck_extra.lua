@@ -1,14 +1,6 @@
 puck_extra = class({})
 LinkLuaModifier("modifier_puck_extra_debuff", "abilities/heroes/puck/puck_extra/modifier_puck_extra_debuff", LUA_MODIFIER_MOTION_NONE)
 
-function puck_extra:GetBehavior()
-    if self:GetLevel() == 2 then
-        return DOTA_ABILITY_BEHAVIOR_AOE + DOTA_ABILITY_BEHAVIOR_POINT
-    end
-
-    return DOTA_ABILITY_BEHAVIOR_AOE + DOTA_ABILITY_BEHAVIOR_NO_TARGET
-end
-
 function puck_extra:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_2 end 
 function puck_extra:GetPlaybackRateOverride() 		return 1.0 end
 function puck_extra:GetCastPointSpeed() 			return 0 end
@@ -20,9 +12,7 @@ function puck_extra:OnSpellStart()
     local pre_silence_duration = self:GetSpecialValueFor("pre_silence_duration")
 	self.radius = self:GetSpecialValueFor("radius")
     
-    if self:GetLevel() == 2 then
-        FindClearSpaceForUnit(caster, point, true)
-    end
+    FindClearSpaceForUnit(caster, point, true)
 
     local enemies = caster:FindUnitsInRadius(
         caster:GetOrigin(), 
