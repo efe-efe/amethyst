@@ -20,6 +20,12 @@ function modifier_storm_special_attack_thinker:OnCreated(params)
     end
 end
 
+function modifier_storm_special_attack_thinker:OnDestroy()
+    if IsServer() then
+        UTIL_Remove(self:GetParent())
+    end
+end
+
 function modifier_storm_special_attack_thinker:OnIntervalThink()
     EFX("particles/units/heroes/hero_zeus/zeus_cloud_strike.vpcf", PATTACH_WORLDORIGIN, nil, {
         cp0 = self.origin,
@@ -28,7 +34,6 @@ function modifier_storm_special_attack_thinker:OnIntervalThink()
         release = true
     })
 
-    
     local give_mana = false
 
     ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)

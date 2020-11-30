@@ -21,6 +21,12 @@ function modifier_storm_ultimate_thinker:OnCreated(params)
     end
 end
 
+function modifier_storm_ultimate_thinker:OnDestroy()
+    if IsServer() then
+        UTIL_Remove(self:GetParent())
+    end
+end
+
 function modifier_storm_ultimate_thinker:OnIntervalThink()
     EFX("particles/units/heroes/hero_zeus/zeus_cloud_strike.vpcf", PATTACH_WORLDORIGIN, nil, {
         cp0 = self.origin,
