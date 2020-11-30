@@ -88,14 +88,9 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 				end
 			end
 
-			if _self.Source.OnBasicAttackImpact then
-				_self.Source:OnBasicAttackImpact(unit)
-			end
-		end,
-		OnFinish = function(_self, pos)
 			if is_charged then
 				local enemies = _self.Source:FindUnitsInRadius(
-					pos, 
+					_self:GetPosition(), 
 					radius, 
 					DOTA_UNIT_TARGET_TEAM_ENEMY, 
 					DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
@@ -117,12 +112,23 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 					ApplyDamage(damage_table_aoe)
 				end
 
-				local groundPosition = GetGroundPosition(pos, _self.Source)
+				local groundPosition = GetGroundPosition(_self:GetPosition(), _self.Source)
 
 				CreateRadiusMarker(_self.Source, groundPosition, radius, RADIUS_SCOPE_PUBLIC, 0.1)
 				ScreenShake(groundPosition, 100, 300, 0.45, 1000, 0, true)
+				
+				EFX("particles/units/heroes/hero_void_spirit/voidspirit_overload_discharge.vpcf", PATTACH_WORLDORIGIN, _self.Source, {
+					cp0 = _self:GetPosition(),
+					release = true,
+				})
 			end
-			self:PlayEffectsOnFinish(pos, is_charged)
+
+			if _self.Source.OnBasicAttackImpact then
+				_self.Source:OnBasicAttackImpact(unit)
+			end
+		end,
+		OnFinish = function(_self, pos)
+			self:PlayEffectsOnFinish(pos)
 		end,
 	}
 
@@ -137,7 +143,7 @@ function storm_basic_attack:PlayEffectsOnCast(isCharged)
 	end
 end
 
-function storm_basic_attack:PlayEffectsOnFinish(pos, is_charged)
+function storm_basic_attack:PlayEffectsOnFinish(pos)
 	local caster = self:GetCaster()
 
 	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.ProjectileImpact", caster)
@@ -146,13 +152,6 @@ function storm_basic_attack:PlayEffectsOnFinish(pos, is_charged)
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, caster)
 	ParticleManager:SetParticleControl(effect_cast, 3, pos)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
-
-	if is_charged then
-		EFX("particles/units/heroes/hero_void_spirit/voidspirit_overload_discharge.vpcf", PATTACH_WORLDORIGIN, caster, {
-			cp0 = pos,
-			release = true,
-		})
-	end
 end
 
 function storm_ex_basic_attack:OnSpellStart()

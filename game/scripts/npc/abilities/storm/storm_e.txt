@@ -26,9 +26,9 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7 14" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"175" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.0" }
 		}
 	}
 }
