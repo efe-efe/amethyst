@@ -106,11 +106,18 @@ function sniper_second_attack:OnSpellStart()
 		end,
 	}
 
-	EFX('particles/sniper/sniper_second_attack_endcap_model.vpcf', PATTACH_ABSORIGIN_FOLLOW, caster, {
-		cp1 = origin + projectile_direction * 100,
-		cp1f = caster:GetForwardVector(),
-		release = true
-	})
+	if self:GetLevel() >= 2 then
+		EFX('particles/econ/items/phantom_lancer/phantom_lancer_fall20_immortal/phantom_lancer_fall20_immortal_doppelganger_aoe_gold_bits.vpcf', PATTACH_ABSORIGIN_FOLLOW, caster, {
+			cp1 = origin,
+			release = true
+		})
+	else 
+		EFX('particles/sniper/sniper_second_attack_endcap_model.vpcf', PATTACH_ABSORIGIN_FOLLOW, caster, {
+			cp1 = origin + projectile_direction * 100,
+			cp1f = caster:GetForwardVector(),
+			release = true
+		})
+	end
 
     Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
