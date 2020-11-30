@@ -1107,7 +1107,7 @@ function Modifiers.Fear(modifier)
     end
     
     function modifier:GetStatusLabel() return "Fear" end
-    function modifier:GetStatusPriority() return 4 end
+    function modifier:GetStatusPriority() return 7 end
     function modifier:GetStatusStyle() return "Fear" end
 
     if IsClient() then require("wrappers/modifiers") end

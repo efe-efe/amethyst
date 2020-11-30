@@ -4,6 +4,7 @@ spectre_ex_mobility = class({})
 LinkLuaModifier("modifier_spectre_banish", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_banish", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_mobility_charges", "abilities/heroes/spectre/spectre_mobility/modifier_spectre_mobility_charges", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_mobility_thinker", "abilities/heroes/spectre/spectre_mobility/modifier_spectre_mobility_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_ex_mobility_fear", "abilities/heroes/spectre/spectre_mobility/modifier_spectre_ex_mobility_fear", LUA_MODIFIER_MOTION_NONE)
 
 function spectre_mobility:GetIntrinsicModifierName()
 	return "modifier_spectre_mobility_charges"

@@ -6,11 +6,8 @@ function modifier_spectre_mobility_thinker:OnCreated(params)
         local origin = self:GetParent():GetAbsOrigin()
         self.radius = self:GetAbility():GetSpecialValueFor('radius')
         self.heal = self:GetAbility():GetSpecialValueFor('heal')
-		self.damage_table = {
-			attacker = caster,
-			damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
-			damage_type = DAMAGE_TYPE_PURE,
-		}
+        self.desolate_duration = self:GetAbility():GetSpecialValueFor('desolate_duration')
+        self.fear_duration = self:GetAbility():GetSpecialValueFor('fear_duration')
         CreateTimedRadiusMarker(caster, origin, self.radius, self:GetDuration(), 0.2, RADIUS_SCOPE_PUBLIC)
     end
 end
@@ -19,13 +16,18 @@ end
 function modifier_spectre_mobility_thinker:OnDestroy()
     if IsServer() then
         local caster = self:GetCaster()
+        local is_charged = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady()
         local origin = self:GetParent():GetAbsOrigin()
         FindClearSpaceForUnit(caster, origin, false)
         SafeDestroyModifier("modifier_spectre_banish", caster, caster)
         
         local enemies = ApplyCallbackForUnitsInArea(caster, self:GetParent():GetAbsOrigin(), self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)
-			self.damage_table.victim = enemy
-			ApplyDamage(self.damage_table)
+            if is_charged then
+                enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
+            end
+            if self:GetAbility():GetLevel() >= 2 then
+                enemy:AddNewModifier(caster, self, "modifier_spectre_ex_mobility_fear", { duration = self.fear_duration })
+            end
             EmitSoundOn("Hero_Spectre.Attack", enemy)
         end)
 

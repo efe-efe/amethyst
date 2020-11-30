@@ -9,7 +9,7 @@
 		"AbilityTextureName"			"spectre_desolate"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"AbilityCastRange"				"600"
+		"AbilityCastRange"				"800"
 		"AbilityCooldown"				"8.0"
 		"AbilityCastPoint"				"0.1"
 
@@ -39,10 +39,10 @@
 		"AbilityTextureName"			"spectre_haunt_single"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"AbilityCastRange"				"1200"
+		"AbilityCastRange"				"800"
 		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
-		"AbilityCastPoint"				"0.2"
+		"AbilityCastPoint"				"0.1"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -51,11 +51,12 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"heal"						"12 18" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"delay"						"0.5" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"heal"						"20" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"delay"						"0.5" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"desolate_duration"			"2.0" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"fear_duration"				"1.0" }
 		}
 	}
 }
