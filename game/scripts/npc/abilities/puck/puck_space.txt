@@ -58,7 +58,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"2000"
 		"AbilityCooldown"				"8.0"
-		"AbilityCastPoint"				"0.4"
+		"AbilityCastPoint"				"0.2"
 		"AbilityManaCost"				"25"
 
 		"TargetingIndicator" {

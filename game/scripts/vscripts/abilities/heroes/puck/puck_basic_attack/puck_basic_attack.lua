@@ -1,7 +1,11 @@
 puck_basic_attack = class({})
 puck_ex_basic_attack = class({})
+puck_basic_attack_related = class({})
+
 LinkLuaModifier("modifier_puck_basic_attack_cooldown", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_puck_fairy_dust", "abilities/heroes/puck/modifier_puck_fairy_dust", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_puck_ex_basic_attack", "abilities/heroes/puck/puck_basic_attack/modifier_puck_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_puck_basic_attack_thinker", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 
 function puck_basic_attack:GetCastPoint()
 	if IsServer() then
@@ -118,22 +122,75 @@ function puck_basic_attack:PlayEffectsOnFinish(pos, is_charged)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function puck_ex_basic_attack:GetCastAnimationCustom()	    return ACT_DOTA_CAST_ABILITY_2 end
-function puck_ex_basic_attack:GetPlaybackRateOverride() 	return 1.0 end
-function puck_ex_basic_attack:GetCastPointSpeed() 		    return 100 end
-function puck_ex_basic_attack:OnSpellStart()
-	self:GetCaster():FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
+function puck_basic_attack:OnUpgrade()
+	local related = self:GetCaster():FindAbilityByName('puck_basic_attack_related')
+	
+	if self:GetLevel() > related:GetLevel() then
+		related:UpgradeAbility(true)
+	end
+end
 
-	EFX("particles/puck/puck_ex_base_attack.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+puck_basic_attack_related.GetCastPoint = puck_basic_attack.GetCastPoint
+puck_basic_attack_related.GetCooldown = puck_basic_attack.GetCooldown
+puck_basic_attack_related.PlayEffectsOnCast = puck_basic_attack.PlayEffectsOnCast
+
+function puck_basic_attack_related:GetCastAnimationCustom()	    return ACT_DOTA_CAST_ABILITY_2 end
+function puck_basic_attack_related:GetPlaybackRateOverride() 	return 1.0 end
+function puck_basic_attack_related:GetCastPointSpeed() 		    return 10 end
+
+function puck_basic_attack_related:OnSpellStart()
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local charged = caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):IsCooldownReady() and 1 or 0
+	
+	CreateModifierThinker(
+		caster, --hCaster
+		self, --hAbility
+		"modifier_puck_basic_attack_thinker", --modifierName
+		{
+			charged = charged
+		},
+		point, --vOrigin
+		caster:GetTeamNumber(), --nTeamNumber
+		false --bPhantomBlocker
+	)
+	
+    EFX('particles/econ/items/invoker/invoker_ti7/invoker_ti7_alacrity_cast.vpcf', PATTACH_CUSTOMORIGIN, self:GetCaster(), {
+		cp0 = {
+			ent = caster,
+			point = 'attach_hitloc'
+		},
+		cp1 = point + Vector(0, 0, 1000),
+		cp2 = point + Vector(0, 0, 1000),
+        release = true,
+	})
+	self:PlayEffectsOnCast(charged == 1)
+end
+
+function puck_basic_attack_related:OnUpgrade()
+	local related = self:GetCaster():FindAbilityByName('puck_basic_attack')
+	
+	if self:GetLevel() > related:GetLevel() then
+		related:UpgradeAbility(true)
+	end
+end
+
+function puck_ex_basic_attack:OnSpellStart()
+	local caster = self:GetCaster()
+	caster:AddNewModifier(caster, self, "modifier_puck_ex_basic_attack", { duration = 5.0 })
+
+	EFX("particles/puck/puck_ex_base_attack.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster, {
 		release = true
 	})
-
-	EmitSoundOn('Hero_Puck.EtherealJaunt', self:GetCaster())
-	EmitSoundOn('Hero_Oracle.FatesEdict.Cast', self:GetCaster())
+	
+    EmitSoundOn("puck_puck_laugh_01", caster)
+	EmitSoundOn('Hero_Puck.EtherealJaunt', caster)
+	EmitSoundOn("Hero_Puck.Phase_Shift", caster)
 end
 
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(puck_basic_attack)
-Abilities.Castpoint(puck_ex_basic_attack)
+Abilities.Castpoint(puck_basic_attack_related)
 

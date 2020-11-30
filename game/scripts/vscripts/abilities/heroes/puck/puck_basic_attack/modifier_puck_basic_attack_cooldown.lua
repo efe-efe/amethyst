@@ -23,8 +23,10 @@ function modifier_puck_basic_attack_cooldown:OnAbilityFullyCast(params)
         end
 
         local counter = self:GetParent():FindAbilityByName("puck_counter")
+        local basic_attack_related = self:GetParent():FindAbilityByName("puck_basic_attack_related")
 
         if  params.ability == counter or
+            params.ability == basic_attack_related or
             params.ability == self:GetAbility()
         then
             if self:GetRemainingTime() > 0 then

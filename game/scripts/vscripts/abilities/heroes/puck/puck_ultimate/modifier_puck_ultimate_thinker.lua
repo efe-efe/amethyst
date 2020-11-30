@@ -71,16 +71,12 @@ function modifier_puck_ultimate_thinker:OnAbilityExecuted(params)
 
         local basic_attack = self:GetCaster():FindAbilityByName("puck_basic_attack")
         local counter = self:GetCaster():FindAbilityByName("puck_counter")
+        local basic_attack_related = self:GetCaster():FindAbilityByName("puck_basic_attack_related")
 
         if  params.ability == counter or
+            params.ability == basic_attack_related or
             params.ability == basic_attack
         then
-            if  params.ability == counter and
-                counter:GetLevel() < 2
-            then
-                return
-            end
-
             basic_attack:LaunchProjectile(self:GetParent():GetOrigin(), self:GetAbility():GetCursorPosition())
         end
     end
