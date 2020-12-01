@@ -402,7 +402,7 @@ function UpdateTargetIndicator(){
                         if(stacks == data.ModifierStacks){
                             type = data.ModifierType;
 
-                            if(data.ModifierLength !== null){
+                            if(data.ModifierLength !== undefined){
                                 length = data.ModifierLength;
                             }
                         }

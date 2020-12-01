@@ -12,19 +12,15 @@ function modifier_spectre_mobility_thinker:OnCreated(params)
     end
 end
 
-
 function modifier_spectre_mobility_thinker:OnDestroy()
     if IsServer() then
         local caster = self:GetCaster()
-        local is_charged = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady()
         local origin = self:GetParent():GetAbsOrigin()
         FindClearSpaceForUnit(caster, origin, false)
         SafeDestroyModifier("modifier_spectre_banish", caster, caster)
         
         local enemies = ApplyCallbackForUnitsInArea(caster, self:GetParent():GetAbsOrigin(), self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)
-            if is_charged then
-                enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
-            end
+            enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
             if self:GetAbility():GetLevel() >= 2 then
                 enemy:AddNewModifier(caster, self, "modifier_spectre_ex_mobility_fear", { duration = self.fear_duration })
             end
@@ -44,5 +40,7 @@ function modifier_spectre_mobility_thinker:OnDestroy()
             cp2 = Vector(self.radius, 1, 1),
             release = true,
         })
+
+        UTIL_Remove(self:GetParent())
     end
 end

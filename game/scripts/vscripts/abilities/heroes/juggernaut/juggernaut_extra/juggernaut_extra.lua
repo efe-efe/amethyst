@@ -10,7 +10,7 @@ function juggernaut_extra:GetCastPointSpeed() 			return 10 end
 function juggernaut_extra:OnSpellStart()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
-	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
     local healing_ward = CreateUnitByName(
         "npc_dota_creature_juggernaut_healing_totem", 

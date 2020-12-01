@@ -30,5 +30,6 @@ end
 function modifier_spectre_debuff:OnDestroy()
     if IsServer() then
         self:GetCaster():Heal(self.damage_done, self:GetCaster())
+        self:GetCaster():FindAbilityByName('spectre_extra_recast'):AddDamage(self.damage_done)
     end
 end

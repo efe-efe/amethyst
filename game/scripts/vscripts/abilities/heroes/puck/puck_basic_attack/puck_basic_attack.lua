@@ -141,7 +141,7 @@ function puck_basic_attack_related:GetCastPointSpeed() 		    return 10 end
 function puck_basic_attack_related:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local charged = caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):IsCooldownReady() and 1 or 0
 	
 	CreateModifierThinker(
@@ -156,7 +156,7 @@ function puck_basic_attack_related:OnSpellStart()
 		false --bPhantomBlocker
 	)
 	
-    EFX('particles/econ/items/invoker/invoker_ti7/invoker_ti7_alacrity_cast.vpcf', PATTACH_CUSTOMORIGIN, self:GetCaster(), {
+    EFX('particles/econ/items/invoker/invoker_ti7/invoker_ti7_alacrity_cast.vpcf', PATTACH_CUSTOMORIGIN, caster, {
 		cp0 = {
 			ent = caster,
 			point = 'attach_hitloc'

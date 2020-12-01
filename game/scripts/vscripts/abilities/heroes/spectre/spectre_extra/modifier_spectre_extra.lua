@@ -42,6 +42,10 @@ function modifier_spectre_extra:OnDestroy(kv)
     if IsServer() then
         self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(self:GetAbility():GetLevel()))
         self:StopEffects()
+
+        if self:GetAbility():GetLevel() >= 2 then
+            self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), 'modifier_spectre_extra_recast', { duration = 5.0 }) 
+        end
     end
 end
 

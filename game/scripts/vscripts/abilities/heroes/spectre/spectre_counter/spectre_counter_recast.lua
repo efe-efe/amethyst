@@ -26,7 +26,8 @@ function spectre_counter_recast:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {
-		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0,0,80),
+		EffectName =			"particles/spectre/spectre_ex_second_attack.vpcf",
+		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0, 0, 80),
 		fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius =			self:GetSpecialValueFor("hitbox"),
 		Source = 				caster,
@@ -46,23 +47,53 @@ function spectre_counter_recast:OnSpellStart()
 			}
 
 			ApplyDamage(damage_table)
+
+			self:TeleportTarget(unit, _self.Source)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)
-		end,
-		OnThinkBegin = function(_self, pos)
-			local effect_cast = ParticleManager:CreateParticle("particles/units/heroes/hero_grimstroke/grimstroke_cast_soulchain.vpcf", PATTACH_WORLDORIGIN, nil)
-			ParticleManager:SetParticleControl(effect_cast, 0, pos)
-			ParticleManager:SetParticleControl(effect_cast, 1, pos)
-			ParticleManager:SetParticleControl(effect_cast, 2, pos)
-			ParticleManager:SetParticleControl(effect_cast, 60, Vector(155, 7, 229))
-			ParticleManager:SetParticleControl(effect_cast, 61, Vector(1, 0, 0))
-			ParticleManager:ReleaseParticleIndex(effect_cast)
-		end,
+		end
 	}
 
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
+end
+
+function spectre_counter_recast:TeleportTarget(hTarget, hCaster)
+	local vCasterOrigin = hCaster:GetAbsOrigin()
+	local hTargetOrigin = hTarget:GetAbsOrigin()
+	local vDirection = (vCasterOrigin - hTargetOrigin):Normalized()
+	local iDistance = (vCasterOrigin - hTargetOrigin):Length2D()
+	local vNewOrigin = vCasterOrigin
+	local iSpeed = 3000
+
+	local projectile = {
+		EffectName =			"particles/spectre/spectre_ex_second_attack.vpcf",
+		vSpawnOrigin = 			hTarget:GetAbsOrigin() + Vector(0, 0, 80),
+		fDistance = 			iDistance,
+		fStartRadius =			80,
+		Source = 				hCaster,
+		vVelocity = 			vDirection * iSpeed,
+		UnitBehavior = 			PROJECTILES_DESTROY,
+		WallBehavior = 			PROJECTILES_DESTROY,
+		TreeBehavior = 			PROJECTILES_NOTHING,
+		GroundBehavior = 		PROJECTILES_NOTHING,
+		fGroundOffset = 		80,
+		OnFinish = function(_self, pos)
+			FindClearSpaceForUnit(hTarget, vNewOrigin, true)
+			EFX('particles/units/heroes/hero_spectre/spectre_death.vpcf', PATTACH_WORLDORIGIN, hTarget, {
+				cp0 = hTargetOrigin,
+				cp3 = hTargetOrigin,
+				release = true,
+			})
+			EFX('particles/econ/items/outworld_devourer/od_shards_exile_gold/od_shards_exile_prison_end_gold.vpcf', PATTACH_WORLDORIGIN, hTarget, {
+				cp0 = vNewOrigin,
+				release = true,
+			})
+		end,
+	}
+
+	Projectiles:CreateProjectile(projectile)
 end
 
 function spectre_counter_recast:PlayEffectsOnPhase()

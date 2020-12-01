@@ -26,7 +26,7 @@ function phantom_basic_attack:GetFadeGestureOnCast()		return false end
 function phantom_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local damage = caster:GetAverageTrueAttackDamage(caster)
 
 	local radius = self:GetSpecialValueFor("radius")

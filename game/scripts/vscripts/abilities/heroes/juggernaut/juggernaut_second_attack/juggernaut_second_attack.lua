@@ -33,7 +33,7 @@ function juggernaut_second_attack:OnSpellStart()
 
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
@@ -171,7 +171,7 @@ function juggernaut_ex_second_attack:GetAnimationTranslate()		return "odachi" en
 function juggernaut_ex_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local ability_damage = self:GetSpecialValueFor("ability_damage")
 	local duration = self:GetSpecialValueFor("duration")
 	local duration_per_stack = self:GetSpecialValueFor("duration_per_stack")

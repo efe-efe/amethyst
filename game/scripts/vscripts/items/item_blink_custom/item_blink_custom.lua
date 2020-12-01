@@ -4,7 +4,7 @@ function item_blink_custom:OnSpellStart()
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
-	local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = ClampPosition(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
     
     self:PlayEffects(0)
 	FindClearSpaceForUnit(caster, point , true)

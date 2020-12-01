@@ -12,7 +12,7 @@ function mars_extra:GetCastPointSpeed() 			return 10 end
 function mars_extra:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-    local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local direction = (origin - point):Normalized()
 	local duration = 5.0
 	local radius = self:GetSpecialValueFor('radius')

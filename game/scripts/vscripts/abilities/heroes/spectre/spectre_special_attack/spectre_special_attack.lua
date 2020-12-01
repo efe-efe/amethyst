@@ -1,7 +1,12 @@
 spectre_special_attack = class({})
+spectre_ex_special_attack = class({})
+spectre_ex_special_attack_recast = class({})
 LinkLuaModifier("modifier_spectre_special_attack_debuff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_debuff", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_special_attack_thinker", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_special_attack_buff", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_special_attack_buff", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_ex_special_attack_thinker", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_ex_special_attack_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_ex_special_attack_recast", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_ex_special_attack_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_ex_special_attack_banish", "abilities/heroes/spectre/spectre_special_attack/modifier_spectre_ex_special_attack_banish", LUA_MODIFIER_MOTION_NONE)
 
 function spectre_special_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
 function spectre_special_attack:GetPlaybackRateOverride()		return 0.7 end
@@ -11,7 +16,7 @@ function spectre_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local origin = caster:GetOrigin()
-	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	local projectile_name = "particles/spectre/spectre_special_attack.vpcf" 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
@@ -117,5 +122,92 @@ function spectre_special_attack:PlayEffectsOnImpact(hTarget)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
+
+spectre_ex_special_attack.PlayEffectsOnCast = spectre_special_attack.PlayEffectsOnCast
+spectre_ex_special_attack.PlayEffectsOnFinish = spectre_special_attack.PlayEffectsOnFinish
+
+function spectre_ex_special_attack:GetCastAnimationCustom()		return ACT_DOTA_FLAIL end
+function spectre_ex_special_attack:GetPlaybackRateOverride()		return 1.0 end
+function spectre_ex_special_attack:GetCastPointSpeed() 			return 0 end
+
+function spectre_ex_special_attack:OnSpellStart()
+	local caster = self:GetCaster()
+    local origin = caster:GetOrigin()
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+		
+	EmitSoundOn("Hero_Spectre.Haunt", caster)
+	EFX('particles/spectre/spectre_illusion_warp.vpcf', PATTACH_CUSTOMORIGIN, caster, {
+		cp0 = {
+			ent = caster,
+			point = 'attach_hitloc'
+		},
+		cp1 = point + Vector(0, 0, 128),
+		cp2 = {
+			ent = caster,
+			point = 'attach_hitloc'
+		},
+        release = true,
+	})
+
+	CreateModifierThinker(caster, self, 'modifier_spectre_ex_special_attack_thinker', {}, point, caster:GetTeam(), false)
+end
+
+function spectre_ex_special_attack_recast:OnSpellStart()
+	local caster = self:GetCaster()
+    local origin = caster:GetOrigin()
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+
+	for _,hTarget in ipairs(self.targets) do
+		hTarget:RemoveModifierByName('modifier_spectre_ex_special_attack_banish')
+		FindClearSpaceForUnit(hTarget, point, true)
+	end
+
+	EFX('particles/spectre/spectre_illusion_warp.vpcf', PATTACH_CUSTOMORIGIN, caster, {
+		cp0 = {
+			ent = caster,
+			point = 'attach_hitloc'
+		},
+		cp1 = point + Vector(0, 0, 128),
+		cp2 = {
+			ent = caster,
+			point = 'attach_hitloc'
+		},
+        release = true,
+	})
+
+	EmitSoundOnLocationWithCaster(point, "Hero_Spectre.Reality", caster)
+end
+
+function spectre_ex_special_attack_recast:AddTarget(hTarget)
+	if not self.targets then
+		self.targets = {}
+	end
+	table.insert(self.targets, hTarget)
+end
+
+function spectre_ex_special_attack_recast:ClearTargets(hTarget)
+	self.targets = nil
+end
+
+
+function spectre_ex_special_attack_recast:OnUpgrade()
+	local related = self:GetCaster():FindAbilityByName('spectre_ex_special_attack')
+	
+	if self:GetLevel() > related:GetLevel() then
+		related:UpgradeAbility(true)
+	end
+end
+
+function spectre_ex_special_attack:OnUpgrade()
+	local related = self:GetCaster():FindAbilityByName('spectre_ex_special_attack_recast')
+	
+	if self:GetLevel() > related:GetLevel() then
+		related:UpgradeAbility(true)
+	end
+end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(spectre_special_attack)
+Abilities.Castpoint(spectre_ex_special_attack)
+Abilities.Tie(spectre_special_attack, 'spectre_ex_special_attack')
+Abilities.Tie(spectre_ex_special_attack, 'spectre_special_attack')

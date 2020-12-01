@@ -36,7 +36,7 @@ function juggernaut_ex_counter:OnSpellStart()
    local caster = self:GetCaster()
    local origin = caster:GetOrigin()
    local min_range = self:GetSpecialValueFor("min_range")
-   local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+   local point = ClampPosition(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
    local damage = self:GetSpecialValueFor("ability_damage")
    local duration = self:GetSpecialValueFor("duration")
 

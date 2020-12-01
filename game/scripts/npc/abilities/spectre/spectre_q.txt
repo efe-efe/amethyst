@@ -24,10 +24,8 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"	"3.0" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"		"50" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"ability_damage"		"22" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"		"22" }
 		}
 	}
 

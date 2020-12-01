@@ -25,7 +25,7 @@ function storm_ultimate:OnSpellStart()
     DEFX(self.efx, false)
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     
     EmitSoundOn('Hero_StormSpirit.StaticRemnantExplode', caster)
     EmitSoundOn('Hero_Zeus.BlinkDagger.Arcana', caster)

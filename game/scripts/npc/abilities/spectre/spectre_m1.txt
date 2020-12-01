@@ -13,6 +13,13 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"220"
 
+
+		"TargetingIndicator" {
+			"ModifierType"				"TARGETING_INDICATOR_HALF_CIRCLE"
+			"ModifierName"				"modifier_spectre_basic_attack_cooldown"
+			"ModifierStacks"			"1"
+		}
+		
 		"precache"
 		{
 			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"

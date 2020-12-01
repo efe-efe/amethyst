@@ -6,17 +6,17 @@ function modifier_juggernaut_ex_counter:IsPurgable() 	return 	true 	end
 
 function modifier_juggernaut_ex_counter:OnCreated(params)
     if IsServer() then
-        self:SetStackCountClamped(params.stacks)
+        self:SetStackCountClampPositioned(params.stacks)
     end
 end
 
 function modifier_juggernaut_ex_counter:OnRefresh(params)
     if IsServer() then
-        self:SetStackCountClamped(self:GetStackCount() + params.stacks)
+        self:SetStackCountClampPositioned(self:GetStackCount() + params.stacks)
     end
 end
 
-function modifier_juggernaut_ex_counter:SetStackCountClamped(iStacks)
+function modifier_juggernaut_ex_counter:SetStackCountClampPositioned(iStacks)
 	local max_stacks = self:GetAbility():GetSpecialValueFor('max_stacks')
 	if iStacks > max_stacks then
 		self:SetStackCount(max_stacks)

@@ -214,7 +214,7 @@ function DuplicateTable(obj, seen)
 	return res
 end
 
-function Clamp(origin, point, max_range, min_range)
+function ClampPosition(origin, point, max_range, min_range)
 	local direction = (point - origin):Normalized()
 	local distance = (point - origin):Length2D()
 	local output_point = point
@@ -232,6 +232,16 @@ function Clamp(origin, point, max_range, min_range)
 	end
 
 	return output_point
+end
+
+function Clamp(iNumber, iMax, iMin)
+	if iNumber > iMax then
+		return iMax
+	end
+	if iNumber < iMin then
+		return iMin
+	end
+	return iNumber
 end
 
 

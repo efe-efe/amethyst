@@ -15,8 +15,10 @@
 		"Ability6"						"spectre_extra"           
 		"Ability7"						"spectre_ultimate"        
 		"Ability8"						"spectre_ex_mobility"  
-		"Ability9"						"spectre_ex_second_attack"  
-		"Ability10"						"spectre_counter_recast"      
+		"Ability9"						"spectre_ex_special_attack"  
+		"Ability10"						"spectre_counter_recast"    
+		"Ability11"						"spectre_ex_special_attack_recast"    
+		"Ability12"						"spectre_extra_recast"    
 		
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"

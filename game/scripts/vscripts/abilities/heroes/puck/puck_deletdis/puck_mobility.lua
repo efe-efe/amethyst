@@ -6,7 +6,7 @@ function puck_deletedis:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
-	local point = Clamp(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 
 	local direction = (point - origin):Normalized()
 	local distance = (point - origin):Length2D()

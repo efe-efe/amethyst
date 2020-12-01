@@ -91,13 +91,13 @@
 			m_ChildRef = resource:"particles/units/heroes/hero_oracle/oracle_fortune_prj_edge.vpcf"
 		},
 		{
-			m_ChildRef = resource:"particles/spectre/spectre_ex_second_attack_rail.vpcf"
+			m_ChildRef = resource:"particles/spectre/spectre_ex_special_attack_rail.vpcf"
 		},
 		{
-			m_ChildRef = resource:"particles/spectre/spectre_ex_second_attack_trail_smoke.vpcf"
+			m_ChildRef = resource:"particles/spectre/spectre_ex_special_attack_trail_smoke.vpcf"
 		},
 		{
-			m_ChildRef = resource:"particles/spectre/spectre_ex_second_attack_trail.vpcf"
+			m_ChildRef = resource:"particles/spectre/spectre_ex_special_attack_trail.vpcf"
 		},
 		{
 			m_ChildRef = resource:"particles/units/heroes/hero_oracle/oracle_fortune_prj_rope.vpcf"

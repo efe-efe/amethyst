@@ -8,7 +8,7 @@ function puck_extra:GetFadeGestureOnCast()			return false end
 
 function puck_extra:OnSpellStart()
 	local caster = self:GetCaster()
-    local point = Clamp(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local point = ClampPosition(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     local pre_silence_duration = self:GetSpecialValueFor("pre_silence_duration")
 	self.radius = self:GetSpecialValueFor("radius")
     

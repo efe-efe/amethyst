@@ -38,7 +38,7 @@ function modifier_spectre_counter_countering:OnTrigger(params)
         end
         
         if self:GetAbility():GetLevel() >= 2 then
-            params.attacker:AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_spectre_counter", { duration = self.fading_slow_duration })
+		    self:GetParent():FindModifierByName('modifier_spectre_mobility_charges'):RefreshCharges()
         end
 
         self:PlayEffectsOnTrigger()
