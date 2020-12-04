@@ -16,8 +16,9 @@ function juggernaut_basic_attack:GetCooldown(iLevel)
 	end
 end
 
-function juggernaut_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK_EVENT end
-function juggernaut_basic_attack:GetPlaybackRateOverride() 	return 1.8 end
+function juggernaut_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_OVERRIDE_ABILITY_1 end
+function juggernaut_basic_attack:GetPlaybackRateOverride() 	return 1.2 end
+function juggernaut_basic_attack:GetAnimationTranslate() 	return "odachi" end
 function juggernaut_basic_attack:GetCastPointSpeed() 		return self:GetSpecialValueFor('cast_point_speed_pct') end
 
 function juggernaut_basic_attack:OnSpellStart()
@@ -108,10 +109,6 @@ function juggernaut_basic_attack:PlayEffectsOnFinish(vDirection)
 		cp3 = Vector(self.radius, 0, 0),
 		release = true,
 	})
-
-	particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_ti8_sword_crit_golden.vpcf"
-	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
-	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function juggernaut_basic_attack:PlayEffectsOnImpact(hTarget)

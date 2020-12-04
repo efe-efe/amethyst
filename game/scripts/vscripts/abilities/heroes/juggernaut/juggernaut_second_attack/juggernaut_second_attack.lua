@@ -75,7 +75,7 @@ function juggernaut_second_attack:OnSpellStart()
 			ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
 		end
 		
-		self:PlayEffectsOnFinish(point)
+		self:PlayEffectsOnFinish(direction, radius)
 	else
 		local give_mana = false
 		local radius = 275 
@@ -125,32 +125,17 @@ function juggernaut_second_attack:PlayEffectsOnImpact(hTarget)
 	EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
 end
 
-function juggernaut_second_attack:PlayEffectsOnFinish(pos)
+function juggernaut_second_attack:PlayEffectsOnFinish(vDirection, iRadius)
 	local caster = self:GetCaster()
-	local offset = 40
 	local origin = caster:GetOrigin()
-	local direction = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
-	EmitSoundOnLocationWithCaster(pos, "Hero_Juggernaut.BladeDance", caster)
-
-	local position_final = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * 20
-
-	--[[local particle_cast_a = "particles/econ/items/chaos_knight/chaos_knight_ti9_weapon/chaos_knight_ti9_weapon_blur_crit_arc.vpcf"
-	local effect_cast_a = ParticleManager:CreateParticle(particle_cast_a, PATTACH_POINT, caster)
-    ParticleManager:SetParticleControl(
-		effect_cast_a, 
-		0, 
-		Vector(position_final.x, position_final.y, caster:GetOrigin().z - 100)
-	)
-	ParticleManager:ReleaseParticleIndex(effect_cast_a)
-	]]
-
-	particle_cast = "particles/juggernaut/juggernaut_second_attack.vpcf"
-	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
-	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
-	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
-	ParticleManager:ReleaseParticleIndex(effect_cast)
+	EmitSoundOnLocationWithCaster(origin, "Hero_Juggernaut.BladeDance", caster)
+	EFX('particles/juggernaut/juggernaut_second_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
+		cp0 = origin,
+		cp0f = vDirection,
+		cp3 = Vector(iRadius, 0, 0),
+		release = true,
+	})
 end
 
 function juggernaut_second_attack:PlayEffectsAoe(radius)
@@ -163,13 +148,24 @@ function juggernaut_second_attack:PlayEffectsAoe(radius)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function juggernaut_ex_second_attack:GetCastAnimationCustom()		return ACT_DOTA_TAUNT end
-function juggernaut_ex_second_attack:GetPlaybackRateOverride() 	return 2.0 end
-function juggernaut_ex_second_attack:GetCastPointSpeed() 			return 10 end
+function juggernaut_ex_second_attack:GetCastAnimationCustom()		return ACT_DOTA_OVERRIDE_ABILITY_1 end
+function juggernaut_ex_second_attack:GetPlaybackRateOverride() 		return 0.5 end
 function juggernaut_ex_second_attack:GetAnimationTranslate()		return "odachi" end
+function juggernaut_ex_second_attack:GetCastPointSpeed() 			return 10 end
+
+function juggernaut_ex_second_attack:OnAbilityPhaseStart()
+	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_juggernaut_spin_animation", { duration = 0.3 })
+	
+	EFX('particles/juggernaut/juggernaut_ex_second_attack_casting_owner.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+		release = true
+	})
+	self.efx = EFX('particles/juggernaut/juggernaut_ex_second_attack_casting.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {})
+	return true
+end
 
 function juggernaut_ex_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
+	DEFX(self.efx, true)
 	local origin = caster:GetOrigin()
 	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local ability_damage = self:GetSpecialValueFor("ability_damage")
@@ -200,7 +196,6 @@ function juggernaut_ex_second_attack:OnSpellStart()
 			attacker = caster,
 			damage = ability_damage,
 			damage_type = DAMAGE_TYPE_PHYSICAL,
-			activate_counters = 1,
 		}
 		ApplyDamage(damage_table)
 		

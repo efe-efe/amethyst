@@ -38,8 +38,12 @@ function modifier_juggernaut_extra_ward:OnDestroy()
         ParticleManager:DestroyParticle(self.effect_cast, false)
         ParticleManager:ReleaseParticleIndex(self.effect_cast)
 
-        ParticleManager:DestroyParticle(self.effect_progress, false)
-        ParticleManager:ReleaseParticleIndex(self.effect_progress)
+        ParticleManager:DestroyParticle(self.efx, false)
+        ParticleManager:ReleaseParticleIndex(self.efx)
+
+        EFX('particles/econ/items/juggernaut/jugg_fall20_immortal/jugg_fall20_immortal_healing_ward_death.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), {
+            release = true,
+        })
 
         self:GetParent():Kill(nil, self:GetParent())
 
@@ -54,8 +58,8 @@ end
 function modifier_juggernaut_extra_ward:OnIntervalThink()
     local percentage = ((self:GetDuration() - self:GetRemainingTime())/self:GetDuration()) + 0.03
 
-    ParticleManager:SetParticleControl(self.effect_progress, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 16))
-    ParticleManager:SetParticleControl(self.effect_progress, 1, Vector(self.radius, percentage, 0))
+    ParticleManager:SetParticleControl(self.efx, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 16))
+    ParticleManager:SetParticleControl(self.efx, 1, Vector(self.radius, percentage, 0))
 end
 
 function modifier_juggernaut_extra_ward:PlayEffectsOnCreated()
@@ -63,7 +67,7 @@ function modifier_juggernaut_extra_ward:PlayEffectsOnCreated()
     ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
     ParticleManager:ReleaseParticleIndex(effect_cast)
 
-    local particle_cast = "particles/econ/items/juggernaut/bladekeeper_healing_ward/juggernaut_healing_ward_dc.vpcf"
+    local particle_cast = "particles/econ/items/juggernaut/jugg_fall20_immortal/jugg_fall20_immortal_healing_ward.vpcf"
 
     self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
     ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 100))
@@ -78,10 +82,22 @@ function modifier_juggernaut_extra_ward:PlayEffectsOnCreated()
         true
    )
     
-    self.effect_progress = ParticleManager:CreateParticle("particles/progress_circle/generic_progress_circle.vpcf", PATTACH_WORLDORIGIN, self:GetParent())
-    ParticleManager:SetParticleControl(self.effect_progress, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 16))
-    ParticleManager:SetParticleControlForward(self.effect_progress, 0, Vector(0, -1, 0))	
-    ParticleManager:SetParticleControl(self.effect_progress, 1, Vector(self.radius, 0, 1))
-    ParticleManager:SetParticleControl(self.effect_progress, 15, Vector(1, 255, 1))
-    ParticleManager:SetParticleControl(self.effect_progress, 16, Vector(1, 0, 0))
+    self.efx = ParticleManager:CreateParticle("particles/progress_circle/generic_progress_circle_small.vpcf", PATTACH_WORLDORIGIN, self:GetParent())
+    ParticleManager:SetParticleControl(self.efx, 0, self:GetParent():GetAbsOrigin() + Vector(0, 0, 16))
+    ParticleManager:SetParticleControlForward(self.efx, 0, Vector(0, -1, 0))	
+    ParticleManager:SetParticleControl(self.efx, 1, Vector(self.radius, 0, 1))
+    ParticleManager:SetParticleControl(self.efx, 15, Vector(1, 255, 1))
+    ParticleManager:SetParticleControl(self.efx, 16, Vector(1, 0, 0))
+end
+
+
+function modifier_juggernaut_extra_ward:DeclareFunctions()
+    return { MODIFIER_EVENT_ON_DEATH }
+end
+
+function modifier_juggernaut_extra_ward:OnDeath(params)
+    if IsServer() then
+        if params.unit ~= self:GetParent() then return end
+        self:Destroy()        
+    end
 end

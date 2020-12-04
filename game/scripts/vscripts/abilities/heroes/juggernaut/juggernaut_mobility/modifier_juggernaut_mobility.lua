@@ -37,10 +37,13 @@ function modifier_juggernaut_mobility:OnIntervalThink()
             damage = self.damage_per_second,
             damage_type = DAMAGE_TYPE_PURE,
         }
-        self:PlayEffects3(enemy)
+
         ApplyDamage(damage)
-        
-        EmitSoundOn("Hero_Juggernaut.Impact ", enemy)
+	    EmitSoundOn("Hero_Juggernaut.Attack", enemy)
+        EmitSoundOn("Hero_Juggernaut.BladeFury.Impact", enemy)
+        EFX('particles/juggernaut/juggernaut_mobility_impact.vpcf', PATTACH_ABSORIGIN, enemy, {
+            release = true
+        })
     end
 end
 
@@ -110,11 +113,6 @@ function modifier_juggernaut_mobility:StopEffects()
     local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
     ParticleManager:ReleaseParticleIndex(effect_cast)
 end
-
-function modifier_juggernaut_mobility:PlayEffects3(hTarget)
-    EmitSoundOn("Hero_Spectre.Desolate", hTarget)
-end
-
 
 function modifier_juggernaut_mobility:GetEffectName()
 	return "particles/econ/events/ti9/phase_boots_ti9.vpcf"
