@@ -26,7 +26,7 @@ function juggernaut_basic_attack:OnSpellStart()
 	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local attack_damage = caster:GetAttackDamage()
 
-	local radius = self:GetSpecialValueFor("radius")
+	self.radius = self:GetSpecialValueFor("radius")
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
@@ -35,7 +35,7 @@ function juggernaut_basic_attack:OnSpellStart()
 		direction, 
 		0, 
 		origin, 
-		radius, 
+		self.radius, 
 		DOTA_UNIT_TARGET_TEAM_ENEMY, 
 		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
 		DOTA_UNIT_TARGET_FLAG_NONE, 
@@ -95,21 +95,19 @@ function juggernaut_basic_attack:OnSpellStart()
 	end
 
 	self:PlayEffectsOnMiss(point)
-	self:PlayEffectsOnFinish(point)
+	self:PlayEffectsOnFinish(direction)
 end
 
-function juggernaut_basic_attack:PlayEffectsOnFinish(pos)
+function juggernaut_basic_attack:PlayEffectsOnFinish(vDirection)
 	local caster = self:GetCaster()
-	local offset = 40
 	local origin = caster:GetOrigin()
-	local direction = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
 
-	local particle_cast = "particles/meele_swing_red/pa_arcana_attack_blinkb_red.vpcf"
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
-	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
-	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
-	ParticleManager:ReleaseParticleIndex(effect_cast)
+	EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
+		cp0 = origin,
+		cp0f = vDirection,
+		cp3 = Vector(self.radius, 0, 0),
+		release = true,
+	})
 
 	particle_cast = "particles/econ/items/juggernaut/jugg_ti8_sword/juggernaut_ti8_sword_crit_golden.vpcf"
 	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)

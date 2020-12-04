@@ -98,22 +98,22 @@ function phantom_basic_attack:OnSpellStart()
 		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
 	end
 
-	self:PlayEffectsOnFinish(point)
+	self:PlayEffectsOnFinish(direction, radius)
 	self:PlayEffectsOnCast()
 end
 
-function phantom_basic_attack:PlayEffectsOnFinish(pos)
+function phantom_basic_attack:PlayEffectsOnFinish(vDirection, nRadius)
 	local caster = self:GetCaster()
-	local offset = 40
 	local origin = caster:GetOrigin()
-	local direction = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
-
-	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_attack_blinkb.vpcf"
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
-	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
-	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
-	ParticleManager:ReleaseParticleIndex(effect_cast)
+	
+	local efx = EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
+		cp0 = origin,
+		cp0f = vDirection,
+		cp3 = Vector(nRadius, 0, 0),
+	})
+	ParticleManager:SetParticleControl(efx, 60, Vector(43, 100, 125))
+	ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
+	ParticleManager:ReleaseParticleIndex(efx)
 end
 
 function phantom_basic_attack:PlayEffectsOnImpact(hTarget)

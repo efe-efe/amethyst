@@ -3,8 +3,8 @@
 	_class = "CParticleSystemDefinition"
 	m_bShouldHitboxesFallbackToRenderBounds = false
 	m_nMaxParticles = 11
-	m_flConstantRadius = 250.0
-	m_ConstantColor = [ 255, 169, 169, 255 ]
+	m_flConstantRadius = 200.0
+	m_ConstantColor = [ 241, 115, 115, 255 ]
 	m_nBehaviorVersion = 4
 	m_nFirstMultipleOverride_BackwardCompat = 2
 	m_controlPointConfigurations = 
@@ -49,19 +49,19 @@
 	[
 		{
 			_class = "C_INIT_RandomLifeTime"
-			m_fLifetimeMin = 0.7
-			m_fLifetimeMax = 0.7
+			m_fLifetimeMax = 0.2
+			m_fLifetimeMin = 0.2
 		},
 		{
 			_class = "C_INIT_RingWave"
 			m_nControlPointNumber = 1
-			m_flParticlesPerOrbit = 16.0
 			m_bEvenDistribution = true
+			m_flParticlesPerOrbit = 16.0
 			m_flInitialRadius = 
 			{
 				m_nType = "PF_TYPE_CONTROL_POINT_COMPONENT"
 				m_nMapType = "PF_MAP_TYPE_DIRECT"
-				m_flLiteralValue = 120.0
+				m_flLiteralValue = 0.0
 				m_nControlPoint = 3
 				m_nScalarAttribute = 3
 				m_nVectorAttribute = 6
@@ -115,36 +115,36 @@
 		},
 		{
 			_class = "C_INIT_RemapParticleCountToScalar"
-			m_flOutputMax = 100.0
 			m_nInputMax = 11
+			m_flOutputMax = 100.0
 		},
 		{
 			_class = "C_INIT_RemapParticleCountToScalar"
-			m_bActiveRange = true
-			m_flOutputMax = 0.75
-			m_nFieldOutput = "7"
 			m_nInputMax = 5
+			m_nFieldOutput = "7"
+			m_flOutputMax = 0.75
+			m_bActiveRange = true
 			m_nSetMethod = "PARTICLE_SET_SCALE_INITIAL_VALUE"
 		},
 		{
 			_class = "C_INIT_PositionOffset"
-			m_bLocalCoords = true
-			m_OffsetMax = [ 14.0, 0.0, 80.0 ]
 			m_OffsetMin = [ 14.0, 0.0, 80.0 ]
+			m_OffsetMax = [ 14.0, 0.0, 80.0 ]
+			m_bLocalCoords = true
 		},
 		{
 			_class = "C_INIT_PositionWarp"
-			m_bDisableOperator = true
-			m_bUseCount = true
-			m_vecWarpMax = [ 0.4, 0.35, 0.8 ]
 			m_flWarpTime = 8.0
+			m_vecWarpMax = [ 0.4, 0.35, 0.8 ]
+			m_bUseCount = true
+			m_bDisableOperator = true
 		},
 		{
 			_class = "C_INIT_RemapParticleCountToScalar"
-			m_nInputMax = 7
-			m_flOutputMax = 0.0
-			m_flOutputMin = 1.0
 			m_nFieldOutput = "7"
+			m_flOutputMin = 1.0
+			m_flOutputMax = 0.0
+			m_nInputMax = 7
 			m_nSetMethod = "PARTICLE_SET_SCALE_INITIAL_VALUE"
 		},
 	]
@@ -155,13 +155,18 @@
 		},
 		{
 			_class = "C_OP_Decay"
-			m_flOpStartFadeInTime = 0.5
 			m_flOpEndFadeInTime = 0.5
+			m_flOpStartFadeInTime = 0.5
 		},
 		{
 			_class = "C_OP_InterpolateRadius"
-			m_flEndScale = 0.0
 			m_flBias = 0.35
+			m_flEndScale = 0.0
+			m_flStartScale = 2.0
+		},
+		{
+			_class = "C_OP_FadeOutSimple"
+			m_flFadeOutTime = 0.65
 		},
 		{
 			_class = "C_OP_FadeInSimple"
@@ -169,33 +174,34 @@
 		},
 		{
 			_class = "C_OP_RemapDirectionToCPToVector"
-			m_flOffsetRot = -85.0
-			m_vecOffsetAxis = [ 0.0, 0.0, 1.0 ]
-			m_bNormalize = true
 			m_nFieldOutput = "21"
+			m_bNormalize = true
+			m_vecOffsetAxis = [ 0.0, 0.0, 1.0 ]
+			m_flOffsetRot = -85.0
 		},
 		{
 			_class = "C_OP_ColorInterpolate"
-			m_ColorFade = [ 146, 38, 38 ]
+			m_flFadeEndTime = 0.75
 			m_flFadeStartTime = 0.3
+			m_ColorFade = [ 146, 38, 38 ]
 		},
 	]
 	m_Renderers = 
 	[
 		{
 			_class = "C_OP_RenderRopes"
-			m_flOverbrightFactor = 6.0
-			m_flAddSelfAmount = 2.0
+			m_flOverbrightFactor = 4.0
+			m_flAddSelfAmount = 14.0
 			m_bSaturateColorPreAlphaBlend = false
 			m_flRadiusScale = 0.5
 			m_flTextureVWorldSize = 200.0
-			m_flTextureVScrollRate = -20.0
+			m_flTextureVScrollRate = -200.0
 			m_nMaxTesselation = 3
 			m_nMinTesselation = 3
 			m_vecTexturesInput = 
 			[
 				{
-					m_hTexture = resource:"materials/particle/beam_blue_energy_01.vtex"
+					m_hTexture = resource:"materials/particle/beam_jagged_01.vtex"
 					m_TextureControls = 
 					{
 						m_flFinalTextureScaleU = 
@@ -206,7 +212,15 @@
 					}
 				},
 			]
-			m_nOutputBlendMode = "PARTICLE_OUTPUT_BLEND_MODE_ADD"
+		},
+	]
+	m_Children = 
+	[
+		{
+			m_ChildRef = resource:"particles/juggernaut/juggernaut_basic_attack_blur_baseb2.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/juggernaut/juggernaut_basic_attack_blur_glowb.vpcf"
 		},
 	]
 }

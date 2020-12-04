@@ -207,6 +207,7 @@
 				},
 			]
 			m_nOutputBlendMode = "PARTICLE_OUTPUT_BLEND_MODE_ADD"
+			m_nHSVShiftControlPoint = 62
 		},
 	]
 }

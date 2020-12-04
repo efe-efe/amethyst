@@ -2,11 +2,11 @@
 {
 	_class = "CParticleSystemDefinition"
 	m_bShouldHitboxesFallbackToRenderBounds = false
-	m_nMaxParticles = 11
-	m_flConstantRadius = 250.0
-	m_ConstantColor = [ 255, 169, 169, 255 ]
-	m_nBehaviorVersion = 4
-	m_nFirstMultipleOverride_BackwardCompat = 2
+	m_nMaxParticles = 20
+	m_flConstantRadius = 100.0
+	m_ConstantColor = [ 255, 239, 229, 155 ]
+	m_nBehaviorVersion = 5
+	m_nFirstMultipleOverride_BackwardCompat = 7
 	m_controlPointConfigurations = 
 	[
 		{
@@ -32,31 +32,21 @@
 	m_Emitters = 
 	[
 		{
-			_class = "C_OP_ContinuousEmitter"
-			m_flEmissionDuration = 
-			{
-				m_nType = "PF_TYPE_LITERAL"
-				m_flLiteralValue = 0.12
-			}
-			m_flEmitRate = 
-			{
-				m_nType = "PF_TYPE_LITERAL"
-				m_flLiteralValue = 120.0
-			}
+			_class = "C_OP_InstantaneousEmitter"
 		},
 	]
 	m_Initializers = 
 	[
 		{
 			_class = "C_INIT_RandomLifeTime"
-			m_fLifetimeMin = 0.7
-			m_fLifetimeMax = 0.7
+			m_fLifetimeMax = 1.2
+			m_fLifetimeMin = 0.75
 		},
 		{
 			_class = "C_INIT_RingWave"
-			m_nControlPointNumber = 1
-			m_flParticlesPerOrbit = 16.0
 			m_bEvenDistribution = true
+			m_flParticlesPerOrbit = 32.0
+			m_nControlPointNumber = 1
 			m_flInitialRadius = 
 			{
 				m_nType = "PF_TYPE_CONTROL_POINT_COMPONENT"
@@ -102,49 +92,59 @@
 					m_vDomainMaxs = [ 0.0, 0.0 ]
 				}
 			}
-			m_flRoll = 
-			{
-				m_nType = "PF_TYPE_LITERAL"
-				m_flLiteralValue = 180.0
-			}
 			m_flYaw = 
 			{
 				m_nType = "PF_TYPE_LITERAL"
-				m_flLiteralValue = -270.0
+				m_flLiteralValue = 300.0
 			}
 		},
 		{
-			_class = "C_INIT_RemapParticleCountToScalar"
-			m_flOutputMax = 100.0
-			m_nInputMax = 11
+			_class = "C_INIT_RandomSequence"
+			m_nSequenceMax = 1
 		},
 		{
-			_class = "C_INIT_RemapParticleCountToScalar"
-			m_bActiveRange = true
-			m_flOutputMax = 0.75
-			m_nFieldOutput = "7"
-			m_nInputMax = 5
-			m_nSetMethod = "PARTICLE_SET_SCALE_INITIAL_VALUE"
+			_class = "C_INIT_RandomRotation"
+			m_flDegreesMax = 45.0
+		},
+		{
+			_class = "C_INIT_RandomRadius"
+			m_flRadiusMax = 50.0
+			m_flRadiusMin = 20.0
+		},
+		{
+			_class = "C_INIT_RandomColor"
+			m_ColorMax = [ 251, 113, 113 ]
+			m_ColorMin = [ 255, 255, 255 ]
+			m_TintMin = [ 0, 0, 0 ]
+			m_TintMax = [ 255, 255, 255 ]
+		},
+		{
+			_class = "C_INIT_RandomAlpha"
+			m_nAlphaMax = 50
+			m_nAlphaMin = 20
 		},
 		{
 			_class = "C_INIT_PositionOffset"
-			m_bLocalCoords = true
-			m_OffsetMax = [ 14.0, 0.0, 80.0 ]
 			m_OffsetMin = [ 14.0, 0.0, 80.0 ]
-		},
-		{
-			_class = "C_INIT_PositionWarp"
-			m_bDisableOperator = true
-			m_bUseCount = true
-			m_vecWarpMax = [ 0.4, 0.35, 0.8 ]
-			m_flWarpTime = 8.0
+			m_OffsetMax = [ 14.0, 0.0, 120.0 ]
+			m_bLocalCoords = true
 		},
 		{
 			_class = "C_INIT_RemapParticleCountToScalar"
-			m_nInputMax = 7
+			m_flOutputMin = 0.5
+			m_nInputMax = 6
+			m_nSetMethod = "PARTICLE_SET_SCALE_INITIAL_VALUE"
+		},
+		{
+			_class = "C_INIT_RandomYawFlip"
+		},
+		{
+			_class = "C_INIT_RemapParticleCountToScalar"
 			m_flOutputMax = 0.0
 			m_flOutputMin = 1.0
 			m_nFieldOutput = "7"
+			m_nInputMax = 15
+			m_nInputMin = 5
 			m_nSetMethod = "PARTICLE_SET_SCALE_INITIAL_VALUE"
 		},
 	]
@@ -152,61 +152,46 @@
 	[
 		{
 			_class = "C_OP_BasicMovement"
-		},
-		{
-			_class = "C_OP_Decay"
-			m_flOpStartFadeInTime = 0.5
-			m_flOpEndFadeInTime = 0.5
+			m_fDrag = 0.05
+			m_Gravity = [ 0.0, 0.0, 20.0 ]
 		},
 		{
 			_class = "C_OP_InterpolateRadius"
-			m_flEndScale = 0.0
-			m_flBias = 0.35
+			m_flStartScale = 0.5
+			m_flBias = 0.7
+			m_flEndScale = 2.0
+		},
+		{
+			_class = "C_OP_FadeOutSimple"
+			m_flFadeOutTime = 0.65
 		},
 		{
 			_class = "C_OP_FadeInSimple"
-			m_flFadeInTime = 0.2
+			m_flFadeInTime = 0.1
 		},
 		{
-			_class = "C_OP_RemapDirectionToCPToVector"
-			m_flOffsetRot = -85.0
-			m_vecOffsetAxis = [ 0.0, 0.0, 1.0 ]
-			m_bNormalize = true
-			m_nFieldOutput = "21"
+			_class = "C_OP_Decay"
 		},
 		{
 			_class = "C_OP_ColorInterpolate"
-			m_ColorFade = [ 146, 38, 38 ]
-			m_flFadeStartTime = 0.3
+			m_ColorFade = [ 202, 72, 72 ]
 		},
 	]
 	m_Renderers = 
 	[
 		{
-			_class = "C_OP_RenderRopes"
-			m_flOverbrightFactor = 6.0
-			m_flAddSelfAmount = 2.0
-			m_bSaturateColorPreAlphaBlend = false
-			m_flRadiusScale = 0.5
-			m_flTextureVWorldSize = 200.0
-			m_flTextureVScrollRate = -20.0
-			m_nMaxTesselation = 3
-			m_nMinTesselation = 3
+			_class = "C_OP_RenderSprites"
+			m_flOverbrightFactor = 10.0
+			m_flAnimationRate = 0.5
 			m_vecTexturesInput = 
 			[
 				{
-					m_hTexture = resource:"materials/particle/beam_blue_energy_01.vtex"
-					m_TextureControls = 
-					{
-						m_flFinalTextureScaleU = 
-						{
-							m_nType = "PF_TYPE_LITERAL"
-							m_flLiteralValue = -1.0
-						}
-					}
+					m_hTexture = resource:"materials/particle/smoke/steam/steam.vtex"
 				},
 			]
 			m_nOutputBlendMode = "PARTICLE_OUTPUT_BLEND_MODE_ADD"
+			m_OutlineColor = [ 255, 255, 255 ]
+			m_nHSVShiftControlPoint = 62
 		},
 	]
 }
