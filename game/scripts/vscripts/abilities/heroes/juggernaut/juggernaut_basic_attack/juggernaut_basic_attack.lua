@@ -71,17 +71,8 @@ function juggernaut_basic_attack:OnSpellStart()
 				{} -- kv
 			)
 
-			-- Reduce the cd of the second attack by 1
-			local second_attack = caster:FindAbilityByName("juggernaut_second_attack")
-			local second_attack_cd = second_attack:GetCooldownTimeRemaining()
-			local new_cd = second_attack_cd - cooldown_reduction
-
-			if (new_cd) < 0 then 
-				second_attack:EndCooldown()
-			else
-				second_attack:EndCooldown()
-				second_attack:StartCooldown(new_cd)
-			end
+			self:ReduceCooldown(caster, 'juggernaut_second_attack', cooldown_reduction)
+			self:ReduceCooldown(caster, 'juggernaut_ex_second_attack', cooldown_reduction)
 		end
 
 		if caster.OnBasicAttackImpact then
@@ -97,6 +88,19 @@ function juggernaut_basic_attack:OnSpellStart()
 
 	self:PlayEffectsOnMiss(point)
 	self:PlayEffectsOnFinish(direction)
+end
+
+function juggernaut_basic_attack:ReduceCooldown(hCaster, sAbilityName, iCooldownReduction)
+	local ability = hCaster:FindAbilityByName(sAbilityName)
+	local ability_cd = ability:GetCooldownTimeRemaining()
+	local new_cd = ability_cd - iCooldownReduction
+
+	if (new_cd) < 0 then 
+		ability:EndCooldown()
+	else
+		ability:EndCooldown()
+		ability:StartCooldown(new_cd)
+	end
 end
 
 function juggernaut_basic_attack:PlayEffectsOnFinish(vDirection)

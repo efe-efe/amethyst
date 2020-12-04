@@ -163,9 +163,13 @@ function juggernaut_ex_second_attack:OnAbilityPhaseStart()
 	return true
 end
 
-function juggernaut_ex_second_attack:OnSpellStart()
-	local caster = self:GetCaster()
+function juggernaut_ex_second_attack:OnAbilityPhaseInterrupted()
 	DEFX(self.efx, true)
+end
+
+function juggernaut_ex_second_attack:OnSpellStart()
+	DEFX(self.efx, true)
+	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local ability_damage = self:GetSpecialValueFor("ability_damage")
@@ -175,8 +179,7 @@ function juggernaut_ex_second_attack:OnSpellStart()
     
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
-	local final_stun_duration = duration + (stacks * duration_per_stack)
-
+	local final_debuff_duration = duration + (stacks * duration_per_stack)
 	local enemies = caster:FindUnitsInCone(
 		direction, 
 		0, 
@@ -188,9 +191,7 @@ function juggernaut_ex_second_attack:OnSpellStart()
 		FIND_CLOSEST
 	)
 
-	for _,enemy in pairs(enemies) do 
-		enemy:AddNewModifier(caster, self , "modifier_generic_stunned", { duration = duration })
-
+	for _,enemy in pairs(enemies) do
 		local damage_table = {
 			victim = enemy,
 			attacker = caster,
@@ -198,7 +199,12 @@ function juggernaut_ex_second_attack:OnSpellStart()
 			damage_type = DAMAGE_TYPE_PHYSICAL,
 		}
 		ApplyDamage(damage_table)
-		
+
+		if self:GetLevel() >= 2 then
+			enemy:AddNewModifier(caster, self, "modifier_generic_stunned", { duration = final_debuff_duration })
+		else 
+			enemy:AddNewModifier(caster, self, "modifier_generic_sleep", { duration = final_debuff_duration })
+		end
 		self:PlayEffectsOnImpact(enemy)
 
 		break

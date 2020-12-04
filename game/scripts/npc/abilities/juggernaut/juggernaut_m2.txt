@@ -43,7 +43,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange" 				"250"
+		"AbilityCastRange" 				"270"
 		"AbilityCooldown"				"7.0"
 		"AbilityManaCost"				"25"
 		"AbilityCastPoint"				"0.4"
@@ -55,10 +55,10 @@
 		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"0.5 1.0" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.3" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"270" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.0" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.5" }
 		}
 	}
 }
