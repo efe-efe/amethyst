@@ -12,9 +12,6 @@ function modifier_sniper_mobility_displacement:GetOverrideAnimationRate() 	retur
 
 function modifier_sniper_mobility_displacement:CheckState()
 	return {
-        [MODIFIER_STATE_NO_HEALTH_BAR] = true,
-		[MODIFIER_STATE_INVULNERABLE] = true,
-		[MODIFIER_STATE_OUT_OF_GAME] = true,
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 	}
 end
