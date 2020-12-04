@@ -338,6 +338,7 @@ function Modifiers.Displacement(modifier)
     local getCollisionOffset =          modifier.GetCollisionOffset
     local getCollisionTeamFilter =      modifier.GetCollisionTeamFilter
     local getCollisionTargetFilter =    modifier.GetCollisionTargetFilter
+    local getCollisionFlagFilter =      modifier.GetCollisionFlagFilter
     local getIsCommandRestricted =      modifier.GetIsCommandRestricted
 
 
@@ -409,7 +410,7 @@ function Modifiers.Displacement(modifier)
             self:GetCollisionRadius(), 
             self:GetCollisionTeamFilter(), 
             self:GetCollisionTargetFilter(), 
-            DOTA_UNIT_TARGET_FLAG_NONE,
+            self:GetCollisionFlagFilter(), 
             FIND_ANY_ORDER
        )
 
@@ -500,10 +501,14 @@ function Modifiers.Displacement(modifier)
         return DOTA_UNIT_TARGET_TEAM_BOTH
     end
 
-
     function modifier:GetCollisionTargetFilter()
         if getCollisionTargetFilter then return getCollisionTargetFilter(self) end
         return DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
+    end
+    
+    function modifier:GetCollisionFlagFilter()
+        if getCollisionFlagFilter then return getCollisionFlagFilter(self) end
+        return DOTA_UNIT_TARGET_FLAG_NONE
     end
     
     function modifier:GetCollisionRadius()

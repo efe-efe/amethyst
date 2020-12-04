@@ -15,17 +15,17 @@ end
 function modifier_juggernaut_ultimate_displacement:OnCollide(params)
 	if IsServer() then
 		if params.type == UNIT_COLLISION then
-			local target = nil
+			local enemy = nil
 
 			for _,unit in pairs(params.units) do
-				if not self:GetParent():IsAlly(unit) and not unit:IsObstacle() then
-					target = unit
+				if not unit:IsObstacle() then
+					enemy = unit
 					break
 				end
 			end
 
-			if target then
-				self:PlayEffectsOnImpact(target)
+			if enemy then
+				self:PlayEffectsOnImpact(enemy)
 
 				self:GetParent():AddNewModifier(
 					self:GetParent(), -- player source
@@ -67,6 +67,14 @@ end
 
 function modifier_juggernaut_ultimate_displacement:GetEffectName() 
 	return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf"
+end
+
+function modifier_juggernaut_ultimate_displacement:GetCollisionTeamFilter()
+	return DOTA_UNIT_TARGET_TEAM_ENEMY
+end
+
+function modifier_juggernaut_ultimate_displacement:GetCollisionFlagFilter()
+	return DOTA_UNIT_TARGET_FLAG_NO_INVIS
 end
 
 if IsClient() then require("wrappers/modifiers") end

@@ -20,11 +20,11 @@
 			"DisplayRange" 				"1"
 			"Fixed"						"1"
 		}
-
+		
 		"AbilitySpecial"
 		{
 			"02"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"350" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"700" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"                "80" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"aspd_per_stack"		"12.5" }
 		}

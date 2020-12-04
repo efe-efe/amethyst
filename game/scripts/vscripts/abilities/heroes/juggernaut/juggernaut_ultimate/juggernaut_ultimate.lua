@@ -1,5 +1,6 @@
 juggernaut_ultimate = class({})
 LinkLuaModifier("modifier_juggernaut_ultimate_displacement", "abilities/heroes/juggernaut/juggernaut_ultimate/modifier_juggernaut_ultimate_displacement", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_juggernaut_ultimate_banish", "abilities/heroes/juggernaut/juggernaut_ultimate/modifier_juggernaut_ultimate_banish", LUA_MODIFIER_MOTION_HORIZONTAL)
 LinkLuaModifier("modifier_juggernaut_ultimate_slashing", "abilities/heroes/juggernaut/juggernaut_ultimate/modifier_juggernaut_ultimate_slashing", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL)
