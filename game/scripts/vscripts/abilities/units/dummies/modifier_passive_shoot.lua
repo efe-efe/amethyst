@@ -6,7 +6,7 @@ function modifier_passive_shoot:OnCreated(params)
         self.radius = 700
         self.damage_table = {
 			attacker = self:GetParent(),
-			damage = 16,
+			damage = self:GetAbility():GetAbilityDamage(),
             damage_type = DAMAGE_TYPE_PHYSICAL
 		}
         self:StartIntervalThink(interval); 

@@ -119,6 +119,7 @@ export default class HeroOverhead extends Overhead{
                 }
             }
 
+
             if(currentStatus){
                 this.status.Activate(
                     currentStatus.label,
@@ -129,6 +130,9 @@ export default class HeroOverhead extends Overhead{
                 );
                 
                 this.midSwitchPanel.SetState(1);
+            } else {
+                this.status.Deactivate();
+                this.midSwitchPanel.SetState(0);
             }
         } else {
             this.status.Deactivate();
