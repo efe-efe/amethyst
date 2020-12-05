@@ -10,7 +10,7 @@ function modifier_phantom_extra_displacement:OnCreated(params)
 		self.damage_table = {
 			attacker = self:GetCaster(),
 			damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
-			damage_type = DAMAGE_TYPE_PURE,
+			damage_type = DAMAGE_TYPE_PHYSICAL,
 		}
 
 		self.recast = false
@@ -46,6 +46,7 @@ function modifier_phantom_extra_displacement:OnDestroy()
 
 		if self:GetAbility():GetLevel() >= 2 then
 			if self.recast then
+				--To prevent recasting from a recast!
 				if self:GetParent():HasModifier('modifier_phantom_extra_slashes') then
 					self:GetParent():RemoveModifierByName('modifier_phantom_extra_slashes')
 				else
@@ -74,28 +75,27 @@ function modifier_phantom_extra_displacement:OnDestroy()
 end
 
 function modifier_phantom_extra_displacement:OnImpact(hTarget)
-	if not self.recast then
-		self.recast = true
-	end
-
 	if not hTarget:HasModifier('modifier_phantom_extra') then
+		if not hTarget:IsCountering() and not self.recast then
+			hTarget:AddNewModifier(
+				self:GetParent(), -- player source
+				self:GetAbility(), -- ability source
+				"modifier_generic_fading_slow", -- modifier name
+				{ duration = self.fading_slow_duration, max_slow_pct = self.fading_slow_pct } -- kv
+			)
+			self.recast = true
+		end
+		
 		self.damage_table.victim = hTarget
 		ApplyDamage(self.damage_table)
-
-		hTarget:AddNewModifier(
-			self:GetParent(), -- player source
-			self:GetAbility(), -- ability source
-			"modifier_generic_fading_slow", -- modifier name
-			{ duration = self.fading_slow_duration, max_slow_pct = self.fading_slow_pct } -- kv
-		)
-
+		
 		hTarget:AddNewModifier(
 			self:GetCaster(), -- player source
 			self:GetAbility(), -- ability source
 			"modifier_phantom_extra", -- modifier name
 			{ duration = 0.1 } -- kv
 		)
-		
+
 		self:PlayEffectsOnImpact(hTarget)
 	end
 end
