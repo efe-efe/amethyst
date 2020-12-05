@@ -38,7 +38,7 @@ function modifier_storm_mobility_thinker:OnIntervalThink()
         ApplyDamage(self.damage_table)
 
         
-        if not enemy:IsObstacle() then
+        if enemy:ProvidesMana() then
             give_mana = true
         end
     end

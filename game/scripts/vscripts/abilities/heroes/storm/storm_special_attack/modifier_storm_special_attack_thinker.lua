@@ -46,7 +46,7 @@ function modifier_storm_special_attack_thinker:OnIntervalThink()
             originY = self.origin.y 
         })
           
-        if not unit:IsObstacle() then
+        if unit:ProvidesMana() then
             give_mana = true
         end
     end)
