@@ -271,6 +271,7 @@ function Modifiers.Charges(modifier)
     function modifier:RefreshCharges()
         self:SetStackCount(self:GetMaxCharges())
         self:CalculateCharge()
+        self:GetAbility():EndCooldown()
     end
 
     function modifier:GetMaxCharges()

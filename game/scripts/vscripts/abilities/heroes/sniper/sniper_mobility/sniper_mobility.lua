@@ -41,18 +41,7 @@ function sniper_mobility:OnSpellStart()
 	)
 
 	if self:GetLevel() == 2 then
-		local enemies = caster:FindUnitsInRadius(
-			origin, 
-			radius, 
-			DOTA_UNIT_TARGET_TEAM_ENEMY, 
-			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-			DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
-			FIND_ANY_ORDER
-		)
-	
-		for _,enemy in pairs(enemies) do
-			enemy:AddNewModifier(caster, self , "modifier_generic_stunned", { duration = stun_duration })
-		end
+		caster:FindAbilityByName("sniper_second_attack"):EndCooldown()
 	end
 
     self:PlayEffectsOnCast()
