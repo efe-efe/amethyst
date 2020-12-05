@@ -44,15 +44,20 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"1200"
-		"AbilityCastPoint"				"0.1"
+		"AbilityCastPoint"				"0.2"
 
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_leshrac.vsndevts"
+		}
+		
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
 		}
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 		}
 	}
@@ -73,7 +78,7 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"shield_per_hit"			"7" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"heal_per_hit"				"5" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.2" } 
+			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.4" } 
 			"04"{ "var_type"	"FIELD_FLOAT"		"fairy_dust_duration"		"2.0" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"fairy_dust_slow_pct"		"20" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }

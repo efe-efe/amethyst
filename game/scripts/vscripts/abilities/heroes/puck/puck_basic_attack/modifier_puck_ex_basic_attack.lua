@@ -35,6 +35,8 @@ function modifier_puck_ex_basic_attack:OnDestroy()
 		local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start_embers.vpcf"
 		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
 		ParticleManager:ReleaseParticleIndex(effect_cast)
+
+        self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(0))
 	end
 end
 

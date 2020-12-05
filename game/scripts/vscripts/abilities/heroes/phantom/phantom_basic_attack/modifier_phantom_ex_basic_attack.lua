@@ -53,7 +53,7 @@ function modifier_phantom_ex_basic_attack:OnDestroy(kv)
             origin, 
             true 
        )
-
+       
         self:StopEffects()
 	end
 end

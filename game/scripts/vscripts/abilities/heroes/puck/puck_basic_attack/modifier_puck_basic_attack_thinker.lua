@@ -33,7 +33,7 @@ function modifier_puck_basic_attack_thinker:OnDestroy()
 end
 
 function modifier_puck_basic_attack_thinker:OnIntervalThink()
-    EmitSoundOn("Hero_Puck.Dream_Coil_Snap", self:GetParent())
+    EmitSoundOn("Hero_Leshrac.Lightning_Storm", self:GetParent())
     local color = Vector(0,0,0)
     if self.charged then
         color = Vector(100,0,0)
