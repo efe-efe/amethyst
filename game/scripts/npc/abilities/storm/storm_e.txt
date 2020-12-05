@@ -22,13 +22,14 @@
 		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7 14" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
-			"07"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
-			"08"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.0" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7 25" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"220" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.0" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"mana_drain"				"25" }
 		}
 	}
 }

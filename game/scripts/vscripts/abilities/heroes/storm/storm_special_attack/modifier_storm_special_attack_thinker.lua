@@ -34,7 +34,7 @@ function modifier_storm_special_attack_thinker:OnIntervalThink()
         release = true
     })
 
-    local give_mana = false
+    local give_mana = true
 
     ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
         self.damage_table.victim = unit
@@ -47,16 +47,25 @@ function modifier_storm_special_attack_thinker:OnIntervalThink()
         })
           
         if unit:ProvidesMana() then
-            give_mana = true
+            if self:GetAbility():GetLevel() >= 2 then
+                unit:ReduceMana(self.mana_gain_pct)
+                self:GiveMana()
+            else
+                if give_mana then
+                    self:GiveMana()
+                    give_mana = false
+                end
+            end
         end
     end)
     
-    if give_mana then
-        self.caster:GiveManaPercent(self.mana_gain_pct)
-        if self.caster:HasModifier('modifier_storm_ultimate') then
-            local extra_mana_pct = self.mana_gain_pct * (self.caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-            self.caster:GiveManaPercentAndInform(extra_mana_pct)
-        end
-    end
     self:Destroy()
+end
+
+function modifier_storm_special_attack_thinker:GiveMana()
+    self.caster:GiveManaPercent(self.mana_gain_pct)
+    if self.caster:HasModifier('modifier_storm_ultimate') then
+        local extra_mana_pct = self.mana_gain_pct * (self.caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
+        self.caster:GiveManaPercentAndInform(extra_mana_pct)
+    end
 end
