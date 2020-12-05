@@ -62,7 +62,7 @@ function phantom_second_attack:OnSpellStart()
 		ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
 	end
 	
-	self:PlayEffectsOnFinish(point)
+	self:PlayEffectsOnFinish(direction, radius)
 	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
 	self:PlayEffectsOnCast()
 end
@@ -95,25 +95,18 @@ function phantom_second_attack:PlayEffectsOnCast()
 	EmitSoundOn("Hero_PhantomAssassin.Attack", self:GetCaster())
 end
 
-function phantom_second_attack:PlayEffectsOnFinish(pos)
+function phantom_second_attack:PlayEffectsOnFinish(vDirection, nRadius)
 	local caster = self:GetCaster()
-
-	local offset = 50
 	local origin = caster:GetOrigin()
-	local direction = (pos - origin):Normalized()
-	local final_position = origin + Vector(direction.x * offset, direction.y * offset, 0)
-
-	local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_c.vpcf"
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
-	ParticleManager:SetParticleControl(effect_cast, 1, final_position)
-	ParticleManager:SetParticleControlForward(effect_cast, 1, (origin - final_position):Normalized())
-	ParticleManager:ReleaseParticleIndex(effect_cast)
 	
-	particle_cast = "particles/phantom/phantom_second_attack.vpcf"
-	effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
-	ParticleManager:SetParticleControl(effect_cast, 0, final_position)
-	ParticleManager:SetParticleControlForward(effect_cast, 0, direction)	
-	ParticleManager:ReleaseParticleIndex(effect_cast)
+	local efx = EFX('particles/juggernaut/juggernaut_second_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
+		cp0 = origin,
+		cp0f = vDirection,
+		cp3 = Vector(nRadius, 0, 0),
+	})
+	ParticleManager:SetParticleControl(efx, 60, Vector(255, 0, 255))
+	ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
+	ParticleManager:ReleaseParticleIndex(efx)
 end
 
 if IsClient() then require("wrappers/abilities") end
