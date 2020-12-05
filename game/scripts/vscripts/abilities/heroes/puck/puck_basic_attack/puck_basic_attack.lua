@@ -130,7 +130,6 @@ function puck_basic_attack:OnUpgrade()
 	end
 end
 
-puck_basic_attack_related.GetCastPoint = puck_basic_attack.GetCastPoint
 puck_basic_attack_related.GetCooldown = puck_basic_attack.GetCooldown
 puck_basic_attack_related.PlayEffectsOnCast = puck_basic_attack.PlayEffectsOnCast
 
@@ -178,7 +177,8 @@ end
 
 function puck_ex_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	caster:AddNewModifier(caster, self, "modifier_puck_ex_basic_attack", { duration = 5.0 })
+	local duration = self:GetSpecialValueFor("duration")
+	caster:AddNewModifier(caster, self, "modifier_puck_ex_basic_attack", { duration = duration })
 
 	EFX("particles/puck/puck_ex_base_attack.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster, {
 		release = true

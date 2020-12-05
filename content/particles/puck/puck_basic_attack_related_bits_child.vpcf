@@ -3,24 +3,13 @@
 	_class = "CParticleSystemDefinition"
 	m_bShouldHitboxesFallbackToRenderBounds = false
 	m_nMaxParticles = 64
-	m_flConstantRadius = 40.0
-	m_ConstantColor = [ 180, 203, 255, 180 ]
-	m_bShouldSort = false
+	m_ConstantColor = [ 131, 149, 255, 255 ]
 	m_nBehaviorVersion = 5
+	m_nFirstMultipleOverride_BackwardCompat = 3
 	m_controlPointConfigurations = 
 	[
 		{
 			m_name = "preview"
-			m_drivers = 
-			[
-				{
-					m_iControlPoint = 2
-					m_iAttachType = "PATTACH_WORLDORIGIN"
-					m_vecOffset = [ 0.0, 0.0, 0.0 ]
-					m_angOffset = [ 0.0, 0.0, 0.0 ]
-					m_entityName = "self"
-				},
-			]
 		},
 	]
 	m_Emitters = 
@@ -30,46 +19,57 @@
 			m_nParticlesToEmit = 
 			{
 				m_nType = "PF_TYPE_LITERAL"
-				m_flLiteralValue = 16.0
+				m_flLiteralValue = 64.0
 			}
 		},
 	]
 	m_Initializers = 
 	[
 		{
-			_class = "C_INIT_RandomLifeTime"
-			m_fLifetimeMin = 0.2
-			m_fLifetimeMax = 0.5
+			_class = "C_INIT_CreateFromParentParticles"
+			m_bSubFrame = false
 		},
 		{
-			_class = "C_INIT_CreateWithinSphere"
-			m_vecDistanceBias = [ 1.0, 1.0, 0.0 ]
-			m_nControlPointNumber = 2
-			m_LocalCoordinateSystemSpeedMin = [ 0.0, 0.0, -1500.0 ]
-			m_LocalCoordinateSystemSpeedMax = [ 0.0, 0.0, -5500.0 ]
-			m_fRadiusMax = 48.0
+			_class = "C_INIT_RandomTrailLength"
+			m_flMinLength = 1.0
+			m_flMaxLength = 2.0
 		},
 		{
-			_class = "C_INIT_RandomRadius"
-			m_flRadiusMax = 160.0
-			m_flRadiusMin = 140.0
+			_class = "C_INIT_RandomColor"
+			m_ColorMin = [ 64, 100, 255 ]
+			m_ColorMax = [ 131, 149, 255 ]
+			m_TintMin = [ 0, 0, 0 ]
+			m_TintMax = [ 255, 255, 255 ]
+		},
+		{
+			_class = "C_INIT_InheritFromParentParticles"
+			m_nFieldOutput = "1"
+			m_flScale = 2.0
+		},
+		{
+			_class = "C_INIT_InheritFromParentParticles"
+			m_flScale = 0.05
 		},
 	]
 	m_Operators = 
 	[
 		{
-			_class = "C_OP_BasicMovement"
-			m_fDrag = 0.1
-		},
-		{
 			_class = "C_OP_Decay"
-			m_flOpEndFadeInTime = 1.0
 			m_flOpStartFadeInTime = 1.0
+			m_flOpEndFadeInTime = 1.0
 		},
 		{
-			_class = "C_OP_InterpolateRadius"
-			m_flEndScale = 0.0
-			m_flStartScale = 2.0
+			_class = "C_OP_InheritFromParentParticles"
+			m_nFieldOutput = "0"
+		},
+		{
+			_class = "C_OP_LerpScalar"
+			m_nFieldOutput = "10"
+			m_flOutput = 0.0
+		},
+		{
+			_class = "C_OP_InheritFromParentParticles"
+			m_flScale = 0.05
 		},
 		{
 			_class = "C_OP_ColorAdjustHSL"
@@ -123,22 +123,44 @@
 	m_Renderers = 
 	[
 		{
-			_class = "C_OP_RenderSprites"
-			m_flAnimationRate = 1.0
+			_class = "C_OP_RenderTrails"
+			m_flOverbrightFactor = 15.0
+			m_bIgnoreDT = true
+			m_flRadiusScale = 
+			{
+				m_nType = "PF_TYPE_LITERAL"
+				m_flLiteralValue = 0.5
+			}
+			m_vecTailColorScale = 
+			{
+				m_nType = "PVEC_TYPE_LITERAL"
+				m_vLiteralValue = [ 0.0, 0.0, 1.0 ]
+			}
+			m_flTailAlphaScale = 
+			{
+				m_nType = "PF_TYPE_LITERAL"
+				m_flLiteralValue = 0.0
+			}
 			m_vecTexturesInput = 
 			[
 				{
-					m_hTexture = resource:"materials/particle/particle_flares/aircraft_blue2.vtex"
+					m_hTexture = resource:"materials/particle/bendibeam2.vtex"
+					m_TextureControls = 
+					{
+						m_flFinalTextureScaleV = 
+						{
+							m_nType = "PF_TYPE_LITERAL"
+							m_flLiteralValue = -1.0
+						}
+						m_flFinalTextureOffsetV = 
+						{
+							m_nType = "PF_TYPE_LITERAL"
+							m_flLiteralValue = 1.0
+						}
+					}
 				},
 			]
 			m_nOutputBlendMode = "PARTICLE_OUTPUT_BLEND_MODE_ADD"
-			m_OutlineColor = [ 255, 255, 255 ]
-		},
-	]
-	m_Children = 
-	[
-		{
-			m_ChildRef = resource:"particles/puck/puck_basic_attack_related_bits_child.vpcf"
 		},
 	]
 }
