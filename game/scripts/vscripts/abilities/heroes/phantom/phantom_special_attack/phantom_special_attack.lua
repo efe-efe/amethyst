@@ -73,7 +73,7 @@ function phantom_special_attack:OnSpellStart()
 				{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct } -- kv
 			)
 			
-			if ability:GetLevel() >= 2 then
+			if ability:GetLevel() >= 2 and caster:HasModifier("modifier_phantom_ex_basic_attack") then
 				unit:AddNewModifier(
 					_self.Source,
 					ability,
