@@ -113,6 +113,9 @@ function juggernaut_basic_attack:PlayEffectsOnFinish(vDirection)
 		cp3 = Vector(self.radius, 0, 0),
 		release = true,
 	})
+	EFX('particles/juggernaut/juggernaut_basic_attack_dust.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+		release = true,
+	})
 end
 
 function juggernaut_basic_attack:PlayEffectsOnImpact(hTarget)

@@ -459,7 +459,7 @@
 	m_Children = 
 	[
 		{
-			m_ChildRef = resource:"particles/juggernaut/juggernaut_basic_attack_blur_baseb2.vpcf"
+			m_ChildRef = resource:"particles/juggernaut/juggernaut_second_attack_blur_baseb2.vpcf"
 		},
 		{
 			m_ChildRef = resource:"particles/juggernaut/juggernaut_basic_attack_blur_glowb.vpcf"

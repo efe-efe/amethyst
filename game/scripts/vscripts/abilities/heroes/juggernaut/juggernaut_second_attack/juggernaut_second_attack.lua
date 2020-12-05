@@ -5,13 +5,14 @@ LinkLuaModifier("modifier_juggernaut_second_attack_recast", "abilities/heroes/ju
 
 function juggernaut_second_attack:OnAbilityPhaseStart()
 	local caster = self:GetCaster()
-	local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_crit_tgt.vpcf"
 
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
-    ParticleManager:SetParticleControl(effect_cast, 1, caster:GetOrigin())
-    ParticleManager:SetParticleControl(effect_cast, 3, caster:GetOrigin())
-	ParticleManager:ReleaseParticleIndex(effect_cast)
+	self.efx = EFX('particles/econ/items/windrunner/windranger_arcana/windranger_arcana_javelin_tgt_v2.vpcf', PATTACH_ABSORIGIN_FOLLOW, caster, {})
 	return true
+end
+
+
+function juggernaut_second_attack:OnAbilityPhaseInterrupted()
+	DEFX(self.efx, true)
 end
 
 function juggernaut_second_attack:GetCastAnimationCustom() 
@@ -155,6 +156,7 @@ function juggernaut_ex_second_attack:GetCastPointSpeed() 			return 10 end
 
 function juggernaut_ex_second_attack:OnAbilityPhaseStart()
 	self:GetCaster():AddNewModifier(self:GetCaster(), self, "modifier_juggernaut_spin_animation", { duration = 0.3 })
+	EmitSoundOn("juggernaut_jugg_ability_bladefury_12", self:GetCaster())
 	
 	EFX('particles/juggernaut/juggernaut_ex_second_attack_casting_owner.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
 		release = true
@@ -217,6 +219,7 @@ end
 
 function juggernaut_ex_second_attack:PlayEffectsOnCast()
 	EmitSoundOn("DOTA_Item.SkullBasher", self:GetCaster())
+	
 end
 
 function juggernaut_ex_second_attack:PlayEffectsOnFinish(pos)
