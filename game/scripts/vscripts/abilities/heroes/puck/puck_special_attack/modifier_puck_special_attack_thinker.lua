@@ -14,6 +14,7 @@ function modifier_puck_special_attack_thinker:OnCreated(params)
         self.stun_duration = self:GetAbility():GetSpecialValueFor('stun_duration')
         self.fairy_dust_duration = self:GetAbility():GetSpecialValueFor('fairy_dust_duration')
         self.fairy_dust_slow_pct = self:GetAbility():GetSpecialValueFor('fairy_dust_slow_pct')
+        self.mana_gain_pct = self:GetAbility():GetSpecialValueFor("mana_gain_pct")
         
         self.delay = self:GetAbility():GetSpecialValueFor('delay')
         self.delay_small = self:GetAbility():GetSpecialValueFor('delay_small')
@@ -46,6 +47,8 @@ function modifier_puck_special_attack_thinker:OnDestroy()
 end
 
 function modifier_puck_special_attack_thinker:OnIntervalThink()
+    local give_mana = false
+    
     if self.iteration == 0 then
         ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius_small, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
             self.damage_table.victim = unit
@@ -56,9 +59,17 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
             end
             EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", unit)
             ApplyDamage(self.damage_table)
+
+            if unit:ProvidesMana() then
+                give_mana = true
+            end
          end)
 
         self:PlayEffectsExplode(self.radius_small, 0)
+        
+        if give_mana then
+            self.caster:GiveManaPercent(self.mana_gain_pct)
+        end
 
         self.iteration = 1
         self:StartIntervalThink(self.delay - self.delay_small)                   
@@ -72,8 +83,16 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
             unit:AddNewModifier(self.caster, self:GetAbility(), 'modifier_puck_fairy_dust', { duration = self.fairy_dust_duration, slow_pct = self.fairy_dust_slow_pct })
             EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", unit)
             ApplyDamage(self.damage_table)
-        end)
 
+            if unit:ProvidesMana() then
+                give_mana = true
+            end
+        end)
+        
+        if give_mana then
+            self.caster:GiveManaPercent(self.mana_gain_pct)
+        end
+        
         self:PlayEffectsExplode(self.radius, 1)
         self:Destroy()
     end
