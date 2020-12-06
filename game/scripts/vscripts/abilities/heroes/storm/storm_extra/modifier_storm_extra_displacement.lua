@@ -8,24 +8,20 @@ function modifier_storm_extra_displacement:OnCreated(params)
 		self.radius = self:GetAbility():GetSpecialValueFor('radius')
 		self.fading_slow_duration = self:GetAbility():GetSpecialValueFor("fading_slow_duration")
 		self.fading_slow_pct = self:GetAbility():GetSpecialValueFor("fading_slow_pct")
+		self.recast = false
 	
-		local ability = self.parent:FindAbilityByName('storm_ex_basic_attack')
-		local damage_per_level = ability:GetSpecialValueFor('damage_per_level')
-		self.stun_duration = ability:GetSpecialValueFor('stun_duration')
-		self.heal = ability:GetSpecialValueFor("heal")
-		self.aoe_heal = ability:GetSpecialValueFor("aoe_heal")
+		local storm_ex_basic_attack = self.parent:FindAbilityByName('storm_ex_basic_attack')
+		local damage_per_level = storm_ex_basic_attack:GetSpecialValueFor('damage_per_level')
+		self.stun_duration = storm_ex_basic_attack:GetSpecialValueFor('stun_duration')
+		self.heal = storm_ex_basic_attack:GetSpecialValueFor("heal")
+		self.aoe_heal = storm_ex_basic_attack:GetSpecialValueFor("aoe_heal")
 		
 		local extra_damage = damage_per_level * self:GetStackCount()
+		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage") + extra_damage
+		self.damage_aoe = self:GetAbility():GetSpecialValueFor("aoe_damage")
 		
 		self.damage_table = {
-			attacker = self:GetCaster(),
-			damage = self:GetAbility():GetSpecialValueFor("ability_damage") + extra_damage,
-			damage_type = DAMAGE_TYPE_PURE,
-		}
-
-		self.damage_table_aoe = {
-			attacker = self:GetCaster(),
-			damage = self:GetAbility():GetSpecialValueFor("aoe_damage"),
+			attacker = self.parent,
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 
@@ -35,52 +31,78 @@ end
 
 function modifier_storm_extra_displacement:OnCollide(params)
 	if IsServer() then
-		if params.type == UNIT_COLLISION then
-			for _,unit in pairs(params.units) do
-				if not unit:HasModifier('modifier_storm_extra') then
-					if unit ~= self.parent then
-						unit:AddNewModifier(
-							self:GetCaster(), -- player source
-							self:GetAbility(), -- ability source
-							"modifier_storm_extra", -- modifier name
-							{ duration = 0.35 } -- kv
-						)
+		if params.type ~= UNIT_COLLISION then
+			return
+		end
+		for _,unit in pairs(params.units) do
+			if unit:HasModifier('modifier_storm_extra') or unit == self.parent then
+				return
+			end
 
-						if not self.parent:IsAlly(unit) then
-							self.damage_table.victim = unit
-							ApplyDamage(self.damage_table)
-							
-							if self:GetStackCount() == 2 then
-								unit:AddNewModifier(
-									self.parent, -- player source
-									self:GetAbility(), -- ability source
-									"modifier_generic_stunned", -- modifier name
-									{ duration = self.stun_duration } -- kv
-								)
-							end
-							
-							if self:GetStackCount() >= 1 then
-								if not unit:IsObstacle() then
-									self.parent:Heal(self.heal, self.parent)
-								end    
-							end    
-						else 
-							if self:GetStackCount() >= 1 then
-								if not unit:IsObstacle() then
-									unit:Heal(self.heal, self.parent)
-								end    
-							end    
-						end
-					end 
-				end
+			unit:AddNewModifier(
+				self.parent,
+				self:GetAbility(),
+				"modifier_storm_extra",
+				{ duration = 0.35 }
+			)
+
+			if not self.parent:IsAlly(unit) then
+				self:OnImpactEnemyCollision(unit)
+			else 
+				self:OnImpactAlly(unit, self.heal)
 			end
 		end
 	end
 end
 
+function modifier_storm_extra_displacement:OnImpactAlly(hTarget, iHeal)
+	if self:GetStackCount() >= 1 then
+		if not hTarget:IsObstacle() then
+			hTarget:Heal(iHeal, self.parent)
+		end    
+	end    
+end
+
+function modifier_storm_extra_displacement:OnImpactEnemy(hTarget, iDamage)
+	if self:GetStackCount() == 2 then
+		hTarget:AddNewModifier(
+			self.parent,
+			self:GetAbility(),
+			"modifier_generic_stunned",
+			{ duration = self.stun_duration }
+		)
+	end
+
+	if not hTarget:IsObstacle() then
+		self.recast = true
+	end
+	self.damage_table.victim = hTarget
+	self.damage_table.damage = iDamage
+	ApplyDamage(self.damage_table)
+end
+
+function modifier_storm_extra_displacement:OnImpactEnemyAOE(hTarget)
+	self:OnImpactEnemy(hTarget, self.damage_aoe)
+	hTarget:AddNewModifier(
+		self.parent,
+		self:GetAbility(),
+		"modifier_generic_fading_slow",
+		{ duration = self.fading_slow_duration, max_slow_pct = self.fading_slow_pct }
+	)
+end
+
+function modifier_storm_extra_displacement:OnImpactEnemyCollision(hTarget)
+	self:OnImpactEnemy(hTarget, self.damage)
+	if self:GetStackCount() >= 1 then
+		if not hTarget:IsObstacle() then
+			self.parent:Heal(self.heal, self.parent)
+		end    
+	end
+end
+
 function modifier_storm_extra_displacement:OnDestroy()
 	if IsServer() then
-		local units = self:GetCaster():FindUnitsInRadius(
+		local units = self.parent:FindUnitsInRadius(
 			self.parent:GetAbsOrigin(), 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_BOTH, 
@@ -91,30 +113,9 @@ function modifier_storm_extra_displacement:OnDestroy()
 
 		for _,unit in pairs(units) do
 			if not self.parent:IsAlly(unit) then
-				unit:AddNewModifier(
-					self.parent, -- player source
-					self:GetAbility(), -- ability source
-					"modifier_generic_fading_slow", -- modifier name
-					{ duration = self.fading_slow_duration, max_slow_pct = self.fading_slow_pct } -- kv
-				)
-
-				if self:GetStackCount() == 2 then
-					unit:AddNewModifier(
-						self.parent, -- player source
-						self:GetAbility(), -- ability source
-						"modifier_generic_stunned", -- modifier name
-						{ duration = self.stun_duration } -- kv
-					)
-				end
-				
-				self.damage_table_aoe.victim = unit
-				ApplyDamage(self.damage_table_aoe)
+				self:OnImpactEnemyAOE(unit)
 			else
-				if self:GetStackCount() >= 1 then
-					if not unit:IsObstacle() then
-						unit:Heal(self.aoe_heal, self.parent)
-					end    
-				end    
+				self:OnImpactAlly(unit, self.aoe_heal)
 			end
 		end
 		
@@ -123,11 +124,31 @@ function modifier_storm_extra_displacement:OnDestroy()
 		StopSoundOn("Hero_StormSpirit.BallLightning.Loop", self.parent)
 		self:PlayEffectsOnDestroy()
 
-		self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(self:GetAbility():GetLevel()))
-
 		if self.parent:HasModifier('modifier_storm_ex_basic_attack') then
 			local modifier = self.parent:FindModifierByName('modifier_storm_ex_basic_attack')
 			modifier:SetStackCount(modifier:GetStackCount() - 10)
+		end
+		
+		if self:GetAbility():GetLevel() >= 2 then
+			if self.recast then
+				if self.parent:HasModifier('modifier_storm_extra_recast_used') then
+					self.parent:RemoveModifierByName('modifier_storm_extra_recast_used')
+				else
+					self.parent:AddNewModifier(
+						self.parent,
+						self:GetAbility(),
+						"modifier_storm_extra_recast_used",
+						{ duration = 3.0 }
+					)
+				
+					self.parent:AddNewModifier(
+						self.parent,
+						self:GetAbility(),
+						"modifier_storm_extra_recast",
+						{ duration = 3.0 }
+					)
+				end
+			end
 		end
 	end
 end
@@ -155,9 +176,9 @@ end
 function modifier_storm_extra_displacement:PlayEffectsOnDestroy()
     local particle_cast = "particles/units/heroes/hero_disruptor/disruptor_thunder_strike_bolt.vpcf"
     local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-    ParticleManager:SetParticleControl(effect_cast, 0, self:GetParent():GetAbsOrigin())
-    ParticleManager:SetParticleControl(effect_cast, 1, self:GetParent():GetAbsOrigin())
-    ParticleManager:SetParticleControl(effect_cast, 2, self:GetParent():GetAbsOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 0, self.parent:GetAbsOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 1, self.parent:GetAbsOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 2, self.parent:GetAbsOrigin())
 end
 
 function modifier_storm_extra_displacement:DeclareFunctions()

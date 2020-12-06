@@ -51,9 +51,12 @@ function spectre_second_attack:OnSpellStart()
 			}
 
 			local knockback_distance = 75
-			
+			local fading_slow_duration = 0.5
+			local fading_slow_pct = 100
+
 			if level >= 2 then
 				knockback_distance = 100
+				fading_slow_duration = 0.7
 
 				EFX('particles/spectre/spectre_second_attack_explosion.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, { 
 					release = true,
@@ -77,6 +80,11 @@ function spectre_second_attack:OnSpellStart()
 					peak = 0,
 				}
 			)
+
+			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
+				duration = fading_slow_duration,
+				max_slow_pct = fading_slow_pct 
+			})
 
 			ApplyDamage(damage_table)
 			

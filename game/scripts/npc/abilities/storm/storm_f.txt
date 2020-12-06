@@ -10,7 +10,7 @@
 		"AbilityTextureName"			"storm_spirit_ball_lightning"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityManaCost"				"25"
-		"AbilityCooldown"				"3.0 0.0"
+		"AbilityCooldown"				"0.0"
 		"AbilityCastRange"				"1250"
 		"AbilityCastPoint"				"0.3"
 
