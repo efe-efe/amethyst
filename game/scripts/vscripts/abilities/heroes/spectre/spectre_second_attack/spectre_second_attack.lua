@@ -1,4 +1,5 @@
 spectre_second_attack = class({})
+LinkLuaModifier("modifier_spectre_second_attack_displacement", "abilities/heroes/spectre/spectre_second_attack/modifier_spectre_second_attack_displacement", LUA_MODIFIER_MOTION_BOTH)
 
 function spectre_second_attack:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
 function spectre_second_attack:GetPlaybackRateOverride()	return 0.25 end
@@ -20,6 +21,7 @@ function spectre_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
+	local level = self:GetLevel()
 
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
@@ -43,23 +45,62 @@ function spectre_second_attack:OnSpellStart()
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {
 				victim = unit,
-				attacker = caster,
+				attacker = _self.Source,
 				damage = damage,
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}
 
-			ApplyDamage(damage_table)
-
-			EFX('particles/spectre/spectre_second_attack_impact.vpcf',PATTACH_ABSORIGIN_FOLLOW, unit, { 
-				cp1 = unit:GetAbsOrigin(),
-				release = true 
-			})
+			local knockback_distance = 75
 			
+			if level >= 2 then
+				knockback_distance = 100
 
+				EFX('particles/spectre/spectre_second_attack_explosion.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, { 
+					release = true,
+				})
+			else 
+				EFX('particles/spectre/spectre_second_attack_impact.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, { 
+					cp1 = unit:GetAbsOrigin(),
+					release = true 
+				})
+			end
+	
+			unit:AddNewModifier(
+				_self.Source, -- player source
+				self, -- ability source
+				"modifier_spectre_second_attack_displacement", -- modifier name
+				{
+					x = projectile_direction.x,
+					y = projectile_direction.y,
+					r = knockback_distance,
+					speed = (knockback_distance/0.125),
+					peak = 0,
+				}
+			)
+
+			ApplyDamage(damage_table)
+			
+			ScreenShake(unit:GetAbsOrigin(), 100, 300, 0.7, 1000, 0, true)
 			caster:GiveManaPercent(mana_gain_pct, unit)
 		end,
 		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
+			if level >= 2 then
+				local counter = 0
+				for k, v in pairs(_self.rehit) do 
+					counter = counter + 1 
+				end
+	
+				if counter == 0 then
+					EFX('particles/spectre/spectre_second_attack_explosion.vpcf', PATTACH_WORLDORIGIN, nil, { 
+						cp0 = pos, 
+						release = true,
+					})
+				end
+
+				EmitSoundOnLocationWithCaster(pos, "Hero_Nevermore.Attack", caster)
+			else
+				self:PlayEffectsOnFinish(pos, level)
+			end
 		end,
 	}
 
