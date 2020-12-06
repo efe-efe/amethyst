@@ -58,11 +58,17 @@
         </Panel>
         
         <Panel id="custom-hotkeys" class="custom-hotkeys">
-            <Button id="custom-hotkeys__button" class="custom-hotkeys__button">
-                <Label id="custom-hotkeys__button-text" class="custom-hotkeys__button-text" text='HIDE HOTKEYS'/>
-            </Button>
+            <Panel class="custom-hotkeys__options" hittest="false" >
 
-            <Panel id="custom-hotkeys__all-rows" class="custom-hotkeys__all-rows" hittest="false" >
+                <Button id="custom-hotkeys__swap-button" class="custom-hotkeys__button">
+                    <Label class="custom-hotkeys__button-text" text='SWAP R/F'/>
+                </Button>
+                <Button id="custom-hotkeys__hide-show-button" class="custom-hotkeys__button custom-hotkeys__button--last">
+                    <Label class="custom-hotkeys__button-text" text='HIDE HOTKEYS'/>
+                </Button>
+            </Panel>
+
+            <Panel id="custom-hotkeys__hotkeys" class="custom-hotkeys__hotkeys" hittest="false" >
                 <Panel class="custom-hotkeys__row" hittest="false" >
                     <Panel class="custom-hotkeys__row-left" hittest="false" >
                         <Panel class="custom-hotkeys__hotkeys-row" hittest="false" >

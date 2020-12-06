@@ -262,6 +262,22 @@ function GameMode:SetupPanoramaEventHooks()
             hero:SendDataToClient()
         end
     end)
+
+    
+    
+    CustomGameEventManager:RegisterListener('swap_r_f', function(eventSourceIndex, event)
+        
+        local playerId = event.playerID
+
+        if self.players and self.players[playerId] then
+            local player = self.players[playerId]
+            local hero = player.hero
+
+            local ability_name_one = hero:GetAbilityByIndex(5):GetName()
+            local ability_name_two = hero:GetAbilityByIndex(6):GetName()
+            hero:SwapAbilities(ability_name_one, ability_name_two, true, true)
+        end
+    end)
 end
 
 function GameMode:SetupMode()

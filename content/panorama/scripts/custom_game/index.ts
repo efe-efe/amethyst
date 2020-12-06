@@ -17,9 +17,10 @@ import { tables } from './shared/util';
     const refunderButton = $('#refunder__button') as Button;
     const refunderPanel = $('#refunder');
     const customHotkeysPanel = $('#custom-hotkeys');
-    const customHotkeysButton = $('#custom-hotkeys__button') as Button;
-    const customHotkeysAllRowsPanel = $('#custom-hotkeys__all-rows');
-    const customHotkeysTextPanel = $('#custom-hotkeys__button-text') as LabelPanel;
+    const hideShowButton = $('#custom-hotkeys__hide-show-button') as Button;
+    const swapButton = $('#custom-hotkeys__swap-button') as Button;
+    const customHotkeysAllRowsPanel = $('#custom-hotkeys__hotkeys');
+    const customHotkeysTextPanel = hideShowButton.FindChildrenWithClassTraverse('custom-hotkeys__button-text')[0] as LabelPanel;
     
     const heroOverheads: any = {};
     const heroInfoCards: any = {};
@@ -318,18 +319,37 @@ import { tables } from './shared/util';
         customHotkeysPanel.style.opacity = '0.5';
     });
 
-    customHotkeysButton.SetPanelEvent('onactivate', () => {
+    hideShowButton.SetPanelEvent('onactivate', () => {
         
         if(customHotkeysShowing){
             customHotkeysPanel.style.width = '140px';
             customHotkeysAllRowsPanel.style.height = '0px';
             customHotkeysTextPanel.text = 'SHOW HOTKEYS';
+            swapButton.style.visibility = 'collapse';
             customHotkeysShowing = false;
         } else {
             customHotkeysPanel.style.width = '340px';
             customHotkeysAllRowsPanel.style.height = '410px';
             customHotkeysTextPanel.text = 'HIDE HOTKEYS';
+            swapButton.style.visibility = 'visible';
             customHotkeysShowing = true;
         }
     });
+
+    swapButton.SetPanelEvent('onactivate', () => {
+        let playerId = Players.GetLocalPlayer();
+
+        if(Game.IsInToolsMode()){
+            const selectedEntity = Players.GetSelectedEntities(playerId)[0];
+            if(selectedEntity){
+                playerId = Entities.GetPlayerOwnerID(selectedEntity);
+            }
+        }
+
+        GameEvents.SendCustomGameEventToServer('swap_r_f', {
+            playerId
+            playerID: playerId, //Idk why this has to be this way...
+
+        } as never);
+    })
 })();
