@@ -18,13 +18,20 @@ function modifier_spectre_debuff:OnCreated(params)
 end
 
 function modifier_spectre_debuff:OnIntervalThink()
-    self.damage_done = self.damage_done + self.damage_per_second
+    if not self:GetParent():IsObstacle() then
+        self.damage_done = self.damage_done + self.damage_per_second
+    end
     ApplyDamage(self.damage_table)
     self:PlayEffects()
 end
 
 function modifier_spectre_debuff:PlayEffects()
     EmitSoundOn("Hero_Spectre.Desolate", self:GetCaster())
+    EmitSoundOn("Hero_Spectre.Attack", self:GetParent())
+
+    EFX('particles/spectre/spectre_extra_impact.vpcf', PATTACH_ABSORIGIN, self:GetParent(), {
+        release = true
+    })
 end
 
 function modifier_spectre_debuff:OnDestroy()
