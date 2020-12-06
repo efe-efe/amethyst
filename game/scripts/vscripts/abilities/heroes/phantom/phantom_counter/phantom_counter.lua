@@ -19,11 +19,6 @@ function phantom_counter:OnSpellStart()
         "modifier_phantom_counter_countering", 
 		{ duration = duration }
    	)
-
-	local alternative_spell = self:GetCaster():FindAbilityByName('phantom_ex_counter')
-	if alternative_spell:GetLevel() < 2 then
-		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
-	end
 end
 
 function phantom_counter_recast:OnSpellStart()
@@ -44,11 +39,6 @@ function phantom_ex_counter:OnSpellStart()
 	)
 	   
 	self:PlayEffectsOnCast()
-	
-	local alternative_spell = self:GetCaster():FindAbilityByName('phantom_counter')
-	if self:GetLevel() < 2 then
-		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
-	end
 end
 
 function phantom_ex_counter:PlayEffectsOnCast()
@@ -154,3 +144,5 @@ end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(phantom_ex_counter_recast)
+Abilities.Tie(phantom_ex_counter, 'phantom_counter', 2)
+Abilities.Tie(phantom_counter, 'phantom_ex_counter', nil)

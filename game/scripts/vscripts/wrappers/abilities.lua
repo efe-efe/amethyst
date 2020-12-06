@@ -1,13 +1,15 @@
 Abilities = {}
 
-function Abilities.Tie(ability, abilityName)
+function Abilities.Tie(ability, abilityName, iUnTieLevel)
     local onSpellStart = ability.OnSpellStart
 
     function ability:OnSpellStart()
         if onSpellStart then onSpellStart(self) end
 
-        local otherAbility = self:GetCaster():FindAbilityByName(abilityName)
-        otherAbility:StartCooldown(otherAbility:GetCooldown(0))
+        if not iUnTieLevel or self:GetLevel() < iUnTieLevel then
+            local otherAbility = self:GetCaster():FindAbilityByName(abilityName)
+            otherAbility:StartCooldown(otherAbility:GetCooldown(0))
+        end
     end
 end
 

@@ -189,5 +189,5 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(puck_mobility)
 Abilities.Castpoint(puck_ex_mobility)
-Abilities.Tie(puck_ex_mobility, 'puck_mobility')
-Abilities.Tie(puck_mobility, 'puck_ex_mobility')
+Abilities.Tie(puck_ex_mobility, 'puck_mobility', 2)
+Abilities.Tie(puck_mobility, 'puck_ex_mobility', nil)
