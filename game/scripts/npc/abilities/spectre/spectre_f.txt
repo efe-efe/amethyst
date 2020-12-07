@@ -19,7 +19,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"3 5" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"40" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.4" }
