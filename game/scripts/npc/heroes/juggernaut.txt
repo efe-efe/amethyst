@@ -32,7 +32,7 @@
 		"AttackAnimationPoint"		"0.25"	
 		"AttackRange"				"80"
 		
-		"MovementSpeed"				"380"
+		"MovementSpeed"				"400"
 		"MovementTurnRate"			"1.0"
 		
 		"AttributeBaseStrength"		"0"										
