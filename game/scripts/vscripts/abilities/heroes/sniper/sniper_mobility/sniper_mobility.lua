@@ -42,6 +42,7 @@ function sniper_mobility:OnSpellStart()
 
 	if self:GetLevel() == 2 then
 		caster:FindAbilityByName("sniper_second_attack"):EndCooldown()
+		caster:FindAbilityByName("sniper_ex_second_attack"):EndCooldown()
 	end
 
     self:PlayEffectsOnCast()
