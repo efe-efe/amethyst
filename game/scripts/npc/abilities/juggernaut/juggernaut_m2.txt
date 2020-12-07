@@ -25,10 +25,10 @@
 		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"14" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"240" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"2 4" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"14" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"240" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"2 4" }
 		}
 	}
 
@@ -43,7 +43,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange" 				"270"
+		"AbilityCastRange" 				"300"
 		"AbilityCooldown"				"7.0"
 		"AbilityManaCost"				"25"
 		"AbilityCastPoint"				"0.4"
@@ -56,7 +56,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"270" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.0" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.5" }
 		}
