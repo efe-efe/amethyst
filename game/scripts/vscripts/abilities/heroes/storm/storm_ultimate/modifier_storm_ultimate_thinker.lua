@@ -15,7 +15,6 @@ function modifier_storm_ultimate_thinker:OnCreated(params)
     if IsServer() then
         local delay_time = self.ability:GetSpecialValueFor('delay_time')
         
-        self.caster:AddNewModifier(self.caster, self.ability, 'modifier_storm_ultimate_banish', { duration = delay_time })
         CreateTimedRadiusMarker(self.caster, self.origin, self.radius, delay_time, 0.2, RADIUS_SCOPE_PUBLIC)
         self:StartIntervalThink(delay_time)
     end
