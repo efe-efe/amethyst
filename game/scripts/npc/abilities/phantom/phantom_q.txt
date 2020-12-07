@@ -20,9 +20,11 @@
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"			"1.5" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"buff_duration"				"3.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"heal"					    "16 24" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"heal"					    "16" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"as_speed"					"200" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"0.6" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"shield"					"20" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"shield_duration"			"6.0" }
 		}
 	}
 
@@ -45,9 +47,6 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_FLOAT"		"buff_duration"				"3.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"as_speed"					"200" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"0.6" }
 		}
 	}
 

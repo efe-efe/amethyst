@@ -22,9 +22,28 @@ function phantom_counter:OnSpellStart()
 end
 
 function phantom_counter_recast:OnSpellStart()
-    local caster = self:GetCaster()
-    local banish_duration = self:GetSpecialValueFor("banish_duration")
-	caster:AddNewModifier(caster, self, "modifier_phantom_counter_banish", { duration = banish_duration })
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+	local phantom_counter = caster:FindAbilityByName('phantom_counter')
+	local duration = phantom_counter:GetSpecialValueFor('buff_duration')
+	local shield = phantom_counter:GetSpecialValueFor('shield')
+	local shield_duration = phantom_counter:GetSpecialValueFor('shield_duration')
+	
+	caster:AddNewModifier(caster, phantom_counter, 'modifier_phantom_counter', { duration = duration } )
+	caster:AddNewModifier(caster, nil, "modifier_shield", { duration = 6.0, damage_block = shield })
+
+	EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster, {
+		cp3 = origin,
+		release = true
+	})
+	
+	EFX("particles/econ/items/phantom_assassin/pa_fall20_immortal_shoulders/pa_fall20_blur_start.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster, {
+		cp3 = origin,
+		release = true
+	})
+
+    EmitSoundOn("Hero_Sven.GodsStrength.Attack", caster)
+    EmitSoundOn("Hero_Abaddon.AphoticShield.Cast", caster)
 end
 
 function phantom_ex_counter:OnSpellStart()
@@ -37,7 +56,7 @@ function phantom_ex_counter:OnSpellStart()
         "modifier_phantom_ex_counter_recast", 
 		{ duration = duration }
 	)
-	   
+	
 	self:PlayEffectsOnCast()
 end
 
