@@ -208,8 +208,6 @@ function juggernaut_ex_second_attack:OnSpellStart()
 			enemy:AddNewModifier(caster, self, "modifier_generic_sleep", { duration = final_debuff_duration })
 		end
 		self:PlayEffectsOnImpact(enemy)
-
-		break
 	end
 
 	self:PlayEffectsOnFinish(point)

@@ -6,6 +6,12 @@ function modifier_juggernaut_ex_counter_recast:OnDestroy()
 	if IsServer() then
 		if self:GetRemainingTime() < 0.05 then
 			self:GetParent():RemoveModifierByName("modifier_juggernaut_ex_counter_slashes")
+
+			local juggernaut_counter = self:GetParent():FindAbilityByName("juggernaut_counter")
+			local juggernaut_ex_counter = self:GetParent():FindAbilityByName("juggernaut_ex_counter")
+
+			juggernaut_counter:StartCooldown(juggernaut_counter:GetCooldown(0))
+			juggernaut_ex_counter:StartCooldown(juggernaut_ex_counter:GetCooldown(0))
 		end
 	end
 end

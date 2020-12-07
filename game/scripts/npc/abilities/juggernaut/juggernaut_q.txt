@@ -23,7 +23,7 @@
 	"juggernaut_counter_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter_recast"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"juggernaut_counter"
@@ -36,7 +36,6 @@
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
 			"DisplayRange" 				"1"
-			"Fixed"						"1"
 		}
 		
 		"AbilitySpecial"
@@ -54,7 +53,7 @@
 		"AbilityTextureName"			"juggernaut_swift_slash"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCooldown"				"10.0"
+		"AbilityCooldown"				"6.0"
 		"AbilityCastRange"				"900"
 		"LevelsBetweenUpgrades"			"0"
 		"AbilityManaCost"				"25"
@@ -63,7 +62,6 @@
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
 			"DisplayRange" 				"1"
-			"Fixed"						"1"
 		}
 		
 		"AbilitySpecial"
