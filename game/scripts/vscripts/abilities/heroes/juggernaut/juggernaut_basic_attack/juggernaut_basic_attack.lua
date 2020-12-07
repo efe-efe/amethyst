@@ -16,7 +16,7 @@ function juggernaut_basic_attack:GetCooldown(iLevel)
 	end
 end
 
-function juggernaut_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_OVERRIDE_ABILITY_1 end
+function juggernaut_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK_EVENT end
 function juggernaut_basic_attack:GetPlaybackRateOverride() 	return 1.2 end
 function juggernaut_basic_attack:GetAnimationTranslate() 	return "odachi" end
 function juggernaut_basic_attack:GetCastPointSpeed() 		return self:GetSpecialValueFor('cast_point_speed_pct') end
