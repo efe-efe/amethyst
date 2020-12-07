@@ -337,6 +337,11 @@ import { tables } from './shared/util';
     });
 
     swapButton.SetPanelEvent('onactivate', () => {
+        SwapRF();
+    })
+
+    function SwapRF(){
+        $.Msg('SWAP RF');
         let playerId = Players.GetLocalPlayer();
 
         if(Game.IsInToolsMode()){
@@ -351,5 +356,7 @@ import { tables } from './shared/util';
             playerID: playerId, //Idk why this has to be this way...
 
         } as never);
-    })
+    }
+
+    $.Schedule(3.0, () => SwapRF());
 })();
