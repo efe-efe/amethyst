@@ -34,7 +34,7 @@
 		}
 	}
 
-		"spectre_ex_special_attack"
+	"spectre_ex_special_attack"
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
@@ -47,7 +47,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityCastRange"				"1200 1500"
-		"AbilityCooldown"				"5.0"
+		"AbilityCooldown"				"7.0"
 		"AbilityManaCost"				"25"
 		"AbilityCastPoint"				"0.1"
 		
