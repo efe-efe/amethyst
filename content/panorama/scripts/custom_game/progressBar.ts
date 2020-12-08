@@ -21,6 +21,7 @@ export default class ProgressBar{
         const font_size = data.font_size || '12px';
         const delayed = data.delayed || false;
         const show_value = data.show_value || false;
+        const border_radius = data.border_radius || '0';
 
         this.panel = $.CreatePanelWithProperties('Panel', parent, id, {
             class: 'ProgressBar',
@@ -79,6 +80,9 @@ export default class ProgressBar{
         });
     
         this.foregroundPanel.style.width = '0%';
+        this.foregroundPanel.style.borderRadius = border_radius;
+        this.delayPanel.style.borderRadius = border_radius;
+        this.backgroundPanel.style.borderRadius = border_radius;
         this.delayPanel.style.visibility = delayed && 'visible' || 'collapse';
         this.textPanel.style.visibility = show_value && 'visible' || 'collapse';
         this.textPanel.style.fontSize = font_size;
@@ -124,6 +128,29 @@ export default class ProgressBar{
         }
         if(data.bottom){
             this.backgroundPanel.style.borderBottom = data.bottom + 'px solid rgb(36, 42, 53);';
+        }
+    }
+
+    SetBorderRadius(data: any): void{
+        if(data.topRight){
+            this.backgroundPanel.style.borderTopRightRadius = data.topRight + 'px;';
+            this.foregroundPanel.style.borderTopRightRadius = data.topRight + 'px;';
+            this.delayPanel.style.borderTopRightRadius = data.topRight + 'px;';
+        }
+        if(data.topLeft){
+            this.backgroundPanel.style.borderTopLeftRadius = data.topLeft + 'px;';
+            this.foregroundPanel.style.borderTopLeftRadius = data.topLeft + 'px;';
+            this.delayPanel.style.borderTopLeftRadius = data.topLeft + 'px;';
+        }
+        if(data.bottomRight){
+            this.backgroundPanel.style.borderBottomRightRadius = data.bottomRight + 'px;';
+            this.foregroundPanel.style.borderBottomRightRadius = data.bottomRight + 'px;';
+            this.delayPanel.style.borderBottomRightRadius = data.bottomRight + 'px;';
+        }
+        if(data.bottomLeft){
+            this.backgroundPanel.style.borderBottomLeftRadius = data.bottomLeft + 'px;';
+            this.foregroundPanel.style.borderBottomLeftRadius = data.bottomLeft + 'px;';
+            this.delayPanel.style.borderBottomLeftRadius = data.bottomLeft + 'px;';
         }
     }
 

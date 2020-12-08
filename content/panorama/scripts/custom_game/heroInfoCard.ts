@@ -17,7 +17,8 @@ export default class HeroInfoCard{
 
     healthPanel: Panel;
     manaPanel: Panel;
-
+    abilitiesPanel: Panel;
+    
     health: Health;
     mana: Mana | undefined;
     color: Color;
@@ -34,13 +35,15 @@ export default class HeroInfoCard{
         this.leftTopPanel = panels.createPanelSimple(this.leftPanel, 'hero-info-card__top');
         this.leftMidPanel = panels.createPanelSimple(this.leftPanel, 'hero-info-card__mid');
         this.leftBotPanel = panels.createPanelSimple(this.leftPanel, 'hero-info-card__bot');
+        this.abilitiesPanel = panels.createPanelSimple(this.rightPanel, 'hero-info-card__abilities');
 
         if(heroData.allianceName == 'DOTA_ALLIANCE_DIRE'){
             this.containerPanel.SetHasClass('hero-info-card--right', true);
+            this.abilitiesPanel.SetHasClass('hero-info-card__abilities--right', true);
         }
 
         for(let i = 0; i < 9; i++){
-            $.CreatePanelWithProperties('DOTAAbilityImage', this.rightPanel, 'hero-info-card__ability_' + i, {
+            $.CreatePanelWithProperties('DOTAAbilityImage', this.abilitiesPanel, 'hero-info-card__ability_' + i, {
                 class: 'hero-info-card__ability',
             });
         }
@@ -55,7 +58,11 @@ export default class HeroInfoCard{
             this.mana = new Mana(this.manaPanel, heroData.mana, heroData.maxMana);
         }
 
-        this.health = new Health(this.healthPanel, this.color, '13px', true);
+        this.health = new Health(this.healthPanel, {
+            color: this.color, 
+            fontSize: '13px', 
+            showValue: true,
+        });
         imagePanel.heroname = heroData.name;
 
         this.UpdateData(heroData);
@@ -89,11 +96,11 @@ export default class HeroInfoCard{
             }
         }
 
-        for(let i = 0; i < this.rightPanel.GetChildCount(); i++){
-            const tmpPanel = this.rightPanel.GetChild(i) as AbilityImage;
+        for(let i = 0; i < this.abilitiesPanel.GetChildCount(); i++){
+            const tmpPanel = this.abilitiesPanel.GetChild(i) as AbilityImage;
 
             if(upgradedAbilities[iterator]){
-                tmpPanel.style.width = '35px';
+                tmpPanel.style.width = '40px';
                 tmpPanel.style.marginRight = '5px';
                 tmpPanel.abilityname = upgradedAbilities[iterator].name;
 

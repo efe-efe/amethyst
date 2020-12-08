@@ -1,6 +1,15 @@
 import ProgressBar from '../progressBar';
 import { colors, Color, panels } from '../shared/util';
 
+type HealthData = {
+    color: Color;
+    fontSize?: string ;
+    showValue?: boolean;
+    usePercentage?: boolean;
+    rounded?: boolean;
+    resize?: boolean;
+}
+
 export default class Health{
     healthProgressBar: ProgressBar;
     shieldProgressBar: ProgressBar;
@@ -9,9 +18,17 @@ export default class Health{
     color: Color;
     showValue: boolean;
     usePercentage: boolean;
+    rounded: boolean;
+    borderRadius = '3';
 
-    constructor(container: Panel, color: Color, fontSize = '13px',showValue = false, usePercentage = false){
-        this.color = color;
+    constructor(container: Panel, data: HealthData){
+        const fontSize = (data.fontSize) ? data.fontSize : '13px';
+        const showValue = (data.showValue) ? data.showValue : false;
+        const usePercentage = (data.usePercentage) ? data.usePercentage : false;
+        this.rounded = (data.rounded) ? data.rounded : false;
+        const resize = (data.resize) ? data.resize : true;
+
+        this.color = data.color;
         this.showValue = showValue;
         this.usePercentage = usePercentage;
 
@@ -21,8 +38,14 @@ export default class Health{
         this.healthProgressBar = new ProgressBar('health__progress-bar', this.healthPanel, { 
             foreground_color: colors.Gradient(this.color), 
             delayed: true, 
+            background_color: 'black',
+            border_radius: (this.rounded) ? this.borderRadius + 'px' : '0',
         });
-        this.shieldProgressBar = new ProgressBar('shield__progress-bar', this.healthPanel, { foreground_color: colors.Gradient(colors.gray) });
+        this.shieldProgressBar = new ProgressBar('shield__progress-bar', this.healthPanel, { 
+            foreground_color: colors.Gradient(colors.gray),
+            background_color: 'black',
+            border_radius: (this.rounded) ? '2px' : '0',
+        });
         
         this.healthPanel.style.flowChildren = 'right';
         this.healthPanel.style.height = '100%';
@@ -47,6 +70,12 @@ export default class Health{
         if(shield <= 0){
             this.shieldProgressBar.SetVisibility('collapse');
             this.healthProgressBar.SetBorder({right: '1'});
+
+            if(this.rounded){
+                this.healthProgressBar.SetBorderRadius({topRight: this.borderRadius, bottomRight: this.borderRadius});
+                this.shieldProgressBar.SetBorderRadius({topLeft: this.borderRadius, bottomLeft: this.borderRadius});
+            }
+
             healthPanelWidth = 100 * (potentialHealth)/(maxHealth);
     
             if(potentialHealth == 0){
@@ -59,7 +88,12 @@ export default class Health{
             this.shieldProgressBar.SetVisibility('visible');
             this.healthProgressBar.SetBorder({right: '0'});
             this.shieldProgressBar.SetBorder({left: '0'});
-    
+            
+            if(this.rounded){
+                this.healthProgressBar.SetBorderRadius({topRight: '0', bottomRight: '0'});
+                this.shieldProgressBar.SetBorderRadius({topLeft: '0', bottomLeft: '0'});
+            }
+
             healthTotalWidth = 100 * (health)/(maxHealth + shield);
             healthPanelWidth = 100;
             healthProgress = 100;
