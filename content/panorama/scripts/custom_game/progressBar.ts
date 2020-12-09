@@ -116,7 +116,12 @@ export default class ProgressBar{
         this.panel.style.visibility = visibility;
     }
 
-    SetBorder(data: any): void{
+    SetBorder(data: {
+        top?: string;
+        left?: string;
+        right?: string;
+        bottom?: string;
+    }): void{
         if(data.left){
             this.backgroundPanel.style.borderLeft = data.left + 'px solid rgb(36, 42, 53);';
         }
@@ -131,7 +136,12 @@ export default class ProgressBar{
         }
     }
 
-    SetBorderRadius(data: any): void{
+    SetBorderRadius(data: {
+        topRight?: string,
+        topLeft?: string,
+        bottomRight?: string,
+        bottomLeft?: string,
+    }): void{
         if(data.topRight){
             this.backgroundPanel.style.borderTopRightRadius = data.topRight + 'px;';
             this.foregroundPanel.style.borderTopRightRadius = data.topRight + 'px;';

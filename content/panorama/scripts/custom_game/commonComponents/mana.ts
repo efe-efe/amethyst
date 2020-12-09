@@ -64,9 +64,11 @@ export default class Mana{
         const progressBar = new ProgressBar('mana__progress-bar__' + index, this.container, { foreground_color: colors.Gradient(colors.blue) });
         const width = (100 * this.manaPerCell)/this.maxMana;
         progressBar.SetTotalWidth(width);
+
         if(index > 0){
-            progressBar.SetBorder({left: 0});
+            progressBar.SetBorder({left: '0'});
         }
+
         this.progressBars.push(progressBar);
     }
 
