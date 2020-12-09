@@ -90,8 +90,11 @@ function spectre_basic_attack:OnSpellStart()
 	
 		if is_charged then
 			enemy:AddNewModifier(caster, self, "modifier_generic_silence", { duration = silence_duration })
-			enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = desolate_duration })
-
+			
+			if enemy:ProvidesMana() then
+				enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = desolate_duration })
+			end
+			
 			if not enemy:IsObstacle() then
 				caster:Heal(heal_charged, caster)
 			end

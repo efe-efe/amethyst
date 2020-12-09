@@ -20,7 +20,9 @@ function modifier_spectre_mobility_thinker:OnDestroy()
         SafeDestroyModifier("modifier_spectre_banish", caster, caster)
         
         local enemies = ApplyCallbackForUnitsInArea(caster, self:GetParent():GetAbsOrigin(), self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)
-            enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
+            if enemy:ProvidesMana() then
+                enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
+            end
             if self:GetAbility():GetLevel() >= 2 then
                 enemy:AddNewModifier(caster, self, "modifier_spectre_ex_mobility_fear", { duration = self.fear_duration })
             end
