@@ -64,7 +64,7 @@ function spectre_counter_recast:TeleportTarget(hTarget, hCaster)
 	local hTargetOrigin = hTarget:GetAbsOrigin()
 	local vDirection = (vCasterOrigin - hTargetOrigin):Normalized()
 	local iDistance = (vCasterOrigin - hTargetOrigin):Length2D()
-	local vNewOrigin = vCasterOrigin
+	local vNewOrigin = vCasterOrigin + hCaster:GetForwardVector() * 150
 	local iSpeed = 3000
 
 	local projectile = {
