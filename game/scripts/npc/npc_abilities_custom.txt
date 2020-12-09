@@ -62,6 +62,8 @@
 #base "abilities\storm\storm_r.txt"
 #base "abilities\storm\storm_space.txt"
 
+#base "abilities\vengeful\vengeful_space.txt"
+
 #base "abilities\dummies\passive_shoot.txt"
 #base "abilities\dummies\passive_walk.txt"
 
