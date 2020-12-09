@@ -74,7 +74,7 @@ export default class HeroOverhead extends Overhead{
         this.status = new Status(this.midPanel, heroData.entityIndex);
         const player = new Player(this.midPanel, heroData.playerId, this.color);
         this.health = new Health(this.healthPanel, {
-            color: this.color, 
+            color: this.color,
             rounded: true,
         });
         this.castpoint = new Castpoint(this.castpointPanel, heroData.entityIndex);

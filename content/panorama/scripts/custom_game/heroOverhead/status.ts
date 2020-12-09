@@ -35,7 +35,9 @@ export default class Status{
         this.textGlowPanel = panels.createPanelSimple(topPanel, 'status__text status__text--glow', 'Label') as LabelPanel;
         this.textPanel = panels.createPanelSimple(topPanel, 'status__text', 'Label') as LabelPanel;
 
-        this.progressBar = new ProgressBar('status__progress-bar' , botPanel, {});
+        this.progressBar = new ProgressBar('status__progress-bar' , botPanel, {
+            background_color: 'rgba(0, 0, 0, 0.9)'
+        });
 
         this.SetText('Status');
     }
