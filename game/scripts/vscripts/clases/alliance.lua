@@ -66,7 +66,7 @@ function Alliance:GetShield()
     return current
 end
 
-function Alliance:GetAmethyst()
+function Alliance:GetAmethysts()
     return self.amethysts
 end
 
@@ -92,7 +92,7 @@ function Alliance:SetScore(nScore)
     self:SendDataToClient()
 end
 
-
 function Alliance:SetAmethysts(amethysts)
     self.amethysts = amethysts
+    self:SendDataToClient()
 end

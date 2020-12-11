@@ -551,20 +551,6 @@ function GameMode:OnEntityKilled(keys)
     end
 end
 
-function GameMode:OnAmethystDestroy(killer)
-    if killer ~= nil then
-        local killer_alliance = killer.alliance
-
-        killer_alliance.amethysts:SetAmethyst(killer_alliance:GetAmethyst() + 1)
-        
-        if self.WIN_CONDITION.type == "AMETHYSTS" then
-            if killer_alliance:GetAmethyst() >= self.WIN_CONDITION.number then
-                self:EndGame(killer_alliance.teams[1]) 
-            end
-        end
-    end
-end
-
 function GameMode:OnHeroKilled(killed)
     if self.WIN_CONDITION.type == "AMETHYSTS" then
         killed.lifes = killed.lifes - 1 

@@ -41,14 +41,10 @@ function Amethyst:OnDeath(params)
         self:PlayEffectsOnDeath()
         self:GetUnit():AddNoDraw()
 
-        killer:GetAlliance().amethysts = killer:GetAlliance().amethysts + 1
+        killer:GetAlliance():SetAmethysts(
+            killer:GetAlliance():GetAmethysts() + 1
+        )
 	end
-    
-    local data = {
-        alliance = params.killer:GetAlliance().name,
-        amethysts = params.killer:GetAlliance().amethysts
-    }
-    CustomGameEventManager:Send_ServerToAllClients("update_amethysts", data)
 
     self:Destroy()
 end
