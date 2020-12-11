@@ -21,8 +21,7 @@ function phantom_special_attack:OnSpellStart()
 	local point = self:GetCursorPosition()
     local origin = caster:GetAbsOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
-	local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
-	local bleed_duration = ability:GetSpecialValueFor("bleed_duration")
+	local bleed_duration = self:GetSpecialValueFor("bleed_duration")
 
 	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
@@ -58,25 +57,25 @@ function phantom_special_attack:OnSpellStart()
 
 				if not unit:IsObstacle() then
 					caster:AddNewModifier(
-						caster, -- player source
-						self, -- ability source
-						"modifier_phantom_strike_stack", -- modifier name
-						{} -- kv
+						caster,
+						self,
+						"modifier_phantom_strike_stack",
+						{}
 					)
 				end
 			end
 
 			unit:AddNewModifier(
-				_self.Source, -- player source
-				self, -- ability source
-				"modifier_generic_fading_slow", -- modifier name
-				{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct } -- kv
+				_self.Source,
+				self,
+				"modifier_generic_fading_slow",
+				{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct }
 			)
 			
-			if ability:GetLevel() >= 2 and caster:HasModifier("modifier_phantom_ex_basic_attack") then
+			if self:GetLevel() >= 2 then
 				unit:AddNewModifier(
 					_self.Source,
-					ability,
+					self,
 					'modifier_phantom_bleed',
 					{ duration = bleed_duration }
 				)

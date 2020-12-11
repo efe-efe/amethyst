@@ -2,9 +2,9 @@ modifier_phantom_bleed = class({})
 
 function modifier_phantom_bleed:OnCreated(params)
     if IsServer() then
-        self.bleed_damage_per_stack = self:GetAbility():GetSpecialValueFor("bleed_damage_per_stack")
-		self.max_stacks = self:GetAbility():GetSpecialValueFor("bleed_max_stacks")
-		local interval_time = self:GetAbility():GetSpecialValueFor("bleed_interval_time")
+        self.bleed_damage_per_stack = 1
+		self.max_stacks = 3
+		local interval_time = 1.0
 		
 		self.damage_table = {
             victim = self:GetParent(),

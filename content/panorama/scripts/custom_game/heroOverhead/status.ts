@@ -120,7 +120,7 @@ const LIGHT_GREEN = '#b2f7bd';
 const PURPLE = '#C655C4';
 const BLUE = '#3b55ed';
 const LIGHT_BLUE = '#81c3f9';
-const RED = '#ff2d2d';
+const RED = '#ed4747';
 const ORANGE = '#E55C34';
 
 const styles: {[key: string]: {
@@ -160,6 +160,7 @@ styles['DancingBlades'] = { backgroundColor: '#DC8668', color: '#DC8668' };
 styles['Raze'] = {          backgroundColor: ORANGE, textShadow: CreateTextShadow('#DC8668'), color: '#E8C070' };
 styles['Desolation'] = {    backgroundColor: '#E55C34', textShadow: CreateTextShadow('#DC8668'), color: '#E8C070' };
 styles['StormUnleashed'] = {backgroundColor: BLUE, textShadow: CreateTextShadow(LIGHT_BLUE), color: SKY_BLUE };
+styles['Bleeding'] = {      backgroundColor: ORANGE, textShadow: CreateTextShadow(PURPLE), color: RED };
 styles['Darkness'] = {
     backgroundColor: '#DC8668',
     color: '#DC8668'
