@@ -45,6 +45,8 @@ function modifier_storm_special_attack_thinker:OnIntervalThink()
             originX = self.origin.x,
             originY = self.origin.y 
         })
+
+        unit:AddNewModifier(self.caster, self.ability, "modifier_generic_stunned", { duration = 0.1 })
           
         if unit:ProvidesMana() then
             if self:GetAbility():GetLevel() >= 2 then
