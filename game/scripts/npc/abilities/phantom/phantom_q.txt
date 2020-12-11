@@ -72,9 +72,9 @@
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.25" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"			"50" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"2.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"sleep_duration"			"1.0" }
 		}
 	}
 
