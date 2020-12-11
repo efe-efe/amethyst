@@ -89,8 +89,8 @@
 			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ms_pct"					"20" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"buff_linger"				"0.1" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"extra_damage"				"3" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"450" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"extra_damage"				"3 5" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.3" }
 		}
 	}
