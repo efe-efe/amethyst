@@ -18,6 +18,16 @@
 			"DisplayRange" 				"1"
 			"Fixed"						"1"
 		}
+
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_techies/techies_base_attack_smokeburst.vpcf"
+			"particle"	"particles/units/heroes/hero_techies/techies_base_attack_explosion.vpcf"
+			"particle"	"particles/units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
+			"particle"	"particles/units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
+			"particle"	"particles/econ/items/techies/techies_arcana/techies_suicide_arcana.vpcf"
+			"particle"	"particles/sniper/sniper_ultimate_new.vpcf"
+		}
 		
 		"AbilitySpecial"
 		{
