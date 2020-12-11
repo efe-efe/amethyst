@@ -32,7 +32,7 @@
 			"08"{ "var_type"	"FIELD_FLOAT"		"fairy_dust_duration"		"2.0" }
 			"09"{ "var_type"	"FIELD_INTEGER"		"fairy_dust_slow_pct"		"30" }
 			"10"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"0.75" }
-			"11"{ "var_type"	"FIELD_FLOAT"		"stun_duration_small"		"1.0" }
+			"11"{ "var_type"	"FIELD_FLOAT"		"stun_duration_small"		"0.75" }
 			"12"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"4" }
 		}
 	}
