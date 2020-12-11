@@ -12,6 +12,7 @@ function juggernaut_counter:OnSpellStart()
    local caster = self:GetCaster()
    local duration = self:GetSpecialValueFor("counter_duration")
    caster:AddNewModifier(caster, self, "modifier_juggernaut_counter_countering", { duration = duration })
+   LinkAbilityCooldowns(caster, 'juggernaut_ex_counter')
 end
 
 function juggernaut_counter_helper:Slash(vPoint, iDamage)
@@ -150,6 +151,7 @@ function juggernaut_ex_counter:OnSpellStart()
    local damage = self:GetRecastAbility():GetSpecialValueFor("ability_damage")
 
    self:Slash(point, damage)
+   LinkAbilityCooldowns(caster, 'juggernaut_counter')
 end
 
 function juggernaut_ex_counter:GetManaCost(iLevel)
@@ -183,5 +185,3 @@ end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(juggernaut_ex_counter)
-Abilities.Tie(juggernaut_ex_counter, 'juggernaut_counter')
-Abilities.Tie(juggernaut_counter, 'juggernaut_ex_counter')

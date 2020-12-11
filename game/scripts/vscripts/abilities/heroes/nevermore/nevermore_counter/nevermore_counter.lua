@@ -18,6 +18,7 @@ function nevermore_counter:OnSpellStart()
       "modifier_nevermore_counter_countering", -- modifier name
       { duration = duration } -- kv
    )
+   LinkAbilityCooldowns(caster, 'nevermore_ex_counter')
 end
 
 function nevermore_counter:PlayEffectsFear()
@@ -70,10 +71,9 @@ function nevermore_ex_counter:OnSpellStart()
    self:PlayEffectsFear()
    EmitSoundOn('Hero_Nevermore.Shadowraze.Arcana', caster)
    EmitSoundOn('nevermore_nev_arc_ability_shadow_24', caster)
+   LinkAbilityCooldowns(caster, 'nevermore_counter')
 end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(nevermore_ex_counter)
-Abilities.Tie(nevermore_counter, 'nevermore_ex_counter')
-Abilities.Tie(nevermore_ex_counter, 'nevermore_counter')
 

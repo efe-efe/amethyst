@@ -18,7 +18,14 @@ function phantom_counter:OnSpellStart()
 		self,
         "modifier_phantom_counter_countering", 
 		{ duration = duration }
-   	)
+	)
+
+	LinkAbilityCooldowns(caster, 'phantom_ex_counter', {
+		["0"] = {
+			ability = 'phantom_ex_counter',
+			level = 2,
+		}
+	})
 end
 
 function phantom_counter_recast:OnSpellStart()
@@ -58,6 +65,13 @@ function phantom_ex_counter:OnSpellStart()
 	)
 	
 	self:PlayEffectsOnCast()
+
+	LinkAbilityCooldowns(caster, 'phantom_counter', {
+		["0"] = {
+			ability = self,
+			level = 2,
+		}
+	})
 end
 
 function phantom_ex_counter:PlayEffectsOnCast()
@@ -163,5 +177,3 @@ end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(phantom_ex_counter_recast)
-Abilities.Tie(phantom_ex_counter, 'phantom_counter', 2)
-Abilities.Tie(phantom_counter, 'phantom_ex_counter', nil)

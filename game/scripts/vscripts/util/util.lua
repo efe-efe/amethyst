@@ -457,3 +457,22 @@ function TrueHeal(base, heal, unit)
 
     SendOverheadHealMessage(unit, heal)
 end
+
+function LinkAbilityCooldowns(hCaster, sLinkedSpell, tUnlinkLevels)
+	local bStartCooldown = true
+	local hLinkedSpell = hCaster:FindAbilityByName(sLinkedSpell)
+
+	if tUnlinkLevels then
+		for _,unlinkLevel in pairs(tUnlinkLevels) do
+			local hAbility = type(unlinkLevel.ability) == "table" and unlinkLevel.ability or hCaster:FindAbilityByName(unlinkLevel.ability)
+
+			if hAbility:GetLevel() >= unlinkLevel.level then
+				bStartCooldown = false
+			end
+		end
+	end
+	
+	if bStartCooldown then
+		hLinkedSpell:StartCooldown(hLinkedSpell:GetCooldown(0))
+	end
+end

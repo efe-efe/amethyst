@@ -36,6 +36,7 @@ function nevermore_special_attack:OnSpellStart()
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
 	)
+	LinkAbilityCooldowns(caster, 'nevermore_ex_special_attack')
 end
 
 function nevermore_special_attack:OnUpgrade()
@@ -61,6 +62,7 @@ function nevermore_ex_special_attack:OnSpellStart()
 
 	self:PlayEffects()
 	caster:Heal(heal + (heal_per_soul * souls), caster)
+	LinkAbilityCooldowns(caster, 'nevermore_special_attack')
 end
 
 function nevermore_ex_special_attack:PlayEffects()
@@ -78,5 +80,3 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(nevermore_special_attack)
 Abilities.Castpoint(nevermore_ex_special_attack)
-Abilities.Tie(nevermore_special_attack, 'nevermore_ex_special_attack')
-Abilities.Tie(nevermore_ex_special_attack, 'nevermore_special_attack')

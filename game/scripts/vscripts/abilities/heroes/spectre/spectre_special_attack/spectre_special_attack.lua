@@ -108,6 +108,7 @@ function spectre_special_attack:OnSpellStart()
 	Projectiles:CreateProjectile(projectile)
 	ProjectileManager:CreateLinearProjectile(info) 
 	self:PlayEffectsOnCast()
+	LinkAbilityCooldowns(caster, 'spectre_ex_special_attack')
 end
 
 function spectre_special_attack:PlayEffectsOnCast()
@@ -150,6 +151,7 @@ function spectre_ex_special_attack:OnSpellStart()
 	})
 
 	CreateModifierThinker(caster, self, 'modifier_spectre_ex_special_attack_thinker', {}, point, caster:GetTeam(), false)
+	LinkAbilityCooldowns(caster, 'spectre_special_attack')
 end
 
 function spectre_ex_special_attack_recast:OnSpellStart()
@@ -209,5 +211,3 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(spectre_special_attack)
 Abilities.Castpoint(spectre_ex_special_attack)
-Abilities.Tie(spectre_special_attack, 'spectre_ex_special_attack')
-Abilities.Tie(spectre_ex_special_attack, 'spectre_special_attack')

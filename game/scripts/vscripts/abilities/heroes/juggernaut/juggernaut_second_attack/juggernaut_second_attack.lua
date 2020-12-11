@@ -40,6 +40,7 @@ function juggernaut_second_attack:OnSpellStart()
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local radius = self:GetSpecialValueFor("radius")
+	local juggernaut_ex_second_attack = caster:FindAbilityByName('juggernaut_ex_second_attack')
 	
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
@@ -114,6 +115,7 @@ function juggernaut_second_attack:OnSpellStart()
 	end
 
 	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
+	LinkAbilityCooldowns(caster, 'juggernaut_ex_second_attack')
 end
 
 function juggernaut_second_attack:PlayEffectsOnImpact(hTarget)
@@ -213,6 +215,7 @@ function juggernaut_ex_second_attack:OnSpellStart()
 	self:PlayEffectsOnFinish(point)
 	self:PlayEffectsOnCast()
 	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
+	LinkAbilityCooldowns(caster, 'juggernaut_second_attack')
 end
 
 function juggernaut_ex_second_attack:PlayEffectsOnCast()
@@ -256,5 +259,3 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(juggernaut_second_attack)
 Abilities.Castpoint(juggernaut_ex_second_attack)
-Abilities.Tie(juggernaut_ex_second_attack, 'juggernaut_second_attack')
-Abilities.Tie(juggernaut_second_attack, 'juggernaut_ex_second_attack')

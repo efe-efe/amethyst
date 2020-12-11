@@ -32,10 +32,7 @@ function sniper_special_attack:OnSpellStart()
 	)
 	
 	self:PlayEffects(point, 'particles/units/heroes/hero_sniper/sniper_shrapnel_launch.vpcf')
-
-	--[[if self:GetLevel() == 2 then
-		caster:AddNewModifier(caster, self, "modifier_sniper_special_attack_recast", { duration = 2.0 })
-	end]]
+	LinkAbilityCooldowns(caster, 'sniper_ex_special_attack')
 end
 
 function sniper_special_attack:PlayEffects(point, particle_cast)
@@ -79,10 +76,9 @@ function sniper_ex_special_attack:OnSpellStart()
 	)
 	
 	self:PlayEffects(point, 'particles/econ/items/sniper/sniper_fall20_immortal/sniper_fall20_immortal_shrapnel_launch.vpcf')
+	LinkAbilityCooldowns(caster, 'sniper_special_attack')
 end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(sniper_special_attack)
 Abilities.Castpoint(sniper_ex_special_attack)
-Abilities.Tie(sniper_special_attack, 'sniper_ex_special_attack')
-Abilities.Tie(sniper_ex_special_attack, 'sniper_special_attack')

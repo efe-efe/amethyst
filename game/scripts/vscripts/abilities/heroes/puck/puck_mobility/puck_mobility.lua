@@ -78,6 +78,13 @@ function puck_mobility:OnSpellStart()
     caster:AddNewModifier(caster, self, "modifier_puck_mobility_recast", { duration = time })
     caster:FindAbilityByName("puck_mobility_recast"):SetProjectile(projectile)
 	self:PlayEffectsOnCast()
+
+	LinkAbilityCooldowns(caster, 'puck_ex_mobility', {
+		["0"] = {
+			ability = 'puck_ex_mobility',
+			level = 2,
+		}
+	})
 end
 
 function puck_mobility:PlayEffectsOnFinish(pos, particle, exParticle)
@@ -169,6 +176,13 @@ function puck_ex_mobility:OnSpellStart()
     caster:AddNewModifier(caster, self, "modifier_puck_ex_mobility_recast", { duration = time })
     caster:FindAbilityByName("puck_ex_mobility_recast"):SetProjectile(projectile)
 	self:PlayEffectsOnCast()
+
+	LinkAbilityCooldowns(caster, 'puck_mobility', {
+		["0"] = {
+			ability = self,
+			level = 2,
+		}
+	})
 end
 
 function puck_ex_mobility_recast:GetCastPointSpeed()    	return 0 end
@@ -189,5 +203,3 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(puck_mobility)
 Abilities.Castpoint(puck_ex_mobility)
-Abilities.Tie(puck_ex_mobility, 'puck_mobility', 2)
-Abilities.Tie(puck_mobility, 'puck_ex_mobility', nil)

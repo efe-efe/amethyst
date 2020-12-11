@@ -33,9 +33,7 @@ function modifier_sniper_ex_special_attack_buff:DeclareFunctions()
 end
 
 function modifier_sniper_ex_special_attack_buff:GetModifierPreAttack_BonusDamage()
-	if self:GetAbility():GetLevel() >= 2 then
-		return self.extra_damage
-	end
+	return self.extra_damage
 end
 
 function modifier_sniper_ex_special_attack_buff:GetModifierMoveSpeedBonus_Percentage()

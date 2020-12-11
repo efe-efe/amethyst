@@ -38,6 +38,7 @@ function storm_mobility:OnSpellStart()
     )
     
     EmitSoundOn("Hero_StormSpirit.StaticRemnantPlant", caster)
+    LinkAbilityCooldowns(caster, 'storm_ex_mobility')
 end
 
 
@@ -76,11 +77,10 @@ function storm_ex_mobility:OnSpellStart()
 	)
 
     EmitSoundOn("Hero_StormSpirit.StaticRemnantPlant", caster)
+    LinkAbilityCooldowns(caster, 'storm_mobility')
 end
 
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(storm_mobility)
 Abilities.Castpoint(storm_ex_mobility)
-Abilities.Tie(storm_mobility, 'storm_ex_mobility')
-Abilities.Tie(storm_ex_mobility, 'storm_mobility')

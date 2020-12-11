@@ -49,7 +49,8 @@ function mars_second_attack:OnSpellStart()
 		})
 	end
 
-    self:PlayEffectsCone(direction, radius, nil, 'particles/units/heroes/hero_mars/mars_shield_bash.vpcf')
+	self:PlayEffectsCone(direction, radius, nil, 'particles/units/heroes/hero_mars/mars_shield_bash.vpcf')
+	LinkAbilityCooldowns(caster, 'mars_ex_second_attack')
 end
 
 function mars_second_attack:PlayEffectsCone(direction, radius, color, particle_cast)
@@ -117,10 +118,9 @@ function mars_ex_second_attack:OnSpellStart()
 	end
 
     self:PlayEffectsCone(direction, radius, Vector(244, 49, 255), 'particles/econ/items/mars/mars_fall20_immortal_shield/mars_fall20_immortal_shield_bash.vpcf')
+	LinkAbilityCooldowns(caster, 'mars_second_attack')
 end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(mars_second_attack)
 Abilities.Castpoint(mars_ex_second_attack)
-Abilities.Tie(mars_second_attack, 'mars_ex_second_attack')
-Abilities.Tie(mars_ex_second_attack, 'mars_second_attack')

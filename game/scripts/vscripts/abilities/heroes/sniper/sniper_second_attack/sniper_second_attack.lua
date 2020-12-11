@@ -122,6 +122,7 @@ function sniper_second_attack:OnSpellStart()
     Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 3.0)
+	LinkAbilityCooldowns(caster, 'sniper_ex_second_attack')
 end
 
 function sniper_second_attack:PlayEffectsOnCast()
@@ -178,6 +179,7 @@ function sniper_ex_second_attack:OnSpellStart()
 
 	self:PlayEffectsOnCast()
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
+	LinkAbilityCooldowns(caster, 'sniper_second_attack')
 end
 
 function sniper_ex_second_attack:ThrowProjectile(vOrigin, vDirection, bFirstTime, hSource)
@@ -241,5 +243,3 @@ end
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(sniper_second_attack)
 Abilities.Castpoint(sniper_ex_second_attack)
-Abilities.Tie(sniper_second_attack, 'sniper_ex_second_attack')
-Abilities.Tie(sniper_ex_second_attack, 'sniper_second_attack')
