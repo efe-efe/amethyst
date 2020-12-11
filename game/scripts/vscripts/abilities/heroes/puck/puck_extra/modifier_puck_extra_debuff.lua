@@ -17,10 +17,15 @@ function modifier_puck_extra_debuff:OnOrder(params)
             params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
         then
             if self:GetAbility():GetLevel() >= 2 then
-                self:GetAbility():EndCooldown()
-                EFX("particles/puck/puck_ex_base_attack.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
-                    release = true
-                })
+                if not self:GetCaster():HasModifier("modifier_puck_extra_recast_used") then
+                    self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_puck_extra_recast_used", { duration = 5.0 })
+                    self:GetCaster():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_puck_extra_recast", { duration = 5.0 })
+                    EFX("particles/puck/puck_ex_base_attack.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+                        release = true
+                    })
+                else
+                    self:GetCaster():RemoveModifierByName("modifier_puck_extra_recast_used")
+                end
             end
 
             self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_silence", { duration = self.silence_duration })

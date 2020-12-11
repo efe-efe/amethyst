@@ -1,10 +1,19 @@
 puck_extra = class({})
 LinkLuaModifier("modifier_puck_extra_debuff", "abilities/heroes/puck/puck_extra/modifier_puck_extra_debuff", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_puck_extra_recast", "abilities/heroes/puck/puck_extra/modifier_puck_extra_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_puck_extra_recast_used", "abilities/heroes/puck/puck_extra/modifier_puck_extra_recast_used", LUA_MODIFIER_MOTION_NONE)
 
 function puck_extra:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_2 end 
 function puck_extra:GetPlaybackRateOverride() 		return 1.0 end
 function puck_extra:GetCastPointSpeed() 			return 0 end
 function puck_extra:GetFadeGestureOnCast()			return false end
+
+function puck_extra:GetManaCost(iLevel)
+    if self:GetCaster():HasModifier('modifier_puck_extra_recast') then
+        return 0
+    end
+    return self.BaseClass.GetManaCost( self, iLevel )
+ end
 
 function puck_extra:OnSpellStart()
 	local caster = self:GetCaster()
