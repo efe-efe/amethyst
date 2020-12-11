@@ -51,6 +51,10 @@ function spectre_basic_attack:OnSpellStart()
 
 	local is_charged = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady()
 	
+	if is_charged then
+		radius = radius + 50
+	end
+
 	local enemies = caster:FindUnitsInCone(
 		direction, 
 		0, 
