@@ -4,16 +4,16 @@ function modifier_spectre_ultimate:OnCreated(params)
     self.bonus_damage = self:GetAbility():GetSpecialValueFor("bonus_damage")
 
     if IsServer() then
-        self.damage_table = {
-            victim = self:GetParent(),
-            attacker = self:GetCaster(),
-            damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
-            damage_type = DAMAGE_TYPE_PURE
-        }
-
-        if self:GetCaster():IsAlly(self:GetParent()) then
+        if self:GetCaster() == self:GetParent() then
+            self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), 'modifier_spectre_special_attack_buff', {}) 
             self:SetStackCount(1)
         else
+            self.damage_table = {
+                victim = self:GetParent(),
+                attacker = self:GetCaster(),
+                damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
+                damage_type = DAMAGE_TYPE_PURE
+            }
             self:SetStackCount(2)
         end
     end
@@ -36,12 +36,14 @@ function modifier_spectre_ultimate:OnDestroy()
                     ApplyDamage(self.damage_table)
                 end
             end
+        else
+            self:GetParent():RemoveModifierByName('modifier_spectre_special_attack_buff')
         end
     end
 end
 
 function modifier_spectre_ultimate:IsDebuff()
-    return self:GetStackCount() >= 2
+    return self:GetStackCount() == 2
 end
 
 function modifier_spectre_ultimate:DeclareFunctions()

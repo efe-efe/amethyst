@@ -1,7 +1,7 @@
 modifier_spectre_ultimate_thinker = class({})
 
 function modifier_spectre_ultimate_thinker:IsAura()
-	return self:IsInitialized()
+	return self.initialized
 end
 function modifier_spectre_ultimate_thinker:GetModifierAura()
 	return "modifier_spectre_ultimate"
@@ -20,58 +20,45 @@ function modifier_spectre_ultimate_thinker:GetAuraSearchType()
 end
 
 function modifier_spectre_ultimate_thinker:OnCreated()
-    self.radius = self:GetAbility():GetSpecialValueFor("radius")
-end
-
-function modifier_spectre_ultimate_thinker:OnDelayEnds()
     if IsServer() then
-        self:GetCaster():FindAbilityByName("spectre_mobility"):EndCooldown()
-
-        local particle_cast = "particles/spectre/spectre_ultimate.vpcf"
-
-        self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-        ParticleManager:SetParticleControl(self.effect_cast, 0, self:GetParent():GetOrigin())
-        ParticleManager:SetParticleControl(self.effect_cast, 1, Vector(self.radius, self.radius, 1))
+        local delay_time = self:GetAbility():GetSpecialValueFor("delay_time")
+        self.radius = self:GetAbility():GetSpecialValueFor("radius")
+        self.origin = self:GetParent():GetAbsOrigin()
+        self.duration = self:GetAbility():GetSpecialValueFor("duration")
+        self.initialized = false
+        CreateTimedRadiusMarker(self:GetCaster(), self.origin, self.radius, delay_time, 0.2, RADIUS_SCOPE_PUBLIC)
+        self:StartIntervalThink(delay_time)
     end
 end
+
 
 function modifier_spectre_ultimate_thinker:OnDestroy()
     if IsServer() then
         local enemies = self:GetCaster():FindUnitsInRadius(
-			self:GetParent():GetOrigin(), 
+			self.origin, 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 
 			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
 			DOTA_UNIT_TARGET_FLAG_NONE,
 			FIND_ANY_ORDER
 		)
-
-        for _,enemy in pairs(enemies) do
-            if enemy:HasModifier("modifier_spectre_ultimate") then
-                enemy:FindModifierByName("modifier_spectre_ultimate"):SetStackCount(3)
-            end
-        end
         
-        ParticleManager:DestroyParticle(self.effect_cast, false)
-        ParticleManager:ReleaseParticleIndex(self.effect_cast)
+        ParticleManager:DestroyParticle(self.efx, false)
+        ParticleManager:ReleaseParticleIndex(self.efx)
     end
 end
 
-function modifier_spectre_ultimate_thinker:GetDelayTime()
-    return self:GetAbility():GetSpecialValueFor("delay_time")
-end
+function modifier_spectre_ultimate_thinker:OnIntervalThink()
+    if not self.initialized then
+        self.efx = ParticleManager:CreateParticle("particles/spectre/spectre_ultimate.vpcf", PATTACH_WORLDORIGIN, nil)
+        ParticleManager:SetParticleControl(self.efx, 0, self.origin)
+        ParticleManager:SetParticleControl(self.efx, 1, Vector(self.radius, self.radius, 1))
 
-function modifier_spectre_ultimate_thinker:GetAOERadius()
-    return self:GetAbility():GetSpecialValueFor("radius")
-end
-
-function modifier_spectre_ultimate_thinker:GetFollowTarget()
-    if self:IsInitialized() then
-        return self:GetParent()
+        self.initialized = true
+        self:StartIntervalThink(self.duration)
+        EmitSoundOn("Hero_Spectre.HauntCast", self:GetParent())
+        EmitSoundOn("Hero_Spectre.Reality", self:GetParent())
     else
-        return self:GetCaster()
+        self:Destroy()
     end
 end
-
-if IsClient() then require("wrappers/modifiers") end
-Modifiers.Thinker(modifier_spectre_ultimate_thinker)

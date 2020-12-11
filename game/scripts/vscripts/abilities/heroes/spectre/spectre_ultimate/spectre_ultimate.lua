@@ -9,18 +9,20 @@ function spectre_ultimate:GetCastPointSpeed() 			return 0 end
 
 function spectre_ultimate:OnSpellStart()
     local caster = self:GetCaster()
-    local duration = self:GetSpecialValueFor("duration")
-    local delay = self:GetSpecialValueFor("delay_time")
+    local origin = caster:GetAbsOrigin()
+    local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
     
     CreateModifierThinker(
         caster, --hCaster
         self, --hAbility
         "modifier_spectre_ultimate_thinker", --modifierName
-        { duration = delay + duration },
-        caster:GetAbsOrigin(), --vOrigin
+        {},
+        point, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         false --bPhantomBlocker
-   )
+    )
+    
+    EmitSoundOn("Hero_Spectre.HauntCast", caster)
 end
 
 if IsClient() then require("wrappers/abilities") end
