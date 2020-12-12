@@ -16,6 +16,7 @@ function phantom_second_attack:OnSpellStart()
 
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
+	local final_damage = damage + (stacks * damage_per_stack)
 
 	local enemies = caster:FindUnitsInCone(
 		direction, 
@@ -28,16 +29,14 @@ function phantom_second_attack:OnSpellStart()
 		FIND_CLOSEST
 	)
 
+	local damage_table = {
+		attacker = caster,
+		damage = final_damage,
+		damage_type = DAMAGE_TYPE_PHYSICAL,
+	}
+
 	for _,enemy in pairs(enemies) do 
-		local final_damage = damage + (stacks * damage_per_stack)
-
-		local damage_table = {
-			victim = enemy,
-			attacker = caster,
-			damage = final_damage,
-			damage_type = DAMAGE_TYPE_MAGICAL,
-		}
-
+		damage_table.victim = enemy
 		ApplyDamage(damage_table)
 		
 		if stacks == 3 then
@@ -54,8 +53,6 @@ function phantom_second_attack:OnSpellStart()
 
 		caster:GiveManaPercent(mana_gain_pct, enemy)
 		self:PlayEffectsOnImpact(enemy, stacks)
-
-		break
 	end
 
 	if #enemies > 0 then
