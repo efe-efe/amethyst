@@ -24,10 +24,6 @@ function juggernaut_extra:OnSpellStart()
    )
 
 	healing_ward:SetControllableByPlayer(caster:GetPlayerID(), true)
-    Timers:CreateTimer(0.1, function()
-		healing_ward:MoveToNPC(caster)
-    end)
-
     if self:GetLevel() >= 2 then
         ApplyCallbackForUnitsInArea(caster, point, radius, DOTA_UNIT_TARGET_TEAM_FRIENDLY, function(unit)
             if unit == healing_ward then
