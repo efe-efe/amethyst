@@ -11,6 +11,9 @@ function modifier_mars_extra_recast:GetRecastCharges()
 end
 
 function modifier_mars_extra_recast:GetRecastKey()
+    if self:GetRecastAbility():GetAbilityIndex() == 6 then
+		return "R"
+	end
 	return "F"
 end
 
