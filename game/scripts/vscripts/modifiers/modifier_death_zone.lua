@@ -87,6 +87,7 @@ function modifier_death_zone:OnIntervalThink()
     end
     
     if self.counter == 10 then
+        self:PlayEffectsMeteor()
         for i = self.radius, self.max_radius, 200 do
             self:PlayEffectsAoe(i, 0)
         end
@@ -101,7 +102,6 @@ function modifier_death_zone:OnIntervalThink()
     self.counter = self.counter + 1
 
     self:PlayEffectsAoe(self.radius, 512)
-    self:PlayEffectsMeteor()
 end
 
 function modifier_death_zone:PlayEffectsMeteor()
