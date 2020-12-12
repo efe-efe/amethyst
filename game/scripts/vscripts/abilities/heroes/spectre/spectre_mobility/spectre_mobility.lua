@@ -33,11 +33,12 @@ function spectre_mobility:OnSpellStart()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
+	local projetile_distance = (point - origin):Length2D()
 
 	local projectile = {
 		EffectName = "particles/econ/items/shadow_demon/sd_ti7_shadow_poison/sd_ti7_shadow_poison_proj.vpcf",
 		vSpawnOrigin = origin + Vector(0,0,80),
-		fDistance =  (point - origin):Length2D(),
+		fDistance = projetile_distance,
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
@@ -94,12 +95,8 @@ function spectre_mobility:OnSpellStart()
 
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
-	caster:AddNewModifier(caster, self, "modifier_spectre_banish", {})
-
-	local alternative_spell = caster:FindAbilityByName('spectre_ex_mobility')
-	if alternative_spell:GetLevel() < 2 then
-		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
-	end
+	caster:AddNewModifier(caster, self, "modifier_spectre_banish", { duration = projetile_distance/projectile_speed })
+    LinkAbilityCooldowns(caster, 'spectre_ex_mobility')
 end
 
 function spectre_mobility:OnUpgrade()
@@ -165,13 +162,10 @@ function spectre_ex_mobility:OnSpellStart()
 	})
 	EmitSoundOn("Hero_Spectre.HauntCast", caster)
 
-	caster:AddNewModifier(caster, self, "modifier_spectre_banish", {})
+	caster:AddNewModifier(caster, self, "modifier_spectre_banish", { duration = delay })
 	CreateModifierThinker(caster, self, 'modifier_spectre_mobility_thinker', { duration = delay }, point, caster:GetTeam(), false)
 	
-	if self:GetLevel() < 2 then
-		local alternative_spell = caster:FindAbilityByName('spectre_mobility')
-		alternative_spell:StartCooldown(alternative_spell:GetCooldown(0))
-	end
+    LinkAbilityCooldowns(caster, 'spectre_mobility')
 end
 
 if IsClient() then require("wrappers/abilities") end

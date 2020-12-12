@@ -1,7 +1,5 @@
 modifier_spectre_banish = class({})
 
---------------------------------------------------------------------------------
--- Classifications
 function modifier_spectre_banish:IsHidden() return false
 end
 
@@ -11,8 +9,6 @@ end
 function modifier_spectre_banish:IsPurgable() return false
 end
 
---------------------------------------------------------------------------------
--- Status Effects
 function modifier_spectre_banish:CheckState()
 	local state = {
 		[MODIFIER_STATE_COMMAND_RESTRICTED] = true,
@@ -24,16 +20,12 @@ function modifier_spectre_banish:CheckState()
 	return state
 end
 
---------------------------------------------------------------------------------
--- Initializations
 function modifier_spectre_banish:OnCreated(kv)
 	if IsServer() then
 		self:GetParent():AddNoDraw()
 	end
 end
 
---------------------------------------------------------------------------------
--- Destroyer
 function modifier_spectre_banish:OnDestroy(kv)
 	if IsServer() then
 		self:GetParent():RemoveNoDraw()
