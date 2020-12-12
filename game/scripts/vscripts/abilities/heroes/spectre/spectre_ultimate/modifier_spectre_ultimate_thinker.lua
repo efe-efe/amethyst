@@ -45,6 +45,8 @@ function modifier_spectre_ultimate_thinker:OnDestroy()
         
         ParticleManager:DestroyParticle(self.efx, false)
         ParticleManager:ReleaseParticleIndex(self.efx)
+        
+        UTIL_Remove(self:GetParent())
     end
 end
 
