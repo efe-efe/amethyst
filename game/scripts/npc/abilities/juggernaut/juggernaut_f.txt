@@ -7,8 +7,8 @@
 
 		"AbilityTextureName"			"juggernaut_healing_ward"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
-		"AbilityCastRange"				"250"
-		"AbilityCooldown"				"12.0 8.0"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"10"
 		"AbilityCastPoint"				"0.1"
 		"AbilityManaCost"				"25"
 		"LevelsBetweenUpgrades"			"0"
@@ -19,9 +19,10 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"heal_per_second"			"8" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal_per_second"			"8" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"shield"					"30" }
 		}
 	}
 

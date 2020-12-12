@@ -30,6 +30,8 @@ function modifier_juggernaut_extra_ward:OnCreated()
     if IsServer() then
         self:PlayEffectsOnCreated()
         self:StartIntervalThink(0.03)
+
+        EmitSoundOn('Hero_Juggernaut.HealingWard.Loop', self:GetParent())
     end
 end
 
@@ -52,6 +54,9 @@ function modifier_juggernaut_extra_ward:OnDestroy()
         if self:GetCaster():HasModifier("modifier_juggernaut_extra_recast") then
             self:GetCaster():RemoveModifierByName("modifier_juggernaut_extra_recast")
         end
+
+        StopSoundOn('Hero_Juggernaut.HealingWard.Stop', self:GetParent())
+        EmitSoundOn('Hero_Juggernaut.HealingWard.Stop', self:GetParent())
     end
 end
 

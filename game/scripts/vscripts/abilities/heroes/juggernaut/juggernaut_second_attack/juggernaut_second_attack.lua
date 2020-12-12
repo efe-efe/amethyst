@@ -2,6 +2,7 @@ juggernaut_second_attack = class({})
 juggernaut_ex_second_attack = class({})
 LinkLuaModifier("modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL)
 LinkLuaModifier("modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_HORIZONTAL)
+LinkLuaModifier("modifier_juggernaut_swiftness", "abilities/heroes/juggernaut/modifier_juggernaut_swiftness", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_second_attack:OnAbilityPhaseStart()
 	local caster = self:GetCaster()
@@ -180,8 +181,12 @@ function juggernaut_ex_second_attack:OnSpellStart()
 	local duration = self:GetSpecialValueFor("duration")
 	local duration_per_stack = self:GetSpecialValueFor("duration_per_stack")
 	self.radius = self:GetSpecialValueFor("radius")
-    
+	local give_mana = false
+	local swiftness_duration = self:GetSpecialValueFor("swiftness_duration")
+	local swiftness_pct = self:GetSpecialValueFor("swiftness_pct")
+	local juggernaut_basic_attack = caster:FindAbilityByName("juggernaut_basic_attack")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	
 	local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
 	local final_debuff_duration = duration + (stacks * duration_per_stack)
 	local enemies = caster:FindUnitsInCone(
@@ -204,17 +209,33 @@ function juggernaut_ex_second_attack:OnSpellStart()
 		}
 		ApplyDamage(damage_table)
 
-		if self:GetLevel() >= 2 then
-			enemy:AddNewModifier(caster, self, "modifier_generic_stunned", { duration = final_debuff_duration })
-		else 
-			enemy:AddNewModifier(caster, self, "modifier_generic_sleep", { duration = final_debuff_duration })
+		enemy:AddNewModifier(caster, self, "modifier_generic_sleep", { duration = final_debuff_duration })
+
+		if not enemy:IsObstacle() then
+			give_mana = true
 		end
 		self:PlayEffectsOnImpact(enemy)
 	end
 
+	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
+
+	if self:GetLevel() >= 2 then
+		if give_mana then
+			caster:GiveManaCustom(self:GetManaCost(self:GetLevel()))
+
+			for i = 0, 3 do
+				caster:AddNewModifier(caster, juggernaut_basic_attack, "modifier_juggernaut_basic_attack_stacks", {})
+			end
+
+			caster:AddNewModifier(caster, self, 'modifier_juggernaut_swiftness', { 
+			   duration = swiftness_duration,
+			   swiftness_pct =  swiftness_pct
+			})
+		end
+	end
+
 	self:PlayEffectsOnFinish(point)
 	self:PlayEffectsOnCast()
-	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
 	LinkAbilityCooldowns(caster, 'juggernaut_second_attack')
 end
 

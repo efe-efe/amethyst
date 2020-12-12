@@ -4,7 +4,7 @@
 	{
 		// General
 		//----------------------------------------------------------------
-		"Model"						"models/heroes/juggernaut/jugg_healing_ward.vmdl"
+		"Model"						"models/items/juggernaut/ward/fall20_juggernaut_katz_ward/fall20_juggernaut_katz_ward.vmdl"
 		"BaseClass"					"npc_dota_creep_neutral"
 		"SoundSet"					"Creep_Good_Range"
 		"Level"						"0"

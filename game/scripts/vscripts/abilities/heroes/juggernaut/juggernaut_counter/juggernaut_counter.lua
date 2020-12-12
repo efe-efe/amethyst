@@ -4,7 +4,7 @@ juggernaut_counter = class({})
 LinkLuaModifier("modifier_juggernaut_counter_countering", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_countering", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_counter_recast", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_counter", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_counter", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_juggernaut_ex_counter", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_swiftness", "abilities/heroes/juggernaut/modifier_juggernaut_swiftness", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_ex_counter_recast", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_ex_counter_slashes", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter_slashes", LUA_MODIFIER_MOTION_NONE)
 
@@ -72,7 +72,7 @@ function juggernaut_counter_helper:ProvidesRecast(hTarget)
 end
 
 function juggernaut_counter_helper:ShouldRecast(iRecasts) 
-   return iRecasts < self:GetMaxRecasts() and self:GetLevel() >= self:GetRecastLevelRequired()
+   return iRecasts < self:GetMaxRecasts()
 end
 
 function juggernaut_counter_helper:RecastLogic(hCaster)
@@ -92,10 +92,6 @@ end
 
 function juggernaut_counter_helper:PlayEffectsOnMiss(hCaster)
    EmitSoundOn("Hero_Juggernaut.Attack", hCaster)
-end
-
-function juggernaut_counter_helper:GetRecastLevelRequired()
-   return 1
 end
 
 function juggernaut_counter_helper:GetRecastAbility() 
@@ -163,13 +159,14 @@ end
 
 function juggernaut_ex_counter:GetRecastCounterModifierName() return       "modifier_juggernaut_ex_counter_slashes" end
 function juggernaut_ex_counter:GetRecastModifierName() return              "modifier_juggernaut_ex_counter_recast" end
-function juggernaut_ex_counter:GetRecastLevelRequired() return             2 end
 
 function juggernaut_ex_counter:OnSlashHitValidTargets(hCaster, iValidTargets)
-   local duration = self:GetSpecialValueFor("duration")
-   hCaster:AddNewModifier(hCaster, self, 'modifier_juggernaut_ex_counter', { 
-      duration = duration,
-      stacks =  iValidTargets
+   local swiftness_duration = self:GetSpecialValueFor("swiftness_duration")
+   local swiftness_pct = self:GetSpecialValueFor("swiftness_pct")
+   
+   hCaster:AddNewModifier(hCaster, self, 'modifier_juggernaut_swiftness', { 
+      duration = swiftness_duration,
+      swiftness_pct =  swiftness_pct * iValidTargets
    })
 end
 

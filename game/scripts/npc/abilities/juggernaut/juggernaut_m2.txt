@@ -59,6 +59,8 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"0.5" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.25" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"swiftness_duration"		"2.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"swiftness_pct"				"50" }
 		}
 	}
 }
