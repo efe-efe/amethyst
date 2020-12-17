@@ -3,17 +3,9 @@
 	{
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility"
-		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
-
-		"AbilityTextureName"			"sniper_mobility"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
-		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCastRange"				"800"
-		"AbilityCooldown"				"8.0"
-		"AbilityCastPoint"				"0.1"
+		"MaxLevel"						"2"
+		"AbilityTextureName"			"vengeful_mobility"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -25,5 +17,44 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
 		}
+	}
+
+	"vengeful_mobility_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility"
+		"LevelsBetweenUpgrades"			"0"
+		"MaxLevel"						"2"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
+		}
+	}
+
+	"vengeful_mobility_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"puck_ethereal_jaunt"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+	}
+
+	"vengeful_mobility_ultimate_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"puck_ethereal_jaunt"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 	}
 }

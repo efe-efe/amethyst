@@ -16,7 +16,7 @@ function modifier_storm_ex_mobility_thinker:OnCreated(params)
         local delay = self:GetAbility():GetSpecialValueFor("delay")
         self:StartIntervalThink(delay)
 
-        CreateTimedRadiusMarker(self:GetCaster(), self.origin, self.radius, delay, 0.0, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
+        self.radius_marker_modifier = CreateTimedRadiusMarker(self:GetCaster(), self.origin, self.radius, delay, 0.0, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
 	end
 end
 

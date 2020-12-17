@@ -74,6 +74,10 @@ function CDOTA_BaseNPC:SendDataToClient()
 end
 
 function CDOTA_BaseNPC_Hero:SendDataToClient()
+	if self:IsIllusion() then
+		return
+	end
+
 	local allianceName = "NOT_ALLIANCE"
 
 	if self:GetAlliance() then

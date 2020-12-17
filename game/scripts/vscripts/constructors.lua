@@ -5,6 +5,9 @@ local constructors = {
     ["npc_dota_hero_juggernaut"] = function(hTarget)
         hTarget:AddStackbars("modifier_juggernaut_basic_attack_stacks")
     end,
+    ["npc_dota_hero_vengefulspirit"] = function(hTarget)
+        hTarget:AddStackbars("modifier_vengeful_basic_attack")
+    end,
     ["npc_dota_hero_phantom_assassin"] = function(hTarget)
         hTarget:AddStackbars("modifier_phantom_strike_stack")
         hTarget:AddCharges("modifier_phantom_special_attack_charges")

@@ -1,5 +1,26 @@
 modifier_vengeful_mobility_displacement = class({})
 
+function modifier_vengeful_mobility_displacement:OnCreated(params)
+	if IsServer() then
+		self.original_scale = self:GetParent():GetModelScale()
+		self:GetParent():SetModelScale(self.original_scale/1.5)
+		EFX("particles/econ/events/ti10/blink_dagger_start_ti10.vpcf", PATTACH_WORLDORIGIN, self:GetParent(), {
+			cp0 = self:GetParent():GetAbsOrigin(),
+			release = true,
+		})
+	end
+end
+
+function modifier_vengeful_mobility_displacement:OnDestroy()
+	if IsServer() then
+		self:GetParent():SetModelScale(self.original_scale)
+		EFX("particles/econ/events/ti10/blink_dagger_end_ti10.vpcf", PATTACH_WORLDORIGIN, self:GetParent(), {
+			cp0 = self:GetParent():GetAbsOrigin(),
+			release = true,
+		})
+	end
+end
+
 function modifier_vengeful_mobility_displacement:DeclareFunctions()
 	return {
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
@@ -7,7 +28,7 @@ function modifier_vengeful_mobility_displacement:DeclareFunctions()
 	}
 end
 
-function modifier_vengeful_mobility_displacement:GetOverrideAnimation() 		return ACT_DOTA_FLAIL end
+function modifier_vengeful_mobility_displacement:GetOverrideAnimation() 		return ACT_DOTA_SPAWN end
 function modifier_vengeful_mobility_displacement:GetOverrideAnimationRate() 	return 1.0 end
 
 function modifier_vengeful_mobility_displacement:CheckState()
