@@ -13,7 +13,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1600"
 		"AbilityCooldown"				"6.0"
-		"AbilityCastPoint"				"1.4 1.2"
+		"AbilityCastPoint"				"1.2 1.0"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"

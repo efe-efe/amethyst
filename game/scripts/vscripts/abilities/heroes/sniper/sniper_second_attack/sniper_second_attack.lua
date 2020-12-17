@@ -17,7 +17,7 @@ end
 
 function sniper_second_attack:GetPlaybackRateOverride() 	
 	if self:GetLevel() >= 2 then
-		return 0.6
+		return 0.8
 	end	
 	return 0.5
 end
