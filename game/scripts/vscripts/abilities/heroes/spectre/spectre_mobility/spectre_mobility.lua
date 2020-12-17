@@ -29,6 +29,7 @@ function spectre_mobility:OnSpellStart()
 	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local damage = self:GetSpecialValueFor("ability_damage")
+	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
 	self.radius = self:GetSpecialValueFor("radius")
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
@@ -79,7 +80,7 @@ function spectre_mobility:OnSpellStart()
 
 			-- if at least 1 enemy
 			if charge == true then
-				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):Replenish()
+				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):ReduceCooldown(cooldown_reduction)
 
 				if #enemies == 1 then
 					caster:GiveManaPercent(mana_gain_pct, enemies[1])    

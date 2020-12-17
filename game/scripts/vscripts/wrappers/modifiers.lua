@@ -1153,10 +1153,23 @@ function Modifiers.Cooldown(modifier)
         end
     end
 
-    function modifier:StartCooldown()
+    function modifier:ReduceCooldown(iAmount)
         if IsServer() then
-            self:SetDuration(self:GetReplenishTime(), true)
-            self:StartIntervalThink(self:GetReplenishTime())
+            local difference = self:GetRemainingTime() - iAmount
+            if difference < 0 then
+                self:Replenish()
+            else
+                self:StartCooldown(difference)
+            end
+        end
+    end
+
+    function modifier:StartCooldown(iTime)
+        if IsServer() then
+            local time = iTime ~= nil and iTime or self:GetReplenishTime()
+
+            self:SetDuration(time, true)
+            self:StartIntervalThink(time)
             self:SetStackCount(0)
 
             if self.OnCooldownStart then
