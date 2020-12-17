@@ -24,13 +24,15 @@ function modifier_spectre_special_attack_buff:OnDestroy()
 end
 
 function modifier_spectre_special_attack_buff:CheckState()
-	local state = {
-		[MODIFIER_STATE_INVISIBLE] = self:GetAbility():GetLevel() >=2 and not self:GetParent():FindModifierByName('modifier_casting'),
+	return {
+		[MODIFIER_STATE_INVISIBLE] = self:GivesInvisibility(),
 		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
 		[MODIFIER_STATE_FLYING_FOR_PATHING_PURPOSES_ONLY] = true
 	}
+end
 
-	return state
+function modifier_spectre_special_attack_buff:GivesInvisibility()
+	return self:GetAbility():GetLevel() >=2 and not self:GetParent():FindModifierByName('modifier_casting') and self:GetParent() == self:GetCaster()
 end
 
 function modifier_spectre_special_attack_buff:DeclareFunctions()

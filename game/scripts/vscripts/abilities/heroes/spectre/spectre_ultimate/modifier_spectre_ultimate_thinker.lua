@@ -34,15 +34,16 @@ end
 
 function modifier_spectre_ultimate_thinker:OnDestroy()
     if IsServer() then
-        local enemies = self:GetCaster():FindUnitsInRadius(
-			self.origin, 
-			self.radius, 
-			DOTA_UNIT_TARGET_TEAM_ENEMY, 
-			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-			DOTA_UNIT_TARGET_FLAG_NONE,
-			FIND_ANY_ORDER
-		)
-        
+        ApplyCallbackForUnitsInArea(self:GetCaster(), self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+
+            local modifier = unit:FindModifierByName("modifier_spectre_ultimate")
+            if modifier ~= nil then
+                if not modifier:IsNull() then
+                    modifier:SetStackCount(1)
+                end
+            end 
+        end)
+
         ParticleManager:DestroyParticle(self.efx, false)
         ParticleManager:ReleaseParticleIndex(self.efx)
         

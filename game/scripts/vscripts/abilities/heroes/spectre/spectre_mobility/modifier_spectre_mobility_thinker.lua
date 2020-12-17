@@ -18,10 +18,12 @@ function modifier_spectre_mobility_thinker:OnDestroy()
         local origin = self:GetParent():GetAbsOrigin()
         FindClearSpaceForUnit(caster, origin, false)
         SafeDestroyModifier("modifier_spectre_banish", caster, caster)
+        local heal = false
         
         local enemies = ApplyCallbackForUnitsInArea(caster, self:GetParent():GetAbsOrigin(), self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)
             if enemy:ProvidesMana() then
                 enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
+                heal = true
             end
             if self:GetAbility():GetLevel() >= 2 then
                 enemy:AddNewModifier(caster, self, "modifier_spectre_ex_mobility_fear", { duration = self.fear_duration })
@@ -29,7 +31,7 @@ function modifier_spectre_mobility_thinker:OnDestroy()
             EmitSoundOn("Hero_Spectre.Attack", enemy)
         end)
 
-        if #enemies > 0 then
+        if heal then
             caster:Heal(self.heal, caster)
         end
 

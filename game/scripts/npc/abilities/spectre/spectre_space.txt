@@ -20,7 +20,7 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"4" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"6" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"min_range"				    "300" }

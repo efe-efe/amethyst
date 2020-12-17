@@ -68,6 +68,12 @@ function spectre_basic_attack:OnSpellStart()
 
 	local should_shake = false
 
+	local damage_table = {
+		attacker = caster,
+		damage_type = DAMAGE_TYPE_PHYSICAL,
+		ability = self
+	}
+
 	for _,enemy in pairs(enemies) do 
 		if enemy:IsRealHero() then
 			should_shake = true
@@ -83,15 +89,6 @@ function spectre_basic_attack:OnSpellStart()
 			end
 		end
 
-		local damage_table = {
-			victim = enemy,
-			attacker = caster,
-			damage = final_damage,
-			damage_type = DAMAGE_TYPE_PHYSICAL,
-			ability = self
-		}
-		ApplyDamage(damage_table)
-	
 		if is_charged then
 			enemy:AddNewModifier(caster, self, "modifier_generic_silence", { duration = silence_duration })
 			
@@ -99,10 +96,14 @@ function spectre_basic_attack:OnSpellStart()
 				enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = desolate_duration })
 			end
 			
-			if not enemy:IsObstacle() then
+			if not enemy:IsObstacle() and not enemy:IsCountering() then
 				caster:Heal(heal_charged, caster)
 			end
 		end
+
+		damage_table.victim = enemy
+		damage_table.damage = final_damage
+		ApplyDamage(damage_table)
 
 		if not enemy:IsObstacle() then 
 			caster:GiveManaPercent(mana_gain_pct, enemy)

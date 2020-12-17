@@ -43,7 +43,7 @@ function modifier_spectre_ultimate:OnDestroy()
 end
 
 function modifier_spectre_ultimate:IsDebuff()
-    return self:GetStackCount() == 2
+    return self:GetStackCount() == 2 and not self:GetCaster():IsAlly(self:GetParent())
 end
 
 function modifier_spectre_ultimate:DeclareFunctions()
