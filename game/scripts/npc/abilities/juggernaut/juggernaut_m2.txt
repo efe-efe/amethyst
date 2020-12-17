@@ -11,7 +11,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"240"
-		"AbilityCooldown"				"7.0"
+		"AbilityCooldown"				"8.0"
 		"AbilityCastPoint"				"0.3"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -44,7 +44,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"300"
-		"AbilityCooldown"				"7.0"
+		"AbilityCooldown"				"8.0"
 		"AbilityManaCost"				"25"
 		"AbilityCastPoint"				"0.4"
 		"LevelsBetweenUpgrades"			"0"

@@ -17,9 +17,9 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"16" }
+			"01"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"12" }
 			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"230" }
-			"03"{ "var_type"			"FIELD_INTEGER"		"mana_gain_pct"		"10" }
+			"03"{ "var_type"			"FIELD_INTEGER"		"mana_gain_pct"		"6" }
 			"04"{ "var_type"			"FIELD_FLOAT"		"duration"			"5.0" }
 			"05"{ "var_type"			"FIELD_INTEGER"		"max_charges"		"1 2" }
 		}
@@ -45,8 +45,8 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"16" }
-			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"175" }
+			"01"{ "var_type"			"FIELD_INTEGER"		"ability_damage"	"12" }
+			"02"{ "var_type"			"FIELD_INTEGER"		"radius"			"200" }
 			"03"{ "var_type"			"FIELD_FLOAT"		"duration"			"3.0" }
 			"04"{ "var_type"			"FIELD_FLOAT"		"delay"				"0.4" }
 			"05"{ "var_type"			"FIELD_FLOAT"		"sleep_duration"	"1.5 2.0" }
