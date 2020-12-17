@@ -17,6 +17,7 @@
 			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"3.0" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"recasts"					"3 6" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"counter_duration"			"1.5" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"recast_time"				"4.0" }
 		}
 	}
 
@@ -71,6 +72,7 @@
 			"03"{ "var_type"	"FIELD_FLOAT"		"swiftness_duration"		"2.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"swiftness_pct"				"20" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"recasts"					"2 4" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"recast_time"				"3.0" }
 		}
 	}
 }

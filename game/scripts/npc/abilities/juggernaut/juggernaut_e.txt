@@ -23,6 +23,7 @@
 		
 		"AbilitySpecial"
 		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"recast_time"				"1.5" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2000" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }

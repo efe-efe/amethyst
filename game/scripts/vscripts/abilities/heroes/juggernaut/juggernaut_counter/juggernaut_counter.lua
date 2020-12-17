@@ -80,7 +80,7 @@ function juggernaut_counter_helper:RecastLogic(hCaster)
       hCaster,
       self:GetRecastAbility(),
       self:GetRecastModifierName(),
-      { duration = 5.0 }
+      { duration = self:GetRecastTime() }
    )
 end
 
@@ -108,6 +108,10 @@ function juggernaut_counter_helper:GetRecastModifierName(hCaster) end
 
 juggernaut_counter_recast = class(juggernaut_counter_helper)
 juggernaut_ex_counter = class(juggernaut_counter_helper)
+
+function juggernaut_counter_recast:GetRecastTime() return
+   self:GetCaster():FindAbilityByName("juggernaut_counter"):GetSpecialValueFor("recast_time") 
+end
 
 function juggernaut_counter_recast:OnSpellStart()
    local caster = self:GetCaster()
@@ -159,6 +163,7 @@ end
 
 function juggernaut_ex_counter:GetRecastCounterModifierName() return       "modifier_juggernaut_ex_counter_slashes" end
 function juggernaut_ex_counter:GetRecastModifierName() return              "modifier_juggernaut_ex_counter_recast" end
+function juggernaut_ex_counter:GetRecastTime() return                      self:GetSpecialValueFor("recast_time") end
 
 function juggernaut_ex_counter:OnSlashHitValidTargets(hCaster, iValidTargets)
    local swiftness_duration = self:GetSpecialValueFor("swiftness_duration")
