@@ -192,14 +192,6 @@ function CDOTA_BaseNPC:UnhideHealthBar()
 	self:RemoveModifierByName("modifier_hide_bar")
 end
 
-function CDOTA_BaseNPC:ForceDirection(direction)
-	self.forced_direction = direction
-end
-
-function CDOTA_BaseNPC:UnforceDirection(direction)
-	self.forced_direction = nil
-end
-
 function CDOTA_BaseNPC:IsDirectionForced()
 	if self.forced_direction ~= nil then
 		return true
@@ -423,26 +415,11 @@ function CDOTA_BaseNPC:StrongPurge()
     self:Purge(false, true, false, true, false)
 end
 
-function CDOTA_BaseNPC:GetForcedDirection()
-	if self.forced_direction == nil then
-		return nil
-	else 
-		return Vector(self.forced_direction.x, self.forced_direction.y, nil)
-	end
-end
-
 function CDOTA_BaseNPC:IsWalking()
 	local is_walking = false
 	local direction = self:GetDirection()
-	local forced_direction = self:GetForcedDirection()
 	
-	if 	direction.x ~= 0 or 
-		direction.y ~= 0 or 
-		forced_direction and (
-			forced_direction.x ~= 0 or 
-			forced_direction.y ~= 0
-		)
-	then
+	if 	direction.x ~= 0 or direction.y ~= 0 then
 		return true
 	else
 		return false
