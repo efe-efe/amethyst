@@ -13,6 +13,7 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.status_modifiers =			{}
 	self.fear_modifiers =			{}
 	self.translate_modifiers = 		{}
+	self.move_force_modifiers = 	{}
 	self.on_projectile_hit_modifiers = {}
 	self:AddNewModifier(self,  nil, "modifier_visible", {})
 	GameRules.GameMode:RegisterUnit(self)
@@ -33,12 +34,12 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 	self.recast_modifiers =			{}
 	self.fear_modifiers =			{}
 	self.translate_modifiers = 		{}
+	self.move_force_modifiers = 	{}
 	self.on_projectile_hit_modifiers = {}
 	self.stackbars_modifier =		nil
 	self.charges_modifier =			nil
 	self.cooldown_modifier =		nil
 	
-	self.forced_direction = 		nil
 	self.treshold = 				0
 
 	self.first_left = 				false
@@ -190,13 +191,6 @@ end
 
 function CDOTA_BaseNPC:UnhideHealthBar()
 	self:RemoveModifierByName("modifier_hide_bar")
-end
-
-function CDOTA_BaseNPC:IsDirectionForced()
-	if self.forced_direction ~= nil then
-		return true
-	end
-	return false
 end
 
 function CDOTA_BaseNPC:GetAlliance()
@@ -519,6 +513,7 @@ MODIFIER_CHANNELING = 5
 MODIFIER_CHARGES = 6 
 MODIFIER_TRANSLATE = 7 
 MODIFIER_ON_PROJECTILE_HIT = 8 
+MODIFIER_MOVE_FORCE = 9
 
 function CDOTA_BaseNPC:AddModifierTracker(data, type) 	
 	local key = nil
@@ -532,6 +527,7 @@ function CDOTA_BaseNPC:AddModifierTracker(data, type)
 	if type == MODIFIER_FEAR then key = "fear_modifiers" end
 	if type == MODIFIER_TRANSLATE then key = "translate_modifiers" end
 	if type == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
+	if type == MODIFIER_MOVE_FORCE then key = "move_force_modifiers" end
 
 	table.insert(self[key], data)
 end
@@ -548,7 +544,7 @@ function CDOTA_BaseNPC:RemoveModifierTracker(data, type)
 	if type == MODIFIER_FEAR then key = "fear_modifiers" end
 	if type == MODIFIER_TRANSLATE then key = "translate_modifiers" end
 	if type == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
-
+	if type == MODIFIER_MOVE_FORCE then key = "move_force_modifiers" end
 
 	for _,m_data in pairs(self[key]) do
 		if m_data == data then
@@ -582,6 +578,10 @@ function CDOTA_BaseNPC:IsFeared()
 	return self.fear_modifiers and #self.fear_modifiers > 0
 end
 
+function CDOTA_BaseNPC:IsMoveForced()
+	return self.move_force_modifiers and #self.move_force_modifiers > 0
+end
+
 function CDOTA_BaseNPC:IsConfused()				return 	self:HasModifier("modifier_generic_confuse") 	end
 function CDOTA_BaseNPC:IsInitialized()			return 	self.initialized								end
 
@@ -594,6 +594,13 @@ function CDOTA_BaseNPC:GetDirection()
 		local direction = (fear_origin - self:GetAbsOrigin()):Normalized()
 		
 		return direction * -1
+	end
+
+	if self:IsMoveForced() then
+		if self.direction.x == 0 and self.direction.y == 0 then 
+			local forward_vector = self:GetForwardVector()
+			return Vector(forward_vector.x, forward_vector.y)
+		end	
 	end
 	return self.direction
 end

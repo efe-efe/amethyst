@@ -167,7 +167,6 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_adrenaline",                      "modifiers/modifier_adrenaline.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("radius_marker_thinker",                    "modifiers/radius_marker_thinker.lua", LUA_MODIFIER_MOTION_NONE)
     
-    LinkLuaModifier("modifier_generic_fear",                    "abilities/generic/modifier_generic_fear", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_silence",                 "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE) -- Should Delete
     LinkLuaModifier("modifier_generic_fading_slow",             "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_fading_haste",            "abilities/generic/modifier_generic_fading_haste", LUA_MODIFIER_MOTION_NONE)
@@ -177,7 +176,6 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_root",                    "abilities/generic/modifier_generic_root", LUA_MODIFIER_MOTION_NONE) -- Should Delete
     LinkLuaModifier("modifier_generic_invencible",              "abilities/generic/modifier_generic_invencible", LUA_MODIFIER_MOTION_NONE) -- Should Delete
     LinkLuaModifier("modifier_generic_confuse",                 "abilities/generic/modifier_generic_confuse", LUA_MODIFIER_MOTION_NONE)
-    LinkLuaModifier("modifier_generic_hypnotize",               "abilities/generic/modifier_generic_hypnotize", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_sleep",                   "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier("modifier_visible",                         "abilities/base/modifier_visible", LUA_MODIFIER_MOTION_NONE)
@@ -186,7 +184,6 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_hero_base",                       "abilities/base/modifier_hero_base", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_shield",                          "abilities/base/modifier_shield", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_channeling",                      "abilities/base/modifier_channeling", LUA_MODIFIER_MOTION_NONE)
-    LinkLuaModifier("modifier_counter",                         "abilities/base/modifier_counter", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_hide_bar",                        "abilities/base/modifier_hide_bar", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_hidden",                          "abilities/base/modifier_hidden", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_banish",                          "abilities/base/modifier_banish", LUA_MODIFIER_MOTION_NONE)

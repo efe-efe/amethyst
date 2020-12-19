@@ -725,6 +725,26 @@ function Modifiers.Animation(modifier)
     end
 end
 
+
+function Modifiers.MoveForced(modifier)
+    local onCreated = modifier.OnCreated
+    local onDestroy = modifier.OnDestroy
+
+    function modifier:OnCreated(params)
+        if IsServer() then
+            self:GetParent():AddModifierTracker(self:GetName(), MODIFIER_MOVE_FORCE)
+        end
+        if onCreated then onCreated(self, params) end
+    end
+
+    function modifier:OnDestroy(params)
+        if IsServer() then
+            self:GetParent():RemoveModifierTracker(self:GetName(), MODIFIER_MOVE_FORCE)
+        end
+        if onDestroy then onDestroy(self, params) end
+    end
+end
+
 function Modifiers.Translate(modifier)
     local onCreated = modifier.OnCreated
     local onDestroy = modifier.OnDestroy
