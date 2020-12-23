@@ -12,7 +12,6 @@ function vengeful_second_attack:GetBehavior()						return DOTA_ABILITY_BEHAVIOR_
 function vengeful_second_attack:GetAbilityTextureName()				return self:GetName() end
 function vengeful_second_attack:GetCooldown(iLevel)					return 8 end
 function vengeful_second_attack:GetCastRange(vLocation, hTarget)	return 850 end
-function vengeful_second_attack:GetManaCost()						return 25 end
 
 function vengeful_second_attack:OnAbilityPhaseStart()
 	self:PlayEffectsOnPhase()
@@ -118,6 +117,7 @@ function vengeful_ex_second_attack:GetBehavior()                        return D
 function vengeful_ex_second_attack:GetAbilityTextureName()              return self:GetName() end
 function vengeful_ex_second_attack:GetCooldown(iLevel)                  return 8 end
 function vengeful_ex_second_attack:GetCastRange(vLocation, hTarget)     return 1600 end
+function vengeful_ex_second_attack:GetManaCost()						return 25 end
 
 function vengeful_ex_second_attack:OnAbilityPhaseStart()
 	self:PlayEffectsOnPhase()
