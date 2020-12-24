@@ -181,6 +181,7 @@ import { tables } from './shared/util';
     layout.CollapsePanelByClass('AbilityInsetShadowRight');
     layout.CollapsePanel('StatBranch');
     layout.CollapsePanel('health_mana');
+    layout.CollapsePanel('AghsStatusContainer');
 
     const rightFlarePanel = layout.GetTopPanel().FindChildTraverse('right_flare')!;
     rightFlarePanel.style.width = '52px';
