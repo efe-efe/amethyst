@@ -24,7 +24,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"pre_silence_duration"      "1.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"pre_silence_duration"      "0.5" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"silence_duration"          "1.0" }
 		}
 	}

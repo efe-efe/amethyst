@@ -21,14 +21,14 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"8" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0 6.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"min_range"			        "550" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"speed"		                "2000" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"07"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"50" }
 			"08"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.0" }
-			"09"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"8" }
+			"09"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"12" }
 		}
 	}
 }

@@ -21,11 +21,11 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"3" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"			"4" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.5" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"35" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"debuff_linger"				"0.5" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"230" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.3" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.7" }
 			"08"{ "var_type"	"FIELD_FLOAT"		"max_charges"				"1 2" }

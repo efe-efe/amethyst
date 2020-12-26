@@ -25,7 +25,7 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"2.0" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"80" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"5" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"7" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"15.0" }
 			"08"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
 		}

@@ -23,8 +23,8 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"15" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"damage_aoe"				"7" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"8" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"damage_aoe"				"12" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1100" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
 			"05"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
@@ -69,8 +69,8 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"damage"				"10" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"damage_aoe"			"5" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"damage"				"8" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"damage_aoe"			"12" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"		"1100" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"fear_duration"			"1.5" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"hitbox"				"150" }

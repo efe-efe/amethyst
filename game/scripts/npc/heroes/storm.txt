@@ -23,8 +23,8 @@
 		"ArmorPhysical"				"0"										
 		"MagicalResistance"			"0"										
 
-		"AttackDamageMin"			"10"										
-		"AttackDamageMax"			"10"											
+		"AttackDamageMin"			"8"										
+		"AttackDamageMax"			"8"											
 		"AttackRate"				"0.6"										
 		"AttackAnimationPoint"		"0.4"	
 		"AttackRange"				"80"
