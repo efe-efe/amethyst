@@ -175,7 +175,6 @@ import { tables } from './shared/util';
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_ITEMS, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_SHOP, false);
-
     layout.CollapsePanel('inventory_tpscroll_container');
     layout.CollapsePanel('inventory_neutral_slot_container');
     layout.CollapsePanelByClass('AbilityInsetShadowRight');
@@ -293,6 +292,9 @@ import { tables } from './shared/util';
         clockPanel.text = data.timer_minute_10.toString() + data.timer_minute_01.toString() + ':' + data.timer_second_10.toString() + data.timer_second_01.toString();
     }
     GameEvents.Subscribe('countdown', UpdateTime);
+    GameEvents.Subscribe('not_enough_energy', function(){
+        GameUI.SendCustomHUDError( "Not Enough Energy", "versus_screen.towers_nopass" )
+    });
 
     refunderButton.SetPanelEvent('onactivate', () => {
         let playerId = Players.GetLocalPlayer();

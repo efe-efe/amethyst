@@ -12,7 +12,7 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
 		"AbilityCastRange" 				"850"
-		"AbilityManaCost"				"100"
+		"AbilityEnergyCost"				"200"
 		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {

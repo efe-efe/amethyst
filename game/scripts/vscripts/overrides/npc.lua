@@ -3,6 +3,8 @@
 function CDOTA_BaseNPC:Initialize(data)
 	self.on_basic_attack_impact = 	{}
 	self.treshold = 				0
+	self.energy = 					0
+	self.max_energy = 				200
 
 	self.charges_modifiers =		{}
 	self.displacement_modifiers = 	{}
@@ -15,6 +17,8 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.translate_modifiers = 		{}
 	self.move_force_modifiers = 	{}
 	self.on_projectile_hit_modifiers = {}
+
+	self:SetEnergy(self.max_energy)	
 	self:AddNewModifier(self,  nil, "modifier_visible", {})
 	GameRules.GameMode:RegisterUnit(self)
 	self:SetTreshold(GameRules.GameMode.max_treshold)
@@ -41,6 +45,8 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 	self.cooldown_modifier =		nil
 	
 	self.treshold = 				0
+	self.energy = 					0
+	self.max_energy = 				200
 
 	self.first_left = 				false
 	self.first_right = 				false
@@ -50,7 +56,7 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 	self.initialized = 				nil
 	self.healing_reduction_pct = 	0
 
-	--self:SetStashEnabled(false)	
+	self:SetEnergy(self.max_energy)	
 	self:SetDirection(0,0)
 	self:SetTreshold(GameRules.GameMode.max_treshold)
 	self:SetInitialized(true)
@@ -103,11 +109,14 @@ function CDOTA_BaseNPC_Hero:SendDataToClient()
 		charges = self:GetCharges(),
 		cooldown = self:GetCooldown(),
 		abilities = self:GetAbilities(),
+		energy = self:GetEnergy(),
+		maxEnergy = self:GetMaxEnergy(),
 	}
 	CustomNetTables:SetTableValue("heroes", tostring(self:GetPlayerID()), data)
 end
 
 function CDOTA_BaseNPC:GiveManaCustom(fMana)
+	self:GiveEnergyWithoutInformingClient(fMana)
 	self:GiveMana(fMana)
 	self:SendDataToClient()
 end
@@ -130,6 +139,7 @@ end
 function CDOTA_BaseNPC:Reset()
 	if not IsInToolsMode() then
 		self:SetManaCustom(0)
+		self:SetEnergy(0)
 	end
 	self:SetHealthCustom(self:GetMaxHealth())
 	self:SetTreshold(GameRules.GameMode.max_treshold)
@@ -137,9 +147,6 @@ function CDOTA_BaseNPC:Reset()
 	for i = 0, 23 do
 		local ability = self:GetAbilityByIndex(i)
 		if ability then
-			--[[if ability:GetMaxAbilityCharges() then
-				ability:SetCurrentAbilityCharges(ability:GetMaxAbilityCharges())
-			end]]
 			ability:EndCooldown()
 			if ability:GetToggleState() then
 				ability:ToggleAbility()
@@ -643,6 +650,31 @@ function CDOTA_BaseNPC:GetAbilities()
 	end
 
 	return abilities
+end
+
+function CDOTA_BaseNPC:GiveEnergy(energy)
+	self:SetEnergy(self:GetEnergy() + energy)
+end
+
+function CDOTA_BaseNPC:GiveEnergyWithoutInformingClient(energy)
+	self:SetEnergyWithoutInformingClient(self:GetEnergy() + energy)
+end
+
+function CDOTA_BaseNPC:SetEnergy(energy)
+	self.energy = Clamp(energy, self:GetMaxEnergy(), 0)
+	self:SendDataToClient()
+end
+
+function CDOTA_BaseNPC:SetEnergyWithoutInformingClient(energy)
+	self.energy = Clamp(energy, self:GetMaxEnergy(), 0)
+end
+
+function CDOTA_BaseNPC:GetEnergy()
+	return self.energy
+end
+
+function CDOTA_BaseNPC:GetMaxEnergy()
+	return self.max_energy
 end
 
 

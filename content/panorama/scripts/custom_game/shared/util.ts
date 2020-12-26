@@ -48,6 +48,10 @@ export const colors = {
         light: [240, 240, 240],
         dark: [120, 120, 120]
     } as Color,
+    yellowRed: {
+        light: [249, 246, 154],
+        dark: [229, 0, 72]
+    } as Color,
     Gradient: function(color: Color, opacity = '1.0'): string{
         const colorA = 'rgba(' + color.light[0] + ',' + color.light[1] + ',' + color.light[2] + ',' + opacity + ')';
         const colorB = 'rgba(' + color.dark[0] + ',' + color.dark[1] + ',' + color.dark[2] + ',' + opacity + ')';

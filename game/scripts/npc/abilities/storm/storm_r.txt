@@ -10,8 +10,8 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCastRange" 				"1200"
 		"AbilityCooldown"				"12.0"
-		"AbilityManaCost"				"100"
 		"AbilityCastPoint"				"0.3"
+		"AbilityEnergyCost"				"200"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"

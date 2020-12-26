@@ -24,6 +24,8 @@ export type HeroData = {
     stackbars: string;
     charges: string;
     cooldown: string;
+    energy: number;
+    maxEnergy: number;
     abilities: {
         [key: string]: {
             name: string;

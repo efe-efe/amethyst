@@ -11,7 +11,7 @@
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
-		"AbilityManaCost"				"100"
+		"AbilityEnergyCost"				"200"
 		"AbilityCastPoint"				"0.3"
 		"AbilityCastRange"				"800"
 		

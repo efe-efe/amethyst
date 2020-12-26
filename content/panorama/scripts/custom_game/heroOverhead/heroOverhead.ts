@@ -7,6 +7,7 @@ import Charges from './charges';
 import Cooldown from './cooldown';
 import Stacks from './stacks';
 import Health from '../commonComponents/health';
+import Energy from '../commonComponents/energy';
 import Alliances from '../alliances';
 import Castpoint from './castpoint';
 import Mana from '../commonComponents/mana';
@@ -30,6 +31,7 @@ export default class HeroOverhead extends Overhead{
     ammoPanel: Panel;
     stackbarsPanel: Panel;
     cooldownPanel: Panel;
+    energyPanel: Panel;
 
     color: Color;
     
@@ -39,6 +41,7 @@ export default class HeroOverhead extends Overhead{
     recast: Recast;
     status: Status;
     health: Health;
+    energy: Energy | undefined;
     mana: Mana | undefined;
     castpoint: Castpoint;
     charges: Charges | undefined;
@@ -61,6 +64,8 @@ export default class HeroOverhead extends Overhead{
         const resourcesPanel = panels.createPanelSimple(this.botPanel, 'hero-overhead-resources');
         this.healthPanel = panels.createPanelSimple(resourcesPanel, 'hero-overhead-resources__health');
         this.manaPanel = panels.createPanelSimple(resourcesPanel, 'hero-overhead-resources__mana');
+        this.energyPanel = panels.createPanelSimple(resourcesPanel, 'hero-overhead-resources__energy');
+
         this.castpointPanel = panels.createPanelSimple(resourcesPanel, 'hero-overhead-resources__castpoint');
         this.ammoPanel = panels.createPanelSimple(this.botPanel, 'hero-overhead-ammo');
         this.stackbarsPanel = panels.createPanelSimple(this.ammoPanel, 'hero-overhead-ammo__stackbars');
@@ -68,11 +73,13 @@ export default class HeroOverhead extends Overhead{
 
         if(alliance.IsLocal()){
             this.mana = new Mana(this.manaPanel, heroData.mana, heroData.maxMana);
+            this.energy = new Energy(this.energyPanel);
         }
         
         this.recast = new Recast(this.topPanel);
         this.status = new Status(this.midPanel, heroData.entityIndex);
         const player = new Player(this.midPanel, heroData.playerId, this.color);
+
         this.health = new Health(this.healthPanel, {
             color: this.color,
             rounded: true,
@@ -145,6 +152,9 @@ export default class HeroOverhead extends Overhead{
         this.health.Update(heroData.health, heroData.treshold, heroData.maxHealth, heroData.shield);
         if(this.mana){
             this.mana.Update(heroData.mana, heroData.maxMana);
+        }
+        if(this.energy){
+            this.energy.Update(heroData.energy, heroData.maxEnergy);
         }
     }
 }

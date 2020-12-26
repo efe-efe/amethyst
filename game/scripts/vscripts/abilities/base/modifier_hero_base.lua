@@ -188,12 +188,26 @@ function modifier_hero_base:DeclareFunctions()
 		MODIFIER_EVENT_ON_SPENT_MANA,
 		MODIFIER_PROPERTY_DISABLE_AUTOATTACK,
 		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
+		MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
     }
 end
 
 function modifier_hero_base:OnSpentMana(event)
 	self:GetParent():SendDataToClient()
 end
+
+function modifier_hero_base:OnAbilityFullyCast(params)
+	if IsServer() then
+		if params.unit ~= self:GetParent() then
+			return
+		end
+
+		params.unit:GiveEnergy(-params.ability:GetEnergyCost())
+	end
+end
+
+
+
 
 function modifier_hero_base:GetDisableAutoAttack()						return true	end
 function modifier_hero_base:GetModifierIgnoreMovespeedLimit(params)		return 1	end

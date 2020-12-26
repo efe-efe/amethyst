@@ -6,31 +6,48 @@ function Filters:Activate(GameMode, this)
     end
     function GameMode:ExecuteOrderFilter(tFilter)
         local order_type = tFilter["order_type"]
-        if order_type == DOTA_UNIT_ORDER_CAST_POSITION then
+
+        if  order_type == DOTA_UNIT_ORDER_CAST_POSITION or 
+            order_type == DOTA_UNIT_ORDER_CAST_TARGET or 
+            order_type == DOTA_UNIT_ORDER_CAST_TARGET_TREE or 
+            order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
+        then
             local ability = EntIndexToHScript(tFilter.entindex_ability)
             local caster = EntIndexToHScript(tFilter.units["0"])
-            local point = Vector(
-                tFilter.position_x,
-                tFilter.position_y,
-                tFilter.position_z
-           )
-            local current_range = (point - caster:GetAbsOrigin()):Length2D()
-            local direction = (point - caster:GetAbsOrigin()):Normalized()
-            local max_range = ability:GetCastRange(Vector(0,0,0), nil)
+            local energy_cost = ability:GetEnergyCost()
+            local energy = caster:GetEnergy()
 
-            if not ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_IMMEDIATE) then
-                caster:FaceTowardsCustom(direction)
+            if energy_cost > energy then 
+                CustomGameEventManager:Send_ServerToAllClients("not_enough_energy", {})
+                return false
             end
 
-            if current_range > max_range then
-                local new_point = caster:GetAbsOrigin() + direction * (max_range - 10)
-
-                tFilter.position_x = new_point.x
-                tFilter.position_y = new_point.y
+            if order_type == DOTA_UNIT_ORDER_CAST_POSITION then
+                local point = Vector(
+                    tFilter.position_x,
+                    tFilter.position_y,
+                    tFilter.position_z
+               )
+                local current_range = (point - caster:GetAbsOrigin()):Length2D()
+                local direction = (point - caster:GetAbsOrigin()):Normalized()
+                local max_range = ability:GetCastRange(Vector(0,0,0), nil)
+    
+                if not ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_IMMEDIATE) then
+                    caster:FaceTowardsCustom(direction)
+                end
+    
+                if current_range > max_range then
+                    local new_point = caster:GetAbsOrigin() + direction * (max_range - 10)
+    
+                    tFilter.position_x = new_point.x
+                    tFilter.position_y = new_point.y
+                end
+    
+                return true
             end
-
-            return true
         end
+
+
         if order_type == DOTA_UNIT_ORDER_STOP or order_type == DOTA_UNIT_ORDER_HOLD_POSITION then
             local caster = EntIndexToHScript(tFilter.units["0"])
             local ability = caster:GetCurrentActiveAbility()
