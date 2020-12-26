@@ -49,7 +49,7 @@ export const colors = {
         dark: [120, 120, 120]
     } as Color,
     yellowRed: {
-        light: [249, 246, 154],
+        light: [219, 213, 30],
         dark: [229, 0, 72]
     } as Color,
     Gradient: function(color: Color, opacity = '1.0'): string{
