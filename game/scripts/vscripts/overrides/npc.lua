@@ -4,7 +4,7 @@ function CDOTA_BaseNPC:Initialize(data)
 	self.on_basic_attack_impact = 	{}
 	self.treshold = 				0
 	self.energy = 					0
-	self.max_energy = 				200
+	self.max_energy = 				100
 
 	self.charges_modifiers =		{}
 	self.displacement_modifiers = 	{}
@@ -46,7 +46,7 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 	
 	self.treshold = 				0
 	self.energy = 					0
-	self.max_energy = 				200
+	self.max_energy = 				100
 
 	self.first_left = 				false
 	self.first_right = 				false

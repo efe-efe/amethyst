@@ -9,7 +9,7 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"AbilityEnergyCost"				"200"
+		"AbilityEnergyCost"				"100"
 		"AbilityCastRange"				"1600"
 		"AbilityCastPoint"				"0.6"
 

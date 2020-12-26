@@ -12,7 +12,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"2400"
-		"AbilityEnergyCost"				"200"
+		"AbilityEnergyCost"				"100"
 		"AbilityCastPoint"				"1.0"
 
 		"TargetingIndicator" {
