@@ -1,17 +1,22 @@
 modifier_hero_base = class({})
 LinkLuaModifier("modifier_hero_movement", "abilities/base/modifier_hero_movement", LUA_MODIFIER_MOTION_NONE)
 
-local DEBUG = false
+local DEBUG = true
 
 local EAST = Vector(1, 0, 0)
 local WEST = Vector(-1, 0, 0)
 local NORTH = Vector(0, 1, 0)
 local SOUTH = Vector(0, -1, 0)
 
-local NORTH_EAST = Vector(1, 1, 0)
-local NORTH_WEST = Vector(-1, 1, 0)
-local SOUTH_EAST = Vector(1, -1, 0)
-local SOUTH_WEST = Vector(-1, -1, 0)
+local NORTH_EAST = Vector(1, 1, 0):Normalized()
+local NORTH_WEST = Vector(-1, 1, 0):Normalized()
+local SOUTH_EAST = Vector(1, -1, 0):Normalized()
+local SOUTH_WEST = Vector(-1, -1, 0):Normalized()
+
+-- [0.707107 0.707107 0.000000]
+-- [-0.707107 0.707107 0.000000]
+-- [0.707107 -0.707107 0.000000]
+-- [-0.707107 -0.707107 0.000000]
 
 function modifier_hero_base:IsHidden() 			return	true	end
 function modifier_hero_base:IsDebuff() 			return	false	end
@@ -36,7 +41,6 @@ function modifier_hero_base:OnIntervalThink()
 	if (direction.x ~= 0 or direction.y ~= 0) and self.parent:CanWalk() then
 		if not self:Move(direction, speed) then
 			local alternative_directions = self:AlternatieDirections(direction)
-			
 			for _,alt_direction in pairs(alternative_directions) do
 				if self:Move(alt_direction, speed/2) then
 					break
