@@ -160,13 +160,14 @@ function vengeful_ex_counter:PlayEffectsOnCast()
 end
 
 
-function MimicSpell(hAbility, hAbilityOriginal, iManaCost)
+function MimicSpell(hAbility, hAbilityOriginal, iEnergyCost)
     for key,value in pairs(hAbilityOriginal) do
         hAbility[key] = hAbilityOriginal[key]
     end
 
     hAbility.IsMimicable = function() return false end
-    hAbility.GetManaCost = function() return iManaCost end
+    hAbility.GetManaCost = function() return 0 end
+    hAbility.GetEnergyCost = function() return iEnergyCost end
 end
 
 MimicSpell(vengeful_counter_ultimate, vengeful_counter, 25)
