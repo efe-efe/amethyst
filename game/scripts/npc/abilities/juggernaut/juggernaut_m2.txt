@@ -29,6 +29,8 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"240" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"2 4" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"					"6.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"shield_per_stack"			"5" }
 		}
 	}
 

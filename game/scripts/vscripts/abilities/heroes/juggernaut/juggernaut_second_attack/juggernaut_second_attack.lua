@@ -41,11 +41,15 @@ function juggernaut_second_attack:OnSpellStart()
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local radius = self:GetSpecialValueFor("radius")
+	local duration = self:GetSpecialValueFor("duration")
+	local shield_per_stack = self:GetSpecialValueFor("shield_per_stack")
 	local juggernaut_ex_second_attack = caster:FindAbilityByName('juggernaut_ex_second_attack')
 	
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
 	local final_damage = damage + (stacks * damage_per_stack)
+	local shield_providers = 0
+
 	local give_mana = false
 	local enemies = {}
 	local damage_table = {
@@ -86,6 +90,10 @@ function juggernaut_second_attack:OnSpellStart()
 			give_mana = true
 		end
 
+		if not enemy:IsObstacle() then
+			shield_providers = shield_providers + 1
+		end
+
 		damage_table.victim = enemy
 		damage_table.damage = final_damage
 
@@ -99,6 +107,11 @@ function juggernaut_second_attack:OnSpellStart()
 	
 	if #enemies > 0 then
 		ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
+	end
+
+	if self:GetLevel() >= 2 and stacks > 0 and shield_providers > 0 then
+		local final_shield = stacks * shield_per_stack * shield_providers
+		caster:AddNewModifier(caster, self, 'modifier_shield', { damage_block = final_shield, duration = duration })
 	end
 
 	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
