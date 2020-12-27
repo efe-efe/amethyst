@@ -52,7 +52,9 @@ function vengeful_special_attack:OnSpellStart()
             unit:AddNewModifier(_self.Source, self, "modifier_vengeful_special_attack", { duration = duration })
 
 			if _self.Source == caster then
-				caster:GiveManaPercent(mana_gain_pct, unit)
+				if unit:ProvidesMana() then
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				end
 			end
 		end,
 		OnFinish = function(_self, pos)

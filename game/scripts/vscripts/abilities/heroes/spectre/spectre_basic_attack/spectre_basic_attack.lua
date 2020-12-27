@@ -105,8 +105,8 @@ function spectre_basic_attack:OnSpellStart()
 		damage_table.damage = final_damage
 		ApplyDamage(damage_table)
 
-		if not enemy:IsObstacle() then 
-			caster:GiveManaPercent(mana_gain_pct, enemy)
+		if enemy:ProvidesMana() then
+			caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
 		end
 
 		self:PlayEffectsOnImpact(enemy, enemy:GetAbsOrigin(), is_charged)

@@ -81,7 +81,9 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 			end
 
 			if _self.Source == caster and not unit:IsObstacle() then
-				caster:GiveManaPercent(mana_gain_pct, unit)
+				if unit:ProvidesMana() then
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				end
 				if self:GetLevel() >=2 then
 					caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
 				end

@@ -83,9 +83,11 @@ function spectre_mobility:OnSpellStart()
 				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):ReduceCooldown(cooldown_reduction)
 
 				if #enemies == 1 then
-					caster:GiveManaPercent(mana_gain_pct, enemies[1])    
+					if enemies[1]:ProvidesMana() then
+						caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+					end
 				else
-					caster:GiveManaPercent(mana_gain_pct)
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
 				end
 			end
             self:PlayEffectsOnFinish(pos)

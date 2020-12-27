@@ -102,7 +102,7 @@ function juggernaut_second_attack:OnSpellStart()
 	end
 
 	if give_mana then
-		caster:GiveManaPercent(mana_gain_pct, nil)
+		caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
 	end
 	
 	if #enemies > 0 then
@@ -220,7 +220,7 @@ function juggernaut_ex_second_attack:OnSpellStart()
 
 	if self:GetLevel() >= 2 then
 		if give_mana then
-			caster:GiveManaCustom(self:GetManaCost(self:GetLevel()))
+			caster:GiveManaAndEnergy(self:GetManaCost(self:GetLevel()), true)
 
 			for i = 0, 3 do
 				caster:AddNewModifier(caster, juggernaut_basic_attack, "modifier_juggernaut_basic_attack_stacks", {})

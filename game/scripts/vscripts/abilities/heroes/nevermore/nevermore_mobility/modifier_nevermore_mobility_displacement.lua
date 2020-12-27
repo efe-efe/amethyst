@@ -57,7 +57,9 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                             end
                         end
                         if self.counter == 1 then
-                            self:GetParent():GiveManaPercent(self.mana_gain_pct, unit)
+                            if unit:ProvidesMana() then
+                                self:GetParent():GiveManaAndEnergyPercent(self.mana_gain_pct, true)
+                            end
                         end
                     end
                     

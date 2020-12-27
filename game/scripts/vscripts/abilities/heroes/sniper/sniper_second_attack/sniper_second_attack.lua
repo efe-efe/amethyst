@@ -92,8 +92,10 @@ function sniper_second_attack:OnSpellStart()
 				damage_type = DAMAGE_TYPE_MAGICAL,
 			}			
 			
-			if counter < 1 then
-				_self.Source:GiveManaPercent(mana_gain_pct, unit)
+			if counter < 1 and _self.Source == caster then
+				if unit:ProvidesMana() then
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				end
 			end
 	
 			ApplyDamage(damage_table)

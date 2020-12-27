@@ -32,8 +32,7 @@ function Amethyst:OnDeath(params)
 		for _,unit in pairs(units) do
 			if unit:IsRealHero() then 
 				TrueHeal(unit:GetHealth(), final_heal, unit)
-				unit:GiveManaCustom(final_mana)
-                SendOverheadManaMessage(unit, final_mana)
+				unit:GiveManaAndEnergy(final_mana, true, true)
                 self:PlayEffectsOnTarget(unit)
 			end
 		end

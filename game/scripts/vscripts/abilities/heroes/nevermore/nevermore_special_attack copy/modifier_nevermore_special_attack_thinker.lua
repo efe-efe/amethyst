@@ -52,7 +52,7 @@ function modifier_nevermore_special_attack_thinker:OnDelayEnds(params)
         end
 
         if give_mana then
-            self:GetCaster():GiveManaPercent(self.mana_gain_pct)    
+            self:GetCaster():GiveManaAndEnergyPercent(self.mana_gain_pct, true)    
         end
         
         local particle_cast = "particles/econ/items/monkey_king/arcana/fire/monkey_king_spring_arcana_fire.vpcf"

@@ -41,10 +41,14 @@ function storm_second_attack:OnSpellStart()
 			ApplyDamage(damage_table)
 
 			if _self.Source == caster then
-				caster:GiveManaPercent(mana_gain_pct, unit)
+				if unit:ProvidesMana() then
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				end
 				if caster:HasModifier('modifier_storm_ultimate') then
 					local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-					caster:GiveManaPercentAndInform(extra_mana_pct, unit)
+					if unit:ProvidesMana() then
+						caster:GiveManaPercent(extra_mana_pct, true, true)
+					end
 				end
 			end
 

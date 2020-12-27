@@ -43,7 +43,7 @@ function modifier_nevermore_special_attack_thinker:OnIntervalThink()
     end)
 
     if give_mana then
-        self.caster:GiveManaPercent(self.mana_gain_pct)    
+        self.caster:GiveManaAndEnergyPercent(self.mana_gain_pct, true)
     end
 
     EmitSoundOnLocationWithCaster(self.origin, "Hero_Nevermore.Shadowraze", self.caster)

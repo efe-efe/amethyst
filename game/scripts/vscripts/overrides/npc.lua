@@ -115,15 +115,47 @@ function CDOTA_BaseNPC_Hero:SendDataToClient()
 	CustomNetTables:SetTableValue("heroes", tostring(self:GetPlayerID()), data)
 end
 
-function CDOTA_BaseNPC:GiveManaCustom(fMana)
-	self:GiveEnergyWithoutInformingClient(fMana)
-	self:GiveMana(fMana)
-	self:SendDataToClient()
+function CDOTA_BaseNPC:GiveManaPercent(iPercentage, bInformClient, bShowOverhead)
+	local mana = self:GetMaxMana() * iPercentage/100
+	self:GiveManaCustom(mana, bInformClient, bShowOverhead)
 end
 
-function CDOTA_BaseNPC:SetManaCustom(fMana)
+function CDOTA_BaseNPC:GiveEnergyPercent(iPercentage, bInformClient, bShowOverhead)
+	local energy = self:GetMaxEnergy() * iPercentage/100
+	self:GiveEnergy(energy, bInformClient, bShowOverhead)
+end
+
+function CDOTA_BaseNPC:GiveManaAndEnergyPercent(iPercentage, bInformClient, bShowOverhead)
+	self:GiveManaPercent(iPercentage, false, bShowOverhead)
+	self:GiveEnergyPercent(iPercentage, false, false)
+	if bInformClient then
+		self:SendDataToClient()
+	end
+end
+
+function CDOTA_BaseNPC:GiveManaAndEnergy(fAmount, bInformClient, bShowOverhead)
+	self:GiveEnergy(fAmount, false)
+	self:GiveManaCustom(fAmount, false, bShowOverhead)
+	if bInformClient then
+		self:SendDataToClient()
+	end
+end
+
+function CDOTA_BaseNPC:GiveManaCustom(fMana, bInformClient, bShowOverhead)
+	self:GiveMana(fMana)
+	if bInformClient then
+		self:SendDataToClient()
+	end
+	if bShowOverhead then
+		SendOverheadManaMessage(self, fMana)
+	end
+end
+
+function CDOTA_BaseNPC:SetManaCustom(fMana, bInformClient)
 	self:SetMana(fMana)
-	self:SendDataToClient()
+	if bInformClient then
+		self:SendDataToClient()
+	end
 end
 
 function CDOTA_BaseNPC:SetHealthCustom(fHealth)
@@ -138,7 +170,7 @@ end
 	
 function CDOTA_BaseNPC:Reset()
 	if not IsInToolsMode() then
-		self:SetManaCustom(0)
+		self:SetManaCustom(0, true)
 		self:SetEnergy(0)
 	end
 	self:SetHealthCustom(self:GetMaxHealth())
@@ -379,16 +411,6 @@ function CDOTA_BaseNPC:IsObstacle()
     return (self:IsBarrel() or self:IsWall()) and true or false
 end
 
-function CDOTA_BaseNPC:GiveManaPercent(iPercentage, hSource)
-	if (not hSource) or (hSource:ProvidesMana()) then
-		local mana = self:GetMaxMana() * iPercentage/100, inform
-		self:GiveManaCustom(mana)
-		return mana
-	end
-	return false
-end
-
-
 function CDOTA_BaseNPC:ProvidesMana()
 	if self and self.GetParentEntity then
 		local entity = self:GetParentEntity()
@@ -403,13 +425,6 @@ function CDOTA_BaseNPC:ProvidesMana()
 	end
 
 	return true
-end
-
-function CDOTA_BaseNPC:GiveManaPercentAndInform(iPercentage, hSource)
-	local mana = self:GiveManaPercent(iPercentage, hSource)
-	if mana then
-		SendOverheadManaMessage(self, mana)
-	end
 end
 
 function CDOTA_BaseNPC:StrongPurge()
@@ -685,21 +700,16 @@ function CDOTA_BaseNPC:GetAbilities()
 	return abilities
 end
 
-function CDOTA_BaseNPC:GiveEnergy(energy)
-	self:SetEnergy(self:GetEnergy() + energy)
+function CDOTA_BaseNPC:GiveEnergy(iEnergy, bInformClient)
+	self:SetEnergy(self:GetEnergy() + iEnergy, bInformClient)
 end
 
-function CDOTA_BaseNPC:GiveEnergyWithoutInformingClient(energy)
-	self:SetEnergyWithoutInformingClient(self:GetEnergy() + energy)
-end
+function CDOTA_BaseNPC:SetEnergy(iEnergy, bInformClient)
+	self.energy = Clamp(iEnergy, self:GetMaxEnergy(), 0)
 
-function CDOTA_BaseNPC:SetEnergy(energy)
-	self.energy = Clamp(energy, self:GetMaxEnergy(), 0)
-	self:SendDataToClient()
-end
-
-function CDOTA_BaseNPC:SetEnergyWithoutInformingClient(energy)
-	self.energy = Clamp(energy, self:GetMaxEnergy(), 0)
+	if bInformClient then
+		self:SendDataToClient()
+	end
 end
 
 function CDOTA_BaseNPC:GetEnergy()

@@ -86,7 +86,9 @@ function nevermore_second_attack:OnSpellStart()
 						else 
 							modifier:DecrementStackCount()
 						end
-						caster:GiveManaPercent(mana_gain_pct, unit)
+						if unit:ProvidesMana() then
+							caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+						end
 					end
 				else
 					caster:RemoveModifierByName("modifier_nevermore_second_attack_recasts_counter")

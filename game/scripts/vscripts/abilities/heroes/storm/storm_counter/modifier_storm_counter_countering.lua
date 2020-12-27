@@ -24,7 +24,7 @@ end
 
 function modifier_storm_counter_countering:OnTrigger(params)
 	if IsServer() then
-		self:GetParent():GiveManaCustom(self.mana_gain)
+		self:GetParent():GiveManaAndEnergy(self.mana_gain, true)
 		
 		local enemies = self:GetParent():FindUnitsInRadius(
 			self:GetParent():GetAbsOrigin(), 

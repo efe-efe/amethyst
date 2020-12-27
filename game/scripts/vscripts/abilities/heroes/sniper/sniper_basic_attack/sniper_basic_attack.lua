@@ -52,8 +52,10 @@ function sniper_basic_attack:OnSpellStart()
 			}
 			ApplyDamage(damage_table)
 
-			if _self.Source == caster and not unit:IsObstacle() then 
-				caster:GiveManaPercent(mana_gain_pct, unit)
+			if _self.Source == caster then 
+				if unit:ProvidesMana() then
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				end
 			end
 
 			if _self.Source.OnBasicAttackImpact then

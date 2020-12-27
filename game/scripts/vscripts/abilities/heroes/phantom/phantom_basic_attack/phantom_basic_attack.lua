@@ -62,8 +62,9 @@ function phantom_basic_attack:OnSpellStart()
 		}
 		ApplyDamage(damage_table)
 
-		
-		caster:GiveManaPercent(mana_gain_pct, enemy)
+		if enemy:ProvidesMana() then
+            caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+        end
 
 		if not enemy:IsObstacle() then
 			caster:AddNewModifier(

@@ -50,8 +50,9 @@ function phantom_second_attack:OnSpellStart()
 
 			EmitSoundOn("DOTA_Item.MagicWand.Activate", caster)
 		end
-
-		caster:GiveManaPercent(mana_gain_pct, enemy)
+		if enemy:ProvidesMana() then
+            caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+        end
 		self:PlayEffectsOnImpact(enemy, stacks)
 	end
 

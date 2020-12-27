@@ -53,7 +53,9 @@ function puck_second_attack:OnSpellStart()
 				if unit:ProvidesMana() and self:GetLevel() >=2 then
 					caster:FindAbilityByName("puck_special_attack"):EndCooldown()
 				end
-				caster:GiveManaPercent(mana_gain_pct, unit)
+				if unit:ProvidesMana() then
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				end
 			end
 		end,
 		OnFinish = function(_self, pos)

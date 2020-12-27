@@ -57,8 +57,9 @@ function vengeful_counter:ThrowProjectile(hCaster, iDamage, vOrigin, vDirection,
 				ability = ability,
 			}
 			ApplyDamage(damage_table)
-
-			hCaster:GiveManaPercent(mana_gain_pct, unit)
+			if unit:ProvidesMana() then
+				hCaster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			ability:PlayEffectsOnFinish(pos)

@@ -77,7 +77,7 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
         end
 
         self.caster:AddNewModifier(self.caster, nil, "modifier_shield", { duration = 6.0, damage_block = self.shield_per_hit })
-        self.caster:GiveManaPercent(self.mana_gain_pct)
+        self.caster:GiveManaAndEnergyPercent(self.mana_gain_pct, true)
     end
     self:Destroy()
 end

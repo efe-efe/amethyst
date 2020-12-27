@@ -57,8 +57,10 @@ function mars_basic_attack:OnSpellStart()
 		}
 		ApplyDamage(damage_table)
 
-		if not enemy:IsObstacle() then 
-			caster:GiveManaPercent(mana_gain_pct, enemy)
+		if not enemy:IsObstacle() then
+			if enemy:ProvidesMana() then
+				caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+			end
 
 			caster:AddNewModifier(
 				caster, -- player source

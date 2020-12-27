@@ -54,7 +54,9 @@ function puck_mobility:OnSpellStart()
 					refreshed = true
 				end
 
-                caster:GiveManaPercent(mana_gain_pct, unit)
+				if unit:ProvidesMana() then
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				end
 			end
 		end,
 		OnFinish = function(_self, pos)

@@ -89,7 +89,9 @@ function spectre_second_attack:OnSpellStart()
 			ApplyDamage(damage_table)
 			
 			ScreenShake(unit:GetAbsOrigin(), 100, 300, 0.7, 1000, 0, true)
-			caster:GiveManaPercent(mana_gain_pct, unit)
+			if unit:ProvidesMana() then
+				caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+			end
 		end,
 		OnFinish = function(_self, pos)
 			if level >= 2 then

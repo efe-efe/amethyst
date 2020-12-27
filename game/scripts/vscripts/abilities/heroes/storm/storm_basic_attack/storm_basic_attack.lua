@@ -79,12 +79,16 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 			}
 			ApplyDamage(damage_table)
 
-			if _self.Source == caster and not unit:IsObstacle() then
-				caster:GiveManaPercent(mana_gain_pct, unit)
+			if _self.Source == caster then
+				if unit:ProvidesMana() then
+					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				end
 
 				if caster:HasModifier('modifier_storm_ultimate') then
 					local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-					caster:GiveManaPercentAndInform(extra_mana_pct, unit)
+					if unit:ProvidesMana() then
+						caster:GiveManaPercent(mana_gain_pct, true, true)
+					end
 				end
 			end
 
