@@ -2,7 +2,6 @@
 require('settings')
 
 require('util/util')
-require('util/modifiers')
 
 require('overrides/npc')
 require('overrides/abilities')
@@ -486,7 +485,7 @@ function GameMode:OnRoundEnd(context)
     for _,player in pairs(self.players) do
         local hero = player.hero
         local playerId = player:GetId()
-        SafeDestroyModifier("modifier_generic_provides_vision", hero, nil)
+        hero:SafeDestroyModifier("modifier_generic_provides_vision")
         PlayerResource:SetCameraTarget(playerId, nil)
     end
 

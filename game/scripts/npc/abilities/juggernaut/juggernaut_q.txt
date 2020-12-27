@@ -67,12 +67,13 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"14" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"					"500" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"swiftness_duration"		"2.0" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"swiftness_pct"				"20" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"recasts"					"2 4" }
 			"06"{ "var_type"	"FIELD_FLOAT"		"recast_time"				"3.0" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"extra_damage"				"4" }
 		}
 	}
 }

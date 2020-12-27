@@ -27,7 +27,7 @@ function phantom_ultimate:OnSpellStart()
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = 4000
-	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
+	local stacks = caster:SafeGetModifierStacks("modifier_phantom_strike_stack")
 
 	local projectile = {
 		EffectName = projectile_name,
@@ -66,7 +66,7 @@ function phantom_ultimate:OnSpellStart()
 		end,
 	}
 
-	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
+	caster:SafeDestroyModifier("modifier_phantom_strike_stack")
 	Projectiles:CreateProjectile(projectile)
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 3.0)
 	self:StopEffectsOnCastPoint()

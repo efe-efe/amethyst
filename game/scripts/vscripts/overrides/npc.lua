@@ -440,6 +440,39 @@ function CDOTA_BaseNPC:DeactivateAllAbilitiesWithExeption(spell)
 	end
 end
 
+function CDOTA_BaseNPC:SafeGetModifier(sModifierName, hCaster)
+	local modifier = nil
+    if hCaster == nil then
+        modifier = self:FindModifierByName(sModifierName)
+    else
+        modifier = self:FindModifierByNameAndCaster(sModifierName, hCaster)
+    end
+
+	if modifier ~= nil then
+		if not modifier:IsNull() then
+			return modifier
+		end
+	end
+
+	return nil
+end
+
+function CDOTA_BaseNPC:SafeGetModifierStacks(sModifierName, hCaster)
+	local modifier = self:SafeGetModifier(sModifierName, hCaster)
+	if modifier then
+		return modifier:GetStackCount()
+	end
+
+	return 0
+end
+
+function CDOTA_BaseNPC:SafeDestroyModifier(sModifierName, hCaster)
+	local modifier = self:SafeGetModifier(sModifierName, hCaster)
+	if modifier then
+		modifier:Destroy()
+	end
+end
+
 function CDOTA_BaseNPC:DeactivateNonPriorityAbilities()
 	if IsServer() then
 		for i = 0, 10 do

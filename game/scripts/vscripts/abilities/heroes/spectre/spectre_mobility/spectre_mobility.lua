@@ -89,7 +89,7 @@ function spectre_mobility:OnSpellStart()
 				end
 			end
             self:PlayEffectsOnFinish(pos)
-            SafeDestroyModifier("modifier_spectre_banish", caster, caster)
+            caster:SafeDestroyModifier("modifier_spectre_banish")
             FindClearSpaceForUnit(caster, pos , true)
 		end,
 	}

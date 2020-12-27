@@ -100,7 +100,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetAbsOrigin()
-	local stacks = SafeGetModifierStacks("modifier_phantom_strike_stack", caster, caster)
+	local stacks = caster:SafeGetModifierStacks("modifier_phantom_strike_stack")
 
 	local ability = caster:FindAbilityByName('phantom_ex_counter')
 	local duration_per_stack = ability:GetSpecialValueFor("duration_per_stack")
@@ -158,7 +158,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 	}
 
 	Projectiles:CreateProjectile(projectile)
-	SafeDestroyModifier("modifier_phantom_strike_stack", caster, caster)
+	caster:SafeDestroyModifier("modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
 end
 

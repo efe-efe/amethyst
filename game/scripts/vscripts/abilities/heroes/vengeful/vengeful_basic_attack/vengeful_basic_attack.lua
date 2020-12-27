@@ -23,13 +23,13 @@ function vengeful_basic_attack:GetCastPointSpeed() 		    return 10 end
 function vengeful_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 
-	local stacks = SafeGetModifierStacks("modifier_vengeful_basic_attack", caster, caster)
+	local stacks = caster:SafeGetModifierStacks("modifier_vengeful_basic_attack")
 	if stacks < 3 then
 		self:ThrowProjectile()
 	else
 		local vengeful_second_attack = caster:FindAbilityByName("vengeful_second_attack")
 		vengeful_second_attack:ThrowProjectile()
-		SafeDestroyModifier("modifier_vengeful_basic_attack", caster, caster)
+		caster:SafeDestroyModifier("modifier_vengeful_basic_attack")
 	end
 
 end

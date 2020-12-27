@@ -17,7 +17,7 @@ function modifier_spectre_mobility_thinker:OnDestroy()
         local caster = self:GetCaster()
         local origin = self:GetParent():GetAbsOrigin()
         FindClearSpaceForUnit(caster, origin, false)
-        SafeDestroyModifier("modifier_spectre_banish", caster, caster)
+        caster:SafeDestroyModifier("modifier_spectre_banish")
         local heal = false
         
         local enemies = ApplyCallbackForUnitsInArea(caster, self:GetParent():GetAbsOrigin(), self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)

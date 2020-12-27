@@ -46,7 +46,7 @@ function juggernaut_second_attack:OnSpellStart()
 	local juggernaut_ex_second_attack = caster:FindAbilityByName('juggernaut_ex_second_attack')
 	
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
-	local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
+	local stacks = caster:SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks")
 	local final_damage = damage + (stacks * damage_per_stack)
 	local shield_providers = 0
 
@@ -114,7 +114,7 @@ function juggernaut_second_attack:OnSpellStart()
 		caster:AddNewModifier(caster, self, 'modifier_shield', { damage_block = final_shield, duration = duration })
 	end
 
-	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
+	caster:SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks")
 	LinkAbilityCooldowns(caster, 'juggernaut_ex_second_attack')
 end
 
@@ -186,7 +186,7 @@ function juggernaut_ex_second_attack:OnSpellStart()
 	local juggernaut_basic_attack = caster:FindAbilityByName("juggernaut_basic_attack")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	
-	local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
+	local stacks = caster:SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks")
 	local final_debuff_duration = duration + (stacks * duration_per_stack)
 	local enemies = caster:FindUnitsInCone(
 		direction, 
@@ -216,7 +216,7 @@ function juggernaut_ex_second_attack:OnSpellStart()
 		self:PlayEffectsOnImpact(enemy)
 	end
 
-	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
+	caster:SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks")
 
 	if self:GetLevel() >= 2 then
 		if give_mana then

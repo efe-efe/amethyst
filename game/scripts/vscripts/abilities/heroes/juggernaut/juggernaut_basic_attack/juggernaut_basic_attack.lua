@@ -32,6 +32,18 @@ function juggernaut_basic_attack:OnSpellStart()
 	local cooldown_reduction_counter = self:GetSpecialValueFor("cooldown_reduction_counter")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local final_damage = attack_damage
+	local modifier = caster:SafeGetModifier("modifier_juggernaut_ex_counter")
+	if modifier then
+		local juggernaut_ex_counter = caster:FindAbilityByName("juggernaut_ex_counter")
+		local extra_damage = juggernaut_ex_counter:GetSpecialValueFor("extra_damage")
+		local color = Vector(0, 255, 0)
+		final_damage = final_damage + extra_damage
+		modifier:DecrementStackCount()
+		self:PlayEffectsOnFinish(direction, color)
+	else
+		self:PlayEffectsOnFinish(direction)
+	end
 
 	local enemies = caster:FindUnitsInCone(
 		direction, 
@@ -56,7 +68,7 @@ function juggernaut_basic_attack:OnSpellStart()
 		local damage_table = {
 			victim = enemy,
 			attacker = caster,
-			damage = attack_damage,
+			damage = final_damage,
 			damage_type = DAMAGE_TYPE_PHYSICAL,
 			activate_counters = 1,
 		}
@@ -93,7 +105,6 @@ function juggernaut_basic_attack:OnSpellStart()
 	end
 
 	self:PlayEffectsOnMiss(point)
-	self:PlayEffectsOnFinish(direction)
 end
 
 function juggernaut_basic_attack:ReduceCooldown(hCaster, sAbilityName, iCooldownReduction)
@@ -109,16 +120,23 @@ function juggernaut_basic_attack:ReduceCooldown(hCaster, sAbilityName, iCooldown
 	end
 end
 
-function juggernaut_basic_attack:PlayEffectsOnFinish(vDirection)
+function juggernaut_basic_attack:PlayEffectsOnFinish(vDirection, vColor)
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 
-	EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
+	local efx = EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
 		cp0 = origin,
 		cp0f = vDirection,
 		cp3 = Vector(self.radius, 0, 0),
-		release = true,
 	})
+
+	if vColor then
+		ParticleManager:SetParticleControl(efx, 60, vColor)
+		ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
+	end
+
+	ParticleManager:ReleaseParticleIndex(efx)
+
 	EFX('particles/juggernaut/juggernaut_basic_attack_dust.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
 		release = true,
 	})

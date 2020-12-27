@@ -15,7 +15,7 @@ function mars_special_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 
-	local stacks = SafeGetModifierStacks("modifier_mars_basic_attack_stacks", caster, caster)
+	local stacks = caster:SafeGetModifierStacks("modifier_mars_basic_attack_stacks")
 	local final_damage = damage + (stacks * damage_per_stack)
 
 	local projectile_particle = "particles/units/heroes/hero_mars/mars_spear.vpcf"
@@ -73,7 +73,7 @@ function mars_special_attack:OnSpellStart()
 
     ExecuteOrderFromTable({ OrderType = DOTA_UNIT_ORDER_STOP, UnitIndex = caster:entindex() })
 	Projectiles:CreateProjectile(projectile)
-	SafeDestroyModifier("modifier_mars_basic_attack_stacks", caster, caster)
+	caster:SafeDestroyModifier("modifier_mars_basic_attack_stacks")
 
 	self:PlayEffectsOnCast()
 end

@@ -7,6 +7,7 @@ LinkLuaModifier("modifier_juggernaut_counter", "abilities/heroes/juggernaut/jugg
 LinkLuaModifier("modifier_juggernaut_swiftness", "abilities/heroes/juggernaut/modifier_juggernaut_swiftness", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_ex_counter_recast", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_ex_counter_slashes", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter_slashes", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_ex_counter", "abilities/heroes/juggernaut/juggernaut_counter/modifier_juggernaut_ex_counter", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_counter:OnSpellStart()
    local caster = self:GetCaster()
@@ -173,6 +174,8 @@ function juggernaut_ex_counter:OnSlashHitValidTargets(hCaster, iValidTargets)
       duration = swiftness_duration,
       swiftness_pct =  swiftness_pct * iValidTargets
    })
+
+   hCaster:AddNewModifier(hCaster, self, 'modifier_juggernaut_ex_counter', {})
 end
 
 function juggernaut_ex_counter:PlayEffectsOnSlash(vOrigin, vNewOrigin)
