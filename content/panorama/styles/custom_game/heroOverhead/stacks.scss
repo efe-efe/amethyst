@@ -1,6 +1,5 @@
 .stacks{
-    margin-top: 6px;
-    height: 18px;
+    height: 24px;
     width: 30px;
     
     flow-children: right;
@@ -8,8 +7,7 @@
 
     &__stack{
         height: 100%;
-        width: 5px;
-
+        width: 6px;
         transition-property: opacity;
         transition-duration: 0.2s;
         border: 1px solid rgb(36, 42, 53);
