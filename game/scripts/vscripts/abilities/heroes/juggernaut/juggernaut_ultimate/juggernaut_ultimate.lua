@@ -6,7 +6,7 @@ LinkLuaModifier("modifier_generic_fading_slow", "abilities/generic/modifier_gene
 LinkLuaModifier("modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL)
 
 function juggernaut_ultimate:GetCastAnimationCustom()		return ACT_DOTA_GENERIC_CHANNEL_1 end
-function juggernaut_ultimate:GetPlaybackRateOverride() 	    return 1.0 end
+function juggernaut_ultimate:GetPlaybackRateOverride() 	    return 2.0 end
 function juggernaut_ultimate:GetCastPointSpeed() 			return 0 end
 function juggernaut_ultimate:GetAnimationTranslate()		return "sharp_blade" end
 
@@ -16,7 +16,9 @@ function juggernaut_ultimate:OnAbilityPhaseStart()
 end
 
 function juggernaut_ultimate:OnAbilityPhaseInterrupted()
-	StopGlobalSound("juggernaut_jug_ability_omnislash_01")
+	StopGlobalSound("juggernaut_jug_rare_17")
+	StopGlobalSound("Hero_Juggernaut.PreAttack")
+    StopGlobalSound("Hero_Lycan.SummonWolves")
 end
 
 function juggernaut_ultimate:OnSpellStart()
@@ -43,9 +45,11 @@ end
 
 function juggernaut_ultimate:PlayEffectsOnPhase()
     local caster = self:GetCaster()
-    EmitGlobalSound("juggernaut_jug_ability_omnislash_01")
-
-    local particle_cast = "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_death_model.vpcf"
+    EmitGlobalSound("juggernaut_jug_rare_17")
+    EmitGlobalSound("Hero_Lycan.SummonWolves")
+	EmitGlobalSound("Hero_Juggernaut.PreAttack")
+    
+    local particle_cast = "particles/juggernaut/juggernaut_ultimate_cast.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, caster)
     ParticleManager:ReleaseParticleIndex(effect_cast)
 

@@ -13,12 +13,17 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"1500"
 		"AbilityEnergyCost"				"100"
-		"AbilityCastPoint"				"0.8"
+		"AbilityCastPoint"				"1.0"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
 			"DisplayRange" 				"1"
 			"Fixed"						"1"
+		}
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_lycan.vsndevts"
 		}
 		
 		"AbilitySpecial"
