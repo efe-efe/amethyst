@@ -9,7 +9,6 @@
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCastRange" 				"1200"
-		"AbilityCooldown"				"12.0"
 		"AbilityCastPoint"				"0.3"
 		"AbilityEnergyCost"				"100"
 
