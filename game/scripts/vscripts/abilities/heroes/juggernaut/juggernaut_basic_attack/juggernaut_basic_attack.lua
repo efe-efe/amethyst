@@ -29,6 +29,7 @@ function juggernaut_basic_attack:OnSpellStart()
 
 	self.radius = self:GetSpecialValueFor("radius")
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
+	local cooldown_reduction_counter = self:GetSpecialValueFor("cooldown_reduction_counter")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
@@ -73,6 +74,11 @@ function juggernaut_basic_attack:OnSpellStart()
 
 			self:ReduceCooldown(caster, 'juggernaut_second_attack', cooldown_reduction)
 			self:ReduceCooldown(caster, 'juggernaut_ex_second_attack', cooldown_reduction)
+
+			if self:GetLevel() >= 2 then
+				self:ReduceCooldown(caster, 'juggernaut_counter', cooldown_reduction_counter)
+				self:ReduceCooldown(caster, 'juggernaut_ex_counter', cooldown_reduction_counter)
+			end
 		end
 
 		if caster.OnBasicAttackImpact then

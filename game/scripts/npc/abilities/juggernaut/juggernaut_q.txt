@@ -27,7 +27,7 @@
 		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter"
 		"MaxLevel"						"1"
 
-		"AbilityTextureName"			"juggernaut_counter"
+		"AbilityTextureName"			"juggernaut_counter_recast"
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"AbilityCastRange"				"900"
