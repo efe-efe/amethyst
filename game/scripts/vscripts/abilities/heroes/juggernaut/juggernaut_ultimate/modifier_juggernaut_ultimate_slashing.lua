@@ -18,7 +18,6 @@ function modifier_juggernaut_ultimate_slashing:OnCreated(params)
             damage = self.damage_per_second,
             damage_type = DAMAGE_TYPE_PURE,
         }
-
         self:SetStackCount(params.aspd_buff)
 
         local attacks_per_second = self.parent:GetAttacksPerSecond()
@@ -38,7 +37,6 @@ end
 
 function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
     local enemies = self:FindTargets()
-
     if #enemies > 0 then
         local enemy_index = RandomInt(1, #enemies)
         self.current_target = enemies[enemy_index]
@@ -114,7 +112,7 @@ function modifier_juggernaut_ultimate_slashing:DeclareFunctions()
 end
 
 function modifier_juggernaut_ultimate_slashing:GetModifierAttackSpeedBonus_Constant()
-	return self:GetStackCount()
+	return -50 + self:GetStackCount()
 end
 
 function modifier_juggernaut_ultimate_slashing:GetOverrideAnimation(params)          return ACT_DOTA_OVERRIDE_ABILITY_4      end

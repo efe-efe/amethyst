@@ -23,10 +23,10 @@
 		
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_FLOAT"		"duration"				"2.0" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"450" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"                "80" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"aspd_per_stack"		"12.5" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"				"1.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"450" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"                "80" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"aspd_per_stack"		"12.5" }
 		}
 	}
 }
