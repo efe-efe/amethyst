@@ -46,9 +46,15 @@ function juggernaut_second_attack:OnSpellStart()
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = SafeGetModifierStacks("modifier_juggernaut_basic_attack_stacks", caster, caster)
 	local final_damage = damage + (stacks * damage_per_stack)
+	local give_mana = false
+	local enemies = {}
+	local damage_table = {
+		attacker = caster,
+		damage = final_damage,
+	}
 
 	if stacks <= 3 then
-		local enemies = caster:FindUnitsInCone(
+		enemies = caster:FindUnitsInCone(
 			direction, 
 			0, 
 			origin, 
@@ -58,32 +64,11 @@ function juggernaut_second_attack:OnSpellStart()
 			DOTA_UNIT_TARGET_FLAG_NONE, 
 			FIND_CLOSEST
 		)
-	
-		for _,enemy in pairs(enemies) do 
-			local damage_table = {
-				victim = enemy,
-				attacker = caster,
-				damage = final_damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-			}
-			ApplyDamage(damage_table)
-			caster:GiveManaPercent(mana_gain_pct, enemy)
-			
-			self:PlayEffectsOnImpact(enemy)
-	
-			break
-		end
-		
-		if #enemies > 0 then
-			ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
-		end
-		
+		damage_table.damage_type = DAMAGE_TYPE_PHYSICAL
 		self:PlayEffectsOnFinish(direction, radius)
 	else
-		local give_mana = false
 		local radius = 275 
-
-		local enemies = caster:FindUnitsInRadius(
+		enemies = caster:FindUnitsInRadius(
 			caster:GetOrigin(), 
 			radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -91,28 +76,29 @@ function juggernaut_second_attack:OnSpellStart()
 			DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
 			FIND_ANY_ORDER
 		)
-		
-		for _,enemy in pairs(enemies) do
-			if not enemy:IsObstacle() then
-				give_mana = true
-			end
-
-			local damage_table = {
-				victim = enemy,
-				attacker = caster,
-				damage = final_damage,
-				damage_type = DAMAGE_TYPE_PURE,
-			}
-			ApplyDamage(damage_table)
-			self:PlayEffectsOnImpact(enemy)
-		end
-
-		if give_mana == true then
-			caster:GiveManaPercent(mana_gain_pct, nil)
-		end
-
+		damage_table.damage_type = DAMAGE_TYPE_PURE
 		caster:AddNewModifier(caster, self, "modifier_juggernaut_spin_animation", { duration = 0.3 })
 		self:PlayEffectsAoe(radius)
+	end
+
+	for _,enemy in pairs(enemies) do
+		if enemy:ProvidesMana() then
+			give_mana = true
+		end
+
+		damage_table.victim = enemy
+		damage_table.damage = final_damage
+
+		ApplyDamage(damage_table)
+		self:PlayEffectsOnImpact(enemy)
+	end
+
+	if give_mana then
+		caster:GiveManaPercent(mana_gain_pct, nil)
+	end
+	
+	if #enemies > 0 then
+		ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
 	end
 
 	SafeDestroyModifier("modifier_juggernaut_basic_attack_stacks", caster, caster)
