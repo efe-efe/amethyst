@@ -8,7 +8,6 @@ function modifier_storm_extra_displacement:OnCreated(params)
 		self.radius = self:GetAbility():GetSpecialValueFor('radius')
 		self.fading_slow_duration = self:GetAbility():GetSpecialValueFor("fading_slow_duration")
 		self.fading_slow_pct = self:GetAbility():GetSpecialValueFor("fading_slow_pct")
-		self.recast = false
 	
 		local storm_ex_basic_attack = self.parent:FindAbilityByName('storm_ex_basic_attack')
 		local damage_per_level = storm_ex_basic_attack:GetSpecialValueFor('damage_per_level')
@@ -73,12 +72,13 @@ function modifier_storm_extra_displacement:OnImpactEnemy(hTarget, iDamage)
 		)
 	end
 
-	if not hTarget:IsObstacle() then
-		self.recast = true
-	end
 	self.damage_table.victim = hTarget
 	self.damage_table.damage = iDamage
 	ApplyDamage(self.damage_table)
+
+	if not hTarget:IsObstacle() and self:GetAbility():GetLevel() >= 2 then
+		self.parent:FindAbilityByName("storm_second_attack"):EndCooldown()
+	end
 end
 
 function modifier_storm_extra_displacement:OnImpactEnemyAOE(hTarget)
@@ -130,25 +130,7 @@ function modifier_storm_extra_displacement:OnDestroy()
 		end
 		
 		if self:GetAbility():GetLevel() >= 2 then
-			if self.recast then
-				if self.parent:HasModifier('modifier_storm_extra_recast_used') then
-					self.parent:RemoveModifierByName('modifier_storm_extra_recast_used')
-				else
-					self.parent:AddNewModifier(
-						self.parent,
-						self:GetAbility(),
-						"modifier_storm_extra_recast_used",
-						{ duration = 3.0 }
-					)
-				
-					self.parent:AddNewModifier(
-						self.parent,
-						self:GetAbility(),
-						"modifier_storm_extra_recast",
-						{ duration = 3.0 }
-					)
-				end
-			end
+			
 		end
 	end
 end

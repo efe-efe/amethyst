@@ -1,19 +1,10 @@
 storm_extra = class({})
 LinkLuaModifier("modifier_storm_extra_displacement", "abilities/heroes/storm/storm_extra/modifier_storm_extra_displacement", LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_storm_extra", "abilities/heroes/storm/storm_extra/modifier_storm_extra", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_storm_extra_recast", "abilities/heroes/storm/storm_extra/modifier_storm_extra_recast", LUA_MODIFIER_MOTION_NONE)
-LinkLuaModifier("modifier_storm_extra_recast_used", "abilities/heroes/storm/storm_extra/modifier_storm_extra_recast_used", LUA_MODIFIER_MOTION_NONE)
 
 function storm_extra:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_4 end
 function storm_extra:GetPlaybackRateOverride()      return 1.0 end
 function storm_extra:GetCastPointSpeed() 			return 0 end
-
-function storm_extra:GetManaCost(iLevel)
-    if self:GetCaster():HasModifier('modifier_storm_extra_recast') then
-        return 0
-    end
-    return self.BaseClass.GetManaCost( self, iLevel )
-end
 
 function storm_extra:OnAbilityPhaseStart()
     if self:GetCaster():HasModifier('modifier_storm_extra_displacement') then
