@@ -1,7 +1,6 @@
 modifier_spectre_basic_attack_cooldown = class({})
 
 function modifier_spectre_basic_attack_cooldown:OnCreated(params)
-    self.charged_damage = self:GetAbility():GetSpecialValueFor("charged_damage")
     if IsServer() then
 	    self.attack_speed_bonus = 0.2 + self:GetCaster():GetAttackAnimationPoint()
     end
@@ -33,7 +32,7 @@ end
 
 function modifier_spectre_basic_attack_cooldown:GetModifierPreAttack_BonusDamage()
     if not self:IsCooldownReady() then return 0 end
-    return self.charged_damage
+    return self:GetAbility():GetSpecialValueFor("charged_damage")
 end
 
 
