@@ -26,10 +26,7 @@ function juggernaut_extra:OnSpellStart()
 	healing_ward:SetControllableByPlayer(caster:GetPlayerID(), true)
     if self:GetLevel() >= 2 then
         ApplyCallbackForUnitsInArea(caster, point, radius, DOTA_UNIT_TARGET_TEAM_FRIENDLY, function(unit)
-            if unit == healing_ward then
-                unit:AddNewModifier(unit, nil, "modifier_shield", { duration = 6.0, damage_block = shield/2 })
-
-            else
+            if unit ~= healing_ward then
                 unit:AddNewModifier(unit, nil, "modifier_shield", { duration = 6.0, damage_block = shield })
             end
         end)
