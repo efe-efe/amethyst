@@ -2,14 +2,11 @@
 	"invoker_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_ultimate/invoker_ultimate"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_orb"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_wex"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCooldown"				"10.0"
 		"LevelsBetweenUpgrades"			"0"
 
 		"AbilitySpecial"

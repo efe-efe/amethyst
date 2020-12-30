@@ -73,7 +73,11 @@
 #base "abilities\invoker\invoker_q.txt"
 #base "abilities\invoker\invoker_e.txt"
 #base "abilities\invoker\invoker_r.txt"
+#base "abilities\invoker\invoker_f.txt"
 #base "abilities\invoker\invoker_m1.txt"
+#base "abilities\invoker\invoker_m2.txt"
+#base "abilities\invoker\invoker_space.txt"
+#base "abilities\invoker\invoker_helper.txt"
 
 #base "abilities\dummies\passive_shoot.txt"
 #base "abilities\dummies\passive_walk.txt"

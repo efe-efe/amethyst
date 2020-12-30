@@ -1,0 +1,28 @@
+"DOTAAbilities" {
+	"invoker_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_second_attack/invoker_second_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"invoker_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCooldown"				"12"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"22" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+		}
+	}
+}

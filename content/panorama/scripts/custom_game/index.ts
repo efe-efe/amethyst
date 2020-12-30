@@ -361,5 +361,8 @@ import { tables } from './shared/util';
         } as never);
     }
 
-    $.Schedule(3.0, () => SwapRF());
+    
+    if(!Game.IsInToolsMode()){
+        $.Schedule(3.0, () => SwapRF());
+    }
 })();

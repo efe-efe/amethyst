@@ -1,1 +1,0 @@
-invoker_ultimate = class(invoker_orb)

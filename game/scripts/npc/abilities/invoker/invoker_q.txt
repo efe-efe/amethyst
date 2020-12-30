@@ -2,14 +2,11 @@
 	"invoker_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_counter/invoker_counter"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_orb"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_quas"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
-		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
-		"AbilityCooldown"				"10.0"
 		"LevelsBetweenUpgrades"			"0"
 
 		"AbilitySpecial"

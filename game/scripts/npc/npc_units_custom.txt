@@ -1,5 +1,6 @@
 #base "units\terrorblade\blade.txt"
 #base "units\juggernaut\healing_ward.txt"
+#base "units\invoker\spirit_custom.txt"
 #base "units\weaver\bug.txt"
 #base "units\shooter.txt"
 #base "units\walker.txt"

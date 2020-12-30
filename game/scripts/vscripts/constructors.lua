@@ -29,6 +29,9 @@ local constructors = {
     ["npc_dota_hero_storm_spirit"] = function(hTarget)
         hTarget:AddCooldown("modifier_storm_basic_attack_cooldown")
     end,
+    ["npc_dota_hero_invoker"] = function(hTarget)
+        hTarget:AddCharges("modifier_invoker_helper")
+    end,
 }
 
 function ConstructHero(hTarget)

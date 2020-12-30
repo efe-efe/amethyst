@@ -112,6 +112,7 @@ function modifier_death_zone:PlayEffectsMeteor()
     EFX("particles/units/heroes/hero_invoker/invoker_sun_strike.vpcf", PATTACH_WORLDORIGIN, nil, {
         cp0 = Vector(origin.x, origin.y, 0),
         cp1 = Vector(300, 0, 0),
+        release = true,
     })
 end
 

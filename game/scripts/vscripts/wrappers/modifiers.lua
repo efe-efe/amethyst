@@ -167,6 +167,11 @@ function Modifiers.Charges(modifier)
         self:CalculateCharge()
     end
 
+    function modifier:RemoveCharge()
+        self:DecrementStackCount()
+        self:CalculateCharge()
+    end
+
     function modifier:OnDestroy()
         if IsServer() then
             self:GetParent():RemoveModifierTracker(self:GetName(), MODIFIER_CHARGES)
