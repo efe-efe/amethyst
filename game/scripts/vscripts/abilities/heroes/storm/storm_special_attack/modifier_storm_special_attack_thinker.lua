@@ -7,6 +7,7 @@ function modifier_storm_special_attack_thinker:OnCreated(params)
     self.caster = self:GetCaster()
     self.origin = self:GetParent():GetAbsOrigin()
     self.mana_gain_pct = self:GetAbility():GetSpecialValueFor("mana_gain_pct")
+    self.energy_gain_pct = self:GetAbility():GetLevelSpecialValueFor("mana_gain_pct", 0)
     self.damage_table = {
         attacker = self.caster,
         damage = self.ability:GetSpecialValueFor("ability_damage"),
@@ -65,7 +66,8 @@ function modifier_storm_special_attack_thinker:OnIntervalThink()
 end
 
 function modifier_storm_special_attack_thinker:GiveMana()
-    self.caster:GiveManaAndEnergyPercent(self.mana_gain_pct, true)
+    self.caster:GiveManaPercent(self.mana_gain_pct, true)
+    self.caster:GiveEnergyPercent(self.energy_gain_pct, true)
     if self.caster:HasModifier('modifier_storm_ultimate') then
         local extra_mana_pct = self.mana_gain_pct * (self.caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
         self.caster:GiveManaPercent(extra_mana_pct, true, true)
