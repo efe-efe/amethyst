@@ -68,7 +68,7 @@ function modifier_hero_base:OnIntervalThink()
 			end	
 
 			for _,alt_direction in pairs(alternative_directions) do
-				local new_output = self:Move(alt_direction, speed/2)
+				local new_output = self:Move(alt_direction, speed * 0.8)
 				if new_output == 'SUCCESS' then
 					break
 				end
