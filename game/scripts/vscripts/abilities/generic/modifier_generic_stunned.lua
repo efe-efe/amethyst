@@ -1,5 +1,11 @@
 modifier_generic_stunned = class({})
 
+function modifier_generic_stunned:OnCreated(params)
+	if IsServer() then
+		self:GetParent():Stop()
+	end
+end
+
 function modifier_generic_stunned:IsDebuff() return true end
 function modifier_generic_stunned:IsStunDebuff() return true end
 
