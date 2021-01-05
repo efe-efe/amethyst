@@ -20,7 +20,7 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             	"7" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"cooldown_reduction"			"2.0" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"max_stacks"					"4" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"cooldown_reduction_counter"	"0.5" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"cooldown_reduction_counter"	"0.5" }
 		}
 	}
 }
