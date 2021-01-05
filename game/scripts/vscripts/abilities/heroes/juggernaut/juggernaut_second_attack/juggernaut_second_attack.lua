@@ -55,6 +55,7 @@ function juggernaut_second_attack:OnSpellStart()
 	local damage_table = {
 		attacker = caster,
 		damage = final_damage,
+		damage_type = DAMAGE_TYPE_PHYSICAL,
 	}
 
 	if stacks <= 3 then
@@ -68,7 +69,6 @@ function juggernaut_second_attack:OnSpellStart()
 			DOTA_UNIT_TARGET_FLAG_NONE, 
 			FIND_CLOSEST
 		)
-		damage_table.damage_type = DAMAGE_TYPE_PHYSICAL
 		self:PlayEffectsOnFinish(direction, radius)
 	else
 		local radius = 275 
@@ -80,7 +80,6 @@ function juggernaut_second_attack:OnSpellStart()
 			DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
 			FIND_ANY_ORDER
 		)
-		damage_table.damage_type = DAMAGE_TYPE_PURE
 		caster:AddNewModifier(caster, self, "modifier_juggernaut_spin_animation", { duration = 0.3 })
 		self:PlayEffectsAoe(radius)
 	end
@@ -90,7 +89,7 @@ function juggernaut_second_attack:OnSpellStart()
 			give_mana = true
 		end
 
-		if not enemy:IsObstacle() then
+		if not enemy:IsObstacle() and not enemy:IsCountering() then
 			shield_providers = shield_providers + 1
 		end
 

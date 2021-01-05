@@ -1,7 +1,7 @@
 modifier_hero_base = class({})
 LinkLuaModifier("modifier_hero_movement", "abilities/base/modifier_hero_movement", LUA_MODIFIER_MOTION_NONE)
 
-local DEBUG = true
+local DEBUG = false
 
 local EAST = Vector(1, 0, 0)
 local WEST = Vector(-1, 0, 0)
