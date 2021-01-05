@@ -23,8 +23,8 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"2.0" }
-			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"80" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.5" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
 			"06"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"7" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"15.0" }
 			"08"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
