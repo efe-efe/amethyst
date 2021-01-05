@@ -70,7 +70,7 @@ function sniper_second_attack:OnSpellStart()
 		TreeBehavior = PROJECTILES_NOTHING,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
+		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
 			-- Count targets
@@ -202,7 +202,7 @@ function sniper_ex_second_attack:ThrowProjectile(vOrigin, vDirection, bFirstTime
 		TreeBehavior = PROJECTILES_NOTHING,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
+		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
 			-- Count targets

@@ -58,16 +58,16 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 
 	local projectile = {
 		EffectName = projectile_particle,
-		vSpawnOrigin = origin + Vector(0, 0, 96),
+		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
+		fStartRadius = 70,--self:GetSpecialValueFor("hitbox"),
 		Source = caster,
 		vVelocity = projectile_direction * projectile_speed,
 		UnitBehavior = PROJECTILES_DESTROY,
 		TreeBehavior = PROJECTILES_NOTHING,
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 80,
+		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {

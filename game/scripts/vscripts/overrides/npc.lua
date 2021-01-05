@@ -55,6 +55,7 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 
 	self.initialized = 				nil
 	self.healing_reduction_pct = 	0
+	self.collision_direction = 		-1
 
 	self:SetEnergy(self.max_energy)	
 	self:SetDirection(0,0)
@@ -79,6 +80,15 @@ end
 function CDOTA_BaseNPC:SendDataToClient()
 	print('SendDataToClient: Not implemented yet!')
 end
+
+function CDOTA_BaseNPC_Hero:SetCollisionDirection(iCollisionDirection)
+	self.collision_direction = iCollisionDirection
+end
+
+function CDOTA_BaseNPC_Hero:GetCollisionDirection()
+	return self.collision_direction
+end
+
 
 function CDOTA_BaseNPC_Hero:SendDataToClient()
 	if self:IsIllusion() then
