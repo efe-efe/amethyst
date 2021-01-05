@@ -18,7 +18,7 @@ function storm_second_attack:OnSpellStart()
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
 	local projectile = {
-		EffectName = "particles/storm/storm_special_attack.vpcf",
+		EffectName = "particles/storm/storm_second_attack.vpcf",
 		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
 		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 		fStartRadius = self:GetSpecialValueFor("hitbox"),
