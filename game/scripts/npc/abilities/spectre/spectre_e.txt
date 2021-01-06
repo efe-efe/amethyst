@@ -61,8 +61,8 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
 			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"1.5 2.5" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"50" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.5" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
 		}
 	}
 
