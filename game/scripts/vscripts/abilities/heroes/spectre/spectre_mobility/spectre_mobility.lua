@@ -99,7 +99,6 @@ function spectre_mobility:OnSpellStart()
 	Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 	caster:AddNewModifier(caster, self, "modifier_spectre_banish", { duration = projetile_distance/projectile_speed })
-    LinkAbilityCooldowns(caster, 'spectre_ex_mobility')
 end
 
 function spectre_mobility:OnUpgrade()

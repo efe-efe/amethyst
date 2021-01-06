@@ -14,7 +14,7 @@
 		"Ability5"						"spectre_special_attack"
 		"Ability6"						"spectre_extra"           
 		"Ability7"						"spectre_ultimate"        
-		"Ability8"						"spectre_ex_mobility"  
+		"Ability8"						"spectre_ex_counter"  
 		"Ability9"						"spectre_ex_special_attack"  
 		"Ability10"						"spectre_counter_recast"    
 		"Ability11"						"spectre_ex_special_attack_recast"    

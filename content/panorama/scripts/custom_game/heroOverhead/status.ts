@@ -47,11 +47,12 @@ export default class Status{
         this.textPanel.text = text.toUpperCase();
     }
 
-    Activate(text: string, style: string, trigger: StatusTrigger, modifierName: string, maxStacks?: number): void{
+    Activate(text: string, style: string, trigger: StatusTrigger, modifierName: string, maxStacks?: number, content?: StatusContent): void{
         this.modifierName = modifierName;
         this.trigger = trigger;
         this.maxStacks = maxStacks;
         this.style = style;
+        this.content = content;
 
         this.SetText(text);
         this.Update();
@@ -161,6 +162,7 @@ styles['Raze'] = {          backgroundColor: ORANGE, textShadow: CreateTextShado
 styles['Desolation'] = {    backgroundColor: '#E55C34', textShadow: CreateTextShadow('#DC8668'), color: '#E8C070' };
 styles['StormUnleashed'] = {backgroundColor: BLUE, textShadow: CreateTextShadow(LIGHT_BLUE), color: SKY_BLUE };
 styles['Bleeding'] = {      backgroundColor: ORANGE, textShadow: CreateTextShadow(PURPLE), color: RED };
+styles['Revenant'] = {      backgroundColor: ORANGE, textShadow: CreateTextShadow(PURPLE), color: RED };
 styles['Darkness'] = {
     backgroundColor: '#DC8668',
     color: '#DC8668'

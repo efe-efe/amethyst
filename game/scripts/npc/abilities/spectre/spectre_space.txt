@@ -6,7 +6,7 @@
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
-		"AbilityTextureName"			"spectre_desolate"
+		"AbilityTextureName"			"spectre_haunt_single"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"AbilityCastRange"				"800"

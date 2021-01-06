@@ -136,7 +136,8 @@ export default class HeroOverhead extends Overhead{
                     currentStatus.style_name,
                     currentStatus.trigger,
                     currentStatus.modifier_name,
-                    currentStatus.max_stacks
+                    currentStatus.max_stacks,
+                    currentStatus.content,
                 );
                 
                 this.midSwitchPanel.SetState(1);
