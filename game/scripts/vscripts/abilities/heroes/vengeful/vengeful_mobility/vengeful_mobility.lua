@@ -71,7 +71,7 @@ function vengeful_mobility:OnSpellStart()
 		WallBehavior = 			PROJECTILES_NOTHING,
 		TreeBehavior = 			PROJECTILES_NOTHING,
 		GroundBehavior = 		PROJECTILES_NOTHING,
-		fGroundOffset = 		80,
+		fGroundOffset = 		0,
     }
 
     self.recast_modifier = caster:AddNewModifier(caster, self, "modifier_vengeful_mobility_recast", { duration = illusion_duration })

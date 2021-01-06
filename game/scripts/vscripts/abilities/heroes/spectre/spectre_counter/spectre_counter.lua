@@ -5,6 +5,7 @@ LinkLuaModifier("modifier_spectre_counter_countering", "abilities/heroes/spectre
 LinkLuaModifier("modifier_spectre_counter", "abilities/heroes/spectre/spectre_counter/modifier_spectre_counter", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_counter_recast", "abilities/heroes/spectre/spectre_counter/modifier_spectre_counter_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_ex_counter", "abilities/heroes/spectre/spectre_counter/modifier_spectre_ex_counter", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_spectre_ex_counter_debuff", "abilities/heroes/spectre/spectre_counter/modifier_spectre_ex_counter_debuff", LUA_MODIFIER_MOTION_NONE)
 
 function spectre_counter:OnSpellStart()
     local caster = self:GetCaster()

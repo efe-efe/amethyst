@@ -41,7 +41,7 @@ function item_nullifier_custom:OnSpellStart()
 		WallBehavior = 			PROJECTILES_DESTROY,
 		TreeBehavior = 			PROJECTILES_NOTHING,
 		GroundBehavior = 		PROJECTILES_NOTHING,
-		fGroundOffset = 		80,
+		fGroundOffset = 		0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit)
 			unit:AddNewModifier(_self.Source, self, "modifier_item_nullifier_custom", { duration = duration })

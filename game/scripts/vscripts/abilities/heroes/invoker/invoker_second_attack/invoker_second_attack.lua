@@ -30,7 +30,7 @@ function invoker_second_attack:OnSpellStart()
 		TreeBehavior = 			PROJECTILES_NOTHING,
         GroundBehavior = 		PROJECTILES_NOTHING,
         bIsReflectable =        false,
-		fGroundOffset = 		80,
+		fGroundOffset = 		0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {

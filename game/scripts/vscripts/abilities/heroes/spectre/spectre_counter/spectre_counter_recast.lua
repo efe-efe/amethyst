@@ -36,7 +36,7 @@ function spectre_counter_recast:OnSpellStart()
 		WallBehavior = 			PROJECTILES_DESTROY,
 		TreeBehavior = 			PROJECTILES_NOTHING,
 		GroundBehavior = 		PROJECTILES_NOTHING,
-		fGroundOffset = 		80,
+		fGroundOffset = 		0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {
@@ -78,7 +78,7 @@ function spectre_counter_recast:TeleportTarget(hTarget, hCaster)
 		WallBehavior = 			PROJECTILES_DESTROY,
 		TreeBehavior = 			PROJECTILES_NOTHING,
 		GroundBehavior = 		PROJECTILES_NOTHING,
-		fGroundOffset = 		80,
+		fGroundOffset = 		0,
 		OnFinish = function(_self, pos)
 			FindClearSpaceForUnit(hTarget, vNewOrigin, true)
 			EFX('particles/units/heroes/hero_spectre/spectre_death.vpcf', PATTACH_WORLDORIGIN, hTarget, {

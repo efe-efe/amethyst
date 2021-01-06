@@ -35,6 +35,10 @@ function modifier_spectre_ex_counter:OnDestroy()
                 max_slow_pct = self.fading_slow_pct 
             })
 
+            unit:AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_spectre_ex_counter_debuff", { 
+                duration = 0.25
+            })
+
             if unit:ProvidesMana() then
                 give_health = true
             end
@@ -44,8 +48,6 @@ function modifier_spectre_ex_counter:OnDestroy()
                 release = true,
             })
 
-            FindClearSpaceForUnit(unit, origin, true)
-                
             EFX('particles/econ/items/outworld_devourer/od_shards_exile_gold/od_shards_exile_prison_end_gold.vpcf', PATTACH_WORLDORIGIN, unit, {
                 cp0 = unit:GetAbsOrigin(),
                 release = true,
