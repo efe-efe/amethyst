@@ -12,12 +12,11 @@ function modifier_storm_extra_displacement:OnCreated(params)
 		local storm_ex_basic_attack = self.parent:FindAbilityByName('storm_ex_basic_attack')
 		local damage_per_level = storm_ex_basic_attack:GetSpecialValueFor('damage_per_level')
 		self.stun_duration = storm_ex_basic_attack:GetSpecialValueFor('stun_duration')
-		self.heal = storm_ex_basic_attack:GetSpecialValueFor("heal")
-		self.aoe_heal = storm_ex_basic_attack:GetSpecialValueFor("aoe_heal")
+		self.heal_multiplier = storm_ex_basic_attack:GetSpecialValueFor("heal_multiplier")
 		
 		local extra_damage = damage_per_level * self:GetStackCount()
 		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage") + extra_damage
-		self.damage_aoe = self:GetAbility():GetSpecialValueFor("aoe_damage")
+		self.damage_aoe = self:GetAbility():GetSpecialValueFor("aoe_damage") + extra_damage
 		
 		self.damage_table = {
 			attacker = self.parent,
@@ -45,24 +44,18 @@ function modifier_storm_extra_displacement:OnCollide(params)
 				{ duration = 0.35 }
 			)
 
-			if not self.parent:IsAlly(unit) then
-				self:OnImpactEnemyCollision(unit)
-			else 
-				self:OnImpactAlly(unit, self.heal)
-			end
+			self:OnImpactEnemyCollision(unit)
 		end
 	end
 end
 
-function modifier_storm_extra_displacement:OnImpactAlly(hTarget, iHeal)
-	if self:GetStackCount() >= 1 then
-		if not hTarget:IsObstacle() then
-			hTarget:Heal(iHeal, self.parent)
-		end    
-	end    
-end
-
 function modifier_storm_extra_displacement:OnImpactEnemy(hTarget, iDamage)
+	if self:GetStackCount() >= 1 then
+		if hTarget:ProvidesMana() then
+			self.parent:Heal(self.heal_multiplier * iDamage, self.parent)
+		end
+	end
+
 	if self:GetStackCount() == 2 then
 		hTarget:AddNewModifier(
 			self.parent,
@@ -93,11 +86,6 @@ end
 
 function modifier_storm_extra_displacement:OnImpactEnemyCollision(hTarget)
 	self:OnImpactEnemy(hTarget, self.damage)
-	if self:GetStackCount() >= 1 then
-		if not hTarget:IsObstacle() then
-			self.parent:Heal(self.heal, self.parent)
-		end    
-	end
 end
 
 function modifier_storm_extra_displacement:OnDestroy()
@@ -105,18 +93,14 @@ function modifier_storm_extra_displacement:OnDestroy()
 		local units = self.parent:FindUnitsInRadius(
 			self.parent:GetAbsOrigin(), 
 			self.radius, 
-			DOTA_UNIT_TARGET_TEAM_BOTH, 
+			DOTA_UNIT_TARGET_TEAM_ENEMY, 
 			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
 			DOTA_UNIT_TARGET_FLAG_NONE,
 			FIND_ANY_ORDER
 		)
 
 		for _,unit in pairs(units) do
-			if not self.parent:IsAlly(unit) then
-				self:OnImpactEnemyAOE(unit)
-			else
-				self:OnImpactAlly(unit, self.aoe_heal)
-			end
+			self:OnImpactEnemyAOE(unit)
 		end
 		
 		CreateRadiusMarker(self.parent, self.parent:GetAbsOrigin(), self.radius, RADIUS_SCOPE_PUBLIC, 0.1)
@@ -171,6 +155,10 @@ end
 
 function modifier_storm_extra_displacement:CheckState()
 	return { [MODIFIER_STATE_ROOTED] = true }
+end
+
+function modifier_storm_extra_displacement:GetCollisionTeamFilter()
+	return DOTA_UNIT_TARGET_TEAM_ENEMY
 end
 
 function modifier_storm_extra_displacement:GetOverrideAnimation() 		return ACT_DOTA_OVERRIDE_ABILITY_4 end

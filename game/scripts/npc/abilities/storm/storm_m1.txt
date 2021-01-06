@@ -43,10 +43,9 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_level"			"7" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"heal"						"10" }
-			"03"{ "var_type"	"FIELD_INTEGER"		"aoe_heal"					"5" }
-			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"1.0" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_level"			"4" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"heal_multiplier"			"0.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"1.0" }
 		}
 	}
 }

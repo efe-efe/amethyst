@@ -1,0 +1,42 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf31:version{593cd181-a1d6-4c6f-9a8c-0534e8d44db0} -->
+{
+	_class = "CParticleSystemDefinition"
+	m_bShouldHitboxesFallbackToRenderBounds = false
+	m_nMaxParticles = 0
+	m_flConstantRadius = 32.0
+	m_flConstantLifespan = 0.5
+	m_ConstantColor = [ 114, 233, 255, 255 ]
+	m_nBehaviorVersion = 10
+	m_nFirstMultipleOverride_BackwardCompat = 3
+	m_controlPointConfigurations = 
+	[
+		{
+			m_name = "preview"
+			m_drivers = 
+			[
+				{
+					m_iControlPoint = 3
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+			]
+		},
+	]
+	m_Children = 
+	[
+		{
+			m_ChildRef = resource:"particles/storm/storm_second_attack_trail_wake04.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/medusa/medusa_ti10_immortal_tail/medusa_ti10_projectile_head_wake03.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/medusa/medusa_ti10_immortal_tail/medusa_ti10_projectile_head_wake05.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/medusa/medusa_ti10_immortal_tail/medusa_ti10_projectile_head_wake06.vpcf"
+		},
+	]
+}
