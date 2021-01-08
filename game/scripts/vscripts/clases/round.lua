@@ -77,6 +77,12 @@ function Round:constructor(players, callback)
         effect = nil
     }
 
+    if RandomInt(0, 1) == 1 then
+        GameRules:SetTimeOfDay(0.0)
+    else
+        GameRules:SetTimeOfDay(0.5)
+    end
+
     self:SpawnArrows()
 end
 

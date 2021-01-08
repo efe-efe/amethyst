@@ -121,6 +121,7 @@ function GameMode:SetupRules()
     GameRules:SetUseBaseGoldBountyOnHeroes(false)
     GameRules:GetGameModeEntity():SetFixedRespawnTime(-1) 
 	GameRules:GetGameModeEntity():SetLoseGoldOnDeath(false)
+    GameRules:SetTimeOfDay(0.5)
 
     if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
         GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 1)
@@ -297,8 +298,6 @@ function GameMode:SetupMode()
     mode:SetBuybackEnabled(false)
     mode:SetDaynightCycleDisabled(true)
     mode:SetCameraDistanceOverride(1350)
-    mode:SetRecommendedItemsDisabled(true) -- Doesn't works :'(
-    --mode:SetStashPurchasingDisabled(true)	
 end
 
 function GameMode:SetupProjectiles()
