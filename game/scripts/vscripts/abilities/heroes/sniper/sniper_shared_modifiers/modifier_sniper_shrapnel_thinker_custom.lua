@@ -16,7 +16,7 @@ function modifier_sniper_shrapnel_thinker_custom:GetAuraSearchTeam()
 	return DOTA_UNIT_TARGET_TEAM_BOTH
 end
 function modifier_sniper_shrapnel_thinker_custom:GetAuraEntityReject(hEntity)
-    if self:GetCaster():IsAlly(hEntity) then
+    if CustomEntities:Allies(self:GetCaster(), hEntity) then
         return true 
     end
     return false

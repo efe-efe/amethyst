@@ -23,13 +23,13 @@ function vengeful_basic_attack:GetCastPointSpeed() 		    return 10 end
 function vengeful_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 
-	local stacks = caster:SafeGetModifierStacks("modifier_vengeful_basic_attack")
+	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_vengeful_basic_attack")
 	if stacks < 3 then
 		self:ThrowProjectile()
 	else
 		local vengeful_second_attack = caster:FindAbilityByName("vengeful_second_attack")
 		vengeful_second_attack:ThrowProjectile()
-		caster:SafeDestroyModifier("modifier_vengeful_basic_attack")
+		CustomEntities:SafeDestroyModifier(caster, "modifier_vengeful_basic_attack")
 	end
 
 end
@@ -56,7 +56,7 @@ function vengeful_basic_attack:ThrowProjectile()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {
 				victim = unit,
@@ -67,17 +67,15 @@ function vengeful_basic_attack:ThrowProjectile()
 			}
 			ApplyDamage(damage_table)
 
-			if _self.Source == caster and not unit:IsObstacle() then
-				if unit:ProvidesMana() then
-					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+			if _self.Source == caster and not CustomEntities:IsObstacle(unit) then
+				if CustomEntities:ProvidesMana(unit) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 				caster:AddNewModifier(caster, self, "modifier_vengeful_basic_attack", {})
 			end
 
 
-			if _self.Source.OnBasicAttackImpact then
-				_self.Source:OnBasicAttackImpact(unit)
-			end
+			CustomEntities:OnBasicAttackImpact(_self.Source, unit)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

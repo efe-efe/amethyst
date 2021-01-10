@@ -21,7 +21,8 @@ function modifier_juggernaut_mobility:OnCreated(kv)
 end
 
 function modifier_juggernaut_mobility:OnIntervalThink()
-    local enemies = self.parent:FindUnitsInRadius(
+    local enemies = CustomEntities:FindUnitsInRadius(
+        self.parent,
         self.parent:GetOrigin(), 
         self.radius, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 

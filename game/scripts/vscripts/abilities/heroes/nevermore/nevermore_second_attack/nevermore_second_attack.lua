@@ -34,7 +34,7 @@ function nevermore_second_attack:OnSpellStart()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {
 				victim = unit,
@@ -51,9 +51,9 @@ function nevermore_second_attack:OnSpellStart()
 				max_slow_pct = fading_slow_pct 
 			})
 
-			if _self.Source == caster and not unit:IsObstacle() then
-				if unit:ProvidesMana() then
-					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+			if _self.Source == caster and not CustomEntities:IsObstacle(unit) then
+				if CustomEntities:ProvidesMana(unit) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 
 				local is_amethyst = false
@@ -70,9 +70,7 @@ function nevermore_second_attack:OnSpellStart()
 				end
 			end
 
-			if _self.Source.OnBasicAttackImpact then
-				_self.Source:OnBasicAttackImpact(unit)
-			end
+			CustomEntities:OnBasicAttackImpact(_self.Source, unit)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

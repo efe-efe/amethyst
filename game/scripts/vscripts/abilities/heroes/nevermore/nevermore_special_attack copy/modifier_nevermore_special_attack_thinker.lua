@@ -24,7 +24,8 @@ end
 
 function modifier_nevermore_special_attack_thinker:OnDelayEnds(params)
     if IsServer() then
-        local enemies = self:GetCaster():FindUnitsInRadius(
+        local enemies = CustomEntities:FindUnitsInRadius(
+            self:GetCaster(),
             self:GetParent():GetOrigin(), 
             self.radius, 
             DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -46,13 +47,13 @@ function modifier_nevermore_special_attack_thinker:OnDelayEnds(params)
                 peak = 400,
             })
 
-            if not enemy:IsObstacle() then
+            if not CustomEntities:IsObstacle(enemy) then
                 give_mana = true
             end
         end
 
         if give_mana then
-            self:GetCaster():GiveManaAndEnergyPercent(self.mana_gain_pct, true)    
+            CustomEntities:GiveManaAndEnergyPercent(self:GetCaster(), self.mana_gain_pct, true)    
         end
         
         local particle_cast = "particles/econ/items/monkey_king/arcana/fire/monkey_king_spring_arcana_fire.vpcf"

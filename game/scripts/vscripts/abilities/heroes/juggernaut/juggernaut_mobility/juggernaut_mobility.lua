@@ -5,7 +5,7 @@ function juggernaut_mobility:OnSpellStart()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
 
-	caster:StrongPurge()
+	CustomEntities:StrongPurge(caster)
 	caster:RemoveModifierByName("modifier_hero_movement")
 	caster:AddNewModifier(caster, self, "modifier_juggernaut_mobility", { duration = duration })
 

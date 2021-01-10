@@ -35,7 +35,8 @@ function phantom_basic_attack:OnSpellStart()
 
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
-	local enemies = caster:FindUnitsInCone(
+	local enemies = CustomEntities:FindUnitsInCone(
+		caster,
 		direction, 
 		0, 
 		origin, 
@@ -62,11 +63,11 @@ function phantom_basic_attack:OnSpellStart()
 		}
 		ApplyDamage(damage_table)
 
-		if enemy:ProvidesMana() then
-            caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+		if CustomEntities:ProvidesMana(enemy) then
+            CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
         end
 
-		if not enemy:IsObstacle() then
+		if not CustomEntities:IsObstacle(enemy) then
 			caster:AddNewModifier(
 				caster, -- player source
 				self, -- ability source
@@ -87,9 +88,7 @@ function phantom_basic_attack:OnSpellStart()
 			second_attack:StartCooldown(new_cd)
 		end
 
-		if caster.OnBasicAttackImpact then
-			caster:OnBasicAttackImpact(enemy)
-		end
+		CustomEntities:OnBasicAttackImpact(caster, enemy)
 		self:PlayEffectsOnImpact(enemy)
 
 		break

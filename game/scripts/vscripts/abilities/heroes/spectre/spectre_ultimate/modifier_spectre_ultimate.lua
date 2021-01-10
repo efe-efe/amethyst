@@ -44,7 +44,7 @@ end
 
 function modifier_spectre_ultimate:IsDebuff()
     if IsServer() then
-        return self:GetStackCount() == 2 and not self:GetCaster():IsAlly(self:GetParent())
+        return self:GetStackCount() == 2 and not CustomEntities:Allies(self:GetCaster(), self:GetParent())
     end
 end
 

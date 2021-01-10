@@ -43,19 +43,19 @@ function puck_mobility:OnSpellStart()
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit)
 			damage_table.victim = unit
 			ApplyDamage(damage_table)
 
 			if _self.Source == caster then
-				if self:GetLevel() >= 2 and unit:ProvidesMana() then
+				if self:GetLevel() >= 2 and CustomEntities:ProvidesMana(unit) then
 					self:EndCooldown()
 					refreshed = true
 				end
 
-				if unit:ProvidesMana() then
-					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				if CustomEntities:ProvidesMana(unit) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 			end
 		end,
@@ -148,7 +148,7 @@ function puck_ex_mobility:OnSpellStart()
 		WallBehavior = PROJECTILES_NOTHING,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit)
 			damage_table.victim = unit
 			ApplyDamage(damage_table)

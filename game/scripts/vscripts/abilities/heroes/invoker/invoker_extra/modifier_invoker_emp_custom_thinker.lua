@@ -52,7 +52,8 @@ end
 
 function modifier_invoker_emp_custom_thinker:OnIntervalThink()
     if IsServer() then
-        local enemies = self:GetCaster():FindUnitsInRadius(
+        local enemies = CustomEntities:FindUnitsInRadius(
+            self:GetCaster(),
             self.origin, 
             self.radius, 
             DOTA_UNIT_TARGET_TEAM_ENEMY, 

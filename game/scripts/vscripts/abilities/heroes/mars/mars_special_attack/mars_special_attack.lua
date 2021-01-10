@@ -15,7 +15,7 @@ function mars_special_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 
-	local stacks = caster:SafeGetModifierStacks("modifier_mars_basic_attack_stacks")
+	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_mars_basic_attack_stacks")
 	local final_damage = damage + (stacks * damage_per_stack)
 
 	local projectile_particle = "particles/units/heroes/hero_mars/mars_spear.vpcf"
@@ -37,7 +37,7 @@ function mars_special_attack:OnSpellStart()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit)
 			local counter = 0
 			for k, v in pairs(_self.rehit) do counter = counter + 1 end
@@ -63,8 +63,8 @@ function mars_special_attack:OnSpellStart()
 			})
 
 			if _self.Source == caster then
-				if unit:ProvidesMana() then
-					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				if CustomEntities:ProvidesMana(unit) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 			end
 		end,
@@ -75,7 +75,7 @@ function mars_special_attack:OnSpellStart()
 
     ExecuteOrderFromTable({ OrderType = DOTA_UNIT_ORDER_STOP, UnitIndex = caster:entindex() })
 	Projectiles:CreateProjectile(projectile)
-	caster:SafeDestroyModifier("modifier_mars_basic_attack_stacks")
+	CustomEntities:SafeDestroyModifier(caster, "modifier_mars_basic_attack_stacks")
 
 	self:PlayEffectsOnCast()
 end

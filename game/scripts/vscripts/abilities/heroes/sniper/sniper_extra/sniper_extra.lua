@@ -42,7 +42,7 @@ function sniper_extra:OnSpellStart()
         WallBehavior = PROJECTILES_DESTROY,
         GroundBehavior = PROJECTILES_NOTHING,
         fGroundOffset = 0,
-        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+        UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
         OnUnitHit = function(_self, unit) 
             local x = unit:GetOrigin().x - origin.x
             local y = unit:GetOrigin().y - origin.y

@@ -42,7 +42,7 @@ function phantom_special_attack:OnSpellStart()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {
 				victim = unit,
@@ -53,11 +53,11 @@ function phantom_special_attack:OnSpellStart()
 			ApplyDamage(damage_table)
 
 			if _self.Source == caster then
-				if unit:ProvidesMana() then
-					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				if CustomEntities:ProvidesMana(unit) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 
-				if not unit:IsObstacle() then
+				if not CustomEntities:IsObstacle(unit) then
 					caster:AddNewModifier(
 						caster,
 						self,

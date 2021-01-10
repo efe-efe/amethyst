@@ -17,7 +17,8 @@ function Amethyst:OnDeath(params)
     local killer = params.killer
 
     if IsServer() then
-		local units = killer:FindUnitsInRadius(
+		local units = CustomEntities:FindUnitsInRadius(
+            killer,
 			self:GetUnit():GetOrigin(), 
 			FIND_UNITS_EVERYWHERE, 
 			DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
@@ -32,7 +33,7 @@ function Amethyst:OnDeath(params)
 		for _,unit in pairs(units) do
 			if unit:IsRealHero() then 
 				TrueHeal(unit:GetHealth(), final_heal, unit)
-				unit:GiveManaAndEnergy(final_mana, true, true)
+				CustomEntities:GiveManaAndEnergy(unit, final_mana, true, true)
                 self:PlayEffectsOnTarget(unit)
 			end
 		end
@@ -40,9 +41,7 @@ function Amethyst:OnDeath(params)
         self:PlayEffectsOnDeath()
         self:GetUnit():AddNoDraw()
 
-        killer:GetAlliance():SetAmethysts(
-            killer:GetAlliance():GetAmethysts() + 1
-        )
+        CustomEntities:GetAlliance(killer):AddAmethsyt()
 	end
 
     self:Destroy()

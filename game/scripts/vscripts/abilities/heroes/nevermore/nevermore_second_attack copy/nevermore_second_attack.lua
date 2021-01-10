@@ -40,9 +40,10 @@ function nevermore_second_attack:OnSpellStart()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnFinish = function(_self, pos)
-			local enemies = _self.Source:FindUnitsInRadius(
+			local enemies = CustomEntities:FindUnitsInRadius(
+				_self.Source,
 				pos, 
 				radius, 
 				DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -59,7 +60,7 @@ function nevermore_second_attack:OnSpellStart()
 			local should_recast = false
 	
 			for _,enemy in pairs(enemies) do
-				if not enemy:IsObstacle() then
+				if not CustomEntities:IsObstacle(enemy) then
 					should_recast = true
 				end
 
@@ -86,8 +87,8 @@ function nevermore_second_attack:OnSpellStart()
 						else 
 							modifier:DecrementStackCount()
 						end
-						if unit:ProvidesMana() then
-							caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+						if CustomEntities:ProvidesMana(unit) then
+							CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 						end
 					end
 				else

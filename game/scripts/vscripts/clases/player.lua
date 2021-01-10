@@ -14,7 +14,7 @@ end
 
 function Player:SetHero(hero)
     self.hero = hero
-	hero:SendDataToClient()
+    CustomEntities:SendDataToClient(hero)
 end
 
 function Player:GetId()

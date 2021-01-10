@@ -24,9 +24,10 @@ end
 
 function modifier_storm_counter_countering:OnTrigger(params)
 	if IsServer() then
-		self:GetParent():GiveManaAndEnergy(self.mana_gain, true)
+		CustomEntities:GiveManaAndEnergy(self:GetParent(), self.mana_gain, true)
 		
-		local enemies = self:GetParent():FindUnitsInRadius(
+		local enemies = CustomEntities:FindUnitsInRadius(
+			self:GetParent(),
 			self:GetParent():GetAbsOrigin(), 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -50,7 +51,7 @@ function modifier_storm_counter_countering:OnTrigger(params)
 			})
 		end
 
-		self:GetParent():StrongPurge()
+		CustomEntities:StrongPurge(self:GetParent())
 		self:PlayEffectsOnTrigger()
 		
 		CreateRadiusMarker(self:GetParent(), self:GetParent():GetAbsOrigin(), self.radius, RADIUS_SCOPE_PUBLIC, 0.1)

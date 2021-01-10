@@ -20,7 +20,7 @@ function mars_extra:OnSpellStart()
 	local spawnPoint = point + (direction * radius * -1)
 
 	local callback = function(unit)
-		unit:FaceTowardsCustom(direction)
+		CustomEntities:FullyFaceTowards(unit, direction)
 		unit:SetNeverMoveToClearSpace(true)
 		unit:AddNewModifier(
 			caster, -- player source

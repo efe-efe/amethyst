@@ -29,7 +29,8 @@ end
 
 function modifier_phantom_extra_displacement:OnDestroy()
 	if IsServer() then
-		local enemies = self:GetParent():FindUnitsInRadius(
+		local enemies = CustomEntities:FindUnitsInRadius(
+			self:GetParent(),
 			self:GetParent():GetOrigin(), 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -76,7 +77,7 @@ end
 
 function modifier_phantom_extra_displacement:OnImpact(hTarget)
 	if not hTarget:HasModifier('modifier_phantom_extra') then
-		if not hTarget:IsCountering() and not self.recast then
+		if not CustomEntities:IsCountering(hTarget) and not self.recast then
 			hTarget:AddNewModifier(
 				self:GetParent(), -- player source
 				self:GetAbility(), -- ability source

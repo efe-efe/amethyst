@@ -100,7 +100,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetAbsOrigin()
-	local stacks = caster:SafeGetModifierStacks("modifier_phantom_strike_stack")
+	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 
 	local ability = caster:FindAbilityByName('phantom_ex_counter')
 	local duration_per_stack = ability:GetSpecialValueFor("duration_per_stack")
@@ -124,7 +124,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {
 				victim = unit,
@@ -135,7 +135,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 			ApplyDamage(damage_table)
 
 			if _self.Source == caster then
-				if not unit:IsObstacle() then
+				if not CustomEntities:IsObstacle(unit) then
 					caster:AddNewModifier(
 						caster, -- player source
 						self, -- ability source
@@ -158,7 +158,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 	}
 
 	Projectiles:CreateProjectile(projectile)
-	caster:SafeDestroyModifier("modifier_phantom_strike_stack")
+	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
 end
 

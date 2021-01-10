@@ -68,7 +68,7 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit) 
 			local damage_table = {
 				victim = unit,
@@ -80,20 +80,21 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 			ApplyDamage(damage_table)
 
 			if _self.Source == caster then
-				if unit:ProvidesMana() then
-					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+				if CustomEntities:ProvidesMana(unit) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 
 				if caster:HasModifier('modifier_storm_ultimate') then
 					local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-					if unit:ProvidesMana() then
-						caster:GiveManaPercent(mana_gain_pct, true, true)
+					if CustomEntities:ProvidesMana(unit) then
+						CustomEntities:GiveManaPercent(caster, mana_gain_pct, true, true)
 					end
 				end
 			end
 
 			if is_charged then
-				local enemies = _self.Source:FindUnitsInRadius(
+				local enemies = CustomEntities:FindUnitsInRadius(
+					_self.Source,
 					_self:GetPosition(), 
 					radius, 
 					DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -127,9 +128,7 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 				})
 			end
 
-			if _self.Source.OnBasicAttackImpact then
-				_self.Source:OnBasicAttackImpact(unit)
-			end
+			CustomEntities:OnBasicAttackImpact(_self.Source, unit)
 		end,
 		OnFinish = function(_self, pos)
 			self:PlayEffectsOnFinish(pos)

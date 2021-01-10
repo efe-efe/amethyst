@@ -38,7 +38,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
         fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit)
 			local damage_table = {
 				victim = unit,
@@ -53,7 +53,8 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 			self:PlayEffectsTarget(_self.Source, unit, _self.current_position)
 		end,
         OnFinish = function(_self, pos)
-            local enemies = caster:FindUnitsInRadius(
+            local enemies = CustomEntities:FindUnitsInRadius(
+        caster,
                 pos, 
                 self.radius + 50, 
                 DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -96,7 +97,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 		end,
 	}
 
-    caster:FaceTowardsCustom(projectile_direction)
+    CustomEntities:FullyFaceTowards(caster, projectile_direction)
     Projectiles:CreateProjectile(projectile)
     EmitSoundOn("Ability.Assassinate", self:GetCaster())
 end

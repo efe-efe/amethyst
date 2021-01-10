@@ -5,7 +5,7 @@ function item_death_orb:OnSpellStart()
     local caster = self:GetCaster()
     local heal = 24
 
-    caster:GiveManaAndEnergy(charges, true, true)
+    CustomEntities:GiveManaAndEnergy(caster, charges, true, true)
 
     if charges == 100 then
         TrueHeal(caster:GetHealth(), heal, caster)

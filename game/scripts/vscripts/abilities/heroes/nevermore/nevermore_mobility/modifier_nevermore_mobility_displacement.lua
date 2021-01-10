@@ -39,7 +39,7 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                     
                     ApplyDamage(self.damage_table)
     
-                    if not unit:IsObstacle() then
+                    if not CustomEntities:IsObstacle(unit) then
                         local is_amethyst = false
                         if unit.GetParentEntity then
                             local entity = unit:GetParentEntity()
@@ -57,8 +57,8 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                             end
                         end
                         if self.counter == 1 then
-                            if unit:ProvidesMana() then
-                                self:GetParent():GiveManaAndEnergyPercent(self.mana_gain_pct, true)
+                            if CustomEntities:ProvidesMana(unit) then
+                                CustomEntities:GiveManaAndEnergyPercent(self:GetParent(), self.mana_gain_pct, true)
                             end
                         end
                     end

@@ -38,7 +38,7 @@ function modifier_puck_deletedis_displacement:OnCollide(params)
     if IsServer() then
 		if params.type == UNIT_COLLISION then
 			for _,unit in pairs(params.units) do
-				if not self:GetParent():IsAlly(unit) and not unit:HasModifier("modifier_puck_deletedis_debuff") then
+				if not CustomEntities:Allies(self:GetParent(), unit) and not unit:HasModifier("modifier_puck_deletedis_debuff") then
 					unit:AddNewModifier(
 						self:GetParent(), -- player source
 						self:GetAbility(), -- ability source

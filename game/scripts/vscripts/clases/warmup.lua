@@ -69,7 +69,7 @@ function Warmup:EndWarmup()
         local hero = player.hero
 
         FindClearSpaceForUnit(hero, target:GetAbsOrigin(), true)
-        hero:Reset()
+        CustomEntities:Reset(hero)
         hero:AddNewModifier(hero, nil, "modifier_adrenaline", { duration = ADRENALINE_DURATION })
 
         for i = 0, 8 do

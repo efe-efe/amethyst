@@ -25,7 +25,7 @@ function modifier_mars_counter_countering:OnIntervalThink()
 	local direction = (mouse - self:GetParent():GetAbsOrigin()):Normalized()
     self:PlayEffectsOnCast()
 
-	self:GetParent():FaceTowardsCustom(Vector(direction.x, direction.y, self:GetParent():GetForwardVector().z))
+	CustomEntities:FullyFaceTowards(self:GetParent(), Vector(direction.x, direction.y, self:GetParent():GetForwardVector().z))
 end
 
 function modifier_mars_counter_countering:OnTrigger(params)   

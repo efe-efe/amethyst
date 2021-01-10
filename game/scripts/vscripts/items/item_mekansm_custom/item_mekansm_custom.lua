@@ -22,7 +22,8 @@ function item_mekansm_custom:OnSpellStart()
 	local duration = self:GetSpecialValueFor("duration")
 	local heal = self:GetSpecialValueFor("heal")
    
-    local allies = caster:FindUnitsInRadius(
+    local allies = CustomEntities:FindUnitsInRadius(
+        caster,
         caster:GetOrigin(), 
         radius, 
         DOTA_UNIT_TARGET_TEAM_FRIENDLY, 

@@ -23,7 +23,8 @@ function puck_extra:OnSpellStart()
     
     FindClearSpaceForUnit(caster, point, true)
 
-    local enemies = caster:FindUnitsInRadius(
+    local enemies = CustomEntities:FindUnitsInRadius(
+        caster,
         caster:GetOrigin(), 
         self.radius, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 

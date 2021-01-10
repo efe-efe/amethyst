@@ -59,8 +59,8 @@ end
 function Alliance:GetShield()
     local current = 0
 
-    for _,player in pairs(self.players) do                
-        current = current + player.hero:GetShield()
+    for _,player in pairs(self.players) do           
+        current = current + CustomEntities:GetShield(player.hero)
     end
 
     return current
@@ -95,4 +95,8 @@ end
 function Alliance:SetAmethysts(amethysts)
     self.amethysts = amethysts
     self:SendDataToClient()
+end
+
+function Alliance:AddAmethsyt()
+    self:SetAmethysts(self:GetAmethysts() + 1)
 end

@@ -22,7 +22,8 @@ function modifier_storm_mobility_thinker:OnCreated(params)
 end
 
 function modifier_storm_mobility_thinker:OnIntervalThink()
-    local enemies = self:GetCaster():FindUnitsInRadius(
+    local enemies = CustomEntities:FindUnitsInRadius(
+        self:GetCaster(),
         self.origin, 
         self.radius, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -38,16 +39,16 @@ function modifier_storm_mobility_thinker:OnIntervalThink()
         ApplyDamage(self.damage_table)
 
         
-        if enemy:ProvidesMana() then
+        if CustomEntities:ProvidesMana(enemy) then
             give_mana = true
         end
     end
 
     if give_mana then
-        self:GetCaster():GiveManaAndEnergyPercent(self.mana_gain_pct, true)
+        CustomEntities:GiveManaAndEnergyPercent(self:GetCaster(), self.mana_gain_pct, true)
         if self:GetCaster():HasModifier('modifier_storm_ultimate') then
             local extra_mana_pct = self.mana_gain_pct * (self:GetCaster():FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-            self:GetCaster():GiveManaPercent(extra_mana_pct, true, true)
+            CustomEntities:GiveManaPercent(self:GetCaster(), extra_mana_pct, true, true)
         end
     end
 

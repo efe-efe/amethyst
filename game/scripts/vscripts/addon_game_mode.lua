@@ -2,6 +2,7 @@
 require('settings')
 
 require('util/util')
+require('util/custom_entities')
 
 require('overrides/npc')
 require('overrides/abilities')
@@ -220,21 +221,21 @@ function GameMode:SetupPanoramaEventHooks()
             local player = self.players[playerId]
             local hero = player.hero
 
-            local type = event.payload.type;
-            local mode = event.payload.mode;
+            local type = event.payload.type
+            local mode = event.payload.mode
             
             if(type == Custom_ActionTypes.MOVEMENT) then
-                local currentDirection = hero:GetRawDirection()
-                local incomingDirection = event.payload.direction;
-                local vector = Vector(incomingDirection['0'], incomingDirection['1'], 0);
+                local currentDirection = CustomEntities:GetRawDirection(hero)
+                local incomingDirection = event.payload.direction
+                local vector = Vector(incomingDirection['0'], incomingDirection['1'], 0)
 
                 if(mode == Custom_ActionModes.STOP) then
-                    vector = vector * (-1);
+                    vector = vector * (-1)
                 end
 
-                local newDirection = currentDirection + (vector);
-                newDirection.z = hero:GetForwardVector().z;
-                hero:SetDirection(newDirection.x, newDirection.y);
+                local newDirection = currentDirection + (vector)
+                newDirection.z = hero:GetForwardVector().z
+                CustomEntities:SetDirection(hero, newDirection.x, newDirection.y)
             end
         end
     end)
@@ -256,7 +257,7 @@ function GameMode:SetupPanoramaEventHooks()
             end
 
             hero:SetAbilityPoints(ABILITY_POINTS)
-            hero:SendDataToClient()
+            CustomEntities:SendDataToClient(hero)
         end
     end)
 
@@ -427,7 +428,7 @@ function GameMode:OnLearnedAbilityEvent(event)
     local player = self.players[playerId]
     local hero = player.hero
     
-    player.hero:SendDataToClient()
+    CustomEntities:SendDataToClient(player.hero)
 end
 
 function GameMode:OnWarmupEnd(context)
@@ -484,7 +485,7 @@ function GameMode:OnRoundEnd(context)
     for _,player in pairs(self.players) do
         local hero = player.hero
         local playerId = player:GetId()
-        hero:SafeDestroyModifier("modifier_generic_provides_vision")
+        CustomEntities:SafeDestroyModifier(hero, "modifier_generic_provides_vision")
         PlayerResource:SetCameraTarget(playerId, nil)
     end
 
@@ -512,8 +513,8 @@ function GameMode:OnHeroInGame(keys)
     if npc:IsNull() then return end
 
     -- First time spawning
-    if not npc:IsInitialized() then
-        npc:Initialize()
+    if not CustomEntities:IsInitialized(npc) then
+        CustomEntities:Initialize(npc)
 
         if npc:IsRealHero() then
             if not self:RegisterPlayer(npc) then

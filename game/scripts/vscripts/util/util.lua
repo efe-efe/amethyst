@@ -429,7 +429,8 @@ function ReplenishEFX(parent)
 end
 
 function ApplyCallbackForUnitsInArea(caster, origin, radius, team, callback)
-	local enemies = caster:FindUnitsInRadius(
+	local enemies = CustomEntities:FindUnitsInRadius(
+		caster,
 		origin, 
 		radius, 
 		team, 
@@ -446,13 +447,13 @@ function ApplyCallbackForUnitsInArea(caster, origin, radius, team, callback)
 end
 
 function TrueHeal(base, heal, unit)
-    unit:SetHealthCustom(base + heal)
+    CustomEntities:SetHealthCustom(unit, base + heal)
 
-    local new_treshold = unit:GetTreshold() + heal
-    if new_treshold > GameRules.GameMode.max_treshold then
-        unit:SetTreshold(GameRules.GameMode.max_treshold)
-    else
-        unit:SetTreshold(new_treshold)
+    local new_treshold = CustomEntities:GetTreshold(unit) + heal
+	if new_treshold > GameRules.GameMode.max_treshold then
+		CustomEntities:SetTreshold(unit, GameRules.GameMode.max_treshold)
+	else
+		CustomEntities:SetTreshold(unit, new_treshold)
     end
 
     SendOverheadHealMessage(unit, heal)

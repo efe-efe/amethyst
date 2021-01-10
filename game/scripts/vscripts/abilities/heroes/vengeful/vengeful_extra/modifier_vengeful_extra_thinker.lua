@@ -26,7 +26,8 @@ function modifier_vengeful_extra_thinker:OnIntervalThink()
     if IsServer() then
         local caster = self:GetCaster()
 
-        local allies = caster:FindUnitsInRadius(
+        local allies = CustomEntities:FindUnitsInRadius(
+        caster,
             self.origin, 
             self.radius, 
             DOTA_UNIT_TARGET_TEAM_FRIENDLY, 

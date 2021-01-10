@@ -26,7 +26,7 @@ function modifier_invoker_spirit_custom:OnOrder(params)
         local point = self:GetAbility():GetCursorPosition()
         local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
-        self:GetParent():FaceTowardsCustom(direction)
+        CustomEntities:FullyFaceTowards(self:GetParent(), direction)
         self:GetParent():StartGesture(ACT_DOTA_ATTACK)
     end
 end
@@ -81,7 +81,7 @@ function modifier_invoker_spirit_custom:LaunchProjectile(vPoint)
             WallBehavior = PROJECTILES_DESTROY,
             GroundBehavior = PROJECTILES_NOTHING,
             fGroundOffset = 0,
-            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not _self.Source:IsAlly(unit) end,
+            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
             OnUnitHit = function(_self, unit) 
                 local damage_table = {
                     victim = unit,
@@ -93,14 +93,12 @@ function modifier_invoker_spirit_custom:LaunchProjectile(vPoint)
                 ApplyDamage(damage_table)
     
                 if _self.Source == parent then
-                    if unit:ProvidesMana() then
-                        caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+                    if CustomEntities:ProvidesMana(unit) then
+                        CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
                     end
                 end
     
-                if _self.Source.OnBasicAttackImpact then
-                    _self.Source:OnBasicAttackImpact(unit)
-                end
+			    CustomEntities:OnBasicAttackImpact(_self.Source, unit)
             end,
             OnFinish = function(_self, pos)
                 EFX("particles/units/heroes/hero_invoker_kid/invoker_kid_forged_spirit_projectile_end.vpcf", PATTACH_WORLDORIGIN, nil, {

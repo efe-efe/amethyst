@@ -26,7 +26,8 @@ function juggernaut_counter_helper:Slash(vPoint, iDamage)
 
    local valid_targets = 0
 	local new_origin = caster:GetOrigin()
-	local enemies = caster:FindUnitsInLine(
+	local enemies = CustomEntities:FindUnitsInLine(
+      caster,
 		new_origin, 
 		origin, 
 		100, 
@@ -69,7 +70,7 @@ function juggernaut_counter_helper:Slash(vPoint, iDamage)
 end
 
 function juggernaut_counter_helper:ProvidesRecast(hTarget)
-   return not(hTarget:IsObstacle() or hTarget:IsCountering())
+   return not(CustomEntities:IsObstacle(hTarget) or CustomEntities:IsCountering(hTarget))
 end
 
 function juggernaut_counter_helper:ShouldRecast(iRecasts) 

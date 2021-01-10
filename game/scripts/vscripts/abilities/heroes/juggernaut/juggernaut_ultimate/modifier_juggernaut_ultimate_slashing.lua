@@ -79,7 +79,8 @@ end
 function modifier_juggernaut_ultimate_slashing:FindTargets()
     local find_origin = self.current_target and self.current_target:GetAbsOrigin() or self.parent:GetAbsOrigin()
 
-    local enemies = self.parent:FindUnitsInRadius(
+    local enemies = CustomEntities:FindUnitsInRadius(
+        self.parent,
         find_origin, 
         self.radius, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -93,7 +94,7 @@ function modifier_juggernaut_ultimate_slashing:FindTargets()
     local filtered_enemies = {}
 
     for _,enemy in pairs(enemies) do
-        if  (not enemy:IsObstacle()) and 
+        if  (not CustomEntities:IsObstacle(enemy)) and 
             (not (enemy:Attribute_GetIntValue("dummy", 0) == 1)) 
         then
             table.insert(filtered_enemies, enemy)

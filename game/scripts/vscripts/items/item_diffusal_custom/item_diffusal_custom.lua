@@ -26,7 +26,8 @@ function item_diffusal_custom:OnSpellStart()
     
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
-	local enemies = caster:FindUnitsInCone(
+	local enemies = CustomEntities:FindUnitsInCone(
+		caster,
 		direction, 
 		0, 
 		origin, 

@@ -62,7 +62,7 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
         ApplyDamage(self.damage_table)
         unit:AddNewModifier(self.caster, nil, "modifier_puck_fairy_dust", { duration = self.fairy_dust_duration, slow_pct = self.fairy_dust_slow_pct })
 
-        if not unit:IsObstacle() then
+        if not CustomEntities:IsObstacle(unit) then
             give_mana = true
         end
     end)
@@ -77,7 +77,7 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
         end
 
         self.caster:AddNewModifier(self.caster, nil, "modifier_shield", { duration = 6.0, damage_block = self.shield_per_hit })
-        self.caster:GiveManaAndEnergyPercent(self.mana_gain_pct, true)
+        CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
     end
     self:Destroy()
 end

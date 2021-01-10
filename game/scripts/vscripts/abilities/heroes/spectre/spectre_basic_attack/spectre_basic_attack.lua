@@ -55,7 +55,8 @@ function spectre_basic_attack:OnSpellStart()
 		radius = radius + 50
 	end
 
-	local enemies = caster:FindUnitsInCone(
+	local enemies = CustomEntities:FindUnitsInCone(
+		caster,
 		direction, 
 		0, 
 		origin, 
@@ -83,7 +84,7 @@ function spectre_basic_attack:OnSpellStart()
 		if enemy:HasModifier("modifier_spectre_desolate_custom") then
 			final_damage = final_damage + damage_bonus_desolate
 
-			if not enemy:IsObstacle() then
+			if not CustomEntities:IsObstacle(enemy) then
 				caster:Heal(heal_desolate, caster)
 				self:PlayEffectsLifeSteal()
 			end
@@ -92,11 +93,11 @@ function spectre_basic_attack:OnSpellStart()
 		if is_charged then
 			enemy:AddNewModifier(caster, self, "modifier_generic_silence", { duration = silence_duration })
 			
-			if enemy:ProvidesMana() then
+			if CustomEntities:ProvidesMana(enemy) then
 				enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = desolate_duration })
 			end
 			
-			if not enemy:IsObstacle() and not enemy:IsCountering() then
+			if not CustomEntities:IsObstacle(enemy) and not CustomEntities:IsCountering(enemy) then
 				caster:Heal(heal_charged, caster)
 			end
 		end
@@ -105,16 +106,13 @@ function spectre_basic_attack:OnSpellStart()
 		damage_table.damage = final_damage
 		ApplyDamage(damage_table)
 
-		if enemy:ProvidesMana() then
-			caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+		if CustomEntities:ProvidesMana(enemy) then
+			CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 		end
 
 		self:PlayEffectsOnImpact(enemy, enemy:GetAbsOrigin(), is_charged)
 
-		if caster.OnBasicAttackImpact then
-			caster:OnBasicAttackImpact(enemy)
-		end
-
+		CustomEntities:OnBasicAttackImpact(caster, enemy)
 		if not is_charged then
 			break
 		end

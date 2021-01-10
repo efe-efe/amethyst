@@ -24,7 +24,8 @@ function modifier_mars_mobility_thinker:OnDelayEnds()
 	if IsServer() then
 		FindClearSpaceForUnit(self:GetCaster(), self:GetParent():GetAbsOrigin() , true)
 
-		local enemies = self:GetCaster():FindUnitsInRadius(
+		local enemies = CustomEntities:FindUnitsInRadius(
+			self:GetCaster(),
 			self:GetParent():GetOrigin(), 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 

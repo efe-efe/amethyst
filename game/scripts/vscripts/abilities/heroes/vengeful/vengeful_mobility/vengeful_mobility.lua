@@ -11,13 +11,7 @@ function vengeful_mobility:GetPlaybackRateOverride() 	    return 2.0 end
 function vengeful_mobility:GetCastPoint() 	                return 0.1 end
 function vengeful_mobility:GetBehavior()                    return DOTA_ABILITY_BEHAVIOR_POINT end
 function vengeful_mobility:GetAbilityTextureName()          return self:GetName() end
-function vengeful_mobility:GetCooldown(iLevel)
-    if self:GetLevel() == 1 then
-        return 4
-    else
-        return 8
-    end 
-end
+function vengeful_mobility:GetCooldown(iLevel)              return 8 end
 function vengeful_mobility:GetCastRange(vLocation, hTarget) return 800 end
 
 function vengeful_mobility:IsMimicable()

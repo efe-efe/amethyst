@@ -9,7 +9,7 @@ function modifier_item_clarity_custom:OnCreated(params)
 end
 
 function modifier_item_clarity_custom:OnIntervalThink()
-    self:GetParent():GiveManaAndEnergy(self.mana_per_tick, true)
+    CustomEntities:GiveManaAndEnergy(self:GetParent(), self.mana_per_tick, true)
 end
 
 function modifier_item_clarity_custom:DeclareFunctions()

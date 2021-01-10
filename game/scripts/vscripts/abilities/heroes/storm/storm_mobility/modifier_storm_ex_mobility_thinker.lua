@@ -30,7 +30,8 @@ function modifier_storm_ex_mobility_thinker:OnIntervalThink()
         self:StartIntervalThink(0.03)
     end
 
-    local enemies = self:GetCaster():FindUnitsInRadius(
+    local enemies = CustomEntities:FindUnitsInRadius(
+        self:GetCaster(),
         self.origin, 
         self.radius, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 

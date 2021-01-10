@@ -39,7 +39,7 @@ function modifier_spectre_ex_counter:OnDestroy()
                 duration = 0.25
             })
 
-            if unit:ProvidesMana() then
+            if CustomEntities:ProvidesMana(unit) then
                 give_health = true
             end
             

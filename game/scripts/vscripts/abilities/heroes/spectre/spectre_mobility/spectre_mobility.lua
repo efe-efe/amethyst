@@ -50,9 +50,10 @@ function spectre_mobility:OnSpellStart()
         bIsReflectable = false,
         bIsSlowable = false,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit"  and not _self.Source:IsAlly(unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit"  and not CustomEntities:Allies(_self.Source, unit) end,
 		OnFinish = function(_self, pos)
-			local enemies = self:GetCaster():FindUnitsInRadius(
+			local enemies = CustomEntities:FindUnitsInRadius(
+			self:GetCaster(),
 				pos, 
 				self.radius, 
 				DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -64,7 +65,7 @@ function spectre_mobility:OnSpellStart()
 			local charge = false
 
 			for _, enemy in pairs(enemies) do 
-				if not enemy:IsObstacle() then
+				if not CustomEntities:IsObstacle(enemy) then
 					charge = true
 				end
 
@@ -83,15 +84,15 @@ function spectre_mobility:OnSpellStart()
 				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):ReduceCooldown(cooldown_reduction)
 
 				if #enemies == 1 then
-					if enemies[1]:ProvidesMana() then
-						caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+					if CustomEntities:ProvidesMana(enemies[1]) then
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 				else
-					caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 			end
             self:PlayEffectsOnFinish(pos)
-            caster:SafeDestroyModifier("modifier_spectre_banish")
+            CustomEntities:SafeDestroyModifier(caster, "modifier_spectre_banish")
             FindClearSpaceForUnit(caster, pos , true)
 		end,
 	}

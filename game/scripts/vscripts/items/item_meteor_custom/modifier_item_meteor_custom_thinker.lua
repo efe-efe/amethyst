@@ -8,7 +8,8 @@ function modifier_item_meteor_custom_thinker:OnDelayEnds()
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
         self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
 
-		local enemies = self:GetCaster():FindUnitsInRadius(
+		local enemies = CustomEntities:FindUnitsInRadius(
+			self:GetCaster(),
 			self.origin, 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 

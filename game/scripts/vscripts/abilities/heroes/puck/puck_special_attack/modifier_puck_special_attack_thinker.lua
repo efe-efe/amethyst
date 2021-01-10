@@ -60,7 +60,7 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
             EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", unit)
             ApplyDamage(self.damage_table)
 
-            if unit:ProvidesMana() then
+            if CustomEntities:ProvidesMana(unit) then
                 give_mana = true
             end
          end)
@@ -68,7 +68,7 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
         self:PlayEffectsExplode(self.radius_small, 0)
         
         if give_mana then
-            self.caster:GiveManaAndEnergyPercent(self.mana_gain_pct, true)
+            CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
         end
 
         self.iteration = 1
@@ -84,13 +84,13 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
             EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", unit)
             ApplyDamage(self.damage_table)
 
-            if unit:ProvidesMana() then
+            if CustomEntities:ProvidesMana(unit) then
                 give_mana = true
             end
         end)
         
         if give_mana then
-            self.caster:GiveManaAndEnergyPercent(self.mana_gain_pct, true)
+            CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
         end
         
         self:PlayEffectsExplode(self.radius, 1)

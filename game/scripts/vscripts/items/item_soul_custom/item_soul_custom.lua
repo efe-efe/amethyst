@@ -23,7 +23,7 @@ function item_soul_custom:OnSpellStart()
     ApplyDamage(damage_table)
 
     Timers:CreateTimer(0.03, function()
-        caster:GiveManaAndEnergy(self:GetSpecialValueFor("mana"), true)
+        CustomEntities:GiveManaAndEnergy(caster, self:GetSpecialValueFor("mana"), true)
         caster:AddNewModifier(caster, self, "modifier_item_soul_custom", { duration = duration, current_mana = current_mana, max_mana = max_mana})
     end)
     self:PlayEffects()

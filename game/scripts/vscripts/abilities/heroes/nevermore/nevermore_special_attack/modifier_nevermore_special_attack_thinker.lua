@@ -37,13 +37,13 @@ function modifier_nevermore_special_attack_thinker:OnIntervalThink()
 
         unit:AddNewModifier(self.caster, self:GetAbility(), 'modifier_nevermore_special_attack_stacks', { duration = self.stacks_duration })
 
-        if not unit:IsObstacle() then
+        if not CustomEntities:IsObstacle(unit) then
             give_mana = true
         end
     end)
 
     if give_mana then
-        self.caster:GiveManaAndEnergyPercent(self.mana_gain_pct, true)
+        CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
     end
 
     EmitSoundOnLocationWithCaster(self.origin, "Hero_Nevermore.Shadowraze", self.caster)

@@ -15,10 +15,11 @@ function phantom_second_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
-	local stacks = caster:SafeGetModifierStacks("modifier_phantom_strike_stack")
+	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 	local final_damage = damage + (stacks * damage_per_stack)
 
-	local enemies = caster:FindUnitsInCone(
+	local enemies = CustomEntities:FindUnitsInCone(
+		caster,
 		direction, 
 		0, 
 		origin, 
@@ -50,8 +51,8 @@ function phantom_second_attack:OnSpellStart()
 
 			EmitSoundOn("DOTA_Item.MagicWand.Activate", caster)
 		end
-		if enemy:ProvidesMana() then
-            caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+		if CustomEntities:ProvidesMana(enemy) then
+            CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
         end
 		self:PlayEffectsOnImpact(enemy, stacks)
 	end
@@ -61,7 +62,7 @@ function phantom_second_attack:OnSpellStart()
 	end
 	
 	self:PlayEffectsOnFinish(direction, radius)
-	caster:SafeDestroyModifier("modifier_phantom_strike_stack")
+	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
 end
 

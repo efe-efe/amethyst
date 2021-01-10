@@ -233,7 +233,7 @@ function Round:EndRound()
         end
 
         FindClearSpaceForUnit(player.hero, target:GetAbsOrigin(), true)
-        player.hero:Reset()
+        CustomEntities:Reset(player.hero)
     end
 
 

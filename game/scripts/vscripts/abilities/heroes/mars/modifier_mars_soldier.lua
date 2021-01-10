@@ -55,7 +55,8 @@ function modifier_mars_soldier:OnIntervalThink()
         end
 	end
 
-	local enemies = self.caster:FindUnitsInRadius(
+	local enemies = CustomEntities:FindUnitsInRadius(
+		self.caster,
 		self.searchOrigin, 
 		self.radius, 
 		DOTA_UNIT_TARGET_TEAM_ENEMY, 
@@ -107,7 +108,8 @@ end
 
 function modifier_mars_soldier:GetAlphaValue()
     local alpha = 0
-    local enemies = self.parent:FindUnitsInRadius(
+    local enemies = CustomEntities:FindUnitsInRadius(
+        self.parent,
         self.origin, 
         self.fade_max, 
         DOTA_UNIT_TARGET_TEAM_ENEMY, 

@@ -51,7 +51,7 @@ end
 
 function modifier_storm_extra_displacement:OnImpactEnemy(hTarget, iDamage)
 	if self:GetStackCount() >= 1 then
-		if hTarget:ProvidesMana() then
+		if CustomEntities:ProvidesMana(hTarget) then
 			self.parent:Heal(self.heal_multiplier * iDamage, self.parent)
 		end
 	end
@@ -69,7 +69,7 @@ function modifier_storm_extra_displacement:OnImpactEnemy(hTarget, iDamage)
 	self.damage_table.damage = iDamage
 	ApplyDamage(self.damage_table)
 
-	if not hTarget:IsObstacle() and self:GetAbility():GetLevel() >= 2 then
+	if not CustomEntities:IsObstacle(hTarget) and self:GetAbility():GetLevel() >= 2 then
 		self.parent:FindAbilityByName("storm_second_attack"):EndCooldown()
 	end
 end
@@ -90,7 +90,8 @@ end
 
 function modifier_storm_extra_displacement:OnDestroy()
 	if IsServer() then
-		local units = self.parent:FindUnitsInRadius(
+		local units = CustomEntities:FindUnitsInRadius(
+			self.parent,
 			self.parent:GetAbsOrigin(), 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 

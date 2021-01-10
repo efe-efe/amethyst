@@ -26,7 +26,8 @@ function modifier_puck_ultimate_thinker:OnCreated(params)
 
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
 
-        local enemies = self:GetCaster():FindUnitsInRadius(
+        local enemies = CustomEntities:FindUnitsInRadius(
+			self:GetCaster(),
 			self:GetParent():GetOrigin(), 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 

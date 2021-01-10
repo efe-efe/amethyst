@@ -49,14 +49,14 @@ function modifier_hero_base:GetNormal(vPosition, hUnit, fScale)
 end
 
 function modifier_hero_base:OnIntervalThink()
-	local direction = self.parent:GetDirection():Normalized()
+	local direction = CustomEntities:GetDirection(self.parent):Normalized()
 	local speed = self.parent:GetIdealSpeed() / 25
 
-	if self.parent:IsAnimating() then
+	if CustomEntities:IsAnimating(self.parent) then
 		self.parent:RemoveModifierByName("modifier_hero_movement")
 	end
 
-	if (direction.x ~= 0 or direction.y ~= 0) and self.parent:CanWalk() then
+	if (direction.x ~= 0 or direction.y ~= 0) and CustomEntities:CanWalk(self.parent) then
 		local output = self:Move(direction, speed)
 		if output ~= 'SUCCESS' then
 			local alternative_directions = {}
@@ -79,7 +79,7 @@ function modifier_hero_base:OnIntervalThink()
 			not self.parent:HasModifier("modifier_mars_counter_countering") and 
 			not self.parent:HasModifier("modifier_spectre_counter_countering")
 		then 
-			self.parent:FaceTowardsCustom(direction)
+			CustomEntities:FullyFaceTowards(self.parent, direction)
 		end
 	else
 		self.parent:RemoveModifierByName("modifier_hero_movement")
@@ -105,7 +105,7 @@ function modifier_hero_base:PickupItems()
 		local owner = item:GetPurchaser()
 		
 		--Only pickup items owned by teammates
-		if owner == nil or (owner ~= nil and self.parent:IsAlly(owner) and self.parent ~= owner) then
+		if owner == nil or (owner ~= nil and CustomEntities:Allies(self.parent, owner) and self.parent ~= owner) then
 			self.parent:AddItem(item)
 			item:OnSpellStart()
 
@@ -166,7 +166,7 @@ function modifier_hero_base:Move(vDirection, iSpeed)
 		end
 	end
 
-	if not self.parent:IsAnimating() then
+	if not CustomEntities:IsAnimating(self.parent) then
 		if not self.parent:HasModifier("modifier_hero_movement") then
 			self.parent:AddNewModifier(self.parent, nil, "modifier_hero_movement", {})
 		end
@@ -178,7 +178,7 @@ end
 
 function modifier_hero_base:AlternativeDirectionsWalls(vDirection)
 	local directions = {}
-	local collision_direction = self.parent:GetCollisionDirection()
+	local collision_direction = CustomEntities:GetCollisionDirection(self.parent)
 	local angle = VectorToAngles(vDirection).y
 
 	if self:IsNorthEast(angle) then
@@ -390,7 +390,7 @@ function modifier_hero_base:DeclareFunctions()
 end
 
 function modifier_hero_base:OnSpentMana(event)
-	self:GetParent():SendDataToClient()
+	CustomEntities:SendDataToClient(self:GetParent())
 end
 
 function modifier_hero_base:OnAbilityFullyCast(params)
@@ -398,8 +398,7 @@ function modifier_hero_base:OnAbilityFullyCast(params)
 		if params.unit ~= self:GetParent() then
 			return
 		end
-
-		params.unit:GiveEnergy(-params.ability:GetEnergyCost())
+		CustomEntities:GiveEnergy(params.unit, -params.ability:GetEnergyCost())
 	end
 end
 

@@ -15,7 +15,7 @@ function Filters:Activate(GameMode, this)
             local ability = EntIndexToHScript(tFilter.entindex_ability)
             local caster = EntIndexToHScript(tFilter.units["0"])
             local energy_cost = ability:GetEnergyCost()
-            local energy = caster:GetEnergy()
+            local energy = CustomEntities:GetEnergy(caster)
 
             if energy_cost > energy then 
                 CustomGameEventManager:Send_ServerToAllClients("not_enough_energy", {})
@@ -33,7 +33,7 @@ function Filters:Activate(GameMode, this)
                 local max_range = ability:GetCastRange(Vector(0,0,0), nil)
     
                 if not ability:HasBehavior(DOTA_ABILITY_BEHAVIOR_IMMEDIATE) then
-                    caster:FaceTowardsCustom(direction)
+                    CustomEntities:FullyFaceTowards(caster, direction)
                 end
     
                 if current_range > max_range then
@@ -113,17 +113,17 @@ function Filters:Activate(GameMode, this)
         
         -- Check if is able to heal
         if healing_target:IsRealHero() then
-            local new_treshold = healing_target:GetTreshold() + tFilter.heal
+            local new_treshold = CustomEntities:GetTreshold(healing_target) + tFilter.heal
             if new_treshold > this.max_treshold then
-                tFilter.heal = this.max_treshold - healing_target:GetTreshold()
-                healing_target:SetTreshold(this.max_treshold)
+                tFilter.heal = this.max_treshold - CustomEntities:GetTreshold(healing_target)
+                CustomEntities:SetTreshold(healing_target, this.max_treshold)
             else
-                healing_target:SetTreshold(new_treshold)
+                CustomEntities:SetTreshold(healing_target, new_treshold)
             end
             
             SendOverheadHealMessage(healing_target, tFilter.heal)
             Timers:CreateTimer(0.05, function()
-                healing_target:SendDataToClient()
+                CustomEntities:SendDataToClient(healing_target)
             end)
             
             local healing_team = healing_target:GetTeam()
@@ -163,14 +163,14 @@ function Filters:Activate(GameMode, this)
         end
         
         if victim:IsRealHero() then
-            victim:SetTreshold(victim:GetTreshold() - damage_after_reductions)
-            if victim:GetTreshold() < 0 then
-                victim:SetTreshold(0)
+            CustomEntities:SetTreshold(victim, CustomEntities:GetTreshold(victim) - damage_after_reductions)
+            if CustomEntities:GetTreshold(victim) < 0 then
+                CustomEntities:SetTreshold(victim, 0)
             end
 
             victim:AddNewModifier(victim, nil, "modifier_damage_fx", { duration = 0.1 })
             Timers:CreateTimer(0.05, function()
-                victim:SendDataToClient()
+                CustomEntities:SendDataToClient(victim)
             end)
             
             

@@ -33,7 +33,7 @@ function juggernaut_basic_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local final_damage = attack_damage
-	local modifier = caster:SafeGetModifier("modifier_juggernaut_ex_counter")
+	local modifier = CustomEntities:SafeGetModifier(caster, "modifier_juggernaut_ex_counter")
 	if modifier then
 		local juggernaut_ex_counter = caster:FindAbilityByName("juggernaut_ex_counter")
 		local extra_damage = juggernaut_ex_counter:GetSpecialValueFor("extra_damage")
@@ -45,7 +45,8 @@ function juggernaut_basic_attack:OnSpellStart()
 		self:PlayEffectsOnFinish(direction)
 	end
 
-	local enemies = caster:FindUnitsInCone(
+	local enemies = CustomEntities:FindUnitsInCone(
+		caster,
 		direction, 
 		0, 
 		origin, 
@@ -74,9 +75,9 @@ function juggernaut_basic_attack:OnSpellStart()
 		}
 		ApplyDamage(damage_table)
 
-		if not enemy:IsObstacle() then
-			if enemy:ProvidesMana() then
-				caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
+		if not CustomEntities:IsObstacle(enemy) then
+			if CustomEntities:ProvidesMana(enemy) then
+				CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 			end
 			-- Add modifier
 			caster:AddNewModifier(
@@ -95,10 +96,7 @@ function juggernaut_basic_attack:OnSpellStart()
 			end
 		end
 
-		if caster.OnBasicAttackImpact then
-			caster:OnBasicAttackImpact(enemy)
-		end
-
+		CustomEntities:OnBasicAttackImpact(caster, enemy)
 		break
 	end
 

@@ -18,7 +18,7 @@ function modifier_spectre_debuff:OnCreated(params)
 end
 
 function modifier_spectre_debuff:OnIntervalThink()
-    if self:GetParent():ProvidesMana() then
+    if CustomEntities:ProvidesMana(self:GetParent()) then
         self.damage_done = self.damage_done + self.damage_per_second
     end
     ApplyDamage(self.damage_table)
