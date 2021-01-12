@@ -52,7 +52,6 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 		projectile_particle = "particles/puck/puck_base_attack_alternative.vpcf"
 	end
 
-	local damage = caster:GetAverageTrueAttackDamage(caster)
 	local projectile = {
 		EffectName = projectile_particle,
 		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
@@ -67,14 +66,7 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-				ability = self
-			}
-			ApplyDamage(damage_table)
+			caster:PerformAttack(unit, true, true, true, true, false, false, true)
 
 			if is_charged then
 				unit:AddNewModifier(_self.Source, nil, "modifier_puck_fairy_dust", { duration = fairy_dust_duration, slow_pct = fairy_dust_slow_pct })
@@ -88,10 +80,11 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 					caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
 				end
 			end
-
-			CustomEntities:OnBasicAttackImpact(_self.Source, unit)
 		end,
 		OnFinish = function(_self, pos)
+			if next(_self.rehit) == nil then
+				CustomEntities:FakeMissAttack(caster, pos)
+			end
 			self:PlayEffectsOnFinish(pos, is_charged)
 		end,
 	}

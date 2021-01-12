@@ -33,24 +33,13 @@ function spectre_basic_attack:GetCastPointSpeed() 		return self:GetSpecialValueF
 
 function spectre_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
+	caster:AddNewModifier(caster, self, "modifier_miss", {duration = 10})
 	local origin = caster:GetOrigin()
 	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
-	local damage = caster:GetAverageTrueAttackDamage(caster)
-
 	local radius = self:GetSpecialValueFor("radius")
-	local desolate_duration = self:GetSpecialValueFor("desolate_duration")
-	local silence_duration = self:GetSpecialValueFor("silence_duration")
-    local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-
-	local heal_charged = self:GetSpecialValueFor("heal_charged")
-	local damage_bonus_charged = self:GetSpecialValueFor("damage_bonus_charged")
-    local damage_bonus_desolate = self:GetSpecialValueFor("damage_bonus_desolate")
-    local heal_desolate = self:GetSpecialValueFor("heal_desolate")
-
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
 	local is_charged = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady()
-	
 	if is_charged then
 		radius = radius + 50
 	end
@@ -69,53 +58,20 @@ function spectre_basic_attack:OnSpellStart()
 
 	local should_shake = false
 
-	local damage_table = {
-		attacker = caster,
-		damage_type = DAMAGE_TYPE_PHYSICAL,
-		ability = self
-	}
-
 	for _,enemy in pairs(enemies) do 
 		if enemy:IsRealHero() then
 			should_shake = true
 		end
 
-		local final_damage = damage
-		if enemy:HasModifier("modifier_spectre_desolate_custom") then
-			final_damage = final_damage + damage_bonus_desolate
+		caster:PerformAttack(enemy, true, true, true, true, false, false, true)
 
-			if not CustomEntities:IsObstacle(enemy) then
-				caster:Heal(heal_desolate, caster)
-				self:PlayEffectsLifeSteal()
-			end
-		end
-
-		if is_charged then
-			enemy:AddNewModifier(caster, self, "modifier_generic_silence", { duration = silence_duration })
-			
-			if CustomEntities:ProvidesMana(enemy) then
-				enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = desolate_duration })
-			end
-			
-			if not CustomEntities:IsObstacle(enemy) and not CustomEntities:IsCountering(enemy) then
-				caster:Heal(heal_charged, caster)
-			end
-		end
-
-		damage_table.victim = enemy
-		damage_table.damage = final_damage
-		ApplyDamage(damage_table)
-
-		if CustomEntities:ProvidesMana(enemy) then
-			CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-		end
-
-		self:PlayEffectsOnImpact(enemy, enemy:GetAbsOrigin(), is_charged)
-
-		CustomEntities:OnBasicAttackImpact(caster, enemy)
 		if not is_charged then
 			break
 		end
+	end
+
+	if #enemies == 0 then
+		CustomEntities:FakeMissAttack(caster)
 	end
 
 	if should_shake or is_charged then
@@ -166,38 +122,6 @@ function spectre_basic_attack:PlayEffectsOnCast(is_charged, direction, radius)
 	if is_charged then
 		EmitSoundOn('Hero_Sven.Layer.GodsStrength', self:GetCaster())
 	end
-end
-
-function spectre_basic_attack:PlayEffectsOnImpact(hTarget, pos, is_charged)
-	if is_charged then
-		EmitSoundOn("Hero_BountyHunter.Jinada", hTarget)
-		
-		local particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
-		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, hTarget)
-		ParticleManager:ReleaseParticleIndex(effect_cast)
-	else
-		EmitSoundOn("Hero_Spectre.Attack", hTarget)
-		
-		EFX('particles/phantom/phantom_basic_attack.vpcf', PATTACH_ABSORIGIN, hTarget, {
-			release = true
-		})
-
-		local caster = self:GetCaster()
-		local offset = 50
-		local new_position = caster:GetOrigin() + (pos - caster:GetOrigin()):Normalized() * offset
-	
-		local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
-		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
-		ParticleManager:SetParticleControl(effect_cast, 0, pos)
-		ParticleManager:SetParticleControlForward(effect_cast, 0, (pos - caster:GetOrigin()):Normalized())
-		ParticleManager:ReleaseParticleIndex(effect_cast)
-	end
-end
-
-function spectre_basic_attack:PlayEffectsLifeSteal()
-	local particle_cast = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
-	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 if IsClient() then require("wrappers/abilities") end

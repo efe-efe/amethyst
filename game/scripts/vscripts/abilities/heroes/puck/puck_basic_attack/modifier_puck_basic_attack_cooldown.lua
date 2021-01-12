@@ -1,19 +1,27 @@
 modifier_puck_basic_attack_cooldown = class({})
 
-function modifier_puck_basic_attack_cooldown:OnCreated(params)
-    self.charged_damage = self:GetAbility():GetSpecialValueFor("charged_damage")
-end
-
 function modifier_puck_basic_attack_cooldown:DeclareFunctions()
     return { 
         MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
-        MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE
+        MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
+        MODIFIER_EVENT_ON_ATTACK,
     }
 end
 
 function modifier_puck_basic_attack_cooldown:GetModifierPreAttack_BonusDamage()
     if not self:IsCooldownReady() then return 0 end
-    return self.charged_damage
+    return self:GetAbility():GetSpecialValueFor("charged_damage")
+end
+
+function modifier_puck_basic_attack_cooldown:OnAttack(params)
+    if params.attacker ~= self:GetParent() then
+        return
+    end
+    
+    if self:GetRemainingTime() > 0 then
+        return
+    end
+    self:StartCooldown()
 end
  
 function modifier_puck_basic_attack_cooldown:OnAbilityFullyCast(params)
@@ -22,13 +30,8 @@ function modifier_puck_basic_attack_cooldown:OnAbilityFullyCast(params)
             return
         end
 
-        local counter = self:GetParent():FindAbilityByName("puck_counter")
         local basic_attack_related = self:GetParent():FindAbilityByName("puck_basic_attack_related")
-
-        if  params.ability == counter or
-            params.ability == basic_attack_related or
-            params.ability == self:GetAbility()
-        then
+        if params.ability == basic_attack_related then
             if self:GetRemainingTime() > 0 then
                 return
             end

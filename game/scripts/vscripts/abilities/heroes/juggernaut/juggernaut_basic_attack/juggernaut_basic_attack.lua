@@ -25,21 +25,15 @@ function juggernaut_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
-	local attack_damage = caster:GetAttackDamage()
 
 	self.radius = self:GetSpecialValueFor("radius")
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
 	local cooldown_reduction_counter = self:GetSpecialValueFor("cooldown_reduction_counter")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
-	local final_damage = attack_damage
 	local modifier = CustomEntities:SafeGetModifier(caster, "modifier_juggernaut_ex_counter")
 	if modifier then
-		local juggernaut_ex_counter = caster:FindAbilityByName("juggernaut_ex_counter")
-		local extra_damage = juggernaut_ex_counter:GetSpecialValueFor("extra_damage")
 		local color = Vector(0, 255, 0)
-		final_damage = final_damage + extra_damage
-		modifier:DecrementStackCount()
 		self:PlayEffectsOnFinish(direction, color)
 	else
 		self:PlayEffectsOnFinish(direction)
@@ -66,14 +60,7 @@ function juggernaut_basic_attack:OnSpellStart()
 
 		self:PlayEffectsOnImpact(enemy)
 
-		local damage_table = {
-			victim = enemy,
-			attacker = caster,
-			damage = final_damage,
-			damage_type = DAMAGE_TYPE_PHYSICAL,
-			activate_counters = 1,
-		}
-		ApplyDamage(damage_table)
+		caster:PerformAttack(enemy, true, true, true, true, false, false, true)
 
 		if not CustomEntities:IsObstacle(enemy) then
 			if CustomEntities:ProvidesMana(enemy) then
@@ -100,6 +87,10 @@ function juggernaut_basic_attack:OnSpellStart()
 		break
 	end
 
+	if #enemies == 0 then
+		CustomEntities:FakeMissAttack(caster)
+	end
+	
 	if should_shake then
 		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
 	end

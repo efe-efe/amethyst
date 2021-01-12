@@ -53,14 +53,8 @@ function phantom_basic_attack_related:OnSpellStart()
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-			}
-			ApplyDamage(damage_table)
+		OnUnitHit = function(_self, unit)
+			caster:PerformAttack(unit, true, true, true, true, false, false, true)
 
 			if _self.Source == caster then
 				if CustomEntities:ProvidesMana(unit) then
@@ -92,10 +86,11 @@ function phantom_basic_attack_related:OnSpellStart()
 					{ duration = bleed_duration }
 				)
 			end
-
-			CustomEntities:OnBasicAttackImpact(_self.Source, unit)
 		end,
 		OnFinish = function(_self, pos)
+			if next(_self.rehit) == nil then
+				CustomEntities:FakeMissAttack(caster, pos)
+			end
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}

@@ -56,15 +56,7 @@ function nevermore_second_attack:OnSpellStart()
 					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 
-				local is_amethyst = false
-				if unit.GetParentEntity then
-					local entity = unit:GetParentEntity()
-			
-					if instanceof(entity, Amethyst) then 
-						is_amethyst = true
-					end
-				end
-				if not is_amethyst then
+				if not CustomEntities:IsAmethyst(unit) then
 					modifier:IncrementStackCount()
 					self:PlayEffectsSoul(unit)
 				end

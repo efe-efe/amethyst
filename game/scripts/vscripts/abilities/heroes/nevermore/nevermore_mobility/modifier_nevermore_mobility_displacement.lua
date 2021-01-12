@@ -40,16 +40,7 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                     ApplyDamage(self.damage_table)
     
                     if not CustomEntities:IsObstacle(unit) then
-                        local is_amethyst = false
-                        if unit.GetParentEntity then
-                            local entity = unit:GetParentEntity()
-                    
-                            if instanceof(entity, Amethyst) then 
-                                is_amethyst = true
-                            end
-                        end
-
-                        if not is_amethyst then
+                        if not CustomEntities:IsAmethyst(unit) then
                             local modifier = self:GetParent():FindModifierByName('modifier_nevermore_souls')
                             for i = 0, 1 do
                                 self:PlayEffectsOnImpact(unit)

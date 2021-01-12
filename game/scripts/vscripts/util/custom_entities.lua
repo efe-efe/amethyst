@@ -1,5 +1,16 @@
 CustomEntities = class({})
 
+MODIFIER_DISPLACEMENT = 1
+MODIFIER_COUNTER = 2
+MODIFIER_REFLECT = 3
+MODIFIER_ANIMATION = 4
+MODIFIER_CHANNELING = 5 
+MODIFIER_CHARGES = 6 
+MODIFIER_TRANSLATE = 7 
+MODIFIER_ON_PROJECTILE_HIT = 8 
+MODIFIER_MOVE_FORCE = 9
+MODIFIER_BANISHED = 10
+
 function CustomEntities:Initialize(hEntity)
 	hEntity.on_basic_attack_impact = 	    {}
 	hEntity.treshold = 				        0
@@ -18,6 +29,7 @@ function CustomEntities:Initialize(hEntity)
 	hEntity.fear_modifiers =			    {}
 	hEntity.translate_modifiers = 		    {}
 	hEntity.move_force_modifiers =  	    {}
+	hEntity.banished_modifiers =			{}
 	hEntity.on_projectile_hit_modifiers =   {}
 
 	CustomEntities:SetEnergy(hEntity, hEntity.max_energy)	
@@ -230,18 +242,22 @@ end
 
 function CustomEntities:GiveEnergy(hEntity, iEnergy, bInformClient, bShowOverhead)
 	CustomEntities:SetEnergy(hEntity, CustomEntities:GetEnergy(hEntity) + iEnergy, bInformClient)
+
+	if bShowOverhead then
+		SendOverheadEnergyMessage(hEntity, iEnergy)
+	end
 end
 
 function CustomEntities:GiveManaAndEnergyPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
 	CustomEntities:GiveManaPercent(hEntity, iPercentage, false, bShowOverhead)
-	CustomEntities:GiveEnergyPercent(hEntity, iPercentage, false, false)
+	CustomEntities:GiveEnergyPercent(hEntity, iPercentage, false, bShowOverhead)
 	if bInformClient then
 		CustomEntities:SendDataToClient(hEntity)
 	end
 end
 
 function CustomEntities:GiveManaAndEnergy(hEntity, fAmount, bInformClient, bShowOverhead)
-	CustomEntities:GiveEnergy(hEntity, fAmount, false)
+	CustomEntities:GiveEnergy(hEntity, fAmount, false, bShowOverhead)
 	CustomEntities:GiveManaCustom(hEntity, fAmount, false, bShowOverhead)
 	if bInformClient then
 		CustomEntities:SendDataToClient(hEntity)
@@ -257,6 +273,13 @@ function CustomEntities:SetHealthCustom(hEntity, fHealth)
 		alliance:SendDataToClient()
 	end
 end 
+
+function CustomEntities:SetManaCustom(hEntity, fMana, bInformClient)
+	hEntity:SetMana(fMana)
+	if bInformClient then
+		CustomEntities:SendDataToClient(hEntity)
+	end
+end
 
 function CustomEntities:Reset(hEntity)
 	if not IsInToolsMode() then
@@ -300,7 +323,8 @@ function CustomEntities:AddModifierTracker(hEntity, tData, iType)
 	if iType == MODIFIER_TRANSLATE then key = "translate_modifiers" end
 	if iType == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
 	if iType == MODIFIER_MOVE_FORCE then key = "move_force_modifiers" end
-
+	if iType == MODIFIER_BANISHED then key = "banished_modifiers" end
+	
 	table.insert(hEntity[key], tData)
 end
 
@@ -317,6 +341,7 @@ function CustomEntities:RemoveModifierTracker(hEntity, tData, iType)
 	if iType  == MODIFIER_TRANSLATE then key = "translate_modifiers" end
 	if iType  == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
 	if iType  == MODIFIER_MOVE_FORCE then key = "move_force_modifiers" end
+	if iType  == MODIFIER_BANISHED then key = "banished_modifiers" end
 
 	for _,m_data in pairs(hEntity[key]) do
 		if m_data == tData then
@@ -343,6 +368,10 @@ function CustomEntities:GetDirection(hEntity)
 	return hEntity.direction
 end
 
+function CustomEntities:IsBanished(hEntity)
+	return hEntity.banished_modifiers and #hEntity.banished_modifiers > 0
+end
+
 function CustomEntities:IsFeared(hEntity)
 	return hEntity.fear_modifiers and #hEntity.fear_modifiers > 0
 end
@@ -361,6 +390,14 @@ function CustomEntities:IsCountering(hEntity)
 	end
 
 	return 	hEntity:HasModifier("modifier_counter")
+end
+
+function CustomEntities:FakeMissAttack(hEntity, vOrigin)
+	local origin = vOrigin and vOrigin or hEntity:GetAbsOrigin()
+	local dummy = CreateModifierThinker(hEntity, nil, nil, {}, origin, hEntity:GetTeamNumber(), false)
+	dummy:AddNewModifier(hEntity, nil, "modifier_miss", {})
+	hEntity:PerformAttack(dummy, false, false, true, true, false, false, false)
+	dummy:RemoveSelf()
 end
 
 function CustomEntities:FullyFaceTowards(hEntity, vDirection)
@@ -597,13 +634,21 @@ function CustomEntities:IsObstacle(hEntity)
     return (CustomEntities:IsBarrel(hEntity) or CustomEntities:IsWall(hEntity)) and true or false
 end
 
-function CustomEntities:ProvidesMana(hEntity)
+function CustomEntities:IsAmethyst(hEntity)
 	if hEntity and hEntity.GetParentEntity then
 		local entity = hEntity:GetParentEntity()
 
-		if instanceof(entity, Amethyst) then 
-			return false
+		if instanceof(entity, GenericGem) then 
+			return true
 		end
+	end
+
+	return false
+end
+
+function CustomEntities:ProvidesMana(hEntity)
+	if CustomEntities:IsAmethyst(hEntity) then
+		return false
 	end
 
     if CustomEntities:IsObstacle(hEntity) then

@@ -304,6 +304,7 @@ function Modifiers.Banish(modifier)
         if IsServer() then
             self.original_scale = self:GetParent():GetModelScale()
             self:GetParent():SetModelScale(0.05)
+            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_BANISHED)
         end
         if onCreated then onCreated(self, params) end
     end
@@ -311,6 +312,7 @@ function Modifiers.Banish(modifier)
     function modifier:OnDestroy()
         if IsServer() then
             self:GetParent():SetModelScale(self.original_scale)
+            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_BANISHED)
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -1043,6 +1045,7 @@ function Modifiers.Status(modifier)
     local getStatusContentType =    modifier.GetStatusContentType
     local getStatusScope =          modifier.GetStatusScope
     local getStatusEnabled =        modifier.GetStatusEnabled
+    local getMaxStacks =            modifier.GetMaxStacks
 
     function modifier:OnCreated(params)
         if IsServer() then
@@ -1054,7 +1057,8 @@ function Modifiers.Status(modifier)
                     trigger = self:GetStatusTriggerType(),
                     content = self:GetStatusContentType(),
                     style_name = self:GetStatusStyle(),
-                    scope = self:GetStatusScope()
+                    scope = self:GetStatusScope(),
+                    max_stacks = self:GetMaxStacks()
                 })
             end
             CustomEntities:SendDataToClient(self:GetParent())
@@ -1085,6 +1089,10 @@ function Modifiers.Status(modifier)
     function modifier:GetStatusTriggerType()
         if getStatusTriggerType then return getStatusTriggerType(self) end
         return STATUS_TRIGGER_DURATION
+    end
+    function modifier:GetMaxStacks()
+        if getMaxStacks then return getMaxStacks(self) end
+        return 1
     end
     function modifier:GetStatusStyle()
         if getStatusStyle then return getStatusStyle(self) end

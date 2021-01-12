@@ -58,6 +58,17 @@ function modifier_phantom_ex_basic_attack:OnDestroy(kv)
 	end
 end
 
+
+function modifier_phantom_ex_basic_attack:DeclareFunctions()
+    return { 
+        MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
+    }
+end
+
+function modifier_phantom_ex_basic_attack:GetModifierPreAttack_BonusDamage(event)
+    return -1
+end
+
 function modifier_phantom_ex_basic_attack:PlayEffectsOnCast()
     local particle_cast = "particles/econ/courier/courier_axolotl_ambient/courier_axolotl_ambient_lvl4_trail_steam.vpcf"
     local origin = self:GetParent():GetAbsOrigin()

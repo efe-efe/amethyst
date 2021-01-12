@@ -60,6 +60,7 @@ function Precache(context)
     PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_sven.vsndevts", context)
     PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_abaddon.vsndevts", context)
     PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_zuus.vsndevts", context)
+    PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_doombringer.vsndevts", context)
 	PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context)
 
     PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", context)
@@ -167,6 +168,8 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("wall_base",                                "modifiers/wall_base.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_adrenaline",                      "modifiers/modifier_adrenaline.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("radius_marker_thinker",                    "modifiers/radius_marker_thinker.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_burning_attacks",                 "modifiers/modifier_burning_attacks.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_miss",                            "modifiers/modifier_miss.lua", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier("modifier_generic_silence",                 "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE) -- Should Delete
     LinkLuaModifier("modifier_generic_fading_slow",             "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
@@ -303,6 +306,7 @@ end
 
 function GameMode:SetupProjectiles()
     Projectiles:Initialize()
+    --ProjectilesManagerInstance:Initialize()
 end
 
 function GameMode:Start()
@@ -532,7 +536,7 @@ function GameMode:OnEntityKilled(keys)
     if killed.GetParentEntity then
         local entity = killed:GetParentEntity()
 
-        if instanceof(entity, Amethyst) then     
+        if CustomEntities:IsAmethyst(killed) then     
             entity:OnDeath({ killer = EntIndexToHScript(keys.entindex_attacker) })
         end
         if instanceof(entity, DummyTarget) then     

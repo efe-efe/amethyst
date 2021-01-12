@@ -298,6 +298,13 @@ function SendOverheadShieldMessage(unit, value)
 	OverheadMessageEFX(unit, value, word_length, color, 7)
 end
 
+function SendOverheadEnergyMessage(unit, value)
+	local word_length = string.len(tostring(math.floor(value))) + 1
+	local color =  Vector(255, 243, 140)
+
+	OverheadMessageEFX(unit, value, word_length, color, 0)
+end
+
 function OverheadMessageEFX(unit, value, word_length, color, shield)
 	local duration = math.max(1, value / 10)
 
@@ -476,4 +483,14 @@ function LinkAbilityCooldowns(hCaster, sLinkedSpell, tUnlinkLevels)
 	if bStartCooldown then
 		hLinkedSpell:StartCooldown(hLinkedSpell:GetCooldown(0))
 	end
+end
+
+function RotatePoint(vOrigin, vPoint, fAngle)
+    local radians = (math.pi / 180) * fAngle
+    local cos = math.cos(radians)
+    local sin = math.sin(radians)
+    local nx = (cos * (vPoint.x - vOrigin.x)) + (sin * (vPoint.y - vOrigin.y)) + vOrigin.x
+    local ny = (cos * (vPoint.y - vOrigin.y)) - (sin * (vPoint.x - vOrigin.x)) + vOrigin.y
+    
+    return Vector(nx, ny)
 end

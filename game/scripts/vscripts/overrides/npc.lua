@@ -458,7 +458,7 @@ function CDOTA_BaseNPC:ProvidesMana()
 	if self and self.GetParentEntity then
 		local entity = self:GetParentEntity()
 
-		if instanceof(entity, Amethyst) then 
+		if instanceof(entity, GenericGem) then 
 			return false
 		end
 	end
@@ -643,6 +643,7 @@ MODIFIER_CHARGES = 6
 MODIFIER_TRANSLATE = 7 
 MODIFIER_ON_PROJECTILE_HIT = 8 
 MODIFIER_MOVE_FORCE = 9
+MODIFIER_BANISHED = 10
 
 function CDOTA_BaseNPC:AddModifierTracker(data, type) 	
 	print('WARNING: USING CDOTA_BaseNPC_Hero:AddModifierTracker instead of CustomEntities. Entity name = ', self:GetName())

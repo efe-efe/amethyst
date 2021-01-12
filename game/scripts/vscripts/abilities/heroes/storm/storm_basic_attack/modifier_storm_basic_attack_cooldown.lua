@@ -3,6 +3,7 @@ modifier_storm_basic_attack_cooldown = class({})
 function modifier_storm_basic_attack_cooldown:DeclareFunctions()
     return { 
         MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
+        MODIFIER_EVENT_ON_ATTACK,
     }
 end
 
@@ -12,17 +13,22 @@ function modifier_storm_basic_attack_cooldown:OnAbilityFullyCast(params)
             return
         end
 
-        if params.ability == self:GetAbility() then
-            if self:GetRemainingTime() > 0 then
-                return
-            end
-
-            self:StartCooldown()
-            DEFX(self.efx)
-        else
+        if params.ability ~= self:GetAbility() then
 			self:Replenish()
         end
     end
+end
+
+function modifier_storm_basic_attack_cooldown:OnAttack(params)
+    if params.attacker ~= self:GetParent() then
+        return
+    end
+    if self:GetRemainingTime() > 0 then
+        return
+    end
+    
+    self:StartCooldown()
+    DEFX(self.efx)
 end
 
 function modifier_storm_basic_attack_cooldown:OnReplenish()

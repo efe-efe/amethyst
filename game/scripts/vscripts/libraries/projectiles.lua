@@ -575,3 +575,585 @@ function Projectiles:ProvideVision(projectile)
         projectile.currentFrame = projectile.currentFrame + 1
     end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ProjectilesManager = class({
+    tProjectiles = {}
+})
+
+if ProjectilesManagerInstance == nil then
+    ProjectilesManagerInstance = ProjectilesManager()
+end
+
+function ProjectilesManager:Initialize()
+    GameRules.GameMode:RegisterThinker(PROJECTILES_THINK, function()
+        self:Update()
+    end)
+end
+
+function ProjectilesManager:Update()
+    local now = Time();
+
+    if not self.fPrevious then
+        self.fPrevious = now;
+    end
+
+    local dt = now - self.fPrevious
+    self.fPrevious = now;
+
+    if dt > 0 then
+        for _,projectile in ipairs(self.tProjectiles) do
+            local fNextCallTime = projectile:Update()
+            if fNextCallTime then
+                projectile:SetEndTime(fNextCallTime)
+            else
+                self:RemoveProjectile(projectile:GetId())
+            end
+        end
+    end
+end
+
+function ProjectilesManager:RemoveProjectile(iProjectileID)
+    for _,projectile in ipairs(self.tProjectiles) do
+        if projectile:GetId() == iProjectileID then
+            self.tProjectiles[_] = nil
+        end
+    end
+end
+
+function ProjectilesManager:CreateProjectile(tData)
+    if not self.tProjectiles then
+        self.tProjectiles = {}
+    end
+
+    local projectile = Projectile(tData)
+
+    PrintTable(self.tProjectiles)
+    table.insert(self.tProjectiles, projectile)
+end
+
+
+Projectile = class({
+    vVelocity =                     Vector(0,0,0) * SPEED_FACTOR,
+    vSpawnOrigin =                  Vector(0,0,0),
+    fDistance =                     1000.0,
+    fStartRadius =                  100.0,
+    fEndRadius =                    100.0,
+    fRehitDelay =                   1.0,
+    fExpireTime =                   8.0,
+    fChangeDelay =                  0.1,
+    fVisionTickTime =               0.1,
+    fVisionLingerDuration =         1.0,
+    fGroundOffset =                 40,
+    iFlagFilter =                   DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
+    iChangeMax =                    1,
+    iVisionRadius =                 200,
+    iPositionCP =                   0,
+    iVelocityCP =                   1,
+    ControlPoints =                 {},
+    ControlPointForwards =          {},
+    ControlPointOrientations =      {},
+    ControlPointEntityAttaches =    {},
+    UnitBehavior =                  PROJECTILES_DESTROY,
+    TreeBehavior =                  PROJECTILES_DESTROY,
+    GroundBehavior =                PROJECTILES_DESTROY,
+    WallBehavior =                  PROJECTILES_DESTROY,
+    bMultipleHits =                 false,
+    bIgnoreSource =                 true,
+    bZCheck =                       false,
+    bCutTrees =                     false,
+    bDestroyImmediate =             true,
+    bRecreateOnChange =             true,
+    bGroundLock =                   false,
+    bIsSlowable =                   true,
+    bIsReflectable =                true,
+    bIsReflectableByAllies =        false,
+    bIsDestructible =               true,
+    bTreeFullCollision =            false,
+    bProvidesVision =               true,
+    bFlyingVision =                 false,
+    bDraw =                         false,
+    UnitTest =                      function() return false end,
+    OnUnitHit =                     function() return end,
+    OnTreeHit =                     function() return end,
+    OnWallHit =                     function() return end,
+    OnGroundHit =                   function() return end,
+    OnFinish =                      function() return end,
+    OnThinkBegin =                  function() return end,
+})
+
+function Projectile:constructor(tData)
+    if tData then
+        self:SetDefaultVariables(tData)
+    end
+    self:InitializeValues()
+    self.id = self:CreateParticle(nil)
+    ParticleManager:SetParticleControl(self.id, self.iVelocityCP, self.vCurrentVelocity * 30)
+    PrintTable(self)
+end
+
+function Projectile:SetVelocity(vNewVelocity, vNewPosition)
+    if self.iChanges > 0 then
+        self.iChanges = self.iChanges - 1
+        self.vCurrentVelocity = vNewVelocity / 30
+        self.fChangeTime = GameRules:GetGameTime() + self.fChangeDelay
+
+        if self.bRecreateOnChange then
+            ParticleManager:DestroyParticle(self.id, self.bDestroyImmediate)
+            self:CreateParticle(vNewPosition or self.vCurrentPosition)
+        end
+        
+        ParticleManager:SetParticleControl(self.id, self.iVelocityCP, vNewVelocity)
+    end
+end
+    
+function Projectile:SetSource(source)
+    self.Source = source
+end
+
+function Projectile:SetVisionTeam(team)
+    self.iVisionTeamNumber = team
+end
+
+function Projectile:ResetDistanceTraveled()
+    self.fDistanceTraveled = 0
+end
+
+function Projectile:ResetRehit()
+    self.tHitLog = {}
+end
+
+function Projectile:Update()
+    local fCurrentTime = GameRules:GetGameTime()
+    local vCurrentPosition = self.vCurrentPosition
+
+    if self.OnThinkBegin then
+        pcall(self.OnThinkBegin, self, self.vCurrentPosition)
+    end
+
+    if self.bGroundLock then  -- Stick to the ground
+        vCurrentPosition.z = GetGroundPosition(vCurrentPosition, self.Source).z + self.fGroundOffset
+    end
+    
+    if self:ShouldDestroy(fCurrentTime) then
+        self:Destroy(false)
+        return
+    end
+    
+    local radius = self.fRadius
+    local radiusSq = radius * radius
+    local vCurrentVelocity = self.vCurrentVelocity
+
+    -- Frame and sub-frame collision checks
+    local subpos = vCurrentPosition
+    local fVelocityLength = self.vCurrentVelocity:Length()
+    local tot = math.max(1, math.ceil(fVelocityLength / 32)) -- lookahead number
+    local div = 1 / tot
+
+    -- unit detection prep
+    local framehalf = vCurrentPosition + (vCurrentVelocity * div * (tot-1))/2
+    local framerad = (framehalf - vCurrentPosition):Length() + radius
+
+    -- Unit detection
+    local entities = nil
+
+    if self.bZCheck then
+        entities = Entities:FindAllInSphere(framehalf, framerad)
+    else
+        entities = FindUnitsInRadius(
+            DOTA_TEAM_NOTEAM, 
+            framehalf, 
+            nil, 
+            framerad, 
+            DOTA_UNIT_TARGET_TEAM_BOTH, 
+            DOTA_UNIT_TARGET_ALL, 
+            self.iFlagFilter,
+            FIND_ANY_ORDER, 
+            false
+        )
+    end
+
+    for index = 1, tot do
+        for _,entity in pairs(entities) do
+            local zOffset = entity.zOffset or 0
+            local height = (entity.height or 150) + zOffset
+
+            local origin = entity:GetAbsOrigin()
+            local nozorg = Vector(origin.x, origin.y, 0)
+            local nozpos = Vector(subpos.x, subpos.y, 0)
+            local nozCheck = VectorDistanceSq(nozpos, nozorg) <= radiusSq
+
+            local zCheck = true
+            if self.bZCheck then
+                zCheck = subpos.z >= origin.z + zOffset and subpos.z <= origin.z + height
+            end
+
+            -- ON HIT AN ENTITY
+            if IsValidEntity(entity) and 
+                entity.GetUnitName and 
+                entity:IsAlive() and 
+                (not    self.bIgnoreSource or 
+                        (self.bIgnoreSource and entity ~= self.Source)
+                ) --[[and 
+                nozCheck]] and 
+                zCheck 
+            then
+                --VectorDistanceSq(nozpos, origin) <= radiusSq and subpos.z >= orgz + zOffset and subpos.z <= orgz + height then
+                local time = self.tHitLog[entity:entindex()]
+                
+                if time == nil or current_time > time then
+                    local status, test = pcall(self.UnitTest, self, entity)
+
+                    if not status then
+                        print('[PROJECTILES] Projectile UnitTest Failure!: ' .. test)
+                    elseif test then
+                        if CustomEntities:IsWall(entity) then
+                            if CustomEntities:Allies(self.Source, entity) then
+                                return
+                            elseif self.WallBehavior == PROJECTILES_DESTROY then
+                                self:Destroy(false)
+                                return
+                            end
+                        end
+                        
+                        if self.bMultipleHits then
+                            self.tHitLog[entity:entindex()] = fCurrentTime + self.fRehitDelay
+                        else
+                            self.tHitLog[entity:entindex()] = fCurrentTime + 10000
+                        end
+                            
+                        local continue = true
+                        
+                        for _,modifier_name in pairs(CustomEntities:GetOnProjectileHit(entity)) do
+                            local modifier_handle = entity:FindModifierByName(modifier_name)
+                            
+                            if not modifier_handle:OnProjectileHitCustom({ projectile = self, target = entity }) then
+                                continue = false
+                            end
+                        end
+
+                        if continue then
+                            local status, action = pcall(self.OnUnitHit, self, entity)
+                            if not status then
+                                print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
+                            end
+
+                            if self.UnitBehavior == PROJECTILES_DESTROY then
+                                self:Destroy(false)
+                                return
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        -- ON HIT AN TREE
+        local navConnect = not GridNav:IsTraversable(subpos) or GridNav:IsBlocked(subpos) -- GNV connect
+        local ground = GetGroundPosition(subpos, self.Source) + Vector(0,0,self.fGroundOffset)
+        --print(tostring(ground.z) .. ' -- ' .. tostring(vCurrentPosition.z))
+        local groundConnect = ground.z > self.vPreviousPosition.z -- ground
+
+        if navConnect then
+            if self.bCutTrees or self.TreeBehavior ~= PROJECTILES_NOTHING then
+                local trees = GridNav:GetAllTreesAroundPoint(subpos, self.fRadius, self.bTreeFullCollision)
+                for _,tree in pairs(trees) do
+                    if not self.bZCheck or (vCurrentPosition.z < ground.z + 280 + radius - self.fGroundOffset and vCurrentPosition.z + radius + self.fGroundOffset > ground.z) then
+                        if self.bCutTrees then
+                            tree:CutDown(self.Source:GetTeamNumber())
+                            navConnect = not GridNav:IsTraversable(subpos) or GridNav:IsBlocked(subpos)
+                        end
+
+                        if self.bCutTrees or self.TreeBehavior ~= PROJECTILES_NOTHING then
+                            local status, action = pcall(self.OnTreeHit, self, tree)
+                            if not status then
+                                print('[PROJECTILES] Projectile OnTreeHit Failure!: ' .. action)
+                            end
+                        end
+
+                        if self.TreeBehavior == PROJECTILES_DESTROY then
+                            self:Destroy(false)
+                            return
+                        elseif self.TreeBehavior == PROJECTILES_BOUNCE and self.iChanges > 0 and fCurrentTime >= self.fChangeTime then
+                        -- bounce calculation
+                        end
+                    end
+                end
+            end
+        end
+
+        -- ON HIT AN WALL
+        if self.WallBehavior ~= PROJECTILES_NOTHING and groundConnect then--ground.z > self.vPreviousPosition.z then
+            local normal = Projectiles:CalcNormal(ground, self.Source, 32)
+            --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(255,255,255), true, 1)
+
+            if normal.z < .8 then
+                local vec = Vector(GridNav:GridPosToWorldCenterX(GridNav:WorldToGridPosX(subpos.x)), GridNav:GridPosToWorldCenterY(GridNav:WorldToGridPosY(subpos.y)), ground.z)
+                local status, action = pcall(self.OnWallHit, self, vec)
+                if not status then
+                    print('[PROJECTILES] Projectile OnWallHit Failure!: ' .. action)
+                end
+
+                if self.WallBehavior == PROJECTILES_DESTROY then
+                    self:Destroy(false)
+                    return
+                elseif self.WallBehavior == PROJECTILES_BOUNCE and self.iChanges > 0 and fCurrentTime >= self.fChangeTime then
+                    --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(255,255,255), true, 1)
+                    normal.z = 0
+                    normal = normal:Normalized()
+                    --DebugDrawLine_vCol(subpos, subpos + normal * 200, Vector(0,255,0), true, 1)
+                    self:SetVelocity(((-2 * vCurrentVelocity:Dot(normal) * normal) + vCurrentVelocity) * 30, subpos)
+                    break
+                end
+            end 
+        end
+
+        -- ON HIT THE GROUND
+        if self.GroundBehavior ~= PROJECTILES_NOTHING and groundConnect then
+            if self.GroundBehavior == PROJECTILES_DESTROY then
+                local status, action = pcall(self.OnGroundHit, self, ground)
+                if not status then
+                    print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
+                end
+                
+                self.Destroy(false)
+                return
+            elseif self.GroundBehavior == PROJECTILES_BOUNCE and self.iChanges > 0 and fCurrentTime >= self.fChangeTime then
+                local status, action = pcall(self.OnGroundHit, self, ground)
+                if not status then
+                    print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
+                end
+
+                local normal = Projectiles:CalcNormal(ground, self.Source)
+                self:SetVelocity(((-2 * vCurrentVelocity:Dot(normal) * normal) + vCurrentVelocity) * 30, subpos)
+                --entity:SetPhysicsVelocity(((-2 * newVelocity:Dot(normal) * normal) + newVelocity) * self.multiplier * 30)
+                break
+            elseif self.GroundBehavior == PROJECTILES_FOLLOW and self.iChanges > 0 and fCurrentTime >= self.fChangeTime then
+                -- follow calculation
+                
+                local slope = Projectiles:CalcSlope(ground, self.Source, vCurrentVelocity)
+                local dir = vCurrentVelocity:Normalized()
+                --self.fGroundOffset = self.fGroundOffset - 10
+                --print('follow ' .. slope:Dot(vCurrentVelocity:Normalized()) .. ' -- ' .. self.changes)
+                if dir.z < slope.z and slope:Dot(dir) < 1 then
+                    local status, action = pcall(self.OnGroundHit, self, ground)
+                    if not status then
+                        print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
+                    end
+                    --self.fGroundOffset = self.fGroundOffset - 10
+                    --print('follow under')
+                    self:SetVelocity(fVelocityLength * 30 * slope, subpos)
+                end
+                break
+            end
+        end
+        subpos = vCurrentPosition + vCurrentVelocity * (div * index)
+
+        if self.fDistanceTraveled + (subpos-vCurrentPosition):Length() > self.fDistance then
+            self:Destroy(false)
+            return
+        end
+
+        if self.bGroundLock then
+            subpos.z = GetGroundPosition(subpos, self.Source).z + self.fGroundOffset
+        end
+    end
+
+    if self.bProvidesVision then
+        self:ProvideVision(self)
+    end
+
+    self.fRadius = radius + self.fRadiusStep
+    self.vPreviousPosition = self.vCurrentPosition
+    self:UpdateTraveledDistance(fVelocityLength)
+    self.vCurrentPosition = vCurrentPosition + vCurrentVelocity
+
+    -- Debug draw
+    if self.bDraw then
+        Projectiles:DebugDraw(self)
+    end
+    
+
+
+
+
+
+    return fCurrentTime
+end
+
+function Projectile:Destroy(bImmediate)
+    ParticleManager:DestroyParticle(self.id, self.bDestroyImmediate)
+    
+    --[[if not bImmediate then
+        if projectile.OnFinish then
+            local status, out = pcall(projectile.OnFinish, projectile, projectile.vCurrentPosition)
+            if not status then
+                print('[PROJECTILES] Projectile OnFinish Failure!: ' .. out)
+            end
+        end
+    end]]
+end
+
+function Projectile:GetPosition()
+    return self.vCurrentPosition
+end
+
+function Projectile:GetVelocity() 
+    return self.vCurrentVelocity * 30 
+end
+
+function Projectile:SetEndTime(fTime)
+    self.fEndTime = fTime
+end
+
+function Projectile:ShouldDestroy(fCurrentTime)
+    return self:HasTimeExpired(fCurrentTime) or self:HasDistanceExpired()
+end
+
+function Projectile:HasTimeExpired(fCurrentTime)
+    return fCurrentTime > self.fSpawnTime + self.fExpireTime;
+end
+
+function Projectile:HasDistanceExpired()
+    return self.fDistanceTraveled > self.fDistance;
+end
+
+function Projectile:SetDefaultVariables(tData)
+    for key,value in pairs(tData) do
+        if tData[key] then 
+            if  key ~= 'vSpawnOrigin' and
+                key ~= 'fVisionTickTime' and
+                key ~= 'fVisionLingerDuration'
+            then
+                self[key] = value
+            end
+        end
+    end
+
+    if not tData.fVisionTickTime then
+        self.fVisionTickTime = 0.1
+    end
+    
+    if not tData.iVisionTeamNumber then
+        self.iVisionTeamNumber = self.Source:GetTeam()
+    end
+
+    if tData.vSpawnOrigin then
+        if tData.vSpawnOrigin.unit then
+            local attach = tData.vSpawnOrigin.unit:ScriptLookupAttachment(tData.vSpawnOrigin.attach)
+            local attachPos = tData.vSpawnOrigin.unit:GetAttachmentOrigin(attach)
+            self.vSpawnOrigin = attachPos + (tData.vSpawnOrigin.offset or Vector(0,0,0))
+        else
+            self.vSpawnOrigin = tData.vSpawnOrigin
+        end
+    end
+
+    if tData.fVisionTickTime then
+        if tData.fVisionTickTime <= 0 then
+            self.fVisionTickTime = 0.1
+        else
+            self.fVisionTickTime = tData.fVisionTickTime
+        end
+    end
+
+    if tData.fVisionLingerDuration then
+        if tData.fVisionLingerDuration < self.fVisionTickTime then
+            self.fVisionLingerDuration = self.fVisionTickTime
+        else
+            self.fVisionLingerDuration = tData.fVisionLingerDuration
+        end
+    end
+end
+
+function Projectile:GetId()
+    return self.id
+end
+
+function Projectile:CreateParticle(vPosition)
+    local efx = ParticleManager:CreateParticle(self.EffectName, PATTACH_CUSTOMORIGIN, nil)
+    ParticleManager:SetParticleAlwaysSimulate(efx)
+
+    for k,v in pairs(self.ControlPoints) do
+        ParticleManager:SetParticleControl(efx, k, v)
+    end
+
+    for k,v in pairs(self.ControlPointForwards) do
+        ParticleManager:SetParticleControlForward(efx, k, v)
+    end
+
+    for k,v in pairs(self.ControlPointOrientations) do
+        ParticleManager:SetParticleControlOrientation(efx, k, v[1], v[2], v[3])
+    end
+
+    for k,v in pairs(self.ControlPointEntityAttaches) do
+        local unit = v.unit or self.Source
+        local pattach = v.pattach or PATTACH_CUSTOMORIGIN
+        local attachPoint = v.attachPoint
+        local origin
+        if vPosition ~= nil then
+            origin = v.origin or vPosition + self.vCurrentVelocity
+        else
+            origin = v.origin or self.vSpawnOrigin
+        end
+        ParticleManager:SetParticleControlEnt(efx, k, unit, pattach, attachPoint, origin, true)
+    end
+
+    if vPosition ~= nil then
+        ParticleManager:SetParticleControl(efx, self.iPositionCP, vPosition + self.vCurrentVelocity)
+    else
+        ParticleManager:SetParticleControl(efx, self.iPositionCP, self.vSpawnOrigin)
+    end
+
+    if self.ControlPointForwards[1] == nil and self.ControlPointOrientations[1] == nil then
+        ParticleManager:SetParticleControlForward(efx, self.iPositionCP, self.vCurrentVelocity:Normalized())
+    end
+
+    return efx
+end
+
+function Projectile:UpdateTraveledDistance(fVelocityLength)
+    self.fDistanceTraveled = self.fDistanceTraveled + fVelocityLength
+end
+
+function Projectile:ProvideVision()
+    if self.fCurrentFrame == self.fVisionTick then
+        AddFOWViewer(self.iVisionTeamNumber, self.vCurrentPosition, self.iVisionRadius, self.fVisionLingerDuration, not self.bFlyingVision)
+        self.fCurrentFrame = 0
+    else
+        self.fCurrentFrame = self.fCurrentFrame + 1
+    end
+end
+
+function Projectile:InitializeValues()
+    self.fEndTime =             GameRules:GetGameTime()
+    self.tHitLog =              {}
+    self.vCurrentPosition =     self.vSpawnOrigin
+    self.vCurrentVelocity =     self.vVelocity / 30
+    self.vPreviousVelocity =    self.vCurrentVelocity
+    self.vPreviousPosition =    self.vSpawnOrigin
+    self.iChanges =             self.iChangeMax
+    self.fRadius =              self.fStartRadius
+    self.fSpawnTime =           GameRules:GetGameTime()
+    self.fChangeTime =          self.fSpawnTime
+    self.fDistanceTraveled =    0
+    self.fVisionTick =          math.ceil(self.fVisionTickTime * 30)
+    self.fCurrentFrame =        self.fVisionTick
+
+    if self.fRadiusStep then
+        self.fRadiusStep = self.fRadiusStep / 30
+    else
+        self.fRadiusStep = (self.fEndRadius - self.fStartRadius) / (self.fDistance / self.vCurrentVelocity:Length())
+    end
+end

@@ -21,7 +21,6 @@ function sniper_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
 	local origin = caster:GetOrigin()
-	local damage = caster:GetAverageTrueAttackDamage(caster) -- or self:GetSpecialValueFor("ability_damage")
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
@@ -42,25 +41,19 @@ function sniper_basic_attack:OnSpellStart()
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-				ability = self
-			}
-			ApplyDamage(damage_table)
+		OnUnitHit = function(_self, unit)
+			caster:PerformAttack(unit, true, true, true, true, false, false, true)
 
 			if _self.Source == caster then 
 				if CustomEntities:ProvidesMana(unit) then
 					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 			end
-
-			CustomEntities:OnBasicAttackImpact(_self.Source, unit)
 		end,
 		OnFinish = function(_self, pos)
+			if next(_self.rehit) == nil then
+				CustomEntities:FakeMissAttack(caster, pos)
+			end
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}

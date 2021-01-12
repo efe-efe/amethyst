@@ -181,14 +181,10 @@ function Filters:Activate(GameMode, this)
             end)
         end
         
-        if victim.GetParentEntity then
-            local entity = victim:GetParentEntity()
-
-            if instanceof(entity, Amethyst) then 
-                Timers:CreateTimer(0.1, function()
-                    this:UpdateUnitHealthBar(victim)
-                end)
-            end
+        if CustomEntities:IsAmethyst(victim) then 
+            Timers:CreateTimer(0.1, function()
+                this:UpdateUnitHealthBar(victim)
+            end)
         end
         return true
     end

@@ -70,14 +70,7 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-				ability = self
-			}
-			ApplyDamage(damage_table)
+			caster:PerformAttack(unit, true, true, true, true, false, false, true)
 
 			if _self.Source == caster then
 				if CustomEntities:ProvidesMana(unit) then
@@ -131,6 +124,9 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 			CustomEntities:OnBasicAttackImpact(_self.Source, unit)
 		end,
 		OnFinish = function(_self, pos)
+			if next(_self.rehit) == nil then
+				CustomEntities:FakeMissAttack(caster, pos)
+			end
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}

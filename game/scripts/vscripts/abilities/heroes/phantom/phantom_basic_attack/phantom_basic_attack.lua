@@ -54,15 +54,6 @@ function phantom_basic_attack:OnSpellStart()
 			should_shake = true
 		end
 
-		local damage_table = {
-			victim = enemy,
-			attacker = caster,
-			damage = damage,
-			damage_type = DAMAGE_TYPE_PHYSICAL,
-			ability = self
-		}
-		ApplyDamage(damage_table)
-
 		if CustomEntities:ProvidesMana(enemy) then
             CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
         end
@@ -88,10 +79,14 @@ function phantom_basic_attack:OnSpellStart()
 			second_attack:StartCooldown(new_cd)
 		end
 
-		CustomEntities:OnBasicAttackImpact(caster, enemy)
+		caster:PerformAttack(enemy, true, true, true, true, false, false, true)
 		self:PlayEffectsOnImpact(enemy)
 
 		break
+	end
+
+	if #enemies == 0 then
+		CustomEntities:FakeMissAttack(caster)
 	end
 
 	if should_shake then
