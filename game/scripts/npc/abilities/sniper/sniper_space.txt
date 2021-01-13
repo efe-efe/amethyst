@@ -1,0 +1,35 @@
+"DOTAAbilities" {
+    "sniper_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_mobility/sniper_mobility"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"sniper_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"800"
+		"AbilityCooldown"				"7.0"
+		"AbilityCastPoint"				"0.1"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+		}
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_techies.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"stun_duration"			"1.0" }
+		}
+	}
+}

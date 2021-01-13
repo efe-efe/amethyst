@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+	"juggernaut_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_mobility/juggernaut_mobility"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"juggernaut_blade_fury"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCooldown"				"10.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"4" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"85" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.25" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+		}
+	}
+}

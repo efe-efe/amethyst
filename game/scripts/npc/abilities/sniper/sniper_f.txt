@@ -1,0 +1,39 @@
+"DOTAAbilities" {
+	"sniper_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_extra/sniper_extra"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"sniper_headshot"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"600"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25 0"
+		"AbilityCastPoint"				"0.3"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_techies.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"600" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"damage_per_bullet"			"8" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"damage_on_collision"		"6" }
+		}
+	}
+}

@@ -1,0 +1,59 @@
+"DOTAAbilities" {
+	"mars_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/mars/mars_extra/mars_extra"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"mars_extra"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"2500"
+		"AbilityCooldown"				"12.0"
+		"AbilityManaCost"				"25"
+		"AbilityCastPoint"				"0.2"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
+		}
+	}
+
+	"mars_extra_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/mars/mars_extra/mars_extra"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"mars_extra"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"2500"
+		"AbilityCastPoint"				"0.2"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"150" }
+		}
+	}
+}

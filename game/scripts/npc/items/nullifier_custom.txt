@@ -1,0 +1,40 @@
+"DOTAAbilities"
+{
+    "item_nullifier_custom"	
+	{	
+		"ID"							"2011"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_nullifier"	
+        "ScriptFile"                    "items/item_nullifier_custom/item_nullifier_custom.lua"
+
+		"ItemCost"						"3"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" 				"0"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"20.0"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"projectile_speed"			"1700" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"initial_duration"			"1.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"tick_duration"				"0.3" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"slow_pct"					"100" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"90" }
+		}
+    }	
+}	

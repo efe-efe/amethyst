@@ -1,0 +1,42 @@
+"DOTAAbilities" {
+    "sniper_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_ultimate/sniper_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"sniper_take_aim"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"AbilityEnergyCost"				"100"
+		"AbilityCastRange"				"1600"
+		"AbilityCastPoint"				"0.6"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+
+		"precache"
+		{
+			"particle"	"particles/units/heroes/hero_techies/techies_base_attack_smokeburst.vpcf"
+			"particle"	"particles/units/heroes/hero_techies/techies_base_attack_explosion.vpcf"
+			"particle"	"particles/units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
+			"particle"	"particles/units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf"
+			"particle"	"particles/econ/items/techies/techies_arcana/techies_suicide_arcana.vpcf"
+			"particle"	"particles/sniper/sniper_ultimate_new.vpcf"
+		}
+		
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"14" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"100" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"28" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2700" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+		}
+	}
+}

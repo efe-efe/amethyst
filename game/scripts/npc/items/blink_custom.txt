@@ -1,0 +1,33 @@
+"DOTAAbilities"
+{
+    "item_blink_custom"	
+	{	
+		"ID"							"2008"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_blink"	
+        "ScriptFile"                    "items/item_blink_custom/item_blink_custom.lua"
+
+		"ItemCost"						"3"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" 				"0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastRange"				"750"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"20.0"	
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.1" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"					"350" }
+		}
+    }	
+}	

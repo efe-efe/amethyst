@@ -1,0 +1,33 @@
+"DOTAAbilities" {
+    "spectre_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ultimate/spectre_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_haunt"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityEnergyCost"				"100"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"800"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			
+			"01"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"20" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"20" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"bonus_damage"				"7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"650" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.8" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
+		}
+	}
+}

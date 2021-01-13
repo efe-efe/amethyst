@@ -1,0 +1,26 @@
+"DOTAAbilities" {
+    "invoker_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_mobility/invoker_mobility"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"invoker_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | TARGETING_INDICATOR_AOE"
+		"AbilityCooldown"				"8.0"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.3" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"min_range"					"300" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+		}
+	}
+}

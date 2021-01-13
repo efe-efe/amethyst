@@ -1,0 +1,30 @@
+"DOTAAbilities" {
+    "mars_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/mars/mars_ultimate/mars_ultimate"
+		"MaxLevel"						"1"
+
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityTextureName"			"mars_arena_of_blood"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"AbilityManaCost"				"100"
+		"AbilityCastPoint"				"0.8"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"8" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"				"4.0" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"			    "550" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"	"250" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"soldier_radius"		"100" }
+		}
+	}
+}

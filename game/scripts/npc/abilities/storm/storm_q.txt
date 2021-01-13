@@ -1,0 +1,23 @@
+"DOTAAbilities" {
+	"storm_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_counter/storm_counter"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+
+		"AbilityTextureName"			"storm_counter"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCooldown"				"8.0 6.0"
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain"                 "25" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"counter_duration"			"1.5" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"knockback_distance"		"250" }
+		}
+	}
+}

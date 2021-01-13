@@ -1,0 +1,1 @@
+modifier_sniper_ultimate_hit = class({})

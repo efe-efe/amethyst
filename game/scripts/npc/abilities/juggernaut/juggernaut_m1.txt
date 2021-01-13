@@ -1,0 +1,26 @@
+"DOTAAbilities" {
+    "juggernaut_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_basic_attack/juggernaut_basic_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"juggernaut_blade_dance"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"240"
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"cast_point_speed_pct"			"85" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"						"240" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             	"7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"cooldown_reduction"			"2.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"max_stacks"					"4" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"cooldown_reduction_counter"	"0.5" }
+		}
+	}
+}

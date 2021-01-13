@@ -1,0 +1,29 @@
+"DOTAAbilities" {
+    "nevermore_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_ultimate/nevermore_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_requiem"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityManaCost"				"100"
+		"AbilityCastPoint"				"1.4"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"						"FIELD_INTEGER"		"radius"				"650" }
+			"03"{ "var_type"						"FIELD_INTEGER"		"reduction_ms"			"25" }
+			"04"{ "var_type"						"FIELD_INTEGER"		"slow_duration"			"5.0" }
+			"08"{ "var_type"						"FIELD_INTEGER"		"damage_per_soul"		"8" }
+			"09"{ "var_type"						"FIELD_INTEGER"		"base_damage"			"40" }
+		}
+	}
+}

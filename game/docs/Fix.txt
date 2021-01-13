@@ -1,0 +1,18 @@
+//=================================================================================	
+General
+//=================================================================================
+
+- Game crashes on 2v3
+- Game not loading anything:
+    * Host on China
+    * Phantom Assassin vs Spectre
+    * Game have crahsed just before 
+- Heroes do not respawn when the owner is disconnected
+- Change most of the "FindModifierByName" for "HasModifier"
+- Change most of the "SafeDestroyModifier" for "RemoveModifierByName"
+//=================================================================================	
+Balance
+//=================================================================================
+
+- Meele heroes movement speed is too high
+- Duration Counter ability duration to loading

@@ -1,0 +1,60 @@
+//=================================================================================	
+Abilities
+//=================================================================================
+
+- Abilities can be in any order execpt for the following:
+    * "Mobility abilities" = 9
+    * "Ex ability one" = 7
+    * "Ex ability two" = 8
+    * "Ex ability three" = 4
+
+//=================================================================================	
+Units
+//=================================================================================
+
+Some units are used to slow projectiles. On those units:
+    * The "AttackAnimationPoint" parameter sets the slow percentage
+
+
+    
+1   2
+M1  M2  SPACE   Q   E   R   F 
+
+
+Get Alternate Version
+Check if Alternate Version is in its original index slot
+If it is:
+    Swap Actual with Alternate
+Else:
+    Check if Alternate Version is in its EX-Version-Ability slot
+    if it is:
+        Swap Actual with Alternate
+    else
+        Swap Actual with Relative one
+    
+GetAbilityOriginalIndex
+    If is basic: 0
+    If is second: 1
+    If is mobility: 2
+    If is counter: 3
+    If is special: 4
+    If is extra: 5
+    If is ultimate: 6
+    
+    If SPELLS_ORDER_TABLE[name] >     
+
+
+
+SPELLS_ORDER_TABLE = {}
+SPELLS_ORDER_TABLE["basic"] = 0
+SPELLS_ORDER_TABLE["second"] = 1
+SPELLS_ORDER_TABLE["mobility"] = 2
+SPELLS_ORDER_TABLE["counter"] = 3
+SPELLS_ORDER_TABLE["special"] = 4
+SPELLS_ORDER_TABLE["extra"] = 5
+SPELLS_ORDER_TABLE["ultimate"] = 6
+SPELLS_ORDER_TABLE["ex_basic"] = 7
+SPELLS_ORDER_TABLE["ex_second"] = 8
+SPELLS_ORDER_TABLE["ex_mobility"] = 9
+SPELLS_ORDER_TABLE["ex_counter"] = 10
+SPELLS_ORDER_TABLE["ex_special"] = 11

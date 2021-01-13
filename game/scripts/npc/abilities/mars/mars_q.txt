@@ -1,0 +1,27 @@
+"DOTAAbilities" {
+    "mars_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/mars/mars_counter/mars_counter"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"mars_bulwark"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityCooldown"				"9.0"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastRange" 				"500" //only for direction showing
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0 3.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"meele_damage"			"10" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"meele_stun_duration"		"0.5" }
+		}
+	}
+}

@@ -1,0 +1,20 @@
+.stacks{
+    height: 24px;
+    width: 30px;
+    
+    flow-children: right;
+    align: right top; 
+
+    &__stack{
+        height: 100%;
+        width: 6px;
+        transition-property: opacity;
+        transition-duration: 0.2s;
+        border: 1px solid rgb(36, 42, 53);
+        background-color: gradient(linear, 0% 0%, 0% 100%, from(rgba(201, 81, 253, 1.0)), to(rgba(250, 117, 245, 1.0)));
+
+        &--empty{
+            opacity: 0.0;
+        }
+    }
+}

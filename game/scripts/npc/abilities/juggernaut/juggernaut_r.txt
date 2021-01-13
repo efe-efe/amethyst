@@ -1,0 +1,37 @@
+"DOTAAbilities" {
+    "juggernaut_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_ultimate/juggernaut_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_omni_slash"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"1500"
+		"AbilityEnergyCost"				"100"
+		"AbilityCastPoint"				"1.0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_lycan.vsndevts"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"				"1.5" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"find_radius"			"450" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"                "80" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"aspd_per_stack"		"12.5" }
+		}
+	}
+}

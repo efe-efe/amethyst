@@ -1,0 +1,88 @@
+"DOTAAbilities" {
+	"puck_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack/puck_basic_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"puck_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"850"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"fairy_dust_duration"		"2.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"fairy_dust_slow_pct"		"20" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"charged_damage"			"4" }
+		}
+	}
+
+	"puck_basic_attack_related"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack/puck_basic_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"puck_basic_attack_related"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1200"
+		"AbilityCastPoint"				"0.2"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_leshrac.vsndevts"
+		}
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+		}
+	}
+	
+	"puck_ex_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack/puck_basic_attack"
+		"MaxLevel"						"2"
+		
+		"AbilityTextureName"			"puck_ex_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"8.0"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"shield_per_hit"			"7" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal_per_hit"				"5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.4" } 
+			"04"{ "var_type"	"FIELD_FLOAT"		"fairy_dust_duration"		"2.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"fairy_dust_slow_pct"		"20" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"duration"					"6.0" }
+		}
+	}
+}

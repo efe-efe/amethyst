@@ -1,0 +1,28 @@
+.alliances-status
+{
+    margin-top: 170px;
+    width: 100%;
+    height: 600px;
+
+    flow-children: right;
+}
+
+.alliances-status__left, .alliances-status__right{
+    height: 100%;
+    flow-children: down;
+    margin-left: 10px;
+}
+
+.alliances-status__right{
+    align: right center;
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.alliances-status__radiant, .alliances-status__dire, .alliances-status__void, .alliances-status__legion{
+    align: center center;
+    flow-children: down;
+
+    height: 50%;
+    padding-top: 10px;
+}

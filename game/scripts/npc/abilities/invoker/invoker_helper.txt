@@ -1,0 +1,12 @@
+"DOTAAbilities" {
+	"invoker_helper"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_helper"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"invoker_exort"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+	}
+}

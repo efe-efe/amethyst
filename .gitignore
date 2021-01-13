@@ -1,0 +1,45 @@
+# Node
+node_modules
+
+/content/panorama/scripts/custom_game/**/*.js
+/content/panorama/styles/custom_game/**/*.css
+
+!/content/panorama/styles/custom_game/heroSelection.css
+
+# Cache crap that Valve autogenerates
+*.bin
+
+# Compiled formats
+*.vpcf_c
+*.vtex_c
+*.vsndevts_c
+*.vmat_c
+*.vjs_c
+*.vxml_c
+*.vcss_c
+*.vmdl_c
+*.vanim_c
+*.vmesh_c
+*.vagrp_c
+*.vsnd_c
+*.vseq_c
+
+# Panorama debugger
+*.cfg
+
+# Commit panorama compiled textures
+!game/panorama/images/*.vtex_c
+!game/panorama/images/custom_game/*.vtex_c
+
+# Map files
+*.vpk
+
+settings.kv
+
+# Map overviews
+content/materials/overviews/*
+game/materials/overviews/*
+game/resource/overviews/*
+
+#Github dump
+*.stackdump

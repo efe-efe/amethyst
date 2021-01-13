@@ -1,0 +1,68 @@
+"DOTAAbilities" {
+    "juggernaut_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_second_attack/juggernaut_second_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"juggernaut_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"240"
+		"AbilityCooldown"				"8.0"
+		"AbilityCastPoint"				"0.3"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
+			"ModifierType"				"TARGETING_INDICATOR_AOE"
+			"ModifierName"				"modifier_juggernaut_basic_attack_stacks"
+			"ModifierStacks"			"4"
+			"ModifierLength"			"0"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"14" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"240" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"			"2 4" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"					"6.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"shield_per_stack"			"5" }
+		}
+	}
+
+    "juggernaut_ex_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_second_attack/juggernaut_second_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"juggernaut_ex_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"300"
+		"AbilityCooldown"				"8.0"
+		"AbilityManaCost"				"25"
+		"AbilityCastPoint"				"0.4"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"duration"					"0.5" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration_per_stack"		"0.25" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"swiftness_duration"		"2.0" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"swiftness_pct"				"50" }
+		}
+	}
+}

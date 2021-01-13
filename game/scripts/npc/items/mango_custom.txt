@@ -1,0 +1,29 @@
+"DOTAAbilities"
+{
+    "item_mango_custom"	
+	{	
+		"ID"							"2021"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_enchanted_mango"	
+        "ScriptFile"                    "items/item_mango_custom/item_mango_custom.lua"
+
+		"ItemCost"						"1"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" "0"
+		"ItemStackable"					"1"
+        "ItemInitialCharges" 			"1" 
+        "ItemDisplayCharges" 			"1" 
+		"ItemPermanent" 				"0"
+		"ItemRequiresCharges" 			"1"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"6.0"
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"mana"						"25" }
+		}
+    }	
+}	

@@ -1,0 +1,47 @@
+"DOTAAbilities" {
+    "vengeful_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_extra/vengeful_extra"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_extra"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_disruptor.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{	
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"			"300" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"delay_time"		"1.5" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"			"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"damage_block"		"24 35" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"			"6.0" }
+		}
+	}
+
+    "vengeful_extra_ultimate"
+	{
+        "BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/vengeful/vengeful_extra/vengeful_extra"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"vengeful_extra"
+
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_disruptor.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{	
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"			"300" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"delay_time"		"1.5" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"			"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"damage_block"		"24 35" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"			"6.0" }
+		}
+	}
+}

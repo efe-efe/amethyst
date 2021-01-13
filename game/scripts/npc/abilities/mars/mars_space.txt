@@ -1,0 +1,31 @@
+"DOTAAbilities" {
+    "mars_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/mars/mars_mobility/mars_mobility"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"mars_mobility"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"850 1300"
+		"AbilityCooldown"				"8.0"
+		"AbilityCastPoint"				"0.4"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"12" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"				"250" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"min_range"				"350" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"0.5" }
+		}
+	}
+}

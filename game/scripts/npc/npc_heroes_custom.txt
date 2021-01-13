@@ -1,0 +1,16 @@
+#base "heroes\phantom.txt"
+#base "heroes\sniper.txt"
+#base "heroes\juggernaut.txt"
+#base "heroes\nevermore.txt"
+#base "heroes\puck.txt"
+#base "heroes\spectre.txt"
+#base "heroes\mars.txt"
+#base "heroes\storm.txt"
+#base "heroes\vengeful.txt"
+#base "heroes\invoker.txt"
+
+
+"DOTAHeroes"
+{   
+}
+

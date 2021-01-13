@@ -1,0 +1,38 @@
+"DOTAAbilities" {
+	"juggernaut_extra"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_extra/juggernaut_extra"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"juggernaut_healing_ward"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityCastRange"				"1200"
+		"AbilityCooldown"				"10"
+		"AbilityCastPoint"				"0.1"
+		"AbilityManaCost"				"25"
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"duration"					"5.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal_per_second"			"8" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"shield"					"30" }
+		}
+	}
+
+	"juggernaut_extra_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_extra/juggernaut_extra_recast"
+		"MaxLevel"						"1"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+
+		"AbilityTextureName"			"juggernaut_healing_ward"
+	}
+}

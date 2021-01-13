@@ -1,0 +1,24 @@
+"DOTAUnits"
+{
+	"npc_dota_creature_invoker_spirit_custom"	
+	{
+		"Model"						"models/heroes/invoker/forge_spirit.vmdl"
+		"BaseClass"					"npc_dota_creep_neutral"
+		"Level"						"0"
+		"ModelScale"				"1"
+
+		"AttackDamageMin"			"8"
+		"AttackDamageMax"			"8"
+		"AttackRate"				"1.0"
+		"AttackAnimationPoint"		"1.0"
+
+		"HealthBarOffset"			"145"
+		"BoundsHullName"			"DOTA_HULL_SIZE_SMALL"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementTurnRate"			"1.0"
+		"StatusHealth"				"40"
+		"VisionDaytimeRange"		"600"
+		"VisionNighttimeRange"		"600"
+	}
+}

@@ -1,0 +1,32 @@
+"DOTAAbilities" {
+	"puck_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_ultimate/puck_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"puck_dream_coil"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCastRange" 				"850"
+		"AbilityEnergyCost"				"100"
+		"AbilityCastPoint"				"0.3"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"15" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"400" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"4.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"initial_stun_duration"		"0.3" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"snap_stun_duration"		"0.5" }
+		}
+	}
+}

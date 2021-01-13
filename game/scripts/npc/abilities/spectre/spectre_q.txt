@@ -1,0 +1,98 @@
+"DOTAAbilities" {
+    "spectre_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"spectre_dispersion"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"9.0"
+		"AbilityCastRange" 				"500" //only for direction showing
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"counter_duration"		"2.0" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"		"22" }
+		}
+	}
+
+    "spectre_counter_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter_recast"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"spectre_counter_recast"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.3"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_nevermore.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+		}
+	}
+
+    "spectre_ex_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"spectre_desolate"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"9.0"
+		"AbilityManaCost" 				"25"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"precache"
+		{
+			"soundfile"	"soundevents/game_sounds_heroes/game_sounds_shadow_demon.vsndevts"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"10 22" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"heal"					"10" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"				"350" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"delay_time"			"1.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.5" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
+		}
+	}
+}

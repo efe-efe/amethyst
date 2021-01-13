@@ -1,0 +1,73 @@
+"DOTAAbilities" {
+    "phantom_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack/phantom_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"phantom_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"240"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"cast_point_speed_pct"		"85" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"240" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "5" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"cooldown_reduction"		"2.0" }
+		}
+	}
+
+    "phantom_basic_attack_related"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack/phantom_basic_attack_related"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"phantom_assassin_stifling_dagger"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1200"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+		}
+	}
+	
+    "phantom_ex_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack/phantom_basic_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"phantom_ex_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"10"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"6" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"bleed_duration"			"4.0" }
+		}
+	}
+
+}

@@ -1,0 +1,37 @@
+"DOTAAbilities"
+{
+    "item_orchid_custom"	
+	{	
+		"ID"							"2010"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_orchid"	
+        "ScriptFile"                    "items/item_orchid_custom/item_orchid_custom.lua"
+
+		"ItemCost"						"3"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" 				"0"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"20.0"
+		"AbilityCastRange"				"1200"
+		"AbilityCastPoint"				"0.5"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.5" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"projectile_speed"			"1700" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"90" }
+		}
+    }	
+}	

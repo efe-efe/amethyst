@@ -1,0 +1,35 @@
+"DOTAAbilities" {
+	"storm_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_special_attack/storm_special_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"storm_spirit_electric_vortex"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1200"
+		"AbilityCooldown"				"8.0"
+		"AbilityCastPoint"				"0.2"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7 25" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"220" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.0" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"mana_drain"				"25" }
+		}
+	}
+}

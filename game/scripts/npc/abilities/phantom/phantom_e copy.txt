@@ -1,0 +1,38 @@
+"DOTAAbilities" {
+	"phantom_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_special_attack/phantom_special_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"phantom_special_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1200"
+		//"AbilityCooldown"				"5.0"
+		"AbilityCharges"                "2 3"
+		"AbilityChargeRestoreTime"		"5.0"
+		"AbilityCastPoint"				"0.2"
+		
+		"LevelsBetweenUpgrades"			"0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"6" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"mana_gain_pct"				"7" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"max_charges"               "2 3" }
+		}
+	}
+}

@@ -1,0 +1,51 @@
+"DOTAAbilities" {
+	"storm_basic_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_basic_attack/storm_basic_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"storm_spirit_overload"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"850"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.5" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"aoe_damage"				"7" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"15.0" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
+		}
+	}
+
+	"storm_ex_basic_attack"{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/storm/storm_basic_attack/storm_basic_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+		
+		"AbilityTextureName"			"storm_ex_basic_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityManaCost"				"25"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"damage_per_level"			"4" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"heal_multiplier"			"0.5" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"stun_duration"				"1.0" }
+		}
+	}
+}

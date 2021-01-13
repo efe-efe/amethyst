@@ -1,0 +1,16 @@
+"DOTAAbilities" {
+	"invoker_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_orb"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"invoker_exort"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilitySpecial"
+		{
+		}
+	}
+}

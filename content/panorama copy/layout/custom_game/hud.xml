@@ -1,0 +1,8 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/util.js"/>
+        <include src="file://{resources}/scripts/custom_game/target_indicator.js" />
+    </scripts>
+    <Panel class="HudPanel" hittest="false">
+    </Panel>
+</root>

@@ -1,0 +1,94 @@
+"DOTAAbilities" {
+	"spectre_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+		
+		"AbilityTextureName"			"spectre_spectral_dagger"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1000 3000"
+		"AbilityCooldown"				"7.0"
+		"AbilityCastPoint"				"0.5"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2300" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"80" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"				"7" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"buff_duration"				"0.2" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"3.5" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"path_duration"				"3.0" }
+			"08"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"			"35" }
+		}
+	}
+
+	"spectre_ex_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"spectre_reality"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_NO"
+		"AbilityCastRange"				"1200 1500"
+		"AbilityCooldown"				"7.0"
+		"AbilityManaCost"				"25"
+		"AbilityCastPoint"				"0.1"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"banish_duration"			"1.5 2.5" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.5" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
+		}
+	}
+
+	"spectre_ex_special_attack_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"spectre_reality"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"1200 1500"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
+		}
+	}
+}

@@ -1,0 +1,34 @@
+"DOTAAbilities"
+{
+    "item_basher_custom"	
+	{	
+		"ID"							"2014"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_basher"	
+        "ScriptFile"                    "items/item_basher_custom/item_basher_custom.lua"
+
+		"ItemCost"						"3"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" 				"0"
+
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastRange"				"180"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"20.0"	
+		"AbilityCastPoint"				"0.4"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
+		}
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.4" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"            "15" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"180" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"duration"					"1.2" }
+		}
+    }	
+}	

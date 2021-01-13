@@ -1,0 +1,19 @@
+"DOTAAbilities" {
+	"puck_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/puck/puck_counter/puck_counter"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+		
+		"AbilityTextureName"			"puck_phase_shift"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityCooldown"				"6.0 5.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"			"FIELD_FLOAT"		"max_charges"       "2" }
+			"02"{ "var_type"			"FIELD_FLOAT"		"banish_duration"	"0.75" }
+		}
+	}
+}

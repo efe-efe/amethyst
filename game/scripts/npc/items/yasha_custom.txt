@@ -1,0 +1,35 @@
+"DOTAAbilities"
+{
+    "item_yasha_custom"	
+	{	
+		"ID"							"2025"
+		"BaseClass"						"item_lua"	
+		"AbilityTextureName" 			"item_yasha"	
+        "ScriptFile"                    "items/item_yasha_custom/item_yasha_custom.lua"
+
+		"ItemCost"						"3"
+		"ItemShopTags"					"consumable"
+		"ItemQuality"					"consumable"
+		"ItemShareability"				"ITEM_FULLY_SHAREABLE"
+		"ItemDroppable" 				"0"
+		
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityManaCost"				"25"
+		"AbilityCooldown"				"20.0"
+		"AbilityCastRange"				"900"
+		"AbilityCastPoint"				"0.3"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+		}
+
+		"AbilitySpecial"	
+		{
+			"01"{ "var_type"	"FIELD_FLOAT"		"cast_point"				"0.3" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"10" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"ms_pct"				    "40" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"1.5" }
+		}
+    }	
+}	

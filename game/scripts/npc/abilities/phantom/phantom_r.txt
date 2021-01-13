@@ -1,0 +1,31 @@
+"DOTAAbilities" {
+	"phantom_ultimate"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_ultimate/phantom_ultimate"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"phantom_assassin_coup_de_grace"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange"				"2400"
+		"AbilityEnergyCost"				"100"
+		"AbilityCastPoint"				"1.0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"		"25" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"		"10" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"				"90" }
+		}
+	}
+}

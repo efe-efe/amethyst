@@ -1,0 +1,56 @@
+<root>
+    <scripts>
+        <include src="file://{resources}/scripts/custom_game/util.js" />
+        <include src="file://{resources}/scripts/custom_game/alliances_status.js" />
+        <include src="file://{resources}/scripts/custom_game/progress_bar.js" />
+    </scripts>
+    <styles>
+        <include src="file://{resources}/styles/custom_game/alliances_status.css" />
+        <include src="file://{resources}/styles/custom_game/progress_bar.css" />
+    </styles>
+    <snippets>
+        <snippet name="HeroStatus">
+            <Panel class="HeroStatus" hittest="false" hittestchildren="false">
+                <Panel class="HeroStatus__Top" hittest="false" hittestchildren="false">
+                    <Panel class="HeroStatus__Image" hittest="false" hittestchildren="false">
+                        <DOTAHeroImage id="HeroStatus__Avatar" heroimagestyle="landscape" heroname=""/>
+                    </Panel>
+                </Panel>
+                <Panel class="HeroStatus__Middle" hittest="false" hittestchildren="false">
+                    <Panel class="HeroStatus__Resources" hittest="false" hittestchildren="false">
+                        <Panel class="HeroStatus__Health" id="HeroStatus__Health" hittest="false" hittestchildren="false"/>
+                        <Panel class="HeroStatus__Mana" id="HeroStatus__Mana" hittest="false" hittestchildren="false"/>
+                    </Panel>
+                </Panel>
+                <Panel class="HeroStatus__Bottom" hittest="false" hittestchildren="false">
+                    <Panel id="Items" class="Items" hittest="false" hittestchildren="false">
+                        <Panel class="Items__Row" hittest="false" hittestchildren="false">
+                            <DOTAItemImage class="Items__Item" itemname="" />
+                            <DOTAItemImage class="Items__Item Items__Item--Center" itemname="" />
+                            <DOTAItemImage class="Items__Item" itemname="" />
+                        </Panel>
+                        <Panel class="Items__Row" hittest="false" hittestchildren="false">
+                            <DOTAItemImage class="Items__Item" itemname="1" />
+                            <DOTAItemImage class="Items__Item Items__Item--Center" itemname="2" />
+                            <DOTAItemImage class="Items__Item" itemname="3" />
+                        </Panel>
+                    </Panel>
+                </Panel>
+            </Panel>
+        </snippet>
+
+    </snippets>
+
+    <Panel class="AlliancesStatus" hittest="false">
+        <Panel id="AlliancesStatus__Container" class="AlliancesStatus__Container" hittest="false">
+            <Panel id="AlliancesStatus__Left" class="AlliancesStatus__Left" hittest="false">
+                <Panel class="AlliancesStatus__Radiant" id="AlliancesStatus__Radiant" hittest="false"/>
+                <Panel class="AlliancesStatus__Legion" id="AlliancesStatus__Legion" hittest="false"/>
+            </Panel>
+            <Panel id="AlliancesStatus__Right" class="AlliancesStatus__Right" hittest="false">
+                <Panel class="AlliancesStatus__Dire" id="AlliancesStatus__Dire" hittest="false"/>
+                <Panel class="AlliancesStatus__Void" id="AlliancesStatus__Void" hittest="false"/>
+            </Panel>
+        </Panel>
+    </Panel>
+</root>
