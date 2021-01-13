@@ -19,7 +19,6 @@ export default class Mana{
         /*if(!IsVisibleByLocal(this.entity_index)){
             return;
         }*/
-
         if(maxMana != this.maxMana){
             this.maxMana = maxMana;
             this.UpdateCells();
@@ -57,19 +56,26 @@ export default class Mana{
         while(this.progressBars.length > cells){
             this.RemoveCell();
         }
+
+        this.SetWidths();
     }
 
     AddCell(): void{
         const index = this.progressBars.length;
         const progressBar = new ProgressBar('mana__progress-bar__' + index, this.container, { foreground_color: colors.Gradient(colors.blue) });
-        const width = (100 * this.manaPerCell)/this.maxMana;
-        progressBar.SetTotalWidth(width);
-
+        
         if(index > 0){
             progressBar.SetBorder({left: '0'});
         }
 
         this.progressBars.push(progressBar);
+    }
+
+    SetWidths(): void{
+        const width = (100 * this.manaPerCell)/this.maxMana;
+        this.progressBars.forEach(bar => {
+            bar.SetTotalWidth(width);
+        });
     }
 
     RemoveCell(): void{
