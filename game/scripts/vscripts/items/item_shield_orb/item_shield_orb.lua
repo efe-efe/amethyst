@@ -1,7 +1,7 @@
 item_shield_orb = class({})
 
 function item_shield_orb:OnSpellStart()
-    local damage_block = 8
+    local damage_block = 16
     local caster = self:GetCaster()
 
     caster:AddNewModifier(caster, nil, "modifier_shield", { duration = 6.0, damage_block = damage_block })

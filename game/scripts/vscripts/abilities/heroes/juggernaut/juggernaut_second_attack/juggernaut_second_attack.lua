@@ -3,6 +3,7 @@ juggernaut_ex_second_attack = class({})
 LinkLuaModifier("modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL)
 LinkLuaModifier("modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_HORIZONTAL)
 LinkLuaModifier("modifier_juggernaut_swiftness", "abilities/heroes/juggernaut/modifier_juggernaut_swiftness", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_second_attack", "abilities/heroes/juggernaut/juggernaut_second_attack/modifier_juggernaut_second_attack", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_second_attack:OnAbilityPhaseStart()
 	local caster = self:GetCaster()
@@ -112,7 +113,7 @@ function juggernaut_second_attack:OnSpellStart()
 
 	if self:GetLevel() >= 2 and stacks > 0 and shield_providers > 0 then
 		local final_shield = stacks * shield_per_stack * shield_providers
-		caster:AddNewModifier(caster, self, 'modifier_shield', { damage_block = final_shield, duration = duration })
+		caster:AddNewModifier(caster, self, 'modifier_juggernaut_second_attack', { damage_block = final_shield, duration = duration })
 	end
 
 	CustomEntities:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")

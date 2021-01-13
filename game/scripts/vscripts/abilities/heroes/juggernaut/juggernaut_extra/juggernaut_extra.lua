@@ -2,6 +2,7 @@ juggernaut_extra = class({})
 LinkLuaModifier("modifier_juggernaut_extra_ward", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_ward", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_extra_recast", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_extra", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_extra_shield", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_shield", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_extra:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_2 end
 function juggernaut_extra:GetPlaybackRateOverride() 	return 2.0 end
@@ -27,7 +28,7 @@ function juggernaut_extra:OnSpellStart()
     if self:GetLevel() >= 2 then
         ApplyCallbackForUnitsInArea(caster, point, radius, DOTA_UNIT_TARGET_TEAM_FRIENDLY, function(unit)
             if unit ~= healing_ward then
-                unit:AddNewModifier(unit, nil, "modifier_shield", { duration = 6.0, damage_block = shield })
+                unit:AddNewModifier(unit, nil, "modifier_juggernaut_extra_shield", { duration = 6.0, damage_block = shield })
             end
         end)
     end

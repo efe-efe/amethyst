@@ -1,5 +1,13 @@
 modifier_shield = class({})
 
+function modifier_shield:GetStatusLabel() return "Shield" end
+function modifier_shield:GetStatusPriority() return 3 end
+function modifier_shield:GetStatusStyle() return "Shield" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_shield)
+Modifiers.Shield(modifier_shield)
+--[[
 function modifier_shield:IsHidden() return false end
 function modifier_shield:IsDebuff() return false end
 function modifier_shield:IsStunDebuff() return false end
@@ -118,3 +126,4 @@ function modifier_shield:GetStatusStyle() return "Shield" end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Status(modifier_shield)
+]]

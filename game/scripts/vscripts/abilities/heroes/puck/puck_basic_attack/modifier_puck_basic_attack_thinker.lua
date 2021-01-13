@@ -76,7 +76,7 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
             self.caster:Heal(self.heal_per_hit, self.caster)
         end
 
-        self.caster:AddNewModifier(self.caster, nil, "modifier_shield", { duration = 6.0, damage_block = self.shield_per_hit })
+        self.caster:AddNewModifier(self.caster, nil, "modifier_puck_ex_basic_attack_shield", { duration = 6.0, damage_block = self.shield_per_hit })
         CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
     end
     self:Destroy()

@@ -37,7 +37,7 @@ function modifier_vengeful_extra_thinker:OnIntervalThink()
         )
 
         for _,ally in pairs(allies) do
-            ally:AddNewModifier(caster, self.ability, "modifier_shield", { duration = self.duration, damage_block = self.damage_block })
+            ally:AddNewModifier(caster, self.ability, "modifier_vengeful_extra", { duration = self.duration, damage_block = self.damage_block })
             EmitSoundOn("Hero_Disruptor.KineticField", ally)
         end
 

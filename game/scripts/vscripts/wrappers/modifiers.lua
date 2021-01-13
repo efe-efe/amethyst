@@ -1283,3 +1283,94 @@ function Modifiers.FadingSlow(modifier)
     if IsClient() then require("wrappers/modifiers") end
     Modifiers.Status(modifier)
 end
+
+function Modifiers.Shield(modifier)
+    local onCreated =               modifier.OnCreated
+    local onDestroy =               modifier.OnDestroy
+    local getStackeable =           modifier.GetStackeable
+    local declareFunctions =        modifier.DeclareFunctions
+
+    function modifier:OnCreated(params)
+        if IsServer() then
+            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_SHIELD)
+            SendOverheadShieldMessage(self:GetParent(), params.damage_block)
+            self:SetStackCount(params.damage_block)
+        end
+        if onCreated then onCreated(self, params) end
+    end
+    
+    function modifier:OnRefresh(params)
+        if IsServer() then
+            if self:GetStackeable() then
+                self:SetStackCount(self:GetStackCount() + params.damage_block)
+            else
+                self:SetStackCount(params.damage_block)
+            end
+
+            SendOverheadShieldMessage(self:GetParent(), params.damage_block)
+        end
+    end
+
+    function modifier:OnDestroy()
+        if IsServer() then
+            self:InformClient()
+            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_SHIELD)
+        end
+        if onDestroy then onDestroy(self) end
+    end
+
+    function modifier:OnStackCountChanged(old)
+        if IsServer() then
+            self:InformClient()
+            if self:GetStackCount() < 0 then
+                self:Destroy()
+            end
+        end
+    end
+
+    function modifier:DeclareFunctions()
+        local funcs = {}
+
+        if declareFunctions then
+            for _,func in pairs(declareFunctions()) do
+                table.insert(funcs, func)
+            end
+        end
+
+        table.insert(funcs, MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE)
+
+        return funcs
+    end
+
+    function modifier:GetModifierIncomingDamage_Percentage(params)
+        for _,shield_modifier_name in pairs(CustomEntities:GetShields(self:GetParent())) do
+            if shield_modifier_name == self:GetName() then
+                local shield_points = self:GetStackCount() - params.damage
+        
+                if shield_points <= 0 then
+                    local reduction = 100 - (100 * shield_points * (-1) / params.damage)
+                    self:Destroy()
+                    return -reduction
+                end
+            
+                self:SetStackCount(shield_points)
+                return -100
+            end
+            return 0
+        end
+    end
+    
+    function modifier:InformClient()
+        CustomEntities:SendDataToClient(self:GetParent())
+        local alliance = CustomEntities:GetAlliance(self:GetParent())
+    
+        if alliance then
+            alliance:SendDataToClient()
+        end
+    end
+
+    function modifier:GetStackeable()
+        if getStackeable then return getStackeable(self) end
+        return false
+    end
+end

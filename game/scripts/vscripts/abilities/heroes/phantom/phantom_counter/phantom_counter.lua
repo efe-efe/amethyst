@@ -8,6 +8,7 @@ LinkLuaModifier("modifier_phantom_counter_countering", "abilities/heroes/phantom
 LinkLuaModifier("modifier_phantom_counter", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_phantom_counter_recast", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_phantom_ex_counter_recast", "abilities/heroes/phantom/phantom_counter/modifier_phantom_ex_counter_recast", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_phantom_counter_shield", "abilities/heroes/phantom/phantom_counter/modifier_phantom_counter_shield", LUA_MODIFIER_MOTION_NONE)
 
 function phantom_counter:OnSpellStart()
     local caster = self:GetCaster()
@@ -37,7 +38,7 @@ function phantom_counter_recast:OnSpellStart()
 	local shield_duration = phantom_counter:GetSpecialValueFor('shield_duration')
 	
 	caster:AddNewModifier(caster, phantom_counter, 'modifier_phantom_counter', { duration = duration } )
-	caster:AddNewModifier(caster, nil, "modifier_shield", { duration = 6.0, damage_block = shield })
+	caster:AddNewModifier(caster, nil, "modifier_phantom_counter_shield", { duration = 6.0, damage_block = shield })
 
 	EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf", PATTACH_ABSORIGIN_FOLLOW, caster, {
 		cp3 = origin,

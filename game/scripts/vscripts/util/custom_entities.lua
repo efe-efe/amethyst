@@ -10,6 +10,7 @@ MODIFIER_TRANSLATE = 7
 MODIFIER_ON_PROJECTILE_HIT = 8 
 MODIFIER_MOVE_FORCE = 9
 MODIFIER_BANISHED = 10
+MODIFIER_SHIELD = 11
 
 function CustomEntities:Initialize(hEntity)
 	hEntity.on_basic_attack_impact = 	    {}
@@ -31,7 +32,8 @@ function CustomEntities:Initialize(hEntity)
 	hEntity.move_force_modifiers =  	    {}
 	hEntity.banished_modifiers =			{}
 	hEntity.on_projectile_hit_modifiers =   {}
-
+	hEntity.shield_modifiers =   			{}
+	
 	CustomEntities:SetEnergy(hEntity, hEntity.max_energy)	
     CustomEntities:SetTreshold(hEntity, GameRules.GameMode.max_treshold)
     
@@ -113,7 +115,7 @@ function CustomEntities:SendDataToClient(hEntity)
 		if CustomEntities:GetAlliance(hEntity) then
 			allianceName = CustomEntities:GetAlliance(hEntity):GetName() 
 		end
-	
+
 		local data = {
 			entityIndex = hEntity:GetEntityIndex(),
 			teamId = hEntity:GetTeam(),
@@ -166,15 +168,18 @@ function CustomEntities:GetTreshold(hEntity)
 end
 
 function CustomEntities:GetShield(hEntity)
-	local shield_modifier = hEntity:FindModifierByName("modifier_shield")
-    local shield = 0
+	local shield = 0
 
-    if shield_modifier ~= nil then
-        if not shield_modifier:IsNull() then
-            shield = shield_modifier:GetStackCount()
-        end
+	for _,shield_modifier_name in pairs(CustomEntities:GetShields(hEntity)) do
+		local shield_modifier = hEntity:FindModifierByName(shield_modifier_name)
+
+		if shield_modifier ~= nil then
+			if not shield_modifier:IsNull() then
+				shield = shield + shield_modifier:GetStackCount()
+			end
+		end
 	end
-	
+
 	return shield
 end
 
@@ -206,6 +211,10 @@ function CustomEntities:GetOnProjectileHit(hEntity)
 	return hEntity.on_projectile_hit_modifiers
 end
 
+function CustomEntities:GetShields(hEntity)
+	return hEntity.shield_modifiers
+end
+
 function CustomEntities:GetAbilities(hEntity)
 	local abilities = {}
 
@@ -221,7 +230,12 @@ function CustomEntities:GetAbilities(hEntity)
 end
 
 function CustomEntities:GiveManaCustom(hEntity, fMana, bInformClient, bShowOverhead)
+	if hEntity:HasModifier("modifier_sapphire") then
+		fMana = fMana * 2
+	end
+
 	hEntity:GiveMana(fMana)
+
 	if bInformClient then
 		CustomEntities:SendDataToClient(hEntity)
 	end
@@ -310,7 +324,7 @@ function CustomEntities:Reset(hEntity)
 	hEntity:Purge(true, true, false, true, false)
 end
 
-function CustomEntities:AddModifierTracker(hEntity, tData, iType) 	
+function CustomEntities:AddModifierTracker(hEntity, sName, iType) 	
 	local key = nil
 
 	if iType == MODIFIER_DISPLACEMENT then key = "displacement_modifiers" end
@@ -324,11 +338,12 @@ function CustomEntities:AddModifierTracker(hEntity, tData, iType)
 	if iType == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
 	if iType == MODIFIER_MOVE_FORCE then key = "move_force_modifiers" end
 	if iType == MODIFIER_BANISHED then key = "banished_modifiers" end
+	if iType == MODIFIER_SHIELD then key = "shield_modifiers" end
 	
-	table.insert(hEntity[key], tData)
+	table.insert(hEntity[key], sName)
 end
 
-function CustomEntities:RemoveModifierTracker(hEntity, tData, iType)
+function CustomEntities:RemoveModifierTracker(hEntity, sName, iType)
 	local key = nil
 	
 	if iType  == MODIFIER_DISPLACEMENT then key = "displacement_modifiers" end
@@ -342,9 +357,10 @@ function CustomEntities:RemoveModifierTracker(hEntity, tData, iType)
 	if iType  == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
 	if iType  == MODIFIER_MOVE_FORCE then key = "move_force_modifiers" end
 	if iType  == MODIFIER_BANISHED then key = "banished_modifiers" end
+	if iType  == MODIFIER_SHIELD then key = "shield_modifiers" end
 
 	for _,m_data in pairs(hEntity[key]) do
-		if m_data == tData then
+		if m_data == sName then
 			hEntity[key][_] = nil
 		end
 	end

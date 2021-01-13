@@ -1,6 +1,7 @@
 vengeful_extra = class({})
 vengeful_extra_ultimate = class({})
 LinkLuaModifier("modifier_vengeful_extra_thinker", "abilities/heroes/vengeful/vengeful_extra/modifier_vengeful_extra_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_vengeful_extra", "abilities/heroes/vengeful/vengeful_extra/modifier_vengeful_extra", LUA_MODIFIER_MOTION_NONE)
 
 function vengeful_extra:GetCastAnimationCustom()			return ACT_DOTA_CAST_ABILITY_2 end
 function vengeful_extra:GetPlaybackRateOverride() 	        return 1.0 end

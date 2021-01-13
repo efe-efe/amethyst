@@ -339,8 +339,6 @@ function modifier_hero_base:AlternativeDirections(vDirection)
 	return directions
 end
 
-
-
 function modifier_hero_base:IsEast(iAngle)
 	return iAngle > 345 or iAngle <= 15
 end
@@ -402,9 +400,5 @@ function modifier_hero_base:OnAbilityFullyCast(params)
 	end
 end
 
-
-
-
 function modifier_hero_base:GetDisableAutoAttack()						return true	end
 function modifier_hero_base:GetModifierIgnoreMovespeedLimit(params)		return 1	end
-

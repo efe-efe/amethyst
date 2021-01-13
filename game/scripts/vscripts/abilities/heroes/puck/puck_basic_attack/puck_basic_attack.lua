@@ -6,6 +6,7 @@ LinkLuaModifier("modifier_puck_basic_attack_cooldown", "abilities/heroes/puck/pu
 LinkLuaModifier("modifier_puck_fairy_dust", "abilities/heroes/puck/modifier_puck_fairy_dust", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_puck_ex_basic_attack", "abilities/heroes/puck/puck_basic_attack/modifier_puck_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_puck_basic_attack_thinker", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_thinker", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_puck_ex_basic_attack_shield", "abilities/heroes/puck/puck_basic_attack/modifier_puck_ex_basic_attack_shield", LUA_MODIFIER_MOTION_NONE)
 
 function puck_basic_attack:GetCastPoint()
 	if IsServer() then
