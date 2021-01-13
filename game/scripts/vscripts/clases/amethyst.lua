@@ -36,6 +36,8 @@ function GenericGem:constructor(vOrigin)
     unit:SetModel(self.model)
     unit:SetModelScale(self.scale)
     unit:SetMaxHealth(self.max_health)
+    unit:SetBaseMaxHealth(self.max_health)
+    unit:SetHealth(self.max_health)
     self:PlayEffectsOnSpawn()
 end
 
