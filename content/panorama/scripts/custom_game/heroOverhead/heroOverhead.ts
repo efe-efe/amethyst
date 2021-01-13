@@ -129,7 +129,6 @@ export default class HeroOverhead extends Overhead{
                 }
             }
 
-
             if(currentStatus){
                 this.status.Activate(
                     currentStatus.label,

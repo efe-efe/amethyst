@@ -163,9 +163,12 @@ styles['Desolation'] = {    backgroundColor: '#E55C34', textShadow: CreateTextSh
 styles['StormUnleashed'] = {backgroundColor: BLUE, textShadow: CreateTextShadow(LIGHT_BLUE), color: SKY_BLUE };
 styles['Bleeding'] = {      backgroundColor: ORANGE, textShadow: CreateTextShadow(PURPLE), color: RED };
 styles['Revenant'] = {      backgroundColor: ORANGE, textShadow: CreateTextShadow(PURPLE), color: RED };
-styles['Ruby'] = {      backgroundColor: ORANGE, textShadow: CreateTextShadow(ORANGE), color: RED };
+styles['Ruby'] = {          backgroundColor: ORANGE, textShadow: CreateTextShadow(ORANGE), color: RED };
 styles['Darkness'] = {      backgroundColor: '#DC8668', color: '#DC8668'};
 styles['Sleep'] = {         backgroundColor: '#CB8CFF', textShadow: CreateTextShadow('#CB8CFF'),};
+styles['Sapphire'] = {      backgroundColor: LIGHT_BLUE, color: LIGHT_BLUE, textShadow: CreateTextShadow(BLUE),};
+styles['Emerald'] = {       backgroundColor: LIGHT_GREEN, textShadow: CreateTextShadow(LIGHT_GREEN), };
+
 
 function CreateTextShadow(color: string){
     return '0px 0px 30px 8.0 ' + color + ';';
