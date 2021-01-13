@@ -18,7 +18,7 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"delay_time"		"1.5" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"			"80" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"damage_block"		"24 35" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"duration"			"3.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"			"6.0" }
 		}
 	}
 
@@ -41,7 +41,7 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"delay_time"		"1.5" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"			"80" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"damage_block"		"24 35" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"duration"			"3.0" }
+			"05"{ "var_type"	"FIELD_FLOAT"		"duration"			"6.0" }
 		}
 	}
 }

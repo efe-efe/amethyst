@@ -1,7 +1,7 @@
 Round = Round or class({}, nil, GameState)
 
-local AMETHYST_SPAWN_TIME = 10.0
-local AMETHYST_RESPAWN_TIME = 15.0
+local GEM_SPAWN_TIME = 10.0
+local GEM_RESPAWN_TIME = 15.0
 
 local PICKUPS_TIMER = PICKUPS_CREATION_TIME
 local ROUND_TIMER = ROUND_DURATION
@@ -26,7 +26,7 @@ function Round:constructor(players, callback)
     self.time_remianing_until_end = DRAW_TIME
     self.time_remaining = ROUND_TIMER * 30
 
-    self.amethyst_entities = Entities:FindAllByName("orb_spawn")
+    self.gem_spawn_entities = Entities:FindAllByName("orb_spawn")
     self.health_entities = Entities:FindAllByName("health_orb")
     self.mana_entities = Entities:FindAllByName("mana_orb")
     self.shield_entities = Entities:FindAllByName("shield_orb")
@@ -63,8 +63,9 @@ function Round:constructor(players, callback)
 
     self.gem = {
         index = RandomInt(1, 3),
-        timer = AMETHYST_SPAWN_TIME,
-        entity = nil
+        type = RandomInt(GemTypes.AMETHYST, GemTypes.EMERALD),
+        entity = nil,
+        number = 0,
     }
 
     if RandomInt(0, 1) == 1 then
@@ -72,20 +73,20 @@ function Round:constructor(players, callback)
     else
         GameRules:SetTimeOfDay(0.5)
     end
-
-    self:SpawnArrows()
 end
 
 function Round:SpawnArrows()
-    local particle_cast = "particles/ui_mouseactions/range_finder_directional.vpcf"
+    local color = self.gem.entity:GetColor()
 
-    for _,entity in pairs(self.amethyst_entities) do
+    for _,entity in pairs(self.gem_spawn_entities) do
         if _ ~= self.gem.index then 
-            local origin = entity:GetOrigin()
-            local direction = (self.amethyst_entities[self.gem.index]:GetOrigin() - origin):Normalized()
-            self.arrows[entity] = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+            local origin = entity:GetAbsOrigin()
+            local direction = (self.gem_spawn_entities[self.gem.index]:GetOrigin() - origin):Normalized()
+            self.arrows[entity] = ParticleManager:CreateParticle("particles/gem_finder.vpcf", PATTACH_WORLDORIGIN, nil)
             ParticleManager:SetParticleControl(self.arrows[entity], 0, origin)
             ParticleManager:SetParticleControl(self.arrows[entity], 2, origin + direction * Vector(128, 128, 0))
+            ParticleManager:SetParticleControl(self.arrows[entity], 60, color)
+            ParticleManager:SetParticleControl(self.arrows[entity], 61, Vector(1, 0, 0))
         end
     end
 end
@@ -105,25 +106,11 @@ function Round:Update()
 
     if not self.ended then
         if not self.gem.entity then
-            self.gem.entity = GemGenerator(self.gem.timer, self.amethyst_entities[self.gem.index]:GetAbsOrigin())
+            self:CreateGemAndArrows()
         else
             if not self.gem.entity:Alive() then
                 self.gem.entity = nil
-
-                if not self.time_over then
-                    local index = RandomInt(1, #self.amethyst_entities)
-                    if index == self.gem.index then
-                        index = index + 1
-
-                        if index > #self.amethyst_entities then
-                            index = 1
-                        end
-                    end
-                    self.gem.index = index
-                end
-
                 self:CleanArrows()
-                self:SpawnArrows()
             else
                 self.gem.entity:Update()
             end
@@ -167,6 +154,22 @@ function Round:Update()
             self.is_trying_to_end = true
         end
     end
+end
+
+function Round:CreateGem()
+    self.gem.type = RandomIntWithExeption(GemTypes.AMETHYST, GemTypes.EMERALD, self.gem.type)
+    if not self.time_over then
+        self.gem.index = RandomIntWithExeption(1, #self.gem_spawn_entities, self.gem.index)
+    end
+    local time = self.gem.number == 0 and GEM_SPAWN_TIME or GEM_RESPAWN_TIME
+    local origin = self.gem_spawn_entities[self.gem.index]:GetAbsOrigin()
+    self.gem.number = self.gem.number + 1
+    self.gem.entity = GemGenerator(time, origin, self.gem.type)
+end
+
+function Round:CreateGemAndArrows()
+    self:CreateGem()
+    self:SpawnArrows()
 end
 
 function Round:EndRound()       
@@ -240,7 +243,7 @@ function Round:CreateDeathZone()
         nil, --hAbility
         "modifier_death_zone", --modifierName
         {}, --paramTable
-        self.amethyst_entities[self.gem.index]:GetOrigin(), --vOrigin
+        self.gem_spawn_entities[self.gem.index]:GetOrigin(), --vOrigin
         DOTA_TEAM_NOTEAM, --nTeamNumber
         false --bPhantomBlocker
    )

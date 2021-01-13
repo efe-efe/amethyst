@@ -1,6 +1,6 @@
-modifier_burning_attacks = class({})
+modifier_ruby = class({})
 
-function modifier_burning_attacks:OnCreated(params)
+function modifier_ruby:OnCreated(params)
     self.damage_table = {
         attacker = self:GetParent(),
         damage = 5,
@@ -9,16 +9,24 @@ function modifier_burning_attacks:OnCreated(params)
 
     if IsServer() then
         self:SetStackCount(params.procs)
+        self.efx_index = ParticleManager:CreateParticle("particles/generic_gameplay/rune_haste_owner.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
     end
 end
 
-function modifier_burning_attacks:OnStackCountChanged(iStackCount)
+function modifier_ruby:OnDestroy()
+    if IsServer() then
+        ParticleManager:DestroyParticle(self.efx_index, false)
+        ParticleManager:ReleaseParticleIndex(self.efx_index)
+    end
+end
+
+function modifier_ruby:OnStackCountChanged(iStackCount)
     if self:GetStackCount() == 0 then
         self:Destroy()
     end
 end
 
-function modifier_burning_attacks:DeclareFunctions()
+function modifier_ruby:DeclareFunctions()
     return { 
         MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
         MODIFIER_EVENT_ON_ATTACK_LANDED,
@@ -26,7 +34,7 @@ function modifier_burning_attacks:DeclareFunctions()
     }
 end
 
-function modifier_burning_attacks:OnAttack(params)
+function modifier_ruby:OnAttack(params)
     if params.attacker ~= self:GetParent() then
         return
     end
@@ -40,7 +48,7 @@ function modifier_burning_attacks:OnAttack(params)
     self:DecrementStackCount()
 end 
 
-function modifier_burning_attacks:OnAbilityFullyCast(params)
+function modifier_ruby:OnAbilityFullyCast(params)
     if IsServer() then
         if params.unit ~= self:GetParent() then
             return
@@ -55,16 +63,16 @@ function modifier_burning_attacks:OnAbilityFullyCast(params)
     end
 end
 
-function modifier_burning_attacks:OnAttackLanded(event)
+function modifier_ruby:OnAttackLanded(event)
     self.damage_table.victim = event.target
     ApplyDamage(self.damage_table)
 end
 
-function modifier_burning_attacks:GetMaxStacks() return 10 end
-function modifier_burning_attacks:GetStatusTriggerType() return STATUS_TRIGGER_STACKS end
-function modifier_burning_attacks:GetStatusLabel() return "Ruby" end
-function modifier_burning_attacks:GetStatusPriority() return 2 end
-function modifier_burning_attacks:GetStatusStyle() return "Ruby" end
+function modifier_ruby:GetMaxStacks() return 10 end
+function modifier_ruby:GetStatusTriggerType() return STATUS_TRIGGER_STACKS end
+function modifier_ruby:GetStatusLabel() return "Ruby" end
+function modifier_ruby:GetStatusPriority() return 2 end
+function modifier_ruby:GetStatusStyle() return "Ruby" end
 
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.Status(modifier_burning_attacks)
+Modifiers.Status(modifier_ruby)

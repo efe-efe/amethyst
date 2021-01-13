@@ -1,33 +1,41 @@
 GenericGem = GenericGem or class({}, nil, UnitEntity)
 Amethyst = Amethyst or class({}, nil, GenericGem)
-Zaphire = Zaphire or class({}, nil, GenericGem)
+Sapphire = Sapphire or class({}, nil, GenericGem)
 Ruby = Ruby or class({}, nil, GenericGem)
+Emerald = Emerald or class({}, nil, GenericGem)
 GemGenerator = GemGenerator or class({})
 
 GemTypes = {
+    NO_TYPE = -1,
     AMETHYST = 0,
-    ZAPHIRE = 1,
+    SAPPHIRE = 1,
     RUBY = 2,
+    EMERALD = 3,
 }
 
 local GEM_LIGHT_PARTICLE = {
     [GemTypes.AMETHYST] = "particles/generic_gameplay/rune_arcane.vpcf",
-    [GemTypes.ZAPHIRE] = "particles/generic_gameplay/rune_doubledamage.vpcf",
+    [GemTypes.SAPPHIRE] = "particles/generic_gameplay/rune_doubledamage.vpcf",
     [GemTypes.RUBY] = "particles/generic_gameplay/rune_haste.vpcf",
+    [GemTypes.EMERALD] = "particles/generic_gameplay/rune_regeneration.vpcf",
 }
 
 local GEM_COLOR = {
     [GemTypes.AMETHYST] = Vector(255, 26, 243),
-    [GemTypes.ZAPHIRE] = Vector(26, 0, 255),
+    [GemTypes.SAPPHIRE] = Vector(0, 101, 255),
     [GemTypes.RUBY] = Vector(255, 26, 0),
+    [GemTypes.EMERALD] = Vector(26, 255, 0),
 }
 
 function GenericGem:constructor(vOrigin)
     getbase(GenericGem).constructor(self, vOrigin, "npc_dota_creature_amethyst")
+    self.max_health = 100
+    self.type = -1
 
     local unit = self:GetUnit()
     unit:SetModel(self.model)
     unit:SetModelScale(self.scale)
+    unit:SetMaxHealth(self.max_health)
     self:PlayEffectsOnSpawn()
 end
 
@@ -78,7 +86,6 @@ function GenericGem:PlayEffectsOnDeath()
 end
 
 function GenericGem:PlaySpecificEffectsOnDeath()
-
 end
 
 function GenericGem:Update()
@@ -98,8 +105,9 @@ function Ruby:constructor(vOrigin)
     self.duration = 5.0
     self.energy_bounty = 70
     self.procs = 10
+    self.type = GemTypes.RUBY
 
-    getbase(Zaphire).constructor(self, vOrigin)
+    getbase(Ruby).constructor(self, vOrigin)
 end
 
 function Ruby:Effect(hKiller)
@@ -109,7 +117,7 @@ function Ruby:Effect(hKiller)
         FIND_UNITS_EVERYWHERE, 
         DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
         DOTA_UNIT_TARGET_HERO, 
-        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,
+        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
         FIND_ANY_ORDER
     )
 
@@ -118,7 +126,7 @@ function Ruby:Effect(hKiller)
 
     for _,unit in pairs(units) do
         if unit:IsRealHero() then
-            unit:AddNewModifier(unit, nil, "modifier_burning_attacks", { procs = final_procs })
+            unit:AddNewModifier(unit, nil, "modifier_ruby", { procs = final_procs })
             CustomEntities:GiveEnergy(unit, final_energy, true, true)
         end
     end
@@ -131,24 +139,26 @@ function Ruby:PlaySpecificEffectsOnDeath()
     })
 end
 
-function Zaphire:constructor(vOrigin)
+function Sapphire:constructor(vOrigin)
     self.particle = "particles/generic_gameplay/rune_doubledamage.vpcf"
     self.model = "models/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_sphere.vmdl"
     self.scale = 4.0
 
-    getbase(Zaphire).constructor(self, vOrigin)
+    getbase(Sapphire).constructor(self, vOrigin)
 
-    self.shield = 80
+    self.shield = 60
+    self.duration = 10.0
+    self.type = GemTypes.SAPPHIRE
 end
 
-function Zaphire:Effect(hKiller)
+function Sapphire:Effect(hKiller)
     local units = CustomEntities:FindUnitsInRadius(
         hKiller,
         self:GetUnit():GetAbsOrigin(), 
         FIND_UNITS_EVERYWHERE, 
         DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
         DOTA_UNIT_TARGET_HERO, 
-        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,
+        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
         FIND_ANY_ORDER
     )
 
@@ -156,7 +166,7 @@ function Zaphire:Effect(hKiller)
 
     for _,unit in pairs(units) do
         if unit:IsRealHero() then
-            unit:AddNewModifier(unit, nil, "modifier_shield", { duration = 10.0, damage_block = final_shield })
+            unit:AddNewModifier(unit, nil, "modifier_sapphire", { duration = self.duration, damage_block = final_shield })
         end
     end
 end
@@ -168,8 +178,9 @@ function Amethyst:constructor(vOrigin)
 
     getbase(Amethyst).constructor(self, vOrigin)
     
-    self.mana_bounty = 40
-    self.heal_bounty = 20
+    self.mana_bounty = 50
+    self.heal_bounty = 30
+    self.type = GemTypes.AMETHYST
 end
 
 function Amethyst:Effect(hKiller)
@@ -179,7 +190,7 @@ function Amethyst:Effect(hKiller)
         FIND_UNITS_EVERYWHERE, 
         DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
         DOTA_UNIT_TARGET_HERO, 
-        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED,
+        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
         FIND_ANY_ORDER
     )
 
@@ -189,7 +200,8 @@ function Amethyst:Effect(hKiller)
     for _,unit in pairs(units) do
         if unit:IsRealHero() then 
             TrueHeal(unit:GetHealth(), final_heal, unit)
-            CustomEntities:GiveManaAndEnergy(unit, final_mana, true, true)
+            unit:AddNewModifier(unit, nil, "modifier_amethyst", { mana = final_mana })
+            CustomEntities:GiveManaCustom(unit, final_mana, true, true)
             self:PlayEffectsOnTarget(unit)
         end
     end
@@ -211,22 +223,42 @@ function Amethyst:PlayEffectsOnTarget(hTarget)
     })
 end
 
+function Emerald:constructor(vOrigin)
+    self.particle = "particles/generic_gameplay/rune_regeneration.vpcf"
+    self.model = "models/items/rubick/rubick_arcana/rubick_arcana_cube.vmdl"
+    self.scale = 0.45
+
+    getbase(Emerald).constructor(self, vOrigin + Vector(0, 0, 64))
+
+    self.duration = 10.0
+    self.type = GemTypes.EMERALD
+end
+
+function Emerald:Effect(hKiller)
+    local units = CustomEntities:FindUnitsInRadius(
+        hKiller,
+        self:GetUnit():GetAbsOrigin(), 
+        FIND_UNITS_EVERYWHERE, 
+        DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
+        DOTA_UNIT_TARGET_HERO, 
+        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
+        FIND_ANY_ORDER
+    )
+
+    for _,unit in pairs(units) do
+        if unit:IsRealHero() then
+            unit:AddNewModifier(unit, nil, "modifier_emerald", { duration = self.duration })
+        end
+    end
+end
+
 function GemGenerator:constructor(fDelayTime, vOrigin, iType)
     self.delay_time = fDelayTime * 30
     self.current_time = fDelayTime * 30
     self.light_delay_time = self.delay_time / 5
 
     if iType == nil then
-        local index = RandomInt(0, 2)
-        if index == 0 then
-            self.type = GemTypes.AMETHYST
-        end
-        if index == 1 then
-            self.type = GemTypes.ZAPHIRE
-        end
-        if index == 2 then
-            self.type = GemTypes.RUBY
-        end
+        self.type = RandomInt(GemTypes.AMETHYST, GemTypes.EMERALD)
     else
         self.type = iType
     end
@@ -252,11 +284,14 @@ function GemGenerator:Update()
         if self.type == GemTypes.AMETHYST then
             self.entity = Amethyst(self.origin)
         end
-        if self.type == GemTypes.ZAPHIRE then
-            self.entity = Zaphire(self.origin)
+        if self.type == GemTypes.SAPPHIRE then
+            self.entity = Sapphire(self.origin)
         end
         if self.type == GemTypes.RUBY then
             self.entity = Ruby(self.origin)
+        end
+        if self.type == GemTypes.EMERALD then
+            self.entity = Emerald(self.origin)
         end
     end
 
@@ -326,4 +361,8 @@ function GemGenerator:DestroyProgressCircle()
         ParticleManager:DestroyParticle(self.progress_circle, false)
         ParticleManager:ReleaseParticleIndex(self.progress_circle)
     end
+end
+
+function GemGenerator:GetColor()
+    return GEM_COLOR[self.type]
 end

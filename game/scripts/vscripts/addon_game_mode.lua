@@ -168,7 +168,10 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("wall_base",                                "modifiers/wall_base.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_adrenaline",                      "modifiers/modifier_adrenaline.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("radius_marker_thinker",                    "modifiers/radius_marker_thinker.lua", LUA_MODIFIER_MOTION_NONE)
-    LinkLuaModifier("modifier_burning_attacks",                 "modifiers/modifier_burning_attacks.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_ruby",                            "modifiers/modifier_ruby.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_sapphire",                        "modifiers/modifier_sapphire.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_emerald",                         "modifiers/modifier_emerald.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_amethyst",                        "modifiers/modifier_amethyst.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_miss",                            "modifiers/modifier_miss.lua", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier("modifier_generic_silence",                 "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE) -- Should Delete

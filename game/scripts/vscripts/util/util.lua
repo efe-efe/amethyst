@@ -494,3 +494,16 @@ function RotatePoint(vOrigin, vPoint, fAngle)
     
     return Vector(nx, ny)
 end
+
+function RandomIntWithExeption(iMinimum, iMaximum, iException)
+	local number = RandomInt(iMinimum, iMaximum)
+	if number == iException then
+		number = number + 1
+
+		if number > iMaximum then
+			number = iMinimum
+		end
+	end
+
+	return number
+end

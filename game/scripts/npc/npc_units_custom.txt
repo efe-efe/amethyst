@@ -86,96 +86,10 @@
 		"ArmorPhysical"				"0"			
 		"RingRadius"				"60"
 		"HealthBarOffset"			"170"
-		"StatusHealth"				"100"		
 		"StatusHealthRegen"			"0.0"		
 		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"
 		"TeamName"					"DOTA_TEAM_NEUTRALS"
-	}
-
-	"npc_dota_creature_amethyst_timer"	
-	{
-		// General
-		//----------------------------------------------------------------
-		"Model"						"models/effects/glow_02.vmdl"	// Model.
-		"BaseClass"					"npc_dota_creature"
-		"SoundSet"					"n_creep_Ranged"
-		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
-		"Level"						"1"
-		"ModelScale" 				"3"
-
-		// Abilities
-		//----------------------------------------------------------------
-		"Ability1"					"orb_timer_apply_glow_lua"			// Ability 1
-		"Ability2"					""			// Ability 2
-		"Ability3"					""			// Ability 3
-		"Ability4"					""			// Ability 4
-
-		// Armor
-		//----------------------------------------------------------------
-		"ArmorPhysical"				"0"			
-
-		// Attack
-		//----------------------------------------------------------------
-		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
-		"AutoAttacksByDefault"		"0"
-		"AttackDamageMin"			"0"		
-		"AttackDamageMax"			"0"		
-		"AttackRate"				"0.0"		
-		"AttackAnimationPoint"		"0.0"		// Normalized time in animation cycle to attack.
-		"AttackAcquisitionRange"	"0"		// Range within a target can be acquired.
-		"AttackRange"				"0"		// Range within a target can be attacked.
-		"ProjectileModel"			"particles/neutral_fx/gnoll_base_attack.vpcf" // Particle system model for projectile.
-		"ProjectileSpeed"			"0"		// Speed of projectile.		     
-
-		// Bounds
-		//----------------------------------------------------------------
-		"RingRadius"				"70"
-		"HealthBarOffset"			"170"
-
-		// Bounty
-		//----------------------------------------------------------------
-		"BountyXP"					"0"		// Experience earn.
-		"BountyGoldMin"				"0"		// Gold earned min.
-		"BountyGoldMax"				"0"		// Gold earned max.
-
-		// Movement
-		//----------------------------------------------------------------
-		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
-		"MovementSpeed"				"0"		// Speed.			
-
-		// Status
-		//----------------------------------------------------------------
-		"StatusHealth"				"60"		
-		"StatusHealthRegen"			"0.0"		
-		"StatusMana"				"0"			
-		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
-		
-		// Vision
-		//----------------------------------------------------------------
-		"VisionDaytimeRange"		"0"		// Range of vision during day light.
-		"VisionNighttimeRange"		"0"		// Range of vision at night time.
-
-		// Team
-		//----------------------------------------------------------------
-		"TeamName"					"DOTA_TEAM_NEUTRALS"						// Team name.
-		"CombatClassAttack"			"DOTA_COMBAT_CLASS_ATTACK_PIERCE"
-		"CombatClassDefend"			"DOTA_COMBAT_CLASS_DEFEND_BASIC"
-		"UnitRelationshipClass"		"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
-
-		// Creature Data
-		//----------------------------------------------------------------
-		"Creature"
-		{
-			//Level Up
-			"HPGain"					"0"
-			"DamageGain"				"0"
-			"ArmorGain"					"0.0"
-			"MagicResistGain"			"0.0"
-			"MoveSpeedGain"				"0"
-			"BountyGain"				"0"
-			"XPGain"					"0"
-		}
 	}
 
 	"npc_dota_creature_skywrath_mage_bubble"	
