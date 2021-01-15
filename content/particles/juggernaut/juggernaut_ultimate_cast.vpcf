@@ -113,7 +113,7 @@
 			m_ChildRef = resource:"particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_death_model_glow.vpcf"
 		},
 		{
-			m_ChildRef = resource:"particles/juggernaut/juggernaut_ex_second_attack_casting_powertrails.vpcf"
+			m_ChildRef = resource:"particles/econ/items/monkey_king/arcana/water/mk_spring_arcana_water_channel_powertrails.vpcf"
 		},
 	]
 }

@@ -28,8 +28,8 @@
 
 		"AttackDamageMin"			"7"										
 		"AttackDamageMax"			"7"											
-		"AttackRate"				"0.2"									
-		"AttackAnimationPoint"		"0.2"	
+		"AttackRate"				"0.25"									
+		"AttackAnimationPoint"		"0.25"	
 		"AttackRange"				"80"
 		
 		"MovementSpeed"				"400"
