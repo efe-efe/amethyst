@@ -11,11 +11,7 @@
     "dev:panorama": "tsc --project content/panorama/scripts/custom_game/tsconfig.json --watch",
     "dev:vscripts": "tstl --project game/scripts/vscripts/tsconfig.json --watch",
     "dev:webpack": "npx webpack --watch",
-    "dev:sass": "node-sass -w content/panorama/styles/custom_game/ -o content/panorama/styles/custom_game/",
-    "dev:localizationCompiler": "tsc --project node_modules/~resource/tsconfig.json",
-    "dev:localizationCompilerWatcher": "tsc --project node_modules/~resource/tsconfig.json --watch",
-    "dev:runlocalizationWatcher": "node node_modules/~generator/fsWatcher.js",
-    "init": "link-module-alias && node node_modules/~generator/init.js"
+    "dev:sass": "node-sass -w content/panorama/styles/custom_game/ -o content/panorama/styles/custom_game/"
   },
   "author": "Efe",
   "license": "ISC",
@@ -30,18 +26,6 @@
     "typescript": "^3.9.3",
     "typescript-to-lua": "^0.35.0",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
-    "@types/node": "^14.14.20",
-    "fs-extra": "^9.0.1",
-    "ts-node": "^9.1.1"
-  },
-  "_moduleAliases": {
-    "~resource": "game/resource",
-    "~generator": "node_modules/@shushishtok/tooltip_generator"
-  },
-  "dependencies": {
-    "@shushishtok/tooltip_generator": "^1.3.14",
-    "link-module-alias": "^1.2.0",
-    "node-watch": "^0.7.1"
+    "webpack-cli": "^3.3.12"
   }
 }
