@@ -520,16 +520,16 @@ function CustomEntities:FindUnitsInCone(hEntity, vDirection, fMinProjection, vCe
 	return filtered_units
 end
 
-function CustomEntities:FindUnitsInRadius(hEntity, vOrigin, radius, teamFilter, typeFilter, flagFilter, orderFilter )
+function CustomEntities:FindUnitsInRadius(hEntity, vOrigin, fRadius, iTeamFilter, iTypeFilter, iFlagFilter, iOrderFilter)
     local units = FindUnitsInRadius(
         hEntity:GetTeamNumber(),
         vOrigin,
         nil,
-        radius,
+        fRadius,
         DOTA_UNIT_TARGET_TEAM_BOTH,
-        typeFilter,
-        flagFilter,
-        orderFilter,
+        iTypeFilter,
+        iFlagFilter,
+        iOrderFilter,
         false
 	)
 
@@ -537,13 +537,13 @@ function CustomEntities:FindUnitsInRadius(hEntity, vOrigin, radius, teamFilter, 
 	local counter = 1
 	
 	for _,unit in pairs(units) do
-		if teamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntities:Allies(hEntity, unit) then
+		if iTeamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntities:Allies(hEntity, unit) then
 			filtered_units[counter] = unit
 			counter = counter + 1
-		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntities:Allies(hEntity, unit) then
+		elseif iTeamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntities:Allies(hEntity, unit) then
 			filtered_units[counter] = unit
 			counter = counter + 1
-		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
+		elseif iTeamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
 			filtered_units[counter] = unit
 			counter = counter + 1
 		end
@@ -716,5 +716,21 @@ function CustomEntities:OnBasicAttackImpact(hEntity, hTarget)
 		if routine then
 			routine.method(routine.context, hTarget)
 		end
+	end
+end
+
+function CustomEntities:TrueHeal(hEntity, iHeal)
+	local base_health = hEntity:GetHealth()
+    CustomEntities:SetHealthCustom(hEntity, base_health + iHeal)
+
+    local new_treshold = CustomEntities:GetTreshold(hEntity) + iHeal
+	if new_treshold > GameRules.GameMode.max_treshold then
+		CustomEntities:SetTreshold(hEntity, GameRules.GameMode.max_treshold)
+	else
+		CustomEntities:SetTreshold(hEntity, new_treshold)
+    end
+
+	if hEntity:GetHealth() < hEntity:GetMaxHealth() then
+		SendOverheadHealMessage(hEntity, iHeal)
 	end
 end

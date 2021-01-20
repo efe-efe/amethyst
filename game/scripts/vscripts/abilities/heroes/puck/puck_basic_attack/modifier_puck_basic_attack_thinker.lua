@@ -57,9 +57,9 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
 
     local give_mana = false
 
-    ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
-        self.damage_table.victim = unit
-        ApplyDamage(self.damage_table)
+    local units = ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+        self.caster:PerformAttack(unit, true, true, true, true, false, false, true)
+      
         unit:AddNewModifier(self.caster, nil, "modifier_puck_fairy_dust", { duration = self.fairy_dust_duration, slow_pct = self.fairy_dust_slow_pct })
 
         if not CustomEntities:IsObstacle(unit) then
@@ -67,6 +67,10 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
         end
     end)
     
+	if #units == 0 then
+		CustomEntities:FakeMissAttack(self.caster)
+	end
+
     if give_mana then
         if self:GetAbility():GetLevel() >=2 then
             self.caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()

@@ -5,7 +5,7 @@ function item_health_orb:OnSpellStart()
     local heal = 3
 
     caster:Heal(heal, caster)
-    TrueHeal(caster:GetHealth(), heal, caster)
+    CustomEntities:TrueHeal(caster, heal)
 
     EmitSoundOn("DOTA_Item.FaerieSpark.Activate", caster)
 end

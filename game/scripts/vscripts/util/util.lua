@@ -43,27 +43,6 @@ function PrintTable(t, indent, done)
 	end
 end
 
-function CountdownTimer()
-	nCOUNTDOWNTIMER = nCOUNTDOWNTIMER - 1
-	local t = nCOUNTDOWNTIMER
-	--print(t)
-	local minutes = math.floor(t / 60)
-	local seconds = t - (minutes * 60)
-	local m10 = math.floor(minutes / 10)
-	local m01 = minutes - (m10 * 10)
-	local s10 = math.floor(seconds / 10)
-	local s01 = seconds - (s10 * 10)
-	local broadcast_gametimer = 
-		{
-			timer_minute_10 = m10,
-			timer_minute_01 = m01,
-			timer_second_10 = s10,
-			timer_second_01 = s01,
-		}
-
-	--CustomGameEventManager:Send_ServerToAllClients("countdown", broadcast_gametimer)
-end
-
 function array_sub(t1, t2)
 	local t = {}
 	for i = 1, #t1 do
@@ -200,10 +179,6 @@ function FindUnitsInCirclesProjection(nTeamNumber, vCenterPos, vStartPos, vEndPo
 	return targets
 end
 
-function Interpolate(value, min, max)
-	return value * (max - min) + min
-end
-
 function DuplicateTable(obj, seen)
 	if type(obj) ~= 'table' then return obj end
 	if seen and seen[obj] then return seen[obj] end
@@ -213,37 +188,6 @@ function DuplicateTable(obj, seen)
 	for k, v in pairs(obj) do res[DuplicateTable(k, s)] = DuplicateTable(v, s) end
 	return res
 end
-
-function ClampPosition(origin, point, max_range, min_range)
-	local direction = (point - origin):Normalized()
-	local distance = (point - origin):Length2D()
-	local output_point = point
-	
-	if max_range then
-		if distance > max_range then
-			output_point = origin + direction * max_range
-		end
-	end
-
-	if min_range then
-		if distance < min_range then
-			output_point = origin + direction * min_range
-		end
-	end
-
-	return output_point
-end
-
-function Clamp(iNumber, iMax, iMin)
-	if iNumber > iMax then
-		return iMax
-	end
-	if iNumber < iMin then
-		return iMin
-	end
-	return iNumber
-end
-
 
 RADIUS_SCOPE_PUBLIC = 1
 RADIUS_SCOPE_LOCAL = 2
@@ -453,19 +397,6 @@ function ApplyCallbackForUnitsInArea(caster, origin, radius, team, callback)
 	return enemies
 end
 
-function TrueHeal(base, heal, unit)
-    CustomEntities:SetHealthCustom(unit, base + heal)
-
-    local new_treshold = CustomEntities:GetTreshold(unit) + heal
-	if new_treshold > GameRules.GameMode.max_treshold then
-		CustomEntities:SetTreshold(unit, GameRules.GameMode.max_treshold)
-	else
-		CustomEntities:SetTreshold(unit, new_treshold)
-    end
-
-    SendOverheadHealMessage(unit, heal)
-end
-
 function LinkAbilityCooldowns(hCaster, sLinkedSpell, tUnlinkLevels)
 	local bStartCooldown = true
 	local hLinkedSpell = hCaster:FindAbilityByName(sLinkedSpell)
@@ -483,27 +414,4 @@ function LinkAbilityCooldowns(hCaster, sLinkedSpell, tUnlinkLevels)
 	if bStartCooldown then
 		hLinkedSpell:StartCooldown(hLinkedSpell:GetCooldown(0))
 	end
-end
-
-function RotatePoint(vOrigin, vPoint, fAngle)
-    local radians = (math.pi / 180) * fAngle
-    local cos = math.cos(radians)
-    local sin = math.sin(radians)
-    local nx = (cos * (vPoint.x - vOrigin.x)) + (sin * (vPoint.y - vOrigin.y)) + vOrigin.x
-    local ny = (cos * (vPoint.y - vOrigin.y)) - (sin * (vPoint.x - vOrigin.x)) + vOrigin.y
-    
-    return Vector(nx, ny)
-end
-
-function RandomIntWithExeption(iMinimum, iMaximum, iException)
-	local number = RandomInt(iMinimum, iMaximum)
-	if number == iException then
-		number = number + 1
-
-		if number > iMaximum then
-			number = iMinimum
-		end
-	end
-
-	return number
 end

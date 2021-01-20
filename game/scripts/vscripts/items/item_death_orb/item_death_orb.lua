@@ -8,6 +8,6 @@ function item_death_orb:OnSpellStart()
     CustomEntities:GiveManaAndEnergy(caster, charges, true, true)
 
     if charges == 100 then
-        TrueHeal(caster:GetHealth(), heal, caster)
+        CustomEntities:TrueHeal(caster, heal)
     end
 end

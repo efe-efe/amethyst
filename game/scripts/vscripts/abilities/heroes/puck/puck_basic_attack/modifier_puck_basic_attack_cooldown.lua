@@ -2,7 +2,6 @@ modifier_puck_basic_attack_cooldown = class({})
 
 function modifier_puck_basic_attack_cooldown:DeclareFunctions()
     return { 
-        MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
         MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
         MODIFIER_EVENT_ON_ATTACK,
     }
@@ -21,24 +20,10 @@ function modifier_puck_basic_attack_cooldown:OnAttack(params)
     if self:GetRemainingTime() > 0 then
         return
     end
-    self:StartCooldown()
-end
- 
-function modifier_puck_basic_attack_cooldown:OnAbilityFullyCast(params)
-    if IsServer() then
-        if params.unit ~= self:GetParent() then
-            return
-        end
-
-        local basic_attack_related = self:GetParent():FindAbilityByName("puck_basic_attack_related")
-        if params.ability == basic_attack_related then
-            if self:GetRemainingTime() > 0 then
-                return
-            end
-
-            self:StartCooldown()
-        end
-    end
+    
+    Timers:CreateTimer(0.05, function()
+        self:StartCooldown()
+    end)
 end
 
 function modifier_puck_basic_attack_cooldown:OnReplenish()

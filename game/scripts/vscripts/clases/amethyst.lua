@@ -100,35 +100,54 @@ function GenericGem:Update()
     end
 end
 
+function GenericGem:GetUnits(hSearcher, iTeamFlags)
+    return CustomEntities:FindUnitsInRadius(
+        hSearcher,
+        self:GetUnit():GetAbsOrigin(), 
+        FIND_UNITS_EVERYWHERE, 
+        iTeamFlags, 
+        DOTA_UNIT_TARGET_HERO, 
+        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
+        FIND_ANY_ORDER
+    )
+end
+
+function GenericGem:GetAllies(hSearcher)
+    return self:GetUnits(hSearcher, DOTA_UNIT_TARGET_TEAM_FRIENDLY)
+end
+
+function GenericGem:GetHeroes()
+    return self:GetUnits(self:GetUnit(), DOTA_UNIT_TARGET_TEAM_BOTH)
+end
+
+function GenericGem:ProcessValue(tAllies, tHeroes, fValue)
+    return math.ceil(#tHeroes * fValue/#tAllies)
+end
+
 function Ruby:constructor(vOrigin)
     self.particle = "particles/generic_gameplay/rune_haste.vpcf"
-    self.model = "models/items/furion/dark_staff/bulb.vmdl"
+    self.model = "models/items/furion/dark_staff/bulb.vmdl" --"models/heroes/oracle/weapon.vmdl" DIAMOND?
     self.scale = 0.5
-    self.duration = 5.0
-    self.energy_bounty = 70
-    self.procs = 10
+    self.duration = 10.0
+    self.energy_bounty = 25
+    self.damage = 3
     self.type = GemTypes.RUBY
 
     getbase(Ruby).constructor(self, vOrigin)
 end
 
 function Ruby:Effect(hKiller)
-    local units = CustomEntities:FindUnitsInRadius(
-        hKiller,
-        self:GetUnit():GetAbsOrigin(), 
-        FIND_UNITS_EVERYWHERE, 
-        DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
-        DOTA_UNIT_TARGET_HERO, 
-        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
-        FIND_ANY_ORDER
-    )
+    local allies = self:GetAllies(hKiller)
+    local heroes = self:GetHeroes()
+    local final_damage = self:ProcessValue(allies, heroes, self.damage)
+    local final_energy = self:ProcessValue(allies, heroes, self.energy_bounty)
 
-    local final_procs = math.ceil(self.procs / #units)
-    local final_energy = math.ceil(self.energy_bounty / #units)
-
-    for _,unit in pairs(units) do
+    for _,unit in pairs(allies) do
         if unit:IsRealHero() then
-            unit:AddNewModifier(unit, nil, "modifier_ruby", { procs = final_procs })
+            unit:AddNewModifier(unit, nil, "modifier_ruby", { 
+                duration = self.duration,
+                damage = final_damage 
+            })
             CustomEntities:GiveEnergy(unit, final_energy, true, true)
         end
     end
@@ -148,27 +167,22 @@ function Sapphire:constructor(vOrigin)
 
     getbase(Sapphire).constructor(self, vOrigin)
 
-    self.shield = 60
+    self.shield = 20
     self.duration = 10.0
     self.type = GemTypes.SAPPHIRE
 end
 
 function Sapphire:Effect(hKiller)
-    local units = CustomEntities:FindUnitsInRadius(
-        hKiller,
-        self:GetUnit():GetAbsOrigin(), 
-        FIND_UNITS_EVERYWHERE, 
-        DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
-        DOTA_UNIT_TARGET_HERO, 
-        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
-        FIND_ANY_ORDER
-    )
+    local allies = self:GetAllies(hKiller)
+    local heroes = self:GetHeroes()
+    local final_shield = self:ProcessValue(allies, heroes, self.shield)
 
-    local final_shield = math.ceil(self.shield / #units)
-
-    for _,unit in pairs(units) do
+    for _,unit in pairs(allies) do
         if unit:IsRealHero() then
-            unit:AddNewModifier(unit, nil, "modifier_sapphire", { duration = self.duration, damage_block = final_shield })
+            unit:AddNewModifier(unit, nil, "modifier_sapphire", { 
+                duration = self.duration, 
+                damage_block = final_shield
+            })
         end
     end
 end
@@ -180,8 +194,9 @@ function Amethyst:constructor(vOrigin)
 
     getbase(Amethyst).constructor(self, vOrigin)
     
-    self.mana_bounty = 50
-    self.heal_bounty = 30
+    self.mana_bounty = 10
+    self.energy_bounty = 10
+    self.heal_bounty = 5
     self.type = GemTypes.AMETHYST
 end
 
@@ -198,12 +213,13 @@ function Amethyst:Effect(hKiller)
 
     local final_heal = self.heal_bounty / #units
     local final_mana = self.mana_bounty / #units
+    local final_energy = self.energy_bounty / #units
 
     for _,unit in pairs(units) do
         if unit:IsRealHero() then 
-            TrueHeal(unit:GetHealth(), final_heal, unit)
-            unit:AddNewModifier(unit, nil, "modifier_amethyst", { mana = final_mana })
+            unit:Heal(final_heal, unit)
             CustomEntities:GiveManaCustom(unit, final_mana, true, true)
+            CustomEntities:GiveEnergy(unit, final_energy, true, true)
             self:PlayEffectsOnTarget(unit)
         end
     end
@@ -232,24 +248,30 @@ function Emerald:constructor(vOrigin)
 
     getbase(Emerald).constructor(self, vOrigin + Vector(0, 0, 64))
 
+    self.heal = 10
+    self.true_heal = 5
     self.duration = 10.0
     self.type = GemTypes.EMERALD
 end
 
 function Emerald:Effect(hKiller)
-    local units = CustomEntities:FindUnitsInRadius(
-        hKiller,
-        self:GetUnit():GetAbsOrigin(), 
-        FIND_UNITS_EVERYWHERE, 
-        DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
-        DOTA_UNIT_TARGET_HERO, 
-        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
-        FIND_ANY_ORDER
-    )
+    local allies = self:GetAllies(hKiller)
+    local heroes = self:GetHeroes()
+    local final_heal = self:ProcessValue(allies, heroes, self.heal)
+    local final_true_heal = self:ProcessValue(allies, heroes, self.true_heal)
 
-    for _,unit in pairs(units) do
+    for _,unit in pairs(allies) do
         if unit:IsRealHero() then
-            unit:AddNewModifier(unit, nil, "modifier_emerald", { duration = self.duration })
+            unit:Heal(final_heal, unit)
+            CustomEntities:TrueHeal(unit, final_true_heal)
+
+            EFX('particles/gems/emerald.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, {
+                cp3 = {
+                    ent = unit,
+                    point = 'attach_hitloc'
+                },
+                release = true,
+            })
         end
     end
 end
