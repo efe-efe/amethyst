@@ -2,6 +2,7 @@
 require('settings')
 
 require('util/util')
+require('util/math')
 require('util/custom_entities')
 
 require('overrides/npc')
