@@ -1,8 +1,5 @@
 Round = Round or class({}, nil, GameState)
 
-local GEM_SPAWN_TIME = 10.0
-local GEM_RESPAWN_TIME = 15.0
-
 local PICKUPS_TIMER = PICKUPS_CREATION_TIME
 local ROUND_TIMER = ROUND_DURATION
 local DRAW_TIME = 3.0
