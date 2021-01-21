@@ -75,7 +75,7 @@ function puck_mobility:OnSpellStart()
 		end,
 	}
 
-    local projectile = Projectiles:CreateProjectile(projectile)
+    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
     local time = self:GetCastRange(Vector(0,0,0), nil)/projectile_speed
     caster:AddNewModifier(caster, self, "modifier_puck_mobility_recast", { duration = time })
     caster:FindAbilityByName("puck_mobility_recast"):SetProjectile(projectile)
@@ -173,7 +173,7 @@ function puck_ex_mobility:OnSpellStart()
 		end,
 	}
 
-    local projectile = Projectiles:CreateProjectile(projectile)
+    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
     local time = self:GetCastRange(Vector(0,0,0), nil)/projectile_speed
     caster:AddNewModifier(caster, self, "modifier_puck_ex_mobility_recast", { duration = time })
     caster:FindAbilityByName("puck_ex_mobility_recast"):SetProjectile(projectile)

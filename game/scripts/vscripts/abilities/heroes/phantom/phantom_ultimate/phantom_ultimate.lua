@@ -67,7 +67,7 @@ function phantom_ultimate:OnSpellStart()
 	}
 
 	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 3.0)
 	self:StopEffectsOnCastPoint()
 end

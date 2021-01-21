@@ -78,7 +78,7 @@ function nevermore_ultimate:OnSpellStart()
                self:PlayEffectsOnFinish(pos)
             end,
         }
-        Projectiles:CreateProjectile(projectile)
+        ProjectilesManagerInstance:CreateProjectile(projectile)
 	end
 
 	ApplyCallbackForUnitsInArea(caster, origin, radius/2, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)

@@ -108,6 +108,6 @@ function modifier_invoker_spirit_custom:LaunchProjectile(vPoint)
             end,
         }
     
-        Projectiles:CreateProjectile(projectile)
+        ProjectilesManagerInstance:CreateProjectile(projectile)
     end
 end

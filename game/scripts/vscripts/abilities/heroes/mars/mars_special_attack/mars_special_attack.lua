@@ -40,7 +40,7 @@ function mars_special_attack:OnSpellStart()
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit)
 			local counter = 0
-			for k, v in pairs(_self.rehit) do counter = counter + 1 end
+			for k, v in pairs(_self.tHitLog) do counter = counter + 1 end
 			if counter > 1 then return end
 			
 			local damage_table = {
@@ -74,7 +74,7 @@ function mars_special_attack:OnSpellStart()
 	}
 
     ExecuteOrderFromTable({ OrderType = DOTA_UNIT_ORDER_STOP, UnitIndex = caster:entindex() })
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	CustomEntities:SafeDestroyModifier(caster, "modifier_mars_basic_attack_stacks")
 
 	self:PlayEffectsOnCast()

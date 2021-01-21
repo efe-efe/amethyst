@@ -47,7 +47,7 @@ function item_atos_custom:OnSpellStart()
 		end,
 	}
 
-    Projectiles:CreateProjectile(projectile)
+    ProjectilesManagerInstance:CreateProjectile(projectile)
     self:PlayEffectsOnCast()
 end
 

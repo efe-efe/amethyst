@@ -82,7 +82,7 @@ function invoker_meteor_custom:OnSpellStart()
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

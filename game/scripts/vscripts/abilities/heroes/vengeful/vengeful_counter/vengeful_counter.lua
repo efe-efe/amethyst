@@ -71,7 +71,7 @@ function vengeful_counter:ThrowProjectile(hCaster, iDamage, vOrigin, vDirection,
 		end,
 	}
 
-    local projectile = Projectiles:CreateProjectile(projectile)
+    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
 end
 
 function vengeful_counter:PlayEffectsOnFinish(pos)
@@ -140,7 +140,7 @@ function vengeful_ex_counter:OnSpellStart()
 		end,
 	}
 
-    local projectile = Projectiles:CreateProjectile(projectile)
+    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 	LinkAbilityCooldowns(caster, 'vengeful_counter')
 end

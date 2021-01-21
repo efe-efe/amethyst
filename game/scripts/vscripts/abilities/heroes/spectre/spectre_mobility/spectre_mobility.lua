@@ -97,7 +97,7 @@ function spectre_mobility:OnSpellStart()
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 	caster:AddNewModifier(caster, self, "modifier_spectre_banish", { duration = projetile_distance/projectile_speed })
 end

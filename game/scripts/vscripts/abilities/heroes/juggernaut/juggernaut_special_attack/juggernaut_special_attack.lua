@@ -64,7 +64,7 @@ function juggernaut_special_attack:OnSpellStart()
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

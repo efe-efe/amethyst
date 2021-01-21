@@ -309,8 +309,7 @@ function GameMode:SetupMode()
 end
 
 function GameMode:SetupProjectiles()
-    Projectiles:Initialize()
-    --ProjectilesManagerInstance:Initialize()
+    ProjectilesManagerInstance:Initialize()
 end
 
 function GameMode:Start()

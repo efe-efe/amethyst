@@ -62,7 +62,7 @@ function spectre_extra_recast:OnSpellStart()
 	}
 
 	EmitSoundOn("Hero_Nevermore.Raze_Flames", caster)
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 end
 
 function spectre_extra_recast:PlayEffectsOnFinish(vOrigin)

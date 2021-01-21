@@ -107,7 +107,7 @@ function spectre_special_attack:OnSpellStart()
 		iVisionTeamNumber = caster:GetTeamNumber(),
 		iVisionRadius = hitbox,
 	} 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	ProjectileManager:CreateLinearProjectile(info) 
 	self:PlayEffectsOnCast()
 	LinkAbilityCooldowns(caster, 'spectre_ex_special_attack')

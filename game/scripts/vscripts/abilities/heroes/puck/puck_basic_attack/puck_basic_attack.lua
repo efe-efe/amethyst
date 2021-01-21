@@ -37,6 +37,7 @@ end
 
 function puck_basic_attack:LaunchProjectile(origin, point)
 	local caster = self:GetCaster()
+	local damage = caster:GetAverageTrueAttackDamage(caster)
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
@@ -66,7 +67,7 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
 		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
+		OnUnitHit = function(_self, unit)
 			caster:PerformAttack(unit, true, true, true, true, false, false, true)
 
 			if is_charged then
@@ -83,14 +84,14 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 			end
 		end,
 		OnFinish = function(_self, pos)
-			if next(_self.rehit) == nil then
+			if next(_self.tHitLog--[[rehit]]) == nil then
 				CustomEntities:FakeMissAttack(caster, pos)
 			end
 			self:PlayEffectsOnFinish(pos, is_charged)
 		end,
 	}
-
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
+	--Projectiles:CreateProjectile(projectile)
 	self:PlayEffectsOnCast(is_charged)
 end
 

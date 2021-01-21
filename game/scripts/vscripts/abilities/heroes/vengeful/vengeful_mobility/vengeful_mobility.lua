@@ -76,7 +76,7 @@ function vengeful_mobility:OnSpellStart()
 
     recast_ability:SetIllusion(illusion)
 
-    Projectiles:CreateProjectile(projectile)
+    ProjectilesManagerInstance:CreateProjectile(projectile)
     EmitSoundOn("Hero_VengefulSpirit.WaveOfTerror", caster)
 end
 

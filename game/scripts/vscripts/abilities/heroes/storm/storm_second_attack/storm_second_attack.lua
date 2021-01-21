@@ -61,7 +61,7 @@ function storm_second_attack:OnSpellStart()
 		end,
 	}
 
-    local projectile = Projectiles:CreateProjectile(projectile)
+    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

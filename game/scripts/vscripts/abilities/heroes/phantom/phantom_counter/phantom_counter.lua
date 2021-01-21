@@ -158,7 +158,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
 end

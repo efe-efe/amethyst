@@ -88,14 +88,14 @@ function phantom_basic_attack_related:OnSpellStart()
 			end
 		end,
 		OnFinish = function(_self, pos)
-			if next(_self.rehit) == nil then
+			if next(_self.tHitLog) == nil then
 				CustomEntities:FakeMissAttack(caster, pos)
 			end
 			self:PlayEffectsOnFinish(pos)
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

@@ -62,7 +62,7 @@ function invoker_tornado_custom:OnSpellStart()
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

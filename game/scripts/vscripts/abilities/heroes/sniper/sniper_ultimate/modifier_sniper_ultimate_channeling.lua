@@ -98,7 +98,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 	}
 
     CustomEntities:FullyFaceTowards(caster, projectile_direction)
-    Projectiles:CreateProjectile(projectile)
+    ProjectilesManagerInstance:CreateProjectile(projectile)
     EmitSoundOn("Ability.Assassinate", self:GetCaster())
 end
 

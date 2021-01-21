@@ -69,7 +69,7 @@ function nevermore_second_attack:OnSpellStart()
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	
 	local cooldown = self:GetCooldown(self:GetLevel()) - (souls * cd_reduction_per_soul)
 	self:EndCooldown()

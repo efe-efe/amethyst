@@ -79,7 +79,7 @@ function vengeful_second_attack:ThrowProjectile()
 		end,
 	}
 
-    local projectile = Projectiles:CreateProjectile(projectile)
+    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
 end
 
 

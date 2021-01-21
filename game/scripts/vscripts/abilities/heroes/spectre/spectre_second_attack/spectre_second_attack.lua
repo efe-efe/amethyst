@@ -96,7 +96,7 @@ function spectre_second_attack:OnSpellStart()
 		OnFinish = function(_self, pos)
 			if level >= 2 then
 				local counter = 0
-				for k, v in pairs(_self.rehit) do 
+				for k, v in pairs(_self.tHitLog) do 
 					counter = counter + 1 
 				end
 	
@@ -114,7 +114,7 @@ function spectre_second_attack:OnSpellStart()
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_CAST_ABILITY_1, 2.0)
 	self:PlayEffectsOnCast()
 end

@@ -1,3 +1,6 @@
+function PrintBoolean(sPrefix, bBoolean)
+	print(sPrefix, bBoolean and 'TRUE' or 'FALSE')
+end
 
 function PrintTable(t, indent, done)
 	--print (string.format ('PrintTable type %s', type(keys)))

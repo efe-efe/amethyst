@@ -75,7 +75,7 @@ function sniper_second_attack:OnSpellStart()
 		OnUnitHit = function(_self, unit)
 			-- Count targets
 			local counter = -1
-			for k, v in pairs(_self.rehit) do
+			for k, v in pairs(_self.tHitLog) do
 				counter = counter + 1
 			end
 			
@@ -121,7 +121,7 @@ function sniper_second_attack:OnSpellStart()
 		})
 	end
 
-    Projectiles:CreateProjectile(projectile)
+    ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 3.0)
 	LinkAbilityCooldowns(caster, 'sniper_ex_second_attack')
@@ -207,7 +207,7 @@ function sniper_ex_second_attack:ThrowProjectile(vOrigin, vDirection, bFirstTime
 		OnUnitHit = function(_self, unit)
 			-- Count targets
 			local counter = -1
-			for k, v in pairs(_self.rehit) do
+			for k, v in pairs(_self.tHitLog) do
 				counter = counter + 1
 			end
 			
@@ -239,7 +239,7 @@ function sniper_ex_second_attack:ThrowProjectile(vOrigin, vDirection, bFirstTime
 		end,
 	}
 
-    Projectiles:CreateProjectile(projectile)
+    ProjectilesManagerInstance:CreateProjectile(projectile)
 end
 
 if IsClient() then require("wrappers/abilities") end

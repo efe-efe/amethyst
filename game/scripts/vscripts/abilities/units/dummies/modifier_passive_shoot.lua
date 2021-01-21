@@ -56,6 +56,6 @@ function modifier_passive_shoot:OnIntervalThink()
         }
 
         CustomEntities:FullyFaceTowards(parent, Vector(projectile_direction.x, projectile_direction.y, parent:GetForwardVector().z))
-        Projectiles:CreateProjectile(projectile)
+        ProjectilesManagerInstance:CreateProjectile(projectile)
 	end)
 end

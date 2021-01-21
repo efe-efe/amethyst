@@ -62,7 +62,7 @@ function item_nullifier_custom:OnSpellStart()
 	}
 
 	-- Cast projectile
-    Projectiles:CreateProjectile(projectile)
+    ProjectilesManagerInstance:CreateProjectile(projectile)
     self:PlayEffectsOnCast()
 end
 

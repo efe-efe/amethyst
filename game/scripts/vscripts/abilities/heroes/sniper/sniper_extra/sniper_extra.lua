@@ -96,9 +96,9 @@ function sniper_extra:OnSpellStart()
     projectile_b.vVelocity = projectile_direction_b * projectile_speed
     projectile_c.vVelocity = projectile_direction_c * projectile_speed
 
-    Projectiles:CreateProjectile(projectile_a)
-    Projectiles:CreateProjectile(projectile_b)
-    Projectiles:CreateProjectile(projectile_c)
+    ProjectilesManagerInstance:CreateProjectile(projectile_a)
+    ProjectilesManagerInstance:CreateProjectile(projectile_b)
+    ProjectilesManagerInstance:CreateProjectile(projectile_c)
     self:PlayEffectsOnCast()
 end
 

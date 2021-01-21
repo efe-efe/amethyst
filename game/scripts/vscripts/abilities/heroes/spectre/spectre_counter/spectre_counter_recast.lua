@@ -55,7 +55,7 @@ function spectre_counter_recast:OnSpellStart()
 		end
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 
@@ -93,7 +93,7 @@ function spectre_counter_recast:TeleportTarget(hTarget, hCaster)
 		end,
 	}
 
-	Projectiles:CreateProjectile(projectile)
+	ProjectilesManagerInstance:CreateProjectile(projectile)
 end
 
 function spectre_counter_recast:PlayEffectsOnPhase()
