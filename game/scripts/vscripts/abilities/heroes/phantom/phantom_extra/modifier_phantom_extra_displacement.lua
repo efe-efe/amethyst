@@ -2,14 +2,16 @@ modifier_phantom_extra_displacement = class({})
 
 function modifier_phantom_extra_displacement:OnCreated(params)
 	if IsServer() then
-		self.origin = self:GetParent():GetAbsOrigin()
-		self.radius = self:GetAbility():GetSpecialValueFor('radius')
-		self.fading_slow_duration = self:GetAbility():GetSpecialValueFor("fading_slow_duration")
-		self.fading_slow_pct = self:GetAbility():GetSpecialValueFor("fading_slow_pct")
+		self.parent = self:GetParent()
+		self.origin = self.parent:GetAbsOrigin()
+		self.ability = self:GetAbility()
+		self.radius = self.ability:GetSpecialValueFor('radius')
+		self.fading_slow_duration = self.ability:GetSpecialValueFor("fading_slow_duration")
+		self.fading_slow_pct = self.ability:GetSpecialValueFor("fading_slow_pct")
 	
 		self.damage_table = {
-			attacker = self:GetCaster(),
-			damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
+			attacker = self.parent,
+			damage = self.ability:GetSpecialValueFor("ability_damage"),
 			damage_type = DAMAGE_TYPE_PHYSICAL,
 		}
 
@@ -30,8 +32,8 @@ end
 function modifier_phantom_extra_displacement:OnDestroy()
 	if IsServer() then
 		local enemies = CustomEntities:FindUnitsInRadius(
-			self:GetParent(),
-			self:GetParent():GetOrigin(), 
+			self.parent,
+			self.parent:GetAbsOrigin(), 
 			self.radius, 
 			DOTA_UNIT_TARGET_TEAM_ENEMY, 
 			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
@@ -40,65 +42,50 @@ function modifier_phantom_extra_displacement:OnDestroy()
 		)
 
 		for _,enemy in pairs(enemies) do
-			if not enemy:HasModifier('modifier_phantom_extra') then
-				self:OnImpact(enemy)
-			end
+			self:OnImpact(enemy)
 		end
 
-		if self:GetAbility():GetLevel() >= 2 then
+		if self.ability:GetLevel() >= 2 then
 			if self.recast then
 				--To prevent recasting from a recast!
-				if self:GetParent():HasModifier('modifier_phantom_extra_slashes') then
-					self:GetParent():RemoveModifierByName('modifier_phantom_extra_slashes')
+				if self.parent:HasModifier('modifier_phantom_extra_slashes') then
+					self.parent:RemoveModifierByName('modifier_phantom_extra_slashes')
 				else
-					local modifier = self:GetParent():AddNewModifier(
-						self:GetParent(),
-						self:GetAbility(),
-						"modifier_phantom_extra_slashes",
-						{ duration = 3.0 }
-					)
-				
-					self:GetParent():AddNewModifier(
-						self:GetParent(),
-						self:GetAbility(),
-						"modifier_phantom_extra_recast",
-						{ duration = 3.0 }
-					)
+					local modifier = self.parent:AddNewModifier(self.parent, self.ability, "modifier_phantom_extra_slashes", { duration = 3.0 })
+					self.parent:AddNewModifier(self.parent, self.ability, "modifier_phantom_extra_recast", { duration = 3.0 })
 				end
 			end
 		end
 		
-		local trail_pfx = ParticleManager:CreateParticle("particles/phantom/mobility_trail.vpcf", PATTACH_ABSORIGIN, self:GetParent())
+		local trail_pfx = ParticleManager:CreateParticle("particles/phantom/mobility_trail.vpcf", PATTACH_ABSORIGIN, self.parent)
 		ParticleManager:SetParticleControl(trail_pfx, 0, self.origin)
-		ParticleManager:SetParticleControl(trail_pfx, 1, self:GetParent():GetAbsOrigin())
+		ParticleManager:SetParticleControl(trail_pfx, 1, self.parent:GetAbsOrigin())
 		ParticleManager:ReleaseParticleIndex(trail_pfx)
 	end
 end
 
 function modifier_phantom_extra_displacement:OnImpact(hTarget)
-	if not hTarget:HasModifier('modifier_phantom_extra') then
-		if not CustomEntities:IsCountering(hTarget) and not self.recast then
-			hTarget:AddNewModifier(
-				self:GetParent(), -- player source
-				self:GetAbility(), -- ability source
-				"modifier_generic_fading_slow", -- modifier name
-				{ duration = self.fading_slow_duration, max_slow_pct = self.fading_slow_pct } -- kv
-			)
-			self.recast = true
-		end
-		
-		self.damage_table.victim = hTarget
-		ApplyDamage(self.damage_table)
-		
-		hTarget:AddNewModifier(
-			self:GetCaster(), -- player source
-			self:GetAbility(), -- ability source
-			"modifier_phantom_extra", -- modifier name
-			{ duration = 0.1 } -- kv
-		)
+	hTarget:AddNewModifier(self.parent, self.ability, "modifier_phantom_extra", { duration = 0.1 })
 
-		self:PlayEffectsOnImpact(hTarget)
-	end
+	CustomEntities:SingleAttack(self.parent, {
+		hTarget = hTarget,
+		Callback = function(hTarget)
+			if not hTarget:HasModifier('modifier_phantom_extra') then
+				if not CustomEntities:IsCountering(hTarget) and not self.recast then
+					hTarget:AddNewModifier(self.parent, self.ability, "modifier_generic_fading_slow", { 
+						duration = self.fading_slow_duration, 
+						max_slow_pct = self.fading_slow_pct 
+					})
+					self.recast = true
+				end
+				
+				self.damage_table.victim = hTarget
+				ApplyDamage(self.damage_table)
+					
+				self:PlayEffectsOnImpact(hTarget)
+			end
+		end
+	})
 end
 
 function modifier_phantom_extra_displacement:PlayEffectsOnImpact(hTarget)

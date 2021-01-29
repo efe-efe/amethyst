@@ -35,66 +35,42 @@ function phantom_basic_attack:OnSpellStart()
 
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
-	local enemies = CustomEntities:FindUnitsInCone(
-		caster,
-		direction, 
-		0, 
-		origin, 
-		radius, 
-		DOTA_UNIT_TARGET_TEAM_ENEMY, 
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-		DOTA_UNIT_TARGET_FLAG_NONE, 
-		FIND_CLOSEST
-	)
+	CustomEntities:MeeleAttack(caster, {
+		vDirection = direction,
+		vOrigin = origin, 
+		fRadius = radius,
+		bIsBasicAttack = true,
+		iMaxTargets = 1,
+		Callback = function(hTarget)
+			CustomEntities:AttackWithBaseDamage(caster, {
+				hTarget = hTarget,
+				hAbility = self,
+			})
 
-	local should_shake = false
+			if not CustomEntities:IsObstacle(hTarget) then
+				if CustomEntities:ProvidesMana(hTarget) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				end
 
-	for _,enemy in pairs(enemies) do
-		if enemy:IsRealHero() then
-			should_shake = true
+				caster:AddNewModifier(caster, self, "modifier_phantom_strike_stack", {})
+				self:ReduceCooldown(caster, 'phantom_second_attack', cooldown_reduction)
+			end
+	
+			self:PlayEffectsOnImpact(hTarget)
 		end
-
-		if CustomEntities:ProvidesMana(enemy) then
-            CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-        end
-
-		if not CustomEntities:IsObstacle(enemy) then
-			caster:AddNewModifier(
-				caster, -- player source
-				self, -- ability source
-				"modifier_phantom_strike_stack", -- modifier name
-				{} -- kv
-			)
-		end
-
-		-- Reduce the cd of the second attack by 1
-		local second_attack = caster:FindAbilityByName("phantom_second_attack")
-		local second_attack_cd = second_attack:GetCooldownTimeRemaining()
-		local new_cd = second_attack_cd - cooldown_reduction
-
-		if (new_cd) < 0 then 
-			second_attack:EndCooldown()
-		else
-			second_attack:EndCooldown()
-			second_attack:StartCooldown(new_cd)
-		end
-
-		caster:PerformAttack(enemy, true, true, true, true, false, false, true)
-		self:PlayEffectsOnImpact(enemy)
-
-		break
-	end
-
-	if #enemies == 0 then
-		CustomEntities:FakeMissAttack(caster)
-	end
-
-	if should_shake then
-		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
-	end
+	})
 
 	self:PlayEffectsOnFinish(direction, radius)
 	self:PlayEffectsOnCast()
+end
+
+function phantom_basic_attack:ReduceCooldown(hCaster, sAbilityName, fCooldownReduction)
+	local hAbility = hCaster:FindAbilityByName(sAbilityName)
+	local fAbilityCooldown = hAbility:GetCooldownTimeRemaining()
+	local fNewCooldown = Clamp((fAbilityCooldown - fCooldownReduction), nil, 0)
+
+	hAbility:EndCooldown()
+	hAbility:StartCooldown(fNewCooldown)
 end
 
 function phantom_basic_attack:PlayEffectsOnFinish(vDirection, nRadius)

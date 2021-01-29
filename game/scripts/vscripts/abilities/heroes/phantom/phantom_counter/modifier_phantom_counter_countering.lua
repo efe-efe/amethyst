@@ -19,12 +19,23 @@ function modifier_phantom_counter_countering:OnTrigger(params)
 	end
 end
 
-function modifier_phantom_counter_countering:OnProjectileHitCustom(params)
+function modifier_phantom_counter_countering:OnHit(params)
 	if IsServer() then
-		self:OnTrigger({})
-		if params.projectile.bIsDestructible then
-			params.projectile:Destroy(true)
+		if not params.bTriggerCounters then
+			return true
 		end
+		
+		self:OnTrigger({})
+
+		if params.iType == PROJECTILE_HIT then
+			local projectile = params.hProjectile
+			if projectile.bIsDestructible then
+				projectile:ScheduleDestroy()
+			end
+
+		end
+
+		return false
 	end
 end
 
@@ -42,4 +53,4 @@ function modifier_phantom_counter_countering:GetOverrideAnimationRate() 	return 
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_phantom_counter_countering)
-Modifiers.OnProjectileHit(modifier_phantom_counter_countering)
+Modifiers.OnHit(modifier_phantom_counter_countering)

@@ -24,38 +24,39 @@ function spectre_counter_recast:OnSpellStart()
 	
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			EffectName =			"particles/spectre/spectre_ex_second_attack.vpcf",
+			vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0, 0, 80),
+			fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius =			self:GetSpecialValueFor("hitbox"),
+			Source = 				caster,
+			vVelocity = 			projectile_direction * projectile_speed,
+			UnitBehavior = 			PROJECTILES_DESTROY,
+			WallBehavior = 			PROJECTILES_DESTROY,
+			TreeBehavior = 			PROJECTILES_NOTHING,
+			GroundBehavior = 		PROJECTILES_NOTHING,
+			fGroundOffset = 		0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = caster,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+				}
 
-	local projectile = {
-		EffectName =			"particles/spectre/spectre_ex_second_attack.vpcf",
-		vSpawnOrigin = 			caster:GetAbsOrigin() + Vector(0, 0, 80),
-		fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius =			self:GetSpecialValueFor("hitbox"),
-		Source = 				caster,
-		vVelocity = 			projectile_direction * projectile_speed,
-		UnitBehavior = 			PROJECTILES_DESTROY,
-		WallBehavior = 			PROJECTILES_DESTROY,
-		TreeBehavior = 			PROJECTILES_NOTHING,
-		GroundBehavior = 		PROJECTILES_NOTHING,
-		fGroundOffset = 		0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-			}
+				ApplyDamage(damage_table)
 
-			ApplyDamage(damage_table)
+				self:TeleportTarget(unit, _self.Source)
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end
+		}
+	})
 
-			self:TeleportTarget(unit, _self.Source)
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end
-	}
-
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

@@ -56,7 +56,7 @@ function invoker_meteor_custom:OnSpellStart()
             local distance = (final_point - unit:GetAbsOrigin()):Length2D()
 			ApplyDamage(damage_table)
         end,
-        OnThinkBegin = function(_self, pos)
+        OnIntervalThink = function(_self, pos)
             counter = counter + 1
             if counter == 5 then
                 CreateModifierThinker(

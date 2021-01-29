@@ -17,51 +17,52 @@ function storm_second_attack:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
-	local projectile = {
-		EffectName = "particles/storm/storm_second_attack.vpcf",
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-        Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-				ability = self,
-			}
-			ApplyDamage(damage_table)
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			EffectName = "particles/storm/storm_second_attack.vpcf",
+			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_DESTROY,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = caster,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+					ability = self,
+				}
+				ApplyDamage(damage_table)
 
-			if _self.Source == caster then
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-				end
-				if caster:HasModifier('modifier_storm_ultimate') then
-					local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
+				if _self.Source == caster then
 					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaPercent(caster, extra_mana_pct, true, true)
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
+					if caster:HasModifier('modifier_storm_ultimate') then
+						local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
+						if CustomEntities:ProvidesMana(unit) then
+							CustomEntities:GiveManaPercent(caster, extra_mana_pct, true, true)
+						end
 					end
 				end
-			end
 
-			if self:GetLevel() >= 2 then
-				unit:AddNewModifier(_self.Source, self, 'modifier_storm_second_attack', { duration = duration })
-			end
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
+				if self:GetLevel() >= 2 then
+					unit:AddNewModifier(_self.Source, self, 'modifier_storm_second_attack', { duration = duration })
+				end
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 
-    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

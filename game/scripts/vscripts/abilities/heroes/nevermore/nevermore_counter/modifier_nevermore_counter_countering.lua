@@ -27,8 +27,8 @@ end
 function modifier_nevermore_counter_countering:OnProjectileHitCustom(params)
 	if IsServer() then
 		self:OnTrigger({})
-		if params.projectile.bIsDestructible then
-			params.projectile:Destroy(true)
+		if params.hProjectile.bIsDestructible then
+			params.hProjectile:Destroy(true)
 		end
 	end
 end

@@ -9,28 +9,22 @@ function modifier_juggernaut_ultimate_slashing:OnCreated(params)
 
     if IsServer() then
         self.parent = self:GetParent()
-        self.damage_per_second = self.parent:GetAttackDamage()
         self.current_position = self.parent:GetOrigin()
         self.previous_position = self.current_position
         self.current_target = nil
-        self.damage_table = {
-            attacker = self.parent,
-            damage = self.damage_per_second,
-            damage_type = DAMAGE_TYPE_PURE,
-        }
         self:SetStackCount(params.aspd_buff)
 
         local attacks_per_second = self.parent:GetAttacksPerSecond()
         self.attack_speed = math.abs(1 / attacks_per_second)
         self:OnIntervalThink()
         self:StartIntervalThink(self.attack_speed)
-        self.parent:HideHealthBar()
+        CustomEntities:HideHealthBar(self.parent)
     end
 end
 
 function modifier_juggernaut_ultimate_slashing:OnDestroy()
     if IsServer() then
-        self.parent:UnhideHealthBar()
+        CustomEntities:UnhideHealthBar(self.parent)
         self.parent:AddNewModifier(self.parent, self:GetAbility(), "modifier_juggernaut_spin_animation", {duration = 0.3})
     end
 end
@@ -40,27 +34,37 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
     if #enemies > 0 then
         local enemy_index = RandomInt(1, #enemies)
         self.current_target = enemies[enemy_index]
-        self:OnEnemyHit()
     else
         self.current_target = nil
         self:OnMiss()
     end
+
+    CustomEntities:SingleAttack(self.parent, {
+        hTarget = self.current_target,
+        bIsBasicAttack = true,
+        bTriggerCounters = false,
+        Callback = function(hTarget)
+            self:OnEnemyHit(hTarget)
+        end
+    })
 end
 
-function modifier_juggernaut_ultimate_slashing:OnEnemyHit(hEnemy)
-    self.damage_table.victim = self.current_target
-    ApplyDamage(self.damage_table)
-    FindClearSpaceForUnit(self.parent, self.current_target:GetAbsOrigin() + RandomVector(128), false)
+function modifier_juggernaut_ultimate_slashing:OnEnemyHit(hTarget)
+    CustomEntities:AttackWithBaseDamage(self.parent, {
+        hTarget = hTarget,
+        hAbility = self:GetAbility(),
+    })
+    FindClearSpaceForUnit(self.parent, hTarget:GetAbsOrigin() + RandomVector(128), false)
 
-    local direction = self.current_target:GetOrigin() - self.parent:GetOrigin()
+    local direction = hTarget:GetOrigin() - self.parent:GetOrigin()
     direction.z = self.parent:GetForwardVector().z
     self.parent:SetForwardVector(direction:Normalized())
     self.current_position = self.parent:GetOrigin()
 
-    self:PlayEffectsTarget(self.current_target)
+    self:PlayEffectsTarget(hTarget)
     self:PlayEffectsTrail(self.previous_position, self.current_position)
 
-    ScreenShake(self.current_target:GetAbsOrigin(), 100, 300, 0.45, 1000, 0, true)
+    ScreenShake(hTarget:GetAbsOrigin(), 100, 300, 0.45, 1000, 0, true)
     self.previous_position = self.current_position
 end
 

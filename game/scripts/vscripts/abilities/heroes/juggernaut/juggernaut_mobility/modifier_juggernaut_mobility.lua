@@ -123,34 +123,35 @@ function modifier_juggernaut_mobility:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end
 
+function modifier_juggernaut_mobility:OnHit(params)
+    if IsServer() then
+        if params.iType == PROJECTILE_HIT then
+            if self:GetAbility():GetLevel() < 2 then
+                return true
+            end
+
+            local projectile = params.hProjectile
+
+            if projectile.bIsReflectable == true then
+                projectile:SetVelocity(projectile:GetVelocity() * -1.2, projectile:GetPosition())
+                projectile:SetSource(self:GetParent())
+                projectile:SetVisionTeam(self:GetParent():GetTeam())
+                projectile:ResetDistanceTraveled()
+                projectile:ResetRehit()
+                EmitSoundOn("Hero_Juggernaut.Attack", self:GetParent())
+            end
+
+            return false
+        end
+        return true
+	end
+end
+
 function modifier_juggernaut_mobility:GetStatusLabel() return "Blade Fury" end
 function modifier_juggernaut_mobility:GetStatusPriority() return 4 end
 function modifier_juggernaut_mobility:GetStatusStyle() return "BladeFury" end
 
-function modifier_juggernaut_mobility:OnProjectileHitCustom(params)
-    if IsServer() then
-        if self:GetAbility():GetLevel() < 2 then
-            return true
-        end
-
-		local projectile = params.projectile
-
-		if projectile.bIsReflectable == true then
-			projectile:SetVelocity(projectile:GetVelocity() * -1, projectile:GetPosition())
-			projectile:SetSource(self:GetParent())
-			projectile:SetVisionTeam(self:GetParent():GetTeam())
-			projectile:ResetDistanceTraveled()
-			projectile:ResetRehit()
-            EmitSoundOn("Hero_Juggernaut.Attack", self:GetParent())
-
-			return false
-		end
-
-		return true
-	end
-end
-
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Animation(modifier_juggernaut_mobility)
 Modifiers.Status(modifier_juggernaut_mobility)
-Modifiers.OnProjectileHit(modifier_juggernaut_mobility)
+Modifiers.OnHit(modifier_juggernaut_mobility)

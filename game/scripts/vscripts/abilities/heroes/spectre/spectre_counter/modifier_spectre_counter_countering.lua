@@ -29,7 +29,7 @@ function modifier_spectre_counter_countering:OnDestroy()
     end
 end
 
-function modifier_spectre_counter_countering:OnTrigger(params)   
+function modifier_spectre_counter_countering:OnTrigger()   
     if IsServer() then
         local modifier = self:GetParent():FindModifierByName("modifier_spectre_basic_attack_cooldown"):Replenish()
 
@@ -74,37 +74,38 @@ function modifier_spectre_counter_countering:OnOrder(params)
     end
 end
 
-function modifier_spectre_counter_countering:GetModifierIncomingDamage_Percentage(params)
+function modifier_spectre_counter_countering:OnHit(params)
     if IsServer() then
-        if params.damage_type ~= DAMAGE_TYPE_PURE then
-            local direction =  self:GetParent():GetAbsOrigin() - params.attacker:GetAbsOrigin()
-            local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
-            
-            if projection <= -0.8 then
-                self:OnTrigger(params)
-                return -100
-            end
+		if not params.bTriggerCounters then
+			return true
         end
-        return 0
-    end
-end
+        
+        local vDirection = nil
 
-function modifier_spectre_counter_countering:OnProjectileHitCustom(params)
-	if IsServer() then
-		local projectile = params.projectile
-        local direction = projectile:GetVelocity():Normalized() 
-        local projection = direction.x * self:GetParent():GetForwardVector().x + direction.y * self:GetParent():GetForwardVector().y
+        if params.iType == PROJECTILE_HIT then
+            local projectile = params.hProjectile
+            vDirection =  projectile:GetVelocity():Normalized()
+
+            if projectile.bIsDestructible then
+                projectile:ScheduleDestroy()
+            end
+        else
+            vDirection =  self:GetParent():GetAbsOrigin() - params.hSource:GetAbsOrigin()
+        end
+            
+        local projection = self:GetProjection(vDirection)
 
         if projection <= -0.8 then
-            if params.projectile.bIsDestructible then
-                params.projectile:Destroy(true)
-            end
-            self:OnTrigger({ attacker = params.projectile.Source })
+            self:OnTrigger()
             return false
+        else
+            return true
         end
-
-		return true
 	end
+end
+
+function modifier_spectre_counter_countering:GetProjection(vDirection)
+    return vDirection.x * self:GetParent():GetForwardVector().x + vDirection.y * self:GetParent():GetForwardVector().y
 end
 
 function modifier_spectre_counter_countering:PlayEffectsOnCast()
@@ -131,4 +132,4 @@ function modifier_spectre_counter_countering:UseDefaultVisuals() return false en
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_spectre_counter_countering)
-Modifiers.OnProjectileHit(modifier_spectre_counter_countering)
+Modifiers.OnHit(modifier_spectre_counter_countering)

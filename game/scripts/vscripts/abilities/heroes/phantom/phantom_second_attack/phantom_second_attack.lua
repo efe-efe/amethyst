@@ -18,49 +18,39 @@ function phantom_second_attack:OnSpellStart()
 	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 	local final_damage = damage + (stacks * damage_per_stack)
 
-	local enemies = CustomEntities:FindUnitsInCone(
-		caster,
-		direction, 
-		0, 
-		origin, 
-		radius, 
-		DOTA_UNIT_TARGET_TEAM_ENEMY, 
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-		DOTA_UNIT_TARGET_FLAG_NONE, 
-		FIND_CLOSEST
-	)
-
 	local damage_table = {
 		attacker = caster,
 		damage = final_damage,
 		damage_type = DAMAGE_TYPE_PHYSICAL,
 	}
 
-	for _,enemy in pairs(enemies) do 
-		damage_table.victim = enemy
-		ApplyDamage(damage_table)
-		
-		if stacks == 3 then
-			local modifier = caster:FindModifierByName("modifier_phantom_mobility_charges")
+	CustomEntities:MeeleAttack(caster, {
+		vDirection = direction,
+		vOrigin = origin, 
+		fRadius = radius,
+		bShakeOnHeroes = true,
+		Callback = function(hTarget)
+			damage_table.victim = hTarget
+			ApplyDamage(damage_table)
+			
+			if stacks == 3 then
+				local modifier = caster:FindModifierByName("modifier_phantom_mobility_charges")
 
-			if self:GetLevel() >= 2 then
-				modifier:RefreshCharges()
-			else
-				modifier:AddCharge()
+				if self:GetLevel() >= 2 then
+					modifier:RefreshCharges()
+				else
+					modifier:AddCharge()
+				end
+
+				EmitSoundOn("DOTA_Item.MagicWand.Activate", caster)
 			end
-
-			EmitSoundOn("DOTA_Item.MagicWand.Activate", caster)
+			if CustomEntities:ProvidesMana(hTarget) then
+				CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+			end
+			self:PlayEffectsOnImpact(hTarget, stacks)
 		end
-		if CustomEntities:ProvidesMana(enemy) then
-            CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-        end
-		self:PlayEffectsOnImpact(enemy, stacks)
-	end
+	})
 
-	if #enemies > 0 then
-		ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
-	end
-	
 	self:PlayEffectsOnFinish(direction, radius)
 	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()

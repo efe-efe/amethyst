@@ -48,9 +48,14 @@ function juggernaut_counter_helper:Slash(vPoint, iDamage)
    end
 
 	for _,enemy in pairs(enemies) do
-      damage_table.victim = enemy
-		ApplyDamage(damage_table)
-		self:PlayEffectsOnTarget(enemy)
+      CustomEntities:SingleAttack(caster, {
+         hTarget = enemy,
+         Callback = function(hTarget)
+            damage_table.victim = hTarget
+            ApplyDamage(damage_table)
+            self:PlayEffectsOnTarget(hTarget)
+         end
+      })
 	end
 
    if valid_targets >= 1 then

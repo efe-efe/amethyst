@@ -147,7 +147,7 @@ function modifier_mars_counter_countering:GetTranslation() return "bulwark" end
 
 function modifier_mars_counter_countering:OnProjectileHitCustom(params)
 	if IsServer() then
-		local projectile = params.projectile
+		local projectile = params.hProjectile
 		
         if projectile.bIsReflectable == true then
             local direction = projectile:GetVelocity():Normalized() 

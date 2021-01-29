@@ -2,7 +2,6 @@
 
 function CDOTA_BaseNPC:Initialize(data)
 	print('WARNING: USING CDOTA_BaseNPC:Initialize instead of CustomEntities. Entity name = ', self:GetName())
-	self.on_basic_attack_impact = 	{}
 	self.treshold = 				0
 	self.energy = 					0
 	self.max_energy = 				100
@@ -29,7 +28,6 @@ function CDOTA_BaseNPC_Hero:Initialize(data)
 	print('WARNING: USING CDOTA_BaseNPC_Hero:Initialize instead of CustomEntities. Entity name = ', self:GetName())
 
 	self.direction = 				{}
-	self.on_basic_attack_impact = 	{}
 
 	self.charges_modifiers =		{}
 	self.displacement_modifiers = 	{}
@@ -220,15 +218,6 @@ function CDOTA_BaseNPC:Reset()
 
 	self:InterruptCastPoint()
 	self:Purge(true, true, false, true, false)
-end
-
-function CDOTA_BaseNPC:OnBasicAttackImpact(hTarget)
-	print('WARNING: USING CDOTA_BaseNPC_Hero:OnBasicAttackImpact instead of CustomEntities. Entity name = ', self:GetName())
-	for _,routine in pairs(self.on_basic_attack_impact) do
-		if routine then
-			routine.method(routine.context, hTarget)
-		end
-	end
 end
 
 function CDOTA_BaseNPC:OnProjectileHit(projectile, entity)

@@ -28,7 +28,7 @@ function vengeful_basic_attack:OnSpellStart()
 		self:ThrowProjectile()
 	else
 		local vengeful_second_attack = caster:FindAbilityByName("vengeful_second_attack")
-		vengeful_second_attack:ThrowProjectile()
+		vengeful_second_attack:ThrowProjectile(true)
 		CustomEntities:SafeDestroyModifier(caster, "modifier_vengeful_basic_attack")
 	end
 
@@ -43,39 +43,40 @@ function vengeful_basic_attack:ThrowProjectile()
 
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	
-	local damage = caster:GetAverageTrueAttackDamage(caster)
-	local projectile = {
-		EffectName = "particles/vengeful/vengeful_basic_attack.vpcf",
-		vSpawnOrigin = origin + Vector(0, 0, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			caster:PerformAttack(unit, true, true, true, true, false, false, true)
+	CustomEntities:ProjectileAttack(caster, {
+		bIsBasicAttack = true,
+		tProjectile = {
+			EffectName = "particles/vengeful/vengeful_basic_attack.vpcf",
+			vSpawnOrigin = origin + Vector(0, 0, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_DESTROY,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				CustomEntities:AttackWithBaseDamage(caster, {
+					hTarget = unit,
+					hAbility = self,
+				})
 
-			if _self.Source == caster and not CustomEntities:IsObstacle(unit) then
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				if _self.Source == caster and not CustomEntities:IsObstacle(unit) then
+					if CustomEntities:ProvidesMana(unit) then
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
+					caster:AddNewModifier(caster, self, "modifier_vengeful_basic_attack", {})
 				end
-				caster:AddNewModifier(caster, self, "modifier_vengeful_basic_attack", {})
-			end
-		end,
-		OnFinish = function(_self, pos)
-			if next(_self.tHitLog) == nil then
-				CustomEntities:FakeMissAttack(caster, pos)
-			end
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

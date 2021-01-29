@@ -61,14 +61,23 @@ function modifier_storm_counter_countering:OnTrigger(params)
 	end
 end
 
-function modifier_storm_counter_countering:OnProjectileHitCustom(params)
+function modifier_storm_counter_countering:OnHit(params)
 	if IsServer() then
-		local projectile = params.projectile
+		if not params.bTriggerCounters then
+			return true
+		end
 
 		self:OnTrigger({})
-		if params.projectile.bIsDestructible then
-			params.projectile:Destroy(true)
+		
+		if params.iType == PROJECTILE_HIT then
+			local projectile = params.hProjectile
+			if projectile.bIsDestructible then
+				projectile:ScheduleDestroy()
+			end
+
 		end
+
+		return false
 	end
 end
 
@@ -110,4 +119,4 @@ end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_storm_counter_countering)
-Modifiers.OnProjectileHit(modifier_storm_counter_countering)
+Modifiers.OnHit(modifier_storm_counter_countering)

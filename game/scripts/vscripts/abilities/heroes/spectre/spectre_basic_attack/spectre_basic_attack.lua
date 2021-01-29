@@ -33,53 +33,44 @@ function spectre_basic_attack:GetCastPointSpeed() 		return self:GetSpecialValueF
 
 function spectre_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	caster:AddNewModifier(caster, self, "modifier_miss", {duration = 10})
 	local origin = caster:GetOrigin()
-	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
+	local cast_range = self:GetCastRange(Vector(0,0,0), nil)
+	local point = ClampPosition(origin, self:GetCursorPosition(), cast_range, cast_range)
 	local radius = self:GetSpecialValueFor("radius")
+	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
-
+	local max_targets = 1
 	local is_charged = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady()
+
 	if is_charged then
 		radius = radius + 50
-	end
-
-	local enemies = CustomEntities:FindUnitsInCone(
-		caster,
-		direction, 
-		0, 
-		origin, 
-		radius, 
-		DOTA_UNIT_TARGET_TEAM_ENEMY, 
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-		DOTA_UNIT_TARGET_FLAG_NONE, 
-		FIND_CLOSEST
-	)
-
-	local should_shake = false
-
-	for _,enemy in pairs(enemies) do 
-		if enemy:IsRealHero() then
-			should_shake = true
-		end
-
-		caster:PerformAttack(enemy, true, true, true, true, false, false, true)
-
-		if not is_charged then
-			break
-		end
-	end
-
-	if #enemies == 0 then
-		CustomEntities:FakeMissAttack(caster)
-	end
-
-	if should_shake or is_charged then
+		max_targets = -1
 		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
 	end
 
+	CustomEntities:MeeleAttack(caster, {
+		vDirection = direction,
+		vOrigin = origin, 
+		fRadius = radius,
+		iMaxTargets = max_targets,
+		bIsBasicAttack = true,
+		bShakeOnHeroes = not is_charged,
+		Callback = function(hTarget)
+			CustomEntities:AttackWithBaseDamage(caster, {
+				hTarget = hTarget,
+				hAbility = self,
+			})
+
+			if CustomEntities:ProvidesMana(hTarget) then
+				CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+			end
+
+			self:PlayEffectsOnImpact(hTarget, hTarget:GetAbsOrigin(), is_charged)
+		end
+	})
+
 	self:PlayEffectsOnFinish(direction, is_charged, radius)
-	self:PlayEffectsOnCast(is_charged, direction, radius)
+	self:PlayEffectsOnCast(is_charged)
 end
 
 function spectre_basic_attack:PlayEffectsOnFinish(vDirection, bCharged, nRadius)
@@ -116,11 +107,37 @@ function spectre_basic_attack:PlayEffectsOnFinish(vDirection, bCharged, nRadius)
 	ParticleManager:ReleaseParticleIndex(efx)
 end
 
-function spectre_basic_attack:PlayEffectsOnCast(is_charged, direction, radius)
+function spectre_basic_attack:PlayEffectsOnCast(bCharged)
 	EmitSoundOn("Hero_Spectre.PreAttack", self:GetCaster())
 
-	if is_charged then
+	if bCharged then
 		EmitSoundOn('Hero_Sven.Layer.GodsStrength', self:GetCaster())
+	end
+end
+
+function spectre_basic_attack:PlayEffectsOnImpact(hTarget, vPosition, bCharged)
+	if bCharged then
+		EmitSoundOn("Hero_BountyHunter.Jinada", hTarget)
+		
+		local particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
+		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, hTarget)
+		ParticleManager:ReleaseParticleIndex(effect_cast)
+	else
+		EmitSoundOn("Hero_Spectre.Attack", hTarget)
+		
+		EFX('particles/phantom/phantom_basic_attack.vpcf', PATTACH_ABSORIGIN, hTarget, {
+			release = true
+		})
+
+		local caster = self:GetCaster()
+		local offset = 50
+		local new_position = caster:GetOrigin() + (vPosition - caster:GetOrigin()):Normalized() * offset
+	
+		local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
+		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
+		ParticleManager:SetParticleControl(effect_cast, 0, vPosition)
+		ParticleManager:SetParticleControlForward(effect_cast, 0, (vPosition - caster:GetOrigin()):Normalized())
+		ParticleManager:ReleaseParticleIndex(effect_cast)
 	end
 end
 

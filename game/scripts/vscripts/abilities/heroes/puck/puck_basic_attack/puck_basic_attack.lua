@@ -3,10 +3,14 @@ puck_ex_basic_attack = class({})
 puck_basic_attack_related = class({})
 
 LinkLuaModifier("modifier_puck_basic_attack_cooldown", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_puck_basic_attack_buff", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
+
 LinkLuaModifier("modifier_puck_fairy_dust", "abilities/heroes/puck/modifier_puck_fairy_dust", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_puck_ex_basic_attack", "abilities/heroes/puck/puck_basic_attack/modifier_puck_ex_basic_attack", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_puck_basic_attack_thinker", "abilities/heroes/puck/puck_basic_attack/modifier_puck_basic_attack_thinker", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_puck_ex_basic_attack_shield", "abilities/heroes/puck/puck_basic_attack/modifier_puck_ex_basic_attack_shield", LUA_MODIFIER_MOTION_NONE)
+
+
 
 function puck_basic_attack:GetCastPoint()
 	if IsServer() then
@@ -54,44 +58,46 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 		projectile_particle = "particles/puck/puck_base_attack_alternative.vpcf"
 	end
 
-	local projectile = {
-		EffectName = projectile_particle,
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit)
-			caster:PerformAttack(unit, true, true, true, true, false, false, true)
-
-			if is_charged then
-				unit:AddNewModifier(_self.Source, nil, "modifier_puck_fairy_dust", { duration = fairy_dust_duration, slow_pct = fairy_dust_slow_pct })
-			end
-
-			if _self.Source == caster and not CustomEntities:IsObstacle(unit) then
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+	CustomEntities:ProjectileAttack(caster, {
+		bIsBasicAttack = true,
+		tProjectile = {
+			EffectName = projectile_particle,
+			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_DESTROY,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit)
+				CustomEntities:AttackWithBaseDamage(caster, {
+					hTarget = unit,
+					hAbility = self,
+				})
+				
+				if is_charged then
+					unit:AddNewModifier(_self.Source, nil, "modifier_puck_fairy_dust", { duration = fairy_dust_duration, slow_pct = fairy_dust_slow_pct })
 				end
-				if self:GetLevel() >=2 then
-					caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
+
+				if _self.Source == caster and not CustomEntities:IsObstacle(unit) then
+					if CustomEntities:ProvidesMana(unit) then
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
+					if self:GetLevel() >=2 then
+						caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
+					end
 				end
-			end
-		end,
-		OnFinish = function(_self, pos)
-			if next(_self.tHitLog--[[rehit]]) == nil then
-				CustomEntities:FakeMissAttack(caster, pos)
-			end
-			self:PlayEffectsOnFinish(pos, is_charged)
-		end,
-	}
-	ProjectilesManagerInstance:CreateProjectile(projectile)
-	--Projectiles:CreateProjectile(projectile)
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos, is_charged)
+			end,
+		}
+	})
+
 	self:PlayEffectsOnCast(is_charged)
 end
 

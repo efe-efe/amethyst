@@ -59,6 +59,8 @@ function ProjectilesManager:CreateProjectile(tData)
     local projectile = Projectile(tData)
 
     table.insert(self.tProjectiles, projectile)
+
+    return projectile
 end
 
 Projectile = class({
@@ -116,7 +118,8 @@ function Projectile:constructor(tData)
     end
     self:InitializeValues()
     self.id = self:CreateParticle(nil)
-    ParticleManager:SetParticleControl(self.id, self.iVelocityCP, self.vCurrentVelocity * 30)
+    self.iEfx = self.id
+    ParticleManager:SetParticleControl(self.iEfx, self.iVelocityCP, self.vCurrentVelocity * 30)
 end
 
 function Projectile:ResetDistanceTraveled()
@@ -250,7 +253,7 @@ function Projectile:ProcessEntity(hEntity)
                 else
                     self.tHitLog[hEntity:entindex()] = self.fCurrentTime + 10000
                 end
-                    
+                 --[[   
                 local continue = true
                 
                 for _,modifier_name in pairs(CustomEntities:GetOnProjectileHit(hEntity)) do
@@ -261,22 +264,30 @@ function Projectile:ProcessEntity(hEntity)
                     end
                 end
 
-                if continue then
+                if continue then]]
                     local status, action = pcall(self.OnUnitHit, self, hEntity)
                     if not status then
                         print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
                     end
 
-                    if self.UnitBehavior == PROJECTILES_DESTROY then
-                        self:Destroy(false)
-                        return false
+                    if not self.bIgnoreNextUnitBehavior then
+                        if self.UnitBehavior == PROJECTILES_DESTROY then
+                            self:Destroy(false)
+                            return false
+                        end
+                    else
+                        self.bIgnoreNextUnitBehavior = false
                     end
-                end
+                --end
             end
         end
     end
 
     return true
+end
+
+function Projectile:IgnoreNextUnitBehavior()
+    self.bIgnoreNextUnitBehavior = true
 end
 
 function Projectile:TestEntity(hEntity, bZCheck)
@@ -321,6 +332,10 @@ function Projectile:ProcessTrees()
     return true
 end
 
+function Projectile:ScheduleDestroy()
+    self.bShouldDestroy = true
+end
+
 function Projectile:ProcessWalls()
     if self.WallBehavior ~= PROJECTILES_NOTHING and self.bGroundConnect then--self.vGroundPosition.z > self.vPreviousPosition.z then
         local normal = self:GetNormal(self.vGroundPosition, self.Source, 32)
@@ -334,7 +349,6 @@ function Projectile:ProcessWalls()
             end
 
             if self.WallBehavior == PROJECTILES_DESTROY then
-                print('self.WallBehavior == PROJECTILES_DESTROY')
                 self:Destroy(false)
                 return false
             elseif self.WallBehavior == PROJECTILES_BOUNCE and self.iChanges > 0 and self.fCurrentTime >= self.fChangeTime then
@@ -376,7 +390,7 @@ function Projectile:ProcessGround()
                 print('[PROJECTILES] Projectile OnGroundHit Failure!: ' .. action)
             end
             
-            self.Destroy(false)
+            self:Destroy(false)
             return false
         elseif self.GroundBehavior == PROJECTILES_BOUNCE and self.iChanges > 0 and self.fCurrentTime >= self.fChangeTime then
             local status, action = pcall(self.OnGroundHit, self, self.vGroundPosition)
@@ -412,7 +426,7 @@ function Projectile:ProcessGround()
 end
 
 function Projectile:Destroy(bImmediate)
-    ParticleManager:DestroyParticle(self.id, self.bDestroyImmediate)
+    ParticleManager:DestroyParticle(self.iEfx, self.bDestroyImmediate)
     
     if not bImmediate then
         if self.OnFinish then
@@ -443,7 +457,7 @@ function Projectile:FindEntities()
 end
 
 function Projectile:ShouldDestroy()
-    return self:HasTimeExpired(self.fCurrentTime) or self:HasDistanceExpired()
+    return self:HasTimeExpired(self.fCurrentTime) or self:HasDistanceExpired() or self.bShouldDestroy
 end
 
 function Projectile:HasTimeExpired()
@@ -456,7 +470,7 @@ end
 
 function Projectile:SetDefaultVariables(tData)
     for key,value in pairs(tData) do
-        if tData[key] then 
+        if tData[key] ~= nil then 
             if  key ~= 'vSpawnOrigin' and
                 key ~= 'fVisionTickTime' and
                 key ~= 'fVisionLingerDuration'
@@ -557,36 +571,36 @@ function Projectile:ProvideVision()
 end
 
 function Projectile:InitializeValues()
-    self.fEndTime =             GameRules:GetGameTime()
-    self.tHitLog =              {}
-    self.vCurrentPosition =     self.vSpawnOrigin
-    self.vCurrentVelocity =     self.vVelocity / 30
-    self.vPreviousVelocity =    self.vCurrentVelocity
-    self.vPreviousPosition =    self.vSpawnOrigin
-    self.iChanges =             self.iChangeMax
-    self.fRadius =              self.fStartRadius
-    self.fSpawnTime =           GameRules:GetGameTime()
-    self.fChangeTime =          self.fSpawnTime
-    self.fDistanceTraveled =    0
-    self.fVisionTick =          math.ceil(self.fVisionTickTime * 30)
-    self.fCurrentFrame =        self.fVisionTick
+    self.fEndTime =                 GameRules:GetGameTime()
+    self.tHitLog =                  {}
+    self.vCurrentPosition =         self.vSpawnOrigin
+    self.vCurrentVelocity =         self.vVelocity / 30
+    self.vPreviousVelocity =        self.vCurrentVelocity
+    self.vPreviousPosition =        self.vSpawnOrigin
+    self.iChanges =                 self.iChangeMax
+    self.iEfx =                     -1
+    self.fRadius =                  self.fStartRadius
+    self.fSpawnTime =               GameRules:GetGameTime()
+    self.fChangeTime =              self.fSpawnTime
+    self.fDistanceTraveled =        0
+    self.fVisionTick =              math.ceil(self.fVisionTickTime * 30)
+    self.fCurrentFrame =            self.fVisionTick
+    self.fPseudoFrames =            0.0
+    self.fFramesDivisor =           0.0
+    self.fFrameHalf =               0.0
+    self.fFrameRadius =             0.0
+    self.fRadiusSquare =            0.0
+    self.vPseudoFramePosition =     Vector(0, 0, 0)
+    self.vGroundPosition =          Vector(0, 0, 0)
+    self.tEntities =                {}
+    self.bGroundConnect =           false
+    self.bShouldDestroy =           false
 
-    
     if self.fRadiusStep then
         self.fRadiusStep = self.fRadiusStep / 30
     else
         self.fRadiusStep = (self.fEndRadius - self.fStartRadius) / (self.fDistance / self.vCurrentVelocity:Length())
     end
-
-    self.fRadiusSquare =            0.0
-    self.fPseudoFrames =            0.0
-    self.fFramesDivisor =           0.0
-    self.fFrameHalf =               0.0
-    self.fFrameRadius =             0.0
-    self.vPseudoFramePosition =     Vector(0, 0, 0)
-    self.vGroundPosition =          Vector(0, 0, 0)
-    self.tEntities =                {}
-    self.bGroundConnect =           false
 end
 
 function Projectile:SetEndTime(fTime)
@@ -600,20 +614,20 @@ function Projectile:SetVelocity(vNewVelocity, vNewPosition)
         self.fChangeTime = GameRules:GetGameTime() + self.fChangeDelay
 
         if self.bRecreateOnChange then
-            ParticleManager:DestroyParticle(self.id, self.bDestroyImmediate)
-            self:CreateParticle(vNewPosition or self.vCurrentPosition)
+            ParticleManager:DestroyParticle(self.iEfx, self.bDestroyImmediate)
+            self.iEfx = self:CreateParticle(vNewPosition or self.vCurrentPosition)
         end
         
-        ParticleManager:SetParticleControl(self.id, self.iVelocityCP, vNewVelocity)
+        ParticleManager:SetParticleControl(self.iEfx, self.iVelocityCP, vNewVelocity)
     end
 end
     
-function Projectile:SetSource(source)
-    self.Source = source
+function Projectile:SetSource(hSource)
+    self.Source = hSource
 end
 
-function Projectile:SetVisionTeam(team)
-    self.iVisionTeamNumber = team
+function Projectile:SetVisionTeam(iTeam)
+    self.iVisionTeamNumber = iTeam
 end
 
 function Projectile:GetId()

@@ -29,45 +29,46 @@ function phantom_ultimate:OnSpellStart()
 	local projectile_speed = 4000
 	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 
-	local projectile = {
-		EffectName = projectile_name,
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = projectile_start_radius,
-		fEndRadius = projectile_end_radius,
-		Source = caster,
-		bIsReflectable = false,
-		bIsSlowable = false,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_NOTHING,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local final_damage = damage + (stacks * damage_per_stack)
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile  = {
+			EffectName = projectile_name,
+			vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = projectile_start_radius,
+			fEndRadius = projectile_end_radius,
+			Source = caster,
+			bIsReflectable = false,
+			bIsSlowable = false,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_NOTHING,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local final_damage = damage + (stacks * damage_per_stack)
 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = final_damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-			}
-			
-			ApplyDamage(damage_table)
+				local damage_table = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = final_damage,
+					damage_type = DAMAGE_TYPE_PHYSICAL,
+				}
+				
+				ApplyDamage(damage_table)
 
-			self:PlayEffectsOnCast(caster)
-            FindClearSpaceForUnit(caster, unit:GetOrigin() , true)
-            self:PlayEffectsOnImpact(unit)
-		end,
-        OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
+				self:PlayEffectsOnCast(caster)
+				FindClearSpaceForUnit(caster, unit:GetOrigin() , true)
+				self:PlayEffectsOnImpact(unit)
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 
 	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 3.0)
 	self:StopEffectsOnCastPoint()
 end

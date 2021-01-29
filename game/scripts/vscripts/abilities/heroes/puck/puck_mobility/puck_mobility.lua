@@ -29,53 +29,59 @@ function puck_mobility:OnSpellStart()
 		damage_type = DAMAGE_TYPE_MAGICAL,
 	}
 
-	local projectile = {
-		EffectName = "particles/econ/items/puck/puck_alliance_set/puck_illusory_orb_aproset.vpcf",
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-        Source = caster,
-		bIsReflectable = false,
-		bIsDestructible = false,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_NOTHING,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit)
-			damage_table.victim = unit
-			ApplyDamage(damage_table)
+	local projectile = nil
 
-			if _self.Source == caster then
-				if self:GetLevel() >= 2 and CustomEntities:ProvidesMana(unit) then
-					self:EndCooldown()
-					refreshed = true
-				end
-
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-				end
-			end
+	CustomEntities:ProjectileAttack(caster, {
+		OnProjectileCreated = function(hProjectile)
+			projectile = hProjectile
 		end,
-		OnFinish = function(_self, pos)
-			damage_table.damage = damage_aoe
-			ApplyCallbackForUnitsInArea(_self.Source, pos, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+		tProjectile = {
+			EffectName = "particles/econ/items/puck/puck_alliance_set/puck_illusory_orb_aproset.vpcf",
+			vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			bIsReflectable = false,
+			bIsDestructible = false,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_NOTHING,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_NOTHING,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit)
 				damage_table.victim = unit
 				ApplyDamage(damage_table)
-			end)
 
-			ScreenShake(pos, 100, 300, 0.45, 1000, 0, true)
-			CreateRadiusMarker(_self.Source, pos, radius, RADIUS_SCOPE_PUBLIC, 0.1)
-			EmitSoundOn("Hero_Puck.EtherealJaunt", _self.Source)
-			EmitSoundOnLocationWithCaster(pos, 'Hero_Puck.Waning_Rift', _self.Source)
-			StopSoundOn("Hero_Puck.Illusory_Orb", _self.Source)
-			self:PlayEffectsOnFinish(pos, 'particles/econ/items/puck/puck_merry_wanderer/puck_illusory_orb_explode_merry_wanderer.vpcf')
-		end,
-	}
+				if _self.Source == caster then
+					if self:GetLevel() >= 2 and CustomEntities:ProvidesMana(unit) then
+						self:EndCooldown()
+						refreshed = true
+					end
 
-    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
+					if CustomEntities:ProvidesMana(unit) then
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
+				end
+			end,
+			OnFinish = function(_self, pos)
+				damage_table.damage = damage_aoe
+				ApplyCallbackForUnitsInArea(_self.Source, pos, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+					damage_table.victim = unit
+					ApplyDamage(damage_table)
+				end)
+
+				ScreenShake(pos, 100, 300, 0.45, 1000, 0, true)
+				CreateRadiusMarker(_self.Source, pos, radius, RADIUS_SCOPE_PUBLIC, 0.1)
+				EmitSoundOn("Hero_Puck.EtherealJaunt", _self.Source)
+				EmitSoundOnLocationWithCaster(pos, 'Hero_Puck.Waning_Rift', _self.Source)
+				StopSoundOn("Hero_Puck.Illusory_Orb", _self.Source)
+				self:PlayEffectsOnFinish(pos, 'particles/econ/items/puck/puck_merry_wanderer/puck_illusory_orb_explode_merry_wanderer.vpcf')
+			end,
+		}
+	})
+
     local time = self:GetCastRange(Vector(0,0,0), nil)/projectile_speed
     caster:AddNewModifier(caster, self, "modifier_puck_mobility_recast", { duration = time })
     caster:FindAbilityByName("puck_mobility_recast"):SetProjectile(projectile)
@@ -134,46 +140,52 @@ function puck_ex_mobility:OnSpellStart()
 		damage_type = DAMAGE_TYPE_PURE,
 	}
 
-	local projectile = {
-		EffectName = "particles/puck/puck_ex_mobility.vpcf",
-		vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-        Source = caster,
-		bIsReflectable = false,
-		bIsDestructible = false,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_NOTHING,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit)
-			damage_table.victim = unit
-			ApplyDamage(damage_table)
+	local projectile = nil
+
+	CustomEntities:ProjectileAttack(caster, {
+		OnProjectileCreated = function(hProjectile)
+			projectile = hProjectile
 		end,
-		OnFinish = function(_self, pos)
-			damage_table.damage = damage_aoe
-			ApplyCallbackForUnitsInArea(_self.Source, pos, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+		tProjectile = {
+			EffectName = "particles/puck/puck_ex_mobility.vpcf",
+			vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,80),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			bIsReflectable = false,
+			bIsDestructible = false,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_NOTHING,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_NOTHING,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit)
 				damage_table.victim = unit
 				ApplyDamage(damage_table)
-				unit:AddNewModifier(caster, self, "modifier_puck_ex_mobility_fear", { 
-					duration = fear_duration,
-					max_slow_pct = fading_slow_pct 
-				})
-			end)
+			end,
+			OnFinish = function(_self, pos)
+				damage_table.damage = damage_aoe
+				ApplyCallbackForUnitsInArea(_self.Source, pos, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+					damage_table.victim = unit
+					ApplyDamage(damage_table)
+					unit:AddNewModifier(caster, self, "modifier_puck_ex_mobility_fear", { 
+						duration = fear_duration,
+						max_slow_pct = fading_slow_pct 
+					})
+				end)
 
-			ScreenShake(pos, 100, 300, 0.45, 1000, 0, true)
-			CreateRadiusMarker(_self.Source, pos, radius, RADIUS_SCOPE_PUBLIC, 0.1)
-			EmitSoundOn("Hero_Puck.EtherealJaunt", _self.Source)
-			EmitSoundOnLocationWithCaster(pos, 'Hero_Puck.Waning_Rift', _self.Source)
-			StopSoundOn("Hero_Puck.Illusory_Orb", _self.Source)
-			self:PlayEffectsOnFinish(pos, 'particles/econ/items/puck/puck_alliance_set/puck_illusory_orb_explode_aproset.vpcf', 'particles/econ/items/abaddon/abaddon_alliance/abaddon_death_coil_alliance_explosion.vpcf')
-		end,
-	}
+				ScreenShake(pos, 100, 300, 0.45, 1000, 0, true)
+				CreateRadiusMarker(_self.Source, pos, radius, RADIUS_SCOPE_PUBLIC, 0.1)
+				EmitSoundOn("Hero_Puck.EtherealJaunt", _self.Source)
+				EmitSoundOnLocationWithCaster(pos, 'Hero_Puck.Waning_Rift', _self.Source)
+				StopSoundOn("Hero_Puck.Illusory_Orb", _self.Source)
+				self:PlayEffectsOnFinish(pos, 'particles/econ/items/puck/puck_alliance_set/puck_illusory_orb_explode_aproset.vpcf', 'particles/econ/items/abaddon/abaddon_alliance/abaddon_death_coil_alliance_explosion.vpcf')
+			end,
+		}
+	})
 
-    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
     local time = self:GetCastRange(Vector(0,0,0), nil)/projectile_speed
     caster:AddNewModifier(caster, self, "modifier_puck_ex_mobility_recast", { duration = time })
     caster:FindAbilityByName("puck_ex_mobility_recast"):SetProjectile(projectile)
@@ -190,10 +202,10 @@ end
 function puck_ex_mobility_recast:GetCastPointSpeed()    	return 0 end
 function puck_ex_mobility_recast:GetCastAnimationCustom()	return ACT_DOTA_CAST_ABILITY_2 end
 function puck_ex_mobility_recast:OnSpellStart()
-    FindClearSpaceForUnit(self:GetCaster(), self.projectile.current_position, true)
+    FindClearSpaceForUnit(self:GetCaster(), self.projectile:GetPosition(), true)
     EmitSoundOn("Hero_Puck.EtherealJaunt", self:GetCaster())
 	StopSoundOn("Hero_Puck.Illusory_Orb", self:GetCaster())
-    self.projectile:Destroy(false)
+    self.projectile:ScheduleDestroy()
 end
 
 function puck_ex_mobility_recast:SetProjectile(projectile)

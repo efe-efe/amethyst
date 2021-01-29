@@ -24,23 +24,36 @@ function modifier_juggernaut_counter_countering:OnTrigger(params)
 	end
 end
 
-function modifier_juggernaut_counter_countering:OnProjectileHitCustom(params)
+function modifier_juggernaut_counter_countering:OnMeeleHitCustom(params)
 	if IsServer() then
-		local projectile = params.projectile
+	end
+end
 
-		self:OnTrigger({})
-		
-		if projectile.bIsReflectable == true then
-			projectile:SetVelocity(projectile:GetVelocity() * -1, projectile:GetPosition())
-			projectile:SetSource(self:GetParent())
-			projectile:SetVisionTeam(self:GetParent():GetTeam())
-			projectile:ResetDistanceTraveled()
-			projectile:ResetRehit()
-			
-			return false
+function modifier_juggernaut_counter_countering:OnHit(params)
+	if IsServer() then
+		if not params.bTriggerCounters then
+			return true
 		end
 
-		return true
+		self:OnTrigger({})
+
+		if params.iType == PROJECTILE_HIT then
+			local projectile = params.hProjectile
+
+			if projectile.bIsReflectable == true then
+				projectile:SetVelocity(projectile:GetVelocity() * -1.2, projectile:GetPosition())
+				projectile:SetSource(self:GetParent())
+				projectile:SetVisionTeam(self:GetParent():GetTeam())
+				projectile:ResetDistanceTraveled()
+				projectile:ResetRehit()
+			else
+				if projectile.bIsDestructible then
+					projectile:ScheduleDestroy()
+				end
+			end
+		end
+		
+		return false
 	end
 end
 
@@ -66,4 +79,4 @@ end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_juggernaut_counter_countering)
-Modifiers.OnProjectileHit(modifier_juggernaut_counter_countering)
+Modifiers.OnHit(modifier_juggernaut_counter_countering)

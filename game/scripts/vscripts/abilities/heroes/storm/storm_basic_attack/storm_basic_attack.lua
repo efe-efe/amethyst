@@ -56,82 +56,80 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 		damage_type = DAMAGE_TYPE_PURE,
 	}
 
-	local projectile = {
-		EffectName = projectile_particle,
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = 70,--self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			caster:PerformAttack(unit, true, true, true, true, false, false, true)
-
-			if _self.Source == caster then
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-				end
-
-				if caster:HasModifier('modifier_storm_ultimate') then
-					local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
+	CustomEntities:ProjectileAttack(caster, {
+		bIsBasicAttack = true,
+		tProjectile = {
+			EffectName = projectile_particle,
+			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = 70,--self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_DESTROY,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				CustomEntities:AttackWithBaseDamage(caster, {
+					hTarget = unit,
+					hAbility = self,
+				})
+				
+				if _self.Source == caster then
 					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaPercent(caster, mana_gain_pct, true, true)
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
+
+					if caster:HasModifier('modifier_storm_ultimate') then
+						local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
+						if CustomEntities:ProvidesMana(unit) then
+							CustomEntities:GiveManaPercent(caster, mana_gain_pct, true, true)
+						end
 					end
 				end
-			end
 
-			if is_charged then
-				local enemies = CustomEntities:FindUnitsInRadius(
-					_self.Source,
-					_self:GetPosition(), 
-					radius, 
-					DOTA_UNIT_TARGET_TEAM_ENEMY, 
-					DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-					DOTA_UNIT_TARGET_FLAG_NONE,
-					FIND_ANY_ORDER
-				)
-
-				damage_table_aoe.attacker = _self.Source
-				
-				for _,enemy in pairs(enemies) do
-					enemy:AddNewModifier(
-						_self.Source, -- player source
-						self, -- ability source
-						"modifier_generic_fading_slow", -- modifier name
-						{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct } -- kv
+				if is_charged then
+					local enemies = CustomEntities:FindUnitsInRadius(
+						_self.Source,
+						_self:GetPosition(), 
+						radius, 
+						DOTA_UNIT_TARGET_TEAM_ENEMY, 
+						DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+						DOTA_UNIT_TARGET_FLAG_NONE,
+						FIND_ANY_ORDER
 					)
+
+					damage_table_aoe.attacker = _self.Source
 					
-					damage_table_aoe.victim = enemy
-					ApplyDamage(damage_table_aoe)
+					for _,enemy in pairs(enemies) do
+						enemy:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
+							duration = fading_slow_duration, 
+							max_slow_pct = fading_slow_pct 
+						})
+						
+						damage_table_aoe.victim = enemy
+						ApplyDamage(damage_table_aoe)
+					end
+
+					local groundPosition = GetGroundPosition(_self:GetPosition(), _self.Source)
+
+					CreateRadiusMarker(_self.Source, groundPosition, radius, RADIUS_SCOPE_PUBLIC, 0.1)
+					ScreenShake(groundPosition, 100, 300, 0.45, 1000, 0, true)
+					
+					EFX("particles/units/heroes/hero_void_spirit/voidspirit_overload_discharge.vpcf", PATTACH_WORLDORIGIN, _self.Source, {
+						cp0 = _self:GetPosition(),
+						release = true,
+					})
 				end
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 
-				local groundPosition = GetGroundPosition(_self:GetPosition(), _self.Source)
-
-				CreateRadiusMarker(_self.Source, groundPosition, radius, RADIUS_SCOPE_PUBLIC, 0.1)
-				ScreenShake(groundPosition, 100, 300, 0.45, 1000, 0, true)
-				
-				EFX("particles/units/heroes/hero_void_spirit/voidspirit_overload_discharge.vpcf", PATTACH_WORLDORIGIN, _self.Source, {
-					cp0 = _self:GetPosition(),
-					release = true,
-				})
-			end
-
-			CustomEntities:OnBasicAttackImpact(_self.Source, unit)
-		end,
-		OnFinish = function(_self, pos)
-			if next(_self.tHitLog) == nil then
-				CustomEntities:FakeMissAttack(caster, pos)
-			end
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
-
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast(is_charged)
 end
 

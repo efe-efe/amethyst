@@ -1,38 +1,55 @@
 CustomEntities = class({})
 
-MODIFIER_DISPLACEMENT = 1
-MODIFIER_COUNTER = 2
-MODIFIER_REFLECT = 3
-MODIFIER_ANIMATION = 4
-MODIFIER_CHANNELING = 5 
-MODIFIER_CHARGES = 6 
-MODIFIER_TRANSLATE = 7 
-MODIFIER_ON_PROJECTILE_HIT = 8 
-MODIFIER_MOVE_FORCE = 9
-MODIFIER_BANISHED = 10
-MODIFIER_SHIELD = 11
+PROJECTILE_HIT = 0
+MEELE_HIT = 1
+AOE_HIT = 2
+SINGLE_HIT = 3
+
+MODIFIER_TYPES = {
+	PRE_ATTACK_DAMAGE = 0,
+	DISPLACEMENT = 1,
+	COUNTER = 2,
+	ANIMATION = 3,
+	CHANNELING = 4,
+	CHARGES = 5,
+	FEAR = 6,
+	TRANSLATE = 7,
+	ON_HIT = 8,
+	ON_EVENT = 9,
+	MOVE_FORCE = 10,
+	BANISHED = 11,
+	SHIELD = 12,
+	STATUS = 13,
+	RECAST = 14,
+}
+
+MODIFIER_OBJECT_NAMES = {}
+for key,value in pairs(MODIFIER_TYPES) do
+	MODIFIER_OBJECT_NAMES[MODIFIER_TYPES[key]] = string.lower(key) .. '_modifiers'
+end
+
+MODIFIER_EVENTS = {
+	ON_BASIC_ATTACK_STARTED = 0,
+	ON_BASIC_ATTACK_LANDED = 1,
+	ON_BASIC_ATTACK_MISSED = 2,
+	ON_BASIC_ATTACK_ENDED = 3,
+}
 
 function CustomEntities:Initialize(hEntity)
-	hEntity.on_basic_attack_impact = 	    {}
 	hEntity.treshold = 				        0
 	hEntity.energy = 					    0
 	hEntity.max_energy = 				    100
 	hEntity.healing_reduction_pct = 		0
 	hEntity.initialized = 					nil
+	hEntity.modifiers = 					{}
 
-	hEntity.charges_modifiers =		        {}
-	hEntity.displacement_modifiers = 	    {}
-	hEntity.reflect_modifiers = 		    {}
-	hEntity.counter_modifiers = 		    {}
-	hEntity.animation_modifiers = 		    {}
-	hEntity.channeling_modifiers = 	        {}
-	hEntity.status_modifiers =			    {}
-	hEntity.fear_modifiers =			    {}
-	hEntity.translate_modifiers = 		    {}
-	hEntity.move_force_modifiers =  	    {}
-	hEntity.banished_modifiers =			{}
-	hEntity.on_projectile_hit_modifiers =   {}
-	hEntity.shield_modifiers =   			{}
+	for key,value in pairs(MODIFIER_TYPES) do
+		hEntity.modifiers[MODIFIER_OBJECT_NAMES[MODIFIER_TYPES[key]]] = {}
+	end
+
+	hEntity.stackbars_modifiers =			nil
+	hEntity.charges_modifiers =				nil
+	hEntity.cooldown_modifiers =			nil
 	
 	CustomEntities:SetEnergy(hEntity, hEntity.max_energy)	
     CustomEntities:SetTreshold(hEntity, GameRules.GameMode.max_treshold)
@@ -43,10 +60,6 @@ function CustomEntities:Initialize(hEntity)
 	if hEntity:IsRealHero() then
 		hEntity.direction = 					{}
 		hEntity.recast_modifiers =				{}
-		hEntity.on_projectile_hit_modifiers = 	{}
-		hEntity.stackbars_modifier =			nil
-		hEntity.charges_modifier =				nil
-		hEntity.cooldown_modifier =				nil
 		hEntity.collision_direction = 			-1
 	
 		CustomEntities:SetDirection(hEntity, 0, 0)
@@ -167,15 +180,19 @@ function CustomEntities:GetTreshold(hEntity)
 	return hEntity.treshold
 end
 
+function CustomEntities:GetAllModifiersWithType(hEntity, iType)
+	return hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]]
+end
+
 function CustomEntities:GetShield(hEntity)
 	local shield = 0
 
-	for _,shield_modifier_name in pairs(CustomEntities:GetShields(hEntity)) do
-		local shield_modifier = hEntity:FindModifierByName(shield_modifier_name)
+	for key, value in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.SHIELD)) do
+		local hModifier = hEntity:FindModifierByName(value)
 
-		if shield_modifier ~= nil then
-			if not shield_modifier:IsNull() then
-				shield = shield + shield_modifier:GetStackCount()
+		if hModifier ~= nil then
+			if not hModifier:IsNull() then
+				shield = shield + hModifier:GetStackCount()
 			end
 		end
 	end
@@ -184,35 +201,45 @@ function CustomEntities:GetShield(hEntity)
 end
 
 function CustomEntities:GetStatus(hEntity)
-	return hEntity.status_modifiers
+	local status = {} 
+	
+	for key, value in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.STATUS)) do
+		local hModifier = hEntity:FindModifierByName(value)
+
+		if hModifier ~= nil then
+			if not hModifier:IsNull() then
+				local data = hModifier:GetStatusData() 
+				if data then
+					status[value] = data
+				end
+			end
+		end
+	end
+	return status
 end
 
 function CustomEntities:GetRecast(hEntity)
-	return hEntity.recast_modifiers
+	local recast = {} 
+	
+	for key, value in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.RECAST)) do
+		local hModifier = hEntity:FindModifierByName(value)
+		recast[value] = hModifier:GetRecastData()
+
+	end
+
+	return recast
 end
 
 function CustomEntities:GetStackbars(hEntity)
-	return hEntity.stackbars_modifier
+	return hEntity.stackbars_modifiers
 end
 
 function CustomEntities:GetCharges(hEntity)
-	return hEntity.charges_modifier
+	return hEntity.charges_modifiers
 end
 
 function CustomEntities:GetCooldown(hEntity)
-	return hEntity.cooldown_modifier
-end
-
-function CustomEntities:GetTranslate(hEntity)
-	return hEntity.translate_modifiers
-end
-
-function CustomEntities:GetOnProjectileHit(hEntity)
-	return hEntity.on_projectile_hit_modifiers
-end
-
-function CustomEntities:GetShields(hEntity)
-	return hEntity.shield_modifiers
+	return hEntity.cooldown_modifiers
 end
 
 function CustomEntities:GetAbilities(hEntity)
@@ -313,7 +340,7 @@ function CustomEntities:Reset(hEntity)
 		end
 	end
 
-	for _,modifier_name in pairs(hEntity.charges_modifiers) do
+	for _,modifier_name in pairs(hEntity.modifiers[MODIFIER_OBJECT_NAMES[MODIFIER_TYPES.CHARGES]]) do
 		local modifier = hEntity:FindModifierByName(modifier_name)
 		if modifier then
 			modifier:RefreshCharges()
@@ -324,44 +351,14 @@ function CustomEntities:Reset(hEntity)
 	hEntity:Purge(true, true, false, true, false)
 end
 
-function CustomEntities:AddModifierTracker(hEntity, sName, iType) 	
-	local key = nil
-
-	if iType == MODIFIER_DISPLACEMENT then key = "displacement_modifiers" end
-	if iType == MODIFIER_COUNTER then key = "counter_modifiers" end
-	if iType == MODIFIER_REFLECT then key = "reflect_modifiers" end
-	if iType == MODIFIER_ANIMATION then key = "animation_modifiers" end
-	if iType == MODIFIER_CHANNELING then key = "channeling_modifiers" end
-	if iType == MODIFIER_CHARGES then key = "charges_modifiers" end
-	if iType == MODIFIER_FEAR then key = "fear_modifiers" end
-	if iType == MODIFIER_TRANSLATE then key = "translate_modifiers" end
-	if iType == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
-	if iType == MODIFIER_MOVE_FORCE then key = "move_force_modifiers" end
-	if iType == MODIFIER_BANISHED then key = "banished_modifiers" end
-	if iType == MODIFIER_SHIELD then key = "shield_modifiers" end
-	
-	table.insert(hEntity[key], sName)
+function CustomEntities:AddModifierTracker(hEntity, sName, iType)
+	table.insert(hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]], sName)
 end
 
 function CustomEntities:RemoveModifierTracker(hEntity, sName, iType)
-	local key = nil
-	
-	if iType  == MODIFIER_DISPLACEMENT then key = "displacement_modifiers" end
-	if iType  == MODIFIER_COUNTER then key = "counter_modifiers" end
-	if iType  == MODIFIER_REFLECT then key = "reflect_modifiers" end
-	if iType  == MODIFIER_ANIMATION then key = "animation_modifiers" end
-	if iType  == MODIFIER_CHANNELING then key = "channeling_modifiers" end
-	if iType  == MODIFIER_CHARGES then key = "charges_modifiers" end
-	if iType  == MODIFIER_FEAR then key = "fear_modifiers" end
-	if iType  == MODIFIER_TRANSLATE then key = "translate_modifiers" end
-	if iType  == MODIFIER_ON_PROJECTILE_HIT then key = "on_projectile_hit_modifiers" end
-	if iType  == MODIFIER_MOVE_FORCE then key = "move_force_modifiers" end
-	if iType  == MODIFIER_BANISHED then key = "banished_modifiers" end
-	if iType  == MODIFIER_SHIELD then key = "shield_modifiers" end
-
-	for _,m_data in pairs(hEntity[key]) do
-		if m_data == sName then
-			hEntity[key][_] = nil
+	for key, value in pairs(hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]]) do
+		if value == sName then
+			hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]][key] = nil
 		end
 	end
 end
@@ -389,31 +386,21 @@ function CustomEntities:IsBanished(hEntity)
 end
 
 function CustomEntities:IsFeared(hEntity)
-	return hEntity.fear_modifiers and #hEntity.fear_modifiers > 0
+	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.FEAR)
 end
 
 function CustomEntities:IsMoveForced(hEntity)
-	return hEntity.move_force_modifiers and #hEntity.move_force_modifiers > 0
+	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.MOVE_FORCE)
 end
 
 function CustomEntities:IsAnimating(hEntity)
-	return hEntity.animation_modifiers and #hEntity.animation_modifiers > 0
+	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.ANIMATION)
 end
 
 function CustomEntities:IsCountering(hEntity)
-	if hEntity.counter_modifiers and #hEntity.counter_modifiers > 0 then
+	if CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.COUNTER) then
 		return true
 	end
-
-	return 	hEntity:HasModifier("modifier_counter")
-end
-
-function CustomEntities:FakeMissAttack(hEntity, vOrigin)
-	local origin = vOrigin and vOrigin or hEntity:GetAbsOrigin()
-	local dummy = CreateModifierThinker(hEntity, nil, nil, {}, origin, hEntity:GetTeamNumber(), false)
-	dummy:AddNewModifier(hEntity, nil, "modifier_miss", {})
-	hEntity:PerformAttack(dummy, false, false, true, true, false, false, false)
-	dummy:RemoveSelf()
 end
 
 function CustomEntities:FullyFaceTowards(hEntity, vDirection)
@@ -424,8 +411,13 @@ function CustomEntities:FullyFaceTowards(hEntity, vDirection)
 	hEntity:FaceTowards(hEntity:GetAbsOrigin() + vDirection)
 end
 
+function CustomEntities:HasModifiersFromType(hEntity, iType)
+	local tModifiers = CustomEntities:GetAllModifiersWithType(hEntity, iType)
+	return tModifiers and #tModifiers > 0
+end
+
 function CustomEntities:IsDisplacing(hEntity)
-	return hEntity.displacement_modifiers and #hEntity.displacement_modifiers > 0
+	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.DISPLACEMENT)
 end
 
 function CustomEntities:CanWalk(hEntity)
@@ -465,15 +457,15 @@ function CustomEntities:AddRecast(hEntity, tData)
 end
 
 function CustomEntities:AddStackbars(hEntity, sModifierName)
-	hEntity.stackbars_modifier = sModifierName 
+	hEntity.stackbars_modifiers = sModifierName 
 end
 
 function CustomEntities:AddCharges(hEntity, sModifierName)
-	hEntity.charges_modifier = sModifierName 
+	hEntity.charges_modifiers = sModifierName 
 end
 
 function CustomEntities:AddCooldown(hEntity, sModifierName) 
-	hEntity.cooldown_modifier = sModifierName 
+	hEntity.cooldown_modifiers = sModifierName 
 end
 
 function CustomEntities:SetCollisionDirection(hEntity, iCollisionDirection)
@@ -583,7 +575,6 @@ function CustomEntities:FindUnitsInLine(hEntity, start_pos, end_pos, radius, tea
 	return filtered_units
 end
 
-
 function CustomEntities:Allies(hEntity, hTarget)
 	local playerID = hEntity:GetPlayerOwnerID()
 	local playerID_test = hTarget:GetPlayerOwnerID()
@@ -596,23 +587,15 @@ function CustomEntities:Allies(hEntity, hTarget)
 end
 
 function CustomEntities:RemoveStackbars(hEntity) 
-	hEntity.stackbars_modifier = nil 
+	hEntity.stackbars_modifiers = nil 
 end
 
 function CustomEntities:RemoveCharges(hEntity) 
-	hEntity.charges_modifier = nil 
+	hEntity.charges_modifiers = nil 
 end
 
 function CustomEntities:RemoveCooldown(hEntity) 
-	hEntity.cooldown_modifier = nil 
-end
-
-function CustomEntities:RemoveStatus(hEntity, sModifierName)
-	hEntity.status_modifiers[sModifierName] = nil
-end
-
-function CustomEntities:RemoveRecast(hEntity, sModifierName)
-	hEntity.recast_modifiers[sModifierName] = nil
+	hEntity.cooldown_modifiers = nil 
 end
 
 function CustomEntities:DeactivateNonPriorityAbilities(hEntity)
@@ -711,14 +694,6 @@ function CustomEntities:SafeDestroyModifier(hEntity, sModifierName, hCaster)
 	end
 end
 
-function CustomEntities:OnBasicAttackImpact(hEntity, hTarget)
-	for _,routine in pairs(hEntity.on_basic_attack_impact) do
-		if routine then
-			routine.method(routine.context, hTarget)
-		end
-	end
-end
-
 function CustomEntities:TrueHeal(hEntity, iHeal)
 	local base_health = hEntity:GetHealth()
     CustomEntities:SetHealthCustom(hEntity, base_health + iHeal)
@@ -733,4 +708,325 @@ function CustomEntities:TrueHeal(hEntity, iHeal)
 	if hEntity:GetHealth() < hEntity:GetMaxHealth() then
 		SendOverheadHealMessage(hEntity, iHeal)
 	end
+end
+
+function CustomEntities:EmitModifierEvent(hEntity, tData)
+	for _,sModifierName in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.ON_EVENT)) do
+		local hModifier = hEntity:FindModifierByName(sModifierName)
+		hModifier:OnEvent(tData)
+	end
+end
+
+function CustomEntities:ProjectileAttack(hEntity, tData)
+	local bTriggerCounters = (tData.bTriggerCounters == nil) and true or tData.bTriggerCounters
+	local onUnitHit = tData.tProjectile.OnUnitHit
+	local onFinish = tData.tProjectile.OnFinish
+
+	tData.tProjectile.OnUnitHit = function(hProjectile, hTarget)
+		local tOnHitModifiers = CustomEntities:GetAllModifiersWithType(hTarget, MODIFIER_TYPES.ON_HIT)
+
+		if #tOnHitModifiers > 0 then
+			for _,sModifierName in pairs(tOnHitModifiers) do
+				local hModifier = hTarget:FindModifierByName(sModifierName)
+				local bProcessEffect = hModifier:OnHit({
+					hProjectile = hProjectile,
+					bTriggerCounters = bTriggerCounters, 
+					iType = PROJECTILE_HIT
+				})
+
+				if bProcessEffect then
+					onUnitHit(hProjectile, hTarget)
+					if tData.bIsBasicAttack then
+						CustomEntities:EmitModifierEvent(hEntity, { 
+							iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+							hTarget = hTarget, 
+						})
+					end
+				else
+					hProjectile:IgnoreNextUnitBehavior()
+				end
+			end
+		else 
+			onUnitHit(hProjectile, hTarget)
+			if tData.bIsBasicAttack then
+				CustomEntities:EmitModifierEvent(hEntity, { 
+					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+					hTarget = hTarget, 
+				})
+			end
+		end
+	end
+
+	tData.tProjectile.OnFinish = function(hProjectile, vPosition)
+		if next(hProjectile.tHitLog) == nil then
+			if tData.bIsBasicAttack then
+				CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+			end
+		end
+		
+		if tData.bIsBasicAttack then
+			CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
+		end
+
+		if onFinish then
+			onFinish(hProjectile, vPosition)
+		end
+	end
+	
+	local hProjectile = ProjectilesManagerInstance:CreateProjectile(tData.tProjectile)
+
+	if tData.bIsBasicAttack then
+		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
+	end
+
+	if tData.OnProjectileCreated then
+		tData.OnProjectileCreated(hProjectile)
+	end
+end
+
+function CustomEntities:MeeleAttack(hEntity, tData)
+	local bTriggerCounters = (tData.bTriggerCounters == nil) and true or tData.bTriggerCounters
+	local iTeamFilter = tData.iTeamFilter or DOTA_UNIT_TARGET_TEAM_ENEMY
+	local iTypeFilter = tData.iTypeFilter or DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
+	local iFlagFilter = tData.iFlagFilter or DOTA_UNIT_TARGET_FLAG_NONE
+	local iOrderFilter = tData.iOrderFilter or FIND_CLOSEST
+	local iMaxTargets = tData.iMaxTargets or 1
+	local bShakeOnHeroes = (tData.bShakeOnHeroes == nil and tData.bIsBasicAttack) and true or tData.bShakeOnHeroes
+	local bShouldShake = false
+	
+	if tData.bIsBasicAttack then
+		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
+	end
+
+	local callback = tData.Callback
+	tData.Callback = function(hTarget)
+		if bShakeOnHeroes and hTarget:IsRealHero() then
+			bShouldShake = true
+		end
+		callback(hTarget)
+	end
+
+	local units = CustomEntities:FindUnitsInCone(
+		hEntity,
+		tData.vDirection, 
+		0, 
+		tData.vOrigin, 
+		tData.fRadius, 
+		iTeamFilter, 
+		iTypeFilter, 
+		iFlagFilter, 
+		iOrderFilter
+	)
+
+	local iTargets = 0
+
+	for _,unit in pairs(units) do
+		local tOnHitModifiers = CustomEntities:GetAllModifiersWithType(unit, MODIFIER_TYPES.ON_HIT)
+
+		if #tOnHitModifiers > 0 then
+			for _,sModifierName in pairs(tOnHitModifiers) do
+				local hModifier = unit:FindModifierByName(sModifierName)
+				local bProcessEffect = hModifier:OnHit({ 
+					hSource = hEntity, 
+					bTriggerCounters = bTriggerCounters, 
+					Callback = tData.Callback, 
+					iType = MEELE_HIT
+				})
+
+				if bProcessEffect then
+					tData.Callback(unit)
+					if tData.bIsBasicAttack then
+						CustomEntities:EmitModifierEvent(hEntity, { 
+							iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+							hTarget = unit,
+						})
+					end
+				end
+			end
+		else
+			tData.Callback(unit)
+			if tData.bIsBasicAttack then
+				CustomEntities:EmitModifierEvent(hEntity, { 
+					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+					hTarget = unit,
+				})
+			end
+		end
+
+		iTargets = iTargets + 1
+
+		if tData.iMaxTargets ~= -1 and tData.iMaxTargets == iTargets then
+			break
+		end
+	end
+
+	if iTargets == 0 then
+		if tData.bIsBasicAttack then
+			CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+		end
+	end
+	
+	if bShouldShake then
+		ScreenShake(tData.vOrigin, 100, 100, 0.45, 1000, 0, true)
+	end
+	
+	if tData.bIsBasicAttack then
+		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
+	end
+
+	return units
+end
+
+function CustomEntities:AoeAttack(hEntity, tData)
+	local bTriggerCounters = tData.bTriggerCounters
+	local iTeamFilter = tData.iTeamFilter or DOTA_UNIT_TARGET_TEAM_ENEMY
+	local iTypeFilter = tData.iTypeFilter or DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
+	local iFlagFilter = tData.iFlagFilter or DOTA_UNIT_TARGET_FLAG_NONE
+	local iOrderFilter = tData.iOrderFilter or FIND_CLOSEST
+	local iMaxTargets = tData.iMaxTargets or -1
+	
+	if tData.bIsBasicAttack then
+		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
+	end
+	
+	local units = CustomEntities:FindUnitsInRadius(
+		hEntity,
+		tData.vOrigin, 
+		tData.fRadius, 
+		iTeamFilter, 
+		iTypeFilter, 
+		iFlagFilter,
+		iOrderFilter
+	)
+
+	local iTargets = 0
+
+	for _,unit in pairs(units) do
+		local tOnHitModifiers = CustomEntities:GetAllModifiersWithType(unit, MODIFIER_TYPES.ON_HIT)
+
+		if #tOnHitModifiers > 0 then
+			for _,sModifierName in pairs(tOnHitModifiers) do
+				local hModifier = unit:FindModifierByName(sModifierName)
+				local bProcessEffect = hModifier:OnHit({ 
+					hSource = hEntity, 
+					bTriggerCounters = bTriggerCounters, 
+					Callback = tData.Callback, 
+					iType = AOE_HIT 
+				})
+
+				if bProcessEffect then
+					tData.Callback(unit)
+					if tData.bIsBasicAttack then
+						CustomEntities:EmitModifierEvent(hEntity, { 
+							iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+							hTarget = unit, 
+						})
+					end
+				end
+			end
+		else
+			tData.Callback(unit)
+			if tData.bIsBasicAttack then
+				CustomEntities:EmitModifierEvent(hEntity, { 
+					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+					hTarget = unit, 
+				})
+			end
+		end
+
+		iTargets = iTargets + 1
+
+		if tData.iMaxTargets ~= -1 and tData.iMaxTargets == iTargets then
+			break
+		end
+	end
+
+	if iTargets == 0 then
+		if tData.bIsBasicAttack then
+			CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+		end
+	end
+	
+	if tData.bIsBasicAttack then
+		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
+	end
+
+	return units
+end
+
+function CustomEntities:SingleAttack(hEntity, tData)
+	local bTriggerCounters = (tData.bTriggerCounters == nil) and true or tData.bTriggerCounters
+
+	if tData.bIsBasicAttack then
+		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
+	end
+
+	if not tData.hTarget then
+		if tData.bIsBasicAttack then
+			CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+		end
+	else
+		local tOnHitModifiers = CustomEntities:GetAllModifiersWithType(tData.hTarget, MODIFIER_TYPES.ON_HIT)
+
+		if #tOnHitModifiers > 0 then
+			for _,sModifierName in pairs(tOnHitModifiers) do
+				local hModifier = tData.hTarget:FindModifierByName(sModifierName)
+				local bProcessEffect = hModifier:OnHit({ 
+					hSource = hEntity, 
+					bTriggerCounters = bTriggerCounters, 
+					Callback = tData.Callback, 
+					iType = SINGLE_HIT
+				})
+
+				if bProcessEffect then
+					tData.Callback(tData.hTarget)
+				end
+			end
+		else
+			tData.Callback(tData.hTarget)
+		end
+		
+		if tData.bIsBasicAttack then
+			CustomEntities:EmitModifierEvent(hEntity, { 
+				iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+				hTarget = tData.hTarget,
+			})
+		end
+	end
+	
+	CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
+end
+
+function CustomEntities:AttackWithBaseDamage(hEntity, tData)
+	local pre_attack_damage = 0
+
+	for key, value in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.PRE_ATTACK_DAMAGE)) do
+		local hModifier = hEntity:FindModifierByName(value)
+
+		if hModifier ~= nil then
+			if not hModifier:IsNull() then
+				pre_attack_damage = pre_attack_damage + hModifier:GetPreAttackDamage({
+					victim = tData.hTarget
+				})
+			end
+		end
+	end
+
+	local damage_table = {
+		victim = tData.hTarget,
+		attacker = hEntity,
+		damage = hEntity:GetAverageTrueAttackDamage(tData.hTarget) + pre_attack_damage,
+		damage_type = tData.iDamageType or DAMAGE_TYPE_PHYSICAL,
+		ability = tData.hAbility,
+	}
+
+	ApplyDamage(damage_table)
+end
+
+function CustomEntities:HideHealthBar(hEntity)
+	hEntity:AddNewModifier(hEntity, nil, "modifier_hide_bar", {})
+end
+
+function CustomEntities:UnhideHealthBar(hEntity)
+	hEntity:RemoveModifierByName("modifier_hide_bar")
 end

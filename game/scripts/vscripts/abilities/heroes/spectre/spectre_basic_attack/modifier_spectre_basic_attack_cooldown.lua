@@ -1,4 +1,5 @@
 modifier_spectre_basic_attack_cooldown = class({})
+modifier_spectre_basic_attack_attack = class({})
 
 function modifier_spectre_basic_attack_cooldown:OnCreated(params)
     self.damage_bonus_desolate = self:GetAbility():GetSpecialValueFor("damage_bonus_desolate")
@@ -17,67 +18,50 @@ end
 
 function modifier_spectre_basic_attack_cooldown:DeclareFunctions()
     return { 
-        MODIFIER_EVENT_ON_ATTACK,
+        --MODIFIER_EVENT_ON_ATTACK,
         MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
         MODIFIER_PROPERTY_ATTACK_POINT_CONSTANT,
-        MODIFIER_EVENT_ON_ATTACK_LANDED,
+        --MODIFIER_EVENT_ON_ATTACK_LANDED,
     }
 end
- 
-function modifier_spectre_basic_attack_cooldown:OnAttack(params)
-    if params.attacker ~= self:GetParent() then
-        return
-    end
-    if self:GetRemainingTime() > 0 then
-        return
-    end
 
-    self:StartCooldown()
-end
-
-function modifier_spectre_basic_attack_cooldown:GetModifierPreAttack_BonusDamage(event)
-    if event.attacker ~= self:GetParent() then
-        return
-    end
-    
-    local extra_damage = 0
-    
-    if event.target and event.target ~= self.parent then
-        local enemy = event.target
-        if enemy:HasModifier("modifier_spectre_desolate_custom") then
-            extra_damage = self.damage_bonus_desolate
+function modifier_spectre_basic_attack_cooldown:OnEvent(params)
+    if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED then
+        if self:GetRemainingTime() > 0 then
+            return
+        else 
+            self:StartCooldown()
         end
+    end
 
-        if CustomEntities:ProvidesMana(enemy) then
-            CustomEntities:GiveManaAndEnergyPercent(self.parent, self.mana_gain_pct, true)
-        end
-        self:PlayEffectsOnImpact(enemy, enemy:GetAbsOrigin(), is_charged)
-
+    if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED then
         if self:IsCooldownReady() then
-            enemy:AddNewModifier(self.parent, self:GetAbility(), "modifier_generic_silence", { duration = self.silence_duration })
+            params.hTarget:AddNewModifier(self.parent, self:GetAbility(), "modifier_generic_silence", { duration = self.silence_duration })
             
-            if CustomEntities:ProvidesMana(enemy) then
-                enemy:AddNewModifier(self.parent, self:GetAbility(), "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
+            if CustomEntities:ProvidesMana(params.hTarget) then
+                params.hTarget:AddNewModifier(self.parent, self:GetAbility(), "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
             end
             
-            if not CustomEntities:IsObstacle(enemy) and not CustomEntities:IsCountering(enemy) then
+            if not CustomEntities:IsObstacle(params.hTarget) and not CustomEntities:IsCountering(params.hTarget) then
                 self.parent:Heal(self.heal_charged, self.parent)
             end
         end
     end
-    
-    if not self:IsCooldownReady() then 
-        return extra_damage 
-    end
-    return self:GetAbility():GetSpecialValueFor("charged_damage") + extra_damage
 end
 
-function modifier_spectre_basic_attack_cooldown:OnAttackLanded(event)
-    if event.attacker ~= self:GetParent() then
+function modifier_spectre_basic_attack_cooldown:GetModifierPreAttack_BonusDamage(params)
+    if not self:IsCooldownReady() then 
+        return 0 
+    end
+    return self:GetAbility():GetSpecialValueFor("charged_damage")
+end
+
+function modifier_spectre_basic_attack_cooldown:OnAttackLanded(params)
+    if params.attacker ~= self:GetParent() then
         return
     end
-    if event.target:HasModifier("modifier_spectre_desolate_custom") then
-        if not CustomEntities:IsObstacle(event.target) then
+    if params.target:HasModifier("modifier_spectre_desolate_custom") then
+        if not CustomEntities:IsObstacle(params.target) then
             self.parent:Heal(self.heal_desolate, self.parent)
             self:PlayEffectsLifeSteal()
         end
@@ -139,32 +123,6 @@ function modifier_spectre_basic_attack_cooldown:PlayEffectsWeapon()
     end
 end
 
-function modifier_spectre_basic_attack_cooldown:PlayEffectsOnImpact(hTarget, vPosition, bCharged)
-	if bCharged then
-		EmitSoundOn("Hero_BountyHunter.Jinada", hTarget)
-		
-		local particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
-		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, hTarget)
-		ParticleManager:ReleaseParticleIndex(effect_cast)
-	else
-		EmitSoundOn("Hero_Spectre.Attack", hTarget)
-		
-		EFX('particles/phantom/phantom_basic_attack.vpcf', PATTACH_ABSORIGIN, hTarget, {
-			release = true
-		})
-
-		local caster = self:GetCaster()
-		local offset = 50
-		local new_position = caster:GetOrigin() + (vPosition - caster:GetOrigin()):Normalized() * offset
-	
-		local particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
-		local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_POINT, caster)
-		ParticleManager:SetParticleControl(effect_cast, 0, vPosition)
-		ParticleManager:SetParticleControlForward(effect_cast, 0, (vPosition - caster:GetOrigin()):Normalized())
-		ParticleManager:ReleaseParticleIndex(effect_cast)
-	end
-end
-
 function modifier_spectre_basic_attack_cooldown:StopEffectsWeapon()
     if IsServer() then
         if self.effect_cast then
@@ -186,5 +144,15 @@ function modifier_spectre_basic_attack_cooldown:GetReplenishTime()
     return self:GetAbility():GetSpecialValueFor("replenish_time")
 end
 
+function modifier_spectre_basic_attack_cooldown:GetPreAttackDamage(params)
+    if params.victim:HasModifier("modifier_spectre_desolate_custom") then
+        return self.damage_bonus_desolate
+    end
+
+    return 0
+end
+
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Cooldown(modifier_spectre_basic_attack_cooldown)
+Modifiers.OnEvent(modifier_spectre_basic_attack_cooldown)
+Modifiers.PreAttackDamage(modifier_spectre_basic_attack_cooldown)

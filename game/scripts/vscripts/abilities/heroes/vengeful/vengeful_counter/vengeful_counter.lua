@@ -34,44 +34,45 @@ function vengeful_counter:ThrowProjectile(hCaster, iDamage, vOrigin, vDirection,
 	local mana_gain_pct = ability:GetSpecialValueFor("mana_gain_pct")
 	local duration = ability:GetSpecialValueFor("duration")
 
-	local projectile = {
-		EffectName = "particles/units/heroes/hero_vengeful/vengeful_wave_of_terror.vpcf",
-		vSpawnOrigin = vOrigin + Vector(vDirection.x * 45, vDirection.y * 45, 96),
-		fDistance = ability:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = ability:GetSpecialValueFor("hitbox"),
-        Source = hCaster,
-		vVelocity = vDirection * fSpeed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_NOTHING,
-		GroundBehavior = PROJECTILES_NOTHING,
-		bIsReflectable = false,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit)
-			local damage_table = {
-				victim = unit,
-				attacker = hCaster,
-				damage = iDamage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-				ability = ability,
-			}
-			ApplyDamage(damage_table)
-			if CustomEntities:ProvidesMana(unit) then
-				CustomEntities:GiveManaAndEnergyPercent(hCaster, mana_gain_pct, true)
-			end
-		end,
-		OnFinish = function(_self, pos)
-			ability:PlayEffectsOnFinish(pos)
-			if bReturn then
-				local origin = hCaster:GetAbsOrigin()
-				local projectile_direction = (Vector(origin.x-pos.x, origin.y-pos.y, 0)):Normalized()
-				ability:ThrowProjectile(hCaster, 10, pos, projectile_direction, fSpeed * 1.25 , false)
-			end
-		end,
-	}
-
-    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			EffectName = "particles/units/heroes/hero_vengeful/vengeful_wave_of_terror.vpcf",
+			vSpawnOrigin = vOrigin + Vector(vDirection.x * 45, vDirection.y * 45, 96),
+			fDistance = ability:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = ability:GetSpecialValueFor("hitbox"),
+			Source = hCaster,
+			vVelocity = vDirection * fSpeed,
+			UnitBehavior = PROJECTILES_NOTHING,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_NOTHING,
+			GroundBehavior = PROJECTILES_NOTHING,
+			bIsReflectable = false,
+			bIsDestructible = false,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit)
+				local damage_table = {
+					victim = unit,
+					attacker = hCaster,
+					damage = iDamage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+					ability = ability,
+				}
+				ApplyDamage(damage_table)
+				if CustomEntities:ProvidesMana(unit) then
+					CustomEntities:GiveManaAndEnergyPercent(hCaster, mana_gain_pct, true)
+				end
+			end,
+			OnFinish = function(_self, pos)
+				ability:PlayEffectsOnFinish(pos)
+				if bReturn then
+					local origin = hCaster:GetAbsOrigin()
+					local projectile_direction = (Vector(origin.x-pos.x, origin.y-pos.y, 0)):Normalized()
+					ability:ThrowProjectile(hCaster, 10, pos, projectile_direction, fSpeed * 1.25 , false)
+				end
+			end,
+		}
+	})
 end
 
 function vengeful_counter:PlayEffectsOnFinish(pos)
@@ -110,37 +111,39 @@ function vengeful_ex_counter:OnSpellStart()
 	local point = self:GetCursorPosition()
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	
+	CustomEntities:ProjectileAttack(caster, {
+		bTriggerCounters = false,
+		tProjectile = {
+			EffectName = "particles/econ/items/vengeful/vengeful_weapon_talon/vengeful_wave_of_terror_weapon_talon.vpcf",
+			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_NOTHING,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_NOTHING,
+			GroundBehavior = PROJECTILES_NOTHING,
+			bIsReflectable = false,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit)
+				local damage_table = {
+					victim = unit,
+					attacker = caster,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+					ability = self,
+				}
+				ApplyDamage(damage_table)
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 
-	local projectile = {
-		EffectName = "particles/econ/items/vengeful/vengeful_weapon_talon/vengeful_wave_of_terror_weapon_talon.vpcf",
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-        Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_NOTHING,
-		GroundBehavior = PROJECTILES_NOTHING,
-		bIsReflectable = false,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit)
-			local damage_table = {
-				victim = unit,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-				ability = self,
-			}
-			ApplyDamage(damage_table)
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
-
-    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 	LinkAbilityCooldowns(caster, 'vengeful_counter')
 end

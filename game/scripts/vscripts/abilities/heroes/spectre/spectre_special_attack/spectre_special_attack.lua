@@ -27,60 +27,62 @@ function spectre_special_attack:OnSpellStart()
 	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
 
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
 
-	local projectile = {
-		vSpawnOrigin = origin,
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = hitbox,
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_NOTHING,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_NOTHING,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		bGroundLock = true,
-		bIsSlowable = false,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit)
-			local damage = {
-				victim = unit,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-			}
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			vSpawnOrigin = origin,
+			fDistance = projectile_distance,
+			fStartRadius = hitbox,
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_NOTHING,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_NOTHING,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			bGroundLock = true,
+			bIsDestructible = false,
+			bIsReflectable = false,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit)
+				local damage = {
+					victim = unit,
+					attacker = caster,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+				}
 
-			ApplyDamage(damage)
-			
-			unit:AddNewModifier(
-				caster,
-				self,
-				"modifier_spectre_special_attack_debuff",
-				{ duration = debuff_duration }
-			)
+				ApplyDamage(damage)
+				
+				unit:AddNewModifier(
+					caster,
+					self,
+					"modifier_spectre_special_attack_debuff",
+					{ duration = debuff_duration }
+				)
 
-			if _self.Source == caster then
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				if _self.Source == caster then
+					if CustomEntities:ProvidesMana(unit) then
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
 				end
-			end
 
-			self:PlayEffectsOnImpact(unit)
-		end,
-		OnFinish = function(_self, pos)
-		end,
-		OnThinkBegin = function(_self, pos)
-			CreateModifierThinker(
-				caster, -- player source
-				self, -- ability source
-				"modifier_spectre_special_attack_thinker", -- modifier name
-				{ duration = path_duration }, -- kv
-				pos,
-				caster:GetTeamNumber(),
-				false --bPhantomBlocker
-			)
-		end
-	}
+				self:PlayEffectsOnImpact(unit)
+			end,
+			OnIntervalThink = function(_self, pos)
+				CreateModifierThinker(
+					caster, -- player source
+					self, -- ability source
+					"modifier_spectre_special_attack_thinker", -- modifier name
+					{ duration = path_duration }, -- kv
+					pos,
+					caster:GetTeamNumber(),
+					false --bPhantomBlocker
+				)
+			end
+		}
+	})
 
 	local info = { 
 		Source = caster, 
@@ -94,10 +96,10 @@ function spectre_special_attack:OnSpellStart()
 		iUnitTargetType = DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
 			
 		EffectName = projectile_name, 
-		fDistance = projectile.fDistance, 
+		fDistance = projectile_distance, 
 		fStartRadius = hitbox, 
 		fEndRadius = hitbox, 
-		vVelocity = projectile.vVelocity, 
+		vVelocity = projectile_direction * projectile_speed, 
 	
 		bHasFrontalCone = false, 
 		bReplaceExisting = false, 
@@ -107,7 +109,6 @@ function spectre_special_attack:OnSpellStart()
 		iVisionTeamNumber = caster:GetTeamNumber(),
 		iVisionRadius = hitbox,
 	} 
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	ProjectileManager:CreateLinearProjectile(info) 
 	self:PlayEffectsOnCast()
 	LinkAbilityCooldowns(caster, 'spectre_ex_special_attack')
@@ -124,7 +125,6 @@ function spectre_special_attack:PlayEffectsOnImpact(hTarget)
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN, hTarget)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
-
 
 spectre_ex_special_attack.PlayEffectsOnCast = spectre_special_attack.PlayEffectsOnCast
 spectre_ex_special_attack.PlayEffectsOnFinish = spectre_special_attack.PlayEffectsOnFinish

@@ -113,52 +113,53 @@ function phantom_ex_counter_recast:OnSpellStart()
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
-	local projectile = {
-		EffectName = "particles/phantom/phantom_counter_recast.vpcf",
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
-		fDistance =	self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-			}
-			ApplyDamage(damage_table)
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile  = {
+			EffectName = "particles/phantom/phantom_counter_recast.vpcf",
+			vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
+			fDistance =	self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_DESTROY,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = caster,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_PHYSICAL,
+				}
+				ApplyDamage(damage_table)
 
-			if _self.Source == caster then
-				if not CustomEntities:IsObstacle(unit) then
-					caster:AddNewModifier(
-						caster, -- player source
-						self, -- ability source
-						"modifier_phantom_strike_stack", -- modifier name
-						{} -- kv
-					)
+				if _self.Source == caster then
+					if not CustomEntities:IsObstacle(unit) then
+						caster:AddNewModifier(
+							caster, -- player source
+							self, -- ability source
+							"modifier_phantom_strike_stack", -- modifier name
+							{} -- kv
+						)
+					end
 				end
-			end
 
-			unit:AddNewModifier(
-				caster, -- player source
-				self, -- ability source
-				"modifier_generic_sleep", -- modifier name
-				{ duration = sleep_duration } -- kv
-			)
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
+				unit:AddNewModifier(
+					caster, -- player source
+					self, -- ability source
+					"modifier_generic_sleep", -- modifier name
+					{ duration = sleep_duration } -- kv
+				)
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
 end

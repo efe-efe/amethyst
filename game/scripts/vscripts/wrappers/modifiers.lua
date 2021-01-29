@@ -1,6 +1,46 @@
 Modifiers = {}
 
-function Modifiers.Recast(modifier)
+CHARGES_TYPE_SYNC = 1
+CHARGES_TYPE_ASYNC = 2
+
+UNIT_COLLISION = 1
+WALL_COLLISION = 2
+TREE_COLLISION = 2
+
+THINKER_VISUALS_PUBLIC = 1
+THINKER_VISUALS_LOCAL = 2
+
+STATUS_TRIGGER_DURATION = 1
+STATUS_TRIGGER_STACKS = 2
+
+STATUS_CONTENT_CLEAROUT = 1
+STATUS_CONTENT_FILLUP = 2
+
+STATUS_SCOPE_PUBLIC = 1
+STATUS_SCOPE_LOCAL = 2
+
+if IsClient() then require("util/custom_entities") end
+
+function Modifiers.StartTracking(hModifier, iType, onCreated, onDestroy)
+    local onCreated = onCreated or hModifier.OnCreated
+    local onDestroy = onDestroy or hModifier.OnDestroy
+
+    function hModifier:OnCreated(params)
+        if IsServer() then
+            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), iType)
+        end
+        if onCreated then onCreated(self, params) end
+    end
+
+    function hModifier:OnDestroy(params)
+        if IsServer() then
+            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), iType)
+        end
+        if onDestroy then onDestroy(self, params) end
+    end
+end
+
+function Modifiers.Recast(modifier)    
     local onCreated =           modifier.OnCreated
     local onDestroy =           modifier.OnDestroy
     local onRefresh =           modifier.OnRefresh
@@ -23,18 +63,21 @@ function Modifiers.Recast(modifier)
                     self:GetRecastAbility():GetName(), 
                     false, 
                     true
-               )
+                )
             end
 
-            CustomEntities:AddRecast(self:GetParent(), {
-                key = self:GetRecastKey(),
-                modifier_name = self:GetName(),
-                ability_name = self:GetRecastAbility():GetName(),
-            })
             CustomEntities:SendDataToClient(self:GetParent())
         end
         
         if onCreated then onCreated(self, params) end
+    end
+
+    function modifier:GetRecastData()
+        return {
+            key = self:GetRecastKey(),
+            modifier_name = self:GetName(),
+            ability_name = self:GetRecastAbility():GetName(),
+        }
     end
 
     function modifier:OnDestroy()
@@ -49,7 +92,6 @@ function Modifiers.Recast(modifier)
                     false
                )
             end
-            CustomEntities:RemoveRecast(self:GetParent(), self:GetName())
             CustomEntities:SendDataToClient(self:GetParent())
         end
         if onDestroy then onDestroy(self) end
@@ -118,13 +160,10 @@ function Modifiers.Recast(modifier)
     
     if IsClient() then require("wrappers/modifiers") end
     Modifiers.Status(modifier)
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.RECAST)
 end
 
-CHARGES_TYPE_SYNC = 1
-CHARGES_TYPE_ASYNC = 2
-
--- TODO: What happens if the modifier has an OnIntervalThink function?
-function Modifiers.Charges(modifier)
+function Modifiers.Charges(modifier)    
     local onCreated =           modifier.OnCreated
     local onDestroy =           modifier.OnDestroy
     local onRefresh =           modifier.OnRefresh
@@ -149,8 +188,6 @@ function Modifiers.Charges(modifier)
             if self:GetReplenishType() == CHARGES_TYPE_SYNC then
                 self.replenish_time = self:GetReplenishTime()
             end
-
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_CHARGES)
         end
         if onCreated then onCreated(self, params) end
     end
@@ -170,13 +207,6 @@ function Modifiers.Charges(modifier)
     function modifier:RemoveCharge()
         self:DecrementStackCount()
         self:CalculateCharge()
-    end
-
-    function modifier:OnDestroy()
-        if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_CHARGES)
-        end
-        if onDestroy then onDestroy(self, params) end
     end
 
     function modifier:CalculateCharge()
@@ -293,6 +323,8 @@ function Modifiers.Charges(modifier)
         if getReplenishType then return getReplenishType(self) end
         return CHARGES_TYPE_SYNC
     end
+
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.CHARGES)
 end
 
 function Modifiers.Banish(modifier)
@@ -304,7 +336,6 @@ function Modifiers.Banish(modifier)
         if IsServer() then
             self.original_scale = self:GetParent():GetModelScale()
             self:GetParent():SetModelScale(0.05)
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_BANISHED)
         end
         if onCreated then onCreated(self, params) end
     end
@@ -312,7 +343,6 @@ function Modifiers.Banish(modifier)
     function modifier:OnDestroy()
         if IsServer() then
             self:GetParent():SetModelScale(self.original_scale)
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_BANISHED)
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -332,11 +362,9 @@ function Modifiers.Banish(modifier)
         states[MODIFIER_STATE_OUT_OF_GAME] = true
         return states
     end
-end
 
-UNIT_COLLISION = 1
-WALL_COLLISION = 2
-TREE_COLLISION = 2
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.BANISHED)
+end
 
 function Modifiers.Displacement(modifier)
     local onCreated =                   modifier.OnCreated
@@ -348,10 +376,8 @@ function Modifiers.Displacement(modifier)
     local getCollisionTargetFilter =    modifier.GetCollisionTargetFilter
     local getCollisionFlagFilter =      modifier.GetCollisionFlagFilter
     local getIsCommandRestricted =      modifier.GetIsCommandRestricted
+    local checkState =                  modifier.CheckState
 
-
-    local checkState =              modifier.CheckState
-    
     function modifier:IsHidden()    return false end
     function modifier:IsPurgable() 	return false end
 
@@ -379,7 +405,6 @@ function Modifiers.Displacement(modifier)
 
             if self:ApplyVerticalMotionController() == false then self:Destroy() end
             if self:ApplyHorizontalMotionController() == false then self:Destroy() end
-            CustomEntities:AddModifierTracker(self.parent, self:GetName(), MODIFIER_DISPLACEMENT)
         end
         if onCreated then onCreated(self, params) end
     end
@@ -388,7 +413,6 @@ function Modifiers.Displacement(modifier)
         if IsServer() then
             self.parent:InterruptMotionControllers(true)
             FindClearSpaceForUnit(self.parent, self.parent:GetAbsOrigin(), true)
-            CustomEntities:RemoveModifierTracker(self.parent, self:GetName(), MODIFIER_DISPLACEMENT)
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -538,6 +562,8 @@ function Modifiers.Displacement(modifier)
         if getIsCommandRestricted then return getIsCommandRestricted(self) end
         return true
     end
+
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.DISPLACEMENT)
 end
 
 function Modifiers.Counter(modifier)
@@ -557,7 +583,6 @@ function Modifiers.Counter(modifier)
             if self:UseDefaultVisuals() then
                 self.effect_cast = ParticleManager:CreateParticle("particles/items_fx/black_king_bar_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
             end
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_COUNTER)
             CustomEntities:DeactivateNonPriorityAbilities(self:GetParent())
         end
         if onCreated then onCreated(self, params) end
@@ -569,7 +594,6 @@ function Modifiers.Counter(modifier)
                 ParticleManager:DestroyParticle(self.effect_cast, false)
                 ParticleManager:ReleaseParticleIndex(self.effect_cast)
             end
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_COUNTER)
 			CustomEntities:SetAllAbilitiesActivated(self:GetParent(), true)
         end
         if onDestroy then onDestroy(self, params) end
@@ -598,7 +622,7 @@ function Modifiers.Counter(modifier)
             end
         end
 
-        table.insert(funcs, MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE)
+        --table.insert(funcs, MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE)
         table.insert(funcs, MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE)
         table.insert(funcs, MODIFIER_EVENT_ON_ORDER)
 
@@ -629,7 +653,7 @@ function Modifiers.Counter(modifier)
         return 0
     end
     
-    function modifier:GetModifierIncomingDamage_Percentage(params)
+    --[[function modifier:GetModifierIncomingDamage_Percentage(params)
         if IsServer() then
             if getModifierIncomingDamage_Percentage then
                 return getModifierIncomingDamage_Percentage(self, params)
@@ -641,7 +665,7 @@ function Modifiers.Counter(modifier)
                 return 0
             end
         end
-    end
+    end]]
 
     function modifier:CheckState()
         local states = {}
@@ -669,88 +693,36 @@ function Modifiers.Counter(modifier)
 
     if IsClient() then require("wrappers/modifiers") end
     Modifiers.Status(modifier)
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.COUNTER)
 end
 
-function Modifiers.OnProjectileHit(modifier)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
-    local onProjectileHitCustom = modifier.OnProjectileHitCustom
+function Modifiers.OnHit(modifier)
+    local onHit = modifier.OnHit
 
-    function modifier:OnProjectileHitCustom(params)
-        if onProjectileHitCustom then return onProjectileHitCustom(self, params) end
+    function modifier:OnHit(params)
+        if onHit then return onHit(self, params) end
     end
 
-    function modifier:OnCreated(params)
-        if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_ON_PROJECTILE_HIT)
-        end
-        if onCreated then onCreated(self, params) end
-    end
-
-    function modifier:OnDestroy(params)
-        if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_ON_PROJECTILE_HIT)
-        end
-        if onDestroy then onDestroy(self, params) end
-    end
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.ON_HIT)
 end
 
-function Modifiers.Reflect(modifier)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
 
-    function modifier:OnCreated(params)
-        if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_REFLECT)
-        end
-        if onCreated then onCreated(self, params) end
+function Modifiers.OnEvent(hModifier)    
+    local onEvent = hModifier.OnEvent
+
+    function hModifier:OnEvent(params)
+        if onEvent then return onEvent(self, params) end
     end
 
-    function modifier:OnDestroy(params)
-        if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_REFLECT)
-        end
-        if onDestroy then onDestroy(self, params) end
-    end
+    Modifiers.StartTracking(hModifier, MODIFIER_TYPES.ON_EVENT)
 end
 
 function Modifiers.Animation(modifier)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
-
-    function modifier:OnCreated(params)
-        if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_ANIMATION)
-        end
-        if onCreated then onCreated(self, params) end
-    end
-
-    function modifier:OnDestroy(params)
-        if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_ANIMATION)
-        end
-        if onDestroy then onDestroy(self, params) end
-    end
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.ANIMATION)
 end
 
-
 function Modifiers.MoveForced(modifier)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
-
-    function modifier:OnCreated(params)
-        if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_MOVE_FORCE)
-        end
-        if onCreated then onCreated(self, params) end
-    end
-
-    function modifier:OnDestroy(params)
-        if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_MOVE_FORCE)
-        end
-        if onDestroy then onDestroy(self, params) end
-    end
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.MOVE_FORCE)
 end
 
 function Modifiers.Translate(modifier)
@@ -761,7 +733,6 @@ function Modifiers.Translate(modifier)
     
     function modifier:OnCreated(params)
         if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_TRANSLATE)
             if self:GetParent():HasModifier("modifier_hero_movement") then
                 self:GetParent():RemoveModifierByName("modifier_hero_movement")
                 print("REMOVED")
@@ -774,7 +745,6 @@ function Modifiers.Translate(modifier)
 
     function modifier:OnDestroy(params)
         if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_TRANSLATE)
             if self:GetParent():HasModifier("modifier_hero_movement") then
                 self:GetParent():RemoveModifierByName("modifier_hero_movement")
                 self:GetParent():AddNewModifier(self:GetParent(), nil, "modifier_hero_movement", {})
@@ -792,10 +762,9 @@ function Modifiers.Translate(modifier)
         if getTranslation then return getTranslation(self) end
         return ""
     end
-end
 
-THINKER_VISUALS_PUBLIC = 1
-THINKER_VISUALS_LOCAL = 2
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.TRANSLATE)
+end
 
 function Modifiers.Thinker(modifier)
     local onCreated =           modifier.OnCreated
@@ -948,25 +917,9 @@ function Modifiers.Thinker(modifier)
 end
 
 function Modifiers.Channeling(modifier)
-    local onCreated =           modifier.OnCreated
-    local onDestroy =           modifier.OnDestroy
     local declareFunctions =    modifier.DeclareFunctions
     local checkState =          modifier.CheckState
     local onOrder =             modifier.OnOrder
-
-    function modifier:OnCreated(params)
-        if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_CHANNELING)
-        end
-        if onCreated then onCreated(self, params) end
-    end
-
-    function modifier:OnDestroy(params)
-        if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_CHANNELING)
-        end
-        if onDestroy then onDestroy(self, params) end
-    end
 
     function modifier:DeclareFunctions()
         local funcs = {}
@@ -1017,25 +970,16 @@ function Modifiers.Channeling(modifier)
         states[MODIFIER_STATE_ROOTED] = true
         return states
     end
-        
     function modifier:GetStatusLabel() return "Channeling" end
     function modifier:GetStatusPriority() return 4 end
     function modifier:GetStatusStyle() return "Channeling" end
 
     if IsClient() then require("wrappers/modifiers") end
     Modifiers.Status(modifier)
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.CHANNELING)
 end
 
-STATUS_TRIGGER_DURATION = 1
-STATUS_TRIGGER_STACKS = 2
-
-STATUS_CONTENT_CLEAROUT = 1
-STATUS_CONTENT_FILLUP = 2
-
-STATUS_SCOPE_PUBLIC = 1
-STATUS_SCOPE_LOCAL = 2
-
-function Modifiers.Status(modifier)
+function Modifiers.Status(modifier)    
     local onCreated =               modifier.OnCreated
     local onDestroy =               modifier.OnDestroy
     local getStatusLabel =          modifier.GetStatusLabel
@@ -1049,26 +993,28 @@ function Modifiers.Status(modifier)
 
     function modifier:OnCreated(params)
         if IsServer() then
-            if self:GetStatusEnabled() then
-                CustomEntities:AddStatus(self:GetParent(), {
-                    label = self:GetStatusLabel(), 
-                    modifier_name = self:GetName(), 
-                    priority = self:GetStatusPriority(), 
-                    trigger = self:GetStatusTriggerType(),
-                    content = self:GetStatusContentType(),
-                    style_name = self:GetStatusStyle(),
-                    scope = self:GetStatusScope(),
-                    max_stacks = self:GetMaxStacks()
-                })
-            end
             CustomEntities:SendDataToClient(self:GetParent())
         end
         if onCreated then onCreated(self, params) end
     end
 
+    function modifier:GetStatusData()
+        if self:GetStatusEnabled() then
+            return {
+                label = self:GetStatusLabel(), 
+                modifier_name = self:GetName(), 
+                priority = self:GetStatusPriority(), 
+                trigger = self:GetStatusTriggerType(),
+                content = self:GetStatusContentType(),
+                style_name = self:GetStatusStyle(),
+                scope = self:GetStatusScope(),
+                max_stacks = self:GetMaxStacks()
+            }
+        end
+    end
+
     function modifier:OnDestroy(params)
         if IsServer() then		
-            CustomEntities:RemoveStatus(self:GetParent(), self:GetName())
             CustomEntities:SendDataToClient(self:GetParent())
         end
         if onDestroy then onDestroy(self, params) end
@@ -1106,26 +1052,12 @@ function Modifiers.Status(modifier)
         if getStatusScope then return getStatusScope(self) end
         return STATUS_SCOPE_PUBLIC
     end
+
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.STATUS)
 end
 
 function Modifiers.Fear(modifier)
-    local onCreated = modifier.OnCreated
-    local onDestroy = modifier.OnDestroy
     local checkState = modifier.CheckState
-    
-    function modifier:OnCreated(params)
-        if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_FEAR)
-        end
-        if onCreated then onCreated(self, params) end
-    end
-
-    function modifier:OnDestroy(params)
-        if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_FEAR)
-        end
-        if onDestroy then onDestroy(self, params) end
-    end
 
     function modifier:GetAbsOrigin()
         if IsServer() then
@@ -1152,6 +1084,7 @@ function Modifiers.Fear(modifier)
 
     if IsClient() then require("wrappers/modifiers") end
     Modifiers.Status(modifier)
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.FEAR)
 end
 
 function Modifiers.Cooldown(modifier)
@@ -1222,7 +1155,6 @@ function Modifiers.Cooldown(modifier)
     end
 end
 
-
 function Modifiers.FadingSlow(modifier)
     local onCreated =               modifier.OnCreated
     local declareFunctions =        modifier.DeclareFunctions
@@ -1292,7 +1224,6 @@ function Modifiers.Shield(modifier)
 
     function modifier:OnCreated(params)
         if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), MODIFIER_SHIELD)
             SendOverheadShieldMessage(self:GetParent(), params.damage_block)
             self:SetStackCount(params.damage_block)
         end
@@ -1314,7 +1245,6 @@ function Modifiers.Shield(modifier)
     function modifier:OnDestroy()
         if IsServer() then
             self:InformClient()
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), MODIFIER_SHIELD)
         end
         if onDestroy then onDestroy(self) end
     end
@@ -1343,8 +1273,8 @@ function Modifiers.Shield(modifier)
     end
 
     function modifier:GetModifierIncomingDamage_Percentage(params)
-        for _,shield_modifier_name in pairs(CustomEntities:GetShields(self:GetParent())) do
-            if shield_modifier_name == self:GetName() then
+        for key, value in pairs(CustomEntities:GetAllModifiersWithType(self:GetParent(), MODIFIER_TYPES.SHIELD)) do
+            if value == self:GetName() then
                 local shield_points = self:GetStackCount() - params.damage
         
                 if shield_points <= 0 then
@@ -1373,4 +1303,17 @@ function Modifiers.Shield(modifier)
         if getStackeable then return getStackeable(self) end
         return false
     end
+
+    Modifiers.StartTracking(modifier, MODIFIER_TYPES.SHIELD)
+end
+
+function Modifiers.PreAttackDamage(hModifier)
+    local getPreAttackDamage = hModifier.GetPreAttackDamage
+
+    function hModifier:GetPreAttackDamage(params)
+        if getPreAttackDamage then return getPreAttackDamage(self, params) end
+        return 0
+    end
+
+    Modifiers.StartTracking(hModifier, MODIFIER_TYPES.PRE_ATTACK_DAMAGE)
 end

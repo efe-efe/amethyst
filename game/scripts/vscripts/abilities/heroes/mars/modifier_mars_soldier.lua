@@ -154,7 +154,7 @@ end
 
 function modifier_mars_soldier:OnProjectileHitCustom(params)
 	if IsServer() then
-		params.projectile:Destroy(false)
+		params.hProjectile:Destroy(false)
 	end
 end
 

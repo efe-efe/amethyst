@@ -50,20 +50,24 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
     local give_mana = false
     
     if self.iteration == 0 then
-        ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius_small, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
-            self.damage_table.victim = unit
-            if self:GetAbility():GetLevel() >= 2 then
-                unit:AddNewModifier(self.caster, self:GetAbility(), 'modifier_generic_stunned', { duration = self.stun_duration_small })
-            else
-                unit:AddNewModifier(self.caster, self:GetAbility(), 'modifier_generic_silence', { duration = self.silence_duration })
+        CustomEntities:AoeAttack(self.caster, {
+            vOrigin = self.origin, 
+            fRadius = self.radius_small,
+            Callback = function(hTarget)
+                self.damage_table.victim = hTarget
+                if self:GetAbility():GetLevel() >= 2 then
+                    hTarget:AddNewModifier(self.caster, self:GetAbility(), 'modifier_generic_stunned', { duration = self.stun_duration_small })
+                else
+                    hTarget:AddNewModifier(self.caster, self:GetAbility(), 'modifier_generic_silence', { duration = self.silence_duration })
+                end
+                EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", hTarget)
+                ApplyDamage(self.damage_table)
+    
+                if CustomEntities:ProvidesMana(hTarget) then
+                    give_mana = true
+                end
             end
-            EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", unit)
-            ApplyDamage(self.damage_table)
-
-            if CustomEntities:ProvidesMana(unit) then
-                give_mana = true
-            end
-         end)
+        })
 
         self:PlayEffectsExplode(self.radius_small, 0)
         
@@ -75,20 +79,25 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
         self:StartIntervalThink(self.delay - self.delay_small)                   
     else
         self.damage_table.damage = self.damage
-        ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
-            self.damage_table.victim = unit
-            if self:GetAbility():GetLevel() >= 2 then
-                unit:AddNewModifier(self.caster, self:GetAbility(), 'modifier_generic_stunned', { duration = self.stun_duration })
-            end
-            unit:AddNewModifier(self.caster, self:GetAbility(), 'modifier_puck_fairy_dust', { duration = self.fairy_dust_duration, slow_pct = self.fairy_dust_slow_pct })
-            EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", unit)
-            ApplyDamage(self.damage_table)
-
-            if CustomEntities:ProvidesMana(unit) then
-                give_mana = true
-            end
-        end)
         
+        CustomEntities:AoeAttack(self.caster, {
+            vOrigin = self.origin, 
+            fRadius = self.radius,
+            Callback = function(hTarget)
+                self.damage_table.victim = hTarget
+                if self:GetAbility():GetLevel() >= 2 then
+                    hTarget:AddNewModifier(self.caster, self:GetAbility(), 'modifier_generic_stunned', { duration = self.stun_duration })
+                end
+                hTarget:AddNewModifier(self.caster, self:GetAbility(), 'modifier_puck_fairy_dust', { duration = self.fairy_dust_duration, slow_pct = self.fairy_dust_slow_pct })
+                EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", hTarget)
+                ApplyDamage(self.damage_table)
+    
+                if CustomEntities:ProvidesMana(hTarget) then
+                    give_mana = true
+                end
+            end
+        })
+
         if give_mana then
             CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
         end

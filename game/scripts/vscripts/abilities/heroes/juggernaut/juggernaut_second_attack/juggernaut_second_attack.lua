@@ -48,62 +48,45 @@ function juggernaut_second_attack:OnSpellStart()
 	
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_juggernaut_basic_attack_stacks")
-	local final_damage = damage + (stacks * damage_per_stack)
-	local shield_providers = 0
+	self.final_damage = damage + (stacks * damage_per_stack)
+	self.shield_providers = 0
 
-	local give_mana = false
+	self.give_mana = false
 	local enemies = {}
-	local damage_table = {
+	self.damage_table = {
 		attacker = caster,
 		damage = final_damage,
 		damage_type = DAMAGE_TYPE_PHYSICAL,
 	}
 
 	if stacks <= 3 then
-		enemies = CustomEntities:FindUnitsInCone(
-			caster,
-			direction, 
-			0, 
-			origin, 
-			radius, 
-			DOTA_UNIT_TARGET_TEAM_ENEMY, 
-			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-			DOTA_UNIT_TARGET_FLAG_NONE, 
-			FIND_CLOSEST
-		)
+		CustomEntities:MeeleAttack(caster, {
+			vDirection = direction,
+			vOrigin = origin, 
+			fRadius = radius,
+			Callback = function(hTarget)
+				self:OnUnitImpact(hTarget)
+			end
+		})
+	
 		self:PlayEffectsOnFinish(direction, radius)
 	else
-		local radius = 275 
-		enemies = CustomEntities:FindUnitsInRadius(
-			caster,
-			caster:GetOrigin(), 
-			radius, 
-			DOTA_UNIT_TARGET_TEAM_ENEMY, 
-			DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-			DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
-			FIND_ANY_ORDER
-		)
+		local radius = 275
+		
+		CustomEntities:AoeAttack(caster, {
+			vOrigin = origin, 
+			fRadius = radius,
+			bTriggerCounters = true,
+			Callback = function(hTarget)
+				self:OnUnitImpact(hTarget)
+			end
+		})
+	
 		caster:AddNewModifier(caster, self, "modifier_juggernaut_spin_animation", { duration = 0.3 })
 		self:PlayEffectsAoe(radius)
 	end
 
-	for _,enemy in pairs(enemies) do
-		if CustomEntities:ProvidesMana(enemy) then
-			give_mana = true
-		end
-
-		if not CustomEntities:IsObstacle(enemy) and not CustomEntities:IsCountering(enemy) then
-			shield_providers = shield_providers + 1
-		end
-
-		damage_table.victim = enemy
-		damage_table.damage = final_damage
-
-		ApplyDamage(damage_table)
-		self:PlayEffectsOnImpact(enemy)
-	end
-
-	if give_mana then
+	if self.give_mana then
 		CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 	end
 	
@@ -111,13 +94,29 @@ function juggernaut_second_attack:OnSpellStart()
 		ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
 	end
 
-	if self:GetLevel() >= 2 and stacks > 0 and shield_providers > 0 then
-		local final_shield = stacks * shield_per_stack * shield_providers
+	if self:GetLevel() >= 2 and stacks > 0 and self.shield_providers > 0 then
+		local final_shield = stacks * shield_per_stack * self.shield_providers
 		caster:AddNewModifier(caster, self, 'modifier_juggernaut_second_attack', { damage_block = final_shield, duration = duration })
 	end
 
 	CustomEntities:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")
 	LinkAbilityCooldowns(caster, 'juggernaut_ex_second_attack')
+end
+
+function juggernaut_second_attack:OnUnitImpact(hTarget)
+	if CustomEntities:ProvidesMana(hTarget) then
+		self.give_mana = true
+	end
+
+	if not CustomEntities:IsObstacle(hTarget) and not CustomEntities:IsCountering(hTarget) then
+		self.shield_providers = self.shield_providers + 1
+	end
+
+	self.damage_table.victim = hTarget
+	self.damage_table.damage = self.final_damage
+
+	ApplyDamage(self.damage_table)
+	self:PlayEffectsOnImpact(hTarget)
 end
 
 function juggernaut_second_attack:PlayEffectsOnImpact(hTarget)
@@ -190,34 +189,28 @@ function juggernaut_ex_second_attack:OnSpellStart()
 	
 	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_juggernaut_basic_attack_stacks")
 	local final_debuff_duration = duration + (stacks * duration_per_stack)
-	local enemies = CustomEntities:FindUnitsInCone(
-		caster,
-		direction, 
-		0, 
-		origin, 
-		self.radius, 
-		DOTA_UNIT_TARGET_TEAM_ENEMY, 
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-		DOTA_UNIT_TARGET_FLAG_NONE, 
-		FIND_CLOSEST
-	)
 
-	for _,enemy in pairs(enemies) do
-		local damage_table = {
-			victim = enemy,
-			attacker = caster,
-			damage = ability_damage,
-			damage_type = DAMAGE_TYPE_PHYSICAL,
-		}
-		ApplyDamage(damage_table)
-
-		enemy:AddNewModifier(caster, self, "modifier_generic_sleep", { duration = final_debuff_duration })
-
-		if not CustomEntities:IsObstacle(enemy) then
-			give_mana = true
+	CustomEntities:MeeleAttack(caster, {
+		vDirection = direction,
+		vOrigin = origin, 
+		fRadius = self.radius,
+		Callback = function(hTarget)
+			local damage_table = {
+				victim = hTarget,
+				attacker = caster,
+				damage = ability_damage,
+				damage_type = DAMAGE_TYPE_PHYSICAL,
+			}
+			ApplyDamage(damage_table)
+	
+			hTarget:AddNewModifier(caster, self, "modifier_generic_sleep", { duration = final_debuff_duration })
+	
+			if not CustomEntities:IsObstacle(hTarget) then
+				give_mana = true
+			end
+			self:PlayEffectsOnImpact(hTarget)
 		end
-		self:PlayEffectsOnImpact(enemy)
-	end
+	})
 
 	CustomEntities:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")
 
@@ -243,7 +236,6 @@ end
 
 function juggernaut_ex_second_attack:PlayEffectsOnCast()
 	EmitSoundOn("DOTA_Item.SkullBasher", self:GetCaster())
-	
 end
 
 function juggernaut_ex_second_attack:PlayEffectsOnFinish(pos)

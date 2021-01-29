@@ -22,27 +22,23 @@ function modifier_storm_mobility_thinker:OnCreated(params)
 end
 
 function modifier_storm_mobility_thinker:OnIntervalThink()
-    local enemies = CustomEntities:FindUnitsInRadius(
-        self:GetCaster(),
-        self.origin, 
-        self.radius, 
-        DOTA_UNIT_TARGET_TEAM_ENEMY, 
-        DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-        DOTA_UNIT_TARGET_FLAG_NONE,
-        FIND_ANY_ORDER
-    )
-
     local give_mana = false
+    local destroy = false
 
-    for _,enemy in pairs(enemies) do
-        self.damage_table.victim = enemy
-        ApplyDamage(self.damage_table)
-
-        
-        if CustomEntities:ProvidesMana(enemy) then
-            give_mana = true
+    CustomEntities:AoeAttack(self:GetCaster(), {
+        vOrigin = self.origin, 
+        fRadius = self.radius,
+        Callback = function(hTarget)
+            self.damage_table.victim = hTarget
+            ApplyDamage(self.damage_table)
+    
+            
+            if CustomEntities:ProvidesMana(hTarget) then
+                give_mana = true
+            end
+            destroy = true
         end
-    end
+    })
 
     if give_mana then
         CustomEntities:GiveManaAndEnergyPercent(self:GetCaster(), self.mana_gain_pct, true)
@@ -52,7 +48,7 @@ function modifier_storm_mobility_thinker:OnIntervalThink()
         end
     end
 
-    if #enemies > 0 then
+    if destroy then
         self:Destroy()
     end
 end

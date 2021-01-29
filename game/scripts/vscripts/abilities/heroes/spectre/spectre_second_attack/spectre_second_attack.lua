@@ -29,92 +29,93 @@ function spectre_second_attack:OnSpellStart()
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
-	local projectile = {
-		EffectName =			"particles/spectre/spectre_second_attack.vpcf",
-		vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius =			self:GetSpecialValueFor("hitbox"),
-		Source = 				caster,
-		vVelocity = 			projectile_direction * projectile_speed,
-		UnitBehavior = 			PROJECTILES_DESTROY,
-		WallBehavior = 			PROJECTILES_DESTROY,
-		TreeBehavior = 			PROJECTILES_NOTHING,
-		GroundBehavior = 		PROJECTILES_NOTHING,
-		fGroundOffset = 		0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-			}
-
-			local knockback_distance = 75
-			local fading_slow_duration = 0.5
-			local fading_slow_pct = 100
-
-			if level >= 2 then
-				knockback_distance = 100
-				fading_slow_duration = 0.7
-
-				EFX('particles/spectre/spectre_second_attack_explosion.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, { 
-					release = true,
-				})
-			else 
-				EFX('particles/spectre/spectre_second_attack_impact.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, { 
-					cp1 = unit:GetAbsOrigin(),
-					release = true 
-				})
-			end
-	
-			unit:AddNewModifier(
-				_self.Source, -- player source
-				self, -- ability source
-				"modifier_spectre_second_attack_displacement", -- modifier name
-				{
-					x = projectile_direction.x,
-					y = projectile_direction.y,
-					r = knockback_distance,
-					speed = (knockback_distance/0.125),
-					peak = 0,
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			EffectName =			"particles/spectre/spectre_second_attack.vpcf",
+			vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius =			self:GetSpecialValueFor("hitbox"),
+			Source = 				caster,
+			vVelocity = 			projectile_direction * projectile_speed,
+			UnitBehavior = 			PROJECTILES_DESTROY,
+			WallBehavior = 			PROJECTILES_DESTROY,
+			TreeBehavior = 			PROJECTILES_NOTHING,
+			GroundBehavior = 		PROJECTILES_NOTHING,
+			fGroundOffset = 		0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
 				}
-			)
 
-			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
-				duration = fading_slow_duration,
-				max_slow_pct = fading_slow_pct 
-			})
+				local knockback_distance = 75
+				local fading_slow_duration = 0.5
+				local fading_slow_pct = 100
 
-			ApplyDamage(damage_table)
-			
-			ScreenShake(unit:GetAbsOrigin(), 100, 300, 0.7, 1000, 0, true)
-			if CustomEntities:ProvidesMana(unit) then
-				CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-			end
-		end,
-		OnFinish = function(_self, pos)
-			if level >= 2 then
-				local counter = 0
-				for k, v in pairs(_self.tHitLog) do 
-					counter = counter + 1 
-				end
-	
-				if counter == 0 then
-					EFX('particles/spectre/spectre_second_attack_explosion.vpcf', PATTACH_WORLDORIGIN, nil, { 
-						cp0 = pos, 
+				if level >= 2 then
+					knockback_distance = 100
+					fading_slow_duration = 0.7
+
+					EFX('particles/spectre/spectre_second_attack_explosion.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, { 
 						release = true,
 					})
+				else 
+					EFX('particles/spectre/spectre_second_attack_impact.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, { 
+						cp1 = unit:GetAbsOrigin(),
+						release = true 
+					})
 				end
+		
+				unit:AddNewModifier(
+					_self.Source, -- player source
+					self, -- ability source
+					"modifier_spectre_second_attack_displacement", -- modifier name
+					{
+						x = _self:GetVelocity():Normalized().x,
+						y = _self:GetVelocity():Normalized().y,
+						r = knockback_distance,
+						speed = (knockback_distance/0.125),
+						peak = 0,
+					}
+				)
 
-				EmitSoundOnLocationWithCaster(pos, "Hero_Nevermore.Attack", caster)
-			else
-				self:PlayEffectsOnFinish(pos, level)
-			end
-		end,
-	}
+				unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
+					duration = fading_slow_duration,
+					max_slow_pct = fading_slow_pct 
+				})
 
-	ProjectilesManagerInstance:CreateProjectile(projectile)
+				ApplyDamage(damage_table)
+				
+				ScreenShake(unit:GetAbsOrigin(), 100, 300, 0.7, 1000, 0, true)
+				if CustomEntities:ProvidesMana(unit) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				end
+			end,
+			OnFinish = function(_self, pos)
+				if level >= 2 then
+					local counter = 0
+					for k, v in pairs(_self.tHitLog) do 
+						counter = counter + 1 
+					end
+		
+					if counter == 0 then
+						EFX('particles/spectre/spectre_second_attack_explosion.vpcf', PATTACH_WORLDORIGIN, nil, { 
+							cp0 = pos, 
+							release = true,
+						})
+					end
+
+					EmitSoundOnLocationWithCaster(pos, "Hero_Nevermore.Attack", caster)
+				else
+					self:PlayEffectsOnFinish(pos, level)
+				end
+			end,
+		}
+	})
+
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_CAST_ABILITY_1, 2.0)
 	self:PlayEffectsOnCast()
 end

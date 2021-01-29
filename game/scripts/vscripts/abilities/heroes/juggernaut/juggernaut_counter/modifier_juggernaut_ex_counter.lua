@@ -27,11 +27,10 @@ function modifier_juggernaut_ex_counter:DeclareFunctions()
     }
 end
 
-function modifier_juggernaut_ex_counter:OnAttack(params)
-    if params.attacker ~= self:GetParent() then
-        return
+function modifier_juggernaut_ex_counter:OnEvent(params)
+    if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED or params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED then
+        self:DecrementStackCount()
     end
-	self:DecrementStackCount()
 end
  
 function modifier_juggernaut_ex_counter:GetModifierPreAttack_BonusDamage(event)
@@ -41,3 +40,6 @@ end
 function modifier_juggernaut_ex_counter:GetTexture()
 	return "modifier_juggernaut_ex_counter"
 end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.OnEvent(modifier_juggernaut_ex_counter)

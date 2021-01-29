@@ -13,13 +13,8 @@ function modifier_puck_basic_attack_thinker:OnCreated(params)
         self.heal_per_hit = self.ex_basic_attack:GetSpecialValueFor("heal_per_hit")
         self.fairy_dust_duration = self.ex_basic_attack:GetSpecialValueFor("fairy_dust_duration")
         self.fairy_dust_slow_pct = self.ex_basic_attack:GetSpecialValueFor("fairy_dust_slow_pct")
-
-        self.damage_table = {
-            attacker = self.caster,
-            damage = self.caster:GetAverageTrueAttackDamage(self.caster),
-            damage_type = DAMAGE_TYPE_PURE,
-        }
         self.charged = params.charged == 1
+
         local delay_time = self.ex_basic_attack:GetSpecialValueFor('delay_time')
         CreateTimedRadiusMarker(self.caster, self.origin, self.radius, delay_time, 0.2, RADIUS_SCOPE_PUBLIC)
         self:StartIntervalThink(delay_time)
@@ -57,19 +52,20 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
 
     local give_mana = false
 
-    local units = ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
-        self.caster:PerformAttack(unit, true, true, true, true, false, false, true)
+    CustomEntities:AoeAttack(self.caster, {
+        bIsBasicAttack = true,
+        vOrigin = self.origin, 
+        fRadius = self.radius,
+        Callback = function(hTarget)
+            self.caster:PerformAttack(hTarget, true, true, true, true, false, false, true)
       
-        unit:AddNewModifier(self.caster, nil, "modifier_puck_fairy_dust", { duration = self.fairy_dust_duration, slow_pct = self.fairy_dust_slow_pct })
-
-        if not CustomEntities:IsObstacle(unit) then
-            give_mana = true
-        end
-    end)
+            hTarget:AddNewModifier(self.caster, nil, "modifier_puck_fairy_dust", { duration = self.fairy_dust_duration, slow_pct = self.fairy_dust_slow_pct })
     
-	if #units == 0 then
-		CustomEntities:FakeMissAttack(self.caster)
-	end
+            if not CustomEntities:IsObstacle(hTarget) then
+                give_mana = true
+            end
+        end
+    })
 
     if give_mana then
         if self:GetAbility():GetLevel() >=2 then

@@ -32,68 +32,45 @@ function juggernaut_basic_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local modifier = CustomEntities:SafeGetModifier(caster, "modifier_juggernaut_ex_counter")
+
 	if modifier then
 		local color = Vector(0, 255, 0)
 		self:PlayEffectsOnFinish(direction, color)
 	else
 		self:PlayEffectsOnFinish(direction)
 	end
-
-	local enemies = CustomEntities:FindUnitsInCone(
-		caster,
-		direction, 
-		0, 
-		origin, 
-		self.radius, 
-		DOTA_UNIT_TARGET_TEAM_ENEMY, 
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-		DOTA_UNIT_TARGET_FLAG_NONE, 
-		FIND_CLOSEST
-	)
-
-	local should_shake = false
-
-	for _,enemy in pairs(enemies) do 
-		if enemy:IsRealHero() then
-			should_shake = true
-		end
-
-		self:PlayEffectsOnImpact(enemy)
-
-		caster:PerformAttack(enemy, true, true, true, true, false, false, true)
-
-		if not CustomEntities:IsObstacle(enemy) then
-			if CustomEntities:ProvidesMana(enemy) then
-				CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-			end
-			-- Add modifier
-			caster:AddNewModifier(
-				caster, -- player source
-				self, -- ability source
-				"modifier_juggernaut_basic_attack_stacks", -- modifier name
-				{} -- kv
-			)
-
-			self:ReduceCooldown(caster, 'juggernaut_second_attack', cooldown_reduction)
-			self:ReduceCooldown(caster, 'juggernaut_ex_second_attack', cooldown_reduction)
-
-			if self:GetLevel() >= 2 then
-				self:ReduceCooldown(caster, 'juggernaut_counter', cooldown_reduction_counter)
-				self:ReduceCooldown(caster, 'juggernaut_ex_counter', cooldown_reduction_counter)
-			end
-		end
-
-		CustomEntities:OnBasicAttackImpact(caster, enemy)
-		break
-	end
-
-	if #enemies == 0 then
-		CustomEntities:FakeMissAttack(caster)
-	end
 	
-	if should_shake then
-		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
-	end
+	CustomEntities:MeeleAttack(caster, {
+		vDirection = direction,
+		vOrigin = origin, 
+		fRadius = self.radius,
+		bIsBasicAttack = true,
+		iMaxTargets = 1,
+		Callback = function(hTarget)
+			CustomEntities:AttackWithBaseDamage(caster, {
+				hTarget = hTarget,
+				hAbility = self,
+			})
+
+			if not CustomEntities:IsObstacle(hTarget) then
+				if CustomEntities:ProvidesMana(hTarget) then
+					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				end
+
+				caster:AddNewModifier(caster, self, "modifier_juggernaut_basic_attack_stacks", {})
+	
+				self:ReduceCooldown(caster, 'juggernaut_second_attack', cooldown_reduction)
+				self:ReduceCooldown(caster, 'juggernaut_ex_second_attack', cooldown_reduction)
+	
+				if self:GetLevel() >= 2 then
+					self:ReduceCooldown(caster, 'juggernaut_counter', cooldown_reduction_counter)
+					self:ReduceCooldown(caster, 'juggernaut_ex_counter', cooldown_reduction_counter)
+				end
+			end
+	
+			self:PlayEffectsOnImpact(hTarget)
+		end
+	})
 
 	self:PlayEffectsOnMiss(point)
 end

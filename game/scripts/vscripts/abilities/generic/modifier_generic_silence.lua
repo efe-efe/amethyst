@@ -6,7 +6,6 @@ function modifier_generic_silence:IsPurgable() return true end
 
 function modifier_generic_silence:OnCreated()
 	if IsServer() then
-		CustomEntities:SafeDestroyModifier(self:GetParent(), "modifier_channeling")
 		self:PlayEffects()
 	end
 end

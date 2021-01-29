@@ -2,12 +2,20 @@ modifier_sniper_ultimate_channeling = class({})
 
 function modifier_sniper_ultimate_channeling:OnCreated(params)
     if IsServer() then
-	    self.damage = self:GetAbility():GetSpecialValueFor("ability_damage")
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
-        self.aoe_damage = self:GetAbility():GetSpecialValueFor("aoe_damage")
         self.projectile_distance = self:GetAbility():GetCastRange(Vector(0,0,0), nil)
         self.hitbox = self:GetAbility():GetSpecialValueFor("hitbox")
         self.projectile_speed = self:GetAbility():GetSpecialValueFor("projectile_speed")
+
+        self.damage_table = {
+            damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
+            damage_type = DAMAGE_TYPE_MAGICAL,
+        }
+        
+        self.damage_table_aoe = {
+            damage = self:GetAbility():GetSpecialValueFor("aoe_damage"),
+            damage_type = DAMAGE_TYPE_PURE,
+        }
 
         self:OnIntervalThink()
         self:StartIntervalThink(0.45)
@@ -24,81 +32,71 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
-	-- Extra data
-	local projectile = {
-		EffectName = "particles/sniper/sniper_ultimate_new.vpcf",
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 100, projectile_direction.y * 100, 96),
-		fDistance = self.projectile_distance,
-		fStartRadius = self.hitbox,
-		fEndRadius = projectile_end_radius,
-		Source = caster,
-		vVelocity = projectile_direction * self.projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-        fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit)
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = self.damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-			}			
-			
-			ApplyDamage(damage_table)
-			
-            unit:AddNewModifier(_self.Source, ability, "modifier_sniper_ultimate_hit", { duration = 0.1 }) -- Avoid dealing hit and aoe damage at the same time
-			self:PlayEffectsTarget(_self.Source, unit, _self.current_position)
-		end,
-        OnFinish = function(_self, pos)
-            local enemies = CustomEntities:FindUnitsInRadius(
-        caster,
-                pos, 
-                self.radius + 50, 
-                DOTA_UNIT_TARGET_TEAM_ENEMY, 
-                DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-                DOTA_UNIT_TARGET_FLAG_NONE,
-                FIND_ANY_ORDER
-           )
-            
-            for _,enemy in pairs(enemies) do
-                local damage = {
-                    victim = enemy,
-                    attacker = caster,
-                    damage = self.aoe_damage,
-                    damage_type = DAMAGE_TYPE_PURE,
-                }
-            
-                if not enemy:HasModifier("modifier_sniper_ultimate_hit") then
-                    ApplyDamage(damage)
-                end
+    CustomEntities:ProjectileAttack(caster, {
+        tProjectile = {
+            EffectName = "particles/sniper/sniper_ultimate_new.vpcf",
+            vSpawnOrigin = origin + Vector(projectile_direction.x * 100, projectile_direction.y * 100, 96),
+            fDistance = self.projectile_distance,
+            fStartRadius = self.hitbox,
+            fEndRadius = projectile_end_radius,
+            Source = caster,
+            vVelocity = projectile_direction * self.projectile_speed,
+            UnitBehavior = PROJECTILES_DESTROY,
+            TreeBehavior = PROJECTILES_NOTHING,
+            WallBehavior = PROJECTILES_DESTROY,
+            GroundBehavior = PROJECTILES_NOTHING,
+            fGroundOffset = 0,
+            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+            OnUnitHit = function(_self, unit)
+                self.damage_table.victim = unit
+                self.damage_table.attacker = _self.Source
+                ApplyDamage(self.damage_table)
                 
-                local knockback_direction = _self:GetVelocity():Normalized()
-        
-                enemy:AddNewModifier(
-                    caster,
-                    self,
-                    "modifier_sniper_ultimate_displacement",
-                    {
-                        x = knockback_direction.x,
-                        y = knockback_direction.y,
-                        r = self.radius,
-                        speed = (self.radius/0.15),
-                        peak = 0,
-                    }
-               )
-            end
-        
-            ScreenShake(pos, 100, 300, 0.45, 1000, 0, true)
-            self:PlayEffectsExplosion(pos)
-			self:PlayEffectsProjectileImpact(_self.Source, pos)
-		end,
-	}
+                unit:AddNewModifier(_self.Source, ability, "modifier_sniper_ultimate_hit", { duration = 0.1 }) -- Avoid dealing hit and aoe damage at the same time
+                self:PlayEffectsTarget(_self.Source, unit, _self.vCurrentPosition)
+            end,
+            OnFinish = function(_self, pos)
+                local enemies = CustomEntities:FindUnitsInRadius(
+                    _self.Source,
+                    pos, 
+                    self.radius + 50, 
+                    DOTA_UNIT_TARGET_TEAM_ENEMY, 
+                    DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+                    DOTA_UNIT_TARGET_FLAG_NONE,
+                    FIND_ANY_ORDER
+                )
+                
+                for _,enemy in pairs(enemies) do
+                    if not enemy:HasModifier("modifier_sniper_ultimate_hit") then
+                        self.damage_table_aoe.victim = enemy
+                        self.damage_table_aoe.attacker = _self.Source
+                        ApplyDamage(damage)
+                    end
+                    
+                    local knockback_direction = _self:GetVelocity():Normalized()
+            
+                    enemy:AddNewModifier(
+                        _self.Source,
+                        self,
+                        "modifier_sniper_ultimate_displacement",
+                        {
+                            x = knockback_direction.x,
+                            y = knockback_direction.y,
+                            r = self.radius,
+                            speed = (self.radius/0.15),
+                            peak = 0,
+                        }
+                )
+                end
+            
+                ScreenShake(pos, 100, 300, 0.45, 1000, 0, true)
+                self:PlayEffectsExplosion(pos)
+                self:PlayEffectsProjectileImpact(_self.Source, pos)
+            end,
+        }
+    })
 
     CustomEntities:FullyFaceTowards(caster, projectile_direction)
-    ProjectilesManagerInstance:CreateProjectile(projectile)
     EmitSoundOn("Ability.Assassinate", self:GetCaster())
 end
 

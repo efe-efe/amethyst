@@ -35,7 +35,7 @@ function vengeful_second_attack:OnSpellStart()
 	LinkAbilityCooldowns(self:GetCaster(), 'vengeful_ex_second_attack')
 end
 
-function vengeful_second_attack:ThrowProjectile()
+function vengeful_second_attack:ThrowProjectile(bIsBasicAttack)
 	local caster = self:GetCaster()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
@@ -46,43 +46,44 @@ function vengeful_second_attack:ThrowProjectile()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 
-	local projectile = {
-		EffectName = "particles/vengeful/vengeful_second_attack.vpcf",
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-        Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-				ability = self,
-			}
-			ApplyDamage(damage_table)
+	CustomEntities:ProjectileAttack(caster, {
+		bIsBasicAttack = bIsBasicAttack,
+		tProjectile = {
+			EffectName = "particles/vengeful/vengeful_second_attack.vpcf",
+			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_DESTROY,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = caster,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+					ability = self,
+				}
+				ApplyDamage(damage_table)
 
-			unit:AddNewModifier(_self.Source, self, "modifier_vengeful_second_attack", { duration = duration })
+				unit:AddNewModifier(_self.Source, self, "modifier_vengeful_second_attack", { duration = duration })
 
-			if _self.Source == caster then
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				if _self.Source == caster then
+					if CustomEntities:ProvidesMana(unit) then
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
 				end
-			end
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
-
-    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 end
 
 
@@ -153,44 +154,45 @@ function vengeful_ex_second_attack:OnSpellStart()
 		ability = self,
 	}
 
-	local projectile = {
-		EffectName = "particles/vengeful/vengeful_ex_second_attack.vpcf",
-		vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-        Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_NOTHING,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			if CustomEntities:Allies(_self.Source, unit) then
-				unit:Heal(heal, _self.Source)
-			else 
-				damage_table.victim = unit
-				damage_table.attacker = _self.Source
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			EffectName = "particles/vengeful/vengeful_ex_second_attack.vpcf",
+			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_NOTHING,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				if CustomEntities:Allies(_self.Source, unit) then
+					unit:Heal(heal, _self.Source)
+				else 
+					damage_table.victim = unit
+					damage_table.attacker = _self.Source
 
-				local unit_origin = unit:GetOrigin()
-				local source_origin = _self.Source:GetOrigin()
-				
-				FindClearSpaceForUnit(_self.Source, unit_origin , true)
-				FindClearSpaceForUnit(unit, source_origin , true)
+					local unit_origin = unit:GetOrigin()
+					local source_origin = _self.Source:GetOrigin()
+					
+					FindClearSpaceForUnit(_self.Source, unit_origin , true)
+					FindClearSpaceForUnit(unit, source_origin , true)
 
-				self:PlayEffectsSwap(unit)
-				ApplyDamage(damage_table)
-			end
+					self:PlayEffectsSwap(unit)
+					ApplyDamage(damage_table)
+				end
 
-			_self.Source:Heal(heal, _self.Source)
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
+				_self.Source:Heal(heal, _self.Source)
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 
-    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
 	LinkAbilityCooldowns(caster, 'vengeful_second_attack')
 	EmitSoundOn("Hero_Chen.Attack", caster)
 	EmitSoundOn("Hero_Chen.HolyPersuasionEnemy", caster)

@@ -15,55 +15,56 @@ function puck_second_attack:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	local hitbox = self:GetSpecialValueFor("hitbox")
+	
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			EffectName = "particles/puck/puck_second_attack_projectile.vpcf",
+			vSpawnOrigin = origin + Vector(projectile_direction.x * hitbox, projectile_direction.y * hitbox, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = hitbox,
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_DESTROY,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = caster,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_MAGICAL,
+					ability = self,
+				}
+				ApplyDamage(damage_table)
 
-	local projectile = {
-		EffectName = "particles/puck/puck_second_attack_projectile.vpcf",
-		vSpawnOrigin = origin + Vector(projectile_direction.x * hitbox, projectile_direction.y * hitbox, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = hitbox,
-        Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = caster,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_MAGICAL,
-				ability = self,
-			}
-			ApplyDamage(damage_table)
+				if unit:HasModifier("modifier_puck_fairy_dust") then
+					unit:AddNewModifier(_self.Source, self, "modifier_generic_silence", { duration = silence_duration })
+					unit:RemoveModifierByName("modifier_puck_fairy_dust")
 
-			if unit:HasModifier("modifier_puck_fairy_dust") then
-				unit:AddNewModifier(_self.Source, self, "modifier_generic_silence", { duration = silence_duration })
-				unit:RemoveModifierByName("modifier_puck_fairy_dust")
-
-				EmitSoundOn("Hero_Puck.EtherealJaunt", unit)
-				local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start_embers.vpcf"
-				local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, unit)
-				ParticleManager:ReleaseParticleIndex(effect_cast)
-			end
-
-			if _self.Source == caster then
-				if CustomEntities:ProvidesMana(unit) and self:GetLevel() >=2 then
-					caster:FindAbilityByName("puck_special_attack"):EndCooldown()
+					EmitSoundOn("Hero_Puck.EtherealJaunt", unit)
+					local particle_cast = "particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_start_embers.vpcf"
+					local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, unit)
+					ParticleManager:ReleaseParticleIndex(effect_cast)
 				end
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-				end
-			end
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
 
-    local projectile = ProjectilesManagerInstance:CreateProjectile(projectile)
+				if _self.Source == caster then
+					if CustomEntities:ProvidesMana(unit) and self:GetLevel() >=2 then
+						caster:FindAbilityByName("puck_special_attack"):EndCooldown()
+					end
+					if CustomEntities:ProvidesMana(unit) then
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
+				end
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
+
 	self:PlayEffectsOnCast()
 end
 
