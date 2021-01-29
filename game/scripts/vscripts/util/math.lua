@@ -23,10 +23,10 @@ function ClampPosition(vOrigin, vPoint, iMaxRange, iMinRange)
 end
 
 function Clamp(iNumber, iMax, iMin)
-	if iNumber > iMax then
+	if iMax and (iNumber > iMax) then
 		return iMax
 	end
-	if iNumber < iMin then
+	if iMin and (iNumber < iMin) then
 		return iMin
 	end
 	return iNumber
@@ -53,4 +53,12 @@ function RandomIntWithExeption(iMinimum, iMaximum, iException)
 	end
 
 	return number
+end
+
+function Direction2D(vOrigin, vPoint)
+	return Vector(
+		vPoint.x - vOrigin.x, 
+		vPoint.y - vOrigin.y, 
+		0
+	):Normalized()
 end
