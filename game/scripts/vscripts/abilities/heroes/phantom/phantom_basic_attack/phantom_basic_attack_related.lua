@@ -37,7 +37,7 @@ function phantom_basic_attack_related:OnSpellStart()
 	local fading_slow_duration = ability:GetSpecialValueFor("fading_slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	CustomEntities:ProjectileAttack(caster, {

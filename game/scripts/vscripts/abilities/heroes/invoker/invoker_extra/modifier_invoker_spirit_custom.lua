@@ -24,7 +24,7 @@ function modifier_invoker_spirit_custom:OnOrder(params)
         local parent = self:GetParent()
         local origin = parent:GetAbsOrigin()
         local point = self:GetAbility():GetCursorPosition()
-        local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+        local direction = Direction2D(origin, point)
 
         CustomEntities:FullyFaceTowards(self:GetParent(), direction)
         self:GetParent():StartGesture(ACT_DOTA_ATTACK)
@@ -66,7 +66,7 @@ function modifier_invoker_spirit_custom:LaunchProjectile(vPoint)
         local point = vPoint
         local mana_gain_pct = 3
         local projectile_speed = 2000
-        local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+        local projectile_direction = Direction2D(origin, point)
         local damage = parent:GetAverageTrueAttackDamage(parent)
     
         local projectile = {

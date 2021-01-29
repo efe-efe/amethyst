@@ -15,7 +15,7 @@ function invoker_second_attack:OnSpellStart()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local duration = self:GetSpecialValueFor("duration")
 	
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local projectile = {

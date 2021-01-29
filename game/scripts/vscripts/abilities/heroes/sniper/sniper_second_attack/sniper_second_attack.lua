@@ -51,7 +51,7 @@ function sniper_second_attack:OnSpellStart()
 	local point = self:GetCursorPosition()
 	local damage = self:GetSpecialValueFor("ability_damage")
 
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	local stun_duration = self:GetSpecialValueFor("stun_duration")
@@ -178,7 +178,7 @@ function sniper_ex_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_origin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
 	self:ThrowProjectile(origin + Vector(0, 0, 96), projectile_direction, true, caster)
 

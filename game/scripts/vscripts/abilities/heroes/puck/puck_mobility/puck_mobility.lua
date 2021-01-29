@@ -21,7 +21,7 @@ function puck_mobility:OnSpellStart()
 	local refreshed = false
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 
 	local damage_table = {
 		attacker = caster,
@@ -128,7 +128,7 @@ function puck_ex_mobility:OnSpellStart()
     local origin = caster:GetOrigin()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 
 	local radius = self:GetSpecialValueFor('radius')
 	local fear_duration = self:GetSpecialValueFor('fear_duration')

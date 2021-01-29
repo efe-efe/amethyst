@@ -24,7 +24,7 @@ function invoker_basic_attack:OnSpellStart()
     local origin = caster:GetOrigin()
     local point = self:GetCursorPosition()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local damage = caster:GetAverageTrueAttackDamage(caster)
 

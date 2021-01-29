@@ -21,7 +21,7 @@ function vengeful_counter:OnSpellStart()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	self:ThrowProjectile(caster, damage, origin, projectile_direction, projectile_speed, true)
@@ -109,7 +109,7 @@ function vengeful_ex_counter:OnSpellStart()
     local origin = caster:GetOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local point = self:GetCursorPosition()
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
 	CustomEntities:ProjectileAttack(caster, {

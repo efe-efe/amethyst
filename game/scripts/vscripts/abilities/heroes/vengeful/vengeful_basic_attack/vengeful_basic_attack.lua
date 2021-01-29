@@ -39,7 +39,7 @@ function vengeful_basic_attack:ThrowProjectile()
 	local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	

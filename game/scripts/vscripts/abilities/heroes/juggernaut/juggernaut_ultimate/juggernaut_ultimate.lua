@@ -26,7 +26,7 @@ function juggernaut_ultimate:OnSpellStart()
     local origin = caster:GetOrigin()
 	local point = self:GetCursorPosition()
     local distance = self:GetCastRange(Vector(0,0,0), nil)
-	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local direction = Direction2D(origin, point)
 
     caster:AddNewModifier(
         caster, -- player source

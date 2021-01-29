@@ -19,7 +19,7 @@ function mars_special_attack:OnSpellStart()
 	local final_damage = damage + (stacks * damage_per_stack)
 
 	local projectile_particle = "particles/units/heroes/hero_mars/mars_spear.vpcf"
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_origin = caster:GetAbsOrigin() + projectile_direction * 80 + Vector(0,0,80)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_hitbox = self:GetSpecialValueFor("hitbox")

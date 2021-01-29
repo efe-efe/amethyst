@@ -13,7 +13,7 @@ function puck_second_attack:OnSpellStart()
 	local silence_duration = self:GetSpecialValueFor("silence_duration")
 	
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local hitbox = self:GetSpecialValueFor("hitbox")
 	
 	CustomEntities:ProjectileAttack(caster, {

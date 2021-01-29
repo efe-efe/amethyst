@@ -44,7 +44,7 @@ function vengeful_second_attack:ThrowProjectile(bIsBasicAttack)
 	local duration = self:GetSpecialValueFor("duration")
 	
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 
 	CustomEntities:ProjectileAttack(caster, {
 		bIsBasicAttack = bIsBasicAttack,
@@ -147,7 +147,7 @@ function vengeful_ex_second_attack:OnSpellStart()
 	local heal = self:GetSpecialValueFor("heal")
 	
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local damage_table = {
 		damage = damage,
 		damage_type = DAMAGE_TYPE_MAGICAL,

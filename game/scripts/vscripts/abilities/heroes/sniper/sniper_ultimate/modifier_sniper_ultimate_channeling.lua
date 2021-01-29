@@ -30,7 +30,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 	local point = self:GetAbility():GetCursorPosition()
     local ability = self:GetAbility()
 
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 
     CustomEntities:ProjectileAttack(caster, {
         tProjectile = {

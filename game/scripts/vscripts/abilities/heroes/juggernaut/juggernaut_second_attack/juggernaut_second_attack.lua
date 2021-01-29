@@ -185,7 +185,7 @@ function juggernaut_ex_second_attack:OnSpellStart()
 	local swiftness_duration = self:GetSpecialValueFor("swiftness_duration")
 	local swiftness_pct = self:GetSpecialValueFor("swiftness_pct")
 	local juggernaut_basic_attack = caster:FindAbilityByName("juggernaut_basic_attack")
-	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local direction = Direction2D(origin, point)
 	
 	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_juggernaut_basic_attack_stacks")
 	local final_debuff_duration = duration + (stacks * duration_per_stack)

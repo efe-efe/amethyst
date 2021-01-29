@@ -32,7 +32,7 @@ function mars_basic_attack:OnSpellStart()
     
 	local radius = self:GetSpecialValueFor("radius")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local direction = Direction2D(origin, point)
 
 	local enemies = CustomEntities:FindUnitsInCone(
 		caster,

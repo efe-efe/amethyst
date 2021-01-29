@@ -31,7 +31,7 @@ function modifier_passive_shoot:OnIntervalThink()
         shooted = true;
         local point = unit:GetAbsOrigin()
 
-        local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+        local projectile_direction = Direction2D(origin, point)
         local projectile_speed = 1200
 
         local projectile = {

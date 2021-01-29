@@ -27,7 +27,7 @@ function item_nullifier_custom:OnSpellStart()
 	local ability_damage = self:GetSpecialValueFor("ability_damage")
 
 	-- Dynamic data
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
     local projectile_speed = self:GetSpecialValueFor("projectile_speed")
     
     local projectile = {

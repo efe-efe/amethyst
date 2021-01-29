@@ -30,7 +30,7 @@ function spectre_extra_recast:OnSpellStart()
 		damage = Clamp(damage + self.extra_damage, max_damage, 0)
 	end
 	
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	CustomEntities:ProjectileAttack(caster, {

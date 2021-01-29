@@ -25,7 +25,7 @@ function phantom_ultimate:OnSpellStart()
 	local projectile_name = "particles/phantom/phantom_ultimate.vpcf"
 	local projectile_start_radius = 70
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = 4000
 	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 

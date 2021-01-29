@@ -24,7 +24,7 @@ function item_diffusal_custom:OnSpellStart()
 	local duration = self:GetSpecialValueFor("duration")
 	local radius = self:GetSpecialValueFor("radius")
     
-	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local direction = Direction2D(origin, point)
 
 	local enemies = CustomEntities:FindUnitsInCone(
 		caster,

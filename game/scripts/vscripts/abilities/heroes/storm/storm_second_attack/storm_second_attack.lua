@@ -15,7 +15,7 @@ function storm_second_attack:OnSpellStart()
 	local duration = self:GetSpecialValueFor("duration")
 	
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 
 	CustomEntities:ProjectileAttack(caster, {
 		tProjectile = {

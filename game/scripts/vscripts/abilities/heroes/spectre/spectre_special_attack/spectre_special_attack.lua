@@ -26,7 +26,7 @@ function spectre_special_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local debuff_duration = self:GetSpecialValueFor("debuff_duration")
 
-	local projectile_direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local projectile_direction = Direction2D(origin, point)
 	local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
 
 	CustomEntities:ProjectileAttack(caster, {

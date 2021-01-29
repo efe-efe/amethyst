@@ -30,7 +30,7 @@ function juggernaut_basic_attack:OnSpellStart()
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
 	local cooldown_reduction_counter = self:GetSpecialValueFor("cooldown_reduction_counter")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
+	local direction = Direction2D(origin, point)
 	local modifier = CustomEntities:SafeGetModifier(caster, "modifier_juggernaut_ex_counter")
 
 	if modifier then
