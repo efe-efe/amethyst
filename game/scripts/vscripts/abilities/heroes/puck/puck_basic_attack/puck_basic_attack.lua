@@ -41,7 +41,6 @@ end
 
 function puck_basic_attack:LaunchProjectile(origin, point)
 	local caster = self:GetCaster()
-	local damage = caster:GetAverageTrueAttackDamage(caster)
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = Direction2D(origin, point)
