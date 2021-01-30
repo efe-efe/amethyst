@@ -139,6 +139,14 @@ export function GenerateLocalizationData(): LocalizationData
             level: 'Can be recasted when hit an enemy.',
         }),
         lore: Keywords.FadingSlow.definition,
+        ability_specials:
+        [
+            {
+                ability_special: 'AbilityCastPoint',
+                text: '<font color=\\"#B2B5B3\\">CAST POINT</font>',
+            },
+
+        ],
     });
     Abilities.push({
         ability_classname: 'phantom_ex_basic_attack',
