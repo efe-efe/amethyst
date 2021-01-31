@@ -18,41 +18,41 @@ function invoker_second_attack:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
-	local projectile = {
-		EffectName =			"particles/invoker/invoker_second_attack.vpcf",
-		vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = 			projectile_distance,
-		fStartRadius =			self:GetSpecialValueFor("hitbox"),
-		Source = 				caster,
-		vVelocity = 			projectile_direction * projectile_speed,
-		UnitBehavior = 			PROJECTILES_DESTROY,
-		WallBehavior = 			PROJECTILES_DESTROY,
-		TreeBehavior = 			PROJECTILES_NOTHING,
-        GroundBehavior = 		PROJECTILES_NOTHING,
-        bIsReflectable =        false,
-		fGroundOffset = 		0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PURE,
-			}
-			ApplyDamage(damage_table)
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			EffectName =			"particles/invoker/invoker_second_attack.vpcf",
+			vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = 			projectile_distance,
+			fStartRadius =			self:GetSpecialValueFor("hitbox"),
+			Source = 				caster,
+			vVelocity = 			projectile_direction * projectile_speed,
+			UnitBehavior = 			PROJECTILES_DESTROY,
+			WallBehavior = 			PROJECTILES_DESTROY,
+			TreeBehavior = 			PROJECTILES_NOTHING,
+			GroundBehavior = 		PROJECTILES_NOTHING,
+			fGroundOffset = 		0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_PURE,
+				}
+				ApplyDamage(damage_table)
 
-			unit:AddNewModifier(_self.Source, self, "modifier_invoker_second_attack", { duration = 3.0 })
-		end,
-		OnFinish = function(_self, pos)
-			EFX("particles/units/heroes/hero_invoker_kid/invoker_kid_forged_spirit_projectile_end.vpcf", PATTACH_WORLDORIGIN, nil, {
-				cp0 = pos,
-				cp3 = pos, 
-				release = true
-			})
-		end,
-	}
+				unit:AddNewModifier(_self.Source, self, "modifier_invoker_second_attack", { duration = 3.0 })
+			end,
+			OnFinish = function(_self, pos)
+				EFX("particles/units/heroes/hero_invoker_kid/invoker_kid_forged_spirit_projectile_end.vpcf", PATTACH_WORLDORIGIN, nil, {
+					cp0 = pos,
+					cp3 = pos, 
+					release = true
+				})
+			end,
+		}
+	})
 
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

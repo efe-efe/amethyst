@@ -980,17 +980,22 @@ function CustomEntities:SingleAttack(hEntity, tData)
 
 				if bProcessEffect then
 					tData.Callback(tData.hTarget)
+					if tData.bIsBasicAttack then
+						CustomEntities:EmitModifierEvent(hEntity, { 
+							iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+							hTarget = tData.hTarget,
+						})
+					end
 				end
 			end
 		else
 			tData.Callback(tData.hTarget)
-		end
-		
-		if tData.bIsBasicAttack then
-			CustomEntities:EmitModifierEvent(hEntity, { 
-				iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
-				hTarget = tData.hTarget,
-			})
+			if tData.bIsBasicAttack then
+				CustomEntities:EmitModifierEvent(hEntity, { 
+					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+					hTarget = tData.hTarget,
+				})
+			end
 		end
 	end
 	

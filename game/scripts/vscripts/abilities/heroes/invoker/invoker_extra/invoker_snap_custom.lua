@@ -17,48 +17,48 @@ function invoker_snap_custom:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
-	local projectile = {
-		EffectName =			"particles/orchid/orchid_proj.vpcf",
-		vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = 			projectile_distance,
-		fStartRadius =			self:GetSpecialValueFor("hitbox"),
-		Source = 				caster,
-		vVelocity = 			projectile_direction * projectile_speed,
-		UnitBehavior = 			PROJECTILES_DESTROY,
-		WallBehavior = 			PROJECTILES_DESTROY,
-		TreeBehavior = 			PROJECTILES_NOTHING,
-        GroundBehavior = 		PROJECTILES_NOTHING,
-        bIsReflectable =        false,
-		fGroundOffset = 		0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PURE,
-			}
+	CustomEntities:ProjectileAttack(caster, {
+		tProjectile = {
+			EffectName =			"particles/orchid/orchid_proj.vpcf",
+			vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = 			projectile_distance,
+			fStartRadius =			self:GetSpecialValueFor("hitbox"),
+			Source = 				caster,
+			vVelocity = 			projectile_direction * projectile_speed,
+			UnitBehavior = 			PROJECTILES_DESTROY,
+			WallBehavior = 			PROJECTILES_DESTROY,
+			TreeBehavior = 			PROJECTILES_NOTHING,
+			GroundBehavior = 		PROJECTILES_NOTHING,
+			fGroundOffset = 		0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_PURE,
+				}
 
-            local distance = (final_point - unit:GetAbsOrigin()):Length2D()
-			unit:AddNewModifier(
-				_self.Source, -- player source
-				self, -- ability source
-				"modifier_invoker_snap_custom", -- modifier name
-				{ duration = duration }
-			)
+				local distance = (final_point - unit:GetAbsOrigin()):Length2D()
+				unit:AddNewModifier(
+					_self.Source, -- player source
+					self, -- ability source
+					"modifier_invoker_snap_custom", -- modifier name
+					{ duration = duration }
+				)
 
-			ApplyDamage(damage_table)
-		end,
-		OnFinish = function(_self, pos)
-			EFX("particles/units/heroes/hero_invoker_kid/invoker_kid_forged_spirit_projectile_end.vpcf", PATTACH_WORLDORIGIN, nil, {
-				cp0 = pos,
-				cp3 = pos, 
-				release = true
-			})
-		end,
-	}
+				ApplyDamage(damage_table)
+			end,
+			OnFinish = function(_self, pos)
+				EFX("particles/units/heroes/hero_invoker_kid/invoker_kid_forged_spirit_projectile_end.vpcf", PATTACH_WORLDORIGIN, nil, {
+					cp0 = pos,
+					cp3 = pos, 
+					release = true
+				})
+			end,
+		}
+	})
 
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

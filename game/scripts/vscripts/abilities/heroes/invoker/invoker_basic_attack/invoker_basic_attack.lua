@@ -26,45 +26,40 @@ function invoker_basic_attack:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = Direction2D(origin, point)
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-	local damage = caster:GetAverageTrueAttackDamage(caster)
+	
+	CustomEntities:ProjectileAttack(caster, {
+		bIsBasicAttack = true,
+		tProjectile = {
+			EffectName = "particles/invoker/invoker_basic_attack.vpcf",
+			vSpawnOrigin = origin + Vector(0, 0, 96),
+			fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fStartRadius = self:GetSpecialValueFor("hitbox"),
+			Source = caster,
+			vVelocity = projectile_direction * projectile_speed,
+			UnitBehavior = PROJECTILES_DESTROY,
+			TreeBehavior = PROJECTILES_NOTHING,
+			WallBehavior = PROJECTILES_DESTROY,
+			GroundBehavior = PROJECTILES_NOTHING,
+			fGroundOffset = 0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				CustomEntities:AttackWithBaseDamage(caster, {
+					hTarget = unit,
+					hAbility = self,
+				})
 
-	local projectile = {
-		EffectName = "particles/invoker/invoker_basic_attack.vpcf",
-		vSpawnOrigin = origin + Vector(0, 0, 96),
-		fDistance = self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-		fStartRadius = self:GetSpecialValueFor("hitbox"),
-		Source = caster,
-		vVelocity = projectile_direction * projectile_speed,
-		UnitBehavior = PROJECTILES_DESTROY,
-		TreeBehavior = PROJECTILES_NOTHING,
-		WallBehavior = PROJECTILES_DESTROY,
-		GroundBehavior = PROJECTILES_NOTHING,
-		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PHYSICAL,
-				ability = self
-			}
-			ApplyDamage(damage_table)
-
-			if _self.Source == caster then
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				if _self.Source == caster then
+					if CustomEntities:ProvidesMana(unit) then
+						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					end
 				end
-			end
+			end,
+			OnFinish = function(_self, pos)
+				self:PlayEffectsOnFinish(pos)
+			end,
+		}
+	})
 
-			CustomEntities:OnBasicAttackImpact(_self.Source, unit)				
-		end,
-		OnFinish = function(_self, pos)
-			self:PlayEffectsOnFinish(pos)
-		end,
-	}
-
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

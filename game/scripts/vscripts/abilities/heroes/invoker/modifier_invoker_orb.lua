@@ -72,7 +72,7 @@ function modifier_invoker_orb_wex:OnCreated(params)
 end
 
 function modifier_invoker_orb_wex:OnIntervalThink()
-    self:GetParent():GiveManaCustom(1, true, true)
+    CustomEntities:GiveManaCustom(self:GetParent(), 1, true, true)
 end
 
 function modifier_invoker_orb_wex:GetParticleName()

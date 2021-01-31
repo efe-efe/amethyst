@@ -19,5 +19,5 @@ function modifier_invoker_ice_wall_custom:DeclareFunctions()
 end
 
 function modifier_invoker_ice_wall_custom:GetModifierMoveSpeedBonus_Percentage()
-    return -25
+    return -50
 end

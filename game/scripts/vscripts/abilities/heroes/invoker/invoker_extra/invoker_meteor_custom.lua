@@ -31,58 +31,61 @@ function invoker_meteor_custom:OnSpellStart()
     local projectile_speed = self:GetSpecialValueFor("projectile_speed")
     
     local counter = 0
+	
+	CustomEntities:ProjectileAttack(caster, {
+		bTriggerCounters = false,
+		tProjectile = {
+			EffectName =			"particles/units/heroes/hero_invoker/invoker_chaos_meteor.vpcf",
+			vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 0),
+			fDistance = 			projectile_distance,
+			fStartRadius =			self:GetSpecialValueFor("hitbox"),
+			Source = 				caster,
+			vVelocity = 			projectile_direction * projectile_speed,
+			UnitBehavior = 			PROJECTILES_NOTHING,
+			WallBehavior = 			PROJECTILES_NOTHING,
+			TreeBehavior = 			PROJECTILES_NOTHING,
+			GroundBehavior = 		PROJECTILES_NOTHING,
+			bIsReflectable =        false,
+			bIsDestructible =		false,
+			fGroundOffset = 		0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_PURE,
+				}
+				local distance = (final_point - unit:GetAbsOrigin()):Length2D()
+				ApplyDamage(damage_table)
+			end,
+			OnIntervalThink = function(_self, pos)
+				counter = counter + 1
+				if counter == 5 then
+					CreateModifierThinker(
+						caster, -- player source
+						self, -- ability source
+						"modifier_invoker_meteor_custom_thinker", -- modifier name
+						{ duration = 3.0 }, -- kv
+						pos,
+						caster:GetTeamNumber(),
+						false --bPhantomBlocker
+					)
+					counter = 0
+				end
+			end,
+			OnFinish = function(_self, pos)
+				EFX("particles/units/heroes/hero_invoker/invoker_chaos_meteor_crumble.vpcf", PATTACH_WORLDORIGIN, nil, {
+					cp0 = pos,
+					cp3 = pos + Vector(0, 0, 32),
+					release = true
+				})
+				EmitSoundOn("Hero_Invoker.ChaosMeteor.Impact", caster)
+				StopSoundOn("Hero_Invoker.ChaosMeteor.Loop", caster)
+			end,
+		}
+	})
 
-	local projectile = {
-		EffectName =			"particles/units/heroes/hero_invoker/invoker_chaos_meteor.vpcf",
-		vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 0),
-		fDistance = 			projectile_distance,
-		fStartRadius =			self:GetSpecialValueFor("hitbox"),
-		Source = 				caster,
-		vVelocity = 			projectile_direction * projectile_speed,
-		UnitBehavior = 			PROJECTILES_NOTHING,
-		WallBehavior = 			PROJECTILES_NOTHING,
-		TreeBehavior = 			PROJECTILES_NOTHING,
-        GroundBehavior = 		PROJECTILES_NOTHING,
-        bIsReflectable =        false,
-		fGroundOffset = 		0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PURE,
-			}
-            local distance = (final_point - unit:GetAbsOrigin()):Length2D()
-			ApplyDamage(damage_table)
-        end,
-        OnIntervalThink = function(_self, pos)
-            counter = counter + 1
-            if counter == 5 then
-                CreateModifierThinker(
-                    caster, -- player source
-                    self, -- ability source
-                    "modifier_invoker_meteor_custom_thinker", -- modifier name
-                    { duration = 3.0 }, -- kv
-                    pos,
-                    caster:GetTeamNumber(),
-                    false --bPhantomBlocker
-                )
-                counter = 0
-            end
-		end,
-        OnFinish = function(_self, pos)
-            EFX("particles/units/heroes/hero_invoker/invoker_chaos_meteor_crumble.vpcf", PATTACH_WORLDORIGIN, nil, {
-                cp0 = pos,
-                cp3 = pos + Vector(0, 0, 32),
-                release = true
-            })
-            EmitSoundOn("Hero_Invoker.ChaosMeteor.Impact", caster)
-            StopSoundOn("Hero_Invoker.ChaosMeteor.Loop", caster)
-		end,
-	}
-
-	ProjectilesManagerInstance:CreateProjectile(projectile)
 	self:PlayEffectsOnCast()
 end
 

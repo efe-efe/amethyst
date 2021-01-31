@@ -8,7 +8,8 @@
 		"AbilityTextureName"			"invoker_invoke"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"LevelsBetweenUpgrades"			"0"
-
+		"AbilityCooldown"				"6"
+		
 		"AbilitySpecial"
 		{
 		}

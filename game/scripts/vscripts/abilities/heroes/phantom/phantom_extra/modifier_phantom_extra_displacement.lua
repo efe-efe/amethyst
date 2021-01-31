@@ -65,12 +65,11 @@ function modifier_phantom_extra_displacement:OnDestroy()
 end
 
 function modifier_phantom_extra_displacement:OnImpact(hTarget)
-	hTarget:AddNewModifier(self.parent, self.ability, "modifier_phantom_extra", { duration = 0.1 })
-
-	CustomEntities:SingleAttack(self.parent, {
-		hTarget = hTarget,
-		Callback = function(hTarget)
-			if not hTarget:HasModifier('modifier_phantom_extra') then
+	if not hTarget:HasModifier('modifier_phantom_extra') then
+		hTarget:AddNewModifier(self.parent, self.ability, "modifier_phantom_extra", { duration = 0.3 })
+		CustomEntities:SingleAttack(self.parent, {
+			hTarget = hTarget,
+			Callback = function(hTarget)
 				if not CustomEntities:IsCountering(hTarget) and not self.recast then
 					hTarget:AddNewModifier(self.parent, self.ability, "modifier_generic_fading_slow", { 
 						duration = self.fading_slow_duration, 
@@ -84,8 +83,8 @@ function modifier_phantom_extra_displacement:OnImpact(hTarget)
 					
 				self:PlayEffectsOnImpact(hTarget)
 			end
-		end
-	})
+		})
+	end
 end
 
 function modifier_phantom_extra_displacement:PlayEffectsOnImpact(hTarget)

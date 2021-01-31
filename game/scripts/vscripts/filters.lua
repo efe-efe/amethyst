@@ -121,9 +121,10 @@ function Filters:Activate(GameMode, this)
                 CustomEntities:SetTreshold(healing_target, new_treshold)
             end
 
-            if healing_target:HasModifier("modifier_emerald") then
+           --[[ if healing_target:HasModifier("modifier_emerald") then
                 CustomEntities:GiveManaAndEnergy(healing_target, tFilter.heal, true, true)
             end
+            ]]
             
             SendOverheadHealMessage(healing_target, tFilter.heal)
             Timers:CreateTimer(0.05, function()

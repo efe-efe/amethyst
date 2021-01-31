@@ -16,49 +16,52 @@ function invoker_blast_custom:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
-	local projectile = {
-		EffectName =			"particles/econ/items/invoker/invoker_ti6/invoker_deafening_blast_ti6.vpcf",
-		vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-		fDistance = 			projectile_distance,
-		fStartRadius =			self:GetSpecialValueFor("hitbox"),
-		Source = 				caster,
-		vVelocity = 			projectile_direction * projectile_speed,
-		UnitBehavior = 			PROJECTILES_NOTHING,
-		WallBehavior = 			PROJECTILES_NOTHING,
-		TreeBehavior = 			PROJECTILES_NOTHING,
-        GroundBehavior = 		PROJECTILES_NOTHING,
-        bIsReflectable =        false,
-		fGroundOffset = 		0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
-		OnUnitHit = function(_self, unit) 
-			local damage_table = {
-				victim = unit,
-				attacker = _self.Source,
-				damage = damage,
-				damage_type = DAMAGE_TYPE_PURE,
-			}
-
-            local distance = (final_point - unit:GetAbsOrigin()):Length2D()
-			unit:AddNewModifier(
-				_self.Source, -- player source
-				self, -- ability source
-				"modifier_invoker_blast_custom_displacement", -- modifier name
-				{
-					x = projectile_direction.x,
-					y = projectile_direction.y,
-					r = distance,
-					speed = projectile_speed,
-					peak = 0,
+	CustomEntities:ProjectileAttack(caster, {
+		bTriggerCounters = false,
+		tProjectile = {
+			EffectName =			"particles/econ/items/invoker/invoker_ti6/invoker_deafening_blast_ti6.vpcf",
+			vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
+			fDistance = 			projectile_distance,
+			fStartRadius =			self:GetSpecialValueFor("hitbox"),
+			Source = 				caster,
+			vVelocity = 			projectile_direction * projectile_speed,
+			UnitBehavior = 			PROJECTILES_NOTHING,
+			WallBehavior = 			PROJECTILES_NOTHING,
+			TreeBehavior = 			PROJECTILES_NOTHING,
+			GroundBehavior = 		PROJECTILES_NOTHING,
+			bIsReflectable =        false,
+			bIsDestructible =		false,
+			fGroundOffset = 		0,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			OnUnitHit = function(_self, unit) 
+				local damage_table = {
+					victim = unit,
+					attacker = _self.Source,
+					damage = damage,
+					damage_type = DAMAGE_TYPE_PURE,
 				}
-			)
 
-			ApplyDamage(damage_table)
-		end,
-		OnFinish = function(_self, pos)
-		end,
-	}
+				local distance = (final_point - unit:GetAbsOrigin()):Length2D()
+				unit:AddNewModifier(
+					_self.Source, -- player source
+					self, -- ability source
+					"modifier_invoker_blast_custom_displacement", -- modifier name
+					{
+						x = projectile_direction.x,
+						y = projectile_direction.y,
+						r = distance,
+						speed = projectile_speed,
+						peak = 0,
+					}
+				)
 
-	ProjectilesManagerInstance:CreateProjectile(projectile)
+				ApplyDamage(damage_table)
+			end,
+			OnFinish = function(_self, pos)
+			end,
+		}
+	})
+
 	self:PlayEffectsOnCast()
 end
 

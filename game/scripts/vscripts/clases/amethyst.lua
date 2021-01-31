@@ -248,22 +248,25 @@ function Emerald:constructor(vOrigin)
 
     getbase(Emerald).constructor(self, vOrigin + Vector(0, 0, 64))
 
-    self.heal = 10
+    self.heal_per_second = 5
     self.true_heal = 5
-    self.duration = 10.0
+    self.duration = 8.0
     self.type = GemTypes.EMERALD
 end
 
 function Emerald:Effect(hKiller)
     local allies = self:GetAllies(hKiller)
     local heroes = self:GetHeroes()
-    local final_heal = self:ProcessValue(allies, heroes, self.heal)
     local final_true_heal = self:ProcessValue(allies, heroes, self.true_heal)
 
     for _,unit in pairs(allies) do
         if unit:IsRealHero() then
-            unit:Heal(final_heal, unit)
             CustomEntities:TrueHeal(unit, final_true_heal)
+            
+            unit:AddNewModifier(unit, nil, "modifier_emerald", { 
+                duration = self.duration, 
+                heal_per_second = self.heal_per_second
+            })
 
             EFX('particles/gems/emerald.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, {
                 cp3 = {
