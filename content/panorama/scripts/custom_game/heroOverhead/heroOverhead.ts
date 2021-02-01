@@ -7,10 +7,9 @@ import Charges from './charges';
 import Cooldown from './cooldown';
 import Stacks from './stacks';
 import Health from '../commonComponents/health';
-import Energy from '../commonComponents/energy';
 import Alliances from '../alliances';
 import Castpoint from './castpoint';
-import Mana from '../commonComponents/mana';
+import MultipleBars from '../commonComponents/multipleBars';
 import { HeroData } from '../types';
 
 enum StatusScope {
@@ -41,8 +40,8 @@ export default class HeroOverhead extends Overhead{
     recast: Recast;
     status: Status;
     health: Health;
-    energy: Energy | undefined;
-    mana: Mana | undefined;
+    energy: MultipleBars | undefined;
+    mana: MultipleBars | undefined;
     castpoint: Castpoint;
     charges: Charges | undefined;
     cooldown: Cooldown | undefined;
@@ -72,8 +71,20 @@ export default class HeroOverhead extends Overhead{
         this.cooldownPanel = panels.createPanelSimple(this.ammoPanel, 'hero-overhead-ammo__cooldown');
 
         if(alliance.IsLocal()){
-            this.mana = new Mana(this.manaPanel, heroData.mana, heroData.maxMana);
-            this.energy = new Energy(this.energyPanel);
+            this.mana = new MultipleBars(this.manaPanel, {
+                value: heroData.mana, 
+                maxValue: heroData.maxMana,
+                className: 'mana',
+                fullColor: colors.Gradient(colors.blue),
+                valuePerCell: 25,
+            });
+            this.energy = new MultipleBars(this.energyPanel, {
+                value: heroData.energy, 
+                maxValue: heroData.maxEnergy,
+                className: 'energy',
+                fullColor: colors.Gradient(colors.yellowRed),
+                valuePerCell: heroData.energyPerCell || 100,
+            });
         }
         
         this.recast = new Recast(this.topPanel);

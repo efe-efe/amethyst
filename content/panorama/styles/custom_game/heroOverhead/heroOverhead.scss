@@ -31,7 +31,10 @@
     &__energy{
         width: 100%;
         height: 5px;
-        border-radius: 3px;
+
+        flow-children: right;
+
+        padding: 0 1px;
         margin-top: -2px;
     }
 

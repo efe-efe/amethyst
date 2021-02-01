@@ -396,7 +396,10 @@ function modifier_hero_base:OnAbilityFullyCast(params)
 		if params.unit ~= self:GetParent() then
 			return
 		end
-		CustomEntities:GiveEnergy(params.unit, -params.ability:GetEnergyCost())
+
+		if not GameRules.GameMode:IsInWTFMode() then
+			CustomEntities:GiveEnergy(params.unit, -params.ability:GetEnergyCost())
+		end
 	end
 end
 

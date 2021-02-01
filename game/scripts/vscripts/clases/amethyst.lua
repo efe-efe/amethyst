@@ -216,27 +216,31 @@ function Amethyst:Effect(hKiller)
     local final_energy = self.energy_bounty / #units
 
     for _,unit in pairs(units) do
-        if unit:IsRealHero() then 
+        if unit:IsRealHero() then
+            CustomEntities:RefreshCooldowns(unit)
+            --[[
             unit:Heal(final_heal, unit)
             CustomEntities:GiveManaCustom(unit, final_mana, true, true)
             CustomEntities:GiveEnergy(unit, final_energy, true, true)
+            ]]
             self:PlayEffectsOnTarget(unit)
         end
     end
 end
 
 function Amethyst:PlayEffectsOnTarget(hTarget)
-    EmitSoundOn("DOTA_Item.ArcaneBoots.Activate", hTarget)
+    EmitSoundOn("DOTA_Item.Refresher.Activate", hTarget)
     EFX("particles/items_fx/arcane_boots_recipient.vpcf", PATTACH_ABSORIGIN_FOLLOW, hTarget, { release = true })
-    EFX("particles/econ/items/terrorblade/terrorblade_back_ti8/terrorblade_sunder_ti8_swirl_rope.vpcf", PATTACH_ABSORIGIN_FOLLOW, hTarget, { 
-        cp3 = hTarget:GetOrigin(),
-        cp15 = Vector(115, 248, 255),
-        cp16 = Vector(1, 0, 0),
+    EFX("particles/gems/amethyst.vpcf", PATTACH_CUSTOMORIGIN, hTarget, {
+		cp0 = {
+			ent = hTarget,
+			point = 'attach_hitloc'
+		},
         release = true 
     })
     EFX("particles/econ/items/crystal_maiden/crystal_maiden_maiden_of_icewrack/cm_arcana_pup_lvlup_godray.vpcf", PATTACH_ABSORIGIN_FOLLOW, hTarget, { 
-        cp1 = hTarget:GetOrigin(),
-        cp3 = hTarget:GetOrigin(),
+        cp1 = hTarget:GetAbsOrigin(),
+        cp3 = hTarget:GetAbsOrigin(),
         release = true 
     })
 end

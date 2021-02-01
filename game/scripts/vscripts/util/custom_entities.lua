@@ -39,6 +39,7 @@ function CustomEntities:Initialize(hEntity)
 	hEntity.treshold = 				        0
 	hEntity.energy = 					    0
 	hEntity.max_energy = 				    100
+	hEntity.energy_per_cell = 				100
 	hEntity.healing_reduction_pct = 		0
 	hEntity.initialized = 					nil
 	hEntity.modifiers = 					{}
@@ -79,6 +80,37 @@ function CustomEntities:Initialize(hEntity)
 	end
 
 	CustomEntities:SetInitialized(hEntity, true)
+end
+
+function CustomEntities:RefreshCooldowns(hEntity)
+	for i = 0, 23 do
+		local hAbility = hEntity:GetAbilityByIndex(i)
+		if hAbility then
+			hAbility:EndCooldown()
+			if hAbility:GetToggleState() then
+				hAbility:ToggleAbility()
+			end
+		end
+	end
+
+	for _,sModifierName in pairs(hEntity.modifiers[MODIFIER_OBJECT_NAMES[MODIFIER_TYPES.CHARGES]]) do
+		local hModifier = hEntity:FindModifierByName(sModifierName)
+		if hModifier then
+			hModifier:RefreshCharges()
+		end
+	end
+end
+
+function CustomEntities:Reset(hEntity)
+	if not IsInToolsMode() then
+		CustomEntities:SetManaCustom(hEntity, 0, true)
+		CustomEntities:SetEnergy(hEntity, 0)
+	end
+	CustomEntities:SetHealthCustom(hEntity, hEntity:GetMaxHealth())
+	CustomEntities:SetTreshold(hEntity, GameRules.GameMode.max_treshold)
+	CustomEntities:RefreshCooldowns(hEntity)	
+	CustomEntities:InterruptCastPoint(hEntity)
+	hEntity:Purge(true, true, false, true, false)
 end
 
 function CustomEntities:IsInitialized(hEntity)
@@ -149,11 +181,20 @@ function CustomEntities:SendDataToClient(hEntity)
 			abilities = CustomEntities:GetAbilities(hEntity),
 			energy = CustomEntities:GetEnergy(hEntity),
 			maxEnergy = CustomEntities:GetMaxEnergy(hEntity),
+			energyPerCell = CustomEntities:GetEnergyPerCell(hEntity)
 		}
 		CustomNetTables:SetTableValue("heroes", tostring(hEntity:GetPlayerID()), data)
 	else
 		--print('SendDataToClient: Not implemented yet for non hero units. Please come back later')
 	end
+end
+
+function CustomEntities:GetEnergyPerCell(hEntity)
+	return hEntity.energy_per_cell
+end
+
+function CustomEntities:SetEnergyPerCell(hEntity, iEnergy)
+	hEntity.energy_per_cell = iEnergy
 end
 
 function CustomEntities:GetAlliance(hEntity)
@@ -322,34 +363,6 @@ function CustomEntities:SetManaCustom(hEntity, fMana, bInformClient)
 	end
 end
 
-function CustomEntities:Reset(hEntity)
-	if not IsInToolsMode() then
-		CustomEntities:SetManaCustom(hEntity, 0, true)
-		CustomEntities:SetEnergy(hEntity, 0)
-	end
-	CustomEntities:SetHealthCustom(hEntity, hEntity:GetMaxHealth())
-	CustomEntities:SetTreshold(hEntity, GameRules.GameMode.max_treshold)
-
-	for i = 0, 23 do
-		local ability = hEntity:GetAbilityByIndex(i)
-		if ability then
-			ability:EndCooldown()
-			if ability:GetToggleState() then
-				ability:ToggleAbility()
-			end
-		end
-	end
-
-	for _,modifier_name in pairs(hEntity.modifiers[MODIFIER_OBJECT_NAMES[MODIFIER_TYPES.CHARGES]]) do
-		local modifier = hEntity:FindModifierByName(modifier_name)
-		if modifier then
-			modifier:RefreshCharges()
-		end
-	end
-
-	CustomEntities:InterruptCastPoint(hEntity)
-	hEntity:Purge(true, true, false, true, false)
-end
 
 function CustomEntities:AddModifierTracker(hEntity, sName, iType)
 	table.insert(hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]], sName)

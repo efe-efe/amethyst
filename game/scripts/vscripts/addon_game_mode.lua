@@ -149,6 +149,8 @@ function GameMode:SetupEventHooks()
     ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(self, 'OnGameRulesStateChange'), self)
     ListenToGameEvent('entity_hurt', Dynamic_Wrap(self, 'OnEntityHurt'), self)
     ListenToGameEvent('dota_player_learned_ability', Dynamic_Wrap(self, 'OnLearnedAbilityEvent'), self)
+    ListenToGameEvent('player_chat', Dynamic_Wrap(self, 'OnPlayerChat'), self)
+
     print('[AMETHYST] Event hooks set')
 end
 
@@ -291,7 +293,8 @@ function GameMode:SetupMode()
     self.units = {}
     self.alliances = {}
     self.round = nil
-
+    self.wtf = false
+    
     GameRules:GetGameModeEntity():SetThink("OnThink", self, THINK_PERIOD)
 
     self:SetupRules()
@@ -306,6 +309,10 @@ function GameMode:SetupMode()
     mode:SetBuybackEnabled(false)
     mode:SetDaynightCycleDisabled(true)
     mode:SetCameraDistanceOverride(1350)
+end
+
+function GameMode:IsInWTFMode()
+    return self.wtf
 end
 
 function GameMode:SetupProjectiles()
@@ -427,6 +434,34 @@ function GameMode:OnGameRulesStateChange(event)
     
     if state == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
         self:OnGameInProgress()
+    end
+end
+
+function GameMode:OnPlayerChat(event)
+    if not GameRules:IsCheatMode() and not IsInToolsMode() then
+        return
+    end
+    
+    if event.text == '-refresh' then
+        self:RefreshHeroes()
+    end
+
+    if event.text == '-wtf' then
+        self:RefreshHeroes()
+        self.wtf = true
+    end
+
+    if event.text == '-unwtf' then
+        self.wtf = false
+    end
+end
+
+function GameMode:RefreshHeroes()
+    for key, player in pairs(self.players) do
+        if player.hero and not player.hero:IsNull() and player.hero:IsAlive() then
+            CustomEntities:GiveEnergy(player.hero, CustomEntities:GetMaxEnergy(player.hero))
+            CustomEntities:SendDataToClient(player.hero)
+        end
     end
 end
 

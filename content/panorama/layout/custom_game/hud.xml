@@ -21,7 +21,7 @@
         <include src="file://{resources}/scripts/custom_game/targetIndicator.js" />
 	</scripts>
     <Panel class="main" hittest="false">
-
+        <!--<Image id="seq_bg" class="SeqBg" src="file://{images}/custom_game/loading_screen/loading_seq_bg.psd" />-->
         <Panel id="refunder" class="refunder">
             <Panel id="refunder__efx" class="refunder__efx">
                 <DOTAScenePanel id="refunder__efx-scene" class="refunder__efx-scene" hittest="false" map="scenes/hud/levelupburst" camera="camera_1"/>

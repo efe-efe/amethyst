@@ -7,6 +7,7 @@ local constructors = {
     end,
     ["npc_dota_hero_vengefulspirit"] = function(hTarget)
         CustomEntities:AddStackbars(hTarget, "modifier_vengeful_basic_attack")
+        CustomEntities:SetEnergyPerCell(hTarget, 25)
     end,
     ["npc_dota_hero_phantom_assassin"] = function(hTarget)
         CustomEntities:AddStackbars(hTarget, "modifier_phantom_strike_stack")
@@ -31,6 +32,7 @@ local constructors = {
     end,
     ["npc_dota_hero_invoker"] = function(hTarget)
         CustomEntities:AddCharges(hTarget, "modifier_invoker_helper")
+        CustomEntities:SetEnergyPerCell(hTarget, 50)
     end,
 }
 

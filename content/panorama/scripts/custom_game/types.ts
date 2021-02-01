@@ -26,6 +26,7 @@ export type HeroData = {
     cooldown: string;
     energy: number;
     maxEnergy: number;
+    energyPerCell?: number;
     abilities: {
         [key: string]: {
             name: string;
