@@ -154,7 +154,7 @@ function Round:Update()
 end
 
 function Round:CreateGem()
-    self.gem.type = GemTypes.AMETHYST--RandomIntWithExeption(GemTypes.AMETHYST, GemTypes.EMERALD, self.gem.type)
+    self.gem.type = RandomIntWithExeption(GemTypes.AMETHYST, GemTypes.EMERALD, self.gem.type)
     if not self.time_over then
         self.gem.index = RandomIntWithExeption(1, #self.gem_spawn_entities, self.gem.index)
     end

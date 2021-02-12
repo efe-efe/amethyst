@@ -194,35 +194,24 @@ function Amethyst:constructor(vOrigin)
 
     getbase(Amethyst).constructor(self, vOrigin)
     
-    self.mana_bounty = 10
-    self.energy_bounty = 10
+    self.mana_bounty = 25
     self.heal_bounty = 5
     self.type = GemTypes.AMETHYST
 end
 
 function Amethyst:Effect(hKiller)
-    local units = CustomEntities:FindUnitsInRadius(
-        hKiller,
-        self:GetUnit():GetAbsOrigin(), 
-        FIND_UNITS_EVERYWHERE, 
-        DOTA_UNIT_TARGET_TEAM_FRIENDLY, 
-        DOTA_UNIT_TARGET_HERO, 
-        DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED + DOTA_UNIT_TARGET_FLAG_INVULNERABLE + DOTA_UNIT_TARGET_FLAG_OUT_OF_WORLD,
-        FIND_ANY_ORDER
-    )
+    local allies = self:GetAllies(hKiller)
+    local heroes = self:GetHeroes()
 
-    local final_heal = self.heal_bounty / #units
-    local final_mana = self.mana_bounty / #units
-    local final_energy = self.energy_bounty / #units
+    local final_mana = self:ProcessValue(allies, heroes, self.mana_bounty)
+    local final_heal = self:ProcessValue(allies, heroes, self.heal_bounty)
 
-    for _,unit in pairs(units) do
+
+    for _,unit in pairs(allies) do
         if unit:IsRealHero() then
             CustomEntities:RefreshCooldowns(unit)
-            --[[
-            unit:Heal(final_heal, unit)
+            CustomEntities:TrueHeal(unit, final_heal)
             CustomEntities:GiveManaCustom(unit, final_mana, true, true)
-            CustomEntities:GiveEnergy(unit, final_energy, true, true)
-            ]]
             self:PlayEffectsOnTarget(unit)
         end
     end
@@ -252,8 +241,8 @@ function Emerald:constructor(vOrigin)
 
     getbase(Emerald).constructor(self, vOrigin + Vector(0, 0, 64))
 
-    self.heal_per_second = 5
-    self.true_heal = 5
+    self.heal_per_second = 2
+    self.true_heal = 10
     self.duration = 8.0
     self.type = GemTypes.EMERALD
 end
@@ -262,6 +251,7 @@ function Emerald:Effect(hKiller)
     local allies = self:GetAllies(hKiller)
     local heroes = self:GetHeroes()
     local final_true_heal = self:ProcessValue(allies, heroes, self.true_heal)
+    local final_heal_per_second = self:ProcessValue(allies, heroes, self.heal_per_second)
 
     for _,unit in pairs(allies) do
         if unit:IsRealHero() then
@@ -269,7 +259,7 @@ function Emerald:Effect(hKiller)
             
             unit:AddNewModifier(unit, nil, "modifier_emerald", { 
                 duration = self.duration, 
-                heal_per_second = self.heal_per_second
+                heal_per_second = final_heal_per_second
             })
 
             EFX('particles/gems/emerald.vpcf', PATTACH_ABSORIGIN_FOLLOW, unit, {
