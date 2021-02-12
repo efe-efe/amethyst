@@ -165,7 +165,7 @@ export default class ProgressBar{
     }
 
     GetProgress(): number{
-        return parseInt(this.foregroundPanel.style.width.split('%')[0], 10);
+        return parseInt(this.foregroundPanel.style.width!.split('%')[0], 10);
     }
 
     GetParent(): Panel{

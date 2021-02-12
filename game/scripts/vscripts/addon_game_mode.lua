@@ -28,7 +28,7 @@ require('wrappers/modifiers')
 require('constructors')
 
 require('filters')
-require('targeting_indicator')
+require('abilities_meta')
 
 THINK_PERIOD = 0.01
 ROUNDS_TO_WIN = 5

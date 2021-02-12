@@ -30,6 +30,7 @@
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_second_attack/vengeful_second_attack"
 		"LevelsBetweenUpgrades"			"0"
 		"MaxLevel"						"2"
+		"AbilityEnergyCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -85,6 +86,7 @@
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_second_attack/vengeful_second_attack"
 		"LevelsBetweenUpgrades"			"0"
 		"MaxLevel"						"2"
+		"AbilityEnergyCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"

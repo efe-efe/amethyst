@@ -32,6 +32,7 @@
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_special_attack/vengeful_special_attack"
 		"LevelsBetweenUpgrades"			"0"
 		"MaxLevel"						"2"
+		"AbilityEnergyCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"

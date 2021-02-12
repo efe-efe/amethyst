@@ -1,4 +1,3 @@
-//import './targetIndicator';
 import './shared/camera/cameraController';
 import './shared/mouse/mousePositionController';
 
@@ -11,8 +10,13 @@ import HeroOverhead from './heroOverhead/heroOverhead';
 import HeroInfoCard from './heroInfoCard';
 import AllianceBar from './allianceBar';
 import { tables } from './shared/util';
+import './targetIndicator';
+import CustomEntities from './shared/customEntities';
+import { HeroData } from './types';
 
 (function(){
+    const customEntities = CustomEntities.GetInstance();
+
     const clockPanel = $('#top-bar__clock-text') as LabelPanel;
     const refunderButton = $('#refunder__button') as Button;
     const refunderPanel = $('#refunder');
@@ -203,9 +207,10 @@ import { tables } from './shared/util';
     layout.SetPanelMargin('debuffs', { bottom: '95px' });
     layout.SetPanelMargin('buffs', { bottom: '95px' });
 
-    const tableNameHeroes = 'heroes' as never;
-    tables.subscribeToNetTableAndLoadNow(tableNameHeroes, (table: never, key: string | number | symbol, value: any) => {
-        const entityIndex = value.entityIndex as EntityIndex;
+    layout.UpdateCurrency();
+
+    customEntities.AddCallback((value: HeroData) => {
+        const entityIndex = value.entityIndex;
         
         if(!heroOverheads[entityIndex]){
             heroOverheads[entityIndex] = new HeroOverhead(value);
@@ -234,6 +239,7 @@ import { tables } from './shared/util';
             heroInfoCards[entityIndex].UpdateData(value);   
         }
     });
+    customEntities.OnReload();
 
     const tableNameAlliance = 'alliances' as never;
     tables.subscribeToNetTableAndLoadNow(tableNameAlliance, (table: never, key: string | number | symbol, value: any) => {
@@ -293,7 +299,7 @@ import { tables } from './shared/util';
     }
     GameEvents.Subscribe('countdown', UpdateTime);
     GameEvents.Subscribe('not_enough_energy', function(){
-        GameUI.SendCustomHUDError( "Not Enough Energy", "versus_screen.towers_nopass" )
+        GameUI.SendCustomHUDError('Not Enough Energy', 'versus_screen.towers_nopass');
     });
 
     refunderButton.SetPanelEvent('onactivate', () => {
@@ -307,7 +313,6 @@ import { tables } from './shared/util';
         }
 
         GameEvents.SendCustomGameEventToServer('refund_points', {
-            playerId
             playerID: playerId, //Idk why this has to be this way...
 
         } as never);
@@ -341,7 +346,7 @@ import { tables } from './shared/util';
 
     swapButton.SetPanelEvent('onactivate', () => {
         SwapRF();
-    })
+    });
 
     function SwapRF(){
         $.Msg('SWAP RF');
@@ -355,7 +360,6 @@ import { tables } from './shared/util';
         }
 
         GameEvents.SendCustomGameEventToServer('swap_r_f', {
-            playerId
             playerID: playerId, //Idk why this has to be this way...
 
         } as never);

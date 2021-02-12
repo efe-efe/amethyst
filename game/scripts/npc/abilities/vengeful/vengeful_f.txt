@@ -29,6 +29,7 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"vengeful_extra"
+		"AbilityEnergyCost"				"25"
 
 		"precache"
 		{

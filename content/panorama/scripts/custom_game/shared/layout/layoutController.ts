@@ -1,3 +1,11 @@
+import CustomEntities from '../customEntities';
+import CustomAbilities from '../customAbilities';
+import { HeroData } from '../../types';
+import { colors } from '../util';
+
+const customEntities = CustomEntities.GetInstance();
+const customAbilities = CustomAbilities.GetInstance();
+
 export default class LayoutController{
     private static instance: LayoutController;
     private topPanel: Panel;
@@ -73,6 +81,108 @@ export default class LayoutController{
                 this.ChangeAbilityTextByBoxName(text, boxName);
             }); 
             return;
+        }
+    }
+
+    //MOVe this sOmeWhere
+    private IsLocalSelectingOwnedUnit(): boolean{
+        const localPlayerId = Game.GetLocalPlayerID();
+        let selectedPlayerId = undefined;
+
+        const selectedEntity = Players.GetSelectedEntities(localPlayerId)[0];
+        if(selectedEntity){
+            selectedPlayerId = Entities.GetPlayerOwnerID(selectedEntity);
+        }
+
+        return selectedPlayerId === localPlayerId;
+    }
+
+    public UpdateCurrency(): void{
+        $.Schedule(0.03, () => {
+            if(this.UpdateCurrencyVisibility()){
+                this.UpdateCurrencyValues();
+            }
+            this.UpdateCurrency();
+        });
+    }
+
+    public UpdateCurrencyVisibility(): boolean{
+        if(!this.IsLocalSelectingOwnedUnit()){
+            for(let i = 0; i < 9; i++){
+                this.DisableAbilityEnergy(i);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    public UpdateCurrencyValues(): void{
+        const localPlayerId = Game.GetLocalPlayerID();
+        const selectedEntity = Players.GetSelectedEntities(localPlayerId)[0];
+        const entityData = customEntities.GetEntity(selectedEntity);
+
+        if(entityData){
+            for(let i = 0; i < 9; i++){
+                const abilityPanel = this.topPanel.FindChildTraverse('Ability' + i);
+                if(abilityPanel){
+                    const abilityIndex = Entities.GetAbility(selectedEntity, i);
+                    const abilityEnergyCost = customAbilities.GetEnergyCost(abilityIndex);
+                    const abilityManaCost = Abilities.GetManaCost(abilityIndex);
+                    this.UpdateResourceBoxOnAbility(abilityPanel, abilityManaCost, abilityEnergyCost);
+                    
+                    if(abilityEnergyCost > 0){
+                        this.UpdateAbilityEnergy(abilityPanel, abilityEnergyCost, entityData.energy);
+                    }
+                }
+            }
+        }
+    }
+        
+    public UpdateResourceBoxOnAbility(abilityPanel: Panel, abilityManaCost: number, abilityEnergyCost: number): void{
+        if(abilityManaCost > 0 || abilityEnergyCost > 0){
+            abilityPanel.SetHasClass('no_mana_cost', false);
+            
+            const manaCost = abilityPanel.FindChildTraverse('ManaCost') as LabelPanel;
+            const bevel = abilityPanel.FindChildTraverse('AbilityBevel') as ImagePanel;
+            const image = abilityPanel.FindChildTraverse('AbilityImage') as ImagePanel;
+
+            if(abilityEnergyCost > 0){
+                manaCost.text = abilityEnergyCost.toString();
+                manaCost.style.color = 'rgb(233, 53, 53)';
+            }
+            if(abilityManaCost > 0){
+                manaCost.text = abilityManaCost.toString();
+                manaCost.style.color = '#57b7ff';
+                bevel.style.washColor = '#6095FD';
+                //image.style.washColor = '#57b7ff';
+            }
+        } else {
+            abilityPanel.SetHasClass('no_mana_cost', true);
+        }
+    }
+
+    public UpdateAbilityEnergy(abilityPanel: Panel, abilityEnergyCost: number, entityEnergy: number): void{
+        const image = abilityPanel.FindChildTraverse('AbilityImage') as ImagePanel;
+        const bevel = abilityPanel.FindChildTraverse('AbilityBevel') as ImagePanel;
+        const abilityButton = abilityPanel.FindChildTraverse('AbilityButton')!;
+
+        if(entityEnergy >= abilityEnergyCost){
+            abilityButton.style.preTransformScale2d = '1.0';
+            image.style.washColor = '#bc591600';
+            bevel.style.washColor = '#bc591600';
+        } else {
+            abilityButton.style.preTransformScale2d = '0.9';
+            image.style.washColor = '#bc5916';
+            bevel.style.washColor = '#bc5916';
+        }
+    }
+
+    public DisableAbilityEnergy(slotIndex: number): void{
+        const abilityPanel = this.topPanel.FindChildTraverse('Ability' + slotIndex);
+        if(abilityPanel){
+            abilityPanel.SetHasClass('energy', false);
+            abilityPanel.SetHasClass('no_mana_cost', true);
         }
     }
 

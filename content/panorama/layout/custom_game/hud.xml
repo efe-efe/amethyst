@@ -18,7 +18,6 @@
     </styles>
 	<scripts>
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
-        <include src="file://{resources}/scripts/custom_game/targetIndicator.js" />
 	</scripts>
     <Panel class="main" hittest="false">
         <!--<Image id="seq_bg" class="SeqBg" src="file://{images}/custom_game/loading_screen/loading_seq_bg.psd" />-->

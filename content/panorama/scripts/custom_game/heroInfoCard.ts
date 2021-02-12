@@ -1,6 +1,6 @@
 import Alliances from './alliances';
 import Health from './commonComponents/health';
-import Mana from './commonComponents/mana';
+import MultipleBars from './commonComponents/multipleBars';
 import { Color, colors, panels } from './shared/util';
 import { HeroData } from './types';
 
@@ -20,7 +20,7 @@ export default class HeroInfoCard{
     abilitiesPanel: Panel;
     
     health: Health;
-    mana: Mana | undefined;
+    mana: MultipleBars | undefined;
     color: Color;
     
     constructor(heroData: HeroData, alliancePanel: Panel){
@@ -55,7 +55,13 @@ export default class HeroInfoCard{
 
         
         if(alliance.IsLocal()){
-            this.mana = new Mana(this.manaPanel, heroData.mana, heroData.maxMana);
+            this.mana = new MultipleBars(this.manaPanel, {
+                value: heroData.mana, 
+                maxValue: heroData.maxMana,
+                className: 'mana',
+                fullColor: colors.Gradient(colors.blue),
+                valuePerCell: 25,
+            });
         }
 
         this.health = new Health(this.healthPanel, {

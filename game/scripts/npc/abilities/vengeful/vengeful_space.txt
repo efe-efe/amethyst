@@ -25,6 +25,7 @@
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_mobility/vengeful_mobility"
 		"LevelsBetweenUpgrades"			"0"
 		"MaxLevel"						"2"
+		"AbilityEnergyCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"

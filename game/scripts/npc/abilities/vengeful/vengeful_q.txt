@@ -29,6 +29,7 @@
 		"ScriptFile"					"abilities/heroes/vengeful/vengeful_counter/vengeful_counter"
 		"LevelsBetweenUpgrades"			"0"
 		"MaxLevel"						"2"
+		"AbilityEnergyCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
@@ -76,6 +77,7 @@
 		"LevelsBetweenUpgrades"			"0"
 		"MaxLevel"						"2"
 		"AbilityTextureName"			"vengeful_counter"
+		"AbilityEnergyCost"				"25"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"

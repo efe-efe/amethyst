@@ -7,6 +7,16 @@ export type AllianceData = {
     shield: number;
 }
 
+export type TargetingIndicator = {
+    Type: string;
+    ModifierName?: string;
+    ModifierType?: string;
+    ModifierLength?: number;
+    ModifierStacks?: number;
+    DisplayRange?: number;
+    Fixed?: number;
+}
+
 export type HeroData = {
     entityIndex: EntityIndex;
     teamId: DOTATeam_t;

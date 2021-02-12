@@ -1,5 +1,17 @@
-import { CustomActionEvent } from '../../../../../common/interfaces';
-import { Custom_ActionModes, Custom_ActionTypes } from '../../../../../common/enums';
+export const enum Custom_ActionModes {
+    START = 0,
+    STOP = 1,
+}
+
+export const enum Custom_ActionTypes {
+    MOVEMENT = 0,
+    ABILITY = 1,
+}
+
+export interface CustomActionEvent {
+    playerID: number;
+    payload?: any;
+}
 
 const server = {
     sendActionSignalToServer: (payload: any): void => {
@@ -13,7 +25,6 @@ const server = {
         }
 
         const data: CustomActionEvent = {
-            playerId
             playerID: playerId, //Idk why this has to be this way...
             payload
         };
