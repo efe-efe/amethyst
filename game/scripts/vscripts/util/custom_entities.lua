@@ -189,6 +189,21 @@ function CustomEntities:SendDataToClient(hEntity)
 	end
 end
 
+function CustomEntities:AutoUpgradeAbilities(hEntity)
+	for i = 0, 8 do
+		if hEntity:GetAbilityPoints() == 0 then
+			break
+		end
+
+		local ability = hEntity:GetAbilityByIndex(i)
+		if ability then
+			if ability:GetLevel() < ability:GetMaxLevel() then
+				hEntity:UpgradeAbility(ability)
+			end
+		end
+	end
+end
+
 function CustomEntities:GetEnergyPerCell(hEntity)
 	return hEntity.energy_per_cell
 end
