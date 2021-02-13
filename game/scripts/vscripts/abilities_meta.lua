@@ -12,7 +12,6 @@ function AbilitiesMeta:Load()
             energyCost = ability.AbilityEnergyCost or 0,
         }
     end
-    PrintTable(meta)
 
     CustomNetTables:SetTableValue("main", "abilities", meta)
 end
