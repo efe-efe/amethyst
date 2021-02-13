@@ -5,6 +5,9 @@
 #base "units\shooter.txt"
 #base "units\walker.txt"
 
+
+//"MovementCapabilities" "DOTA_UNIT_CAP_MOVE_GROUND" Is needed to use displacements
+
 "DOTAUnits"
 {
 	
@@ -90,6 +93,7 @@
 		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"
 		"TeamName"					"DOTA_TEAM_NEUTRALS"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 	}
 
 	"npc_dota_creature_skywrath_mage_bubble"	
@@ -266,19 +270,11 @@
 
 	"npc_dota_creature_wall"	
 	{
-		// General
-		//----------------------------------------------------------------
 		"Model"						"models/props_generic/barrel_02.vmdl"
 		"BaseClass"					"npc_dota_creature"
 		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"ModelScale" 				"1.3"
-
-		// Armor
-		//----------------------------------------------------------------
 		"ArmorPhysical"				"0"			
-
-		// Attack
-		//----------------------------------------------------------------
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"AutoAttacksByDefault"		"0"
 		"AttackDamageMin"			"0"		
@@ -288,47 +284,25 @@
 		"AttackAcquisitionRange"	"0"		// Range within a target can be acquired.
 		"AttackRange"				"0"		// Range within a target can be attacked.
 		"ProjectileSpeed"			"0"		// Speed of projectile.		     
-
-		// Bounds
-		//----------------------------------------------------------------
 		"RingRadius"				"120"
 		"HealthBarOffset"			"150"
-
-		// Bounty
-		//----------------------------------------------------------------
 		"BountyXP"					"0"		// Experience earn.
 		"BountyGoldMin"				"0"		// Gold earned min.
 		"BountyGoldMax"				"0"		// Gold earned max.
-
-		// Movement
-		//----------------------------------------------------------------
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 		"MovementSpeed"				"0"		// Speed.			
-
-		// Status
-		//----------------------------------------------------------------
 		"StatusHealth"				"30"		
 		"StatusHealthRegen"			"0.0"		
 		"StatusMana"				"0"			
 		"StatusManaRegen"			"0.0"		// Mana regeneration rate.		 
-		
-		// Vision
-		//----------------------------------------------------------------
 		"VisionDaytimeRange"		"0"		// Range of vision during day light.
 		"VisionNighttimeRange"		"0"		// Range of vision at night time.
-
-		// Team
-		//----------------------------------------------------------------
 		"TeamName"					"DOTA_TEAM_NEUTRALS"						// Team name.
 		"CombatClassAttack"			"DOTA_COMBAT_CLASS_ATTACK_PIERCE"
 		"CombatClassDefend"			"DOTA_COMBAT_CLASS_DEFEND_BASIC"
 		"UnitRelationshipClass"		"DOTA_NPC_UNIT_RELATIONSHIP_TYPE_DEFAULT"
-
-		// Creature Data
-		//----------------------------------------------------------------
 		"Creature"
 		{
-			//Level Up
 			"HPGain"					"0"
 			"DamageGain"				"0"
 			"ArmorGain"					"0.0"
