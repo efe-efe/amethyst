@@ -55,7 +55,7 @@ import CustomAbilities from './shared/customAbilities';
             heroIndex = Players.GetSelectedEntities(playerId)[0];
         }
     
-        if(!heroIndex){
+        if(!heroIndex || heroIndex == -1){
             heroIndex = Players.GetPlayerHeroEntityIndex(playerId);
             if(Game.IsInToolsMode()){
                 heroIndex = Players.GetSelectedEntities(playerId)[0];
