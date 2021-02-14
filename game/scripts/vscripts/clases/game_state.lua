@@ -26,7 +26,7 @@ function GameState:GetAllPlayers()
 end
 
 function GameState:GetDuration()
-    return self.time_remaining
+    return math.floor(self.time_remaining/30)
 end
 
 function GameState:SetDuration(fDuration)

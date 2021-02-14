@@ -271,6 +271,10 @@ function GameMode:SetupPanoramaEventHooks()
             hero:SetAbilityPoints(ABILITY_POINTS)
             CustomEntities:SendDataToClient(hero)
         end
+
+        if self.warmup then
+            self.warmup:SetDuration(self.warmup:GetDuration() + 10.0)
+        end
     end)
 
     
