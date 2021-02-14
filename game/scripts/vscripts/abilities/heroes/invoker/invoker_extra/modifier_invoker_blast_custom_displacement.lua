@@ -16,8 +16,10 @@ function modifier_invoker_blast_custom_displacement:OnDestroy()
             max_slow_pct = fading_slow_pct 
         })
 
-        ParticleManager:DestroyParticle(self.efx, false)
-        ParticleManager:ReleaseParticleIndex(self.efx)
+        if IsServer() then
+            ParticleManager:DestroyParticle(self.efx, false)
+            ParticleManager:ReleaseParticleIndex(self.efx)
+        end
     end
 end
 

@@ -4,10 +4,8 @@ local PICKUPS_TIMER = PICKUPS_CREATION_TIME
 local ROUND_TIMER = ROUND_DURATION
 local DRAW_TIME = 3.0
 
-function Round:constructor(players, callback)
-    self.players = players
-    self.callback = callback
-    
+function Round:constructor(alliances)
+    getbase(Round).constructor(self, alliances)
     self.death_zone = nil
     self.winner = nil
 
@@ -177,7 +175,7 @@ function Round:EndRound()
     self:DestroyGem()
     self:CleanArrows()
 
-    for _,player in pairs(self.players) do
+    for _,player in pairs(self:GetAllPlayers()) do
         local target = nil
 
         if player.alliance.name == "DOTA_ALLIANCE_RADIANT" then
@@ -195,14 +193,77 @@ function Round:EndRound()
         CustomEntities:Reset(player.hero)
     end
 
+    local max_score = ROUNDS_DIFFERENCE_TO_WIN
+    local allinaces_with_one_point = 0
+    local allinaces_with_two_points = 0
 
-    self:callback()
+    self:DestroyAllPickups() -- Remove death orbs
+
+    if self.winner then
+        local new_score = self.winner:GetScore() + 1
+        self.winner:SetScore(new_score)
+
+        if  self.winner:GetScore() >= ROUNDS_TO_WIN or self:GetHighestWinsDifference(self.winner) >= ROUNDS_DIFFERENCE_TO_WIN then
+            GameRules.GameMode:EndGame(self.winner.teams[1]) 
+            return
+        end
+    else
+        CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = "DRAW!" })
+    end
+
+    for _,alliance in pairs(self.alliances) do
+        if alliance:GetScore() == 1 then
+            allinaces_with_one_point = allinaces_with_one_point + 1
+        elseif alliance:GetScore() > 1 then
+            allinaces_with_one_point = allinaces_with_one_point + 1
+            allinaces_with_two_points = allinaces_with_two_points + 1
+        end
+    end
+
+    if allinaces_with_two_points >= 2 then
+        max_score = 5
+    elseif allinaces_with_one_point >= 2 then
+        max_score = 4
+    end
+    
+    CustomNetTables:SetTableValue("main", "maxScore", { max_score = max_score })
+
+    GameRules.GameMode.round = nil
+
+    for _,player in pairs(self:GetAllPlayers()) do
+        local hero = player.hero
+        local playerId = player:GetId()
+        CustomEntities:SafeDestroyModifier(hero, "modifier_generic_provides_vision")
+        PlayerResource:SetCameraTarget(playerId, nil)
+    end
+
+    GameRules.GameMode.round = nil
+    GameRules.GameMode.warmup = Warmup(self.alliances)
+    GameRules.GameMode:SetState(CustomGameState.WARMUP_IN_PROGRESS)
 end
 
+function Round:GetHighestWinsDifference(alliance)
+    local difference = 0
+
+    for _,m_alliance in pairs(self.alliances) do
+        if m_alliance ~= alliance then
+            if next(m_alliance.players) ~= nil then
+                local m_difference = alliance.wins - m_alliance.wins
+
+                if m_difference > difference then
+                    difference = m_difference 
+                end
+            end
+        end
+    end 
+
+    return difference
+end
+    
 function Round:GetLastOrNoneAlive()
     local alliances = {}
 
-    for _,player in pairs(self.players) do
+    for _,player in pairs(self:GetAllPlayers()) do
         if player.hero and not player.hero:IsNull() and player.hero:IsAlive() then
             alliances[player.alliance.number] = player.alliance
         end

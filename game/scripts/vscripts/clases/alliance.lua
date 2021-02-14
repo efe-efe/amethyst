@@ -70,6 +70,10 @@ function Alliance:GetAmethysts()
     return self.amethysts
 end
 
+function Alliance:GetPlayers()
+    return self.players
+end
+
 function Alliance:AddPlayer(player)
     table.insert(self.players, player)
     if not self.active then

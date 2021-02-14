@@ -94,7 +94,7 @@ function GenericGem:Update()
     local currentAngle = (GameRules:GetGameTime() % (math.pi * 2)) * 2.0
 
     if not CustomEntities:IsBanished(self:GetUnit()) then
-        self:GetUnit():SetForwardVector(Vector(math.cos(currentAngle), math.sin(currentAngle)))
+        CustomEntities:FullyFaceTowards(self:GetUnit(), Vector(math.cos(currentAngle), math.sin(currentAngle)))
         self:GetUnit():SetModel(self.model)
         self:GetUnit():SetModelScale(self.scale)
     end

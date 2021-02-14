@@ -12,10 +12,12 @@ import AllianceBar from './allianceBar';
 import { tables } from './shared/util';
 import './targetIndicator';
 import CustomEntities from './shared/customEntities';
-import { HeroData } from './types';
+import { CustomGameState, HeroData } from './types';
+import { ReadyBar } from './readyBar';
 
 (function(){
     const customEntities = CustomEntities.GetInstance();
+    const layout = LayoutController.GetInstance();
 
     const clockPanel = $('#top-bar__clock-text') as LabelPanel;
     const refunderButton = $('#refunder__button') as Button;
@@ -32,8 +34,6 @@ import { HeroData } from './types';
 
     let customHotkeysShowing = true;
     let maxScore = 3;
-
-    const layout = LayoutController.GetInstance();
     
     const allKeys = [
         new Key('W'),
@@ -153,23 +153,21 @@ import { HeroData } from './types';
     
         return new Command(key, action);
     };
-    
-    const allCommands: Command[] = [
-        CreateCommandByKeyAndActionCodes('W', CUSTOM_HeroActionCodes.MOVE_UP),
-        CreateCommandByKeyAndActionCodes('A', CUSTOM_HeroActionCodes.MOVE_LEFT),
-        CreateCommandByKeyAndActionCodes('S', CUSTOM_HeroActionCodes.MOVE_DOWN),
-        CreateCommandByKeyAndActionCodes('D', CUSTOM_HeroActionCodes.MOVE_RIGHT),
-        CreateCommandByKeyAndActionCodes('R', CUSTOM_HeroActionCodes.ULTIMATE, true),
-        CreateCommandByKeyAndActionCodes('F', CUSTOM_HeroActionCodes.EXTRA, true),
-        CreateCommandByKeyAndActionCodes('E', CUSTOM_HeroActionCodes.SPECIAL_ATTACK, true),
-        CreateCommandByKeyAndActionCodes('Q', CUSTOM_HeroActionCodes.COUNTER, true),
-        CreateCommandByKeyAndActionCodes('C', CUSTOM_HeroActionCodes.CANCEL),
-        CreateCommandByKeyAndActionCodes('1', CUSTOM_HeroActionCodes.EX_ONE, true),
-        CreateCommandByKeyAndActionCodes('2', CUSTOM_HeroActionCodes.EX_TWO, true),
-        CreateCommandByKeyAndActionCodes('Space', CUSTOM_HeroActionCodes.MOBILITY, true),
-        CreateCommandByKeyAndActionCodes('MOUSE_1', CUSTOM_HeroActionCodes.BASIC_ATTACK, true),
-        CreateCommandByKeyAndActionCodes('MOUSE_2', CUSTOM_HeroActionCodes.SECOND_ATTACK, true),
-    ];
+
+    CreateCommandByKeyAndActionCodes('W', CUSTOM_HeroActionCodes.MOVE_UP),
+    CreateCommandByKeyAndActionCodes('A', CUSTOM_HeroActionCodes.MOVE_LEFT),
+    CreateCommandByKeyAndActionCodes('S', CUSTOM_HeroActionCodes.MOVE_DOWN),
+    CreateCommandByKeyAndActionCodes('D', CUSTOM_HeroActionCodes.MOVE_RIGHT),
+    CreateCommandByKeyAndActionCodes('R', CUSTOM_HeroActionCodes.ULTIMATE, true),
+    CreateCommandByKeyAndActionCodes('F', CUSTOM_HeroActionCodes.EXTRA, true),
+    CreateCommandByKeyAndActionCodes('E', CUSTOM_HeroActionCodes.SPECIAL_ATTACK, true),
+    CreateCommandByKeyAndActionCodes('Q', CUSTOM_HeroActionCodes.COUNTER, true),
+    CreateCommandByKeyAndActionCodes('C', CUSTOM_HeroActionCodes.CANCEL),
+    CreateCommandByKeyAndActionCodes('1', CUSTOM_HeroActionCodes.EX_ONE, true),
+    CreateCommandByKeyAndActionCodes('2', CUSTOM_HeroActionCodes.EX_TWO, true),
+    CreateCommandByKeyAndActionCodes('Space', CUSTOM_HeroActionCodes.MOBILITY, true),
+    CreateCommandByKeyAndActionCodes('MOUSE_1', CUSTOM_HeroActionCodes.BASIC_ATTACK, true),
+    CreateCommandByKeyAndActionCodes('MOUSE_2', CUSTOM_HeroActionCodes.SECOND_ATTACK, true),
     
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);
@@ -275,11 +273,16 @@ import { HeroData } from './types';
     const tableNameMain = 'main' as never;
     tables.subscribeToNetTableKey(tableNameMain, 'gameState', true, function(data: any){
         const refunderButton = $('#refunder') as Button;
+        const state = data.gameState;
 
-        if(data.gameState == 1){
+        if(state == CustomGameState.PRE_ROUND){
+            new ReadyBar(4.0);
+        }
+        if(state == CustomGameState.ROUND_IN_PROGRESS){
+            layout.HideDimmer                                                                                                                                                                                         ();
             refunderButton.style.visibility = 'collapse';
         }
-        if(data.gameState == 2){
+        if(state == CustomGameState.WARMUP_IN_PROGRESS){
             refunderButton.style.visibility = 'visible';
         }
     });
@@ -313,7 +316,7 @@ import { HeroData } from './types';
         }
 
         GameEvents.SendCustomGameEventToServer('refund_points', {
-            playerID: playerId, //Idk why this has to be this way...
+            playerIndex: playerId, 
 
         } as never);
 
@@ -360,7 +363,7 @@ import { HeroData } from './types';
         }
 
         GameEvents.SendCustomGameEventToServer('swap_r_f', {
-            playerID: playerId, //Idk why this has to be this way...
+            playerIndex: playerId, 
 
         } as never);
     }

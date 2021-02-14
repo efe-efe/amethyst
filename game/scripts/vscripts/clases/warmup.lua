@@ -4,16 +4,13 @@ local WARMUP_TIME = WARMUP_DURATION
 local DUMMY_TARGET_RESPAWN = 5.0
 local ADRENALINE_DURATION = 25.0
 
-function Warmup:constructor(players, callback)
+function Warmup:constructor(alliances)
+    getbase(Warmup).constructor(self, alliances)
+
     self.time_remaining = WARMUP_TIME * 10
-    self.callback = callback
-    self.players = players
     
     self.dummy_targets_ents = Entities:FindAllByName("dummy_target")
     self.dummy_targets = {}
-    
-    self.radiant_spawn = Entities:FindByName(nil, "radiant_spawn")
-    self.dire_spawn = Entities:FindByName(nil, "dire_spawn")
 
     for _,entity in pairs(self.dummy_targets_ents) do
         table.insert(self.dummy_targets, {
@@ -56,37 +53,13 @@ end
 function Warmup:EndWarmup()
     self:DestroyAllDummyTargets()
 
-    for _,player in pairs(self.players) do
-        local target = nil
-
-        if player.alliance.name == "DOTA_ALLIANCE_RADIANT" then
-            target = self.radiant_spawn
-        end
-        if player.alliance.name == "DOTA_ALLIANCE_DIRE" then
-            target = self.dire_spawn
-        end
-
-        local hero = player.hero
-
-        FindClearSpaceForUnit(hero, target:GetAbsOrigin(), true)
-        CustomEntities:Reset(hero)
-        hero:AddNewModifier(hero, nil, "modifier_adrenaline", { duration = ADRENALINE_DURATION })
-
-        for i = 0, 8 do
-            if hero:GetAbilityPoints() == 0 then
-                break
-            end
-
-            local ability = hero:GetAbilityByIndex(i)
-            if ability then
-                if ability:GetLevel() < ability:GetMaxLevel() then
-                    hero:UpgradeAbility(ability)
-                end
-            end
-        end
+    for _,alliance in pairs(self.alliances) do
+        alliance:SetAmethysts(0)
     end
 
-    self:callback()
+    GameRules.GameMode.warmup = nil
+    GameRules.GameMode.pre_round = PreRound(self.alliances)
+    GameRules.GameMode:SetState(CustomGameState.PRE_ROUND)
 end
 
 function Warmup:DestroyAllDummyTargets()

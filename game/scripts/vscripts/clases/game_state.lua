@@ -1,5 +1,9 @@
 GameState = GameState or class({})
 
+function GameState:constructor(alliances)
+    self.alliances = alliances
+end
+
 function GameState:UpdateGameTimer(time)
     local minutes = math.floor(time / 60)
     local seconds = time - (minutes * 60)
@@ -16,4 +20,17 @@ function GameState:UpdateGameTimer(time)
         }
   
     CustomGameEventManager:Send_ServerToAllClients("countdown", broadcast_gametimer)
+end
+
+function GameState:GetAllPlayers()
+    local players = {}
+    if self.alliances then
+        for key, alliance in pairs(self.alliances) do
+            for _key, player in pairs(alliance:GetPlayers()) do
+                table.insert(players, player)
+            end
+        end
+    end
+
+    return players
 end

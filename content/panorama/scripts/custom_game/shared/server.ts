@@ -9,7 +9,7 @@ export const enum Custom_ActionTypes {
 }
 
 export interface CustomActionEvent {
-    playerID: number;
+    playerIndex: number;
     payload?: any;
 }
 
@@ -25,7 +25,7 @@ const server = {
         }
 
         const data: CustomActionEvent = {
-            playerID: playerId, //Idk why this has to be this way...
+            playerIndex: playerId, 
             payload
         };
 
@@ -48,7 +48,6 @@ const server = {
 
         server.sendActionSignalToServer(payload);
     },
-
     sendStopMovementSignalToServer: (direction: number[]): void => {
         const payload = {
             direction,

@@ -13,10 +13,11 @@ require('clases/game_state')
 require('clases/dummy_target')
 require('clases/pickup')
 require('clases/amethyst')
-require('clases/round')
 require('clases/alliance')
 require('clases/player')
 require('clases/warmup')
+require('clases/pre_round')
+require('clases/round')
 
 require('libraries/timers') 
 require('libraries/projectiles') 
@@ -31,12 +32,13 @@ require('filters')
 require('abilities_meta')
 
 THINK_PERIOD = 0.01
-ROUNDS_TO_WIN = 5
-ROUNDS_DIFFERENCE_TO_WIN = 3
 
-_G.STATE_NONE = 0
-_G.STATE_ROUND_IN_PROGRESS = 1 
-_G.STATE_WARMUP = 2 
+_G.CustomGameState = {}
+CustomGameState.NONE = 0
+CustomGameState.PRE_ROUND = 1 
+CustomGameState.ROUND_IN_PROGRESS = 2
+CustomGameState.PRE_WARMUP = 3
+CustomGameState.WARMUP_IN_PROGRESS = 4
 
 local Custom_ActionTypes = {
     MOVEMENT = 0,
@@ -177,6 +179,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_emerald",                         "modifiers/modifier_emerald.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_amethyst",                        "modifiers/modifier_amethyst.lua", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_miss",                            "modifiers/modifier_miss.lua", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_restricted",                      "modifiers/modifier_restricted.lua", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier("modifier_generic_silence",                 "abilities/generic/modifier_generic_silence", LUA_MODIFIER_MOTION_NONE) -- Should Delete
     LinkLuaModifier("modifier_generic_fading_slow",             "abilities/generic/modifier_generic_fading_slow", LUA_MODIFIER_MOTION_NONE)
@@ -224,7 +227,7 @@ function GameMode:SetupPanoramaEventHooks()
     end)
 
     CustomGameEventManager:RegisterListener('custom_action', function(eventSourceIndex, event)
-        local playerId = event.playerID
+        local playerId = event.playerIndex
 
         if self.players and self.players[playerId] then
             local player = self.players[playerId]
@@ -250,7 +253,7 @@ function GameMode:SetupPanoramaEventHooks()
     end)
     
     CustomGameEventManager:RegisterListener('refund_points', function(eventSourceIndex, event)
-        local playerId = event.playerID
+        local playerId = event.playerIndex
 
         if self.players and self.players[playerId] then
             local player = self.players[playerId]
@@ -273,8 +276,7 @@ function GameMode:SetupPanoramaEventHooks()
     
     
     CustomGameEventManager:RegisterListener('swap_r_f', function(eventSourceIndex, event)
-        
-        local playerId = event.playerID
+        local playerId = event.playerIndex
 
         if self.players and self.players[playerId] then
             local player = self.players[playerId]
@@ -292,6 +294,8 @@ function GameMode:SetupMode()
     self.players = {}
     self.units = {}
     self.alliances = {}
+    self.warmup = nil
+    self.pre_round = nil
     self.round = nil
     self.wtf = false
     
@@ -303,7 +307,6 @@ function GameMode:SetupMode()
     self:SetupFilters()
     self:SetupProjectiles()
     self:LinkModifiers()
-
 
     local mode = GameRules:GetGameModeEntity()
     mode:SetBuybackEnabled(false)
@@ -322,7 +325,7 @@ end
 function GameMode:Start()
     self.mouse_positions = {}
 
-    self.state = STATE_NONE
+    self.state = CustomGameState.NONE
     self.max_treshold = 30
 
     self.alliances[DOTA_ALLIANCE_RADIANT] = Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS })
@@ -334,30 +337,22 @@ function GameMode:Start()
     self.barrels = {} -- Created walls on the map
     self:CreateBarrels()
 
-    self:SetState(STATE_WARMUP)
+    self:SetState(CustomGameState.WARMUP_IN_PROGRESS)
 
-    self.warmup = Warmup(
-        self.players,
-        function(context) -- sent automatically if using self:Method() notation
-            self:OnWarmupEnd(context)
-        end
-   )
-
-    self.round = Round(
-        self.players,
-        function(context) -- sent automatically if using self:Method() notation
-            self:OnRoundEnd(context)
-        end
-   )
+    self.warmup = Warmup(self.alliances)
     
     self:RegisterThinker(0.1, function()
-        if self.state == STATE_WARMUP and self.warmup then
+        if self.state == CustomGameState.WARMUP_IN_PROGRESS and self.warmup then
             self.warmup:Update()
         end
     end)
 
     self:RegisterThinker(0.01, function()
-        if self.state == STATE_ROUND_IN_PROGRESS and self.round then
+        if self.state == CustomGameState.PRE_ROUND and self.pre_round then
+            self.pre_round:Update()
+        end
+
+        if self.state == CustomGameState.ROUND_IN_PROGRESS and self.round then
             self.round:Update()
         end
         CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
@@ -425,7 +420,6 @@ end
 
 function GameMode:SetState(state)
     self.state = state
-
     CustomNetTables:SetTableValue("main", "gameState", { gameState = state })
 end 
 
@@ -473,79 +467,6 @@ function GameMode:OnLearnedAbilityEvent(event)
     CustomEntities:SendDataToClient(player.hero)
 end
 
-function GameMode:OnWarmupEnd(context)
-    local warmup = context
-    
-    self.warmup = nil
-    for _,alliance in pairs(self.alliances) do
-        alliance:SetAmethysts(0)
-    end
-
-    self:SetState(STATE_ROUND_IN_PROGRESS)
-    CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = "Round Start!" })
-end
-
-function GameMode:OnRoundEnd(context)
-    local round = context
-    local max_score = ROUNDS_DIFFERENCE_TO_WIN
-    local allinaces_with_one_point = 0
-    local allinaces_with_two_points = 0
-
-    round:DestroyAllPickups() -- Remove death orbs
-
-    if round.winner then
-        local new_score = round.winner:GetScore() + 1
-        round.winner:SetScore(new_score)
-
-        if  round.winner:GetScore() >= ROUNDS_TO_WIN or self:GetHighestWinsDifference(round.winner) >= ROUNDS_DIFFERENCE_TO_WIN then
-            self:EndGame(round.winner.teams[1]) 
-            return
-        end
-    else
-        CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = "DRAW!" })
-    end
-
-    for _,alliance in pairs(self.alliances) do
-        if alliance:GetScore() == 1 then
-            allinaces_with_one_point = allinaces_with_one_point + 1
-        elseif alliance:GetScore() > 1 then
-            allinaces_with_one_point = allinaces_with_one_point + 1
-            allinaces_with_two_points = allinaces_with_two_points + 1
-        end
-    end
-
-    if allinaces_with_two_points >= 2 then
-        max_score = 5
-    elseif allinaces_with_one_point >= 2 then
-        max_score = 4
-    end
-    
-    CustomNetTables:SetTableValue("main", "maxScore", { max_score = max_score })
-
-    self.round = nil
-
-    for _,player in pairs(self.players) do
-        local hero = player.hero
-        local playerId = player:GetId()
-        CustomEntities:SafeDestroyModifier(hero, "modifier_generic_provides_vision")
-        PlayerResource:SetCameraTarget(playerId, nil)
-    end
-
-    self:SetState(STATE_WARMUP)
-    self.warmup = Warmup(
-        self.players,
-        function(context) 
-            self:OnWarmupEnd(context)
-        end
-    )
-    self.round = Round(
-        self.players,
-        function(context) 
-            self:OnRoundEnd(context)
-        end
-   )
-end
-
 function GameMode:OnGameInProgress()
     self:Start()
 end
@@ -554,7 +475,6 @@ function GameMode:OnHeroInGame(keys)
     local npc = EntIndexToHScript(keys.entindex)
     if npc:IsNull() then return end
 
-    -- First time spawning
     if not CustomEntities:IsInitialized(npc) then
         CustomEntities:Initialize(npc)
 
@@ -564,8 +484,6 @@ function GameMode:OnHeroInGame(keys)
             end
         end
     end
-
-    -- Always
 end
 
 function GameMode:OnEntityKilled(keys)
@@ -623,24 +541,6 @@ function GameMode:OnEntityHurt(keys)
 
         SendOverheadDamageMessage(entVictim, keys.damage)
     end
-end
-
-function GameMode:GetHighestWinsDifference(alliance)
-    local difference = 0
-
-    for _,m_alliance in pairs(self.alliances) do
-        if m_alliance ~= alliance then
-            if next(m_alliance.players) ~= nil then
-                local m_difference = alliance.wins - m_alliance.wins
-
-                if m_difference > difference then
-                    difference = m_difference 
-                end
-            end
-        end
-    end 
-
-    return difference
 end
 
 function GameMode:FindNextAliveAlly(alliance)

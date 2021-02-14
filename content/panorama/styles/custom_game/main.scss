@@ -2,3 +2,23 @@
     height: 100%;
     width: 100%;
 }
+
+.ready-bar{
+    height: 0px;
+    width: 100%;
+
+    transition-property: height;
+    transition-duration: 0.2s;
+    
+    align: center center;
+    color: black;
+
+    background-color: rgba(0,0,0, 0.85);
+
+    &__title{
+        color: #ECE4B7;
+        font-size: 96px;
+        align: center center;
+        text-transform: uppercase;
+    }
+}

@@ -1,3 +1,12 @@
+
+export enum CustomGameState {
+    NONE = 0,
+    PRE_ROUND,
+    ROUND_IN_PROGRESS,
+    PRE_WARMUP,
+    WARMUP_IN_PROGRESS,
+}
+
 export type AllianceData = {
     max_health: number;
     amethysts: number;
