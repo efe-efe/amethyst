@@ -339,15 +339,13 @@ function GameMode:Start()
 
     self:SetState(CustomGameState.WARMUP_IN_PROGRESS)
 
-    self.warmup = Warmup(self.alliances)
-    
-    self:RegisterThinker(0.1, function()
+    self.warmup = Warmup(self.alliances, FIRST_WARMUP_DURATION)
+
+    self:RegisterThinker(0.01, function()
         if self.state == CustomGameState.WARMUP_IN_PROGRESS and self.warmup then
             self.warmup:Update()
         end
-    end)
 
-    self:RegisterThinker(0.01, function()
         if self.state == CustomGameState.PRE_ROUND and self.pre_round then
             self.pre_round:Update()
         end
@@ -432,6 +430,18 @@ function GameMode:OnGameRulesStateChange(event)
 end
 
 function GameMode:OnPlayerChat(event)
+    if event.text == '-unstuck' then
+        local playerId = event.playerid
+        local player = self.players[playerId]
+        
+        if player then
+            local hero = player.hero
+            if hero then
+                CustomEntities:SetDirection(hero, 0,0)
+            end
+        end
+    end
+
     if not GameRules:IsCheatMode() and not IsInToolsMode() then
         return
     end
@@ -463,6 +473,21 @@ function GameMode:OnLearnedAbilityEvent(event)
     local playerId = event.PlayerID
     local player = self.players[playerId]
     local hero = player.hero
+    local ready = true
+
+    for _,_player in pairs(self.players) do
+        if _player.hero:GetAbilityPoints() > 0 then
+            ready = false
+        end
+    end
+
+    if ready then
+        if self.warmup then
+            if self.warmup:GetDuration() > 3.0 then
+                self.warmup:SetDuration(3.0)
+            end
+        end
+    end
     
     CustomEntities:SendDataToClient(player.hero)
 end

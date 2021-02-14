@@ -1,7 +1,36 @@
 GameState = GameState or class({})
 
-function GameState:constructor(alliances)
-    self.alliances = alliances
+function GameState:constructor(tAlliances, fDuration)
+    self.alliances = tAlliances
+    self.time_remaining = fDuration * 30
+    self.max_duration = fDuration
+end
+
+function GameState:Update()
+    if self.time_remaining > 0 then
+        self.time_remaining = self.time_remaining - 1
+    end
+end
+
+function GameState:GetAllPlayers()
+    local players = {}
+    if self.alliances then
+        for key, alliance in pairs(self.alliances) do
+            for _key, player in pairs(alliance:GetPlayers()) do
+                table.insert(players, player)
+            end
+        end
+    end
+
+    return players
+end
+
+function GameState:GetDuration()
+    return self.time_remaining
+end
+
+function GameState:SetDuration(fDuration)
+    self.time_remaining = fDuration * 30
 end
 
 function GameState:UpdateGameTimer(time)
@@ -20,17 +49,4 @@ function GameState:UpdateGameTimer(time)
         }
   
     CustomGameEventManager:Send_ServerToAllClients("countdown", broadcast_gametimer)
-end
-
-function GameState:GetAllPlayers()
-    local players = {}
-    if self.alliances then
-        for key, alliance in pairs(self.alliances) do
-            for _key, player in pairs(alliance:GetPlayers()) do
-                table.insert(players, player)
-            end
-        end
-    end
-
-    return players
 end

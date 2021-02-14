@@ -1,11 +1,10 @@
 Round = Round or class({}, nil, GameState)
 
 local PICKUPS_TIMER = PICKUPS_CREATION_TIME
-local ROUND_TIMER = ROUND_DURATION
 local DRAW_TIME = 3.0
 
-function Round:constructor(alliances)
-    getbase(Round).constructor(self, alliances)
+function Round:constructor(tAlliances, fDuration)
+    getbase(Round).constructor(self, tAlliances, fDuration)
     self.death_zone = nil
     self.winner = nil
 
@@ -19,7 +18,6 @@ function Round:constructor(alliances)
     self.is_trying_to_end = false
 
     self.time_remianing_until_end = DRAW_TIME
-    self.time_remaining = ROUND_TIMER * 30
 
     self.gem_spawn_entities = Entities:FindAllByName("orb_spawn")
     self.health_entities = Entities:FindAllByName("health_orb")
@@ -87,15 +85,15 @@ function Round:SpawnArrows()
 end
 
 function Round:Update()
-    if self.time_remaining > 0 then
-        self.time_remaining = self.time_remaining - 1
-
+    getbase(Round).Update(self)
+    if self.time_remaining >= 0 then
         self:UpdateGameTimer(math.floor(self.time_remaining/30))
-        if self.time_remaining <= 0 then
-            if ROUND_TIMER ~= -1 then
-                self.time_over = true
-                self:CreateDeathZone()
-            end
+    end
+    
+    if self.time_remaining == 0 and not self.time_over then
+        if self.max_duration ~= -1 then
+            self.time_over = true
+            self:CreateDeathZone()
         end
     end
 
@@ -238,7 +236,7 @@ function Round:EndRound()
     end
 
     GameRules.GameMode.round = nil
-    GameRules.GameMode.warmup = Warmup(self.alliances)
+    GameRules.GameMode.warmup = Warmup(self.alliances, WARMUP_DURATION)
     GameRules.GameMode:SetState(CustomGameState.WARMUP_IN_PROGRESS)
 end
 

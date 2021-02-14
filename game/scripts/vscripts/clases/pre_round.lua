@@ -1,10 +1,7 @@
 PreRound = PreRound or class({}, nil, GameState)
 
-local PRE_ROUND_TIMER = PRE_ROUND_DURATION
-
-function PreRound:constructor(alliances)
-    getbase(PreRound).constructor(self, alliances)
-    self.time_remaining = PRE_ROUND_TIMER * 30
+function PreRound:constructor(tAlliances, fDuration)
+    getbase(PreRound).constructor(self, tAlliances, fDuration)
     self.radiant_spawn = Entities:FindByName(nil, "radiant_spawn")
     self.dire_spawn = Entities:FindByName(nil, "dire_spawn")
 
@@ -15,15 +12,13 @@ function PreRound:constructor(alliances)
     end
 end
 
-
 function PreRound:Update()
-    if self.time_remaining > 0 then
-        self.time_remaining = self.time_remaining - 1
-
+    getbase(PreRound).Update(self)
+    if self.time_remaining >= 0 then
         self:UpdateGameTimer(math.floor(self.time_remaining/30))
-        if self.time_remaining <= 0 then
-            self:EndPreRound()
-        end
+    end
+    if self.time_remaining == 0 then
+        self:EndPreRound()
     end
 end
 
@@ -48,6 +43,6 @@ function PreRound:EndPreRound()
     end
 
     GameRules.GameMode.pre_round = nil
-    GameRules.GameMode.round = Round(self.alliances)
+    GameRules.GameMode.round = Round(self.alliances, ROUND_DURATION)
     GameRules.GameMode:SetState(CustomGameState.ROUND_IN_PROGRESS)
 end

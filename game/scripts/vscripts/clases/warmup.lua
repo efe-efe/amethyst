@@ -1,14 +1,11 @@
 Warmup = Warmup or class({}, nil, GameState)
 
-local WARMUP_TIME = WARMUP_DURATION
 local DUMMY_TARGET_RESPAWN = 5.0
 local ADRENALINE_DURATION = 25.0
 
-function Warmup:constructor(alliances)
-    getbase(Warmup).constructor(self, alliances)
+function Warmup:constructor(tAlliances, fDuration)
+    getbase(Warmup).constructor(self, tAlliances, fDuration)
 
-    self.time_remaining = WARMUP_TIME * 10
-    
     self.dummy_targets_ents = Entities:FindAllByName("dummy_target")
     self.dummy_targets = {}
 
@@ -22,12 +19,12 @@ function Warmup:constructor(alliances)
 end
 
 function Warmup:Update()
+    getbase(Warmup).Update(self)
     if self.time_remaining > 0 then
-        self.time_remaining = self.time_remaining - 1
-        self:UpdateGameTimer(math.floor(self.time_remaining/10))
+        self:UpdateGameTimer(math.floor(self.time_remaining/30))
 
         if self.time_remaining <= 30 and self.time_remaining > 0 then
-            CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = tostring(self.time_remaining/10) })
+            CustomGameEventManager:Send_ServerToAllClients("custom_message", { text = tostring(self.time_remaining/30) })
         end
 
         for _,dummy_target in ipairs(self.dummy_targets) do
@@ -38,13 +35,13 @@ function Warmup:Update()
                 end
             else
                 if not dummy_target.entity:Alive() then
-                    dummy_target.timer = DUMMY_TARGET_RESPAWN * 10
+                    dummy_target.timer = DUMMY_TARGET_RESPAWN * 30
                     dummy_target.entity = nil
                 end
             end
         end
     else
-        if WARMUP_TIME ~= -1 then
+        if self.max_duration ~= -1 then
             self:EndWarmup()
         end
     end
@@ -58,7 +55,7 @@ function Warmup:EndWarmup()
     end
 
     GameRules.GameMode.warmup = nil
-    GameRules.GameMode.pre_round = PreRound(self.alliances)
+    GameRules.GameMode.pre_round = PreRound(self.alliances, PRE_ROUND_DURATION)
     GameRules.GameMode:SetState(CustomGameState.PRE_ROUND)
 end
 
