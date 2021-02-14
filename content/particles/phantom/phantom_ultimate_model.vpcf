@@ -1,49 +1,73 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf27:version{36c3961f-02a4-4c52-bf8f-6e3147d7d142} -->
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf31:version{593cd181-a1d6-4c6f-9a8c-0534e8d44db0} -->
 {
 	_class = "CParticleSystemDefinition"
 	m_bShouldHitboxesFallbackToRenderBounds = false
 	m_nMaxParticles = 16
 	m_flConstantRadius = 1.0
 	m_bShouldSort = false
-	m_Renderers = 
+	m_nBehaviorVersion = 5
+	m_controlPointConfigurations = 
 	[
 		{
-			_class = "C_OP_RenderModels"
-			m_bOrientZ = true
-			m_EconSlotName = "weapon"
-			m_nModelCP = 7
-			m_bSuppressTint = true
-			m_ModelList = 
+			m_name = "preview"
+			m_drivers = 
 			[
 				{
-					m_model = resource:"models/heroes/luna/luna_weapon.vmdl"
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 1
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 3
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 5
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 7
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_vecOffset = [ 0.0, 0.0, 0.0 ]
+					m_angOffset = [ 0.0, 0.0, 0.0 ]
+					m_entityName = "self"
 				},
 			]
-			m_bAnimated = true
-			m_nLOD = 1
-			m_bForceLoopingAnimation = true
 		},
 	]
-	m_Operators = 
+	m_PreEmissionOperators = 
 	[
 		{
-			_class = "C_OP_BasicMovement"
+			_class = "C_OP_RemapAverageScalarValuetoCP"
+			m_nField = "12"
+			m_flInputMax = 360.0
+			m_nOutControlPointNumber = 5
+			m_flOutputMax = 360.0
 		},
+	]
+	m_Emitters = 
+	[
 		{
-			_class = "C_OP_Decay"
-			m_nOpEndCapState = 1
-		},
-		{
-			_class = "C_OP_SetControlPointsToParticle"
-			m_nFirstControlPoint = 3
-			m_bSetOrientation = true
-		},
-		{
-			_class = "C_OP_SpinUpdate"
-		},
-		{
-			_class = "C_OP_SpinYaw"
-			m_nSpinRateDegrees = 180
+			_class = "C_OP_InstantaneousEmitter"
+			m_nParticlesToEmit = 
+			{
+				m_nType = "PF_TYPE_LITERAL"
+				m_flLiteralValue = 1.0
+			}
 		},
 	]
 	m_Initializers = 
@@ -66,15 +90,45 @@
 			m_nControlPoint = 1
 		},
 	]
-	m_Emitters = 
+	m_Operators = 
 	[
 		{
-			_class = "C_OP_InstantaneousEmitter"
-			m_nParticlesToEmit = 
-			{
-				m_nType = "PF_TYPE_LITERAL"
-				m_flLiteralValue = 1.0
-			}
+			_class = "C_OP_BasicMovement"
+		},
+		{
+			_class = "C_OP_Decay"
+			m_nOpEndCapState = "PARTICLE_ENDCAP_ENDCAP_ON"
+		},
+		{
+			_class = "C_OP_SetControlPointsToParticle"
+			m_nFirstControlPoint = 3
+			m_bSetOrientation = true
+		},
+		{
+			_class = "C_OP_SpinUpdate"
+		},
+		{
+			_class = "C_OP_SpinYaw"
+			m_nSpinRateDegrees = 180
+		},
+	]
+	m_Renderers = 
+	[
+		{
+			_class = "C_OP_RenderModels"
+			m_bOrientZ = true
+			m_EconSlotName = "weapon"
+			m_nModelCP = 7
+			m_bSuppressTint = true
+			m_ModelList = 
+			[
+				{
+					m_model = resource:"models/heroes/luna/luna_weapon.vmdl"
+				},
+			]
+			m_bAnimated = true
+			m_nLOD = 1
+			m_bForceLoopingAnimation = true
 		},
 	]
 	m_Children = 
@@ -88,59 +142,45 @@
 		{
 			m_ChildRef = resource:"particles/econ/items/clinkz/clinkz_maraxiform/clinkz_ti9_summon_projectile_arrow_d.vpcf"
 		},
-	]
-	m_PreEmissionOperators = 
-	[
 		{
-			_class = "C_OP_RemapAverageScalarValuetoCP"
-			m_nField = "12"
-			m_flInputMax = 360.0
-			m_nOutControlPointNumber = 5
-			m_flOutputMax = 360.0
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_arc.vpcf"
 		},
-	]
-	m_nBehaviorVersion = 5
-	m_controlPointConfigurations = 
-	[
 		{
-			m_name = "preview"
-			m_drivers = 
-			[
-				{
-					m_iAttachType = "PATTACH_WORLDORIGIN"
-					m_vecOffset = [ 0.0, 0.0, 0.0 ]
-					m_angOffset = [ null, null, null ]
-					m_entityName = "self"
-				},
-				{
-					m_iControlPoint = 1
-					m_iAttachType = "PATTACH_WORLDORIGIN"
-					m_vecOffset = [ 0.0, 0.0, 0.0 ]
-					m_angOffset = [ null, null, null ]
-					m_entityName = "self"
-				},
-				{
-					m_iControlPoint = 3
-					m_iAttachType = "PATTACH_WORLDORIGIN"
-					m_vecOffset = [ 0.0, 0.0, 0.0 ]
-					m_angOffset = [ null, null, null ]
-					m_entityName = "self"
-				},
-				{
-					m_iControlPoint = 5
-					m_iAttachType = "PATTACH_WORLDORIGIN"
-					m_vecOffset = [ 0.0, 0.0, 0.0 ]
-					m_angOffset = [ null, null, null ]
-					m_entityName = "self"
-				},
-				{
-					m_iControlPoint = 7
-					m_iAttachType = "PATTACH_WORLDORIGIN"
-					m_vecOffset = [ 0.0, 0.0, 0.0 ]
-					m_angOffset = [ null, null, null ]
-					m_entityName = "self"
-				},
-			]
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_arc_pnt.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_arcb.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_disc.vpcf"
+			m_bDisableChild = true
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/luna/luna_ti9_weapon/luna_ti9_base_attack_impact.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/luna/luna_ti9_weapon/luna_ti9_base_attack_impact_flash.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/luna/luna_ti9_weapon/luna_ti9_base_attack_impact_glow.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_stars.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_model_ghosts.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/econ/items/luna/luna_ti9_weapon/luna_ti9_base_attack_trail.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_trail_galaxy.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_trail_stars.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/phantom/phantom_ultimate_trail_volume.vpcf"
 		},
 	]
 }
