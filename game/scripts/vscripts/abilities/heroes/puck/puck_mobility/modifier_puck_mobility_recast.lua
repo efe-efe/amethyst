@@ -1,5 +1,9 @@
 modifier_puck_mobility_recast = class({})
 
+function modifier_puck_mobility_recast:IsHidden()
+    return true
+end
+
 function modifier_puck_mobility_recast:GetRecastAbility()
     if IsServer() then
         return self:GetParent():FindAbilityByName("puck_mobility_recast") 

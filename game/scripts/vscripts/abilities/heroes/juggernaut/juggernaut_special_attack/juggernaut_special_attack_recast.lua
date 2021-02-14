@@ -1,5 +1,9 @@
 juggernaut_special_attack_recast = class({})
 
+function juggernaut_special_attack_recast:IsHidden()
+    return true 
+end
+
 function juggernaut_special_attack_recast:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetAbsOrigin()

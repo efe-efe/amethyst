@@ -1,5 +1,15 @@
 modifier_juggernaut_extra_shield = class({})
 
+function modifier_juggernaut_extra_shield:DeclareFunctions()
+	return {
+		MODIFIER_PROPERTY_TOOLTIP,
+	}
+end
+
+function modifier_juggernaut_extra_shield:OnTooltip()
+	return self:GetStackCount()
+end
+
 function modifier_juggernaut_extra_shield:GetStatusLabel() return "Totem Shield" end
 function modifier_juggernaut_extra_shield:GetStatusPriority() return 3 end
 function modifier_juggernaut_extra_shield:GetStatusStyle() return "Shield" end

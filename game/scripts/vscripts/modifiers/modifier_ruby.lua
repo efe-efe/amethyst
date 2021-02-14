@@ -78,6 +78,11 @@ function modifier_ruby:OnAttackFail(params)
     end
 end
 ]]
+
+function modifier_ruby:GetTexture()
+	return 'modifier_ruby'
+end
+
 function modifier_ruby:GetStatusLabel() return "Ruby" end
 function modifier_ruby:GetStatusPriority() return 2 end
 function modifier_ruby:GetStatusStyle() return "Ruby" end
@@ -85,6 +90,10 @@ function modifier_ruby:GetStatusStyle() return "Ruby" end
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Status(modifier_ruby)
 Modifiers.OnEvent(modifier_ruby)
+
+function modifier_ruby_attack:IsHidden()
+    return true
+end
 
 function modifier_ruby_attack:OnCreated(params)
     if IsServer() then

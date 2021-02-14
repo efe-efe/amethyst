@@ -12,3 +12,13 @@ end
 function modifier_juggernaut_extra:OnIntervalThink()	
     self:GetParent():Heal(self.heal_per_second, self:GetCaster())
 end
+
+function modifier_juggernaut_extra:DeclareFunctions()
+	return {
+		MODIFIER_PROPERTY_TOOLTIP,
+	}
+end
+
+function modifier_juggernaut_extra:OnTooltip()
+	return self.heal_per_second
+end

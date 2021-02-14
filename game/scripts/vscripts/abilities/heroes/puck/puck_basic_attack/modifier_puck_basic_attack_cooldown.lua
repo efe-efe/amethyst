@@ -36,6 +36,10 @@ function modifier_puck_basic_attack_cooldown:GetReplenishTime()
     return self:GetAbility():GetSpecialValueFor("replenish_time")
 end
 
+function modifier_puck_basic_attack_buff:IsHidden()
+    return true
+end
+
 function modifier_puck_basic_attack_buff:OnEvent(params)
     if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED then
         self:Destroy()

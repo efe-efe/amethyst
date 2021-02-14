@@ -13,7 +13,6 @@ function modifier_puck_fairy_dust:OnDestroy()
     ParticleManager:ReleaseParticleIndex(self.effect_cast_dust)
 end
 
-
 function modifier_puck_fairy_dust:OnRefresh(params)
     if IsServer() then
         if params.slow_pct > self:GetStackCount() then
@@ -28,14 +27,16 @@ function modifier_puck_fairy_dust:DeclareFunctions()
 	}
 end
 
-
 function modifier_puck_fairy_dust:GetModifierMoveSpeedBonus_Percentage()
     return -self:GetStackCount()
 end
 
-
 function modifier_puck_fairy_dust:GetStatusEffectName()
     return "particles/status_fx/status_effect_combo_breaker.vpcf"
+end
+
+function modifier_puck_fairy_dust:GetTexture()
+    return 'modifier_puck_fairy_dust'
 end
 
 function modifier_puck_fairy_dust:GetStatusLabel() return "Fairy Dust" end

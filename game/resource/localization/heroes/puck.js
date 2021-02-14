@@ -178,6 +178,31 @@ function GenerateLocalizationData() {
             },
         ],
     });
+    Modifiers.push({
+        modifier_classname: 'modifier_puck_basic_attack_cooldown',
+        name: 'Weapon Cooldown',
+        description: 'When has one stack, your weapon is charged.'
+    });
+    Modifiers.push({
+        modifier_classname: 'modifier_puck_counter_charges',
+        name: 'Phase Shift Charges',
+        description: 'Amount of charges.'
+    });
+    Modifiers.push({
+        modifier_classname: 'modifier_puck_counter_banish',
+        name: 'Banished',
+        description: 'Invulnerable and unable to act.'
+    });
+    Modifiers.push({
+        modifier_classname: 'modifier_puck_ex_basic_attack',
+        name: 'Fairy Form',
+        description: 'Basic attack changed to an area effect.'
+    });
+    Modifiers.push({
+        modifier_classname: 'modifier_puck_fairy_dust',
+        name: 'Fairy Dust',
+        description: 'You move slower.'
+    });
     return localization_info;
 }
 exports.GenerateLocalizationData = GenerateLocalizationData;

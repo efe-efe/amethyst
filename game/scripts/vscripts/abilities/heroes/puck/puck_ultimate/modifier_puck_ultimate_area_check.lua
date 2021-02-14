@@ -1,5 +1,9 @@
 modifier_puck_ultimate_area_check = class({})
 
+function modifier_puck_ultimate_area_check:IsHidden()
+    return true
+end
+
 function modifier_puck_ultimate_area_check:OnCreated(params)
     self.snap_stun_duration = self:GetAbility():GetSpecialValueFor("snap_stun_duration")
     self.damage_table = {

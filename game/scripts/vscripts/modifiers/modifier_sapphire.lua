@@ -13,6 +13,20 @@ function modifier_sapphire:OnDestroy()
     end
 end
 
+function modifier_sapphire:GetTexture()
+	return 'modifier_sapphire'
+end
+
+function modifier_sapphire:DeclareFunctions()
+	return {
+		MODIFIER_PROPERTY_TOOLTIP,
+	}
+end
+
+function modifier_sapphire:OnTooltip()
+	return self:GetStackCount()
+end
+
 function modifier_sapphire:GetStatusLabel() return "Sapphire" end
 function modifier_sapphire:GetStatusPriority() return 2 end
 function modifier_sapphire:GetStatusStyle() return "Sapphire" end

@@ -7,13 +7,13 @@ function modifier_juggernaut_swiftness:IsPurgable() 	return 	true 	end
 function modifier_juggernaut_swiftness:OnCreated(params)
 	self.max_speed_pct = 100
 	if IsServer() then
-        self:SetStackCount(params.swiftness_pct)
+        self:SetStackCount(Clamp(params.swiftness_pct, self.max_speed_pct, 0))
     end
 end
 
 function modifier_juggernaut_swiftness:OnRefresh(params)
     if IsServer() then
-        self:SetStackCount(self:GetStackCount() + params.swiftness_pct)
+        self:SetStackCount(Clamp(self:GetStackCount() + params.swiftness_pct, self.max_speed_pct, 0))
     end
 end
 
@@ -24,7 +24,7 @@ function modifier_juggernaut_swiftness:DeclareFunctions()
 end
 
 function modifier_juggernaut_swiftness:GetModifierMoveSpeedBonus_Percentage()
-    return Clamp(self:GetStackCount(), self.max_speed_pct, 0)
+    return self:GetStackCount()
 end
 
 function modifier_juggernaut_swiftness:CheckState()
@@ -35,6 +35,10 @@ end
 
 function modifier_juggernaut_swiftness:GetEffectName()
 	return "particles/items2_fx/butterfly_buff.vpcf"
+end
+
+function modifier_juggernaut_swiftness:GetTexture()
+	return "modifier_swiftness"
 end
 
 function modifier_juggernaut_swiftness:GetStatusLabel() return "Swiftness" end

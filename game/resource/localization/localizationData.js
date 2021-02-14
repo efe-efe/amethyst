@@ -512,16 +512,6 @@ function GenerateLocalizationData() {
         name: 'Omnislash',
         description: 'Invencible. Unable to act.',
     });
-    Modifiers.push({
-        modifier_classname: 'modifier_juggernaut_extra',
-        name: 'Healing Ward',
-        description: 'Gaining health per second.',
-    });
-    Modifiers.push({
-        modifier_classname: 'modifier_juggernaut_basic_attack_stacks',
-        name: 'Fury Stacks',
-        description: 'Can be consumed to add extra effects on M2, EX-M2 and Ultimate.',
-    });
     // Return data to compiler
     return localization_info;
 }

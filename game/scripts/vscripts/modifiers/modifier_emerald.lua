@@ -2,7 +2,7 @@ modifier_emerald = class({})
 
 function modifier_emerald:OnCreated(params)
     if IsServer() then
-        self.heal_per_second = params.heal_per_second
+        self:SetStackCount(params.heal_per_second)
         self:StartIntervalThink(1.0)
         self.efx_index = ParticleManager:CreateParticle("particles/gems/emerald_regen_owner.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
     end
@@ -16,7 +16,7 @@ function modifier_emerald:OnDestroy()
 end
 
 function modifier_emerald:OnIntervalThink()
-    self:GetParent():Heal(self.heal_per_second, self:GetParent())
+    self:GetParent():Heal(self:GetStackCount(), self:GetParent())
     
     EFX('particles/econ/items/earthshaker/earthshaker_arcana/earthshaker_arcana_target_death_beam.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), {
         cp1 = self:GetParent():GetAbsOrigin(),
@@ -32,6 +32,20 @@ function modifier_emerald:OnIntervalThink()
         },
         release = true,
     })
+end
+
+function modifier_emerald:DeclareFunctions()
+	return {
+		MODIFIER_PROPERTY_TOOLTIP,
+	}
+end
+
+function modifier_emerald:OnTooltip()
+	return self:GetStackCount()
+end
+
+function modifier_emerald:GetTexture()
+	return 'modifier_emerald'
 end
 
 function modifier_emerald:GetStatusLabel() return "Emerald" end

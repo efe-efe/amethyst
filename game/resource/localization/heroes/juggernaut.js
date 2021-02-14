@@ -151,6 +151,31 @@ function GenerateLocalizationData() {
             },
         ],
     });
+    Modifiers.push({
+        modifier_classname: 'modifier_juggernaut_basic_attack_stacks',
+        name: 'Fury Stacks',
+        description: 'Can be consumed to add extra effects on some abilities.',
+    });
+    Modifiers.push({
+        modifier_classname: 'modifier_juggernaut_extra_shield',
+        name: 'Totem Shield',
+        description: "Blocks {" + "MODIFIER_PROPERTY_TOOLTIP" /* TOOLTIP */ + "} incoming damage.",
+    });
+    Modifiers.push({
+        modifier_classname: 'modifier_juggernaut_ex_counter',
+        name: 'Swiftslash',
+        description: "Your next basic attack deals {" + "MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE" /* PREATTACK_BONUS_DAMAGE */ + "} extra damage.",
+    });
+    Modifiers.push({
+        modifier_classname: 'modifier_juggernaut_extra',
+        name: 'Healing Ward',
+        description: "Recovering {" + "MODIFIER_PROPERTY_TOOLTIP" /* TOOLTIP */ + "} health per second.",
+    });
+    Modifiers.push({
+        modifier_classname: 'modifier_juggernaut_swiftness',
+        name: 'Swiftness',
+        description: "Moves {" + "MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE" /* MOVESPEED_BONUS_PERCENTAGE */ + "}% faster.",
+    });
     return localization_info;
 }
 exports.GenerateLocalizationData = GenerateLocalizationData;

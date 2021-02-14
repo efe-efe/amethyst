@@ -1,5 +1,9 @@
 modifier_shield = class({})
 
+function modifier_shield:GetTexture()
+    return "modifier_shield"
+end
+
 function modifier_shield:GetStatusLabel() return "Shield" end
 function modifier_shield:GetStatusPriority() return 3 end
 function modifier_shield:GetStatusStyle() return "Shield" end
