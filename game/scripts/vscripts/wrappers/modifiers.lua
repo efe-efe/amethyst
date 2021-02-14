@@ -297,8 +297,10 @@ function Modifiers.Charges(modifier)
             end
 
             if params.ability == self:GetAbility() then
-                self:DecrementStackCount()
-                self:CalculateCharge()
+                if not GameRules.GameMode:IsInWTFMode() then
+                    self:DecrementStackCount()
+                    self:CalculateCharge()
+                end
             end
         end
     end
