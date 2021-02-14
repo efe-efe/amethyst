@@ -11,6 +11,7 @@ export class ReadyBar{
         this.duration = duration;
         this.container = layout.GetTopPanel().FindChildTraverse('ready-bar')!;
         this.textPanel = this.container.FindChildTraverse('ready-bar__title') as LabelPanel;
+        this.textPanel.text = 'READY?';
         this.Activate();
     }
 
@@ -27,7 +28,7 @@ export class ReadyBar{
             }
 
             this.duration = this.duration - 1;
-            const text = this.duration > 0 ? this.duration.toString() : 'GO!';
+            const text = this.duration > 0 ? this.duration.toString() : 'FIGHT!';
             this.textPanel.text = text;
             this.Update();
         });
