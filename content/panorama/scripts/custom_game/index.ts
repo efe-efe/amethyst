@@ -370,6 +370,6 @@ import { ReadyBar } from './readyBar';
 
     
     if(!Game.IsInToolsMode()){
-        $.Schedule(3.0, () => SwapRF());
+        //$.Schedule(3.0, () => SwapRF());
     }
 })();
