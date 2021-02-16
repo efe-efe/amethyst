@@ -19,7 +19,7 @@ function invoker_snap_custom:OnSpellStart()
 
 	CustomEntities:ProjectileAttack(caster, {
 		tProjectile = {
-			EffectName =			"particles/orchid/orchid_proj.vpcf",
+			EffectName =			"particles/invoker/invoker_snap_custom.vpcf",
 			vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
 			fDistance = 			projectile_distance,
 			fStartRadius =			self:GetSpecialValueFor("hitbox"),
@@ -50,7 +50,7 @@ function invoker_snap_custom:OnSpellStart()
 				ApplyDamage(damage_table)
 			end,
 			OnFinish = function(_self, pos)
-				EFX("particles/units/heroes/hero_invoker_kid/invoker_kid_forged_spirit_projectile_end.vpcf", PATTACH_WORLDORIGIN, nil, {
+				EFX("particles/econ/items/puck/puck_merry_wanderer/puck_illusory_orb_explode_merry_wanderer.vpcf", PATTACH_WORLDORIGIN, nil, {
 					cp0 = pos,
 					cp3 = pos, 
 					release = true

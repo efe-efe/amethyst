@@ -113,7 +113,7 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"30" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.8" }
+			"03"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"1.2" }
 		}
 	}
 
