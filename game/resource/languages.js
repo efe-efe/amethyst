@@ -21,8 +21,8 @@ var Language;
     // Norwegian = `norwegian`,
     // Polish = 'polish',    
     // Portuguese = `portuguese`,
-    Language["Russian"] = "russian";
-    Language["Schinese"] = "schinese";
+    // Russian = `russian`,    
+    // Schinese = `schinese`,
     // Spanish = `spanish`,
     // Swedish = `swedish`,
     // TChinese = `tchinese`,

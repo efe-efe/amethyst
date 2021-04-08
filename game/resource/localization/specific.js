@@ -4,33 +4,33 @@ exports.Keywords = exports.multipleKeywords = exports.Ability = exports.Descript
 exports.Description = function (data) {
     var output = '';
     if (data.channeled) {
-        output = output + '<img src=\\"file://{images}/custom_game/clock.png\\" /> <b><font color=\\"gold\\">CHANNELED</font></b> - ';
+        output = output + '<img src="file://{images}/custom_game/clock.png" /> <b><font color="gold">CHANNELED</font></b> - ';
     }
     output = output + data.description;
     if (data.level) {
-        output = output + '<br><br><b><font color=\\"#61ffd0\\"><img src=\\"file://{images}/custom_game/add.png\\" />LEVEL UPGRADE</font></b><br>' + data.level;
+        output = output + '<br><br><b><font color="#61ffd0"><img src="file://{images}/custom_game/add.png" />LEVEL UPGRADE</font></b><br>' + data.level;
     }
     if (data.subAbility) {
-        output = output + '<br><br><img src=\\"file://{images}/custom_game/' + data.subAbility.iconPath + '\\" /> <b><font color=\\"#ffffff\\">' + data.subAbility.name.toUpperCase() + '</font></b><br>' + data.subAbility.description;
+        output = output + '<br><br><img src="file://{images}/custom_game/' + data.subAbility.iconPath + '" /> <b><font color="#ffffff">' + data.subAbility.name.toUpperCase() + '</font></b><br>' + data.subAbility.description;
     }
     return output;
 };
 exports.Ability = function (name, iconPath) {
-    return '<img src=\\"file://{images}/custom_game/' + iconPath + '\\" /> <b><font color=\\"#ffffff\\">' + name + '</font></b>';
+    return '<img src="file://{images}/custom_game/' + iconPath + '" /> <b><font color="#ffffff">' + name + '</font></b>';
 };
 var createKeywordDefinition = function (options) {
     var name = options.name.toUpperCase();
     if (options.function) {
         name = name + ' (X)';
     }
-    return '<img src=\\"file://{images}/custom_game/' + options.iconPath + '\\" /><b><font color=\\"' + options.color + '\\"> ' + name + ': </font><font color=\\"#B2B5B3\\">' + options.description + '</font></b>';
+    return '<img src="file://{images}/custom_game/' + options.iconPath + '" /><b><font color="' + options.color + '"> ' + name + ': </font><font color="#B2B5B3">' + options.description + '</font></b>';
 };
 var keywordInstanceFactory = function (options) {
     return function (value) {
         if (value) {
-            return '<img src=\\"file://{images}/custom_game/' + options.iconPath + '\\" /><b><font color=\\"' + options.color + '\\">' + options.name + ' (' + value + ')</font></b>';
+            return '<img src="file://{images}/custom_game/' + options.iconPath + '" /><b><font color="' + options.color + '">' + options.name + ' (' + value + ')</font></b>';
         }
-        return '<img src=\\"file://{images}/custom_game/' + options.iconPath + '\\" /><b><font color=\\"' + options.color + '\\">' + options.name + '</font></b>';
+        return '<img src="file://{images}/custom_game/' + options.iconPath + '" /><b><font color="' + options.color + '">' + options.name + '</font></b>';
     };
 };
 var createKeyword = function (options) {
@@ -52,7 +52,7 @@ exports.multipleKeywords = function (keywords) {
 exports.Keywords = {
     FairyDust: createKeyword({
         name: 'Fairy Dust',
-        description: 'Reduces the target movement speed by X percent and adds extra effects to <img src=\\"file://{images}/custom_game/puck_second_attack.png\\" /> <b>Lightining Orb.',
+        description: 'Reduces the target movement speed by X percent and adds extra effects to <img src="file://{images}/custom_game/puck_second_attack.png" /> <b>Lightining Orb.',
         iconPath: 'fairy_dust.png',
         color: '#C5FAFF',
         function: true,
@@ -137,5 +137,5 @@ exports.Keywords = {
         iconPath: 'bleeding.png',
         color: '#ed4747',
     }),
-    BaseDamage: '<b><font color=\\"#ffffff\\">base damage</font></b>'
+    BaseDamage: '<b><font color="#ffffff">base damage</font></b>'
 };
