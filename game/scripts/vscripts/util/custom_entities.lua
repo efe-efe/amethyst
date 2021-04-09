@@ -391,9 +391,13 @@ function CustomEntities:RemoveModifierTracker(hEntity, sName, iType)
 	end
 end
 
+function CustomEntities:GetDistance(hEntityA, hEntityB)
+	return (hEntityA:GetAbsOrigin() - hEntityB:GetAbsOrigin()):Length2D()
+end
+
 function CustomEntities:GetDirection(hEntity)
 	if CustomEntities:IsFeared(hEntity) then
-		local fear_modifier_name = hEntity.fear_modifiers[1]
+		local fear_modifier_name = CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.FEAR)[1]
 		local fear_origin = hEntity:FindModifierByName(fear_modifier_name):GetAbsOrigin()
 		local direction = (fear_origin - hEntity:GetAbsOrigin()):Normalized()
 		
