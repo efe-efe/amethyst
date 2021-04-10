@@ -511,7 +511,7 @@ function CustomEntities:InterruptCastPoint(hEntity)
 end
 
 function CustomEntities:FindUnitsInCone(hEntity, vDirection, fMinProjection, vCenterPos, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
-	local units = FindUnitsInCone(
+	local tUnits = FindUnitsInCone(
 		hEntity:GetTeamNumber(), 
 		vDirection, 
 		fMinProjection,
@@ -525,86 +525,58 @@ function CustomEntities:FindUnitsInCone(hEntity, vDirection, fMinProjection, vCe
 		false
 	)
 
-	local filtered_units = {}
-	local counter = 1
-	
-	for _,unit in pairs(units) do
-		if nTeamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntities:Allies(hEntity, unit) then
-			filtered_units[counter] = unit
-			counter = counter + 1
-		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntities:Allies(hEntity, unit) then
-			filtered_units[counter] = unit
-			counter = counter + 1
-		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
-			filtered_units[counter] = unit
-			counter = counter + 1
-		end
-	end
-	
-	return filtered_units
+	return CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
 end
 
-function CustomEntities:FindUnitsInRadius(hEntity, vOrigin, fRadius, iTeamFilter, iTypeFilter, iFlagFilter, iOrderFilter)
-    local units = FindUnitsInRadius(
+function CustomEntities:FindUnitsInRadius(hEntity, vOrigin, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
+    local tUnits = FindUnitsInRadius(
         hEntity:GetTeamNumber(),
         vOrigin,
         nil,
         fRadius,
         DOTA_UNIT_TARGET_TEAM_BOTH,
-        iTypeFilter,
-        iFlagFilter,
-        iOrderFilter,
+        nTypeFilter,
+        nFlagFilter,
+        nOrderFilter,
         false
 	)
 
-	local filtered_units = {}
-	local counter = 1
-	
-	for _,unit in pairs(units) do
-		if iTeamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntities:Allies(hEntity, unit) then
-			filtered_units[counter] = unit
-			counter = counter + 1
-		elseif iTeamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntities:Allies(hEntity, unit) then
-			filtered_units[counter] = unit
-			counter = counter + 1
-		elseif iTeamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
-			filtered_units[counter] = unit
-			counter = counter + 1
-		end
-	end
-	
-	return filtered_units
+	return CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
 end
 
-function CustomEntities:FindUnitsInLine(hEntity, start_pos, end_pos, radius, teamFilter, typeFilter, flagFilter)
-	local units = FindUnitsInLine(
+function CustomEntities:FindUnitsInLine(hEntity, vStartPos, vEndPos, nRadius, nTeamFilter, nTypeFilter, nFlagFilter)
+	local tUnits = FindUnitsInLine(
 		hEntity:GetTeamNumber(),
-		start_pos,
-		end_pos,
+		vStartPos,
+		vEndPos,
 		nil,
-		radius,
+		nRadius,
 		DOTA_UNIT_TARGET_TEAM_BOTH,
-		typeFilter,
-		flagFilter
+		nTypeFilter,
+		nFlagFilter
 	)
 
-	local filtered_units = {}
-	local counter = 1
+	return CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
+end
+
+function CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
+	local tFilteredUnits = {}
+	local nCounter = 1
 	
-	for _,unit in pairs(units) do
-		if teamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntities:Allies(hEntity, unit) then
-			filtered_units[counter] = unit
-			counter = counter + 1
-		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntities:Allies(hEntity, unit) then
-			filtered_units[counter] = unit
-			counter = counter + 1
-		elseif teamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
-			filtered_units[counter] = unit
-			counter = counter + 1
+	for _,hUnit in pairs(tUnits) do
+		if nTeamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntities:Allies(hEntity, hUnit) then
+			tFilteredUnits[nCounter] = hUnit
+			nCounter = nCounter + 1
+		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntities:Allies(hEntity, hUnit) then
+			tFilteredUnits[nCounter] = hUnit
+			nCounter = nCounter + 1
+		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
+			tFilteredUnits[nCounter] = hUnit
+			nCounter = nCounter + 1
 		end
 	end
-	
-	return filtered_units
+
+	return tFilteredUnits
 end
 
 function CustomEntities:Allies(hEntity, hTarget)
