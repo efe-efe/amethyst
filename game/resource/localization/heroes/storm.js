@@ -35,7 +35,7 @@ function GenerateLocalizationData() {
         name: 'Unestable Energy',
         description: specific_1.Description({
             description: 'Storm attacks with an unestable ball of energy that deals @{ability_damage} to the enemy.',
-            level: 'Applies a debuff that deals {damage_per_tick} damage and applies ' + specific_1.Keywords.Stun.instance() + ' for @{stun_duration} every @{think_interval}s. Lasts for @{duration}s.',
+            level: 'Applies a debuff that deals @{damage_per_tick} damage and applies ' + specific_1.Keywords.Stun.instance() + ' for @{stun_duration} every @{think_interval}s. Lasts for @{duration}s.',
         }),
         lore: specific_1.Keywords.Stun.definition,
         ability_specials: [
