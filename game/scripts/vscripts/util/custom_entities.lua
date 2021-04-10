@@ -69,7 +69,7 @@ function CustomEntities:Initialize(hEntity)
 		for i = 0, 23 do
 			local ability = hEntity:GetAbilityByIndex(i)
 			if ability then
-				if ability:GetAbilityType() ~= 2 then -- To not level up the talents
+				if CustomAbilities:IsNotTalentNorAttribute(ability) then -- To not level up the talents
 					ability:SetLevel(1)
 				end
 			end
