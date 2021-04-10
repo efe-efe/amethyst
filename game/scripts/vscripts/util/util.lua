@@ -382,22 +382,22 @@ function ReplenishEFX(parent)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
-function ApplyCallbackForUnitsInArea(caster, origin, radius, team, callback)
-	local enemies = CustomEntities:FindUnitsInRadius(
-		caster,
-		origin, 
-		radius, 
-		team, 
+function ApplyCallbackForUnitsInArea(hCaster, vOrigin, nRadius, nTeamFilter, fCallback)
+	local units = CustomEntities:FindUnitsInRadius(
+		hCaster,
+		vOrigin, 
+		nRadius, 
+		nTeamFilter, 
 		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
 		DOTA_UNIT_TARGET_FLAG_NONE,
 		FIND_ANY_ORDER
 	)
 
-	for _, enemy in pairs(enemies) do 
-		callback(enemy)
+	for _,unit in pairs(units) do 
+		fCallback(unit)
 	end
 
-	return enemies
+	return units
 end
 
 function LinkAbilityCooldowns(hCaster, sLinkedSpell, tUnlinkLevels)
