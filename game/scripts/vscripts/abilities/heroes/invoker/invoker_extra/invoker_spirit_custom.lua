@@ -3,7 +3,7 @@ LinkLuaModifier("modifier_invoker_spirit_custom", "abilities/heroes/invoker/invo
 
 function invoker_spirit_custom:OnSpellStart()
     local caster = self:GetCaster()
-    local point = ClampPosition(caster:GetAbsOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local point = ClampPosition(caster:GetAbsOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
     local duration = 7.0
 
     local spirit = CreateUnitByName(

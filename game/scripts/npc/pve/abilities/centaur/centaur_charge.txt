@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+    "centaur_charge"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/centaur/centaur_charge/centaur_charge"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_requiem"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCooldown"				"3.0"
+		"AbilityCastRange"				"1200"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.1"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"						"FIELD_INTEGER"		"radius"				"400" }
+		}
+	}
+}

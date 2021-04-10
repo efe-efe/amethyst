@@ -14,7 +14,7 @@ function sniper_extra:GetCastPointSpeed() 			return 0 end
 function sniper_extra:OnSpellStart()
 	local caster = self:GetCaster()
     local origin = caster:GetAbsOrigin()
-    local point = self:GetCursorPosition()
+    local point = CustomAbilities:GetCursorPosition(self)
     local knockback_distance = self:GetSpecialValueFor("knockback_distance")
     local damage = self:GetSpecialValueFor("damage_per_bullet")
     

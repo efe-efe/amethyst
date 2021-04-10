@@ -22,7 +22,7 @@ function invoker_meteor_custom:OnSpellStart()
 	end
     local caster = self:GetCaster()
     local origin = caster:GetAbsOrigin()
-    local point = self:GetCursorPosition()
+    local point = CustomAbilities:GetCursorPosition(self)
     local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
     local final_point = ClampPosition(origin, point, projectile_distance, projectile_distance)
 	local damage = self:GetSpecialValueFor("ability_damage")

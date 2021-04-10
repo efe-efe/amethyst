@@ -18,7 +18,7 @@ function phantom_special_attack:GetFadeGestureOnCast()			return false end
 
 function phantom_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
     local origin = caster:GetAbsOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local bleed_duration = self:GetSpecialValueFor("bleed_duration")

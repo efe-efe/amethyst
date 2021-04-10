@@ -1,8 +1,9 @@
 UnitEntity = UnitEntity or class({})
 
-function UnitEntity:constructor(origin, name)
+function UnitEntity:constructor(origin, name, team)
     self.origin = origin
     self.destroyed = false
+    self.team = team or DOTA_TEAM_NOTEAM
 
     self:SetUnit(CreateUnitByName(
         name, --szUnitName
@@ -10,7 +11,7 @@ function UnitEntity:constructor(origin, name)
         true, --bFindClearSpace
         nil, --hNPCOwner
         nil, --hUnitOwner
-        DOTA_TEAM_NOTEAM
+        self.team
    ))   
     
     self:GetUnit():SetAbsOrigin(self.origin)

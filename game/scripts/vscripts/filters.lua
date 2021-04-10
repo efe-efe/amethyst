@@ -4,6 +4,7 @@ function Filters:Activate(GameMode, this)
     function GameMode:ModifyExperienceFilter(tFilter)
         return false
     end
+    
     function GameMode:ExecuteOrderFilter(tFilter)
         local order_type = tFilter["order_type"]
 
@@ -27,7 +28,7 @@ function Filters:Activate(GameMode, this)
                     tFilter.position_x,
                     tFilter.position_y,
                     tFilter.position_z
-               )
+                )
                 local current_range = (point - caster:GetAbsOrigin()):Length2D()
                 local direction = (point - caster:GetAbsOrigin()):Normalized()
                 local max_range = ability:GetCastRange(Vector(0,0,0), nil)
@@ -134,9 +135,11 @@ function Filters:Activate(GameMode, this)
             local healing_team = healing_target:GetTeam()
             local healing_alliance = GameRules.GameMode:FindAllianceByTeam(healing_team)
 
-            Timers:CreateTimer(0.05, function()
-                healing_alliance:SendDataToClient()
-            end)
+            if healing_alliance then
+                Timers:CreateTimer(0.05, function()
+                    healing_alliance:SendDataToClient()
+                end)
+            end
         end
         return true
     end
@@ -181,9 +184,12 @@ function Filters:Activate(GameMode, this)
             
             local victim_team = victim:GetTeam()
             local victim_alliance = GameRules.GameMode:FindAllianceByTeam(victim_team)
-            Timers:CreateTimer(0.05, function()
-                victim_alliance:SendDataToClient()
-            end)
+
+            if victim_alliance then
+                Timers:CreateTimer(0.05, function()
+                    victim_alliance:SendDataToClient()
+                end)
+            end
         end
         
         if CustomEntities:IsAmethyst(victim) then 

@@ -99,7 +99,7 @@ function phantom_ex_counter_recast:GetFadeGestureOnCast()		return false end
 
 function phantom_ex_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
     local origin = caster:GetAbsOrigin()
 	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 

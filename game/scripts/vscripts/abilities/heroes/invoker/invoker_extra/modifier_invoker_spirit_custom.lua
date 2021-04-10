@@ -23,7 +23,7 @@ function modifier_invoker_spirit_custom:OnOrder(params)
     if  params.ability == invoker_basic_attack then
         local parent = self:GetParent()
         local origin = parent:GetAbsOrigin()
-        local point = self:GetAbility():GetCursorPosition()
+        local point = CustomAbilities:GetCursorPosition(self:GetAbility())
         local direction = Direction2D(origin, point)
 
         CustomEntities:FullyFaceTowards(self:GetParent(), direction)
@@ -39,7 +39,7 @@ function modifier_invoker_spirit_custom:OnAbilityExecuted(params)
 
         local invoker_basic_attack = self:GetCaster():FindAbilityByName("invoker_basic_attack")
         if  params.ability == invoker_basic_attack then
-            self:LaunchProjectile(self:GetAbility():GetCursorPosition())
+            self:LaunchProjectile(CustomAbilities:GetCursorPosition(self:GetAbility()))
         end
     end
 end

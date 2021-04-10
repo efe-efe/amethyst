@@ -79,6 +79,10 @@
 #base "abilities\invoker\invoker_space.txt"
 #base "abilities\invoker\invoker_helper.txt"
 
+#base "pve\abilities\centaur\centaur_short_attack.txt"
+#base "pve\abilities\centaur\centaur_passive.txt"
+#base "pve\abilities\centaur\centaur_charge.txt"
+
 #base "abilities\dummies\passive_shoot.txt"
 #base "abilities\dummies\passive_walk.txt"
 

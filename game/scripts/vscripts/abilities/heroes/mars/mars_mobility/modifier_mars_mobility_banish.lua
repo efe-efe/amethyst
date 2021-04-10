@@ -2,7 +2,7 @@ modifier_mars_mobility_banish = class({})
 
 function modifier_mars_mobility_banish:OnDestroy()
     if IsServer() then
-        local point = ClampPosition(self:GetParent():GetAbsOrigin(), self:GetAbility():GetCursorPosition(), self:GetAbility():GetCastRange(Vector(0,0,0), nil), nil)
+        local point = ClampPosition(self:GetParent():GetAbsOrigin(), CustomAbilities:GetCursorPosition(self:GetAbility()), self:GetAbility():GetCastRange(Vector(0,0,0), nil), nil)
         local delay = self:GetAbility():GetSpecialValueFor("delay_time")
 
     end

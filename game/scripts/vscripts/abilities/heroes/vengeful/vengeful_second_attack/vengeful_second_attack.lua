@@ -37,7 +37,7 @@ end
 
 function vengeful_second_attack:ThrowProjectile(bIsBasicAttack)
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
@@ -141,7 +141,7 @@ function vengeful_ex_second_attack:OnSpellStart()
 	end
 	
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local heal = self:GetSpecialValueFor("heal")

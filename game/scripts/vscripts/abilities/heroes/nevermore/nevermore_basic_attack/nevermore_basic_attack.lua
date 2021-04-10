@@ -26,7 +26,7 @@ end
 
 function nevermore_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
 	local origin = caster:GetOrigin()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")

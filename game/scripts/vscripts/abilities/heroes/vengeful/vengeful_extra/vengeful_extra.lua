@@ -19,7 +19,7 @@ end
 
 function vengeful_extra:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = ClampPosition(caster:GetAbsOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(caster:GetAbsOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 	
     CreateModifierThinker(
 		caster, --hCaster

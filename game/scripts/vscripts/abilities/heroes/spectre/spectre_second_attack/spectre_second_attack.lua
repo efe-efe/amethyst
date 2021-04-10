@@ -19,7 +19,7 @@ function spectre_second_attack:OnSpellStart()
 		DEFX(self.efx, false)
 	end
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 	local level = self:GetLevel()
 

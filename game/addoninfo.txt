@@ -2,7 +2,8 @@
 {
 	maps = 
 	[
-		"mad_moon_map",
+		"pve",
+		"pvp",
 	]
 	IsPlayable = 1
 	Default_Keys = 
@@ -85,13 +86,18 @@
 		{
 			MaxPlayers = 4
 			TeamCount = 4
-			map = "mad_moon_map"
+			map = "pvp"
+		},
+		{
+			MaxPlayers = 4
+			TeamCount = 4
+			map = "pve"
 		},
 	]
 	HideInTools = false
 	IsTemplate = false
 	CheckAFKPlayers = false
-	DefaultMap = "mad_moon_map"
+	DefaultMap = "pve"
 	DisableIK = false
 	EnablePickRules = false
 	EventGame = false

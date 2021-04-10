@@ -4,6 +4,7 @@ require('settings')
 require('util/util')
 require('util/math')
 require('util/custom_entities')
+require('util/custom_abilities')
 
 require('overrides/npc')
 require('overrides/abilities')
@@ -18,6 +19,7 @@ require('clases/player')
 require('clases/warmup')
 require('clases/pre_round')
 require('clases/round')
+require('clases/boss')
 
 require('libraries/timers') 
 require('libraries/projectiles') 
@@ -48,6 +50,11 @@ local Custom_ActionTypes = {
 local Custom_ActionModes = {
     START = 0,
     STOP = 1,
+}
+
+local Custom_MapNames = {
+    PVE = "pve",
+    PVP = "pvp"
 }
 
 if GameMode == nil then
@@ -96,6 +103,61 @@ function Activate()
     GameRules.GameMode:SetupMode()
 end
 
+function GameMode:Start()
+    self.mouse_positions = {}
+
+    self.state = CustomGameState.NONE
+    self.max_treshold = 30
+
+    self.alliances[DOTA_ALLIANCE_RADIANT] = Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS })
+    self.alliances[DOTA_ALLIANCE_DIRE] = Alliance(DOTA_ALLIANCE_DIRE, { DOTA_TEAM_CUSTOM_1, DOTA_TEAM_CUSTOM_2, DOTA_TEAM_NEUTRALS })
+    self.alliances[DOTA_ALLIANCE_LEGION] = Alliance(DOTA_ALLIANCE_LEGION, { DOTA_TEAM_CUSTOM_3, DOTA_TEAM_CUSTOM_4 })
+    self.alliances[DOTA_ALLIANCE_VOID] = Alliance(DOTA_ALLIANCE_VOID, { DOTA_TEAM_CUSTOM_5, DOTA_TEAM_CUSTOM_6 })
+
+    if GetMapName() == Custom_MapNames.PVP then
+        self:StarPVPMap()
+    elseif GetMapName() == Custom_MapNames.PVE then
+        self:StartPVEMap()
+    end
+
+    self:RegisterThinker(0.01, function()
+        CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
+    end)
+end
+
+function GameMode:StarPVPMap()
+    self.barrel_ents = Entities:FindAllByName("wall_spawn")
+    self.barrels = {} -- Created walls on the map
+    self:CreateBarrels()
+
+    self:SetState(CustomGameState.WARMUP_IN_PROGRESS)
+
+    self.warmup = Warmup(self.alliances, FIRST_WARMUP_DURATION)
+    CustomNetTables:SetTableValue("main", "maxScore", { max_score = ROUNDS_DIFFERENCE_TO_WIN })
+
+    self:RegisterThinker(0.01, function()
+        if self.state == CustomGameState.WARMUP_IN_PROGRESS and self.warmup then
+            self.warmup:Update()
+        end
+
+        if self.state == CustomGameState.PRE_ROUND and self.pre_round then
+            self.pre_round:Update()
+        end
+
+        if self.state == CustomGameState.ROUND_IN_PROGRESS and self.round then
+            self.round:Update()
+        end
+    end)
+end
+
+function GameMode:StartPVEMap()
+    self.boss = Centaur(Vector(0, 0, 128), "npc_dota_hero_centaur")
+
+    self:RegisterThinker(0.01, function()
+        self.boss:Update()
+    end)
+end
+
 function GameMode:OnThink()
 	if GameRules:IsGamePaused() == true then
         return THINK_PERIOD
@@ -128,21 +190,26 @@ function GameMode:SetupRules()
 	GameRules:GetGameModeEntity():SetLoseGoldOnDeath(false)
     GameRules:SetTimeOfDay(0.5)
 
-    if GetMapName() == "mad_moon_map" or GetMapName() == "forest_map" then
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 1)
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 1)
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_1, 1)
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_2, 1)
-        GameRules:SetHeroRespawnEnabled(false)
-    elseif GetMapName() == "free_for_all" then
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 1)
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 0)
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_1, 1)
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_3, 1)
-        GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_5, 1)
-        GameRules:SetHeroRespawnEnabled(true)
+    if GetMapName() == Custom_MapNames.PVP then
+        self:SetupRulesPVP()
+    elseif GetMapName() == Custom_MapNames.PVE then
+        self:SetupRulesPVE()
     end
     print('[AMETHYST] GameRules set')
+end
+
+function GameMode:SetupRulesPVP()
+    GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 1)
+    GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 1)
+    GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_1, 1)
+    GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_CUSTOM_2, 1)
+    GameRules:SetHeroRespawnEnabled(false)
+end
+
+function GameMode:SetupRulesPVE()
+    GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 2)
+    GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 2)
+    GameRules:SetHeroRespawnEnabled(true)
 end
 
 function GameMode:SetupEventHooks()
@@ -326,43 +393,6 @@ function GameMode:SetupProjectiles()
     ProjectilesManagerInstance:Initialize()
 end
 
-function GameMode:Start()
-    self.mouse_positions = {}
-
-    self.state = CustomGameState.NONE
-    self.max_treshold = 30
-
-    self.alliances[DOTA_ALLIANCE_RADIANT] = Alliance(DOTA_ALLIANCE_RADIANT, { DOTA_TEAM_GOODGUYS, DOTA_TEAM_BADGUYS })
-    self.alliances[DOTA_ALLIANCE_DIRE] = Alliance(DOTA_ALLIANCE_DIRE, { DOTA_TEAM_CUSTOM_1, DOTA_TEAM_CUSTOM_2 })
-    self.alliances[DOTA_ALLIANCE_LEGION] = Alliance(DOTA_ALLIANCE_LEGION, { DOTA_TEAM_CUSTOM_3, DOTA_TEAM_CUSTOM_4 })
-    self.alliances[DOTA_ALLIANCE_VOID] = Alliance(DOTA_ALLIANCE_VOID, { DOTA_TEAM_CUSTOM_5, DOTA_TEAM_CUSTOM_6 })
-
-    self.barrel_ents = Entities:FindAllByName("wall_spawn")
-    self.barrels = {} -- Created walls on the map
-    self:CreateBarrels()
-
-    self:SetState(CustomGameState.WARMUP_IN_PROGRESS)
-
-    self.warmup = Warmup(self.alliances, FIRST_WARMUP_DURATION)
-
-    self:RegisterThinker(0.01, function()
-        if self.state == CustomGameState.WARMUP_IN_PROGRESS and self.warmup then
-            self.warmup:Update()
-        end
-
-        if self.state == CustomGameState.PRE_ROUND and self.pre_round then
-            self.pre_round:Update()
-        end
-
-        if self.state == CustomGameState.ROUND_IN_PROGRESS and self.round then
-            self.round:Update()
-        end
-        CustomGameEventManager:Send_ServerToAllClients("get_mouse_position", {})
-    end)
-
-    CustomNetTables:SetTableValue("main", "maxScore", { max_score = ROUNDS_DIFFERENCE_TO_WIN })
-end
-
 function GameMode:RegisterThinker(period, callback)
     local timer = {}
     timer.period = period
@@ -387,10 +417,10 @@ function GameMode:RegisterPlayer(hero)
     local team = hero:GetTeamNumber()
     local playerID = hero:GetPlayerOwnerID()
     local userID = playerID + 1
-    
+
     if playerID == -1 then
         hero:Destroy()
-        print("ERROR: TRYING TO CREATE AN UNIT ON AN INVALID PLAYER")
+        print("ERROR: TRYING TO CREATE AN UNIT ON AN INVALID PLAYER: \n\t playerID: " .. playerID .. "\n\t hero: " .. hero:GetName() .. "\n\t team: " .. team)
         return false
     else
         if not self.players[playerID] then
@@ -505,13 +535,31 @@ function GameMode:OnHeroInGame(keys)
     if npc:IsNull() then return end
 
     if not CustomEntities:IsInitialized(npc) then
-        CustomEntities:Initialize(npc)
+        if not (npc:GetName() == "npc_dota_thinker") then
+            CustomEntities:Initialize(npc)
 
-        if npc:IsRealHero() then
-            if not self:RegisterPlayer(npc) then
-                return false
+            if npc:IsRealHero() then
+                if GetMapName() == Custom_MapNames.PVP then
+                    return self:OnHeroInGamePVP(npc)
+                elseif GetMapName() == Custom_MapNames.PVE then
+                    return self:OnHeroInGamePVE(npc)
+                end
             end
         end
+    end
+end
+
+function GameMode:OnHeroInGamePVE(hNPC)
+    if hNPC:GetTeamNumber() ~= DOTA_TEAM_CUSTOM_1 then
+        if not self:RegisterPlayer(hNPC) then
+            return false
+        end
+    end
+end
+
+function GameMode:OnHeroInGamePVP(hNPC)
+    if not self:RegisterPlayer(hNPC) then
+        return false
     end
 end
 

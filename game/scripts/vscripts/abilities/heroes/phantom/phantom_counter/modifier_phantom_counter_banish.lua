@@ -11,7 +11,7 @@ end
 
 function modifier_phantom_counter_banish:OnDestroy()
     if IsServer() then
-        local point = ClampPosition(self:GetParent():GetAbsOrigin(), self:GetAbility():GetCursorPosition(), self:GetAbility():GetCastRange(Vector(0,0,0), nil), nil)
+        local point = ClampPosition(self:GetParent():GetAbsOrigin(), CustomAbilities:GetCursorPosition(self:GetAbility()), self:GetAbility():GetCastRange(Vector(0,0,0), nil), nil)
         FindClearSpaceForUnit(self:GetParent(), point, true)
 
         self:GetParent():Heal(self.heal, self:GetParent())

@@ -1,0 +1,14 @@
+"DOTAAbilities" {
+    "centaur_passive"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/centaur/centaur_passive/centaur_passive"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_requiem"
+		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+	}
+}

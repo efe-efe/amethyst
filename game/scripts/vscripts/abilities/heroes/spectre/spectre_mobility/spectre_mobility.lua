@@ -26,7 +26,7 @@ function spectre_mobility:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
-	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
@@ -150,7 +150,7 @@ function spectre_ex_mobility:OnSpellStart()
 	local origin = caster:GetAbsOrigin()
 	local min_range = self:GetSpecialValueFor("min_range")
 	local delay = self:GetSpecialValueFor("delay")
-	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
 	
 	EFX('particles/units/heroes/hero_spectre/spectre_death.vpcf', PATTACH_WORLDORIGIN, self:GetCaster(), {
 		cp0 = self:GetCaster():GetAbsOrigin(),

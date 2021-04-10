@@ -9,7 +9,7 @@ end
 function puck_counter:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
 	local banish_duration = self:GetSpecialValueFor("banish_duration")
 
 	caster:AddNewModifier(caster, self, "modifier_puck_counter_banish", { duration = banish_duration })
@@ -18,6 +18,6 @@ function puck_counter:OnSpellStart()
 		caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()
 	end
 	local ability = caster:FindAbilityByName("puck_basic_attack")
-	ability:LaunchProjectile(self:GetCaster():GetOrigin(), ability:GetCursorPosition())
+	ability:LaunchProjectile(self:GetCaster():GetOrigin(), CustomAbilities:GetCursorPosition(ability))
 end
 

@@ -2,7 +2,7 @@ juggernaut_extra_recast = class({})
 
 function juggernaut_extra_recast:OnSpellStart()
     local caster = self:GetCaster()
-    local point = self:GetCursorPosition()
+    local point = CustomAbilities:GetCursorPosition(self)
     
     local healing_ward = EntIndexToHScript(self.healing_ward_index) 
 

@@ -24,7 +24,7 @@ function item_meteor_custom:OnSpellStart()
 	self:GetCaster():RemoveGesture(ACT_DOTA_GENERIC_CHANNEL_1)
 	
 	local caster = self:GetCaster()
-	local point = ClampPosition(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(caster:GetOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local delay_time = self:GetSpecialValueFor("delay_time")
 	local radius = self:GetSpecialValueFor("radius")
 

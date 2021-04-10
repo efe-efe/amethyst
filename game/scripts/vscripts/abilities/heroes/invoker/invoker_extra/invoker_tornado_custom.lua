@@ -8,7 +8,7 @@ function invoker_tornado_custom:GetCastPointSpeed() 			return 100 end
 function invoker_tornado_custom:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-    local point = self:GetCursorPosition()
+    local point = CustomAbilities:GetCursorPosition(self)
     local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
     local final_point = ClampPosition(origin, point, projectile_distance, projectile_distance)
 	local damage = self:GetSpecialValueFor("ability_damage")

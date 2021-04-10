@@ -36,7 +36,7 @@ function puck_basic_attack:GetIntrinsicModifierName()
 end
 
 function puck_basic_attack:OnSpellStart()
-	self:LaunchProjectile(self:GetCaster():GetOrigin(), self:GetCursorPosition())
+	self:LaunchProjectile(self:GetCaster():GetOrigin(), CustomAbilities:GetCursorPosition(self))
 end
 
 function puck_basic_attack:LaunchProjectile(origin, point)
@@ -140,7 +140,7 @@ function puck_basic_attack_related:GetCastPointSpeed() 		    return 10 end
 function puck_basic_attack_related:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local charged = caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):IsCooldownReady() and 1 or 0
 	
 	CreateModifierThinker(

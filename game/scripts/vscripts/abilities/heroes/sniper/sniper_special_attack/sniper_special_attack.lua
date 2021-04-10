@@ -18,7 +18,7 @@ function sniper_special_attack:GetCastPointSpeed() 			return 10 end
 
 function sniper_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = ClampPosition(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(caster:GetOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local duration = self:GetSpecialValueFor("duration")
 
 	CreateModifierThinker(
@@ -62,7 +62,7 @@ end
 
 function sniper_ex_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = ClampPosition(caster:GetOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(caster:GetOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local duration = self:GetSpecialValueFor("duration")
 
 	CreateModifierThinker(

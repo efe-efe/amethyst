@@ -10,7 +10,7 @@ function modifier_spectre_counter_countering:OnCreated(params)
 end
 
 function modifier_spectre_counter_countering:OnIntervalThink()
-    local mouse = self:GetAbility():GetCursorPosition()
+    local mouse = CustomAbilities:GetCursorPosition(self:GetAbility())
 	local direction = (mouse - self:GetParent():GetAbsOrigin()):Normalized()
     self:PlayEffectsOnCast()
 

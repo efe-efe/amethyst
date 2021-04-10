@@ -19,7 +19,7 @@ end
 
 function sniper_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
 	local origin = caster:GetOrigin()
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 

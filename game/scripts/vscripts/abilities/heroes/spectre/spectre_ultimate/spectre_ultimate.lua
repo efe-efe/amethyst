@@ -10,7 +10,7 @@ function spectre_ultimate:GetCastPointSpeed() 			return 0 end
 function spectre_ultimate:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetAbsOrigin()
-    local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
     
     CreateModifierThinker(
         caster, --hCaster

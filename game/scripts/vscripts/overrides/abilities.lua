@@ -3,19 +3,6 @@ function CDOTABaseAbility:HasBehavior(behavior)
 	return bit.band(abilityBehavior, behavior) == behavior
 end
 
-function CDOTABaseAbility:GetCursorPosition()
-	local caster = self:GetCaster();
-	local playerId = caster:GetPlayerOwnerID();
-
-	if IsInToolsMode() then
-		playerId = Entities:GetLocalPlayer():GetPlayerID();
-	end
-
-	local position = GameRules.GameMode.players[playerId].cursor_position
-
-	return position
-end
-
 function CDOTABaseAbility:IsBasicAttack()
 	return self:IsType("basic_attack")
 end

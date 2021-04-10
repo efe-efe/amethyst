@@ -12,7 +12,7 @@ function puck_mobility:GetCastPointSpeed() 			return 10 end
 
 function puck_mobility:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local damage_aoe = self:GetSpecialValueFor("damage_aoe")
@@ -124,7 +124,7 @@ function puck_ex_mobility:GetCastPointSpeed() 			return 10 end
 
 function puck_ex_mobility:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")

@@ -1,0 +1,104 @@
+diff --git a/node_modules/@shushishtok/tooltip_generator/fsWatcher.js b/node_modules/@shushishtok/tooltip_generator/fsWatcher.js
+index b946f06..07772a3 100644
+--- a/node_modules/@shushishtok/tooltip_generator/fsWatcher.js
++++ b/node_modules/@shushishtok/tooltip_generator/fsWatcher.js
+@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
+ var __importStar = (this && this.__importStar) || function (mod) {
+     if (mod && mod.__esModule) return mod;
+     var result = {};
+-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
++    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+     __setModuleDefault(result, mod);
+     return result;
+ };
+diff --git a/node_modules/@shushishtok/tooltip_generator/init.js b/node_modules/@shushishtok/tooltip_generator/init.js
+index 53ede01..2c6a370 100644
+--- a/node_modules/@shushishtok/tooltip_generator/init.js
++++ b/node_modules/@shushishtok/tooltip_generator/init.js
+@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
+ var __importStar = (this && this.__importStar) || function (mod) {
+     if (mod && mod.__esModule) return mod;
+     var result = {};
+-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
++    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+     __setModuleDefault(result, mod);
+     return result;
+ };
+diff --git a/node_modules/@shushishtok/tooltip_generator/install.js b/node_modules/@shushishtok/tooltip_generator/install.js
+index 03ba115..8c17e92 100644
+--- a/node_modules/@shushishtok/tooltip_generator/install.js
++++ b/node_modules/@shushishtok/tooltip_generator/install.js
+@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
+ var __importStar = (this && this.__importStar) || function (mod) {
+     if (mod && mod.__esModule) return mod;
+     var result = {};
+-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
++    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+     __setModuleDefault(result, mod);
+     return result;
+ };
+diff --git a/node_modules/@shushishtok/tooltip_generator/languages.js b/node_modules/@shushishtok/tooltip_generator/languages.js
+index b168df7..810b352 100644
+--- a/node_modules/@shushishtok/tooltip_generator/languages.js
++++ b/node_modules/@shushishtok/tooltip_generator/languages.js
+@@ -21,8 +21,8 @@ var Language;
+     // Norwegian = `norwegian`,
+     // Polish = 'polish',    
+     // Portuguese = `portuguese`,
+-    Language["Russian"] = "russian";
+-    Language["Schinese"] = "schinese";
++    // Russian = `russian`,    
++    // Schinese = `schinese`,
+     // Spanish = `spanish`,
+     // Swedish = `swedish`,
+     // TChinese = `tchinese`,
+diff --git a/node_modules/@shushishtok/tooltip_generator/languages.ts b/node_modules/@shushishtok/tooltip_generator/languages.ts
+index 1e2eff8..8a59a41 100644
+--- a/node_modules/@shushishtok/tooltip_generator/languages.ts
++++ b/node_modules/@shushishtok/tooltip_generator/languages.ts
+@@ -18,8 +18,8 @@ export enum Language
+     // Norwegian = `norwegian`,
+     // Polish = 'polish',    
+     // Portuguese = `portuguese`,
+-    Russian = `russian`,    
+-    Schinese = `schinese`,
++    // Russian = `russian`,    
++    // Schinese = `schinese`,
+     // Spanish = `spanish`,
+     // Swedish = `swedish`,
+     // TChinese = `tchinese`,
+diff --git a/node_modules/@shushishtok/tooltip_generator/localizationCompiler.js b/node_modules/@shushishtok/tooltip_generator/localizationCompiler.js
+index 8dd51b9..ab07f27 100644
+--- a/node_modules/@shushishtok/tooltip_generator/localizationCompiler.js
++++ b/node_modules/@shushishtok/tooltip_generator/localizationCompiler.js
+@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
+ var __importStar = (this && this.__importStar) || function (mod) {
+     if (mod && mod.__esModule) return mod;
+     var result = {};
+-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
++    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+     __setModuleDefault(result, mod);
+     return result;
+ };
+@@ -41,7 +41,7 @@ var LocalizationCompiler = /** @class */ (function () {
+             return text;
+         }
+         else {
+-            text = text.replace(/\{(\w*)}($|[^%])/g, "%$1%$2");
++            text = text.replace(/\@{(\w*)}($|[^%])/g, "%$1%$2");
+             text = text.replace(/\{(\w*)}%/g, "%$1%%%");
+             text = text.replace(/%\{(\w*)}/g, "%%%$1%");
+             return text;
+diff --git a/node_modules/@shushishtok/tooltip_generator/localizationCompiler.ts b/node_modules/@shushishtok/tooltip_generator/localizationCompiler.ts
+index 3019fae..50ec433 100644
+--- a/node_modules/@shushishtok/tooltip_generator/localizationCompiler.ts
++++ b/node_modules/@shushishtok/tooltip_generator/localizationCompiler.ts
+@@ -25,7 +25,7 @@ export class LocalizationCompiler
+         }
+         else
+         {
+-            text = text.replace(/\{(\w*)}($|[^%])/g, "%$1%$2")
++            text = text.replace(/\@{(\w*)}($|[^%])/g, "%$1%$2")
+             text = text.replace(/\{(\w*)}%/g, "%$1%%%");
+             text = text.replace(/%\{(\w*)}/g, "%%%$1%");
+             

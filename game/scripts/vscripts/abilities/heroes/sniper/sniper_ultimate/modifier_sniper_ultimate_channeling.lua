@@ -27,7 +27,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = self:GetAbility():GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self:GetAbility())
     local ability = self:GetAbility()
 
 	local projectile_direction = Direction2D(origin, point)

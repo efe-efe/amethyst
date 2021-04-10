@@ -50,7 +50,7 @@ function storm_ex_mobility:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetAbsOrigin()
     local duration = self:GetSpecialValueFor("duration")
-    local point = ClampPosition(caster:GetAbsOrigin(), self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local point = ClampPosition(caster:GetAbsOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 
     local thinker = CreateModifierThinker(
         caster, --hCaster

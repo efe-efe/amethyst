@@ -61,7 +61,7 @@ function modifier_casting:OnIntervalThink()
 		self:Destroy()
 	end
 		
-    local mouse = self:GetAbility():GetCursorPosition()
+    local mouse = CustomAbilities:GetCursorPosition(self:GetAbility())
 	local direction = (mouse - self.parent:GetAbsOrigin()):Normalized()
 
 	CustomEntities:FullyFaceTowards(self.parent, Vector(direction.x, direction.y, self.parent:GetForwardVector().z))

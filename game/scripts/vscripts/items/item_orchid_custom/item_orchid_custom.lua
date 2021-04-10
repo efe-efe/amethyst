@@ -19,7 +19,7 @@ function item_orchid_custom:OnSpellStart()
 	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilities:GetCursorPosition(self)
 	local damage = self:GetSpecialValueFor("ability_damage")
 
 	local duration = self:GetSpecialValueFor("duration")

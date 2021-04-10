@@ -21,7 +21,7 @@ function modifier_mars_counter_countering:OnDestroy()
 end
 
 function modifier_mars_counter_countering:OnIntervalThink()
-    local mouse = self:GetAbility():GetCursorPosition()
+    local mouse = CustomAbilities:GetCursorPosition(self:GetAbility())
 	local direction = (mouse - self:GetParent():GetAbsOrigin()):Normalized()
     self:PlayEffectsOnCast()
 
