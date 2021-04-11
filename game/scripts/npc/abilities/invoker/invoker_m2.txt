@@ -20,7 +20,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"22" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"22 30" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 		}
