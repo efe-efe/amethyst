@@ -72,21 +72,22 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"LevelsBetweenUpgrades"			"0"
 		"AbilityEnergyCost"				"50"
-		"AbilityCastRange"				"2000"
-		"AbilityCastPoint"				"0.5"
+		"AbilityCastRange"				"900"
+		"AbilityCastPoint"				"0.2"
 		"AbilityCooldown"				"12"
 
 		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_LINE"
+			"Type" 						"TARGETING_INDICATOR_AOE"
 			"DisplayRange" 				"1"
-			"Fixed"						"1"
 		}
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1200" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"35" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1000" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"min_range"					"550" }
 		}
 	}
 
