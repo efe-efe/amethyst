@@ -4,7 +4,7 @@ function modifier_invoker_meteor_custom_thinker:OnCreated(params)
     if IsServer() then
         self.caster = self:GetCaster()
         self.origin = self:GetParent():GetAbsOrigin()
-        self.radius = 150--self:GetAbility():GetSpecialValueFor('radius')
+        self.radius = 200--self:GetAbility():GetSpecialValueFor('radius')
         
         self.damage_table = {
             attacker = self.caster,

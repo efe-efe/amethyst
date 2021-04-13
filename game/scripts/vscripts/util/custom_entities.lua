@@ -421,6 +421,10 @@ function CustomEntities:IsFeared(hEntity)
 	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.FEAR)
 end
 
+function CustomEntities:IsChanneling(hEntity)
+	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.CHANNELING)
+end
+
 function CustomEntities:IsMoveForced(hEntity)
 	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.MOVE_FORCE)
 end
@@ -581,11 +585,6 @@ end
 
 function CustomEntities:Allies(hEntity, hTarget)
 	local playerID = hEntity:GetPlayerOwnerID()
-	local playerID_test = hTarget:GetPlayerOwnerID()
-
-	if playerID_test == -1 then
-		return false
-	end
 
 	return CustomEntities:GetAlliance(hEntity) == CustomEntities:GetAlliance(hTarget)
 end

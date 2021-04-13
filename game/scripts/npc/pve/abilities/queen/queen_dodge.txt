@@ -1,0 +1,20 @@
+"DOTAAbilities" {
+    "queen_dodge"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/queen/queen_dodge/queen_dodge"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"sniper_take_aim"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"AbilityCastPoint"				"0.1"
+		"AbilityCooldown"				"6.0"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+	}
+}

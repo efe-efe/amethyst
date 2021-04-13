@@ -34,6 +34,9 @@ local constructors = {
         CustomEntities:AddCharges(hTarget, "modifier_invoker_helper")
         CustomEntities:SetEnergyPerCell(hTarget, 50)
     end,
+    ["npc_dota_hero_centaur"] = function(hTarget)
+        hTarget:SetHullRadius(100)
+    end,
 }
 
 function ConstructHero(hTarget)

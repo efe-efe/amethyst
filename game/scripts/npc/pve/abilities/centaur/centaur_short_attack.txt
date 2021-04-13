@@ -6,7 +6,6 @@
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"nevermore_requiem"
-		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
 		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
@@ -19,7 +18,7 @@
 
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"						"FIELD_INTEGER"		"radius"				"350" }
+			"01"{ "var_type"						"FIELD_INTEGER"		"radius"				"500" }
 		}
 	}
 }

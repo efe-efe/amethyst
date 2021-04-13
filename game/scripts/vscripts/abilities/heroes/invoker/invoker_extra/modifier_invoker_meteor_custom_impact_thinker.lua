@@ -9,7 +9,6 @@ function modifier_invoker_meteor_custom_impact_thinker:OnCreated(params)
     if IsServer() then
         local caster_origin = Vector(params.x, params.y)
         self.direction = Direction2D(caster_origin, self.origin)
-        print((caster_origin - self.origin):Length2D())
         self.damage_table = {
             attacker = self.caster,
             damage = self:GetAbility():GetSpecialValueFor("ability_damage"),

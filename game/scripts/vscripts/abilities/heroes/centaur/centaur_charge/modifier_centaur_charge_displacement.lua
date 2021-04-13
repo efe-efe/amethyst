@@ -3,6 +3,9 @@ modifier_centaur_charge_displacement = class({})
 function modifier_centaur_charge_displacement:OnCreated(params)
 	if IsServer() then
 		self.origin = self:GetParent():GetAbsOrigin()
+		self.stun_duration = 0.5
+		self.fading_slow_duration = 5.0
+		self.fading_slow_pct = 100
 	end
 end
 
@@ -17,6 +20,27 @@ function modifier_centaur_charge_displacement:OnDestroy()
 	end
 end
 
+function modifier_centaur_charge_displacement:OnCollide(params)
+	if IsServer() then
+		if params.type == UNIT_COLLISION then
+			for _,unit in pairs(params.units) do
+				if not unit:HasModifier("modifier_centaur_debuff") then
+					unit:AddNewModifier(self:GetCaster(), self:GetAbility(), 'modifier_centaur_debuff', {
+						duration = self.fading_slow_duration,
+						max_slow_pct = self.fading_slow_pct
+					})
+
+					unit:AddNewModifier(self:GetCaster(), self, 'modifier_generic_stunned', { duration = self.stun_duration })
+				end
+			end
+		end
+	end
+end
+
+function modifier_centaur_charge_displacement:GetCollisionTeamFilter()
+	return DOTA_UNIT_TARGET_TEAM_ENEMY
+end
+
 function modifier_centaur_charge_displacement:DeclareFunctions()
 	return {
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
@@ -24,8 +48,9 @@ function modifier_centaur_charge_displacement:DeclareFunctions()
 	}
 end
 
-function modifier_centaur_charge_displacement:GetOverrideAnimation() 		return ACT_DOTA_CAST_ABILITY_2 end
+function modifier_centaur_charge_displacement:GetOverrideAnimation() 		return ACT_DOTA_RUN end
 function modifier_centaur_charge_displacement:GetOverrideAnimationRate() 	return 1.5 end
+function modifier_centaur_charge_displacement:GetCollisionRadius() 			return 200 end
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Displacement(modifier_centaur_charge_displacement)

@@ -1,18 +1,20 @@
 centaur_charge = class({})
 LinkLuaModifier("modifier_centaur_charge_displacement", "abilities/heroes/centaur/centaur_charge/modifier_centaur_charge_displacement", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_centaur_charge_knockback_displacement", "abilities/heroes/centaur/centaur_charge/modifier_centaur_charge_knockback_displacement", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_centaur_debuff", "abilities/heroes/centaur/centaur_charge/modifier_centaur_debuff", LUA_MODIFIER_MOTION_NONE)
 
-function centaur_charge:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end 
-function centaur_charge:GetPlaybackRateOverride()       return 1.0 end
-function centaur_charge:GetCastPointSpeed() 			return 100 end
+
+function centaur_charge:GetCastAnimationCustom()		return ACT_DOTA_CENTAUR_STAMPEDE end 
+function centaur_charge:GetPlaybackRateOverride()       return 2.0 end
+function centaur_charge:GetCastPointSpeed() 			return 0 end
 
 function centaur_charge:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
 	local point = self:GetCursorPosition()
+    local direction = (point - origin):Normalized()
 
-	local direction = (point - origin):Normalized()
-    local distance = self:GetCastRange(Vector(0,0,0), nil)
-
+    CustomEntities:FullyFaceTowards(caster, direction)
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source
@@ -20,8 +22,8 @@ function centaur_charge:OnSpellStart()
         {
             x = direction.x,
             y = direction.y,
-            r = distance,
-            speed = distance/1.0,
+            r = self:GetCastRange(Vector(0,0,0), nil),
+            speed = 1200,
             peak = 30,
         }
    )
@@ -30,7 +32,7 @@ function centaur_charge:OnSpellStart()
 end
 
 function centaur_charge:PlayEffectsOnCast()
-    EmitSoundOn("Hero_PhantomAssassin.Strike.Start", self:GetCaster())
+    EmitSoundOn("Hero_Centaur.Stampede.Cast", self:GetCaster())
 
     local effect_cast = ParticleManager:CreateParticle("particles/blink_purple.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster())
 

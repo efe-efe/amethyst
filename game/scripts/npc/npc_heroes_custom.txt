@@ -9,6 +9,7 @@
 #base "heroes\vengeful.txt"
 #base "heroes\invoker.txt"
 #base "pve\heroes\centaur.txt"
+#base "pve\heroes\queen.txt"
 
 
 "DOTAHeroes"

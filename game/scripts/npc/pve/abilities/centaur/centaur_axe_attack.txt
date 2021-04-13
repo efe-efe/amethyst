@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+    "centaur_axe_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/centaur/centaur_axe_attack/centaur_axe_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_requiem"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCooldown"				"1.0"
+		"AbilityCastRange"				"500"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.4"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_HALF_CIRCLE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"						"FIELD_INTEGER"		"radius"				"500" }
+		}
+	}
+}

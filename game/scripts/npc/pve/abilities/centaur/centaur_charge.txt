@@ -8,17 +8,14 @@
 		"AbilityTextureName"			"nevermore_requiem"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCooldown"				"3.0"
-		"AbilityCastRange"				"1200"
+		"AbilityCastRange"				"1400"
 		"LevelsBetweenUpgrades"			"0"
-		"AbilityCastPoint"				"0.1"
+		"AbilityCastPoint"				"0.3"
 
 		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_AOE"
-		}
-
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"						"FIELD_INTEGER"		"radius"				"400" }
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
 		}
 	}
 }

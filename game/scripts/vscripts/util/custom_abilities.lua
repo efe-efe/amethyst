@@ -8,8 +8,11 @@ function CustomAbilities:GetCursorPosition(hAbility)
 		playerId = Entities:GetLocalPlayer():GetPlayerID();
 	end
 
-	local position = GameRules.GameMode.players[playerId].cursor_position
+	if not playerId then
+		return Vector(0, 0, 0)
+	end
 
+	local position = GameRules.GameMode.players[playerId].cursor_position
 	return position
 end
 

@@ -151,10 +151,15 @@ function GameMode:StarPVPMap()
 end
 
 function GameMode:StartPVEMap()
-    self.boss = Centaur(Vector(0, 0, 128), "npc_dota_hero_centaur")
-
+    self.boss = Centaur(Vector(150, 0, 128))
+    self.helper = 3.0 * 30 -- Otherwise this shit bugs and says something i don't want
+    
     self:RegisterThinker(0.01, function()
-        self.boss:Update()
+        if self.helper == 0 then
+            self.boss:Update()
+        else 
+            self.helper = self.helper - 1
+        end
     end)
 end
 
@@ -186,7 +191,6 @@ function GameMode:SetupRules()
     GameRules:SetStrategyTime(0.0)
     GameRules:SetShowcaseTime(0.0)
     GameRules:SetUseBaseGoldBountyOnHeroes(false)
-    GameRules:GetGameModeEntity():SetFixedRespawnTime(-1) 
 	GameRules:GetGameModeEntity():SetLoseGoldOnDeath(false)
     GameRules:SetTimeOfDay(0.5)
 
@@ -210,6 +214,7 @@ function GameMode:SetupRulesPVE()
     GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_GOODGUYS, 2)
     GameRules:SetCustomGameTeamMaxPlayers(DOTA_TEAM_BADGUYS, 2)
     GameRules:SetHeroRespawnEnabled(true)
+    GameRules:GetGameModeEntity():SetFixedRespawnTime(5.0)
 end
 
 function GameMode:SetupEventHooks()
@@ -258,6 +263,7 @@ function GameMode:LinkModifiers()
     LinkLuaModifier("modifier_generic_invencible",              "abilities/generic/modifier_generic_invencible", LUA_MODIFIER_MOTION_NONE) -- Should Delete
     LinkLuaModifier("modifier_generic_confuse",                 "abilities/generic/modifier_generic_confuse", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_generic_sleep",                   "abilities/generic/modifier_generic_sleep", LUA_MODIFIER_MOTION_NONE)
+    LinkLuaModifier("modifier_generic_fear",                    "abilities/generic/modifier_generic_fear", LUA_MODIFIER_MOTION_NONE)
     
     LinkLuaModifier("modifier_visible",                         "abilities/base/modifier_visible", LUA_MODIFIER_MOTION_NONE)
     LinkLuaModifier("modifier_casting",                         "abilities/base/modifier_casting", LUA_MODIFIER_MOTION_NONE)
@@ -566,6 +572,10 @@ end
 function GameMode:OnEntityKilled(keys)
     local killed = EntIndexToHScript(keys.entindex_killed)
 
+    if GetMapName() == Custom_MapNames.PVE then
+        self:OnEntityKilledPVE(killed)
+    end
+
     if killed.GetParentEntity then
         local entity = killed:GetParentEntity()
 
@@ -577,31 +587,39 @@ function GameMode:OnEntityKilled(keys)
         end
     else
         if killed:IsRealHero() then
-            self.round.hero_died = true
-            self:CreateDeathOrb(killed)
-            self:UpdateCameras()
-        end
-    end
-end
-
-function GameMode:OnHeroKilled(killed)
-    if self.WIN_CONDITION.type == "AMETHYSTS" then
-        killed.lifes = killed.lifes - 1 
-
-        local new_respawn_time = nil
-
-        if killed.lifes <= 0 then
-            new_respawn_time = 999
-        else
-            new_respawn_time = self.BASE_RESPAWN_TIME + self.RESPAWN_TIME_PER_DEATH * (PlayerResource:GetDeaths(killed:GetPlayerID()) - 1)
-            if new_respawn_time > self.MAX_RESPAWN_TIME then 
-                new_respawn_time = self.MAX_RESPAWN_TIME 
+            if GetMapName() == Custom_MapNames.PVP then
+                self:OnEntityKilledPVP(killed)
             end
         end
-
-        killed:SetTimeUntilRespawn(new_respawn_time)
     end
 end
+
+function GameMode:OnEntityKilledPVP(hKilled)
+    self.round.hero_died = true
+    self:CreateDeathOrb(hKilled)
+    self:UpdateCameras()
+end
+
+function GameMode:OnEntityKilledPVE(hKilled)
+    if hKilled.GetParentEntity then
+        local entity = hKilled:GetParentEntity()
+        
+        if instanceof(entity, Boss) then
+            if instanceof(entity, Centaur) then
+                self.boss = Queen(Vector(150, 0, 128))
+            elseif instanceof(entity, Queen) then
+                self.boss = Centaur(Vector(150, 0, 128))
+            end
+        end
+        
+        self:SetRespawnTime(hKilled:GetTeam(), hKilled, 999)
+    end    
+end
+
+function GameMode:SetRespawnTime( killedTeam, killedUnit, extraTime )
+    killedUnit:SetTimeUntilRespawn( extraTime )
+end
+
 
 function GameMode:OnEntityHurt(keys)
     local damagebits = keys.damagebits -- This might always be 0 and therefore useless
