@@ -19,7 +19,9 @@ require('clases/player')
 require('clases/warmup')
 require('clases/pre_round')
 require('clases/round')
+require('clases/pve_round')
 require('clases/boss')
+require('clases/npc')
 
 require('libraries/timers') 
 require('libraries/projectiles') 
@@ -41,6 +43,10 @@ CustomGameState.PRE_ROUND = 1
 CustomGameState.ROUND_IN_PROGRESS = 2
 CustomGameState.PRE_WARMUP = 3
 CustomGameState.WARMUP_IN_PROGRESS = 4
+CustomGameState.PVE_PRE_ROUND = 5
+CustomGameState.PVE_ROUND_IN_PROGRESS = 6
+CustomGameState.PVE_POST_ROUND = 7
+CustomGameState.PVE_WARMUP_IN_PROGRESS = 8
 
 local Custom_ActionTypes = {
     MOVEMENT = 0,
@@ -151,14 +157,13 @@ function GameMode:StarPVPMap()
 end
 
 function GameMode:StartPVEMap()
-    self.boss = Centaur(Vector(150, 0, 128))
+    self:SetState(CustomGameState.PVE_ROUND_IN_PROGRESS)
+    self.pve_round = PveRound(self.alliances, -1)
     self.helper = 3.0 * 30 -- Otherwise this shit bugs and says something i don't want
     
     self:RegisterThinker(0.01, function()
-        if self.helper == 0 then
-            self.boss:Update()
-        else 
-            self.helper = self.helper - 1
+        if self.state == CustomGameState.PVE_ROUND_IN_PROGRESS and self.pve_round then
+            self.pve_round:Update()
         end
     end)
 end
@@ -371,9 +376,6 @@ function GameMode:SetupMode()
     self.players = {}
     self.units = {}
     self.alliances = {}
-    self.warmup = nil
-    self.pre_round = nil
-    self.round = nil
     self.wtf = false
     
     GameRules:GetGameModeEntity():SetThink("OnThink", self, THINK_PERIOD)
@@ -389,6 +391,18 @@ function GameMode:SetupMode()
     mode:SetBuybackEnabled(false)
     mode:SetDaynightCycleDisabled(true)
     mode:SetCameraDistanceOverride(1350)
+end
+
+function GameMode:SetupPVPMode()
+    self.warmup = nil
+    self.pre_round = nil
+    self.round = nil
+end
+
+
+function GameMode:SetupPVEMode()
+    self.pve_warmup = nil
+    self.pve_round = nil
 end
 
 function GameMode:IsInWTFMode()
@@ -604,6 +618,7 @@ function GameMode:OnEntityKilledPVE(hKilled)
     if hKilled.GetParentEntity then
         local entity = hKilled:GetParentEntity()
         
+        --[[
         if instanceof(entity, Boss) then
             if instanceof(entity, Centaur) then
                 self.boss = Queen(Vector(150, 0, 128))
@@ -611,8 +626,8 @@ function GameMode:OnEntityKilledPVE(hKilled)
                 self.boss = Centaur(Vector(150, 0, 128))
             end
         end
-        
         self:SetRespawnTime(hKilled:GetTeam(), hKilled, 999)
+        ]]
     end    
 end
 
@@ -727,14 +742,4 @@ end
 
 function GameMode:EndGame(victoryTeam)
 	GameRules:SetGameWinner(victoryTeam)
-end
-
-function GameMode:UpdateUnitHealthBar(unit)
-    local data = {
-        unitIndex = unit:GetEntityIndex(),
-        current_health = unit:GetHealth(),
-        max_health = unit:GetMaxHealth()
-    }
-
-    CustomGameEventManager:Send_ServerToAllClients("update_unit_health_bar", data)
 end
