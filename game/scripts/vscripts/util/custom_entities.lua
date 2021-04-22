@@ -43,6 +43,7 @@ function CustomEntities:Initialize(hEntity)
 	hEntity.healing_reduction_pct = 		0
 	hEntity.initialized = 					nil
 	hEntity.modifiers = 					{}
+	hEntity.parent =						nil
 
 	for key,value in pairs(MODIFIER_TYPES) do
 		hEntity.modifiers[MODIFIER_OBJECT_NAMES[MODIFIER_TYPES[key]]] = {}
@@ -51,12 +52,12 @@ function CustomEntities:Initialize(hEntity)
 	hEntity.stackbars_modifiers =			nil
 	hEntity.charges_modifiers =				nil
 	hEntity.cooldown_modifiers =			nil
-	
+
 	CustomEntities:SetEnergy(hEntity, hEntity.max_energy)	
-    CustomEntities:SetTreshold(hEntity, GameRules.GameMode.max_treshold)
+    CustomEntities:SetTreshold(hEntity, GameRules.Addon.max_treshold)
     
 	hEntity:AddNewModifier(hEntity,  nil, "modifier_visible", {})
-	GameRules.GameMode:RegisterUnit(hEntity)
+	GameRules.Addon:RegisterUnit(hEntity)
 
 	if hEntity:IsRealHero() then
 		hEntity.direction = 					{}
@@ -75,11 +76,19 @@ function CustomEntities:Initialize(hEntity)
 			end
 		end
 	
-		hEntity:SetAbilityPoints(ABILITY_POINTS)
+		hEntity:SetAbilityPoints(2) -- This should point to settings.AbilityPoints
 		ConstructHero(hEntity)
 	end
 
 	CustomEntities:SetInitialized(hEntity, true)
+end
+
+function CustomEntities:SetParent(hEntity, cParent)
+	hEntity.parent = cParent
+end
+
+function CustomEntities:GetParent(hEntity)
+	return hEntity.parent
 end
 
 function CustomEntities:RefreshCooldowns(hEntity)
@@ -107,7 +116,7 @@ function CustomEntities:Reset(hEntity)
 		CustomEntities:SetEnergy(hEntity, 0)
 	end
 	CustomEntities:SetHealthCustom(hEntity, hEntity:GetMaxHealth())
-	CustomEntities:SetTreshold(hEntity, GameRules.GameMode.max_treshold)
+	CustomEntities:SetTreshold(hEntity, GameRules.Addon.max_treshold)
 	CustomEntities:RefreshCooldowns(hEntity)	
 	CustomEntities:InterruptCastPoint(hEntity)
 	hEntity:Purge(true, true, false, true, false)
@@ -219,7 +228,7 @@ function CustomEntities:GetAlliance(hEntity)
 		return false
 	end
 
-	local player_object = GameRules.GameMode.players[playerID]
+	local player_object = GameRules.Addon:FindPlayerById(playerID)
 	
 	if player_object then
 		return player_object.alliance
@@ -636,7 +645,7 @@ function CustomEntities:IsObstacle(hEntity)
     return (CustomEntities:IsBarrel(hEntity) or CustomEntities:IsWall(hEntity)) and true or false
 end
 
-function CustomEntities:IsAmethyst(hEntity)
+function CustomEntities:IsGem(hEntity)
 	if hEntity and hEntity.GetParentEntity then
 		local entity = hEntity:GetParentEntity()
 
@@ -649,7 +658,7 @@ function CustomEntities:IsAmethyst(hEntity)
 end
 
 function CustomEntities:ProvidesMana(hEntity)
-	if CustomEntities:IsAmethyst(hEntity) then
+	if CustomEntities:IsGem(hEntity) then
 		return false
 	end
 
@@ -702,8 +711,8 @@ function CustomEntities:TrueHeal(hEntity, iHeal)
     CustomEntities:SetHealthCustom(hEntity, base_health + iHeal)
 
     local new_treshold = CustomEntities:GetTreshold(hEntity) + iHeal
-	if new_treshold > GameRules.GameMode.max_treshold then
-		CustomEntities:SetTreshold(hEntity, GameRules.GameMode.max_treshold)
+	if new_treshold > GameRules.Addon.max_treshold then
+		CustomEntities:SetTreshold(hEntity, GameRules.Addon.max_treshold)
 	else
 		CustomEntities:SetTreshold(hEntity, new_treshold)
     end

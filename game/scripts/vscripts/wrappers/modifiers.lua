@@ -297,7 +297,7 @@ function Modifiers.Charges(modifier)
             end
 
             if params.ability == self:GetAbility() then
-                if not GameRules.GameMode:IsInWTFMode() then
+                if not GameRules.Addon:IsInWTFMode() then
                     self:DecrementStackCount()
                     self:CalculateCharge()
                 end
@@ -867,7 +867,7 @@ function Modifiers.Thinker(modifier)
         self.effects_cast_progress = {}
 
         if self:GetVisualScope() == THINKER_VISUALS_PUBLIC then
-            for _,alliance in pairs(GameRules.GameMode.alliances) do
+            for _,alliance in pairs(GameRules.Addon.alliances) do
                 for _,team in pairs(alliance.teams) do
                     self.effects_cast_progress[team] = ParticleManager:CreateParticleForTeam(particle_cast, PATTACH_WORLDORIGIN, self:GetCaster(), team)
 
@@ -876,7 +876,7 @@ function Modifiers.Thinker(modifier)
                     ParticleManager:SetParticleControl(self.effects_cast_progress[team], 1, Vector(self:GetAOERadius(), percentage, 1))
                     ParticleManager:SetParticleControl(self.effects_cast_progress[team], 16, Vector(1, 0, 0))
                     
-                    local alliance = GameRules.GameMode:FindAllianceByTeam(team)
+                    local alliance = GameRules.Addon:FindAllianceByTeam(team)
 
                     if alliance == caster_alliance then
                         ParticleManager:SetParticleControl(self.effects_cast_progress[team], 15, Vector(70, 70, 250))

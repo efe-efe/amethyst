@@ -287,7 +287,7 @@ function CreateRadiusMarker(caster, origin, radius, scope, duration)
 	local particle_cast = "particles/aoe_marker.vpcf"
 	
 	if scope == RADIUS_SCOPE_PUBLIC then
-		for _,alliance in pairs(GameRules.GameMode.alliances) do
+		for _,alliance in pairs(GameRules.Addon.alliances) do
 			for _,team in pairs(alliance.teams) do
 				if caster:GetTeam() == team then
 					color = GREEN

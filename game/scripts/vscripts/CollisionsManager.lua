@@ -1,7 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["4"] = 1,["5"] = 2,["6"] = 3,["7"] = 4,["8"] = 5,["9"] = 11,["10"] = 12,["11"] = 11,["12"] = 14,["13"] = 15,["14"] = 14,["15"] = 17,["16"] = 18,["17"] = 17,["18"] = 20,["19"] = 21,["20"] = 20});
-NO_DIRECTION = -1
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["4"] = 3,["5"] = 4,["6"] = 5,["7"] = 6,["8"] = 12,["9"] = 13,["10"] = 12,["11"] = 15,["12"] = 16,["13"] = 15,["14"] = 18,["15"] = 19,["16"] = 18,["17"] = 21,["18"] = 22,["19"] = 21});
 DIAGONAL_LEFT = 0
 DIAGONAL_RIGHT = 1
 HORIZONTAL = 2

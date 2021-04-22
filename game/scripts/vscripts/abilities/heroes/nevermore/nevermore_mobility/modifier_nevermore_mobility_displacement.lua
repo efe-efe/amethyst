@@ -40,7 +40,7 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                     ApplyDamage(self.damage_table)
     
                     if not CustomEntities:IsObstacle(unit) then
-                        if not CustomEntities:IsAmethyst(unit) then
+                        if not CustomEntities:IsGem(unit) then
                             local modifier = self:GetParent():FindModifierByName('modifier_nevermore_souls')
                             for i = 0, 1 do
                                 self:PlayEffectsOnImpact(unit)

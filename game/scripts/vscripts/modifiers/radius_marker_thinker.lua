@@ -62,7 +62,7 @@ function radius_marker_thinker:DrawVisuals()
     self.effects_cast_progress = {}
 
     if self.scope == RADIUS_SCOPE_PUBLIC then
-        for _,alliance in pairs(GameRules.GameMode.alliances) do
+        for _,alliance in pairs(GameRules.Addon.alliances) do
             for _,team in pairs(alliance.teams) do
                 self.effects_cast_progress[team] = ParticleManager:CreateParticleForTeam(particle_cast, PATTACH_WORLDORIGIN, self:GetCaster(), team)
 
@@ -71,7 +71,7 @@ function radius_marker_thinker:DrawVisuals()
                 ParticleManager:SetParticleControl(self.effects_cast_progress[team], 1, Vector(self.radius, percentage, 1))
                 ParticleManager:SetParticleControl(self.effects_cast_progress[team], 16, Vector(1, 0, 0))
                 
-                local alliance = GameRules.GameMode:FindAllianceByTeam(team)
+                local alliance = GameRules.Addon:FindAllianceByTeam(team)
 
                 if alliance == caster_alliance then
                     ParticleManager:SetParticleControl(self.effects_cast_progress[team], 15, Vector(70, 70, 250))

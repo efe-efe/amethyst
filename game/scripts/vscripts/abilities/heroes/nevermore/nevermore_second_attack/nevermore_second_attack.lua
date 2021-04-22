@@ -56,7 +56,7 @@ function nevermore_second_attack:OnSpellStart()
 					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 
-				if not CustomEntities:IsAmethyst(unit) then
+				if not CustomEntities:IsGem(unit) then
 					modifier:IncrementStackCount()
 					self:PlayEffectsSoul(unit)
 				end

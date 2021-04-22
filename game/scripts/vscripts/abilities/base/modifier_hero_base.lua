@@ -90,7 +90,7 @@ function modifier_hero_base:OnIntervalThink()
 	end
 
 	if IsInToolsMode() and DEBUG then
-		local mouse = GameRules.GameMode.players[self.parent:GetPlayerID()].cursor_position
+		local mouse = GameRules.Addon.players[self.parent:GetPlayerID()].cursor_position
 
 		DebugDrawLine_vCol(self.parent:GetAbsOrigin(), self.parent:GetAbsOrigin() + self.parent:GetForwardVector() * 500, Vector(0,0,255), true, 0.03)
 		DebugDrawLine_vCol(self.parent:GetAbsOrigin(), mouse, Vector(0,255,0), true, 0.03)
@@ -109,8 +109,7 @@ function modifier_hero_base:PickupItems()
 			self.parent:AddItem(item)
 			item:OnSpellStart()
 
-			local entity = item:GetParentEntity()
-			entity:OnPickedUp()
+			GameRules.Addon:OnPickedUp(item)
 			UTIL_Remove(drop)
 		end
 	end
@@ -397,7 +396,7 @@ function modifier_hero_base:OnAbilityFullyCast(params)
 			return
 		end
 
-		if not GameRules.GameMode:IsInWTFMode() then
+		if not GameRules.Addon:IsInWTFMode() then
 			CustomEntities:GiveEnergy(params.unit, -params.ability:GetEnergyCost())
 		end
 	end

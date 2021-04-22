@@ -1,11 +1,12 @@
-const NO_DIRECTION =  -1;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const DIAGONAL_LEFT = 0;
 const DIAGONAL_RIGHT = 1;
 const HORIZONTAL = 2;
 const VERTICAL = 3;
 
 type HammerEvent = {
-    activator: EntityIndex;
+    activator: CDOTA_BaseNPC;
 }
 
 function OnStartTouchCollisionVertical(this: void, tEvent: HammerEvent): void{

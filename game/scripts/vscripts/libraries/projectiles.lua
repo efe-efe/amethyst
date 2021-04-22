@@ -1,45 +1,45 @@
-PROJECTILES_THINK = 0.01
-
 PROJECTILES_NOTHING = 0
 PROJECTILES_DESTROY = 1
 PROJECTILES_BOUNCE = 2
 PROJECTILES_FOLLOW = 3
 SPEED_FACTOR = 1.0
+PROJECTILES_THINK = 0.01
+PROJECTILES_VISUAL_OFFSET = 15
 
 ProjectilesManager = class({
     tProjectiles = {}
 })
 
-if ProjectilesManagerInstance == nil then
-    ProjectilesManagerInstance = ProjectilesManager()
-end
-
-function ProjectilesManager:Initialize()
-    GameRules.GameMode:RegisterThinker(PROJECTILES_THINK, function()
-        self:Update()
-    end)
+function ProjectilesManager:constructor()
+    self:Update()
 end
 
 function ProjectilesManager:Update()
-    local now = Time();
+    Timers:CreateTimer(PROJECTILES_THINK, function()
+        local now = Time();
 
-    if not self.fPrevious then
+        if not self.fPrevious then
+            self.fPrevious = now;
+        end
+
+        local dt = now - self.fPrevious
         self.fPrevious = now;
-    end
 
-    local dt = now - self.fPrevious
-    self.fPrevious = now;
-
-    if dt > 0 then
-        for _,projectile in ipairs(self.tProjectiles) do
-            local fNextCallTime = projectile:Update()
-            if fNextCallTime then
-                projectile:SetEndTime(fNextCallTime)
-            else
-                self:RemoveProjectile(projectile:GetId())
+        if dt > 0 then
+            for _,projectile in ipairs(self.tProjectiles) do
+                local fNextCallTime = projectile:Update()
+                if fNextCallTime then
+                    projectile:SetEndTime(fNextCallTime)
+                else
+                    self:RemoveProjectile(projectile:GetId())
+                end
             end
         end
-    end
+        
+        Timers:CreateTimer(PROJECTILES_THINK, function()
+            self:Update()
+        end)
+    end)
 end
 
 function ProjectilesManager:RemoveProjectile(iProjectileID)
@@ -61,6 +61,10 @@ function ProjectilesManager:CreateProjectile(tData)
     table.insert(self.tProjectiles, projectile)
 
     return projectile
+end
+
+if ProjectilesManagerInstance == nil then
+    ProjectilesManagerInstance = ProjectilesManager()
 end
 
 Projectile = class({
@@ -119,7 +123,7 @@ function Projectile:constructor(tData)
     self:InitializeValues()
     self.id = self:CreateParticle(nil)
     self.iEfx = self.id
-    ParticleManager:SetParticleControl(self.iEfx, self.iVelocityCP, self.vCurrentVelocity * 30)
+    ParticleManager:SetParticleControl(self.iEfx, self.iVelocityCP, self.vCurrentVelocity * PROJECTILES_VISUAL_OFFSET)
 end
 
 function Projectile:ResetDistanceTraveled()
@@ -356,7 +360,7 @@ function Projectile:ProcessWalls()
                 normal.z = 0
                 normal = normal:Normalized()
                 --DebugDrawLine_vCol(self.vPseudoFramePosition, self.vPseudoFramePosition + normal * 200, Vector(0,255,0), true, 1)
-                self:SetVelocity(((-2 * self.vCurrentVelocity:Dot(normal) * normal) + self.vCurrentVelocity) * 30, self.vPseudoFramePosition)
+                self:SetVelocity(((-2 * self.vCurrentVelocity:Dot(normal) * normal) + self.vCurrentVelocity) * PROJECTILES_VISUAL_OFFSET, self.vPseudoFramePosition)
                 return true--break
             end
         end 
@@ -399,8 +403,8 @@ function Projectile:ProcessGround()
             end
 
             local normal = self:GetNormal(self.vGroundPosition, self.Source)
-            self:SetVelocity(((-2 * self.vCurrentVelocity:Dot(normal) * normal) + self.vCurrentVelocity) * 30, self.vPseudoFramePosition)
-            --entity:SetPhysicsVelocity(((-2 * newVelocity:Dot(normal) * normal) + newVelocity) * self.multiplier * 30)
+            self:SetVelocity(((-2 * self.vCurrentVelocity:Dot(normal) * normal) + self.vCurrentVelocity) * PROJECTILES_VISUAL_OFFSET, self.vPseudoFramePosition)
+            --entity:SetPhysicsVelocity(((-2 * newVelocity:Dot(normal) * normal) + newVelocity) * self.multiplier * PROJECTILES_VISUAL_OFFSET)
             return true--break
         elseif self.GroundBehavior == PROJECTILES_FOLLOW and self.iChanges > 0 and self.fCurrentTime >= self.fChangeTime then
             -- follow calculation
@@ -416,7 +420,7 @@ function Projectile:ProcessGround()
                 end
                 --self.fGroundOffset = self.fGroundOffset - 10
                 --print('follow under')
-                self:SetVelocity(fVelocityLength * 30 * slope, self.vPseudoFramePosition)
+                self:SetVelocity(fVelocityLength * PROJECTILES_VISUAL_OFFSET * slope, self.vPseudoFramePosition)
             end
             return true--break
         end
@@ -574,7 +578,7 @@ function Projectile:InitializeValues()
     self.fEndTime =                 GameRules:GetGameTime()
     self.tHitLog =                  {}
     self.vCurrentPosition =         self.vSpawnOrigin
-    self.vCurrentVelocity =         self.vVelocity / 30
+    self.vCurrentVelocity =         self.vVelocity / PROJECTILES_VISUAL_OFFSET
     self.vPreviousVelocity =        self.vCurrentVelocity
     self.vPreviousPosition =        self.vSpawnOrigin
     self.iChanges =                 self.iChangeMax
@@ -583,7 +587,7 @@ function Projectile:InitializeValues()
     self.fSpawnTime =               GameRules:GetGameTime()
     self.fChangeTime =              self.fSpawnTime
     self.fDistanceTraveled =        0
-    self.fVisionTick =              math.ceil(self.fVisionTickTime * 30)
+    self.fVisionTick =              math.ceil(self.fVisionTickTime * PROJECTILES_VISUAL_OFFSET)
     self.fCurrentFrame =            self.fVisionTick
     self.fPseudoFrames =            0.0
     self.fFramesDivisor =           0.0
@@ -597,7 +601,7 @@ function Projectile:InitializeValues()
     self.bShouldDestroy =           false
 
     if self.fRadiusStep then
-        self.fRadiusStep = self.fRadiusStep / 30
+        self.fRadiusStep = self.fRadiusStep / PROJECTILES_VISUAL_OFFSET
     else
         self.fRadiusStep = (self.fEndRadius - self.fStartRadius) / (self.fDistance / self.vCurrentVelocity:Length())
     end
@@ -610,7 +614,7 @@ end
 function Projectile:SetVelocity(vNewVelocity, vNewPosition)
     if self.iChanges > 0 then
         self.iChanges = self.iChanges - 1
-        self.vCurrentVelocity = vNewVelocity / 30
+        self.vCurrentVelocity = vNewVelocity / PROJECTILES_VISUAL_OFFSET
         self.fChangeTime = GameRules:GetGameTime() + self.fChangeDelay
 
         if self.bRecreateOnChange then
@@ -639,5 +643,5 @@ function Projectile:GetPosition()
 end
 
 function Projectile:GetVelocity() 
-    return self.vCurrentVelocity * 30 
+    return self.vCurrentVelocity * PROJECTILES_VISUAL_OFFSET 
 end
