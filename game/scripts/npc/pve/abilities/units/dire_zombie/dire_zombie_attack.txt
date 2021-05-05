@@ -1,0 +1,26 @@
+"DOTAAbilities" {
+    "dire_zombie_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"pve/abilities/units/dire_zombie/dire_zombie_attack/dire_zombie_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"sniper_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastRange"				"900"
+		"AbilityCooldown"				"3.0"
+		"AbilityCastPoint"				"0.35"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+        
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"3" }
+		}
+	}
+}

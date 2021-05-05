@@ -35,7 +35,7 @@ MODIFIER_EVENTS = {
 	ON_BASIC_ATTACK_ENDED = 3,
 }
 
-function CustomEntities:Initialize(hEntity)
+function CustomEntities:Initialize(hEntity, bIsPVENPC)
 	hEntity.treshold = 				        0
 	hEntity.energy = 					    0
 	hEntity.max_energy = 				    100
@@ -59,14 +59,17 @@ function CustomEntities:Initialize(hEntity)
 	hEntity:AddNewModifier(hEntity,  nil, "modifier_visible", {})
 	GameRules.Addon:RegisterUnit(hEntity)
 
-	if hEntity:IsRealHero() then
-		hEntity.direction = 					{}
-		hEntity.recast_modifiers =				{}
-		hEntity.collision_direction = 			-1
+	if hEntity:IsRealHero() or bIsPVENPC then
+		hEntity.direction = {}
+		hEntity.collision_direction = -1
 	
 		CustomEntities:SetDirection(hEntity, 0, 0)
 		hEntity:AddNewModifier(hEntity,  nil, "modifier_hero_base", {})
-	
+		ConstructHero(hEntity)
+	end
+
+	if hEntity:IsRealHero() then
+		hEntity.recast_modifiers = {}
 		for i = 0, 23 do
 			local ability = hEntity:GetAbilityByIndex(i)
 			if ability then
@@ -77,7 +80,6 @@ function CustomEntities:Initialize(hEntity)
 		end
 	
 		hEntity:SetAbilityPoints(2) -- This should point to settings.AbilityPoints
-		ConstructHero(hEntity)
 	end
 
 	CustomEntities:SetInitialized(hEntity, true)
@@ -463,6 +465,10 @@ end
 
 function CustomEntities:IsDisplacing(hEntity)
 	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.DISPLACEMENT)
+end
+
+function CustomEntities:IsCasting(hEntity)
+	return hEntity:HasModifier('modifier_casting')
 end
 
 function CustomEntities:CanWalk(hEntity)

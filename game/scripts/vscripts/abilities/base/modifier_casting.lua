@@ -60,11 +60,13 @@ function modifier_casting:OnIntervalThink()
 	if not self.parent:IsAlive() then
 		self:Destroy()
 	end
-		
-    local mouse = CustomAbilities:GetCursorPosition(self:GetAbility())
-	local direction = (mouse - self.parent:GetAbsOrigin()):Normalized()
+	
+	if self.parent.GetPlayerID then
+		local mouse = CustomAbilities:GetCursorPosition(self:GetAbility())
+		local direction = (mouse - self.parent:GetAbsOrigin()):Normalized()
 
-	CustomEntities:FullyFaceTowards(self.parent, Vector(direction.x, direction.y, self.parent:GetForwardVector().z))
+		CustomEntities:FullyFaceTowards(self.parent, Vector(direction.x, direction.y, self.parent:GetForwardVector().z))
+	end
 end
 
 function modifier_casting:DeclareFunctions()

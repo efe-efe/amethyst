@@ -20,8 +20,9 @@ import Round from './clases/round';
 import UnitEntity from './clases/unit_entity';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
-import PveRound from './clases/pve_round';
+import Wave, { WaveGroup, NPCNames } from './clases/wave';
 import settings from './settings';
+import PreWave from './clases/pre_wave';
 
 declare global {
     interface CDOTAGamerules {
@@ -76,9 +77,12 @@ export class GameMode{
     public alliances: Alliance[] = [];
     public warmup: Warmup | undefined;
     public pre_round: PreRound | undefined;
-    public pve_round: PveRound | undefined;
+    public waveGroups: WaveGroup[] = [];
+    public wave: Wave | undefined;
+    public pre_wave: PreWave | undefined;
     public round: Round | undefined;
     public max_treshold = 30;
+    public currentWave = 0;
 
     constructor(){
         GameRules.GetGameModeEntity().SetContextThink('OnThink', () => { return this.OnThink(); }, THINK_PERIOD);
@@ -136,9 +140,9 @@ export class GameMode{
         this.alliances.push(new Alliance(DOTA_ALLIANCE_LEGION, [DotaTeam.CUSTOM_3, DotaTeam.CUSTOM_4]));
         this.alliances.push(new Alliance(DOTA_ALLIANCE_VOID, [DotaTeam.CUSTOM_5, DotaTeam.CUSTOM_6]));
 
-        if(GetMapName() === Custom_MapNames.PVP){
+        if(this.IsPVP()){
             this.StartPVPMap();
-        } else if(GetMapName() === Custom_MapNames.PVE){
+        } else if(this.IsPVE()){
             this.StartPVEMap();
         }
 
@@ -171,12 +175,34 @@ export class GameMode{
     }
 
     StartPVEMap(): void{
-        this.SetState(CustomGameState.PVE_ROUND_IN_PROGRESS);
-        this.pve_round = new PveRound(this.alliances, -1);
+        this.SetState(CustomGameState.WAVE_IN_PROGRESS);
+        this.waveGroups = [
+            {
+                name: NPCNames.DIRE_ZOMBIE,
+                ammount: 20,
+            },
+            {
+                name: NPCNames.QUEEN,
+                ammount: 1,
+            },
+            {
+                name: NPCNames.DIRE_ZOMBIE,
+                ammount: 40,
+            },
+            {
+                name: NPCNames.CENTAUR,
+                ammount: 1,
+            },
+        ];
+
+        this.wave = new Wave(this.alliances, -1, [this.waveGroups[this.currentWave]]);
         
         this.RegisterThinker(0.01, () => {
-            if(this.state == CustomGameState.PVE_ROUND_IN_PROGRESS && this.pve_round){
-                this.pve_round.Update();
+            if(this.state == CustomGameState.WAVE_IN_PROGRESS && this.wave){
+                this.wave.Update();
+            }
+            if(this.state == CustomGameState.PRE_WAVE && this.pre_wave){
+                this.pre_wave.Update();
             }
         });
     }
@@ -212,9 +238,9 @@ export class GameMode{
         GameRules.GetGameModeEntity().SetLoseGoldOnDeath(false);
         GameRules.SetTimeOfDay(0.5);
 
-        if(GetMapName() === Custom_MapNames.PVP){
+        if(this.IsPVP()){
             this.SetupRulesPVP();
-        } else if(GetMapName() === Custom_MapNames.PVE){
+        } else if(this.IsPVE()){
             this.SetupRulesPVE();
         }
         print('[AMETHYST] GameRules set');
@@ -236,7 +262,7 @@ export class GameMode{
     }
     
     SetupEventHooks(): void{
-        ListenToGameEvent('npc_spawned', (event) => this.OnHeroInGame(event), undefined);
+        ListenToGameEvent('npc_spawned', (event) => this.OnNPCInGame(event), undefined);
         ListenToGameEvent('game_rules_state_change',  () => this.OnGameRulesStateChange(), undefined);
         ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
         ListenToGameEvent('player_chat', (event) => this.OnPlayerChat(event), undefined);
@@ -461,6 +487,21 @@ export class GameMode{
         else if(state === CustomGameState.PRE_ROUND){
             this.pre_round = undefined;
             this.round = new Round(this.alliances, settings.RoundDuration);    
+        }
+        else if(state === CustomGameState.PRE_WAVE){
+            this.pre_wave = undefined;
+            this.IncrementWave();
+
+            const waveGroup = this.waveGroups[this.currentWave];
+            if(waveGroup){
+                this.wave = new Wave(this.alliances, -1, [waveGroup]);
+            } else {
+                this.EndGame(0);
+            }
+        }
+        else if(state === CustomGameState.WAVE_IN_PROGRESS){
+            this.wave = undefined;
+            this.pre_wave = new PreWave(this.alliances, settings.PreRoundDuration);    
         }
     }
 
@@ -697,6 +738,18 @@ export class GameMode{
         if(event.text == '-unwtf'){
             this.wtf = false;
         }
+
+        if(event.text == '-skip'){
+            if(this.IsPVE()){
+                if(this.wave){
+                    this.wave.npcs.forEach((npc) => {
+                        if(npc.GetUnit().IsAlive()){
+                            npc.GetUnit().ForceKill(false);
+                        }
+                    });
+                }
+            }
+        }
     }
     
     OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void{
@@ -734,7 +787,7 @@ export class GameMode{
         this.Start();
     }
 
-    OnHeroInGame(event: NpcSpawnedEvent): boolean{
+    OnNPCInGame(event: NpcSpawnedEvent): boolean{
         const npc = EntIndexToHScript(event.entindex) as CDOTA_BaseNPC;
         if(npc === undefined || npc.IsNull()){ 
             return false;
@@ -742,19 +795,38 @@ export class GameMode{
 
         if(!CustomEntities.IsInitialized(npc)){
             if(!(npc.GetName() === 'npc_dota_thinker')){
-                CustomEntities.Initialize(npc);
-
                 if(npc.IsRealHero()){
-                    if(GetMapName() === Custom_MapNames.PVP){
+                    CustomEntities.Initialize(npc);
+                    if(this.IsPVP()){
                         return this.OnHeroInGamePVP(npc);
-                    } else if(GetMapName() === Custom_MapNames.PVE){
+                    } else if(this.IsPVE()){
                         return this.OnHeroInGamePVE(npc);
+                    }
+                } else {
+                    if(this.IsPVP()){
+                        CustomEntities.Initialize(npc);
+                        return true;//this.OnNPCInGamePVP(npc);
+                    } else if(this.IsPVE()){
+                        CustomEntities.Initialize(npc, true);
+                        return true;//return this.OnNPCInGamePVE(npc);
                     }
                 }
             }
         }
 
         return true;
+    }
+
+    IncrementWave(): void{
+        this.currentWave = this.currentWave + 1;
+    }
+
+    IsPVP(): boolean{
+        return GetMapName() === Custom_MapNames.PVP;
+    }
+
+    IsPVE(): boolean{
+        return GetMapName() === Custom_MapNames.PVE;
     }
 
     OnHeroInGamePVE(hero: CDOTA_BaseNPC_Hero): boolean{
@@ -784,9 +856,12 @@ export class GameMode{
         if(parent){
             const killer = EntIndexToHScript(event.entindex_attacker);
             parent.OnDeath({ killer });
+            if(this.IsPVE() && this.wave){ //This will trigger when summoned units dies :()
+                this.wave.aliveNpcs = this.wave.aliveNpcs - 1;
+            }
         } else {
             if(killed.IsRealHero()){
-                if(GetMapName() === Custom_MapNames.PVP){
+                if(this.IsPVP()){
                     this.OnEntityKilledPVP(killed);
                 }
             }

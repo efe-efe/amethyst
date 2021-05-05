@@ -6,7 +6,7 @@ declare interface CustomEntities {
     TrueHeal(hEntity: CDOTA_BaseNPC, nHealAmount: number): void;
     RefreshCooldowns(hEntity: CDOTA_BaseNPC): void;
     GetShield(hEntity: CDOTA_BaseNPC): number;
-    Initialize(hEntity: CDOTA_BaseNPC): void;
+    Initialize(hEntity: CDOTA_BaseNPC, bIsPVENPC?: boolean): void;
     IsInitialized(hEntity: CDOTA_BaseNPC): boolean;
     SendDataToClient(hEntity: CDOTA_BaseNPC): boolean;
     GetRawDirection(hEntity: CDOTA_BaseNPC): Vector;
@@ -23,6 +23,7 @@ declare interface CustomEntities {
     GetParent(hEntity: CDOTA_BaseNPC): UnitEntity | undefined;
     IsChanneling(hEntity: CDOTA_BaseNPC): boolean;
     IsDisplacing(hEntity: CDOTA_BaseNPC): boolean;
+    IsCasting(hEntity: CDOTA_BaseNPC): boolean;
     GetDistance(hEntity: CDOTA_BaseNPC, hTarget: CDOTA_BaseNPC): number;
     SafeDestroyModifier(hEntity: CDOTA_BaseNPC, sModifierName: string): void;
     FindUnitsInRadius(hEntity: CDOTA_BaseNPC, origin: Vector, radius: number, nTeamFilter: UnitTargetTeam, nTypeFilter: UnitTargetType, nFlagFilter: UnitTargetFlags, nOrderFilter: FindOrder): CDOTA_BaseNPC[];

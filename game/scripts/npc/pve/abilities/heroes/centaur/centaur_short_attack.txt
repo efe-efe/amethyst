@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+    "centaur_short_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_short_attack/centaur_short_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_requiem"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AOE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+		"AbilityCooldown"				"5.0"
+		"AbilityCastPoint"				"0.7"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"						"FIELD_INTEGER"		"radius"				"500" }
+		}
+	}
+}
