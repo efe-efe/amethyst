@@ -30,14 +30,14 @@ function modifier_invoker_emp_custom_thinker:OnDestroy()
         ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius/2, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
             self.damage_table.victim = unit
             ApplyDamage(self.damage_table)
-            CustomEntities:GiveManaCustom(unit, -self.mana_burn)
+            CustomEntitiesLegacy:GiveManaCustom(unit, -self.mana_burn)
         end)
 
         
         ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
             self.damage_table.victim = unit
             ApplyDamage(self.damage_table)
-            CustomEntities:GiveManaCustom(unit, -self.mana_burn)
+            CustomEntitiesLegacy:GiveManaCustom(unit, -self.mana_burn)
         end)
     
         ParticleManager:DestroyParticle(self.efx, true)
@@ -52,7 +52,7 @@ end
 
 function modifier_invoker_emp_custom_thinker:OnIntervalThink()
     if IsServer() then
-        local enemies = CustomEntities:FindUnitsInRadius(
+        local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
             self:GetCaster(),
             self.origin, 
             self.radius, 

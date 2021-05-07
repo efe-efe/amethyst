@@ -67,7 +67,7 @@ ____exports.default = (function()
             function(____, player)
                 local hero = player.hero
                 if hero then
-                    current = current + CustomEntities:GetShield(hero)
+                    current = current + CustomEntitiesLegacy:GetShield(hero)
                 end
             end
         )

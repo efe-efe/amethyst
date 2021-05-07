@@ -11,7 +11,7 @@ function modifier_hero_movement:StatusEffectPriority()      return 1.0      end
 
 function modifier_hero_movement:OnCreated(params)
     if IsServer() then
-        local translate_modifiers = CustomEntities:GetAllModifiersWithType(self:GetParent(), MODIFIER_TYPES.TRANSLATE)
+        local translate_modifiers = CustomEntitiesLegacy:GetAllModifiersWithType(self:GetParent(), MODIFIER_TYPES.TRANSLATE)
 
         if translate_modifiers then
             local translate_modifier = nil

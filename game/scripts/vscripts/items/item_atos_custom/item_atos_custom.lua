@@ -37,7 +37,7 @@ function item_atos_custom:OnSpellStart()
 		TreeBehavior = 			PROJECTILES_NOTHING,
 		GroundBehavior = 		PROJECTILES_NOTHING,
 		fGroundOffset = 		0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 		OnUnitHit = function(_self, unit)
             unit:AddNewModifier(_self.Source, self, "modifier_generic_root", { duration = duration })
             self:PlayEffectsOnImpact(unit)

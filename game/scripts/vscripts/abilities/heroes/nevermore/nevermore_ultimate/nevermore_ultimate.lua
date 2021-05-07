@@ -73,7 +73,7 @@ function nevermore_ultimate:OnSpellStart()
             WallBehavior = PROJECTILES_NOTHING,
             GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
             OnFinish = function(_self, pos)
                self:PlayEffectsOnFinish(pos)
             end,

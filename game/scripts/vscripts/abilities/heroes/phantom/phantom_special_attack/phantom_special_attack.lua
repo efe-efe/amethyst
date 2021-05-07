@@ -30,7 +30,7 @@ function phantom_special_attack:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile  = {
 			EffectName = "particles/phantom/phantom_special_attack.vpcf",
 			vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
@@ -43,7 +43,7 @@ function phantom_special_attack:OnSpellStart()
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
 				local damage_table = {
 					victim = unit,
@@ -54,11 +54,11 @@ function phantom_special_attack:OnSpellStart()
 				ApplyDamage(damage_table)
 
 				if _self.Source == caster then
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 
-					if not CustomEntities:IsObstacle(unit) then
+					if not CustomEntitiesLegacy:IsObstacle(unit) then
 						caster:AddNewModifier(
 							caster,
 							self,

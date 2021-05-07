@@ -31,7 +31,7 @@ end
 
 function modifier_phantom_extra_displacement:OnDestroy()
 	if IsServer() then
-		local enemies = CustomEntities:FindUnitsInRadius(
+		local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 			self.parent,
 			self.parent:GetAbsOrigin(), 
 			self.radius, 
@@ -67,10 +67,10 @@ end
 function modifier_phantom_extra_displacement:OnImpact(hTarget)
 	if not hTarget:HasModifier('modifier_phantom_extra') then
 		hTarget:AddNewModifier(self.parent, self.ability, "modifier_phantom_extra", { duration = 0.3 })
-		CustomEntities:SingleAttack(self.parent, {
+		CustomEntitiesLegacy:SingleAttack(self.parent, {
 			hTarget = hTarget,
 			Callback = function(hTarget)
-				if not CustomEntities:IsCountering(hTarget) and not self.recast then
+				if not CustomEntitiesLegacy:IsCountering(hTarget) and not self.recast then
 					hTarget:AddNewModifier(self.parent, self.ability, "modifier_generic_fading_slow", { 
 						duration = self.fading_slow_duration, 
 						max_slow_pct = self.fading_slow_pct 

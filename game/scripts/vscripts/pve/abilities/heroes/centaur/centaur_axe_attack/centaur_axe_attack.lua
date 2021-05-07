@@ -19,7 +19,7 @@ function centaur_axe_attack:OnSpellStart()
 		damage_type = DAMAGE_TYPE_PHYSICAL,
 	}
 
-	CustomEntities:MeeleAttack(caster, {
+	CustomEntitiesLegacy:MeeleAttack(caster, {
 		vDirection = direction,
 		vOrigin = origin, 
 		fRadius = radius,
@@ -45,7 +45,7 @@ function centaur_axe_attack:OnSpellStart()
 
 	self:PlayEffectsOnFinish(direction, radius/2)
 	self:PlayEffectsOnFinish(direction, radius)
-	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
+	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
 end
 

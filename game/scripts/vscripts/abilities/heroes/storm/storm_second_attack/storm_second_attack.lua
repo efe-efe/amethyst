@@ -17,7 +17,7 @@ function storm_second_attack:OnSpellStart()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = Direction2D(origin, point)
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName = "particles/storm/storm_second_attack.vpcf",
 			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
@@ -30,7 +30,7 @@ function storm_second_attack:OnSpellStart()
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
 				local damage_table = {
 					victim = unit,
@@ -42,13 +42,13 @@ function storm_second_attack:OnSpellStart()
 				ApplyDamage(damage_table)
 
 				if _self.Source == caster then
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 					if caster:HasModifier('modifier_storm_ultimate') then
 						local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-						if CustomEntities:ProvidesMana(unit) then
-							CustomEntities:GiveManaPercent(caster, extra_mana_pct, true, true)
+						if CustomEntitiesLegacy:ProvidesMana(unit) then
+							CustomEntitiesLegacy:GiveManaPercent(caster, extra_mana_pct, true, true)
 						end
 					end
 				end

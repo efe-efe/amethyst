@@ -22,7 +22,7 @@ ____exports.default = (function()
         return (team and team) or DOTA_TEAM_NOTEAM
     end
     function UnitEntity.prototype.SetUnit(self, unit)
-        CustomEntities:SetParent(unit, self)
+        CustomEntitiesLegacy:SetParent(unit, self)
         return unit
     end
     function UnitEntity.prototype.GetUnit(self)

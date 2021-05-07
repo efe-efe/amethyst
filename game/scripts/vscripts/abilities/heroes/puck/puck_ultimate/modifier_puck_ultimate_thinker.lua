@@ -26,7 +26,7 @@ function modifier_puck_ultimate_thinker:OnCreated(params)
 
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
 
-        local enemies = CustomEntities:FindUnitsInRadius(
+        local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 			self:GetCaster(),
 			self:GetParent():GetOrigin(), 
 			self.radius, 

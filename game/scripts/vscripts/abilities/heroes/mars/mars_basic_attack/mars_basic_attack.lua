@@ -34,7 +34,7 @@ function mars_basic_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = Direction2D(origin, point)
 
-	local enemies = CustomEntities:FindUnitsInCone(
+	local enemies = CustomEntitiesLegacy:FindUnitsInCone(
 		caster,
 		direction, 
 		0, 
@@ -58,9 +58,9 @@ function mars_basic_attack:OnSpellStart()
 		}
 		ApplyDamage(damage_table)
 
-		if not CustomEntities:IsObstacle(enemy) then
-			if CustomEntities:ProvidesMana(enemy) then
-				CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+		if not CustomEntitiesLegacy:IsObstacle(enemy) then
+			if CustomEntitiesLegacy:ProvidesMana(enemy) then
+				CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 			end
 
 			caster:AddNewModifier(
@@ -71,7 +71,7 @@ function mars_basic_attack:OnSpellStart()
 			)
 		end
 
-		CustomEntities:OnBasicAttackImpact(caster, enemy)
+		CustomEntitiesLegacy:OnBasicAttackImpact(caster, enemy)
 		break
 	end
     

@@ -22,7 +22,7 @@ function item_mekansm_custom:OnSpellStart()
 	local duration = self:GetSpecialValueFor("duration")
 	local heal = self:GetSpecialValueFor("heal")
    
-    local allies = CustomEntities:FindUnitsInRadius(
+    local allies = CustomEntitiesLegacy:FindUnitsInRadius(
         caster,
         caster:GetOrigin(), 
         radius, 

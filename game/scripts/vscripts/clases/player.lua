@@ -16,7 +16,7 @@ ____exports.default = (function()
     end
     function Player.prototype.SetHero(self, hero)
         self.hero = hero
-        CustomEntities:SendDataToClient(hero)
+        CustomEntitiesLegacy:SendDataToClient(hero)
     end
     function Player.prototype.GetId(self)
         return self.id

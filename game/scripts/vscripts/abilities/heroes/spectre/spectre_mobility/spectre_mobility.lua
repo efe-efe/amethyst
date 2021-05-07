@@ -50,9 +50,9 @@ function spectre_mobility:OnSpellStart()
         bIsReflectable = false,
         bIsSlowable = false,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit"  and not CustomEntities:Allies(_self.Source, unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit"  and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 		OnFinish = function(_self, pos)
-			local enemies = CustomEntities:FindUnitsInRadius(
+			local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 			self:GetCaster(),
 				pos, 
 				self.radius, 
@@ -65,7 +65,7 @@ function spectre_mobility:OnSpellStart()
 			local charge = false
 
 			for _, enemy in pairs(enemies) do 
-				if not CustomEntities:IsObstacle(enemy) then
+				if not CustomEntitiesLegacy:IsObstacle(enemy) then
 					charge = true
 				end
 
@@ -84,15 +84,15 @@ function spectre_mobility:OnSpellStart()
 				local modifier = caster:FindModifierByName("modifier_spectre_basic_attack_cooldown"):ReduceCooldown(cooldown_reduction)
 
 				if #enemies == 1 then
-					if CustomEntities:ProvidesMana(enemies[1]) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(enemies[1]) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 				else
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 			end
             self:PlayEffectsOnFinish(pos)
-            CustomEntities:SafeDestroyModifier(caster, "modifier_spectre_banish")
+            CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_spectre_banish")
             FindClearSpaceForUnit(caster, pos , true)
 		end,
 	}

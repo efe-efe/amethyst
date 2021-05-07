@@ -32,7 +32,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
 
 	local projectile_direction = Direction2D(origin, point)
 
-    CustomEntities:ProjectileAttack(caster, {
+    CustomEntitiesLegacy:ProjectileAttack(caster, {
         tProjectile = {
             EffectName = "particles/sniper/sniper_ultimate_new.vpcf",
             vSpawnOrigin = origin + Vector(projectile_direction.x * 100, projectile_direction.y * 100, 96),
@@ -46,7 +46,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
             WallBehavior = PROJECTILES_DESTROY,
             GroundBehavior = PROJECTILES_NOTHING,
             fGroundOffset = 0,
-            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
             OnUnitHit = function(_self, unit)
                 self.damage_table.victim = unit
                 self.damage_table.attacker = _self.Source
@@ -56,7 +56,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
                 self:PlayEffectsTarget(_self.Source, unit, _self.vCurrentPosition)
             end,
             OnFinish = function(_self, pos)
-                local enemies = CustomEntities:FindUnitsInRadius(
+                local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
                     _self.Source,
                     pos, 
                     self.radius + 50, 
@@ -96,7 +96,7 @@ function modifier_sniper_ultimate_channeling:OnIntervalThink()
         }
     })
 
-    CustomEntities:FullyFaceTowards(caster, projectile_direction)
+    CustomEntitiesLegacy:FullyFaceTowards(caster, projectile_direction)
     EmitSoundOn("Ability.Assassinate", self:GetCaster())
 end
 

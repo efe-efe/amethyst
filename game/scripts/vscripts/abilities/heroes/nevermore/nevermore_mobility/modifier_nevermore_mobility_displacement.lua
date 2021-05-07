@@ -39,8 +39,8 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                     
                     ApplyDamage(self.damage_table)
     
-                    if not CustomEntities:IsObstacle(unit) then
-                        if not CustomEntities:IsGem(unit) then
+                    if not CustomEntitiesLegacy:IsObstacle(unit) then
+                        if not CustomEntitiesLegacy:IsGem(unit) then
                             local modifier = self:GetParent():FindModifierByName('modifier_nevermore_souls')
                             for i = 0, 1 do
                                 self:PlayEffectsOnImpact(unit)
@@ -48,8 +48,8 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                             end
                         end
                         if self.counter == 1 then
-                            if CustomEntities:ProvidesMana(unit) then
-                                CustomEntities:GiveManaAndEnergyPercent(self:GetParent(), self.mana_gain_pct, true)
+                            if CustomEntitiesLegacy:ProvidesMana(unit) then
+                                CustomEntitiesLegacy:GiveManaAndEnergyPercent(self:GetParent(), self.mana_gain_pct, true)
                             end
                         end
                     end

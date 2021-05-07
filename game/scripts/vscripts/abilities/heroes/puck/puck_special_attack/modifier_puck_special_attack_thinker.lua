@@ -50,7 +50,7 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
     local give_mana = false
     
     if self.iteration == 0 then
-        CustomEntities:AoeAttack(self.caster, {
+        CustomEntitiesLegacy:AoeAttack(self.caster, {
             vOrigin = self.origin, 
             fRadius = self.radius_small,
             Callback = function(hTarget)
@@ -63,7 +63,7 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
                 EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", hTarget)
                 ApplyDamage(self.damage_table)
     
-                if CustomEntities:ProvidesMana(hTarget) then
+                if CustomEntitiesLegacy:ProvidesMana(hTarget) then
                     give_mana = true
                 end
             end
@@ -72,7 +72,7 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
         self:PlayEffectsExplode(self.radius_small, 0)
         
         if give_mana then
-            CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
+            CustomEntitiesLegacy:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
         end
 
         self.iteration = 1
@@ -80,7 +80,7 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
     else
         self.damage_table.damage = self.damage
         
-        CustomEntities:AoeAttack(self.caster, {
+        CustomEntitiesLegacy:AoeAttack(self.caster, {
             vOrigin = self.origin, 
             fRadius = self.radius,
             Callback = function(hTarget)
@@ -92,14 +92,14 @@ function modifier_puck_special_attack_thinker:OnIntervalThink()
                 EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", hTarget)
                 ApplyDamage(self.damage_table)
     
-                if CustomEntities:ProvidesMana(hTarget) then
+                if CustomEntitiesLegacy:ProvidesMana(hTarget) then
                     give_mana = true
                 end
             end
         })
 
         if give_mana then
-            CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
+            CustomEntitiesLegacy:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
         end
         
         self:PlayEffectsExplode(self.radius, 1)

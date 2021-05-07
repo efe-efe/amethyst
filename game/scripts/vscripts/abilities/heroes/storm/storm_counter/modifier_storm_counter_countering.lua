@@ -24,9 +24,9 @@ end
 
 function modifier_storm_counter_countering:OnTrigger(params)
 	if IsServer() then
-		CustomEntities:GiveManaAndEnergy(self:GetParent(), self.mana_gain, true)
+		CustomEntitiesLegacy:GiveManaAndEnergy(self:GetParent(), self.mana_gain, true)
 		
-		local enemies = CustomEntities:FindUnitsInRadius(
+		local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 			self:GetParent(),
 			self:GetParent():GetAbsOrigin(), 
 			self.radius, 
@@ -51,7 +51,7 @@ function modifier_storm_counter_countering:OnTrigger(params)
 			})
 		end
 
-		CustomEntities:StrongPurge(self:GetParent())
+		CustomEntitiesLegacy:StrongPurge(self:GetParent())
 		self:PlayEffectsOnTrigger()
 		
 		CreateRadiusMarker(self:GetParent(), self:GetParent():GetAbsOrigin(), self.radius, RADIUS_SCOPE_PUBLIC, 0.1)

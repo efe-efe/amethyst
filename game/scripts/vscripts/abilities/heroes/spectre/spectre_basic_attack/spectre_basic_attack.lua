@@ -48,7 +48,7 @@ function spectre_basic_attack:OnSpellStart()
 		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
 	end
 
-	CustomEntities:MeeleAttack(caster, {
+	CustomEntitiesLegacy:MeeleAttack(caster, {
 		vDirection = direction,
 		vOrigin = origin, 
 		fRadius = radius,
@@ -56,13 +56,13 @@ function spectre_basic_attack:OnSpellStart()
 		bIsBasicAttack = true,
 		bShakeOnHeroes = not is_charged,
 		Callback = function(hTarget)
-			CustomEntities:AttackWithBaseDamage(caster, {
+			CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
 				hTarget = hTarget,
 				hAbility = self,
 			})
 
-			if CustomEntities:ProvidesMana(hTarget) then
-				CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+			if CustomEntitiesLegacy:ProvidesMana(hTarget) then
+				CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 			end
 
 			self:PlayEffectsOnImpact(hTarget, hTarget:GetAbsOrigin(), is_charged)

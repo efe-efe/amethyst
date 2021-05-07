@@ -33,7 +33,7 @@ function modifier_centaur_passive:LaunchProjectile(vPoint)
         local projectile_direction = Direction2D(origin, point)
         local damage = 7
     
-        CustomEntities:ProjectileAttack(caster, {
+        CustomEntitiesLegacy:ProjectileAttack(caster, {
             tProjectile = {
                 EffectName = "particles/invoker/invoker_spirit_projectile.vpcf", -- "particles/econ/items/earthshaker/earthshaker_arcana/earthshaker_arcana_echoslam_proj_v2.vpcf",
                 vSpawnOrigin = origin + Vector(0, 0, 96),
@@ -46,7 +46,7 @@ function modifier_centaur_passive:LaunchProjectile(vPoint)
                 WallBehavior = PROJECTILES_DESTROY,
                 GroundBehavior = PROJECTILES_NOTHING,
                 fGroundOffset = 0,
-                UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+                UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
                 OnUnitHit = function(_self, unit) 
                     local damage_table = {
                         victim = unit,

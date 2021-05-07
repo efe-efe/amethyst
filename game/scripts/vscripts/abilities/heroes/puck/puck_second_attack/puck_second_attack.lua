@@ -16,7 +16,7 @@ function puck_second_attack:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local hitbox = self:GetSpecialValueFor("hitbox")
 	
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName = "particles/puck/puck_second_attack_projectile.vpcf",
 			vSpawnOrigin = origin + Vector(projectile_direction.x * hitbox, projectile_direction.y * hitbox, 96),
@@ -29,7 +29,7 @@ function puck_second_attack:OnSpellStart()
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
 				local damage_table = {
 					victim = unit,
@@ -51,11 +51,11 @@ function puck_second_attack:OnSpellStart()
 				end
 
 				if _self.Source == caster then
-					if CustomEntities:ProvidesMana(unit) and self:GetLevel() >=2 then
+					if CustomEntitiesLegacy:ProvidesMana(unit) and self:GetLevel() >=2 then
 						caster:FindAbilityByName("puck_special_attack"):EndCooldown()
 					end
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 				end
 			end,

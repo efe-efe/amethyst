@@ -56,7 +56,7 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 		damage_type = DAMAGE_TYPE_PURE,
 	}
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		bIsBasicAttack = true,
 		tProjectile = {
 			EffectName = projectile_particle,
@@ -70,28 +70,28 @@ function storm_basic_attack:LaunchProjectile(origin, point)
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
-				CustomEntities:AttackWithBaseDamage(caster, {
+				CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
 					hTarget = unit,
 					hAbility = self,
 				})
 				
 				if _self.Source == caster then
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 
 					if caster:HasModifier('modifier_storm_ultimate') then
 						local extra_mana_pct = mana_gain_pct * (caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-						if CustomEntities:ProvidesMana(unit) then
-							CustomEntities:GiveManaPercent(caster, mana_gain_pct, true, true)
+						if CustomEntitiesLegacy:ProvidesMana(unit) then
+							CustomEntitiesLegacy:GiveManaPercent(caster, mana_gain_pct, true, true)
 						end
 					end
 				end
 
 				if is_charged then
-					local enemies = CustomEntities:FindUnitsInRadius(
+					local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 						_self.Source,
 						_self:GetPosition(), 
 						radius, 

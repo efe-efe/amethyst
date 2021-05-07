@@ -75,7 +75,7 @@ export default class Alliance{
         this.players.forEach((player) => {
             const hero = player.hero;
             if(hero){
-                current = current + CustomEntities.GetShield(hero);
+                current = current + CustomEntitiesLegacy.GetShield(hero);
             }
         });
 

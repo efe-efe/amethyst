@@ -46,8 +46,8 @@ export default class PreRound extends GameState{
                     }
 
                     FindClearSpaceForUnit(hero, target!, true);
-                    CustomEntities.Reset(hero);
-                    CustomEntities.AutoUpgradeAbilities(hero);
+                    CustomEntitiesLegacy.Reset(hero);
+                    CustomEntitiesLegacy.AutoUpgradeAbilities(hero);
                     hero.RemoveModifierByName('modifier_restricted');
                     hero.AddNewModifier(hero, undefined, 'modifier_adrenaline', { duration: ADRENALINE_DURATION });
                 }

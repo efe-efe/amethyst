@@ -35,21 +35,21 @@ function phantom_basic_attack:OnSpellStart()
 
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 
-	CustomEntities:MeeleAttack(caster, {
+	CustomEntitiesLegacy:MeeleAttack(caster, {
 		vDirection = direction,
 		vOrigin = origin, 
 		fRadius = radius,
 		bIsBasicAttack = true,
 		iMaxTargets = 1,
 		Callback = function(hTarget)
-			CustomEntities:AttackWithBaseDamage(caster, {
+			CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
 				hTarget = hTarget,
 				hAbility = self,
 			})
 
-			if not CustomEntities:IsObstacle(hTarget) then
-				if CustomEntities:ProvidesMana(hTarget) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+			if not CustomEntitiesLegacy:IsObstacle(hTarget) then
+				if CustomEntitiesLegacy:ProvidesMana(hTarget) then
+					CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 
 				caster:AddNewModifier(caster, self, "modifier_phantom_strike_stack", {})

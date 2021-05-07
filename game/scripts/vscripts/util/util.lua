@@ -383,7 +383,7 @@ function ReplenishEFX(parent)
 end
 
 function ApplyCallbackForUnitsInArea(hCaster, vOrigin, nRadius, nTeamFilter, fCallback)
-	local units = CustomEntities:FindUnitsInRadius(
+	local units = CustomEntitiesLegacy:FindUnitsInRadius(
 		hCaster,
 		vOrigin, 
 		nRadius, 

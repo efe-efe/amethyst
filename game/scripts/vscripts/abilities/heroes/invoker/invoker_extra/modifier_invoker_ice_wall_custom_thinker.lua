@@ -23,7 +23,7 @@ function modifier_invoker_ice_wall_custom_thinker:OnCreated(params)
 end
 
 function modifier_invoker_ice_wall_custom_thinker:OnIntervalThink()
-	local enemies = CustomEntities:FindUnitsInLine(
+	local enemies = CustomEntitiesLegacy:FindUnitsInLine(
         self:GetCaster(),
 		self.point_a, 
 		self.point_b, 

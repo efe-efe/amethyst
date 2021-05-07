@@ -29,7 +29,7 @@ function spectre_special_attack:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			vSpawnOrigin = origin,
 			fDistance = projectile_distance,
@@ -44,7 +44,7 @@ function spectre_special_attack:OnSpellStart()
 			bGroundLock = true,
 			bIsDestructible = false,
 			bIsReflectable = false,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit)
 				local damage = {
 					victim = unit,
@@ -63,8 +63,8 @@ function spectre_special_attack:OnSpellStart()
 				)
 
 				if _self.Source == caster then
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 				end
 

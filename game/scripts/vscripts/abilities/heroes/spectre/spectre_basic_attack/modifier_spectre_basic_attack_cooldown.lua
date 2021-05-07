@@ -38,11 +38,11 @@ function modifier_spectre_basic_attack_cooldown:OnEvent(params)
         if self:IsCooldownReady() then
             params.hTarget:AddNewModifier(self.parent, self:GetAbility(), "modifier_generic_silence", { duration = self.silence_duration })
             
-            if CustomEntities:ProvidesMana(params.hTarget) then
+            if CustomEntitiesLegacy:ProvidesMana(params.hTarget) then
                 params.hTarget:AddNewModifier(self.parent, self:GetAbility(), "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
             end
             
-            if not CustomEntities:IsObstacle(params.hTarget) and not CustomEntities:IsCountering(params.hTarget) then
+            if not CustomEntitiesLegacy:IsObstacle(params.hTarget) and not CustomEntitiesLegacy:IsCountering(params.hTarget) then
                 self.parent:Heal(self.heal_charged, self.parent)
             end
         end
@@ -61,7 +61,7 @@ function modifier_spectre_basic_attack_cooldown:OnAttackLanded(params)
         return
     end
     if params.target:HasModifier("modifier_spectre_desolate_custom") then
-        if not CustomEntities:IsObstacle(params.target) then
+        if not CustomEntitiesLegacy:IsObstacle(params.target) then
             self.parent:Heal(self.heal_desolate, self.parent)
             self:PlayEffectsLifeSteal()
         end

@@ -18,13 +18,13 @@ function modifier_juggernaut_ultimate_slashing:OnCreated(params)
         self.attack_speed = math.abs(1 / attacks_per_second)
         self:OnIntervalThink()
         self:StartIntervalThink(self.attack_speed)
-        CustomEntities:HideHealthBar(self.parent)
+        CustomEntitiesLegacy:HideHealthBar(self.parent)
     end
 end
 
 function modifier_juggernaut_ultimate_slashing:OnDestroy()
     if IsServer() then
-        CustomEntities:UnhideHealthBar(self.parent)
+        CustomEntitiesLegacy:UnhideHealthBar(self.parent)
         self.parent:AddNewModifier(self.parent, self:GetAbility(), "modifier_juggernaut_spin_animation", {duration = 0.3})
     end
 end
@@ -39,7 +39,7 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
         self:OnMiss()
     end
 
-    CustomEntities:SingleAttack(self.parent, {
+    CustomEntitiesLegacy:SingleAttack(self.parent, {
         hTarget = self.current_target,
         bIsBasicAttack = true,
         bTriggerCounters = false,
@@ -50,7 +50,7 @@ function modifier_juggernaut_ultimate_slashing:OnIntervalThink()
 end
 
 function modifier_juggernaut_ultimate_slashing:OnEnemyHit(hTarget)
-    CustomEntities:AttackWithBaseDamage(self.parent, {
+    CustomEntitiesLegacy:AttackWithBaseDamage(self.parent, {
         hTarget = hTarget,
         hAbility = self:GetAbility(),
     })
@@ -83,7 +83,7 @@ end
 function modifier_juggernaut_ultimate_slashing:FindTargets()
     local find_origin = self.current_target and self.current_target:GetAbsOrigin() or self.parent:GetAbsOrigin()
 
-    local enemies = CustomEntities:FindUnitsInRadius(
+    local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
         self.parent,
         find_origin, 
         self.radius, 
@@ -98,7 +98,7 @@ function modifier_juggernaut_ultimate_slashing:FindTargets()
     local filtered_enemies = {}
 
     for _,enemy in pairs(enemies) do
-        if  (not CustomEntities:IsObstacle(enemy)) and 
+        if  (not CustomEntitiesLegacy:IsObstacle(enemy)) and 
             (not (enemy:Attribute_GetIntValue("dummy", 0) == 1)) 
         then
             table.insert(filtered_enemies, enemy)

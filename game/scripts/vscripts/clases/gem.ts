@@ -52,8 +52,8 @@ class Gem extends UnitEntity{
     Update(): void{
         const currentAngle = (GameRules.GetGameTime() % (math.pi * 2)) * 2.0;
 
-        if(!CustomEntities.IsBanished(this.GetUnit())){
-            CustomEntities.FullyFaceTowards(this.GetUnit(), Vector(math.cos(currentAngle), math.sin(currentAngle)));
+        if(!CustomEntitiesLegacy.IsBanished(this.GetUnit())){
+            CustomEntitiesLegacy.FullyFaceTowards(this.GetUnit(), Vector(math.cos(currentAngle), math.sin(currentAngle)));
             this.GetUnit().SetModel(this.model);
             this.GetUnit().SetModelScale(this.scale);
         }
@@ -65,7 +65,7 @@ class Gem extends UnitEntity{
         this.Effect(killer);
         this.PlayEffectsOnDeath();
         this.GetUnit().AddNoDraw();
-        CustomEntities.GetAlliance(killer).AddAmethsyt();
+        CustomEntitiesLegacy.GetAlliance(killer).AddAmethsyt();
 
         this.Destroy(false); //Or false? idk
     }
@@ -102,7 +102,7 @@ class Gem extends UnitEntity{
     }
 
     GetUnits(searcher: CDOTA_BaseNPC, iTeamFlags: UnitTargetTeam){
-        return CustomEntities.FindUnitsInRadius(
+        return CustomEntitiesLegacy.FindUnitsInRadius(
             searcher,
             this.GetUnit().GetAbsOrigin(),
             FIND_UNITS_EVERYWHERE, 
@@ -174,9 +174,9 @@ class Amethyst extends Gem{
 
         allies.forEach((ally) => {
             if(ally.IsRealHero()){
-                CustomEntities.RefreshCooldowns(ally);
-                CustomEntities.TrueHeal(ally, final_heal);
-                CustomEntities.GiveManaCustom(ally, final_mana, true, true);
+                CustomEntitiesLegacy.RefreshCooldowns(ally);
+                CustomEntitiesLegacy.TrueHeal(ally, final_heal);
+                CustomEntitiesLegacy.GiveManaCustom(ally, final_mana, true, true);
                 this.PlayEffectsOnTarget(ally);
             }
         });
@@ -220,7 +220,7 @@ class Emerald extends Gem{
         
         allies.forEach((ally) => {
             if(ally.IsRealHero()){
-                CustomEntities.TrueHeal(ally, final_true_heal);
+                CustomEntitiesLegacy.TrueHeal(ally, final_true_heal);
                 
                 ally.AddNewModifier(ally, undefined, 'modifier_emerald', { 
                     duration: this.duration, 
@@ -261,7 +261,7 @@ class Ruby extends Gem{
                     duration: this.duration,
                     damage: final_damage 
                 });
-                CustomEntities.GiveEnergy(ally, final_energy, true, true);
+                CustomEntitiesLegacy.GiveEnergy(ally, final_energy, true, true);
             }
         });
     }

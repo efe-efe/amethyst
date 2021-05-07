@@ -10,14 +10,14 @@ type HammerEvent = {
 }
 
 function OnStartTouchCollisionVertical(this: void, tEvent: HammerEvent): void{
-    CustomEntities.SetCollisionDirection(tEvent.activator, VERTICAL);
+    CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, VERTICAL);
 }
 function OnStartTouchCollisionHorizontal(this: void, tEvent: HammerEvent): void{
-    CustomEntities.SetCollisionDirection(tEvent.activator, HORIZONTAL);
+    CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, HORIZONTAL);
 }
 function OnStartTouchCollisionDiagonalLeft(this: void, tEvent: HammerEvent): void{
-    CustomEntities.SetCollisionDirection(tEvent.activator, DIAGONAL_LEFT);
+    CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, DIAGONAL_LEFT);
 }
 function OnStartTouchCollisionDiagonalRight(this: void, tEvent: HammerEvent): void{
-    CustomEntities.SetCollisionDirection(tEvent.activator, DIAGONAL_RIGHT);
+    CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, DIAGONAL_RIGHT);
 }

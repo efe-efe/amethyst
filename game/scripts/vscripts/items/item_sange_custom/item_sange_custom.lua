@@ -27,7 +27,7 @@ function item_sange_custom:OnSpellStart()
 
 	local new_origin = caster:GetOrigin()
 
-	local enemies = CustomEntities:FindUnitsInLine(
+	local enemies = CustomEntitiesLegacy:FindUnitsInLine(
 		caster,
 		new_origin, 
 		origin, 

@@ -20,7 +20,7 @@ function invoker_tornado_custom:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		bTriggerCounters = false,
 		tProjectile = {
 			EffectName =			"particles/econ/items/invoker/invoker_ti6/invoker_tornado_ti6.vpcf",
@@ -36,7 +36,7 @@ function invoker_tornado_custom:OnSpellStart()
 			bIsReflectable =        false,
 			bIsDestructible =		false,
 			fGroundOffset = 		0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
 				damage_table.victim = unit
 				damage_table.attacker = _self.Source

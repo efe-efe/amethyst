@@ -26,7 +26,7 @@ function juggernaut_counter_helper:Slash(vPoint, iDamage)
 
    local valid_targets = 0
 	local new_origin = caster:GetOrigin()
-	local enemies = CustomEntities:FindUnitsInLine(
+	local enemies = CustomEntitiesLegacy:FindUnitsInLine(
       caster,
 		new_origin, 
 		origin, 
@@ -48,7 +48,7 @@ function juggernaut_counter_helper:Slash(vPoint, iDamage)
    end
 
 	for _,enemy in pairs(enemies) do
-      CustomEntities:SingleAttack(caster, {
+      CustomEntitiesLegacy:SingleAttack(caster, {
          hTarget = enemy,
          Callback = function(hTarget)
             damage_table.victim = hTarget
@@ -75,7 +75,7 @@ function juggernaut_counter_helper:Slash(vPoint, iDamage)
 end
 
 function juggernaut_counter_helper:ProvidesRecast(hTarget)
-   return not(CustomEntities:IsObstacle(hTarget) or CustomEntities:IsCountering(hTarget))
+   return not(CustomEntitiesLegacy:IsObstacle(hTarget) or CustomEntitiesLegacy:IsCountering(hTarget))
 end
 
 function juggernaut_counter_helper:ShouldRecast(iRecasts) 

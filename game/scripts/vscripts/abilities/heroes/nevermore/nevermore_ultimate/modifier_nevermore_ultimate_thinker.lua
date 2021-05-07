@@ -44,7 +44,7 @@ end
 
 function modifier_nevermore_ultimate_thinker:OnIntervalThink()
     if IsServer() then
-        local enemies = CustomEntities:FindUnitsInRadius(
+        local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
             self:GetCaster(),
             self.origin, 
             self.radius, 

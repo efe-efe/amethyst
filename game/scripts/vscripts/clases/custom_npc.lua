@@ -91,11 +91,11 @@ function CustomNPC.prototype.BackToOrigin(self, origin)
         return false
     end
     local direction = self.originalPosition:__sub(origin):Normalized()
-    CustomEntities:SetDirection(self.unit, direction.x, direction.y)
+    CustomEntitiesLegacy:SetDirection(self.unit, direction.x, direction.y)
     return true
 end
 function CustomNPC.prototype.Cast(self)
-    if ((CustomEntities:IsDisplacing(self.unit) or CustomEntities:IsCasting(self.unit)) or CustomEntities:IsChanneling(self.unit)) or (self.remainingRestTime > 0) then
+    if ((CustomEntitiesLegacy:IsDisplacing(self.unit) or CustomEntitiesLegacy:IsCasting(self.unit)) or CustomEntitiesLegacy:IsChanneling(self.unit)) or (self.remainingRestTime > 0) then
         return false
     end
     local abilityToExecute = nil
@@ -157,16 +157,16 @@ function CustomNPC.prototype.Follow(self, origin)
     if not target then
         return false
     end
-    local distance = CustomEntities:GetDistance(self.unit, target)
+    local distance = CustomEntitiesLegacy:GetDistance(self.unit, target)
     local direction = Vector(0, 0)
     if target:IsAlive() and (distance > self.minFollowRange) then
         direction = target:GetAbsOrigin():__sub(origin):Normalized()
     end
-    CustomEntities:SetDirection(self.unit, direction.x, direction.y)
+    CustomEntitiesLegacy:SetDirection(self.unit, direction.x, direction.y)
     return true
 end
 function CustomNPC.prototype.StopMoving(self)
-    CustomEntities:SetDirection(self.unit, 0, 0)
+    CustomEntitiesLegacy:SetDirection(self.unit, 0, 0)
 end
 function CustomNPC.prototype.MoveTowards(self, origin, point)
     local distance = point:__sub(origin):Length2D()
@@ -174,7 +174,7 @@ function CustomNPC.prototype.MoveTowards(self, origin, point)
         return false
     else
         local direction = point:__sub(origin):Normalized()
-        CustomEntities:SetDirection(self.unit, direction.x, direction.y)
+        CustomEntitiesLegacy:SetDirection(self.unit, direction.x, direction.y)
         return true
     end
 end

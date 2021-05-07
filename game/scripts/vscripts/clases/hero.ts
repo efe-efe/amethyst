@@ -38,7 +38,7 @@ export default class Hero extends UnitEntity{
         const futureOrigin = origin.__add(direction.__mul(speed));
         const testOrigin = futureOrigin.__add(direction.__mul(offset));
         futureOrigin.z = GetGroundPosition(futureOrigin, this.unit).z;
-        const normal = CustomEntities.GetNormal(this.unit, futureOrigin);
+        const normal = CustomEntitiesLegacy.GetNormal(this.unit, futureOrigin);
 
         if(IsInToolsMode() && DEBUG){
             DebugDrawLine_vCol(futureOrigin, testOrigin, Vector(255,0,0), true, 1.0);
@@ -82,7 +82,7 @@ export default class Hero extends UnitEntity{
             });
         }
 
-        if(!CustomEntities.IsAnimating(this.unit)){
+        if(!CustomEntitiesLegacy.IsAnimating(this.unit)){
             if(!this.unit.HasModifier('modifier_hero_movement')){
                 this.unit.AddNewModifier(this.unit, undefined, 'modifier_hero_movement', {});
             }
@@ -126,7 +126,7 @@ export default class Hero extends UnitEntity{
 
     AlternativeDirectionsWalls(direction: Vector): Vector[]{
         const directions: Vector[] = [];
-        const collisionDirection = CustomEntities.GetCollisionDirection(this.unit);
+        const collisionDirection = CustomEntitiesLegacy.GetCollisionDirection(this.unit);
         const angle = VectorToAngles(direction).y;
 
         if(this.IsNorthEast(angle)){
@@ -288,15 +288,15 @@ export default class Hero extends UnitEntity{
     }
 
     Update(): void{
-        const direction = CustomEntities.GetDirection(this.unit).Normalized();
+        const direction = CustomEntitiesLegacy.GetDirection(this.unit).Normalized();
         const speed = (this.unit.GetIdealSpeed()/25);
 
         
-        if(CustomEntities.IsAnimating(this.unit)){
+        if(CustomEntitiesLegacy.IsAnimating(this.unit)){
             this.unit.RemoveModifierByName('modifier_hero_movement');
         }
 
-        if((direction.x !== 0 || direction.y !== 0) && CustomEntities.CanWalk(this.unit)){
+        if((direction.x !== 0 || direction.y !== 0) && CustomEntitiesLegacy.CanWalk(this.unit)){
             const output = this.Move(direction, speed);
             if(output !== CollisionTypes.SUCCESS){
                 let alternativeDirections: Vector[] = [];
@@ -320,7 +320,7 @@ export default class Hero extends UnitEntity{
                 !this.unit.HasModifier('modifier_mars_counter_countering') && 
                 !this.unit.HasModifier('modifier_spectre_counter_countering')
             ){ 
-                CustomEntities.FullyFaceTowards(this.unit, direction);
+                CustomEntitiesLegacy.FullyFaceTowards(this.unit, direction);
             }
         } else {
             this.unit.RemoveModifierByName('modifier_hero_movement');
@@ -348,7 +348,7 @@ export default class Hero extends UnitEntity{
             const owner = item.GetPurchaser();
             
             //Only pickup items owned by teammates
-            if(!owner || (owner && CustomEntities.Allies(this.unit, owner) && this.unit !== owner)){
+            if(!owner || (owner && CustomEntitiesLegacy.Allies(this.unit, owner) && this.unit !== owner)){
                 this.unit.AddItem(item);
                 item.OnSpellStart();
 
@@ -378,7 +378,7 @@ DeclareFunctions()
 }
 
 OnSpentMana(event)
-	CustomEntities.SendDataToClient(this.GetParent())
+	CustomEntitiesLegacy.SendDataToClient(this.GetParent())
 }
 
 OnAbilityFullyCast(params)
@@ -388,7 +388,7 @@ OnAbilityFullyCast(params)
 		}
 
 		if(!GameRules.Addon:IsInWTFMode()){
-			CustomEntities.GiveEnergy(params.unit, -params.ability:GetEnergyCost())
+			CustomEntitiesLegacy.GiveEnergy(params.unit, -params.ability:GetEnergyCost())
 		}
 	}
 }

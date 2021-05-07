@@ -18,7 +18,7 @@ function modifier_juggernaut_ultimate_displacement:OnCollide(params)
 			local enemy = nil
 
 			for _,unit in pairs(params.units) do
-				if not CustomEntities:IsObstacle(unit) then
+				if not CustomEntitiesLegacy:IsObstacle(unit) then
 					enemy = unit
 					break
 				end

@@ -101,7 +101,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = CustomAbilities:GetCursorPosition(self)
     local origin = caster:GetAbsOrigin()
-	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
+	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 
 	local ability = caster:FindAbilityByName('phantom_ex_counter')
 	local duration_per_stack = ability:GetSpecialValueFor("duration_per_stack")
@@ -113,7 +113,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile  = {
 			EffectName = "particles/phantom/phantom_counter_recast.vpcf",
 			vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
@@ -126,7 +126,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
 				local damage_table = {
 					victim = unit,
@@ -137,7 +137,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 				ApplyDamage(damage_table)
 
 				if _self.Source == caster then
-					if not CustomEntities:IsObstacle(unit) then
+					if not CustomEntitiesLegacy:IsObstacle(unit) then
 						caster:AddNewModifier(
 							caster, -- player source
 							self, -- ability source
@@ -160,7 +160,7 @@ function phantom_ex_counter_recast:OnSpellStart()
 		}
 	})
 
-	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
+	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
 end
 

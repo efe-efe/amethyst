@@ -27,14 +27,14 @@ function Modifiers.StartTracking(hModifier, iType, onCreated, onDestroy)
 
     function hModifier:OnCreated(params)
         if IsServer() then
-            CustomEntities:AddModifierTracker(self:GetParent(), self:GetName(), iType)
+            CustomEntitiesLegacy:AddModifierTracker(self:GetParent(), self:GetName(), iType)
         end
         if onCreated then onCreated(self, params) end
     end
 
     function hModifier:OnDestroy(params)
         if IsServer() then
-            CustomEntities:RemoveModifierTracker(self:GetParent(), self:GetName(), iType)
+            CustomEntitiesLegacy:RemoveModifierTracker(self:GetParent(), self:GetName(), iType)
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -66,7 +66,7 @@ function Modifiers.Recast(modifier)
                 )
             end
 
-            CustomEntities:SendDataToClient(self:GetParent())
+            CustomEntitiesLegacy:SendDataToClient(self:GetParent())
         end
         
         if onCreated then onCreated(self, params) end
@@ -92,7 +92,7 @@ function Modifiers.Recast(modifier)
                     false
                )
             end
-            CustomEntities:SendDataToClient(self:GetParent())
+            CustomEntitiesLegacy:SendDataToClient(self:GetParent())
         end
         if onDestroy then onDestroy(self) end
     end
@@ -439,7 +439,7 @@ function Modifiers.Displacement(modifier)
 
         local trees = GridNav:GetAllTreesAroundPoint(origin, (self:GetCollisionRadius()/2), true)
 
-        local units = CustomEntities:FindUnitsInRadius(
+        local units = CustomEntitiesLegacy:FindUnitsInRadius(
             self:GetCaster(),
             origin, 
             self:GetCollisionRadius(), 
@@ -585,7 +585,7 @@ function Modifiers.Counter(modifier)
             if self:UseDefaultVisuals() then
                 self.effect_cast = ParticleManager:CreateParticle("particles/items_fx/black_king_bar_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
             end
-            CustomEntities:DeactivateNonPriorityAbilities(self:GetParent())
+            CustomEntitiesLegacy:DeactivateNonPriorityAbilities(self:GetParent())
         end
         if onCreated then onCreated(self, params) end
     end
@@ -596,7 +596,7 @@ function Modifiers.Counter(modifier)
                 ParticleManager:DestroyParticle(self.effect_cast, false)
                 ParticleManager:ReleaseParticleIndex(self.effect_cast)
             end
-			CustomEntities:SetAllAbilitiesActivated(self:GetParent(), true)
+			CustomEntitiesLegacy:SetAllAbilitiesActivated(self:GetParent(), true)
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -857,7 +857,7 @@ function Modifiers.Thinker(modifier)
 
     function modifier:DrawVisuals()
         local percentage = 1.0
-        local caster_alliance = CustomEntities:GetAlliance(self:GetCaster())
+        local caster_alliance = CustomEntitiesLegacy:GetAlliance(self:GetCaster())
 
         if self:GetDelayTime() > 0 then
             percentage = 0.0
@@ -995,7 +995,7 @@ function Modifiers.Status(modifier)
 
     function modifier:OnCreated(params)
         if IsServer() then
-            CustomEntities:SendDataToClient(self:GetParent())
+            CustomEntitiesLegacy:SendDataToClient(self:GetParent())
         end
         if onCreated then onCreated(self, params) end
     end
@@ -1017,7 +1017,7 @@ function Modifiers.Status(modifier)
 
     function modifier:OnDestroy(params)
         if IsServer() then		
-            CustomEntities:SendDataToClient(self:GetParent())
+            CustomEntitiesLegacy:SendDataToClient(self:GetParent())
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -1275,7 +1275,7 @@ function Modifiers.Shield(modifier)
     end
 
     function modifier:GetModifierIncomingDamage_Percentage(params)
-        for key, value in pairs(CustomEntities:GetAllModifiersWithType(self:GetParent(), MODIFIER_TYPES.SHIELD)) do
+        for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(self:GetParent(), MODIFIER_TYPES.SHIELD)) do
             if value == self:GetName() then
                 local shield_points = self:GetStackCount() - params.damage
         
@@ -1293,8 +1293,8 @@ function Modifiers.Shield(modifier)
     end
     
     function modifier:InformClient()
-        CustomEntities:SendDataToClient(self:GetParent())
-        local alliance = CustomEntities:GetAlliance(self:GetParent())
+        CustomEntitiesLegacy:SendDataToClient(self:GetParent())
+        local alliance = CustomEntitiesLegacy:GetAlliance(self:GetParent())
     
         if alliance then
             alliance:SendDataToClient()

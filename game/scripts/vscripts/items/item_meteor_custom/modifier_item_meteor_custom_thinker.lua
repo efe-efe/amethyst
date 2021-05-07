@@ -8,7 +8,7 @@ function modifier_item_meteor_custom_thinker:OnDelayEnds()
         self.duration = self:GetAbility():GetSpecialValueFor("duration")
         self.stun_duration = self:GetAbility():GetSpecialValueFor("stun_duration")
 
-		local enemies = CustomEntities:FindUnitsInRadius(
+		local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 			self:GetCaster(),
 			self.origin, 
 			self.radius, 

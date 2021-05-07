@@ -19,7 +19,7 @@ function dire_zombie_attack:LaunchProjectile(vPoint, nSpeed, nDistance, nDamage)
     local fading_slow_duration = 4.0
     local fading_slow_pct = 80
 
-    CustomEntities:ProjectileAttack(caster, {
+    CustomEntitiesLegacy:ProjectileAttack(caster, {
         tProjectile = {
             EffectName = "particles/dire_zombie/dire_zombie_projectile.vpcf",
             vSpawnOrigin = origin + Vector(0, 0, 96),
@@ -32,7 +32,7 @@ function dire_zombie_attack:LaunchProjectile(vPoint, nSpeed, nDistance, nDamage)
             WallBehavior = PROJECTILES_DESTROY,
             GroundBehavior = PROJECTILES_NOTHING,
             fGroundOffset = 0,
-            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
             OnUnitHit = function(_self, unit) 
                 local damage_table = {
                     victim = unit,

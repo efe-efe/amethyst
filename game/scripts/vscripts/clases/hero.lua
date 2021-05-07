@@ -51,7 +51,7 @@ ____exports.default = (function()
             direction:__mul(offset)
         )
         futureOrigin.z = GetGroundPosition(futureOrigin, self.unit).z
-        local normal = CustomEntities:GetNormal(self.unit, futureOrigin)
+        local normal = CustomEntitiesLegacy:GetNormal(self.unit, futureOrigin)
         if IsInToolsMode() and DEBUG then
             DebugDrawLine_vCol(
                 futureOrigin,
@@ -112,7 +112,7 @@ ____exports.default = (function()
                 end
             )
         end
-        if not CustomEntities:IsAnimating(self.unit) then
+        if not CustomEntitiesLegacy:IsAnimating(self.unit) then
             if not self.unit:HasModifier("modifier_hero_movement") then
                 self.unit:AddNewModifier(self.unit, nil, "modifier_hero_movement", {})
             end
@@ -146,7 +146,7 @@ ____exports.default = (function()
     end
     function Hero.prototype.AlternativeDirectionsWalls(self, direction)
         local directions = {}
-        local collisionDirection = CustomEntities:GetCollisionDirection(self.unit)
+        local collisionDirection = CustomEntitiesLegacy:GetCollisionDirection(self.unit)
         local angle = VectorToAngles(direction).y
         if self:IsNorthEast(angle) then
             if collisionDirection == Orientations.DIAGONAL_LEFT then
@@ -302,12 +302,12 @@ ____exports.default = (function()
         return directions
     end
     function Hero.prototype.Update(self)
-        local direction = CustomEntities:GetDirection(self.unit):Normalized()
+        local direction = CustomEntitiesLegacy:GetDirection(self.unit):Normalized()
         local speed = self.unit:GetIdealSpeed() / 25
-        if CustomEntities:IsAnimating(self.unit) then
+        if CustomEntitiesLegacy:IsAnimating(self.unit) then
             self.unit:RemoveModifierByName("modifier_hero_movement")
         end
-        if ((direction.x ~= 0) or (direction.y ~= 0)) and CustomEntities:CanWalk(self.unit) then
+        if ((direction.x ~= 0) or (direction.y ~= 0)) and CustomEntitiesLegacy:CanWalk(self.unit) then
             local output = self:Move(direction, speed)
             if output ~= CollisionTypes.SUCCESS then
                 local alternativeDirections = {}
@@ -329,7 +329,7 @@ ____exports.default = (function()
                 end
             end
             if ((not self.unit:HasModifier("modifier_casting")) and (not self.unit:HasModifier("modifier_mars_counter_countering"))) and (not self.unit:HasModifier("modifier_spectre_counter_countering")) then
-                CustomEntities:FullyFaceTowards(self.unit, direction)
+                CustomEntitiesLegacy:FullyFaceTowards(self.unit, direction)
             end
         else
             self.unit:RemoveModifierByName("modifier_hero_movement")
@@ -373,7 +373,7 @@ ____exports.default = (function()
             function(____, drop)
                 local item = drop:GetContainedItem()
                 local owner = item:GetPurchaser()
-                if (not owner) or ((owner and CustomEntities:Allies(self.unit, owner)) and (self.unit ~= owner)) then
+                if (not owner) or ((owner and CustomEntitiesLegacy:Allies(self.unit, owner)) and (self.unit ~= owner)) then
                     self.unit:AddItem(item)
                     item:OnSpellStart()
                     GameRules.Addon:OnPickedUp(item)

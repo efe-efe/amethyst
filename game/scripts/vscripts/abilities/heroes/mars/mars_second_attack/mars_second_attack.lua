@@ -20,7 +20,7 @@ function mars_second_attack:OnSpellStart()
 	local knockback_distance = self:GetSpecialValueFor("knockback_distance")
 	direction.z = 0
 
-	local enemies = CustomEntities:FindUnitsInCone(
+	local enemies = CustomEntitiesLegacy:FindUnitsInCone(
 		caster,
 		direction, 
 		0.0, 
@@ -86,7 +86,7 @@ function mars_ex_second_attack:OnSpellStart()
 	local knockback_distance = self:GetSpecialValueFor("knockback_distance")
 	direction.z = 0
 
-	local enemies = CustomEntities:FindUnitsInCone(
+	local enemies = CustomEntitiesLegacy:FindUnitsInCone(
 		caster,
 		direction, 
 		0.0, 

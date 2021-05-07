@@ -24,7 +24,7 @@ function modifier_nevermore_counter_thinker:OnDelayEnds()
 	if IsServer() then
 		FindClearSpaceForUnit(self:GetCaster(), self:GetParent():GetAbsOrigin() , true)
 
-		local enemies = CustomEntities:FindUnitsInRadius(
+		local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 			self:GetCaster(),
 			self:GetParent():GetOrigin(), 
 			self.radius, 

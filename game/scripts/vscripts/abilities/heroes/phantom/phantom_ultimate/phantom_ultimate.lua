@@ -27,9 +27,9 @@ function phantom_ultimate:OnSpellStart()
 	local projectile_end_radius = self:GetSpecialValueFor("hitbox")
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = 4000
-	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
+	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile  = {
 			EffectName = projectile_name,
 			vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
@@ -45,7 +45,7 @@ function phantom_ultimate:OnSpellStart()
 			WallBehavior = PROJECTILES_NOTHING,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
 				local final_damage = damage + (stacks * damage_per_stack)
 
@@ -68,7 +68,7 @@ function phantom_ultimate:OnSpellStart()
 		}
 	})
 
-	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
+	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 3.0)
 	self:StopEffectsOnCastPoint()
 end

@@ -52,7 +52,7 @@ end
 
 function radius_marker_thinker:DrawVisuals()
     local percentage = 1.0
-    local caster_alliance = CustomEntities:GetAlliance(self:GetCaster())
+    local caster_alliance = CustomEntitiesLegacy:GetAlliance(self:GetCaster())
 
     if self.delay > 0 then
         percentage = 0.0

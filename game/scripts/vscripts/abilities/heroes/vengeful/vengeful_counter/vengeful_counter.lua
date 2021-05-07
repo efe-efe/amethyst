@@ -34,7 +34,7 @@ function vengeful_counter:ThrowProjectile(hCaster, iDamage, vOrigin, vDirection,
 	local mana_gain_pct = ability:GetSpecialValueFor("mana_gain_pct")
 	local duration = ability:GetSpecialValueFor("duration")
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName = "particles/units/heroes/hero_vengeful/vengeful_wave_of_terror.vpcf",
 			vSpawnOrigin = vOrigin + Vector(vDirection.x * 45, vDirection.y * 45, 96),
@@ -49,7 +49,7 @@ function vengeful_counter:ThrowProjectile(hCaster, iDamage, vOrigin, vDirection,
 			bIsReflectable = false,
 			bIsDestructible = false,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit)
 				local damage_table = {
 					victim = unit,
@@ -59,8 +59,8 @@ function vengeful_counter:ThrowProjectile(hCaster, iDamage, vOrigin, vDirection,
 					ability = ability,
 				}
 				ApplyDamage(damage_table)
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(hCaster, mana_gain_pct, true)
+				if CustomEntitiesLegacy:ProvidesMana(unit) then
+					CustomEntitiesLegacy:GiveManaAndEnergyPercent(hCaster, mana_gain_pct, true)
 				end
 			end,
 			OnFinish = function(_self, pos)
@@ -112,7 +112,7 @@ function vengeful_ex_counter:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		bTriggerCounters = false,
 		tProjectile = {
 			EffectName = "particles/econ/items/vengeful/vengeful_weapon_talon/vengeful_wave_of_terror_weapon_talon.vpcf",
@@ -127,7 +127,7 @@ function vengeful_ex_counter:OnSpellStart()
 			GroundBehavior = PROJECTILES_NOTHING,
 			bIsReflectable = false,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit)
 				local damage_table = {
 					victim = unit,

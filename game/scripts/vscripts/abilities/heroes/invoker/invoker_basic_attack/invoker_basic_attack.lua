@@ -27,7 +27,7 @@ function invoker_basic_attack:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
     local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		bIsBasicAttack = true,
 		tProjectile = {
 			EffectName = "particles/invoker/invoker_basic_attack.vpcf",
@@ -41,16 +41,16 @@ function invoker_basic_attack:OnSpellStart()
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
-				CustomEntities:AttackWithBaseDamage(caster, {
+				CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
 					hTarget = unit,
 					hAbility = self,
 				})
 
 				if _self.Source == caster then
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 				end
 			end,

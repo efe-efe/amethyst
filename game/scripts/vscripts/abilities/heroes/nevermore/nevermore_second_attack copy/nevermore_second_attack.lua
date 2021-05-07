@@ -40,9 +40,9 @@ function nevermore_second_attack:OnSpellStart()
 		WallBehavior = PROJECTILES_DESTROY,
 		GroundBehavior = PROJECTILES_NOTHING,
 		fGroundOffset = 0,
-		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+		UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 		OnFinish = function(_self, pos)
-			local enemies = CustomEntities:FindUnitsInRadius(
+			local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 				_self.Source,
 				pos, 
 				radius, 
@@ -60,7 +60,7 @@ function nevermore_second_attack:OnSpellStart()
 			local should_recast = false
 	
 			for _,enemy in pairs(enemies) do
-				if not CustomEntities:IsObstacle(enemy) then
+				if not CustomEntitiesLegacy:IsObstacle(enemy) then
 					should_recast = true
 				end
 
@@ -87,8 +87,8 @@ function nevermore_second_attack:OnSpellStart()
 						else 
 							modifier:DecrementStackCount()
 						end
-						if CustomEntities:ProvidesMana(unit) then
-							CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+						if CustomEntitiesLegacy:ProvidesMana(unit) then
+							CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 						end
 					end
 				else

@@ -26,7 +26,7 @@ function modifier_invoker_spirit_custom:OnOrder(params)
         local point = CustomAbilities:GetCursorPosition(self:GetAbility())
         local direction = Direction2D(origin, point)
 
-        CustomEntities:FullyFaceTowards(self:GetParent(), direction)
+        CustomEntitiesLegacy:FullyFaceTowards(self:GetParent(), direction)
         self:GetParent():StartGesture(ACT_DOTA_ATTACK)
     end
 end
@@ -69,7 +69,7 @@ function modifier_invoker_spirit_custom:LaunchProjectile(vPoint)
         local projectile_direction = Direction2D(origin, point)
         local damage = parent:GetAverageTrueAttackDamage(parent)
     
-        CustomEntities:ProjectileAttack(caster, {
+        CustomEntitiesLegacy:ProjectileAttack(caster, {
             tProjectile = {
                 EffectName = "particles/invoker/invoker_spirit_projectile.vpcf",
                 vSpawnOrigin = origin + Vector(0, 0, 96),
@@ -82,7 +82,7 @@ function modifier_invoker_spirit_custom:LaunchProjectile(vPoint)
                 WallBehavior = PROJECTILES_DESTROY,
                 GroundBehavior = PROJECTILES_NOTHING,
                 fGroundOffset = 0,
-                UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+                UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
                 OnUnitHit = function(_self, unit) 
                     local damage_table = {
                         victim = unit,
@@ -94,8 +94,8 @@ function modifier_invoker_spirit_custom:LaunchProjectile(vPoint)
                     ApplyDamage(damage_table)
         
                     if _self.Source == parent then
-                        if CustomEntities:ProvidesMana(unit) then
-                            CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+                        if CustomEntitiesLegacy:ProvidesMana(unit) then
+                            CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
                         end
                     end
                 end,

@@ -28,7 +28,7 @@ function sniper_extra:OnSpellStart()
     table.insert(directions, RotatePoint(Vector(0,0,0), Vector(0,0,0) + straight_direction, 30):Normalized())
 
     for _,direction in ipairs(directions) do
-        CustomEntities:ProjectileAttack(caster, {
+        CustomEntitiesLegacy:ProjectileAttack(caster, {
             tProjectile = {
                 EffectName = "particles/sniper/sniper_extra.vpcf",
                 vSpawnOrigin = caster:GetAbsOrigin() + Vector(0,0,60),
@@ -41,7 +41,7 @@ function sniper_extra:OnSpellStart()
                 WallBehavior = PROJECTILES_DESTROY,
                 GroundBehavior = PROJECTILES_NOTHING,
                 fGroundOffset = 0,
-                UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+                UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
                 OnUnitHit = function(_self, unit) 
                     local x = unit:GetOrigin().x - origin.x
                     local y = unit:GetOrigin().y - origin.y

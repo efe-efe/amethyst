@@ -25,7 +25,7 @@ function modifier_storm_mobility_thinker:OnIntervalThink()
     local give_mana = false
     local destroy = false
 
-    CustomEntities:AoeAttack(self:GetCaster(), {
+    CustomEntitiesLegacy:AoeAttack(self:GetCaster(), {
         vOrigin = self.origin, 
         fRadius = self.radius,
         Callback = function(hTarget)
@@ -33,7 +33,7 @@ function modifier_storm_mobility_thinker:OnIntervalThink()
             ApplyDamage(self.damage_table)
     
             
-            if CustomEntities:ProvidesMana(hTarget) then
+            if CustomEntitiesLegacy:ProvidesMana(hTarget) then
                 give_mana = true
             end
             destroy = true
@@ -41,10 +41,10 @@ function modifier_storm_mobility_thinker:OnIntervalThink()
     })
 
     if give_mana then
-        CustomEntities:GiveManaAndEnergyPercent(self:GetCaster(), self.mana_gain_pct, true)
+        CustomEntitiesLegacy:GiveManaAndEnergyPercent(self:GetCaster(), self.mana_gain_pct, true)
         if self:GetCaster():HasModifier('modifier_storm_ultimate') then
             local extra_mana_pct = self.mana_gain_pct * (self:GetCaster():FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-            CustomEntities:GiveManaPercent(self:GetCaster(), extra_mana_pct, true, true)
+            CustomEntitiesLegacy:GiveManaPercent(self:GetCaster(), extra_mana_pct, true, true)
         end
     end
 

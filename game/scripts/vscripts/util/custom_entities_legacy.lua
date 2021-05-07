@@ -1,4 +1,4 @@
-CustomEntities = class({})
+CustomEntitiesLegacy = class({})
 
 PROJECTILE_HIT = 0
 MEELE_HIT = 1
@@ -35,7 +35,7 @@ MODIFIER_EVENTS = {
 	ON_BASIC_ATTACK_ENDED = 3,
 }
 
-function CustomEntities:Initialize(hEntity, bIsPVENPC)
+function CustomEntitiesLegacy:Initialize(hEntity, bIsPVENPC)
 	hEntity.treshold = 				        0
 	hEntity.energy = 					    0
 	hEntity.max_energy = 				    100
@@ -53,8 +53,8 @@ function CustomEntities:Initialize(hEntity, bIsPVENPC)
 	hEntity.charges_modifiers =				nil
 	hEntity.cooldown_modifiers =			nil
 
-	CustomEntities:SetEnergy(hEntity, hEntity.max_energy)	
-    CustomEntities:SetTreshold(hEntity, GameRules.Addon.max_treshold)
+	CustomEntitiesLegacy:SetEnergy(hEntity, hEntity.max_energy)	
+    CustomEntitiesLegacy:SetTreshold(hEntity, GameRules.Addon.max_treshold)
     
 	hEntity:AddNewModifier(hEntity,  nil, "modifier_visible", {})
 	GameRules.Addon:RegisterUnit(hEntity)
@@ -63,7 +63,7 @@ function CustomEntities:Initialize(hEntity, bIsPVENPC)
 		hEntity.direction = {}
 		hEntity.collision_direction = -1
 	
-		CustomEntities:SetDirection(hEntity, 0, 0)
+		CustomEntitiesLegacy:SetDirection(hEntity, 0, 0)
 		--hEntity:AddNewModifier(hEntity,  nil, "modifier_hero_base", {})
 		ConstructHero(hEntity)
 	end
@@ -82,18 +82,18 @@ function CustomEntities:Initialize(hEntity, bIsPVENPC)
 		hEntity:SetAbilityPoints(2) -- This should point to settings.AbilityPoints
 	end
 
-	CustomEntities:SetInitialized(hEntity, true)
+	CustomEntitiesLegacy:SetInitialized(hEntity, true)
 end
 
-function CustomEntities:SetParent(hEntity, cParent)
+function CustomEntitiesLegacy:SetParent(hEntity, cParent)
 	hEntity.parent = cParent
 end
 
-function CustomEntities:GetParent(hEntity)
+function CustomEntitiesLegacy:GetParent(hEntity)
 	return hEntity.parent
 end
 
-function CustomEntities:GetNormal(hEntity, vPosition, fScale)
+function CustomEntitiesLegacy:GetNormal(hEntity, vPosition, fScale)
     local m_scale = fScale or 1
     local nscale = -1 * m_scale
     local zl = GetGroundPosition(vPosition + Vector(nscale,0,0), hEntity).z
@@ -103,7 +103,7 @@ function CustomEntities:GetNormal(hEntity, vPosition, fScale)
     return Vector(zl - zr, zd - zu, 2 * m_scale):Normalized()
 end
 
-function CustomEntities:RefreshCooldowns(hEntity)
+function CustomEntitiesLegacy:RefreshCooldowns(hEntity)
 	for i = 0, 23 do
 		local hAbility = hEntity:GetAbilityByIndex(i)
 		if hAbility then
@@ -122,55 +122,55 @@ function CustomEntities:RefreshCooldowns(hEntity)
 	end
 end
 
-function CustomEntities:Reset(hEntity)
+function CustomEntitiesLegacy:Reset(hEntity)
 	if not IsInToolsMode() then
-		CustomEntities:SetManaCustom(hEntity, 0, true)
-		CustomEntities:SetEnergy(hEntity, 0)
+		CustomEntitiesLegacy:SetManaCustom(hEntity, 0, true)
+		CustomEntitiesLegacy:SetEnergy(hEntity, 0)
 	end
-	CustomEntities:SetHealthCustom(hEntity, hEntity:GetMaxHealth())
-	CustomEntities:SetTreshold(hEntity, GameRules.Addon.max_treshold)
-	CustomEntities:RefreshCooldowns(hEntity)	
-	CustomEntities:InterruptCastPoint(hEntity)
+	CustomEntitiesLegacy:SetHealthCustom(hEntity, hEntity:GetMaxHealth())
+	CustomEntitiesLegacy:SetTreshold(hEntity, GameRules.Addon.max_treshold)
+	CustomEntitiesLegacy:RefreshCooldowns(hEntity)	
+	CustomEntitiesLegacy:InterruptCastPoint(hEntity)
 	hEntity:Purge(true, true, false, true, false)
 end
 
-function CustomEntities:IsInitialized(hEntity)
+function CustomEntitiesLegacy:IsInitialized(hEntity)
 	return 	hEntity.initialized
 end
 
-function CustomEntities:SetInitialized(hEntity, bInitialized)	
+function CustomEntitiesLegacy:SetInitialized(hEntity, bInitialized)	
 	hEntity.initialized = bInitialized
 end
 
-function CustomEntities:SetDirection(hEntity, fX, fY)
-	local current_direction = CustomEntities:GetRawDirection(hEntity)
+function CustomEntitiesLegacy:SetDirection(hEntity, fX, fY)
+	local current_direction = CustomEntitiesLegacy:GetRawDirection(hEntity)
 	local m_x = fX or current_direction.x
 	local m_y = fY or current_direction.y 
 	hEntity.direction = Vector(m_x, m_y, hEntity:GetForwardVector().z)
 end
 
-function CustomEntities:GetRawDirection(hEntity)
+function CustomEntitiesLegacy:GetRawDirection(hEntity)
 	return hEntity.direction
 end
 
-function CustomEntities:SetEnergy(hEntity, iEnergy, bInformClient)
-	hEntity.energy = Clamp(iEnergy, CustomEntities:GetMaxEnergy(hEntity), 0)
+function CustomEntitiesLegacy:SetEnergy(hEntity, iEnergy, bInformClient)
+	hEntity.energy = Clamp(iEnergy, CustomEntitiesLegacy:GetMaxEnergy(hEntity), 0)
 
 	if bInformClient then
-		CustomEntities:SendDataToClient(hEntity)
+		CustomEntitiesLegacy:SendDataToClient(hEntity)
 	end
 end
 
-function CustomEntities:GetMaxEnergy(hEntity)
+function CustomEntitiesLegacy:GetMaxEnergy(hEntity)
 	return hEntity.max_energy
 end
 
-function CustomEntities:SetTreshold(hEntity, iTreshold)	
+function CustomEntitiesLegacy:SetTreshold(hEntity, iTreshold)	
 	hEntity.treshold = iTreshold
-	CustomEntities:SendDataToClient(hEntity)
+	CustomEntitiesLegacy:SendDataToClient(hEntity)
 end
 
-function CustomEntities:SendDataToClient(hEntity)
+function CustomEntitiesLegacy:SendDataToClient(hEntity)
 	if hEntity:IsRealHero() then
 		if hEntity:IsIllusion() then
 			return
@@ -178,8 +178,8 @@ function CustomEntities:SendDataToClient(hEntity)
 	
 		local allianceName = "NOT_ALLIANCE"
 	
-		if CustomEntities:GetAlliance(hEntity) then
-			allianceName = CustomEntities:GetAlliance(hEntity):GetName() 
+		if CustomEntitiesLegacy:GetAlliance(hEntity) then
+			allianceName = CustomEntitiesLegacy:GetAlliance(hEntity):GetName() 
 		end
 
 		local data = {
@@ -190,19 +190,19 @@ function CustomEntities:SendDataToClient(hEntity)
 			name = hEntity:GetName(),
 			health = hEntity:GetHealth(),
 			maxHealth = hEntity:GetMaxHealth(),
-			treshold = CustomEntities:GetTreshold(hEntity),
-			shield = CustomEntities:GetShield(hEntity),
+			treshold = CustomEntitiesLegacy:GetTreshold(hEntity),
+			shield = CustomEntitiesLegacy:GetShield(hEntity),
 			mana = hEntity:GetMana(),
 			maxMana = hEntity:GetMaxMana(),
-			status = CustomEntities:GetStatus(hEntity),
-			recast = CustomEntities:GetRecast(hEntity),
-			stackbars = CustomEntities:GetStackbars(hEntity),
-			charges = CustomEntities:GetCharges(hEntity),
-			cooldown = CustomEntities:GetCooldown(hEntity),
-			abilities = CustomEntities:GetAbilities(hEntity),
-			energy = CustomEntities:GetEnergy(hEntity),
-			maxEnergy = CustomEntities:GetMaxEnergy(hEntity),
-			energyPerCell = CustomEntities:GetEnergyPerCell(hEntity)
+			status = CustomEntitiesLegacy:GetStatus(hEntity),
+			recast = CustomEntitiesLegacy:GetRecast(hEntity),
+			stackbars = CustomEntitiesLegacy:GetStackbars(hEntity),
+			charges = CustomEntitiesLegacy:GetCharges(hEntity),
+			cooldown = CustomEntitiesLegacy:GetCooldown(hEntity),
+			abilities = CustomEntitiesLegacy:GetAbilities(hEntity),
+			energy = CustomEntitiesLegacy:GetEnergy(hEntity),
+			maxEnergy = CustomEntitiesLegacy:GetMaxEnergy(hEntity),
+			energyPerCell = CustomEntitiesLegacy:GetEnergyPerCell(hEntity)
 		}
 		CustomNetTables:SetTableValue("heroes", tostring(hEntity:GetPlayerID()), data)
 	else
@@ -210,7 +210,7 @@ function CustomEntities:SendDataToClient(hEntity)
 	end
 end
 
-function CustomEntities:AutoUpgradeAbilities(hEntity)
+function CustomEntitiesLegacy:AutoUpgradeAbilities(hEntity)
 	for i = 0, 8 do
 		if hEntity:GetAbilityPoints() == 0 then
 			break
@@ -225,15 +225,15 @@ function CustomEntities:AutoUpgradeAbilities(hEntity)
 	end
 end
 
-function CustomEntities:GetEnergyPerCell(hEntity)
+function CustomEntitiesLegacy:GetEnergyPerCell(hEntity)
 	return hEntity.energy_per_cell
 end
 
-function CustomEntities:SetEnergyPerCell(hEntity, iEnergy)
+function CustomEntitiesLegacy:SetEnergyPerCell(hEntity, iEnergy)
 	hEntity.energy_per_cell = iEnergy
 end
 
-function CustomEntities:GetAlliance(hEntity)
+function CustomEntitiesLegacy:GetAlliance(hEntity)
 	local playerID = hEntity:GetPlayerOwnerID()
 
 	if playerID == -1 then
@@ -249,22 +249,22 @@ function CustomEntities:GetAlliance(hEntity)
 	return nil
 end
 
-function CustomEntities:GetEnergy(hEntity)
+function CustomEntitiesLegacy:GetEnergy(hEntity)
 	return hEntity.energy
 end
 
-function CustomEntities:GetTreshold(hEntity)
+function CustomEntitiesLegacy:GetTreshold(hEntity)
 	return hEntity.treshold
 end
 
-function CustomEntities:GetAllModifiersWithType(hEntity, iType)
+function CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, iType)
 	return hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]]
 end
 
-function CustomEntities:GetShield(hEntity)
+function CustomEntitiesLegacy:GetShield(hEntity)
 	local shield = 0
 
-	for key, value in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.SHIELD)) do
+	for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.SHIELD)) do
 		local hModifier = hEntity:FindModifierByName(value)
 
 		if hModifier ~= nil then
@@ -277,10 +277,10 @@ function CustomEntities:GetShield(hEntity)
 	return shield
 end
 
-function CustomEntities:GetStatus(hEntity)
+function CustomEntitiesLegacy:GetStatus(hEntity)
 	local status = {} 
 	
-	for key, value in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.STATUS)) do
+	for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.STATUS)) do
 		local hModifier = hEntity:FindModifierByName(value)
 
 		if hModifier ~= nil then
@@ -295,10 +295,10 @@ function CustomEntities:GetStatus(hEntity)
 	return status
 end
 
-function CustomEntities:GetRecast(hEntity)
+function CustomEntitiesLegacy:GetRecast(hEntity)
 	local recast = {} 
 	
-	for key, value in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.RECAST)) do
+	for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.RECAST)) do
 		local hModifier = hEntity:FindModifierByName(value)
 		recast[value] = hModifier:GetRecastData()
 
@@ -307,19 +307,19 @@ function CustomEntities:GetRecast(hEntity)
 	return recast
 end
 
-function CustomEntities:GetStackbars(hEntity)
+function CustomEntitiesLegacy:GetStackbars(hEntity)
 	return hEntity.stackbars_modifiers
 end
 
-function CustomEntities:GetCharges(hEntity)
+function CustomEntitiesLegacy:GetCharges(hEntity)
 	return hEntity.charges_modifiers
 end
 
-function CustomEntities:GetCooldown(hEntity)
+function CustomEntitiesLegacy:GetCooldown(hEntity)
 	return hEntity.cooldown_modifiers
 end
 
-function CustomEntities:GetAbilities(hEntity)
+function CustomEntitiesLegacy:GetAbilities(hEntity)
 	local abilities = {}
 
 	for i = 0, 8 do
@@ -333,7 +333,7 @@ function CustomEntities:GetAbilities(hEntity)
 	return abilities
 end
 
-function CustomEntities:GiveManaCustom(hEntity, fMana, bInformClient, bShowOverhead)
+function CustomEntitiesLegacy:GiveManaCustom(hEntity, fMana, bInformClient, bShowOverhead)
 	if hEntity:HasModifier("modifier_sapphire") then
 		fMana = fMana * 2
 	end
@@ -341,70 +341,70 @@ function CustomEntities:GiveManaCustom(hEntity, fMana, bInformClient, bShowOverh
 	hEntity:GiveMana(fMana)
 
 	if bInformClient then
-		CustomEntities:SendDataToClient(hEntity)
+		CustomEntitiesLegacy:SendDataToClient(hEntity)
 	end
 	if bShowOverhead then
 		SendOverheadManaMessage(hEntity, fMana)
 	end
 end
 
-function CustomEntities:GiveManaPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
+function CustomEntitiesLegacy:GiveManaPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
 	local mana = hEntity:GetMaxMana() * iPercentage/100
-	CustomEntities:GiveManaCustom(hEntity, mana, bInformClient, bShowOverhead)
+	CustomEntitiesLegacy:GiveManaCustom(hEntity, mana, bInformClient, bShowOverhead)
 end
 
-function CustomEntities:GiveEnergyPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
-	local energy = CustomEntities:GetMaxEnergy(hEntity) * iPercentage/100
-	CustomEntities:GiveEnergy(hEntity, energy, bInformClient, bShowOverhead)
+function CustomEntitiesLegacy:GiveEnergyPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
+	local energy = CustomEntitiesLegacy:GetMaxEnergy(hEntity) * iPercentage/100
+	CustomEntitiesLegacy:GiveEnergy(hEntity, energy, bInformClient, bShowOverhead)
 end
 
-function CustomEntities:GiveEnergy(hEntity, iEnergy, bInformClient, bShowOverhead)
-	CustomEntities:SetEnergy(hEntity, CustomEntities:GetEnergy(hEntity) + iEnergy, bInformClient)
+function CustomEntitiesLegacy:GiveEnergy(hEntity, iEnergy, bInformClient, bShowOverhead)
+	CustomEntitiesLegacy:SetEnergy(hEntity, CustomEntitiesLegacy:GetEnergy(hEntity) + iEnergy, bInformClient)
 
 	if bShowOverhead then
 		SendOverheadEnergyMessage(hEntity, iEnergy)
 	end
 end
 
-function CustomEntities:GiveManaAndEnergyPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
-	CustomEntities:GiveManaPercent(hEntity, iPercentage, false, bShowOverhead)
-	CustomEntities:GiveEnergyPercent(hEntity, iPercentage, false, bShowOverhead)
+function CustomEntitiesLegacy:GiveManaAndEnergyPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
+	CustomEntitiesLegacy:GiveManaPercent(hEntity, iPercentage, false, bShowOverhead)
+	CustomEntitiesLegacy:GiveEnergyPercent(hEntity, iPercentage, false, bShowOverhead)
 	if bInformClient then
-		CustomEntities:SendDataToClient(hEntity)
+		CustomEntitiesLegacy:SendDataToClient(hEntity)
 	end
 end
 
-function CustomEntities:GiveManaAndEnergy(hEntity, fAmount, bInformClient, bShowOverhead)
-	CustomEntities:GiveEnergy(hEntity, fAmount, false, bShowOverhead)
-	CustomEntities:GiveManaCustom(hEntity, fAmount, false, bShowOverhead)
+function CustomEntitiesLegacy:GiveManaAndEnergy(hEntity, fAmount, bInformClient, bShowOverhead)
+	CustomEntitiesLegacy:GiveEnergy(hEntity, fAmount, false, bShowOverhead)
+	CustomEntitiesLegacy:GiveManaCustom(hEntity, fAmount, false, bShowOverhead)
 	if bInformClient then
-		CustomEntities:SendDataToClient(hEntity)
+		CustomEntitiesLegacy:SendDataToClient(hEntity)
 	end
 end
 
-function CustomEntities:SetHealthCustom(hEntity, fHealth)
+function CustomEntitiesLegacy:SetHealthCustom(hEntity, fHealth)
 	hEntity:SetHealth(fHealth)
-	CustomEntities:SendDataToClient(hEntity)
+	CustomEntitiesLegacy:SendDataToClient(hEntity)
 	
-	local alliance = CustomEntities:GetAlliance(hEntity)
+	local alliance = CustomEntitiesLegacy:GetAlliance(hEntity)
 	if alliance then
 		alliance:SendDataToClient()
 	end
 end 
 
-function CustomEntities:SetManaCustom(hEntity, fMana, bInformClient)
+function CustomEntitiesLegacy:SetManaCustom(hEntity, fMana, bInformClient)
 	hEntity:SetMana(fMana)
 	if bInformClient then
-		CustomEntities:SendDataToClient(hEntity)
+		CustomEntitiesLegacy:SendDataToClient(hEntity)
 	end
 end
 
 
-function CustomEntities:AddModifierTracker(hEntity, sName, iType)
+function CustomEntitiesLegacy:AddModifierTracker(hEntity, sName, iType)
 	table.insert(hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]], sName)
 end
 
-function CustomEntities:RemoveModifierTracker(hEntity, sName, iType)
+function CustomEntitiesLegacy:RemoveModifierTracker(hEntity, sName, iType)
 	for key, value in pairs(hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]]) do
 		if value == sName then
 			hEntity.modifiers[MODIFIER_OBJECT_NAMES[iType]][key] = nil
@@ -412,20 +412,20 @@ function CustomEntities:RemoveModifierTracker(hEntity, sName, iType)
 	end
 end
 
-function CustomEntities:GetDistance(hEntityA, hEntityB)
+function CustomEntitiesLegacy:GetDistance(hEntityA, hEntityB)
 	return (hEntityA:GetAbsOrigin() - hEntityB:GetAbsOrigin()):Length2D()
 end
 
-function CustomEntities:GetDirection(hEntity)
-	if CustomEntities:IsFeared(hEntity) then
-		local fear_modifier_name = CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.FEAR)[1]
+function CustomEntitiesLegacy:GetDirection(hEntity)
+	if CustomEntitiesLegacy:IsFeared(hEntity) then
+		local fear_modifier_name = CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.FEAR)[1]
 		local fear_origin = hEntity:FindModifierByName(fear_modifier_name):GetAbsOrigin()
 		local direction = (fear_origin - hEntity:GetAbsOrigin()):Normalized()
 		
 		return direction * -1
 	end
 
-	if CustomEntities:IsMoveForced(hEntity) then
+	if CustomEntitiesLegacy:IsMoveForced(hEntity) then
 		if hEntity.direction.x == 0 and hEntity.direction.y == 0 then 
 			local forward_vector = hEntity:GetForwardVector()
 			return Vector(forward_vector.x, forward_vector.y)
@@ -434,54 +434,54 @@ function CustomEntities:GetDirection(hEntity)
 	return hEntity.direction
 end
 
-function CustomEntities:IsBanished(hEntity)
+function CustomEntitiesLegacy:IsBanished(hEntity)
 	return hEntity.banished_modifiers and #hEntity.banished_modifiers > 0
 end
 
-function CustomEntities:IsFeared(hEntity)
-	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.FEAR)
+function CustomEntitiesLegacy:IsFeared(hEntity)
+	return CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.FEAR)
 end
 
-function CustomEntities:IsChanneling(hEntity)
-	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.CHANNELING)
+function CustomEntitiesLegacy:IsChanneling(hEntity)
+	return CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.CHANNELING)
 end
 
-function CustomEntities:IsMoveForced(hEntity)
-	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.MOVE_FORCE)
+function CustomEntitiesLegacy:IsMoveForced(hEntity)
+	return CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.MOVE_FORCE)
 end
 
-function CustomEntities:IsAnimating(hEntity)
-	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.ANIMATION)
+function CustomEntitiesLegacy:IsAnimating(hEntity)
+	return CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.ANIMATION)
 end
 
-function CustomEntities:IsCountering(hEntity)
-	if CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.COUNTER) then
+function CustomEntitiesLegacy:IsCountering(hEntity)
+	if CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.COUNTER) then
 		return true
 	end
 end
 
-function CustomEntities:FullyFaceTowards(hEntity, vDirection)
-	if CustomEntities:IsDisplacing(hEntity) then
+function CustomEntitiesLegacy:FullyFaceTowards(hEntity, vDirection)
+	if CustomEntitiesLegacy:IsDisplacing(hEntity) then
 		return
 	end
 	hEntity:SetForwardVector(vDirection)
 	hEntity:FaceTowards(hEntity:GetAbsOrigin() + vDirection)
 end
 
-function CustomEntities:HasModifiersFromType(hEntity, iType)
-	local tModifiers = CustomEntities:GetAllModifiersWithType(hEntity, iType)
+function CustomEntitiesLegacy:HasModifiersFromType(hEntity, iType)
+	local tModifiers = CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, iType)
 	return tModifiers and #tModifiers > 0
 end
 
-function CustomEntities:IsDisplacing(hEntity)
-	return CustomEntities:HasModifiersFromType(hEntity, MODIFIER_TYPES.DISPLACEMENT)
+function CustomEntitiesLegacy:IsDisplacing(hEntity)
+	return CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.DISPLACEMENT)
 end
 
-function CustomEntities:IsCasting(hEntity)
+function CustomEntitiesLegacy:IsCasting(hEntity)
 	return hEntity:HasModifier('modifier_casting')
 end
 
-function CustomEntities:CanWalk(hEntity)
+function CustomEntitiesLegacy:CanWalk(hEntity)
 	return not (hEntity:IsStunned() or 
 	hEntity:IsCommandRestricted() or 
 	hEntity:IsRooted() or
@@ -489,11 +489,11 @@ function CustomEntities:CanWalk(hEntity)
 	not hEntity:IsAlive())
 end
 
-function CustomEntities:StrongPurge(hEntity)
+function CustomEntitiesLegacy:StrongPurge(hEntity)
     hEntity:Purge(false, true, false, true, false)
 end
 
-function CustomEntities:AddStatus(hEntity, tData)
+function CustomEntitiesLegacy:AddStatus(hEntity, tData)
 	local status = {
 		label = tData.label or "No Label",
 		modifier_name = tData.modifier_name,
@@ -508,7 +508,7 @@ function CustomEntities:AddStatus(hEntity, tData)
 	hEntity.status_modifiers[status.modifier_name] = status
 end
 
-function CustomEntities:AddRecast(hEntity, tData)
+function CustomEntitiesLegacy:AddRecast(hEntity, tData)
 	local recast = {
 		key = tData.key or "NO KEY",
 		modifier_name = tData.modifier_name,
@@ -517,29 +517,29 @@ function CustomEntities:AddRecast(hEntity, tData)
 	hEntity.recast_modifiers[recast.modifier_name] = recast
 end
 
-function CustomEntities:AddStackbars(hEntity, sModifierName)
+function CustomEntitiesLegacy:AddStackbars(hEntity, sModifierName)
 	hEntity.stackbars_modifiers = sModifierName 
 end
 
-function CustomEntities:AddCharges(hEntity, sModifierName)
+function CustomEntitiesLegacy:AddCharges(hEntity, sModifierName)
 	hEntity.charges_modifiers = sModifierName 
 end
 
-function CustomEntities:AddCooldown(hEntity, sModifierName) 
+function CustomEntitiesLegacy:AddCooldown(hEntity, sModifierName) 
 	hEntity.cooldown_modifiers = sModifierName 
 end
 
-function CustomEntities:SetCollisionDirection(hEntity, iCollisionDirection)
+function CustomEntitiesLegacy:SetCollisionDirection(hEntity, iCollisionDirection)
 	if hEntity:IsRealHero() then
 		hEntity.collision_direction = iCollisionDirection
 	end
 end
 
-function CustomEntities:InterruptCastPoint(hEntity)
+function CustomEntitiesLegacy:InterruptCastPoint(hEntity)
 	hEntity:RemoveModifierByName("modifier_casting")
 end
 
-function CustomEntities:FindUnitsInCone(hEntity, vDirection, fMinProjection, vCenterPos, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
+function CustomEntitiesLegacy:FindUnitsInCone(hEntity, vDirection, fMinProjection, vCenterPos, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
 	local tUnits = FindUnitsInCone(
 		hEntity:GetTeamNumber(), 
 		vDirection, 
@@ -554,10 +554,10 @@ function CustomEntities:FindUnitsInCone(hEntity, vDirection, fMinProjection, vCe
 		false
 	)
 
-	return CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
+	return CustomEntitiesLegacy:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
 end
 
-function CustomEntities:FindUnitsInRadius(hEntity, vOrigin, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
+function CustomEntitiesLegacy:FindUnitsInRadius(hEntity, vOrigin, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
     local tUnits = FindUnitsInRadius(
         hEntity:GetTeamNumber(),
         vOrigin,
@@ -570,10 +570,10 @@ function CustomEntities:FindUnitsInRadius(hEntity, vOrigin, fRadius, nTeamFilter
         false
 	)
 
-	return CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
+	return CustomEntitiesLegacy:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
 end
 
-function CustomEntities:FindUnitsInLine(hEntity, vStartPos, vEndPos, nRadius, nTeamFilter, nTypeFilter, nFlagFilter)
+function CustomEntitiesLegacy:FindUnitsInLine(hEntity, vStartPos, vEndPos, nRadius, nTeamFilter, nTypeFilter, nFlagFilter)
 	local tUnits = FindUnitsInLine(
 		hEntity:GetTeamNumber(),
 		vStartPos,
@@ -585,18 +585,18 @@ function CustomEntities:FindUnitsInLine(hEntity, vStartPos, vEndPos, nRadius, nT
 		nFlagFilter
 	)
 
-	return CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
+	return CustomEntitiesLegacy:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
 end
 
-function CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
+function CustomEntitiesLegacy:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
 	local tFilteredUnits = {}
 	local nCounter = 1
 	
 	for _,hUnit in pairs(tUnits) do
-		if nTeamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntities:Allies(hEntity, hUnit) then
+		if nTeamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntitiesLegacy:Allies(hEntity, hUnit) then
 			tFilteredUnits[nCounter] = hUnit
 			nCounter = nCounter + 1
-		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntities:Allies(hEntity, hUnit) then
+		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntitiesLegacy:Allies(hEntity, hUnit) then
 			tFilteredUnits[nCounter] = hUnit
 			nCounter = nCounter + 1
 		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
@@ -608,25 +608,25 @@ function CustomEntities:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, n
 	return tFilteredUnits
 end
 
-function CustomEntities:Allies(hEntity, hTarget)
+function CustomEntitiesLegacy:Allies(hEntity, hTarget)
 	local playerID = hEntity:GetPlayerOwnerID()
 
-	return CustomEntities:GetAlliance(hEntity) == CustomEntities:GetAlliance(hTarget)
+	return CustomEntitiesLegacy:GetAlliance(hEntity) == CustomEntitiesLegacy:GetAlliance(hTarget)
 end
 
-function CustomEntities:RemoveStackbars(hEntity) 
+function CustomEntitiesLegacy:RemoveStackbars(hEntity) 
 	hEntity.stackbars_modifiers = nil 
 end
 
-function CustomEntities:RemoveCharges(hEntity) 
+function CustomEntitiesLegacy:RemoveCharges(hEntity) 
 	hEntity.charges_modifiers = nil 
 end
 
-function CustomEntities:RemoveCooldown(hEntity) 
+function CustomEntitiesLegacy:RemoveCooldown(hEntity) 
 	hEntity.cooldown_modifiers = nil 
 end
 
-function CustomEntities:DeactivateNonPriorityAbilities(hEntity)
+function CustomEntitiesLegacy:DeactivateNonPriorityAbilities(hEntity)
 	if IsServer() then
 		for i = 0, 10 do
 			local ability = hEntity:GetAbilityByIndex(i)
@@ -641,7 +641,7 @@ function CustomEntities:DeactivateNonPriorityAbilities(hEntity)
 	end
 end
 
-function CustomEntities:SetAllAbilitiesActivated(hEntity, bMode)
+function CustomEntitiesLegacy:SetAllAbilitiesActivated(hEntity, bMode)
 	if IsServer() then
 		for i = 0, 13 do
 			hEntity:GetAbilityByIndex(i):SetActivated(bMode)
@@ -649,19 +649,19 @@ function CustomEntities:SetAllAbilitiesActivated(hEntity, bMode)
 	end
 end
 
-function CustomEntities:IsBarrel(hEntity)
+function CustomEntitiesLegacy:IsBarrel(hEntity)
     return hEntity:Attribute_GetIntValue("barrel", 0) == 1 and true or false
 end
 
-function CustomEntities:IsWall(hEntity)
+function CustomEntitiesLegacy:IsWall(hEntity)
     return hEntity:Attribute_GetIntValue("wall", 0) == 1 and true or false
 end
 
-function CustomEntities:IsObstacle(hEntity)
-    return (CustomEntities:IsBarrel(hEntity) or CustomEntities:IsWall(hEntity)) and true or false
+function CustomEntitiesLegacy:IsObstacle(hEntity)
+    return (CustomEntitiesLegacy:IsBarrel(hEntity) or CustomEntitiesLegacy:IsWall(hEntity)) and true or false
 end
 
-function CustomEntities:IsGem(hEntity)
+function CustomEntitiesLegacy:IsGem(hEntity)
 	if hEntity and hEntity.GetParentEntity then
 		local entity = hEntity:GetParentEntity()
 
@@ -673,23 +673,23 @@ function CustomEntities:IsGem(hEntity)
 	return false
 end
 
-function CustomEntities:ProvidesMana(hEntity)
-	if CustomEntities:IsGem(hEntity) then
+function CustomEntitiesLegacy:ProvidesMana(hEntity)
+	if CustomEntitiesLegacy:IsGem(hEntity) then
 		return false
 	end
 
-    if CustomEntities:IsObstacle(hEntity) then
+    if CustomEntitiesLegacy:IsObstacle(hEntity) then
         return false
 	end
 
 	return true
 end
 
-function CustomEntities:GetCollisionDirection(hEntity)
+function CustomEntitiesLegacy:GetCollisionDirection(hEntity)
 	return hEntity.collision_direction
 end
 
-function CustomEntities:SafeGetModifier(hEntity, sModifierName, hCaster)
+function CustomEntitiesLegacy:SafeGetModifier(hEntity, sModifierName, hCaster)
 	local modifier = nil
     if hCaster == nil then
         modifier = hEntity:FindModifierByName(sModifierName)
@@ -706,8 +706,8 @@ function CustomEntities:SafeGetModifier(hEntity, sModifierName, hCaster)
 	return nil
 end
 
-function CustomEntities:SafeGetModifierStacks(hEntity, sModifierName, hCaster)
-	local modifier = CustomEntities:SafeGetModifier(hEntity, sModifierName, hCaster)
+function CustomEntitiesLegacy:SafeGetModifierStacks(hEntity, sModifierName, hCaster)
+	local modifier = CustomEntitiesLegacy:SafeGetModifier(hEntity, sModifierName, hCaster)
 	if modifier then
 		return modifier:GetStackCount()
 	end
@@ -715,22 +715,22 @@ function CustomEntities:SafeGetModifierStacks(hEntity, sModifierName, hCaster)
 	return 0
 end
 
-function CustomEntities:SafeDestroyModifier(hEntity, sModifierName, hCaster)
-	local modifier = CustomEntities:SafeGetModifier(hEntity, sModifierName, hCaster)
+function CustomEntitiesLegacy:SafeDestroyModifier(hEntity, sModifierName, hCaster)
+	local modifier = CustomEntitiesLegacy:SafeGetModifier(hEntity, sModifierName, hCaster)
 	if modifier then
 		modifier:Destroy()
 	end
 end
 
-function CustomEntities:TrueHeal(hEntity, iHeal)
+function CustomEntitiesLegacy:TrueHeal(hEntity, iHeal)
 	local base_health = hEntity:GetHealth()
-    CustomEntities:SetHealthCustom(hEntity, base_health + iHeal)
+    CustomEntitiesLegacy:SetHealthCustom(hEntity, base_health + iHeal)
 
-    local new_treshold = CustomEntities:GetTreshold(hEntity) + iHeal
+    local new_treshold = CustomEntitiesLegacy:GetTreshold(hEntity) + iHeal
 	if new_treshold > GameRules.Addon.max_treshold then
-		CustomEntities:SetTreshold(hEntity, GameRules.Addon.max_treshold)
+		CustomEntitiesLegacy:SetTreshold(hEntity, GameRules.Addon.max_treshold)
 	else
-		CustomEntities:SetTreshold(hEntity, new_treshold)
+		CustomEntitiesLegacy:SetTreshold(hEntity, new_treshold)
     end
 
 	if hEntity:GetHealth() < hEntity:GetMaxHealth() then
@@ -738,20 +738,20 @@ function CustomEntities:TrueHeal(hEntity, iHeal)
 	end
 end
 
-function CustomEntities:EmitModifierEvent(hEntity, tData)
-	for _,sModifierName in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.ON_EVENT)) do
+function CustomEntitiesLegacy:EmitModifierEvent(hEntity, tData)
+	for _,sModifierName in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.ON_EVENT)) do
 		local hModifier = hEntity:FindModifierByName(sModifierName)
 		hModifier:OnEvent(tData)
 	end
 end
 
-function CustomEntities:ProjectileAttack(hEntity, tData)
+function CustomEntitiesLegacy:ProjectileAttack(hEntity, tData)
 	local bTriggerCounters = (tData.bTriggerCounters == nil) and true or tData.bTriggerCounters
 	local onUnitHit = tData.tProjectile.OnUnitHit
 	local onFinish = tData.tProjectile.OnFinish
 
 	tData.tProjectile.OnUnitHit = function(hProjectile, hTarget)
-		local tOnHitModifiers = CustomEntities:GetAllModifiersWithType(hTarget, MODIFIER_TYPES.ON_HIT)
+		local tOnHitModifiers = CustomEntitiesLegacy:GetAllModifiersWithType(hTarget, MODIFIER_TYPES.ON_HIT)
 
 		if #tOnHitModifiers > 0 then
 			for _,sModifierName in pairs(tOnHitModifiers) do
@@ -765,7 +765,7 @@ function CustomEntities:ProjectileAttack(hEntity, tData)
 				if bProcessEffect then
 					onUnitHit(hProjectile, hTarget)
 					if tData.bIsBasicAttack then
-						CustomEntities:EmitModifierEvent(hEntity, { 
+						CustomEntitiesLegacy:EmitModifierEvent(hEntity, { 
 							iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
 							hTarget = hTarget, 
 						})
@@ -777,7 +777,7 @@ function CustomEntities:ProjectileAttack(hEntity, tData)
 		else 
 			onUnitHit(hProjectile, hTarget)
 			if tData.bIsBasicAttack then
-				CustomEntities:EmitModifierEvent(hEntity, { 
+				CustomEntitiesLegacy:EmitModifierEvent(hEntity, { 
 					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
 					hTarget = hTarget, 
 				})
@@ -788,12 +788,12 @@ function CustomEntities:ProjectileAttack(hEntity, tData)
 	tData.tProjectile.OnFinish = function(hProjectile, vPosition)
 		if next(hProjectile.tHitLog) == nil then
 			if tData.bIsBasicAttack then
-				CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+				CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
 			end
 		end
 		
 		if tData.bIsBasicAttack then
-			CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
+			CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
 		end
 
 		if onFinish then
@@ -804,7 +804,7 @@ function CustomEntities:ProjectileAttack(hEntity, tData)
 	local hProjectile = ProjectilesManagerInstance:CreateProjectile(tData.tProjectile)
 
 	if tData.bIsBasicAttack then
-		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
+		CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
 	end
 
 	if tData.OnProjectileCreated then
@@ -812,7 +812,7 @@ function CustomEntities:ProjectileAttack(hEntity, tData)
 	end
 end
 
-function CustomEntities:MeeleAttack(hEntity, tData)
+function CustomEntitiesLegacy:MeeleAttack(hEntity, tData)
 	local bTriggerCounters = (tData.bTriggerCounters == nil) and true or tData.bTriggerCounters
 	local iTeamFilter = tData.iTeamFilter or DOTA_UNIT_TARGET_TEAM_ENEMY
 	local iTypeFilter = tData.iTypeFilter or DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
@@ -823,7 +823,7 @@ function CustomEntities:MeeleAttack(hEntity, tData)
 	local bShouldShake = false
 	
 	if tData.bIsBasicAttack then
-		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
+		CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
 	end
 
 	local callback = tData.Callback
@@ -834,7 +834,7 @@ function CustomEntities:MeeleAttack(hEntity, tData)
 		callback(hTarget)
 	end
 
-	local units = CustomEntities:FindUnitsInCone(
+	local units = CustomEntitiesLegacy:FindUnitsInCone(
 		hEntity,
 		tData.vDirection, 
 		0, 
@@ -849,7 +849,7 @@ function CustomEntities:MeeleAttack(hEntity, tData)
 	local iTargets = 0
 
 	for _,unit in pairs(units) do
-		local tOnHitModifiers = CustomEntities:GetAllModifiersWithType(unit, MODIFIER_TYPES.ON_HIT)
+		local tOnHitModifiers = CustomEntitiesLegacy:GetAllModifiersWithType(unit, MODIFIER_TYPES.ON_HIT)
 
 		if #tOnHitModifiers > 0 then
 			for _,sModifierName in pairs(tOnHitModifiers) do
@@ -864,7 +864,7 @@ function CustomEntities:MeeleAttack(hEntity, tData)
 				if bProcessEffect then
 					tData.Callback(unit)
 					if tData.bIsBasicAttack then
-						CustomEntities:EmitModifierEvent(hEntity, { 
+						CustomEntitiesLegacy:EmitModifierEvent(hEntity, { 
 							iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
 							hTarget = unit,
 						})
@@ -874,7 +874,7 @@ function CustomEntities:MeeleAttack(hEntity, tData)
 		else
 			tData.Callback(unit)
 			if tData.bIsBasicAttack then
-				CustomEntities:EmitModifierEvent(hEntity, { 
+				CustomEntitiesLegacy:EmitModifierEvent(hEntity, { 
 					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
 					hTarget = unit,
 				})
@@ -890,7 +890,7 @@ function CustomEntities:MeeleAttack(hEntity, tData)
 
 	if iTargets == 0 then
 		if tData.bIsBasicAttack then
-			CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+			CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
 		end
 	end
 	
@@ -899,13 +899,13 @@ function CustomEntities:MeeleAttack(hEntity, tData)
 	end
 	
 	if tData.bIsBasicAttack then
-		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
+		CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
 	end
 
 	return units
 end
 
-function CustomEntities:AoeAttack(hEntity, tData)
+function CustomEntitiesLegacy:AoeAttack(hEntity, tData)
 	local bTriggerCounters = tData.bTriggerCounters
 	local iTeamFilter = tData.iTeamFilter or DOTA_UNIT_TARGET_TEAM_ENEMY
 	local iTypeFilter = tData.iTypeFilter or DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
@@ -914,10 +914,10 @@ function CustomEntities:AoeAttack(hEntity, tData)
 	local iMaxTargets = tData.iMaxTargets or -1
 	
 	if tData.bIsBasicAttack then
-		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
+		CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
 	end
 	
-	local units = CustomEntities:FindUnitsInRadius(
+	local units = CustomEntitiesLegacy:FindUnitsInRadius(
 		hEntity,
 		tData.vOrigin, 
 		tData.fRadius, 
@@ -930,7 +930,7 @@ function CustomEntities:AoeAttack(hEntity, tData)
 	local iTargets = 0
 
 	for _,unit in pairs(units) do
-		local tOnHitModifiers = CustomEntities:GetAllModifiersWithType(unit, MODIFIER_TYPES.ON_HIT)
+		local tOnHitModifiers = CustomEntitiesLegacy:GetAllModifiersWithType(unit, MODIFIER_TYPES.ON_HIT)
 
 		if #tOnHitModifiers > 0 then
 			for _,sModifierName in pairs(tOnHitModifiers) do
@@ -945,7 +945,7 @@ function CustomEntities:AoeAttack(hEntity, tData)
 				if bProcessEffect then
 					tData.Callback(unit)
 					if tData.bIsBasicAttack then
-						CustomEntities:EmitModifierEvent(hEntity, { 
+						CustomEntitiesLegacy:EmitModifierEvent(hEntity, { 
 							iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
 							hTarget = unit, 
 						})
@@ -955,7 +955,7 @@ function CustomEntities:AoeAttack(hEntity, tData)
 		else
 			tData.Callback(unit)
 			if tData.bIsBasicAttack then
-				CustomEntities:EmitModifierEvent(hEntity, { 
+				CustomEntitiesLegacy:EmitModifierEvent(hEntity, { 
 					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
 					hTarget = unit, 
 				})
@@ -971,30 +971,30 @@ function CustomEntities:AoeAttack(hEntity, tData)
 
 	if iTargets == 0 then
 		if tData.bIsBasicAttack then
-			CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+			CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
 		end
 	end
 	
 	if tData.bIsBasicAttack then
-		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
+		CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
 	end
 
 	return units
 end
 
-function CustomEntities:SingleAttack(hEntity, tData)
+function CustomEntitiesLegacy:SingleAttack(hEntity, tData)
 	local bTriggerCounters = (tData.bTriggerCounters == nil) and true or tData.bTriggerCounters
 
 	if tData.bIsBasicAttack then
-		CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
+		CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED })
 	end
 
 	if not tData.hTarget then
 		if tData.bIsBasicAttack then
-			CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+			CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
 		end
 	else
-		local tOnHitModifiers = CustomEntities:GetAllModifiersWithType(tData.hTarget, MODIFIER_TYPES.ON_HIT)
+		local tOnHitModifiers = CustomEntitiesLegacy:GetAllModifiersWithType(tData.hTarget, MODIFIER_TYPES.ON_HIT)
 
 		if #tOnHitModifiers > 0 then
 			for _,sModifierName in pairs(tOnHitModifiers) do
@@ -1009,7 +1009,7 @@ function CustomEntities:SingleAttack(hEntity, tData)
 				if bProcessEffect then
 					tData.Callback(tData.hTarget)
 					if tData.bIsBasicAttack then
-						CustomEntities:EmitModifierEvent(hEntity, { 
+						CustomEntitiesLegacy:EmitModifierEvent(hEntity, { 
 							iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
 							hTarget = tData.hTarget,
 						})
@@ -1019,7 +1019,7 @@ function CustomEntities:SingleAttack(hEntity, tData)
 		else
 			tData.Callback(tData.hTarget)
 			if tData.bIsBasicAttack then
-				CustomEntities:EmitModifierEvent(hEntity, { 
+				CustomEntitiesLegacy:EmitModifierEvent(hEntity, { 
 					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
 					hTarget = tData.hTarget,
 				})
@@ -1027,13 +1027,13 @@ function CustomEntities:SingleAttack(hEntity, tData)
 		end
 	end
 	
-	CustomEntities:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
+	CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED })
 end
 
-function CustomEntities:AttackWithBaseDamage(hEntity, tData)
+function CustomEntitiesLegacy:AttackWithBaseDamage(hEntity, tData)
 	local pre_attack_damage = 0
 
-	for key, value in pairs(CustomEntities:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.PRE_ATTACK_DAMAGE)) do
+	for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.PRE_ATTACK_DAMAGE)) do
 		local hModifier = hEntity:FindModifierByName(value)
 
 		if hModifier ~= nil then
@@ -1056,10 +1056,10 @@ function CustomEntities:AttackWithBaseDamage(hEntity, tData)
 	ApplyDamage(damage_table)
 end
 
-function CustomEntities:HideHealthBar(hEntity)
+function CustomEntitiesLegacy:HideHealthBar(hEntity)
 	hEntity:AddNewModifier(hEntity, nil, "modifier_hide_bar", {})
 end
 
-function CustomEntities:UnhideHealthBar(hEntity)
+function CustomEntitiesLegacy:UnhideHealthBar(hEntity)
 	hEntity:RemoveModifierByName("modifier_hide_bar")
 end

@@ -39,7 +39,7 @@ function modifier_invoker_meteor_custom_impact_thinker:CreateMeteor()
     local projectile_distance = 1200
     local counter = 0
 
-    CustomEntities:ProjectileAttack(self.caster, {
+    CustomEntitiesLegacy:ProjectileAttack(self.caster, {
         bTriggerCounters = false,
         tProjectile = {
             EffectName =			"particles/units/heroes/hero_invoker/invoker_chaos_meteor.vpcf",
@@ -55,7 +55,7 @@ function modifier_invoker_meteor_custom_impact_thinker:CreateMeteor()
             bIsReflectable =        false,
             bIsDestructible =		false,
             fGroundOffset = 		0,
-            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
             OnUnitHit = function(_self, unit) 
                 local damage_table = {
                     victim = unit,

@@ -18,7 +18,7 @@ function modifier_generic_invencible:OnCreated(kv)
 end
 
 function modifier_generic_invencible:OnIntervalThink()
-	CustomEntities:StrongPurge(self:GetParent())
+	CustomEntitiesLegacy:StrongPurge(self:GetParent())
 end
 
 function modifier_generic_invencible:DeclareFunctions()

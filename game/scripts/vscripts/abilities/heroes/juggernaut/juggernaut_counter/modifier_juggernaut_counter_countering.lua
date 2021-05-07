@@ -18,7 +18,7 @@ function modifier_juggernaut_counter_countering:OnTrigger(params)
 			{ duration = 5.0 }
 		)
 		
-		CustomEntities:StrongPurge(self:GetParent())
+		CustomEntitiesLegacy:StrongPurge(self:GetParent())
 		self:PlayEffectsOnTrigger()
 		self:Destroy()
 	end

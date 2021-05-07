@@ -49,7 +49,7 @@ function modifier_storm_special_attack_thinker:OnIntervalThink()
 
         unit:AddNewModifier(self.caster, self.ability, "modifier_generic_stunned", { duration = 0.1 })
           
-        if CustomEntities:ProvidesMana(unit) then
+        if CustomEntitiesLegacy:ProvidesMana(unit) then
             if self:GetAbility():GetLevel() >= 2 then
                 unit:ReduceMana(self.mana_gain_pct)
                 self:GiveMana()
@@ -66,10 +66,10 @@ function modifier_storm_special_attack_thinker:OnIntervalThink()
 end
 
 function modifier_storm_special_attack_thinker:GiveMana()
-    CustomEntities:GiveManaPercent(self.caster, self.mana_gain_pct, true)
-    CustomEntities:GiveEnergyPercent(self.caster, self.energy_gain_pct, true)
+    CustomEntitiesLegacy:GiveManaPercent(self.caster, self.mana_gain_pct, true)
+    CustomEntitiesLegacy:GiveEnergyPercent(self.caster, self.energy_gain_pct, true)
     if self.caster:HasModifier('modifier_storm_ultimate') then
         local extra_mana_pct = self.mana_gain_pct * (self.caster:FindModifierByName('modifier_storm_ultimate'):GetManaMultiplier() - 1)
-        CustomEntities:GiveManaPercent(self.caster, extra_mana_pct, true, true)
+        CustomEntitiesLegacy:GiveManaPercent(self.caster, extra_mana_pct, true, true)
     end
 end

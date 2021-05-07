@@ -13,7 +13,7 @@ function phantom_mobility:OnSpellStart()
 
 	local direction = (point - origin):Normalized()
     local distance = self:GetCastRange(Vector(0,0,0), nil)
-    local caster_direction = CustomEntities:GetDirection(caster)
+    local caster_direction = CustomEntitiesLegacy:GetDirection(caster)
 
     if caster_direction.x ~= 0 or caster_direction.y ~=0 then
         direction = caster_direction

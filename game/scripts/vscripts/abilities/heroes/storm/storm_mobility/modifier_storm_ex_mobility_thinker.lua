@@ -30,7 +30,7 @@ function modifier_storm_ex_mobility_thinker:OnIntervalThink()
         self:StartIntervalThink(0.03)
     end
 
-    local enemies = CustomEntities:FindUnitsInRadius(
+    local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
         self:GetCaster(),
         self.origin, 
         self.radius, 

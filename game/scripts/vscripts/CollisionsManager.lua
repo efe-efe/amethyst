@@ -6,14 +6,14 @@ DIAGONAL_RIGHT = 1
 HORIZONTAL = 2
 VERTICAL = 3
 function OnStartTouchCollisionVertical(tEvent)
-    CustomEntities:SetCollisionDirection(tEvent.activator, VERTICAL)
+    CustomEntitiesLegacy:SetCollisionDirection(tEvent.activator, VERTICAL)
 end
 function OnStartTouchCollisionHorizontal(tEvent)
-    CustomEntities:SetCollisionDirection(tEvent.activator, HORIZONTAL)
+    CustomEntitiesLegacy:SetCollisionDirection(tEvent.activator, HORIZONTAL)
 end
 function OnStartTouchCollisionDiagonalLeft(tEvent)
-    CustomEntities:SetCollisionDirection(tEvent.activator, DIAGONAL_LEFT)
+    CustomEntitiesLegacy:SetCollisionDirection(tEvent.activator, DIAGONAL_LEFT)
 end
 function OnStartTouchCollisionDiagonalRight(tEvent)
-    CustomEntities:SetCollisionDirection(tEvent.activator, DIAGONAL_RIGHT)
+    CustomEntitiesLegacy:SetCollisionDirection(tEvent.activator, DIAGONAL_RIGHT)
 end

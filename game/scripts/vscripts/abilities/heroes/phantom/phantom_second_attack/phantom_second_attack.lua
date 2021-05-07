@@ -15,7 +15,7 @@ function phantom_second_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
-	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
+	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
 	local final_damage = damage + (stacks * damage_per_stack)
 
 	local damage_table = {
@@ -24,7 +24,7 @@ function phantom_second_attack:OnSpellStart()
 		damage_type = DAMAGE_TYPE_PHYSICAL,
 	}
 
-	CustomEntities:MeeleAttack(caster, {
+	CustomEntitiesLegacy:MeeleAttack(caster, {
 		vDirection = direction,
 		vOrigin = origin, 
 		fRadius = radius,
@@ -44,15 +44,15 @@ function phantom_second_attack:OnSpellStart()
 
 				EmitSoundOn("DOTA_Item.MagicWand.Activate", caster)
 			end
-			if CustomEntities:ProvidesMana(hTarget) then
-				CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+			if CustomEntitiesLegacy:ProvidesMana(hTarget) then
+				CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 			end
 			self:PlayEffectsOnImpact(hTarget, stacks)
 		end
 	})
 
 	self:PlayEffectsOnFinish(direction, radius)
-	CustomEntities:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
+	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
 end
 

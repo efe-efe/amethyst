@@ -301,7 +301,7 @@ function GameMode.prototype.SetupPanoramaEventHooks(self)
                 local ____type = event.payload.type
                 local mode = event.payload.mode
                 if (____type == Custom_ActionTypes.MOVEMENT) and hero then
-                    local currentDirection = CustomEntities:GetRawDirection(hero)
+                    local currentDirection = CustomEntitiesLegacy:GetRawDirection(hero)
                     local incomingDirection = event.payload.direction
                     local vector = Vector(incomingDirection["0"], incomingDirection["1"], 0)
                     if mode == Custom_ActionModes.STOP then
@@ -309,7 +309,7 @@ function GameMode.prototype.SetupPanoramaEventHooks(self)
                     end
                     local newDirection = currentDirection:__add(vector)
                     newDirection.z = hero:GetForwardVector().z
-                    CustomEntities:SetDirection(hero, newDirection.x, newDirection.y)
+                    CustomEntitiesLegacy:SetDirection(hero, newDirection.x, newDirection.y)
                 end
             end
         end
@@ -335,7 +335,7 @@ function GameMode.prototype.SetupPanoramaEventHooks(self)
                         end
                     end
                     hero:SetAbilityPoints(settings.AbilityPoints)
-                    CustomEntities:SendDataToClient(hero)
+                    CustomEntitiesLegacy:SendDataToClient(hero)
                 end
             end
             if self.warmup then
@@ -543,7 +543,7 @@ function GameMode.prototype.ExecuteOrderFilter(self, event)
         local ability = EntIndexToHScript(event.entindex_ability)
         local caster = EntIndexToHScript(event.units["0"])
         local energyCost = CustomAbilities:GetEnergyCost(ability)
-        local energy = CustomEntities:GetEnergy(caster)
+        local energy = CustomEntitiesLegacy:GetEnergy(caster)
         if energyCost > energy then
             CustomGameEventManager:Send_ServerToAllClients("not_enough_energy", {})
             return false
@@ -561,7 +561,7 @@ function GameMode.prototype.ExecuteOrderFilter(self, event)
                 nil
             )
             if not CustomAbilities:HasBehavior(ability, DOTA_ABILITY_BEHAVIOR_IMMEDIATE) then
-                CustomEntities:FullyFaceTowards(caster, direction)
+                CustomEntitiesLegacy:FullyFaceTowards(caster, direction)
             end
             if current_range > max_range then
                 local new_point = caster:GetAbsOrigin():__add(
@@ -596,18 +596,18 @@ end
 function GameMode.prototype.HealingFilter(self, event)
     local target = EntIndexToHScript(event.entindex_target_const)
     if target:IsRealHero() then
-        local new_treshold = CustomEntities:GetTreshold(target) + event.heal
+        local new_treshold = CustomEntitiesLegacy:GetTreshold(target) + event.heal
         if new_treshold > self.max_treshold then
-            event.heal = self.max_treshold - CustomEntities:GetTreshold(target)
-            CustomEntities:SetTreshold(target, self.max_treshold)
+            event.heal = self.max_treshold - CustomEntitiesLegacy:GetTreshold(target)
+            CustomEntitiesLegacy:SetTreshold(target, self.max_treshold)
         else
-            CustomEntities:SetTreshold(target, new_treshold)
+            CustomEntitiesLegacy:SetTreshold(target, new_treshold)
         end
         SendOverheadHealMessage(target, event.heal)
         Timers:CreateTimer(
             0.05,
             function()
-                CustomEntities:SendDataToClient(target)
+                CustomEntitiesLegacy:SendDataToClient(target)
             end
         )
         local healing_team = target:GetTeam()
@@ -631,18 +631,18 @@ function GameMode.prototype.DamageFilter(self, event)
         return false
     end
     if victim and victim:IsRealHero() then
-        CustomEntities:SetTreshold(
+        CustomEntitiesLegacy:SetTreshold(
             victim,
-            CustomEntities:GetTreshold(victim) - damage_after_reductions
+            CustomEntitiesLegacy:GetTreshold(victim) - damage_after_reductions
         )
-        if CustomEntities:GetTreshold(victim) < 0 then
-            CustomEntities:SetTreshold(victim, 0)
+        if CustomEntitiesLegacy:GetTreshold(victim) < 0 then
+            CustomEntitiesLegacy:SetTreshold(victim, 0)
         end
         victim:AddNewModifier(victim, nil, "modifier_damage_fx", {duration = 0.1})
         Timers:CreateTimer(
             0.05,
             function()
-                CustomEntities:SendDataToClient(victim)
+                CustomEntitiesLegacy:SendDataToClient(victim)
             end
         )
         local victim_team = victim:GetTeam()
@@ -671,7 +671,7 @@ function GameMode.prototype.OnPlayerChat(self, event)
         if player then
             local hero = player.hero
             if hero then
-                CustomEntities:SetDirection(hero, 0, 0)
+                CustomEntitiesLegacy:SetDirection(hero, 0, 0)
             end
         end
     end
@@ -728,7 +728,7 @@ function GameMode.prototype.OnLearnedAbilityEvent(self, event)
                     end
                 end
             end
-            CustomEntities:SendDataToClient(hero)
+            CustomEntitiesLegacy:SendDataToClient(hero)
         end
     end
 end
@@ -740,14 +740,14 @@ function GameMode.prototype.OnNPCInGame(self, event)
     if (npc == nil) or npc:IsNull() then
         return false
     end
-    if not CustomEntities:IsInitialized(npc) then
+    if not CustomEntitiesLegacy:IsInitialized(npc) then
         if not (npc:GetName() == "npc_dota_thinker") then
             if npc:IsRealHero() then
                 __TS__ArrayPush(
                     self.heroes,
                     __TS__New(Hero, npc)
                 )
-                CustomEntities:Initialize(npc)
+                CustomEntitiesLegacy:Initialize(npc)
                 if self:IsPVP() then
                     return self:OnHeroInGamePVP(npc)
                 elseif self:IsPVE() then
@@ -755,10 +755,10 @@ function GameMode.prototype.OnNPCInGame(self, event)
                 end
             else
                 if self:IsPVP() then
-                    CustomEntities:Initialize(npc)
+                    CustomEntitiesLegacy:Initialize(npc)
                     return true
                 elseif self:IsPVE() then
-                    CustomEntities:Initialize(npc, true)
+                    CustomEntitiesLegacy:Initialize(npc, true)
                     return true
                 end
             end
@@ -793,7 +793,7 @@ function GameMode.prototype.OnEntityKilled(self, event)
     local killed = EntIndexToHScript(event.entindex_killed)
     if GetMapName() == Custom_MapNames.PVE then
     end
-    local parent = CustomEntities:GetParent(killed)
+    local parent = CustomEntitiesLegacy:GetParent(killed)
     if parent then
         local killer = EntIndexToHScript(event.entindex_attacker)
         parent:OnDeath({killer = killer})
@@ -828,11 +828,11 @@ function GameMode.prototype.RefreshHeroes(self)
         self.players,
         function(____, player)
             if (player.hero and (not player.hero:IsNull())) and player.hero:IsAlive() then
-                CustomEntities:GiveEnergy(
+                CustomEntitiesLegacy:GiveEnergy(
                     player.hero,
-                    CustomEntities:GetMaxEnergy(player.hero)
+                    CustomEntitiesLegacy:GetMaxEnergy(player.hero)
                 )
-                CustomEntities:SendDataToClient(player.hero)
+                CustomEntitiesLegacy:SendDataToClient(player.hero)
             end
         end
     )

@@ -57,7 +57,7 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 		projectile_particle = "particles/puck/puck_base_attack_alternative.vpcf"
 	end
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		bIsBasicAttack = true,
 		tProjectile = {
 			EffectName = projectile_particle,
@@ -71,9 +71,9 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit)
-				CustomEntities:AttackWithBaseDamage(caster, {
+				CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
 					hTarget = unit,
 					hAbility = self,
 				})
@@ -82,9 +82,9 @@ function puck_basic_attack:LaunchProjectile(origin, point)
 					unit:AddNewModifier(_self.Source, nil, "modifier_puck_fairy_dust", { duration = fairy_dust_duration, slow_pct = fairy_dust_slow_pct })
 				end
 
-				if _self.Source == caster and not CustomEntities:IsObstacle(unit) then
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				if _self.Source == caster and not CustomEntitiesLegacy:IsObstacle(unit) then
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 					if self:GetLevel() >=2 then
 						caster:FindModifierByName("modifier_puck_basic_attack_cooldown"):Replenish()

@@ -1,4 +1,4 @@
-declare interface CustomEntities {
+declare interface CustomEntitiesLegacy {
     SetTreshold(hEntity: CDOTA_BaseNPC, nTreshold: number): void;
     GetTreshold(hEntity: CDOTA_BaseNPC): number;
     SetCollisionDirection(hEntity: CDOTA_BaseNPC, iCollisionDirection: number): void;
@@ -35,4 +35,4 @@ declare interface CustomEntities {
     FindUnitsInRadius(hEntity: CDOTA_BaseNPC, origin: Vector, radius: number, nTeamFilter: UnitTargetTeam, nTypeFilter: UnitTargetType, nFlagFilter: UnitTargetFlags, nOrderFilter: FindOrder): CDOTA_BaseNPC[];
 }
 
-declare const CustomEntities: CustomEntities;
+declare const CustomEntitiesLegacy: CustomEntitiesLegacy;

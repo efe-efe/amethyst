@@ -210,7 +210,7 @@ export default class Round extends GameState{
                 }
 
                 FindClearSpaceForUnit(player.hero, target.GetAbsOrigin(), true);
-                CustomEntities.Reset(player.hero);
+                CustomEntitiesLegacy.Reset(player.hero);
             }
         });
 
@@ -255,7 +255,7 @@ export default class Round extends GameState{
             const hero = player.hero;
             const playerId = player.GetId();
             if(hero){
-                CustomEntities.SafeDestroyModifier(hero, 'modifier_generic_provides_vision');
+                CustomEntitiesLegacy.SafeDestroyModifier(hero, 'modifier_generic_provides_vision');
             }
             PlayerResource.SetCameraTarget(playerId, undefined);
         });

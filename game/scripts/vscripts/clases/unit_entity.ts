@@ -41,7 +41,7 @@ export default class UnitEntity{
     }
 
     SetUnit(unit: CDOTA_BaseNPC): CDOTA_BaseNPC{
-        CustomEntities.SetParent(unit, this);
+        CustomEntitiesLegacy.SetParent(unit, this);
         return unit;
     }
 

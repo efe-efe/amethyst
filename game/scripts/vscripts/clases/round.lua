@@ -211,7 +211,7 @@ ____exports.default = (function()
                         target:GetAbsOrigin(),
                         true
                     )
-                    CustomEntities:Reset(player.hero)
+                    CustomEntitiesLegacy:Reset(player.hero)
                 end
             end
         )
@@ -254,7 +254,7 @@ ____exports.default = (function()
                 local hero = player.hero
                 local playerId = player:GetId()
                 if hero then
-                    CustomEntities:SafeDestroyModifier(hero, "modifier_generic_provides_vision")
+                    CustomEntitiesLegacy:SafeDestroyModifier(hero, "modifier_generic_provides_vision")
                 end
                 PlayerResource:SetCameraTarget(playerId, nil)
             end

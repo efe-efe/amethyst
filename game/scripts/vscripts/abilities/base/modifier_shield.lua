@@ -80,8 +80,8 @@ function modifier_shield:OnStackCountChanged(old)
 end
 
 function modifier_shield:InformClient()
-    CustomEntities:SendDataToClient(self:GetParent())
-    local alliance = CustomEntities:GetAlliance(self:GetParent())
+    CustomEntitiesLegacy:SendDataToClient(self:GetParent())
+    local alliance = CustomEntitiesLegacy:GetAlliance(self:GetParent())
 
     if alliance then
         alliance:SendDataToClient()

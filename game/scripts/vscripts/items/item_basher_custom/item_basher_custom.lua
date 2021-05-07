@@ -25,7 +25,7 @@ function item_basher_custom:OnSpellStart()
     
 	local direction = Direction2D(origin, point)
 
-	local enemies = CustomEntities:FindUnitsInCone(
+	local enemies = CustomEntitiesLegacy:FindUnitsInCone(
 		caster,
 		direction, 
 		0, 

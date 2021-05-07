@@ -131,12 +131,12 @@ export class CustomNPC extends UnitEntity{
         }
 
         const direction = (this.originalPosition.__sub(origin)).Normalized();
-        CustomEntities.SetDirection(this.unit, direction.x, direction.y);
+        CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
         return true;
     }
 
     Cast(): boolean{
-        if(CustomEntities.IsDisplacing(this.unit) || CustomEntities.IsCasting(this.unit) || CustomEntities.IsChanneling(this.unit) || this.remainingRestTime > 0){
+        if(CustomEntitiesLegacy.IsDisplacing(this.unit) || CustomEntitiesLegacy.IsCasting(this.unit) || CustomEntitiesLegacy.IsChanneling(this.unit) || this.remainingRestTime > 0){
             return false;
         }
         
@@ -192,19 +192,19 @@ export class CustomNPC extends UnitEntity{
         if(!target){
             return false;
         }
-        const distance = CustomEntities.GetDistance(this.unit, target);
+        const distance = CustomEntitiesLegacy.GetDistance(this.unit, target);
         let direction = Vector(0,0);
 
         if(target.IsAlive() && distance > this.minFollowRange){
             direction = (target.GetAbsOrigin().__sub(origin)).Normalized();
         }
         
-        CustomEntities.SetDirection(this.unit, direction.x, direction.y);
+        CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
         return true;
     }
 
     StopMoving(): void{
-        CustomEntities.SetDirection(this.unit, 0, 0);
+        CustomEntitiesLegacy.SetDirection(this.unit, 0, 0);
     }
 
     MoveTowards(origin: Vector, point: Vector): boolean{
@@ -214,7 +214,7 @@ export class CustomNPC extends UnitEntity{
             return false;
         } else {
             const direction = (point.__sub(origin)).Normalized();
-            CustomEntities.SetDirection(this.unit, direction.x, direction.y);
+            CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
             return true;
         }
     }
@@ -267,7 +267,7 @@ export class CustomNPC extends UnitEntity{
             if(this.wanderer){
                 if(this.restDirection == undefined){
                     this.restDirection = Vector(RandomFloat(-1.0, 1.0), RandomFloat(-1.0, 1.0));
-                    CustomEntities.SetDirection(this.unit, this.restDirection.x, this.restDirection.y);
+                    CustomEntitiesLegacy.SetDirection(this.unit, this.restDirection.x, this.restDirection.y);
                 }
             }
 
@@ -276,7 +276,7 @@ export class CustomNPC extends UnitEntity{
             this.restDirection = undefined;
         }
 
-        if(this.unit.HasModifier('modifier_casting') || CustomEntities.IsChanneling(this.unit)){
+        if(this.unit.HasModifier('modifier_casting') || CustomEntitiesLegacy.IsChanneling(this.unit)){
             this.state = CustomNPCState.CASTING;
         } else { 
             this.state = CustomNPCState.READY;
@@ -297,7 +297,7 @@ export class CustomNPC extends UnitEntity{
 
             const target = this.FindEnemy(this.followRange);
             if(target){
-                const distance = CustomEntities.GetDistance(this.unit, target);
+                const distance = CustomEntitiesLegacy.GetDistance(this.unit, target);
 
                 if(target.IsAlive() && distance > this.minFollowRange){
                     direction = (target.GetAbsOrigin().__sub(this.unit.GetAbsOrigin())).Normalized();
@@ -306,7 +306,7 @@ export class CustomNPC extends UnitEntity{
                 }
             }
 
-            if(!CustomEntities.IsDisplacing(this.unit)){
+            if(!CustomEntitiesLegacy.IsDisplacing(this.unit)){
                 let abilityToExecute: CustomNPCAbility | undefined = undefined; 
                 let abilityTarget: CDOTA_BaseNPC | undefined = undefined;
                 this.abilities.forEach((npcAbility) => {
@@ -351,7 +351,7 @@ export class CustomNPC extends UnitEntity{
             }
 
             if(this.wanderer){
-                CustomEntities.SetDirection(this.unit, direction.x, direction.y);
+                CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
             }
         }
     */

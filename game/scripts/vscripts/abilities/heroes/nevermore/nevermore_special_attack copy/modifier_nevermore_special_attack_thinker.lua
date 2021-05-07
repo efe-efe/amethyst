@@ -24,7 +24,7 @@ end
 
 function modifier_nevermore_special_attack_thinker:OnDelayEnds(params)
     if IsServer() then
-        local enemies = CustomEntities:FindUnitsInRadius(
+        local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
             self:GetCaster(),
             self:GetParent():GetOrigin(), 
             self.radius, 
@@ -47,13 +47,13 @@ function modifier_nevermore_special_attack_thinker:OnDelayEnds(params)
                 peak = 400,
             })
 
-            if not CustomEntities:IsObstacle(enemy) then
+            if not CustomEntitiesLegacy:IsObstacle(enemy) then
                 give_mana = true
             end
         end
 
         if give_mana then
-            CustomEntities:GiveManaAndEnergyPercent(self:GetCaster(), self.mana_gain_pct, true)    
+            CustomEntitiesLegacy:GiveManaAndEnergyPercent(self:GetCaster(), self.mana_gain_pct, true)    
         end
         
         local particle_cast = "particles/econ/items/monkey_king/arcana/fire/monkey_king_spring_arcana_fire.vpcf"

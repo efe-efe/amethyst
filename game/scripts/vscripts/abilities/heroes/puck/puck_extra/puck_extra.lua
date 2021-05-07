@@ -23,7 +23,7 @@ function puck_extra:OnSpellStart()
     
     FindClearSpaceForUnit(caster, point, true)
 
-    local enemies = CustomEntities:FindUnitsInRadius(
+    local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
         caster,
         caster:GetOrigin(), 
         self.radius, 

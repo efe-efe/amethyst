@@ -31,7 +31,7 @@ function juggernaut_basic_attack:OnSpellStart()
 	local cooldown_reduction_counter = self:GetSpecialValueFor("cooldown_reduction_counter")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = Direction2D(origin, point)
-	local modifier = CustomEntities:SafeGetModifier(caster, "modifier_juggernaut_ex_counter")
+	local modifier = CustomEntitiesLegacy:SafeGetModifier(caster, "modifier_juggernaut_ex_counter")
 
 	if modifier then
 		local color = Vector(0, 255, 0)
@@ -40,21 +40,21 @@ function juggernaut_basic_attack:OnSpellStart()
 		self:PlayEffectsOnFinish(direction)
 	end
 	
-	CustomEntities:MeeleAttack(caster, {
+	CustomEntitiesLegacy:MeeleAttack(caster, {
 		vDirection = direction,
 		vOrigin = origin, 
 		fRadius = self.radius,
 		bIsBasicAttack = true,
 		iMaxTargets = 1,
 		Callback = function(hTarget)
-			CustomEntities:AttackWithBaseDamage(caster, {
+			CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
 				hTarget = hTarget,
 				hAbility = self,
 			})
 
-			if not CustomEntities:IsObstacle(hTarget) then
-				if CustomEntities:ProvidesMana(hTarget) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+			if not CustomEntitiesLegacy:IsObstacle(hTarget) then
+				if CustomEntitiesLegacy:ProvidesMana(hTarget) then
+					CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 
 				caster:AddNewModifier(caster, self, "modifier_juggernaut_basic_attack_stacks", {})

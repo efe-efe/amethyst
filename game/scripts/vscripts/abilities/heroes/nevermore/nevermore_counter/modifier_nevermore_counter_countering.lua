@@ -18,7 +18,7 @@ end
 function modifier_nevermore_counter_countering:OnTrigger(params)
     if IsServer() then
         self:GetParent():AddNewModifier(self:GetParent(), self:GetAbility(), "modifier_nevermore_counter_banish", { duration = self.banish_duration })
-        CustomEntities:StrongPurge(self:GetParent())
+        CustomEntitiesLegacy:StrongPurge(self:GetParent())
         self:PlayEffectsOnTrigger()
 		self:Destroy()
 	end

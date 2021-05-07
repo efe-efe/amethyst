@@ -52,7 +52,7 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
 
     local give_mana = false
 
-    CustomEntities:AoeAttack(self.caster, {
+    CustomEntitiesLegacy:AoeAttack(self.caster, {
         bIsBasicAttack = true,
         vOrigin = self.origin, 
         fRadius = self.radius,
@@ -61,7 +61,7 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
       
             hTarget:AddNewModifier(self.caster, nil, "modifier_puck_fairy_dust", { duration = self.fairy_dust_duration, slow_pct = self.fairy_dust_slow_pct })
     
-            if not CustomEntities:IsObstacle(hTarget) then
+            if not CustomEntitiesLegacy:IsObstacle(hTarget) then
                 give_mana = true
             end
         end
@@ -77,7 +77,7 @@ function modifier_puck_basic_attack_thinker:OnIntervalThink()
         end
 
         self.caster:AddNewModifier(self.caster, nil, "modifier_puck_ex_basic_attack_shield", { duration = 6.0, damage_block = self.shield_per_hit })
-        CustomEntities:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
+        CustomEntitiesLegacy:GiveManaAndEnergyPercent(self.caster, self.mana_gain_pct, true)
     end
     self:Destroy()
 end

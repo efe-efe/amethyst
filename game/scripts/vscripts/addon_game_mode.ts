@@ -301,7 +301,7 @@ export class GameMode{
                 const mode = event.payload.mode;
                 
                 if(type == Custom_ActionTypes.MOVEMENT && hero){
-                    const currentDirection = CustomEntities.GetRawDirection(hero);
+                    const currentDirection = CustomEntitiesLegacy.GetRawDirection(hero);
                     const incomingDirection = event.payload.direction;
                     let vector = Vector(incomingDirection['0'], incomingDirection['1'], 0);
 
@@ -311,7 +311,7 @@ export class GameMode{
 
                     const newDirection = currentDirection.__add(vector);
                     newDirection.z = hero.GetForwardVector().z;
-                    CustomEntities.SetDirection(hero, newDirection.x, newDirection.y);
+                    CustomEntitiesLegacy.SetDirection(hero, newDirection.x, newDirection.y);
                 }
             }
         });
@@ -334,7 +334,7 @@ export class GameMode{
                     }
 
                     hero.SetAbilityPoints(settings.AbilityPoints);
-                    CustomEntities.SendDataToClient(hero);
+                    CustomEntitiesLegacy.SendDataToClient(hero);
                 }
             }
 
@@ -559,7 +559,7 @@ export class GameMode{
             const ability = EntIndexToHScript(event.entindex_ability) as CDOTA_Ability_Lua;
             const caster = EntIndexToHScript(event.units['0']) as CDOTA_BaseNPC;
             const energyCost = CustomAbilities.GetEnergyCost(ability);
-            const energy = CustomEntities.GetEnergy(caster);
+            const energy = CustomEntitiesLegacy.GetEnergy(caster);
 
             if(energyCost > energy){ 
                 CustomGameEventManager.Send_ServerToAllClients('not_enough_energy', {} as never);
@@ -577,7 +577,7 @@ export class GameMode{
                 const max_range = ability.GetCastRange(Vector(0,0,0), undefined);
 
                 if(!CustomAbilities.HasBehavior(ability, AbilityBehavior.IMMEDIATE)){
-                    CustomEntities.FullyFaceTowards(caster, direction);
+                    CustomEntitiesLegacy.FullyFaceTowards(caster, direction);
                 }
 
                 if(current_range > max_range){
@@ -618,17 +618,17 @@ export class GameMode{
         //const ability = (event.entindex_inflictor_const) ? EntIndexToHScript(event.entindex_inflictor_const) : undefined;
 
         if(target.IsRealHero()){
-            const new_treshold = CustomEntities.GetTreshold(target) + event.heal;
+            const new_treshold = CustomEntitiesLegacy.GetTreshold(target) + event.heal;
             if(new_treshold > this.max_treshold){
-                event.heal = this.max_treshold - CustomEntities.GetTreshold(target);
-                CustomEntities.SetTreshold(target, this.max_treshold);
+                event.heal = this.max_treshold - CustomEntitiesLegacy.GetTreshold(target);
+                CustomEntitiesLegacy.SetTreshold(target, this.max_treshold);
             } else {
-                CustomEntities.SetTreshold(target, new_treshold);
+                CustomEntitiesLegacy.SetTreshold(target, new_treshold);
             }
             
             SendOverheadHealMessage(target, event.heal);
             Timers.CreateTimer(0.05, function(){
-                CustomEntities.SendDataToClient(target);
+                CustomEntitiesLegacy.SendDataToClient(target);
             });
             
             const healing_team = target.GetTeam();
@@ -682,14 +682,14 @@ export class GameMode{
         }
         
         if(victim && victim.IsRealHero()){
-            CustomEntities.SetTreshold(victim, CustomEntities.GetTreshold(victim) - damage_after_reductions);
-            if(CustomEntities.GetTreshold(victim) < 0){
-                CustomEntities.SetTreshold(victim, 0);
+            CustomEntitiesLegacy.SetTreshold(victim, CustomEntitiesLegacy.GetTreshold(victim) - damage_after_reductions);
+            if(CustomEntitiesLegacy.GetTreshold(victim) < 0){
+                CustomEntitiesLegacy.SetTreshold(victim, 0);
             }
 
             victim.AddNewModifier(victim, undefined, 'modifier_damage_fx', { duration: 0.1 });
             Timers.CreateTimer(0.05, function(){
-                CustomEntities.SendDataToClient(victim);
+                CustomEntitiesLegacy.SendDataToClient(victim);
             });
             
             const victim_team = victim.GetTeam();
@@ -722,7 +722,7 @@ export class GameMode{
             if(player){
                 const hero = player.hero;
                 if(hero){
-                    CustomEntities.SetDirection(hero, 0,0);
+                    CustomEntitiesLegacy.SetDirection(hero, 0,0);
                 }
             }
         }
@@ -783,7 +783,7 @@ export class GameMode{
                     }
                 }
 
-                CustomEntities.SendDataToClient(hero);
+                CustomEntitiesLegacy.SendDataToClient(hero);
             }
         }
     }
@@ -798,11 +798,11 @@ export class GameMode{
             return false;
         }
 
-        if(!CustomEntities.IsInitialized(npc)){
+        if(!CustomEntitiesLegacy.IsInitialized(npc)){
             if(!(npc.GetName() === 'npc_dota_thinker')){
                 if(npc.IsRealHero()){
                     this.heroes.push(new Hero(npc));
-                    CustomEntities.Initialize(npc);
+                    CustomEntitiesLegacy.Initialize(npc);
                     if(this.IsPVP()){
                         return this.OnHeroInGamePVP(npc);
                     } else if(this.IsPVE()){
@@ -810,10 +810,10 @@ export class GameMode{
                     }
                 } else {
                     if(this.IsPVP()){
-                        CustomEntities.Initialize(npc);
+                        CustomEntitiesLegacy.Initialize(npc);
                         return true;//this.OnNPCInGamePVP(npc);
                     } else if(this.IsPVE()){
-                        CustomEntities.Initialize(npc, true);
+                        CustomEntitiesLegacy.Initialize(npc, true);
                         return true;//return this.OnNPCInGamePVE(npc);
                     }
                 }
@@ -858,7 +858,7 @@ export class GameMode{
             //this.OnEntityKilledPVE(killed)
         }
 
-        const parent = CustomEntities.GetParent(killed);
+        const parent = CustomEntitiesLegacy.GetParent(killed);
         if(parent){
             const killer = EntIndexToHScript(event.entindex_attacker);
             parent.OnDeath({ killer });
@@ -909,8 +909,8 @@ export class GameMode{
     RefreshHeroes(): void{
         this.players.forEach((player) => {
             if(player.hero && !player.hero.IsNull() && player.hero.IsAlive()){
-                CustomEntities.GiveEnergy(player.hero, CustomEntities.GetMaxEnergy(player.hero));
-                CustomEntities.SendDataToClient(player.hero);
+                CustomEntitiesLegacy.GiveEnergy(player.hero, CustomEntitiesLegacy.GetMaxEnergy(player.hero));
+                CustomEntitiesLegacy.SendDataToClient(player.hero);
             }
         });
     }

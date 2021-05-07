@@ -15,7 +15,7 @@ export default class Player{
 
     SetHero(hero: CDOTA_BaseNPC_Hero): void{
         this.hero = hero;
-        CustomEntities.SendDataToClient(hero);
+        CustomEntitiesLegacy.SendDataToClient(hero);
     }
     
     GetId(): PlayerID{

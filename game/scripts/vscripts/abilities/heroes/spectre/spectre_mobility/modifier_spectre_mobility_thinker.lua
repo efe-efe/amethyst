@@ -17,11 +17,11 @@ function modifier_spectre_mobility_thinker:OnDestroy()
         local caster = self:GetCaster()
         local origin = self:GetParent():GetAbsOrigin()
         FindClearSpaceForUnit(caster, origin, false)
-        CustomEntities:SafeDestroyModifier(caster, "modifier_spectre_banish")
+        CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_spectre_banish")
         local heal = false
         
         local enemies = ApplyCallbackForUnitsInArea(caster, self:GetParent():GetAbsOrigin(), self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)
-            if CustomEntities:ProvidesMana(enemy) then
+            if CustomEntitiesLegacy:ProvidesMana(enemy) then
                 enemy:AddNewModifier(caster, self, "modifier_spectre_desolate_custom", { duration = self.desolate_duration })
                 heal = true
             end

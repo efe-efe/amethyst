@@ -243,8 +243,8 @@ function Projectile:ProcessEntity(hEntity)
             if not status then
                 print('[PROJECTILES] Projectile UnitTest Failure!: ' .. test)
             elseif test then
-                if CustomEntities:IsWall(hEntity) then
-                    if CustomEntities:Allies(self.Source, hEntity) then
+                if CustomEntitiesLegacy:IsWall(hEntity) then
+                    if CustomEntitiesLegacy:Allies(self.Source, hEntity) then
                         return true
                     elseif self.WallBehavior == PROJECTILES_DESTROY then
                         self:Destroy(false)
@@ -260,7 +260,7 @@ function Projectile:ProcessEntity(hEntity)
                  --[[   
                 local continue = true
                 
-                for _,modifier_name in pairs(CustomEntities:GetOnProjectileHit(hEntity)) do
+                for _,modifier_name in pairs(CustomEntitiesLegacy:GetOnProjectileHit(hEntity)) do
                     local modifier_handle = hEntity:FindModifierByName(modifier_name)
                     
                     if not modifier_handle:OnProjectileHitCustom({ projectile = self, target = hEntity }) then

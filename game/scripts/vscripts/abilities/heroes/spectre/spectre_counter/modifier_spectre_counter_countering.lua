@@ -14,7 +14,7 @@ function modifier_spectre_counter_countering:OnIntervalThink()
 	local direction = (mouse - self:GetParent():GetAbsOrigin()):Normalized()
     self:PlayEffectsOnCast()
 
-	CustomEntities:FullyFaceTowards(self:GetParent(), Vector(direction.x, direction.y, self:GetParent():GetForwardVector().z))
+	CustomEntitiesLegacy:FullyFaceTowards(self:GetParent(), Vector(direction.x, direction.y, self:GetParent():GetForwardVector().z))
 end
 
 function modifier_spectre_counter_countering:OnDestroy()

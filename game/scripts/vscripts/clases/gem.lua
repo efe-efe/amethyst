@@ -46,10 +46,10 @@ function Gem.prototype.____constructor(self, origin, particle, model, scale)
 end
 function Gem.prototype.Update(self)
     local currentAngle = (GameRules:GetGameTime() % (math.pi * 2)) * 2
-    if not CustomEntities:IsBanished(
+    if not CustomEntitiesLegacy:IsBanished(
         self:GetUnit()
     ) then
-        CustomEntities:FullyFaceTowards(
+        CustomEntitiesLegacy:FullyFaceTowards(
             self:GetUnit(),
             Vector(
                 math.cos(currentAngle),
@@ -65,7 +65,7 @@ function Gem.prototype.OnDeath(self, params)
     self:Effect(killer)
     self:PlayEffectsOnDeath()
     self:GetUnit():AddNoDraw()
-    CustomEntities:GetAlliance(killer):AddAmethsyt()
+    CustomEntitiesLegacy:GetAlliance(killer):AddAmethsyt()
     self:Destroy(false)
 end
 function Gem.prototype.Effect(self, killer)
@@ -95,7 +95,7 @@ function Gem.prototype.PlayEffectsOnDeath(self)
     self:PlaySpecificEffectsOnDeath()
 end
 function Gem.prototype.GetUnits(self, searcher, iTeamFlags)
-    return CustomEntities:FindUnitsInRadius(
+    return CustomEntitiesLegacy:FindUnitsInRadius(
         searcher,
         self:GetUnit():GetAbsOrigin(),
         FIND_UNITS_EVERYWHERE,
@@ -159,9 +159,9 @@ function Amethyst.prototype.Effect(self, killer)
         allies,
         function(____, ally)
             if ally:IsRealHero() then
-                CustomEntities:RefreshCooldowns(ally)
-                CustomEntities:TrueHeal(ally, final_heal)
-                CustomEntities:GiveManaCustom(ally, final_mana, true, true)
+                CustomEntitiesLegacy:RefreshCooldowns(ally)
+                CustomEntitiesLegacy:TrueHeal(ally, final_heal)
+                CustomEntitiesLegacy:GiveManaCustom(ally, final_mana, true, true)
                 self:PlayEffectsOnTarget(ally)
             end
         end
@@ -209,7 +209,7 @@ function Emerald.prototype.Effect(self, killer)
         allies,
         function(____, ally)
             if ally:IsRealHero() then
-                CustomEntities:TrueHeal(ally, final_true_heal)
+                CustomEntitiesLegacy:TrueHeal(ally, final_true_heal)
                 ally:AddNewModifier(ally, nil, "modifier_emerald", {duration = self.duration, heal_per_second = final_heal_per_second})
                 EFX("particles/gems/emerald.vpcf", PATTACH_ABSORIGIN_FOLLOW, ally, {cp3 = {ent = ally, point = "attach_hitloc"}, release = true})
             end
@@ -236,7 +236,7 @@ function Ruby.prototype.Effect(self, killer)
         function(____, ally)
             if ally:IsRealHero() then
                 ally:AddNewModifier(ally, nil, "modifier_ruby", {duration = self.duration, damage = final_damage})
-                CustomEntities:GiveEnergy(ally, final_energy, true, true)
+                CustomEntitiesLegacy:GiveEnergy(ally, final_energy, true, true)
             end
         end
     )

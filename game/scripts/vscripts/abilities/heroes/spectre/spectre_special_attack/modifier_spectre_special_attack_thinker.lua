@@ -16,7 +16,7 @@ function modifier_spectre_special_attack_thinker:GetAuraSearchTeam()
 	return DOTA_UNIT_TARGET_TEAM_BOTH
 end
 function modifier_spectre_special_attack_thinker:GetAuraEntityReject(hEntity)
-    if not CustomEntities:Allies(self:GetCaster(), hEntity) then
+    if not CustomEntitiesLegacy:Allies(self:GetCaster(), hEntity) then
         return true 
     end
     return false

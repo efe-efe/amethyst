@@ -21,7 +21,7 @@ function modifier_juggernaut_mobility:OnCreated(kv)
 end
 
 function modifier_juggernaut_mobility:OnIntervalThink()
-    local enemies = CustomEntities:FindUnitsInRadius(
+    local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
         self.parent,
         self.parent:GetOrigin(), 
         self.radius, 

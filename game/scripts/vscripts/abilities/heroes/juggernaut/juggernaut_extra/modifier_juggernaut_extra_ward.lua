@@ -16,7 +16,7 @@ function modifier_juggernaut_extra_ward:GetAuraSearchTeam()
 	return DOTA_UNIT_TARGET_TEAM_BOTH
 end
 function modifier_juggernaut_extra_ward:GetAuraEntityReject(hEntity)
-    if not CustomEntities:Allies(self:GetCaster(), hEntity) then
+    if not CustomEntitiesLegacy:Allies(self:GetCaster(), hEntity) then
         return true 
     end
     return false

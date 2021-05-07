@@ -14,7 +14,7 @@ function centaur_charge:OnSpellStart()
 	local point = self:GetCursorPosition()
     local direction = (point - origin):Normalized()
 
-    CustomEntities:FullyFaceTowards(caster, direction)
+    CustomEntitiesLegacy:FullyFaceTowards(caster, direction)
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source

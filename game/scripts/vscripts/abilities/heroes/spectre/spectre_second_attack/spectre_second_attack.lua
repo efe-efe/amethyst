@@ -29,7 +29,7 @@ function spectre_second_attack:OnSpellStart()
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName =			"particles/spectre/spectre_second_attack.vpcf",
 			vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
@@ -42,7 +42,7 @@ function spectre_second_attack:OnSpellStart()
 			TreeBehavior = 			PROJECTILES_NOTHING,
 			GroundBehavior = 		PROJECTILES_NOTHING,
 			fGroundOffset = 		0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
 				local damage_table = {
 					victim = unit,
@@ -90,8 +90,8 @@ function spectre_second_attack:OnSpellStart()
 				ApplyDamage(damage_table)
 				
 				ScreenShake(unit:GetAbsOrigin(), 100, 300, 0.7, 1000, 0, true)
-				if CustomEntities:ProvidesMana(unit) then
-					CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				if CustomEntitiesLegacy:ProvidesMana(unit) then
+					CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 				end
 			end,
 			OnFinish = function(_self, pos)

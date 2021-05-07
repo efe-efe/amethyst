@@ -55,7 +55,7 @@ function modifier_mars_soldier:OnIntervalThink()
         end
 	end
 
-	local enemies = CustomEntities:FindUnitsInRadius(
+	local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
 		self.caster,
 		self.searchOrigin, 
 		self.radius, 
@@ -108,7 +108,7 @@ end
 
 function modifier_mars_soldier:GetAlphaValue()
     local alpha = 0
-    local enemies = CustomEntities:FindUnitsInRadius(
+    local enemies = CustomEntitiesLegacy:FindUnitsInRadius(
         self.parent,
         self.origin, 
         self.fade_max, 

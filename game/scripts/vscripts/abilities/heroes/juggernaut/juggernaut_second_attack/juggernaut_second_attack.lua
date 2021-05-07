@@ -47,7 +47,7 @@ function juggernaut_second_attack:OnSpellStart()
 	local juggernaut_ex_second_attack = caster:FindAbilityByName('juggernaut_ex_second_attack')
 	
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
-	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_juggernaut_basic_attack_stacks")
+	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_juggernaut_basic_attack_stacks")
 	self.final_damage = damage + (stacks * damage_per_stack)
 	self.shield_providers = 0
 
@@ -60,7 +60,7 @@ function juggernaut_second_attack:OnSpellStart()
 	}
 
 	if stacks <= 3 then
-		CustomEntities:MeeleAttack(caster, {
+		CustomEntitiesLegacy:MeeleAttack(caster, {
 			vDirection = direction,
 			vOrigin = origin, 
 			fRadius = radius,
@@ -73,7 +73,7 @@ function juggernaut_second_attack:OnSpellStart()
 	else
 		local radius = 275
 		
-		CustomEntities:AoeAttack(caster, {
+		CustomEntitiesLegacy:AoeAttack(caster, {
 			vOrigin = origin, 
 			fRadius = radius,
 			bTriggerCounters = true,
@@ -87,7 +87,7 @@ function juggernaut_second_attack:OnSpellStart()
 	end
 
 	if self.give_mana then
-		CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+		CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 	end
 	
 	if #enemies > 0 then
@@ -99,16 +99,16 @@ function juggernaut_second_attack:OnSpellStart()
 		caster:AddNewModifier(caster, self, 'modifier_juggernaut_second_attack', { damage_block = final_shield, duration = duration })
 	end
 
-	CustomEntities:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")
+	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")
 	LinkAbilityCooldowns(caster, 'juggernaut_ex_second_attack')
 end
 
 function juggernaut_second_attack:OnUnitImpact(hTarget)
-	if CustomEntities:ProvidesMana(hTarget) then
+	if CustomEntitiesLegacy:ProvidesMana(hTarget) then
 		self.give_mana = true
 	end
 
-	if not CustomEntities:IsObstacle(hTarget) and not CustomEntities:IsCountering(hTarget) then
+	if not CustomEntitiesLegacy:IsObstacle(hTarget) and not CustomEntitiesLegacy:IsCountering(hTarget) then
 		self.shield_providers = self.shield_providers + 1
 	end
 
@@ -187,10 +187,10 @@ function juggernaut_ex_second_attack:OnSpellStart()
 	local juggernaut_basic_attack = caster:FindAbilityByName("juggernaut_basic_attack")
 	local direction = Direction2D(origin, point)
 	
-	local stacks = CustomEntities:SafeGetModifierStacks(caster, "modifier_juggernaut_basic_attack_stacks")
+	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_juggernaut_basic_attack_stacks")
 	local final_debuff_duration = duration + (stacks * duration_per_stack)
 
-	CustomEntities:MeeleAttack(caster, {
+	CustomEntitiesLegacy:MeeleAttack(caster, {
 		vDirection = direction,
 		vOrigin = origin, 
 		fRadius = self.radius,
@@ -205,18 +205,18 @@ function juggernaut_ex_second_attack:OnSpellStart()
 	
 			hTarget:AddNewModifier(caster, self, "modifier_generic_sleep", { duration = final_debuff_duration })
 	
-			if not CustomEntities:IsObstacle(hTarget) then
+			if not CustomEntitiesLegacy:IsObstacle(hTarget) then
 				give_mana = true
 			end
 			self:PlayEffectsOnImpact(hTarget)
 		end
 	})
 
-	CustomEntities:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")
+	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")
 
 	if self:GetLevel() >= 2 then
 		if give_mana then
-			CustomEntities:GiveManaAndEnergy(caster, self:GetManaCost(self:GetLevel()), true)
+			CustomEntitiesLegacy:GiveManaAndEnergy(caster, self:GetManaCost(self:GetLevel()), true)
 
 			for i = 0, 3 do
 				caster:AddNewModifier(caster, juggernaut_basic_attack, "modifier_juggernaut_basic_attack_stacks", {})

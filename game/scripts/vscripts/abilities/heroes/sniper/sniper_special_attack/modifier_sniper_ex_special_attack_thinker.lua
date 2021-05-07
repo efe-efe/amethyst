@@ -16,7 +16,7 @@ function modifier_sniper_ex_special_attack_thinker:GetAuraSearchTeam()
 	return DOTA_UNIT_TARGET_TEAM_BOTH
 end
 function modifier_sniper_ex_special_attack_thinker:GetAuraEntityReject(hEntity)
-    if CustomEntities:Allies(self:GetCaster(), hEntity) then
+    if CustomEntitiesLegacy:Allies(self:GetCaster(), hEntity) then
         return false 
     end
     return true

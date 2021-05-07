@@ -12,7 +12,7 @@ function modifier_channeling:OnCreated(params)
         local channeling_tick = params.channeling_tick or 1.0
         local immediate = params.immediate and true or false
 
-        CustomEntities:SetAllAbilitiesActivated(self:GetParent(), false)
+        CustomEntitiesLegacy:SetAllAbilitiesActivated(self:GetParent(), false)
 
         self:StartIntervalThink(channeling_tick)
         if immediate then
@@ -30,7 +30,7 @@ function modifier_channeling:OnDestroy()
         if self:GetAbility().OnChannelingEnd then
             self:GetAbility():OnChannelingEnd()
         end
-        CustomEntities:SetAllAbilitiesActivated(self:GetParent(), true)
+        CustomEntitiesLegacy:SetAllAbilitiesActivated(self:GetParent(), true)
     end
 end
 

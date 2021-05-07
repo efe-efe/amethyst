@@ -39,7 +39,7 @@ function centaur_range_attack:LaunchProjectile(vDirection)
 		damage_type = DAMAGE_TYPE_MAGICAL,
 	}
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName = "particles/units/heroes/hero_invoker/invoker_deafening_blast.vpcf",
 			vSpawnOrigin = origin + Vector(vDirection.x * 45, vDirection.y * 45, 96),
@@ -52,7 +52,7 @@ function centaur_range_attack:LaunchProjectile(vDirection)
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit)
 				damage_table.victim = unit
 				damage_table.attacker = _self.Source

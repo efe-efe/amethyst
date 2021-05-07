@@ -46,7 +46,7 @@ function vengeful_second_attack:ThrowProjectile(bIsBasicAttack)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = Direction2D(origin, point)
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		bIsBasicAttack = bIsBasicAttack,
 		tProjectile = {
 			EffectName = "particles/vengeful/vengeful_second_attack.vpcf",
@@ -60,7 +60,7 @@ function vengeful_second_attack:ThrowProjectile(bIsBasicAttack)
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
 				local damage_table = {
 					victim = unit,
@@ -74,8 +74,8 @@ function vengeful_second_attack:ThrowProjectile(bIsBasicAttack)
 				unit:AddNewModifier(_self.Source, self, "modifier_vengeful_second_attack", { duration = duration })
 
 				if _self.Source == caster then
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 				end
 			end,
@@ -154,7 +154,7 @@ function vengeful_ex_second_attack:OnSpellStart()
 		ability = self,
 	}
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName = "particles/vengeful/vengeful_ex_second_attack.vpcf",
 			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
@@ -167,9 +167,9 @@ function vengeful_ex_second_attack:OnSpellStart()
 			WallBehavior = PROJECTILES_NOTHING,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
-				if CustomEntities:Allies(_self.Source, unit) then
+				if CustomEntitiesLegacy:Allies(_self.Source, unit) then
 					unit:Heal(heal, _self.Source)
 				else 
 					damage_table.victim = unit

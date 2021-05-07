@@ -59,7 +59,7 @@ function modifier_queen_scream:LaunchProjectile(vPoint)
     local damage = 12
     local fear_duration = 1.0
 
-    CustomEntities:ProjectileAttack(self.caster, {
+    CustomEntitiesLegacy:ProjectileAttack(self.caster, {
         tProjectile = {
             EffectName = "particles/queen/queen_scream.vpcf",
             vSpawnOrigin = self.origin + Vector(0, 0, 96),
@@ -72,7 +72,7 @@ function modifier_queen_scream:LaunchProjectile(vPoint)
             WallBehavior = PROJECTILES_DESTROY,
             GroundBehavior = PROJECTILES_NOTHING,
             fGroundOffset = 0,
-            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+            UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
             OnUnitHit = function(_self, unit) 
                 local damage_table = {
                     victim = unit,

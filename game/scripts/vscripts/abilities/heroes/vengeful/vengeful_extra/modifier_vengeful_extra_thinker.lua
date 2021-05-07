@@ -26,7 +26,7 @@ function modifier_vengeful_extra_thinker:OnIntervalThink()
     if IsServer() then
         local caster = self:GetCaster()
 
-        local allies = CustomEntities:FindUnitsInRadius(
+        local allies = CustomEntitiesLegacy:FindUnitsInRadius(
         caster,
             self.origin, 
             self.radius, 

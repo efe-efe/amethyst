@@ -63,7 +63,7 @@ function sniper_second_attack:OnSpellStart()
 		damage_type = DAMAGE_TYPE_MAGICAL,
 	}
 
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName = "particles/sniper/sniper_second_attack.vpcf",
 			vSpawnOrigin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
@@ -76,7 +76,7 @@ function sniper_second_attack:OnSpellStart()
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit)
 				-- Count targets
 				local counter = -1
@@ -96,8 +96,8 @@ function sniper_second_attack:OnSpellStart()
 		
 				
 				if counter < 1 and _self.Source == caster then
-					if CustomEntities:ProvidesMana(unit) then
-						CustomEntities:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+					if CustomEntitiesLegacy:ProvidesMana(unit) then
+						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
 				end
 		
@@ -198,7 +198,7 @@ function sniper_ex_second_attack:ThrowProjectile(vOrigin, vDirection, bFirstTime
 		damage_type = DAMAGE_TYPE_MAGICAL,
 	}			
 	
-	CustomEntities:ProjectileAttack(caster, {
+	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName = "particles/sniper/sniper_ex_second_attack_new.vpcf",
 			vSpawnOrigin = vOrigin,
@@ -211,7 +211,7 @@ function sniper_ex_second_attack:ThrowProjectile(vOrigin, vDirection, bFirstTime
 			WallBehavior = PROJECTILES_DESTROY,
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntities:Allies(_self.Source, unit) end,
+			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit)
 				-- Count targets
 				local counter = -1
