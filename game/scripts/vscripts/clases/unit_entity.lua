@@ -1,26 +1,29 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 1,["9"] = 7,["10"] = 7,["11"] = 7,["13"] = 4,["14"] = 8,["15"] = 9,["16"] = 11,["17"] = 11,["18"] = 11,["19"] = 20,["21"] = 23,["22"] = 24,["23"] = 25,["24"] = 23,["25"] = 28,["26"] = 29,["27"] = 28,["28"] = 32,["29"] = 33,["30"] = 32,["31"] = 36,["32"] = 37,["33"] = 39,["34"] = 40,["35"] = 40,["36"] = 40,["38"] = 36,["39"] = 44,["40"] = 44,["41"] = 1});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 14,["9"] = 21,["10"] = 18,["11"] = 22,["12"] = 23,["13"] = 24,["14"] = 25,["15"] = 25,["16"] = 25,["17"] = 34,["18"] = 35,["20"] = 21,["21"] = 39,["22"] = 40,["24"] = 43,["25"] = 44,["26"] = 45,["27"] = 43,["28"] = 48,["29"] = 49,["30"] = 48,["31"] = 52,["32"] = 53,["33"] = 52,["34"] = 56,["35"] = 57,["36"] = 59,["37"] = 60,["38"] = 60,["39"] = 60,["41"] = 56,["42"] = 64,["43"] = 64,["44"] = 14});
 local ____exports = {}
 ____exports.default = (function()
     ____exports.default = __TS__Class()
     local UnitEntity = ____exports.default
     UnitEntity.name = "UnitEntity"
-    function UnitEntity.prototype.____constructor(self, origin, name, team)
-        if team == nil then
-            team = DOTA_TEAM_NOTEAM
-        end
+    function UnitEntity.prototype.____constructor(self, options)
         self.destroyed = false
-        self.origin = origin
-        self.team = team
-        self:SetUnit(
-            CreateUnitByName(name, self.origin, true, nil, nil, self.team)
+        self.team = (options.unit and options.unit:GetTeam()) or self:InitializeTeam(options.properties.team)
+        self.origin = (options.unit and options.unit:GetAbsOrigin()) or options.properties.origin
+        self.name = (options.unit and options.unit:GetName()) or options.properties.name
+        self.unit = (options.unit and self:SetUnit(options.unit)) or self:SetUnit(
+            CreateUnitByName(self.name, self.origin, true, nil, nil, self.team)
         )
-        self:GetUnit():SetAbsOrigin(self.origin)
+        if options.properties then
+            self.unit:SetAbsOrigin(self.origin)
+        end
+    end
+    function UnitEntity.prototype.InitializeTeam(self, team)
+        return (team and team) or DOTA_TEAM_NOTEAM
     end
     function UnitEntity.prototype.SetUnit(self, unit)
-        self.unit = unit
-        CustomEntities:SetParent(self.unit, self)
+        CustomEntities:SetParent(unit, self)
+        return unit
     end
     function UnitEntity.prototype.GetUnit(self)
         return self.unit

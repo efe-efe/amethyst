@@ -32,7 +32,10 @@ class Gem extends UnitEntity{
     scale: number;
 
     constructor(origin: Vector, particle: string, model: string, scale = 1.0){
-        super(origin, 'npc_dota_creature_amethyst');
+        super({ properties: {
+            origin, 
+            name: 'npc_dota_creature_amethyst'
+        }});
         this.particle = particle;
         this.model = model;
         this.scale = scale;

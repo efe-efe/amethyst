@@ -5,7 +5,7 @@ import { reloadable } from './lib/tstl-utils';
 import './wrappers/abilities';
 import './wrappers/modifiers';
 import './util/custom_abilities';
-import './util/custom_entities';
+import './util/custom_entities_legacy';
 import './util/math';
 import './util/util';
 import './settings';
@@ -17,7 +17,7 @@ import './overrides/abilities';
 import Player from './clases/player';
 import PreRound from './clases/pre_round';
 import Round from './clases/round';
-import UnitEntity from './clases/unit_entity';
+import Hero from './clases/hero';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
 import Wave, { WaveGroup, NPCNames } from './clases/wave';
@@ -69,6 +69,7 @@ const THINK_PERIOD = 0.01;
 @reloadable
 export class GameMode{
     private players: Player[] = [];
+    private heroes: Hero[] = [];
     private state = CustomGameState.NONE;
     private thinkers: Thinker[] = [];
     private wtf = false;
@@ -146,8 +147,11 @@ export class GameMode{
             this.StartPVEMap();
         }
 
-        this.RegisterThinker(0.01, function(){
+        this.RegisterThinker(0.01, () => {
             CustomGameEventManager.Send_ServerToAllClients('get_mouse_position', {} as never);
+            this.heroes.forEach(hero => {
+                hero.Update();
+            });
         });
     }
     
@@ -179,7 +183,7 @@ export class GameMode{
         this.waveGroups = [
             {
                 name: NPCNames.DIRE_ZOMBIE,
-                ammount: 20,
+                ammount: 10,
             },
             {
                 name: NPCNames.QUEEN,
@@ -376,7 +380,7 @@ export class GameMode{
         LinkLuaModifier('modifier_amethyst',                        'modifiers/modifier_amethyst.lua', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_miss',                            'modifiers/modifier_miss.lua', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_restricted',                      'modifiers/modifier_restricted.lua', LuaModifierMotionType.NONE);
-        
+
         LinkLuaModifier('modifier_generic_silence',                 'abilities/generic/modifier_generic_silence', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_fading_slow',             'abilities/generic/modifier_generic_fading_slow', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_fading_haste',            'abilities/generic/modifier_generic_fading_haste', LuaModifierMotionType.NONE);
@@ -397,6 +401,7 @@ export class GameMode{
         LinkLuaModifier('modifier_hide_bar',                        'abilities/base/modifier_hide_bar', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_hidden',                          'abilities/base/modifier_hidden', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_banish',                          'abilities/base/modifier_banish', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_hero_movement',                   'abilities/base/modifier_hero_movement', LuaModifierMotionType.NONE);
         
         LinkLuaModifier('modifier_mount',                          'abilities/heroes/common/mount/modifier_mount.lua', LuaModifierMotionType.NONE);
     
@@ -796,6 +801,7 @@ export class GameMode{
         if(!CustomEntities.IsInitialized(npc)){
             if(!(npc.GetName() === 'npc_dota_thinker')){
                 if(npc.IsRealHero()){
+                    this.heroes.push(new Hero(npc));
                     CustomEntities.Initialize(npc);
                     if(this.IsPVP()){
                         return this.OnHeroInGamePVP(npc);

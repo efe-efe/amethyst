@@ -19,7 +19,7 @@ STATUS_CONTENT_FILLUP = 2
 STATUS_SCOPE_PUBLIC = 1
 STATUS_SCOPE_LOCAL = 2
 
-if IsClient() then require("util/custom_entities") end
+if IsClient() then require("util/custom_entities_legacy") end
 
 function Modifiers.StartTracking(hModifier, iType, onCreated, onDestroy)
     local onCreated = onCreated or hModifier.OnCreated

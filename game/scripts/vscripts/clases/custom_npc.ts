@@ -49,14 +49,16 @@ export class CustomNPC extends UnitEntity{
     remainingRestTime = 0;
     rangeOfAction = 3000;
     restDirection: Vector | undefined;
-    unit: CDOTA_BaseNPC;
     behavior: CustomNPCBehavior;
     originalPosition: Vector;
     targetPosition: Vector | undefined;
 
     constructor(origin: Vector, name: string, options: CustomNPCOptions){
-        super(origin, name, DotaTeam.CUSTOM_1);
-        this.unit = this.GetUnit();
+        super({properties: {
+            origin,
+            name, 
+            team: DotaTeam.CUSTOM_1,
+        }});
         this.restTime = options.restTime || 1.0;
         this.followRange = options.followRange || 2500;
         this.minFollowRange = options.minFollowRange || 0;
@@ -355,7 +357,6 @@ export class CustomNPC extends UnitEntity{
     */
     }
 }
-
 export class DireZombie extends CustomNPC{
     constructor(origin: Vector){    
         super(origin, 'dire_zombie', {
@@ -372,7 +373,6 @@ export class DireZombie extends CustomNPC{
         }));
     }
 }
-
 export class Centaur extends CustomNPC{
     constructor(origin: Vector){    
         super(origin, 'npc_dota_hero_centaur', {});
@@ -411,7 +411,6 @@ export class Centaur extends CustomNPC{
         }));
     }
 }
-
 export class Queen extends CustomNPC{
     constructor(origin: Vector){    
         super(origin, 'npc_dota_hero_queenofpain', {

@@ -37,8 +37,8 @@ export default class Wave extends GameState{
 
         waveGroups.forEach(waveGroup => {
             for(let i = 0; i < waveGroup.ammount; i++){
-                const x = RandomInt(0, 2500);
-                const y = RandomInt(0, 2500);
+                const x = RandomInt(-1500, 1500);
+                const y = RandomInt(-1500, 1500);
                 const npc = NPCFactories[waveGroup.name](Vector(x, y, 128));
                 this.npcs.push(npc);
                 this.aliveNpcs = this.aliveNpcs + 1;

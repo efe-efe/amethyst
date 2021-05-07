@@ -41,8 +41,8 @@ ____exports.default = (function()
                 do
                     local i = 0
                     while i < waveGroup.ammount do
-                        local x = RandomInt(0, 2500)
-                        local y = RandomInt(0, 2500)
+                        local x = RandomInt(-1500, 1500)
+                        local y = RandomInt(-1500, 1500)
                         local npc = NPCFactories[waveGroup.name](
                             NPCFactories,
                             Vector(x, y, 128)
