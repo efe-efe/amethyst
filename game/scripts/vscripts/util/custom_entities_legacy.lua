@@ -57,14 +57,12 @@ function CustomEntitiesLegacy:Initialize(hEntity, bIsPVENPC)
     CustomEntitiesLegacy:SetTreshold(hEntity, GameRules.Addon.max_treshold)
     
 	hEntity:AddNewModifier(hEntity,  nil, "modifier_visible", {})
-	GameRules.Addon:RegisterUnit(hEntity)
 
 	if hEntity:IsRealHero() or bIsPVENPC then
 		hEntity.direction = {}
 		hEntity.collision_direction = -1
 	
 		CustomEntitiesLegacy:SetDirection(hEntity, 0, 0)
-		--hEntity:AddNewModifier(hEntity,  nil, "modifier_hero_base", {})
 		ConstructHero(hEntity)
 	end
 

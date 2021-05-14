@@ -1,5 +1,9 @@
 modifier_damage_fx = class({})
 
+function modifier_damage_fx:IsHidden()
+	return true
+end
+
 function modifier_damage_fx:GetEffectAttachType()
 	return PATTACH_ABSORIGIN_FOLLOW
 end

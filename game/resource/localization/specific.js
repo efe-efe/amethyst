@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Keywords = exports.multipleKeywords = exports.Ability = exports.Description = void 0;
-exports.Description = function (data) {
+var Description = function (data) {
     var output = '';
     if (data.channeled) {
         output = output + '<img src="file://{images}/custom_game/clock.png" /> <b><font color="gold">CHANNELED</font></b> - ';
@@ -15,9 +15,11 @@ exports.Description = function (data) {
     }
     return output;
 };
-exports.Ability = function (name, iconPath) {
+exports.Description = Description;
+var Ability = function (name, iconPath) {
     return '<img src="file://{images}/custom_game/' + iconPath + '" /> <b><font color="#ffffff">' + name + '</font></b>';
 };
+exports.Ability = Ability;
 var createKeywordDefinition = function (options) {
     var name = options.name.toUpperCase();
     if (options.function) {
@@ -39,7 +41,7 @@ var createKeyword = function (options) {
         instance: keywordInstanceFactory(options),
     };
 };
-exports.multipleKeywords = function (keywords) {
+var multipleKeywords = function (keywords) {
     var output = '';
     keywords.forEach(function (keyword, i) {
         output = output + keyword;
@@ -49,6 +51,7 @@ exports.multipleKeywords = function (keywords) {
     });
     return output;
 };
+exports.multipleKeywords = multipleKeywords;
 exports.Keywords = {
     FairyDust: createKeyword({
         name: 'Fairy Dust',

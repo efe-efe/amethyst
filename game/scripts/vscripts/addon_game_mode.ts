@@ -6,7 +6,7 @@ import './wrappers/abilities';
 import './wrappers/modifiers';
 import './util/custom_abilities';
 import './util/custom_entities_legacy';
-import './util/math';
+import './util/math_legacy';
 import './util/util';
 import './settings';
 import './constructors';
@@ -17,7 +17,7 @@ import './overrides/abilities';
 import Player from './clases/player';
 import PreRound from './clases/pre_round';
 import Round from './clases/round';
-import Hero from './clases/hero';
+import CustomNPC, { PlayerNPC } from './clases/custom_npc';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
 import Wave, { WaveGroup, NPCNames } from './clases/wave';
@@ -69,16 +69,15 @@ const THINK_PERIOD = 0.01;
 @reloadable
 export class GameMode{
     private players: Player[] = [];
-    private heroes: Hero[] = [];
+    private units: (PlayerNPC | CustomNPC)[] = [];
     private state = CustomGameState.NONE;
     private thinkers: Thinker[] = [];
     private wtf = false;
-    private units: CDOTA_BaseNPC[] = [];
 
     public alliances: Alliance[] = [];
     public warmup: Warmup | undefined;
     public pre_round: PreRound | undefined;
-    public waveGroups: WaveGroup[] = [];
+    public waveGroups: WaveGroup[][] = [];
     public wave: Wave | undefined;
     public pre_wave: PreWave | undefined;
     public round: Round | undefined;
@@ -149,8 +148,8 @@ export class GameMode{
 
         this.RegisterThinker(0.01, () => {
             CustomGameEventManager.Send_ServerToAllClients('get_mouse_position', {} as never);
-            this.heroes.forEach(hero => {
-                hero.Update();
+            this.units.forEach(unit => {
+                unit.Update();
             });
         });
     }
@@ -181,22 +180,22 @@ export class GameMode{
     StartPVEMap(): void{
         this.SetState(CustomGameState.WAVE_IN_PROGRESS);
         this.waveGroups = [
-            {
+            [{
                 name: NPCNames.DIRE_ZOMBIE,
-                ammount: 10,
-            },
-            {
+                ammount: 15,
+            }],
+            [{
                 name: NPCNames.QUEEN,
                 ammount: 1,
-            },
-            {
+            }],
+            [{
                 name: NPCNames.DIRE_ZOMBIE,
-                ammount: 40,
-            },
-            {
+                ammount: 20,
+            }],
+            [{
                 name: NPCNames.CENTAUR,
                 ammount: 1,
-            },
+            }],
         ];
 
         this.wave = new Wave(this.alliances, -1, [this.waveGroups[this.currentWave]]);
@@ -467,11 +466,7 @@ export class GameMode{
             return true;
         }
     }
-    
-    public RegisterUnit(unit: CDOTA_BaseNPC): void{
-        this.units.push(unit);
-    }
-    
+
     SetState(state: CustomGameState): void{
         this.OnStateEnd(this.state);
         this.state = state;
@@ -705,7 +700,6 @@ export class GameMode{
         return true;
     }
 
-
     OnGameRulesStateChange(): void{
         const state = GameRules.State_Get();
 
@@ -748,8 +742,8 @@ export class GameMode{
             if(this.IsPVE()){
                 if(this.wave){
                     this.wave.npcs.forEach((npc) => {
-                        if(npc.GetUnit().IsAlive()){
-                            npc.GetUnit().ForceKill(false);
+                        if(npc.unit.IsAlive()){
+                            npc.unit.ForceKill(false);
                         }
                     });
                 }
@@ -798,29 +792,28 @@ export class GameMode{
             return false;
         }
 
-        if(!CustomEntitiesLegacy.IsInitialized(npc)){
-            if(!(npc.GetName() === 'npc_dota_thinker')){
-                if(npc.IsRealHero()){
-                    this.heroes.push(new Hero(npc));
-                    CustomEntitiesLegacy.Initialize(npc);
-                    if(this.IsPVP()){
-                        return this.OnHeroInGamePVP(npc);
-                    } else if(this.IsPVE()){
-                        return this.OnHeroInGamePVE(npc);
-                    }
-                } else {
-                    if(this.IsPVP()){
-                        CustomEntitiesLegacy.Initialize(npc);
-                        return true;//this.OnNPCInGamePVP(npc);
-                    } else if(this.IsPVE()){
-                        CustomEntitiesLegacy.Initialize(npc, true);
-                        return true;//return this.OnNPCInGamePVE(npc);
-                    }
-                }
+        if(npc.GetName() === 'npc_dota_thinker'){
+            return true;
+        }
+
+        if(CustomEntitiesLegacy.IsInitialized(npc)){
+            return true;
+        }
+
+        this.RegisterUnit(npc);
+        if(npc.IsRealHero()){
+            if(this.IsPVP()){
+                return this.OnHeroInGamePVP(npc);
+            } else if(this.IsPVE()){
+                return this.OnHeroInGamePVE(npc);
             }
         }
 
         return true;
+    }
+
+    IsPlayerHero(hero: CDOTA_BaseNPC): boolean{
+        return this.players.filter((player) => player.hero === hero)[0] !== undefined;
     }
 
     IncrementWave(): void{
@@ -837,61 +830,56 @@ export class GameMode{
 
     OnHeroInGamePVE(hero: CDOTA_BaseNPC_Hero): boolean{
         if(hero.GetTeamNumber() !== DotaTeam.CUSTOM_1){
-            if(!this.RegisterPlayer(hero)){
-                return false;
-            }
+            return this.RegisterPlayer(hero);
         }
         return true;
     }
 
     OnHeroInGamePVP(hero: CDOTA_BaseNPC_Hero): boolean{
-        if(!this.RegisterPlayer(hero)){
-            return false;
+        return this.RegisterPlayer(hero);
+    }
+
+    RegisterUnit(unit: CDOTA_BaseNPC): void{
+        print('Registering: ', unit.GetName(), unit.GetUnitName());
+        if(unit.IsRealHero()){
+            this.units.push(new PlayerNPC(unit));
+        } else {
+            this.units.push(new CustomNPC(unit));
         }
-        return true;
+    }
+
+    RemoveUnit(unit: CDOTA_BaseNPC): void{
+        print('Removing: ', unit.GetName(), unit.GetUnitName());
+        this.units = this.units.filter((unitEntity) => unitEntity.GetUnit() !== unit);
     }
 
     OnEntityKilled(event: EntityKilledEvent): void{
         const killed = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
-
-        if(GetMapName() == Custom_MapNames.PVE){
-            //this.OnEntityKilledPVE(killed)
-        }
+        const killer = EntIndexToHScript(event.entindex_attacker);
 
         const parent = CustomEntitiesLegacy.GetParent(killed);
         if(parent){
-            const killer = EntIndexToHScript(event.entindex_attacker);
             parent.OnDeath({ killer });
-            if(this.IsPVE() && this.wave){ //This will trigger when summoned units dies :()
-                this.wave.aliveNpcs = this.wave.aliveNpcs - 1;
+        }
+        
+        if(this.wave){
+            this.wave.OnUnitDies(killed);
+        }
+        
+        if(killed.IsRealHero()){
+            if(this.IsPVP()){
+                this.OnHeroKilledPVP(killed);
+            }
+            if(!this.IsPlayerHero(killed)){
+                this.SetRespawnTime(killed.GetTeam(), killed as CDOTA_BaseNPC_Hero, 999);
+                this.RemoveUnit(killed);
             }
         } else {
-            if(killed.IsRealHero()){
-                if(this.IsPVP()){
-                    this.OnEntityKilledPVP(killed);
-                }
-            }
+            this.RemoveUnit(killed);
         }
-    }
-
-    OnEntityKilledPVE(killed: CDOTA_BaseNPC): void{
-        /*
-        if(killed.GetParentEntity){
-            const entity = killed.GetParentEntity();
-            
-            if(instanceof(entity, Boss)){
-                if(instanceof(entity, Centaur)){
-                    this.boss = Queen(Vector(150, 0, 128));
-                } else if(instanceof(entity, Queen)){
-                    this.boss = Centaur(Vector(150, 0, 128));
-                }
-            }
-            this.SetRespawnTime(killed.GetTeam(), killed, 999)
-        }
-        */
     }
     
-    OnEntityKilledPVP(killed: CDOTA_BaseNPC): void{
+    OnHeroKilledPVP(killed: CDOTA_BaseNPC): void{
         if(this.round){
             this.round.hero_died = true;
             this.CreateDeathOrb(killed);

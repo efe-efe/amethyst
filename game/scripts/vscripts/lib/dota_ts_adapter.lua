@@ -1,14 +1,14 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 114,["6"] = 114,["7"] = 115,["8"] = 116,["10"] = 114,["11"] = 124,["12"] = 125,["13"] = 126,["14"] = 127,["15"] = 128,["16"] = 129,["17"] = 129,["18"] = 129,["19"] = 129,["21"] = 132,["23"] = 124,["24"] = 136,["25"] = 137,["26"] = 138,["27"] = 139,["28"] = 140,["29"] = 141,["32"] = 145,["34"] = 136,["35"] = 8,["36"] = 8,["37"] = 8,["39"] = 8,["40"] = 11,["41"] = 11,["42"] = 11,["44"] = 11,["45"] = 14,["46"] = 14,["47"] = 14,["49"] = 14,["50"] = 15,["51"] = 22,["52"] = 15,["53"] = 27,["54"] = 27,["55"] = 27,["56"] = 27,["57"] = 30,["58"] = 30,["59"] = 30,["60"] = 30,["61"] = 33,["62"] = 33,["63"] = 33,["64"] = 33,["65"] = 36,["66"] = 37,["67"] = 38,["68"] = 40,["69"] = 41,["70"] = 43,["72"] = 45,["74"] = 48,["75"] = 48,["76"] = 48,["77"] = 50,["78"] = 51,["80"] = 53,["82"] = 56,["83"] = 58,["84"] = 59,["85"] = 60,["86"] = 61,["87"] = 62,["89"] = 59,["90"] = 40,["91"] = 67,["92"] = 68,["93"] = 70,["95"] = 72,["97"] = 75,["98"] = 75,["99"] = 75,["100"] = 76,["101"] = 76,["102"] = 76,["103"] = 78,["104"] = 79,["106"] = 81,["108"] = 84,["109"] = 86,["110"] = 86,["111"] = 87,["112"] = 88,["113"] = 89,["114"] = 90,["116"] = 87,["117"] = 94,["118"] = 95,["119"] = 96,["120"] = 97,["121"] = 98,["123"] = 100,["124"] = 101,["126"] = 103,["127"] = 104,["130"] = 108,["132"] = 111});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 147,["6"] = 122,["7"] = 123,["8"] = 124,["10"] = 122,["11"] = 128,["12"] = 129,["13"] = 130,["14"] = 131,["15"] = 132,["16"] = 133,["17"] = 133,["18"] = 133,["19"] = 133,["21"] = 136,["23"] = 128,["24"] = 147,["25"] = 148,["26"] = 149,["27"] = 150,["28"] = 153,["29"] = 154,["32"] = 158,["34"] = 147,["35"] = 10,["36"] = 10,["37"] = 10,["39"] = 10,["40"] = 13,["41"] = 13,["42"] = 13,["44"] = 13,["45"] = 16,["46"] = 16,["47"] = 16,["49"] = 16,["50"] = 17,["51"] = 24,["52"] = 17,["53"] = 29,["54"] = 29,["55"] = 29,["56"] = 29,["57"] = 32,["58"] = 32,["59"] = 32,["60"] = 32,["61"] = 35,["62"] = 35,["63"] = 35,["64"] = 35,["65"] = 38,["66"] = 41,["67"] = 44,["68"] = 48,["69"] = 49,["70"] = 51,["72"] = 53,["74"] = 56,["75"] = 56,["76"] = 56,["77"] = 58,["78"] = 59,["80"] = 61,["82"] = 64,["83"] = 66,["84"] = 67,["85"] = 68,["86"] = 69,["87"] = 70,["89"] = 67,["90"] = 48,["91"] = 75,["92"] = 76,["93"] = 78,["95"] = 80,["97"] = 83,["98"] = 83,["99"] = 83,["100"] = 84,["101"] = 86,["102"] = 87,["104"] = 89,["106"] = 92,["107"] = 94,["108"] = 95,["109"] = 96,["110"] = 97,["111"] = 98,["113"] = 95,["114"] = 102,["115"] = 103,["116"] = 104,["117"] = 105,["118"] = 106,["120"] = 108,["121"] = 109,["123"] = 111,["124"] = 112,["127"] = 116,["129"] = 119,["130"] = 75,["131"] = 140,["132"] = 141,["133"] = 141,["134"] = 141,["135"] = 142,["136"] = 143,["137"] = 142,["138"] = 140});
 local ____exports = {}
-local clearTable, getFileScope, toDotaClassInstance
-function clearTable(self, ____table)
+local toDotaClassInstance
+function ____exports.clearTable(self, ____table)
     for key in pairs(____table) do
         ____table[key] = nil
     end
 end
-function getFileScope(self)
+function ____exports.getFileScope(self)
     local level = 1
     while true do
         local info = debug.getinfo(level, "S")
@@ -72,10 +72,10 @@ ____exports.registerAbility = function(____, name) return function(____, ability
         name = ability.name
     end
     local env = unpack(
-        getFileScope(nil)
+        ____exports.getFileScope(nil)
     )
     if env[name] then
-        clearTable(nil, env[name])
+        ____exports.clearTable(nil, env[name])
     else
         env[name] = {}
     end
@@ -95,19 +95,16 @@ ____exports.registerModifier = function(____, name) return function(____, modifi
         name = modifier.name
     end
     local env, source = unpack(
-        getFileScope(nil)
+        ____exports.getFileScope(nil)
     )
-    local fileName = unpack(
-        string.gsub(source, ".*scripts[\\/]vscripts[\\/]", "")
-    )
+    local fileName = string.gsub(source, ".*scripts[\\/]vscripts[\\/]", "")
     if env[name] then
-        clearTable(nil, env[name])
+        ____exports.clearTable(nil, env[name])
     else
         env[name] = {}
     end
     toDotaClassInstance(nil, env[name], modifier)
-    local originalOnCreated
-    originalOnCreated = env[name].OnCreated
+    local originalOnCreated = env[name].OnCreated
     env[name].OnCreated = function(self, parameters)
         self:____constructor()
         if originalOnCreated then
@@ -131,4 +128,12 @@ ____exports.registerModifier = function(____, name) return function(____, modifi
     end
     LinkLuaModifier(name, fileName, ____type)
 end end
+function ____exports.entityFunction(self, name, f)
+    local env = unpack(
+        ____exports.getFileScope(nil)
+    )
+    env[name] = function(...)
+        f(nil, ...)
+    end
+end
 return ____exports

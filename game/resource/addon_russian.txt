@@ -1,6 +1,6 @@
 "lang"
 {
-    "Language"    "english"
+    "Language"    "russian"
     "Tokens"
     {
         "addon_game_name"    "Amethyst"

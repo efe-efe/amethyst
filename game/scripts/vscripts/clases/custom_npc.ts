@@ -1,454 +1,376 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import UnitEntity from './unit_entity';
+import Math from '../util/math';
+import customEntities from '../util/custom_entities';
+import { CustomAI } from './custom_ai';
 
-enum CustomNPCState {
-    IDLE = 0,
-    WANDERING,
-    RESTING,
+const DEBUG = false;
+
+enum CollisionTypes {
+    SUCCESS = 0,
+    UNIT,
+    WALL,
+    TREE,
 }
 
-enum CustomNPCBehavior {
-    FOLLOWER = 0,
-    WANDERER,
+enum Orientations {
+    NONE = 0,
+    DIAGONAL_LEFT,
+    DIAGONAL_RIGHT,
+    HORIZONTAL,
+    VERTICAL,
 }
+export default class CustomNPC extends UnitEntity{
+    ai: CustomAI | undefined;
 
-interface CustomNPCAbilityRequirements {
-    cooldownReady?: boolean;
-    phaseReady?: boolean;
-    targetInCastRange?: boolean;
-    targetInRadius?: boolean;
-}
-
-interface CustomNPCAbility {
-    ability: CDOTABaseAbility;
-    priority: number;
-    requirements: CustomNPCAbilityRequirements;
-    cast(ability: CDOTABaseAbility, target: CDOTA_BaseNPC | undefined): void;
-    orderType: UnitOrder;
-}
-
-interface CustomNPCAbilityFactoryOptions {
-    ability: CDOTABaseAbility;
-    orderType: UnitOrder;
-    requirements?: CustomNPCAbilityRequirements;
-}
-
-interface CustomNPCOptions {
-    followRange?: number;
-    minFollowRange?: number;
-    restTime?: number;
-    behavior?: CustomNPCBehavior;
-}
-
-export class CustomNPC extends UnitEntity{
-    state = CustomNPCState.IDLE ;
-    abilities: CustomNPCAbility[] = [];
-    followRange: number;
-    minFollowRange: number;
-    restTime: number;
-    remainingRestTime = 0;
-    rangeOfAction = 3000;
-    restDirection: Vector | undefined;
-    behavior: CustomNPCBehavior;
-    originalPosition: Vector;
-    targetPosition: Vector | undefined;
-
-    constructor(origin: Vector, name: string, options: CustomNPCOptions){
-        super({properties: {
-            origin,
-            name, 
-            team: DotaTeam.CUSTOM_1,
-        }});
-        this.restTime = options.restTime || 1.0;
-        this.followRange = options.followRange || 2500;
-        this.minFollowRange = options.minFollowRange || 0;
-        this.behavior = options.behavior || CustomNPCBehavior.FOLLOWER;
-        this.originalPosition = origin;
-    }
-
-    FindEnemy(radius: number): CDOTA_BaseNPC | undefined{
-        const units = FindUnitsInRadius(
-            this.unit.GetTeamNumber(),
-            this.unit.GetAbsOrigin(),
-            undefined,
-            radius,
-            UnitTargetTeam.ENEMY, 
-            UnitTargetType.HERO + UnitTargetType.BASIC, 
-            UnitTargetFlags.NO_INVIS,
-            FindOrder.ANY,
-            false
-        );
-
-        if(units.length > 0) {
-            return units[0];
+    constructor(unit: CDOTA_BaseNPC){
+        if(unit.IsRealHero()){
+            CustomEntitiesLegacy.Initialize(unit);
         } else {
-            return undefined;
+            CustomEntitiesLegacy.Initialize(unit, true);
         }
+        super({ unit });
+        customEntities.Disarm(this.unit);
     }
-
-    IsAbilityReady(ability: CDOTABaseAbility): boolean{
-        return ability.IsCooldownReady() && !ability.IsInAbilityPhase();
-    }
-
-    AbilityFactory(options: CustomNPCAbilityFactoryOptions): CustomNPCAbility{
-        const npcAbility: CustomNPCAbility = {
-            ability: options.ability,
-            orderType: options.orderType,
-            priority: this.abilities.length + 1,
-            cast: (ability: CDOTABaseAbility, target: CDOTA_BaseNPC) => {
-                ExecuteOrderFromTable({
-                    OrderType: options.orderType,
-                    UnitIndex: this.GetUnit().GetEntityIndex(),
-                    AbilityIndex: ability.GetEntityIndex(),
-                    Position: target && target.GetAbsOrigin() || undefined,
-                }); 
-            },
-            requirements: (options.requirements) ? {
-                ...options.requirements,
-                cooldownReady: (options.requirements.cooldownReady !== undefined) ? options.requirements.cooldownReady : true,
-                phaseReady: (options.requirements.phaseReady !== undefined) ? options.requirements.phaseReady : true,
-            } : {
-                cooldownReady: true,
-                phaseReady: true,
-            }
-        };
-        return npcAbility;
-    }
-
-    AddAbility(npcAbility: CustomNPCAbility): void{
-        this.abilities.push(npcAbility);
-    }
-
-    StartRest(restTime: number): void{
-        this.remainingRestTime = restTime * 30;
-    }
-
-    BackToOrigin(origin: Vector): boolean{
-        const distanceFromOrigin = (this.originalPosition.__sub(origin)).Length2D();
-
-        if(this.rangeOfAction > distanceFromOrigin){
-            return false;
-        }
-
-        const direction = (this.originalPosition.__sub(origin)).Normalized();
-        CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
-        return true;
-    }
-
-    Cast(): boolean{
-        if(CustomEntitiesLegacy.IsDisplacing(this.unit) || CustomEntitiesLegacy.IsCasting(this.unit) || CustomEntitiesLegacy.IsChanneling(this.unit) || this.remainingRestTime > 0){
-            return false;
-        }
-        
-        let abilityToExecute: CustomNPCAbility | undefined = undefined; 
-        let abilityTarget: CDOTA_BaseNPC | undefined = undefined;
-        this.abilities.forEach((npcAbility) => {
-            const ability = npcAbility.ability;
-
-            if(npcAbility.requirements){
-                if(npcAbility.requirements.cooldownReady){
-                    if(!npcAbility.ability.IsCooldownReady()){
-                        return false;
-                    }
-                }
-                if(npcAbility.requirements.phaseReady){
-                    if(npcAbility.ability.IsInAbilityPhase()){
-                        return false;
-                    }
-                }
-                if(npcAbility.requirements.targetInCastRange){
-                    abilityTarget = this.FindEnemy(ability.GetCastRange(Vector(0,0,0), undefined));
-                    if(!abilityTarget){
-                        return false;
-                    }
-                }
-                if(npcAbility.requirements.targetInRadius){
-                    abilityTarget = this.FindEnemy(ability.GetSpecialValueFor('radius'));
-                    if(!abilityTarget){
-                        return false;
-                    }
-                }
-            }
-            if(abilityToExecute == undefined){
-                abilityToExecute = npcAbility;
-            }
-            if(npcAbility.priority > abilityToExecute.priority){
-                abilityToExecute = npcAbility;
-            }
-        });
-
-        if(abilityToExecute){
-            abilityToExecute = abilityToExecute as CustomNPCAbility;
-            abilityToExecute.cast(abilityToExecute.ability, abilityTarget);
-            this.StartRest(this.restTime);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    Follow(origin: Vector): boolean{
-        const target = this.FindEnemy(this.followRange);
-        if(!target){
-            return false;
-        }
-        const distance = CustomEntitiesLegacy.GetDistance(this.unit, target);
-        let direction = Vector(0,0);
-
-        if(target.IsAlive() && distance > this.minFollowRange){
-            direction = (target.GetAbsOrigin().__sub(origin)).Normalized();
-        }
-        
-        CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
-        return true;
-    }
-
-    StopMoving(): void{
-        CustomEntitiesLegacy.SetDirection(this.unit, 0, 0);
-    }
-
-    MoveTowards(origin: Vector, point: Vector): boolean{
-        const distance = (point.__sub(origin)).Length2D();
-
-        if(distance < 10){
-            return false;
-        } else {
-            const direction = (point.__sub(origin)).Normalized();
-            CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
-            return true;
-        }
-    }
-
-    PickTargetPosition(origin: Vector): void{
-        const worldLimits = 1500;
-        const x = Clamp(origin.x + RandomInt(-400, 400), worldLimits, -worldLimits);
-        const y = Clamp(origin.y + RandomInt(-400, 400), worldLimits, -worldLimits);
-        this.targetPosition = Vector(x, y);
-    }
-
-    ClearTargetPosition(): void{
-        this.targetPosition = undefined;
-    }
-
-    Update(): void{
+    Move(direction: Vector, speed: number): CollisionTypes{
+        const offset = 70;
         const origin = this.unit.GetAbsOrigin();
+        const futureOrigin = origin.__add(direction.__mul(speed));
+        const testOrigin = futureOrigin.__add(direction.__mul(offset));
+        futureOrigin.z = GetGroundPosition(futureOrigin, this.unit).z;
+        const normal = CustomEntitiesLegacy.GetNormal(this.unit, futureOrigin);
 
-        if(this.remainingRestTime > 0){
-            this.remainingRestTime = this.remainingRestTime - 1;
+        if(IsInToolsMode() && DEBUG){
+            DebugDrawLine_vCol(futureOrigin, testOrigin, Vector(255,0,0), true, 1.0);
+            DebugDrawLine_vCol(futureOrigin, futureOrigin.__add(normal.__mul(200)), Vector(255,255,255), true, 1);
+            DebugDrawCircle(futureOrigin, Vector(255,0,0), 5, offset, false, 0.03);
+        }
+
+        if(this.unit.HasModifier('modifier_spectre_special_attack_buff')){
+            this.unit.SetAbsOrigin(futureOrigin);
+            return CollisionTypes.SUCCESS;
+        }
+        
+        const trees = GridNav.GetAllTreesAroundPoint(testOrigin, 5, true);
+        
+        if(normal.z <= 0.9){
+            return CollisionTypes.WALL;
+        }
+        if(trees.length > 0){
+            return CollisionTypes.TREE;
+        }
+
+        if(!this.unit.IsPhased()){
+            const units = FindUnitsInRadius(
+                this.unit.GetTeamNumber(),
+                testOrigin,
+                undefined,
+                5,
+                UnitTargetTeam.BOTH,
+                UnitTargetType.ALL,
+                UnitTargetFlags.NONE,
+                FindOrder.ANY,
+                false
+            );
+        
+            units.forEach((unit) => {
+                if(unit !== this.unit){
+                    if(!unit.IsPhased()){
+                        return CollisionTypes.UNIT;
+                    }
+                }
+            });
+        }
+
+        if(!CustomEntitiesLegacy.IsAnimating(this.unit)){
+            if(!this.unit.HasModifier('modifier_hero_movement')){
+                this.unit.AddNewModifier(this.unit, undefined, 'modifier_hero_movement', {});
+            }
+        }
+
+        this.unit.SetAbsOrigin(futureOrigin);
+        return CollisionTypes.SUCCESS;
+    }
+    AlternativeDirectionsWalls(direction: Vector): Vector[]{
+        const directions: Vector[] = [];
+        const collisionDirection = CustomEntitiesLegacy.GetCollisionDirection(this.unit);
+        const angle = VectorToAngles(direction).y;
+
+        if(Math.IsNorthEast(angle)){
+            if(collisionDirection === Orientations.DIAGONAL_LEFT){
+                return directions;
+            }
+            directions.push(Math.NORTH);
+            directions.push(Math.EAST);
         } 
-        if(!this.Cast()){
-            if(this.behavior === CustomNPCBehavior.WANDERER){
-                if(this.state === CustomNPCState.WANDERING && this.targetPosition){
-                    if(!this.MoveTowards(origin, this.targetPosition)){
-                        this.state = CustomNPCState.IDLE;
-                        this.ClearTargetPosition();
-                        this.StopMoving();
-                    }
+        if(Math.IsNorthWest(angle)){
+            if(collisionDirection === Orientations.DIAGONAL_RIGHT){
+                return directions;
+            }
+            if(collisionDirection === Orientations.DIAGONAL_LEFT){
+                directions.push(Math.NORTH);
+                directions.push(Math.WEST);
+                return directions;
+            }
+            if(collisionDirection === Orientations.VERTICAL){
+                directions.push(Math.NORTH);
+                directions.push(Math.WEST);
+                return directions;
+            }
+            directions.push(Math.NORTH);
+            directions.push(Math.WEST);
+        } 
+        if(Math.IsSouthEast(angle)){
+            if(collisionDirection === Orientations.DIAGONAL_RIGHT){
+                return directions;
+            }
+            if(collisionDirection === Orientations.DIAGONAL_LEFT){
+                directions.push(Math.SOUTH);
+                directions.push(Math.EAST);
+            }
+            if(collisionDirection === Orientations.HORIZONTAL){
+                directions.push(Math.EAST);
+                directions.push(Math.SOUTH);
+            }
+            if(collisionDirection === Orientations.VERTICAL){
+                directions.push(Math.SOUTH);
+                directions.push(Math.EAST);
+            }
+        } 
+        if(Math.IsSouthWest(angle)){
+            if(collisionDirection === Orientations.HORIZONTAL){
+                directions.push(Math.WEST);
+                directions.push(Math.SOUTH);
+            }
+            if(collisionDirection === Orientations.DIAGONAL_RIGHT){
+                directions.push(Math.SOUTH_WEST);
+                directions.push(Math.WEST);
+                directions.push(Math.SOUTH);
+            }
+            if(collisionDirection === Orientations.VERTICAL){
+                directions.push(Math.SOUTH);
+                directions.push(Math.WEST);
+            }
+        } 
+        if(Math.IsEast(angle)){
+            if(collisionDirection === Orientations.DIAGONAL_RIGHT){
+                directions.push(Math.NORTH_EAST);
+                directions.push(Math.NORTH);
+            }
+            if(collisionDirection === Orientations.DIAGONAL_LEFT){
+                directions.push(Math.SOUTH_EAST);
+                directions.push(Math.SOUTH);
+            }
+        }
+        if(Math.IsWest(angle)){
+            if(collisionDirection === Orientations.DIAGONAL_RIGHT){
+                directions.push(Math.SOUTH_EAST);
+                directions.push(Math.SOUTH);
+            }
+            if(collisionDirection === Orientations.DIAGONAL_LEFT){
+                directions.push(Math.NORTH_WEST);
+                directions.push(Math.NORTH);
+            }
+            if(collisionDirection === Orientations.HORIZONTAL){
+                directions.push(Math.SOUTH);
+                directions.push(Math.NORTH);
+            }
+        } 
+        if(Math.IsNorth(angle)){
+            if(collisionDirection === Orientations.DIAGONAL_RIGHT){
+                directions.push(Math.NORTH_EAST);
+                directions.push(Math.EAST);
+            }
+            if(collisionDirection === Orientations.HORIZONTAL){
+                return directions;
+            }
+            if(collisionDirection === Orientations.DIAGONAL_LEFT){
+                directions.push(Math.WEST);
+            }
+            if(collisionDirection === Orientations.VERTICAL){
+                directions.push(Math.NORTH_WEST);
+                directions.push(Math.WEST);
+            }
+        }
+        if(Math.IsSouth(angle)){
+            if(collisionDirection === Orientations.HORIZONTAL){
+                return directions;
+            }
+            if(collisionDirection === Orientations.DIAGONAL_RIGHT){
+                directions.push(Math.SOUTH_WEST);
+                directions.push(Math.WEST);
+            }
+            if(collisionDirection === Orientations.DIAGONAL_LEFT){
+                directions.push(Math.SOUTH_EAST);
+                directions.push(Math.EAST);
+            }
+            if(collisionDirection === Orientations.VERTICAL){
+                directions.push(Math.EAST);
+            }
+        }
+
+        return directions;
+    }
+    AlternativeDirections(direction: Vector): Vector[]{
+        const directions = [];
+        const angle = VectorToAngles(direction).y;
+
+        if(Math.IsNorthEast(angle)){
+            directions.push(Math.NORTH);
+            directions.push(Math.EAST);
+        } 
+        if(Math.IsNorthWest(angle)){
+            directions.push(Math.NORTH);
+            directions.push(Math.WEST);
+        } 
+        if(Math.IsSouthEast(angle)){
+            directions.push(Math.SOUTH);
+            directions.push(Math.EAST);
+        } 
+        if(Math.IsSouthWest(angle)){
+            directions.push(Math.SOUTH);
+            directions.push(Math.WEST);
+        } 
+        if(Math.IsEast(angle) || Math.IsWest(angle)){
+            if(this.unit.GetAbsOrigin().y < 0){
+                directions.push(Math.SOUTH);
+                directions.push(Math.NORTH);
+            }
+            
+            if(this.unit.GetAbsOrigin().y > 0){
+                directions.push(Math.NORTH);
+                directions.push(Math.SOUTH);
+            }
+        } 
+        if(Math.IsNorth(angle) || Math.IsSouth(angle)){
+            if(this.unit.GetAbsOrigin().x < 0){
+                directions.push(Math.WEST);
+            }
+            if(this.unit.GetAbsOrigin().x > 0){
+                directions.push(Math.EAST);
+            }
+        }
+        return directions;
+    }
+    Update(): void{
+        const direction = CustomEntitiesLegacy.GetDirection(this.unit).Normalized();
+        const speed = (this.unit.GetIdealSpeed()/25);
+
+        if(CustomEntitiesLegacy.IsAnimating(this.unit)){
+            this.unit.RemoveModifierByName('modifier_hero_movement');
+        }
+
+        if((direction.x !== 0 || direction.y !== 0) && CustomEntitiesLegacy.CanWalk(this.unit)){
+            const output = this.Move(direction, speed);
+            if(output !== CollisionTypes.SUCCESS){
+                let alternativeDirections: Vector[] = [];
+                
+                if(output === CollisionTypes.WALL){
+                    alternativeDirections = this.AlternativeDirectionsWalls(direction);
                 } else {
-                    this.state = CustomNPCState.WANDERING;
-                    this.PickTargetPosition(origin);
+                    alternativeDirections = this.AlternativeDirections(direction);
+                }	
+
+                for(let i = 0; i < alternativeDirections.length; i++){
+                    const alternativeDireaction = alternativeDirections[i]; 
+                    const newOutput = this.Move(alternativeDireaction, speed * 0.8);
+                    if(newOutput === CollisionTypes.SUCCESS){
+                        break;
+                    }
                 }
-            } else {
-                this.Follow(origin);
+            }
+    
+            if(	!this.unit.HasModifier('modifier_casting') && 
+                !this.unit.HasModifier('modifier_mars_counter_countering') && 
+                !this.unit.HasModifier('modifier_spectre_counter_countering')
+            ){ 
+                CustomEntitiesLegacy.FullyFaceTowards(this.unit, direction);
             }
         } else {
-            this.remainingRestTime = 1.0 * 30;
-            this.ClearTargetPosition();
-            this.StopMoving();
-        }
-        /*
-        if(this.remainingRestTime > 0){
-            this.remainingRestTime = this.remainingRestTime - 1;
-
-            if(this.state !== CustomNPCState.RESTING){
-                this.state = CustomNPCState.RESTING;
-            }
-
-            if(this.wanderer){
-                if(this.restDirection == undefined){
-                    this.restDirection = Vector(RandomFloat(-1.0, 1.0), RandomFloat(-1.0, 1.0));
-                    CustomEntitiesLegacy.SetDirection(this.unit, this.restDirection.x, this.restDirection.y);
-                }
-            }
-
-            return;
-        } else {
-            this.restDirection = undefined;
+            this.unit.RemoveModifierByName('modifier_hero_movement');
         }
 
-        if(this.unit.HasModifier('modifier_casting') || CustomEntitiesLegacy.IsChanneling(this.unit)){
-            this.state = CustomNPCState.CASTING;
-        } else { 
-            this.state = CustomNPCState.READY;
-        }
+        if(IsInToolsMode() && DEBUG){
+            const player = GameRules.Addon.FindPlayerById((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID());
 
-        if(this.state == CustomNPCState.READY){
-            let direction = Vector(0,0);
-
-            if(this.backToCenter){
-                if((this.unit.GetAbsOrigin().__sub(Vector(0,0,0))).Length2D() < 10){
-                    direction = Vector(0,0);
-                } else {
-                    direction = (Vector(0,0,0).__sub(this.unit.GetAbsOrigin())).Normalized();
-                }
-            } else {
-                direction = Vector(RandomFloat(-1.0, 1.0), RandomFloat(-1.0, 1.0));
-            }
-
-            const target = this.FindEnemy(this.followRange);
-            if(target){
-                const distance = CustomEntitiesLegacy.GetDistance(this.unit, target);
-
-                if(target.IsAlive() && distance > this.minFollowRange){
-                    direction = (target.GetAbsOrigin().__sub(this.unit.GetAbsOrigin())).Normalized();
-                } else {
-                    direction = Vector(0,0);
-                }
-            }
-
-            if(!CustomEntitiesLegacy.IsDisplacing(this.unit)){
-                let abilityToExecute: CustomNPCAbility | undefined = undefined; 
-                let abilityTarget: CDOTA_BaseNPC | undefined = undefined;
-                this.abilities.forEach((npcAbility) => {
-                    const ability = npcAbility.ability;
-
-                    if(npcAbility.requirements){
-                        if(npcAbility.requirements.cooldownReady){
-                            if(!npcAbility.ability.IsCooldownReady()){
-                                return false;
-                            }
-                        }
-                        if(npcAbility.requirements.phaseReady){
-                            if(npcAbility.ability.IsInAbilityPhase()){
-                                return false;
-                            }
-                        }
-                        if(npcAbility.requirements.targetInCastRange){
-                            abilityTarget = this.FindEnemy(ability.GetCastRange(Vector(0,0,0), undefined));
-                            if(!abilityTarget){
-                                return false;
-                            }
-                        }
-                        if(npcAbility.requirements.targetInRadius){
-                            abilityTarget = this.FindEnemy(ability.GetSpecialValueFor('radius'));
-                            if(!abilityTarget){
-                                return false;
-                            }
-                        }
-                    }
-                    if(abilityToExecute == undefined){
-                        abilityToExecute = npcAbility;
-                    }
-                    if(npcAbility.priority > abilityToExecute.priority){
-                        abilityToExecute = npcAbility;
-                    }
-                });
-                if(abilityToExecute){
-                    abilityToExecute = abilityToExecute as CustomNPCAbility;
-                    abilityToExecute.cast(abilityToExecute.ability, abilityTarget);
-                    this.StartRest(this.restTime);
-                }
-            }
-
-            if(this.wanderer){
-                CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
+            if(player){
+                const mouse = player.GetCursorPosition();
+                DebugDrawLine_vCol(this.unit.GetAbsOrigin(), this.unit.GetAbsOrigin().__add(this.unit.GetForwardVector().__mul(500)), Vector(0,0,255), true, 0.03);
+                DebugDrawLine_vCol(this.unit.GetAbsOrigin(), mouse, Vector(0,255,0), true, 0.03);
             }
         }
-    */
+    }
+    OnDeath(params: { killer: CDOTA_BaseNPC }): void{
+        super.OnDeath(params);
+        this.Destroy(false);
     }
 }
-export class DireZombie extends CustomNPC{
-    constructor(origin: Vector){    
-        super(origin, 'dire_zombie', {
-            minFollowRange: 500,
-            behavior: CustomNPCBehavior.WANDERER,
+
+export class PlayerNPC extends CustomNPC{
+    constructor(unit: CDOTA_BaseNPC){
+        super(unit);
+        customEntities.HideHealthBar(this.unit);
+        customEntities.SetUseEnergy(this.unit);
+    }
+    
+    Update(): void{
+        super.Update();
+        if(this.unit.IsAlive()){
+            this.PickupItems();
+        }
+    }
+
+    PickupItems(): void{
+        const dropItems = Entities.FindAllByClassnameWithin('dota_item_drop', this.unit.GetAbsOrigin(), this.unit.GetHullRadius() * 2.5);
+        dropItems.forEach((drop) => {
+            const item = (drop as CDOTA_Item_Physical).GetContainedItem();
+            const owner = item.GetPurchaser();
+            
+            //Only pickup items owned by teammates
+            if(!owner || (owner && CustomEntitiesLegacy.Allies(this.unit, owner) && this.unit !== owner)){
+                this.unit.AddItem(item);
+                item.OnSpellStart();
+
+                GameRules.Addon.OnPickedUp(item);
+                UTIL_Remove(drop);
+            }
+
         });
-        
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('dire_zombie_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        }));
     }
 }
-export class Centaur extends CustomNPC{
-    constructor(origin: Vector){    
-        super(origin, 'npc_dota_hero_centaur', {});
-        
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_axe_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInRadius: true
-            }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_range_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_short_attack')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-            requirements: {
-                targetInRadius: true
-            }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_charge')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_rage')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        }));
+
+/*
+CheckState()
+	return { 
+		[MODIFIER_STATE_DISARMED] = true,
+		[MODIFIER_STATE_NO_HEALTH_BAR] = true 
+	} 
+}
+
+DeclareFunctions()
+    return {
+		MODIFIER_EVENT_ON_SPENT_MANA,
+		MODIFIER_PROPERTY_DISABLE_AUTOATTACK,
+		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
+		MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
     }
 }
-export class Queen extends CustomNPC{
-    constructor(origin: Vector){    
-        super(origin, 'npc_dota_hero_queenofpain', {
-            minFollowRange: 500
-        });
-        
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_scream')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_dodge')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_blink')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_daggers')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_wave')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        }));
-    }
+
+OnSpentMana(event)
+	CustomEntitiesLegacy.SendDataToClient(this.GetParent())
 }
+
+OnAbilityFullyCast(params)
+	if(IsServer()){
+		if(params.unit !== this.GetParent()){
+			return
+		}
+
+		if(!GameRules.Addon:IsInWTFMode()){
+			CustomEntitiesLegacy.GiveEnergy(params.unit, -params.ability:GetEnergyCost())
+		}
+	}
+}
+
+GetDisableAutoAttack()						return true	}
+GetModifierIgnoreMovespeedLimit(params)		return 1	}
+*/
