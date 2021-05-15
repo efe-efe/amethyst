@@ -1,0 +1,20 @@
+"DOTAAbilities" {
+    "dire_zombie_attack_meele"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"pve/abilities/units/dire_zombie/dire_zombie_attack_meele/dire_zombie_attack_meele"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"sniper_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastRange"				"300"
+		"AbilityCooldown"				"1.0"
+		"AbilityCastPoint"				"0.4"
+
+		"AbilitySpecial"
+		{
+            "01"{ "var_type"	"FIELD_INTEGER"		"radius"						"300" }
+		}
+	}
+}
