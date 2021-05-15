@@ -9,6 +9,10 @@ export interface NonExistingEntityOptions {
     }
 }
 
+export interface Component {
+    Activate(unitEntity: UnitEntity): void;
+}
+
 export type UnitEntityOptions = ExistingEntityOptions | NonExistingEntityOptions;
 
 export default class UnitEntity{
@@ -63,5 +67,9 @@ export default class UnitEntity{
 
     OnDeath(params: { killer: CDOTA_BaseNPC }): void{
         //override this method
+    }
+
+    AddComponent(component: Component): void{
+        component.Activate(this);
     }
 }
