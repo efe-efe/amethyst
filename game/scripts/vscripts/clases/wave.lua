@@ -1,34 +1,12 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 2,["8"] = 2,["9"] = 2,["10"] = 3,["11"] = 3,["12"] = 3,["13"] = 10,["14"] = 11,["15"] = 12,["16"] = 13,["17"] = 14,["18"] = 17,["19"] = 18,["20"] = 19,["21"] = 17,["22"] = 21,["23"] = 22,["24"] = 17,["25"] = 24,["26"] = 25,["27"] = 17,["28"] = 27,["29"] = 28,["30"] = 17,["31"] = 17,["32"] = 32,["33"] = 32,["34"] = 32,["35"] = 32,["36"] = 32,["37"] = 38,["38"] = 32,["39"] = 33,["40"] = 34,["41"] = 36,["42"] = 40,["43"] = 42,["44"] = 42,["45"] = 42,["46"] = 43,["47"] = 43,["48"] = 43,["50"] = 44,["51"] = 44,["52"] = 45,["53"] = 46,["54"] = 47,["55"] = 47,["56"] = 47,["58"] = 48,["59"] = 49,["60"] = 44,["63"] = 43,["64"] = 43,["65"] = 42,["66"] = 42,["67"] = 38,["68"] = 55,["69"] = 56,["70"] = 57,["71"] = 57,["72"] = 57,["73"] = 57,["74"] = 58,["75"] = 59,["77"] = 55,["78"] = 63,["79"] = 32,["80"] = 66,["81"] = 66,["82"] = 66,["83"] = 67,["84"] = 66,["85"] = 66,["86"] = 70,["87"] = 71,["89"] = 63,["90"] = 75,["91"] = 76,["92"] = 75,["93"] = 32,["94"] = 32});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 9,["11"] = 9,["12"] = 9,["13"] = 9,["14"] = 9,["15"] = 15,["16"] = 9,["17"] = 10,["18"] = 11,["19"] = 13,["20"] = 17,["21"] = 19,["22"] = 19,["23"] = 19,["24"] = 20,["25"] = 20,["26"] = 20,["28"] = 21,["29"] = 21,["30"] = 22,["31"] = 23,["32"] = 24,["33"] = 24,["34"] = 24,["36"] = 25,["37"] = 26,["38"] = 21,["41"] = 20,["42"] = 20,["43"] = 19,["44"] = 19,["45"] = 15,["46"] = 32,["47"] = 33,["48"] = 34,["49"] = 34,["50"] = 34,["51"] = 34,["52"] = 35,["53"] = 36,["55"] = 32,["56"] = 40,["57"] = 9,["58"] = 43,["59"] = 43,["60"] = 43,["61"] = 44,["62"] = 43,["63"] = 43,["64"] = 47,["65"] = 48,["67"] = 40,["68"] = 52,["69"] = 53,["70"] = 52,["71"] = 9,["72"] = 9});
 local ____exports = {}
 local ____custom_ai = require("clases.custom_ai")
-local Centaur = ____custom_ai.Centaur
-local DireZombie = ____custom_ai.DireZombie
-local Queen = ____custom_ai.Queen
-local DireZombieRager = ____custom_ai.DireZombieRager
+local CustomAIFactories = ____custom_ai.CustomAIFactories
 local ____game_state = require("clases.game_state")
 local GameState = ____game_state.default
 local CustomGameState = ____game_state.CustomGameState
-____exports.NPCNames = NPCNames or ({})
-____exports.NPCNames.DIRE_ZOMBIE = "DireZombie"
-____exports.NPCNames.DIRE_ZOMBIE_RAGER = "DireZombieRager"
-____exports.NPCNames.QUEEN = "Queen"
-____exports.NPCNames.CENTAUR = "Centaur"
-local NPCFactories = {
-    [____exports.NPCNames.DIRE_ZOMBIE] = function(____, origin)
-        return __TS__New(DireZombie, origin)
-    end,
-    [____exports.NPCNames.DIRE_ZOMBIE_RAGER] = function(____, origin)
-        return __TS__New(DireZombieRager, origin)
-    end,
-    [____exports.NPCNames.QUEEN] = function(____, origin)
-        return __TS__New(Queen, origin)
-    end,
-    [____exports.NPCNames.CENTAUR] = function(____, origin)
-        return __TS__New(Centaur, origin)
-    end
-}
 ____exports.default = (function()
     ____exports.default = __TS__Class()
     local Wave = ____exports.default
@@ -37,8 +15,8 @@ ____exports.default = (function()
     function Wave.prototype.____constructor(self, alliances, duration, wavesInfo)
         GameState.prototype.____constructor(self, alliances, duration)
         self.helper = 3 * 30
-        self.npcs = {}
-        self.aliveNpcs = 0
+        self.ais = {}
+        self.aliveAis = 0
         self.wavesInfo = wavesInfo
         __TS__ArrayForEach(
             wavesInfo,
@@ -51,12 +29,12 @@ ____exports.default = (function()
                             while i < waveGroup.ammount do
                                 local x = RandomInt(-1500, 1500)
                                 local y = RandomInt(-1500, 1500)
-                                local npc = NPCFactories[waveGroup.name](
-                                    NPCFactories,
+                                local ai = CustomAIFactories[waveGroup.name](
+                                    CustomAIFactories,
                                     Vector(x, y, 128)
                                 )
-                                __TS__ArrayPush(self.npcs, npc)
-                                self.aliveNpcs = self.aliveNpcs + 1
+                                __TS__ArrayPush(self.ais, ai)
+                                self.aliveAis = self.aliveAis + 1
                                 i = i + 1
                             end
                         end
@@ -66,24 +44,24 @@ ____exports.default = (function()
         )
     end
     function Wave.prototype.OnUnitDies(self, unit)
-        local previousNpcs = #self.npcs
-        self.npcs = __TS__ArrayFilter(
-            self.npcs,
-            function(____, npc) return npc.unit ~= unit end
+        local previousAis = #self.ais
+        self.ais = __TS__ArrayFilter(
+            self.ais,
+            function(____, ai) return ai.unit ~= unit end
         )
-        if previousNpcs > #self.npcs then
-            self.aliveNpcs = self.aliveNpcs - 1
+        if previousAis > #self.ais then
+            self.aliveAis = self.aliveAis - 1
         end
     end
     function Wave.prototype.Update(self)
         GameState.prototype.Update(self)
         __TS__ArrayForEach(
-            self.npcs,
-            function(____, npc)
-                npc:Update()
+            self.ais,
+            function(____, ai)
+                ai:Update()
             end
         )
-        if self.aliveNpcs <= 0 then
+        if self.aliveAis <= 0 then
             self:EndWave()
         end
     end

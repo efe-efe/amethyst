@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 2,["8"] = 2,["9"] = 2,["10"] = 2,["11"] = 2,["12"] = 8,["13"] = 8,["14"] = 8,["15"] = 8,["16"] = 8,["17"] = 41,["18"] = 41,["19"] = 41,["20"] = 55,["21"] = 42,["22"] = 43,["23"] = 47,["24"] = 48,["25"] = 56,["26"] = 65,["27"] = 66,["28"] = 67,["29"] = 68,["30"] = 69,["31"] = 55,["32"] = 72,["33"] = 73,["34"] = 73,["35"] = 73,["36"] = 73,["37"] = 73,["38"] = 73,["39"] = 73,["40"] = 73,["41"] = 73,["42"] = 73,["43"] = 73,["44"] = 85,["45"] = 86,["47"] = 88,["49"] = 72,["50"] = 92,["51"] = 93,["52"] = 92,["53"] = 96,["54"] = 97,["55"] = 97,["56"] = 97,["57"] = 97,["58"] = 101,["59"] = 102,["60"] = 102,["61"] = 102,["62"] = 102,["63"] = 102,["64"] = 102,["65"] = 102,["66"] = 102,["67"] = 97,["68"] = 109,["69"] = 109,["70"] = 109,["71"] = 109,["72"] = 109,["73"] = 109,["74"] = 109,["75"] = 97,["76"] = 97,["77"] = 118,["78"] = 96,["79"] = 121,["80"] = 122,["81"] = 121,["82"] = 125,["83"] = 126,["84"] = 125,["85"] = 129,["86"] = 130,["87"] = 132,["88"] = 133,["90"] = 136,["91"] = 137,["92"] = 138,["93"] = 129,["94"] = 141,["95"] = 142,["96"] = 143,["98"] = 146,["99"] = 147,["100"] = 148,["101"] = 148,["102"] = 148,["103"] = 149,["104"] = 151,["105"] = 152,["106"] = 153,["107"] = 154,["110"] = 157,["111"] = 158,["112"] = 159,["115"] = 162,["116"] = 163,["117"] = 163,["118"] = 163,["119"] = 163,["120"] = 163,["121"] = 163,["122"] = 164,["123"] = 165,["126"] = 168,["127"] = 169,["128"] = 169,["129"] = 169,["130"] = 170,["131"] = 171,["135"] = 175,["136"] = 176,["138"] = 178,["139"] = 179,["141"] = 148,["142"] = 148,["143"] = 183,["144"] = 184,["145"] = 185,["146"] = 186,["147"] = 187,["149"] = 189,["151"] = 141,["152"] = 193,["153"] = 194,["154"] = 195,["155"] = 196,["157"] = 198,["158"] = 199,["159"] = 201,["160"] = 202,["162"] = 205,["163"] = 206,["164"] = 193,["165"] = 209,["166"] = 210,["167"] = 209,["168"] = 213,["169"] = 214,["170"] = 216,["171"] = 217,["173"] = 219,["174"] = 220,["175"] = 221,["177"] = 213,["178"] = 225,["179"] = 226,["180"] = 227,["181"] = 227,["182"] = 227,["183"] = 227,["184"] = 227,["185"] = 228,["186"] = 228,["187"] = 228,["188"] = 228,["189"] = 228,["190"] = 229,["191"] = 225,["192"] = 232,["193"] = 233,["194"] = 232,["195"] = 236,["196"] = 237,["197"] = 239,["198"] = 240,["200"] = 242,["201"] = 243,["202"] = 244,["203"] = 245,["204"] = 246,["205"] = 247,["206"] = 248,["209"] = 251,["210"] = 252,["213"] = 255,["216"] = 258,["217"] = 259,["218"] = 260,["220"] = 236,["221"] = 264,["222"] = 264,["223"] = 264,["224"] = 264,["225"] = 265,["226"] = 264,["227"] = 270,["228"] = 270,["229"] = 270,["230"] = 270,["231"] = 270,["232"] = 270,["233"] = 270,["234"] = 270,["235"] = 270,["236"] = 265,["237"] = 280,["238"] = 280,["239"] = 280,["240"] = 280,["241"] = 281,["242"] = 280,["243"] = 286,["244"] = 286,["245"] = 286,["246"] = 286,["247"] = 286,["248"] = 286,["249"] = 286,["250"] = 286,["251"] = 290,["252"] = 290,["253"] = 290,["254"] = 290,["255"] = 290,["256"] = 290,["257"] = 290,["258"] = 290,["259"] = 290,["260"] = 281,["261"] = 300,["262"] = 300,["263"] = 300,["264"] = 300,["265"] = 301,["266"] = 300,["267"] = 304,["268"] = 304,["269"] = 304,["270"] = 304,["271"] = 304,["272"] = 304,["273"] = 304,["274"] = 304,["275"] = 304,["276"] = 311,["277"] = 311,["278"] = 311,["279"] = 311,["280"] = 311,["281"] = 311,["282"] = 311,["283"] = 311,["284"] = 311,["285"] = 318,["286"] = 318,["287"] = 318,["288"] = 318,["289"] = 318,["290"] = 318,["291"] = 318,["292"] = 318,["293"] = 318,["294"] = 325,["295"] = 325,["296"] = 325,["297"] = 325,["298"] = 325,["299"] = 325,["300"] = 325,["301"] = 325,["302"] = 325,["303"] = 332,["304"] = 332,["305"] = 332,["306"] = 332,["307"] = 332,["308"] = 332,["309"] = 332,["310"] = 332,["311"] = 301,["312"] = 338,["313"] = 338,["314"] = 338,["315"] = 338,["316"] = 339,["317"] = 338,["318"] = 344,["319"] = 344,["320"] = 344,["321"] = 344,["322"] = 344,["323"] = 344,["324"] = 344,["325"] = 344,["326"] = 348,["327"] = 348,["328"] = 348,["329"] = 348,["330"] = 348,["331"] = 348,["332"] = 348,["333"] = 348,["334"] = 352,["335"] = 352,["336"] = 352,["337"] = 352,["338"] = 352,["339"] = 352,["340"] = 352,["341"] = 352,["342"] = 352,["343"] = 359,["344"] = 359,["345"] = 359,["346"] = 359,["347"] = 359,["348"] = 359,["349"] = 359,["350"] = 359,["351"] = 363,["352"] = 363,["353"] = 363,["354"] = 363,["355"] = 363,["356"] = 363,["357"] = 363,["358"] = 363,["359"] = 363,["360"] = 370,["361"] = 370,["362"] = 370,["363"] = 370,["364"] = 370,["365"] = 370,["366"] = 370,["367"] = 370,["368"] = 370,["369"] = 339});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 2,["8"] = 2,["9"] = 2,["10"] = 2,["11"] = 2,["12"] = 8,["13"] = 8,["14"] = 8,["15"] = 8,["16"] = 8,["17"] = 13,["18"] = 14,["19"] = 14,["20"] = 15,["21"] = 15,["22"] = 16,["23"] = 16,["24"] = 17,["25"] = 17,["26"] = 18,["27"] = 18,["28"] = 48,["29"] = 48,["30"] = 48,["31"] = 62,["32"] = 49,["33"] = 50,["34"] = 54,["35"] = 55,["36"] = 63,["37"] = 72,["38"] = 73,["39"] = 74,["40"] = 75,["41"] = 76,["42"] = 62,["43"] = 79,["44"] = 80,["45"] = 80,["46"] = 80,["47"] = 80,["48"] = 80,["49"] = 80,["50"] = 80,["51"] = 80,["52"] = 80,["53"] = 80,["54"] = 80,["55"] = 92,["56"] = 93,["58"] = 95,["60"] = 79,["61"] = 99,["62"] = 100,["63"] = 99,["64"] = 103,["65"] = 104,["66"] = 104,["67"] = 104,["68"] = 104,["69"] = 108,["70"] = 109,["71"] = 109,["72"] = 109,["73"] = 109,["74"] = 109,["75"] = 109,["76"] = 109,["77"] = 109,["78"] = 104,["79"] = 116,["80"] = 116,["81"] = 116,["82"] = 116,["83"] = 116,["84"] = 116,["85"] = 116,["86"] = 104,["87"] = 104,["88"] = 125,["89"] = 103,["90"] = 128,["91"] = 129,["92"] = 128,["93"] = 132,["94"] = 133,["95"] = 135,["96"] = 136,["98"] = 139,["99"] = 140,["100"] = 141,["101"] = 132,["102"] = 144,["103"] = 145,["104"] = 146,["106"] = 149,["107"] = 150,["108"] = 151,["109"] = 151,["110"] = 151,["111"] = 152,["112"] = 154,["113"] = 155,["114"] = 156,["115"] = 157,["118"] = 160,["119"] = 161,["120"] = 162,["123"] = 165,["124"] = 166,["125"] = 166,["126"] = 166,["127"] = 166,["128"] = 166,["129"] = 166,["130"] = 167,["131"] = 168,["134"] = 171,["135"] = 172,["136"] = 172,["137"] = 172,["138"] = 173,["139"] = 174,["143"] = 178,["144"] = 179,["146"] = 181,["147"] = 182,["149"] = 151,["150"] = 151,["151"] = 186,["152"] = 187,["153"] = 188,["154"] = 189,["155"] = 190,["157"] = 192,["159"] = 144,["160"] = 196,["161"] = 197,["162"] = 198,["163"] = 199,["165"] = 201,["166"] = 202,["167"] = 204,["168"] = 205,["170"] = 208,["171"] = 209,["172"] = 196,["173"] = 212,["174"] = 213,["175"] = 212,["176"] = 216,["177"] = 217,["178"] = 219,["179"] = 220,["181"] = 222,["182"] = 223,["183"] = 224,["185"] = 216,["186"] = 228,["187"] = 229,["188"] = 230,["189"] = 230,["190"] = 230,["191"] = 230,["192"] = 230,["193"] = 231,["194"] = 231,["195"] = 231,["196"] = 231,["197"] = 231,["198"] = 232,["199"] = 228,["200"] = 235,["201"] = 236,["202"] = 235,["203"] = 239,["204"] = 240,["205"] = 242,["206"] = 243,["208"] = 245,["209"] = 246,["210"] = 247,["211"] = 248,["212"] = 249,["213"] = 250,["214"] = 251,["217"] = 254,["218"] = 255,["221"] = 258,["224"] = 261,["225"] = 262,["226"] = 263,["228"] = 239,["229"] = 268,["230"] = 271,["231"] = 272,["232"] = 276,["233"] = 276,["234"] = 276,["235"] = 276,["236"] = 276,["237"] = 276,["238"] = 280,["239"] = 280,["240"] = 280,["241"] = 280,["242"] = 280,["243"] = 280,["244"] = 284,["245"] = 284,["246"] = 284,["247"] = 284,["248"] = 284,["249"] = 284,["250"] = 284,["251"] = 291,["252"] = 291,["253"] = 291,["254"] = 291,["255"] = 291,["256"] = 291,["257"] = 295,["258"] = 295,["259"] = 295,["260"] = 295,["261"] = 295,["262"] = 295,["263"] = 295,["264"] = 302,["265"] = 302,["266"] = 302,["267"] = 302,["268"] = 302,["269"] = 302,["270"] = 302,["271"] = 309,["272"] = 270,["273"] = 311,["274"] = 312,["275"] = 314,["276"] = 314,["277"] = 314,["278"] = 314,["279"] = 314,["280"] = 314,["281"] = 314,["282"] = 321,["283"] = 321,["284"] = 321,["285"] = 321,["286"] = 321,["287"] = 321,["288"] = 321,["289"] = 328,["290"] = 328,["291"] = 328,["292"] = 328,["293"] = 328,["294"] = 328,["295"] = 328,["296"] = 335,["297"] = 335,["298"] = 335,["299"] = 335,["300"] = 335,["301"] = 335,["302"] = 335,["303"] = 342,["304"] = 342,["305"] = 342,["306"] = 342,["307"] = 342,["308"] = 342,["309"] = 346,["310"] = 270,["311"] = 348,["312"] = 349,["313"] = 353,["314"] = 353,["315"] = 353,["316"] = 353,["317"] = 353,["318"] = 353,["319"] = 353,["320"] = 360,["321"] = 270,["322"] = 362,["323"] = 363,["324"] = 367,["325"] = 367,["326"] = 367,["327"] = 367,["328"] = 367,["329"] = 367,["330"] = 371,["331"] = 371,["332"] = 371,["333"] = 371,["334"] = 371,["335"] = 371,["336"] = 371,["337"] = 378,["338"] = 270,["339"] = 380,["340"] = 381,["341"] = 386,["342"] = 386,["343"] = 386,["344"] = 386,["345"] = 386,["346"] = 386,["347"] = 386,["348"] = 395,["349"] = 396,["350"] = 270,["351"] = 270});
 local ____exports = {}
 local CustomAIState = CustomAIState or ({})
 CustomAIState.IDLE = 0
@@ -14,6 +14,17 @@ CustomAIBehavior.FOLLOWER = 0
 CustomAIBehavior[CustomAIBehavior.FOLLOWER] = "FOLLOWER"
 CustomAIBehavior.WANDERER = 1
 CustomAIBehavior[CustomAIBehavior.WANDERER] = "WANDERER"
+____exports.NPCNames = NPCNames or ({})
+____exports.NPCNames.DIRE_ZOMBIE = 0
+____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE] = "DIRE_ZOMBIE"
+____exports.NPCNames.DIRE_ZOMBIE_RAGER = 1
+____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE_RAGER] = "DIRE_ZOMBIE_RAGER"
+____exports.NPCNames.DIRE_ZOMBIE_MEELE = 2
+____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE_MEELE] = "DIRE_ZOMBIE_MEELE"
+____exports.NPCNames.QUEEN = 3
+____exports.NPCNames[____exports.NPCNames.QUEEN] = "QUEEN"
+____exports.NPCNames.CENTAUR = 4
+____exports.NPCNames[____exports.NPCNames.CENTAUR] = "CENTAUR"
 ____exports.CustomAI = __TS__Class()
 local CustomAI = ____exports.CustomAI
 CustomAI.name = "CustomAI"
@@ -50,7 +61,7 @@ end
 function CustomAI.prototype.IsAbilityReady(self, ability)
     return ability:IsCooldownReady() and (not ability:IsInAbilityPhase())
 end
-function CustomAI.prototype.AbilityFactory(self, options)
+function CustomAI.prototype.RegisterAbility(self, options)
     local npcAbility = {
         ability = options.ability,
         orderType = options.orderType,
@@ -74,9 +85,6 @@ function CustomAI.prototype.AbilityFactory(self, options)
             }
         )) or ({cooldownReady = true, phaseReady = true})
     }
-    return npcAbility
-end
-function CustomAI.prototype.AddAbility(self, npcAbility)
     __TS__ArrayPush(self.abilities, npcAbility)
 end
 function CustomAI.prototype.StartRest(self, restTime)
@@ -218,153 +226,127 @@ function CustomAI.prototype.Update(self)
         self:StopMoving()
     end
 end
-____exports.DireZombie = __TS__Class()
-local DireZombie = ____exports.DireZombie
-DireZombie.name = "DireZombie"
-__TS__ClassExtends(DireZombie, ____exports.CustomAI)
-function DireZombie.prototype.____constructor(self, origin)
-    DireZombie.____super.prototype.____constructor(self, "dire_zombie", origin, {behavior = CustomAIBehavior.WANDERER})
-    self:AddAbility(
-        self:AbilityFactory(
+____exports.CustomAIFactories = {
+    [____exports.NPCNames.QUEEN] = function(____, origin)
+        local ai = __TS__New(____exports.CustomAI, "npc_dota_hero_queenofpain", origin, {minFollowRange = 500})
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("dire_zombie_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-    )
-end
-____exports.DireZombieRager = __TS__Class()
-local DireZombieRager = ____exports.DireZombieRager
-DireZombieRager.name = "DireZombieRager"
-__TS__ClassExtends(DireZombieRager, ____exports.CustomAI)
-function DireZombieRager.prototype.____constructor(self, origin)
-    DireZombieRager.____super.prototype.____constructor(self, "dire_zombie_rager", origin, {behavior = CustomAIBehavior.WANDERER})
-    self:AddAbility(
-        self:AbilityFactory(
-            {
-                ability = self.unit:FindAbilityByName("dire_zombie_rage_aura"),
+                ability = ai.unit:FindAbilityByName("queen_scream"),
                 orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
             }
         )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("dire_zombie_attack"),
+                ability = ai.unit:FindAbilityByName("queen_dodge"),
+                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
+            }
+        )
+        ai:RegisterAbility(
+            {
+                ability = ai.unit:FindAbilityByName("queen_blink"),
                 orderType = DOTA_UNIT_ORDER_CAST_POSITION,
                 requirements = {targetInCastRange = true}
             }
         )
-    )
-end
-____exports.Centaur = __TS__Class()
-local Centaur = ____exports.Centaur
-Centaur.name = "Centaur"
-__TS__ClassExtends(Centaur, ____exports.CustomAI)
-function Centaur.prototype.____constructor(self, origin)
-    Centaur.____super.prototype.____constructor(self, "npc_dota_hero_centaur", origin, {})
-    self:AddAbility(
-        self:AbilityFactory(
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("centaur_axe_attack"),
+                ability = ai.unit:FindAbilityByName("queen_daggers"),
+                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
+            }
+        )
+        ai:RegisterAbility(
+            {
+                ability = ai.unit:FindAbilityByName("queen_attack"),
+                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                requirements = {targetInCastRange = true}
+            }
+        )
+        ai:RegisterAbility(
+            {
+                ability = ai.unit:FindAbilityByName("queen_wave"),
+                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                requirements = {targetInCastRange = true}
+            }
+        )
+        return ai
+    end,
+    [____exports.NPCNames.CENTAUR] = function(____, origin)
+        local ai = __TS__New(____exports.CustomAI, "npc_dota_hero_centaur", origin, {})
+        ai:RegisterAbility(
+            {
+                ability = ai.unit:FindAbilityByName("centaur_axe_attack"),
                 orderType = DOTA_UNIT_ORDER_CAST_POSITION,
                 requirements = {targetInRadius = true}
             }
         )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("centaur_range_attack"),
+                ability = ai.unit:FindAbilityByName("centaur_range_attack"),
                 orderType = DOTA_UNIT_ORDER_CAST_POSITION,
                 requirements = {targetInCastRange = true}
             }
         )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("centaur_short_attack"),
+                ability = ai.unit:FindAbilityByName("centaur_short_attack"),
                 orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET,
                 requirements = {targetInRadius = true}
             }
         )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("centaur_charge"),
+                ability = ai.unit:FindAbilityByName("centaur_charge"),
                 orderType = DOTA_UNIT_ORDER_CAST_POSITION,
                 requirements = {targetInCastRange = true}
             }
         )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("centaur_rage"),
+                ability = ai.unit:FindAbilityByName("centaur_rage"),
                 orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
             }
         )
-    )
-end
-____exports.Queen = __TS__Class()
-local Queen = ____exports.Queen
-Queen.name = "Queen"
-__TS__ClassExtends(Queen, ____exports.CustomAI)
-function Queen.prototype.____constructor(self, origin)
-    Queen.____super.prototype.____constructor(self, "npc_dota_hero_queenofpain", origin, {minFollowRange = 500})
-    self:AddAbility(
-        self:AbilityFactory(
+        return ai
+    end,
+    [____exports.NPCNames.DIRE_ZOMBIE] = function(____, origin)
+        local ai = __TS__New(____exports.CustomAI, "dire_zombie", origin, {behavior = CustomAIBehavior.WANDERER})
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("queen_scream"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
-            }
-        )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
-            {
-                ability = self.unit:FindAbilityByName("queen_dodge"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
-            }
-        )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
-            {
-                ability = self.unit:FindAbilityByName("queen_blink"),
+                ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
                 orderType = DOTA_UNIT_ORDER_CAST_POSITION,
                 requirements = {targetInCastRange = true}
             }
         )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
+        return ai
+    end,
+    [____exports.NPCNames.DIRE_ZOMBIE_RAGER] = function(____, origin)
+        local ai = __TS__New(____exports.CustomAI, "dire_zombie_rager", origin, {behavior = CustomAIBehavior.WANDERER})
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("queen_daggers"),
+                ability = ai.unit:FindAbilityByName("dire_zombie_rage_aura"),
                 orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
             }
         )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("queen_attack"),
+                ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
                 orderType = DOTA_UNIT_ORDER_CAST_POSITION,
                 requirements = {targetInCastRange = true}
             }
         )
-    )
-    self:AddAbility(
-        self:AbilityFactory(
+        return ai
+    end,
+    [____exports.NPCNames.DIRE_ZOMBIE_MEELE] = function(____, origin)
+        local ai = __TS__New(____exports.CustomAI, "dire_zombie_meele", origin, {minFollowRange = 200, behavior = CustomAIBehavior.FOLLOWER})
+        ai:RegisterAbility(
             {
-                ability = self.unit:FindAbilityByName("queen_wave"),
+                ability = ai.unit:FindAbilityByName("dire_zombie_attack_meele"),
                 orderType = DOTA_UNIT_ORDER_CAST_POSITION,
                 requirements = {targetInCastRange = true}
             }
         )
-    )
-end
+        ai.unit:SetHullRadius(120)
+        return ai
+    end
+}
 return ____exports

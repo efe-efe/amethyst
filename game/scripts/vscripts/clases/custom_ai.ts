@@ -10,6 +10,13 @@ enum CustomAIBehavior {
     WANDERER,
 }
 
+export enum NPCNames {
+    DIRE_ZOMBIE = 0,
+    DIRE_ZOMBIE_RAGER,
+    DIRE_ZOMBIE_MEELE,
+    QUEEN,
+    CENTAUR,
+}
 interface CustomAIAbilityRequirements {
     cooldownReady?: boolean;
     phaseReady?: boolean;
@@ -25,7 +32,7 @@ interface CustomAIAbility {
     orderType: UnitOrder;
 }
 
-interface CustomAIAbilityFactoryOptions {
+interface CustomAIRegisterAbilityOptions {
     ability: CDOTABaseAbility;
     orderType: UnitOrder;
     requirements?: CustomAIAbilityRequirements;
@@ -93,7 +100,7 @@ export class CustomAI{
         return ability.IsCooldownReady() && !ability.IsInAbilityPhase();
     }
 
-    AbilityFactory(options: CustomAIAbilityFactoryOptions): CustomAIAbility{
+    RegisterAbility(options: CustomAIRegisterAbilityOptions): void{
         const npcAbility: CustomAIAbility = {
             ability: options.ability,
             orderType: options.orderType,
@@ -115,10 +122,6 @@ export class CustomAI{
                 phaseReady: true,
             }
         };
-        return npcAbility;
-    }
-
-    AddAbility(npcAbility: CustomAIAbility): void{
         this.abilities.push(npcAbility);
     }
 
@@ -261,118 +264,135 @@ export class CustomAI{
         }
     }
 }
-export class DireZombie extends CustomAI{
-    constructor(origin: Vector){    
-        super('dire_zombie', origin, {
-            behavior: CustomAIBehavior.WANDERER,
-        });
-        
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('dire_zombie_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        }));
-    }
-}
 
-export class DireZombieRager extends CustomAI{
-    constructor(origin: Vector){    
-        super('dire_zombie_rager', origin, {
-            behavior: CustomAIBehavior.WANDERER,
+export const CustomAIFactories: {
+    [key: number]: (origin: Vector) => CustomAI
+} = {
+    [NPCNames.QUEEN]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('npc_dota_hero_queenofpain', origin, {
+            minFollowRange: 500,
         });
-        
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('dire_zombie_rage_aura')!,
+
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('queen_scream')!,
             orderType: UnitOrder.CAST_NO_TARGET,
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('dire_zombie_attack')!,
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('queen_dodge')!,
+            orderType: UnitOrder.CAST_NO_TARGET,
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('queen_blink')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true,
+            }
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('queen_daggers')!,
+            orderType: UnitOrder.CAST_NO_TARGET,
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('queen_attack')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true,
+            }
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('queen_wave')!,
             orderType: UnitOrder.CAST_POSITION,
             requirements: {
                 targetInCastRange: true
             }
-        }));
-    }
-}
+        });
+        return ai;
+    },
+    [NPCNames.CENTAUR]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('npc_dota_hero_centaur', origin, {});
 
-export class Centaur extends CustomAI{
-    constructor(origin: Vector){    
-        super('npc_dota_hero_centaur', origin, {});
-        
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_axe_attack')!,
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('centaur_axe_attack')!,
             orderType: UnitOrder.CAST_POSITION,
             requirements: {
                 targetInRadius: true
             }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_range_attack')!,
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('centaur_range_attack')!,
             orderType: UnitOrder.CAST_POSITION,
             requirements: {
                 targetInCastRange: true,
             }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_short_attack')!,
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('centaur_short_attack')!,
             orderType: UnitOrder.CAST_NO_TARGET,
             requirements: {
                 targetInRadius: true
             }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_charge')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('centaur_rage')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        }));
-    }
-}
-export class Queen extends CustomAI{
-    constructor(origin: Vector){    
-        super('npc_dota_hero_queenofpain', origin, {
-            minFollowRange: 500
         });
-        
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_scream')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_dodge')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_blink')!,
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('centaur_charge')!,
             orderType: UnitOrder.CAST_POSITION,
             requirements: {
                 targetInCastRange: true,
             }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_daggers')!,
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('centaur_rage')!,
             orderType: UnitOrder.CAST_NO_TARGET,
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        }));
-        this.AddAbility(this.AbilityFactory({
-            ability: this.unit.FindAbilityByName('queen_wave')!,
+        });
+        return ai;
+    },
+    [NPCNames.DIRE_ZOMBIE]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('dire_zombie', origin, {
+            behavior: CustomAIBehavior.WANDERER,
+        });
+
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
             orderType: UnitOrder.CAST_POSITION,
             requirements: {
                 targetInCastRange: true
             }
-        }));
-    }
-}
+        });
+        return ai;
+    },
+    [NPCNames.DIRE_ZOMBIE_RAGER]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('dire_zombie_rager', origin, {
+            behavior: CustomAIBehavior.WANDERER,
+        });
+
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('dire_zombie_rage_aura')!,
+            orderType: UnitOrder.CAST_NO_TARGET,
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true
+            }
+        });
+        return ai;
+    },
+    [NPCNames.DIRE_ZOMBIE_MEELE]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('dire_zombie_meele', origin, {
+            minFollowRange: 200,
+            behavior: CustomAIBehavior.FOLLOWER,
+        });
+
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('dire_zombie_attack_meele')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true
+            }
+        });
+
+        
+        ai.unit.SetHullRadius(120);
+        return ai;
+    },
+};

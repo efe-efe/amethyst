@@ -20,9 +20,10 @@ import Round from './clases/round';
 import CustomNPC, { PlayerNPC } from './clases/custom_npc';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
-import Wave, { WaveGroup, NPCNames } from './clases/wave';
+import Wave, { WaveGroup } from './clases/wave';
 import settings from './settings';
 import PreWave from './clases/pre_wave';
+import { NPCNames } from './clases/custom_ai';
 
 declare global {
     interface CDOTAGamerules {
@@ -186,6 +187,9 @@ export class GameMode{
             },{
                 name: NPCNames.DIRE_ZOMBIE_RAGER,
                 ammount: 5,
+            },{
+                name: NPCNames.DIRE_ZOMBIE_MEELE,
+                ammount: 5,
             }],
             [{
                 name: NPCNames.QUEEN,
@@ -193,7 +197,13 @@ export class GameMode{
             }],
             [{
                 name: NPCNames.DIRE_ZOMBIE,
-                ammount: 20,
+                ammount: 8,
+            },{
+                name: NPCNames.DIRE_ZOMBIE_RAGER,
+                ammount: 6,
+            },{
+                name: NPCNames.DIRE_ZOMBIE_MEELE,
+                ammount: 8,
             }],
             [{
                 name: NPCNames.CENTAUR,
@@ -745,9 +755,9 @@ export class GameMode{
         if(event.text == '-skip'){
             if(this.IsPVE()){
                 if(this.wave){
-                    this.wave.npcs.forEach((npc) => {
-                        if(npc.unit.IsAlive()){
-                            npc.unit.ForceKill(false);
+                    this.wave.ais.forEach((ai) => {
+                        if(ai.unit.IsAlive()){
+                            ai.unit.ForceKill(false);
                         }
                     });
                 }
