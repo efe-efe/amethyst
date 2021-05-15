@@ -82,7 +82,7 @@ export class GameMode{
     public pre_wave: PreWave | undefined;
     public round: Round | undefined;
     public max_treshold = 30;
-    public currentWave = 0;
+    public currentWave = -1;
 
     constructor(){
         GameRules.GetGameModeEntity().SetContextThink('OnThink', () => { return this.OnThink(); }, THINK_PERIOD);
@@ -178,11 +178,14 @@ export class GameMode{
     }
 
     StartPVEMap(): void{
-        this.SetState(CustomGameState.WAVE_IN_PROGRESS);
+        this.SetState(CustomGameState.PRE_WAVE);
         this.waveGroups = [
             [{
                 name: NPCNames.DIRE_ZOMBIE,
-                ammount: 15,
+                ammount: 10,
+            },{
+                name: NPCNames.DIRE_ZOMBIE_RAGER,
+                ammount: 5,
             }],
             [{
                 name: NPCNames.QUEEN,
@@ -198,7 +201,8 @@ export class GameMode{
             }],
         ];
 
-        this.wave = new Wave(this.alliances, -1, [this.waveGroups[this.currentWave]]);
+        
+        this.pre_wave = new PreWave(this.alliances, settings.PreRoundDuration);
         
         this.RegisterThinker(0.01, () => {
             if(this.state == CustomGameState.WAVE_IN_PROGRESS && this.wave){
@@ -840,7 +844,6 @@ export class GameMode{
     }
 
     RegisterUnit(unit: CDOTA_BaseNPC): void{
-        print('Registering: ', unit.GetName(), unit.GetUnitName());
         if(unit.IsRealHero()){
             this.units.push(new PlayerNPC(unit));
         } else {
@@ -849,7 +852,6 @@ export class GameMode{
     }
 
     RemoveUnit(unit: CDOTA_BaseNPC): void{
-        print('Removing: ', unit.GetName(), unit.GetUnitName());
         this.units = this.units.filter((unitEntity) => unitEntity.GetUnit() !== unit);
     }
 

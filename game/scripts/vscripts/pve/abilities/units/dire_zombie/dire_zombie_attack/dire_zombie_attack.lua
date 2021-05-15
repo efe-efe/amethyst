@@ -5,28 +5,20 @@ function dire_zombie_attack:GetPlaybackRateOverride()       return 1.5 end
 function dire_zombie_attack:GetCastPointSpeed() 			return 0 end
 
 function dire_zombie_attack:OnSpellStart()
-    local point = self:GetCursorPosition()
-    self:LaunchProjectile(point, 1500, self:GetCastRange(Vector(0,0,0), nil), 5)
-    EmitSoundOn("General.Attack", self:GetCaster())
-end
-
-function dire_zombie_attack:LaunchProjectile(vPoint, nSpeed, nDistance, nDamage)
     local caster = self:GetCaster()
+    local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
-    local point = vPoint
     local projectile_direction = Direction2D(origin, point)
-    local poison_duration = 4.0
-    local fading_slow_duration = 4.0
-    local fading_slow_pct = 80
 
     CustomEntitiesLegacy:ProjectileAttack(caster, {
+		bIsBasicAttack = true,
         tProjectile = {
             EffectName = "particles/dire_zombie/dire_zombie_projectile.vpcf",
             vSpawnOrigin = origin + Vector(0, 0, 96),
-            fDistance = nDistance,
+            fDistance = self:GetCastRange(Vector(0,0,0), nil),
             fStartRadius = 70,
             Source = caster,
-            vVelocity = projectile_direction * nSpeed,
+            vVelocity = projectile_direction * 1500,
             UnitBehavior = PROJECTILES_DESTROY,
             TreeBehavior = PROJECTILES_NOTHING,
             WallBehavior = PROJECTILES_DESTROY,
@@ -34,14 +26,10 @@ function dire_zombie_attack:LaunchProjectile(vPoint, nSpeed, nDistance, nDamage)
             fGroundOffset = 0,
             UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
             OnUnitHit = function(_self, unit) 
-                local damage_table = {
-                    victim = unit,
-                    attacker = _self.Source,
-                    damage = nDamage,
-                    damage_type = DAMAGE_TYPE_PHYSICAL,
-                    ability = self
-                }
-                ApplyDamage(damage_table)
+				CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
+					hTarget = unit,
+					hAbility = self,
+				})
             end,
             OnFinish = function(_self, pos)
                 EFX("particles/base_attacks/ti9_dire_ranged_explosion.vpcf", PATTACH_WORLDORIGIN, nil, {
@@ -52,6 +40,9 @@ function dire_zombie_attack:LaunchProjectile(vPoint, nSpeed, nDistance, nDamage)
             end,
         }
     })
+
+
+    EmitSoundOn("General.Attack", self:GetCaster())
 end
 
 if IsClient() then require("wrappers/abilities") end

@@ -8,16 +8,9 @@
 		"AbilityTextureName"			"sniper_take_aim"
 		"AbilityType"					"DOTA_ABILITY_TYPE_ULTIMATE"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
-		"AbilityCastRange"				"1600"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
 		"AbilityCastPoint"				"0.6"
 		"AbilityCooldown"				"8.0"
-
-		"TargetingIndicator" {
-			"Type" 						"TARGETING_INDICATOR_LINE"
-			"DisplayRange" 				"1"
-			"Fixed"						"1"
-		}
 
 		"AbilitySpecial"
 		{

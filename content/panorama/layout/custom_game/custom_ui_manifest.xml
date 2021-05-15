@@ -9,7 +9,7 @@
 
         GameUI.CustomUIConfig().team_colors = {};
         GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_GOODGUYS] = "#7FB069;"; // { 61, 210, 150 }	--		Teal
-        GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_BADGUYS] = "#D36135;"; // { 243, 201, 9 }		--		Yellow
+        GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_BADGUYS] = "#7FB069;"; // { 243, 201, 9 }		--		Yellow
         GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_CUSTOM_1] = "#8D91C7;"; // { 141, 145, 199 }	--		Pink
         GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_CUSTOM_2] = "#247BA0;"; // { 255, 108, 0 }		--		Orange
         GameUI.CustomUIConfig().team_colors[DOTATeam_t.DOTA_TEAM_CUSTOM_3] = "#3455FF;"; // { 52, 85, 255 }		--		Blue

@@ -6,6 +6,7 @@
 #base "units\walker.txt"
 
 #base "pve\units\dire_zombie.txt"
+#base "pve\units\dire_zombie_rager.txt"
 
 
 //"MovementCapabilities" "DOTA_UNIT_CAP_MOVE_GROUND" Is needed to use displacements

@@ -1,5 +1,5 @@
 import Alliance from './alliance';
-import { Centaur, DireZombie, Queen, CustomAI } from './custom_ai';
+import { Centaur, DireZombie, Queen, CustomAI, DireZombieRager } from './custom_ai';
 import GameState, { CustomGameState } from './game_state';
 
 export interface WaveGroup {
@@ -9,6 +9,7 @@ export interface WaveGroup {
 
 export enum NPCNames {
     DIRE_ZOMBIE = 'DireZombie',
+    DIRE_ZOMBIE_RAGER = 'DireZombieRager',
     QUEEN = 'Queen',
     CENTAUR = 'Centaur',
 }
@@ -16,6 +17,9 @@ export enum NPCNames {
 const NPCFactories = {
     [NPCNames.DIRE_ZOMBIE]: (origin: Vector): CustomAI => {
         return new DireZombie(origin);
+    },
+    [NPCNames.DIRE_ZOMBIE_RAGER]: (origin: Vector): CustomAI => {
+        return new DireZombieRager(origin);
     },
     [NPCNames.QUEEN]: (origin: Vector): CustomAI => {
         return new Queen(origin);

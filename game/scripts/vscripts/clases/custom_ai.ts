@@ -276,6 +276,27 @@ export class DireZombie extends CustomAI{
         }));
     }
 }
+
+export class DireZombieRager extends CustomAI{
+    constructor(origin: Vector){    
+        super('dire_zombie_rager', origin, {
+            behavior: CustomAIBehavior.WANDERER,
+        });
+        
+        this.AddAbility(this.AbilityFactory({
+            ability: this.unit.FindAbilityByName('dire_zombie_rage_aura')!,
+            orderType: UnitOrder.CAST_NO_TARGET,
+        }));
+        this.AddAbility(this.AbilityFactory({
+            ability: this.unit.FindAbilityByName('dire_zombie_attack')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true
+            }
+        }));
+    }
+}
+
 export class Centaur extends CustomAI{
     constructor(origin: Vector){    
         super('npc_dota_hero_centaur', origin, {});

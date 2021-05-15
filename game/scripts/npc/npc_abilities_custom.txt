@@ -94,6 +94,7 @@
 #base "pve\abilities\heroes\queen\queen_dodge.txt"
 
 #base "pve\abilities\units\dire_zombie\dire_zombie_attack.txt"
+#base "pve\abilities\units\dire_zombie\dire_zombie_rage_aura.txt"
 
 #base "abilities\dummies\passive_shoot.txt"
 #base "abilities\dummies\passive_walk.txt"
