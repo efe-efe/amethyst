@@ -59,7 +59,7 @@ function sniper_extra:OnSpellStart()
                             speed = (distance/0.35),
                             peak = 32,
                         }
-                )
+                    )
         
                     local damage_table = {
                         victim = unit,

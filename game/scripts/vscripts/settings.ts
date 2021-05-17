@@ -23,7 +23,7 @@ if(IsInToolsMode()){
         PickupsCreationTime: 2.0,
         GemSpawnTime: 5.0,
         GemRespawnTime: 5.0,
-        PreWaveDuration: 1.0,
+        PreWaveDuration: 2.0,
     };
 }
 

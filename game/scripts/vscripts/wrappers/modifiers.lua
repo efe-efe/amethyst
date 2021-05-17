@@ -378,6 +378,7 @@ function Modifiers.Displacement(modifier)
     local getCollisionTargetFilter =    modifier.GetCollisionTargetFilter
     local getCollisionFlagFilter =      modifier.GetCollisionFlagFilter
     local getIsCommandRestricted =      modifier.GetIsCommandRestricted
+    local getFindClearSpace =           modifier.GetFindClearSpace
     local checkState =                  modifier.CheckState
 
     function modifier:IsHidden()    return false end
@@ -414,7 +415,9 @@ function Modifiers.Displacement(modifier)
     function modifier:OnDestroy()
         if IsServer() then
             self.parent:InterruptMotionControllers(true)
-            FindClearSpaceForUnit(self.parent, self.parent:GetAbsOrigin(), true)
+            if self:GetFindClearSpace() then
+                FindClearSpaceForUnit(self.parent, self.parent:GetAbsOrigin(), true)
+            end
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -562,6 +565,11 @@ function Modifiers.Displacement(modifier)
 
     function modifier:GetIsCommandRestricted()
         if getIsCommandRestricted then return getIsCommandRestricted(self) end
+        return true
+    end
+
+    function modifier:GetFindClearSpace()
+        if getFindClearSpace then return getFindClearSpace(self) end
         return true
     end
 

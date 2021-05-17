@@ -1,7 +1,6 @@
 import UnitEntity from './unit_entity';
 import Math from '../util/math';
 import customEntities from '../util/custom_entities';
-import { CustomAI } from './custom_ai';
 
 const DEBUG = false;
 
@@ -20,8 +19,6 @@ enum Orientations {
     VERTICAL,
 }
 export default class CustomNPC extends UnitEntity{
-    ai: CustomAI | undefined;
-
     constructor(unit: CDOTA_BaseNPC){
         if(unit.IsRealHero()){
             CustomEntitiesLegacy.Initialize(unit);
@@ -71,14 +68,15 @@ export default class CustomNPC extends UnitEntity{
                 FindOrder.ANY,
                 false
             );
-        
-            units.forEach((unit) => {
+
+            for(let i = 0; i < units.length; i++){
+                const unit = units[i];
                 if(unit !== this.unit){
                     if(!unit.IsPhased()){
                         return CollisionTypes.UNIT;
                     }
                 }
-            });
+            }
         }
 
         if(!CustomEntitiesLegacy.IsAnimating(this.unit)){
@@ -290,12 +288,14 @@ export default class CustomNPC extends UnitEntity{
         }
 
         if(IsInToolsMode() && DEBUG){
-            const player = GameRules.Addon.FindPlayerById((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID());
+            if((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID){
+                const player = GameRules.Addon.FindPlayerById((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID());
 
-            if(player){
-                const mouse = player.GetCursorPosition();
-                DebugDrawLine_vCol(this.unit.GetAbsOrigin(), this.unit.GetAbsOrigin().__add(this.unit.GetForwardVector().__mul(500)), Vector(0,0,255), true, 0.03);
-                DebugDrawLine_vCol(this.unit.GetAbsOrigin(), mouse, Vector(0,255,0), true, 0.03);
+                if(player){
+                    const mouse = player.GetCursorPosition();
+                    DebugDrawLine_vCol(this.unit.GetAbsOrigin(), this.unit.GetAbsOrigin().__add(this.unit.GetForwardVector().__mul(500)), Vector(0,0,255), true, 0.03);
+                    DebugDrawLine_vCol(this.unit.GetAbsOrigin(), mouse, Vector(0,255,0), true, 0.03);
+                }
             }
         }
     }

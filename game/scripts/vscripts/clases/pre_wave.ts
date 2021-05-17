@@ -13,11 +13,11 @@ export default class PreWave extends GameState{
             this.UpdateGameTimer(math.floor(this.time_remaining/30));
         }
         if(this.time_remaining == 0){
-            this.EndWave();
+            this.EndPreWave();
         }
     }
 
-    EndWave(): void{
+    EndPreWave(): void{
         GameRules.Addon.SetState(CustomGameState.WAVE_IN_PROGRESS);
     }
 }

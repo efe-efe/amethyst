@@ -183,13 +183,13 @@ export class GameMode{
         this.waveGroups = [
             [{
                 name: NPCNames.DIRE_ZOMBIE,
-                ammount: 10,
+                ammount: 8,
             },{
                 name: NPCNames.DIRE_ZOMBIE_RAGER,
-                ammount: 5,
+                ammount: 3,
             },{
                 name: NPCNames.DIRE_ZOMBIE_MEELE,
-                ammount: 5,
+                ammount: 3,
             }],
             [{
                 name: NPCNames.QUEEN,
@@ -212,7 +212,7 @@ export class GameMode{
         ];
 
         
-        this.pre_wave = new PreWave(this.alliances, settings.PreRoundDuration);
+        this.pre_wave = new PreWave(this.alliances, settings.PreWaveDuration);
         
         this.RegisterThinker(0.01, () => {
             if(this.state == CustomGameState.WAVE_IN_PROGRESS && this.wave){
@@ -405,6 +405,8 @@ export class GameMode{
         LinkLuaModifier('modifier_generic_confuse',                 'abilities/generic/modifier_generic_confuse', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_sleep',                   'abilities/generic/modifier_generic_sleep', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_fear',                    'abilities/generic/modifier_generic_fear', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_meele_npc',               'abilities/generic/modifier_generic_meele_npc', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_phased',                  'abilities/generic/modifier_generic_phased', LuaModifierMotionType.NONE);
         
         LinkLuaModifier('modifier_visible',                         'abilities/base/modifier_visible', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_casting',                         'abilities/base/modifier_casting', LuaModifierMotionType.NONE);
@@ -515,7 +517,7 @@ export class GameMode{
         }
         else if(state === CustomGameState.WAVE_IN_PROGRESS){
             this.wave = undefined;
-            this.pre_wave = new PreWave(this.alliances, settings.PreRoundDuration);    
+            this.pre_wave = new PreWave(this.alliances, settings.PreWaveDuration);    
         }
     }
 

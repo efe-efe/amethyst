@@ -17,8 +17,10 @@ function modifier_invoker_blast_custom_displacement:OnDestroy()
         })
 
         if IsServer() then
-            ParticleManager:DestroyParticle(self.efx, false)
-            ParticleManager:ReleaseParticleIndex(self.efx)
+            if self.efx then
+                ParticleManager:DestroyParticle(self.efx, false)
+                ParticleManager:ReleaseParticleIndex(self.efx)
+            end
         end
     end
 end

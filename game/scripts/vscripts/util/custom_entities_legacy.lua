@@ -757,7 +757,7 @@ function CustomEntitiesLegacy:ProjectileAttack(hEntity, tData)
 				local bProcessEffect = hModifier:OnHit({
 					hProjectile = hProjectile,
 					bTriggerCounters = bTriggerCounters, 
-					iType = PROJECTILE_HIT
+					iType = PROJECTILE_HIT,
 				})
 
 				if bProcessEffect then

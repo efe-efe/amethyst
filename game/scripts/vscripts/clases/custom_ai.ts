@@ -58,6 +58,7 @@ export class CustomAI{
     originalPosition: Vector;
     targetPosition: Vector | undefined;
     unit: CDOTA_BaseNPC;
+    followTarget: CDOTA_BaseNPC | undefined;
 
     constructor(name: string, origin: Vector, options: CustomAIOptions){
         this.unit = CreateUnitByName(
@@ -94,6 +95,35 @@ export class CustomAI{
         } else {
             return undefined;
         }
+    }
+
+    UpdateTarget(): void{
+        if(this.followTarget){
+            if(CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget) <= this.followRange && !this.followTarget.IsInvisible()){
+                return;
+            } else {
+                this.followTarget = undefined;
+            }
+        } else {
+            this.followTarget = this.FindEnemy(this.followRange);
+        }
+    }
+
+    Follow(origin: Vector): boolean{
+        this.UpdateTarget();
+
+        if(!this.followTarget){
+            return false;
+        }
+        const distance = CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget);
+        let direction = Vector(0,0);
+
+        if(this.followTarget.IsAlive() && distance > this.minFollowRange){
+            direction = (this.followTarget.GetAbsOrigin().__sub(origin)).Normalized();
+        }
+        
+        CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
+        return true;
     }
 
     IsAbilityReady(ability: CDOTABaseAbility): boolean{
@@ -191,22 +221,6 @@ export class CustomAI{
         } else {
             return false;
         }
-    }
-
-    Follow(origin: Vector): boolean{
-        const target = this.FindEnemy(this.followRange);
-        if(!target){
-            return false;
-        }
-        const distance = CustomEntitiesLegacy.GetDistance(this.unit, target);
-        let direction = Vector(0,0);
-
-        if(target.IsAlive() && distance > this.minFollowRange){
-            direction = (target.GetAbsOrigin().__sub(origin)).Normalized();
-        }
-        
-        CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
-        return true;
     }
 
     StopMoving(): void{
@@ -391,8 +405,8 @@ export const CustomAIFactories: {
             }
         });
 
-        
-        ai.unit.SetHullRadius(120);
+        ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
+        ai.unit.SetHullRadius(95);
         return ai;
     },
 };

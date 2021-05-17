@@ -21,10 +21,10 @@ ____exports.default = (function()
             )
         end
         if self.time_remaining == 0 then
-            self:EndWave()
+            self:EndPreWave()
         end
     end
-    function PreWave.prototype.EndWave(self)
+    function PreWave.prototype.EndPreWave(self)
         GameRules.Addon:SetState(CustomGameState.WAVE_IN_PROGRESS)
     end
     return PreWave

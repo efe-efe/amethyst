@@ -18,6 +18,7 @@
 		"MovementSpeed"				"250"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"TeamName"					"DOTA_TEAM_NEUTRALS"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 		
 		"AttackDamageMin"			"5"										
 		"AttackDamageMax"			"5"

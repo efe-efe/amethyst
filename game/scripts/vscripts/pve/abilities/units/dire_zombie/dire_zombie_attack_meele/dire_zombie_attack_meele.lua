@@ -2,6 +2,7 @@ dire_zombie_attack_meele = class({})
 
 function dire_zombie_attack_meele:GetCastAnimationCustom()	return ACT_DOTA_ATTACK end
 function dire_zombie_attack_meele:GetPlaybackRateOverride() return 1.0 end
+function dire_zombie_attack_meele:GetCastPointSpeed()		return 0 end
 
 function dire_zombie_attack_meele:OnSpellStart()
     local caster = self:GetCaster()
