@@ -19,7 +19,7 @@ function item_sange_custom:OnSpellStart()
 	self:GetCaster():FadeGesture(ACT_DOTA_GENERIC_CHANNEL_1)
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local duration = self:GetSpecialValueFor("duration")
 	

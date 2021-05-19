@@ -543,7 +543,7 @@ function GameMode.prototype.ExecuteOrderFilter(self, event)
     if (((orderType == DOTA_UNIT_ORDER_CAST_POSITION) or (orderType == DOTA_UNIT_ORDER_CAST_TARGET)) or (orderType == DOTA_UNIT_ORDER_CAST_TARGET_TREE)) or (orderType == DOTA_UNIT_ORDER_CAST_NO_TARGET) then
         local ability = EntIndexToHScript(event.entindex_ability)
         local caster = EntIndexToHScript(event.units["0"])
-        local energyCost = CustomAbilities:GetEnergyCost(ability)
+        local energyCost = CustomAbilitiesLegacy:GetEnergyCost(ability)
         local energy = CustomEntitiesLegacy:GetEnergy(caster)
         if energyCost > energy then
             CustomGameEventManager:Send_ServerToAllClients("not_enough_energy", {})
@@ -561,7 +561,7 @@ function GameMode.prototype.ExecuteOrderFilter(self, event)
                 Vector(0, 0, 0),
                 nil
             )
-            if not CustomAbilities:HasBehavior(ability, DOTA_ABILITY_BEHAVIOR_IMMEDIATE) then
+            if not CustomAbilitiesLegacy:HasBehavior(ability, DOTA_ABILITY_BEHAVIOR_IMMEDIATE) then
                 CustomEntitiesLegacy:FullyFaceTowards(caster, direction)
             end
             if current_range > max_range then

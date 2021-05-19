@@ -7,7 +7,7 @@ function nevermore_second_attack:GetCastPointSpeed() 		return 10 end
 
 function nevermore_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 	local origin = caster:GetOrigin()
 
 	local damage = self:GetSpecialValueFor("ability_damage")

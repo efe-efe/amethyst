@@ -16,7 +16,7 @@ end
 function phantom_ultimate:OnSpellStart()
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 	
     local max_range = self:GetSpecialValueFor("range")
     local damage = self:GetSpecialValueFor("ability_damage")

@@ -24,7 +24,7 @@ function mars_mobility:OnSpellStart()
     local origin = caster:GetAbsOrigin()
     local min_range = self:GetSpecialValueFor("min_range")
 
-    local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
+    local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
     local delay = self:GetSpecialValueFor("delay_time")
 
     CreateModifierThinker(

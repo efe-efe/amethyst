@@ -9,7 +9,7 @@ function juggernaut_special_attack:GetAnimationTranslate()		return "odachi" end
 
 function juggernaut_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")

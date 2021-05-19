@@ -8,7 +8,7 @@ function puck_special_attack:GetCastPointSpeed()            return 0 end
 
 function puck_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
-    local point = ClampPosition(caster:GetOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local point = ClampPosition(caster:GetOrigin(), CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
     
     CreateModifierThinker(
         caster, --hCaster

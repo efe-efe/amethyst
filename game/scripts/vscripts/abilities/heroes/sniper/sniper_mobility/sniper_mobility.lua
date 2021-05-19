@@ -11,7 +11,7 @@ function sniper_mobility:OnSpellStart()
 	local min_range = self:GetSpecialValueFor("min_range")
 	local radius = self:GetSpecialValueFor("radius")
 	local stun_duration = self:GetSpecialValueFor("stun_duration")
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
     local shrapnel = caster:FindAbilityByName("sniper_special_attack")
 
 	local direction = (point - origin):Normalized()

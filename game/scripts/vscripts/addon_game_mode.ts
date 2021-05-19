@@ -576,7 +576,7 @@ export class GameMode{
         ){
             const ability = EntIndexToHScript(event.entindex_ability) as CDOTA_Ability_Lua;
             const caster = EntIndexToHScript(event.units['0']) as CDOTA_BaseNPC;
-            const energyCost = CustomAbilities.GetEnergyCost(ability);
+            const energyCost = CustomAbilitiesLegacy.GetEnergyCost(ability);
             const energy = CustomEntitiesLegacy.GetEnergy(caster);
 
             if(energyCost > energy){ 
@@ -594,7 +594,7 @@ export class GameMode{
                 const direction = (point.__sub(caster.GetAbsOrigin())).Normalized();
                 const max_range = ability.GetCastRange(Vector(0,0,0), undefined);
 
-                if(!CustomAbilities.HasBehavior(ability, AbilityBehavior.IMMEDIATE)){
+                if(!CustomAbilitiesLegacy.HasBehavior(ability, AbilityBehavior.IMMEDIATE)){
                     CustomEntitiesLegacy.FullyFaceTowards(caster, direction);
                 }
 

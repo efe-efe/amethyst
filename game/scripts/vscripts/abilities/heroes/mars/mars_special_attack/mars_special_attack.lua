@@ -7,7 +7,7 @@ function mars_special_attack:GetCastPointSpeed() 			return 0 end
 
 function mars_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")

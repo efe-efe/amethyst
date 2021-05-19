@@ -24,7 +24,7 @@ end
 function juggernaut_ultimate:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local distance = self:GetCastRange(Vector(0,0,0), nil)
 	local direction = Direction2D(origin, point)
 

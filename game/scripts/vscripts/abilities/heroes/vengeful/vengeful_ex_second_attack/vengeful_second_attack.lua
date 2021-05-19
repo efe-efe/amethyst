@@ -34,7 +34,7 @@ end
 
 function vengeful_second_attack:ThrowProjectile()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")

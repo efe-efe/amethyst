@@ -32,7 +32,7 @@ export default class CustomNPC extends UnitEntity{
         for(let i = 0; i <= 23; i++){
             const ability = this.unit.GetAbilityByIndex(i);
             if(ability){
-                if(CustomAbilities.IsNotTalentNorAttribute(ability)){
+                if(CustomAbilitiesLegacy.IsNotTalentNorAttribute(ability)){
                     ability.SetLevel(level);
                 }
             }

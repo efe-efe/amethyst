@@ -52,7 +52,7 @@ ____exports.default = (function()
             while i <= 23 do
                 local ability = self.unit:GetAbilityByIndex(i)
                 if ability then
-                    if CustomAbilities:IsNotTalentNorAttribute(ability) then
+                    if CustomAbilitiesLegacy:IsNotTalentNorAttribute(ability) then
                         ability:SetLevel(level)
                     end
                 end

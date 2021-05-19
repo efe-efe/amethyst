@@ -9,7 +9,7 @@ function storm_special_attack:GetCastPointSpeed() 			return 10 end
 function storm_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")

@@ -12,7 +12,7 @@ function nevermore_mobility:OnSpellStart()
     local origin = caster:GetAbsOrigin()
 
     local min_range = self:GetSpecialValueFor("min_range")
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
 
     local direction = (point - origin):Normalized()
     local distance = (point - origin):Length2D()

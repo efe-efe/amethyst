@@ -28,7 +28,7 @@ function storm_basic_attack:GetIntrinsicModifierName()
 end
 
 function storm_basic_attack:OnSpellStart()
-	self:LaunchProjectile(self:GetCaster():GetOrigin(), CustomAbilities:GetCursorPosition(self))
+	self:LaunchProjectile(self:GetCaster():GetOrigin(), CustomAbilitiesLegacy:GetCursorPosition(self))
 end
 
 function storm_basic_attack:LaunchProjectile(origin, point)

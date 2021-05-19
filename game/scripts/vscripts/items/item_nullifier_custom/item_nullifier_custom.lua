@@ -20,7 +20,7 @@ function item_nullifier_custom:OnSpellStart()
 	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 
 	local initial_duration = self:GetSpecialValueFor("initial_duration")
 	local duration = self:GetSpecialValueFor("duration")

@@ -27,7 +27,7 @@ function phantom_basic_attack_related:GetFadeGestureOnCast()		return false end
 
 function phantom_basic_attack_related:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 	local origin = caster:GetOrigin()
 	local ability = caster:FindAbilityByName("phantom_ex_basic_attack")
 	local bleed_duration = ability:GetSpecialValueFor("bleed_duration")

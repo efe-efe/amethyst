@@ -7,7 +7,7 @@ function phantom_second_attack:GetCastPointSpeed() 			return 80 end
 function phantom_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local radius = self:GetSpecialValueFor("radius")
 	

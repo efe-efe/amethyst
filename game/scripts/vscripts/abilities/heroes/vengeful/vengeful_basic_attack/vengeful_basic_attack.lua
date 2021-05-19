@@ -36,7 +36,7 @@ end
 
 function vengeful_basic_attack:ThrowProjectile()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 	local projectile_direction = Direction2D(origin, point)

@@ -62,7 +62,7 @@ function modifier_casting:OnIntervalThink()
 	end
 	
 	if self.parent.GetPlayerID then
-		local mouse = CustomAbilities:GetCursorPosition(self:GetAbility())
+		local mouse = CustomAbilitiesLegacy:GetCursorPosition(self:GetAbility())
 		local direction = (mouse - self.parent:GetAbsOrigin()):Normalized()
 
 		CustomEntitiesLegacy:FullyFaceTowards(self.parent, Vector(direction.x, direction.y, self.parent:GetForwardVector().z))

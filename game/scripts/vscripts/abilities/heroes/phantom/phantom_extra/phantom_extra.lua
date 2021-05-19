@@ -18,7 +18,7 @@ end
 function phantom_extra:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 
 	local direction = (point - origin):Normalized()
     local distance = self:GetCastRange(Vector(0,0,0), nil)

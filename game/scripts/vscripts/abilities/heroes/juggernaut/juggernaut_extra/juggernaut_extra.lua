@@ -13,7 +13,7 @@ function juggernaut_extra:OnSpellStart()
     local duration = self:GetSpecialValueFor("duration")
     local radius = self:GetSpecialValueFor("radius")
     local shield = self:GetSpecialValueFor("shield")    
-	local point = ClampPosition(caster:GetOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(caster:GetOrigin(), CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 
     local healing_ward = CreateUnitByName(
         "npc_dota_creature_juggernaut_healing_totem", 

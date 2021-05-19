@@ -48,7 +48,7 @@ function sniper_second_attack:OnSpellStart()
 	end 
     local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 	local damage = self:GetSpecialValueFor("ability_damage")
 
 	local projectile_direction = Direction2D(origin, point)
@@ -177,7 +177,7 @@ sniper_ex_second_attack.PlayEffectsOnHit = sniper_second_attack.PlayEffectsOnHit
 function sniper_ex_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 	local projectile_direction = Direction2D(origin, point)
 	local projectile_origin = origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
 	self:ThrowProjectile(origin + Vector(0, 0, 96), projectile_direction, true, caster)

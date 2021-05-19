@@ -8,7 +8,7 @@ function invoker_emp_custom:GetCastPointSpeed() 			return 10 end
 function invoker_emp_custom:OnSpellStart()
 	local caster = self:GetCaster()
     local delay_time = self:GetSpecialValueFor('delay_time')
-	local point = ClampPosition(caster:GetOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(caster:GetOrigin(), CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	CreateModifierThinker(
 		caster, --hCaster

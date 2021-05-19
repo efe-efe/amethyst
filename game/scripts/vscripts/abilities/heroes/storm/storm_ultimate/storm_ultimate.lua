@@ -38,7 +38,7 @@ function storm_ultimate:OnSpellStart()
     DEFX(self.efx, false)
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
     
     CreateModifierThinker(
         caster, --hCaster

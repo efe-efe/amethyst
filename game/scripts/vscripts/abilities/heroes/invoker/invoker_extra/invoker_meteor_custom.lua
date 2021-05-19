@@ -9,7 +9,7 @@ function invoker_meteor_custom:GetCastPointSpeed() 			return 80 end
 function invoker_meteor_custom:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = ClampPosition(caster:GetAbsOrigin(), CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetSpecialValueFor("min_range"))
+	local point = ClampPosition(caster:GetAbsOrigin(), CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetSpecialValueFor("min_range"))
 		
 	CreateModifierThinker(
 		caster,

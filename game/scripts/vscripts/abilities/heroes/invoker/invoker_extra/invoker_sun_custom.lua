@@ -7,7 +7,7 @@ function invoker_sun_custom:GetCastPointSpeed() 			return 10 end
 
 function invoker_sun_custom:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 	
 	CreateModifierThinker(
 		caster, --hCaster

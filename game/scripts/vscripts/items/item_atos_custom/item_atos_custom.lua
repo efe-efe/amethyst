@@ -18,7 +18,7 @@ function item_atos_custom:OnSpellStart()
 	self:GetCaster():FadeGesture(ACT_DOTA_ATTACK)
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 
 	local duration = self:GetSpecialValueFor("duration")
 

@@ -1,6 +1,6 @@
-CustomAbilities = class({})
+CustomAbilitiesLegacy = class({})
 
-function CustomAbilities:GetCursorPosition(hAbility)
+function CustomAbilitiesLegacy:GetCursorPosition(hAbility)
 	local caster = hAbility:GetCaster();
 	local playerId = caster:GetPlayerOwnerID();
 
@@ -16,15 +16,15 @@ function CustomAbilities:GetCursorPosition(hAbility)
 	return position
 end
 
-function CustomAbilities:IsNotTalentNorAttribute(hAbility)
+function CustomAbilitiesLegacy:IsNotTalentNorAttribute(hAbility)
 	return (hAbility:GetAbilityType() ~= 2 and hAbility:GetName() ~= "special_bonus_attributes")
 end
 
-function CustomAbilities:GetEnergyCost(hAbility)
-	return CustomAbilities:GetValueFromKV(hAbility, "AbilityEnergyCost") and CustomAbilities:GetValueFromKV(hAbility, "AbilityEnergyCost")  or 0
+function CustomAbilitiesLegacy:GetEnergyCost(hAbility)
+	return CustomAbilitiesLegacy:GetValueFromKV(hAbility, "AbilityEnergyCost") and CustomAbilitiesLegacy:GetValueFromKV(hAbility, "AbilityEnergyCost")  or 0
 end
 
-function CustomAbilities:GetValueFromKV(hAbility, sKey)
+function CustomAbilitiesLegacy:GetValueFromKV(hAbility, sKey)
 	local ability_key_values = hAbility:GetAbilityKeyValues()
 	local value = nil
 
@@ -43,7 +43,7 @@ function CustomAbilities:GetValueFromKV(hAbility, sKey)
 	return value
 end
 
-function CustomAbilities:HasBehavior(hAbility, nBehavior)
+function CustomAbilitiesLegacy:HasBehavior(hAbility, nBehavior)
 	local abilityBehavior = tonumber(tostring(hAbility:GetBehavior()))
 	return bit.band(abilityBehavior, nBehavior) == nBehavior
 end

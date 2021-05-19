@@ -16,7 +16,7 @@ end
 
 function spectre_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local origin = caster:GetOrigin()
     local ability = caster:FindAbilityByName('spectre_counter')
 

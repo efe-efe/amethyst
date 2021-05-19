@@ -8,7 +8,7 @@ function invoker_blast_custom:GetCastPointSpeed() 			return 20 end
 function invoker_blast_custom:OnSpellStart()
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-    local point = CustomAbilities:GetCursorPosition(self)
+    local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
     local final_point = ClampPosition(origin, point, projectile_distance, projectile_distance)
 	local damage = self:GetSpecialValueFor("ability_damage")

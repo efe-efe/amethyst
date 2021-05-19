@@ -16,7 +16,7 @@ function spectre_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local damage = self:GetSpecialValueFor("ability_damage")
 	local origin = caster:GetOrigin()
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	local projectile_name = "particles/spectre/spectre_special_attack.vpcf" 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
@@ -136,7 +136,7 @@ function spectre_ex_special_attack:GetCastPointSpeed() 			return 0 end
 function spectre_ex_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 		
 	EmitSoundOn("Hero_Spectre.Haunt", caster)
 	EFX('particles/spectre/spectre_illusion_warp.vpcf', PATTACH_CUSTOMORIGIN, caster, {
@@ -159,7 +159,7 @@ end
 function spectre_ex_special_attack_recast:OnSpellStart()
 	local caster = self:GetCaster()
     local origin = caster:GetOrigin()
-	local point = ClampPosition(origin, CustomAbilities:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
 
 	for _,hTarget in ipairs(self.targets) do
 		hTarget:RemoveModifierByName('modifier_spectre_ex_special_attack_banish')

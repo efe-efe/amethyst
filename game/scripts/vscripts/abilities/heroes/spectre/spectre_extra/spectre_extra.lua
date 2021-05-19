@@ -19,7 +19,7 @@ function spectre_extra_recast:GetIgnoreActivationCycle()   return true end
 
 function spectre_extra_recast:OnSpellStart()
 	local caster = self:GetCaster()
-	local point = CustomAbilities:GetCursorPosition(self)
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local origin = caster:GetOrigin()
 
 	local spectre_extra = caster:FindAbilityByName('spectre_extra')

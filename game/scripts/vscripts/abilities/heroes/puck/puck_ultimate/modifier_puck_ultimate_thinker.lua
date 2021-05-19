@@ -78,7 +78,7 @@ function modifier_puck_ultimate_thinker:OnAbilityExecuted(params)
             params.ability == basic_attack_related or
             params.ability == basic_attack
         then
-            basic_attack:LaunchProjectile(self:GetParent():GetOrigin(), CustomAbilities:GetCursorPosition(self:GetAbility()))
+            basic_attack:LaunchProjectile(self:GetParent():GetOrigin(), CustomAbilitiesLegacy:GetCursorPosition(self:GetAbility()))
         end
     end
 end

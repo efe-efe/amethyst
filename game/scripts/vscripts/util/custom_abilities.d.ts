@@ -1,7 +1,7 @@
-declare interface CustomAbilities {
+declare interface CustomAbilitiesLegacy {
     GetEnergyCost(hAbility: CDOTA_Ability_Lua): number;
     HasBehavior(hAbility: CDOTA_Ability_Lua, nBehavior: AbilityBehavior): boolean;
     IsNotTalentNorAttribute(hAbility: CDOTABaseAbility): boolean;
 }
 
-declare const CustomAbilities: CustomAbilities;
+declare const CustomAbilitiesLegacy: CustomAbilitiesLegacy;
