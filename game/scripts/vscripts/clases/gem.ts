@@ -62,6 +62,10 @@ class Gem extends UnitEntity{
     OnDeath(params: { killer: CDOTA_BaseNPC }): void{
         const killer = params.killer;
 
+        if(killer === this.unit){
+            return;
+        }
+        
         this.Effect(killer);
         this.PlayEffectsOnDeath();
         this.GetUnit().AddNoDraw();
@@ -378,6 +382,7 @@ export default class GemWrapper{
 
     Destroy(remove: boolean): void{
         if(this.entity){
+            this.entity.GetUnit().ForceKill(false);
             this.entity.Destroy(remove);
         }
         this.DestroyProgressCircle();
