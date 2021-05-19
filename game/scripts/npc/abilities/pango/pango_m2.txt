@@ -1,0 +1,25 @@
+"DOTAAbilities" {
+    "pango_second_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/pango/pango_second_attack/pango_second_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"pangolier_swashbuckle"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCooldown"				"5.0"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"550"
+		"LevelsBetweenUpgrades"			"0"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+		}
+	}
+}

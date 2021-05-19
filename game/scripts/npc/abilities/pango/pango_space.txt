@@ -1,0 +1,24 @@
+"DOTAAbilities" {
+    "pango_mobility"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/pango/pango_mobility/pango_mobility"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"pangolier_gyroshell"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastPoint"				"0.6"
+		"AbilityCooldown"				"8.0"
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"12" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"80" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"150" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"duration"					"2.0" }
+		}
+	}
+}

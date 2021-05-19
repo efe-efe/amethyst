@@ -1,0 +1,29 @@
+"DOTAAbilities" {
+    "pango_special_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/pango/pango_special_attack/pango_special_attack"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"pangolier_shield_crash"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_AOE"
+		"AbilityCooldown"				"5.0"
+		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"550"
+		"LevelsBetweenUpgrades"			"0"
+		
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"20" }
+            "02"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"damage_block"				"15" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"duration"					"6.0" }
+		}
+	}
+}

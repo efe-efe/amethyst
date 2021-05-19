@@ -1,0 +1,19 @@
+"DOTAAbilities" {
+	"pango_counter"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/pango/pango_counter/pango_counter"
+		"MaxLevel"						"2"
+
+		"AbilityTextureName"			"juggernaut_counter"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCooldown"				"6.0"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilitySpecial"
+		{
+			"04"{ "var_type"	"FIELD_INTEGER"		"counter_duration"			"1.5" }
+		}
+	}
+    }
