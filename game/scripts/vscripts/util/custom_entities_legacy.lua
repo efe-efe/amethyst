@@ -68,16 +68,6 @@ function CustomEntitiesLegacy:Initialize(hEntity, bIsPVENPC)
 
 	if hEntity:IsRealHero() then
 		hEntity.recast_modifiers = {}
-		for i = 0, 23 do
-			local ability = hEntity:GetAbilityByIndex(i)
-			if ability then
-				if CustomAbilities:IsNotTalentNorAttribute(ability) then -- To not level up the talents
-					ability:SetLevel(1)
-				end
-			end
-		end
-	
-		hEntity:SetAbilityPoints(2) -- This should point to settings.AbilityPoints
 	end
 
 	CustomEntitiesLegacy:SetInitialized(hEntity, true)

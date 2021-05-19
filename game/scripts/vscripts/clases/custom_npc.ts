@@ -20,13 +20,23 @@ enum Orientations {
 }
 export default class CustomNPC extends UnitEntity{
     constructor(unit: CDOTA_BaseNPC){
-        if(unit.IsRealHero()){
-            CustomEntitiesLegacy.Initialize(unit);
-        } else {
-            CustomEntitiesLegacy.Initialize(unit, true);
-        }
+        CustomEntitiesLegacy.Initialize(unit, !unit.IsRealHero()); //Need this for SetParent bullshit
         super({ unit });
+        this.LevelAllAbilities(1);
+        if(this.unit.IsRealHero()){
+            this.unit.SetAbilityPoints(2);
+        }
         customEntities.Disarm(this.unit);
+    }
+    LevelAllAbilities(level: number): void{
+        for(let i = 0; i <= 23; i++){
+            const ability = this.unit.GetAbilityByIndex(i);
+            if(ability){
+                if(CustomAbilities.IsNotTalentNorAttribute(ability)){
+                    ability.SetLevel(level);
+                }
+            }
+        }
     }
     Move(direction: Vector, speed: number): CollisionTypes{
         const offset = 70;
