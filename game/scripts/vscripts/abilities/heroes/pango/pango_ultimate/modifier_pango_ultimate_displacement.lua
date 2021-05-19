@@ -34,7 +34,7 @@ function modifier_pango_ultimate_displacement:OnDestroy()
         StopSoundOn("Hero_Pangolier.Gyroshell.Loop", self.parent)
         self.parent:RemoveGesture(ACT_DOTA_RUN)
         self.parent:AddNewModifier(self.parent, self:GetAbility(), "modifier_pango_roll_end_animation", { duration = 0.3 })
-        self.parent:SetAllAbilitiesActivated(true)
+        CustomEntitiesLegacy:SetAllAbilitiesActivated(self.parent, true)
 	end
 end
 

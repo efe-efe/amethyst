@@ -31,58 +31,39 @@ function pango_basic_attack:GetCastPointSpeed() 		return self:GetSpecialValueFor
 function pango_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
-	local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local attack_damage = caster:GetAttackDamage()
 
 	self.radius = self:GetSpecialValueFor("radius")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x-origin.x, point.y-origin.y, 0)):Normalized()
 	
-	local enemies = caster:FindUnitsInCone(
-		direction, 
-		0, 
-		origin, 
-		self.radius, 
-		DOTA_UNIT_TARGET_TEAM_ENEMY, 
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-		DOTA_UNIT_TARGET_FLAG_NONE, 
-		FIND_CLOSEST
-	)
+	CustomEntitiesLegacy:MeeleAttack(caster, {
+		vDirection = direction,
+		vOrigin = origin, 
+		fRadius = self.radius,
+		bIsBasicAttack = true,
+		iMaxTargets = 1,
+		Callback = function(hTarget)
+			CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
+				hTarget = hTarget,
+				hAbility = self,
+			})
 
-	local should_shake = false
+			self:TryProc(hTarget)
+			self:PlayEffectsOnImpact(hTarget)
 
-	for _,enemy in pairs(enemies) do 
-		if enemy:IsRealHero() then
-			should_shake = true
+			if not CustomEntitiesLegacy:IsObstacle(hTarget) then
+				if CustomEntitiesLegacy:ProvidesMana(hTarget) then
+					CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
+				end
+
+				caster:AddNewModifier(caster, self, "modifier_pango_basic_attack_stacks", {})
+			end
+	
+			self:PlayEffectsOnImpact(hTarget)
 		end
-		
-		self:TryProc(enemy)
-		self:PlayEffectsOnImpact(enemy)
-
-		local damage_table = {
-			victim = enemy,
-			attacker = caster,
-			damage = attack_damage,
-			damage_type = DAMAGE_TYPE_PHYSICAL,
-			activate_counters = 1,
-		}
-		ApplyDamage(damage_table)
-
-		if not enemy:IsObstacle() then 
-			caster:GiveManaAndEnergyPercent(mana_gain_pct, true)
-			caster:AddNewModifier(caster, self, "modifier_pango_basic_attack_stacks", {})
-		end
-
-		if caster.OnBasicAttackImpact then
-			caster:OnBasicAttackImpact(enemy)
-		end
-
-		break
-	end
-
-	if should_shake then
-		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
-	end
+	})
 
 	self:PlayEffectsOnMiss(point)
 	self:PlayEffectsOnFinish(direction)
@@ -90,9 +71,9 @@ end
 
 function pango_basic_attack:TryProc(hTarget)
 	local caster = self:GetCaster()
-	local stacks = caster:SafeGetModifierStacks("modifier_pango_basic_attack_stacks")
+	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_pango_basic_attack_stacks")
 	if stacks == 4 then
-		caster:SafeDestroyModifier("modifier_pango_basic_attack_stacks")
+		CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_pango_basic_attack_stacks")
 		hTarget:AddNewModifier(caster, self, "modifier_generic_silence", { duration = 1.0 })
 		hTarget:AddNewModifier(caster, self, "modifier_generic_fading_slow", { 
 			duration = 1.0,

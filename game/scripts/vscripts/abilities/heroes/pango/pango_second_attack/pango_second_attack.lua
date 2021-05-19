@@ -10,26 +10,25 @@ function pango_second_attack:GetFadeGestureOnCast()			return false end
 function pango_second_attack:OnSpellStart()
     local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local distance = self:GetCastRange(Vector(0,0,0), nil)
     local direction = (point - origin):Normalized()
 
-    if caster:GetDirection().x ~= 0 or caster:GetDirection().y ~=0 then
-        direction = caster:GetDirection()
-    else 
-        distance = 1
+    if CustomEntitiesLegacy:GetDirection(caster).x ~= 0 or CustomEntitiesLegacy:GetDirection(caster).y ~=0 then
+        self:Dash(CustomEntitiesLegacy:GetDirection(caster), distance)
+    else
+        self:Cut(origin, direction, distance)
     end
-
-	self:Start(direction, distance)
+    EmitSoundOn("Hero_Pangolier.Swashbuckle.Cast", caster)
 end
 
-function pango_second_attack:Start(vDirection, iDistance)
+function pango_second_attack:Dash(vDirection, iDistance)
     local caster = self:GetCaster()
 
     caster:AddNewModifier(
-        caster, -- player source
-        self, -- ability source
-        "modifier_pango_second_attack_displacement", -- modifier name
+        caster,
+        self,
+        "modifier_pango_second_attack_displacement",
         {
             x = vDirection.x,
             y = vDirection.y,
@@ -38,7 +37,6 @@ function pango_second_attack:Start(vDirection, iDistance)
             peak = 1,
         }
     )
-    EmitSoundOn("Hero_Pangolier.Swashbuckle.Cast", caster)
 end
 
 

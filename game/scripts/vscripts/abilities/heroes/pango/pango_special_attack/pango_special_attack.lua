@@ -31,10 +31,11 @@ end
 function pango_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 
 	local direction = (point - origin):Normalized()
     local distance = self:GetCastRange(Vector(0,0,0), nil)
+    local air_time = 0.4
 
     caster:AddNewModifier(
         caster, -- player source
@@ -44,10 +45,15 @@ function pango_special_attack:OnSpellStart()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = distance/0.4,
+            speed = distance/air_time,
             peak = 250,
         }
     )
+    
+    local modifier_pango_mobility = CustomEntitiesLegacy:SafeGetModifier(caster, "modifier_pango_mobility")
+    if modifier_pango_mobility then
+        modifier_pango_mobility:SetDuration(modifier_pango_mobility:GetRemainingTime() + air_time, true)
+    end
 
     EmitSoundOn("Hero_Pangolier.TailThump.Cast", caster)
 end
@@ -67,7 +73,7 @@ function pango_special_attack:Crash(iRadius)
 		damage_table.victim = unit
 		ApplyDamage(damage_table)
 
-		if not unit:IsObstacle() then
+		if not CustomEntitiesLegacy:IsObstacle(unit) then
 			shield_providers = shield_providers + 1
 		end
 	end)

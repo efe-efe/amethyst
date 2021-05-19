@@ -36,12 +36,12 @@ function modifier_pango_mobility:OnCreated()
         EmitSoundOn("Hero_Juggernaut.Attack", self.parent)
 
         self:StartIntervalThink(0.1)
-        self.parent:DeactivateNonPriorityAbilities()
+        CustomEntitiesLegacy:DeactivateNonPriorityAbilities(self.parent)
     end
 end
 
 function modifier_pango_mobility:OnIntervalThink()
-    self.parent:DeactivateNonPriorityAbilities()
+    CustomEntitiesLegacy:DeactivateNonPriorityAbilities(self.parent)
     local parent_origin = self.parent:GetAbsOrigin()
 
     ApplyCallbackForUnitsInArea(self.parent, parent_origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
@@ -72,7 +72,7 @@ function modifier_pango_mobility:OnDestroy()
         StopSoundOn("Hero_Pangolier.Gyroshell.Loop", self.parent)
         self.parent:RemoveGesture(ACT_DOTA_RUN)
         self.parent:AddNewModifier(self.parent, self:GetAbility(), "modifier_pango_roll_end_animation", { duration = 0.3 })
-        self.parent:SetAllAbilitiesActivated(true)
+        CustomEntitiesLegacy:SetAllAbilitiesActivated(self.parent, true)
 	end
 end
 

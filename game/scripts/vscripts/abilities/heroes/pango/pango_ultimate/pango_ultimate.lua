@@ -25,7 +25,7 @@ function pango_ultimate:OnSpellStart()
     DEFX(self.efx, false)
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
-	local point = self:GetCursorPosition()
+	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 	local direction = (point - origin):Normalized()
     local distance = self:GetCastRange(Vector(0,0,0), nil)
 

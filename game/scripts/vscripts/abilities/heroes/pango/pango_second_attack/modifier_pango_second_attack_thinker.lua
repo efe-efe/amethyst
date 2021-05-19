@@ -32,7 +32,7 @@ function modifier_pango_second_attack_thinker:OnDestroy()
 end
 
 function modifier_pango_second_attack_thinker:OnIntervalThink()
-    local enemies = self:GetCaster():FindUnitsInLine(
+    local enemies = CustomEntitiesLegacy:FindUnitsInLine(self:GetCaster(),
 		self:GetParent():GetAbsOrigin(), 
 		self.point, 
 		150, 
@@ -43,7 +43,7 @@ function modifier_pango_second_attack_thinker:OnIntervalThink()
 
     for _,enemy in pairs(enemies) do
         self.pango_basic_attack:TryProc(enemy)
-        if not enemy:IsObstacle() then
+        if not CustomEntitiesLegacy:IsObstacle(enemy) then
             self:GetCaster():AddNewModifier(self:GetCaster(), self.pango_basic_attack, "modifier_pango_basic_attack_stacks", {}) 
         end
         self.damage_table.victim = enemy

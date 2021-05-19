@@ -18,11 +18,15 @@ function modifier_pango_counter_countering:OnTrigger(params)
 	end
 end
 
-function modifier_pango_counter_countering:OnProjectileHitCustom(params)
+function modifier_pango_counter_countering:OnHit(params)
 	if IsServer() then
+		if not params.bTriggerCounters then
+			return true
+		end
+		
 		self:OnTrigger({})
-		if params.projectile.bIsDestructible then
-			params.projectile:Destroy(true)
+		if projectile.bIsDestructible then
+			projectile:ScheduleDestroy()
 		end
 	end
 end
@@ -41,4 +45,4 @@ function modifier_pango_counter_countering:GetOverrideAnimationRate() 	return 0.
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Counter(modifier_pango_counter_countering)
-Modifiers.OnProjectileHit(modifier_pango_counter_countering)
+Modifiers.OnHit(modifier_pango_counter_countering)

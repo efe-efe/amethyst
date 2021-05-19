@@ -1,5 +1,6 @@
 #base "heroes\phantom.txt"
 #base "heroes\sniper.txt"
+#base "heroes\pango.txt"
 #base "heroes\juggernaut.txt"
 #base "heroes\nevermore.txt"
 #base "heroes\puck.txt"

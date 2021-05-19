@@ -14,6 +14,13 @@
 #base "abilities\sniper\sniper_f.txt"
 #base "abilities\sniper\sniper_r.txt"
 
+#base "abilities\pango\pango_m1.txt"
+#base "abilities\pango\pango_m2.txt"
+#base "abilities\pango\pango_e.txt"
+#base "abilities\pango\pango_q.txt"
+#base "abilities\pango\pango_space.txt"
+#base "abilities\pango\pango_r.txt"
+
 #base "abilities\phantom\phantom_m1.txt"
 #base "abilities\phantom\phantom_m2.txt"
 #base "abilities\phantom\phantom_q.txt"

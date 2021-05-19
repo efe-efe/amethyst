@@ -5,7 +5,7 @@ function modifier_pango_second_attack_displacement:OnDestroy()
 		local caster = self:GetCaster()
 		local origin = caster:GetAbsOrigin()
 		local range = self:GetAbility():GetCastRange(Vector(0,0,0), nil)
-		local direction = (self:GetAbility():GetCursorPosition() - origin):Normalized()
+		local direction = (CustomAbilitiesLegacy:GetCursorPosition(self:GetAbility()) - origin):Normalized()
 		self:GetAbility():Cut(origin, direction, range)
 
 		local trail_pfx = ParticleManager:CreateParticle("particles/phantom/mobility_trail.vpcf", PATTACH_ABSORIGIN, self:GetParent())
@@ -16,7 +16,6 @@ function modifier_pango_second_attack_displacement:OnDestroy()
 		ParticleManager:ReleaseParticleIndex(trail_pfx)
 	end
 end
-
 
 function modifier_pango_second_attack_displacement:DeclareFunctions()
 	return {
