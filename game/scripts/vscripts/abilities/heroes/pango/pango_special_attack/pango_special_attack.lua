@@ -37,6 +37,12 @@ function pango_special_attack:OnSpellStart()
     local distance = self:GetCastRange(Vector(0,0,0), nil)
     local air_time = 0.4
 
+    local modifier_pango_mobility = CustomEntitiesLegacy:SafeGetModifier(caster, "modifier_pango_mobility")
+    if modifier_pango_mobility then
+        modifier_pango_mobility:SetDuration(modifier_pango_mobility:GetRemainingTime() + air_time, true)
+        direction = CustomEntitiesLegacy:GetDirection(caster)
+    end
+
     caster:AddNewModifier(
         caster, -- player source
         self, -- ability source
@@ -49,11 +55,6 @@ function pango_special_attack:OnSpellStart()
             peak = 250,
         }
     )
-    
-    local modifier_pango_mobility = CustomEntitiesLegacy:SafeGetModifier(caster, "modifier_pango_mobility")
-    if modifier_pango_mobility then
-        modifier_pango_mobility:SetDuration(modifier_pango_mobility:GetRemainingTime() + air_time, true)
-    end
 
     EmitSoundOn("Hero_Pangolier.TailThump.Cast", caster)
 end
