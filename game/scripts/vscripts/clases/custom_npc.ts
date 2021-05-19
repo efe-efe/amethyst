@@ -27,6 +27,7 @@ export default class CustomNPC extends UnitEntity{
             this.unit.SetAbilityPoints(2);
         }
         customEntities.Disarm(this.unit);
+        customEntities.IgnoreMSLimit(this.unit);
     }
     LevelAllAbilities(level: number): void{
         for(let i = 0; i <= 23; i++){

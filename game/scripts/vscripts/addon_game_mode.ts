@@ -414,6 +414,7 @@ export class GameMode{
         LinkLuaModifier('modifier_generic_meele_npc',               'abilities/generic/modifier_generic_meele_npc', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_phased',                  'abilities/generic/modifier_generic_phased', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_flying',                  'abilities/generic/modifier_generic_flying', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_ignore_ms_limit',         'abilities/generic/modifier_generic_ignore_ms_limit', LuaModifierMotionType.NONE);
         
         LinkLuaModifier('modifier_visible',                         'abilities/base/modifier_visible', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_casting',                         'abilities/base/modifier_casting', LuaModifierMotionType.NONE);
