@@ -3,7 +3,6 @@ LinkLuaModifier("modifier_centaur_charge_displacement", "pve/abilities/heroes/ce
 LinkLuaModifier("modifier_centaur_charge_knockback_displacement", "pve/abilities/heroes/centaur/centaur_charge/modifier_centaur_charge_knockback_displacement", LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_centaur_debuff", "pve/abilities/heroes/centaur/centaur_charge/modifier_centaur_debuff", LUA_MODIFIER_MOTION_NONE)
 
-
 function centaur_charge:GetCastAnimationCustom()		return ACT_DOTA_CENTAUR_STAMPEDE end 
 function centaur_charge:GetPlaybackRateOverride()       return 2.0 end
 function centaur_charge:GetCastPointSpeed() 			return 0 end
@@ -26,7 +25,7 @@ function centaur_charge:OnSpellStart()
             speed = 1200,
             peak = 30,
         }
-   )
+    )
 
     self:PlayEffectsOnCast()
 end

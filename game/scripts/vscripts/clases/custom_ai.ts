@@ -8,6 +8,7 @@ enum CustomAIState {
 enum CustomAIBehavior {
     FOLLOWER = 0,
     WANDERER,
+    STATIC,
 }
 
 export enum NPCNames {
@@ -16,6 +17,7 @@ export enum NPCNames {
     DIRE_ZOMBIE_MEELE,
     QUEEN,
     CENTAUR,
+    FLYING_SKULL,
 }
 interface CustomAIAbilityRequirements {
     cooldownReady?: boolean;
@@ -49,6 +51,9 @@ export class CustomAI{
     state = CustomAIState.IDLE ;
     abilities: CustomAIAbility[] = [];
     followRange: number;
+    tauntedFollowRange: number;
+    tauntedDuration = 3.0;
+    tauntedRemainingDuration = 0.0;
     minFollowRange: number;
     restTime: number;
     remainingRestTime = 0;
@@ -72,6 +77,7 @@ export class CustomAI{
 
         this.restTime = options.restTime || 1.0;
         this.followRange = options.followRange || 2500;
+        this.tauntedFollowRange = this.followRange * 1.5;
         this.minFollowRange = options.minFollowRange || 0;
         this.behavior = options.behavior || CustomAIBehavior.FOLLOWER;
         this.originalPosition = origin;
@@ -98,14 +104,16 @@ export class CustomAI{
     }
 
     UpdateTarget(): void{
+        const followRange = (this.tauntedRemainingDuration > 0) ? this.tauntedFollowRange : this.followRange;
+
         if(this.followTarget){
-            if(CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget) <= this.followRange && !this.followTarget.IsInvisible()){
+            if(CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget) <= followRange && !this.followTarget.IsInvisible()){
                 return;
             } else {
                 this.followTarget = undefined;
             }
         } else {
-            this.followTarget = this.FindEnemy(this.followRange);
+            this.followTarget = this.FindEnemy(followRange);
         }
     }
 
@@ -250,13 +258,23 @@ export class CustomAI{
         this.targetPosition = undefined;
     }
 
+    OnHurt(): void{
+        this.tauntedRemainingDuration = this.tauntedDuration * 30;
+    }
+
     Update(): void{
         const origin = this.unit.GetAbsOrigin();
 
+        if(this.tauntedRemainingDuration > 0){
+            this.tauntedRemainingDuration = this.tauntedRemainingDuration - 1;
+        } 
         if(this.remainingRestTime > 0){
             this.remainingRestTime = this.remainingRestTime - 1;
         } 
         if(!this.Cast()){
+            if(this.behavior === CustomAIBehavior.STATIC){
+                return;
+            }
             if(this.behavior === CustomAIBehavior.WANDERER){
                 if(this.state === CustomAIState.WANDERING && this.targetPosition){
                     if(!this.MoveTowards(origin, this.targetPosition)){
@@ -269,7 +287,9 @@ export class CustomAI{
                     this.PickTargetPosition(origin);
                 }
             } else {
-                this.Follow(origin);
+                if(!this.Follow(origin)){
+                    this.StopMoving();
+                }
             }
         } else {
             this.remainingRestTime = 1.0 * 30;
@@ -393,6 +413,7 @@ export const CustomAIFactories: {
     },
     [NPCNames.DIRE_ZOMBIE_MEELE]: (origin: Vector): CustomAI => {
         const ai = new CustomAI('dire_zombie_meele', origin, {
+            followRange: 1500,
             minFollowRange: 200,
             behavior: CustomAIBehavior.FOLLOWER,
         });
@@ -407,6 +428,23 @@ export const CustomAIFactories: {
 
         ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
         ai.unit.SetHullRadius(95);
+        return ai;
+    },
+    [NPCNames.FLYING_SKULL]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('flying_skull', origin, {
+            followRange: 1000,
+            minFollowRange: 450,
+            behavior: CustomAIBehavior.FOLLOWER,
+        });
+
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('flying_skull_dash')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true
+            }
+        });
+
         return ai;
     },
 };

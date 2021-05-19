@@ -182,6 +182,9 @@ export class GameMode{
         this.SetState(CustomGameState.PRE_WAVE);
         this.waveGroups = [
             [{
+                name: NPCNames.FLYING_SKULL,
+                ammount: 5,
+            },{
                 name: NPCNames.DIRE_ZOMBIE,
                 ammount: 8,
             },{
@@ -194,6 +197,9 @@ export class GameMode{
             [{
                 name: NPCNames.QUEEN,
                 ammount: 1,
+            },{
+                name: NPCNames.FLYING_SKULL,
+                ammount: 5,
             }],
             [{
                 name: NPCNames.DIRE_ZOMBIE,
@@ -407,6 +413,7 @@ export class GameMode{
         LinkLuaModifier('modifier_generic_fear',                    'abilities/generic/modifier_generic_fear', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_meele_npc',               'abilities/generic/modifier_generic_meele_npc', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_phased',                  'abilities/generic/modifier_generic_phased', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_flying',                  'abilities/generic/modifier_generic_flying', LuaModifierMotionType.NONE);
         
         LinkLuaModifier('modifier_visible',                         'abilities/base/modifier_visible', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_casting',                         'abilities/base/modifier_casting', LuaModifierMotionType.NONE);
@@ -902,9 +909,16 @@ export class GameMode{
     }
     
     OnEntityHurt(event: EntityHurtEvent): void{
-        if(event.entindex_attacker !== undefined && event.entindex_killed !== undefined){
+        if(event.entindex_killed !== undefined){
             const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
-            SendOverheadDamageMessage(victim, event.damage);
+
+            if(this.wave){
+                this.wave.OnUnitHurt(victim);
+            }
+            
+            if(event.entindex_attacker !== undefined){
+                SendOverheadDamageMessage(victim, event.damage);
+            }
         }
     }
     

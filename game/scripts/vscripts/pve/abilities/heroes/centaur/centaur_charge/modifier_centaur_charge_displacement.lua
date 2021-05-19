@@ -30,7 +30,7 @@ function modifier_centaur_charge_displacement:OnCollide(params)
 						max_slow_pct = self.fading_slow_pct
 					})
 
-					unit:AddNewModifier(self:GetCaster(), self, 'modifier_generic_stunned', { duration = self.stun_duration })
+					unit:AddNewModifier(self:GetCaster(), self:GetAbility(), 'modifier_generic_stunned', { duration = self.stun_duration })
 				end
 			end
 		end

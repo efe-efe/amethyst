@@ -97,6 +97,8 @@
 #base "pve\abilities\units\dire_zombie\dire_zombie_rage_aura.txt"
 #base "pve\abilities\units\dire_zombie\dire_zombie_attack_meele.txt"
 
+#base "pve\abilities\units\flying_skull\flying_skull_dash.txt"
+
 #base "abilities\dummies\passive_shoot.txt"
 #base "abilities\dummies\passive_walk.txt"
 

@@ -1,0 +1,21 @@
+"DOTAAbilities" {
+    "flying_skull_dash"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"pve/abilities/units/flying_skull/flying_skull_dash/flying_skull_dash"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"nevermore_requiem"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCooldown"				"3.0"
+		"AbilityCastRange"				"1000"
+		"LevelsBetweenUpgrades"			"0"
+		"AbilityCastPoint"				"0.15"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+	}
+}

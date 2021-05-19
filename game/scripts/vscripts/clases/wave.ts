@@ -37,6 +37,13 @@ export default class Wave extends GameState{
         }
     }
 
+    OnUnitHurt(unit: CDOTA_BaseNPC): void{
+        const ai = this.ais.filter(ai => ai.unit === unit)[0];
+        if(ai){
+            ai.OnHurt();
+        }
+    }
+
     Update(): void{
         super.Update();
 
