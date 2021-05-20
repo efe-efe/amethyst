@@ -316,11 +316,24 @@ export default class CustomNPC extends UnitEntity{
     }
 }
 
-export class PlayerNPC extends CustomNPC{
+export class CustomHeroNPC extends CustomNPC{
     constructor(unit: CDOTA_BaseNPC){
         super(unit);
         customEntities.HideHealthBar(this.unit);
         customEntities.SetUseEnergy(this.unit);
+    }
+}
+export class CustomPlayerHeroNPC extends CustomHeroNPC{
+    constructor(unit: CDOTA_BaseNPC){
+        super(unit);
+        customEntities.HideHealthBar(this.unit);
+        customEntities.SetUseEnergy(this.unit);
+
+        if(GameRules.Addon.IsPVE()){
+            this.LevelAllAbilities(0);
+            this.unit.GetAbilityByIndex(0)?.SetLevel(1);
+            this.unit.GetAbilityByIndex(6)?.SetLevel(1);
+        }
     }
     
     Update(): void{

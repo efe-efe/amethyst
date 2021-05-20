@@ -15,9 +15,9 @@ export enum NPCNames {
     DIRE_ZOMBIE = 0,
     DIRE_ZOMBIE_RAGER,
     DIRE_ZOMBIE_MEELE,
+    FLYING_SKULL,
     QUEEN,
     CENTAUR,
-    FLYING_SKULL,
 }
 interface CustomAIAbilityRequirements {
     cooldownReady?: boolean;

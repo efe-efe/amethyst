@@ -17,7 +17,7 @@ import './overrides/abilities';
 import Player from './clases/player';
 import PreRound from './clases/pre_round';
 import Round from './clases/round';
-import CustomNPC, { PlayerNPC } from './clases/custom_npc';
+import CustomNPC, { CustomHeroNPC, CustomPlayerHeroNPC } from './clases/custom_npc';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
 import Wave, { WaveGroup } from './clases/wave';
@@ -70,7 +70,7 @@ const THINK_PERIOD = 0.01;
 @reloadable
 export class GameMode{
     private players: Player[] = [];
-    private units: (PlayerNPC | CustomNPC)[] = [];
+    private units: (CustomPlayerHeroNPC | CustomHeroNPC | CustomNPC)[] = [];
     private state = CustomGameState.NONE;
     private thinkers: Thinker[] = [];
     private wtf = false;
@@ -180,44 +180,7 @@ export class GameMode{
 
     StartPVEMap(): void{
         this.SetState(CustomGameState.PRE_WAVE);
-        this.waveGroups = [
-            [{
-                name: NPCNames.FLYING_SKULL,
-                ammount: 5,
-            },{
-                name: NPCNames.DIRE_ZOMBIE,
-                ammount: 8,
-            },{
-                name: NPCNames.DIRE_ZOMBIE_RAGER,
-                ammount: 3,
-            },{
-                name: NPCNames.DIRE_ZOMBIE_MEELE,
-                ammount: 3,
-            }],
-            [{
-                name: NPCNames.QUEEN,
-                ammount: 1,
-            },{
-                name: NPCNames.FLYING_SKULL,
-                ammount: 5,
-            }],
-            [{
-                name: NPCNames.DIRE_ZOMBIE,
-                ammount: 8,
-            },{
-                name: NPCNames.DIRE_ZOMBIE_RAGER,
-                ammount: 6,
-            },{
-                name: NPCNames.DIRE_ZOMBIE_MEELE,
-                ammount: 8,
-            }],
-            [{
-                name: NPCNames.CENTAUR,
-                ammount: 1,
-            }],
-        ];
-
-        
+        this.GenerateWaveGroups();  
         this.pre_wave = new PreWave(this.alliances, settings.PreWaveDuration);
         
         this.RegisterThinker(0.01, () => {
@@ -228,6 +191,40 @@ export class GameMode{
                 this.pre_wave.Update();
             }
         });
+    }
+
+    GenerateWaveGroups(): void{
+        const bossLevels = [1, 9, 19];
+        const npcs = [NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL];
+        const bosses = [NPCNames.QUEEN, NPCNames.CENTAUR];
+        
+        for(let i = 0; i < 20; i++){
+            const isBossLevel = bossLevels.filter((level) => level === i)[0];
+            const amount = (isBossLevel) ? 1 : i + 3;
+            const npcsToUse = (isBossLevel) ? bosses : npcs;
+            this.waveGroups.push(this.GenerateWaveGroup(npcsToUse, amount));
+        }
+    }
+
+    GenerateWaveGroup(possibleNPCs: NPCNames[], amount: number): WaveGroup[]{
+        const group: WaveGroup[] = [];
+        let remainingNpcs = amount;
+        let remainingPossibleNPCs = possibleNPCs;
+
+        while(remainingNpcs > 0){
+            const currentNPC = RandomInt(remainingPossibleNPCs[0], remainingPossibleNPCs[remainingPossibleNPCs.length - 1]);
+            const currentAmmountToGenerate = (remainingPossibleNPCs.length === 1) ? remainingNpcs : RandomInt(1, remainingNpcs);
+    
+            group.push({
+                name: currentNPC,
+                ammount: currentAmmountToGenerate,
+            });
+    
+            remainingPossibleNPCs = remainingPossibleNPCs.filter((npc) => (npc !== currentNPC));
+            remainingNpcs = remainingNpcs - currentAmmountToGenerate;
+        }
+
+        return group;
     }
 
     OnThink(): number {
@@ -837,7 +834,8 @@ export class GameMode{
     }
 
     IsPlayerHero(hero: CDOTA_BaseNPC): boolean{
-        return this.players.filter((player) => player.hero === hero)[0] !== undefined;
+        const playerID = hero.GetPlayerOwnerID();
+        return playerID !== -1;
     }
 
     IncrementWave(): void{
@@ -865,7 +863,11 @@ export class GameMode{
 
     RegisterUnit(unit: CDOTA_BaseNPC): void{
         if(unit.IsRealHero()){
-            this.units.push(new PlayerNPC(unit));
+            if(this.IsPlayerHero(unit)){
+                this.units.push(new CustomPlayerHeroNPC(unit));
+            } else {
+                this.units.push(new CustomHeroNPC(unit));
+            }
         } else {
             this.units.push(new CustomNPC(unit));
         }
