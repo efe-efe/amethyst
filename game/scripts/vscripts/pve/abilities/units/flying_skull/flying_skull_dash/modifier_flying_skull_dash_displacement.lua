@@ -45,7 +45,8 @@ end
 
 function modifier_flying_skull_dash_displacement:GetOverrideAnimation() 		return ACT_DOTA_RUN end
 function modifier_flying_skull_dash_displacement:GetOverrideAnimationRate() 	return 1.5 end
-function modifier_flying_skull_dash_displacement:GetCollisionRadius() 			return 200 end
+function modifier_flying_skull_dash_displacement:GetCollisionRadius() 			return 100 end
+
 
 if IsClient() then require("wrappers/modifiers") end
 Modifiers.Displacement(modifier_flying_skull_dash_displacement)
