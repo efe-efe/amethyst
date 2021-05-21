@@ -8,15 +8,15 @@ function phantom_second_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
 	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
-	local damage = self:GetSpecialValueFor("ability_damage")
+	local damage = caster:GetAverageTrueAttackDamage(caster)
 	local radius = self:GetSpecialValueFor("radius")
 	
-	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
+	local damage_multiplier_per_stack = self:GetSpecialValueFor("damage_multiplier_per_stack")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
-	local final_damage = damage + (stacks * damage_per_stack)
+	local final_damage = damage * ((stacks + 1) * damage_multiplier_per_stack)
 
 	local damage_table = {
 		attacker = caster,

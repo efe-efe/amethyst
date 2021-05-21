@@ -24,7 +24,7 @@
 		
 		"AbilitySpecial"
 		{
-			"01"{ "var_type"	"FIELD_FLOAT"		"ability_damage"			"6 9" }
+			"01"{ "var_type"	"FIELD_FLOAT"		"damage_multiplier"			"0.9 1.3" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1900" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"60" }

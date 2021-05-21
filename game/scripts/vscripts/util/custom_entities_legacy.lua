@@ -1020,6 +1020,7 @@ end
 
 function CustomEntitiesLegacy:AttackWithBaseDamage(hEntity, tData)
 	local pre_attack_damage = 0
+	local multiplier = tData.nMultiplier or 1.0 
 
 	for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.PRE_ATTACK_DAMAGE)) do
 		local hModifier = hEntity:FindModifierByName(value)
@@ -1036,7 +1037,7 @@ function CustomEntitiesLegacy:AttackWithBaseDamage(hEntity, tData)
 	local damage_table = {
 		victim = tData.hTarget,
 		attacker = hEntity,
-		damage = hEntity:GetAverageTrueAttackDamage(tData.hTarget) + pre_attack_damage,
+		damage = math.floor((hEntity:GetAverageTrueAttackDamage(tData.hTarget) + pre_attack_damage) * multiplier),
 		damage_type = tData.iDamageType or DAMAGE_TYPE_PHYSICAL,
 		ability = tData.hAbility,
 	}

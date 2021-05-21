@@ -19,8 +19,9 @@ function phantom_ultimate:OnSpellStart()
 	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
 	
     local max_range = self:GetSpecialValueFor("range")
-    local damage = self:GetSpecialValueFor("ability_damage")
-    local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
+	local damage = caster:GetAverageTrueAttackDamage(caster)
+	local damage_multiplier = self:GetSpecialValueFor("damage_multiplier")
+	local damage_multiplier_per_stack = self:GetSpecialValueFor("damage_multiplier_per_stack")
 
 	local projectile_name = "particles/phantom/phantom_ultimate.vpcf"
 	local projectile_start_radius = 70
@@ -47,7 +48,7 @@ function phantom_ultimate:OnSpellStart()
 			fGroundOffset = 0,
 			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
-				local final_damage = damage + (stacks * damage_per_stack)
+				local final_damage = damage * (damage_multiplier + (stacks * damage_multiplier_per_stack))
 
 				local damage_table = {
 					victim = unit,
