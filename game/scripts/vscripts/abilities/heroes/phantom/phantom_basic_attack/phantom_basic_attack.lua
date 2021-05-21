@@ -122,5 +122,9 @@ function phantom_ex_basic_attack:PlayEffects()
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
+function phantom_ex_basic_attack:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_basic_attack_related")
+end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(phantom_basic_attack)

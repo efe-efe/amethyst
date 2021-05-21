@@ -36,10 +36,12 @@ function phantom_second_attack:OnSpellStart()
 			if stacks == 3 then
 				local modifier = caster:FindModifierByName("modifier_phantom_mobility_charges")
 
-				if self:GetLevel() >= 2 then
-					modifier:RefreshCharges()
-				else
-					modifier:AddCharge()
+				if modifier then
+					if self:GetLevel() >= 2 then
+						modifier:RefreshCharges()
+					else
+						modifier:AddCharge()
+					end
 				end
 
 				EmitSoundOn("DOTA_Item.MagicWand.Activate", caster)

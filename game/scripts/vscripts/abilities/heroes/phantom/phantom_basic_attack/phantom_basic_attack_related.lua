@@ -108,6 +108,9 @@ end
 function phantom_basic_attack_related:PlayEffectsOnCast()
 	EmitSoundOn("Hero_PhantomAssassin.Dagger.Cast", self:GetCaster())
 end
+function phantom_basic_attack_related:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_ex_basic_attack")
+end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(phantom_basic_attack_related)
