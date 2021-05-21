@@ -17,10 +17,16 @@ function dire_zombie_rage_aura:OnSpellStart()
 
     CreateRadiusMarker(self:GetCaster(), self:GetCaster():GetAbsOrigin(), radius, RADIUS_SCOPE_PUBLIC, 0.15)
     EmitSoundOn("General.Attack", self:GetCaster())
+
+    EFX("particles/econ/items/lifestealer/ls_ti10_immortal/ls_ti10_immortal_infest_gold_shockwave.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
+        release = true,
+    })
 end
 
 function dire_zombie_rage_aura:OnUpgrade()
-    EFX("particles/econ/items/invoker/invoker_ti7/invoker_ti7_alacrity_buff.vpcf", PATTACH_OVERHEAD_FOLLOW, self:GetCaster(), {})
+    EFX("particles/econ/items/invoker/invoker_ti7/invoker_ti7_alacrity_buff.vpcf", PATTACH_OVERHEAD_FOLLOW, self:GetCaster(), {
+        release = true,
+    })
 end
 
 if IsClient() then require("wrappers/abilities") end
