@@ -20,7 +20,6 @@
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
 	</scripts>
     <Panel class="main" hittest="false">
-        <!--<Image id="seq_bg" class="SeqBg" src="file://{images}/custom_game/loading_screen/loading_seq_bg.psd" />-->
         <Panel id="ready-bar" class="ready-bar">
             <Label class="ready-bar__title" id="ready-bar__title" text="Ready?" />
         </Panel>
