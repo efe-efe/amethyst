@@ -52,6 +52,10 @@ function sniper_special_attack:PlayEffects(point, particle_cast)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
+function sniper_special_attack:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "sniper_special_attack_recast")
+end
+
 sniper_ex_special_attack.GetCastAnimationCustom = sniper_special_attack.GetCastAnimationCustom
 sniper_ex_special_attack.GetPlaybackRateOverride = sniper_special_attack.GetPlaybackRateOverride
 sniper_ex_special_attack.PlayEffects = sniper_special_attack.PlayEffects

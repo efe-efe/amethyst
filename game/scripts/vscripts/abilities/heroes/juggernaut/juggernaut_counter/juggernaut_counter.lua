@@ -16,6 +16,10 @@ function juggernaut_counter:OnSpellStart()
    LinkAbilityCooldowns(caster, 'juggernaut_ex_counter')
 end
 
+function juggernaut_counter:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_counter_recast")
+end
+
 function juggernaut_counter_helper:Slash(vPoint, iDamage)
    local caster = self:GetCaster()
    local modifier = caster:AddNewModifier(caster, self, self:GetRecastCounterModifierName(), {})
@@ -143,6 +147,10 @@ function juggernaut_counter_recast:PlayEffectsOnSlash(vOrigin, vNewOrigin)
       cp1 = vNewOrigin,
       release = true
    })  
+end
+
+function juggernaut_counter_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_counter")
 end
 
 function juggernaut_ex_counter:GetCastAnimationCustom()		return ACT_DOTA_TAUNT end

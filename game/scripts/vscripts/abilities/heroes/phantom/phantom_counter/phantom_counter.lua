@@ -29,6 +29,10 @@ function phantom_counter:OnSpellStart()
 	})
 end
 
+function phantom_counter:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_counter_recast")
+end
+
 function phantom_counter_recast:OnSpellStart()
 	local caster = self:GetCaster()
 	local origin = caster:GetAbsOrigin()
@@ -52,6 +56,10 @@ function phantom_counter_recast:OnSpellStart()
 
     EmitSoundOn("Hero_Sven.GodsStrength.Attack", caster)
     EmitSoundOn("Hero_Abaddon.AphoticShield.Cast", caster)
+end
+
+function phantom_counter_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_counter")
 end
 
 function phantom_ex_counter:OnSpellStart()
@@ -90,6 +98,10 @@ function phantom_ex_counter:PlayEffectsOnCast()
 		cp3 = origin,
 		release = true
 	})
+end
+
+function phantom_ex_counter:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_ex_counter_recast")
 end
 
 function phantom_ex_counter_recast:GetCastAnimationCustom()		return ACT_DOTA_TELEPORT_END end 
@@ -175,6 +187,10 @@ end
 
 function phantom_ex_counter_recast:PlayEffectsOnCast()
 	EmitSoundOn("Hero_PhantomAssassin.Dagger.Cast", self:GetCaster())
+end
+
+function phantom_ex_counter_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_ex_counter")
 end
 
 if IsClient() then require("wrappers/abilities") end

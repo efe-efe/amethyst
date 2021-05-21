@@ -1,4 +1,5 @@
 juggernaut_extra = class({})
+juggernaut_extra_recast = class({})
 LinkLuaModifier("modifier_juggernaut_extra_ward", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_ward", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_extra_recast", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra_recast", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_extra", "abilities/heroes/juggernaut/juggernaut_extra/modifier_juggernaut_extra", LUA_MODIFIER_MOTION_NONE)
@@ -45,6 +46,36 @@ function juggernaut_extra:OnSpellStart()
     ParticleManager:SetParticleControlEnt(efx, 0, healing_ward, PATTACH_POINT_FOLLOW, "attach_hitloc", healing_ward:GetAbsOrigin(), true)
     ParticleManager:SetParticleControlEnt(efx, 1, caster, PATTACH_POINT_FOLLOW, "attach_hitloc", caster:GetAbsOrigin(), true)
     ParticleManager:ReleaseParticleIndex(efx)
+end
+
+function juggernaut_extra:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_extra_recast")
+end
+
+function juggernaut_extra_recast:OnSpellStart()
+    local caster = self:GetCaster()
+    local point = CustomAbilitiesLegacy:GetCursorPosition(self)
+    
+    local healing_ward = EntIndexToHScript(self.healing_ward_index) 
+
+    healing_ward:MoveToPosition(point)
+
+    self:PlayEffects(point)
+end
+
+function juggernaut_extra_recast:SetHealingWardIndex(healing_ward_index)
+    self.healing_ward_index = healing_ward_index
+end
+
+function juggernaut_extra_recast:PlayEffects(point)
+    local particle_cast = "particles/ui_mouseactions/clicked_basemove.vpcf"
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, point)
+    ParticleManager:SetParticleControl(effect_cast, 1, Vector(0,255,0))
+end
+
+function juggernaut_extra_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_extra")
 end
 
 if IsClient() then require("wrappers/abilities") end

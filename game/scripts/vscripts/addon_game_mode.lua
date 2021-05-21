@@ -12,7 +12,7 @@ local ____tstl_2Dutils = require("lib.tstl-utils")
 local reloadable = ____tstl_2Dutils.reloadable
 require("wrappers.abilities")
 require("wrappers.modifiers")
-require("util.custom_abilities")
+require("util.custom_abilities_legacy")
 require("util.custom_entities_legacy")
 require("util.math_legacy")
 require("util.util")
@@ -30,7 +30,7 @@ local ____round = require("clases.round")
 local Round = ____round.default
 local ____custom_npc = require("clases.custom_npc")
 local CustomNPC = ____custom_npc.default
-local CustomHeroNPC = ____custom_npc.CustomHeroNPC
+local CustomNonPlayerHeroNPC = ____custom_npc.CustomNonPlayerHeroNPC
 local CustomPlayerHeroNPC = ____custom_npc.CustomPlayerHeroNPC
 local ____custom_items = require("util.custom_items")
 local CustomItems = ____custom_items.CustomItems
@@ -194,7 +194,7 @@ function GameMode.prototype.StartPVEMap(self)
     )
 end
 function GameMode.prototype.GenerateWaveGroups(self)
-    local bossLevels = {1, 9, 19}
+    local bossLevels = {7, 15}
     local npcs = {NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL}
     local bosses = {NPCNames.QUEEN, NPCNames.CENTAUR}
     do
@@ -828,7 +828,7 @@ function GameMode.prototype.RegisterUnit(self, unit)
         else
             __TS__ArrayPush(
                 self.units,
-                __TS__New(CustomHeroNPC, unit)
+                __TS__New(CustomNonPlayerHeroNPC, unit)
             )
         end
     else

@@ -1,5 +1,6 @@
 
 juggernaut_special_attack = class({})
+juggernaut_special_attack_recast = class({})
 LinkLuaModifier("modifier_juggernaut_special_attack_recast", "abilities/heroes/juggernaut/juggernaut_special_attack/modifier_juggernaut_special_attack_recast", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_special_attack:GetCastAnimationCustom()		return ACT_DOTA_TAUNT end
@@ -82,6 +83,45 @@ function juggernaut_special_attack:PlayEffectsOnCast()
 	EmitSoundOn("juggernaut_jug_spawn_02", self:GetCaster())
 	EmitSoundOn("Hero_Juggernaut.ArcanaTrigger", self:GetCaster())	
 	EmitSoundOn("Hero_Juggernaut.BladeDance", self:GetCaster())
+end
+
+function juggernaut_special_attack:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_special_attack_recast")
+end
+
+function juggernaut_special_attack_recast:IsHidden()
+    return true 
+end
+
+function juggernaut_special_attack_recast:OnSpellStart()
+    local caster = self:GetCaster()
+    local origin = caster:GetAbsOrigin()
+    local target_entity = EntIndexToHScript(self.target_index)
+ 
+	local random_number = RandomInt(1, 9)
+	if random_number > 1 then
+		EmitSoundOn("juggernaut_jug_ability_bladefury_0" .. random_number, caster)
+	end
+
+    FindClearSpaceForUnit(caster, target_entity:GetAbsOrigin() + target_entity:GetForwardVector() * - 80, true)
+    
+	local particle_cast = "particles/juggernaut/special_attack_recast.vpcf"
+    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
+    ParticleManager:SetParticleControl(effect_cast, 0, origin)
+    ParticleManager:SetParticleControl(effect_cast, 1, self:GetCaster():GetOrigin())
+    ParticleManager:SetParticleControl(effect_cast, 3, self:GetCaster():GetOrigin())
+    ParticleManager:ReleaseParticleIndex(effect_cast)
+
+    caster:StartGestureWithPlaybackRate(ACT_DOTA_SPAWN, 2.0)
+
+end
+
+function juggernaut_special_attack_recast:SetTargetIndex(target_index)
+    self.target_index = target_index
+end
+
+function juggernaut_special_attack_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_special_attack")
 end
 
 if IsClient() then require("wrappers/abilities") end

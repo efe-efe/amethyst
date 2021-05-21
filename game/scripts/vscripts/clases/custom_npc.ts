@@ -22,10 +22,6 @@ export default class CustomNPC extends UnitEntity{
     constructor(unit: CDOTA_BaseNPC){
         CustomEntitiesLegacy.Initialize(unit, !unit.IsRealHero()); //Need this for SetParent bullshit
         super({ unit });
-        this.LevelAllAbilities(1);
-        if(this.unit.IsRealHero()){
-            this.unit.SetAbilityPoints(2);
-        }
         customEntities.Disarm(this.unit);
         customEntities.IgnoreMSLimit(this.unit);
     }
@@ -323,16 +319,22 @@ export class CustomHeroNPC extends CustomNPC{
         customEntities.SetUseEnergy(this.unit);
     }
 }
+export class CustomNonPlayerHeroNPC extends CustomHeroNPC{
+    constructor(unit: CDOTA_BaseNPC){
+        super(unit);
+        this.LevelAllAbilities(1);
+    }
+}
 export class CustomPlayerHeroNPC extends CustomHeroNPC{
     constructor(unit: CDOTA_BaseNPC){
         super(unit);
-        customEntities.HideHealthBar(this.unit);
-        customEntities.SetUseEnergy(this.unit);
-
         if(GameRules.Addon.IsPVE()){
-            this.LevelAllAbilities(0);
             this.unit.GetAbilityByIndex(0)?.SetLevel(1);
             this.unit.GetAbilityByIndex(6)?.SetLevel(1);
+            (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(2);
+        } else {
+            this.LevelAllAbilities(1);        
+            (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(2);    
         }
     }
     

@@ -4,7 +4,7 @@ import Warmup from './clases/warmup';
 import { reloadable } from './lib/tstl-utils';
 import './wrappers/abilities';
 import './wrappers/modifiers';
-import './util/custom_abilities';
+import './util/custom_abilities_legacy';
 import './util/custom_entities_legacy';
 import './util/math_legacy';
 import './util/util';
@@ -17,7 +17,7 @@ import './overrides/abilities';
 import Player from './clases/player';
 import PreRound from './clases/pre_round';
 import Round from './clases/round';
-import CustomNPC, { CustomHeroNPC, CustomPlayerHeroNPC } from './clases/custom_npc';
+import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from './clases/custom_npc';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
 import Wave, { WaveGroup } from './clases/wave';
@@ -70,7 +70,7 @@ const THINK_PERIOD = 0.01;
 @reloadable
 export class GameMode{
     private players: Player[] = [];
-    private units: (CustomPlayerHeroNPC | CustomHeroNPC | CustomNPC)[] = [];
+    private units: (CustomPlayerHeroNPC | CustomNonPlayerHeroNPC | CustomNPC)[] = [];
     private state = CustomGameState.NONE;
     private thinkers: Thinker[] = [];
     private wtf = false;
@@ -194,7 +194,7 @@ export class GameMode{
     }
 
     GenerateWaveGroups(): void{
-        const bossLevels = [1, 9, 19];
+        const bossLevels = [7, 15];
         const npcs = [NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL];
         const bosses = [NPCNames.QUEEN, NPCNames.CENTAUR];
         
@@ -866,7 +866,7 @@ export class GameMode{
             if(this.IsPlayerHero(unit)){
                 this.units.push(new CustomPlayerHeroNPC(unit));
             } else {
-                this.units.push(new CustomHeroNPC(unit));
+                this.units.push(new CustomNonPlayerHeroNPC(unit));
             }
         } else {
             this.units.push(new CustomNPC(unit));

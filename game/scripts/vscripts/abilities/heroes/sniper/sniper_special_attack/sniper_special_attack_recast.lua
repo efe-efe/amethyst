@@ -46,5 +46,9 @@ function sniper_special_attack_recast:PlayEffects(point)
 	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
+function sniper_special_attack_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "sniper_special_attack")
+end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(sniper_special_attack_recast)

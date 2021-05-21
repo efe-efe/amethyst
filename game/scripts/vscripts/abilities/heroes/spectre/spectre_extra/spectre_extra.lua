@@ -12,6 +12,10 @@ function spectre_extra:OnSpellStart()
     caster:AddNewModifier(caster, self, "modifier_spectre_extra", { duration = duration })
 end
 
+function spectre_extra:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "spectre_extra_recast")
+end
+
 function spectre_extra_recast:GetCastAnimationCustom()     return ACT_DOTA_CAST_ABILITY_1 end
 function spectre_extra_recast:GetPlaybackRateOverride()    return 1.0 end
 function spectre_extra_recast:GetCastPointSpeed() 			return 80 end
@@ -84,6 +88,10 @@ end
 
 function spectre_extra_recast:ResetDamage()
 	self.extra_damage = 0
+end
+
+function spectre_extra_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "spectre_extra")
 end
 
 if IsClient() then require("wrappers/abilities") end

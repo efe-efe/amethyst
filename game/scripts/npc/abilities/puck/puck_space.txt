@@ -35,7 +35,7 @@
 	"puck_mobility_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility_recast"
+		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
 		"MaxLevel"						"1"
 
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"

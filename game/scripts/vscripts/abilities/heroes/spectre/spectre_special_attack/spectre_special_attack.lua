@@ -156,6 +156,15 @@ function spectre_ex_special_attack:OnSpellStart()
 	LinkAbilityCooldowns(caster, 'spectre_special_attack')
 end
 
+function spectre_ex_special_attack:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "spectre_ex_special_attack_recast")
+	local related = self:GetCaster():FindAbilityByName('spectre_ex_special_attack_recast')
+	
+	if self:GetLevel() > related:GetLevel() then
+		related:UpgradeAbility(true)
+	end
+end
+
 function spectre_ex_special_attack_recast:OnSpellStart()
 	local caster = self:GetCaster()
     local origin = caster:GetOrigin()
@@ -193,17 +202,9 @@ function spectre_ex_special_attack_recast:ClearTargets(hTarget)
 	self.targets = nil
 end
 
-
 function spectre_ex_special_attack_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "spectre_ex_special_attack")
 	local related = self:GetCaster():FindAbilityByName('spectre_ex_special_attack')
-	
-	if self:GetLevel() > related:GetLevel() then
-		related:UpgradeAbility(true)
-	end
-end
-
-function spectre_ex_special_attack:OnUpgrade()
-	local related = self:GetCaster():FindAbilityByName('spectre_ex_special_attack_recast')
 	
 	if self:GetLevel() > related:GetLevel() then
 		related:UpgradeAbility(true)

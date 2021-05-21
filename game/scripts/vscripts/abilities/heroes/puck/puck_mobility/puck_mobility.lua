@@ -1,4 +1,5 @@
 puck_mobility = class({})
+puck_mobility_recast = class({})
 puck_ex_mobility = class({})
 puck_ex_mobility_recast = class({})
 
@@ -115,6 +116,30 @@ function puck_mobility:PlayEffectsOnCast()
 	EmitSoundOn("Hero_Puck.Illusory_Orb", self:GetCaster())
 end
 
+function puck_mobility:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "puck_mobility_recast")
+end
+
+function puck_mobility_recast:GetCastPointSpeed()    return 0 end
+
+function puck_mobility_recast:OnSpellStart()
+    FindClearSpaceForUnit(self:GetCaster(), self.projectile:GetPosition(), true)
+    EmitSoundOn("Hero_Puck.EtherealJaunt", self:GetCaster())
+    
+	StopSoundOn("Hero_Puck.Illusory_Orb", self:GetCaster())
+    self.projectile:ScheduleDestroy()
+end
+
+function puck_mobility_recast:SetProjectile(projectile)
+    if IsServer() then
+        self.projectile = projectile
+    end
+end
+
+function puck_mobility_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "puck_mobility")
+end
+
 puck_ex_mobility.GetCastAnimationCustom = puck_mobility.GetCastAnimationCustom
 puck_ex_mobility.PlayEffectsOnCast = puck_mobility.PlayEffectsOnCast
 puck_ex_mobility.PlayEffectsOnFinish = puck_mobility.PlayEffectsOnFinish
@@ -199,6 +224,10 @@ function puck_ex_mobility:OnSpellStart()
 	})
 end
 
+function puck_ex_mobility:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "puck_ex_mobility_recast")
+end
+
 function puck_ex_mobility_recast:GetCastPointSpeed()    	return 0 end
 function puck_ex_mobility_recast:GetCastAnimationCustom()	return ACT_DOTA_CAST_ABILITY_2 end
 function puck_ex_mobility_recast:OnSpellStart()
@@ -214,6 +243,11 @@ function puck_ex_mobility_recast:SetProjectile(projectile)
     end
 end
 
+function puck_ex_mobility_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "puck_ex_mobility")
+end
+
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(puck_mobility)
+Abilities.Castpoint(puck_mobility_recast)
 Abilities.Castpoint(puck_ex_mobility)
