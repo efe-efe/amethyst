@@ -278,7 +278,7 @@ function GenerateLocalizationData() {
     Abilities.push({
         ability_classname: 'nevermore_ex_special_attack',
         name: 'Soul Eater',
-        description: 'Shadow Fiend consumes all the captured <b><font color="#ff2727 ">Souls</font></b> to heals himself by ${heal} plus ${heal_per_soul} per <b><font color="#ff2727 ">Soul</font></b> consumed.n<b><font color="#61ffd0"><img src="file://{images}/custom_game/add.png" />LEVEL UPGRADE</font></b><br>Increases the base heal ammount.',
+        description: 'Shadow Fiend consumes all the captured <b><font color="#ff2727 ">Souls</font></b> to heals himself by $@{heal} plus ${heal_per_soul} per <b><font color="#ff2727 ">Soul</font></b> consumed.n<b><font color="#61ffd0"><img src="file://{images}/custom_game/add.png" />LEVEL UPGRADE</font></b><br>Increases the base heal ammount.',
         ability_specials: [
             {
                 ability_special: 'AbilityCastPoint',

@@ -67,7 +67,7 @@ function GenerateLocalizationData() {
         ability_classname: 'phantom_counter',
         name: 'Phantom Strike',
         description: specific_1.Description({
-            description: 'Counters the next projectile or melee attack. Countering an attack banishes yourself for @{banish_duration} second, after that, teleports you to target location, heals you in <font color="#97DF3B">{heal}</font>, increases your attack speed by @{as_speed} for @{buff_duration}s and teleports you to a new location.',
+            description: 'Counters the next projectile or melee attack. Countering an attack banishes yourself for @{banish_duration} second, after that, teleports you to target location, heals you in <font color="#97DF3B">@{heal}</font>, increases your attack speed by @{as_speed} for @{buff_duration}s and teleports you to a new location.',
             level: 'Can be recasted to get the attack speed buff again and gain a shield that blocks @{shield} damage during @{shield_duration}s.',
         }),
     });
