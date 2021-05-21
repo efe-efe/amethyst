@@ -389,42 +389,39 @@ export class GameMode{
         LinkLuaModifier('wall_base',                                'modifiers/wall_base.lua', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_adrenaline',                      'modifiers/modifier_adrenaline.lua', LuaModifierMotionType.NONE);
         LinkLuaModifier('radius_marker_thinker',                    'modifiers/radius_marker_thinker.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_ruby',                            'modifiers/modifier_ruby.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_ruby_attack',                     'modifiers/modifier_ruby.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_sapphire',                        'modifiers/modifier_sapphire.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_emerald',                         'modifiers/modifier_emerald.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_amethyst',                        'modifiers/modifier_amethyst.lua', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_miss',                            'modifiers/modifier_miss.lua', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_restricted',                      'modifiers/modifier_restricted.lua', LuaModifierMotionType.NONE);
+        
+        LinkLuaModifier('modifier_ruby',                            'modifiers/gems/modifier_ruby.lua', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_ruby_attack',                     'modifiers/gems/modifier_ruby.lua', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_sapphire',                        'modifiers/gems/modifier_sapphire.lua', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_emerald',                         'modifiers/gems/modifier_emerald.lua', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_amethyst',                        'modifiers/gems/modifier_amethyst.lua', LuaModifierMotionType.NONE);
 
-        LinkLuaModifier('modifier_generic_silence',                 'abilities/generic/modifier_generic_silence', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_fading_slow',             'abilities/generic/modifier_generic_fading_slow', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_fading_haste',            'abilities/generic/modifier_generic_fading_haste', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_stunned',                 'abilities/generic/modifier_generic_stunned', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_provides_vision',         'abilities/generic/modifier_generic_provides_vision', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_knockback',               'abilities/generic/modifier_generic_knockback', LuaModifierMotionType.BOTH);
-        LinkLuaModifier('modifier_generic_root',                    'abilities/generic/modifier_generic_root', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_invencible',              'abilities/generic/modifier_generic_invencible', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_confuse',                 'abilities/generic/modifier_generic_confuse', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_sleep',                   'abilities/generic/modifier_generic_sleep', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_fear',                    'abilities/generic/modifier_generic_fear', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_meele_npc',               'abilities/generic/modifier_generic_meele_npc', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_phased',                  'abilities/generic/modifier_generic_phased', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_flying',                  'abilities/generic/modifier_generic_flying', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_ignore_ms_limit',         'abilities/generic/modifier_generic_ignore_ms_limit', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_silence',                 'modifiers/generic/modifier_generic_silence', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_fading_slow',             'modifiers/generic/modifier_generic_fading_slow', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_fading_haste',            'modifiers/generic/modifier_generic_fading_haste', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_stunned',                 'modifiers/generic/modifier_generic_stunned', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_provides_vision',         'modifiers/generic/modifier_generic_provides_vision', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_knockback',               'modifiers/generic/modifier_generic_knockback', LuaModifierMotionType.BOTH);
+        LinkLuaModifier('modifier_generic_root',                    'modifiers/generic/modifier_generic_root', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_invencible',              'modifiers/generic/modifier_generic_invencible', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_confuse',                 'modifiers/generic/modifier_generic_confuse', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_sleep',                   'modifiers/generic/modifier_generic_sleep', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_fear',                    'modifiers/generic/modifier_generic_fear', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_meele_npc',               'modifiers/generic/modifier_generic_meele_npc', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_phased',                  'modifiers/generic/modifier_generic_phased', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_flying',                  'modifiers/generic/modifier_generic_flying', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_ignore_ms_limit',         'modifiers/generic/modifier_generic_ignore_ms_limit', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_visible',                         'modifiers/generic/modifier_visible', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_casting',                         'modifiers/generic/modifier_casting', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_damage_fx',                       'modifiers/generic/modifier_damage_fx', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_shield',                          'modifiers/generic/modifier_shield', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_hide_bar',                        'modifiers/generic/modifier_hide_bar', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_hidden',                          'modifiers/generic/modifier_hidden', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_banish',                          'modifiers/generic/modifier_banish', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_hero_movement',                   'modifiers/generic/modifier_hero_movement', LuaModifierMotionType.NONE);
         
-        LinkLuaModifier('modifier_visible',                         'abilities/base/modifier_visible', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_casting',                         'abilities/base/modifier_casting', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_damage_fx',                       'abilities/base/modifier_damage_fx', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_hero_base',                       'abilities/base/modifier_hero_base', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_shield',                          'abilities/base/modifier_shield', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_hide_bar',                        'abilities/base/modifier_hide_bar', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_hidden',                          'abilities/base/modifier_hidden', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_banish',                          'abilities/base/modifier_banish', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_hero_movement',                   'abilities/base/modifier_hero_movement', LuaModifierMotionType.NONE);
-        
-        LinkLuaModifier('modifier_mount',                          'abilities/heroes/common/mount/modifier_mount.lua', LuaModifierMotionType.NONE);
-    
         print('[AMETHYST] Useful modifiers linked');
     }
 
