@@ -20,6 +20,10 @@
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
 	</scripts>
     <Panel class="main" hittest="false">
+        <Panel id="pve" class="pve">
+            <Label id="enemies-count" text="Killed enemies: 0/0" />
+            <Label id="current-level" text="Level: 1" />
+        </Panel>
         <Panel id="ready-bar" class="ready-bar">
             <Label class="ready-bar__title" id="ready-bar__title" text="Ready?" />
         </Panel>

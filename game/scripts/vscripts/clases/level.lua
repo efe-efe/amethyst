@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 9,["11"] = 9,["12"] = 9,["13"] = 9,["14"] = 9,["15"] = 15,["16"] = 9,["17"] = 10,["18"] = 11,["19"] = 13,["20"] = 17,["21"] = 19,["22"] = 19,["23"] = 19,["24"] = 20,["25"] = 20,["26"] = 20,["28"] = 21,["29"] = 21,["30"] = 22,["31"] = 23,["32"] = 24,["33"] = 24,["34"] = 24,["36"] = 25,["37"] = 26,["38"] = 27,["39"] = 21,["42"] = 20,["43"] = 20,["44"] = 19,["45"] = 19,["46"] = 15,["47"] = 35,["48"] = 36,["49"] = 37,["50"] = 37,["51"] = 37,["52"] = 37,["53"] = 38,["54"] = 39,["56"] = 35,["57"] = 43,["58"] = 44,["59"] = 44,["60"] = 44,["61"] = 44,["62"] = 45,["63"] = 46,["65"] = 43,["66"] = 50,["67"] = 9,["68"] = 53,["69"] = 53,["70"] = 53,["71"] = 54,["72"] = 53,["73"] = 53,["74"] = 57,["75"] = 58,["77"] = 50,["78"] = 62,["79"] = 63,["80"] = 62,["81"] = 9,["82"] = 9});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 19,["11"] = 19,["12"] = 19,["13"] = 19,["14"] = 19,["15"] = 27,["16"] = 19,["17"] = 20,["18"] = 21,["19"] = 25,["20"] = 29,["21"] = 30,["22"] = 31,["23"] = 32,["24"] = 34,["25"] = 27,["26"] = 37,["27"] = 38,["28"] = 39,["29"] = 44,["30"] = 37,["31"] = 47,["32"] = 48,["33"] = 49,["34"] = 49,["35"] = 49,["37"] = 50,["38"] = 50,["39"] = 51,["40"] = 52,["41"] = 53,["42"] = 53,["43"] = 53,["45"] = 54,["46"] = 55,["47"] = 50,["50"] = 49,["51"] = 49,["52"] = 47,["53"] = 62,["54"] = 63,["55"] = 64,["56"] = 64,["57"] = 64,["58"] = 64,["59"] = 65,["60"] = 66,["61"] = 67,["63"] = 69,["64"] = 62,["65"] = 72,["66"] = 73,["67"] = 73,["68"] = 73,["69"] = 73,["70"] = 74,["71"] = 75,["73"] = 72,["74"] = 79,["75"] = 19,["76"] = 82,["77"] = 82,["78"] = 82,["79"] = 83,["80"] = 82,["81"] = 82,["82"] = 86,["83"] = 87,["84"] = 88,["86"] = 90,["87"] = 91,["90"] = 79,["91"] = 96,["92"] = 97,["93"] = 96,["94"] = 19,["95"] = 19});
 local ____exports = {}
 local ____custom_ai = require("clases.custom_ai")
 local CustomAIFactories = ____custom_ai.CustomAIFactories
@@ -12,47 +12,55 @@ ____exports.default = (function()
     local Level = ____exports.default
     Level.name = "Level"
     __TS__ClassExtends(Level, GameState)
-    function Level.prototype.____constructor(self, alliances, duration, wavesInfo)
+    function Level.prototype.____constructor(self, alliances, duration, level)
         GameState.prototype.____constructor(self, alliances, duration)
         self.helper = 3 * 30
         self.ais = {}
-        self.aliveAis = 0
-        self.wavesInfo = wavesInfo
+        self.currentWave = 0
+        self.level = level
+        self.remainingTotalNpcs = level.totalNpcs
+        self.remainingWaveNpcs = self.level.waves[self.currentWave + 1].totalNpcs
+        self:StartWave(self.currentWave)
+        self:SendDataToClient()
+    end
+    function Level.prototype.SendDataToClient(self)
+        local tableName = "main"
+        local data = {remainingEnemies = self.level.totalNpcs - self.remainingTotalNpcs, currentLevel = self.level.currentLevel + 1, maxEnemies = self.level.totalNpcs}
+        CustomNetTables:SetTableValue(tableName, "level", data)
+    end
+    function Level.prototype.StartWave(self, waveNumber)
+        self.remainingWaveNpcs = self.level.waves[waveNumber + 1].totalNpcs
         __TS__ArrayForEach(
-            wavesInfo,
-            function(____, waveInfo)
-                __TS__ArrayForEach(
-                    waveInfo,
-                    function(____, waveGroup)
-                        do
-                            local i = 0
-                            while i < waveGroup.ammount do
-                                local x = RandomInt(-1500, 1500)
-                                local y = RandomInt(-1500, 1500)
-                                local ai = CustomAIFactories[waveGroup.name](
-                                    CustomAIFactories,
-                                    Vector(x, y, 128)
-                                )
-                                __TS__ArrayPush(self.ais, ai)
-                                self.aliveAis = self.aliveAis + 1
-                                EFX("particles/ai_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, ai.unit, {release = true})
-                                i = i + 1
-                            end
-                        end
+            self.level.waves[waveNumber + 1].npcGroups,
+            function(____, npcGroup)
+                do
+                    local i = 0
+                    while i < npcGroup.ammount do
+                        local x = RandomInt(-1500, 1500)
+                        local y = RandomInt(-1500, 1500)
+                        local ai = CustomAIFactories[npcGroup.name](
+                            CustomAIFactories,
+                            Vector(x, y, 128)
+                        )
+                        __TS__ArrayPush(self.ais, ai)
+                        EFX("particles/ai_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, ai.unit, {release = true})
+                        i = i + 1
                     end
-                )
+                end
             end
         )
     end
     function Level.prototype.OnUnitDies(self, unit)
-        local previousAis = #self.ais
+        local previousNpcs = #self.ais
         self.ais = __TS__ArrayFilter(
             self.ais,
             function(____, ai) return ai.unit ~= unit end
         )
-        if previousAis > #self.ais then
-            self.aliveAis = self.aliveAis - 1
+        if previousNpcs > #self.ais then
+            self.remainingWaveNpcs = self.remainingWaveNpcs - 1
+            self.remainingTotalNpcs = self.remainingTotalNpcs - 1
         end
+        self:SendDataToClient()
     end
     function Level.prototype.OnUnitHurt(self, unit)
         local ai = __TS__ArrayFilter(
@@ -71,8 +79,13 @@ ____exports.default = (function()
                 ai:Update()
             end
         )
-        if self.aliveAis <= 0 then
-            self:EndLevel()
+        if self.remainingWaveNpcs <= 0 then
+            if self.currentWave == (#self.level.waves - 1) then
+                self:EndLevel()
+            else
+                self.currentWave = self.currentWave + 1
+                self:StartWave(self.currentWave)
+            end
         end
     end
     function Level.prototype.EndLevel(self)

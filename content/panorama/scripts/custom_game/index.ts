@@ -20,6 +20,9 @@ import { ReadyBar } from './readyBar';
     const layout = LayoutController.GetInstance();
 
     const clockPanel = $('#top-bar__clock-text') as LabelPanel;
+    const pvePanel = $('#pve');
+    const currentLevelPanel = $('#current-level') as LabelPanel;
+    const enemiesCountPanel = $('#enemies-count') as LabelPanel;
     const refunderButton = $('#refunder__button') as Button;
     const refunderPanel = $('#refunder');
     const customHotkeysPanel = $('#custom-hotkeys');
@@ -295,11 +298,16 @@ import { ReadyBar } from './readyBar';
             allianceBar.UpdateMaxScore(maxScore);
         }
     });
-
+    
+    tables.subscribeToNetTableKey(tableNameMain, 'level', true, function(data: any){
+        currentLevelPanel.text = 'Level: ' + data.currentLevel;
+        enemiesCountPanel.text = 'Killed enemies: ' + data.remainingEnemies + '/' + data.maxEnemies;
+    });
 
     function UpdateTime(data: any): void{
         clockPanel.text = data.timer_minute_10.toString() + data.timer_minute_01.toString() + ':' + data.timer_second_10.toString() + data.timer_second_01.toString();
     }
+
     GameEvents.Subscribe('countdown', UpdateTime);
     GameEvents.Subscribe('not_enough_energy', function(){
         GameUI.SendCustomHUDError('Not Enough Energy', 'versus_screen.towers_nopass');
@@ -371,5 +379,9 @@ import { ReadyBar } from './readyBar';
     
     if(!Game.IsInToolsMode()){
         //$.Schedule(3.0, () => SwapRF());
+    }
+
+    if(Game.GetMapInfo().map_display_name === 'pvp'){
+        pvePanel.style.visibility = 'collapse';
     }
 })();

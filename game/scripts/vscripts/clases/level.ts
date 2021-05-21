@@ -2,42 +2,71 @@ import Alliance from './alliance';
 import { CustomAI, CustomAIFactories, NPCNames } from './custom_ai';
 import GameState, { CustomGameState } from './game_state';
 
-export interface WaveGroup {
+export interface NPCGroup {
     name: NPCNames;
     ammount: number;
 }
+
+export interface ILevel{
+    waves: Wave[];
+    totalNpcs: number;
+    currentLevel: number;
+}
+export interface Wave {
+    npcGroups: NPCGroup[];
+    totalNpcs: number
+} 
 export default class Level extends GameState{
     helper = 3.0 * 30;
     ais: CustomAI[] = [];
-    wavesInfo: WaveGroup[][];
-    aliveAis = 0;
+    level: ILevel;
+    remainingTotalNpcs: number;
+    remainingWaveNpcs: number;
+    currentWave = 0;
 
-    constructor(alliances: Alliance[], duration: number, wavesInfo: WaveGroup[][]){
+    constructor(alliances: Alliance[], duration: number, level: ILevel){
         super(alliances, duration);
-        this.wavesInfo = wavesInfo;
+        this.level = level;
+        this.remainingTotalNpcs = level.totalNpcs;
+        this.remainingWaveNpcs = this.level.waves[this.currentWave].totalNpcs;
+        this.StartWave(this.currentWave);
 
-        wavesInfo.forEach(waveInfo => {
-            waveInfo.forEach(waveGroup => {
-                for(let i = 0; i < waveGroup.ammount; i++){
-                    const x = RandomInt(-1500, 1500);
-                    const y = RandomInt(-1500, 1500);
-                    const ai = CustomAIFactories[waveGroup.name](Vector(x, y, 128));
-                    this.ais.push(ai);
-                    this.aliveAis = this.aliveAis + 1;
-                    EFX('particles/ai_spawn.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, ai.unit, {
-                        release: true,
-                    });
-                }
-            });
+        this.SendDataToClient();
+    }
+
+    SendDataToClient(): void{
+        const tableName = 'main' as never;
+        const data = { 
+            remainingEnemies: this.level.totalNpcs - this.remainingTotalNpcs,
+            currentLevel: this.level.currentLevel + 1, 
+            maxEnemies: this.level.totalNpcs
+        } as never;
+        CustomNetTables.SetTableValue(tableName, 'level', data);
+    }
+
+    StartWave(waveNumber: number): void{
+        this.remainingWaveNpcs = this.level.waves[waveNumber].totalNpcs;
+        this.level.waves[waveNumber].npcGroups.forEach(npcGroup => {
+            for(let i = 0; i < npcGroup.ammount; i++){
+                const x = RandomInt(-1500, 1500);
+                const y = RandomInt(-1500, 1500);
+                const ai = CustomAIFactories[npcGroup.name](Vector(x, y, 128));
+                this.ais.push(ai);
+                EFX('particles/ai_spawn.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, ai.unit, {
+                    release: true,
+                });
+            }
         });
     }
 
     OnUnitDies(unit: CDOTA_BaseNPC): void{
-        const previousAis = this.ais.length;
+        const previousNpcs = this.ais.length;
         this.ais = this.ais.filter(ai => ai.unit !== unit);
-        if(previousAis > this.ais.length){
-            this.aliveAis = this.aliveAis - 1;
+        if(previousNpcs > this.ais.length){
+            this.remainingWaveNpcs--;
+            this.remainingTotalNpcs--;
         }
+        this.SendDataToClient();
     }
 
     OnUnitHurt(unit: CDOTA_BaseNPC): void{
@@ -54,8 +83,13 @@ export default class Level extends GameState{
             ai.Update();
         });
 
-        if(this.aliveAis <= 0){
-            this.EndLevel();
+        if(this.remainingWaveNpcs <= 0){
+            if(this.currentWave === this.level.waves.length - 1){
+                this.EndLevel();
+            } else {
+                this.currentWave++;
+                this.StartWave(this.currentWave);
+            }
         }
     }
 

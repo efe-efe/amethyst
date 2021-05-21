@@ -20,7 +20,7 @@ import Round from './clases/round';
 import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from './clases/custom_npc';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
-import Level, { WaveGroup } from './clases/level';
+import Level, { Wave, NPCGroup, ILevel } from './clases/level';
 import settings from './settings';
 import PreLevel from './clases/pre_level';
 import { NPCNames } from './clases/custom_ai';
@@ -78,12 +78,12 @@ export class GameMode{
     public alliances: Alliance[] = [];
     public warmup: Warmup | undefined;
     public pre_round: PreRound | undefined;
-    public waveGroups: WaveGroup[][] = [];
+    public levelsData: ILevel[] = [];
     public level: Level | undefined;
     public pre_level: PreLevel | undefined;
     public round: Round | undefined;
     public max_treshold = 30;
-    public currentWave = -1;
+    public currentLevel = -1;
 
     constructor(){
         GameRules.GetGameModeEntity().SetContextThink('OnThink', () => { return this.OnThink(); }, THINK_PERIOD);
@@ -180,7 +180,7 @@ export class GameMode{
 
     StartPVEMap(): void{
         this.SetState(CustomGameState.PRE_LEVEL);
-        this.GenerateWaveGroups();  
+        this.GenerateLevelData();  
         this.pre_level = new PreLevel(this.alliances, settings.PreWaveDuration);
         
         this.RegisterThinker(0.01, () => {
@@ -193,21 +193,36 @@ export class GameMode{
         });
     }
 
-    GenerateWaveGroups(): void{
+    GenerateLevelData(): void{
         const bossLevels = [7, 15];
         const npcs = [NPCNames.RADIANT_ZOMBIE_HEALER, NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL];
         const bosses = [NPCNames.QUEEN, NPCNames.CENTAUR];
-        
+
         for(let i = 0; i < 20; i++){
             const isBossLevel = bossLevels.filter((level) => level === i)[0];
             const amount = (isBossLevel) ? 1 : i + 3;
             const npcsToUse = (isBossLevel) ? bosses : npcs;
-            this.waveGroups.push(this.GenerateWaveGroup(npcsToUse, amount));
+            const wavesNumber = (isBossLevel) ? 1 : 3;
+            const waves = this.GenerateWaves(npcsToUse, wavesNumber, amount);
+            this.levelsData.push({
+                waves,
+                currentLevel: i,
+                totalNpcs: amount * wavesNumber,
+            });
         }
     }
 
-    GenerateWaveGroup(possibleNPCs: NPCNames[], amount: number): WaveGroup[]{
-        const group: WaveGroup[] = [];
+    GenerateWaves(possibleNPCs: NPCNames[], wavesNumber: number, npcsPerWave: number): Wave[]{
+        const waves: Wave[] = [];
+        for(let i = 0; i < wavesNumber; i++){
+            waves.push(this.GenerateWave(possibleNPCs, npcsPerWave));
+        }
+        
+        return waves;
+    }
+
+    GenerateWave(possibleNPCs: NPCNames[], amount: number): Wave{
+        const npcGroups: NPCGroup[] = [];
         let remainingNpcs = amount;
         let remainingPossibleNPCs = possibleNPCs;
 
@@ -215,7 +230,7 @@ export class GameMode{
             const currentNPC = RandomInt(remainingPossibleNPCs[0], remainingPossibleNPCs[remainingPossibleNPCs.length - 1]);
             const currentAmmountToGenerate = (remainingPossibleNPCs.length === 1) ? remainingNpcs : RandomInt(1, remainingNpcs);
     
-            group.push({
+            npcGroups.push({
                 name: currentNPC,
                 ammount: currentAmmountToGenerate,
             });
@@ -224,7 +239,7 @@ export class GameMode{
             remainingNpcs = remainingNpcs - currentAmmountToGenerate;
         }
 
-        return group;
+        return { totalNpcs: amount, npcGroups };
     }
 
     OnThink(): number {
@@ -510,9 +525,9 @@ export class GameMode{
             this.pre_level = undefined;
             this.IncrementWave();
 
-            const waveGroup = this.waveGroups[this.currentWave];
-            if(waveGroup){
-                this.level = new Level(this.alliances, -1, [waveGroup]);
+            const levelsData = this.levelsData[this.currentLevel];
+            if(levelsData){
+                this.level = new Level(this.alliances, -1, levelsData);
             } else {
                 this.EndGame(0);
             }
@@ -836,7 +851,7 @@ export class GameMode{
     }
 
     IncrementWave(): void{
-        this.currentWave = this.currentWave + 1;
+        this.currentLevel = this.currentLevel + 1;
     }
 
     IsPVP(): boolean{

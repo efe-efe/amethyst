@@ -61,7 +61,7 @@ function modifier_casting:OnIntervalThink()
 		self:Destroy()
 	end
 	
-	if self.parent.GetPlayerID then
+	if self.parent.GetPlayerID and self.parent:GetPlayerID() ~= -1 then
 		local mouse = CustomAbilitiesLegacy:GetCursorPosition(self:GetAbility())
 		local direction = (mouse - self.parent:GetAbsOrigin()):Normalized()
 
