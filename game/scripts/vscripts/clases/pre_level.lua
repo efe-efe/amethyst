@@ -21,10 +21,10 @@ ____exports.default = (function()
             )
         end
         if self.time_remaining == 0 then
-            self:EndPreWave()
+            self:EndPreLevel()
         end
     end
-    function PreLevel.prototype.EndPreWave(self)
+    function PreLevel.prototype.EndPreLevel(self)
         GameRules.Addon:SetState(CustomGameState.LEVEL_IN_PROGRESS)
     end
     return PreLevel

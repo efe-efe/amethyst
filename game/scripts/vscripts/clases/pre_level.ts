@@ -13,11 +13,11 @@ export default class PreLevel extends GameState{
             this.UpdateGameTimer(math.floor(this.time_remaining/30));
         }
         if(this.time_remaining == 0){
-            this.EndPreWave();
+            this.EndPreLevel();
         }
     }
 
-    EndPreWave(): void{
+    EndPreLevel(): void{
         GameRules.Addon.SetState(CustomGameState.LEVEL_IN_PROGRESS);
     }
 }

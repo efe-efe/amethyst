@@ -72,10 +72,10 @@ ____exports.default = (function()
             end
         )
         if self.aliveAis <= 0 then
-            self:EndWave()
+            self:EndLevel()
         end
     end
-    function Level.prototype.EndWave(self)
+    function Level.prototype.EndLevel(self)
         GameRules.Addon:SetState(CustomGameState.PRE_LEVEL)
     end
     return Level

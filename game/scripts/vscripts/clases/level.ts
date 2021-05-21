@@ -55,11 +55,11 @@ export default class Level extends GameState{
         });
 
         if(this.aliveAis <= 0){
-            this.EndWave();
+            this.EndLevel();
         }
     }
 
-    EndWave(): void{
+    EndLevel(): void{
         GameRules.Addon.SetState(CustomGameState.PRE_LEVEL);
     }
 }
