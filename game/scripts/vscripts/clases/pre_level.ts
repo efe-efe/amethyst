@@ -2,7 +2,7 @@ import Alliance from './alliance';
 import GameState, { CustomGameState } from './game_state';
 
 
-export default class PreWave extends GameState{
+export default class PreLevel extends GameState{
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
     }
@@ -18,6 +18,6 @@ export default class PreWave extends GameState{
     }
 
     EndPreWave(): void{
-        GameRules.Addon.SetState(CustomGameState.WAVE_IN_PROGRESS);
+        GameRules.Addon.SetState(CustomGameState.LEVEL_IN_PROGRESS);
     }
 }

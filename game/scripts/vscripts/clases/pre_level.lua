@@ -7,13 +7,13 @@ local GameState = ____game_state.default
 local CustomGameState = ____game_state.CustomGameState
 ____exports.default = (function()
     ____exports.default = __TS__Class()
-    local PreWave = ____exports.default
-    PreWave.name = "PreWave"
-    __TS__ClassExtends(PreWave, GameState)
-    function PreWave.prototype.____constructor(self, alliances, duration)
+    local PreLevel = ____exports.default
+    PreLevel.name = "PreLevel"
+    __TS__ClassExtends(PreLevel, GameState)
+    function PreLevel.prototype.____constructor(self, alliances, duration)
         GameState.prototype.____constructor(self, alliances, duration)
     end
-    function PreWave.prototype.Update(self)
+    function PreLevel.prototype.Update(self)
         GameState.prototype.Update(self)
         if self.time_remaining >= 0 then
             self:UpdateGameTimer(
@@ -24,9 +24,9 @@ ____exports.default = (function()
             self:EndPreWave()
         end
     end
-    function PreWave.prototype.EndPreWave(self)
-        GameRules.Addon:SetState(CustomGameState.WAVE_IN_PROGRESS)
+    function PreLevel.prototype.EndPreWave(self)
+        GameRules.Addon:SetState(CustomGameState.LEVEL_IN_PROGRESS)
     end
-    return PreWave
+    return PreLevel
 end)()
 return ____exports

@@ -9,10 +9,10 @@ local GameState = ____game_state.default
 local CustomGameState = ____game_state.CustomGameState
 ____exports.default = (function()
     ____exports.default = __TS__Class()
-    local Wave = ____exports.default
-    Wave.name = "Wave"
-    __TS__ClassExtends(Wave, GameState)
-    function Wave.prototype.____constructor(self, alliances, duration, wavesInfo)
+    local Level = ____exports.default
+    Level.name = "Level"
+    __TS__ClassExtends(Level, GameState)
+    function Level.prototype.____constructor(self, alliances, duration, wavesInfo)
         GameState.prototype.____constructor(self, alliances, duration)
         self.helper = 3 * 30
         self.ais = {}
@@ -44,7 +44,7 @@ ____exports.default = (function()
             end
         )
     end
-    function Wave.prototype.OnUnitDies(self, unit)
+    function Level.prototype.OnUnitDies(self, unit)
         local previousAis = #self.ais
         self.ais = __TS__ArrayFilter(
             self.ais,
@@ -54,7 +54,7 @@ ____exports.default = (function()
             self.aliveAis = self.aliveAis - 1
         end
     end
-    function Wave.prototype.OnUnitHurt(self, unit)
+    function Level.prototype.OnUnitHurt(self, unit)
         local ai = __TS__ArrayFilter(
             self.ais,
             function(____, ai) return ai.unit == unit end
@@ -63,7 +63,7 @@ ____exports.default = (function()
             ai:OnHurt()
         end
     end
-    function Wave.prototype.Update(self)
+    function Level.prototype.Update(self)
         GameState.prototype.Update(self)
         __TS__ArrayForEach(
             self.ais,
@@ -75,9 +75,9 @@ ____exports.default = (function()
             self:EndWave()
         end
     end
-    function Wave.prototype.EndWave(self)
-        GameRules.Addon:SetState(CustomGameState.PRE_WAVE)
+    function Level.prototype.EndWave(self)
+        GameRules.Addon:SetState(CustomGameState.PRE_LEVEL)
     end
-    return Wave
+    return Level
 end)()
 return ____exports

@@ -15,6 +15,7 @@ export enum NPCNames {
     DIRE_ZOMBIE = 0,
     DIRE_ZOMBIE_RAGER,
     DIRE_ZOMBIE_MEELE,
+    RADIANT_ZOMBIE_HEALER,
     FLYING_SKULL,
     QUEEN,
     CENTAUR,
@@ -376,6 +377,24 @@ export const CustomAIFactories: {
         ai.RegisterAbility({
             ability: ai.unit.FindAbilityByName('centaur_rage')!,
             orderType: UnitOrder.CAST_NO_TARGET,
+        });
+        return ai;
+    },
+    [NPCNames.RADIANT_ZOMBIE_HEALER]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('radiant_zombie_healer', origin, {
+            behavior: CustomAIBehavior.WANDERER,
+        });
+
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('radiant_zombie_heal_aura')!,
+            orderType: UnitOrder.CAST_NO_TARGET,
+        });
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true
+            }
         });
         return ai;
     },

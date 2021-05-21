@@ -20,9 +20,9 @@ import Round from './clases/round';
 import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from './clases/custom_npc';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
-import Wave, { WaveGroup } from './clases/wave';
+import Level, { WaveGroup } from './clases/level';
 import settings from './settings';
-import PreWave from './clases/pre_wave';
+import PreLevel from './clases/pre_level';
 import { NPCNames } from './clases/custom_ai';
 
 declare global {
@@ -79,8 +79,8 @@ export class GameMode{
     public warmup: Warmup | undefined;
     public pre_round: PreRound | undefined;
     public waveGroups: WaveGroup[][] = [];
-    public wave: Wave | undefined;
-    public pre_wave: PreWave | undefined;
+    public level: Level | undefined;
+    public pre_level: PreLevel | undefined;
     public round: Round | undefined;
     public max_treshold = 30;
     public currentWave = -1;
@@ -179,23 +179,23 @@ export class GameMode{
     }
 
     StartPVEMap(): void{
-        this.SetState(CustomGameState.PRE_WAVE);
+        this.SetState(CustomGameState.PRE_LEVEL);
         this.GenerateWaveGroups();  
-        this.pre_wave = new PreWave(this.alliances, settings.PreWaveDuration);
+        this.pre_level = new PreLevel(this.alliances, settings.PreWaveDuration);
         
         this.RegisterThinker(0.01, () => {
-            if(this.state == CustomGameState.WAVE_IN_PROGRESS && this.wave){
-                this.wave.Update();
+            if(this.state == CustomGameState.LEVEL_IN_PROGRESS && this.level){
+                this.level.Update();
             }
-            if(this.state == CustomGameState.PRE_WAVE && this.pre_wave){
-                this.pre_wave.Update();
+            if(this.state == CustomGameState.PRE_LEVEL && this.pre_level){
+                this.pre_level.Update();
             }
         });
     }
 
     GenerateWaveGroups(): void{
         const bossLevels = [7, 15];
-        const npcs = [NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL];
+        const npcs = [NPCNames.RADIANT_ZOMBIE_HEALER, NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL];
         const bosses = [NPCNames.QUEEN, NPCNames.CENTAUR];
         
         for(let i = 0; i < 20; i++){
@@ -506,20 +506,20 @@ export class GameMode{
             this.pre_round = undefined;
             this.round = new Round(this.alliances, settings.RoundDuration);    
         }
-        else if(state === CustomGameState.PRE_WAVE){
-            this.pre_wave = undefined;
+        else if(state === CustomGameState.PRE_LEVEL){
+            this.pre_level = undefined;
             this.IncrementWave();
 
             const waveGroup = this.waveGroups[this.currentWave];
             if(waveGroup){
-                this.wave = new Wave(this.alliances, -1, [waveGroup]);
+                this.level = new Level(this.alliances, -1, [waveGroup]);
             } else {
                 this.EndGame(0);
             }
         }
-        else if(state === CustomGameState.WAVE_IN_PROGRESS){
-            this.wave = undefined;
-            this.pre_wave = new PreWave(this.alliances, settings.PreWaveDuration);    
+        else if(state === CustomGameState.LEVEL_IN_PROGRESS){
+            this.level = undefined;
+            this.pre_level = new PreLevel(this.alliances, settings.PreWaveDuration);    
         }
     }
 
@@ -638,12 +638,7 @@ export class GameMode{
             } else {
                 CustomEntitiesLegacy.SetTreshold(target, new_treshold);
             }
-            
-            SendOverheadHealMessage(target, event.heal);
-            Timers.CreateTimer(0.05, function(){
-                CustomEntitiesLegacy.SendDataToClient(target);
-            });
-            
+                       
             const healing_team = target.GetTeam();
             const healing_alliance = this.FindAllianceByTeam(healing_team);
 
@@ -653,6 +648,11 @@ export class GameMode{
                 });
             }
         }
+
+        SendOverheadHealMessage(target, event.heal);
+        Timers.CreateTimer(0.05, function(){
+            CustomEntitiesLegacy.SendDataToClient(target);
+        });
         /*
         const sourceIndex = event.entindex_healer_const;
         let healingReductionPct = 0;
@@ -758,8 +758,8 @@ export class GameMode{
 
         if(event.text == '-skip'){
             if(this.IsPVE()){
-                if(this.wave){
-                    this.wave.ais.forEach((ai) => {
+                if(this.level){
+                    this.level.ais.forEach((ai) => {
                         if(ai.unit.IsAlive()){
                             ai.unit.ForceKill(false);
                         }
@@ -883,8 +883,8 @@ export class GameMode{
             parent.OnDeath({ killer });
         }
         
-        if(this.wave){
-            this.wave.OnUnitDies(killed);
+        if(this.level){
+            this.level.OnUnitDies(killed);
         }
         
         if(killed.IsRealHero()){
@@ -912,8 +912,8 @@ export class GameMode{
         if(event.entindex_killed !== undefined){
             const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
 
-            if(this.wave){
-                this.wave.OnUnitHurt(victim);
+            if(this.level){
+                this.level.OnUnitHurt(victim);
             }
             
             if(event.entindex_attacker !== undefined){

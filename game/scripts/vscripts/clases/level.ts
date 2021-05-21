@@ -6,7 +6,7 @@ export interface WaveGroup {
     name: NPCNames;
     ammount: number;
 }
-export default class Wave extends GameState{
+export default class Level extends GameState{
     helper = 3.0 * 30;
     ais: CustomAI[] = [];
     wavesInfo: WaveGroup[][];
@@ -60,6 +60,6 @@ export default class Wave extends GameState{
     }
 
     EndWave(): void{
-        GameRules.Addon.SetState(CustomGameState.PRE_WAVE);
+        GameRules.Addon.SetState(CustomGameState.PRE_LEVEL);
     }
 }
