@@ -5,6 +5,7 @@
 #base "units\shooter.txt"
 #base "units\walker.txt"
 
+#base "pve\units\radiant_zombie_healer.txt"
 #base "pve\units\dire_zombie.txt"
 #base "pve\units\dire_zombie_rager.txt"
 #base "pve\units\dire_zombie_meele.txt"
