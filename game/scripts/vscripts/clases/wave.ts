@@ -24,6 +24,9 @@ export default class Wave extends GameState{
                     const ai = CustomAIFactories[waveGroup.name](Vector(x, y, 128));
                     this.ais.push(ai);
                     this.aliveAis = this.aliveAis + 1;
+                    EFX('particles/ai_spawn.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, ai.unit, {
+                        release: true,
+                    });
                 }
             });
         });
