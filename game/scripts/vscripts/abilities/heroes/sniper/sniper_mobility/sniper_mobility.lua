@@ -32,9 +32,9 @@ function sniper_mobility:OnSpellStart()
 
 	CreateModifierThinker(
 		caster, --hCaster
-		shrapnel, --hAbility
+		self, --hAbility
 		"modifier_sniper_shrapnel_thinker_custom", --modifierName
-		{ duration = shrapnel:GetSpecialValueFor("duration") }, --paramTable
+		{ duration = self:GetSpecialValueFor("duration") }, --paramTable
 		caster:GetAbsOrigin(), --vOrigin
 		caster:GetTeamNumber(), --nTeamNumber
 		false --bPhantomBlocker
