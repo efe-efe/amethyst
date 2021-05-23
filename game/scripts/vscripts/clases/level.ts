@@ -14,10 +14,19 @@ export interface ILevel{
 }
 export interface Wave {
     npcGroups: NPCGroup[];
-    totalNpcs: number
-} 
+    totalNpcs: number;
+}
+
+export interface Spawn {
+    delayTime: number;
+    remainingTime: number;
+    origin: Vector;
+    name: number;
+    marker: CDOTA_Buff | undefined;
+}
 export default class Level extends GameState{
     helper = 3.0 * 30;
+    spawnQueue: Spawn[] = []; 
     ais: CustomAI[] = [];
     level: ILevel;
     remainingTotalNpcs: number;
@@ -49,11 +58,8 @@ export default class Level extends GameState{
             for(let i = 0; i < npcGroup.ammount; i++){
                 const x = RandomInt(-1500, 1500);
                 const y = RandomInt(-1500, 1500);
-                const ai = CustomAIFactories[npcGroup.name](Vector(x, y, 128));
-                this.ais.push(ai);
-                EFX('particles/ai_spawn.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, ai.unit, {
-                    release: true,
-                });
+                const origin = Vector(x, y, 128);
+                this.SchedulAiSpawn(origin, npcGroup.name, 1.0);
             }
         });
     }
@@ -78,6 +84,21 @@ export default class Level extends GameState{
     Update(): void{
         super.Update();
 
+        this.spawnQueue.forEach((scheduledSpawn) => {
+            if(scheduledSpawn.remainingTime > 0){
+                scheduledSpawn.remainingTime = scheduledSpawn.remainingTime - 1;
+            } else {
+                const ai = CustomAIFactories[scheduledSpawn.name](scheduledSpawn.origin);
+                this.ais.push(ai);
+                EFX('particles/ai_spawn.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, ai.unit, {
+                    release: true,
+                });
+
+                this.spawnQueue = this.spawnQueue.filter((spawn) => { spawn !== scheduledSpawn; });
+            }
+        });
+        
+
         this.ais.forEach((ai) => {
             ai.Update();
         });
@@ -93,6 +114,13 @@ export default class Level extends GameState{
     }
 
     SkipWave(): void{
+        this.spawnQueue.forEach((scheduledSpawn) => {
+            if(scheduledSpawn.marker){
+                scheduledSpawn.marker.Destroy();
+            }
+            this.remainingWaveNpcs--;
+            this.remainingTotalNpcs--;
+        });
         this.ais.forEach((ai) => {
             if(ai.unit.IsAlive()){
                 ai.unit.ForceKill(false);
@@ -103,6 +131,16 @@ export default class Level extends GameState{
     SkipLevel(): void{
         this.currentWave = this.level.waves.length - 1;
         this.SkipWave();
+    }
+
+    SchedulAiSpawn(origin: Vector, name: number, delayTime: number): void{
+        this.spawnQueue.push({
+            delayTime: delayTime * 30,
+            remainingTime: delayTime * 30,
+            origin,
+            name,
+            marker: (CreateTimedRadiusMarker(undefined, origin, 150, delayTime, 0.2, RADIUS_SCOPE_PUBLIC) as CDOTA_BaseNPC).FindModifierByName('radius_marker_thinker'),
+        });
     }
     
     EndLevel(): void{

@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 19,["11"] = 19,["12"] = 19,["13"] = 19,["14"] = 19,["15"] = 27,["16"] = 19,["17"] = 20,["18"] = 21,["19"] = 25,["20"] = 29,["21"] = 30,["22"] = 31,["23"] = 32,["24"] = 33,["25"] = 27,["26"] = 36,["27"] = 37,["28"] = 38,["29"] = 43,["30"] = 36,["31"] = 46,["32"] = 47,["33"] = 48,["34"] = 48,["35"] = 48,["37"] = 49,["38"] = 49,["39"] = 50,["40"] = 51,["41"] = 52,["42"] = 52,["43"] = 52,["45"] = 53,["46"] = 54,["47"] = 49,["50"] = 48,["51"] = 48,["52"] = 46,["53"] = 61,["54"] = 62,["55"] = 63,["56"] = 63,["57"] = 63,["58"] = 63,["59"] = 64,["60"] = 65,["61"] = 66,["63"] = 68,["64"] = 61,["65"] = 71,["66"] = 72,["67"] = 72,["68"] = 72,["69"] = 72,["70"] = 73,["71"] = 74,["73"] = 71,["74"] = 78,["75"] = 19,["76"] = 81,["77"] = 81,["78"] = 81,["79"] = 82,["80"] = 81,["81"] = 81,["82"] = 85,["83"] = 86,["84"] = 87,["86"] = 89,["87"] = 90,["90"] = 78,["91"] = 95,["92"] = 96,["93"] = 96,["94"] = 96,["95"] = 97,["96"] = 98,["98"] = 96,["99"] = 96,["100"] = 95,["101"] = 103,["102"] = 104,["103"] = 105,["104"] = 103,["105"] = 108,["106"] = 109,["107"] = 109,["108"] = 109,["109"] = 110,["110"] = 111,["111"] = 112,["113"] = 109,["114"] = 109,["115"] = 116,["116"] = 108,["117"] = 19,["118"] = 19});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 27,["11"] = 27,["12"] = 27,["13"] = 27,["14"] = 27,["15"] = 36,["16"] = 27,["17"] = 28,["18"] = 29,["19"] = 30,["20"] = 34,["21"] = 38,["22"] = 39,["23"] = 40,["24"] = 41,["25"] = 42,["26"] = 36,["27"] = 45,["28"] = 46,["29"] = 47,["30"] = 52,["31"] = 45,["32"] = 55,["33"] = 56,["34"] = 57,["35"] = 57,["36"] = 57,["38"] = 58,["39"] = 58,["40"] = 59,["41"] = 60,["42"] = 61,["43"] = 62,["44"] = 58,["47"] = 57,["48"] = 57,["49"] = 55,["50"] = 67,["51"] = 68,["52"] = 69,["53"] = 69,["54"] = 69,["55"] = 69,["56"] = 70,["57"] = 71,["58"] = 72,["60"] = 74,["61"] = 67,["62"] = 77,["63"] = 78,["64"] = 78,["65"] = 78,["66"] = 78,["67"] = 79,["68"] = 80,["70"] = 77,["71"] = 84,["72"] = 27,["73"] = 87,["74"] = 87,["75"] = 87,["76"] = 88,["77"] = 89,["79"] = 91,["80"] = 92,["81"] = 93,["82"] = 97,["83"] = 97,["84"] = 97,["85"] = 97,["86"] = 97,["87"] = 97,["89"] = 87,["90"] = 87,["91"] = 102,["92"] = 102,["93"] = 102,["94"] = 103,["95"] = 102,["96"] = 102,["97"] = 106,["98"] = 107,["99"] = 108,["101"] = 110,["102"] = 111,["105"] = 84,["106"] = 116,["107"] = 117,["108"] = 117,["109"] = 117,["110"] = 118,["111"] = 119,["113"] = 121,["114"] = 122,["115"] = 117,["116"] = 117,["117"] = 124,["118"] = 124,["119"] = 124,["120"] = 125,["121"] = 126,["123"] = 124,["124"] = 124,["125"] = 116,["126"] = 131,["127"] = 132,["128"] = 133,["129"] = 131,["130"] = 136,["131"] = 137,["132"] = 137,["133"] = 137,["134"] = 137,["135"] = 137,["136"] = 137,["137"] = 137,["138"] = 137,["139"] = 137,["140"] = 137,["141"] = 136,["142"] = 146,["143"] = 147,["144"] = 147,["145"] = 147,["146"] = 148,["147"] = 149,["148"] = 150,["150"] = 147,["151"] = 147,["152"] = 154,["153"] = 146,["154"] = 27,["155"] = 27});
 local ____exports = {}
 local ____custom_ai = require("clases.custom_ai")
 local CustomAIFactories = ____custom_ai.CustomAIFactories
@@ -15,6 +15,7 @@ ____exports.default = (function()
     function Level.prototype.____constructor(self, alliances, duration, level)
         GameState.prototype.____constructor(self, alliances, duration)
         self.helper = 3 * 30
+        self.spawnQueue = {}
         self.ais = {}
         self.currentWave = 0
         self.level = level
@@ -38,12 +39,8 @@ ____exports.default = (function()
                     while i < npcGroup.ammount do
                         local x = RandomInt(-1500, 1500)
                         local y = RandomInt(-1500, 1500)
-                        local ai = CustomAIFactories[npcGroup.name](
-                            CustomAIFactories,
-                            Vector(x, y, 128)
-                        )
-                        __TS__ArrayPush(self.ais, ai)
-                        EFX("particles/ai_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, ai.unit, {release = true})
+                        local origin = Vector(x, y, 128)
+                        self:SchedulAiSpawn(origin, npcGroup.name, 1)
                         i = i + 1
                     end
                 end
@@ -74,6 +71,24 @@ ____exports.default = (function()
     function Level.prototype.Update(self)
         GameState.prototype.Update(self)
         __TS__ArrayForEach(
+            self.spawnQueue,
+            function(____, scheduledSpawn)
+                if scheduledSpawn.remainingTime > 0 then
+                    scheduledSpawn.remainingTime = scheduledSpawn.remainingTime - 1
+                else
+                    local ai = CustomAIFactories[scheduledSpawn.name](CustomAIFactories, scheduledSpawn.origin)
+                    __TS__ArrayPush(self.ais, ai)
+                    EFX("particles/ai_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, ai.unit, {release = true})
+                    self.spawnQueue = __TS__ArrayFilter(
+                        self.spawnQueue,
+                        function(____, spawn)
+                            local ____ = spawn ~= scheduledSpawn
+                        end
+                    )
+                end
+            end
+        )
+        __TS__ArrayForEach(
             self.ais,
             function(____, ai)
                 ai:Update()
@@ -90,6 +105,16 @@ ____exports.default = (function()
     end
     function Level.prototype.SkipWave(self)
         __TS__ArrayForEach(
+            self.spawnQueue,
+            function(____, scheduledSpawn)
+                if scheduledSpawn.marker then
+                    scheduledSpawn.marker:Destroy()
+                end
+                self.remainingWaveNpcs = self.remainingWaveNpcs - 1
+                self.remainingTotalNpcs = self.remainingTotalNpcs - 1
+            end
+        )
+        __TS__ArrayForEach(
             self.ais,
             function(____, ai)
                 if ai.unit:IsAlive() then
@@ -101,6 +126,18 @@ ____exports.default = (function()
     function Level.prototype.SkipLevel(self)
         self.currentWave = #self.level.waves - 1
         self:SkipWave()
+    end
+    function Level.prototype.SchedulAiSpawn(self, origin, name, delayTime)
+        __TS__ArrayPush(
+            self.spawnQueue,
+            {
+                delayTime = delayTime * 30,
+                remainingTime = delayTime * 30,
+                origin = origin,
+                name = name,
+                marker = CreateTimedRadiusMarker(nil, origin, 150, delayTime, 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName("radius_marker_thinker")
+            }
+        )
     end
     function Level.prototype.EndLevel(self)
         __TS__ArrayForEach(
