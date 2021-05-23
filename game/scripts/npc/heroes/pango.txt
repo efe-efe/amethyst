@@ -2,8 +2,8 @@
 {   
 	"npc_dota_hero_pango_lua"
 	{
-		"override_hero"				"npc_dota_hero_pangolier"			
-		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
+		"override_hero"				"npc_dota_hero_pangolier"					
+		"AttackCapabilities"		"DOTA_UNIT_CAP_MELEE_ATTACK"
 		"AttributePrimary"			"DOTA_ATTRIBUTE_STRENGTH"
 		
 		"AbilityLayout"					"9"

@@ -456,6 +456,10 @@ export class GameMode{
         if(this.IsPVE()){
             LinkLuaModifier('modifier_upgrade_meele_extra_radius',  'modifiers/upgrades/modifier_upgrade_meele_extra_radius', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_phantom_extra_daggers',  'modifiers/upgrades/modifier_upgrade_phantom_extra_daggers', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_extra_base_damage',  'modifiers/upgrades/modifier_upgrade_extra_base_damage', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_juggernaut_refresh_dagger',  'modifiers/upgrades/modifier_upgrade_juggernaut_refresh_dagger', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_lightining_attack',  'modifiers/upgrades/modifier_upgrade_lightining_attack', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_lightining_attack_attack',  'modifiers/upgrades/modifier_upgrade_lightining_attack', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');
@@ -796,14 +800,31 @@ export class GameMode{
         if(event.text == '-skip'){
             if(this.IsPVE()){
                 if(this.level){
-                    this.level.ais.forEach((ai) => {
-                        if(ai.unit.IsAlive()){
-                            ai.unit.ForceKill(false);
-                        }
-                    });
+                    this.level.SkipWave();
                 }
             }
         }
+
+        if(event.text.split(' ')[0] == '-level'){
+            if(!event.text.split(' ')[1]){
+                return;
+            }
+            if(this.IsPVE()){
+                const level = parseInt(event.text.split(' ')[1], 10);
+                if(isNaN(level)){
+                    return;
+                }
+                if(!this.levelsData[level]){
+                    return;
+                }
+                print(level);
+                this.currentLevel = level - 1;
+                if(this.level){
+                    this.level.SkipLevel();
+                }
+            }
+        }
+        
         
         if(event.text == '-upgrade'){
             if(this.IsPVE()){

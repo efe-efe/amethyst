@@ -22,6 +22,7 @@ const Upgrades: Upgrade[] = [
         name: 'Extra radius',
         description: 'Provides extra radius on your basic attack',
         maxLevel: 1,
+        attackCapability: UnitAttackCapability.MELEE_ATTACK,
         modifier: {
             name: 'modifier_upgrade_meele_extra_radius'
         },
@@ -36,6 +37,38 @@ const Upgrades: Upgrade[] = [
         maxLevel: 1,
         modifier: {
             name: 'modifier_upgrade_phantom_extra_daggers'
+        },
+        tier: 1,
+    },
+    {
+        id: 'extra_base_damage',
+        name: 'Extra base damage',
+        description: 'Increases your base damage by 3.',
+        maxLevel: 3,
+        modifier: {
+            name: 'modifier_upgrade_extra_base_damage'
+        },
+        tier: 1,
+    },
+    {
+        id: 'juggernaut_refresh_dagger',
+        name: 'Refreshing dagger',
+        description: 'Your dagger cooldown is recharged when succesfully hitting enemies',
+        hero: 'npc_dota_hero_juggernaut',
+        ability: 'juggernaut_special_attack',
+        maxLevel: 1,
+        modifier: {
+            name: 'modifier_upgrade_juggernaut_refresh_dagger'
+        },
+        tier: 1,
+    },
+    {
+        id: 'lightining_attack',
+        name: 'Lightining attack',
+        description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets ',
+        maxLevel: 1,
+        modifier: {
+            name: 'modifier_upgrade_lightining_attack'
         },
         tier: 1,
     }

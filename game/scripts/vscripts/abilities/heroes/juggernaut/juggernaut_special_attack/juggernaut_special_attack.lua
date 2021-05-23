@@ -59,6 +59,10 @@ function juggernaut_special_attack:OnSpellStart()
 					if CustomEntitiesLegacy:ProvidesMana(unit) then
 						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 					end
+
+					if caster:HasModifier("modifier_upgrade_juggernaut_refresh_dagger") then
+						self:EndCooldown()
+					end
 				end
 			end,
 			OnFinish = function(_self, pos)

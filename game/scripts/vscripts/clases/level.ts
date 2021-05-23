@@ -92,6 +92,19 @@ export default class Level extends GameState{
         }
     }
 
+    SkipWave(): void{
+        this.ais.forEach((ai) => {
+            if(ai.unit.IsAlive()){
+                ai.unit.ForceKill(false);
+            }
+        });
+    }
+
+    SkipLevel(): void{
+        this.currentWave = this.level.waves.length - 1;
+        this.SkipWave();
+    }
+    
     EndLevel(): void{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;

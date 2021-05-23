@@ -373,17 +373,51 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     RequestUpgrades(): void{
         const data = {
             entityIndex: this.unit.GetEntityIndex(),
-            upgrades: [
-                this.GenerateUpgrade(0),
-                this.GenerateUpgrade(1),
-            ]
+            upgrades: this.GenerateUpgrades(3),
         } as never;
 
         CustomGameEventManager.Send_ServerToAllClients('custom_npc:request_upgrades', data);
     }
 
-    GenerateUpgrade(index: number): Upgrade{
-        return Upgrades[index];
+    GenerateUpgrades(amount: number): Upgrade[]{
+        const upgrades = Upgrades.filter((upgrade) => (
+            this.ValdateUpgradeHero(upgrade) &&        
+            this.ValdateUpgradeAbility(upgrade) &&
+            this.ValdateUpgradeAttackCapabilities(upgrade)
+        ));
+
+        return Math.GetRandomElementsFromArray(upgrades, Clamp(amount, upgrades.length, 0));
+    }
+
+    ValdateUpgradeHero(upgrade: Upgrade): boolean{
+        if(!upgrade.hero){
+            return true;
+        }
+        return (upgrade.hero === this.unit.GetName());
+    }
+    
+    ValdateUpgradeAbility(upgrade: Upgrade): boolean{
+        if(!upgrade.ability){
+            return true;
+        }
+
+        const ability = this.unit.FindAbilityByName(upgrade.ability);
+        if(!ability || ability.GetLevel() === 0){
+            return false;
+        }
+
+        return true;
+    }
+
+    ValdateUpgradeAttackCapabilities(upgrade: Upgrade): boolean{
+        if(!upgrade.attackCapability){
+            return true;
+        }
+        if(this.unit.GetAttackCapability() !== upgrade.attackCapability){
+            return false;
+        }
+
+        return true;
     }
 }
 

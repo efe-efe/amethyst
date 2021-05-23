@@ -30,6 +30,23 @@ const Math = {
     },
     IsSouthEast(angle: number): boolean{
         return angle > 285 && angle <= 345;
+    },
+    GetRandomElementsFromArray<T>(array: T[], amount: number): T[]{
+        if (amount > array.length){
+            print('GetRandomElementsFromArray ERROR: array lenght is smaller than amount requested');
+            return [];
+        }
+
+        const result = [];
+        let available = array.map((e) => e);
+
+        for(let i = 0; i < amount; i++){
+            const x = RandomInt(0, available.length - 1);
+            const element = available[x];
+            result.push(element);
+            available = available.filter((e) => e !== element);
+        }
+        return result;
     }
 };
 

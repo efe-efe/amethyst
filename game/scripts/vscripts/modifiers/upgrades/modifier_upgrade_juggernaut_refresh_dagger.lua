@@ -1,0 +1,1 @@
+modifier_upgrade_juggernaut_refresh_dagger = class({})
