@@ -1,4 +1,4 @@
-import LayoutController from './shared/layout/layoutController';
+import LayoutController from './layout/layoutController';
 
 const layout = LayoutController.GetInstance();
 

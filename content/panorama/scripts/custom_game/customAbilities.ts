@@ -1,5 +1,5 @@
 import { tables } from './util';
-import { TargetingIndicator } from '../types';
+import { TargetingIndicator } from './types';
 
 export default class CustomAbilities{
     private static instance: CustomAbilities;

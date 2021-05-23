@@ -1,7 +1,5 @@
 import CustomEntities from '../customEntities';
 import CustomAbilities from '../customAbilities';
-import { HeroData } from '../../types';
-import { colors } from '../util';
 
 const customEntities = CustomEntities.GetInstance();
 const customAbilities = CustomAbilities.GetInstance();

@@ -1,4 +1,4 @@
-import { Color, colors, panels } from '../shared/util';
+import { Color, colors, panels } from '../util';
 
 export default class Player{
     panel: Panel;

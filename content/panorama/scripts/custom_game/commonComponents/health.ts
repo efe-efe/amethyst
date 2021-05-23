@@ -1,5 +1,5 @@
 import ProgressBar from '../progressBar';
-import { colors, Color, panels } from '../shared/util';
+import { colors, Color, panels } from '../util';
 
 type HealthData = {
     color: Color;

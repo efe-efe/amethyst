@@ -1,5 +1,5 @@
 import ProgressBar from '../progressBar';
-import { colors } from '../shared/util';
+import { colors } from '../util';
 
 type MultipleBarsOptions = {
     value: number, 

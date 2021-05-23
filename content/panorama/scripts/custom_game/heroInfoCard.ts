@@ -1,7 +1,7 @@
 import Alliances from './alliances';
 import Health from './commonComponents/health';
 import MultipleBars from './commonComponents/multipleBars';
-import { Color, colors, panels } from './shared/util';
+import { Color, colors, panels } from './util';
 import { HeroData } from './types';
 
 const alliances = Alliances.GetInstance();

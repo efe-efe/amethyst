@@ -1,4 +1,4 @@
-import { modifiers, panels } from '../shared/util';
+import { modifiers, panels } from '../util';
 
 export default class Cooldown{
     panel: Panel;

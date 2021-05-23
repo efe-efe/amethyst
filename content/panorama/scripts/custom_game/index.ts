@@ -1,17 +1,17 @@
-import './shared/camera/cameraController';
-import './shared/mouse/mousePositionController';
+import './camera/cameraController';
+import './mouse/mousePositionController';
 
-import Command from './shared/commands/commands';
-import Key, { GetKeyByKeyCode } from './shared/commands/key';
-import Action, { GetActionByActionCode } from './shared/commands/actions';
-import LayoutController from './shared/layout/layoutController';
-import HeroController from './shared/heroController';
+import Command from './commands/commands';
+import Key, { GetKeyByKeyCode } from './commands/key';
+import Action, { GetActionByActionCode } from './commands/actions';
+import LayoutController from './layout/layoutController';
+import HeroController from './heroController';
 import HeroOverhead from './heroOverhead/heroOverhead';
 import HeroInfoCard from './heroInfoCard';
 import AllianceBar from './allianceBar';
-import { tables } from './shared/util';
+import { tables } from './util';
 import './targetIndicator';
-import CustomEntities from './shared/customEntities';
+import CustomEntities from './customEntities';
 import { CustomGameState, HeroData } from './types';
 import { ReadyBar } from './readyBar';
 
@@ -322,8 +322,10 @@ import { ReadyBar } from './readyBar';
         upgrades.forEach((upgrade, i) => {
             const upgradeData = event.upgrades[i + 1];
             if(upgradeData){
-                upgrade.FindChildrenWithClassTraverse('upgrade__title')[0].text = upgradeData.name;
-                upgrade.FindChildrenWithClassTraverse('upgrade__description')[0].text = upgradeData.description;
+                const titlePanel = upgrade.FindChildrenWithClassTraverse('upgrade__title')[0] as LabelPanel;
+                const descriptionPanel = upgrade.FindChildrenWithClassTraverse('upgrade__description')[0] as LabelPanel;
+                titlePanel.text = upgradeData.name;
+                descriptionPanel.text = upgradeData.description;
                 
                 upgrade.ClearPanelEvent('onactivate');
                 upgrade.SetPanelEvent('onactivate', () => {

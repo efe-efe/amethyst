@@ -1,5 +1,5 @@
 import ProgressBar from '../progressBar';
-import { modifiers } from '../shared/util';
+import { modifiers } from '../util';
 
 export default class Castpoint{
     progressBar: ProgressBar;

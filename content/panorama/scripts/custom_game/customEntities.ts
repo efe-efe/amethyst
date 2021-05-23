@@ -1,4 +1,4 @@
-import { HeroData } from '../types';
+import { HeroData } from './types';
 import { tables } from './util';
 
 type GenericData = {

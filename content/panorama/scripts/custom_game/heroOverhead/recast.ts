@@ -1,4 +1,4 @@
-import { panels } from '../shared/util';
+import { panels } from '../util';
 
 export default class Recast{
     panel: Panel;

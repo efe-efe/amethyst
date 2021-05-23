@@ -1,5 +1,5 @@
 import ProgressBar from '../progressBar';
-import { modifiers, panels } from '../shared/util';
+import { modifiers, panels } from '../util';
 
 
 export enum StatusTrigger {

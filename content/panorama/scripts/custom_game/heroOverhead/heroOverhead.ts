@@ -1,7 +1,7 @@
-import Overhead from '../shared/overhead/overhead';
+import Overhead from '../overhead/overhead';
 import Recast from './recast';
 import Status from './status';
-import util, { Color, colors, panels } from '../shared/util';
+import util, { Color, colors, panels } from '../util';
 import Player from './player';
 import Charges from './charges';
 import Cooldown from './cooldown';

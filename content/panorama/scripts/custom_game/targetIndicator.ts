@@ -1,6 +1,6 @@
-import { tables, math, modifiers } from './shared/util';
+import { tables, math, modifiers } from './util';
 import { TargetingIndicator } from './types';
-import CustomAbilities from './shared/customAbilities';
+import CustomAbilities from './customAbilities';
 
 (function(){
     const customAbilities = CustomAbilities.GetInstance();
