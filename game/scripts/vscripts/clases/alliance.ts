@@ -1,6 +1,7 @@
 import Player from './player';
 
 const ALLIANCE_NAMES: {[key: number]: string} = {
+    [0]: 'DOTA_NO_ALLIANCE',
     [1]: 'DOTA_ALLIANCE_RADIANT',
     [2]: 'DOTA_ALLIANCE_DIRE',
     [3]: 'DOTA_ALLIANCE_LEGION',

@@ -222,6 +222,9 @@ function CustomEntitiesLegacy:SetEnergyPerCell(hEntity, iEnergy)
 end
 
 function CustomEntitiesLegacy:GetAlliance(hEntity)
+	if not hEntity then
+		return GameRules.Addon.alliances["0"]
+	end
 	local playerID = hEntity:GetPlayerOwnerID()
 
 	if playerID == -1 then

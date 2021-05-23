@@ -61,6 +61,7 @@ enum Custom_ActionModes {
     STOP = 1,
 }
 
+const DOTA_ALIANCE_NO_ALLIANCE = 0;
 const DOTA_ALLIANCE_RADIANT = 1;
 const DOTA_ALLIANCE_DIRE = 2;
 const DOTA_ALLIANCE_LEGION = 3;
@@ -137,6 +138,7 @@ export class GameMode{
     }
 
     public Start(): void{
+        this.alliances.push(new Alliance(DOTA_ALIANCE_NO_ALLIANCE, []));
         this.alliances.push(new Alliance(DOTA_ALLIANCE_RADIANT, [DotaTeam.GOODGUYS, DotaTeam.BADGUYS]));
         this.alliances.push(new Alliance(DOTA_ALLIANCE_DIRE, [DotaTeam.CUSTOM_1, DotaTeam.CUSTOM_2, DotaTeam.NEUTRALS]));
         this.alliances.push(new Alliance(DOTA_ALLIANCE_LEGION, [DotaTeam.CUSTOM_3, DotaTeam.CUSTOM_4]));

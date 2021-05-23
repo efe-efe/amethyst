@@ -265,6 +265,7 @@ function OverheadMessageEFX(unit, value, word_length, color, shield)
 end
 
 function CreateTimedRadiusMarker(caster, origin, radius, delay, duration, scope)
+	local team = caster and caster:GetTeamNumber() or DOTA_TEAM_NOTEAM
 	return CreateModifierThinker(
         caster, --hCaster
         nil, --hAbility
@@ -276,7 +277,7 @@ function CreateTimedRadiusMarker(caster, origin, radius, delay, duration, scope)
 			scope = scope,
 		},
         origin, --vOrigin
-        caster:GetTeamNumber(), --nTeamNumber
+        team, --nTeamNumber
         false --bPhantomBlocker
    	)
 end
