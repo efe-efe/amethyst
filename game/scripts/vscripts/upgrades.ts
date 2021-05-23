@@ -41,6 +41,30 @@ const Upgrades: Upgrade[] = [
         tier: 1,
     },
     {
+        id: 'phantom_dash_damage',
+        name: 'Swift damage',
+        description: 'Your Swift deals damage when passing through enemies.',
+        hero: 'npc_dota_hero_phantom_assassin',
+        ability: 'phantom_mobility',
+        maxLevel: 1,
+        modifier: {
+            name: 'modifier_upgrade_phantom_dash_damage'
+        },
+        tier: 1,
+    },
+    {
+        id: 'phantom_dash_invulnerability',
+        name: 'Swift invulnerability',
+        description: 'Your Swift gives you invulnerability for a short period of time after passing through enemies.',
+        hero: 'npc_dota_hero_phantom_assassin',
+        ability: 'phantom_mobility',
+        maxLevel: 1,
+        modifier: {
+            name: 'modifier_upgrade_phantom_dash_invulnerability'
+        },
+        tier: 1,
+    },
+    {
         id: 'extra_base_damage',
         name: 'Extra base damage',
         description: 'Increases your base damage by 3.',
@@ -66,7 +90,7 @@ const Upgrades: Upgrade[] = [
         id: 'lightining_attack',
         name: 'Lightining attack',
         description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets ',
-        maxLevel: 1,
+        maxLevel: 3,
         modifier: {
             name: 'modifier_upgrade_lightining_attack'
         },

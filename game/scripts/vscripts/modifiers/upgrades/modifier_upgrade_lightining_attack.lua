@@ -1,9 +1,22 @@
 modifier_upgrade_lightining_attack = class({})
 modifier_upgrade_lightining_attack_attack = class({})
 
+function modifier_upgrade_lightining_attack:RemoveOnDeath() return false end
+function modifier_upgrade_lightining_attack:IsPurgable() return false end
+
 function modifier_upgrade_lightining_attack:OnCreated(params)
     if IsServer() then
+        self.proc_chance_pct =  25
+        self.proc_chance_pct_per_stack = 25
+
+        self:SetStackCount(1)
         self.efx_index = ParticleManager:CreateParticle("particles/generic_gameplay/rune_haste_owner.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+    end
+end
+
+function modifier_upgrade_lightining_attack:OnRefresh(params)
+    if IsServer() then
+        self:IncrementStackCount()
     end
 end
 
@@ -16,7 +29,9 @@ end
 
 function modifier_upgrade_lightining_attack:OnEvent(params)
     if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED then
-        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_upgrade_lightining_attack_attack', {})
+        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_upgrade_lightining_attack_attack', {
+            proc_chance_pct = self.proc_chance_pct + (self.proc_chance_pct_per_stack * self:GetStackCount())
+        })
     end
 end
 
@@ -27,12 +42,12 @@ end
 
 function modifier_upgrade_lightining_attack_attack:OnCreated(params)
     if IsServer() then
-        self.proc_chance_pct = 50
+        self.proc_chance_pct = params.proc_chance_pct
         self.radius = 850
         self.procs = 5
         self.damage_table = {
             attacker = self:GetParent(),
-            damage = 2,
+            damage = 5,
             damage_type = DAMAGE_TYPE_MAGICAL,
         }
         self.targets = {}

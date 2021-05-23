@@ -155,7 +155,13 @@ function modifier_storm_extra_displacement:DeclareFunctions()
 end
 
 function modifier_storm_extra_displacement:CheckState()
-	return { [MODIFIER_STATE_ROOTED] = true }
+	return { 
+		[MODIFIER_STATE_ROOTED] = true,
+        [MODIFIER_STATE_NO_HEALTH_BAR] = true,
+		[MODIFIER_STATE_INVULNERABLE] = true,
+		[MODIFIER_STATE_OUT_OF_GAME] = true,
+		[MODIFIER_STATE_NO_UNIT_COLLISION] = true,
+	}
 end
 
 function modifier_storm_extra_displacement:GetCollisionTeamFilter()

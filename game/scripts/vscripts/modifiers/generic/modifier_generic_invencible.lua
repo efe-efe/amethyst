@@ -1,14 +1,8 @@
 modifier_generic_invencible = class({})
 
-function modifier_generic_invencible:IsHidden() return false
-end
-
-function modifier_generic_invencible:IsDebuff() return false
-end
-
-function modifier_generic_invencible:IsPurgable()
-	return true
-end
+function modifier_generic_invencible:IsHidden() return false end
+function modifier_generic_invencible:IsDebuff() return false end
+function modifier_generic_invencible:IsPurgable() return true end
 
 function modifier_generic_invencible:OnCreated(kv)
     if IsServer() then
@@ -39,7 +33,13 @@ function modifier_generic_invencible:PlayEffects()
     ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
--- Graphics & Animations
 function modifier_generic_invencible:GetStatusEffectName()
 	return "particles/status_fx/status_effect_electrical.vpcf"
 end
+
+function modifier_generic_invencible:GetStatusLabel() return "Invulnerable" end
+function modifier_generic_invencible:GetStatusPriority() return 1 end
+function modifier_generic_invencible:GetStatusStyle() return "BladeFury" end
+
+if IsClient() then require("wrappers/modifiers") end
+Modifiers.Status(modifier_generic_invencible)

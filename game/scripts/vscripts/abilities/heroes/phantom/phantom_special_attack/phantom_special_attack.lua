@@ -48,6 +48,7 @@ function phantom_special_attack:ThrowProjectile(vOrigin, vDirection)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
 
 	CustomEntitiesLegacy:ProjectileAttack(caster, {
+		bIsBasicAttack = true,
 		tProjectile  = {
 			EffectName = "particles/phantom/phantom_special_attack.vpcf",
 			vSpawnOrigin = vOrigin + Vector(vDirection.x * 30, vDirection.y * 30, 96),

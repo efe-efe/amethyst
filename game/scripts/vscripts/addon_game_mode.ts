@@ -460,6 +460,8 @@ export class GameMode{
             LinkLuaModifier('modifier_upgrade_juggernaut_refresh_dagger',  'modifiers/upgrades/modifier_upgrade_juggernaut_refresh_dagger', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_lightining_attack',  'modifiers/upgrades/modifier_upgrade_lightining_attack', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_lightining_attack_attack',  'modifiers/upgrades/modifier_upgrade_lightining_attack', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_phantom_dash_damage',  'modifiers/upgrades/modifier_upgrade_phantom_dash_damage', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_phantom_dash_invulnerability',  'modifiers/upgrades/modifier_upgrade_phantom_dash_invulnerability', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');
