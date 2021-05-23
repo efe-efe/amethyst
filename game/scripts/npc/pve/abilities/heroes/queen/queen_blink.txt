@@ -10,12 +10,17 @@
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCastRange"				"1500"
 		"AbilityCooldown"				"10.0"
-		"AbilityCastPoint"				"0.5"
+		"AbilityCastPoint"				"0.8"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
 			"DisplayRange" 				"1"
 			"Fixed"						"1"
+		}
+
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"			"425" }
 		}
 	}
 }

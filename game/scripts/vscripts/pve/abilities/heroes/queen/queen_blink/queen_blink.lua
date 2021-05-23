@@ -8,7 +8,7 @@ function queen_blink:OnAbilityPhaseStart()
     local caster = self:GetCaster()
     local origin = caster:GetOrigin()
     local point = ClampPosition(origin, self:GetCursorPosition(), self:GetCastRange(Vector(0,0,0), nil), nil)
-    local radius = 250--self:GetSpecialValueFor("radius")
+    local radius = self:GetSpecialValueFor("radius")
     CreateTimedRadiusMarker(caster, point, radius, self:GetCastPoint(), 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
     CreateTimedRadiusMarker(caster, origin, radius, self:GetCastPoint(), 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
 
