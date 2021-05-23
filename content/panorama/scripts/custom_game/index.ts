@@ -9,7 +9,8 @@ import HeroController from './heroController';
 import HeroOverhead from './heroOverhead/heroOverhead';
 import HeroInfoCard from './heroInfoCard';
 import AllianceBar from './allianceBar';
-import { tables } from './util';
+import util, { tables } from './util';
+import './upgrades';
 import './targetIndicator';
 import CustomEntities from './customEntities';
 import { CustomGameState, HeroData } from './types';
@@ -314,38 +315,9 @@ import { ReadyBar } from './readyBar';
         GameUI.SendCustomHUDError('Not Enough Energy', 'versus_screen.towers_nopass');
     });
 
-    GameEvents.Subscribe('custom_npc:request_upgrades', function(event: any){
-        const upgradesContainer = layout.GetTopPanel().FindChildrenWithClassTraverse('upgrades')[0];
-        const upgrades = layout.GetTopPanel().FindChildrenWithClassTraverse('upgrade');
-
-        upgradesContainer.style.visibility = 'visible';
-        upgrades.forEach((upgrade, i) => {
-            const upgradeData = event.upgrades[i + 1];
-            if(upgradeData){
-                const titlePanel = upgrade.FindChildrenWithClassTraverse('upgrade__title')[0] as LabelPanel;
-                const descriptionPanel = upgrade.FindChildrenWithClassTraverse('upgrade__description')[0] as LabelPanel;
-                titlePanel.text = upgradeData.name;
-                descriptionPanel.text = upgradeData.description;
-                
-                upgrade.ClearPanelEvent('onactivate');
-                upgrade.SetPanelEvent('onactivate', () => {
-                    const playerId = getCurrentPlayer();
-                    GameEvents.SendCustomGameEventToServer('custom_npc:apply_upgrade', {
-                        playerIndex: playerId,
-                        payload: {
-                            upgradeId: upgradeData.id,
-                        }
-            
-                    } as never);
-            
-                    upgradesContainer.style.visibility = 'collapse';
-                });
-            }
-        });
-    });
 
     refunderButton.SetPanelEvent('onactivate', () => {
-        const playerId = getCurrentPlayer();
+        const playerId = util.getCurrentPlayer();
 
         GameEvents.SendCustomGameEventToServer('refund_points', {
             playerIndex: playerId, 
@@ -384,7 +356,7 @@ import { ReadyBar } from './readyBar';
     });
 
     function SwapRF(){
-        const playerId = getCurrentPlayer();
+        const playerId = util.getCurrentPlayer();
         GameEvents.SendCustomGameEventToServer('swap_r_f', {
             playerIndex: playerId, 
 
@@ -399,17 +371,5 @@ import { ReadyBar } from './readyBar';
         pvpPanels.forEach((panel) => {
             panel.style.visibility = 'collapse';
         });
-    }
-
-    const getCurrentPlayer = (): PlayerID => {
-        let playerId = Players.GetLocalPlayer();
-        if(Game.IsInToolsMode()){
-            const selectedEntity = Players.GetSelectedEntities(playerId)[0];
-            if(selectedEntity){
-                playerId = Entities.GetPlayerOwnerID(selectedEntity);
-            }
-        }
-
-        return playerId;
     }
 })();

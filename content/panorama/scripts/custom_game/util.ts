@@ -17,7 +17,18 @@ export default {
             const element = object[key];
             return element;
         }
-    }
+    },
+    getCurrentPlayer(): PlayerID{
+        let playerId = Players.GetLocalPlayer();
+        if(Game.IsInToolsMode()){
+            const selectedEntity = Players.GetSelectedEntities(playerId)[0];
+            if(selectedEntity){
+                playerId = Entities.GetPlayerOwnerID(selectedEntity);
+            }
+        }
+
+        return playerId;
+    },
 };
 export const colors = {
     local: {
