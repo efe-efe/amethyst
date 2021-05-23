@@ -28,6 +28,7 @@
         <Panel class="upgrades pve">
             <Panel class="upgrade">
                 <Panel class="upgrade-left">
+                   <DOTAAbilityImage class="upgrade__ability"></DOTAAbilityImage>
                 </Panel>
                 <Panel class="upgrade-right">
                     <Label class="upgrade__title" text="Upgrade Title"></Label>
@@ -36,6 +37,7 @@
             </Panel>
             <Panel class="upgrade">
                 <Panel class="upgrade-left">
+                   <DOTAAbilityImage class="upgrade__ability"></DOTAAbilityImage>
                 </Panel>
                 <Panel class="upgrade-right">
                     <Label class="upgrade__title" text="Upgrade Title"></Label>
@@ -44,6 +46,7 @@
             </Panel>
             <Panel class="upgrade">
                 <Panel class="upgrade-left">
+                   <DOTAAbilityImage class="upgrade__ability"></DOTAAbilityImage>
                 </Panel>
                 <Panel class="upgrade-right">
                     <Label class="upgrade__title" text="Upgrade Title"></Label>

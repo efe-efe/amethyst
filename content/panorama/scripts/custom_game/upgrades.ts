@@ -15,13 +15,20 @@ import util from './util';
         upgradesContainers.forEach((upgradeContainer, i) => {
             const titlePanel = upgradeContainer.FindChildrenWithClassTraverse('upgrade__title')[0] as LabelPanel;
             const descriptionPanel = upgradeContainer.FindChildrenWithClassTraverse('upgrade__description')[0] as LabelPanel;
+            const abilityPanel = upgradeContainer.FindChildrenWithClassTraverse('upgrade__ability')[0] as AbilityImage;
             titlePanel.text = 'Empty';
             descriptionPanel.text = 'No upgrades here';
+            abilityPanel.abilityname = '';
     
             const upgradeData = event.upgrades[i + 1];
             if(upgradeData){
                 titlePanel.text = upgradeData.name;
                 descriptionPanel.text = upgradeData.description;
+
+                if(upgradeData.ability){
+                    abilityPanel.abilityname = upgradeData.ability;
+                }
+
                 upgradeContainer.ClearPanelEvent('onactivate');
                 upgradeContainer.SetPanelEvent('onactivate', () => {
                     const playerId = util.getCurrentPlayer();

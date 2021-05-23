@@ -54,13 +54,14 @@
 
     &:hover{
         background-color: rgba(0,0,0, 0.3);
+        border: 1px solid #8b8b8b;
     }
 
     &-left{
         width: 20%;
     }
     &-right{
-        padding: 20px;
+        padding: 20px 20px 20px 0;
         width: 80%;
         flow-children: down;
     }
