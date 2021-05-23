@@ -1,6 +1,7 @@
 import UnitEntity from './unit_entity';
 import Math from '../util/math';
 import customEntities from '../util/custom_entities';
+import Upgrades, { Upgrade } from '../upgrades';
 
 const DEBUG = false;
 
@@ -311,7 +312,6 @@ export default class CustomNPC extends UnitEntity{
         this.Destroy(false);
     }
 }
-
 export class CustomHeroNPC extends CustomNPC{
     constructor(unit: CDOTA_BaseNPC){
         super(unit);
@@ -330,6 +330,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         super(unit);
         if(GameRules.Addon.IsPVE()){
             this.unit.GetAbilityByIndex(0)?.SetLevel(1);
+            this.unit.GetAbilityByIndex(5)?.SetLevel(1);
             this.unit.GetAbilityByIndex(6)?.SetLevel(1);
             (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(2);
         } else {
@@ -361,6 +362,28 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             }
 
         });
+    }
+
+    ApplyUpgrade(upgrade: Upgrade): void{
+        if(upgrade.modifier){
+            this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
+        }
+    }
+
+    RequestUpgrades(): void{
+        const data = {
+            entityIndex: this.unit.GetEntityIndex(),
+            upgrades: [
+                this.GenerateUpgrade(0),
+                this.GenerateUpgrade(1),
+            ]
+        } as never;
+
+        CustomGameEventManager.Send_ServerToAllClients('custom_npc:request_upgrades', data);
+    }
+
+    GenerateUpgrade(index: number): Upgrade{
+        return Upgrades[index];
     }
 }
 

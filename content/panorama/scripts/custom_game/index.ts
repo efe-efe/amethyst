@@ -20,7 +20,8 @@ import { ReadyBar } from './readyBar';
     const layout = LayoutController.GetInstance();
 
     const clockPanel = $('#top-bar__clock-text') as LabelPanel;
-    const pvePanel = $('#pve');
+    const pvePanels = layout.GetTopPanel().FindChildrenWithClassTraverse('pve');
+    const pvpPanels = layout.GetTopPanel().FindChildrenWithClassTraverse('pvp');
     const currentLevelPanel = $('#current-level') as LabelPanel;
     const enemiesCountPanel = $('#enemies-count') as LabelPanel;
     const refunderButton = $('#refunder__button') as Button;
@@ -313,15 +314,36 @@ import { ReadyBar } from './readyBar';
         GameUI.SendCustomHUDError('Not Enough Energy', 'versus_screen.towers_nopass');
     });
 
-    refunderButton.SetPanelEvent('onactivate', () => {
-        let playerId = Players.GetLocalPlayer();
+    GameEvents.Subscribe('custom_npc:request_upgrades', function(event: any){
+        const upgradesContainer = layout.GetTopPanel().FindChildrenWithClassTraverse('upgrades')[0];
+        const upgrades = layout.GetTopPanel().FindChildrenWithClassTraverse('upgrade');
 
-        if(Game.IsInToolsMode()){
-            const selectedEntity = Players.GetSelectedEntities(playerId)[0];
-            if(selectedEntity){
-                playerId = Entities.GetPlayerOwnerID(selectedEntity);
+        upgradesContainer.style.visibility = 'visible';
+        upgrades.forEach((upgrade, i) => {
+            const upgradeData = event.upgrades[i + 1];
+            if(upgradeData){
+                upgrade.FindChildrenWithClassTraverse('upgrade__title')[0].text = upgradeData.name;
+                upgrade.FindChildrenWithClassTraverse('upgrade__description')[0].text = upgradeData.description;
+                
+                upgrade.ClearPanelEvent('onactivate');
+                upgrade.SetPanelEvent('onactivate', () => {
+                    const playerId = getCurrentPlayer();
+                    GameEvents.SendCustomGameEventToServer('custom_npc:apply_upgrade', {
+                        playerIndex: playerId,
+                        payload: {
+                            upgradeId: upgradeData.id,
+                        }
+            
+                    } as never);
+            
+                    upgradesContainer.style.visibility = 'collapse';
+                });
             }
-        }
+        });
+    });
+
+    refunderButton.SetPanelEvent('onactivate', () => {
+        const playerId = getCurrentPlayer();
 
         GameEvents.SendCustomGameEventToServer('refund_points', {
             playerIndex: playerId, 
@@ -360,9 +382,25 @@ import { ReadyBar } from './readyBar';
     });
 
     function SwapRF(){
-        $.Msg('SWAP RF');
-        let playerId = Players.GetLocalPlayer();
+        const playerId = getCurrentPlayer();
+        GameEvents.SendCustomGameEventToServer('swap_r_f', {
+            playerIndex: playerId, 
 
+        } as never);
+    }
+
+    if(Game.GetMapInfo().map_display_name === 'pvp'){
+        pvePanels.forEach((panel) => {
+            panel.style.visibility = 'collapse';
+        });
+    } else {
+        pvpPanels.forEach((panel) => {
+            panel.style.visibility = 'collapse';
+        });
+    }
+
+    const getCurrentPlayer = (): PlayerID => {
+        let playerId = Players.GetLocalPlayer();
         if(Game.IsInToolsMode()){
             const selectedEntity = Players.GetSelectedEntities(playerId)[0];
             if(selectedEntity){
@@ -370,18 +408,6 @@ import { ReadyBar } from './readyBar';
             }
         }
 
-        GameEvents.SendCustomGameEventToServer('swap_r_f', {
-            playerIndex: playerId, 
-
-        } as never);
-    }
-
-    
-    if(!Game.IsInToolsMode()){
-        //$.Schedule(3.0, () => SwapRF());
-    }
-
-    if(Game.GetMapInfo().map_display_name === 'pvp'){
-        pvePanel.style.visibility = 'collapse';
+        return playerId;
     }
 })();

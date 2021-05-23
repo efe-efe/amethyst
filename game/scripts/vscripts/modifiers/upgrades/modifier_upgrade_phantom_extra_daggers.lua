@@ -1,0 +1,1 @@
+modifier_upgrade_phantom_extra_daggers = class({})

@@ -13,9 +13,10 @@
 }
 
 .top-bar__middle{
-    width: 20%;
+	width: fill-parent-flow(1);
     height: 100%;
     flow-children: down;
+    align: center center;
 }
 
 .top-bar__left{

@@ -30,7 +30,6 @@ export default class Level extends GameState{
         this.remainingTotalNpcs = level.totalNpcs;
         this.remainingWaveNpcs = this.level.waves[this.currentWave].totalNpcs;
         this.StartWave(this.currentWave);
-
         this.SendDataToClient();
     }
 
@@ -94,6 +93,13 @@ export default class Level extends GameState{
     }
 
     EndLevel(): void{
+        this.GetAllPlayers().forEach((player) => {
+            const customNpc = player.customNpc;
+            if(customNpc){
+                customNpc.RequestUpgrades();
+            }
+        });
+
         GameRules.Addon.SetState(CustomGameState.PRE_LEVEL);
     }
 }

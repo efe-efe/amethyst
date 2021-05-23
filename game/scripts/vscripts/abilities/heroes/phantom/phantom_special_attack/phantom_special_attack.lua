@@ -19,7 +19,25 @@ function phantom_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
     local origin = caster:GetAbsOrigin()
-	local damage = self:GetSpecialValueFor("ability_damage")
+	local straight_direction = Direction2D(origin, point)
+
+	local directions = {}
+    table.insert(directions, straight_direction)
+
+	if caster:HasModifier("modifier_upgrade_phantom_extra_daggers") then
+    	table.insert(directions, RotatePoint(Vector(0,0,0), Vector(0,0,0) + straight_direction, -30):Normalized())
+    	table.insert(directions, RotatePoint(Vector(0,0,0), Vector(0,0,0) + straight_direction, 30):Normalized())
+	end
+
+    for _,direction in ipairs(directions) do
+		self:ThrowProjectile(origin, direction)
+	end
+
+	self:PlayEffectsOnCast()
+end
+
+function phantom_special_attack:ThrowProjectile(vOrigin, vDirection)
+	local caster = self:GetCaster()
 	local bleed_duration = self:GetSpecialValueFor("bleed_duration")
 	local damage_multiplier = self:GetSpecialValueFor("damage_multiplier")
 
@@ -27,17 +45,16 @@ function phantom_special_attack:OnSpellStart()
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
 
-	local projectile_direction = Direction2D(origin, point)
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-	
+
 	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile  = {
 			EffectName = "particles/phantom/phantom_special_attack.vpcf",
-			vSpawnOrigin = origin + Vector(projectile_direction.x * 30, projectile_direction.y * 30, 96),
+			vSpawnOrigin = vOrigin + Vector(vDirection.x * 30, vDirection.y * 30, 96),
 			fDistance =	self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
 			fStartRadius = self:GetSpecialValueFor("hitbox"),
 			Source = caster,
-			vVelocity = projectile_direction * projectile_speed,
+			vVelocity = vDirection * projectile_speed,
 			UnitBehavior = PROJECTILES_DESTROY,
 			TreeBehavior = PROJECTILES_NOTHING,
 			WallBehavior = PROJECTILES_DESTROY,
@@ -88,7 +105,6 @@ function phantom_special_attack:OnSpellStart()
 		}
 	})
 
-	self:PlayEffectsOnCast()
 end
 
 function phantom_special_attack:OnUpgrade()

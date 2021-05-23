@@ -800,6 +800,16 @@ function CustomEntitiesLegacy:ProjectileAttack(hEntity, tData)
 	end
 end
 
+function CustomEntitiesLegacy:GetMeeleExtraRadius(hEntity)
+	local modifier = CustomEntitiesLegacy:SafeGetModifier(hEntity, "modifier_upgrade_meele_extra_radius")
+
+	if modifier then
+		return modifier:GetExtraRadius()
+	end
+	
+	return 0
+end
+
 function CustomEntitiesLegacy:MeeleAttack(hEntity, tData)
 	local bTriggerCounters = (tData.bTriggerCounters == nil) and true or tData.bTriggerCounters
 	local iTeamFilter = tData.iTeamFilter or DOTA_UNIT_TARGET_TEAM_ENEMY

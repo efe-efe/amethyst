@@ -1,10 +1,12 @@
 import Alliance from './alliance';
+import { CustomPlayerHeroNPC } from './custom_npc';
 
 export default class Player{
     id: PlayerID;
     userid: number;
     hero: CDOTA_BaseNPC_Hero | undefined = undefined;
     alliance: Alliance | undefined = undefined;
+    customNpc: CustomPlayerHeroNPC | undefined = undefined;
     team = DotaTeam.NOTEAM;
     cursor_position = Vector(0,0,0);
 
@@ -16,6 +18,10 @@ export default class Player{
     SetHero(hero: CDOTA_BaseNPC_Hero): void{
         this.hero = hero;
         CustomEntitiesLegacy.SendDataToClient(hero);
+    }
+
+    SetCustomNPC(customNpc: CustomPlayerHeroNPC): void{
+        this.customNpc = customNpc;
     }
     
     GetId(): PlayerID{

@@ -24,6 +24,7 @@ import Level, { Wave, NPCGroup, ILevel } from './clases/level';
 import settings from './settings';
 import PreLevel from './clases/pre_level';
 import { NPCNames } from './clases/custom_ai';
+import Upgrades from './upgrades';
 
 declare global {
     interface CDOTAGamerules {
@@ -194,7 +195,7 @@ export class GameMode{
     }
 
     GenerateLevelData(): void{
-        const bossLevels = [7, 15];
+        const bossLevels = [4, 9, 14, 19];
         const npcs = [NPCNames.RADIANT_ZOMBIE_HEALER, NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL];
         const bosses = [NPCNames.QUEEN, NPCNames.CENTAUR];
 
@@ -387,6 +388,21 @@ export class GameMode{
                 }
             }
         });
+
+        CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_upgrade', (eventSourceIndex, event) => {
+            const playerId = event.playerIndex;
+            const player = this.FindPlayerById(playerId);
+
+            if(player){
+                const customNpc = player.customNpc;
+                if(customNpc){
+                    const upgrade = Upgrades.filter((currentUpgrade) => currentUpgrade.id === event.payload.upgradeId)[0];
+                    if(upgrade){
+                        customNpc.ApplyUpgrade(upgrade);
+                    }
+                }
+            }
+        });
     }
 
     SetupFilters(): void{
@@ -437,6 +453,11 @@ export class GameMode{
         LinkLuaModifier('modifier_banish',                          'modifiers/generic/modifier_banish', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_hero_movement',                   'modifiers/generic/modifier_hero_movement', LuaModifierMotionType.NONE);
         
+        if(this.IsPVE()){
+            LinkLuaModifier('modifier_upgrade_meele_extra_radius',  'modifiers/upgrades/modifier_upgrade_meele_extra_radius', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_phantom_extra_daggers',  'modifiers/upgrades/modifier_upgrade_phantom_extra_daggers', LuaModifierMotionType.NONE);
+        }
+
         print('[AMETHYST] Useful modifiers linked');
     }
 
@@ -468,7 +489,7 @@ export class GameMode{
         return found;
     }
 
-    RegisterPlayer(hero: CDOTA_BaseNPC_Hero): boolean{
+    RegisterPlayer(hero: CDOTA_BaseNPC_Hero, customNpc: CustomPlayerHeroNPC): boolean{
         const team = hero.GetTeamNumber();
         const playerID = hero.GetPlayerOwnerID();
         const userID = playerID + 1;
@@ -492,6 +513,7 @@ export class GameMode{
                 player.SetTeam(team);
                 player.SetAlliance(alliance);
                 player.SetHero(hero);
+                player.SetCustomNPC(customNpc);
 
                 alliance.AddPlayer(player);
             }
@@ -782,6 +804,20 @@ export class GameMode{
                 }
             }
         }
+        
+        if(event.text == '-upgrade'){
+            if(this.IsPVE()){
+                const playerId = event.playerid;
+                const player = this.FindPlayerById(playerId);
+                
+                if(player){
+                    const customNpc = player.customNpc;
+                    if(customNpc){
+                        customNpc.RequestUpgrades();
+                    }
+                }
+            }
+        }
     }
     
     OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void{
@@ -833,12 +869,14 @@ export class GameMode{
             return true;
         }
 
-        this.RegisterUnit(npc);
+        const customNpc = this.RegisterUnit(npc);
         if(npc.IsRealHero()){
             if(this.IsPVP()){
-                return this.OnHeroInGamePVP(npc);
+                return this.RegisterPlayer(npc, customNpc as CustomPlayerHeroNPC);
             } else if(this.IsPVE()){
-                return this.OnHeroInGamePVE(npc);
+                if(npc.GetTeamNumber() !== DotaTeam.CUSTOM_1){
+                    return this.RegisterPlayer(npc, customNpc as CustomPlayerHeroNPC);
+                }
             }
         }
 
@@ -862,27 +900,20 @@ export class GameMode{
         return GetMapName() === Custom_MapNames.PVE;
     }
 
-    OnHeroInGamePVE(hero: CDOTA_BaseNPC_Hero): boolean{
-        if(hero.GetTeamNumber() !== DotaTeam.CUSTOM_1){
-            return this.RegisterPlayer(hero);
-        }
-        return true;
-    }
+    RegisterUnit(unit: CDOTA_BaseNPC): (CustomPlayerHeroNPC | CustomNonPlayerHeroNPC | CustomNPC){
+        let customNpc = undefined;
 
-    OnHeroInGamePVP(hero: CDOTA_BaseNPC_Hero): boolean{
-        return this.RegisterPlayer(hero);
-    }
-
-    RegisterUnit(unit: CDOTA_BaseNPC): void{
         if(unit.IsRealHero()){
             if(this.IsPlayerHero(unit)){
-                this.units.push(new CustomPlayerHeroNPC(unit));
+                customNpc = new CustomPlayerHeroNPC(unit);
             } else {
-                this.units.push(new CustomNonPlayerHeroNPC(unit));
+                customNpc = new CustomNonPlayerHeroNPC(unit);
             }
         } else {
-            this.units.push(new CustomNPC(unit));
+            customNpc = new CustomNPC(unit);
         }
+        this.units.push(customNpc);
+        return customNpc;
     }
 
     RemoveUnit(unit: CDOTA_BaseNPC): void{
