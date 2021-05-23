@@ -364,6 +364,14 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         });
     }
 
+    IsRanged(): boolean{
+        return ((this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() === Attributes.AGILITY);
+    }
+
+    IsMeele(): boolean{
+        return ((this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() === Attributes.STRENGTH);
+    }
+
     ApplyUpgrade(upgrade: Upgrade): void{
         if(upgrade.modifier){
             this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
@@ -413,7 +421,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         if(!upgrade.attackCapability){
             return true;
         }
-        if(this.unit.GetAttackCapability() !== upgrade.attackCapability){
+        if((upgrade.attackCapability === UnitAttackCapability.MELEE_ATTACK && !this.IsMeele()) || (upgrade.attackCapability === UnitAttackCapability.RANGED_ATTACK && !this.IsRanged())){
             return false;
         }
 
