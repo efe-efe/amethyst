@@ -18,6 +18,17 @@ export interface Upgrade {
 
 const Upgrades: Upgrade[] = [
     {
+        id: 'juggernaut_fury_attack',
+        name: 'Blade Fury attacks',
+        description: 'Blade Fury damage count as basic attacks',
+        ability: 'juggernaut_mobility',
+        maxLevel: 1,
+        modifier: {
+            name: 'modifier_upgrade_juggernaut_fury_attack'
+        },
+        tier: 0,
+    },
+    {
         id: 'meele_extra_radius',
         name: 'Extra radius',
         description: 'Provides extra radius on your basic attack',
@@ -32,7 +43,6 @@ const Upgrades: Upgrade[] = [
         id: 'phantom_extra_daggers',
         name: 'Extra daggers',
         description: 'Your stiffling daggers throws 3 daggers.',
-        hero: 'npc_dota_hero_phantom_assassin',
         ability: 'phantom_special_attack',
         maxLevel: 1,
         modifier: {
@@ -44,7 +54,6 @@ const Upgrades: Upgrade[] = [
         id: 'phantom_dash_damage',
         name: 'Swift damage',
         description: 'Your Swift deals damage when passing through enemies.',
-        hero: 'npc_dota_hero_phantom_assassin',
         ability: 'phantom_mobility',
         maxLevel: 1,
         modifier: {
@@ -53,10 +62,20 @@ const Upgrades: Upgrade[] = [
         tier: 1,
     },
     {
+        id: 'phantom_coup_cast_fast',
+        name: 'Coup de Grace cast fast',
+        description: 'Reduces the cast time of Coup de Grace considerably.',
+        ability: 'phantom_ultimate',
+        maxLevel: 1,
+        modifier: {
+            name: 'modifier_upgrade_phantom_coup_cast_fast'
+        },
+        tier: 1,
+    },
+    {
         id: 'phantom_dash_invulnerability',
         name: 'Swift invulnerability',
         description: 'Your Swift gives you invulnerability for a short period of time after passing through enemies.',
-        hero: 'npc_dota_hero_phantom_assassin',
         ability: 'phantom_mobility',
         maxLevel: 1,
         modifier: {
@@ -78,7 +97,6 @@ const Upgrades: Upgrade[] = [
         id: 'juggernaut_refresh_dagger',
         name: 'Refreshing dagger',
         description: 'Your dagger cooldown is recharged when succesfully hitting enemies',
-        hero: 'npc_dota_hero_juggernaut',
         ability: 'juggernaut_special_attack',
         maxLevel: 1,
         modifier: {

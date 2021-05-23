@@ -1,8 +1,20 @@
 phantom_ultimate = class({})
 
 function phantom_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_3 end
-function phantom_ultimate:GetPlaybackRateOverride()		return 0.7 end
+function phantom_ultimate:GetPlaybackRateOverride()
+	if self:GetCaster():HasModifier("modifier_upgrade_phantom_coup_cast_fast") then
+		return 1.2
+	end
+	return 0.7 
+end
 function phantom_ultimate:GetCastPointSpeed() 			return 0 end
+
+function phantom_ultimate:GetCastPoint()
+	if self:GetCaster():HasModifier("modifier_upgrade_phantom_coup_cast_fast") then
+		return 0.3
+	end
+	return 1.0
+end
 
 function phantom_ultimate:OnAbilityPhaseStart()
 	self:PlayEffectsOnCastPoint()

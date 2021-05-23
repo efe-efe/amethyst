@@ -13,7 +13,6 @@
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange"				"2400"
 		"AbilityEnergyCost"				"100"
-		"AbilityCastPoint"				"1.0"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"

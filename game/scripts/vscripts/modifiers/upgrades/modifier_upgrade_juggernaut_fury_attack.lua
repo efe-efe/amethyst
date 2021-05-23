@@ -1,0 +1,1 @@
+modifier_upgrade_juggernaut_fury_attack = class({})

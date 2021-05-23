@@ -9,7 +9,7 @@ function phantom_second_attack:OnSpellStart()
 	local origin = caster:GetAbsOrigin()
 	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local damage = caster:GetAverageTrueAttackDamage(caster)
-	local radius = self:GetSpecialValueFor("radius")
+	local radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
 	
 	local damage_multiplier_per_stack = self:GetSpecialValueFor("damage_multiplier_per_stack")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")

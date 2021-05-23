@@ -26,7 +26,7 @@ function juggernaut_basic_attack:OnSpellStart()
 	local origin = caster:GetOrigin()
 	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 
-	self.radius = self:GetSpecialValueFor("radius")
+	self.radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
 	local cooldown_reduction_counter = self:GetSpecialValueFor("cooldown_reduction_counter")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")

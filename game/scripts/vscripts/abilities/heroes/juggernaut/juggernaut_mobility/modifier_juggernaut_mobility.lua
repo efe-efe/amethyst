@@ -11,10 +11,14 @@ function modifier_juggernaut_mobility:OnCreated(kv)
     self.parent = self:GetParent()
 
     if IsServer() then
-        self.damage_per_second = self:GetAbility():GetSpecialValueFor("damage_per_second")
+        self.damage_table = {
+            attacker = self.parent,
+            damage = self:GetAbility():GetSpecialValueFor("damage_per_second"),
+            damage_type = DAMAGE_TYPE_PURE,
+        }
+
         local think_interval = self:GetAbility():GetSpecialValueFor("think_interval")
         self.radius = self:GetAbility():GetSpecialValueFor("radius")
-
         self:StartIntervalThink(think_interval)
         self:PlayEffects()
     end
@@ -32,19 +36,21 @@ function modifier_juggernaut_mobility:OnIntervalThink()
    )
 
     for _,enemy in pairs(enemies) do
-        local damage = {
-            victim = enemy,
-            attacker = self.parent,
-            damage = self.damage_per_second,
-            damage_type = DAMAGE_TYPE_PURE,
-        }
-
-        ApplyDamage(damage)
-	    EmitSoundOn("Hero_Juggernaut.Attack", enemy)
-        EmitSoundOn("Hero_Juggernaut.BladeFury.Impact", enemy)
-        EFX('particles/juggernaut/juggernaut_mobility_impact.vpcf', PATTACH_ABSORIGIN, enemy, {
-            release = true
-        })
+        if self.parent:HasModifier("modifier_upgrade_juggernaut_fury_attack") then
+            CustomEntitiesLegacy:SingleAttack(self.parent, {
+                bIsBasicAttack = true,
+                hTarget = enemy,
+                Callback = function(hTarget)
+                    self.damage_table.victim = hTarget
+                    ApplyDamage(self.damage_table)
+                    self:PlayEffectsOnImpact(hTarget)
+                end
+            })
+        else
+            self.damage_table.victim = enemy
+            ApplyDamage(self.damage_table)
+            self:PlayEffectsOnImpact(enemy)
+        end
     end
 end
 
@@ -86,6 +92,14 @@ function modifier_juggernaut_mobility:CheckState()
         [MODIFIER_STATE_NO_UNIT_COLLISION] = true,
         [MODIFIER_STATE_SILENCED] = true
     }
+end
+
+function modifier_juggernaut_mobility:PlayEffectsOnImpact(hTarget)
+    EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
+    EmitSoundOn("Hero_Juggernaut.BladeFury.Impact", hTarget)
+    EFX('particles/juggernaut/juggernaut_mobility_impact.vpcf', PATTACH_ABSORIGIN, enemy, {
+        release = true
+    })
 end
 
 function modifier_juggernaut_mobility:PlayEffects()
