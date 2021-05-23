@@ -19,6 +19,11 @@ enum Orientations {
     HORIZONTAL,
     VERTICAL,
 }
+
+interface HeroUpgrade {
+    id: string; 
+    level: number;
+}
 export default class CustomNPC extends UnitEntity{
     constructor(unit: CDOTA_BaseNPC){
         CustomEntitiesLegacy.Initialize(unit, !unit.IsRealHero()); //Need this for SetParent bullshit
@@ -326,6 +331,8 @@ export class CustomNonPlayerHeroNPC extends CustomHeroNPC{
     }
 }
 export class CustomPlayerHeroNPC extends CustomHeroNPC{
+    heroUpgrades: HeroUpgrade[] = [];
+
     constructor(unit: CDOTA_BaseNPC){
         super(unit);
         if(GameRules.Addon.IsPVE()){
@@ -376,6 +383,24 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         if(upgrade.modifier){
             this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
         }
+        let found = false;
+        this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
+            if(heroUpgrade.id === upgrade.id){
+                found = true;
+                return {
+                    ...heroUpgrade,
+                    level: heroUpgrade.level + 1
+                };
+            } 
+            return heroUpgrade;
+        });
+
+        if(!found){
+            this.heroUpgrades.push({
+                id: upgrade.id,
+                level: 1,
+            });
+        }
     }
 
     RequestUpgrades(): void{
@@ -391,7 +416,8 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         const upgrades = Upgrades.filter((upgrade) => (
             this.ValdateUpgradeHero(upgrade) &&        
             this.ValdateUpgradeAbility(upgrade) &&
-            this.ValdateUpgradeAttackCapabilities(upgrade)
+            this.ValdateUpgradeAttackCapabilities(upgrade) &&
+            this.ValidateUpgradeLevel(upgrade)
         ));
 
         return Math.GetRandomElementsFromArray(upgrades, Clamp(amount, upgrades.length, 0));
@@ -422,6 +448,20 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             return true;
         }
         if((upgrade.attackCapability === UnitAttackCapability.MELEE_ATTACK && !this.IsMeele()) || (upgrade.attackCapability === UnitAttackCapability.RANGED_ATTACK && !this.IsRanged())){
+            return false;
+        }
+
+        return true;
+    }
+
+    ValidateUpgradeLevel(upgrade: Upgrade): boolean{
+        const heroUpgrade = this.heroUpgrades.filter((heroUpgrade) => heroUpgrade.id === upgrade.id)[0];
+
+        if(!heroUpgrade){
+            return true;
+        }
+
+        if(heroUpgrade.level >= upgrade.maxLevel){
             return false;
         }
 
