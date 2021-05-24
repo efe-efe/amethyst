@@ -1,5 +1,5 @@
 import LayoutController from './layout/layoutController';
-import util from './util';
+import util, { tables } from './util';
 
 (function(){
     const layout = LayoutController.GetInstance();
@@ -10,7 +10,11 @@ import util from './util';
         upgradeContainer.SetDisableFocusOnMouseDown(true);
     });
 
-    GameEvents.Subscribe('custom_npc:request_upgrades', function(event: any){
+    const HideUpgrades = () => {
+        upgradesContainer.style.visibility = 'collapse';
+    };
+
+    const ShowUpgrades = (upgrades: any) => {
         upgradesContainer.style.visibility = 'visible';
         upgradesContainers.forEach((upgradeContainer, i) => {
             const titlePanel = upgradeContainer.FindChildrenWithClassTraverse('upgrade__title')[0] as LabelPanel;
@@ -20,7 +24,7 @@ import util from './util';
             descriptionPanel.text = 'No upgrades here';
             abilityPanel.abilityname = '';
     
-            const upgradeData = event.upgrades[i + 1];
+            const upgradeData = upgrades[i + 1];
             if(upgradeData){
                 titlePanel.text = upgradeData.name;
                 descriptionPanel.text = upgradeData.description;
@@ -36,10 +40,20 @@ import util from './util';
                         playerIndex: playerId,
                         payload: { upgradeId: upgradeData.id, }
                     } as never);
-            
-                    upgradesContainer.style.visibility = 'collapse';
                 });
             }
         });
+    };
+
+    const tableName = 'custom_npc_upgrades' as never;
+    tables.subscribeToNetTableAndLoadNow(tableName, (table: never, key: string | number | symbol, value: any) => {
+        const playerId = util.getCurrentPlayer();
+        if(playerId === value.playerId){
+            if(value.upgrades){
+                ShowUpgrades(value.upgrades);
+            } else {
+                HideUpgrades();
+            }
+        }
     });
 })();

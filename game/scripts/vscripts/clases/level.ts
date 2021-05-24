@@ -144,13 +144,6 @@ export default class Level extends GameState{
     }
     
     EndLevel(): void{
-        this.GetAllPlayers().forEach((player) => {
-            const customNpc = player.customNpc;
-            if(customNpc){
-                customNpc.RequestUpgrades();
-            }
-        });
-
         GameRules.Addon.SetState(CustomGameState.PRE_LEVEL);
     }
 }

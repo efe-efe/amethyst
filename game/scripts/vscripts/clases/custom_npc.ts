@@ -379,7 +379,20 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return ((this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() === Attributes.STRENGTH);
     }
 
+    IsUpgrading(): boolean{
+        const tableName = 'custom_npc_upgrades' as never;
+        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; upgrades: Upgrade[] | undefined };
+        return (value && (value.upgrades !== undefined));
+    }
+
     ApplyUpgrade(upgrade: Upgrade): void{
+        const data = {
+            playerId: this.unit.GetPlayerOwnerID(),
+        } as never;
+
+        const tableName = 'custom_npc_upgrades' as never;
+        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
+
         if(upgrade.modifier){
             this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
         }
@@ -410,11 +423,12 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
 
     RequestUpgrades(): void{
         const data = {
-            entityIndex: this.unit.GetEntityIndex(),
+            playerId: this.unit.GetPlayerOwnerID(),
             upgrades: this.GenerateUpgrades(3),
         } as never;
 
-        CustomGameEventManager.Send_ServerToAllClients('custom_npc:request_upgrades', data);
+        const tableName = 'custom_npc_upgrades' as never;
+        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
 
     GenerateUpgrades(amount: number): Upgrade[]{
@@ -484,40 +498,3 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return true;
     }
 }
-
-/*
-CheckState()
-	return { 
-		[MODIFIER_STATE_DISARMED] = true,
-		[MODIFIER_STATE_NO_HEALTH_BAR] = true 
-	} 
-}
-
-DeclareFunctions()
-    return {
-		MODIFIER_EVENT_ON_SPENT_MANA,
-		MODIFIER_PROPERTY_DISABLE_AUTOATTACK,
-		MODIFIER_PROPERTY_IGNORE_MOVESPEED_LIMIT,
-		MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
-    }
-}
-
-OnSpentMana(event)
-	CustomEntitiesLegacy.SendDataToClient(this.GetParent())
-}
-
-OnAbilityFullyCast(params)
-	if(IsServer()){
-		if(params.unit !== this.GetParent()){
-			return
-		}
-
-		if(!GameRules.Addon:IsInWTFMode()){
-			CustomEntitiesLegacy.GiveEnergy(params.unit, -params.ability:GetEnergyCost())
-		}
-	}
-}
-
-GetDisableAutoAttack()						return true	}
-GetModifierIgnoreMovespeedLimit(params)		return 1	}
-*/

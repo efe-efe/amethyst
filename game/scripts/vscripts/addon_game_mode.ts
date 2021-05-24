@@ -401,6 +401,9 @@ export class GameMode{
                     const upgrade = Upgrades.filter((currentUpgrade) => currentUpgrade.id === event.payload.upgradeId)[0];
                     if(upgrade){
                         customNpc.ApplyUpgrade(upgrade);
+                        if(this.pre_level){
+                            this.pre_level.OnHeroUpgrade();
+                        }
                     }
                 }
             }
@@ -536,6 +539,7 @@ export class GameMode{
     }
 
     SetState(state: CustomGameState): void{
+        //print('NEW STATE: ', CustomGameState[state]);
         this.OnStateEnd(this.state);
         this.state = state;
         const tableName = 'main' as never;
@@ -569,7 +573,7 @@ export class GameMode{
         }
         else if(state === CustomGameState.LEVEL_IN_PROGRESS){
             this.level = undefined;
-            this.pre_level = new PreLevel(this.alliances, settings.PreLevelDuration);    
+            this.pre_level = new PreLevel(this.alliances, -1);    
         }
     }
 

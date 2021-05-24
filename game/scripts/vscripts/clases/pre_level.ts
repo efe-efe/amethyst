@@ -4,10 +4,18 @@ import GameState, { CustomGameState } from './game_state';
 
 
 export default class PreLevel extends GameState{
-    ready = false;
-
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
+
+        const abilitiesReady = this.CheckAbilitiesReady();
+        if(abilitiesReady){
+            this.GetAllPlayers().forEach((player) => {
+                const customNpc = player.customNpc;
+                if(customNpc){
+                    customNpc.RequestUpgrades();
+                }
+            });
+        }
     }
 
     Update(): void{
@@ -18,30 +26,52 @@ export default class PreLevel extends GameState{
         if(this.time_remaining == 0){
             this.EndPreLevel();
         }
+    }
 
-        if(this.ready && this.time_remaining < 0){
+    CheckAbilitiesReady(): boolean{
+        let abilitiesReady = true;
+        this.GetAllPlayers().forEach((player) => {
+            const hero = player.hero;
+            if(hero){
+                if(hero.GetAbilityPoints() > 0){
+                    abilitiesReady = false;
+                }
+            }
+        });
+        return abilitiesReady;
+    }
+
+    CheckUpgradesaReady(): boolean{
+        let upgradesReady = true;
+        this.GetAllPlayers().forEach((player) => {
+            const customNpc = player.customNpc;
+            if(customNpc){
+                if(customNpc.IsUpgrading()){
+                    upgradesReady = false;
+                }
+            }
+        });
+        return upgradesReady;
+    }
+
+    OnAbilityLearned(): void{
+        const abilitiesReady = this.CheckAbilitiesReady();
+        if(abilitiesReady){
             this.GetAllPlayers().forEach((player) => {
                 const customNpc = player.customNpc;
                 if(customNpc){
                     customNpc.RequestUpgrades();
                 }
             });
-            this.SetDuration(settings.PreLevelDuration);
         }
     }
 
-    OnAbilityLearned(): void{
-        let ready = true;
-        this.GetAllPlayers().forEach((player) => {
-            const hero = player.hero;
-            if(hero){
-                if(hero.GetAbilityPoints() > 0){
-                    ready = false;
-                }
-            }
-        });
-
-        this.ready = ready;
+    OnHeroUpgrade(): void{
+        const upgradesReady = this.CheckAbilitiesReady();
+        
+        if(upgradesReady){
+            this.SetDuration(settings.PreLevelDuration);
+        }
     }
 
     EndPreLevel(): void{
