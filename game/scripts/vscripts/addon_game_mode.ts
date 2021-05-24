@@ -466,6 +466,7 @@ export class GameMode{
             LinkLuaModifier('modifier_upgrade_phantom_dash_invulnerability',  'modifiers/upgrades/modifier_upgrade_phantom_dash_invulnerability', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_phantom_coup_cast_fast',  'modifiers/upgrades/modifier_upgrade_phantom_coup_cast_fast', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_juggernaut_fury_attack',  'modifiers/upgrades/modifier_upgrade_juggernaut_fury_attack', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_storm_ranged_remnant',  'modifiers/upgrades/modifier_upgrade_storm_ranged_remnant', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');

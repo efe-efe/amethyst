@@ -13,6 +13,13 @@ function storm_mobility:GetCastAnimationCustom()		return ACT_DOTA_SPAWN end
 function storm_mobility:GetPlaybackRateOverride()       return 1.5 end
 function storm_mobility:GetCastPointSpeed() 			return 50 end
 
+function storm_mobility:GetCastRange(vLocation, hTarget)
+    if self:GetCaster():HasModifier("modifier_upgrade_storm_ranged_remnant") then
+        return 1200
+    end
+    return self.BaseClass.GetCastRange(self, vLocation, hTarget)
+end
+
 function storm_mobility:GetCastPoint()
     if self:GetCaster():HasModifier('modifier_storm_extra_displacement') then
         return 0.0
@@ -24,9 +31,24 @@ end
 function storm_mobility:OnSpellStart()
     local caster = self:GetCaster()
     local duration = self:GetSpecialValueFor("duration")
-    local origin = caster:GetAbsOrigin()
-    local groundPosition = GetGroundPosition(origin, caster)
+    local point = ClampPosition(caster:GetAbsOrigin(), CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local groundPosition = GetGroundPosition(point, caster)
     
+    if self:GetCaster():HasModifier("modifier_upgrade_storm_ranged_remnant") then
+        EFX('particles/spectre/spectre_illusion_warp.vpcf', PATTACH_CUSTOMORIGIN, caster, {
+            cp0 = {
+                ent = caster,
+                point = 'attach_hitloc'
+            },
+            cp1 = groundPosition,
+            cp2 = {
+                ent = caster,
+                point = 'attach_hitloc'
+            },
+            release = true,
+        })
+    end
+
     local thinker = CreateModifierThinker(
         caster, --hCaster
         self, --hAbility
@@ -51,13 +73,14 @@ function storm_ex_mobility:OnSpellStart()
     local origin = caster:GetAbsOrigin()
     local duration = self:GetSpecialValueFor("duration")
     local point = ClampPosition(caster:GetAbsOrigin(), CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+    local groundPosition = GetGroundPosition(point, caster)
 
     local thinker = CreateModifierThinker(
         caster, --hCaster
         self, --hAbility
         "modifier_storm_ex_mobility_thinker", --modifierName
         { duration = duration },
-        point, --vOrigin
+        groundPosition, --vOrigin
         caster:GetTeamNumber(), --nTeamNumber
         true --bPhantomBlocker
     )      

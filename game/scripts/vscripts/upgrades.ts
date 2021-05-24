@@ -29,6 +29,17 @@ const Upgrades: Upgrade[] = [
         tier: 0,
     },
     {
+        id: 'storm_ranged_remnant',
+        name: 'Ranged remnant',
+        description: 'Your static remnant can be casted with range',
+        ability: 'storm_mobility',
+        maxLevel: 1,
+        modifier: {
+            name: 'modifier_upgrade_storm_ranged_remnant'
+        },
+        tier: 0,
+    },
+    {
         id: 'meele_extra_radius',
         name: 'Extra radius',
         description: 'Provides extra radius on your basic attack',
