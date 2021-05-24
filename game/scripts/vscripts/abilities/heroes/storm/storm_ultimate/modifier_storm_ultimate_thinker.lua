@@ -6,6 +6,7 @@ function modifier_storm_ultimate_thinker:OnCreated(params)
     self.duration = self.ability:GetSpecialValueFor("duration")
     self.caster = self:GetCaster()
     self.origin = self:GetParent():GetAbsOrigin()
+    self.knockback_distance = 500
     self.damage_table = {
         attacker = self.caster,
         damage = self.ability:GetSpecialValueFor("ability_damage"),
@@ -47,6 +48,17 @@ function modifier_storm_ultimate_thinker:OnIntervalThink()
     ApplyCallbackForUnitsInArea(self.caster, self.origin, self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
         self.damage_table.victim = unit
         ApplyDamage(self.damage_table)
+
+        if self.caster:HasModifier("modifier_upgrade_storm_unleashed_knockback") then
+            local direction = (unit:GetAbsOrigin() - self.origin):Normalized()
+            unit:AddNewModifier(self.caster, self.ability, "modifier_storm_ultimate_displacement", { 
+                x = direction.x,
+                y = direction.y,
+                r = self.knockback_distance,
+                speed = (self.knockback_distance)/0.35,
+                peak = 50,
+            })
+        end
     end)
 
     self.caster:AddNewModifier(self.caster, self.ability, 'modifier_storm_ultimate', { duration = self.duration })

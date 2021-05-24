@@ -10,13 +10,14 @@
     "build:panorama": "tsc --project content/panorama/scripts/custom_game/tsconfig.json",
     "build:vscripts": "tstl --project game/scripts/vscripts/tsconfig.json",
     "dev": "run-p dev:*",
+    "localization": "run-p localization:*",
     "dev:panorama": "tsc --project content/panorama/scripts/custom_game/tsconfig.json --watch",
     "dev:vscripts": "tstl --project game/scripts/vscripts/tsconfig.json --watch",
     "dev:webpack": "npx webpack --watch",
     "dev:sass": "node-sass -w content/panorama/styles/custom_game/ -o content/panorama/styles/custom_game/",
-    "dev:localizationCompiler": "tsc --project node_modules/~resource/tsconfig.json",
-    "dev:localizationCompilerWatcher": "tsc --project node_modules/~resource/tsconfig.json --watch",
-    "dev:runlocalizationWatcher": "node node_modules/~generator/fsWatcher.js",
+    "localization:localizationCompiler": "tsc --project node_modules/~resource/tsconfig.json",
+    "localization:localizationCompilerWatcher": "tsc --project node_modules/~resource/tsconfig.json --watch",
+    "localization:runlocalizationWatcher": "node node_modules/~generator/fsWatcher.js",
     "init": "link-module-alias && node node_modules/~generator/init.js"
   },
   "_moduleAliases": {

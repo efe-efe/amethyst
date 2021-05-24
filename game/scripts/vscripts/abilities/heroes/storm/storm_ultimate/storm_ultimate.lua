@@ -2,6 +2,7 @@ storm_ultimate = class({})
 LinkLuaModifier("modifier_storm_ultimate", "abilities/heroes/storm/storm_ultimate/modifier_storm_ultimate", LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_storm_ultimate_thinker", "abilities/heroes/storm/storm_ultimate/modifier_storm_ultimate_thinker", LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_storm_ultimate_banish", "abilities/heroes/storm/storm_ultimate/modifier_storm_ultimate_banish", LUA_MODIFIER_MOTION_BOTH)
+LinkLuaModifier("modifier_storm_ultimate_displacement", "abilities/heroes/storm/storm_ultimate/modifier_storm_ultimate_displacement", LUA_MODIFIER_MOTION_BOTH)
 
 function storm_ultimate:GetCastAnimationCustom()		return ACT_DOTA_CAST_ABILITY_1 end
 function storm_ultimate:GetPlaybackRateOverride()       return 1.0 end

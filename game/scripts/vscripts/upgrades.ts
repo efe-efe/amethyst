@@ -40,6 +40,17 @@ const Upgrades: Upgrade[] = [
         tier: 0,
     },
     {
+        id: 'storm_unleashed_knockback',
+        name: 'Storm Unleashed knockback',
+        description: 'Your Storm Unleashed push enemies out.',
+        ability: 'storm_ultimate',
+        maxLevel: 1,
+        modifier: {
+            name: 'modifier_upgrade_storm_unleashed_knockback'
+        },
+        tier: 0,
+    },
+    {
         id: 'meele_extra_radius',
         name: 'Extra radius',
         description: 'Provides extra radius on your basic attack',
@@ -101,6 +112,16 @@ const Upgrades: Upgrade[] = [
         maxLevel: 3,
         modifier: {
             name: 'modifier_upgrade_extra_base_damage'
+        },
+        tier: 1,
+    },
+    {
+        id: 'extra_movement_speed',
+        name: 'Extra movement speed',
+        description: 'Increases your movement speed.',
+        maxLevel: 3,
+        modifier: {
+            name: 'modifier_upgrade_extra_movement_speed'
         },
         tier: 1,
     },
