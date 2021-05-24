@@ -73,7 +73,7 @@ function juggernaut_second_attack:OnSpellStart()
 	
 		self:PlayEffectsOnFinish(direction, radius)
 	else
-		local radius = 275
+		radius = radius * 1.15
 		
 		CustomEntitiesLegacy:AoeAttack(caster, {
 			vOrigin = origin, 
