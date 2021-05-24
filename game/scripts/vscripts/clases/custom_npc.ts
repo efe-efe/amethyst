@@ -1,7 +1,7 @@
 import UnitEntity from './unit_entity';
 import Math from '../util/math';
 import customEntities from '../util/custom_entities';
-import Upgrades, { Upgrade } from '../upgrades';
+import Upgrades, { Upgrade } from '../upgrades/upgrades';
 
 const DEBUG = false;
 

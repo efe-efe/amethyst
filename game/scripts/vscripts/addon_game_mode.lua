@@ -45,7 +45,7 @@ local ____pre_level = require("clases.pre_level")
 local PreLevel = ____pre_level.default
 local ____custom_ai = require("clases.custom_ai")
 local NPCNames = ____custom_ai.NPCNames
-local ____upgrades = require("upgrades")
+local ____upgrades = require("upgrades.upgrades")
 local Upgrades = ____upgrades.default
 local Custom_MapNames = {PVP = "pvp", PVE = "pve"}
 local Custom_ActionTypes = Custom_ActionTypes or ({})

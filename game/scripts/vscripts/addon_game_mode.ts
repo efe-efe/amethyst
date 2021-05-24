@@ -24,7 +24,7 @@ import Level, { Wave, NPCGroup, ILevel } from './clases/level';
 import settings from './settings';
 import PreLevel from './clases/pre_level';
 import { NPCNames } from './clases/custom_ai';
-import Upgrades from './upgrades';
+import Upgrades from './upgrades/upgrades';
 
 declare global {
     interface CDOTAGamerules {
