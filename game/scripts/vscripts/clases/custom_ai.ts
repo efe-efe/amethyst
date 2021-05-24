@@ -16,6 +16,7 @@ export enum NPCNames {
     DIRE_ZOMBIE_RAGER,
     DIRE_ZOMBIE_MEELE,
     RADIANT_ZOMBIE_HEALER,
+    RADIANT_ZOMBIE_MEELE,
     FLYING_SKULL,
     QUEEN,
     CENTAUR,
@@ -432,6 +433,25 @@ export const CustomAIFactories: {
     },
     [NPCNames.DIRE_ZOMBIE_MEELE]: (origin: Vector): CustomAI => {
         const ai = new CustomAI('dire_zombie_meele', origin, {
+            followRange: 1500,
+            minFollowRange: 200,
+            behavior: CustomAIBehavior.FOLLOWER,
+        });
+
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('dire_zombie_attack_meele')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true
+            }
+        });
+
+        ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
+        ai.unit.SetHullRadius(95);
+        return ai;
+    },
+    [NPCNames.RADIANT_ZOMBIE_MEELE]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('radiant_zombie_meele', origin, {
             followRange: 1500,
             minFollowRange: 200,
             behavior: CustomAIBehavior.FOLLOWER,
