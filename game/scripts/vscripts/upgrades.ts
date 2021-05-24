@@ -10,19 +10,31 @@ export interface Upgrade {
     hero?: string;
     ability?: string;
     attackCapability?: UnitAttackCapability;
-    maxLevel: number;
+    maxStacks: number;
     modifier?: UpgradeModifier;
     tier: number;
+    minLevel?: number;
     effect?(hero: CDOTA_BaseNPC_Hero): void;
 }
 
 const Upgrades: Upgrade[] = [
     {
+        id: 'restore_health',
+        name: 'Restore health',
+        description: 'Fully restores your health',
+        maxStacks: 1,
+        minLevel: 2,
+        tier: 0,
+        effect: (hero: CDOTA_BaseNPC_Hero): void => {
+            CustomEntitiesLegacy.TrueHeal(hero, hero.GetMaxHealth());
+        },
+    },
+    {
         id: 'juggernaut_fury_attack',
         name: 'Blade Fury attacks',
         description: 'Blade Fury damage count as basic attacks',
         ability: 'juggernaut_mobility',
-        maxLevel: 1,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_juggernaut_fury_attack'
         },
@@ -33,7 +45,7 @@ const Upgrades: Upgrade[] = [
         name: 'Ranged remnant',
         description: 'Your static remnant can be casted with range',
         ability: 'storm_mobility',
-        maxLevel: 1,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_storm_ranged_remnant'
         },
@@ -44,7 +56,7 @@ const Upgrades: Upgrade[] = [
         name: 'Storm Unleashed knockback',
         description: 'Your Storm Unleashed push enemies out.',
         ability: 'storm_ultimate',
-        maxLevel: 1,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_storm_unleashed_knockback'
         },
@@ -54,7 +66,7 @@ const Upgrades: Upgrade[] = [
         id: 'meele_extra_radius',
         name: 'Extra radius',
         description: 'Provides extra radius on your basic attack',
-        maxLevel: 1,
+        maxStacks: 1,
         attackCapability: UnitAttackCapability.MELEE_ATTACK,
         modifier: {
             name: 'modifier_upgrade_meele_extra_radius'
@@ -66,7 +78,7 @@ const Upgrades: Upgrade[] = [
         name: 'Extra daggers',
         description: 'Your stiffling daggers throws 3 daggers.',
         ability: 'phantom_special_attack',
-        maxLevel: 1,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_phantom_extra_daggers'
         },
@@ -77,7 +89,7 @@ const Upgrades: Upgrade[] = [
         name: 'Swift damage',
         description: 'Your Swift deals damage when passing through enemies.',
         ability: 'phantom_mobility',
-        maxLevel: 1,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_phantom_dash_damage'
         },
@@ -88,7 +100,7 @@ const Upgrades: Upgrade[] = [
         name: 'Coup de Grace cast fast',
         description: 'Reduces the cast time of Coup de Grace considerably.',
         ability: 'phantom_ultimate',
-        maxLevel: 1,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_phantom_coup_cast_fast'
         },
@@ -99,7 +111,7 @@ const Upgrades: Upgrade[] = [
         name: 'Swift invulnerability',
         description: 'Your Swift gives you invulnerability for a short period of time after passing through enemies.',
         ability: 'phantom_mobility',
-        maxLevel: 1,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_phantom_dash_invulnerability'
         },
@@ -109,7 +121,7 @@ const Upgrades: Upgrade[] = [
         id: 'extra_base_damage',
         name: 'Extra base damage',
         description: 'Increases your base damage by 3.',
-        maxLevel: 3,
+        maxStacks: 3,
         modifier: {
             name: 'modifier_upgrade_extra_base_damage'
         },
@@ -119,7 +131,7 @@ const Upgrades: Upgrade[] = [
         id: 'extra_movement_speed',
         name: 'Extra movement speed',
         description: 'Increases your movement speed.',
-        maxLevel: 3,
+        maxStacks: 3,
         modifier: {
             name: 'modifier_upgrade_extra_movement_speed'
         },
@@ -130,7 +142,7 @@ const Upgrades: Upgrade[] = [
         name: 'Refreshing dagger',
         description: 'Your dagger cooldown is recharged when succesfully hitting enemies',
         ability: 'juggernaut_special_attack',
-        maxLevel: 1,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_juggernaut_refresh_dagger'
         },
@@ -140,7 +152,7 @@ const Upgrades: Upgrade[] = [
         id: 'lightining_attack',
         name: 'Lightining attack',
         description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets ',
-        maxLevel: 3,
+        maxStacks: 3,
         modifier: {
             name: 'modifier_upgrade_lightining_attack'
         },

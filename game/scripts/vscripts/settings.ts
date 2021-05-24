@@ -9,7 +9,7 @@ let settings = {
     GemRespawnTime: 15.0,
     RoundsToWin: 5,
     RoundsDifferenceToWin: 3,
-    PreWaveDuration: 3.0,
+    PreLevelDuration: 10.0,
     DrawTime: 3.0,
 };
 
@@ -23,7 +23,7 @@ if(IsInToolsMode()){
         PickupsCreationTime: 2.0,
         GemSpawnTime: 5.0,
         GemRespawnTime: 5.0,
-        PreWaveDuration: 2.0,
+        PreLevelDuration: 5.0,
     };
 }
 

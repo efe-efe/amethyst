@@ -4,7 +4,7 @@ CustomAbilitiesLegacy = class({})
 function CustomAbilitiesLegacy:LinkUpgrades(hAbility, sLinkedAbilityName)
     local caster = hAbility:GetCaster()
     local linkedAbility = caster:FindAbilityByName(sLinkedAbilityName)
-    if linkedAbility:GetLevel() == 0 then
+    if linkedAbility and linkedAbility:GetLevel() == 0 then
         linkedAbility:UpgradeAbility(true)
     end
 end

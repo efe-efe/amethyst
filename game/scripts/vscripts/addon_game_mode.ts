@@ -184,7 +184,7 @@ export class GameMode{
     StartPVEMap(): void{
         this.SetState(CustomGameState.PRE_LEVEL);
         this.GenerateLevelData();  
-        this.pre_level = new PreLevel(this.alliances, settings.PreWaveDuration);
+        this.pre_level = new PreLevel(this.alliances, -1);
         
         this.RegisterThinker(0.01, () => {
             if(this.state == CustomGameState.LEVEL_IN_PROGRESS && this.level){
@@ -306,7 +306,7 @@ export class GameMode{
         ListenToGameEvent('player_chat', (event) => this.OnPlayerChat(event), undefined);
         ListenToGameEvent('entity_killed', (event) => this.OnEntityKilled(event), undefined);
         ListenToGameEvent('entity_hurt', (event) => this.OnEntityHurt(event), undefined);
-
+        ListenToGameEvent('dota_player_learned_ability', (event) => this.OnHeroLearnedAbility(event), undefined);
         print('[AMETHYST] Event hooks set');
     }
 
@@ -550,7 +550,7 @@ export class GameMode{
         }
         else if(state === CustomGameState.WARMUP_IN_PROGRESS){
             this.warmup = undefined;
-            this.pre_round = new PreRound(this.alliances, settings.PreRoundDuration);
+            this.pre_round = new PreRound(this.alliances, 1);
         }
         else if(state === CustomGameState.PRE_ROUND){
             this.pre_round = undefined;
@@ -569,7 +569,7 @@ export class GameMode{
         }
         else if(state === CustomGameState.LEVEL_IN_PROGRESS){
             this.level = undefined;
-            this.pre_level = new PreLevel(this.alliances, settings.PreWaveDuration);    
+            this.pre_level = new PreLevel(this.alliances, settings.PreLevelDuration);    
         }
     }
 
@@ -766,6 +766,12 @@ export class GameMode{
         }
         
         return true;
+    }
+
+    OnHeroLearnedAbility(event: DotaPlayerLearnedAbilityEvent): void{
+        if(this.pre_level){
+            this.pre_level.OnAbilityLearned();
+        }
     }
 
     OnGameRulesStateChange(): void{

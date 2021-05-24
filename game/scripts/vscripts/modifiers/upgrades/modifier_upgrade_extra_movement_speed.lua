@@ -4,7 +4,7 @@ function modifier_upgrade_extra_movement_speed:RemoveOnDeath() return false end
 function modifier_upgrade_extra_movement_speed:IsPurgable() return false end
 
 function modifier_upgrade_extra_movement_speed:OnCreated()
-    self.speed_buff_pct = 10
+    self.speed_buff_pct = 20
     if IsServer() then
         self:SetStackCount(1)
     end

@@ -383,6 +383,11 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         if(upgrade.modifier){
             this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
         }
+        if(upgrade.effect){
+            upgrade.effect(this.unit as CDOTA_BaseNPC_Hero);
+            return;
+        }
+
         let found = false;
         this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
             if(heroUpgrade.id === upgrade.id){
@@ -417,6 +422,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             this.ValdateUpgradeHero(upgrade) &&        
             this.ValdateUpgradeAbility(upgrade) &&
             this.ValdateUpgradeAttackCapabilities(upgrade) &&
+            this.ValidateUpgradeStacks(upgrade) &&
             this.ValidateUpgradeLevel(upgrade)
         ));
 
@@ -455,13 +461,23 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     ValidateUpgradeLevel(upgrade: Upgrade): boolean{
+        if(!upgrade.minLevel){
+            return true;
+        }
+        if(GameRules.Addon.currentLevel < upgrade.minLevel - 1){
+            return false;
+        }
+        return true;
+    }
+
+    ValidateUpgradeStacks(upgrade: Upgrade): boolean{
         const heroUpgrade = this.heroUpgrades.filter((heroUpgrade) => heroUpgrade.id === upgrade.id)[0];
 
         if(!heroUpgrade){
             return true;
         }
 
-        if(heroUpgrade.level >= upgrade.maxLevel){
+        if(heroUpgrade.level >= upgrade.maxStacks){
             return false;
         }
 
