@@ -38,17 +38,19 @@ function juggernaut_second_attack:OnSpellStart()
 	local origin = caster:GetOrigin()
 	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	
-	local damage = self:GetSpecialValueFor("ability_damage")
-	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
+	local damage = caster:GetAverageTrueAttackDamage(caster)
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
 	local duration = self:GetSpecialValueFor("duration")
 	local shield_per_stack = self:GetSpecialValueFor("shield_per_stack")
 	local juggernaut_ex_second_attack = caster:FindAbilityByName('juggernaut_ex_second_attack')
 	
+	local damage_multiplier = self:GetSpecialValueFor("damage_multiplier")
+	local damage_multiplier_per_stack = self:GetSpecialValueFor("damage_multiplier_per_stack")
+
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_juggernaut_basic_attack_stacks")
-	self.final_damage = damage + (stacks * damage_per_stack)
+	self.final_damage = (damage * damage_multiplier) * ((stacks + 1) * damage_multiplier_per_stack)
 	self.shield_providers = 0
 
 	self.give_mana = false

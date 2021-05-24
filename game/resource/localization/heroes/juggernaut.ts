@@ -44,7 +44,7 @@ export function GenerateLocalizationData(): LocalizationData
         ability_classname: 'juggernaut_second_attack',
         name: 'Blade Dance',
         description: Description({
-            description: 'Juggernaut swings his blade dealing @{ability_damage} to the enemy and consuming all his current ' + Keywords.FuryStack.instance() + ' to increase the damage dealt by @{damage_per_stack} per stack. If 4 stacks are consumed, a spin attack is cast instead, dealing damage to all enemies around Juggernaut',
+            description: 'Juggernaut swings his blade dealing @{damage_multiplier_per_stack} times your ' + Keywords.BaseDamage + ' to all enemies in front of you. Consumes all his current ' + Keywords.FuryStack.instance() + ' to increase the damage multiplier by @{damage_multiplier_per_stack} per stack. If 4 stacks are consumed, a spin attack is cast instead, dealing damage to all enemies around Juggernaut',
             level: 'Increases damage per stack. Successful hits provides a shield that blocks @{shield_per_stack} damage per stack per target.',
         }),
         lore: Keywords.FuryStack.definition,
