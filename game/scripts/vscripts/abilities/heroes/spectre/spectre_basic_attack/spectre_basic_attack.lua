@@ -36,7 +36,7 @@ function spectre_basic_attack:OnSpellStart()
 	local origin = caster:GetOrigin()
 	local cast_range = self:GetCastRange(Vector(0,0,0), nil)
 	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), cast_range, cast_range)
-	local radius = self:GetSpecialValueFor("radius")
+	local radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local max_targets = 1

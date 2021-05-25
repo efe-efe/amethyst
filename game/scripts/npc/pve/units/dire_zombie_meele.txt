@@ -15,13 +15,13 @@
 		"Ability4"					""			// Ability 4
 
 		"StatusHealth"				"60" 	
-		"MovementSpeed"				"200"
+		"MovementSpeed"				"240"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"TeamName"					"DOTA_TEAM_NEUTRALS"
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 		
-		"AttackDamageMin"			"20"										
-		"AttackDamageMax"			"20"
+		"AttackDamageMin"			"30"										
+		"AttackDamageMax"			"30"
 	}
 }
 	
