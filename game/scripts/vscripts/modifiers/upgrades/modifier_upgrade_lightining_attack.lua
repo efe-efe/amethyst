@@ -10,20 +10,12 @@ function modifier_upgrade_lightining_attack:OnCreated(params)
         self.proc_chance_pct_per_stack = 25
 
         self:SetStackCount(1)
-        self.efx_index = ParticleManager:CreateParticle("particles/generic_gameplay/rune_haste_owner.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
     end
 end
 
 function modifier_upgrade_lightining_attack:OnRefresh(params)
     if IsServer() then
         self:IncrementStackCount()
-    end
-end
-
-function modifier_upgrade_lightining_attack:OnDestroy()
-    if IsServer() then
-        ParticleManager:DestroyParticle(self.efx_index, false)
-        ParticleManager:ReleaseParticleIndex(self.efx_index)
     end
 end
 
@@ -63,6 +55,7 @@ function modifier_upgrade_lightining_attack_attack:OnEvent(params)
         if IsServer() then
             if RandomInt(1, 100) <= self.proc_chance_pct then
                 if params.hTarget:IsAlive() then
+                    EmitSoundOn("Item.Maelstrom.Chain_Lightning", params.hTarget)
                     self:ReleaseBolt(self:GetParent(), params.hTarget)
                 end
             end
@@ -92,6 +85,7 @@ function modifier_upgrade_lightining_attack_attack:ReleaseBolt(hSource, hTarget)
         ApplyCallbackForUnitsInArea(self:GetParent(), hTarget:GetAbsOrigin(), self.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
             if not self.targets[unit:GetEntityIndex()] and not self.sources[hSource] then
                 self.procs = self.procs - 1
+                EmitSoundOn("Item.Maelstrom.Chain_Lightning.Jump", unit)
                 self:ReleaseBolt(hTarget, unit)
             end
         end)

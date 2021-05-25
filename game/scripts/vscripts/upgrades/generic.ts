@@ -34,22 +34,32 @@ const genericUpgrades: Upgrade[] = [
         tier: 1,
     },
     {
-        id: 'extra_movement_speed',
-        name: 'Extra movement speed',
-        description: 'Increases your movement speed.',
+        id: 'extra_speed',
+        name: 'Extra speed',
+        description: 'Increases your movement and attack speed.',
         maxStacks: 3,
         modifier: {
-            name: 'modifier_upgrade_extra_movement_speed'
+            name: 'modifier_upgrade_extra_speed'
         },
         tier: 1,
     },
     {
         id: 'lightining_attack',
         name: 'Lightining attack',
-        description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets ',
+        description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets.',
         maxStacks: 3,
         modifier: {
             name: 'modifier_upgrade_lightining_attack'
+        },
+        tier: 1,
+    },
+    {
+        id: 'stun_attack',
+        name: 'Stun attack',
+        description: 'Your attacks has a chance to deal extra damage and stun the target.',
+        maxStacks: 3,
+        modifier: {
+            name: 'modifier_upgrade_stun_attack'
         },
         tier: 1,
     }

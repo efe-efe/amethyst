@@ -478,7 +478,9 @@ export class GameMode{
             LinkLuaModifier('modifier_upgrade_juggernaut_fury_attack',  'modifiers/upgrades/modifier_upgrade_juggernaut_fury_attack', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_storm_ranged_remnant',  'modifiers/upgrades/modifier_upgrade_storm_ranged_remnant', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_storm_unleashed_knockback',  'modifiers/upgrades/modifier_upgrade_storm_unleashed_knockback', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_extra_movement_speed',  'modifiers/upgrades/modifier_upgrade_extra_movement_speed', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_extra_speed',  'modifiers/upgrades/modifier_upgrade_extra_speed', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_stun_attack',  'modifiers/upgrades/modifier_upgrade_stun_attack', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_stun_attack_attack',  'modifiers/upgrades/modifier_upgrade_stun_attack', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');
