@@ -910,7 +910,7 @@ export class GameMode{
             return false;
         }
 
-        if(npc.GetName() === 'npc_dota_thinker'){
+        if(npc.GetName() === 'npc_dota_thinker' || npc.GetName() === 'npc_dota_base'){
             return true;
         }
 

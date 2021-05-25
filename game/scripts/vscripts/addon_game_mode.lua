@@ -877,7 +877,7 @@ function GameMode.prototype.OnNPCInGame(self, event)
     if (npc == nil) or npc:IsNull() then
         return false
     end
-    if npc:GetName() == "npc_dota_thinker" then
+    if (npc:GetName() == "npc_dota_thinker") or (npc:GetName() == "npc_dota_base") then
         return true
     end
     if CustomEntitiesLegacy:IsInitialized(npc) then
