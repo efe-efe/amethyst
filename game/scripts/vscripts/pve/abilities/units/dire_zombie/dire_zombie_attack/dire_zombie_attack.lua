@@ -3,6 +3,20 @@ dire_zombie_attack = class({})
 function dire_zombie_attack:GetCastAnimationCustom()		return ACT_DOTA_ATTACK end
 function dire_zombie_attack:GetPlaybackRateOverride()       return 1.5 end
 function dire_zombie_attack:GetCastPointSpeed() 			return 0 end
+function dire_zombie_attack:GetCastPoint()
+	if IsServer() then
+		return self:GetCaster():GetAttackAnimationPoint()
+	end
+end
+
+function dire_zombie_attack:GetCooldown(iLevel)
+	if IsServer() then
+        local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
+        local attack_speed = (1 / attacks_per_second)
+		
+		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
+	end
+end
 
 function dire_zombie_attack:OnSpellStart()
     local caster = self:GetCaster()

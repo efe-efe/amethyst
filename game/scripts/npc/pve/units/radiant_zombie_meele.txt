@@ -21,7 +21,9 @@
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 		
 		"AttackDamageMin"			"10"										
-		"AttackDamageMax"			"10"
+		"AttackDamageMax"			"10"								
+		"AttackRate"				"1.0"									
+		"AttackAnimationPoint"		"0.4"
 	}
 }
 	

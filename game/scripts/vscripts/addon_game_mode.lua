@@ -202,7 +202,7 @@ function GameMode.prototype.StartPVEMap(self)
 end
 function GameMode.prototype.GenerateLevelData(self)
     local bossLevels = {4, 9, 14, 19}
-    local npcs = {NPCNames.RADIANT_ZOMBIE_MEELE, NPCNames.RADIANT_ZOMBIE_HEALER, NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL}
+    local npcs = {NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE}
     local bosses = {NPCNames.QUEEN, NPCNames.CENTAUR}
     do
         local i = 0

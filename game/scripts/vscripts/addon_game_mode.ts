@@ -199,12 +199,12 @@ export class GameMode{
     GenerateLevelData(): void{
         const bossLevels = [4, 9, 14, 19];
         const npcs = [
-            NPCNames.RADIANT_ZOMBIE_MEELE, 
-            NPCNames.RADIANT_ZOMBIE_HEALER, 
+            //NPCNames.RADIANT_ZOMBIE_MEELE, 
+            //NPCNames.RADIANT_ZOMBIE_HEALER, 
             NPCNames.DIRE_ZOMBIE, 
             NPCNames.DIRE_ZOMBIE_RAGER, 
             NPCNames.DIRE_ZOMBIE_MEELE, 
-            NPCNames.FLYING_SKULL
+            //NPCNames.FLYING_SKULL
         ];
         const bosses = [NPCNames.QUEEN, NPCNames.CENTAUR];
 

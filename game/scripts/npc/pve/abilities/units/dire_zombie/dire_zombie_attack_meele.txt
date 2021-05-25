@@ -9,8 +9,6 @@
 		"AbilityTextureName"			"sniper_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCastRange"				"300"
-		"AbilityCooldown"				"1.0"
-		"AbilityCastPoint"				"0.4"
 
 		"AbilitySpecial"
 		{

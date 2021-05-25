@@ -22,6 +22,8 @@
 		
 		"AttackDamageMin"			"30"										
 		"AttackDamageMax"			"30"
+		"AttackRate"				"0.65"
+		"AttackAnimationPoint"		"0.35"
 	}
 }
 	
