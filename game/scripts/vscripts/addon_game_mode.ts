@@ -838,14 +838,14 @@ export class GameMode{
                 return;
             }
             if(this.IsPVE()){
-                const level = parseInt(event.text.split(' ')[1], 10);
+                let level = parseInt(event.text.split(' ')[1], 10);
                 if(isNaN(level)){
                     return;
                 }
+                level = level - 1;
                 if(!this.levelsData[level]){
                     return;
                 }
-                print(level);
                 this.currentLevel = level - 1;
                 if(this.level){
                     this.level.SkipLevel();
