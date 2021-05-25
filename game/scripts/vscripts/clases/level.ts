@@ -25,7 +25,7 @@ export interface Spawn {
     marker: CDOTA_Buff | undefined;
 }
 export default class Level extends GameState{
-    helper = 3.0 * 30;
+    remainingAfterTime = 3 * 30;
     spawnQueue: Spawn[] = []; 
     ais: CustomAI[] = [];
     level: ILevel;
@@ -97,7 +97,6 @@ export default class Level extends GameState{
                 this.spawnQueue = this.spawnQueue.filter((spawn) => { spawn !== scheduledSpawn; });
             }
         });
-        
 
         this.ais.forEach((ai) => {
             ai.Update();
@@ -105,7 +104,12 @@ export default class Level extends GameState{
 
         if(this.remainingWaveNpcs <= 0){
             if(this.currentWave === this.level.waves.length - 1){
-                this.EndLevel();
+                if(this.remainingAfterTime === 0){
+                    this.EndLevel();
+                }
+                if(this.remainingAfterTime > 0){
+                    this.remainingAfterTime = this.remainingAfterTime - 1;
+                }
             } else {
                 this.currentWave++;
                 this.StartWave(this.currentWave);
