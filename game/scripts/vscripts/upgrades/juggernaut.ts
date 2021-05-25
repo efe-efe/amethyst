@@ -15,7 +15,7 @@ const juggernautUpgrades: Upgrade[] = [
     {
         id: 'juggernaut_refresh_dagger',
         name: 'Refreshing dagger',
-        description: 'Your dagger cooldown is recharged when succesfully hitting enemies',
+        description: 'Your dagger cooldown is drastically reduced when succesfully hitting enemies but increased when missing.',
         ability: 'juggernaut_special_attack',
         maxStacks: 1,
         modifier: {
