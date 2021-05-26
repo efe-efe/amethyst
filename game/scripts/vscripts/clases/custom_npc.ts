@@ -332,6 +332,7 @@ export class CustomNonPlayerHeroNPC extends CustomHeroNPC{
 }
 export class CustomPlayerHeroNPC extends CustomHeroNPC{
     heroUpgrades: HeroUpgrade[] = [];
+    remainingTimeToRemoveMana = 1.0 * 30;
 
     constructor(unit: CDOTA_BaseNPC){
         super(unit);
@@ -348,6 +349,13 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     
     Update(): void{
         super.Update();
+        if(this.remainingTimeToRemoveMana > 0){
+            this.remainingTimeToRemoveMana--;
+        } else if(this.remainingTimeToRemoveMana === 0){
+            CustomEntitiesLegacy.SetManaCustom(this.unit, 0, true);
+            this.remainingTimeToRemoveMana = -1;
+        }
+
         if(this.unit.IsAlive()){
             this.PickupItems();
         }

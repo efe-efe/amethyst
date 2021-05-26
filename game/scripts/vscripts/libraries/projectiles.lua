@@ -79,6 +79,8 @@ Projectile = class({
     fVisionTickTime =               0.1,
     fVisionLingerDuration =         1.0,
     fGroundOffset =                 40,
+    nPeakHeight =                   -1,
+    nSpeed =                        0,
     iFlagFilter =                   DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES,
     iChangeMax =                    1,
     iVisionRadius =                 200,
@@ -177,6 +179,22 @@ function Projectile:Update()
         self:DebugDraw()
     end
 
+    --[[
+        local g = -9.8
+        local AlturaInicial = 0
+        local TiempoTotal = self.fDistance/self.nSpeed
+        local TiempoDeSubida = TiempoTotal/2
+        local VelocidadInicialZ = ((self.nPeakHeight - AlturaInicial) - (0.5 * g * (TiempoTotal * TiempoTotal)))/TiempoDeSubida
+        local VelocidadActualZ = VelocidadInicialZ + (g * self:ElapsedTime())
+        local VelocidadInicialXY = nSpeed               
+        local VelocidadInicial = VelocidadInicialXY / math.cos(Angulo) = VelocidadInicialZ / math.sin(Angulo)
+        local angle = math.atan(VelocidadInicialZ / VelocidadInicialXY)
+        local VelocidadActualZ = VelocidadInicialZ + (g * TiempoTotal)
+        local Velocidad = Vector(VelocidadActualZ)
+        local weirdFormat = (self.vCurrentVelocity + Vector(0, 0, 1 * 30))
+        self:SetVelocity(weirdFormat, nil, true)
+        print(self.vCurrentVelocity.x, self.vCurrentVelocity.y, VelocidadActualZ, self:ElapsedTime(), TiempoTotal)
+    ]]
     return self.fCurrentTime
 end
 
@@ -464,6 +482,10 @@ function Projectile:ShouldDestroy()
     return self:HasTimeExpired(self.fCurrentTime) or self:HasDistanceExpired() or self.bShouldDestroy
 end
 
+function Projectile:ElapsedTime()
+    return self.fCurrentTime - self.nInitialTime
+end
+
 function Projectile:HasTimeExpired()
     return self.fCurrentTime > self.fSpawnTime + self.fExpireTime;
 end
@@ -599,6 +621,7 @@ function Projectile:InitializeValues()
     self.tEntities =                {}
     self.bGroundConnect =           false
     self.bShouldDestroy =           false
+    self.nInitialTime =             GameRules:GetGameTime()
 
     if self.fRadiusStep then
         self.fRadiusStep = self.fRadiusStep / PROJECTILES_VISUAL_OFFSET
@@ -611,11 +634,14 @@ function Projectile:SetEndTime(fTime)
     self.fEndTime = fTime
 end
 
-function Projectile:SetVelocity(vNewVelocity, vNewPosition)
-    if self.iChanges > 0 then
-        self.iChanges = self.iChanges - 1
+function Projectile:SetVelocity(vNewVelocity, vNewPosition, bIgnoreChanges)
+    if self.iChanges > 0 or bIgnoreChanges then
+        if not bIgnoreChanges then
+            self.iChanges = self.iChanges - 1
+            self.fChangeTime = GameRules:GetGameTime() + self.fChangeDelay
+        end
+        
         self.vCurrentVelocity = vNewVelocity / PROJECTILES_VISUAL_OFFSET
-        self.fChangeTime = GameRules:GetGameTime() + self.fChangeDelay
 
         if self.bRecreateOnChange then
             ParticleManager:DestroyParticle(self.iEfx, self.bDestroyImmediate)
@@ -626,6 +652,16 @@ function Projectile:SetVelocity(vNewVelocity, vNewPosition)
     end
 end
     
+function Projectile:SetPosition(vNewPosition)
+    if self.bRecreateOnChange then
+        ParticleManager:DestroyParticle(self.iEfx, self.bDestroyImmediate)
+        self.iEfx = self:CreateParticle(vNewPosition)
+    end
+    
+    ParticleManager:SetParticleControl(self.iEfx, self.iVelocityCP, self.vCurrentVelocity)
+    self.vCurrentPosition = vNewPosition
+end
+
 function Projectile:SetSource(hSource)
     self.Source = hSource
 end

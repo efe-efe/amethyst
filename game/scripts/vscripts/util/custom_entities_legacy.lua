@@ -53,7 +53,6 @@ function CustomEntitiesLegacy:Initialize(hEntity, bIsPVENPC)
 	hEntity.charges_modifiers =				nil
 	hEntity.cooldown_modifiers =			nil
 
-	CustomEntitiesLegacy:SetEnergy(hEntity, hEntity.max_energy)	
     CustomEntitiesLegacy:SetTreshold(hEntity, GameRules.Addon.max_treshold)
     
 	hEntity:AddNewModifier(hEntity,  nil, "modifier_visible", {})
@@ -325,6 +324,10 @@ function CustomEntitiesLegacy:GetAbilities(hEntity)
 end
 
 function CustomEntitiesLegacy:GiveManaCustom(hEntity, fMana, bInformClient, bShowOverhead)
+	if GameRules.Addon:IsPVE() then
+		fMana = fMana / 2
+	end
+
 	if hEntity:HasModifier("modifier_sapphire") then
 		fMana = fMana * 2
 	end
@@ -350,6 +353,10 @@ function CustomEntitiesLegacy:GiveEnergyPercent(hEntity, iPercentage, bInformCli
 end
 
 function CustomEntitiesLegacy:GiveEnergy(hEntity, iEnergy, bInformClient, bShowOverhead)
+	if GameRules.Addon:IsPVE() then
+		iEnergy = iEnergy / 2
+	end
+
 	CustomEntitiesLegacy:SetEnergy(hEntity, CustomEntitiesLegacy:GetEnergy(hEntity) + iEnergy, bInformClient)
 
 	if bShowOverhead then

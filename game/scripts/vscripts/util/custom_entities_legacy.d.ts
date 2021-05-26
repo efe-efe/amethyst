@@ -1,4 +1,5 @@
 declare interface CustomEntitiesLegacy {
+    SetManaCustom(hEntity: CDOTA_BaseNPC, fMana: number, bInformClient: boolean): void;
     SetTreshold(hEntity: CDOTA_BaseNPC, nTreshold: number): void;
     GetTreshold(hEntity: CDOTA_BaseNPC): number;
     SetCollisionDirection(hEntity: CDOTA_BaseNPC, iCollisionDirection: number): void;
