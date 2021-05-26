@@ -46,13 +46,14 @@ function phantom_special_attack:ThrowProjectile(vOrigin, vDirection)
 	local fading_slow_pct = self:GetSpecialValueFor("fading_slow_pct")
 
 	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
+	local projectile_distance = self:GetCastRange(Vector(0,0,0), nil)
 
 	CustomEntitiesLegacy:ProjectileAttack(caster, {
 		bIsBasicAttack = true,
 		tProjectile  = {
 			EffectName = "particles/phantom/phantom_special_attack.vpcf",
 			vSpawnOrigin = vOrigin + Vector(vDirection.x * 30, vDirection.y * 30, 96),
-			fDistance =	self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
+			fDistance =	projectile_distance,
 			fStartRadius = self:GetSpecialValueFor("hitbox"),
 			Source = caster,
 			vVelocity = vDirection * projectile_speed,
