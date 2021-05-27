@@ -2,8 +2,7 @@ import settings from '../../settings';
 import Alliance from '../alliance';
 import GameState, { CustomGameState } from '../game_state';
 
-
-export default class PreLevel extends GameState{
+export default class PreRoom extends GameState{
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
 
@@ -24,7 +23,7 @@ export default class PreLevel extends GameState{
             this.UpdateGameTimer(math.floor(this.time_remaining/30));
         }
         if(this.time_remaining == 0){
-            this.EndPreLevel();
+            this.End();
         }
     }
 
@@ -74,7 +73,7 @@ export default class PreLevel extends GameState{
         }
     }
 
-    EndPreLevel(): void{
-        GameRules.Addon.SetState(CustomGameState.LEVEL_IN_PROGRESS);
+    End(): void{
+        GameRules.Addon.SetState(CustomGameState.ROOM_IN_PROGRESS);
     }
 }

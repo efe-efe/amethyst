@@ -59,7 +59,7 @@ ____exports.default = (function()
                 end
             end
         )
-        GameRules.Addon:SetState(CustomGameState.ROUND_IN_PROGRESS)
+        GameRules.Addon:SetState(CustomGameState.ROOM_IN_PROGRESS)
     end
     return PreRound
 end)()

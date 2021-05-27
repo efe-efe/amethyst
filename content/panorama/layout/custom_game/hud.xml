@@ -20,9 +20,9 @@
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
 	</scripts>
     <Panel class="main" hittest="false">
-        <Panel class="level-status pve">
+        <Panel class="room-status pve">
             <Label id="enemies-count" text="Killed enemies: 0/0" />
-            <Label id="current-level" text="Level: 1" />
+            <Label id="current-room" text="Room: 1" />
         </Panel>
 
         <Panel class="upgrades pve">

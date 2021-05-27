@@ -9,30 +9,30 @@ local GameState = ____game_state.default
 local CustomGameState = ____game_state.CustomGameState
 ____exports.default = (function()
     ____exports.default = __TS__Class()
-    local Level = ____exports.default
-    Level.name = "Level"
-    __TS__ClassExtends(Level, GameState)
-    function Level.prototype.____constructor(self, alliances, duration, level)
+    local Room = ____exports.default
+    Room.name = "Room"
+    __TS__ClassExtends(Room, GameState)
+    function Room.prototype.____constructor(self, alliances, duration, roomData)
         GameState.prototype.____constructor(self, alliances, duration)
         self.remainingAfterTime = 3 * 30
         self.spawnQueue = {}
         self.ais = {}
         self.currentWave = 0
-        self.level = level
-        self.remainingTotalNpcs = level.totalNpcs
-        self.remainingWaveNpcs = self.level.waves[self.currentWave + 1].totalNpcs
+        self.roomData = roomData
+        self.remainingTotalNpcs = roomData.totalNpcs
+        self.remainingWaveNpcs = self.roomData.waves[self.currentWave + 1].totalNpcs
         self:StartWave(self.currentWave)
         self:SendDataToClient()
     end
-    function Level.prototype.SendDataToClient(self)
+    function Room.prototype.SendDataToClient(self)
         local tableName = "main"
-        local data = {remainingEnemies = self.level.totalNpcs - self.remainingTotalNpcs, currentLevel = self.level.currentLevel + 1, maxEnemies = self.level.totalNpcs}
-        CustomNetTables:SetTableValue(tableName, "level", data)
+        local data = {remainingEnemies = self.roomData.totalNpcs - self.remainingTotalNpcs, currentRoom = self.roomData.currentRoom + 1, maxEnemies = self.roomData.totalNpcs}
+        CustomNetTables:SetTableValue(tableName, "room", data)
     end
-    function Level.prototype.StartWave(self, waveNumber)
-        self.remainingWaveNpcs = self.level.waves[waveNumber + 1].totalNpcs
+    function Room.prototype.StartWave(self, waveNumber)
+        self.remainingWaveNpcs = self.roomData.waves[waveNumber + 1].totalNpcs
         __TS__ArrayForEach(
-            self.level.waves[waveNumber + 1].npcGroups,
+            self.roomData.waves[waveNumber + 1].npcGroups,
             function(____, npcGroup)
                 do
                     local i = 0
@@ -47,7 +47,7 @@ ____exports.default = (function()
             end
         )
     end
-    function Level.prototype.OnUnitDies(self, unit)
+    function Room.prototype.OnUnitDies(self, unit)
         local previousNpcs = #self.ais
         self.ais = __TS__ArrayFilter(
             self.ais,
@@ -59,7 +59,7 @@ ____exports.default = (function()
         end
         self:SendDataToClient()
     end
-    function Level.prototype.OnUnitHurt(self, unit)
+    function Room.prototype.OnUnitHurt(self, unit)
         local ai = __TS__ArrayFilter(
             self.ais,
             function(____, ai) return ai.unit == unit end
@@ -68,7 +68,7 @@ ____exports.default = (function()
             ai:OnHurt()
         end
     end
-    function Level.prototype.Update(self)
+    function Room.prototype.Update(self)
         GameState.prototype.Update(self)
         __TS__ArrayForEach(
             self.spawnQueue,
@@ -95,9 +95,9 @@ ____exports.default = (function()
             end
         )
         if self.remainingWaveNpcs <= 0 then
-            if self.currentWave == (#self.level.waves - 1) then
+            if self.currentWave == (#self.roomData.waves - 1) then
                 if self.remainingAfterTime == 0 then
-                    self:EndLevel()
+                    self:End()
                 end
                 if self.remainingAfterTime > 0 then
                     self.remainingAfterTime = self.remainingAfterTime - 1
@@ -108,7 +108,7 @@ ____exports.default = (function()
             end
         end
     end
-    function Level.prototype.SkipWave(self)
+    function Room.prototype.SkipWave(self)
         __TS__ArrayForEach(
             self.spawnQueue,
             function(____, scheduledSpawn)
@@ -128,11 +128,11 @@ ____exports.default = (function()
             end
         )
     end
-    function Level.prototype.SkipLevel(self)
-        self.currentWave = #self.level.waves - 1
+    function Room.prototype.SkipRoom(self)
+        self.currentWave = #self.roomData.waves - 1
         self:SkipWave()
     end
-    function Level.prototype.SchedulAiSpawn(self, origin, name, delayTime)
+    function Room.prototype.SchedulAiSpawn(self, origin, name, delayTime)
         __TS__ArrayPush(
             self.spawnQueue,
             {
@@ -144,9 +144,9 @@ ____exports.default = (function()
             }
         )
     end
-    function Level.prototype.EndLevel(self)
-        GameRules.Addon:SetState(CustomGameState.PRE_LEVEL)
+    function Room.prototype.End(self)
+        GameRules.Addon:SetState(CustomGameState.PRE_ROOM)
     end
-    return Level
+    return Room
 end)()
 return ____exports

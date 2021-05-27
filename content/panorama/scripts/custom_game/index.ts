@@ -23,7 +23,7 @@ import { ReadyBar } from './readyBar';
     const clockPanel = $('#top-bar__clock-text') as LabelPanel;
     const pvePanels = layout.GetTopPanel().FindChildrenWithClassTraverse('pve');
     const pvpPanels = layout.GetTopPanel().FindChildrenWithClassTraverse('pvp');
-    const currentLevelPanel = $('#current-level') as LabelPanel;
+    const currentLevelPanel = $('#current-room') as LabelPanel;
     const enemiesCountPanel = $('#enemies-count') as LabelPanel;
     const refunderButton = $('#refunder__button') as Button;
     const refunderPanel = $('#refunder');
@@ -301,8 +301,8 @@ import { ReadyBar } from './readyBar';
         }
     });
     
-    tables.subscribeToNetTableKey(tableNameMain, 'level', true, function(data: any){
-        currentLevelPanel.text = 'Level: ' + data.currentLevel;
+    tables.subscribeToNetTableKey(tableNameMain, 'room', true, function(data: any){
+        currentLevelPanel.text = 'Room: ' + data.currentRoom;
         enemiesCountPanel.text = 'Killed enemies: ' + data.remainingEnemies + '/' + data.maxEnemies;
     });
 

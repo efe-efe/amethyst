@@ -492,7 +492,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         if(!upgrade.minLevel){
             return true;
         }
-        if(GameRules.Addon.currentLevel < upgrade.minLevel - 1){
+        if(GameRules.Addon.currentRoom < upgrade.minLevel - 1){
             return false;
         }
         return true;

@@ -539,7 +539,7 @@ function CustomPlayerHeroNPC.prototype.ValidateUpgradeLevel(self, upgrade)
     if not upgrade.minLevel then
         return true
     end
-    if GameRules.Addon.currentLevel < (upgrade.minLevel - 1) then
+    if GameRules.Addon.currentRoom < (upgrade.minLevel - 1) then
         return false
     end
     return true

@@ -7,10 +7,10 @@ export interface NPCGroup {
     ammount: number;
 }
 
-export interface ILevel{
+export interface RoomData{
     waves: Wave[];
     totalNpcs: number;
-    currentLevel: number;
+    currentRoom: number;
 }
 export interface Wave {
     npcGroups: NPCGroup[];
@@ -24,20 +24,20 @@ export interface Spawn {
     name: number;
     marker: CDOTA_Buff | undefined;
 }
-export default class Level extends GameState{
+export default class Room extends GameState{
     remainingAfterTime = 3 * 30;
     spawnQueue: Spawn[] = []; 
     ais: CustomAI[] = [];
-    level: ILevel;
+    roomData: RoomData;
     remainingTotalNpcs: number;
     remainingWaveNpcs: number;
     currentWave = 0;
 
-    constructor(alliances: Alliance[], duration: number, level: ILevel){
+    constructor(alliances: Alliance[], duration: number, roomData: RoomData){
         super(alliances, duration);
-        this.level = level;
-        this.remainingTotalNpcs = level.totalNpcs;
-        this.remainingWaveNpcs = this.level.waves[this.currentWave].totalNpcs;
+        this.roomData = roomData;
+        this.remainingTotalNpcs = roomData.totalNpcs;
+        this.remainingWaveNpcs = this.roomData.waves[this.currentWave].totalNpcs;
         this.StartWave(this.currentWave);
         this.SendDataToClient();
     }
@@ -45,16 +45,16 @@ export default class Level extends GameState{
     SendDataToClient(): void{
         const tableName = 'main' as never;
         const data = { 
-            remainingEnemies: this.level.totalNpcs - this.remainingTotalNpcs,
-            currentLevel: this.level.currentLevel + 1, 
-            maxEnemies: this.level.totalNpcs
+            remainingEnemies: this.roomData.totalNpcs - this.remainingTotalNpcs,
+            currentRoom: this.roomData.currentRoom + 1, 
+            maxEnemies: this.roomData.totalNpcs
         } as never;
-        CustomNetTables.SetTableValue(tableName, 'level', data);
+        CustomNetTables.SetTableValue(tableName, 'room', data);
     }
 
     StartWave(waveNumber: number): void{
-        this.remainingWaveNpcs = this.level.waves[waveNumber].totalNpcs;
-        this.level.waves[waveNumber].npcGroups.forEach(npcGroup => {
+        this.remainingWaveNpcs = this.roomData.waves[waveNumber].totalNpcs;
+        this.roomData.waves[waveNumber].npcGroups.forEach(npcGroup => {
             for(let i = 0; i < npcGroup.ammount; i++){
                 const x = RandomInt(-1500, 1500);
                 const y = RandomInt(-1500, 1500);
@@ -103,9 +103,9 @@ export default class Level extends GameState{
         });
 
         if(this.remainingWaveNpcs <= 0){
-            if(this.currentWave === this.level.waves.length - 1){
+            if(this.currentWave === this.roomData.waves.length - 1){
                 if(this.remainingAfterTime === 0){
-                    this.EndLevel();
+                    this.End();
                 }
                 if(this.remainingAfterTime > 0){
                     this.remainingAfterTime = this.remainingAfterTime - 1;
@@ -132,8 +132,8 @@ export default class Level extends GameState{
         });
     }
 
-    SkipLevel(): void{
-        this.currentWave = this.level.waves.length - 1;
+    SkipRoom(): void{
+        this.currentWave = this.roomData.waves.length - 1;
         this.SkipWave();
     }
 
@@ -147,7 +147,7 @@ export default class Level extends GameState{
         });
     }
     
-    EndLevel(): void{
-        GameRules.Addon.SetState(CustomGameState.PRE_LEVEL);
+    End(): void{
+        GameRules.Addon.SetState(CustomGameState.PRE_ROOM);
     }
 }

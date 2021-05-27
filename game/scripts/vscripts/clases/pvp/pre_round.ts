@@ -54,7 +54,7 @@ export default class PreRound extends GameState{
             }
         });
 
-        GameRules.Addon.SetState(CustomGameState.ROUND_IN_PROGRESS);
+        GameRules.Addon.SetState(CustomGameState.ROOM_IN_PROGRESS);
     }
 }
 

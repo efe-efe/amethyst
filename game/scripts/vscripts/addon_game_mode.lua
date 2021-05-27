@@ -38,11 +38,11 @@ local ____pickup = require("clases.pickup")
 local Pickup = ____pickup.default
 local PickupTypes = ____pickup.PickupTypes
 local ____room = require("clases.pve.room")
-local Level = ____room.default
+local Room = ____room.default
 local ____settings = require("settings")
 local settings = ____settings.default
 local ____pre_room = require("clases.pve.pre_room")
-local PreLevel = ____pre_room.default
+local PreRoom = ____pre_room.default
 local ____custom_ai = require("clases.pve.custom_ai")
 local NPCNames = ____custom_ai.NPCNames
 local ____upgrades = require("upgrades.upgrades")
@@ -74,9 +74,9 @@ function GameMode.prototype.____constructor(self)
     self.thinkers = {}
     self.wtf = false
     self.alliances = {}
-    self.levelsData = {}
+    self.roomsData = {}
     self.max_treshold = 30
-    self.currentLevel = -1
+    self.currentRoom = -1
     GameRules:GetGameModeEntity():SetContextThink(
         "OnThink",
         function()
@@ -178,44 +178,44 @@ function GameMode.prototype.StartPVPMap(self)
             if (self.state == CustomGameState.PRE_ROUND) and self.pre_round then
                 self.pre_round:Update()
             end
-            if (self.state == CustomGameState.ROUND_IN_PROGRESS) and self.round then
+            if (self.state == CustomGameState.ROOM_IN_PROGRESS) and self.round then
                 self.round:Update()
             end
         end
     )
 end
 function GameMode.prototype.StartPVEMap(self)
-    self:SetState(CustomGameState.PRE_LEVEL)
-    self:GenerateLevelData()
-    self.pre_level = __TS__New(PreLevel, self.alliances, -1)
+    self:SetState(CustomGameState.PRE_ROOM)
+    self:GenerateRoomData()
+    self.preRoom = __TS__New(PreRoom, self.alliances, -1)
     self:RegisterThinker(
         0.01,
         function()
-            if (self.state == CustomGameState.LEVEL_IN_PROGRESS) and self.level then
-                self.level:Update()
+            if (self.state == CustomGameState.ROOM_IN_PROGRESS) and self.room then
+                self.room:Update()
             end
-            if (self.state == CustomGameState.PRE_LEVEL) and self.pre_level then
-                self.pre_level:Update()
+            if (self.state == CustomGameState.PRE_ROOM) and self.preRoom then
+                self.preRoom:Update()
             end
         end
     )
 end
-function GameMode.prototype.GenerateLevelData(self)
-    local bossLevels = {4, 9, 14, 19}
+function GameMode.prototype.GenerateRoomData(self)
+    local bossRooms = {4, 9, 14, 19}
     local npcs = {NPCNames.DIRE_TOWER, NPCNames.RADIANT_ZOMBIE_MEELE, NPCNames.RADIANT_ZOMBIE_HEALER, NPCNames.DIRE_ZOMBIE, NPCNames.DIRE_ZOMBIE_RAGER, NPCNames.DIRE_ZOMBIE_MEELE, NPCNames.FLYING_SKULL}
     local bosses = {NPCNames.QUEEN, NPCNames.CENTAUR}
     do
         local i = 0
         while i < 20 do
-            local isBossLevel = __TS__ArrayFilter(
-                bossLevels,
-                function(____, level) return level == i end
+            local isBossRoom = __TS__ArrayFilter(
+                bossRooms,
+                function(____, room) return room == i end
             )[1]
-            local amount = (isBossLevel and 1) or (i + 3)
-            local npcsToUse = (isBossLevel and bosses) or npcs
-            local wavesNumber = (isBossLevel and 1) or 3
+            local amount = (isBossRoom and 1) or (i + 3)
+            local npcsToUse = (isBossRoom and bosses) or npcs
+            local wavesNumber = (isBossRoom and 1) or 3
             local waves = self:GenerateWaves(npcsToUse, wavesNumber, amount)
-            __TS__ArrayPush(self.levelsData, {waves = waves, currentLevel = i, totalNpcs = amount * wavesNumber})
+            __TS__ArrayPush(self.roomsData, {waves = waves, currentRoom = i, totalNpcs = amount * wavesNumber})
             i = i + 1
         end
     end
@@ -438,8 +438,8 @@ function GameMode.prototype.SetupPanoramaEventHooks(self)
                     )[1]
                     if upgrade then
                         customNpc:ApplyUpgrade(upgrade)
-                        if self.pre_level then
-                            self.pre_level:OnHeroUpgrade()
+                        if self.preRoom then
+                            self.preRoom:OnHeroUpgrade()
                         end
                     end
                 end
@@ -587,18 +587,18 @@ function GameMode.prototype.OnStateEnd(self, state)
     elseif state == CustomGameState.PRE_ROUND then
         self.pre_round = nil
         self.round = __TS__New(Round, self.alliances, settings.RoundDuration)
-    elseif state == CustomGameState.PRE_LEVEL then
-        self.pre_level = nil
+    elseif state == CustomGameState.PRE_ROOM then
+        self.preRoom = nil
         self:IncrementWave()
-        local levelsData = self.levelsData[self.currentLevel + 1]
-        if levelsData then
-            self.level = __TS__New(Level, self.alliances, -1, levelsData)
+        local roomsData = self.roomsData[self.currentRoom + 1]
+        if roomsData then
+            self.room = __TS__New(Room, self.alliances, -1, roomsData)
         else
             self:EndGame(0)
         end
-    elseif state == CustomGameState.LEVEL_IN_PROGRESS then
-        self.level = nil
-        self.pre_level = __TS__New(PreLevel, self.alliances, -1)
+    elseif state == CustomGameState.ROOM_IN_PROGRESS then
+        self.room = nil
+        self.preRoom = __TS__New(PreRoom, self.alliances, -1)
     end
 end
 function GameMode.prototype.CreateBarrels(self)
@@ -763,8 +763,8 @@ function GameMode.prototype.DamageFilter(self, event)
     return true
 end
 function GameMode.prototype.OnHeroLearnedAbility(self, event)
-    if self.pre_level then
-        self.pre_level:OnAbilityLearned()
+    if self.preRoom then
+        self.preRoom:OnAbilityLearned()
     end
 end
 function GameMode.prototype.OnGameRulesStateChange(self)
@@ -799,32 +799,32 @@ function GameMode.prototype.OnPlayerChat(self, event)
     end
     if event.text == "-skip" then
         if self:IsPVE() then
-            if self.level then
-                self.level:SkipWave()
+            if self.room then
+                self.room:SkipWave()
             end
         end
     end
-    if __TS__StringSplit(event.text, " ")[1] == "-level" then
+    if __TS__StringSplit(event.text, " ")[1] == "-room" then
         if not __TS__StringSplit(event.text, " ")[2] then
             return
         end
         if self:IsPVE() then
-            local level = __TS__ParseInt(
+            local room = __TS__ParseInt(
                 __TS__StringSplit(event.text, " ")[2],
                 10
             )
             if __TS__NumberIsNaN(
-                __TS__Number(level)
+                __TS__Number(room)
             ) then
                 return
             end
-            level = level - 1
-            if not self.levelsData[level + 1] then
+            room = room - 1
+            if not self.roomsData[room + 1] then
                 return
             end
-            self.currentLevel = level - 1
-            if self.level then
-                self.level:SkipLevel()
+            self.currentRoom = room - 1
+            if self.room then
+                self.room:SkipRoom()
             end
         end
     end
@@ -901,7 +901,7 @@ function GameMode.prototype.IsPlayerHero(self, hero)
     return playerID ~= -1
 end
 function GameMode.prototype.IncrementWave(self)
-    self.currentLevel = self.currentLevel + 1
+    self.currentRoom = self.currentRoom + 1
 end
 function GameMode.prototype.IsPVP(self)
     return GetMapName() == Custom_MapNames.PVP
@@ -936,8 +936,8 @@ function GameMode.prototype.OnEntityKilled(self, event)
     if parent then
         parent:OnDeath({killer = killer})
     end
-    if self.level then
-        self.level:OnUnitDies(killed)
+    if self.room then
+        self.room:OnUnitDies(killed)
     end
     if killed:IsRealHero() then
         if self:IsPVP() then
@@ -965,8 +965,8 @@ end
 function GameMode.prototype.OnEntityHurt(self, event)
     if event.entindex_killed ~= nil then
         local victim = EntIndexToHScript(event.entindex_killed)
-        if self.level then
-            self.level:OnUnitHurt(victim)
+        if self.room then
+            self.room:OnUnitHurt(victim)
         end
         if event.entindex_attacker ~= nil then
             SendOverheadDamageMessage(victim, event.damage)

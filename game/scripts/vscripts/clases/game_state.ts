@@ -7,8 +7,8 @@ export enum CustomGameState {
     WARMUP_IN_PROGRESS,
     PRE_ROUND,
     ROUND_IN_PROGRESS,
-    PRE_LEVEL,
-    LEVEL_IN_PROGRESS,
+    PRE_ROOM,
+    ROOM_IN_PROGRESS,
 }
 
 export default class GameState{
