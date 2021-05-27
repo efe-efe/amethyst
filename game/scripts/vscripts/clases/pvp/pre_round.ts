@@ -1,6 +1,6 @@
 
-import Alliance from './alliance';
-import GameState, { CustomGameState } from './game_state';
+import Alliance from '../alliance';
+import GameState, { CustomGameState } from '../game_state';
 
 const ADRENALINE_DURATION = 25.0;
 

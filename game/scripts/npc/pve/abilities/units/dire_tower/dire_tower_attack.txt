@@ -1,0 +1,19 @@
+"DOTAAbilities" {
+    "dire_tower_attack"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"pve/abilities/units/dire_tower/dire_tower_attack/dire_tower_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"sniper_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastRange"				"1500"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+			"Fixed"						"1"
+		}
+	}
+}

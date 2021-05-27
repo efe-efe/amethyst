@@ -1,9 +1,9 @@
 
-import Alliance from './alliance';
-import GameState, { CustomGameState } from './game_state';
-import GemWrapper, { GemTypes } from './gem';
-import Pickup, { PickupTypes } from './pickup';
-import settings from '../settings';
+import Alliance from '../alliance';
+import GameState, { CustomGameState } from '../game_state';
+import GemWrapper, { GemTypes } from '../gem';
+import Pickup, { PickupTypes } from '../pickup';
+import settings from '../../settings';
 
 interface PickupWrapper {
     origin: Vector;

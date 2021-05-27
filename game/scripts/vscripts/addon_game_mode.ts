@@ -15,15 +15,15 @@ import './libraries/timers';
 import './libraries/projectiles';
 import './overrides/abilities';
 import Player from './clases/player';
-import PreRound from './clases/pre_round';
-import Round from './clases/round';
-import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from './clases/custom_npc';
+import PreRound from './clases/pvp/pre_round';
+import Round from './clases/pvp/round';
+import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from './clases/pve/custom_npc';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
-import Level, { Wave, NPCGroup, ILevel } from './clases/level';
+import Level, { Wave, NPCGroup, ILevel } from './clases/pve/room';
 import settings from './settings';
-import PreLevel from './clases/pre_level';
-import { NPCNames } from './clases/custom_ai';
+import PreLevel from './clases/pve/pre_room';
+import { NPCNames } from './clases/pve/custom_ai';
 import Upgrades from './upgrades/upgrades';
 
 declare global {
@@ -199,12 +199,13 @@ export class GameMode{
     GenerateLevelData(): void{
         const bossLevels = [4, 9, 14, 19];
         const npcs = [
-            //NPCNames.RADIANT_ZOMBIE_MEELE, 
-            //NPCNames.RADIANT_ZOMBIE_HEALER, 
+            NPCNames.DIRE_TOWER,
+            NPCNames.RADIANT_ZOMBIE_MEELE, 
+            NPCNames.RADIANT_ZOMBIE_HEALER, 
             NPCNames.DIRE_ZOMBIE, 
             NPCNames.DIRE_ZOMBIE_RAGER, 
             NPCNames.DIRE_ZOMBIE_MEELE, 
-            //NPCNames.FLYING_SKULL
+            NPCNames.FLYING_SKULL
         ];
         const bosses = [NPCNames.QUEEN, NPCNames.CENTAUR];
 
@@ -464,7 +465,8 @@ export class GameMode{
         LinkLuaModifier('modifier_hidden',                          'modifiers/generic/modifier_hidden', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_banish',                          'modifiers/generic/modifier_banish', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_hero_movement',                   'modifiers/generic/modifier_hero_movement', LuaModifierMotionType.NONE);
-        
+        LinkLuaModifier('modifier_tower_idle',                      'modifiers/generic/modifier_tower_idle', LuaModifierMotionType.NONE);
+
         if(this.IsPVE()){
             LinkLuaModifier('modifier_upgrade_meele_extra_radius',  'modifiers/upgrades/modifier_upgrade_meele_extra_radius', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_phantom_extra_daggers',  'modifiers/upgrades/modifier_upgrade_phantom_extra_daggers', LuaModifierMotionType.NONE);

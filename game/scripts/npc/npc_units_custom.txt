@@ -11,6 +11,8 @@
 #base "pve\units\dire_zombie_meele.txt"
 #base "pve\units\flying_skull.txt"
 #base "pve\units\radiant_zombie_meele.txt"
+#base "pve\units\dire_tower.txt"
+
 
 
 //"MovementCapabilities" "DOTA_UNIT_CAP_MOVE_GROUND" Is needed to use displacements

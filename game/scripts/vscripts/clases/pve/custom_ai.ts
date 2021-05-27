@@ -18,6 +18,7 @@ export enum NPCNames {
     RADIANT_ZOMBIE_HEALER,
     RADIANT_ZOMBIE_MEELE,
     FLYING_SKULL,
+    DIRE_TOWER,
     QUEEN,
     CENTAUR,
 }
@@ -484,6 +485,21 @@ export const CustomAIFactories: {
             }
         });
 
+        return ai;
+    },
+    [NPCNames.DIRE_TOWER]: (origin: Vector): CustomAI => {
+        const ai = new CustomAI('dire_tower', origin, {
+            behavior: CustomAIBehavior.STATIC,
+        });
+
+        ai.RegisterAbility({
+            ability: ai.unit.FindAbilityByName('dire_tower_attack')!,
+            orderType: UnitOrder.CAST_POSITION,
+            requirements: {
+                targetInCastRange: true
+            }
+        });
+        ai.unit.SetHullRadius(100);
         return ai;
     },
 };

@@ -1,6 +1,6 @@
-import settings from '../settings';
-import Alliance from './alliance';
-import GameState, { CustomGameState } from './game_state';
+import settings from '../../settings';
+import Alliance from '../alliance';
+import GameState, { CustomGameState } from '../game_state';
 
 
 export default class PreLevel extends GameState{

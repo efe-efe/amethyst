@@ -1,7 +1,7 @@
-import UnitEntity from './unit_entity';
-import Math from '../util/math';
-import customEntities from '../util/custom_entities';
-import Upgrades, { Upgrade } from '../upgrades/upgrades';
+import UnitEntity from '../unit_entity';
+import Math from '../../util/math';
+import customEntities from '../../util/custom_entities';
+import Upgrades, { Upgrade } from '../../upgrades/upgrades';
 
 const DEBUG = false;
 
@@ -268,6 +268,7 @@ export default class CustomNPC extends UnitEntity{
 
         if(CustomEntitiesLegacy.IsAnimating(this.unit)){
             this.unit.RemoveModifierByName('modifier_hero_movement');
+            this.unit.RemoveModifierByName('modifier_tower_idle');
         }
 
         if((direction.x !== 0 || direction.y !== 0) && CustomEntitiesLegacy.CanWalk(this.unit)){
@@ -297,6 +298,11 @@ export default class CustomNPC extends UnitEntity{
                 CustomEntitiesLegacy.FullyFaceTowards(this.unit, direction);
             }
         } else {
+            if(this.unit.GetUnitName() === 'dire_tower'){
+                if(!this.unit.HasModifier('modifier_tower_idle')){
+                    this.unit.AddNewModifier(this.unit, undefined, 'modifier_tower_idle', {});
+                }
+            }
             this.unit.RemoveModifierByName('modifier_hero_movement');
         }
 

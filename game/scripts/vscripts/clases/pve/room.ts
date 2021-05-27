@@ -1,6 +1,6 @@
-import Alliance from './alliance';
+import Alliance from '../alliance';
 import { CustomAI, CustomAIFactories, NPCNames } from './custom_ai';
-import GameState, { CustomGameState } from './game_state';
+import GameState, { CustomGameState } from '../game_state';
 
 export interface NPCGroup {
     name: NPCNames;
