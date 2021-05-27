@@ -1,6 +1,6 @@
 import Alliance from './clases/alliance';
 import { CustomGameState } from './clases/game_state';
-import Warmup from './clases/warmup';
+import Warmup from './clases/pvp/warmup';
 import { reloadable } from './lib/tstl-utils';
 import './wrappers/abilities';
 import './wrappers/modifiers';
