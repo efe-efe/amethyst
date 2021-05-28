@@ -405,6 +405,15 @@ function LinkAbilityCooldowns(hCaster, sLinkedSpell, tUnlinkLevels)
 	local bStartCooldown = true
 	local hLinkedSpell = hCaster:FindAbilityByName(sLinkedSpell)
 
+	if not hLinkedSpell then
+		print('LinkAbilityCooldowns ERROR:', sLinkedSpell, ' NOT FOUND!')
+		return
+	end
+
+	if hLinkedSpell:GetLevel() == 0 then
+		return
+	end
+
 	if tUnlinkLevels then
 		for _,unlinkLevel in pairs(tUnlinkLevels) do
 			local hAbility = type(unlinkLevel.ability) == "table" and unlinkLevel.ability or hCaster:FindAbilityByName(unlinkLevel.ability)

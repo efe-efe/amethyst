@@ -25,7 +25,7 @@ import PreRun from './clases/pve/pre_run';
 import { NPCNames } from './clases/pve/custom_ai';
 import Upgrades from './upgrades/upgrades';
 import Run from './clases/pve/run';
-import Bounties from './bounties/bounties';
+import Prizes from './bounties/bounties';
 
 declare global {
     interface CDOTAGamerules {
@@ -255,7 +255,6 @@ export class GameMode{
         ListenToGameEvent('player_chat', (event) => this.OnPlayerChat(event), undefined);
         ListenToGameEvent('entity_killed', (event) => this.OnEntityKilled(event), undefined);
         ListenToGameEvent('entity_hurt', (event) => this.OnEntityHurt(event), undefined);
-        ListenToGameEvent('dota_player_learned_ability', (event) => this.OnHeroLearnedAbility(event), undefined);
         print('[AMETHYST] Event hooks set');
     }
 
@@ -336,42 +335,6 @@ export class GameMode{
                     const ability_name_one = hero.GetAbilityByIndex(5)!.GetName();
                     const ability_name_two = hero.GetAbilityByIndex(6)!.GetName();
                     hero.SwapAbilities(ability_name_one, ability_name_two, true, true);
-                }
-            }
-        });
-
-        CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_upgrade', (eventSourceIndex, event) => {
-            const playerId = event.playerIndex;
-            const player = this.FindPlayerById(playerId);
-
-            if(player){
-                const customNpc = player.customNpc;
-                if(customNpc){
-                    const upgrade = Upgrades.filter((currentUpgrade) => currentUpgrade.id === event.payload.upgradeId)[0];
-                    if(upgrade){
-                        customNpc.ApplyUpgrade(upgrade);
-                        if(this.run){
-                            this.run.OnHeroUpgrade();
-                        }
-                    }
-                }
-            }
-        });
-
-        CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:select_bounty', (eventSourceIndex, event) => {
-            const playerId = event.playerIndex;
-            const player = this.FindPlayerById(playerId);
-
-            if(player){
-                const customNpc = player.customNpc;
-                if(customNpc){
-                    const bounty = Bounties.filter((currentBounty) => currentBounty.id === event.payload.bountyId)[0];
-                    if(bounty){
-                        customNpc.SelectBounty(bounty);
-                        if(this.run){
-                            this.run.OnBountySelected();
-                        }
-                    }
                 }
             }
         });
@@ -751,13 +714,6 @@ export class GameMode{
         }
         
         return true;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    OnHeroLearnedAbility(event: DotaPlayerLearnedAbilityEvent): void{
-        if(this.preRun){
-            this.preRun.OnAbilityLearned();
-        }
     }
 
     OnGameRulesStateChange(): void{

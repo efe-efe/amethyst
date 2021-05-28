@@ -38,7 +38,7 @@ import util, { tables } from './util';
                     const playerId = util.getCurrentPlayer();
                     GameEvents.SendCustomGameEventToServer('custom_npc:select_bounty', {
                         playerIndex: playerId,
-                        payload: { bountyId: bountyData.id, }
+                        payload: { type: bountyData.type, }
                     } as never);
                 });
             }

@@ -4,6 +4,8 @@ import GameState from '../game_state';
 import Stage from './stage';
 import settings from '../../settings';
 import Upgrades from '../../upgrades/upgrades';
+import { CustomEvents } from '../../custom_events';
+import { PrizeTypes } from '../../bounties/bounties';
 
 export interface RoomData{
     waves: Wave[];
@@ -38,6 +40,14 @@ export default class Room extends GameState{
         this.stage = stage;
         this.StartWave(this.currentWave);
         this.SendDataToClient();
+
+        const customEvents = CustomEvents.GetInstance();
+        customEvents.RegisterListener('pve:apply_favor', () => {
+            this.OnFavorApplied();
+        });
+        customEvents.RegisterListener('pve:prize_selected', () => {
+            this.OnPrizeSelected();
+        });
     }
     
     SendDataToClient(): void{
@@ -77,7 +87,7 @@ export default class Room extends GameState{
         }
     }
 
-    OnBountySelected(): void{
+    OnPrizeSelected(): void{
         let bountiesReady = true;
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
@@ -93,7 +103,7 @@ export default class Room extends GameState{
         }
     }
 
-    OnHeroUpgrade(): void{
+    OnFavorApplied(): void{
         let upgradesReady = true;
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
@@ -161,18 +171,15 @@ export default class Room extends GameState{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                if(customNpc.bounty && customNpc.bounty.id === 'bounty_upgrades'){
+                if(customNpc.bounty && customNpc.bounty.type === PrizeTypes.FAVOR){
                     customNpc.RequestUpgrades();
                 }
-                if(customNpc.bounty && customNpc.bounty.id === 'bounty_improvements'){
+                if(customNpc.bounty && customNpc.bounty.type === PrizeTypes.ENHANCEMENT){
                     customNpc.RequestImprovements();
                 }
-                if(customNpc.bounty && customNpc.bounty.id === 'bounty_regenerate'){
+                if(customNpc.bounty && customNpc.bounty.type === PrizeTypes.TARRASQUE){
                     const regenerationUpgrade = Upgrades.filter((upgrade) => upgrade.id === 'restore_health')[0];
                     customNpc.ApplyUpgrade(regenerationUpgrade);
-                    if(this.stage.run){
-                        this.stage.run.OnHeroUpgrade();
-                    }
                 }
             }
         });

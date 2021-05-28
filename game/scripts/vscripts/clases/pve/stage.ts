@@ -156,18 +156,6 @@ export default class Stage extends GameState{
         this.SendDataToClient();
     }
 
-    OnHeroUpgrade(): void{
-        if(this.room){
-            this.room.OnHeroUpgrade();
-        }
-    }
-    
-    OnBountySelected(): void{
-        if(this.room){
-            this.room.OnBountySelected();
-        }
-    }
-
     End(): void{
         this.run.OnStageEnd();
     }

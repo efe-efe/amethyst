@@ -1,22 +1,33 @@
-export interface Bounty {
-    id: string;
+import { CustomActionEvent } from '../addon_game_mode';
+import { CustomEvents } from '../custom_events';
+
+export interface Prize {
+    type: PrizeTypes;
     name: string;
     description: string;
 }
 
-const Bounties: Bounty[] = [
+export enum PrizeTypes {
+    FAVOR = 0,
+    ENHANCEMENT,
+    TARRASQUE,
+    SECRET_SHOP,
+    GOLD,
+}
+
+const Prizes: Prize[] = [
     {
-        id: 'bounty_upgrades',
-        name: 'Upgrades',
+        type: PrizeTypes.FAVOR,
+        name: 'Favor',
         description: 'Upgrades one of your abilities.',
     },
     {
-        id: 'bounty_improvements',
-        name: 'Improvements',
+        type: PrizeTypes.ENHANCEMENT,
+        name: 'Improvement',
         description: 'Improves one of your existing upgrades.',
     },
     {
-        id: 'bounty_regenerate',
+        type: PrizeTypes.TARRASQUE,
         name: 'Regenerate',
         description: 'Fully restores all your HP.',
     },/*
@@ -32,4 +43,22 @@ const Bounties: Bounty[] = [
     }*/
 ];
 
-export default Bounties;
+
+CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:select_bounty', (eventSourceIndex, event) => {
+    const customEvents = CustomEvents.GetInstance();
+    const playerId = event.playerIndex;
+    const player = GameRules.Addon.FindPlayerById(playerId);
+
+    if(player){
+        const customNpc = player.customNpc;
+        if(customNpc){
+            const prize = Prizes.filter((_prize) => _prize.type === event.payload.type)[0];
+            if(prize){
+                customNpc.SelectBounty(prize);
+                customEvents.EmitEvent('pve:prize_selected', { customNpc });
+            }
+        }
+    }
+});
+
+export default Prizes;

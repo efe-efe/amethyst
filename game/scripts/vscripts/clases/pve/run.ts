@@ -1,4 +1,4 @@
-import Bounties from '../../bounties/bounties';
+import Prizes from '../../bounties/bounties';
 import Alliance from '../alliance';
 import GameState, { CustomGameState } from '../game_state';
 import Stage, { StageData } from './stage';
@@ -23,7 +23,7 @@ export default class Run extends GameState{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                customNpc.SelectBounty(Bounties[0]);
+                customNpc.SelectBounty(Prizes[0]);
             }
         });
         
@@ -63,18 +63,6 @@ export default class Run extends GameState{
     OnUnitDies(unit: CDOTA_BaseNPC): void{
         if(this.stage){
             this.stage.OnUnitDies(unit);
-        }
-    }
-
-    OnHeroUpgrade(): void{
-        if(this.stage){
-            this.stage.OnHeroUpgrade();
-        }
-    }
-
-    OnBountySelected(): void{
-        if(this.stage){
-            this.stage.OnBountySelected();
         }
     }
 

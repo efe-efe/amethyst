@@ -1,9 +1,9 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 4,["11"] = 4,["12"] = 6,["13"] = 6,["14"] = 6,["15"] = 10,["16"] = 10,["17"] = 10,["18"] = 10,["19"] = 10,["20"] = 16,["21"] = 10,["22"] = 14,["23"] = 18,["24"] = 19,["25"] = 20,["26"] = 23,["27"] = 23,["28"] = 23,["29"] = 24,["30"] = 25,["31"] = 26,["33"] = 23,["34"] = 23,["35"] = 16,["36"] = 32,["37"] = 33,["38"] = 34,["39"] = 37,["40"] = 32,["41"] = 40,["42"] = 10,["43"] = 42,["44"] = 43,["46"] = 45,["47"] = 46,["49"] = 48,["52"] = 40,["53"] = 53,["54"] = 54,["55"] = 53,["56"] = 57,["57"] = 58,["58"] = 59,["60"] = 57,["61"] = 63,["62"] = 64,["63"] = 65,["65"] = 63,["66"] = 69,["67"] = 70,["68"] = 71,["70"] = 69,["71"] = 75,["72"] = 76,["73"] = 77,["75"] = 75,["76"] = 81,["77"] = 82,["78"] = 83,["79"] = 84,["80"] = 81,["81"] = 87,["82"] = 88,["83"] = 87,["84"] = 10,["85"] = 10});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 4,["11"] = 4,["12"] = 6,["13"] = 6,["14"] = 6,["15"] = 10,["16"] = 10,["17"] = 10,["18"] = 10,["19"] = 10,["20"] = 16,["21"] = 10,["22"] = 14,["23"] = 18,["24"] = 19,["25"] = 20,["26"] = 23,["27"] = 23,["28"] = 23,["29"] = 24,["30"] = 25,["31"] = 26,["33"] = 23,["34"] = 23,["35"] = 16,["36"] = 32,["37"] = 33,["38"] = 34,["39"] = 37,["40"] = 32,["41"] = 40,["42"] = 10,["43"] = 42,["44"] = 43,["46"] = 45,["47"] = 46,["49"] = 48,["52"] = 40,["53"] = 53,["54"] = 54,["55"] = 53,["56"] = 57,["57"] = 58,["58"] = 59,["60"] = 57,["61"] = 63,["62"] = 64,["63"] = 65,["65"] = 63,["66"] = 69,["67"] = 70,["68"] = 71,["69"] = 72,["70"] = 69,["71"] = 75,["72"] = 76,["73"] = 75,["74"] = 10,["75"] = 10});
 local ____exports = {}
 local ____bounties = require("bounties.bounties")
-local Bounties = ____bounties.default
+local Prizes = ____bounties.default
 local ____game_state = require("clases.game_state")
 local GameState = ____game_state.default
 local CustomGameState = ____game_state.CustomGameState
@@ -28,7 +28,7 @@ ____exports.default = (function()
             function(____, player)
                 local customNpc = player.customNpc
                 if customNpc then
-                    customNpc:SelectBounty(Bounties[1])
+                    customNpc:SelectBounty(Prizes[1])
                 end
             end
         )
@@ -61,16 +61,6 @@ ____exports.default = (function()
     function Run.prototype.OnUnitDies(self, unit)
         if self.stage then
             self.stage:OnUnitDies(unit)
-        end
-    end
-    function Run.prototype.OnHeroUpgrade(self)
-        if self.stage then
-            self.stage:OnHeroUpgrade()
-        end
-    end
-    function Run.prototype.OnBountySelected(self)
-        if self.stage then
-            self.stage:OnBountySelected()
         end
     end
     function Run.prototype.OnStageEnd(self)

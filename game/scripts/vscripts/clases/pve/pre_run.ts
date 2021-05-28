@@ -5,6 +5,7 @@ import GameState, { CustomGameState } from '../game_state';
 export default class PreRun extends GameState{
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
+        ListenToGameEvent('dota_player_learned_ability', () => this.OnAbilityLearned(), undefined);
     }
 
     Update(): void{

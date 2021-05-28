@@ -2,7 +2,8 @@ import UnitEntity from '../unit_entity';
 import Math from '../../util/math';
 import customEntities from '../../util/custom_entities';
 import Upgrades, { Upgrade } from '../../upgrades/upgrades';
-import Bounties, { Bounty } from '../../bounties/bounties';
+import Prizes, { Prize, PrizeTypes } from '../../bounties/bounties';
+import { CustomEvents } from '../../custom_events';
 
 const DEBUG = false;
 
@@ -339,7 +340,7 @@ export class CustomNonPlayerHeroNPC extends CustomHeroNPC{
 }
 export class CustomPlayerHeroNPC extends CustomHeroNPC{
     heroUpgrades: HeroUpgrade[] = [];
-    bounty: Bounty | undefined;
+    bounty: Prize | undefined;
     remainingTimeToRemoveMana = 1.0 * 30;
 
     constructor(unit: CDOTA_BaseNPC){
@@ -403,42 +404,43 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
 
     IsSelectingBounty(): boolean{
         const tableName = 'custom_npc_bounties' as never;
-        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; bounties: Bounty[] | undefined };
+        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; bounties: Prize[] | undefined };
         return (value && (value.bounties !== undefined));
     }
 
     ApplyUpgrade(upgrade: Upgrade): void{
-        this.ClearTable('custom_npc_upgrades' as never);
-
         if(upgrade.modifier){
             this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
+            let found = false;
+            this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
+                if(heroUpgrade.id === upgrade.id){
+                    found = true;
+                    return {
+                        ...heroUpgrade,
+                        level: heroUpgrade.level + 1
+                    };
+                } 
+                return heroUpgrade;
+            });
+
+            if(!found){
+                this.heroUpgrades.push({
+                    id: upgrade.id,
+                    level: 1,
+                });
+            }
         }
+
         if(upgrade.effect){
             upgrade.effect(this.unit as CDOTA_BaseNPC_Hero);
-            return;
         }
 
-        let found = false;
-        this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
-            if(heroUpgrade.id === upgrade.id){
-                found = true;
-                return {
-                    ...heroUpgrade,
-                    level: heroUpgrade.level + 1
-                };
-            } 
-            return heroUpgrade;
-        });
-
-        if(!found){
-            this.heroUpgrades.push({
-                id: upgrade.id,
-                level: 1,
-            });
-        }
+        this.ClearTable('custom_npc_upgrades' as never);
+        const customEvents = CustomEvents.GetInstance();
+        customEvents.EmitEvent('pve:apply_favor', { customNpc: this });
     }
 
-    SelectBounty(bounty: Bounty): void{
+    SelectBounty(bounty: Prize): void{
         this.ClearTable('custom_npc_bounties' as never);
         this.bounty = bounty;
     }
@@ -463,7 +465,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     RequestUpgrades(): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            upgrades: this.GenerateUpgrades(3),
+            upgrades: this.GenerateUpgrades(3, false),
         } as never;
 
         const tableName = 'custom_npc_upgrades' as never;
@@ -480,8 +482,8 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
     
-    GenerateBounties(amount: number): Bounty[]{
-        const bounties = Bounties.filter((bounty) => (
+    GenerateBounties(amount: number): Prize[]{
+        const bounties = Prizes.filter((bounty) => (
             this.ValidateBounty(bounty)
         ));
 
@@ -495,19 +497,19 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             this.ValidateUpgradeAttackCapabilities(upgrade) &&
             this.ValidateUpgradeStacks(upgrade) &&
             this.ValidateUpgradeLevel(upgrade) &&
-            (existingOnly ? (this.ValidateUpgradeExisting(upgrade)) : (true))
+            (existingOnly ? (this.ValidateUpgradeExisting(upgrade)) : (!this.ValidateUpgradeExisting(upgrade)))
         ));
 
         return Math.GetRandomElementsFromArray(upgrades, Clamp(amount, upgrades.length, 0));
     }
 
-    ValidateBounty(bounty: Bounty): boolean{
-        if(bounty.id === 'bounty_improvements'){
+    ValidateBounty(bounty: Prize): boolean{
+        if(bounty.type === PrizeTypes.ENHANCEMENT){
             if(this.heroUpgrades.length < 2){
                 return false;
             }
         }
-        if(bounty.id === 'bounty_regenerate'){
+        if(bounty.type === PrizeTypes.TARRASQUE){
             if(!GameRules.Addon.run || !GameRules.Addon.run.stage || GameRules.Addon.run.stage.currentRoom === 0){
                 return false;
             }
