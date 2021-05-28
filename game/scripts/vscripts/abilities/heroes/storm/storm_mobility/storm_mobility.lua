@@ -14,8 +14,12 @@ function storm_mobility:GetPlaybackRateOverride()       return 1.5 end
 function storm_mobility:GetCastPointSpeed() 			return 50 end
 
 function storm_mobility:GetCastRange(vLocation, hTarget)
+    if self:GetCaster():HasModifier('modifier_storm_extra_displacement') then
+        return 0
+    end
+
     if self:GetCaster():HasModifier("modifier_upgrade_storm_ranged_remnant") then
-        return 1200
+        return 650
     end
     return self.BaseClass.GetCastRange(self, vLocation, hTarget)
 end
