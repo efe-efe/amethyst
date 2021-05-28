@@ -513,7 +513,7 @@ function CustomPlayerHeroNPC.prototype.ClearTable(self, name)
         data
     )
 end
-function CustomPlayerHeroNPC.prototype.RequestBounties(self)
+function CustomPlayerHeroNPC.prototype.RequestRewards(self)
     local data = {
         playerId = self.unit:GetPlayerOwnerID(),
         rewards = self:GenerateBounties(3)

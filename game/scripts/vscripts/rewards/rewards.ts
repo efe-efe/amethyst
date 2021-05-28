@@ -24,7 +24,7 @@ const Rewards: Reward[] = [
     {
         type: RewardTypes.ENHANCEMENT,
         name: 'Enhancement',
-        description: 'Enhances one of your existing upgrades.',
+        description: 'Enhances one of your existing favors.',
     },
     {
         type: RewardTypes.TARRASQUE,

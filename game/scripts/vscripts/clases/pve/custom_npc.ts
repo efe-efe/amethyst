@@ -459,7 +459,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         CustomNetTables.SetTableValue(name, this.unit.GetPlayerOwnerID().toString(), data);
     }
 
-    RequestBounties(): void{
+    RequestRewards(): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
             rewards: this.GenerateBounties(3),

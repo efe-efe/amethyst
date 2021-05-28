@@ -15,7 +15,7 @@ ____exports.RewardTypes.SECRET_SHOP = 3
 ____exports.RewardTypes[____exports.RewardTypes.SECRET_SHOP] = "SECRET_SHOP"
 ____exports.RewardTypes.GOLD = 4
 ____exports.RewardTypes[____exports.RewardTypes.GOLD] = "GOLD"
-local Rewards = {{type = ____exports.RewardTypes.FAVOR, name = "Favor", description = "Applies a new favor on one of your abilities, improving one aspect from it."}, {type = ____exports.RewardTypes.ENHANCEMENT, name = "Enhancement", description = "Enhances one of your existing upgrades."}, {type = ____exports.RewardTypes.TARRASQUE, name = "Heart of Tarrasque", description = "Increases your maximun health pool."}}
+local Rewards = {{type = ____exports.RewardTypes.FAVOR, name = "Favor", description = "Applies a new favor on one of your abilities, improving one aspect from it."}, {type = ____exports.RewardTypes.ENHANCEMENT, name = "Enhancement", description = "Enhances one of your existing favors."}, {type = ____exports.RewardTypes.TARRASQUE, name = "Heart of Tarrasque", description = "Increases your maximun health pool."}}
 CustomGameEventManager:RegisterListener(
     "custom_npc:select_reward",
     function(eventSourceIndex, event)

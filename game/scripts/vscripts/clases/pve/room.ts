@@ -3,7 +3,6 @@ import { CustomAI, CustomAIMeta, NPCNames } from './custom_ai';
 import GameState from '../game_state';
 import Stage from './stage';
 import settings from '../../settings';
-import Upgrades from '../../upgrades/upgrades';
 import { CustomEvents } from '../../custom_events';
 import { RewardTypes } from '../../rewards/rewards';
 
@@ -133,7 +132,7 @@ export default class Room extends GameState{
                 }
 
                 if(this.rewardsMenuDelay === 0){
-                    this.GenerateBounties();
+                    this.GenerateRewards();
                     this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
                 }
                 if(this.rewardsMenuDelay > 0){
@@ -184,11 +183,11 @@ export default class Room extends GameState{
         });
     }
 
-    GenerateBounties(): void{
+    GenerateRewards(): void{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                customNpc.RequestBounties();
+                customNpc.RequestRewards();
             }
         });
     }
