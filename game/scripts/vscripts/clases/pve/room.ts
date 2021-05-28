@@ -3,6 +3,7 @@ import { CustomAI, CustomAIMeta, NPCNames } from './custom_ai';
 import GameState from '../game_state';
 import Stage from './stage';
 import settings from '../../settings';
+import Upgrades from '../../upgrades/upgrades';
 
 export interface RoomData{
     waves: Wave[];
@@ -160,7 +161,19 @@ export default class Room extends GameState{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                customNpc.RequestUpgrades();
+                if(customNpc.bounty && customNpc.bounty.id === 'bounty_upgrades'){
+                    customNpc.RequestUpgrades();
+                }
+                if(customNpc.bounty && customNpc.bounty.id === 'bounty_improvements'){
+                    customNpc.RequestImprovements();
+                }
+                if(customNpc.bounty && customNpc.bounty.id === 'bounty_regenerate'){
+                    const regenerationUpgrade = Upgrades.filter((upgrade) => upgrade.id === 'restore_health')[0];
+                    customNpc.ApplyUpgrade(regenerationUpgrade);
+                    if(this.stage.run){
+                        this.stage.run.OnHeroUpgrade();
+                    }
+                }
             }
         });
     }

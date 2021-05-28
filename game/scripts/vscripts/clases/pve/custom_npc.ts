@@ -469,6 +469,16 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         const tableName = 'custom_npc_upgrades' as never;
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
+
+    RequestImprovements(): void{
+        const data = {
+            playerId: this.unit.GetPlayerOwnerID(),
+            upgrades: this.GenerateUpgrades(3, true),
+        } as never;
+
+        const tableName = 'custom_npc_upgrades' as never;
+        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
+    }
     
     GenerateBounties(amount: number): Bounty[]{
         const bounties = Bounties.filter((bounty) => (
@@ -478,20 +488,21 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return Math.GetRandomElementsFromArray(bounties, Clamp(amount, bounties.length, 0));
     }
 
-    GenerateUpgrades(amount: number): Upgrade[]{
+    GenerateUpgrades(amount: number, existingOnly: boolean): Upgrade[]{
         const upgrades = Upgrades.filter((upgrade) => (
             this.ValidateUpgradeHero(upgrade) &&        
             this.ValidateUpgradeAbility(upgrade) &&
             this.ValidateUpgradeAttackCapabilities(upgrade) &&
             this.ValidateUpgradeStacks(upgrade) &&
-            this.ValidateUpgradeLevel(upgrade)
+            this.ValidateUpgradeLevel(upgrade) &&
+            (existingOnly ? (this.ValidateUpgradeExisting(upgrade)) : (true))
         ));
 
         return Math.GetRandomElementsFromArray(upgrades, Clamp(amount, upgrades.length, 0));
     }
 
     ValidateBounty(bounty: Bounty): boolean{
-        if(bounty.id === 'bounty_upgrades'){
+        if(bounty.id === 'bounty_improvements'){
             if(this.heroUpgrades.length < 2){
                 return false;
             }
@@ -529,6 +540,16 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             return true;
         }
         if((upgrade.attackCapability === UnitAttackCapability.MELEE_ATTACK && !this.IsMeele()) || (upgrade.attackCapability === UnitAttackCapability.RANGED_ATTACK && !this.IsRanged())){
+            return false;
+        }
+
+        return true;
+    }
+    
+    ValidateUpgradeExisting(upgrade: Upgrade): boolean{
+        const heroUpgrade = this.heroUpgrades.filter((heroUpgrade) => heroUpgrade.id === upgrade.id)[0];
+
+        if(!heroUpgrade){
             return false;
         }
 
