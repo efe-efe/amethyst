@@ -57,22 +57,22 @@
             </Panel>
         </Panel>
 
-        <Panel class="bounties pve">
-            <Label class="bounties__title" text="Chose your next bounty" />
-            <Label class="bounties__sub-title" text="Chose the bounty that you will gain once the next room is cleared." />
+        <Panel class="rewards pve">
+            <Label class="rewards__title" text="Chose your next reward" />
+            <Label class="rewards__sub-title" text="Chose the reward that you will gain once the next room is cleared." />
             
-            <Panel class="bounty-container">
-                <Panel class="bounty">
-                    <Label class="bounty__title" text="Chose A" />
-                    <Label class="bounty__description" text="Description" />
+            <Panel class="reward-container">
+                <Panel class="reward">
+                    <Label class="reward__title" text="Chose A" />
+                    <Label class="reward__description" text="Description" />
                 </Panel>
-                <Panel class="bounty">
-                    <Label class="bounty__title" text="Chose B" />
-                    <Label class="bounty__description" text="Description" />
+                <Panel class="reward">
+                    <Label class="reward__title" text="Chose B" />
+                    <Label class="reward__description" text="Description" />
                 </Panel>
-                <Panel class="bounty bounty--last">
-                    <Label class="bounty__title" text="Chose C" />
-                    <Label class="bounty__description" text="Description" />
+                <Panel class="reward reward--last">
+                    <Label class="reward__title" text="Chose C" />
+                    <Label class="reward__description" text="Description" />
                 </Panel>
             </Panel>
         </Panel>

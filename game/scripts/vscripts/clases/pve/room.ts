@@ -5,7 +5,7 @@ import Stage from './stage';
 import settings from '../../settings';
 import Upgrades from '../../upgrades/upgrades';
 import { CustomEvents } from '../../custom_events';
-import { PrizeTypes } from '../../bounties/bounties';
+import { RewardTypes } from '../../rewards/rewards';
 
 export interface RoomData{
     waves: Wave[];
@@ -22,8 +22,8 @@ export interface Spawn {
 }
 export default class Room extends GameState{
     stage: Stage;
-    upgradesDelay = 1 * 30;
-    bountiesDelay = -1;
+    favorsDelay = 1 * 30;
+    rewardsDelay = -1;
     spawnQueue: Spawn[] = []; 
     ais: CustomAI[] = [];
     waves: Wave[];
@@ -45,8 +45,8 @@ export default class Room extends GameState{
         customEvents.RegisterListener('pve:apply_favor', () => {
             this.OnFavorApplied();
         });
-        customEvents.RegisterListener('pve:prize_selected', () => {
-            this.OnPrizeSelected();
+        customEvents.RegisterListener('pve:reward_selected', () => {
+            this.OnRewardSelected();
         });
     }
     
@@ -87,35 +87,35 @@ export default class Room extends GameState{
         }
     }
 
-    OnPrizeSelected(): void{
-        let bountiesReady = true;
+    OnRewardSelected(): void{
+        let rewardsReady = true;
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                if(customNpc.IsSelectingBounty()){
-                    bountiesReady = false;
+                if(customNpc.IsSelectingReward()){
+                    rewardsReady = false;
                 }
             }
         });
         
-        if(bountiesReady){
+        if(rewardsReady){
             this.SetDuration(settings.PreStageDuration);
         }
     }
 
     OnFavorApplied(): void{
-        let upgradesReady = true;
+        let favorsReady = true;
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                if(customNpc.IsUpgrading()){
-                    upgradesReady = false;
+                if(customNpc.IsSelectingFavor()){
+                    favorsReady = false;
                 }
             }
         });
         
-        if(upgradesReady){
-            this.bountiesDelay = 2 * 30;
+        if(favorsReady){
+            this.rewardsDelay = 2 * 30;
         }
     }
 
@@ -124,20 +124,20 @@ export default class Room extends GameState{
 
         if(this.remainingWaveNpcs <= 0){
             if(this.currentWave === this.waves.length - 1){
-                if(this.upgradesDelay === 0){
-                    this.GenerateUpgrades();
-                    this.upgradesDelay = this.upgradesDelay - 1;
+                if(this.favorsDelay === 0){
+                    this.GenerateFavors();
+                    this.favorsDelay = this.favorsDelay - 1;
                 }
-                if(this.upgradesDelay > 0){
-                    this.upgradesDelay = this.upgradesDelay - 1;
+                if(this.favorsDelay > 0){
+                    this.favorsDelay = this.favorsDelay - 1;
                 }
 
-                if(this.bountiesDelay === 0){
+                if(this.rewardsDelay === 0){
                     this.GenerateBounties();
-                    this.bountiesDelay = this.bountiesDelay - 1;
+                    this.rewardsDelay = this.rewardsDelay - 1;
                 }
-                if(this.bountiesDelay > 0){
-                    this.bountiesDelay = this.bountiesDelay - 1;
+                if(this.rewardsDelay > 0){
+                    this.rewardsDelay = this.rewardsDelay - 1;
                 }
 
                 if(this.time_remaining === 0){
@@ -167,19 +167,19 @@ export default class Room extends GameState{
         }
     }
 
-    GenerateUpgrades(): void{
+    GenerateFavors(): void{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                if(customNpc.bounty && customNpc.bounty.type === PrizeTypes.FAVOR){
-                    customNpc.RequestUpgrades();
+                if(customNpc.reward && customNpc.reward.type === RewardTypes.FAVOR){
+                    customNpc.RequestFavors();
                 }
-                if(customNpc.bounty && customNpc.bounty.type === PrizeTypes.ENHANCEMENT){
-                    customNpc.RequestImprovements();
+                if(customNpc.reward && customNpc.reward.type === RewardTypes.ENHANCEMENT){
+                    customNpc.RequestEnhancements();
                 }
-                if(customNpc.bounty && customNpc.bounty.type === PrizeTypes.TARRASQUE){
+                if(customNpc.reward && customNpc.reward.type === RewardTypes.TARRASQUE){
                     const regenerationUpgrade = Upgrades.filter((upgrade) => upgrade.id === 'restore_health')[0];
-                    customNpc.ApplyUpgrade(regenerationUpgrade);
+                    customNpc.ApplyFavor(regenerationUpgrade);
                 }
             }
         });

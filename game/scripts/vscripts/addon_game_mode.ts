@@ -23,9 +23,7 @@ import Pickup, { PickupTypes } from './clases/pickup';
 import settings from './settings';
 import PreRun from './clases/pve/pre_run';
 import { NPCNames } from './clases/pve/custom_ai';
-import Upgrades from './upgrades/upgrades';
 import Run from './clases/pve/run';
-import Prizes from './bounties/bounties';
 
 declare global {
     interface CDOTAGamerules {
@@ -792,7 +790,7 @@ export class GameMode{
                 if(player){
                     const customNpc = player.customNpc;
                     if(customNpc){
-                        customNpc.RequestUpgrades();
+                        customNpc.RequestFavors();
                     }
                 }
             }

@@ -10,9 +10,9 @@ local ____custom_entities = require("util.custom_entities")
 local customEntities = ____custom_entities.default
 local ____upgrades = require("upgrades.upgrades")
 local Upgrades = ____upgrades.default
-local ____bounties = require("bounties.bounties")
-local Prizes = ____bounties.default
-local PrizeTypes = ____bounties.PrizeTypes
+local ____rewards = require("rewards.rewards")
+local Rewards = ____rewards.default
+local RewardTypes = ____rewards.RewardTypes
 local ____custom_events = require("custom_events")
 local CustomEvents = ____custom_events.CustomEvents
 local DEBUG = false
@@ -447,8 +447,8 @@ end
 function CustomPlayerHeroNPC.prototype.IsMeele(self)
     return self.unit:GetPrimaryAttribute() == DOTA_ATTRIBUTE_STRENGTH
 end
-function CustomPlayerHeroNPC.prototype.IsUpgrading(self)
-    local tableName = "custom_npc_upgrades"
+function CustomPlayerHeroNPC.prototype.IsSelectingFavor(self)
+    local tableName = "custom_npc_favors"
     local value = CustomNetTables:GetTableValue(
         tableName,
         tostring(
@@ -457,17 +457,17 @@ function CustomPlayerHeroNPC.prototype.IsUpgrading(self)
     )
     return value and (value.upgrades ~= nil)
 end
-function CustomPlayerHeroNPC.prototype.IsSelectingBounty(self)
-    local tableName = "custom_npc_bounties"
+function CustomPlayerHeroNPC.prototype.IsSelectingReward(self)
+    local tableName = "custom_npc_rewards"
     local value = CustomNetTables:GetTableValue(
         tableName,
         tostring(
             self.unit:GetPlayerOwnerID()
         )
     )
-    return value and (value.bounties ~= nil)
+    return value and (value.rewards ~= nil)
 end
-function CustomPlayerHeroNPC.prototype.ApplyUpgrade(self, upgrade)
+function CustomPlayerHeroNPC.prototype.ApplyFavor(self, upgrade)
     if upgrade.modifier then
         self.unit:AddNewModifier(self.unit, nil, upgrade.modifier.name, {duration = upgrade.modifier.duration})
         local found = false
@@ -488,13 +488,13 @@ function CustomPlayerHeroNPC.prototype.ApplyUpgrade(self, upgrade)
     if upgrade.effect then
         upgrade:effect(self.unit)
     end
-    self:ClearTable("custom_npc_upgrades")
+    self:ClearTable("custom_npc_favors")
     local customEvents = CustomEvents:GetInstance()
     customEvents:EmitEvent("pve:apply_favor", {customNpc = self})
 end
-function CustomPlayerHeroNPC.prototype.SelectBounty(self, bounty)
-    self:ClearTable("custom_npc_bounties")
-    self.bounty = bounty
+function CustomPlayerHeroNPC.prototype.SelectReward(self, reward)
+    self:ClearTable("custom_npc_rewards")
+    self.reward = reward
 end
 function CustomPlayerHeroNPC.prototype.ClearTable(self, name)
     local data = {
@@ -511,9 +511,9 @@ end
 function CustomPlayerHeroNPC.prototype.RequestBounties(self)
     local data = {
         playerId = self.unit:GetPlayerOwnerID(),
-        bounties = self:GenerateBounties(3)
+        rewards = self:GenerateBounties(3)
     }
-    local tableName = "custom_npc_bounties"
+    local tableName = "custom_npc_rewards"
     CustomNetTables:SetTableValue(
         tableName,
         tostring(
@@ -522,12 +522,12 @@ function CustomPlayerHeroNPC.prototype.RequestBounties(self)
         data
     )
 end
-function CustomPlayerHeroNPC.prototype.RequestUpgrades(self)
+function CustomPlayerHeroNPC.prototype.RequestFavors(self)
     local data = {
         playerId = self.unit:GetPlayerOwnerID(),
         upgrades = self:GenerateUpgrades(3, false)
     }
-    local tableName = "custom_npc_upgrades"
+    local tableName = "custom_npc_favors"
     CustomNetTables:SetTableValue(
         tableName,
         tostring(
@@ -536,12 +536,12 @@ function CustomPlayerHeroNPC.prototype.RequestUpgrades(self)
         data
     )
 end
-function CustomPlayerHeroNPC.prototype.RequestImprovements(self)
+function CustomPlayerHeroNPC.prototype.RequestEnhancements(self)
     local data = {
         playerId = self.unit:GetPlayerOwnerID(),
         upgrades = self:GenerateUpgrades(3, true)
     }
-    local tableName = "custom_npc_upgrades"
+    local tableName = "custom_npc_favors"
     CustomNetTables:SetTableValue(
         tableName,
         tostring(
@@ -551,13 +551,13 @@ function CustomPlayerHeroNPC.prototype.RequestImprovements(self)
     )
 end
 function CustomPlayerHeroNPC.prototype.GenerateBounties(self, amount)
-    local bounties = __TS__ArrayFilter(
-        Prizes,
-        function(____, bounty) return self:ValidateBounty(bounty) end
+    local rewards = __TS__ArrayFilter(
+        Rewards,
+        function(____, reward) return self:ValidateReward(reward) end
     )
     return Math:GetRandomElementsFromArray(
-        bounties,
-        Clamp(amount, #bounties, 0)
+        rewards,
+        Clamp(amount, #rewards, 0)
     )
 end
 function CustomPlayerHeroNPC.prototype.GenerateUpgrades(self, amount, existingOnly)
@@ -570,13 +570,13 @@ function CustomPlayerHeroNPC.prototype.GenerateUpgrades(self, amount, existingOn
         Clamp(amount, #upgrades, 0)
     )
 end
-function CustomPlayerHeroNPC.prototype.ValidateBounty(self, bounty)
-    if bounty.type == PrizeTypes.ENHANCEMENT then
+function CustomPlayerHeroNPC.prototype.ValidateReward(self, reward)
+    if reward.type == RewardTypes.ENHANCEMENT then
         if #self.heroUpgrades < 2 then
             return false
         end
     end
-    if bounty.type == PrizeTypes.TARRASQUE then
+    if reward.type == RewardTypes.TARRASQUE then
         if ((not GameRules.Addon.run) or (not GameRules.Addon.run.stage)) or (GameRules.Addon.run.stage.currentRoom == 0) then
             return false
         end

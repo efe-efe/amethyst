@@ -2,8 +2,8 @@
 require("lualib_bundle");
 __TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 4,["11"] = 4,["12"] = 6,["13"] = 6,["14"] = 6,["15"] = 10,["16"] = 10,["17"] = 10,["18"] = 10,["19"] = 10,["20"] = 16,["21"] = 10,["22"] = 14,["23"] = 18,["24"] = 19,["25"] = 20,["26"] = 23,["27"] = 23,["28"] = 23,["29"] = 24,["30"] = 25,["31"] = 26,["33"] = 23,["34"] = 23,["35"] = 16,["36"] = 32,["37"] = 33,["38"] = 34,["39"] = 37,["40"] = 32,["41"] = 40,["42"] = 10,["43"] = 42,["44"] = 43,["46"] = 45,["47"] = 46,["49"] = 48,["52"] = 40,["53"] = 53,["54"] = 54,["55"] = 53,["56"] = 57,["57"] = 58,["58"] = 59,["60"] = 57,["61"] = 63,["62"] = 64,["63"] = 65,["65"] = 63,["66"] = 69,["67"] = 70,["68"] = 71,["69"] = 72,["70"] = 69,["71"] = 75,["72"] = 76,["73"] = 75,["74"] = 10,["75"] = 10});
 local ____exports = {}
-local ____bounties = require("bounties.bounties")
-local Prizes = ____bounties.default
+local ____rewards = require("rewards.rewards")
+local Rewards = ____rewards.default
 local ____game_state = require("clases.game_state")
 local GameState = ____game_state.default
 local CustomGameState = ____game_state.CustomGameState
@@ -28,7 +28,7 @@ ____exports.default = (function()
             function(____, player)
                 local customNpc = player.customNpc
                 if customNpc then
-                    customNpc:SelectBounty(Prizes[1])
+                    customNpc:SelectReward(Rewards[1])
                 end
             end
         )

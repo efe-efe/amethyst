@@ -84,13 +84,13 @@
     }
 }
 
-.bounties{
+.rewards{
     height: 600px;
     width: 800px;
     flow-children: down;
     align: center center;
     padding: 40px 20px;
-    background-color: rgba(0,0,0, 0.2);
+    background-color: rgba(0,0,0, 0.5);
     border-radius: 2px;
     z-index: 2;
     color: white;
@@ -106,13 +106,13 @@
     }
 }
 
-.bounty-container{
+.reward-container{
     align: center center;
     flow-children: right;
 }
 
-.bounty{
-    background-color: rgba(0,0,0, 0.5);
+.reward{
+    background-color: rgba(0,0,0, 0.8);
     width: 220px;
     height: 200px;
     margin-right: 20px;
@@ -137,8 +137,7 @@
     }
 
     &:hover{
-        background-color: rgba(0,0,0, 0.3);
-        border: 1px solid #8b8b8b;
+        background-color: rgba(0,0,0, 0.5);
     }
 }
 

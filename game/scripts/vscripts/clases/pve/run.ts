@@ -1,4 +1,4 @@
-import Prizes from '../../bounties/bounties';
+import Rewards from '../../rewards/rewards';
 import Alliance from '../alliance';
 import GameState, { CustomGameState } from '../game_state';
 import Stage, { StageData } from './stage';
@@ -23,7 +23,7 @@ export default class Run extends GameState{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                customNpc.SelectBounty(Prizes[0]);
+                customNpc.SelectReward(Rewards[0]);
             }
         });
         

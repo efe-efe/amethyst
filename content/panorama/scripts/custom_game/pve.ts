@@ -3,42 +3,42 @@ import util, { tables } from './util';
 
 (function(){
     const layout = LayoutController.GetInstance();
-    const bountiesContainerPanel = layout.GetTopPanel().FindChildrenWithClassTraverse('bounties')[0];
-    const bountyPanels = bountiesContainerPanel.FindChildrenWithClassTraverse('bounty');
+    const rewardsContainerPanel = layout.GetTopPanel().FindChildrenWithClassTraverse('rewards')[0];
+    const rewardPanels = rewardsContainerPanel.FindChildrenWithClassTraverse('reward');
 
-    const upgradesContainerPanel = layout.GetTopPanel().FindChildrenWithClassTraverse('upgrades')[0];
-    const upgradePanels = upgradesContainerPanel.FindChildrenWithClassTraverse('upgrade');
+    const favorsContainerPanel = layout.GetTopPanel().FindChildrenWithClassTraverse('upgrades')[0];
+    const upgradePanels = favorsContainerPanel.FindChildrenWithClassTraverse('upgrade');
 
-    [...bountyPanels, ...upgradePanels].forEach((panel, i) => {
+    [...rewardPanels, ...upgradePanels].forEach((panel, i) => {
         panel.SetDisableFocusOnMouseDown(true);
     });
 
-    const Hidebounties = () => {
-        bountiesContainerPanel.style.visibility = 'collapse';
+    const HideRewards = () => {
+        rewardsContainerPanel.style.visibility = 'collapse';
     };
     const HideUpgrades = () => {
-        upgradesContainerPanel.style.visibility = 'collapse';
+        favorsContainerPanel.style.visibility = 'collapse';
     };
 
-    const Showbounties = (bounties: any) => {
-        bountiesContainerPanel.style.visibility = 'visible';
-        bountyPanels.forEach((bountyPanel, i) => {
-            const titlePanel = bountyPanel.FindChildrenWithClassTraverse('bounty__title')[0] as LabelPanel;
-            const descriptionPanel = bountyPanel.FindChildrenWithClassTraverse('bounty__description')[0] as LabelPanel;
+    const ShowRewards = (rewards: any) => {
+        rewardsContainerPanel.style.visibility = 'visible';
+        rewardPanels.forEach((rewardPanel, i) => {
+            const titlePanel = rewardPanel.FindChildrenWithClassTraverse('reward__title')[0] as LabelPanel;
+            const descriptionPanel = rewardPanel.FindChildrenWithClassTraverse('reward__description')[0] as LabelPanel;
             titlePanel.text = 'Empty';
-            descriptionPanel.text = 'No bounties here';
+            descriptionPanel.text = 'No rewards here';
     
-            const bountyData = bounties[i + 1];
-            if(bountyData){
-                titlePanel.text = bountyData.name;
-                descriptionPanel.text = bountyData.description;
+            const rewardData = rewards[i + 1];
+            if(rewardData){
+                titlePanel.text = rewardData.name;
+                descriptionPanel.text = rewardData.description;
 
-                bountyPanel.ClearPanelEvent('onactivate');
-                bountyPanel.SetPanelEvent('onactivate', () => {
+                rewardPanel.ClearPanelEvent('onactivate');
+                rewardPanel.SetPanelEvent('onactivate', () => {
                     const playerId = util.getCurrentPlayer();
-                    GameEvents.SendCustomGameEventToServer('custom_npc:select_bounty', {
+                    GameEvents.SendCustomGameEventToServer('custom_npc:select_reward', {
                         playerIndex: playerId,
-                        payload: { type: bountyData.type, }
+                        payload: { type: rewardData.type, }
                     } as never);
                 });
             }
@@ -46,7 +46,7 @@ import util, { tables } from './util';
     };
 
     const ShowUpgrades = (upgrades: any) => {
-        upgradesContainerPanel.style.visibility = 'visible';
+        favorsContainerPanel.style.visibility = 'visible';
         upgradePanels.forEach((upgradeContainer, i) => {
             const titlePanel = upgradeContainer.FindChildrenWithClassTraverse('upgrade__title')[0] as LabelPanel;
             const descriptionPanel = upgradeContainer.FindChildrenWithClassTraverse('upgrade__description')[0] as LabelPanel;
@@ -67,7 +67,7 @@ import util, { tables } from './util';
                 upgradeContainer.ClearPanelEvent('onactivate');
                 upgradeContainer.SetPanelEvent('onactivate', () => {
                     const playerId = util.getCurrentPlayer();
-                    GameEvents.SendCustomGameEventToServer('custom_npc:apply_upgrade', {
+                    GameEvents.SendCustomGameEventToServer('custom_npc:apply_favor', {
                         playerIndex: playerId,
                         payload: { upgradeId: upgradeData.id, }
                     } as never);
@@ -76,18 +76,18 @@ import util, { tables } from './util';
         });
     };
 
-    tables.subscribeToNetTableAndLoadNow('custom_npc_bounties' as never, (table: never, key: string | number | symbol, value: any) => {
+    tables.subscribeToNetTableAndLoadNow('custom_npc_rewards' as never, (table: never, key: string | number | symbol, value: any) => {
         const playerId = util.getCurrentPlayer();
         if(playerId === value.playerId){
-            if(value.bounties){
-                Showbounties(value.bounties);
+            if(value.rewards){
+                ShowRewards(value.rewards);
             } else {
-                Hidebounties();
+                HideRewards();
             }
         }
     });
 
-    tables.subscribeToNetTableAndLoadNow('custom_npc_upgrades' as never, (table: never, key: string | number | symbol, value: any) => {
+    tables.subscribeToNetTableAndLoadNow('custom_npc_favors' as never, (table: never, key: string | number | symbol, value: any) => {
         const playerId = util.getCurrentPlayer();
         if(playerId === value.playerId){
             if(value.upgrades){

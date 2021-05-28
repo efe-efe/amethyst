@@ -2,7 +2,7 @@ import UnitEntity from '../unit_entity';
 import Math from '../../util/math';
 import customEntities from '../../util/custom_entities';
 import Upgrades, { Upgrade } from '../../upgrades/upgrades';
-import Prizes, { Prize, PrizeTypes } from '../../bounties/bounties';
+import Rewards, { Reward, RewardTypes } from '../../rewards/rewards';
 import { CustomEvents } from '../../custom_events';
 
 const DEBUG = false;
@@ -340,7 +340,7 @@ export class CustomNonPlayerHeroNPC extends CustomHeroNPC{
 }
 export class CustomPlayerHeroNPC extends CustomHeroNPC{
     heroUpgrades: HeroUpgrade[] = [];
-    bounty: Prize | undefined;
+    reward: Reward | undefined;
     remainingTimeToRemoveMana = 1.0 * 30;
 
     constructor(unit: CDOTA_BaseNPC){
@@ -396,19 +396,19 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return ((this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() === Attributes.STRENGTH);
     }
 
-    IsUpgrading(): boolean{
-        const tableName = 'custom_npc_upgrades' as never;
+    IsSelectingFavor(): boolean{
+        const tableName = 'custom_npc_favors' as never;
         const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; upgrades: Upgrade[] | undefined };
         return (value && (value.upgrades !== undefined));
     }
 
-    IsSelectingBounty(): boolean{
-        const tableName = 'custom_npc_bounties' as never;
-        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; bounties: Prize[] | undefined };
-        return (value && (value.bounties !== undefined));
+    IsSelectingReward(): boolean{
+        const tableName = 'custom_npc_rewards' as never;
+        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; rewards: Reward[] | undefined };
+        return (value && (value.rewards !== undefined));
     }
 
-    ApplyUpgrade(upgrade: Upgrade): void{
+    ApplyFavor(upgrade: Upgrade): void{
         if(upgrade.modifier){
             this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
             let found = false;
@@ -435,14 +435,14 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             upgrade.effect(this.unit as CDOTA_BaseNPC_Hero);
         }
 
-        this.ClearTable('custom_npc_upgrades' as never);
+        this.ClearTable('custom_npc_favors' as never);
         const customEvents = CustomEvents.GetInstance();
         customEvents.EmitEvent('pve:apply_favor', { customNpc: this });
     }
 
-    SelectBounty(bounty: Prize): void{
-        this.ClearTable('custom_npc_bounties' as never);
-        this.bounty = bounty;
+    SelectReward(reward: Reward): void{
+        this.ClearTable('custom_npc_rewards' as never);
+        this.reward = reward;
     }
 
     ClearTable(name: never): void{
@@ -455,39 +455,39 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     RequestBounties(): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            bounties: this.GenerateBounties(3),
+            rewards: this.GenerateBounties(3),
         } as never;
 
-        const tableName = 'custom_npc_bounties' as never;
+        const tableName = 'custom_npc_rewards' as never;
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
 
-    RequestUpgrades(): void{
+    RequestFavors(): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
             upgrades: this.GenerateUpgrades(3, false),
         } as never;
 
-        const tableName = 'custom_npc_upgrades' as never;
+        const tableName = 'custom_npc_favors' as never;
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
 
-    RequestImprovements(): void{
+    RequestEnhancements(): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
             upgrades: this.GenerateUpgrades(3, true),
         } as never;
 
-        const tableName = 'custom_npc_upgrades' as never;
+        const tableName = 'custom_npc_favors' as never;
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
     
-    GenerateBounties(amount: number): Prize[]{
-        const bounties = Prizes.filter((bounty) => (
-            this.ValidateBounty(bounty)
+    GenerateBounties(amount: number): Reward[]{
+        const rewards = Rewards.filter((reward) => (
+            this.ValidateReward(reward)
         ));
 
-        return Math.GetRandomElementsFromArray(bounties, Clamp(amount, bounties.length, 0));
+        return Math.GetRandomElementsFromArray(rewards, Clamp(amount, rewards.length, 0));
     }
 
     GenerateUpgrades(amount: number, existingOnly: boolean): Upgrade[]{
@@ -503,13 +503,13 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return Math.GetRandomElementsFromArray(upgrades, Clamp(amount, upgrades.length, 0));
     }
 
-    ValidateBounty(bounty: Prize): boolean{
-        if(bounty.type === PrizeTypes.ENHANCEMENT){
+    ValidateReward(reward: Reward): boolean{
+        if(reward.type === RewardTypes.ENHANCEMENT){
             if(this.heroUpgrades.length < 2){
                 return false;
             }
         }
-        if(bounty.type === PrizeTypes.TARRASQUE){
+        if(reward.type === RewardTypes.TARRASQUE){
             if(!GameRules.Addon.run || !GameRules.Addon.run.stage || GameRules.Addon.run.stage.currentRoom === 0){
                 return false;
             }

@@ -3,7 +3,6 @@ import juggernaut from './juggernaut';
 import storm from './storm';
 import generic from './generic';
 import { CustomActionEvent } from '../addon_game_mode';
-import { CustomEvents } from '../custom_events';
 
 interface UpgradeModifier {
     name: string;
@@ -31,7 +30,7 @@ const Upgrades: Upgrade[] = [
     ...generic
 ];
 
-CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_upgrade', (eventSourceIndex, event) => {
+CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_favor', (eventSourceIndex, event) => {
     const playerId = event.playerIndex;
     const player = GameRules.Addon.FindPlayerById(playerId);
 
@@ -40,7 +39,7 @@ CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_upg
         if(customNpc){
             const upgrade = Upgrades.filter((currentUpgrade) => currentUpgrade.id === event.payload.upgradeId)[0];
             if(upgrade){
-                customNpc.ApplyUpgrade(upgrade);
+                customNpc.ApplyFavor(upgrade);
             }
         }
     }

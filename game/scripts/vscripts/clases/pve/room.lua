@@ -12,8 +12,8 @@ local ____upgrades = require("upgrades.upgrades")
 local Upgrades = ____upgrades.default
 local ____custom_events = require("custom_events")
 local CustomEvents = ____custom_events.CustomEvents
-local ____bounties = require("bounties.bounties")
-local PrizeTypes = ____bounties.PrizeTypes
+local ____rewards = require("rewards.rewards")
+local RewardTypes = ____rewards.RewardTypes
 ____exports.default = (function()
     ____exports.default = __TS__Class()
     local Room = ____exports.default
@@ -21,8 +21,8 @@ ____exports.default = (function()
     __TS__ClassExtends(Room, GameState)
     function Room.prototype.____constructor(self, alliances, duration, waves, stage)
         GameState.prototype.____constructor(self, alliances, duration)
-        self.upgradesDelay = 1 * 30
-        self.bountiesDelay = -1
+        self.favorsDelay = 1 * 30
+        self.rewardsDelay = -1
         self.spawnQueue = {}
         self.ais = {}
         self.remainingWaveNpcs = 0
@@ -41,9 +41,9 @@ ____exports.default = (function()
             end
         )
         customEvents:RegisterListener(
-            "pve:prize_selected",
+            "pve:reward_selected",
             function()
-                self:OnPrizeSelected()
+                self:OnRewardSelected()
             end
         )
     end
@@ -86,57 +86,57 @@ ____exports.default = (function()
             ai:OnHurt()
         end
     end
-    function Room.prototype.OnPrizeSelected(self)
-        local bountiesReady = true
+    function Room.prototype.OnRewardSelected(self)
+        local rewardsReady = true
         __TS__ArrayForEach(
             self:GetAllPlayers(),
             function(____, player)
                 local customNpc = player.customNpc
                 if customNpc then
-                    if customNpc:IsSelectingBounty() then
-                        bountiesReady = false
+                    if customNpc:IsSelectingReward() then
+                        rewardsReady = false
                     end
                 end
             end
         )
-        if bountiesReady then
+        if rewardsReady then
             self:SetDuration(settings.PreStageDuration)
         end
     end
     function Room.prototype.OnFavorApplied(self)
-        local upgradesReady = true
+        local favorsReady = true
         __TS__ArrayForEach(
             self:GetAllPlayers(),
             function(____, player)
                 local customNpc = player.customNpc
                 if customNpc then
-                    if customNpc:IsUpgrading() then
-                        upgradesReady = false
+                    if customNpc:IsSelectingFavor() then
+                        favorsReady = false
                     end
                 end
             end
         )
-        if upgradesReady then
-            self.bountiesDelay = 2 * 30
+        if favorsReady then
+            self.rewardsDelay = 2 * 30
         end
     end
     function Room.prototype.Update(self)
         GameState.prototype.Update(self)
         if self.remainingWaveNpcs <= 0 then
             if self.currentWave == (#self.waves - 1) then
-                if self.upgradesDelay == 0 then
-                    self:GenerateUpgrades()
-                    self.upgradesDelay = self.upgradesDelay - 1
+                if self.favorsDelay == 0 then
+                    self:GenerateFavors()
+                    self.favorsDelay = self.favorsDelay - 1
                 end
-                if self.upgradesDelay > 0 then
-                    self.upgradesDelay = self.upgradesDelay - 1
+                if self.favorsDelay > 0 then
+                    self.favorsDelay = self.favorsDelay - 1
                 end
-                if self.bountiesDelay == 0 then
+                if self.rewardsDelay == 0 then
                     self:GenerateBounties()
-                    self.bountiesDelay = self.bountiesDelay - 1
+                    self.rewardsDelay = self.rewardsDelay - 1
                 end
-                if self.bountiesDelay > 0 then
-                    self.bountiesDelay = self.bountiesDelay - 1
+                if self.rewardsDelay > 0 then
+                    self.rewardsDelay = self.rewardsDelay - 1
                 end
                 if self.time_remaining == 0 then
                     self:End()
@@ -171,24 +171,24 @@ ____exports.default = (function()
             )
         end
     end
-    function Room.prototype.GenerateUpgrades(self)
+    function Room.prototype.GenerateFavors(self)
         __TS__ArrayForEach(
             self:GetAllPlayers(),
             function(____, player)
                 local customNpc = player.customNpc
                 if customNpc then
-                    if customNpc.bounty and (customNpc.bounty.type == PrizeTypes.FAVOR) then
-                        customNpc:RequestUpgrades()
+                    if customNpc.reward and (customNpc.reward.type == RewardTypes.FAVOR) then
+                        customNpc:RequestFavors()
                     end
-                    if customNpc.bounty and (customNpc.bounty.type == PrizeTypes.ENHANCEMENT) then
-                        customNpc:RequestImprovements()
+                    if customNpc.reward and (customNpc.reward.type == RewardTypes.ENHANCEMENT) then
+                        customNpc:RequestEnhancements()
                     end
-                    if customNpc.bounty and (customNpc.bounty.type == PrizeTypes.TARRASQUE) then
+                    if customNpc.reward and (customNpc.reward.type == RewardTypes.TARRASQUE) then
                         local regenerationUpgrade = __TS__ArrayFilter(
                             Upgrades,
                             function(____, upgrade) return upgrade.id == "restore_health" end
                         )[1]
-                        customNpc:ApplyUpgrade(regenerationUpgrade)
+                        customNpc:ApplyFavor(regenerationUpgrade)
                     end
                 end
             end
