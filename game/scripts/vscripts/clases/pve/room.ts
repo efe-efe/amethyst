@@ -55,7 +55,7 @@ export default class Room extends GameState{
             remainingEnemies: this.totalNpcs - this.remainingTotalNpcs,
             maxEnemies: this.totalNpcs
         } as never;
-        CustomNetTables.SetTableValue(tableName, 'stage', data);
+        CustomNetTables.SetTableValue(tableName, 'pve', data);
     }
 
     StartWave(waveNumber: number): void{

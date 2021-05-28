@@ -28,6 +28,7 @@ import { ReadyBar } from './readyBar';
     const currentLevelPanel = $('#current-room') as LabelPanel;
     const currentStagePanel = $('#current-stage') as LabelPanel;
     const enemiesCountPanel = $('#enemies-count') as LabelPanel;
+    const nextRewardPanel = $('#next-reward') as LabelPanel;
     const refunderButton = $('#refunder__button') as Button;
     const refunderPanel = $('#refunder');
     const customHotkeysPanel = $('#custom-hotkeys');
@@ -306,7 +307,14 @@ import { ReadyBar } from './readyBar';
         }
     });
     
-    tables.subscribeToNetTableKey(tableNameMain, 'stage', true, function(data: any){
+    tables.subscribeToNetTableKey(tableNameMain, 'pve', true, function(data: any){
+        
+        
+        if(Game.IsInToolsMode()){
+            if(data.nextReward){
+                nextRewardPanel.text = 'Next reward: ' + data.nextReward;
+            }
+        }
         if(data.currentStage){
             currentStagePanel.text = 'Stage: ' + data.currentStage;
         }

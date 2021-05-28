@@ -66,7 +66,7 @@ export default class Stage extends GameState{
         const data = { 
             currentRoom: this.currentRoom + 1, 
         } as never;
-        CustomNetTables.SetTableValue(tableName, 'stage', data);
+        CustomNetTables.SetTableValue(tableName, 'pve', data);
     }
 
     Update(): void{

@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 10,["8"] = 11,["9"] = 11,["10"] = 12,["11"] = 12,["12"] = 13,["13"] = 13,["14"] = 14,["15"] = 14,["16"] = 15,["17"] = 15,["18"] = 18,["19"] = 47,["20"] = 47,["21"] = 47,["22"] = 48,["23"] = 49,["24"] = 50,["25"] = 52,["26"] = 53,["27"] = 54,["28"] = 55,["29"] = 55,["30"] = 55,["31"] = 55,["32"] = 56,["33"] = 57,["34"] = 58,["38"] = 47,["39"] = 47,["40"] = 64});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 10,["8"] = 11,["9"] = 11,["10"] = 12,["11"] = 12,["12"] = 13,["13"] = 13,["14"] = 14,["15"] = 14,["16"] = 15,["17"] = 15,["18"] = 18,["19"] = 47,["20"] = 47,["21"] = 47,["22"] = 48,["23"] = 49,["24"] = 50,["25"] = 52,["26"] = 53,["27"] = 54,["28"] = 55,["29"] = 55,["30"] = 55,["31"] = 55,["32"] = 56,["33"] = 57,["37"] = 47,["38"] = 47,["39"] = 63});
 local ____exports = {}
 local ____custom_events = require("custom_events")
 local CustomEvents = ____custom_events.CustomEvents
@@ -31,7 +31,6 @@ CustomGameEventManager:RegisterListener(
                 )[1]
                 if reward then
                     customNpc:SelectReward(reward)
-                    customEvents:EmitEvent("pve:next_reward_selected", {customNpc = customNpc, reward = reward})
                 end
             end
         end

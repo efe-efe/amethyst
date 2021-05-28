@@ -34,7 +34,7 @@ export default class Run extends GameState{
         const data = { 
             currentStage: this.currentStage + 1, 
         } as never;
-        CustomNetTables.SetTableValue(tableName, 'stage', data);
+        CustomNetTables.SetTableValue(tableName, 'pve', data);
     }
 
     Update(): void{

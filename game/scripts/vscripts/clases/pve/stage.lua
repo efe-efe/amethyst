@@ -33,7 +33,7 @@ ____exports.default = (function()
     function Stage.prototype.SendDataToClient(self)
         local tableName = "main"
         local data = {currentRoom = self.currentRoom + 1}
-        CustomNetTables:SetTableValue(tableName, "stage", data)
+        CustomNetTables:SetTableValue(tableName, "pve", data)
     end
     function Stage.prototype.Update(self)
         GameState.prototype.Update(self)

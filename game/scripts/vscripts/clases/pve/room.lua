@@ -48,7 +48,7 @@ ____exports.default = (function()
     function Room.prototype.SendDataToClient(self)
         local tableName = "main"
         local data = {remainingEnemies = self.totalNpcs - self.remainingTotalNpcs, maxEnemies = self.totalNpcs}
-        CustomNetTables:SetTableValue(tableName, "stage", data)
+        CustomNetTables:SetTableValue(tableName, "pve", data)
     end
     function Room.prototype.StartWave(self, waveNumber)
         local wave = self.waves[waveNumber + 1]

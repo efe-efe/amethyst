@@ -36,7 +36,7 @@ ____exports.default = (function()
     function Run.prototype.SendDataToClient(self)
         local tableName = "main"
         local data = {currentStage = self.currentStage + 1}
-        CustomNetTables:SetTableValue(tableName, "stage", data)
+        CustomNetTables:SetTableValue(tableName, "pve", data)
     end
     function Run.prototype.Update(self)
         GameState.prototype.Update(self)

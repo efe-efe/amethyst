@@ -55,7 +55,6 @@ CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:select_re
             const reward = Rewards.filter((_reward) => _reward.type === event.payload.type)[0];
             if(reward){
                 customNpc.SelectReward(reward);
-                customEvents.EmitEvent('pve:next_reward_selected', { customNpc, reward });
             }
         }
     }

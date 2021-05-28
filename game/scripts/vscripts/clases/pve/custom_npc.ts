@@ -448,8 +448,15 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     SelectReward(reward: Reward): void{
-        this.ClearTable('custom_npc_rewards' as never);
         this.reward = reward;
+        this.ClearTable('custom_npc_rewards' as never);
+        const customEvents = CustomEvents.GetInstance();
+        customEvents.EmitEvent('pve:next_reward_selected', { customNpc: this, reward });
+
+        const data = { 
+            nextReward: this.reward.name,
+        } as never;
+        CustomNetTables.SetTableValue('main' as never, 'pve', data);
     }
 
     ClearTable(name: never): void{
