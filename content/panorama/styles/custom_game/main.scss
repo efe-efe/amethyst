@@ -32,9 +32,8 @@
 }
 
 .upgrades{
-    height: 700px;
+    height: 600px;
     width: 800px;
-    border: 1px solid black;
     flow-children: down;
     align: center center;
     padding: 40px 20px;
@@ -46,7 +45,7 @@
 
 .upgrade{
     width: 100%;
-    height: 120px;
+    height: 150px;
     flow-children: right;
     color: white;
     margin-bottom: 20px;
@@ -58,11 +57,16 @@
         border: 1px solid #8b8b8b;
     }
 
+    &--last{
+        margin-bottom: 0;
+    }
+
     &-left{
+        height: 100%;
         width: 20%;
     }
     &-right{
-        padding: 20px 20px 20px 0;
+        padding: 20px 20px 20px 20px;
         width: 80%;
         flow-children: down;
     }
@@ -73,4 +77,72 @@
     &__description{
         font-size: 16px;
     }
+
+    &__ability{
+        align: center center;
+        border: 5px solid black;
+    }
+}
+
+.bounties{
+    height: 600px;
+    width: 800px;
+    flow-children: down;
+    align: center center;
+    padding: 40px 20px;
+    background-color: rgba(0,0,0, 0.2);
+    border-radius: 2px;
+    z-index: 2;
+    color: white;
+    visibility: collapse;
+    
+    &__title{
+        font-size: 20px;
+        align: center center;
+    }
+    &__sub-title{
+        font-size: 15px;
+        align: center center;
+    }
+}
+
+.bounty-container{
+    align: center center;
+    flow-children: right;
+}
+
+.bounty{
+    background-color: rgba(0,0,0, 0.5);
+    width: 220px;
+    height: 200px;
+    margin-right: 20px;
+    flow-children: down;
+    border-radius: 5px;
+    padding: 10px;
+
+    &__title{
+        text-align: center;
+        align: center center;
+        font-size: 20px;
+    }
+
+    &__description{
+        text-align: center;
+        align: center center;
+        font-size: 16px;
+    }
+
+    &--last{
+        margin-right: 0px;
+    }
+
+    &:hover{
+        background-color: rgba(0,0,0, 0.3);
+        border: 1px solid #8b8b8b;
+    }
+}
+
+.game-state{
+    color: white;
+    font-size: 12px;
 }

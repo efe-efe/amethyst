@@ -20,7 +20,9 @@
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
 	</scripts>
     <Panel class="main" hittest="false">
+        <Label id="game-state" class="game-state" text="-" />
         <Panel class="room-status pve">
+            <Label id="current-stage" text="Stage: 1" />
             <Label id="enemies-count" text="Killed enemies: 0/0" />
             <Label id="current-room" text="Room: 1" />
         </Panel>
@@ -44,13 +46,33 @@
                     <Label class="upgrade__description" text="Upgrade Description"></Label>
                 </Panel>
             </Panel>
-            <Panel class="upgrade">
+            <Panel class="upgrade upgrade--last">
                 <Panel class="upgrade-left">
                    <DOTAAbilityImage class="upgrade__ability"></DOTAAbilityImage>
                 </Panel>
                 <Panel class="upgrade-right">
                     <Label class="upgrade__title" text="Upgrade Title"></Label>
                     <Label class="upgrade__description" text="Upgrade Description"></Label>
+                </Panel>
+            </Panel>
+        </Panel>
+
+        <Panel class="bounties pve">
+            <Label class="bounties__title" text="Chose your next bounty" />
+            <Label class="bounties__sub-title" text="Chose the bounty that you will gain once the next room is cleared." />
+            
+            <Panel class="bounty-container">
+                <Panel class="bounty">
+                    <Label class="bounty__title" text="Chose A" />
+                    <Label class="bounty__description" text="Description" />
+                </Panel>
+                <Panel class="bounty">
+                    <Label class="bounty__title" text="Chose B" />
+                    <Label class="bounty__description" text="Description" />
+                </Panel>
+                <Panel class="bounty bounty--last">
+                    <Label class="bounty__title" text="Chose C" />
+                    <Label class="bounty__description" text="Description" />
                 </Panel>
             </Panel>
         </Panel>

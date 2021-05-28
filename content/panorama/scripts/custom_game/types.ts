@@ -5,7 +5,9 @@ export enum CustomGameState {
     WARMUP_IN_PROGRESS,
     PRE_ROUND,
     ROUND_IN_PROGRESS,
+    PRE_RUN,
     RUN_IN_PROGRESS,
+    POST_RUN,
 }
 
 export type AllianceData = {

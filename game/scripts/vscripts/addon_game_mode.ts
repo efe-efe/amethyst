@@ -1,3 +1,4 @@
+import './abilities_meta';
 import Alliance from './clases/alliance';
 import { CustomGameState } from './clases/game_state';
 import Warmup from './clases/pvp/warmup';
@@ -10,7 +11,6 @@ import './util/math_legacy';
 import './util/util';
 import './settings';
 import './constructors';
-import './abilities_meta';
 import './libraries/timers';
 import './libraries/projectiles';
 import './overrides/abilities';
@@ -25,6 +25,7 @@ import PreRun from './clases/pve/pre_run';
 import { NPCNames } from './clases/pve/custom_ai';
 import Upgrades from './upgrades/upgrades';
 import Run from './clases/pve/run';
+import Bounties from './bounties/bounties';
 
 declare global {
     interface CDOTAGamerules {
@@ -356,6 +357,24 @@ export class GameMode{
                 }
             }
         });
+
+        CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:select_bounty', (eventSourceIndex, event) => {
+            const playerId = event.playerIndex;
+            const player = this.FindPlayerById(playerId);
+
+            if(player){
+                const customNpc = player.customNpc;
+                if(customNpc){
+                    const bounty = Bounties.filter((currentBounty) => currentBounty.id === event.payload.bountyId)[0];
+                    if(bounty){
+                        customNpc.SelectBounty(bounty);
+                        if(this.run){
+                            this.run.OnBountySelected();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     SetupFilters(): void{
@@ -490,7 +509,6 @@ export class GameMode{
     }
 
     SetState(state: CustomGameState): void{
-        //print('NEW STATE: ', CustomGameState[state]);
         this.OnStateEnd(this.state);
         this.state = state;
         const tableName = 'main' as never;

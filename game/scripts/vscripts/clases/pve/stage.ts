@@ -125,7 +125,7 @@ export default class Stage extends GameState{
     }
 
     GenerateWaves(): Wave[]{
-        const amount = RandomInt(1, 3);
+        const amount = RandomInt(2, 3);
         const waves: Wave[] = [];
         for(let i = 0; i < amount; i++){
             waves.push(this.GenerateWave());
@@ -159,6 +159,12 @@ export default class Stage extends GameState{
     OnHeroUpgrade(): void{
         if(this.room){
             this.room.OnHeroUpgrade();
+        }
+    }
+    
+    OnBountySelected(): void{
+        if(this.room){
+            this.room.OnBountySelected();
         }
     }
 

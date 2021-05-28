@@ -19,7 +19,8 @@ export interface Spawn {
 }
 export default class Room extends GameState{
     stage: Stage;
-    upgradesDelay = 3 * 30;
+    upgradesDelay = 1 * 30;
+    bountiesDelay = -1;
     spawnQueue: Spawn[] = []; 
     ais: CustomAI[] = [];
     waves: Wave[];
@@ -37,7 +38,6 @@ export default class Room extends GameState{
         this.StartWave(this.currentWave);
         this.SendDataToClient();
     }
-
     
     SendDataToClient(): void{
         const tableName = 'main' as never;
@@ -76,6 +76,22 @@ export default class Room extends GameState{
         }
     }
 
+    OnBountySelected(): void{
+        let bountiesReady = true;
+        this.GetAllPlayers().forEach((player) => {
+            const customNpc = player.customNpc;
+            if(customNpc){
+                if(customNpc.IsSelectingBounty()){
+                    bountiesReady = false;
+                }
+            }
+        });
+        
+        if(bountiesReady){
+            this.SetDuration(settings.PreStageDuration);
+        }
+    }
+
     OnHeroUpgrade(): void{
         let upgradesReady = true;
         this.GetAllPlayers().forEach((player) => {
@@ -88,7 +104,7 @@ export default class Room extends GameState{
         });
         
         if(upgradesReady){
-            this.SetDuration(settings.PreStageDuration);
+            this.bountiesDelay = 2 * 30;
         }
     }
 
@@ -104,6 +120,15 @@ export default class Room extends GameState{
                 if(this.upgradesDelay > 0){
                     this.upgradesDelay = this.upgradesDelay - 1;
                 }
+
+                if(this.bountiesDelay === 0){
+                    this.GenerateBounties();
+                    this.bountiesDelay = this.bountiesDelay - 1;
+                }
+                if(this.bountiesDelay > 0){
+                    this.bountiesDelay = this.bountiesDelay - 1;
+                }
+
                 if(this.time_remaining === 0){
                     this.End();
                 }
@@ -137,7 +162,17 @@ export default class Room extends GameState{
             if(customNpc){
                 customNpc.RequestUpgrades();
             }
-        });}
+        });
+    }
+
+    GenerateBounties(): void{
+        this.GetAllPlayers().forEach((player) => {
+            const customNpc = player.customNpc;
+            if(customNpc){
+                customNpc.RequestBounties();
+            }
+        });
+    }
 
     IncrementWave(): void{
         this.currentWave++;

@@ -6,6 +6,7 @@
 		"heroes",
 		"main",
 		"alliances",
-		"custom_npc_upgrades"
+		"custom_npc_upgrades",
+		"custom_npc_bounties"
 	]
 }

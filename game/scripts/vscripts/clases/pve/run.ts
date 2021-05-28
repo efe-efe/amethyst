@@ -16,6 +16,15 @@ export default class Run extends GameState{
         super(alliances, -1);
         this.alliances = alliances;
         this.stagesData = stagesData;
+        this.SendDataToClient();
+    }
+
+    SendDataToClient(): void{
+        const tableName = 'main' as never;
+        const data = { 
+            currentStage: this.currentStage + 1, 
+        } as never;
+        CustomNetTables.SetTableValue(tableName, 'stage', data);
     }
 
     Update(): void{
@@ -53,9 +62,16 @@ export default class Run extends GameState{
         }
     }
 
+    OnBountySelected(): void{
+        if(this.stage){
+            this.stage.OnBountySelected();
+        }
+    }
+
     OnStageEnd(): void{
         this.currentStage++;
         this.stage = undefined;
+        this.SendDataToClient();
     }
 
     End(): void{

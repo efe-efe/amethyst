@@ -10,7 +10,7 @@ import HeroOverhead from './heroOverhead/heroOverhead';
 import HeroInfoCard from './heroInfoCard';
 import AllianceBar from './allianceBar';
 import util, { tables } from './util';
-import './upgrades';
+import './pve';
 import './targetIndicator';
 import CustomEntities from './customEntities';
 import { CustomGameState, HeroData } from './types';
@@ -20,10 +20,13 @@ import { ReadyBar } from './readyBar';
     const customEntities = CustomEntities.GetInstance();
     const layout = LayoutController.GetInstance();
 
+    const refunder = $('#refunder') as Button;
+    const gameStatePanel = $('#game-state') as LabelPanel;
     const clockPanel = $('#top-bar__clock-text') as LabelPanel;
     const pvePanels = layout.GetTopPanel().FindChildrenWithClassTraverse('pve');
     const pvpPanels = layout.GetTopPanel().FindChildrenWithClassTraverse('pvp');
     const currentLevelPanel = $('#current-room') as LabelPanel;
+    const currentStagePanel = $('#current-stage') as LabelPanel;
     const enemiesCountPanel = $('#enemies-count') as LabelPanel;
     const refunderButton = $('#refunder__button') as Button;
     const refunderPanel = $('#refunder');
@@ -277,18 +280,20 @@ import { ReadyBar } from './readyBar';
 
     const tableNameMain = 'main' as never;
     tables.subscribeToNetTableKey(tableNameMain, 'gameState', true, function(data: any){
-        const refunderButton = $('#refunder') as Button;
         const state = data.gameState;
 
+        if(Game.IsInToolsMode()){
+            gameStatePanel.text = CustomGameState[data.gameState];
+        }
         if(state == CustomGameState.PRE_ROUND){
             new ReadyBar(4.0);
         }
         if(state == CustomGameState.ROUND_IN_PROGRESS){
             layout.HideDimmer                                                                                                                                                                                         ();
-            refunderButton.style.visibility = 'collapse';
+            refunder.style.visibility = 'collapse';
         }
         if(state == CustomGameState.WARMUP_IN_PROGRESS){
-            refunderButton.style.visibility = 'visible';
+            refunder.style.visibility = 'visible';
         }
     });
 
@@ -302,6 +307,9 @@ import { ReadyBar } from './readyBar';
     });
     
     tables.subscribeToNetTableKey(tableNameMain, 'stage', true, function(data: any){
+        if(data.currentStage){
+            currentStagePanel.text = 'Stage: ' + data.currentStage;
+        }
         if(data.currentRoom){
             currentLevelPanel.text = 'Room: ' + data.currentRoom;
         }
