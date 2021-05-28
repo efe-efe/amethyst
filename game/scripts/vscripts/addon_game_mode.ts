@@ -403,6 +403,7 @@ export class GameMode{
             LinkLuaModifier('modifier_upgrade_extra_speed',  'modifiers/upgrades/modifier_upgrade_extra_speed', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_stun_attack',  'modifiers/upgrades/modifier_upgrade_stun_attack', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_stun_attack_attack',  'modifiers/upgrades/modifier_upgrade_stun_attack', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_tarrasque',  'modifiers/upgrades/modifier_upgrade_tarrasque', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');

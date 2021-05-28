@@ -22,8 +22,8 @@ export interface Spawn {
 }
 export default class Room extends GameState{
     stage: Stage;
-    favorsDelay = 1 * 30;
-    rewardsDelay = -1;
+    applyRewardsDelay = 1 * 30;
+    rewardsMenuDelay = -1;
     spawnQueue: Spawn[] = []; 
     ais: CustomAI[] = [];
     waves: Wave[];
@@ -42,10 +42,10 @@ export default class Room extends GameState{
         this.SendDataToClient();
 
         const customEvents = CustomEvents.GetInstance();
-        customEvents.RegisterListener('pve:apply_favor', () => {
-            this.OnFavorApplied();
+        customEvents.RegisterListener('pve:current_reward_applied', () => {
+            this.OnRewardApplied();
         });
-        customEvents.RegisterListener('pve:reward_selected', () => {
+        customEvents.RegisterListener('pve:next_reward_selected', () => {
             this.OnRewardSelected();
         });
     }
@@ -103,7 +103,7 @@ export default class Room extends GameState{
         }
     }
 
-    OnFavorApplied(): void{
+    OnRewardApplied(): void{
         let favorsReady = true;
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
@@ -115,7 +115,7 @@ export default class Room extends GameState{
         });
         
         if(favorsReady){
-            this.rewardsDelay = 2 * 30;
+            this.rewardsMenuDelay = 2 * 30;
         }
     }
 
@@ -124,20 +124,20 @@ export default class Room extends GameState{
 
         if(this.remainingWaveNpcs <= 0){
             if(this.currentWave === this.waves.length - 1){
-                if(this.favorsDelay === 0){
-                    this.GenerateFavors();
-                    this.favorsDelay = this.favorsDelay - 1;
+                if(this.applyRewardsDelay === 0){
+                    this.ApplyRewards();
+                    this.applyRewardsDelay = this.applyRewardsDelay - 1;
                 }
-                if(this.favorsDelay > 0){
-                    this.favorsDelay = this.favorsDelay - 1;
+                if(this.applyRewardsDelay > 0){
+                    this.applyRewardsDelay = this.applyRewardsDelay - 1;
                 }
 
-                if(this.rewardsDelay === 0){
+                if(this.rewardsMenuDelay === 0){
                     this.GenerateBounties();
-                    this.rewardsDelay = this.rewardsDelay - 1;
+                    this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
                 }
-                if(this.rewardsDelay > 0){
-                    this.rewardsDelay = this.rewardsDelay - 1;
+                if(this.rewardsMenuDelay > 0){
+                    this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
                 }
 
                 if(this.time_remaining === 0){
@@ -167,7 +167,7 @@ export default class Room extends GameState{
         }
     }
 
-    GenerateFavors(): void{
+    ApplyRewards(): void{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
@@ -178,8 +178,7 @@ export default class Room extends GameState{
                     customNpc.RequestEnhancements();
                 }
                 if(customNpc.reward && customNpc.reward.type === RewardTypes.TARRASQUE){
-                    const regenerationUpgrade = Upgrades.filter((upgrade) => upgrade.id === 'restore_health')[0];
-                    customNpc.ApplyFavor(regenerationUpgrade);
+                    customNpc.ApplyTarrasque();
                 }
             }
         });

@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 5,["10"] = 5,["11"] = 6,["12"] = 6,["13"] = 7,["14"] = 7,["15"] = 8,["16"] = 8,["17"] = 23,["18"] = 23,["19"] = 23,["20"] = 23,["21"] = 23,["22"] = 35,["23"] = 23,["24"] = 25,["25"] = 26,["26"] = 27,["27"] = 28,["28"] = 32,["29"] = 33,["30"] = 37,["31"] = 38,["32"] = 39,["33"] = 40,["34"] = 41,["35"] = 42,["36"] = 44,["37"] = 45,["38"] = 45,["39"] = 45,["40"] = 46,["41"] = 45,["42"] = 45,["43"] = 48,["44"] = 48,["45"] = 48,["46"] = 49,["47"] = 48,["48"] = 48,["49"] = 35,["50"] = 53,["51"] = 54,["52"] = 55,["53"] = 59,["54"] = 53,["55"] = 62,["56"] = 63,["57"] = 64,["58"] = 65,["59"] = 65,["60"] = 65,["61"] = 66,["62"] = 67,["63"] = 68,["64"] = 69,["65"] = 65,["66"] = 65,["67"] = 62,["68"] = 73,["69"] = 74,["70"] = 75,["71"] = 75,["72"] = 75,["73"] = 75,["74"] = 76,["75"] = 77,["76"] = 78,["78"] = 80,["79"] = 73,["80"] = 83,["81"] = 84,["82"] = 84,["83"] = 84,["84"] = 84,["85"] = 85,["86"] = 86,["88"] = 83,["89"] = 90,["90"] = 91,["91"] = 92,["92"] = 92,["93"] = 92,["94"] = 93,["95"] = 94,["96"] = 95,["97"] = 96,["100"] = 92,["101"] = 92,["102"] = 101,["103"] = 102,["105"] = 90,["106"] = 106,["107"] = 107,["108"] = 108,["109"] = 108,["110"] = 108,["111"] = 109,["112"] = 110,["113"] = 111,["114"] = 112,["117"] = 108,["118"] = 108,["119"] = 117,["120"] = 118,["122"] = 106,["123"] = 122,["124"] = 23,["125"] = 125,["126"] = 126,["127"] = 127,["128"] = 128,["129"] = 129,["131"] = 131,["132"] = 132,["134"] = 135,["135"] = 136,["136"] = 137,["138"] = 139,["139"] = 140,["141"] = 143,["142"] = 144,["145"] = 147,["148"] = 150,["149"] = 150,["150"] = 150,["151"] = 151,["152"] = 152,["154"] = 154,["155"] = 155,["156"] = 156,["157"] = 160,["158"] = 160,["159"] = 160,["160"] = 160,["161"] = 160,["162"] = 160,["164"] = 150,["165"] = 150,["166"] = 164,["167"] = 164,["168"] = 164,["169"] = 165,["170"] = 164,["171"] = 164,["173"] = 122,["174"] = 170,["175"] = 171,["176"] = 171,["177"] = 171,["178"] = 172,["179"] = 173,["180"] = 174,["181"] = 175,["183"] = 177,["184"] = 178,["186"] = 180,["187"] = 181,["188"] = 181,["189"] = 181,["190"] = 181,["191"] = 182,["194"] = 171,["195"] = 171,["196"] = 170,["197"] = 188,["198"] = 189,["199"] = 189,["200"] = 189,["201"] = 190,["202"] = 191,["203"] = 192,["205"] = 189,["206"] = 189,["207"] = 188,["208"] = 197,["209"] = 198,["210"] = 199,["211"] = 197,["212"] = 202,["213"] = 203,["214"] = 203,["215"] = 203,["216"] = 204,["217"] = 205,["219"] = 207,["220"] = 208,["221"] = 203,["222"] = 203,["223"] = 210,["224"] = 210,["225"] = 210,["226"] = 211,["227"] = 212,["229"] = 210,["230"] = 210,["231"] = 202,["232"] = 217,["233"] = 218,["234"] = 219,["235"] = 217,["236"] = 222,["237"] = 223,["238"] = 223,["239"] = 223,["240"] = 223,["241"] = 223,["242"] = 223,["243"] = 223,["244"] = 223,["245"] = 223,["246"] = 223,["247"] = 222,["248"] = 232,["249"] = 233,["250"] = 233,["251"] = 233,["252"] = 233,["253"] = 233,["254"] = 232,["255"] = 236,["256"] = 237,["257"] = 236,["258"] = 23,["259"] = 23});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 5,["10"] = 5,["11"] = 7,["12"] = 7,["13"] = 8,["14"] = 8,["15"] = 23,["16"] = 23,["17"] = 23,["18"] = 23,["19"] = 23,["20"] = 35,["21"] = 23,["22"] = 25,["23"] = 26,["24"] = 27,["25"] = 28,["26"] = 32,["27"] = 33,["28"] = 37,["29"] = 38,["30"] = 39,["31"] = 40,["32"] = 41,["33"] = 42,["34"] = 44,["35"] = 45,["36"] = 45,["37"] = 45,["38"] = 46,["39"] = 45,["40"] = 45,["41"] = 48,["42"] = 48,["43"] = 48,["44"] = 49,["45"] = 48,["46"] = 48,["47"] = 35,["48"] = 53,["49"] = 54,["50"] = 55,["51"] = 59,["52"] = 53,["53"] = 62,["54"] = 63,["55"] = 64,["56"] = 65,["57"] = 65,["58"] = 65,["59"] = 66,["60"] = 67,["61"] = 68,["62"] = 69,["63"] = 65,["64"] = 65,["65"] = 62,["66"] = 73,["67"] = 74,["68"] = 75,["69"] = 75,["70"] = 75,["71"] = 75,["72"] = 76,["73"] = 77,["74"] = 78,["76"] = 80,["77"] = 73,["78"] = 83,["79"] = 84,["80"] = 84,["81"] = 84,["82"] = 84,["83"] = 85,["84"] = 86,["86"] = 83,["87"] = 90,["88"] = 91,["89"] = 92,["90"] = 92,["91"] = 92,["92"] = 93,["93"] = 94,["94"] = 95,["95"] = 96,["98"] = 92,["99"] = 92,["100"] = 101,["101"] = 102,["103"] = 90,["104"] = 106,["105"] = 107,["106"] = 108,["107"] = 108,["108"] = 108,["109"] = 109,["110"] = 110,["111"] = 111,["112"] = 112,["115"] = 108,["116"] = 108,["117"] = 117,["118"] = 118,["120"] = 106,["121"] = 122,["122"] = 23,["123"] = 125,["124"] = 126,["125"] = 127,["126"] = 128,["127"] = 129,["129"] = 131,["130"] = 132,["132"] = 135,["133"] = 136,["134"] = 137,["136"] = 139,["137"] = 140,["139"] = 143,["140"] = 144,["143"] = 147,["146"] = 150,["147"] = 150,["148"] = 150,["149"] = 151,["150"] = 152,["152"] = 154,["153"] = 155,["154"] = 156,["155"] = 160,["156"] = 160,["157"] = 160,["158"] = 160,["159"] = 160,["160"] = 160,["162"] = 150,["163"] = 150,["164"] = 164,["165"] = 164,["166"] = 164,["167"] = 165,["168"] = 164,["169"] = 164,["171"] = 122,["172"] = 170,["173"] = 171,["174"] = 171,["175"] = 171,["176"] = 172,["177"] = 173,["178"] = 174,["179"] = 175,["181"] = 177,["182"] = 178,["184"] = 180,["185"] = 181,["188"] = 171,["189"] = 171,["190"] = 170,["191"] = 187,["192"] = 188,["193"] = 188,["194"] = 188,["195"] = 189,["196"] = 190,["197"] = 191,["199"] = 188,["200"] = 188,["201"] = 187,["202"] = 196,["203"] = 197,["204"] = 198,["205"] = 196,["206"] = 201,["207"] = 202,["208"] = 202,["209"] = 202,["210"] = 203,["211"] = 204,["213"] = 206,["214"] = 207,["215"] = 202,["216"] = 202,["217"] = 209,["218"] = 209,["219"] = 209,["220"] = 210,["221"] = 211,["223"] = 209,["224"] = 209,["225"] = 201,["226"] = 216,["227"] = 217,["228"] = 218,["229"] = 216,["230"] = 221,["231"] = 222,["232"] = 222,["233"] = 222,["234"] = 222,["235"] = 222,["236"] = 222,["237"] = 222,["238"] = 222,["239"] = 222,["240"] = 222,["241"] = 221,["242"] = 231,["243"] = 232,["244"] = 232,["245"] = 232,["246"] = 232,["247"] = 232,["248"] = 231,["249"] = 235,["250"] = 236,["251"] = 235,["252"] = 23,["253"] = 23});
 local ____exports = {}
 local ____custom_ai = require("clases.pve.custom_ai")
 local CustomAIMeta = ____custom_ai.CustomAIMeta
@@ -8,8 +8,6 @@ local ____game_state = require("clases.game_state")
 local GameState = ____game_state.default
 local ____settings = require("settings")
 local settings = ____settings.default
-local ____upgrades = require("upgrades.upgrades")
-local Upgrades = ____upgrades.default
 local ____custom_events = require("custom_events")
 local CustomEvents = ____custom_events.CustomEvents
 local ____rewards = require("rewards.rewards")
@@ -21,8 +19,8 @@ ____exports.default = (function()
     __TS__ClassExtends(Room, GameState)
     function Room.prototype.____constructor(self, alliances, duration, waves, stage)
         GameState.prototype.____constructor(self, alliances, duration)
-        self.favorsDelay = 1 * 30
-        self.rewardsDelay = -1
+        self.applyRewardsDelay = 1 * 30
+        self.rewardsMenuDelay = -1
         self.spawnQueue = {}
         self.ais = {}
         self.remainingWaveNpcs = 0
@@ -35,13 +33,13 @@ ____exports.default = (function()
         self:SendDataToClient()
         local customEvents = CustomEvents:GetInstance()
         customEvents:RegisterListener(
-            "pve:apply_favor",
+            "pve:current_reward_applied",
             function()
-                self:OnFavorApplied()
+                self:OnRewardApplied()
             end
         )
         customEvents:RegisterListener(
-            "pve:reward_selected",
+            "pve:next_reward_selected",
             function()
                 self:OnRewardSelected()
             end
@@ -103,7 +101,7 @@ ____exports.default = (function()
             self:SetDuration(settings.PreStageDuration)
         end
     end
-    function Room.prototype.OnFavorApplied(self)
+    function Room.prototype.OnRewardApplied(self)
         local favorsReady = true
         __TS__ArrayForEach(
             self:GetAllPlayers(),
@@ -117,26 +115,26 @@ ____exports.default = (function()
             end
         )
         if favorsReady then
-            self.rewardsDelay = 2 * 30
+            self.rewardsMenuDelay = 2 * 30
         end
     end
     function Room.prototype.Update(self)
         GameState.prototype.Update(self)
         if self.remainingWaveNpcs <= 0 then
             if self.currentWave == (#self.waves - 1) then
-                if self.favorsDelay == 0 then
-                    self:GenerateFavors()
-                    self.favorsDelay = self.favorsDelay - 1
+                if self.applyRewardsDelay == 0 then
+                    self:ApplyRewards()
+                    self.applyRewardsDelay = self.applyRewardsDelay - 1
                 end
-                if self.favorsDelay > 0 then
-                    self.favorsDelay = self.favorsDelay - 1
+                if self.applyRewardsDelay > 0 then
+                    self.applyRewardsDelay = self.applyRewardsDelay - 1
                 end
-                if self.rewardsDelay == 0 then
+                if self.rewardsMenuDelay == 0 then
                     self:GenerateBounties()
-                    self.rewardsDelay = self.rewardsDelay - 1
+                    self.rewardsMenuDelay = self.rewardsMenuDelay - 1
                 end
-                if self.rewardsDelay > 0 then
-                    self.rewardsDelay = self.rewardsDelay - 1
+                if self.rewardsMenuDelay > 0 then
+                    self.rewardsMenuDelay = self.rewardsMenuDelay - 1
                 end
                 if self.time_remaining == 0 then
                     self:End()
@@ -171,7 +169,7 @@ ____exports.default = (function()
             )
         end
     end
-    function Room.prototype.GenerateFavors(self)
+    function Room.prototype.ApplyRewards(self)
         __TS__ArrayForEach(
             self:GetAllPlayers(),
             function(____, player)
@@ -184,11 +182,7 @@ ____exports.default = (function()
                         customNpc:RequestEnhancements()
                     end
                     if customNpc.reward and (customNpc.reward.type == RewardTypes.TARRASQUE) then
-                        local regenerationUpgrade = __TS__ArrayFilter(
-                            Upgrades,
-                            function(____, upgrade) return upgrade.id == "restore_health" end
-                        )[1]
-                        customNpc:ApplyFavor(regenerationUpgrade)
+                        customNpc:ApplyTarrasque()
                     end
                 end
             end

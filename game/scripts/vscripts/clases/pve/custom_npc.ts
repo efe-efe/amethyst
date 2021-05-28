@@ -437,7 +437,14 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
 
         this.ClearTable('custom_npc_favors' as never);
         const customEvents = CustomEvents.GetInstance();
-        customEvents.EmitEvent('pve:apply_favor', { customNpc: this });
+        customEvents.EmitEvent('pve:current_reward_applied', { customNpc: this });
+    }
+
+
+    ApplyTarrasque(): void{
+        this.unit.AddNewModifier(this.unit, undefined, 'modifier_upgrade_tarrasque', {});
+        const customEvents = CustomEvents.GetInstance();
+        customEvents.EmitEvent('pve:current_reward_applied', { customNpc: this });
     }
 
     SelectReward(reward: Reward): void{
@@ -506,11 +513,6 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     ValidateReward(reward: Reward): boolean{
         if(reward.type === RewardTypes.ENHANCEMENT){
             if(this.heroUpgrades.length < 2){
-                return false;
-            }
-        }
-        if(reward.type === RewardTypes.TARRASQUE){
-            if(!GameRules.Addon.run || !GameRules.Addon.run.stage || GameRules.Addon.run.stage.currentRoom === 0){
                 return false;
             }
         }

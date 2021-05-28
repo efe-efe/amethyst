@@ -31,7 +31,7 @@ CustomGameEventManager:RegisterListener(
                 )[1]
                 if reward then
                     customNpc:SelectReward(reward)
-                    customEvents:EmitEvent("pve:reward_selected", {customNpc = customNpc, reward = reward})
+                    customEvents:EmitEvent("pve:next_reward_selected", {customNpc = customNpc, reward = reward})
                 end
             end
         end
