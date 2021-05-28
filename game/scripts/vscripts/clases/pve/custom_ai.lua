@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 2,["8"] = 2,["9"] = 2,["10"] = 2,["11"] = 2,["12"] = 8,["13"] = 8,["14"] = 8,["15"] = 8,["16"] = 8,["17"] = 8,["18"] = 8,["19"] = 14,["20"] = 15,["21"] = 15,["22"] = 16,["23"] = 16,["24"] = 17,["25"] = 17,["26"] = 18,["27"] = 18,["28"] = 19,["29"] = 19,["30"] = 20,["31"] = 20,["32"] = 21,["33"] = 21,["34"] = 22,["35"] = 22,["36"] = 23,["37"] = 23,["38"] = 53,["39"] = 53,["40"] = 53,["41"] = 71,["42"] = 54,["43"] = 55,["44"] = 58,["45"] = 59,["46"] = 62,["47"] = 63,["48"] = 72,["49"] = 81,["50"] = 82,["51"] = 83,["52"] = 84,["53"] = 85,["54"] = 86,["55"] = 71,["56"] = 89,["57"] = 90,["58"] = 90,["59"] = 90,["60"] = 90,["61"] = 90,["62"] = 90,["63"] = 90,["64"] = 90,["65"] = 90,["66"] = 90,["67"] = 90,["68"] = 102,["69"] = 103,["71"] = 105,["73"] = 89,["74"] = 109,["75"] = 110,["76"] = 112,["77"] = 113,["80"] = 116,["83"] = 119,["85"] = 109,["86"] = 123,["87"] = 124,["88"] = 126,["89"] = 127,["91"] = 129,["92"] = 130,["93"] = 132,["94"] = 133,["96"] = 136,["97"] = 137,["98"] = 123,["99"] = 140,["100"] = 141,["101"] = 140,["102"] = 144,["103"] = 145,["104"] = 145,["105"] = 145,["106"] = 145,["107"] = 149,["108"] = 150,["109"] = 150,["110"] = 150,["111"] = 150,["112"] = 150,["113"] = 150,["114"] = 150,["115"] = 150,["116"] = 145,["117"] = 157,["118"] = 157,["119"] = 157,["120"] = 157,["121"] = 157,["122"] = 157,["123"] = 157,["124"] = 145,["125"] = 145,["126"] = 166,["127"] = 144,["128"] = 169,["129"] = 170,["130"] = 169,["131"] = 173,["132"] = 174,["133"] = 176,["134"] = 177,["136"] = 180,["137"] = 181,["138"] = 182,["139"] = 173,["140"] = 185,["141"] = 186,["142"] = 187,["144"] = 190,["145"] = 191,["146"] = 192,["147"] = 192,["148"] = 192,["149"] = 193,["150"] = 195,["151"] = 196,["152"] = 197,["153"] = 198,["156"] = 201,["157"] = 202,["158"] = 203,["161"] = 206,["162"] = 207,["163"] = 207,["164"] = 207,["165"] = 207,["166"] = 207,["167"] = 207,["168"] = 208,["169"] = 209,["172"] = 212,["173"] = 213,["174"] = 213,["175"] = 213,["176"] = 214,["177"] = 215,["181"] = 219,["182"] = 220,["184"] = 222,["185"] = 223,["187"] = 192,["188"] = 192,["189"] = 227,["190"] = 228,["191"] = 229,["192"] = 230,["193"] = 231,["195"] = 233,["197"] = 185,["198"] = 237,["199"] = 238,["200"] = 237,["201"] = 241,["202"] = 242,["203"] = 244,["204"] = 245,["206"] = 247,["207"] = 248,["208"] = 249,["210"] = 241,["211"] = 253,["212"] = 254,["213"] = 255,["214"] = 255,["215"] = 255,["216"] = 255,["217"] = 255,["218"] = 256,["219"] = 256,["220"] = 256,["221"] = 256,["222"] = 256,["223"] = 257,["224"] = 253,["225"] = 260,["226"] = 261,["227"] = 260,["228"] = 264,["229"] = 265,["230"] = 264,["231"] = 268,["232"] = 269,["233"] = 271,["234"] = 272,["236"] = 274,["237"] = 275,["239"] = 277,["240"] = 278,["243"] = 281,["244"] = 282,["245"] = 283,["246"] = 284,["247"] = 285,["248"] = 286,["251"] = 289,["252"] = 290,["255"] = 293,["256"] = 294,["260"] = 298,["261"] = 299,["262"] = 300,["264"] = 268,["265"] = 305,["266"] = 308,["267"] = 309,["268"] = 313,["269"] = 313,["270"] = 313,["271"] = 313,["272"] = 313,["273"] = 313,["274"] = 317,["275"] = 317,["276"] = 317,["277"] = 317,["278"] = 317,["279"] = 317,["280"] = 321,["281"] = 321,["282"] = 321,["283"] = 321,["284"] = 321,["285"] = 321,["286"] = 321,["287"] = 328,["288"] = 328,["289"] = 328,["290"] = 328,["291"] = 328,["292"] = 328,["293"] = 332,["294"] = 332,["295"] = 332,["296"] = 332,["297"] = 332,["298"] = 332,["299"] = 332,["300"] = 339,["301"] = 339,["302"] = 339,["303"] = 339,["304"] = 339,["305"] = 339,["306"] = 339,["307"] = 346,["308"] = 307,["309"] = 348,["310"] = 349,["311"] = 351,["312"] = 351,["313"] = 351,["314"] = 351,["315"] = 351,["316"] = 351,["317"] = 351,["318"] = 358,["319"] = 358,["320"] = 358,["321"] = 358,["322"] = 358,["323"] = 358,["324"] = 358,["325"] = 365,["326"] = 365,["327"] = 365,["328"] = 365,["329"] = 365,["330"] = 365,["331"] = 365,["332"] = 372,["333"] = 372,["334"] = 372,["335"] = 372,["336"] = 372,["337"] = 372,["338"] = 372,["339"] = 379,["340"] = 379,["341"] = 379,["342"] = 379,["343"] = 379,["344"] = 379,["345"] = 383,["346"] = 307,["347"] = 385,["348"] = 386,["349"] = 390,["350"] = 390,["351"] = 390,["352"] = 390,["353"] = 390,["354"] = 390,["355"] = 394,["356"] = 394,["357"] = 394,["358"] = 394,["359"] = 394,["360"] = 394,["361"] = 394,["362"] = 401,["363"] = 307,["364"] = 403,["365"] = 404,["366"] = 408,["367"] = 408,["368"] = 408,["369"] = 408,["370"] = 408,["371"] = 408,["372"] = 408,["373"] = 415,["374"] = 307,["375"] = 417,["376"] = 418,["377"] = 422,["378"] = 422,["379"] = 422,["380"] = 422,["381"] = 422,["382"] = 422,["383"] = 426,["384"] = 426,["385"] = 426,["386"] = 426,["387"] = 426,["388"] = 426,["389"] = 426,["390"] = 433,["391"] = 307,["392"] = 435,["393"] = 436,["394"] = 442,["395"] = 442,["396"] = 442,["397"] = 442,["398"] = 442,["399"] = 442,["400"] = 442,["401"] = 450,["402"] = 451,["403"] = 452,["404"] = 307,["405"] = 454,["406"] = 455,["407"] = 461,["408"] = 461,["409"] = 461,["410"] = 461,["411"] = 461,["412"] = 461,["413"] = 461,["414"] = 469,["415"] = 470,["416"] = 471,["417"] = 307,["418"] = 473,["419"] = 474,["420"] = 480,["421"] = 480,["422"] = 480,["423"] = 480,["424"] = 480,["425"] = 480,["426"] = 480,["427"] = 488,["428"] = 307,["429"] = 490,["430"] = 491,["431"] = 495,["432"] = 495,["433"] = 495,["434"] = 495,["435"] = 495,["436"] = 495,["437"] = 495,["438"] = 502,["439"] = 503,["440"] = 307,["441"] = 307});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 2,["8"] = 2,["9"] = 2,["10"] = 2,["11"] = 2,["12"] = 8,["13"] = 8,["14"] = 8,["15"] = 8,["16"] = 8,["17"] = 8,["18"] = 8,["19"] = 14,["20"] = 15,["21"] = 15,["22"] = 16,["23"] = 16,["24"] = 17,["25"] = 17,["26"] = 18,["27"] = 18,["28"] = 21,["29"] = 22,["30"] = 22,["31"] = 23,["32"] = 23,["33"] = 24,["34"] = 24,["35"] = 25,["36"] = 25,["37"] = 26,["38"] = 26,["39"] = 27,["40"] = 27,["41"] = 28,["42"] = 28,["43"] = 29,["44"] = 29,["45"] = 30,["46"] = 30,["47"] = 60,["48"] = 60,["49"] = 60,["50"] = 78,["51"] = 61,["52"] = 62,["53"] = 65,["54"] = 66,["55"] = 69,["56"] = 70,["57"] = 79,["58"] = 88,["59"] = 89,["60"] = 90,["61"] = 91,["62"] = 92,["63"] = 93,["64"] = 78,["65"] = 96,["66"] = 97,["67"] = 97,["68"] = 97,["69"] = 97,["70"] = 97,["71"] = 97,["72"] = 97,["73"] = 97,["74"] = 97,["75"] = 97,["76"] = 97,["77"] = 109,["78"] = 110,["80"] = 112,["82"] = 96,["83"] = 116,["84"] = 117,["85"] = 119,["86"] = 120,["89"] = 123,["92"] = 126,["94"] = 116,["95"] = 130,["96"] = 131,["97"] = 133,["98"] = 134,["100"] = 136,["101"] = 137,["102"] = 139,["103"] = 140,["105"] = 143,["106"] = 144,["107"] = 130,["108"] = 147,["109"] = 148,["110"] = 147,["111"] = 151,["112"] = 152,["113"] = 152,["114"] = 152,["115"] = 152,["116"] = 156,["117"] = 157,["118"] = 157,["119"] = 157,["120"] = 157,["121"] = 157,["122"] = 157,["123"] = 157,["124"] = 157,["125"] = 152,["126"] = 164,["127"] = 164,["128"] = 164,["129"] = 164,["130"] = 164,["131"] = 164,["132"] = 164,["133"] = 152,["134"] = 152,["135"] = 173,["136"] = 151,["137"] = 176,["138"] = 177,["139"] = 176,["140"] = 180,["141"] = 181,["142"] = 183,["143"] = 184,["145"] = 187,["146"] = 188,["147"] = 189,["148"] = 180,["149"] = 192,["150"] = 193,["151"] = 194,["153"] = 197,["154"] = 198,["155"] = 199,["156"] = 199,["157"] = 199,["158"] = 200,["159"] = 202,["160"] = 203,["161"] = 204,["162"] = 205,["165"] = 208,["166"] = 209,["167"] = 210,["170"] = 213,["171"] = 214,["172"] = 214,["173"] = 214,["174"] = 214,["175"] = 214,["176"] = 214,["177"] = 215,["178"] = 216,["181"] = 219,["182"] = 220,["183"] = 220,["184"] = 220,["185"] = 221,["186"] = 222,["190"] = 226,["191"] = 227,["193"] = 229,["194"] = 230,["196"] = 199,["197"] = 199,["198"] = 234,["199"] = 235,["200"] = 236,["201"] = 237,["202"] = 238,["204"] = 240,["206"] = 192,["207"] = 244,["208"] = 245,["209"] = 244,["210"] = 248,["211"] = 249,["212"] = 251,["213"] = 252,["215"] = 254,["216"] = 255,["217"] = 256,["219"] = 248,["220"] = 260,["221"] = 261,["222"] = 262,["223"] = 262,["224"] = 262,["225"] = 262,["226"] = 262,["227"] = 263,["228"] = 263,["229"] = 263,["230"] = 263,["231"] = 263,["232"] = 264,["233"] = 260,["234"] = 267,["235"] = 268,["236"] = 267,["237"] = 271,["238"] = 272,["239"] = 271,["240"] = 275,["241"] = 276,["242"] = 278,["243"] = 279,["245"] = 281,["246"] = 282,["248"] = 284,["249"] = 285,["252"] = 288,["253"] = 289,["254"] = 290,["255"] = 291,["256"] = 292,["257"] = 293,["260"] = 296,["261"] = 297,["264"] = 300,["265"] = 301,["269"] = 305,["270"] = 306,["271"] = 307,["273"] = 275,["274"] = 312,["275"] = 318,["276"] = 319,["277"] = 320,["278"] = 324,["279"] = 324,["280"] = 324,["281"] = 324,["282"] = 324,["283"] = 324,["284"] = 328,["285"] = 328,["286"] = 328,["287"] = 328,["288"] = 328,["289"] = 328,["290"] = 332,["291"] = 332,["292"] = 332,["293"] = 332,["294"] = 332,["295"] = 332,["296"] = 332,["297"] = 339,["298"] = 339,["299"] = 339,["300"] = 339,["301"] = 339,["302"] = 339,["303"] = 343,["304"] = 343,["305"] = 343,["306"] = 343,["307"] = 343,["308"] = 343,["309"] = 343,["310"] = 350,["311"] = 350,["312"] = 350,["313"] = 350,["314"] = 350,["315"] = 350,["316"] = 350,["317"] = 357,["318"] = 318,["319"] = 318,["320"] = 317,["321"] = 361,["322"] = 362,["323"] = 363,["324"] = 365,["325"] = 365,["326"] = 365,["327"] = 365,["328"] = 365,["329"] = 365,["330"] = 365,["331"] = 372,["332"] = 372,["333"] = 372,["334"] = 372,["335"] = 372,["336"] = 372,["337"] = 372,["338"] = 379,["339"] = 379,["340"] = 379,["341"] = 379,["342"] = 379,["343"] = 379,["344"] = 379,["345"] = 386,["346"] = 386,["347"] = 386,["348"] = 386,["349"] = 386,["350"] = 386,["351"] = 386,["352"] = 393,["353"] = 393,["354"] = 393,["355"] = 393,["356"] = 393,["357"] = 393,["358"] = 397,["359"] = 361,["360"] = 361,["361"] = 317,["362"] = 401,["363"] = 402,["364"] = 403,["365"] = 407,["366"] = 407,["367"] = 407,["368"] = 407,["369"] = 407,["370"] = 407,["371"] = 411,["372"] = 411,["373"] = 411,["374"] = 411,["375"] = 411,["376"] = 411,["377"] = 411,["378"] = 418,["379"] = 401,["380"] = 401,["381"] = 317,["382"] = 422,["383"] = 423,["384"] = 424,["385"] = 428,["386"] = 428,["387"] = 428,["388"] = 428,["389"] = 428,["390"] = 428,["391"] = 428,["392"] = 435,["393"] = 422,["394"] = 422,["395"] = 317,["396"] = 439,["397"] = 440,["398"] = 441,["399"] = 445,["400"] = 445,["401"] = 445,["402"] = 445,["403"] = 445,["404"] = 445,["405"] = 449,["406"] = 449,["407"] = 449,["408"] = 449,["409"] = 449,["410"] = 449,["411"] = 449,["412"] = 456,["413"] = 439,["414"] = 439,["415"] = 317,["416"] = 460,["417"] = 461,["418"] = 462,["419"] = 468,["420"] = 468,["421"] = 468,["422"] = 468,["423"] = 468,["424"] = 468,["425"] = 468,["426"] = 476,["427"] = 477,["428"] = 478,["429"] = 460,["430"] = 460,["431"] = 317,["432"] = 482,["433"] = 483,["434"] = 484,["435"] = 490,["436"] = 490,["437"] = 490,["438"] = 490,["439"] = 490,["440"] = 490,["441"] = 490,["442"] = 498,["443"] = 499,["444"] = 500,["445"] = 482,["446"] = 482,["447"] = 317,["448"] = 504,["449"] = 505,["450"] = 506,["451"] = 512,["452"] = 512,["453"] = 512,["454"] = 512,["455"] = 512,["456"] = 512,["457"] = 512,["458"] = 520,["459"] = 504,["460"] = 504,["461"] = 317,["462"] = 524,["463"] = 525,["464"] = 526,["465"] = 530,["466"] = 530,["467"] = 530,["468"] = 530,["469"] = 530,["470"] = 530,["471"] = 530,["472"] = 537,["473"] = 538,["474"] = 524,["475"] = 524,["476"] = 317,["477"] = 317});
 local ____exports = {}
 local CustomAIState = CustomAIState or ({})
 CustomAIState.IDLE = 0
@@ -16,6 +16,15 @@ CustomAIBehavior.WANDERER = 1
 CustomAIBehavior[CustomAIBehavior.WANDERER] = "WANDERER"
 CustomAIBehavior.STATIC = 2
 CustomAIBehavior[CustomAIBehavior.STATIC] = "STATIC"
+____exports.CustomAITier = CustomAITier or ({})
+____exports.CustomAITier.BASIC = 1
+____exports.CustomAITier[____exports.CustomAITier.BASIC] = "BASIC"
+____exports.CustomAITier.MID = 2
+____exports.CustomAITier[____exports.CustomAITier.MID] = "MID"
+____exports.CustomAITier.HIGH = 3
+____exports.CustomAITier[____exports.CustomAITier.HIGH] = "HIGH"
+____exports.CustomAITier.BOSS = 4
+____exports.CustomAITier[____exports.CustomAITier.BOSS] = "BOSS"
 ____exports.NPCNames = NPCNames or ({})
 ____exports.NPCNames.DIRE_ZOMBIE = 0
 ____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE] = "DIRE_ZOMBIE"
@@ -262,181 +271,208 @@ function CustomAI.prototype.Update(self)
         self:StopMoving()
     end
 end
-____exports.CustomAIFactories = {
-    [____exports.NPCNames.QUEEN] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "npc_dota_hero_queenofpain", origin, {minFollowRange = 500})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("queen_scream"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("queen_dodge"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("queen_blink"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("queen_daggers"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("queen_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("queen_wave"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        return ai
-    end,
-    [____exports.NPCNames.CENTAUR] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "npc_dota_hero_centaur", origin, {})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("centaur_axe_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInRadius = true}
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("centaur_range_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("centaur_short_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET,
-                requirements = {targetInRadius = true}
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("centaur_charge"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("centaur_rage"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
-            }
-        )
-        return ai
-    end,
-    [____exports.NPCNames.RADIANT_ZOMBIE_HEALER] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "radiant_zombie_healer", origin, {behavior = CustomAIBehavior.WANDERER})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("radiant_zombie_heal_aura"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        return ai
-    end,
-    [____exports.NPCNames.DIRE_ZOMBIE] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "dire_zombie", origin, {behavior = CustomAIBehavior.WANDERER})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        return ai
-    end,
-    [____exports.NPCNames.DIRE_ZOMBIE_RAGER] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "dire_zombie_rager", origin, {behavior = CustomAIBehavior.WANDERER})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("dire_zombie_rage_aura"),
-                orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
-            }
-        )
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        return ai
-    end,
-    [____exports.NPCNames.DIRE_ZOMBIE_MEELE] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "dire_zombie_meele", origin, {followRange = 1500, minFollowRange = 200, behavior = CustomAIBehavior.FOLLOWER})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("dire_zombie_attack_meele"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        ai.unit:AddNewModifier(ai.unit, nil, "modifier_generic_meele_npc", {})
-        ai.unit:SetHullRadius(95)
-        return ai
-    end,
-    [____exports.NPCNames.RADIANT_ZOMBIE_MEELE] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "radiant_zombie_meele", origin, {followRange = 1500, minFollowRange = 200, behavior = CustomAIBehavior.FOLLOWER})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("dire_zombie_attack_meele"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        ai.unit:AddNewModifier(ai.unit, nil, "modifier_generic_meele_npc", {})
-        ai.unit:SetHullRadius(95)
-        return ai
-    end,
-    [____exports.NPCNames.FLYING_SKULL] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "flying_skull", origin, {followRange = 1000, minFollowRange = 450, behavior = CustomAIBehavior.FOLLOWER})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("flying_skull_dash"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        return ai
-    end,
-    [____exports.NPCNames.DIRE_TOWER] = function(____, origin)
-        local ai = __TS__New(____exports.CustomAI, "dire_tower", origin, {behavior = CustomAIBehavior.STATIC})
-        ai:RegisterAbility(
-            {
-                ability = ai.unit:FindAbilityByName("dire_tower_attack"),
-                orderType = DOTA_UNIT_ORDER_CAST_POSITION,
-                requirements = {targetInCastRange = true}
-            }
-        )
-        ai.unit:SetHullRadius(100)
-        return ai
-    end
+____exports.CustomAIMeta = {
+    [____exports.NPCNames.QUEEN] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "npc_dota_hero_queenofpain", origin, {minFollowRange = 500})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("queen_scream"),
+                    orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("queen_dodge"),
+                    orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("queen_blink"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("queen_daggers"),
+                    orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("queen_attack"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("queen_wave"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            return ai
+        end,
+        tier = ____exports.CustomAITier.BOSS
+    },
+    [____exports.NPCNames.CENTAUR] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "npc_dota_hero_centaur", origin, {})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("centaur_axe_attack"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInRadius = true}
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("centaur_range_attack"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("centaur_short_attack"),
+                    orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET,
+                    requirements = {targetInRadius = true}
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("centaur_charge"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("centaur_rage"),
+                    orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
+                }
+            )
+            return ai
+        end,
+        tier = ____exports.CustomAITier.BOSS
+    },
+    [____exports.NPCNames.RADIANT_ZOMBIE_HEALER] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "radiant_zombie_healer", origin, {behavior = CustomAIBehavior.WANDERER})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("radiant_zombie_heal_aura"),
+                    orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            return ai
+        end,
+        tier = ____exports.CustomAITier.MID
+    },
+    [____exports.NPCNames.DIRE_ZOMBIE] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "dire_zombie", origin, {behavior = CustomAIBehavior.WANDERER})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            return ai
+        end,
+        tier = ____exports.CustomAITier.BASIC
+    },
+    [____exports.NPCNames.DIRE_ZOMBIE_RAGER] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "dire_zombie_rager", origin, {behavior = CustomAIBehavior.WANDERER})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("dire_zombie_rage_aura"),
+                    orderType = DOTA_UNIT_ORDER_CAST_NO_TARGET
+                }
+            )
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            return ai
+        end,
+        tier = ____exports.CustomAITier.MID
+    },
+    [____exports.NPCNames.DIRE_ZOMBIE_MEELE] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "dire_zombie_meele", origin, {followRange = 1500, minFollowRange = 200, behavior = CustomAIBehavior.FOLLOWER})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("dire_zombie_attack_meele"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            ai.unit:AddNewModifier(ai.unit, nil, "modifier_generic_meele_npc", {})
+            ai.unit:SetHullRadius(95)
+            return ai
+        end,
+        tier = ____exports.CustomAITier.MID
+    },
+    [____exports.NPCNames.RADIANT_ZOMBIE_MEELE] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "radiant_zombie_meele", origin, {followRange = 1500, minFollowRange = 200, behavior = CustomAIBehavior.FOLLOWER})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("dire_zombie_attack_meele"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            ai.unit:AddNewModifier(ai.unit, nil, "modifier_generic_meele_npc", {})
+            ai.unit:SetHullRadius(95)
+            return ai
+        end,
+        tier = ____exports.CustomAITier.BASIC
+    },
+    [____exports.NPCNames.FLYING_SKULL] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "flying_skull", origin, {followRange = 1000, minFollowRange = 450, behavior = CustomAIBehavior.FOLLOWER})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("flying_skull_dash"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            return ai
+        end,
+        tier = ____exports.CustomAITier.BASIC
+    },
+    [____exports.NPCNames.DIRE_TOWER] = {
+        factory = function(____, origin)
+            local ai = __TS__New(____exports.CustomAI, "dire_tower", origin, {behavior = CustomAIBehavior.STATIC})
+            ai:RegisterAbility(
+                {
+                    ability = ai.unit:FindAbilityByName("dire_tower_attack"),
+                    orderType = DOTA_UNIT_ORDER_CAST_POSITION,
+                    requirements = {targetInCastRange = true}
+                }
+            )
+            ai.unit:SetHullRadius(100)
+            return ai
+        end,
+        tier = ____exports.CustomAITier.HIGH
+    }
 }
 return ____exports

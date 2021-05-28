@@ -301,9 +301,13 @@ import { ReadyBar } from './readyBar';
         }
     });
     
-    tables.subscribeToNetTableKey(tableNameMain, 'room', true, function(data: any){
-        currentLevelPanel.text = 'Room: ' + data.currentRoom;
-        enemiesCountPanel.text = 'Killed enemies: ' + data.remainingEnemies + '/' + data.maxEnemies;
+    tables.subscribeToNetTableKey(tableNameMain, 'stage', true, function(data: any){
+        if(data.currentRoom){
+            currentLevelPanel.text = 'Room: ' + data.currentRoom;
+        }
+        if(data.remainingEnemies && data.maxEnemies){
+            enemiesCountPanel.text = 'Killed enemies: ' + data.remainingEnemies + '/' + data.maxEnemies;
+        }
     });
 
     function UpdateTime(data: any): void{

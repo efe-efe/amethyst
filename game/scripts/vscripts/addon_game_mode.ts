@@ -20,11 +20,11 @@ import Round from './clases/pvp/round';
 import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from './clases/pve/custom_npc';
 import { CustomItems } from './util/custom_items';
 import Pickup, { PickupTypes } from './clases/pickup';
-import Room, { Wave, NPCGroup, RoomData } from './clases/pve/room';
 import settings from './settings';
-import PreRoom from './clases/pve/pre_room';
+import PreRun from './clases/pve/pre_run';
 import { NPCNames } from './clases/pve/custom_ai';
 import Upgrades from './upgrades/upgrades';
+import Run from './clases/pve/run';
 
 declare global {
     interface CDOTAGamerules {
@@ -79,11 +79,10 @@ export class GameMode{
 
     public alliances: Alliance[] = [];
     public warmup: Warmup | undefined;
-    public pre_round: PreRound | undefined;
-    public roomsData: RoomData[] = [];
-    public room: Room | undefined;
-    public preRoom: PreRoom | undefined;
+    public preRound: PreRound | undefined;
+    public preRun: PreRun | undefined;
     public round: Round | undefined;
+    public run: Run | undefined;
     public max_treshold = 30;
     public currentRoom = -1;
 
@@ -171,86 +170,27 @@ export class GameMode{
             if(this.state == CustomGameState.WARMUP_IN_PROGRESS && this.warmup){
                 this.warmup.Update();
             }
-            if(this.state == CustomGameState.PRE_ROUND && this.pre_round){
-                this.pre_round.Update();
+            if(this.state == CustomGameState.PRE_ROUND && this.preRound){
+                this.preRound.Update();
             }
-
-            if(this.state == CustomGameState.ROOM_IN_PROGRESS && this.round){
+            if(this.state == CustomGameState.ROUND_IN_PROGRESS && this.round){
                 this.round.Update();
             }
         });
     }
 
     StartPVEMap(): void{
-        this.SetState(CustomGameState.PRE_ROOM);
-        this.GenerateRoomData();  
-        this.preRoom = new PreRoom(this.alliances, -1);
+        this.SetState(CustomGameState.PRE_RUN);
+        this.preRun = new PreRun(this.alliances, -1);
         
         this.RegisterThinker(0.01, () => {
-            if(this.state == CustomGameState.ROOM_IN_PROGRESS && this.room){
-                this.room.Update();
+            if(this.state == CustomGameState.RUN_IN_PROGRESS && this.run){
+                this.run.Update();
             }
-            if(this.state == CustomGameState.PRE_ROOM && this.preRoom){
-                this.preRoom.Update();
+            if(this.state == CustomGameState.PRE_RUN && this.preRun){
+                this.preRun.Update();
             }
         });
-    }
-
-    GenerateRoomData(): void{
-        const bossRooms = [4, 9, 14, 19];
-        const npcs = [
-            NPCNames.DIRE_TOWER,
-            NPCNames.RADIANT_ZOMBIE_MEELE, 
-            NPCNames.RADIANT_ZOMBIE_HEALER, 
-            NPCNames.DIRE_ZOMBIE, 
-            NPCNames.DIRE_ZOMBIE_RAGER, 
-            NPCNames.DIRE_ZOMBIE_MEELE, 
-            NPCNames.FLYING_SKULL
-        ];
-        const bosses = [NPCNames.QUEEN, NPCNames.CENTAUR];
-
-        for(let i = 0; i < 20; i++){
-            const isBossRoom = bossRooms.filter((room) => room === i)[0];
-            const amount = (isBossRoom) ? 1 : i + 3;
-            const npcsToUse = (isBossRoom) ? bosses : npcs;
-            const wavesNumber = (isBossRoom) ? 1 : 3;
-            const waves = this.GenerateWaves(npcsToUse, wavesNumber, amount);
-            this.roomsData.push({
-                waves,
-                currentRoom: i,
-                totalNpcs: amount * wavesNumber,
-            });
-        }
-    }
-
-    GenerateWaves(possibleNPCs: NPCNames[], wavesNumber: number, npcsPerWave: number): Wave[]{
-        const waves: Wave[] = [];
-        for(let i = 0; i < wavesNumber; i++){
-            waves.push(this.GenerateWave(possibleNPCs, npcsPerWave));
-        }
-        
-        return waves;
-    }
-
-    GenerateWave(possibleNPCs: NPCNames[], amount: number): Wave{
-        const npcGroups: NPCGroup[] = [];
-        let remainingNpcs = amount;
-        let remainingPossibleNPCs = possibleNPCs;
-
-        while(remainingNpcs > 0){
-            const currentNPC = RandomInt(remainingPossibleNPCs[0], remainingPossibleNPCs[remainingPossibleNPCs.length - 1]);
-            const currentAmmountToGenerate = (remainingPossibleNPCs.length === 1) ? remainingNpcs : RandomInt(1, remainingNpcs);
-    
-            npcGroups.push({
-                name: currentNPC,
-                ammount: currentAmmountToGenerate,
-            });
-    
-            remainingPossibleNPCs = remainingPossibleNPCs.filter((npc) => (npc !== currentNPC));
-            remainingNpcs = remainingNpcs - currentAmmountToGenerate;
-        }
-
-        return { totalNpcs: amount, npcGroups };
     }
 
     OnThink(): number {
@@ -409,8 +349,8 @@ export class GameMode{
                     const upgrade = Upgrades.filter((currentUpgrade) => currentUpgrade.id === event.payload.upgradeId)[0];
                     if(upgrade){
                         customNpc.ApplyUpgrade(upgrade);
-                        if(this.preRoom){
-                            this.preRoom.OnHeroUpgrade();
+                        if(this.run){
+                            this.run.OnHeroUpgrade();
                         }
                     }
                 }
@@ -565,26 +505,38 @@ export class GameMode{
         }
         else if(state === CustomGameState.WARMUP_IN_PROGRESS){
             this.warmup = undefined;
-            this.pre_round = new PreRound(this.alliances, 1);
+            this.preRound = new PreRound(this.alliances, 1);
         }
         else if(state === CustomGameState.PRE_ROUND){
-            this.pre_round = undefined;
+            this.preRound = undefined;
             this.round = new Round(this.alliances, settings.RoundDuration);    
         }
-        else if(state === CustomGameState.PRE_ROOM){
-            this.preRoom = undefined;
-            this.IncrementWave();
-
-            const roomsData = this.roomsData[this.currentRoom];
-            if(roomsData){
-                this.room = new Room(this.alliances, -1, roomsData);
-            } else {
-                this.EndGame(0);
-            }
+        else if(state === CustomGameState.PRE_RUN){
+            this.preRun = undefined;
+            this.run = new Run(this.alliances, [
+                {
+                    possibleNPCs: [
+                        NPCNames.DIRE_ZOMBIE,
+                        NPCNames.DIRE_ZOMBIE_MEELE,
+                        NPCNames.DIRE_ZOMBIE_RAGER,
+                        NPCNames.FLYING_SKULL,
+                        NPCNames.DIRE_TOWER,
+                        NPCNames.QUEEN,
+                    ]
+                },
+                {
+                    possibleNPCs: [
+                        NPCNames.RADIANT_ZOMBIE_HEALER,
+                        NPCNames.RADIANT_ZOMBIE_MEELE,
+                        NPCNames.FLYING_SKULL,
+                        NPCNames.CENTAUR,
+                    ]
+                }
+            ]);
         }
-        else if(state === CustomGameState.ROOM_IN_PROGRESS){
-            this.room = undefined;
-            this.preRoom = new PreRoom(this.alliances, -1);    
+        else if(state === CustomGameState.RUN_IN_PROGRESS){
+            this.run = undefined;
+            this.EndGame(0);
         }
     }
 
@@ -783,9 +735,10 @@ export class GameMode{
         return true;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     OnHeroLearnedAbility(event: DotaPlayerLearnedAbilityEvent): void{
-        if(this.preRoom){
-            this.preRoom.OnAbilityLearned();
+        if(this.preRun){
+            this.preRun.OnAbilityLearned();
         }
     }
 
@@ -827,6 +780,7 @@ export class GameMode{
             this.wtf = false;
         }
 
+        /*
         if(event.text == '-skip'){
             if(this.IsPVE()){
                 if(this.room){
@@ -854,7 +808,7 @@ export class GameMode{
                 }
             }
         }
-        
+        */
         
         if(event.text == '-upgrade'){
             if(this.IsPVE()){
@@ -980,8 +934,8 @@ export class GameMode{
             parent.OnDeath({ killer });
         }
         
-        if(this.room){
-            this.room.OnUnitDies(killed);
+        if(this.run){
+            this.run.OnUnitDies(killed);
         }
         
         if(killed.IsRealHero()){
@@ -1009,8 +963,8 @@ export class GameMode{
         if(event.entindex_killed !== undefined){
             const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
 
-            if(this.room){
-                this.room.OnUnitHurt(victim);
+            if(this.run){
+                this.run.OnUnitHurt(victim);
             }
             
             if(event.entindex_attacker !== undefined){

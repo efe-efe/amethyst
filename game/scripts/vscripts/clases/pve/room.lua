@@ -1,49 +1,47 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 27,["11"] = 27,["12"] = 27,["13"] = 27,["14"] = 27,["15"] = 36,["16"] = 27,["17"] = 28,["18"] = 29,["19"] = 30,["20"] = 34,["21"] = 38,["22"] = 39,["23"] = 40,["24"] = 41,["25"] = 42,["26"] = 36,["27"] = 45,["28"] = 46,["29"] = 47,["30"] = 52,["31"] = 45,["32"] = 55,["33"] = 56,["34"] = 57,["35"] = 57,["36"] = 57,["38"] = 58,["39"] = 58,["40"] = 59,["41"] = 60,["42"] = 61,["43"] = 62,["44"] = 58,["47"] = 57,["48"] = 57,["49"] = 55,["50"] = 67,["51"] = 68,["52"] = 69,["53"] = 69,["54"] = 69,["55"] = 69,["56"] = 70,["57"] = 71,["58"] = 72,["60"] = 74,["61"] = 67,["62"] = 77,["63"] = 78,["64"] = 78,["65"] = 78,["66"] = 78,["67"] = 79,["68"] = 80,["70"] = 77,["71"] = 84,["72"] = 27,["73"] = 87,["74"] = 87,["75"] = 87,["76"] = 88,["77"] = 89,["79"] = 91,["80"] = 92,["81"] = 93,["82"] = 97,["83"] = 97,["84"] = 97,["85"] = 97,["86"] = 97,["87"] = 97,["89"] = 87,["90"] = 87,["91"] = 101,["92"] = 101,["93"] = 101,["94"] = 102,["95"] = 101,["96"] = 101,["97"] = 105,["98"] = 106,["99"] = 107,["100"] = 108,["102"] = 110,["103"] = 111,["106"] = 114,["107"] = 115,["110"] = 84,["111"] = 120,["112"] = 121,["113"] = 121,["114"] = 121,["115"] = 122,["116"] = 123,["118"] = 125,["119"] = 126,["120"] = 121,["121"] = 121,["122"] = 128,["123"] = 128,["124"] = 128,["125"] = 129,["126"] = 130,["128"] = 128,["129"] = 128,["130"] = 120,["131"] = 135,["132"] = 136,["133"] = 137,["134"] = 135,["135"] = 140,["136"] = 141,["137"] = 141,["138"] = 141,["139"] = 141,["140"] = 141,["141"] = 141,["142"] = 141,["143"] = 141,["144"] = 141,["145"] = 141,["146"] = 140,["147"] = 150,["148"] = 151,["149"] = 150,["150"] = 27,["151"] = 27});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 5,["10"] = 5,["11"] = 20,["12"] = 20,["13"] = 20,["14"] = 20,["15"] = 20,["16"] = 31,["17"] = 20,["18"] = 22,["19"] = 23,["20"] = 24,["21"] = 28,["22"] = 29,["23"] = 33,["24"] = 34,["25"] = 35,["26"] = 36,["27"] = 37,["28"] = 38,["29"] = 31,["30"] = 42,["31"] = 43,["32"] = 44,["33"] = 48,["34"] = 42,["35"] = 51,["36"] = 52,["37"] = 53,["38"] = 54,["39"] = 54,["40"] = 54,["41"] = 55,["42"] = 56,["43"] = 57,["44"] = 58,["45"] = 54,["46"] = 54,["47"] = 51,["48"] = 62,["49"] = 63,["50"] = 64,["51"] = 64,["52"] = 64,["53"] = 64,["54"] = 65,["55"] = 66,["56"] = 67,["58"] = 69,["59"] = 62,["60"] = 72,["61"] = 73,["62"] = 73,["63"] = 73,["64"] = 73,["65"] = 74,["66"] = 75,["68"] = 72,["69"] = 79,["70"] = 80,["71"] = 81,["72"] = 81,["73"] = 81,["74"] = 82,["75"] = 83,["76"] = 84,["77"] = 85,["80"] = 81,["81"] = 81,["82"] = 90,["83"] = 91,["85"] = 79,["86"] = 95,["87"] = 20,["88"] = 98,["89"] = 99,["90"] = 100,["91"] = 101,["92"] = 102,["94"] = 104,["95"] = 105,["97"] = 107,["98"] = 108,["101"] = 111,["104"] = 114,["105"] = 114,["106"] = 114,["107"] = 115,["108"] = 116,["110"] = 118,["111"] = 119,["112"] = 120,["113"] = 124,["114"] = 124,["115"] = 124,["116"] = 124,["117"] = 124,["118"] = 124,["120"] = 114,["121"] = 114,["122"] = 128,["123"] = 128,["124"] = 128,["125"] = 129,["126"] = 128,["127"] = 128,["129"] = 95,["130"] = 134,["131"] = 135,["132"] = 135,["133"] = 135,["134"] = 136,["135"] = 137,["136"] = 138,["138"] = 135,["139"] = 135,["140"] = 134,["141"] = 142,["142"] = 143,["143"] = 144,["144"] = 142,["145"] = 147,["146"] = 148,["147"] = 148,["148"] = 148,["149"] = 149,["150"] = 150,["152"] = 152,["153"] = 153,["154"] = 148,["155"] = 148,["156"] = 155,["157"] = 155,["158"] = 155,["159"] = 156,["160"] = 157,["162"] = 155,["163"] = 155,["164"] = 147,["165"] = 162,["166"] = 163,["167"] = 164,["168"] = 162,["169"] = 167,["170"] = 168,["171"] = 168,["172"] = 168,["173"] = 168,["174"] = 168,["175"] = 168,["176"] = 168,["177"] = 168,["178"] = 168,["179"] = 168,["180"] = 167,["181"] = 177,["182"] = 178,["183"] = 178,["184"] = 178,["185"] = 178,["186"] = 178,["187"] = 177,["188"] = 181,["189"] = 182,["190"] = 181,["191"] = 20,["192"] = 20});
 local ____exports = {}
 local ____custom_ai = require("clases.pve.custom_ai")
-local CustomAIFactories = ____custom_ai.CustomAIFactories
+local CustomAIMeta = ____custom_ai.CustomAIMeta
 local ____game_state = require("clases.game_state")
 local GameState = ____game_state.default
-local CustomGameState = ____game_state.CustomGameState
+local ____settings = require("settings")
+local settings = ____settings.default
 ____exports.default = (function()
     ____exports.default = __TS__Class()
     local Room = ____exports.default
     Room.name = "Room"
     __TS__ClassExtends(Room, GameState)
-    function Room.prototype.____constructor(self, alliances, duration, roomData)
+    function Room.prototype.____constructor(self, alliances, duration, waves, stage)
         GameState.prototype.____constructor(self, alliances, duration)
-        self.remainingAfterTime = 3 * 30
+        self.upgradesDelay = 3 * 30
         self.spawnQueue = {}
         self.ais = {}
+        self.remainingWaveNpcs = 0
         self.currentWave = 0
-        self.roomData = roomData
-        self.remainingTotalNpcs = roomData.totalNpcs
-        self.remainingWaveNpcs = self.roomData.waves[self.currentWave + 1].totalNpcs
+        self.waves = waves
+        self.totalNpcs = self:GetTotalNPCs(waves)
+        self.remainingTotalNpcs = self.totalNpcs
+        self.stage = stage
         self:StartWave(self.currentWave)
         self:SendDataToClient()
     end
     function Room.prototype.SendDataToClient(self)
         local tableName = "main"
-        local data = {remainingEnemies = self.roomData.totalNpcs - self.remainingTotalNpcs, currentRoom = self.roomData.currentRoom + 1, maxEnemies = self.roomData.totalNpcs}
-        CustomNetTables:SetTableValue(tableName, "room", data)
+        local data = {remainingEnemies = self.totalNpcs - self.remainingTotalNpcs, maxEnemies = self.totalNpcs}
+        CustomNetTables:SetTableValue(tableName, "stage", data)
     end
     function Room.prototype.StartWave(self, waveNumber)
-        self.remainingWaveNpcs = self.roomData.waves[waveNumber + 1].totalNpcs
+        local wave = self.waves[waveNumber + 1]
+        self.remainingWaveNpcs = #wave.npcs
         __TS__ArrayForEach(
-            self.roomData.waves[waveNumber + 1].npcGroups,
-            function(____, npcGroup)
-                do
-                    local i = 0
-                    while i < npcGroup.ammount do
-                        local x = RandomInt(-1500, 1500)
-                        local y = RandomInt(-1500, 1500)
-                        local origin = Vector(x, y, 128)
-                        self:SchedulAiSpawn(origin, npcGroup.name, 1)
-                        i = i + 1
-                    end
-                end
+            wave.npcs,
+            function(____, npc)
+                local x = RandomInt(-1500, 1500)
+                local y = RandomInt(-1500, 1500)
+                local origin = Vector(x, y, 128)
+                self:SchedulAiSpawn(origin, npc, 1)
             end
         )
     end
@@ -68,45 +66,81 @@ ____exports.default = (function()
             ai:OnHurt()
         end
     end
+    function Room.prototype.OnHeroUpgrade(self)
+        local upgradesReady = true
+        __TS__ArrayForEach(
+            self:GetAllPlayers(),
+            function(____, player)
+                local customNpc = player.customNpc
+                if customNpc then
+                    if customNpc:IsUpgrading() then
+                        upgradesReady = false
+                    end
+                end
+            end
+        )
+        if upgradesReady then
+            self:SetDuration(settings.PreStageDuration)
+        end
+    end
     function Room.prototype.Update(self)
         GameState.prototype.Update(self)
-        __TS__ArrayForEach(
-            self.spawnQueue,
-            function(____, scheduledSpawn)
-                if scheduledSpawn.remainingTime > 0 then
-                    scheduledSpawn.remainingTime = scheduledSpawn.remainingTime - 1
-                else
-                    local ai = CustomAIFactories[scheduledSpawn.name](CustomAIFactories, scheduledSpawn.origin)
-                    __TS__ArrayPush(self.ais, ai)
-                    EFX("particles/ai_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, ai.unit, {release = true})
-                    self.spawnQueue = __TS__ArrayFilter(
-                        self.spawnQueue,
-                        function(____, spawn)
-                            local ____ = spawn ~= scheduledSpawn
-                        end
-                    )
-                end
-            end
-        )
-        __TS__ArrayForEach(
-            self.ais,
-            function(____, ai)
-                ai:Update()
-            end
-        )
         if self.remainingWaveNpcs <= 0 then
-            if self.currentWave == (#self.roomData.waves - 1) then
-                if self.remainingAfterTime == 0 then
+            if self.currentWave == (#self.waves - 1) then
+                if self.upgradesDelay == 0 then
+                    self:GenerateUpgrades()
+                    self.upgradesDelay = self.upgradesDelay - 1
+                end
+                if self.upgradesDelay > 0 then
+                    self.upgradesDelay = self.upgradesDelay - 1
+                end
+                if self.time_remaining == 0 then
                     self:End()
                 end
-                if self.remainingAfterTime > 0 then
-                    self.remainingAfterTime = self.remainingAfterTime - 1
-                end
             else
-                self.currentWave = self.currentWave + 1
-                self:StartWave(self.currentWave)
+                self:IncrementWave()
             end
+        else
+            __TS__ArrayForEach(
+                self.spawnQueue,
+                function(____, scheduledSpawn)
+                    if scheduledSpawn.remainingTime > 0 then
+                        scheduledSpawn.remainingTime = scheduledSpawn.remainingTime - 1
+                    else
+                        local ai = CustomAIMeta[scheduledSpawn.name]:factory(scheduledSpawn.origin)
+                        __TS__ArrayPush(self.ais, ai)
+                        EFX("particles/ai_spawn.vpcf", PATTACH_ABSORIGIN_FOLLOW, ai.unit, {release = true})
+                        self.spawnQueue = __TS__ArrayFilter(
+                            self.spawnQueue,
+                            function(____, spawn)
+                                local ____ = spawn ~= scheduledSpawn
+                            end
+                        )
+                    end
+                end
+            )
+            __TS__ArrayForEach(
+                self.ais,
+                function(____, ai)
+                    ai:Update()
+                end
+            )
         end
+    end
+    function Room.prototype.GenerateUpgrades(self)
+        __TS__ArrayForEach(
+            self:GetAllPlayers(),
+            function(____, player)
+                local customNpc = player.customNpc
+                if customNpc then
+                    customNpc:RequestUpgrades()
+                end
+            end
+        )
+    end
+    function Room.prototype.IncrementWave(self)
+        self.currentWave = self.currentWave + 1
+        self:StartWave(self.currentWave)
     end
     function Room.prototype.SkipWave(self)
         __TS__ArrayForEach(
@@ -129,7 +163,7 @@ ____exports.default = (function()
         )
     end
     function Room.prototype.SkipRoom(self)
-        self.currentWave = #self.roomData.waves - 1
+        self.currentWave = #self.waves - 1
         self:SkipWave()
     end
     function Room.prototype.SchedulAiSpawn(self, origin, name, delayTime)
@@ -144,8 +178,15 @@ ____exports.default = (function()
             }
         )
     end
+    function Room.prototype.GetTotalNPCs(self, waves)
+        return __TS__ArrayReduce(
+            waves,
+            function(____, a, wave) return a + #wave.npcs end,
+            0
+        )
+    end
     function Room.prototype.End(self)
-        GameRules.Addon:SetState(CustomGameState.PRE_ROOM)
+        self.stage:OnRoomCompleted()
     end
     return Room
 end)()

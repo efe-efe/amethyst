@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 5,["7"] = 5,["8"] = 6,["9"] = 6,["10"] = 7,["11"] = 7,["12"] = 8,["13"] = 8,["14"] = 9,["15"] = 9,["16"] = 10,["17"] = 10,["18"] = 11,["19"] = 11,["20"] = 14,["21"] = 14,["22"] = 14,["23"] = 14,["24"] = 19,["25"] = 20,["26"] = 21,["27"] = 22,["28"] = 19,["29"] = 25,["30"] = 26,["31"] = 27,["33"] = 25,["34"] = 31,["35"] = 32,["36"] = 33,["37"] = 34,["38"] = 34,["39"] = 34,["40"] = 35,["41"] = 35,["42"] = 35,["43"] = 36,["44"] = 35,["45"] = 35,["46"] = 34,["47"] = 34,["49"] = 41,["50"] = 31,["51"] = 44,["52"] = 45,["53"] = 44,["54"] = 48,["55"] = 49,["56"] = 48,["57"] = 52,["58"] = 53,["59"] = 54,["60"] = 55,["61"] = 56,["62"] = 57,["63"] = 58,["64"] = 59,["65"] = 66,["66"] = 52,["67"] = 14,["68"] = 14});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 5,["7"] = 5,["8"] = 6,["9"] = 6,["10"] = 7,["11"] = 7,["12"] = 8,["13"] = 8,["14"] = 9,["15"] = 9,["16"] = 10,["17"] = 10,["18"] = 11,["19"] = 11,["20"] = 12,["21"] = 12,["22"] = 15,["23"] = 15,["24"] = 15,["25"] = 15,["26"] = 20,["27"] = 21,["28"] = 22,["29"] = 23,["30"] = 20,["31"] = 26,["32"] = 27,["33"] = 28,["35"] = 26,["36"] = 32,["37"] = 33,["38"] = 34,["39"] = 35,["40"] = 35,["41"] = 35,["42"] = 36,["43"] = 36,["44"] = 36,["45"] = 37,["46"] = 36,["47"] = 36,["48"] = 35,["49"] = 35,["51"] = 42,["52"] = 32,["53"] = 45,["54"] = 46,["55"] = 45,["56"] = 49,["57"] = 50,["58"] = 49,["59"] = 53,["60"] = 54,["61"] = 55,["62"] = 56,["63"] = 57,["64"] = 58,["65"] = 59,["66"] = 60,["67"] = 67,["68"] = 53,["69"] = 15,["70"] = 15});
 local ____exports = {}
 ____exports.CustomGameState = CustomGameState or ({})
 ____exports.CustomGameState.NONE = 0
@@ -13,10 +13,12 @@ ____exports.CustomGameState.PRE_ROUND = 3
 ____exports.CustomGameState[____exports.CustomGameState.PRE_ROUND] = "PRE_ROUND"
 ____exports.CustomGameState.ROUND_IN_PROGRESS = 4
 ____exports.CustomGameState[____exports.CustomGameState.ROUND_IN_PROGRESS] = "ROUND_IN_PROGRESS"
-____exports.CustomGameState.PRE_ROOM = 5
-____exports.CustomGameState[____exports.CustomGameState.PRE_ROOM] = "PRE_ROOM"
-____exports.CustomGameState.ROOM_IN_PROGRESS = 6
-____exports.CustomGameState[____exports.CustomGameState.ROOM_IN_PROGRESS] = "ROOM_IN_PROGRESS"
+____exports.CustomGameState.PRE_RUN = 5
+____exports.CustomGameState[____exports.CustomGameState.PRE_RUN] = "PRE_RUN"
+____exports.CustomGameState.RUN_IN_PROGRESS = 6
+____exports.CustomGameState[____exports.CustomGameState.RUN_IN_PROGRESS] = "RUN_IN_PROGRESS"
+____exports.CustomGameState.POST_RUN = 7
+____exports.CustomGameState[____exports.CustomGameState.POST_RUN] = "POST_RUN"
 ____exports.default = (function()
     ____exports.default = __TS__Class()
     local GameState = ____exports.default

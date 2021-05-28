@@ -11,6 +11,13 @@ enum CustomAIBehavior {
     STATIC,
 }
 
+export enum CustomAITier {
+    BASIC = 1,
+    MID,
+    HIGH,
+    BOSS,
+}
+
 export enum NPCNames {
     DIRE_ZOMBIE = 0,
     DIRE_ZOMBIE_RAGER,
@@ -302,119 +309,135 @@ export class CustomAI{
     }
 }
 
-export const CustomAIFactories: {
-    [key: number]: (origin: Vector) => CustomAI
+export const CustomAIMeta: {
+    [key: number]: {
+        factory: (origin: Vector) => CustomAI,
+        tier?: number,
+    }
 } = {
-    [NPCNames.QUEEN]: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('npc_dota_hero_queenofpain', origin, {
-            minFollowRange: 500,
-        });
+    [NPCNames.QUEEN]: {
+        factory: (origin: Vector): CustomAI => {
+            const ai = new CustomAI('npc_dota_hero_queenofpain', origin, {
+                minFollowRange: 500,
+            });
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('queen_scream')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('queen_dodge')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('queen_blink')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('queen_daggers')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('queen_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('queen_wave')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        });
-        return ai;
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('queen_scream')!,
+                orderType: UnitOrder.CAST_NO_TARGET,
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('queen_dodge')!,
+                orderType: UnitOrder.CAST_NO_TARGET,
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('queen_blink')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true,
+                }
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('queen_daggers')!,
+                orderType: UnitOrder.CAST_NO_TARGET,
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('queen_attack')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true,
+                }
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('queen_wave')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true
+                }
+            });
+            return ai;
+        },
+        tier: CustomAITier.BOSS,
     },
-    [NPCNames.CENTAUR]: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('npc_dota_hero_centaur', origin, {});
+    [NPCNames.CENTAUR]: {
+        factory: (origin: Vector): CustomAI => {
+            const ai = new CustomAI('npc_dota_hero_centaur', origin, {});
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('centaur_axe_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInRadius: true
-            }
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('centaur_range_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('centaur_short_attack')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-            requirements: {
-                targetInRadius: true
-            }
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('centaur_charge')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true,
-            }
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('centaur_rage')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        });
-        return ai;
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('centaur_axe_attack')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInRadius: true
+                }
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('centaur_range_attack')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true,
+                }
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('centaur_short_attack')!,
+                orderType: UnitOrder.CAST_NO_TARGET,
+                requirements: {
+                    targetInRadius: true
+                }
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('centaur_charge')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true,
+                }
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('centaur_rage')!,
+                orderType: UnitOrder.CAST_NO_TARGET,
+            });
+            return ai;
+        },
+        tier: CustomAITier.BOSS,
     },
-    [NPCNames.RADIANT_ZOMBIE_HEALER]: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('radiant_zombie_healer', origin, {
-            behavior: CustomAIBehavior.WANDERER,
-        });
+    [NPCNames.RADIANT_ZOMBIE_HEALER]: {
+        factory: (origin: Vector): CustomAI => {
+            const ai = new CustomAI('radiant_zombie_healer', origin, {
+                behavior: CustomAIBehavior.WANDERER,
+            });
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('radiant_zombie_heal_aura')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        });
-        return ai;
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('radiant_zombie_heal_aura')!,
+                orderType: UnitOrder.CAST_NO_TARGET,
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true
+                }
+            });
+            return ai;
+        },
+        tier: CustomAITier.MID,
     },
-    [NPCNames.DIRE_ZOMBIE]: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('dire_zombie', origin, {
-            behavior: CustomAIBehavior.WANDERER,
-        });
+    [NPCNames.DIRE_ZOMBIE]: {
+        factory: (origin: Vector): CustomAI => {
+            const ai = new CustomAI('dire_zombie', origin, {
+                behavior: CustomAIBehavior.WANDERER,
+            });
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        });
-        return ai;
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true
+                }
+            });
+            return ai;
+        },
+        tier: CustomAITier.BASIC,
     },
-    [NPCNames.DIRE_ZOMBIE_RAGER]: (origin: Vector): CustomAI => {
+    [NPCNames.DIRE_ZOMBIE_RAGER]: {
+        factory: (origin: Vector): CustomAI => {
         const ai = new CustomAI('dire_zombie_rager', origin, {
             behavior: CustomAIBehavior.WANDERER,
         });
@@ -431,8 +454,11 @@ export const CustomAIFactories: {
             }
         });
         return ai;
+        },
+        tier: CustomAITier.MID,
     },
-    [NPCNames.DIRE_ZOMBIE_MEELE]: (origin: Vector): CustomAI => {
+    [NPCNames.DIRE_ZOMBIE_MEELE]: {
+        factory: (origin: Vector): CustomAI => {
         const ai = new CustomAI('dire_zombie_meele', origin, {
             followRange: 1500,
             minFollowRange: 200,
@@ -450,8 +476,11 @@ export const CustomAIFactories: {
         ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
         ai.unit.SetHullRadius(95);
         return ai;
+        },
+        tier: CustomAITier.MID,
     },
-    [NPCNames.RADIANT_ZOMBIE_MEELE]: (origin: Vector): CustomAI => {
+    [NPCNames.RADIANT_ZOMBIE_MEELE]: {
+        factory: (origin: Vector): CustomAI => {
         const ai = new CustomAI('radiant_zombie_meele', origin, {
             followRange: 1500,
             minFollowRange: 200,
@@ -469,8 +498,11 @@ export const CustomAIFactories: {
         ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
         ai.unit.SetHullRadius(95);
         return ai;
+        },
+        tier: CustomAITier.BASIC,
     },
-    [NPCNames.FLYING_SKULL]: (origin: Vector): CustomAI => {
+    [NPCNames.FLYING_SKULL]: {
+        factory: (origin: Vector): CustomAI => {
         const ai = new CustomAI('flying_skull', origin, {
             followRange: 1000,
             minFollowRange: 450,
@@ -486,8 +518,11 @@ export const CustomAIFactories: {
         });
 
         return ai;
+        },
+        tier: CustomAITier.BASIC,
     },
-    [NPCNames.DIRE_TOWER]: (origin: Vector): CustomAI => {
+    [NPCNames.DIRE_TOWER]: {
+        factory: (origin: Vector): CustomAI => {
         const ai = new CustomAI('dire_tower', origin, {
             behavior: CustomAIBehavior.STATIC,
         });
@@ -501,5 +536,7 @@ export const CustomAIFactories: {
         });
         ai.unit.SetHullRadius(100);
         return ai;
-    },
+        },
+        tier: CustomAITier.HIGH,
+    }
 };

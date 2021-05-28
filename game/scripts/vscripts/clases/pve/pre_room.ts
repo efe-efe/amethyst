@@ -1,4 +1,3 @@
-import settings from '../../settings';
 import Alliance from '../alliance';
 import GameState, { CustomGameState } from '../game_state';
 
@@ -65,15 +64,7 @@ export default class PreRoom extends GameState{
         }
     }
 
-    OnHeroUpgrade(): void{
-        const upgradesReady = this.CheckAbilitiesReady();
-        
-        if(upgradesReady){
-            this.SetDuration(settings.PreLevelDuration);
-        }
-    }
-
     End(): void{
-        GameRules.Addon.SetState(CustomGameState.ROOM_IN_PROGRESS);
+        GameRules.Addon.SetState(CustomGameState.RUN_IN_PROGRESS);
     }
 }
