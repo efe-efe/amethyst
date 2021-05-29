@@ -1,5 +1,4 @@
 import { CustomActionEvent } from '../addon_game_mode';
-import { CustomEvents } from '../custom_events';
 
 export interface Reward {
     type: RewardTypes;
