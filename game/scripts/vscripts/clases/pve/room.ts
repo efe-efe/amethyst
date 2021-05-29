@@ -179,6 +179,9 @@ export default class Room extends GameState{
                 if(customNpc.reward && customNpc.reward.type === RewardTypes.TARRASQUE){
                     customNpc.ApplyTarrasque();
                 }
+                if(customNpc.reward && customNpc.reward.type === RewardTypes.ITEM){
+                    customNpc.RequestItems();
+                }
             }
         });
     }

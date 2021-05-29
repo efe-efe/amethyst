@@ -4,6 +4,7 @@ import customEntities from '../../util/custom_entities';
 import Upgrades, { Upgrade } from '../../upgrades/upgrades';
 import Rewards, { Reward, RewardTypes } from '../../rewards/rewards';
 import { CustomEvents } from '../../custom_events';
+import Items from '../../upgrades/items';
 
 const DEBUG = false;
 
@@ -477,6 +478,16 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
 
+    RequestItems(): void{
+        const data = {
+            playerId: this.unit.GetPlayerOwnerID(),
+            upgrades: this.GenerateItems(3),
+        } as never;
+
+        const tableName = 'custom_npc_favors' as never;
+        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
+    }
+
     RequestFavors(): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
@@ -516,6 +527,14 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         ));
 
         return Math.GetRandomElementsFromArray(upgrades, Clamp(amount, upgrades.length, 0));
+    }
+
+    GenerateItems(amount: number): Upgrade[]{
+        const items = Items.filter((item) => (
+            !this.ValidateUpgradeExisting(item)
+        ));
+
+        return Math.GetRandomElementsFromArray(items, Clamp(amount, items.length, 0));
     }
 
     ValidateReward(reward: Reward): boolean{

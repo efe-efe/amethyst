@@ -12,6 +12,7 @@ export enum RewardTypes {
     TARRASQUE,
     SECRET_SHOP,
     GOLD,
+    ITEM,
 }
 
 const Rewards: Reward[] = [
@@ -29,6 +30,11 @@ const Rewards: Reward[] = [
         type: RewardTypes.TARRASQUE,
         name: 'Heart of Tarrasque',
         description: 'Increases your maximun health pool.',
+    },
+    {
+        type: RewardTypes.ITEM,
+        name: 'Item',
+        description: 'Artifacts that improves your hero powers.',
     },/*
     {
         id: 'bounty_shop',
