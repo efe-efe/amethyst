@@ -2,17 +2,6 @@ import { Upgrade } from './upgrades';
 
 const genericUpgrades: Upgrade[] = [
     {
-        id: 'restore_health',
-        name: 'Restore health',
-        description: 'Fully restores your health',
-        maxStacks: 1,
-        minLevel: 2,
-        tier: 0,
-        effect: (hero: CDOTA_BaseNPC_Hero): void => {
-            CustomEntitiesLegacy.TrueHeal(hero, hero.GetMaxHealth());
-        },
-    },
-    {
         id: 'meele_extra_radius',
         name: 'Extra radius',
         description: 'Provides extra radius on your basic attack',
