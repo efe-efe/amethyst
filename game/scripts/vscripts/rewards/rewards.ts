@@ -45,7 +45,6 @@ const Rewards: Reward[] = [
 
 
 CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:select_reward', (eventSourceIndex, event) => {
-    const customEvents = CustomEvents.GetInstance();
     const playerId = event.playerIndex;
     const player = GameRules.Addon.FindPlayerById(playerId);
 
