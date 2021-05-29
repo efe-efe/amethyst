@@ -16,6 +16,9 @@ const customEntities = {
     IgnoreMSLimit(entity: CDOTA_BaseNPC): void{
         entity.AddNewModifier(entity, undefined, 'modifier_generic_ignore_ms_limit', {});
     },
+    ChangeMS(entity: CDOTA_BaseNPC, amount: number): void{
+        entity.AddNewModifier(entity, undefined, 'modifier_generic_change_ms', { amount });
+    },
     
 };
 

@@ -377,6 +377,7 @@ export class GameMode{
         LinkLuaModifier('modifier_generic_phased',                  'modifiers/generic/modifier_generic_phased', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_flying',                  'modifiers/generic/modifier_generic_flying', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_ignore_ms_limit',         'modifiers/generic/modifier_generic_ignore_ms_limit', LuaModifierMotionType.NONE);
+        LinkLuaModifier('modifier_generic_change_ms',               'modifiers/generic/modifier_generic_change_ms', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_visible',                         'modifiers/generic/modifier_visible', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_casting',                         'modifiers/generic/modifier_casting', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_damage_fx',                       'modifiers/generic/modifier_damage_fx', LuaModifierMotionType.NONE);
