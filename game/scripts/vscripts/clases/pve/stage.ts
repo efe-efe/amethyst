@@ -43,7 +43,9 @@ const mobsDistribution: {
     { tier: CustomAITier.MID,       base: 2,    optional: 1, },
     { tier: CustomAITier.HIGH,      base: 3,    optional: 0, }
 ],[
-    { tier: CustomAITier.BOSS,      base: 1,    optional: 0, },
+    { tier: CustomAITier.BASIC,     base: 2,    optional: 1, },
+    { tier: CustomAITier.MID,       base: 2,    optional: 1, },
+    { tier: CustomAITier.HIGH,      base: 3,    optional: 0, },
 ]];
 
 export default class Stage extends GameState{
@@ -75,7 +77,7 @@ export default class Stage extends GameState{
             this.room.Update();
         } else {
             if(this.currentRoom < this.rooms){
-                const roomType = (this.currentRoom === this.rooms - 2) ? RoomType.BOSS : (this.currentRoom === 0) ? RoomType.BONUS : RoomType.REGULAR;
+                const roomType = (this.currentRoom === this.rooms - 2) ? RoomType.BOSS : (this.currentRoom === 0 || this.currentRoom === this.rooms - 1) ? RoomType.BONUS : RoomType.REGULAR;
                 this.room = this.GenerateRoom(roomType);
             } else {
                 this.End();
