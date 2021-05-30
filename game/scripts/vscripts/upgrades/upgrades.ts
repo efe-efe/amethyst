@@ -103,6 +103,18 @@ export const UpgradeManager = {
             return false;
         }
 
+        if(!upgrade.secondaryAbilities){
+            return true;
+        }
+
+        for(let i = 0; i < upgrade.secondaryAbilities.length; i++){
+            const secondaryAbilityName = upgrade.secondaryAbilities[i];
+            const secondaryAbility = customNpc.unit.FindAbilityByName(secondaryAbilityName);
+            if(!secondaryAbility || secondaryAbility.GetLevel() === 0){
+                return false;
+            }
+        }
+
         return true;
     },
     ValidateUpgradeAttackCapabilities: (customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): boolean => {

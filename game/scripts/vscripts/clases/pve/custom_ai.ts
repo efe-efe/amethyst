@@ -130,7 +130,7 @@ export class CustomAI{
     Follow(origin: Vector): boolean{
         this.UpdateTarget();
 
-        if(!this.followTarget){
+        if(!this.followTarget || !this.followTarget.IsAlive()){
             return false;
         }
         const distance = CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget);

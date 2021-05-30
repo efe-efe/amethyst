@@ -94,7 +94,7 @@ function CustomAI.prototype.UpdateTarget(self)
 end
 function CustomAI.prototype.Follow(self, origin)
     self:UpdateTarget()
-    if not self.followTarget then
+    if (not self.followTarget) or (not self.followTarget:IsAlive()) then
         return false
     end
     local distance = CustomEntitiesLegacy:GetDistance(self.unit, self.followTarget)

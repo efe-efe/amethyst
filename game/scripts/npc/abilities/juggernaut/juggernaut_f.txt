@@ -31,7 +31,7 @@
 		"BaseClass"						"ability_lua"
 		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_extra/juggernaut_extra"
 		"MaxLevel"						"1"
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_HIDDEN | DOTA_ABILITY_BEHAVIOR_IGNORE_PSEUDO_QUEUE"
 
 		"AbilityTextureName"			"juggernaut_healing_ward"
 	}

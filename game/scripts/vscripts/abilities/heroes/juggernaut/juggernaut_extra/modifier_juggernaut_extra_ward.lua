@@ -28,6 +28,12 @@ end
 function modifier_juggernaut_extra_ward:OnCreated()
     self.radius = self:GetAbility():GetSpecialValueFor("radius")
     if IsServer() then
+        self.health = 1
+
+        if self:GetCaster():HasModifier("modifier_upgrade_juggernaut_spinning_ward") then
+            self.health = 5
+        end
+
         self:PlayEffectsOnCreated()
         self:StartIntervalThink(0.03)
 
@@ -97,7 +103,10 @@ end
 
 
 function modifier_juggernaut_extra_ward:DeclareFunctions()
-    return { MODIFIER_EVENT_ON_DEATH }
+    return { 
+        MODIFIER_EVENT_ON_DEATH,
+        MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE,
+    }
 end
 
 function modifier_juggernaut_extra_ward:OnDeath(params)
@@ -105,4 +114,15 @@ function modifier_juggernaut_extra_ward:OnDeath(params)
         if params.unit ~= self:GetParent() then return end
         self:Destroy()        
     end
+end
+
+function modifier_juggernaut_extra_ward:GetModifierIncomingDamage_Percentage(params)
+    if IsServer() then
+        self.health = self.health - 1
+
+        if self.health == 0 then
+            self:GetParent():ForceKill(false)
+        end
+    end
+    return -100
 end

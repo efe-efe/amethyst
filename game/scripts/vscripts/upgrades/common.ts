@@ -22,4 +22,5 @@ export interface Upgrade {
     effect?(hero: CDOTA_BaseNPC_Hero): void;
     type: UpgradeTypes;
     abilityIconName?: string;
+    secondaryAbilities?: string[];
 }

@@ -107,14 +107,17 @@ function modifier_juggernaut_mobility:PlayEffects()
 
     local particle_cast = "particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf"
     
-    if self:GetAbility():GetLevel() >= 2 then
+    if self:ShouldReflect() then
         particle_cast = 'particles/econ/items/juggernaut/jugg_sword_jade/juggernaut_blade_fury_jade.vpcf'
     end
 
 	self.effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent)
     ParticleManager:SetParticleControl(self.effect_cast, 5, Vector(self.radius, 1, 1))
     ParticleManager:SetParticleControl(self.effect_cast, 2, self.parent:GetOrigin())
-    
+end
+
+function modifier_juggernaut_mobility:ShouldReflect()
+    return self:GetAbility():GetLevel() >= 2 or self:GetCaster():HasModifier("modifier_upgrade_juggernaut_fury_reflects")
 end
 
 function modifier_juggernaut_mobility:StopEffects()
@@ -140,7 +143,7 @@ end
 function modifier_juggernaut_mobility:OnHit(params)
     if IsServer() then
         if params.iType == PROJECTILE_HIT then
-            if self:GetAbility():GetLevel() < 2 then
+            if not self:ShouldReflect() then
                 return true
             end
 

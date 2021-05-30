@@ -407,6 +407,8 @@ export class GameMode{
             LinkLuaModifier('modifier_upgrade_tarrasque',  'modifiers/upgrades/modifier_upgrade_tarrasque', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_phantom_act_while_countering',  'modifiers/upgrades/modifier_upgrade_phantom_act_while_countering', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_sniper_snipe_cast_fast',  'modifiers/upgrades/modifier_upgrade_sniper_snipe_cast_fast', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_juggernaut_spinning_ward',  'modifiers/upgrades/modifier_upgrade_juggernaut_spinning_ward', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_juggernaut_fury_reflects',  'modifiers/upgrades/modifier_upgrade_juggernaut_fury_reflects', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');
