@@ -1,6 +1,9 @@
-import { Upgrade } from './upgrades';
+import { Upgrade, UpgradeTypes } from './common';
 
-const stormUpgrades: Upgrade[] = [
+const Shards: Upgrade[] = [
+];
+
+const Favors: Upgrade[] = [
     {
         id: 'storm_ranged_remnant',
         name: 'Ranged remnant',
@@ -11,6 +14,7 @@ const stormUpgrades: Upgrade[] = [
             name: 'modifier_upgrade_storm_ranged_remnant'
         },
         tier: 0,
+        type: UpgradeTypes.FAVOR,
     },    
     {
         id: 'storm_unleashed_knockback',
@@ -22,7 +26,13 @@ const stormUpgrades: Upgrade[] = [
             name: 'modifier_upgrade_storm_unleashed_knockback'
         },
         tier: 0,
+        type: UpgradeTypes.FAVOR,
     },
 ];
 
-export default stormUpgrades;
+const StormRewards = {
+    Shards,
+    Favors,
+};
+
+export default StormRewards;

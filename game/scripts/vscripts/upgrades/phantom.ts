@@ -1,6 +1,9 @@
-import { Upgrade } from './upgrades';
+import { Upgrade, UpgradeTypes } from './common';
 
-const phantomUpgrades: Upgrade[] = [
+const Shards: Upgrade[] = [
+];
+
+const Favors: Upgrade[] = [
     {
         id: 'phantom_extra_daggers',
         name: 'Extra daggers',
@@ -11,6 +14,7 @@ const phantomUpgrades: Upgrade[] = [
             name: 'modifier_upgrade_phantom_extra_daggers'
         },
         tier: 1,
+        type: UpgradeTypes.FAVOR,
     },    
     {
         id: 'phantom_dash_damage',
@@ -22,6 +26,7 @@ const phantomUpgrades: Upgrade[] = [
             name: 'modifier_upgrade_phantom_dash_damage'
         },
         tier: 1,
+        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'phantom_coup_cast_fast',
@@ -33,6 +38,7 @@ const phantomUpgrades: Upgrade[] = [
             name: 'modifier_upgrade_phantom_coup_cast_fast'
         },
         tier: 1,
+        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'phantom_dash_invulnerability',
@@ -44,7 +50,13 @@ const phantomUpgrades: Upgrade[] = [
             name: 'modifier_upgrade_phantom_dash_invulnerability'
         },
         tier: 1,
+        type: UpgradeTypes.FAVOR,
     },
 ];
 
-export default phantomUpgrades;
+const PhantomRewards = {
+    Shards,
+    Favors,
+};
+
+export default PhantomRewards;

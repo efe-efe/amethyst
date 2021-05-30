@@ -1,6 +1,9 @@
-import { Upgrade } from './upgrades';
+import { Upgrade, UpgradeTypes } from './common';
 
-const juggernautUpgrades: Upgrade[] = [
+const Shards: Upgrade[] = [
+];
+
+const Favors: Upgrade[] = [
     {
         id: 'juggernaut_fury_attack',
         name: 'Blade Fury attacks',
@@ -11,6 +14,7 @@ const juggernautUpgrades: Upgrade[] = [
             name: 'modifier_upgrade_juggernaut_fury_attack'
         },
         tier: 0,
+        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'juggernaut_refresh_dagger',
@@ -22,7 +26,13 @@ const juggernautUpgrades: Upgrade[] = [
             name: 'modifier_upgrade_juggernaut_refresh_dagger'
         },
         tier: 1,
+        type: UpgradeTypes.FAVOR,
     },
 ];
 
-export default juggernautUpgrades;
+const JuggernautRewards = {
+    Shards,
+    Favors,
+};
+
+export default JuggernautRewards;

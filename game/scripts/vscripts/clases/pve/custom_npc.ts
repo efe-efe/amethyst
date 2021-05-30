@@ -1,12 +1,14 @@
 import UnitEntity from '../unit_entity';
 import Math from '../../util/math';
 import customEntities from '../../util/custom_entities';
-import Upgrades, { Upgrade } from '../../upgrades/upgrades';
+import { Upgrade, UpgradeTypes } from '../../upgrades/common';
+import Upgrades from '../../upgrades/upgrades';
 import Rewards, { Reward, RewardTypes } from '../../rewards/rewards';
 import { CustomEvents } from '../../custom_events';
 import Items from '../../upgrades/items';
 
 const DEBUG = false;
+const DEBUG_VALIDATIONS = false;
 
 enum CollisionTypes {
     SUCCESS = 0,
@@ -478,34 +480,52 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
 
-    RequestItems(): void{
-        const data = {
-            playerId: this.unit.GetPlayerOwnerID(),
-            upgrades: this.GenerateItems(3),
-        } as never;
-
-        const tableName = 'custom_npc_favors' as never;
-        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
-    }
-
     RequestFavors(): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            upgrades: this.GenerateUpgrades(3, false),
+            upgrades: this.GenerateUpgrades(3, UpgradeTypes.FAVOR, false),
         } as never;
 
         const tableName = 'custom_npc_favors' as never;
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
     }
 
-    RequestEnhancements(): void{
+    RequestShards(): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            upgrades: this.GenerateUpgrades(3, true),
+            upgrades: this.GenerateUpgrades(3, UpgradeTypes.SHARD, false),
         } as never;
 
         const tableName = 'custom_npc_favors' as never;
         CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
+    }
+
+    RequestKnowledge(): void{
+        const data = {
+            playerId: this.unit.GetPlayerOwnerID(),
+            upgrades: this.GenerateUpgrades(3, UpgradeTypes.SHARD, true),
+        } as never;
+
+        const tableName = 'custom_npc_favors' as never;
+        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
+    }
+
+    RequestItems(): void{
+        const data = {
+            playerId: this.unit.GetPlayerOwnerID(),
+            upgrades: this.GenerateUpgrades(3, UpgradeTypes.ITEM, false),
+        } as never;
+
+        const tableName = 'custom_npc_favors' as never;
+        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
+    }
+
+    GenerateItems(amount: number): Upgrade[]{
+        const items = Items.filter((item) => (
+            !this.ValidateUpgradeExisting(item)
+        ));
+
+        return Math.GetRandomElementsFromArray(items, Clamp(amount, items.length, 0));
     }
     
     GenerateBounties(amount: number): Reward[]{
@@ -516,8 +536,10 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return Math.GetRandomElementsFromArray(rewards, Clamp(amount, rewards.length, 0));
     }
 
-    GenerateUpgrades(amount: number, existingOnly: boolean): Upgrade[]{
+    GenerateUpgrades(amount: number, type: UpgradeTypes, existingOnly: boolean): Upgrade[]{
         const upgrades = Upgrades.filter((upgrade) => (
+            this.ValidateUpgradeType(upgrade, type) &&
+            this.ValidateUpgradeType(upgrade, type) &&        
             this.ValidateUpgradeHero(upgrade) &&        
             this.ValidateUpgradeAbility(upgrade) &&
             this.ValidateUpgradeAttackCapabilities(upgrade) &&
@@ -526,24 +548,33 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             (existingOnly ? (this.ValidateUpgradeExisting(upgrade)) : (!this.ValidateUpgradeExisting(upgrade)))
         ));
 
+        if(DEBUG_VALIDATIONS){
+            Upgrades.forEach((upgrade) => {
+                print('Validating: ', upgrade.name);
+                print('\tValidateUpgradeType', this.ValidateUpgradeType(upgrade, type), upgrade.type, '|', type);
+                print('\tValidateUpgradeHero', this.ValidateUpgradeHero(upgrade));
+                print('\tValidateUpgradeAbility', this.ValidateUpgradeAbility(upgrade));
+                print('\tValidateUpgradeAttackCapabilities', this.ValidateUpgradeAttackCapabilities(upgrade));
+                print('\tValidateUpgradeStacks', this.ValidateUpgradeStacks(upgrade));
+                print('\tValidateUpgradeLevel', this.ValidateUpgradeLevel(upgrade));
+                print('\tValidateUpgradeExisting', this.ValidateUpgradeExisting(upgrade));
+            });
+        }
+
         return Math.GetRandomElementsFromArray(upgrades, Clamp(amount, upgrades.length, 0));
     }
 
-    GenerateItems(amount: number): Upgrade[]{
-        const items = Items.filter((item) => (
-            !this.ValidateUpgradeExisting(item)
-        ));
-
-        return Math.GetRandomElementsFromArray(items, Clamp(amount, items.length, 0));
-    }
-
     ValidateReward(reward: Reward): boolean{
-        if(reward.type === RewardTypes.ENHANCEMENT){
+        if(reward.type === RewardTypes.KNOWLEDGE){
             if(this.heroUpgrades.length < 2){
                 return false;
             }
         }
         return true;
+    }
+
+    ValidateUpgradeType(upgrade: Upgrade, type: UpgradeTypes): boolean{
+        return upgrade.type === type;
     }
 
     ValidateUpgradeHero(upgrade: Upgrade): boolean{

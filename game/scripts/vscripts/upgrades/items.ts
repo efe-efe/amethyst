@@ -1,4 +1,4 @@
-import { Upgrade } from './upgrades';
+import { Upgrade, UpgradeTypes } from './common';
 
 const Items: Upgrade[] = [
     {
@@ -11,6 +11,7 @@ const Items: Upgrade[] = [
             name: 'modifier_upgrade_meele_extra_radius'
         },
         tier: 0,
+        type: UpgradeTypes.ITEM,
     },
     {
         id: 'upgrade_blades_of_attack',
@@ -21,6 +22,7 @@ const Items: Upgrade[] = [
             name: 'modifier_upgrade_extra_base_damage'
         },
         tier: 1,
+        type: UpgradeTypes.ITEM,
     },
     {
         id: 'upgrade_item_moonshard',
@@ -31,6 +33,7 @@ const Items: Upgrade[] = [
             name: 'modifier_upgrade_extra_speed'
         },
         tier: 1,
+        type: UpgradeTypes.ITEM,
     },
     {
         id: 'upgrade_item_maelstrom',
@@ -41,6 +44,7 @@ const Items: Upgrade[] = [
             name: 'modifier_upgrade_lightining_attack'
         },
         tier: 1,
+        type: UpgradeTypes.ITEM,
     },
     {
         id: 'upgrade_item_basher',
@@ -51,6 +55,7 @@ const Items: Upgrade[] = [
             name: 'modifier_upgrade_stun_attack'
         },
         tier: 1,
+        type: UpgradeTypes.ITEM,
     }
 ];
 

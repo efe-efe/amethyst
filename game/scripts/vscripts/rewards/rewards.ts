@@ -8,23 +8,24 @@ export interface Reward {
 
 export enum RewardTypes {
     FAVOR = 0,
-    ENHANCEMENT,
+    SHARD,
+    ITEM,
+    KNOWLEDGE,
     TARRASQUE,
     SECRET_SHOP,
     GOLD,
-    ITEM,
 }
 
 const Rewards: Reward[] = [
     {
         type: RewardTypes.FAVOR,
         name: 'Favor',
-        description: 'Applies a new favor on one of your abilities, improving one aspect from it.',
+        description: 'Change the effect one of your abilities.',
     },
     {
-        type: RewardTypes.ENHANCEMENT,
-        name: 'Enhancement',
-        description: 'Enhances one of your existing favors.',
+        type: RewardTypes.KNOWLEDGE,
+        name: 'Tome of Knowledge',
+        description: 'Enhances one of your existing shard effects.',
     },
     {
         type: RewardTypes.TARRASQUE,
@@ -35,6 +36,11 @@ const Rewards: Reward[] = [
         type: RewardTypes.ITEM,
         name: 'Item',
         description: 'Artifacts that improves your hero powers.',
+    },
+    {
+        type: RewardTypes.SHARD,
+        name: 'Shard',
+        description: 'Improves one of your abilities.',
     },/*
     {
         id: 'bounty_shop',

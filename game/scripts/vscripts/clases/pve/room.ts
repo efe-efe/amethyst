@@ -173,14 +173,17 @@ export default class Room extends GameState{
                 if(customNpc.reward && customNpc.reward.type === RewardTypes.FAVOR){
                     customNpc.RequestFavors();
                 }
-                if(customNpc.reward && customNpc.reward.type === RewardTypes.ENHANCEMENT){
-                    customNpc.RequestEnhancements();
+                if(customNpc.reward && customNpc.reward.type === RewardTypes.KNOWLEDGE){
+                    customNpc.RequestKnowledge();
                 }
                 if(customNpc.reward && customNpc.reward.type === RewardTypes.TARRASQUE){
                     customNpc.ApplyTarrasque();
                 }
                 if(customNpc.reward && customNpc.reward.type === RewardTypes.ITEM){
                     customNpc.RequestItems();
+                }
+                if(customNpc.reward && customNpc.reward.type === RewardTypes.SHARD){
+                    customNpc.RequestShards();
                 }
             }
         });
