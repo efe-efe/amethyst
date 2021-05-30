@@ -5,7 +5,7 @@ import GameState, { CustomGameState } from '../game_state';
 export default class PreRun extends GameState{
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
-        ListenToGameEvent('dota_player_learned_ability', () => this.OnAbilityLearned(), undefined);
+        ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
     }
 
     Update(): void{
@@ -18,11 +18,18 @@ export default class PreRun extends GameState{
         }
     }
 
-    OnAbilityLearned(): void{
+    OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void{
         let abilitiesReady = true;
         this.GetAllPlayers().forEach((player) => {
             const hero = player.hero;
             if(hero){
+                const ability = hero.FindAbilityByName(event.abilityname);
+                if(ability){
+                    if(ability.GetLevel() === 2){
+                        abilitiesReady = false;
+                    }
+                }
+
                 if(hero.GetAbilityPoints() > 0){
                     abilitiesReady = false;
                 }

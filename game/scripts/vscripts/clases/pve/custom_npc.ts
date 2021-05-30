@@ -354,12 +354,26 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             customEntities.ChangeMS(this.unit, 50);
             this.unit.RemoveAbility(this.unit.GetAbilityByIndex(7)!.GetName());
             this.unit.RemoveAbility(this.unit.GetAbilityByIndex(8)!.GetName());
+
+            ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
         } else {
             this.LevelAllAbilities(1);        
             (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(2);    
         }
     }
     
+    OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void{
+        if(event.PlayerID === this.unit.GetPlayerOwnerID()){
+            const ability = this.unit.FindAbilityByName(event.abilityname);
+            if(ability){
+                if(ability.GetLevel() === 2){
+                    ability.SetLevel(1);
+                    (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints((this.unit as CDOTA_BaseNPC_Hero).GetAbilityPoints() + 1);
+                }
+            }
+        }
+    }
+
     Update(): void{
         super.Update();
         if(this.remainingTimeToRemoveMana > 0){

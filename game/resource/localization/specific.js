@@ -8,7 +8,7 @@ var Description = function (data) {
     }
     output = output + data.description;
     if (data.level) {
-        output = output + '<br><br><b><font color="#61ffd0"><img src="file://{images}/custom_game/add.png" />LEVEL UPGRADE</font></b><br>' + data.level;
+        output = output + '<br><br><b><font color="#61ffd0"><img src="file://{images}/custom_game/add.png" />LEVEL UPGRADE</font></b> <font color="gray">(PVP ONLY)</font><br>' + data.level;
     }
     if (data.subAbility) {
         output = output + '<br><br><img src="file://{images}/custom_game/' + data.subAbility.iconPath + '" /> <b><font color="#ffffff">' + data.subAbility.name.toUpperCase() + '</font></b><br>' + data.subAbility.description;
