@@ -1,9 +1,15 @@
 import { CustomActionEvent } from '../addon_game_mode';
+import { CustomPlayerHeroNPC } from '../clases/pve/custom_npc';
+import Math from '../util/math';
 
 export interface Reward {
     type: RewardTypes;
     name: string;
     description: string;
+}
+
+interface GenerateRewardsOptions {
+    amount: number;
 }
 
 export enum RewardTypes {
@@ -54,6 +60,24 @@ const Rewards: Reward[] = [
     }*/
 ];
 
+export const RewardsManager = {
+    Rewards,
+    GenerateRewards: (customNpc: CustomPlayerHeroNPC, options: GenerateRewardsOptions): Reward[] => {
+        const rewards = Rewards.filter((reward) => (
+            RewardsManager.ValidateReward(customNpc, reward)
+        ));
+
+        return Math.GetRandomElementsFromArray(rewards, Clamp(options.amount, rewards.length, 0));
+    },
+    ValidateReward: (customNpc: CustomPlayerHeroNPC, reward: Reward): boolean => {
+        if(reward.type === RewardTypes.KNOWLEDGE){
+            if(customNpc.heroUpgrades.length < 2){
+                return false;
+            }
+        }
+        return true;
+    }
+};
 
 CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:select_reward', (eventSourceIndex, event) => {
     const playerId = event.playerIndex;

@@ -2,13 +2,122 @@ import { CustomActionEvent } from '../addon_game_mode';
 import Items from './items';
 import Shards from './shards';
 import Favors from './favors';
-import { Upgrade } from './common';
+import { Upgrade, UpgradeTypes } from './common';
+import { CustomPlayerHeroNPC } from '../clases/pve/custom_npc';
+import Math from '../util/math';
 
 const Upgrades: Upgrade[] = [
     ...Items,
     ...Shards,
     ...Favors,
 ];
+
+interface GenerateUpgradesOptions {
+    amount: number;
+    existingOnly: boolean;
+    allowDuplicates: boolean;
+    type: UpgradeTypes;
+}
+
+export const UpgradeManager = {
+    Upgrades,
+    GenerateUpgrades(customNpc: CustomPlayerHeroNPC, options: GenerateUpgradesOptions): Upgrade[]{
+        const upgrades = Upgrades.filter((upgrade) => {
+            if(!this.ValidateUpgradeType(upgrade, options.type)){
+                return false;
+            }
+            if(!this.ValidateUpgradeHero(customNpc, upgrade)){
+                return false;
+            }
+            if(!this.ValidateUpgradeAbility(customNpc, upgrade)){
+                return false;
+            }
+            if(!this.ValidateUpgradeAttackCapabilities(customNpc, upgrade)){
+                return false;
+            }
+            if(!this.ValidateUpgradeStacks(customNpc, upgrade)){
+                return false;
+            }
+            if(!this.ValidateUpgradeLevel(upgrade)){
+                return false;
+            }
+            if(!options.allowDuplicates && this.ValidateUpgradeAlreadyExists(customNpc, upgrade)){
+                return false;
+            }
+            if(options.existingOnly && !this.ValidateUpgradeAlreadyExists(customNpc, upgrade)){
+                return false;
+            }
+            return true;
+        });
+
+        return Math.GetRandomElementsFromArray(upgrades, Clamp(options.amount, upgrades.length, 0));
+    },
+    ValidateUpgradeType: (upgrade: Upgrade, type: UpgradeTypes): boolean => {
+        return upgrade.type === type;
+    },
+    ValidateUpgradeHero: (customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): boolean => {
+        if(!upgrade.hero){
+            return true;
+        }
+        return (upgrade.hero === customNpc.unit.GetName());
+    },
+    ValidateUpgradeAbility: (customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): boolean => {
+        if(!upgrade.ability){
+            return true;
+        }
+
+        const ability = customNpc.unit.FindAbilityByName(upgrade.ability);
+        if(!ability || ability.GetLevel() === 0){
+            return false;
+        }
+
+        return true;
+    },
+    ValidateUpgradeAttackCapabilities: (customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): boolean => {
+        if(!upgrade.attackCapability){
+            return true;
+        }
+        if(
+            (upgrade.attackCapability === UnitAttackCapability.MELEE_ATTACK && !customNpc.IsMeele()) || 
+            (upgrade.attackCapability === UnitAttackCapability.RANGED_ATTACK && !customNpc.IsRanged())
+        ){
+            return false;
+        }
+
+        return true;
+    },
+    ValidateUpgradeAlreadyExists: (customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): boolean => {
+        const heroUpgrade = customNpc.heroUpgrades.filter((heroUpgrade) => heroUpgrade.id === upgrade.id)[0];
+
+        if(!heroUpgrade){
+            return false;
+        }
+
+        return true;
+    },
+    ValidateUpgradeLevel: (upgrade: Upgrade): boolean => {
+        if(!upgrade.minLevel){
+            return true;
+        }
+        if(GameRules.Addon.currentRoom < upgrade.minLevel - 1){
+            return false;
+        }
+        return true;
+    },
+    ValidateUpgradeStacks: (customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): boolean => {
+        const heroUpgrade = customNpc.heroUpgrades.filter((heroUpgrade) => heroUpgrade.id === upgrade.id)[0];
+
+        if(!heroUpgrade){
+            return true;
+        }
+
+        if(heroUpgrade.level >= upgrade.maxStacks){
+            return false;
+        }
+
+        return true;
+    }
+};
 
 CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_favor', (eventSourceIndex, event) => {
     const playerId = event.playerIndex;

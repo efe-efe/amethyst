@@ -6,7 +6,7 @@ const Shards: Upgrade[] = [
         name: 'Swift damage',
         description: 'Your Swift deals damage when passing through enemies.',
         ability: 'phantom_mobility',
-        maxStacks: 3,
+        maxStacks: 5,
         modifier: {
             name: 'modifier_upgrade_phantom_dash_damage'
         },
@@ -18,7 +18,7 @@ const Shards: Upgrade[] = [
         name: 'Swift Shield',
         description: 'Your Swift gives you shield for a short period of time after passing through enemies.',
         ability: 'phantom_mobility',
-        maxStacks: 3,
+        maxStacks: 5,
         modifier: {
             name: 'modifier_upgrade_phantom_dash_shield'
         },

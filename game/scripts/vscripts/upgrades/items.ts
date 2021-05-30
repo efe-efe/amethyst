@@ -16,8 +16,8 @@ const Items: Upgrade[] = [
     {
         id: 'upgrade_blades_of_attack',
         name: 'Blades of attack',
-        description: 'Increases your base damage by 3.',
-        maxStacks: 3,
+        description: 'Increases your base damage by 1.',
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_extra_base_damage'
         },
@@ -28,7 +28,7 @@ const Items: Upgrade[] = [
         id: 'upgrade_item_moonshard',
         name: 'Moonshard',
         description: 'Increases your movement and attack speed.',
-        maxStacks: 3,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_extra_speed'
         },
@@ -39,7 +39,7 @@ const Items: Upgrade[] = [
         id: 'upgrade_item_maelstrom',
         name: 'Maelstrom',
         description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets.',
-        maxStacks: 3,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_lightining_attack'
         },
@@ -50,7 +50,7 @@ const Items: Upgrade[] = [
         id: 'upgrade_item_basher',
         name: 'Basher',
         description: 'Your attacks has a chance to deal extra damage and stun the target.',
-        maxStacks: 3,
+        maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_stun_attack'
         },
