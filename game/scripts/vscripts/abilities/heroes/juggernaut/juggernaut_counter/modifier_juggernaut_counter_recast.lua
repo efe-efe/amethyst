@@ -6,12 +6,18 @@ function modifier_juggernaut_counter_recast:OnDestroy()
 	if IsServer() then
 		if self:GetRemainingTime() < 0.05 then
 			self:GetParent():RemoveModifierByName("modifier_juggernaut_counter")
+			self:StartCooldownSafely("juggernaut_counter")
+			self:StartCooldownSafely("juggernaut_ex_counter")
+		end
+	end
+end
 
-			local juggernaut_counter = self:GetParent():FindAbilityByName("juggernaut_counter")
-			local juggernaut_ex_counter = self:GetParent():FindAbilityByName("juggernaut_ex_counter")
+function modifier_juggernaut_counter_recast:StartCooldownSafely(sAbilityName)
+	if IsServer() then
+		local ability = self:GetParent():FindAbilityByName(sAbilityName)
 
-			juggernaut_counter:StartCooldown(juggernaut_counter:GetCooldown(0))
-			juggernaut_ex_counter:StartCooldown(juggernaut_ex_counter:GetCooldown(0))
+		if ability then
+			ability:StartCooldown(ability:GetCooldown(0))
 		end
 	end
 end

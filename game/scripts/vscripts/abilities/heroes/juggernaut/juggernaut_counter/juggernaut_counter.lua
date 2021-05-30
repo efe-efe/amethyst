@@ -134,7 +134,10 @@ function juggernaut_counter_recast:OnSpellStart()
    self:Slash(point, damage)
 
    self:GetRecastAbility():StartCooldown(self:GetRecastAbility():GetCooldown(0))
-   juggernaut_ex_counter:StartCooldown(juggernaut_ex_counter:GetCooldown(0))
+
+   if juggernaut_ex_counter then
+      juggernaut_ex_counter:StartCooldown(juggernaut_ex_counter:GetCooldown(0))
+   end
 end
 
 function juggernaut_counter_recast:GetRecastCounterModifierName() return   "modifier_juggernaut_counter" end
