@@ -352,6 +352,8 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             this.unit.GetAbilityByIndex(6)?.SetLevel(1);
             (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(2);
             customEntities.ChangeMS(this.unit, 50);
+            this.unit.RemoveAbility(this.unit.GetAbilityByIndex(7)!.GetName());
+            this.unit.RemoveAbility(this.unit.GetAbilityByIndex(8)!.GetName());
         } else {
             this.LevelAllAbilities(1);        
             (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(2);    

@@ -314,10 +314,12 @@ function CustomEntitiesLegacy:GetAbilities(hEntity)
 
 	for i = 0, 8 do
 		local ability = hEntity:GetAbilityByIndex(i)
-		table.insert(abilities, {
-			name = ability:GetName(),
-			level = ability:GetLevel(),
-		})
+		if ability then
+			table.insert(abilities, {
+				name = ability:GetName(),
+				level = ability:GetLevel(),
+			})
+		end
 	end
 
 	return abilities
@@ -628,12 +630,15 @@ function CustomEntitiesLegacy:DeactivateNonPriorityAbilities(hEntity)
 	if IsServer() then
 		for i = 0, 10 do
 			local ability = hEntity:GetAbilityByIndex(i)
-			if 	not ability:IsCounter() and
-				not ability:IsMobility() and 
-				not ability:IsUltimate() and 
-				not ability:HasPriority() 
-			then
-				ability:SetActivated(false)
+			
+			if ability then
+				if 	not ability:IsCounter() and
+					not ability:IsMobility() and 
+					not ability:IsUltimate() and 
+					not ability:HasPriority() 
+				then
+					ability:SetActivated(false)
+				end
 			end
 		end
 	end
@@ -642,7 +647,10 @@ end
 function CustomEntitiesLegacy:SetAllAbilitiesActivated(hEntity, bMode)
 	if IsServer() then
 		for i = 0, 13 do
-			hEntity:GetAbilityByIndex(i):SetActivated(bMode)
+			local ability = hEntity:GetAbilityByIndex(i)
+			if ability then
+				hEntity:GetAbilityByIndex(i):SetActivated(bMode)
+			end
 		end
 	end
 end

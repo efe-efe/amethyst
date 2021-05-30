@@ -67,13 +67,11 @@ function modifier_phantom_counter_countering:OnOrder(params)
 end
 
 function modifier_phantom_counter_countering:GetMovementSpeedPercentage()
-	if IsServer() then
-		if self:GetParent():HasModifier('modifier_upgrade_phantom_act_while_countering') then
-			return 100
-		end
-
-		return 0
+	if self:GetParent():HasModifier('modifier_upgrade_phantom_act_while_countering') then
+		return 100
 	end
+
+	return 0
 end
 
 function modifier_phantom_counter_countering:DeclareFunctions()

@@ -209,7 +209,7 @@ import { ReadyBar } from './readyBar';
     abilitiesAndStatsBranchPanel.style.marginBottom = '-15px';
 
     const centerBgPanel = layout.GetTopPanel().FindChildTraverse('center_bg')!;
-    centerBgPanel.style.height = '80px';
+    centerBgPanel.style.height = '90px';
 
     layout.SetPanelMargin('debuffs', { bottom: '95px' });
     layout.SetPanelMargin('buffs', { bottom: '95px' });
