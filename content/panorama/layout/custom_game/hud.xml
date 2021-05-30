@@ -19,6 +19,31 @@
 	<scripts>
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
 	</scripts>
+
+    <snippets>
+		<snippet name="Upgrade">
+            <Panel class="upgrade">
+                <Panel class="upgrade-left">
+                   <DOTAAbilityImage class="upgrade__ability"></DOTAAbilityImage>
+                </Panel>
+                <Panel class="upgrade-right">
+                    <Label class="upgrade__title" text="Empty"></Label>
+                    <Label class="upgrade__description" text="No upgrades here"></Label>
+                </Panel>
+            </Panel>
+		</snippet>
+
+		<snippet name="Reward">
+            <Panel class="reward">
+                <Label class="reward__title" text="Empty" />
+                <Panel class='reward__image-container'>
+                    <Image class='reward__image' />
+                </Panel>
+                <Label class="reward__description" text="Description" />
+            </Panel>
+		</snippet>
+    </snippets>
+
     <Panel class="main" hittest="false">
         <Label id="game-state" class="game-state" text="-" />
         <Panel class="room-status pve">
@@ -27,54 +52,15 @@
             <Label id="current-room" text="Room: 1" />
             <Label id="next-reward" text="Next reward: " />
         </Panel>
-
+        
         <Panel class="upgrades pve">
-            <Panel class="upgrade">
-                <Panel class="upgrade-left">
-                   <DOTAAbilityImage class="upgrade__ability"></DOTAAbilityImage>
-                </Panel>
-                <Panel class="upgrade-right">
-                    <Label class="upgrade__title" text="Upgrade Title"></Label>
-                    <Label class="upgrade__description" text="Upgrade Description"></Label>
-                </Panel>
-            </Panel>
-            <Panel class="upgrade">
-                <Panel class="upgrade-left">
-                   <DOTAAbilityImage class="upgrade__ability"></DOTAAbilityImage>
-                </Panel>
-                <Panel class="upgrade-right">
-                    <Label class="upgrade__title" text="Upgrade Title"></Label>
-                    <Label class="upgrade__description" text="Upgrade Description"></Label>
-                </Panel>
-            </Panel>
-            <Panel class="upgrade upgrade--last">
-                <Panel class="upgrade-left">
-                   <DOTAAbilityImage class="upgrade__ability"></DOTAAbilityImage>
-                </Panel>
-                <Panel class="upgrade-right">
-                    <Label class="upgrade__title" text="Upgrade Title"></Label>
-                    <Label class="upgrade__description" text="Upgrade Description"></Label>
-                </Panel>
-            </Panel>
         </Panel>
 
         <Panel class="rewards pve">
             <Label class="rewards__title" text="Chose your next reward" />
             <Label class="rewards__sub-title" text="Chose the reward that you will gain once the next room is cleared." />
             
-            <Panel class="reward-container">
-                <Panel class="reward">
-                    <Label class="reward__title" text="Chose A" />
-                    <Label class="reward__description" text="Description" />
-                </Panel>
-                <Panel class="reward">
-                    <Label class="reward__title" text="Chose B" />
-                    <Label class="reward__description" text="Description" />
-                </Panel>
-                <Panel class="reward reward--last">
-                    <Label class="reward__title" text="Chose C" />
-                    <Label class="reward__description" text="Description" />
-                </Panel>
+            <Panel class="rewards-container">
             </Panel>
         </Panel>
 

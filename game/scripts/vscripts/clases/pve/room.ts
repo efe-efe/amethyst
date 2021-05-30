@@ -176,7 +176,7 @@ export default class Room extends GameState{
                 if(customNpc.reward && customNpc.reward.type === RewardTypes.KNOWLEDGE){
                     customNpc.RequestKnowledge();
                 }
-                if(customNpc.reward && customNpc.reward.type === RewardTypes.TARRASQUE){
+                if(customNpc.reward && customNpc.reward.type === RewardTypes.VITALITY){
                     customNpc.ApplyTarrasque();
                 }
                 if(customNpc.reward && customNpc.reward.type === RewardTypes.ITEM){

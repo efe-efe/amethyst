@@ -17,7 +17,7 @@ export enum RewardTypes {
     SHARD,
     ITEM,
     KNOWLEDGE,
-    TARRASQUE,
+    VITALITY,
     SECRET_SHOP,
     GOLD,
 }
@@ -34,8 +34,8 @@ const Rewards: Reward[] = [
         description: 'Enhances one of your existing shard effects.',
     },
     {
-        type: RewardTypes.TARRASQUE,
-        name: 'Heart of Tarrasque',
+        type: RewardTypes.VITALITY,
+        name: 'Vitality',
         description: 'Increases your maximun health pool.',
     },
     {

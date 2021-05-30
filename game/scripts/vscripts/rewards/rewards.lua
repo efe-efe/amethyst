@@ -13,13 +13,13 @@ ____exports.RewardTypes.ITEM = 2
 ____exports.RewardTypes[____exports.RewardTypes.ITEM] = "ITEM"
 ____exports.RewardTypes.KNOWLEDGE = 3
 ____exports.RewardTypes[____exports.RewardTypes.KNOWLEDGE] = "KNOWLEDGE"
-____exports.RewardTypes.TARRASQUE = 4
-____exports.RewardTypes[____exports.RewardTypes.TARRASQUE] = "TARRASQUE"
+____exports.RewardTypes.VITALITY = 4
+____exports.RewardTypes[____exports.RewardTypes.VITALITY] = "VITALITY"
 ____exports.RewardTypes.SECRET_SHOP = 5
 ____exports.RewardTypes[____exports.RewardTypes.SECRET_SHOP] = "SECRET_SHOP"
 ____exports.RewardTypes.GOLD = 6
 ____exports.RewardTypes[____exports.RewardTypes.GOLD] = "GOLD"
-local Rewards = {{type = ____exports.RewardTypes.FAVOR, name = "Favor", description = "Change the effect one of your abilities."}, {type = ____exports.RewardTypes.KNOWLEDGE, name = "Tome of Knowledge", description = "Enhances one of your existing shard effects."}, {type = ____exports.RewardTypes.TARRASQUE, name = "Heart of Tarrasque", description = "Increases your maximun health pool."}, {type = ____exports.RewardTypes.ITEM, name = "Item", description = "Artifacts that improves your hero powers."}, {type = ____exports.RewardTypes.SHARD, name = "Shard", description = "Improves one of your abilities."}}
+local Rewards = {{type = ____exports.RewardTypes.FAVOR, name = "Favor", description = "Change the effect one of your abilities."}, {type = ____exports.RewardTypes.KNOWLEDGE, name = "Tome of Knowledge", description = "Enhances one of your existing shard effects."}, {type = ____exports.RewardTypes.VITALITY, name = "Vitality", description = "Increases your maximun health pool."}, {type = ____exports.RewardTypes.ITEM, name = "Item", description = "Artifacts that improves your hero powers."}, {type = ____exports.RewardTypes.SHARD, name = "Shard", description = "Improves one of your abilities."}}
 ____exports.RewardsManager = {
     Rewards = Rewards,
     GenerateRewards = function(____, customNpc, options)

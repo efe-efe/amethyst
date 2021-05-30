@@ -181,7 +181,7 @@ ____exports.default = (function()
                     if customNpc.reward and (customNpc.reward.type == RewardTypes.KNOWLEDGE) then
                         customNpc:RequestKnowledge()
                     end
-                    if customNpc.reward and (customNpc.reward.type == RewardTypes.TARRASQUE) then
+                    if customNpc.reward and (customNpc.reward.type == RewardTypes.VITALITY) then
                         customNpc:ApplyTarrasque()
                     end
                     if customNpc.reward and (customNpc.reward.type == RewardTypes.ITEM) then

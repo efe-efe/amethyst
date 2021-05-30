@@ -32,6 +32,7 @@
 }
 
 .upgrades{
+    overflow: squish scroll;
     height: 600px;
     width: 800px;
     flow-children: down;
@@ -106,15 +107,16 @@
     }
 }
 
-.reward-container{
+.rewards-container{
     align: center center;
     flow-children: right;
+    overflow: scroll squish;
 }
 
 .reward{
     background-color: rgba(0,0,0, 0.8);
     width: 220px;
-    height: 200px;
+    height: 250px;
     margin-right: 20px;
     flow-children: down;
     border-radius: 5px;
@@ -124,6 +126,7 @@
         text-align: center;
         align: center center;
         font-size: 20px;
+        margin-bottom: 10px;
     }
 
     &__description{
@@ -134,6 +137,12 @@
 
     &--last{
         margin-right: 0px;
+    }
+
+    &__image-container{
+        height: 120px;
+        margin-bottom: 10px;
+        align: center center;
     }
 
     &:hover{

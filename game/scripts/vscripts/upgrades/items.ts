@@ -3,6 +3,7 @@ import { Upgrade, UpgradeTypes } from './common';
 const Items: Upgrade[] = [
     {
         id: 'upgrade_broom_handle',
+        abilityIconName: 'item_broom_handle',
         name: 'Broom handle',
         description: 'Provides extra radius on your basic attack',
         maxStacks: 1,
@@ -15,6 +16,7 @@ const Items: Upgrade[] = [
     },
     {
         id: 'upgrade_blades_of_attack',
+        abilityIconName: 'item_blades_of_attack',
         name: 'Blades of attack',
         description: 'Increases your base damage by 1.',
         maxStacks: 1,
@@ -26,6 +28,7 @@ const Items: Upgrade[] = [
     },
     {
         id: 'upgrade_item_moonshard',
+        abilityIconName: 'item_moon_shard',
         name: 'Moonshard',
         description: 'Increases your movement and attack speed.',
         maxStacks: 1,
@@ -37,6 +40,7 @@ const Items: Upgrade[] = [
     },
     {
         id: 'upgrade_item_maelstrom',
+        abilityIconName: 'item_maelstrom',
         name: 'Maelstrom',
         description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets.',
         maxStacks: 1,
@@ -48,6 +52,7 @@ const Items: Upgrade[] = [
     },
     {
         id: 'upgrade_item_basher',
+        abilityIconName: 'item_basher',
         name: 'Basher',
         description: 'Your attacks has a chance to deal extra damage and stun the target.',
         maxStacks: 1,

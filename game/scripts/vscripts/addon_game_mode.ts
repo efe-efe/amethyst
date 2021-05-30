@@ -839,6 +839,20 @@ export class GameMode{
                 }
             }
         }
+
+        if(event.text == '-reward'){
+            if(this.IsPVE()){
+                const playerId = event.playerid;
+                const player = this.FindPlayerById(playerId);
+                
+                if(player){
+                    const customNpc = player.customNpc;
+                    if(customNpc){
+                        customNpc.RequestRewards();
+                    }
+                }
+            }
+        }
     }
     
     OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void{
