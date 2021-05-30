@@ -77,14 +77,17 @@ end
 
 function juggernaut_basic_attack:ReduceCooldown(hCaster, sAbilityName, iCooldownReduction)
 	local ability = hCaster:FindAbilityByName(sAbilityName)
-	local ability_cd = ability:GetCooldownTimeRemaining()
-	local new_cd = ability_cd - iCooldownReduction
 
-	if (new_cd) < 0 then 
-		ability:EndCooldown()
-	else
-		ability:EndCooldown()
-		ability:StartCooldown(new_cd)
+	if ability then
+		local ability_cd = ability:GetCooldownTimeRemaining()
+		local new_cd = ability_cd - iCooldownReduction
+
+		if (new_cd) < 0 then 
+			ability:EndCooldown()
+		else
+			ability:EndCooldown()
+			ability:StartCooldown(new_cd)
+		end
 	end
 end
 

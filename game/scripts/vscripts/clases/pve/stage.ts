@@ -110,13 +110,14 @@ export default class Stage extends GameState{
         const distribution = mobsDistribution[this.currentRoom];
         distribution.forEach((mobTier) => {
             const npcs = this.GetAllNpcsOfTier(mobTier.tier);
-            const index = RandomInt(0, npcs.length - 1);
 
             for(let i = 0; i < mobTier.base; i++){
+                const index = RandomInt(0, npcs.length - 1);
                 wave.npcs.push(npcs[index]);
             }
             
             for(let i = 0; i < mobTier.optional; i++){
+                const index = RandomInt(0, npcs.length - 1);
                 if(RandomInt(1,2) === 1){
                     wave.npcs.push(npcs[index]);
                 }
