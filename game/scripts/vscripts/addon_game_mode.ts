@@ -727,10 +727,10 @@ export class GameMode{
     }
     
     OnPlayerChat(event: PlayerChatEvent): void{
+        const playerId = event.playerid;
+        const player = this.FindPlayerById(playerId);
+
         if(event.text == '-unstuck'){
-            const playerId = event.playerid;
-            const player = this.FindPlayerById(playerId);
-            
             if(player){
                 const hero = player.hero;
                 if(hero){
@@ -754,6 +754,42 @@ export class GameMode{
 
         if(event.text == '-unwtf'){
             this.wtf = false;
+        }
+        
+        if(this.IsPVE()){
+            if(!player){
+                return;
+            }
+
+            const customNpc = player.customNpc;
+
+            if(!customNpc){
+                return;
+            }
+
+            if(event.text == '-favor'){
+                customNpc.RequestFavors();
+            }
+            
+            if(event.text == '-shard'){
+                customNpc.RequestShards();
+            }
+            
+            if(event.text == '-tome'){
+                customNpc.RequestKnowledge();
+            }
+            
+            if(event.text == '-item'){
+                customNpc.RequestItems();
+            }
+
+            if(event.text == '-reward'){
+                customNpc.RequestRewards();
+            }
+
+            if(event.text == '-vitality'){
+                customNpc.ApplyTarrasque();
+            }
         }
 
         /*
@@ -785,76 +821,6 @@ export class GameMode{
             }
         }
         */
-        
-        if(event.text == '-favor'){
-            if(this.IsPVE()){
-                const playerId = event.playerid;
-                const player = this.FindPlayerById(playerId);
-                
-                if(player){
-                    const customNpc = player.customNpc;
-                    if(customNpc){
-                        customNpc.RequestFavors();
-                    }
-                }
-            }
-        }
-        
-        if(event.text == '-shard'){
-            if(this.IsPVE()){
-                const playerId = event.playerid;
-                const player = this.FindPlayerById(playerId);
-                
-                if(player){
-                    const customNpc = player.customNpc;
-                    if(customNpc){
-                        customNpc.RequestShards();
-                    }
-                }
-            }
-        }
-        
-        if(event.text == '-tome'){
-            if(this.IsPVE()){
-                const playerId = event.playerid;
-                const player = this.FindPlayerById(playerId);
-                
-                if(player){
-                    const customNpc = player.customNpc;
-                    if(customNpc){
-                        customNpc.RequestKnowledge();
-                    }
-                }
-            }
-        }
-        
-        if(event.text == '-item'){
-            if(this.IsPVE()){
-                const playerId = event.playerid;
-                const player = this.FindPlayerById(playerId);
-                
-                if(player){
-                    const customNpc = player.customNpc;
-                    if(customNpc){
-                        customNpc.RequestItems();
-                    }
-                }
-            }
-        }
-
-        if(event.text == '-reward'){
-            if(this.IsPVE()){
-                const playerId = event.playerid;
-                const player = this.FindPlayerById(playerId);
-                
-                if(player){
-                    const customNpc = player.customNpc;
-                    if(customNpc){
-                        customNpc.RequestRewards();
-                    }
-                }
-            }
-        }
     }
     
     OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void{
