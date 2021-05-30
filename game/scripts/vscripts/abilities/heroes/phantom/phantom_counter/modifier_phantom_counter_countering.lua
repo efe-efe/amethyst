@@ -39,12 +39,48 @@ function modifier_phantom_counter_countering:OnHit(params)
 	end
 end
 
-function modifier_phantom_counter_countering:GetMovementSpeedPercentage() return 0 end
+function modifier_phantom_counter_countering:DeactivateAbilities()
+	if IsServer() then
+		if self:GetParent():HasModifier('modifier_upgrade_phantom_act_while_countering') then
+			return false
+		end
+		return true
+	end
+end
+
+function modifier_phantom_counter_countering:OnOrder(params)
+	if IsServer() then
+		if self:GetParent():HasModifier('modifier_upgrade_phantom_act_while_countering') then
+			return
+		end
+
+		if params.unit == self:GetParent() then
+			if  params.order_type == DOTA_UNIT_ORDER_STOP or 
+				params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION or 
+				params.order_type == DOTA_UNIT_ORDER_CAST_POSITION or
+				params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
+			then
+				self:Destroy()
+			end
+		end
+	end
+end
+
+function modifier_phantom_counter_countering:GetMovementSpeedPercentage()
+	if IsServer() then
+		if self:GetParent():HasModifier('modifier_upgrade_phantom_act_while_countering') then
+			return 100
+		end
+
+		return 0
+	end
+end
 
 function modifier_phantom_counter_countering:DeclareFunctions()
 	return {
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION,
 		MODIFIER_PROPERTY_OVERRIDE_ANIMATION_RATE,
+		MODIFIER_EVENT_ON_ORDER,
 	}
 end
 

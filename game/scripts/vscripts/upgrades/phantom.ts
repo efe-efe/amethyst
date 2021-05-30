@@ -52,6 +52,18 @@ const Favors: Upgrade[] = [
         tier: 1,
         type: UpgradeTypes.FAVOR,
     },
+    {
+        id: 'phantom_act_while_countering',
+        name: 'Phantom Strike while acting',
+        description: 'You can act while in counter state.',
+        ability: 'phantom_counter',
+        maxStacks: 1,
+        modifier: {
+            name: 'modifier_upgrade_phantom_act_while_countering'
+        },
+        tier: 1,
+        type: UpgradeTypes.FAVOR,
+    },
 ];
 
 const PhantomRewards = {

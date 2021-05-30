@@ -587,13 +587,16 @@ function Modifiers.Counter(modifier)
     local useDefaultVisuals =                       modifier.UseDefaultVisuals
     local getStatusEffectName =                     modifier.GetStatusEffectName
     local getModifierIncomingDamage_Percentage =    modifier.GetModifierIncomingDamage_Percentage
+    local deactivateAbilities =                     modifier.DeactivateAbilities
     
     function modifier:OnCreated(params)
         if IsServer() then
             if self:UseDefaultVisuals() then
                 self.effect_cast = ParticleManager:CreateParticle("particles/items_fx/black_king_bar_avatar.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
             end
-            CustomEntitiesLegacy:DeactivateNonPriorityAbilities(self:GetParent())
+            if self:DeactivateAbilities() then
+                CustomEntitiesLegacy:DeactivateNonPriorityAbilities(self:GetParent())
+            end
         end
         if onCreated then onCreated(self, params) end
     end
@@ -604,7 +607,9 @@ function Modifiers.Counter(modifier)
                 ParticleManager:DestroyParticle(self.effect_cast, false)
                 ParticleManager:ReleaseParticleIndex(self.effect_cast)
             end
-			CustomEntitiesLegacy:SetAllAbilitiesActivated(self:GetParent(), true)
+            if self:DeactivateAbilities() then
+                CustomEntitiesLegacy:SetAllAbilitiesActivated(self:GetParent(), true)
+            end
         end
         if onDestroy then onDestroy(self, params) end
     end
@@ -620,6 +625,11 @@ function Modifiers.Counter(modifier)
 
     function modifier:UseDefaultVisuals()
         if useDefaultVisuals then return useDefaultVisuals(self) end
+        return true
+    end 
+
+    function modifier:DeactivateAbilities()
+        if deactivateAbilities then return deactivateAbilities(self) end
         return true
     end 
 

@@ -410,8 +410,8 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return (value && (value.rewards !== undefined));
     }
 
-    ApplyFavor(upgrade: Upgrade): void{
-        if(upgrade.modifier){
+    ApplyFavor(upgrade: Upgrade | undefined): void{
+        if(upgrade && upgrade.modifier){
             this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
             let found = false;
             this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
@@ -433,7 +433,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
             }
         }
 
-        if(upgrade.effect){
+        if(upgrade && upgrade.effect){
             upgrade.effect(this.unit as CDOTA_BaseNPC_Hero);
         }
 
@@ -469,9 +469,16 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     RequestRewards(): void{
+        const rewards = RewardsManager.GenerateRewards(this, { amount: RandomInt(1, 3) });
+        
+        if(rewards.length === 0){
+            print('Skipping rewards selection. No rewards available');
+            return;         
+        }
+        
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            rewards: RewardsManager.GenerateRewards(this, { amount: RandomInt(1, 3) }),
+            rewards,
         } as never;
 
         const tableName = 'custom_npc_rewards' as never;
@@ -479,14 +486,17 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     RequestFavors(): void{
+        const upgrades = UpgradeManager.GenerateFavors(this, 3);
+        
+        if(upgrades.length === 0){
+            print('Skipping favors selection. No rewards available');  
+            this.ApplyFavor(undefined);
+            return;          
+        }
+
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            upgrades: UpgradeManager.GenerateUpgrades(this, {
-                amount: 3,
-                type: UpgradeTypes.FAVOR,
-                allowDuplicates: false,
-                existingOnly: false,
-            }),
+            upgrades,
         } as never;
 
         const tableName = 'custom_npc_favors' as never;
@@ -494,14 +504,17 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     RequestShards(): void{
+        const upgrades = UpgradeManager.GenerateShards(this, 3);
+        
+        if(upgrades.length === 0){
+            print('Skipping shards selection. No rewards available');  
+            this.ApplyFavor(undefined);
+            return;          
+        }
+
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            upgrades: UpgradeManager.GenerateUpgrades(this, {
-                amount: 3,
-                type: UpgradeTypes.SHARD,
-                allowDuplicates: false,
-                existingOnly: false,
-            }),
+            upgrades
         } as never;
 
         const tableName = 'custom_npc_favors' as never;
@@ -509,14 +522,17 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     RequestKnowledge(): void{
+        const upgrades = UpgradeManager.GenerateKnowledge(this, 3);
+        
+        if(upgrades.length === 0){
+            print('Skipping knowledge selection. No rewards available');  
+            this.ApplyFavor(undefined);
+            return;          
+        }
+        
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            upgrades: UpgradeManager.GenerateUpgrades(this, {
-                amount: 3,
-                type: UpgradeTypes.SHARD,
-                allowDuplicates: true,
-                existingOnly: true,
-            }),
+            upgrades,
         } as never;
 
         const tableName = 'custom_npc_favors' as never;
@@ -524,14 +540,17 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     RequestItems(): void{
+        const upgrades = UpgradeManager.GenerateItems(this, RandomInt(4, 6));
+        
+        if(upgrades.length === 0){
+            print('Skipping items selection. No rewards available');  
+            this.ApplyFavor(undefined);
+            return;          
+        }
+        
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
-            upgrades: UpgradeManager.GenerateUpgrades(this, {
-                amount: 3,
-                type: UpgradeTypes.ITEM,
-                allowDuplicates: false,
-                existingOnly: false,
-            }),
+            upgrades,
         } as never;
 
         const tableName = 'custom_npc_favors' as never;

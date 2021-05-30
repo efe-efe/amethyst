@@ -1,5 +1,6 @@
 import { CustomActionEvent } from '../addon_game_mode';
 import { CustomPlayerHeroNPC } from '../clases/pve/custom_npc';
+import { UpgradeManager } from '../upgrades/upgrades';
 import Math from '../util/math';
 
 export interface Reward {
@@ -62,21 +63,44 @@ const Rewards: Reward[] = [
 
 export const RewardsManager = {
     Rewards,
-    GenerateRewards: (customNpc: CustomPlayerHeroNPC, options: GenerateRewardsOptions): Reward[] => {
+    GenerateRewards(customNpc: CustomPlayerHeroNPC, options: GenerateRewardsOptions): Reward[]{
         const rewards = Rewards.filter((reward) => (
-            RewardsManager.ValidateReward(customNpc, reward)
+            this.ValidateReward(customNpc, reward)
         ));
 
         return Math.GetRandomElementsFromArray(rewards, Clamp(options.amount, rewards.length, 0));
     },
     ValidateReward: (customNpc: CustomPlayerHeroNPC, reward: Reward): boolean => {
+        const knowledge = UpgradeManager.GenerateKnowledge(customNpc, 1);
+        const items = UpgradeManager.GenerateItems(customNpc, 1);
+        const shards = UpgradeManager.GenerateShards(customNpc, 1);
+        const favors = UpgradeManager.GenerateFavors(customNpc, 1);
+
         if(reward.type === RewardTypes.KNOWLEDGE){
+            if(knowledge.length === 0){
+                return false;
+            }
             if(customNpc.heroUpgrades.length < 2){
                 return false;
             }
         }
+        if(reward.type === RewardTypes.ITEM){
+            if(items.length === 0){
+                return false;
+            }
+        }
+        if(reward.type === RewardTypes.SHARD){
+            if(shards.length === 0){
+                return false;
+            }
+        }
+        if(reward.type === RewardTypes.FAVOR){
+            if(favors.length === 0){
+                return false;
+            }
+        }
         return true;
-    }
+    },
 };
 
 CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:select_reward', (eventSourceIndex, event) => {

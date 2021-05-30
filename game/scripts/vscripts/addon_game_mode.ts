@@ -405,6 +405,7 @@ export class GameMode{
             LinkLuaModifier('modifier_upgrade_stun_attack',  'modifiers/upgrades/modifier_upgrade_stun_attack', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_stun_attack_attack',  'modifiers/upgrades/modifier_upgrade_stun_attack', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_tarrasque',  'modifiers/upgrades/modifier_upgrade_tarrasque', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_phantom_act_while_countering',  'modifiers/upgrades/modifier_upgrade_phantom_act_while_countering', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');

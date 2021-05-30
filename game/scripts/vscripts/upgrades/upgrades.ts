@@ -21,6 +21,38 @@ interface GenerateUpgradesOptions {
 
 export const UpgradeManager = {
     Upgrades,
+    GenerateFavors(customNpc: CustomPlayerHeroNPC, amount: number): Upgrade[]{
+        return this.GenerateUpgrades(customNpc, {
+            amount,
+            type: UpgradeTypes.FAVOR,
+            allowDuplicates: false,
+            existingOnly: false,
+        });
+    },
+    GenerateShards(customNpc: CustomPlayerHeroNPC, amount: number): Upgrade[]{
+        return this.GenerateUpgrades(customNpc, {
+            amount,
+            type: UpgradeTypes.SHARD,
+            allowDuplicates: false,
+            existingOnly: false,
+        });
+    },
+    GenerateKnowledge(customNpc: CustomPlayerHeroNPC, amount: number): Upgrade[]{
+        return this.GenerateUpgrades(customNpc, {
+            amount,
+            type: UpgradeTypes.SHARD,
+            allowDuplicates: true,
+            existingOnly: true,
+        });
+    },
+    GenerateItems(customNpc: CustomPlayerHeroNPC, amount: number): Upgrade[]{
+        return this.GenerateUpgrades(customNpc, {
+            amount,
+            type: UpgradeTypes.ITEM,
+            allowDuplicates: false,
+            existingOnly: false,
+        });
+    },
     GenerateUpgrades(customNpc: CustomPlayerHeroNPC, options: GenerateUpgradesOptions): Upgrade[]{
         const upgrades = Upgrades.filter((upgrade) => {
             if(!this.ValidateUpgradeType(upgrade, options.type)){
