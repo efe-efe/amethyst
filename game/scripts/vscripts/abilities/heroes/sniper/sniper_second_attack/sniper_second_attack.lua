@@ -29,6 +29,16 @@ function sniper_second_attack:GetCastPointSpeed()
 	return 0 
 end
 
+function sniper_second_attack:GetCastPoint()
+	if IsServer() then
+		if self:GetCaster():FindModifierByName('modifier_upgrade_sniper_snipe_cast_fast') then
+			return 0.3
+		end
+
+		return self.BaseClass.GetCastPoint(self)
+	end
+end
+
 function sniper_second_attack:OnAbilityPhaseStart()
 	EmitGlobalSound("Ability.AssassinateLoad")
 	
