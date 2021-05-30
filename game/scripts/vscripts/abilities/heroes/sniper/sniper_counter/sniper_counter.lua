@@ -9,14 +9,18 @@ function sniper_counter:OnSpellStart()
         self,
         "modifier_sniper_counter",
         { duration = duration }
-   )
+    )
 
-    local ability = self:GetCaster():FindAbilityByName("sniper_second_attack")
-    ability:EndCooldown()
-
-    ability = self:GetCaster():FindAbilityByName("sniper_ex_second_attack")
-    ability:EndCooldown()
+    self:RefreshAbility('sniper_second_attack')
+    self:RefreshAbility('sniper_ex_second_attack')
     self:PlayEffects()
+end
+
+function sniper_counter:RefreshAbility(sAbilityName)
+    local ability = self:GetCaster():FindAbilityByName(sAbilityName)
+    if ability then
+        ability:EndCooldown()
+    end
 end
 
 function sniper_counter:PlayEffects()
