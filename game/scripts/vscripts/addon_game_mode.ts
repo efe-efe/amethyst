@@ -396,7 +396,7 @@ export class GameMode{
             LinkLuaModifier('modifier_upgrade_lightining_attack',  'modifiers/upgrades/modifier_upgrade_lightining_attack', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_lightining_attack_attack',  'modifiers/upgrades/modifier_upgrade_lightining_attack', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_phantom_dash_damage',  'modifiers/upgrades/modifier_upgrade_phantom_dash_damage', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_phantom_dash_invulnerability',  'modifiers/upgrades/modifier_upgrade_phantom_dash_invulnerability', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_phantom_dash_shield',  'modifiers/upgrades/modifier_upgrade_phantom_dash_shield', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_phantom_coup_cast_fast',  'modifiers/upgrades/modifier_upgrade_phantom_coup_cast_fast', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_juggernaut_fury_attack',  'modifiers/upgrades/modifier_upgrade_juggernaut_fury_attack', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_storm_ranged_remnant',  'modifiers/upgrades/modifier_upgrade_storm_ranged_remnant', LuaModifierMotionType.NONE);
@@ -784,7 +784,7 @@ export class GameMode{
         }
         */
         
-        if(event.text == '-upgrade'){
+        if(event.text == '-favor'){
             if(this.IsPVE()){
                 const playerId = event.playerid;
                 const player = this.FindPlayerById(playerId);
@@ -793,6 +793,48 @@ export class GameMode{
                     const customNpc = player.customNpc;
                     if(customNpc){
                         customNpc.RequestFavors();
+                    }
+                }
+            }
+        }
+        
+        if(event.text == '-shard'){
+            if(this.IsPVE()){
+                const playerId = event.playerid;
+                const player = this.FindPlayerById(playerId);
+                
+                if(player){
+                    const customNpc = player.customNpc;
+                    if(customNpc){
+                        customNpc.RequestShards();
+                    }
+                }
+            }
+        }
+        
+        if(event.text == '-tome'){
+            if(this.IsPVE()){
+                const playerId = event.playerid;
+                const player = this.FindPlayerById(playerId);
+                
+                if(player){
+                    const customNpc = player.customNpc;
+                    if(customNpc){
+                        customNpc.RequestKnowledge();
+                    }
+                }
+            }
+        }
+        
+        if(event.text == '-item'){
+            if(this.IsPVE()){
+                const playerId = event.playerid;
+                const player = this.FindPlayerById(playerId);
+                
+                if(player){
+                    const customNpc = player.customNpc;
+                    if(customNpc){
+                        customNpc.RequestItems();
                     }
                 }
             }

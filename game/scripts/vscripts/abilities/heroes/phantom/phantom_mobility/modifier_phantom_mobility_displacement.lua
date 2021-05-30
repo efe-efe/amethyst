@@ -29,18 +29,20 @@ function modifier_phantom_mobility_displacement:OnCollide(params)
 		local ability = self:GetAbility()
 
 		if params.type == UNIT_COLLISION then
-			if parent:HasModifier("modifier_upgrade_phantom_dash_damage") then
-				for _,unit in pairs(params.units) do
-					if not unit:HasModifier("modifier_phantom_mobility_debuff") then
+			for _,unit in pairs(params.units) do
+				if not unit:HasModifier("modifier_phantom_mobility_debuff") then
+					unit:AddNewModifier(parent, ability, "modifier_phantom_mobility_debuff", { duration = 0.5 })
+
+					if parent:HasModifier("modifier_upgrade_phantom_dash_damage") then
 						self.damage_table.victim = unit
-						unit:AddNewModifier(parent, ability, "modifier_phantom_mobility_debuff", { duration = 0.5 })
 						ApplyDamage(self.damage_table)
 					end
-				end
-			end
 
-			if parent:HasModifier("modifier_upgrade_phantom_dash_invulnerability") then
-				parent:AddNewModifier(parent, ability, "modifier_generic_invencible", { duration = 2.0 })
+					local shield_modifier = CustomEntitiesLegacy:SafeGetModifier(parent, "modifier_upgrade_phantom_dash_shield")
+					if shield_modifier then
+						parent:AddNewModifier(parent, ability, "modifier_phantom_mobility_shield", { duration = 5.0, damage_block = shield_modifier:GetDamageBlock() })
+					end
+				end
 			end
 		end
 	end

@@ -1,6 +1,30 @@
 import { Upgrade, UpgradeTypes } from './common';
 
 const Shards: Upgrade[] = [
+    {
+        id: 'phantom_dash_damage',
+        name: 'Swift damage',
+        description: 'Your Swift deals damage when passing through enemies.',
+        ability: 'phantom_mobility',
+        maxStacks: 3,
+        modifier: {
+            name: 'modifier_upgrade_phantom_dash_damage'
+        },
+        tier: 1,
+        type: UpgradeTypes.SHARD,
+    },
+    {
+        id: 'phantom_dash_shield',
+        name: 'Swift Shield',
+        description: 'Your Swift gives you shield for a short period of time after passing through enemies.',
+        ability: 'phantom_mobility',
+        maxStacks: 3,
+        modifier: {
+            name: 'modifier_upgrade_phantom_dash_shield'
+        },
+        tier: 1,
+        type: UpgradeTypes.SHARD,
+    },
 ];
 
 const Favors: Upgrade[] = [
@@ -17,18 +41,6 @@ const Favors: Upgrade[] = [
         type: UpgradeTypes.FAVOR,
     },    
     {
-        id: 'phantom_dash_damage',
-        name: 'Swift damage',
-        description: 'Your Swift deals damage when passing through enemies.',
-        ability: 'phantom_mobility',
-        maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_dash_damage'
-        },
-        tier: 1,
-        type: UpgradeTypes.FAVOR,
-    },
-    {
         id: 'phantom_coup_cast_fast',
         name: 'Coup de Grace cast fast',
         description: 'Reduces the cast time of Coup de Grace considerably.',
@@ -36,18 +48,6 @@ const Favors: Upgrade[] = [
         maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_phantom_coup_cast_fast'
-        },
-        tier: 1,
-        type: UpgradeTypes.FAVOR,
-    },
-    {
-        id: 'phantom_dash_invulnerability',
-        name: 'Swift invulnerability',
-        description: 'Your Swift gives you invulnerability for a short period of time after passing through enemies.',
-        ability: 'phantom_mobility',
-        maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_dash_invulnerability'
         },
         tier: 1,
         type: UpgradeTypes.FAVOR,
