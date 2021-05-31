@@ -1,6 +1,16 @@
 modifier_phantom_counter = class({})
 
 function modifier_phantom_counter:OnCreated(kv)
+	self.damage_per_stack = 2
+
+	if IsServer() then
+		if self:GetParent():HasModifier("modifier_upgrade_phantom_countering_stacks") then
+			local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(self:GetParent(), "modifier_phantom_strike_stack")
+			CustomEntitiesLegacy:SafeDestroyModifier(self:GetParent(), "modifier_phantom_strike_stack")
+			self:SetStackCount(stacks)
+		end
+	end
+
 	self.as_speed = self:GetAbility():GetSpecialValueFor("as_speed")
 end
 
@@ -9,7 +19,14 @@ function modifier_phantom_counter:GetModifierAttackSpeedBonus_Constant()
 end
 
 function modifier_phantom_counter:DeclareFunctions()
-	return { MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT }
+	return { 
+		MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT,
+		MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE
+	}
+end
+
+function modifier_phantom_counter:GetModifierPreAttack_BonusDamage(params)
+    return self.damage_per_stack * self:GetStackCount()
 end
 
 function modifier_phantom_counter:GetEffectAttachType()

@@ -53,6 +53,18 @@ const Favors: Upgrade[] = [
         type: UpgradeTypes.FAVOR,
     },
     {
+        id: 'phantom_countering_stacks',
+        name: 'Phantom Strike stacks',
+        description: 'Your Phantom Strike consumes all your Phantom Stacks to multiply your damage while the attack speed buff is on.',
+        ability: 'phantom_counter',
+        maxStacks: 1,
+        modifier: {
+            name: 'modifier_upgrade_phantom_countering_stacks'
+        },
+        tier: 1,
+        type: UpgradeTypes.FAVOR,
+    },
+    {
         id: 'phantom_act_while_countering',
         name: 'Phantom Strike while acting',
         description: 'You can act while in counter state but the counter state duration its reduced.',
@@ -72,6 +84,18 @@ const Favors: Upgrade[] = [
         maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_phantom_strike_instant'
+        },
+        tier: 1,
+        type: UpgradeTypes.FAVOR,
+    },
+    {
+        id: 'phantom_quick_recast',
+        name: 'Phantom Quick Strike recast',
+        description: 'Your Quick Strike can be used again for free after hitting at least one enemy.',
+        ability: 'phantom_extra',
+        maxStacks: 1,
+        modifier: {
+            name: 'modifier_upgrade_phantom_quick_recast'
         },
         tier: 1,
         type: UpgradeTypes.FAVOR,

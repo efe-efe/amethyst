@@ -45,7 +45,7 @@ function modifier_phantom_extra_displacement:OnDestroy()
 			self:OnImpact(enemy)
 		end
 
-		if self.ability:GetLevel() >= 2 then
+		if self.ability:GetLevel() >= 2 or self.parent:HasModifier("modifier_upgrade_phantom_quick_recast") then
 			if self.recast then
 				--To prevent recasting from a recast!
 				if self.parent:HasModifier('modifier_phantom_extra_slashes') then
