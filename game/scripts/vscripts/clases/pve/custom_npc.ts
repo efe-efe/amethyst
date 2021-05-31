@@ -23,8 +23,7 @@ enum Orientations {
     VERTICAL,
 }
 
-interface HeroUpgrade {
-    id: string; 
+interface HeroUpgrade extends Upgrade{
     level: number;
 }
 export default class CustomNPC extends UnitEntity{
@@ -434,6 +433,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         if(upgrade && upgrade.modifier){
             const ability = (upgrade.ability) ? this.unit.FindAbilityByName(upgrade.ability) : undefined;
             this.unit.AddNewModifier(this.unit, ability, upgrade.modifier.name, { duration: upgrade.modifier.duration });
+
             let found = false;
             this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
                 if(heroUpgrade.id === upgrade.id){
@@ -448,9 +448,27 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
 
             if(!found){
                 this.heroUpgrades.push({
-                    id: upgrade.id,
+                    ...upgrade,
                     level: 1,
                 });
+            }
+
+            if(upgrade.ingredients){
+                upgrade.ingredients.forEach((ingredientId) => {
+                    const ingredientUpgrade = this.heroUpgrades.filter((_heroUpgrade) => _heroUpgrade.id === ingredientId)[0];
+
+                    if(ingredientUpgrade){
+                        this.unit.RemoveModifierByName(ingredientUpgrade.modifier!.name);
+                    }
+                });
+
+                EFX('particles/items_fx/item_sheepstick.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+                    release: true,
+                });
+                
+                this.unit.AddNewModifier(this.unit, undefined, 'modifier_combine_util', { duration: 1.5 });
+                
+                EmitSoundOn('DOTA_Item.RepairKit.Target', this.unit);
             }
         }
 

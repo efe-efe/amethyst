@@ -73,6 +73,9 @@ export const UpgradeManager = {
             if(!this.ValidateUpgradeLevel(upgrade)){
                 return false;
             }
+            if(!this.ValidateUpgradeIngredients(customNpc, upgrade)){
+                return false;
+            }
             if(!options.allowDuplicates && this.ValidateUpgradeAlreadyExists(customNpc, upgrade)){
                 return false;
             }
@@ -157,6 +160,22 @@ export const UpgradeManager = {
 
         if(heroUpgrade.level >= upgrade.maxStacks){
             return false;
+        }
+
+        return true;
+    },
+    ValidateUpgradeIngredients: (customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): boolean => {
+        if(!upgrade.ingredients){
+            return true;
+        }
+
+        for(let i = 0; i < upgrade.ingredients.length; i++){
+            const ingredientId = upgrade.ingredients[i];
+            const heroUpgrade = customNpc.heroUpgrades.filter((heroUpgrade) => heroUpgrade.id === ingredientId)[0];
+
+            if(!heroUpgrade){
+                return false;
+            }
         }
 
         return true;

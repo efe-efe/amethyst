@@ -398,10 +398,11 @@ export class GameMode{
         LinkLuaModifier('modifier_tower_idle',                      'modifiers/generic/modifier_tower_idle', LuaModifierMotionType.NONE);
 
         if(this.IsPVE()){
+            LinkLuaModifier('modifier_combine_util',                'modifiers/modifier_combine_util', LuaModifierMotionType.NONE);
             const favorsPath = 'modifiers/upgrades/favors/';
             const itemsPath = 'modifiers/upgrades/items/';
             const shardsPath = 'modifiers/upgrades/shards/';
-
+            
             Upgrades.forEach((upgrade) => {
                 if(upgrade.modifier){
                     if(upgrade.type === UpgradeTypes.FAVOR){

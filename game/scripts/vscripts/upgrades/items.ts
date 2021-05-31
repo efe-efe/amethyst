@@ -2,6 +2,43 @@ import { Upgrade, UpgradeTypes } from './common';
 
 const Items: Upgrade[] = [
     {
+        id: 'upgrade_blade_of_alacrity',
+        abilityIconName: 'item_blade_of_alacrity',
+        name: 'Blade of Alacrity',
+        description: 'Provides extra movement and attack speed',
+        maxStacks: 1,
+        modifier: {
+            name: 'modifier_upgrade_blade_of_alacrity'
+        },
+        tier: 0,
+        type: UpgradeTypes.ITEM,
+    },
+    {
+        id: 'upgrade_boots_of_elves',
+        abilityIconName: 'item_boots_of_elves',
+        name: 'Band of Elvenskin',
+        description: 'Provides extra attack speed and damage.',
+        maxStacks: 1,
+        modifier: {
+            name: 'modifier_upgrade_boots_of_elves'
+        },
+        tier: 0,
+        type: UpgradeTypes.ITEM,
+    },
+    {
+        id: 'upgrade_item_yasha',
+        abilityIconName: 'item_yasha',
+        name: 'Yasha',
+        description: 'Increases your movement and attack speed.',
+        maxStacks: 1,
+        modifier: {
+            name: 'modifier_upgrade_yasha'
+        },
+        tier: 1,
+        type: UpgradeTypes.ITEM,
+        ingredients: ['upgrade_boots_of_elves', 'upgrade_blade_of_alacrity'],
+    },
+    {
         id: 'upgrade_broom_handle',
         abilityIconName: 'item_broom_handle',
         name: 'Broom handle',
@@ -18,22 +55,10 @@ const Items: Upgrade[] = [
         id: 'upgrade_blades_of_attack',
         abilityIconName: 'item_blades_of_attack',
         name: 'Blades of attack',
-        description: 'Increases your base damage by 1.',
+        description: 'Increases your base damage.',
         maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_blades_of_attack'
-        },
-        tier: 1,
-        type: UpgradeTypes.ITEM,
-    },
-    {
-        id: 'upgrade_item_yasha',
-        abilityIconName: 'item_yasha',
-        name: 'Yasha',
-        description: 'Increases your movement and attack speed.',
-        maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_yasha'
         },
         tier: 1,
         type: UpgradeTypes.ITEM,

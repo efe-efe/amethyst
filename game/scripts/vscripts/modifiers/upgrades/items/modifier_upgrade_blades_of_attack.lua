@@ -4,7 +4,7 @@ function modifier_upgrade_blades_of_attack:RemoveOnDeath() return false end
 function modifier_upgrade_blades_of_attack:IsPurgable() return false end
 
 function modifier_upgrade_blades_of_attack:OnCreated()
-    self.damage_per_stack = 3
+    self.damage_per_stack = 2
 end
 
 function modifier_upgrade_blades_of_attack:DeclareFunctions()
