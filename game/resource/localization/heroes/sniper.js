@@ -1,4 +1,9 @@
 "use strict";
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenerateLocalizationData = void 0;
 var specific_1 = require("../specific");
@@ -159,6 +164,22 @@ function GenerateLocalizationData() {
             },
         ],
     });
+    var Shards = [];
+    var Favors = [
+        {
+            id: 'sniper_snipe_cast_fast',
+            name: 'Quick Snipe',
+            description: 'Your Snipe cast point is reduced drastically.',
+            ability: 'sniper_second_attack',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_sniper_snipe_cast_fast'
+            },
+            tier: 1,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+    ];
+    Modifiers.push.apply(Modifiers, specific_1.Upgrades(__spreadArray(__spreadArray([], Shards), Favors)));
     return localization_info;
 }
 exports.GenerateLocalizationData = GenerateLocalizationData;

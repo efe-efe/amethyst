@@ -1,5 +1,5 @@
 import { AbilityLocalization, HeroTalents, Language, LocalizationData, ModifierLocalization, StandardLocalization } from '../../localizationInterfaces';
-import { Keywords, Description, multipleKeywords, Ability } from '../specific';
+import { Keywords, Description, multipleKeywords, Ability, Upgrade, UpgradeTypes, Upgrades } from '../specific';
 
 export function GenerateLocalizationData(): LocalizationData
 {
@@ -184,6 +184,25 @@ export function GenerateLocalizationData(): LocalizationData
 
         ],
     });
+
+    const Shards: Upgrade[] = [
+    ];
     
+    const Favors: Upgrade[] = [
+        {
+            id: 'sniper_snipe_cast_fast',
+            name: 'Quick Snipe',
+            description: 'Your Snipe cast point is reduced drastically.',
+            ability: 'sniper_second_attack',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_sniper_snipe_cast_fast'
+            },
+            tier: 1,
+            type: UpgradeTypes.FAVOR,
+        },
+    ];
+
+    Modifiers.push(...Upgrades([...Shards, ...Favors]));
     return localization_info;
 }

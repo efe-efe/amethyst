@@ -1,4 +1,9 @@
 "use strict";
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenerateLocalizationData = void 0;
 var specific_1 = require("../specific");
@@ -155,6 +160,34 @@ function GenerateLocalizationData() {
             },
         ],
     });
+    var Shards = [];
+    var Favors = [
+        {
+            id: 'storm_ranged_remnant',
+            name: 'Ranged remnant',
+            description: 'Your static remnant can be casted with range',
+            ability: 'storm_mobility',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_storm_ranged_remnant'
+            },
+            tier: 0,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+        {
+            id: 'storm_unleashed_knockback',
+            name: 'Storm Unleashed knockback',
+            description: 'Your Storm Unleashed push enemies out.',
+            ability: 'storm_ultimate',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_storm_unleashed_knockback'
+            },
+            tier: 0,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+    ];
+    Modifiers.push.apply(Modifiers, specific_1.Upgrades(__spreadArray(__spreadArray([], Shards), Favors)));
     return localization_info;
 }
 exports.GenerateLocalizationData = GenerateLocalizationData;

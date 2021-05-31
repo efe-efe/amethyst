@@ -24,6 +24,8 @@ import settings from './settings';
 import PreRun from './clases/pve/pre_run';
 import { NPCNames } from './clases/pve/custom_ai';
 import Run from './clases/pve/run';
+import Upgrades from './upgrades/upgrades';
+import { UpgradeTypes } from './upgrades/common';
 
 declare global {
     interface CDOTAGamerules {
@@ -389,26 +391,24 @@ export class GameMode{
         LinkLuaModifier('modifier_tower_idle',                      'modifiers/generic/modifier_tower_idle', LuaModifierMotionType.NONE);
 
         if(this.IsPVE()){
-            LinkLuaModifier('modifier_upgrade_meele_extra_radius',  'modifiers/upgrades/modifier_upgrade_meele_extra_radius', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_phantom_extra_daggers',  'modifiers/upgrades/modifier_upgrade_phantom_extra_daggers', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_extra_base_damage',  'modifiers/upgrades/modifier_upgrade_extra_base_damage', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_juggernaut_refresh_dagger',  'modifiers/upgrades/modifier_upgrade_juggernaut_refresh_dagger', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_lightining_attack',  'modifiers/upgrades/modifier_upgrade_lightining_attack', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_lightining_attack_attack',  'modifiers/upgrades/modifier_upgrade_lightining_attack', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_phantom_dash_damage',  'modifiers/upgrades/modifier_upgrade_phantom_dash_damage', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_phantom_dash_shield',  'modifiers/upgrades/modifier_upgrade_phantom_dash_shield', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_phantom_coup_cast_fast',  'modifiers/upgrades/modifier_upgrade_phantom_coup_cast_fast', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_juggernaut_fury_attack',  'modifiers/upgrades/modifier_upgrade_juggernaut_fury_attack', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_storm_ranged_remnant',  'modifiers/upgrades/modifier_upgrade_storm_ranged_remnant', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_storm_unleashed_knockback',  'modifiers/upgrades/modifier_upgrade_storm_unleashed_knockback', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_extra_speed',  'modifiers/upgrades/modifier_upgrade_extra_speed', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_stun_attack',  'modifiers/upgrades/modifier_upgrade_stun_attack', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_stun_attack_attack',  'modifiers/upgrades/modifier_upgrade_stun_attack', LuaModifierMotionType.NONE);
+            const favorsPath = 'modifiers/upgrades/favors/';
+            const itemsPath = 'modifiers/upgrades/items/';
+            const shardsPath = 'modifiers/upgrades/shards/';
+
+            Upgrades.forEach((upgrade) => {
+                if(upgrade.modifier){
+                    if(upgrade.type === UpgradeTypes.FAVOR){
+                        LinkLuaModifier(upgrade.modifier.name,  favorsPath + upgrade.modifier.name, LuaModifierMotionType.NONE);
+                    }
+                    if(upgrade.type === UpgradeTypes.SHARD){
+                        LinkLuaModifier(upgrade.modifier.name,  shardsPath + upgrade.modifier.name, LuaModifierMotionType.NONE);
+                    }
+                    if(upgrade.type === UpgradeTypes.ITEM){
+                        LinkLuaModifier(upgrade.modifier.name,  itemsPath + upgrade.modifier.name, LuaModifierMotionType.NONE);
+                    }
+                }
+            });
             LinkLuaModifier('modifier_upgrade_tarrasque',  'modifiers/upgrades/modifier_upgrade_tarrasque', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_phantom_act_while_countering',  'modifiers/upgrades/modifier_upgrade_phantom_act_while_countering', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_sniper_snipe_cast_fast',  'modifiers/upgrades/modifier_upgrade_sniper_snipe_cast_fast', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_juggernaut_spinning_ward',  'modifiers/upgrades/modifier_upgrade_juggernaut_spinning_ward', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_juggernaut_fury_reflects',  'modifiers/upgrades/modifier_upgrade_juggernaut_fury_reflects', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');

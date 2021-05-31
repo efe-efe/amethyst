@@ -1,38 +1,28 @@
-modifier_upgrade_stun_attack = class({})
-modifier_upgrade_stun_attack_attack = class({})
+modifier_upgrade_basher = class({})
+modifier_upgrade_basher_attack = class({})
 
-function modifier_upgrade_stun_attack:RemoveOnDeath() return false end
-function modifier_upgrade_stun_attack:IsPurgable() return false end
+function modifier_upgrade_basher:RemoveOnDeath() return false end
+function modifier_upgrade_basher:IsPurgable() return false end
 
-function modifier_upgrade_stun_attack:OnCreated(params)
+function modifier_upgrade_basher:OnCreated(params)
     if IsServer() then
-        self.proc_chance_pct =  15
-        self.proc_chance_pct_per_stack = 10
-
-        self:SetStackCount(1)
+        self.proc_chance_pct =  25
     end
 end
 
-function modifier_upgrade_stun_attack:OnRefresh(params)
-    if IsServer() then
-        self:IncrementStackCount()
-    end
-end
-
-function modifier_upgrade_stun_attack:OnEvent(params)
+function modifier_upgrade_basher:OnEvent(params)
     if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED then
-        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_upgrade_stun_attack_attack', {
-            proc_chance_pct = self.proc_chance_pct + (self.proc_chance_pct_per_stack * self:GetStackCount())
+        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_upgrade_basher_attack', {
+            proc_chance_pct = self.proc_chance_pct
         })
     end
 end
 
-
-function modifier_upgrade_stun_attack_attack:IsHidden()
+function modifier_upgrade_basher_attack:IsHidden()
     return true
 end
 
-function modifier_upgrade_stun_attack_attack:OnCreated(params)
+function modifier_upgrade_basher_attack:OnCreated(params)
     if IsServer() then
         self.proc_chance_pct = params.proc_chance_pct
         self.damage_table = {
@@ -44,7 +34,7 @@ function modifier_upgrade_stun_attack_attack:OnCreated(params)
     end
 end
 
-function modifier_upgrade_stun_attack_attack:OnEvent(params)
+function modifier_upgrade_basher_attack:OnEvent(params)
     if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED then
         self:Destroy()
     end
@@ -59,7 +49,7 @@ function modifier_upgrade_stun_attack_attack:OnEvent(params)
     end
 end
 
-function modifier_upgrade_stun_attack_attack:Stun(hSource, hTarget)
+function modifier_upgrade_basher_attack:Stun(hSource, hTarget)
     local direction = Direction2D(hSource:GetAbsOrigin(), hTarget:GetAbsOrigin())
     EFX("particles/units/heroes/hero_spirit_breaker/spirit_breaker_greater_bash.vpcf", PATTACH_CUSTOMORIGIN, hTarget, {
         cp0 = {
@@ -77,6 +67,10 @@ function modifier_upgrade_stun_attack_attack:Stun(hSource, hTarget)
     EmitSoundOn("DOTA_Item.SkullBasher", hTarget)
 end
 
+function modifier_upgrade_basher:GetTexture()
+    return 'item_basher'
+end
+
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.OnEvent(modifier_upgrade_stun_attack)
-Modifiers.OnEvent(modifier_upgrade_stun_attack_attack)
+Modifiers.OnEvent(modifier_upgrade_basher)
+Modifiers.OnEvent(modifier_upgrade_basher_attack)

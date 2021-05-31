@@ -1,6 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Keywords = exports.multipleKeywords = exports.Ability = exports.Description = void 0;
+exports.Keywords = exports.multipleKeywords = exports.Ability = exports.Description = exports.UpgradeTypes = exports.Upgrades = void 0;
+var Upgrades = function (upgrades) {
+    return upgrades.map(function (upgrade) {
+        return {
+            modifier_classname: upgrade.modifier.name,
+            name: upgrade.name,
+            description: upgrade.description,
+        };
+    });
+};
+exports.Upgrades = Upgrades;
+var UpgradeTypes;
+(function (UpgradeTypes) {
+    UpgradeTypes[UpgradeTypes["FAVOR"] = 0] = "FAVOR";
+    UpgradeTypes[UpgradeTypes["SHARD"] = 1] = "SHARD";
+    UpgradeTypes[UpgradeTypes["ITEM"] = 2] = "ITEM";
+})(UpgradeTypes = exports.UpgradeTypes || (exports.UpgradeTypes = {}));
 var Description = function (data) {
     var output = '';
     if (data.channeled) {

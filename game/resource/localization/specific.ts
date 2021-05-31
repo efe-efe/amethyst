@@ -1,8 +1,42 @@
 import { create } from 'domain';
+import { ModifierLocalization } from '../localizationInterfaces';
 
 type KeywordOptions = { name: string, description: string, iconPath: string, color: string, function?: boolean };
 type KeywordDefinitionOptions = { name: string, description: string, iconPath: string, color: string, function?: boolean };
 type KeywordInstanceOptions = { name: string, iconPath: string, color: string, function?: boolean};
+
+export interface Upgrade {
+    id: string;
+    name: string;
+    description: string;
+    hero?: string;
+    ability?: string;
+    attackCapability?: any;
+    maxStacks: number;
+    modifier?: any;
+    tier: number;
+    minLevel?: number;
+    effect?(hero: any): void;
+    type: UpgradeTypes;
+    abilityIconName?: string;
+    secondaryAbilities?: string[];
+}
+
+export const Upgrades = (upgrades: any[]) => {
+    return upgrades.map((upgrade) => {
+        return {
+            modifier_classname: upgrade.modifier!.name,
+            name: upgrade.name,
+            description: upgrade.description,
+        };
+    });
+};
+
+export enum UpgradeTypes {
+    FAVOR = 0,
+    SHARD,
+    ITEM,
+}
 
 export const Description = (data: {
     description: string,

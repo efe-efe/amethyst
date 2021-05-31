@@ -1,4 +1,9 @@
 "use strict";
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GenerateLocalizationData = void 0;
 var specific_1 = require("../specific");
@@ -176,6 +181,59 @@ function GenerateLocalizationData() {
         name: 'Swiftness',
         description: "Moves {" + "MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE" /* MOVESPEED_BONUS_PERCENTAGE */ + "}% faster.",
     });
+    var Shards = [];
+    var Favors = [
+        {
+            id: 'juggernaut_fury_reflects',
+            name: 'Blade Fury reflects',
+            description: 'Blade Fury reflect enemy projectiles.',
+            ability: 'juggernaut_mobility',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_juggernaut_fury_reflects'
+            },
+            tier: 0,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+        {
+            id: 'juggernaut_fury_attack',
+            name: 'Blade Fury attacks',
+            description: 'Blade Fury damage count as basic attacks',
+            ability: 'juggernaut_mobility',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_juggernaut_fury_attack'
+            },
+            tier: 0,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+        {
+            id: 'juggernaut_refresh_dagger',
+            name: 'Refreshing dagger',
+            description: 'Your dagger cooldown is drastically reduced when succesfully hitting enemies but increased when missing.',
+            ability: 'juggernaut_special_attack',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_juggernaut_refresh_dagger'
+            },
+            tier: 1,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+        {
+            id: 'juggernaut_spinning_ward',
+            name: 'Spinning Ward',
+            description: 'Your Healing Ward also spins when you activates your Blade Fury. It also resists 5 hits instead of 1.',
+            ability: 'juggernaut_extra',
+            secondaryAbilities: ['juggernaut_mobility'],
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_juggernaut_spinning_ward'
+            },
+            tier: 1,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+    ];
+    Modifiers.push.apply(Modifiers, specific_1.Upgrades(__spreadArray(__spreadArray([], Shards), Favors)));
     return localization_info;
 }
 exports.GenerateLocalizationData = GenerateLocalizationData;

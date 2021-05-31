@@ -9,7 +9,7 @@ const Items: Upgrade[] = [
         maxStacks: 1,
         attackCapability: UnitAttackCapability.MELEE_ATTACK,
         modifier: {
-            name: 'modifier_upgrade_meele_extra_radius'
+            name: 'modifier_upgrade_broom_handle'
         },
         tier: 0,
         type: UpgradeTypes.ITEM,
@@ -21,19 +21,19 @@ const Items: Upgrade[] = [
         description: 'Increases your base damage by 1.',
         maxStacks: 1,
         modifier: {
-            name: 'modifier_upgrade_extra_base_damage'
+            name: 'modifier_upgrade_blades_of_attack'
         },
         tier: 1,
         type: UpgradeTypes.ITEM,
     },
     {
-        id: 'upgrade_item_moonshard',
-        abilityIconName: 'item_moon_shard',
-        name: 'Moonshard',
+        id: 'upgrade_item_yasha',
+        abilityIconName: 'item_yasha',
+        name: 'Yasha',
         description: 'Increases your movement and attack speed.',
         maxStacks: 1,
         modifier: {
-            name: 'modifier_upgrade_extra_speed'
+            name: 'modifier_upgrade_yasha'
         },
         tier: 1,
         type: UpgradeTypes.ITEM,
@@ -45,7 +45,7 @@ const Items: Upgrade[] = [
         description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets.',
         maxStacks: 1,
         modifier: {
-            name: 'modifier_upgrade_lightining_attack'
+            name: 'modifier_upgrade_maelstrom'
         },
         tier: 1,
         type: UpgradeTypes.ITEM,
@@ -57,7 +57,7 @@ const Items: Upgrade[] = [
         description: 'Your attacks has a chance to deal extra damage and stun the target.',
         maxStacks: 1,
         modifier: {
-            name: 'modifier_upgrade_stun_attack'
+            name: 'modifier_upgrade_basher'
         },
         tier: 1,
         type: UpgradeTypes.ITEM,

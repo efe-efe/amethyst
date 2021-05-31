@@ -1,38 +1,29 @@
-modifier_upgrade_lightining_attack = class({})
-modifier_upgrade_lightining_attack_attack = class({})
+modifier_upgrade_maelstrom = class({})
+modifier_upgrade_maelstrom_attack = class({})
 
-function modifier_upgrade_lightining_attack:RemoveOnDeath() return false end
-function modifier_upgrade_lightining_attack:IsPurgable() return false end
+function modifier_upgrade_maelstrom:RemoveOnDeath() return false end
+function modifier_upgrade_maelstrom:IsPurgable() return false end
 
-function modifier_upgrade_lightining_attack:OnCreated(params)
+function modifier_upgrade_maelstrom:OnCreated(params)
     if IsServer() then
-        self.proc_chance_pct =  25
-        self.proc_chance_pct_per_stack = 25
-
-        self:SetStackCount(1)
+        self.proc_chance_pct =  50
     end
 end
 
-function modifier_upgrade_lightining_attack:OnRefresh(params)
-    if IsServer() then
-        self:IncrementStackCount()
-    end
-end
-
-function modifier_upgrade_lightining_attack:OnEvent(params)
+function modifier_upgrade_maelstrom:OnEvent(params)
     if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED then
-        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_upgrade_lightining_attack_attack', {
-            proc_chance_pct = self.proc_chance_pct + (self.proc_chance_pct_per_stack * self:GetStackCount())
+        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_upgrade_maelstrom_attack', {
+            proc_chance_pct = self.proc_chance_pct
         })
     end
 end
 
 
-function modifier_upgrade_lightining_attack_attack:IsHidden()
+function modifier_upgrade_maelstrom_attack:IsHidden()
     return true
 end
 
-function modifier_upgrade_lightining_attack_attack:OnCreated(params)
+function modifier_upgrade_maelstrom_attack:OnCreated(params)
     if IsServer() then
         self.proc_chance_pct = params.proc_chance_pct
         self.radius = 850
@@ -47,7 +38,7 @@ function modifier_upgrade_lightining_attack_attack:OnCreated(params)
     end
 end
 
-function modifier_upgrade_lightining_attack_attack:OnEvent(params)
+function modifier_upgrade_maelstrom_attack:OnEvent(params)
     if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED then
         self:Destroy()
     end
@@ -63,7 +54,7 @@ function modifier_upgrade_lightining_attack_attack:OnEvent(params)
     end
 end
 
-function modifier_upgrade_lightining_attack_attack:ReleaseBolt(hSource, hTarget)
+function modifier_upgrade_maelstrom_attack:ReleaseBolt(hSource, hTarget)
     EFX("particles/econ/events/ti10/maelstrom_ti10.vpcf", PATTACH_CUSTOMORIGIN, hSource, {
         cp0 = {
             ent = hSource,
@@ -92,6 +83,10 @@ function modifier_upgrade_lightining_attack_attack:ReleaseBolt(hSource, hTarget)
     end
 end
 
+function modifier_upgrade_maelstrom:GetTexture()
+    return 'item_maelstrom'
+end
+
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.OnEvent(modifier_upgrade_lightining_attack)
-Modifiers.OnEvent(modifier_upgrade_lightining_attack_attack)
+Modifiers.OnEvent(modifier_upgrade_maelstrom)
+Modifiers.OnEvent(modifier_upgrade_maelstrom_attack)

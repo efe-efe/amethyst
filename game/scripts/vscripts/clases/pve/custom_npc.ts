@@ -428,7 +428,8 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
 
     ApplyFavor(upgrade: Upgrade | undefined): void{
         if(upgrade && upgrade.modifier){
-            this.unit.AddNewModifier(this.unit, undefined, upgrade.modifier.name, { duration: upgrade.modifier.duration });
+            const ability = (upgrade.ability) ? this.unit.FindAbilityByName(upgrade.ability) : undefined;
+            this.unit.AddNewModifier(this.unit, ability, upgrade.modifier.name, { duration: upgrade.modifier.duration });
             let found = false;
             this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
                 if(heroUpgrade.id === upgrade.id){
