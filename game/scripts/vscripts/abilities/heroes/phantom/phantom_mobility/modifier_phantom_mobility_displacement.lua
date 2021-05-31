@@ -5,7 +5,6 @@ function modifier_phantom_mobility_displacement:OnCreated(params)
 		self.origin = self:GetParent():GetAbsOrigin()
         self.damage_table = {
             attacker = self:GetParent(),
-            damage = 8,
             damage_type = DAMAGE_TYPE_PHYSICAL,
         }
 	end
@@ -33,7 +32,10 @@ function modifier_phantom_mobility_displacement:OnCollide(params)
 				if not unit:HasModifier("modifier_phantom_mobility_debuff") then
 					unit:AddNewModifier(parent, ability, "modifier_phantom_mobility_debuff", { duration = 0.5 })
 
-					if parent:HasModifier("modifier_upgrade_phantom_dash_damage") then
+					
+    				local shard = CustomEntitiesLegacy:SafeGetModifier(parent, "modifier_upgrade_phantom_dash_damage")
+					if shard then
+						self.damage_table.damage = shard:GetDamage()
 						self.damage_table.victim = unit
 						ApplyDamage(self.damage_table)
 					end

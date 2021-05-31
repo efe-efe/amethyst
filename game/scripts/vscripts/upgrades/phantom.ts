@@ -4,7 +4,7 @@ const Shards: Upgrade[] = [
     {
         id: 'phantom_dash_damage',
         name: 'Swift damage',
-        description: 'Your Swift deals damage when passing through enemies.',
+        description: 'Your Swift deals damage when passing through enemies and increases its range.',
         ability: 'phantom_mobility',
         maxStacks: 5,
         modifier: {
@@ -15,8 +15,8 @@ const Shards: Upgrade[] = [
     },
     {
         id: 'phantom_dash_shield',
-        name: 'Swift Shield',
-        description: 'Your Swift gives you shield for a short period of time after passing through enemies.',
+        name: 'Swift shield',
+        description: 'Your Swift gives you shield for a short period of time after passing through enemies and increases its range.',
         ability: 'phantom_mobility',
         maxStacks: 5,
         modifier: {
@@ -55,11 +55,23 @@ const Favors: Upgrade[] = [
     {
         id: 'phantom_act_while_countering',
         name: 'Phantom Strike while acting',
-        description: 'You can act while in counter state.',
+        description: 'You can act while in counter state but the counter state duration its reduced.',
         ability: 'phantom_counter',
         maxStacks: 1,
         modifier: {
             name: 'modifier_upgrade_phantom_act_while_countering'
+        },
+        tier: 1,
+        type: UpgradeTypes.FAVOR,
+    },
+    {
+        id: 'phantom_strike_instant',
+        name: 'Phantom Strike instant effect',
+        description: 'Your Phantom Strike is activated instantly without the need to be activated by an attack, but no longer heals and the banish duration is reduced.',
+        ability: 'phantom_counter',
+        maxStacks: 1,
+        modifier: {
+            name: 'modifier_upgrade_phantom_strike_instant'
         },
         tier: 1,
         type: UpgradeTypes.FAVOR,

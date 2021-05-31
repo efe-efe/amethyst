@@ -258,11 +258,23 @@ export function GenerateLocalizationData(): LocalizationData
         {
             id: 'phantom_act_while_countering',
             name: 'Phantom Strike while acting',
-            description: 'You can act while in counter state.',
+            description: 'You can act while in counter state but the counter state duration its reduced.',
             ability: 'phantom_counter',
             maxStacks: 1,
             modifier: {
                 name: 'modifier_upgrade_phantom_act_while_countering'
+            },
+            tier: 1,
+            type: UpgradeTypes.FAVOR,
+        },
+        {
+            id: 'phantom_strike_instant',
+            name: 'Phantom Strike instant effect',
+            description: 'Your Phantom Strike is activated instantly without the need to be activated by an attack, but no longer heals and the banish duration is reduced.',
+            ability: 'phantom_counter',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_phantom_strike_instant'
             },
             tier: 1,
             type: UpgradeTypes.FAVOR,

@@ -14,12 +14,22 @@ function phantom_counter:OnSpellStart()
     local caster = self:GetCaster()
 	local duration = self:GetSpecialValueFor("counter_duration")
 
-    caster:AddNewModifier(
+	if caster:HasModifier("modifier_upgrade_phantom_strike_instant") then
+		duration = duration / 2
+	end
+
+    local modifier = caster:AddNewModifier(
 		caster,
 		self,
         "modifier_phantom_counter_countering", 
 		{ duration = duration }
 	)
+
+	if caster:HasModifier("modifier_upgrade_phantom_strike_instant") then
+		modifier:OnHit({
+			bTriggerCounters = 1,
+		})
+	end
 
 	LinkAbilityCooldowns(caster, 'phantom_ex_counter', {
 		["0"] = {

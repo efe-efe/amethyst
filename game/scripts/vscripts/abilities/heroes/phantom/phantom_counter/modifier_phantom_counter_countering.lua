@@ -2,6 +2,10 @@ modifier_phantom_counter_countering = class({})
 
 function modifier_phantom_counter_countering:OnCreated(params)
     self.banish_duration = self:GetAbility():GetSpecialValueFor("banish_duration")
+	
+	if self:GetParent():HasModifier('modifier_upgrade_phantom_strike_instant') then
+		self.banish_duration = self.banish_duration / 2
+	end
 end
 
 function modifier_phantom_counter_countering:OnDestroy()
