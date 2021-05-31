@@ -14,6 +14,12 @@ function sniper_counter:OnSpellStart()
     self:RefreshAbility('sniper_second_attack')
     self:RefreshAbility('sniper_ex_second_attack')
     self:PlayEffects()
+
+    EFX("particles/items2_fx/smoke_of_deceit.vpcf", PATTACH_WORLDORIGIN, self:GetCaster(), {
+        cp0 = self:GetCaster():GetAbsOrigin(),
+        cp1 = Vector(500, 500, 500),
+        release = true,
+    })
 end
 
 function sniper_counter:RefreshAbility(sAbilityName)

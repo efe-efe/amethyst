@@ -44,7 +44,7 @@ function GenerateLocalizationData() {
         ability_classname: 'sniper_second_attack',
         name: 'Snipe',
         description: specific_1.Description({
-            description: 'Fire a piercing shot that deals @{ability_damage} damage and inflicts ' + specific_1.Keywords.Stun.instance() + ' for @{stun_duration}s. Damage is reduced @{reduction_per_hit}% per target hit.',
+            description: 'Fire a piercing shot that deals @{ability_damage} damage and inflicts ' + specific_1.Keywords.Stun.instance() + ' for @{stun_duration}s. Damage is reduced @{reduction_per_hit} % per target hit.',
             level: 'Reduces the damage but also reduces the cast point and allows you to cast it while moving.',
         }),
         lore: specific_1.Keywords.Stun.definition,
@@ -64,7 +64,7 @@ function GenerateLocalizationData() {
         ability_classname: 'sniper_counter',
         name: 'Stealth',
         description: specific_1.Description({
-            description: 'Becomes invisible for @{duration}s. Moves @{speed_buff_pct}% faster while invisible. Resets the cooldown of ' + Snipe + '.',
+            description: 'Becomes invisible for @{duration}s. Moves @{speed_buff_pct} % faster while invisible. Resets the cooldown of ' + Snipe + '.',
             level: 'Increases movement speed while active.',
         }),
         ability_specials: [
