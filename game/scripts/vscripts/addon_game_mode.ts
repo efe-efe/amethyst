@@ -268,15 +268,12 @@ export class GameMode{
             }
         });
             
-        CustomGameEventManager.RegisterListener('key_released', (eventSourceIndex, args) => {
-            //const unit = EntIndexToHScript(args.entityIndex)
-        });
-
         CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_action', (eventSourceIndex, event) => {
             const playerId = event.playerIndex;
             const player = this.FindPlayerById(playerId);
 
             if(player){
+                const customNpc = player.customNpc;
                 const hero = player.hero;
 
                 const type = event.payload.type;
@@ -295,6 +292,16 @@ export class GameMode{
                     newDirection.z = hero.GetForwardVector().z;
                     CustomEntitiesLegacy.SetDirection(hero, newDirection.x, newDirection.y);
                 }
+
+                if(type == Custom_ActionTypes.ABILITY && hero){
+                    if(mode == Custom_ActionModes.STOP){
+                        const ability = EntIndexToHScript(event.payload.abilityEntityIndex);
+                        if(customNpc && ability){
+                            customNpc.ReleaseAbility(ability.GetName());
+                        }
+                    }
+                }
+
             }
         });
 

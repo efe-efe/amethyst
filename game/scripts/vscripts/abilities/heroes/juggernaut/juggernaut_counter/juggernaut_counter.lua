@@ -24,12 +24,12 @@ function juggernaut_counter_helper:Slash(vPoint, iDamage)
    local caster = self:GetCaster()
    local modifier = caster:AddNewModifier(caster, self, self:GetRecastCounterModifierName(), {})
    local recasts = modifier:GetStackCount()
-   local origin = caster:GetOrigin()
+   local origin = caster:GetAbsOrigin()
    
    FindClearSpaceForUnit(caster, vPoint, true)
 
    local valid_targets = 0
-	local new_origin = caster:GetOrigin()
+	local new_origin = caster:GetAbsOrigin()
 	local enemies = CustomEntitiesLegacy:FindUnitsInLine(
       caster,
 		new_origin, 

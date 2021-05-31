@@ -426,6 +426,10 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return (value && (value.rewards !== undefined));
     }
 
+    ReleaseAbility(abilityName: string): void{
+        //WIP
+    }
+
     ApplyFavor(upgrade: Upgrade | undefined): void{
         if(upgrade && upgrade.modifier){
             const ability = (upgrade.ability) ? this.unit.FindAbilityByName(upgrade.ability) : undefined;
