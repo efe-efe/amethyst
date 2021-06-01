@@ -429,58 +429,92 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         //WIP
     }
 
-    ApplyFavor(upgrade: Upgrade | undefined): void{
-        if(upgrade && upgrade.modifier){
-            const ability = (upgrade.ability) ? this.unit.FindAbilityByName(upgrade.ability) : undefined;
-            this.unit.AddNewModifier(this.unit, ability, upgrade.modifier.name, { duration: upgrade.modifier.duration });
-
-            let found = false;
-            this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
-                if(heroUpgrade.id === upgrade.id){
-                    found = true;
-                    return {
-                        ...heroUpgrade,
-                        level: heroUpgrade.level + 1
-                    };
-                } 
-                return heroUpgrade;
-            });
-
-            if(!found){
-                this.heroUpgrades.push({
-                    ...upgrade,
-                    level: 1,
+    ApplyUpgrade(upgrade: Upgrade | undefined): void{
+        if(upgrade){
+            if(upgrade && upgrade.modifier){
+                const ability = (upgrade.ability) ? this.unit.FindAbilityByName(upgrade.ability) : undefined;
+                this.unit.AddNewModifier(this.unit, ability, upgrade.modifier.name, { duration: upgrade.modifier.duration });
+    
+                let found = false;
+                this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
+                    if(heroUpgrade.id === upgrade.id){
+                        found = true;
+                        return {
+                            ...heroUpgrade,
+                            level: heroUpgrade.level + 1
+                        };
+                    } 
+                    return heroUpgrade;
                 });
+    
+                if(!found){
+                    this.heroUpgrades.push({
+                        ...upgrade,
+                        level: 1,
+                    });
+                }
+            }
+    
+            if(upgrade.effect){
+                upgrade.effect(this.unit as CDOTA_BaseNPC_Hero);
             }
 
-            if(upgrade.ingredients){
-                upgrade.ingredients.forEach((ingredientId) => {
-                    const ingredientUpgrade = this.heroUpgrades.filter((_heroUpgrade) => _heroUpgrade.id === ingredientId)[0];
-
-                    if(ingredientUpgrade){
-                        this.unit.RemoveModifierByName(ingredientUpgrade.modifier!.name);
-                    }
-                });
-
-                EFX('particles/items_fx/item_sheepstick.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
-                    release: true,
-                });
-                
-                this.unit.AddNewModifier(this.unit, undefined, 'modifier_combine_util', { duration: 1.5 });
-                
-                EmitSoundOn('DOTA_Item.RepairKit.Target', this.unit);
+            if(upgrade.type === UpgradeTypes.ITEM){
+                this.ApplyItem(upgrade);
+            }
+            if(upgrade.type === UpgradeTypes.FAVOR){
+                this.ApplyFavor(upgrade);
+            }
+            if(upgrade.type === UpgradeTypes.SHARD){
+                this.ApplyShard(upgrade);
             }
         }
-
-        if(upgrade && upgrade.effect){
-            upgrade.effect(this.unit as CDOTA_BaseNPC_Hero);
-        }
-
+        
         this.ClearTable('custom_npc_favors' as never);
         const customEvents = CustomEvents.GetInstance();
         customEvents.EmitEvent('pve:current_reward_applied', { customNpc: this });
     }
 
+    ApplyItem(upgrade: Upgrade): void{
+        if(upgrade.ingredients){
+            upgrade.ingredients.forEach((ingredientId) => {
+                const ingredientUpgrade = this.heroUpgrades.filter((_heroUpgrade) => _heroUpgrade.id === ingredientId)[0];
+
+                if(ingredientUpgrade){
+                    this.unit.RemoveModifierByName(ingredientUpgrade.modifier!.name);
+                }
+            });
+
+            EFX('particles/items_fx/item_sheepstick.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+                release: true,
+            });
+            
+            this.unit.AddNewModifier(this.unit, undefined, 'modifier_combine_util', { duration: 1.5 });
+            
+            EmitSoundOn('DOTA_Item.RepairKit.Target', this.unit);
+        }
+        
+        EFX('particles/econ/events/ti10/mekanism_ti10.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+            release: true,
+        });
+        EmitSoundOn('DOTA_Item.Overwhelming_Blink.NailedIt', this.unit);
+    }
+
+    ApplyFavor(upgrade: Upgrade): void{
+        EmitSoundOn('DOTA_Item.Mekansm.Target', this.unit);
+
+        EFX('particles/econ/events/ti10/hero_levelup_ti10.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+            release: true
+        });
+    }
+
+    ApplyShard(upgrade: Upgrade): void{
+        EmitSoundOn('Item.MoonShard.Consume', this.unit);
+
+        EFX('particles/econ/events/ti10/hero_levelup_ti10.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+            release: true
+        });
+    }
 
     ApplyTarrasque(): void{
         this.unit.AddNewModifier(this.unit, undefined, 'modifier_upgrade_tarrasque', {});
@@ -538,7 +572,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         
         if(upgrades.length === 0){
             print('Skipping favors selection. No rewards available');  
-            this.ApplyFavor(undefined);
+            this.ApplyUpgrade(undefined);
             return;          
         }
 
@@ -556,7 +590,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         
         if(upgrades.length === 0){
             print('Skipping shards selection. No rewards available');  
-            this.ApplyFavor(undefined);
+            this.ApplyUpgrade(undefined);
             return;          
         }
 
@@ -574,7 +608,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         
         if(upgrades.length === 0){
             print('Skipping knowledge selection. No rewards available');  
-            this.ApplyFavor(undefined);
+            this.ApplyUpgrade(undefined);
             return;          
         }
         
@@ -592,7 +626,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         
         if(upgrades.length === 0){
             print('Skipping items selection. No rewards available');  
-            this.ApplyFavor(undefined);
+            this.ApplyUpgrade(undefined);
             return;          
         }
         

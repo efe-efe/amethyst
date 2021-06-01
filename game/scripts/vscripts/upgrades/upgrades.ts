@@ -191,7 +191,7 @@ CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_fav
         if(customNpc){
             const upgrade = Upgrades.filter((currentUpgrade) => currentUpgrade.id === event.payload.upgradeId)[0];
             if(upgrade){
-                customNpc.ApplyFavor(upgrade);
+                customNpc.ApplyUpgrade(upgrade);
             }
         }
     }

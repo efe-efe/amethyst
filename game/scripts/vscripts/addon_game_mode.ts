@@ -399,6 +399,7 @@ export class GameMode{
 
         if(this.IsPVE()){
             LinkLuaModifier('modifier_combine_util',                'modifiers/modifier_combine_util', LuaModifierMotionType.NONE);
+            
             const favorsPath = 'modifiers/upgrades/favors/';
             const itemsPath = 'modifiers/upgrades/items/';
             const shardsPath = 'modifiers/upgrades/shards/';
@@ -416,7 +417,9 @@ export class GameMode{
                     }
                 }
             });
-            LinkLuaModifier('modifier_upgrade_tarrasque',  'modifiers/upgrades/modifier_upgrade_tarrasque', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_combine_util',                'modifiers/modifier_combine_util', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_maelstrom_attack',  itemsPath + 'modifier_upgrade_maelstrom', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_basher_attack',  itemsPath + 'modifier_upgrade_basher', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');

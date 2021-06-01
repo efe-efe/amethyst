@@ -75,6 +75,9 @@ export default class Room extends GameState{
         if(previousNpcs > this.ais.length){
             this.remainingWaveNpcs--;
             this.remainingTotalNpcs--;
+            EFX('particles/econ/events/new_bloom/dragon_death.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, {
+                release: true,
+            });
         }
         this.SendDataToClient();
     }

@@ -188,7 +188,7 @@ CustomGameEventManager:RegisterListener(
                     function(____, currentUpgrade) return currentUpgrade.id == event.payload.upgradeId end
                 )[1]
                 if upgrade then
-                    customNpc:ApplyFavor(upgrade)
+                    customNpc:ApplyUpgrade(upgrade)
                 end
             end
         end
