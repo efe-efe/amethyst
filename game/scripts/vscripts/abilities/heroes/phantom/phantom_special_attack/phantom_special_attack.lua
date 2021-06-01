@@ -15,6 +15,17 @@ function phantom_special_attack:GetPlaybackRateOverride() 		return 2.0 end
 function phantom_special_attack:GetCastPointSpeed() 			return 80 end
 function phantom_special_attack:GetFadeGestureOnCast()			return false end
 
+function phantom_special_attack:GetCooldown(iLevel)
+	if self:GetCaster():HasModifier("modifier_upgrade_phantom_fast_daggers") then 
+		local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
+		local attack_speed = (1 / attacks_per_second)
+		
+		return attack_speed * 2
+	else 
+		return self.BaseClass.GetCooldown(self, self:GetLevel())
+	end
+end
+
 function phantom_special_attack:OnSpellStart()
 	local caster = self:GetCaster()
 	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
@@ -83,15 +94,17 @@ function phantom_special_attack:ThrowProjectile(vOrigin, vDirection)
 							{}
 						)
 					end
+
+					if not _self.Source:HasModifier("modifier_upgrade_phantom_fast_daggers") then 
+						unit:AddNewModifier(
+							_self.Source,
+							self,
+							"modifier_generic_fading_slow",
+							{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct }
+						)
+					end
 				end
 
-				unit:AddNewModifier(
-					_self.Source,
-					self,
-					"modifier_generic_fading_slow",
-					{ duration = fading_slow_duration, max_slow_pct = fading_slow_pct }
-				)
-				
 				if self:GetLevel() >= 2 then
 					unit:AddNewModifier(
 						_self.Source,

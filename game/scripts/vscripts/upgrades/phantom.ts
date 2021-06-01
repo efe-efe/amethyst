@@ -31,7 +31,7 @@ const Favors: Upgrade[] = [
     {
         id: 'phantom_extra_daggers',
         name: 'Extra daggers',
-        description: 'Your stiffling daggers throws 3 daggers.',
+        description: 'Your Stiffling Daggers throws 3 daggers.',
         ability: 'phantom_special_attack',
         maxStacks: 1,
         modifier: {
@@ -39,7 +39,19 @@ const Favors: Upgrade[] = [
         },
         tier: 1,
         type: UpgradeTypes.FAVOR,
-    },    
+    },  
+    {
+        id: 'phantom_fast_daggers',
+        name: 'Fast daggers',
+        description: 'Your Stiffling Daggers cooldown is two times to your attack speed, but no longer apply slow.',
+        ability: 'phantom_special_attack',
+        maxStacks: 1,
+        modifier: {
+            name: 'modifier_upgrade_phantom_fast_daggers'
+        },
+        tier: 1,
+        type: UpgradeTypes.FAVOR,
+    },   
     {
         id: 'phantom_coup_cast_fast',
         name: 'Coup de Grace cast fast',

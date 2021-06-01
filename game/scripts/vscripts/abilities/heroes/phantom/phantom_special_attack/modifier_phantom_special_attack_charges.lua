@@ -1,7 +1,11 @@
 modifier_phantom_special_attack_charges = class({})
 
 function modifier_phantom_special_attack_charges:GetMaxCharges()
-	return self:GetAbility():GetSpecialValueFor("max_charges")
+	if self:GetCaster():HasModifier("modifier_upgrade_phantom_fast_daggers") then 
+		return 1
+	else 
+		return self:GetAbility():GetSpecialValueFor("max_charges")
+	end
 end
 
 function modifier_phantom_special_attack_charges:GetReplenishType() return CHARGES_TYPE_ASYNC end
