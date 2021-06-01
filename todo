@@ -1,7 +1,3 @@
-short :)
-Make levelup mandatory and automatic if not used
-Create initial only perks
-
 ------------------------------------------------------------
 Perks Targets:
 * Ability Specific Perks
@@ -44,3 +40,24 @@ Bonuses
 Problems
 * Some ability effects (regular or leveled up) are designed to bennefit other abilities which maybe you won't have.
 * If you don't level the propper abilities, mana could be useless
+
+
+
+
+
+
+
+
+
+
+ Implement Gold System
+* Implement Shop System
+* Second reward should always be a Shard
+* Upgrade NPCs health bar to reflect status/shield
+* Upgrade boss bars to be Huuuge
+* Implement different locations system
+* Implement random elements per locations, based on the current Stage
+* Generate a mob distribution algorythm
+* Shrink map size
+* Design and implement rarity system for shards
+* Design and implement a chance based system for rewards
