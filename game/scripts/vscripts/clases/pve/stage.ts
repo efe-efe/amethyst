@@ -97,7 +97,7 @@ export default class Stage extends GameState{
             return new Room(this.alliances, -1, [{ npcs: [] }], this);
         }
         if(RandomInt(1, 100) < 5){
-            return new Room(this.alliances, -1, [{ npcs: [] }], this);
+            //return new Room(this.alliances, -1, [{ npcs: [] }], this);
         }
         return new Room(this.alliances, -1, this.GenerateWaves(), this);
     }
