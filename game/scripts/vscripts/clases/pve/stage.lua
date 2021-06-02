@@ -1,21 +1,15 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 1,["8"] = 2,["9"] = 2,["10"] = 3,["11"] = 3,["12"] = 11,["13"] = 11,["14"] = 11,["15"] = 11,["16"] = 11,["17"] = 11,["18"] = 11,["19"] = 17,["20"] = 51,["21"] = 51,["22"] = 51,["23"] = 51,["24"] = 51,["25"] = 58,["26"] = 51,["27"] = 56,["28"] = 60,["29"] = 61,["30"] = 62,["31"] = 63,["32"] = 58,["33"] = 66,["34"] = 67,["35"] = 68,["36"] = 71,["37"] = 66,["38"] = 74,["39"] = 51,["40"] = 76,["41"] = 77,["43"] = 79,["44"] = 80,["45"] = 81,["47"] = 83,["50"] = 74,["51"] = 88,["52"] = 89,["53"] = 90,["54"] = 94,["56"] = 96,["57"] = 97,["59"] = 99,["61"] = 102,["62"] = 102,["63"] = 102,["64"] = 102,["65"] = 102,["66"] = 102,["67"] = 102,["68"] = 102,["69"] = 88,["70"] = 105,["71"] = 106,["72"] = 110,["73"] = 111,["74"] = 111,["75"] = 111,["76"] = 112,["78"] = 114,["79"] = 114,["80"] = 115,["81"] = 116,["82"] = 114,["86"] = 119,["87"] = 119,["88"] = 120,["89"] = 121,["90"] = 122,["92"] = 119,["95"] = 111,["96"] = 111,["97"] = 127,["98"] = 105,["99"] = 130,["100"] = 131,["101"] = 132,["103"] = 133,["104"] = 133,["105"] = 134,["106"] = 134,["107"] = 134,["108"] = 134,["109"] = 133,["112"] = 137,["113"] = 130,["114"] = 140,["115"] = 141,["116"] = 141,["117"] = 141,["118"] = 141,["119"] = 140,["120"] = 144,["121"] = 145,["122"] = 146,["124"] = 144,["125"] = 150,["126"] = 151,["127"] = 152,["129"] = 150,["130"] = 156,["131"] = 157,["132"] = 158,["133"] = 159,["134"] = 156,["135"] = 162,["136"] = 163,["137"] = 162,["138"] = 51,["139"] = 51});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 1,["8"] = 2,["9"] = 2,["10"] = 2,["11"] = 3,["12"] = 3,["13"] = 11,["14"] = 45,["15"] = 45,["16"] = 45,["17"] = 45,["18"] = 45,["19"] = 53,["20"] = 45,["21"] = 50,["22"] = 51,["23"] = 55,["24"] = 56,["25"] = 57,["26"] = 58,["27"] = 53,["28"] = 61,["29"] = 62,["30"] = 63,["31"] = 66,["32"] = 61,["33"] = 69,["34"] = 45,["35"] = 71,["36"] = 72,["38"] = 74,["39"] = 75,["40"] = 76,["42"] = 78,["45"] = 69,["46"] = 83,["47"] = 84,["48"] = 85,["50"] = 87,["51"] = 88,["53"] = 90,["54"] = 83,["55"] = 93,["56"] = 94,["57"] = 96,["58"] = 96,["59"] = 96,["60"] = 96,["61"] = 96,["62"] = 96,["63"] = 96,["64"] = 96,["65"] = 96,["66"] = 96,["67"] = 96,["68"] = 93,["69"] = 103,["70"] = 104,["71"] = 108,["72"] = 109,["73"] = 109,["74"] = 109,["75"] = 110,["77"] = 112,["78"] = 112,["79"] = 113,["80"] = 114,["81"] = 112,["85"] = 117,["86"] = 117,["87"] = 118,["88"] = 119,["89"] = 120,["91"] = 117,["94"] = 109,["95"] = 109,["96"] = 125,["97"] = 103,["98"] = 128,["99"] = 129,["100"] = 130,["102"] = 132,["103"] = 133,["105"] = 138,["106"] = 139,["108"] = 140,["109"] = 140,["110"] = 141,["111"] = 141,["112"] = 141,["113"] = 141,["114"] = 140,["117"] = 144,["118"] = 128,["119"] = 147,["120"] = 148,["121"] = 148,["122"] = 148,["123"] = 148,["124"] = 147,["125"] = 151,["126"] = 152,["127"] = 153,["129"] = 151,["130"] = 157,["131"] = 158,["132"] = 159,["134"] = 157,["135"] = 163,["136"] = 164,["137"] = 165,["138"] = 166,["140"] = 168,["142"] = 170,["143"] = 171,["144"] = 163,["145"] = 174,["146"] = 175,["147"] = 174,["148"] = 45,["149"] = 45});
 local ____exports = {}
 local ____custom_ai = require("clases.pve.custom_ai")
 local CustomAIMeta = ____custom_ai.CustomAIMeta
 local CustomAITier = ____custom_ai.CustomAITier
 local ____room = require("clases.pve.room")
 local Room = ____room.default
+local RoomType = ____room.RoomType
 local ____game_state = require("clases.game_state")
 local GameState = ____game_state.default
-local RoomType = RoomType or ({})
-RoomType.REGULAR = 0
-RoomType[RoomType.REGULAR] = "REGULAR"
-RoomType.BOSS = 1
-RoomType[RoomType.BOSS] = "BOSS"
-RoomType.BONUS = 2
-RoomType[RoomType.BONUS] = "BONUS"
 local mobsDistribution = {{{tier = CustomAITier.BASIC, base = 4, optional = 1}, {tier = CustomAITier.MID, base = 0, optional = 0}}, {{tier = CustomAITier.BASIC, base = 4, optional = 2}, {tier = CustomAITier.MID, base = 0, optional = 0}}, {{tier = CustomAITier.BASIC, base = 4, optional = 1}, {tier = CustomAITier.MID, base = 1, optional = 0}}, {{tier = CustomAITier.BASIC, base = 4, optional = 1}, {tier = CustomAITier.MID, base = 1, optional = 1}}, {{tier = CustomAITier.BASIC, base = 4, optional = 1}, {tier = CustomAITier.MID, base = 1, optional = 1}, {tier = CustomAITier.HIGH, base = 1, optional = 0}}, {{tier = CustomAITier.BASIC, base = 4, optional = 2}, {tier = CustomAITier.MID, base = 1, optional = 1}, {tier = CustomAITier.HIGH, base = 2, optional = 0}}, {{tier = CustomAITier.BASIC, base = 2, optional = 1}, {tier = CustomAITier.MID, base = 2, optional = 1}, {tier = CustomAITier.HIGH, base = 3, optional = 0}}, {{tier = CustomAITier.BASIC, base = 2, optional = 1}, {tier = CustomAITier.MID, base = 2, optional = 1}, {tier = CustomAITier.HIGH, base = 3, optional = 0}}}
 ____exports.default = (function()
     ____exports.default = __TS__Class()
@@ -24,15 +18,16 @@ ____exports.default = (function()
     __TS__ClassExtends(Stage, GameState)
     function Stage.prototype.____constructor(self, alliances, stageData, run)
         GameState.prototype.____constructor(self, alliances, -1)
-        self.currentRoom = 0
+        self.currentRoomNumber = 0
+        self.currentNpcRoomNumber = 0
         self.run = run
         self.possibleNPCs = stageData.possibleNPCs
-        self.rooms = RandomInt(6, 8)
+        self.totalNpcRooms = RandomInt(6, 8)
         self:SendDataToClient()
     end
     function Stage.prototype.SendDataToClient(self)
         local tableName = "main"
-        local data = {currentRoom = self.currentRoom + 1}
+        local data = {currentRoom = self.currentNpcRoomNumber + 1}
         CustomNetTables:SetTableValue(tableName, "pve", data)
     end
     function Stage.prototype.Update(self)
@@ -40,36 +35,40 @@ ____exports.default = (function()
         if self.room then
             self.room:Update()
         else
-            if self.currentRoom < self.rooms then
-                local roomType = ((self.currentRoom == (self.rooms - 2)) and RoomType.BOSS) or ((((self.currentRoom == 0) or (self.currentRoom == (self.rooms - 1))) and RoomType.BONUS) or RoomType.REGULAR)
-                self.room = self:GenerateRoom(roomType, (self.currentRoom == 2) or (self.currentRoom == 6))
+            if self.currentNpcRoomNumber < self.totalNpcRooms then
+                local spawnDiamond = (self.currentRoomNumber == 2) or (self.currentRoomNumber == 6)
+                self.room = self:GenerateRoom(spawnDiamond)
             else
                 self:End()
             end
         end
     end
-    function Stage.prototype.GenerateRoom(self, roomType, spawnDiamond)
-        if roomType == RoomType.BOSS then
-            local waves = {{npcs = {self.possibleNPCs[#self.possibleNPCs]}}}
-            return __TS__New(Room, self.alliances, -1, waves, self, spawnDiamond)
+    function Stage.prototype.GenerateRoomType(self)
+        if self.currentNpcRoomNumber == (self.totalNpcRooms - 1) then
+            return RoomType.BOSS
         end
-        if roomType == RoomType.BONUS then
-            return __TS__New(Room, self.alliances, -1, {{npcs = {}}}, self, spawnDiamond)
+        if self.currentRoomNumber == 0 then
+            return RoomType.BONUS
         end
-        if RandomInt(1, 100) < 5 then
-        end
+        return RoomType.REGULAR
+    end
+    function Stage.prototype.GenerateRoom(self, spawnDiamond)
+        local ____type = self:GenerateRoomType()
         return __TS__New(
             Room,
             self.alliances,
             -1,
-            self:GenerateWaves(),
             self,
-            spawnDiamond
+            {
+                waves = self:GenerateWaves(____type),
+                spawnDiamond = spawnDiamond,
+                type = ____type
+            }
         )
     end
     function Stage.prototype.GenerateWave(self)
         local wave = {npcs = {}}
-        local distribution = mobsDistribution[self.currentRoom + 1]
+        local distribution = mobsDistribution[self.currentNpcRoomNumber + 1]
         __TS__ArrayForEach(
             distribution,
             function(____, mobTier)
@@ -96,7 +95,13 @@ ____exports.default = (function()
         )
         return wave
     end
-    function Stage.prototype.GenerateWaves(self)
+    function Stage.prototype.GenerateWaves(self, ____type)
+        if ____type == RoomType.BONUS then
+            return {{npcs = {}}}
+        end
+        if ____type == RoomType.BOSS then
+            return {{npcs = {self.possibleNPCs[#self.possibleNPCs]}}}
+        end
         local amount = RandomInt(2, 3)
         local waves = {}
         do
@@ -128,7 +133,12 @@ ____exports.default = (function()
         end
     end
     function Stage.prototype.OnRoomCompleted(self)
-        self.currentRoom = self.currentRoom + 1
+        if self.room then
+            if (self.room.type == RoomType.REGULAR) or (self.room.type == RoomType.BOSS) then
+                self.currentNpcRoomNumber = self.currentNpcRoomNumber + 1
+            end
+            self.currentRoomNumber = self.currentRoomNumber + 1
+        end
         self.room = nil
         self:SendDataToClient()
     end

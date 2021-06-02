@@ -1,17 +1,11 @@
 import { CustomAIMeta, CustomAITier, NPCNames } from './custom_ai';
-import Room, { Wave } from './room';
+import Room, { RoomType, Wave } from './room';
 import GameState from '../game_state';
 import Alliance from '../alliance';
 import Run from './run';
 
 export interface StageData {
     possibleNPCs: NPCNames[];
-}
-
-enum RoomType {
-    REGULAR = 0,
-    BOSS,
-    BONUS,
 }
 
 const mobsDistribution: {
@@ -51,22 +45,23 @@ const mobsDistribution: {
 export default class Stage extends GameState{
     possibleNPCs: NPCNames[];
     run: Run;
-    rooms: number;
     room: Room | undefined;
-    currentRoom = 0;
+    totalNpcRooms: number;
+    currentRoomNumber = 0;
+    currentNpcRoomNumber = 0;
 
     constructor(alliances: Alliance[], stageData: StageData, run: Run){
         super(alliances, -1);
         this.run = run;
         this.possibleNPCs = stageData.possibleNPCs;
-        this.rooms = RandomInt(6, 8);
+        this.totalNpcRooms = RandomInt(6, 8);
         this.SendDataToClient();
     }
 
     SendDataToClient(): void{
         const tableName = 'main' as never;
         const data = { 
-            currentRoom: this.currentRoom + 1, 
+            currentRoom: this.currentNpcRoomNumber + 1, 
         } as never;
         CustomNetTables.SetTableValue(tableName, 'pve', data);
     }
@@ -76,30 +71,33 @@ export default class Stage extends GameState{
         if(this.room){
             this.room.Update();
         } else {
-            if(this.currentRoom < this.rooms){
-                const roomType = (this.currentRoom === this.rooms - 2) ? RoomType.BOSS : (this.currentRoom === 0 || this.currentRoom === this.rooms - 1) ? RoomType.BONUS : RoomType.REGULAR;
-                this.room = this.GenerateRoom(roomType, this.currentRoom === 2 || this.currentRoom === 6);
+            if(this.currentNpcRoomNumber < this.totalNpcRooms){
+                const spawnDiamond = (this.currentRoomNumber === 2 || this.currentRoomNumber === 6);
+                this.room = this.GenerateRoom(spawnDiamond);
             } else {
                 this.End();
             }
         }
     }
 
-    GenerateRoom(roomType: RoomType, spawnDiamond: boolean): Room{
-        if(roomType === RoomType.BOSS){
-            const waves = [{
-                npcs: [this.possibleNPCs[this.possibleNPCs.length - 1]],
-            }];
+    GenerateRoomType(): RoomType{
+        if(this.currentNpcRoomNumber === this.totalNpcRooms - 1){
+            return RoomType.BOSS;
+        }
+        if(this.currentRoomNumber === 0){
+            return RoomType.BONUS;
+        }
+        return RoomType.REGULAR;
+    }
 
-            return new Room(this.alliances, -1, waves, this, spawnDiamond);
-        }
-        if(roomType === RoomType.BONUS){
-            return new Room(this.alliances, -1, [{ npcs: [] }], this, spawnDiamond);
-        }
-        if(RandomInt(1, 100) < 5){
-            //return new Room(this.alliances, -1, [{ npcs: [] }], this);
-        }
-        return new Room(this.alliances, -1, this.GenerateWaves(), this, spawnDiamond);
+    GenerateRoom(spawnDiamond: boolean): Room{
+        const type = this.GenerateRoomType();
+
+        return new Room(this.alliances, -1, this, {
+            waves: this.GenerateWaves(type), 
+            spawnDiamond,
+            type,
+        });
     }
 
     GenerateWave(): Wave{
@@ -107,7 +105,7 @@ export default class Stage extends GameState{
             npcs: []
         };
 
-        const distribution = mobsDistribution[this.currentRoom];
+        const distribution = mobsDistribution[this.currentNpcRoomNumber];
         distribution.forEach((mobTier) => {
             const npcs = this.GetAllNpcsOfTier(mobTier.tier);
 
@@ -127,7 +125,16 @@ export default class Stage extends GameState{
         return wave;
     }
 
-    GenerateWaves(): Wave[]{
+    GenerateWaves(type: RoomType): Wave[]{
+        if(type === RoomType.BONUS){
+            return [{ npcs: [] }];
+        }
+        if(type === RoomType.BOSS){
+            return [{
+                npcs: [this.possibleNPCs[this.possibleNPCs.length - 1]],
+            }];
+        }
+        
         const amount = RandomInt(2, 3);
         const waves: Wave[] = [];
         for(let i = 0; i < amount; i++){
@@ -154,7 +161,12 @@ export default class Stage extends GameState{
     }
 
     OnRoomCompleted(): void{
-        this.currentRoom++;
+        if(this.room){
+            if(this.room.type === RoomType.REGULAR || this.room.type === RoomType.BOSS){
+                this.currentNpcRoomNumber++;
+            }
+            this.currentRoomNumber++;
+        }
         this.room = undefined;
         this.SendDataToClient();
     }

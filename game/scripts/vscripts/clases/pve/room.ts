@@ -7,8 +7,15 @@ import { CustomEvents } from '../../custom_events';
 import { RewardTypes } from '../../rewards/rewards';
 import { Diamond } from '../gem';
 
-export interface RoomData{
+export enum RoomType {
+    REGULAR = 0,
+    BOSS,
+    BONUS,
+}
+export interface RoomOptions{
     waves: Wave[];
+    spawnDiamond: boolean;
+    type: RoomType;
 }
 export interface Wave {
     npcs: NPCNames[];
@@ -33,14 +40,16 @@ export default class Room extends GameState{
     currentWave = 0;
     diamond: Diamond | undefined;
     spawnDiamond: boolean;
+    type: RoomType;
 
-    constructor(alliances: Alliance[], duration: number, waves: Wave[], stage: Stage, spawnDiamond = false){
+    constructor(alliances: Alliance[], duration: number, stage: Stage, options: RoomOptions){
         super(alliances, duration);
-        this.waves = waves;
-        this.totalNpcs = this.GetTotalNPCs(waves);
+        this.waves = options.waves;
+        this.totalNpcs = this.GetTotalNPCs(this.waves);
         this.remainingTotalNpcs = this.totalNpcs;
         this.stage = stage;
-        this.spawnDiamond = spawnDiamond;
+        this.type = options.type;
+        this.spawnDiamond = options.spawnDiamond;
         this.StartWave(this.currentWave);
         this.SendDataToClient();
 
@@ -131,7 +140,7 @@ export default class Room extends GameState{
         if(this.remainingWaveNpcs <= 0){
             if(this.currentWave === this.waves.length - 1){
                 if(this.spawnDiamond && !this.diamond){
-                    this.diamond = new Diamond(Vector(0, 0, 256));
+                    this.diamond = new Diamond(Vector(0, 0, 300));
                     this.spawnDiamond = false;
                 }
                 if(!this.diamond){
