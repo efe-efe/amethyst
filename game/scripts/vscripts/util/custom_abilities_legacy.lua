@@ -1,5 +1,13 @@
 CustomAbilitiesLegacy = class({})
 
+function CustomAbilitiesLegacy:FakeAbility(hAbility)
+	if RandomInt(1, 10) < 3 then
+		hAbility:StartCooldown(0.35)
+		return true
+	end
+
+	return false
+end
 
 function CustomAbilitiesLegacy:LinkUpgrades(hAbility, sLinkedAbilityName)
     local caster = hAbility:GetCaster()

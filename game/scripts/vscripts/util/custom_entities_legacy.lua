@@ -816,6 +816,8 @@ function CustomEntitiesLegacy:ProjectileAttack(hEntity, tData)
 	if tData.OnProjectileCreated then
 		tData.OnProjectileCreated(hProjectile)
 	end
+
+	return hProjectile
 end
 
 function CustomEntitiesLegacy:GetMeeleExtraRadius(hEntity)

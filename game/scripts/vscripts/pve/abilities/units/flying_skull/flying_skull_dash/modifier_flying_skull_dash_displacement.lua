@@ -4,7 +4,7 @@ function modifier_flying_skull_dash_displacement:OnCreated(params)
 	if IsServer() then
 		self.damage_table = {
 			attacker = self:GetParent(),
-			damage = 4,
+			damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 		self.original_scale = self:GetParent():GetModelScale()
@@ -15,7 +15,20 @@ end
 function modifier_flying_skull_dash_displacement:OnDestroy()
 	if IsServer() then
 		self:GetParent():SetModelScale(self.original_scale)
+		self:PlayEffectsOnFinish()
 	end
+end
+
+function modifier_flying_skull_dash_displacement:PlayEffectsOnFinish()
+	local position = self:GetCaster():GetAbsOrigin()
+	EmitSoundOnLocationWithCaster(position, "Hero_StormSpirit.ProjectileImpact", self:GetCaster())
+	EmitSoundOnLocationWithCaster(position, "Hero_StormSpirit.StaticRemnantExplode", self:GetCaster())
+
+	EFX("particles/units/heroes/hero_vengeful/vengeful_magic_missle_end.vpcf", PATTACH_WORLDORIGIN, nil, {
+		cp0 = position,
+		cp3 = position,
+		release = true,
+	})
 end
 
 function modifier_flying_skull_dash_displacement:OnCollide(params)

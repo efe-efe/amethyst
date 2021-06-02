@@ -1,8 +1,15 @@
 flying_skull_dash = class({})
 LinkLuaModifier("modifier_flying_skull_dash_displacement", "pve/abilities/units/flying_skull/flying_skull_dash/modifier_flying_skull_dash_displacement", LUA_MODIFIER_MOTION_BOTH)
 LinkLuaModifier("modifier_flying_skull_dash", "pve/abilities/units/flying_skull/flying_skull_dash/modifier_flying_skull_dash", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_flying_skull_dash_intrinsic", "pve/abilities/units/flying_skull/flying_skull_dash/modifier_flying_skull_dash_intrinsic", LUA_MODIFIER_MOTION_NONE)
 
-function flying_skull_dash:GetCastPointSpeed() 			return 0 end
+function flying_skull_dash:GetIntrinsicModifierName()
+	return "modifier_flying_skull_dash_intrinsic"
+end
+
+function flying_skull_dash:GetCastPointSpeed()
+	return 0
+end
 
 function flying_skull_dash:OnAbilityPhaseStart()
 	local caster = self:GetCaster()
@@ -21,6 +28,11 @@ function flying_skull_dash:OnSpellStart()
     local direction = (point - origin):Normalized()
     local distance = self:GetCastRange(Vector(0,0,0), nil)
     local speed = 1200
+	self.projectile = nil
+
+	if CustomAbilitiesLegacy:FakeAbility(self) then
+		return
+	end
 
     CustomEntitiesLegacy:FullyFaceTowards(caster, direction)
     caster:AddNewModifier(
@@ -36,7 +48,7 @@ function flying_skull_dash:OnSpellStart()
         }
     )
 
-    CustomEntitiesLegacy:ProjectileAttack(caster, {
+    self.projectile = CustomEntitiesLegacy:ProjectileAttack(caster, {
 		tProjectile = {
 			EffectName = "particles/vengeful/vengeful_ex_second_attack.vpcf",
 			vSpawnOrigin = origin + Vector(direction.x * 45, direction.y * 45, 96),
@@ -50,22 +62,12 @@ function flying_skull_dash:OnSpellStart()
 			GroundBehavior = PROJECTILES_NOTHING,
 			fGroundOffset = 0,
 			UnitTest = function(_self, unit) return false end,
-			OnFinish = function(_self, pos)
-				self:PlayEffectsOnFinish(pos)
-			end,
 		}
 	})
 end
 
-function flying_skull_dash:PlayEffectsOnFinish(pos)
-	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.ProjectileImpact", nil)
-	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.StaticRemnantExplode", nil)
-	
-	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_magic_missle_end.vpcf"
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-	ParticleManager:SetParticleControl(effect_cast, 0, pos)
-	ParticleManager:SetParticleControl(effect_cast, 3, pos)
-	ParticleManager:ReleaseParticleIndex(effect_cast)
+function flying_skull_dash:GetProjectile()
+	return self.projectile
 end
 
 function flying_skull_dash:OnUpgrade()

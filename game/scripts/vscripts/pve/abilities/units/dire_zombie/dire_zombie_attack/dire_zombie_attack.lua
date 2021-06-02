@@ -24,6 +24,10 @@ function dire_zombie_attack:OnSpellStart()
     local origin = caster:GetOrigin()
     local projectile_direction = Direction2D(origin, point)
 
+    if CustomAbilitiesLegacy:FakeAbility(self) then
+		return
+	end
+
     CustomEntitiesLegacy:ProjectileAttack(caster, {
 		bIsBasicAttack = true,
         tProjectile = {
