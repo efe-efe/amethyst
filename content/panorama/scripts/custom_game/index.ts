@@ -6,15 +6,16 @@ import Key, { GetKeyByKeyCode } from './commands/key';
 import Action, { GetActionByActionCode } from './commands/actions';
 import LayoutController from './layout/layoutController';
 import HeroController from './heroController';
-import HeroOverhead from './heroOverhead/heroOverhead';
+import HeroOverhead from './overhead/heroOverhead';
 import HeroInfoCard from './heroInfoCard';
 import AllianceBar from './allianceBar';
 import util, { tables } from './util';
 import './pve';
 import './targetIndicator';
 import CustomEntities from './customEntities';
-import { CustomGameState, HeroData } from './types';
+import { CustomGameState, HeroData, UnitData } from './types';
 import { ReadyBar } from './readyBar';
+import UnitOverhead from './overhead/unitOverhead';
 
 (function(){
     const customEntities = CustomEntities.GetInstance();
@@ -38,6 +39,7 @@ import { ReadyBar } from './readyBar';
     const customHotkeysTextPanel = hideShowButton.FindChildrenWithClassTraverse('custom-hotkeys__button-text')[0] as LabelPanel;
     
     const heroOverheads: any = {};
+    const unitOverheads: any = {};
     const heroInfoCards: any = {};
     const allianceBars: any = {};
 
@@ -216,34 +218,43 @@ import { ReadyBar } from './readyBar';
 
     layout.UpdateCurrency();
 
-    customEntities.AddCallback((value: HeroData) => {
+    customEntities.AddCallback((value: UnitData) => {
         const entityIndex = value.entityIndex;
         
-        if(!heroOverheads[entityIndex]){
-            heroOverheads[entityIndex] = new HeroOverhead(value);
-        } else {
-            heroOverheads[entityIndex].UpdateData(value);   
-        }
+        if(value.playerId !== undefined){
+            if(!heroOverheads[entityIndex]){
+                heroOverheads[entityIndex] = new HeroOverhead(value as HeroData);
+            } else {
+                heroOverheads[entityIndex].UpdateData(value);   
+            }
 
-        if(!heroInfoCards[entityIndex]){
-            let container: Panel | null;
+            if(!heroInfoCards[entityIndex]){
+                let container: Panel | null;
+                const allianceName = (value as HeroData).allianceName
 
-            if(value.allianceName == 'DOTA_ALLIANCE_RADIANT'){
-                container = $('#alliances-status').FindChildTraverse('alliances-status__radiant');
+                if(allianceName == 'DOTA_ALLIANCE_RADIANT'){
+                    container = $('#alliances-status').FindChildTraverse('alliances-status__radiant');
+                }
+                if(allianceName == 'DOTA_ALLIANCE_DIRE'){
+                    container = $('#alliances-status').FindChildTraverse('alliances-status__dire');
+                }
+                if(allianceName == 'DOTA_ALLIANCE_LEGION'){
+                    container = $('#alliances-status').FindChildTraverse('alliances-status__legion');
+                }
+                if(allianceName == 'DOTA_ALLIANCE_VOID'){
+                    container = $('#alliances-status').FindChildTraverse('alliances-status__void');
+                }
+            
+                heroInfoCards[entityIndex] = new HeroInfoCard((value as HeroData), container!);
+            } else {
+                heroInfoCards[entityIndex].UpdateData(value);   
             }
-            if(value.allianceName == 'DOTA_ALLIANCE_DIRE'){
-                container = $('#alliances-status').FindChildTraverse('alliances-status__dire');
-            }
-            if(value.allianceName == 'DOTA_ALLIANCE_LEGION'){
-                container = $('#alliances-status').FindChildTraverse('alliances-status__legion');
-            }
-            if(value.allianceName == 'DOTA_ALLIANCE_VOID'){
-                container = $('#alliances-status').FindChildTraverse('alliances-status__void');
-            }
-        
-            heroInfoCards[entityIndex] = new HeroInfoCard(value, container!);
         } else {
-            heroInfoCards[entityIndex].UpdateData(value);   
+            if(!unitOverheads[entityIndex]){
+                unitOverheads[entityIndex] = new UnitOverhead(value);
+            } else {
+                unitOverheads[entityIndex].UpdateData(value);   
+            }
         }
     });
     customEntities.OnReload();
@@ -308,8 +319,6 @@ import { ReadyBar } from './readyBar';
     });
     
     tables.subscribeToNetTableKey(tableNameMain, 'pve', true, function(data: any){
-        
-        
         if(Game.IsInToolsMode()){
             if(data.nextReward){
                 nextRewardPanel.text = 'Next reward: ' + data.nextReward;

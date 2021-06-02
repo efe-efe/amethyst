@@ -707,24 +707,26 @@ export class GameMode{
             return false;
         }
         
-        if(victim && victim.IsRealHero()){
-            CustomEntitiesLegacy.SetTreshold(victim, CustomEntitiesLegacy.GetTreshold(victim) - damage_after_reductions);
-            if(CustomEntitiesLegacy.GetTreshold(victim) < 0){
-                CustomEntitiesLegacy.SetTreshold(victim, 0);
-            }
-
+        if(victim){
             victim.AddNewModifier(victim, undefined, 'modifier_damage_fx', { duration: 0.1 });
             Timers.CreateTimer(0.05, function(){
                 CustomEntitiesLegacy.SendDataToClient(victim);
             });
-            
-            const victim_team = victim.GetTeam();
-            const victim_alliance = this.FindAllianceByTeam(victim_team);
 
-            if(victim_alliance){
-                Timers.CreateTimer(0.05, function(){
-                    victim_alliance.SendDataToClient();
-                });
+            if(victim.IsRealHero()){
+                CustomEntitiesLegacy.SetTreshold(victim, CustomEntitiesLegacy.GetTreshold(victim) - damage_after_reductions);
+                if(CustomEntitiesLegacy.GetTreshold(victim) < 0){
+                    CustomEntitiesLegacy.SetTreshold(victim, 0);
+                }
+                
+                const victim_team = victim.GetTeam();
+                const victim_alliance = this.FindAllianceByTeam(victim_team);
+
+                if(victim_alliance){
+                    Timers.CreateTimer(0.05, function(){
+                        victim_alliance.SendDataToClient();
+                    });
+                }
             }
         }
         

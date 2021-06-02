@@ -1,5 +1,6 @@
 import CustomEntities from '../customEntities';
 import CustomAbilities from '../customAbilities';
+import { HeroData } from '../types';
 
 const customEntities = CustomEntities.GetInstance();
 const customAbilities = CustomAbilities.GetInstance();
@@ -130,7 +131,9 @@ export default class LayoutController{
                     this.UpdateResourceBoxOnAbility(abilityPanel, abilityManaCost, abilityEnergyCost);
                     
                     if(abilityEnergyCost > 0){
-                        this.UpdateAbilityEnergy(abilityPanel, abilityEnergyCost, entityData.energy);
+                        if(entityData.playerId){
+                            this.UpdateAbilityEnergy(abilityPanel, abilityEnergyCost, (entityData as HeroData).energy);
+                        }                    
                     }
                 }
             }

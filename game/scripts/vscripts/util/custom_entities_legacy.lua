@@ -191,9 +191,22 @@ function CustomEntitiesLegacy:SendDataToClient(hEntity)
 			maxEnergy = CustomEntitiesLegacy:GetMaxEnergy(hEntity),
 			energyPerCell = CustomEntitiesLegacy:GetEnergyPerCell(hEntity)
 		}
-		CustomNetTables:SetTableValue("heroes", tostring(hEntity:GetPlayerID()), data)
+		CustomNetTables:SetTableValue('units', tostring(hEntity:GetPlayerID()), data)
 	else
-		--print('SendDataToClient: Not implemented yet for non hero units. Please come back later')
+		if hEntity:IsIllusion() then
+			return
+		end
+
+		local data = {
+			playerId = nil,
+			entityIndex = hEntity:GetEntityIndex(),
+			teamId = hEntity:GetTeam(),
+			health = hEntity:GetHealth(),
+			maxHealth = hEntity:GetMaxHealth(),
+			shield = CustomEntitiesLegacy:GetShield(hEntity),
+			status = CustomEntitiesLegacy:GetStatus(hEntity),
+		}
+		CustomNetTables:SetTableValue('units', tostring('_' .. hEntity:GetEntityIndex()), data)
 	end
 end
 

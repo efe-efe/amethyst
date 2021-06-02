@@ -2,13 +2,13 @@
     <styles>
         <include src="file://{resources}/styles/custom_game/main.css" />
         <include src="file://{resources}/styles/custom_game/progressBar.css" />
-        <include src="file://{resources}/styles/custom_game/heroOverhead/heroOverhead.css" />
-        <include src="file://{resources}/styles/custom_game/heroOverhead/charges.css" />
-        <include src="file://{resources}/styles/custom_game/heroOverhead/player.css" />
-        <include src="file://{resources}/styles/custom_game/heroOverhead/recast.css" />
-        <include src="file://{resources}/styles/custom_game/heroOverhead/status.css" />
-        <include src="file://{resources}/styles/custom_game/heroOverhead/cooldown.css" />
-        <include src="file://{resources}/styles/custom_game/heroOverhead/stacks.css" />
+        <include src="file://{resources}/styles/custom_game/unitOverhead/unitOverhead.css" />
+        <include src="file://{resources}/styles/custom_game/unitOverhead/charges.css" />
+        <include src="file://{resources}/styles/custom_game/unitOverhead/player.css" />
+        <include src="file://{resources}/styles/custom_game/unitOverhead/recast.css" />
+        <include src="file://{resources}/styles/custom_game/unitOverhead/status.css" />
+        <include src="file://{resources}/styles/custom_game/unitOverhead/cooldown.css" />
+        <include src="file://{resources}/styles/custom_game/unitOverhead/stacks.css" />
         <include src="file://{resources}/styles/custom_game/allianceStatus.css" />
         <include src="file://{resources}/styles/custom_game/heroInfoCard.css" />
         <include src="file://{resources}/styles/custom_game/topBar.css" />

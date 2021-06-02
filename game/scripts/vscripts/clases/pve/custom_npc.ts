@@ -32,6 +32,7 @@ export default class CustomNPC extends UnitEntity{
         super({ unit });
         customEntities.Disarm(this.unit);
         customEntities.IgnoreMSLimit(this.unit);
+        customEntities.HideHealthBar(this.unit);
     }
     LevelAllAbilities(level: number): void{
         for(let i = 0; i <= 23; i++){
@@ -328,7 +329,6 @@ export default class CustomNPC extends UnitEntity{
 export class CustomHeroNPC extends CustomNPC{
     constructor(unit: CDOTA_BaseNPC){
         super(unit);
-        customEntities.HideHealthBar(this.unit);
         customEntities.SetUseEnergy(this.unit);
     }
 }

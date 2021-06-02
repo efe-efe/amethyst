@@ -29,19 +29,23 @@ export type TargetingIndicator = {
     Fixed?: number;
 }
 
-export type HeroData = {
+export interface UnitData {
+    playerId?: PlayerID;
     entityIndex: EntityIndex;
     teamId: DOTATeam_t;
+    health: number;
+    maxHealth: number;
+    shield: number;
+    status: StatusTypes;
+}
+
+export interface HeroData extends UnitData{
     playerId: PlayerID;
     allianceName: string;
     name: string;
-    health: number;
-    maxHealth: number;
     treshold: number;
-    shield: number;
     mana: number;
     maxMana: number;
-    status: StatusTypes;
     recast: RecastTypes;
     stackbars: string;
     charges: string;

@@ -1,4 +1,4 @@
-import { HeroData } from './types';
+import { UnitData } from './types';
 import { tables } from './util';
 
 type GenericData = {
@@ -9,12 +9,12 @@ type GenericData = {
 export default class CustomEntities{
     private static instance: CustomEntities;
     private onUpdateCallbacks: any[] = [];
-    private entities: HeroData[] = [];
+    private entities: UnitData[] = [];
         
     private constructor(){
-        const tableName = 'heroes' as never;
+        const tableName = 'units' as never;
         tables.subscribeToNetTableAndLoadNow(tableName, (table: never, key: string | number | symbol, value: any) => {
-            const entity = value as HeroData;
+            const entity = value as UnitData;
             this.SetEntity(entity);
         });
     }
@@ -27,7 +27,7 @@ export default class CustomEntities{
         return CustomEntities.instance;
     }
 
-    public SetEntity(entity: HeroData): void{
+    public SetEntity(entity: UnitData): void{
         const index = this.GetEntityArrayIndex(entity.entityIndex);
         if(index !== undefined){
             this.UpdateEntity(index, entity);
@@ -41,11 +41,11 @@ export default class CustomEntities{
         });
     }
 
-    public GetEntity(entityIndex: EntityIndex): HeroData | undefined{
+    public GetEntity(entityIndex: EntityIndex): UnitData | undefined{
         return this.entities.filter(entity => entity.entityIndex === entityIndex)[0];
     }
 
-    public UpdateEntity(index: number, entity: HeroData): void{
+    public UpdateEntity(index: number, entity: UnitData): void{
         this.entities = [
             ...this.entities.slice(0, index),
             ...this.entities.slice(index + 1)
@@ -54,7 +54,7 @@ export default class CustomEntities{
     }
 
     public OnReload(): void{
-        const tableName = 'heroes' as never;
+        const tableName = 'units' as never;
         const data = CustomNetTables.GetAllTableValues(tableName);
         
         data.forEach((d) => {

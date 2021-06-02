@@ -1,4 +1,4 @@
-import Overhead from '../overhead/overhead';
+import Overhead from './overhead';
 import Recast from './recast';
 import Status from './status';
 import util, { Color, colors, panels } from '../util';
@@ -56,19 +56,19 @@ export default class HeroOverhead extends Overhead{
 
         this.isLocalPlayer = localPlayerId == heroData.playerId;
         this.color = colors[alliance.GetColor()];
-        this.topPanel = panels.createPanelSimple(this.containerPanel, 'hero-overhead__top');
-        this.midPanel = panels.createPanelSimple(this.containerPanel, 'hero-overhead__mid');
-        this.botPanel = panels.createPanelSimple(this.containerPanel, 'hero-overhead__bot');
-        this.chargesPanel = panels.createPanelSimple(this.botPanel, 'hero-overhead-charges');
-        const resourcesPanel = panels.createPanelSimple(this.botPanel, 'hero-overhead-resources');
-        this.healthPanel = panels.createPanelSimple(resourcesPanel, 'hero-overhead-resources__health');
-        this.manaPanel = panels.createPanelSimple(resourcesPanel, 'hero-overhead-resources__mana');
-        this.energyPanel = panels.createPanelSimple(resourcesPanel, 'hero-overhead-resources__energy');
+        this.topPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__top');
+        this.midPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__mid');
+        this.botPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__bot unit-overhead__bot--hero');
+        this.chargesPanel = panels.createPanelSimple(this.botPanel, 'unit-overhead-charges');
+        const resourcesPanel = panels.createPanelSimple(this.botPanel, 'unit-overhead-resources');
+        this.healthPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__health');
+        this.manaPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__mana');
+        this.energyPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__energy');
 
-        this.castpointPanel = panels.createPanelSimple(resourcesPanel, 'hero-overhead-resources__castpoint');
-        this.ammoPanel = panels.createPanelSimple(this.botPanel, 'hero-overhead-ammo');
-        this.stackbarsPanel = panels.createPanelSimple(this.ammoPanel, 'hero-overhead-ammo__stackbars');
-        this.cooldownPanel = panels.createPanelSimple(this.ammoPanel, 'hero-overhead-ammo__cooldown');
+        this.castpointPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__castpoint');
+        this.ammoPanel = panels.createPanelSimple(this.botPanel, 'unit-overhead-ammo');
+        this.stackbarsPanel = panels.createPanelSimple(this.ammoPanel, 'unit-overhead-ammo__stackbars');
+        this.cooldownPanel = panels.createPanelSimple(this.ammoPanel, 'unit-overhead-ammo__cooldown');
 
         if(alliance.IsLocal()){
             this.mana = new MultipleBars(this.manaPanel, {

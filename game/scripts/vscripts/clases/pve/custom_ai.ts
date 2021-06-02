@@ -432,6 +432,7 @@ export const CustomAIMeta: {
                     targetInCastRange: true
                 }
             });
+            ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_shield', { damage_block: ai.unit.GetMaxHealth() });
             return ai;
         },
         tier: CustomAITier.BASIC,
