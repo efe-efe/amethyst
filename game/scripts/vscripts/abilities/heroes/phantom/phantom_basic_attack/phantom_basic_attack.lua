@@ -23,9 +23,35 @@ function phantom_basic_attack:GetPlaybackRateOverride() 	return 1.7 end
 function phantom_basic_attack:GetCastPointSpeed() 			return self:GetSpecialValueFor('cast_point_speed_pct') end
 function phantom_basic_attack:GetFadeGestureOnCast()		return false end
 
+function phantom_basic_attack:TryThrowKnives(sModifier)
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+	local radius = 300
+
+	local modifier = CustomEntitiesLegacy:SafeGetModifier(caster, sModifier)
+	if modifier then
+		local stacks = modifier:GetStackCount()
+		EFX("particles/phantom/phantom_aoe_daggers_small.vpcf", PATTACH_ABSORIGIN, caster, {
+			release = true,
+		})
+
+		local damage_table = {
+			attacker = caster,
+			damage = caster:GetAverageTrueAttackDamage(caster) * (0.5 * stacks),
+			damage_type = DAMAGE_TYPE_PHYSICAL,
+		}
+		ApplyCallbackForUnitsInArea(caster, origin, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+			damage_table.victim = unit
+			ApplyDamage(damage_table)
+		end)
+
+		CreateRadiusMarker(caster, origin, radius, RADIUS_SCOPE_PUBLIC, 0.1)
+	end
+end
+
 function phantom_basic_attack:OnSpellStart()
 	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
+	local origin = caster:GetAbsOrigin()
 	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
 	local radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")

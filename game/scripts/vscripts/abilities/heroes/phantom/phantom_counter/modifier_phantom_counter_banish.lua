@@ -20,6 +20,8 @@ function modifier_phantom_counter_banish:OnDestroy()
             self.parent:Heal(self.heal, self.parent)
         end
         
+        self.parent:FindAbilityByName("phantom_basic_attack"):TryThrowKnives("modifier_upgrade_phantom_strike_knives")
+        
         if self.ability:GetLevel() >= 2 then
             self.parent:AddNewModifier(self.parent, self.ability, "modifier_phantom_counter_recast", { duration = self.buff_duration })
         end

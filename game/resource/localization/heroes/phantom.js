@@ -185,8 +185,8 @@ function GenerateLocalizationData() {
     var Shards = [
         {
             id: 'phantom_dash_damage',
-            name: 'Swift damage',
-            description: 'Your Swift deals damage when passing through enemies.',
+            name: 'Swift knives',
+            description: 'Your Swift leaves a fan of knives on its original position.',
             ability: 'phantom_mobility',
             maxStacks: 5,
             modifier: {
@@ -197,12 +197,24 @@ function GenerateLocalizationData() {
         },
         {
             id: 'phantom_dash_shield',
-            name: 'Swift Shield',
-            description: 'Your Swift gives you shield for a short period of time after passing through enemies.',
+            name: 'Swift shield',
+            description: 'Your Swift gives you shield for a short period of time after passing through enemies and increases its range.',
             ability: 'phantom_mobility',
             maxStacks: 5,
             modifier: {
                 name: 'modifier_upgrade_phantom_dash_shield'
+            },
+            tier: 1,
+            type: specific_1.UpgradeTypes.SHARD,
+        },
+        {
+            id: 'phantom_strike_knives',
+            name: 'Strike knives',
+            description: 'Your Phantom Strike leaves a fan of knives on the arival location.',
+            ability: 'phantom_counter',
+            maxStacks: 5,
+            modifier: {
+                name: 'modifier_upgrade_phantom_strike_knives'
             },
             tier: 1,
             type: specific_1.UpgradeTypes.SHARD,
@@ -212,11 +224,23 @@ function GenerateLocalizationData() {
         {
             id: 'phantom_extra_daggers',
             name: 'Extra daggers',
-            description: 'Your stiffling daggers throws 3 daggers.',
+            description: 'Your Stiffling Daggers throws 3 daggers.',
             ability: 'phantom_special_attack',
             maxStacks: 1,
             modifier: {
                 name: 'modifier_upgrade_phantom_extra_daggers'
+            },
+            tier: 1,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+        {
+            id: 'phantom_fast_daggers',
+            name: 'Fast daggers',
+            description: 'Your Stiffling Daggers cooldown is two times to your attack speed, but no longer apply slow.',
+            ability: 'phantom_special_attack',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_phantom_fast_daggers'
             },
             tier: 1,
             type: specific_1.UpgradeTypes.FAVOR,
@@ -229,6 +253,18 @@ function GenerateLocalizationData() {
             maxStacks: 1,
             modifier: {
                 name: 'modifier_upgrade_phantom_coup_cast_fast'
+            },
+            tier: 1,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+        {
+            id: 'phantom_countering_stacks',
+            name: 'Phantom Strike stacks',
+            description: 'Your Phantom Strike consumes all your Phantom Stacks to multiply your damage while the attack speed buff is on.',
+            ability: 'phantom_counter',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_phantom_countering_stacks'
             },
             tier: 1,
             type: specific_1.UpgradeTypes.FAVOR,
@@ -253,6 +289,18 @@ function GenerateLocalizationData() {
             maxStacks: 1,
             modifier: {
                 name: 'modifier_upgrade_phantom_strike_instant'
+            },
+            tier: 1,
+            type: specific_1.UpgradeTypes.FAVOR,
+        },
+        {
+            id: 'phantom_quick_recast',
+            name: 'Phantom Quick Strike recast',
+            description: 'Your Quick Strike can be used again for free after hitting at least one enemy.',
+            ability: 'phantom_extra',
+            maxStacks: 1,
+            modifier: {
+                name: 'modifier_upgrade_phantom_quick_recast'
             },
             tier: 1,
             type: specific_1.UpgradeTypes.FAVOR,

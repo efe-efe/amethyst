@@ -33,22 +33,7 @@ function phantom_mobility:OnSpellStart()
         }
     )
 
-    if caster:HasModifier("modifier_upgrade_phantom_dash_damage") then
-        EFX("particles/phantom/phantom_aoe_daggers_small.vpcf", PATTACH_ABSORIGIN, caster, {
-            release = true,
-        })
-
-        local damage_table = {
-            attacker = caster,
-            damage =caster:GetAverageTrueAttackDamage(caster) * 0.5,
-            damage_type = DAMAGE_TYPE_PHYSICAL,
-        }
-        ApplyCallbackForUnitsInArea(caster, origin, 250, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
-            damage_table.victim = unit
-            ApplyDamage(damage_table)
-        end)
-    end
-
+    caster:FindAbilityByName("phantom_basic_attack"):TryThrowKnives("modifier_upgrade_phantom_dash_damage")
     self:PlayEffectsOnCast()
 end
 
