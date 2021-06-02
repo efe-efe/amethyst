@@ -55,6 +55,7 @@ interface CustomAIOptions {
     minFollowRange?: number;
     restTime?: number;
     behavior?: CustomAIBehavior;
+    shield?: boolean;
 }
 
 export class CustomAI{
@@ -84,6 +85,11 @@ export class CustomAI{
             undefined,
             DotaTeam.CUSTOM_1
         );
+
+        if(options.shield){
+            this.unit.AddNewModifier(this.unit, undefined, 'modifier_generic_npc_shield', { damage_block: this.unit.GetMaxHealth() });
+            this.unit.AddNewModifier(this.unit, undefined, 'modifier_generic_npc_mini_stun', {});
+        }
 
         this.restTime = options.restTime || 1.0;
         this.followRange = options.followRange || 2500;
@@ -402,6 +408,7 @@ export const CustomAIMeta: {
         factory: (origin: Vector): CustomAI => {
             const ai = new CustomAI('radiant_zombie_healer', origin, {
                 behavior: CustomAIBehavior.WANDERER,
+                shield: true,
             });
 
             ai.RegisterAbility({
@@ -423,6 +430,7 @@ export const CustomAIMeta: {
         factory: (origin: Vector): CustomAI => {
             const ai = new CustomAI('dire_zombie', origin, {
                 behavior: CustomAIBehavior.WANDERER,
+                shield: true,
             });
 
             ai.RegisterAbility({
@@ -432,7 +440,6 @@ export const CustomAIMeta: {
                     targetInCastRange: true
                 }
             });
-            ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_shield', { damage_block: ai.unit.GetMaxHealth() });
             return ai;
         },
         tier: CustomAITier.BASIC,
@@ -441,6 +448,7 @@ export const CustomAIMeta: {
         factory: (origin: Vector): CustomAI => {
             const ai = new CustomAI('dire_zombie_rager', origin, {
                 behavior: CustomAIBehavior.WANDERER,
+                shield: true,
             });
 
             ai.RegisterAbility({
@@ -464,6 +472,7 @@ export const CustomAIMeta: {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,
+                shield: true,
             });
 
             ai.RegisterAbility({
@@ -474,7 +483,6 @@ export const CustomAIMeta: {
                 }
             });
 
-            ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
             ai.unit.SetHullRadius(95);
             return ai;
         },
@@ -486,6 +494,7 @@ export const CustomAIMeta: {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,
+                shield: true,
             });
 
             ai.RegisterAbility({
@@ -496,7 +505,6 @@ export const CustomAIMeta: {
                 }
             });
 
-            ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
             ai.unit.SetHullRadius(95);
             return ai;
         },
@@ -508,6 +516,7 @@ export const CustomAIMeta: {
                 followRange: 1000,
                 minFollowRange: 450,
                 behavior: CustomAIBehavior.FOLLOWER,
+                shield: true,
             });
 
             ai.RegisterAbility({

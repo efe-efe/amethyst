@@ -1,6 +1,6 @@
-modifier_generic_meele_npc = class({})
+modifier_generic_npc_mini_stun = class({})
 
-function modifier_generic_meele_npc:OnHit(params)
+function modifier_generic_npc_mini_stun:OnHit(params)
 	if IsServer() then
 		if not params.bTriggerCounters then
 			return true
@@ -12,6 +12,17 @@ function modifier_generic_meele_npc:OnHit(params)
         end
         
         if hSource then
+            if not self:GetParent():HasModifier("modifier_generic_npc_shield") then
+                self:GetParent():AddNewModifier(
+                    hSource,
+                    nil,
+                    "modifier_generic_stunned",
+                    {
+                        duration = 0.25,
+                    }
+                )
+            end
+            --[[
             local direction = (self:GetParent():GetAbsOrigin() - hSource:GetAbsOrigin()):Normalized()
             local distance = 25
 
@@ -27,6 +38,7 @@ function modifier_generic_meele_npc:OnHit(params)
                     peak = 15,
                 }
             )
+            ]]
         end
 		
 		return true
@@ -34,4 +46,4 @@ function modifier_generic_meele_npc:OnHit(params)
 end
 
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.OnHit(modifier_generic_meele_npc)
+Modifiers.OnHit(modifier_generic_npc_mini_stun)

@@ -382,7 +382,6 @@ export class GameMode{
         LinkLuaModifier('modifier_generic_confuse',                 'modifiers/generic/modifier_generic_confuse', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_sleep',                   'modifiers/generic/modifier_generic_sleep', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_fear',                    'modifiers/generic/modifier_generic_fear', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_meele_npc',               'modifiers/generic/modifier_generic_meele_npc', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_phased',                  'modifiers/generic/modifier_generic_phased', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_flying',                  'modifiers/generic/modifier_generic_flying', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_generic_ignore_ms_limit',         'modifiers/generic/modifier_generic_ignore_ms_limit', LuaModifierMotionType.NONE);
@@ -391,6 +390,7 @@ export class GameMode{
         LinkLuaModifier('modifier_casting',                         'modifiers/generic/modifier_casting', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_damage_fx',                       'modifiers/generic/modifier_damage_fx', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_shield',                          'modifiers/generic/modifier_shield', LuaModifierMotionType.NONE);
+        
         LinkLuaModifier('modifier_hide_bar',                        'modifiers/generic/modifier_hide_bar', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_hidden',                          'modifiers/generic/modifier_hidden', LuaModifierMotionType.NONE);
         LinkLuaModifier('modifier_banish',                          'modifiers/generic/modifier_banish', LuaModifierMotionType.NONE);
@@ -399,6 +399,8 @@ export class GameMode{
 
         if(this.IsPVE()){
             LinkLuaModifier('modifier_combine_util',                'modifiers/modifier_combine_util', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_generic_npc_shield',              'modifiers/generic/modifier_generic_npc_shield', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_generic_npc_mini_stun',               'modifiers/generic/modifier_generic_npc_mini_stun', LuaModifierMotionType.NONE);
             
             const favorsPath = 'modifiers/upgrades/favors/';
             const itemsPath = 'modifiers/upgrades/items/';
