@@ -1,0 +1,58 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:vpcf35:version{ec5bfcca-b89d-4591-9ef4-c8679487d623} -->
+{
+	_class = "CParticleSystemDefinition"
+	m_bShouldHitboxesFallbackToRenderBounds = false
+	m_nMaxParticles = 2
+	m_nGroupID = 3
+	m_flMaxDrawDistance = 2000.0
+	m_bShouldSort = false
+	m_nBehaviorVersion = 11
+	m_controlPointConfigurations = 
+	[
+		{
+			m_name = "preview"
+			m_drivers = 
+			[
+				{
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 62
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_entityName = "self"
+				},
+				{
+					m_iControlPoint = 3
+					m_iAttachType = "PATTACH_WORLDORIGIN"
+					m_entityName = "self"
+				},
+			]
+		},
+	]
+	m_Children = 
+	[
+		{
+			m_ChildRef = resource:"particles/phantom/phantom_aoe_daggers_small_blades.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_phantom_assassin/phantom_assassin_shard_fan_of_knives_cast_light.vpcf"
+			m_flDelay = 0.25
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_phantom_assassin/phantom_assassin_shard_fan_of_knives_cast_swirl.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_phantom_assassin/phantom_assassin_shard_fan_of_knives_warp.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_phantom_assassin/phantom_assassin_shard_fan_of_knives_b.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_phantom_assassin/phantom_assassin_shard_fan_of_knives_ring_dust.vpcf"
+		},
+		{
+			m_ChildRef = resource:"particles/units/heroes/hero_phantom_assassin/phantom_assassin_shard_fan_of_knives_ring.vpcf"
+		},
+	]
+}

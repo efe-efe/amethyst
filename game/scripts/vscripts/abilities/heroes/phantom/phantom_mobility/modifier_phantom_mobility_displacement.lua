@@ -31,15 +31,6 @@ function modifier_phantom_mobility_displacement:OnCollide(params)
 			for _,unit in pairs(params.units) do
 				if not unit:HasModifier("modifier_phantom_mobility_debuff") then
 					unit:AddNewModifier(parent, ability, "modifier_phantom_mobility_debuff", { duration = 0.5 })
-
-					
-    				local shard = CustomEntitiesLegacy:SafeGetModifier(parent, "modifier_upgrade_phantom_dash_damage")
-					if shard then
-						self.damage_table.damage = shard:GetDamage()
-						self.damage_table.victim = unit
-						ApplyDamage(self.damage_table)
-					end
-
 					local shield_modifier = CustomEntitiesLegacy:SafeGetModifier(parent, "modifier_upgrade_phantom_dash_shield")
 					if shield_modifier then
 						parent:AddNewModifier(parent, ability, "modifier_phantom_mobility_shield", { duration = 5.0, damage_block = shield_modifier:GetDamageBlock() })

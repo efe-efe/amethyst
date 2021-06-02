@@ -16,8 +16,6 @@ function phantom_mobility:OnSpellStart()
     local distance = self:GetCastRange(Vector(0,0,0), caster) + caster:GetCastRangeBonus()
     local caster_direction = CustomEntitiesLegacy:GetDirection(caster)
 
-    print(caster:GetCastRangeBonus())
-
     if caster_direction.x ~= 0 or caster_direction.y ~=0 then
         direction = caster_direction
     end
@@ -33,7 +31,23 @@ function phantom_mobility:OnSpellStart()
             speed = distance/0.15,
             peak = 30,
         }
-   )
+    )
+
+    if caster:HasModifier("modifier_upgrade_phantom_dash_damage") then
+        EFX("particles/phantom/phantom_aoe_daggers_small.vpcf", PATTACH_ABSORIGIN, caster, {
+            release = true,
+        })
+
+        local damage_table = {
+            attacker = caster,
+            damage =caster:GetAverageTrueAttackDamage(caster) * 0.5,
+            damage_type = DAMAGE_TYPE_PHYSICAL,
+        }
+        ApplyCallbackForUnitsInArea(caster, origin, 250, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+            damage_table.victim = unit
+            ApplyDamage(damage_table)
+        end)
+    end
 
     self:PlayEffectsOnCast()
 end
