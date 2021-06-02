@@ -439,104 +439,104 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE_RAGER]: {
         factory: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('dire_zombie_rager', origin, {
-            behavior: CustomAIBehavior.WANDERER,
-        });
+            const ai = new CustomAI('dire_zombie_rager', origin, {
+                behavior: CustomAIBehavior.WANDERER,
+            });
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('dire_zombie_rage_aura')!,
-            orderType: UnitOrder.CAST_NO_TARGET,
-        });
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        });
-        return ai;
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('dire_zombie_rage_aura')!,
+                orderType: UnitOrder.CAST_NO_TARGET,
+            });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true
+                }
+            });
+            return ai;
         },
         tier: CustomAITier.MID,
     },
     [NPCNames.DIRE_ZOMBIE_MEELE]: {
         factory: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('dire_zombie_meele', origin, {
-            followRange: 1500,
-            minFollowRange: 200,
-            behavior: CustomAIBehavior.FOLLOWER,
-        });
+            const ai = new CustomAI('dire_zombie_meele', origin, {
+                followRange: 1500,
+                minFollowRange: 200,
+                behavior: CustomAIBehavior.FOLLOWER,
+            });
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('dire_zombie_attack_meele')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('dire_zombie_attack_meele')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true
+                }
+            });
 
-        ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
-        ai.unit.SetHullRadius(95);
-        return ai;
+            ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
+            ai.unit.SetHullRadius(95);
+            return ai;
         },
         tier: CustomAITier.MID,
     },
     [NPCNames.RADIANT_ZOMBIE_MEELE]: {
         factory: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('radiant_zombie_meele', origin, {
-            followRange: 1500,
-            minFollowRange: 200,
-            behavior: CustomAIBehavior.FOLLOWER,
-        });
+            const ai = new CustomAI('radiant_zombie_meele', origin, {
+                followRange: 1500,
+                minFollowRange: 200,
+                behavior: CustomAIBehavior.FOLLOWER,
+            });
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('dire_zombie_attack_meele')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('dire_zombie_attack_meele')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true
+                }
+            });
 
-        ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
-        ai.unit.SetHullRadius(95);
-        return ai;
+            ai.unit.AddNewModifier(ai.unit, undefined, 'modifier_generic_meele_npc', {});
+            ai.unit.SetHullRadius(95);
+            return ai;
         },
         tier: CustomAITier.BASIC,
     },
     [NPCNames.FLYING_SKULL]: {
         factory: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('flying_skull', origin, {
-            followRange: 1000,
-            minFollowRange: 450,
-            behavior: CustomAIBehavior.FOLLOWER,
-        });
+            const ai = new CustomAI('flying_skull', origin, {
+                followRange: 1000,
+                minFollowRange: 450,
+                behavior: CustomAIBehavior.FOLLOWER,
+            });
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('flying_skull_dash')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        });
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('flying_skull_dash')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true
+                }
+            });
 
-        return ai;
+            return ai;
         },
         tier: CustomAITier.BASIC,
     },
     [NPCNames.DIRE_TOWER]: {
         factory: (origin: Vector): CustomAI => {
-        const ai = new CustomAI('dire_tower', origin, {
-            behavior: CustomAIBehavior.STATIC,
-        });
+            const ai = new CustomAI('dire_tower', origin, {
+                behavior: CustomAIBehavior.STATIC,
+            });
 
-        ai.RegisterAbility({
-            ability: ai.unit.FindAbilityByName('dire_tower_attack')!,
-            orderType: UnitOrder.CAST_POSITION,
-            requirements: {
-                targetInCastRange: true
-            }
-        });
-        ai.unit.SetHullRadius(100);
-        return ai;
+            ai.RegisterAbility({
+                ability: ai.unit.FindAbilityByName('dire_tower_attack')!,
+                orderType: UnitOrder.CAST_POSITION,
+                requirements: {
+                    targetInCastRange: true
+                }
+            });
+            ai.unit.SetHullRadius(100);
+            return ai;
         },
         tier: CustomAITier.HIGH,
     }
