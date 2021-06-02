@@ -1,7 +1,7 @@
 dire_zombie_attack = class({})
 
 function dire_zombie_attack:GetCastAnimationCustom()		return ACT_DOTA_ATTACK end
-function dire_zombie_attack:GetPlaybackRateOverride()       return 1.5 end
+function dire_zombie_attack:GetPlaybackRateOverride()       return 1.2 end
 function dire_zombie_attack:GetCastPointSpeed() 			return 0 end
 function dire_zombie_attack:GetCastPoint()
 	if IsServer() then
@@ -23,6 +23,7 @@ function dire_zombie_attack:OnSpellStart()
     local point = self:GetCursorPosition()
     local origin = caster:GetOrigin()
     local projectile_direction = Direction2D(origin, point)
+    local projectile_speed = RandomInt(1500, 2000)
 
     if CustomAbilitiesLegacy:FakeAbility(self) then
 		return
@@ -36,7 +37,7 @@ function dire_zombie_attack:OnSpellStart()
             fDistance = self:GetCastRange(Vector(0,0,0), nil),
             fStartRadius = 70,
             Source = caster,
-            vVelocity = projectile_direction * 1500,
+            vVelocity = projectile_direction * projectile_speed,
             UnitBehavior = PROJECTILES_DESTROY,
             TreeBehavior = PROJECTILES_NOTHING,
             WallBehavior = PROJECTILES_DESTROY,

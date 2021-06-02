@@ -809,11 +809,10 @@ export class GameMode{
             }
         }
 
-        /*
         if(event.text == '-skip'){
             if(this.IsPVE()){
-                if(this.room){
-                    this.room.SkipWave();
+                if(this.run && this.run.stage && this.run.stage.room){
+                    this.run.stage.room.SkipWave();
                 }
             }
         }
@@ -828,16 +827,15 @@ export class GameMode{
                     return;
                 }
                 room = room - 1;
-                if(!this.roomsData[room]){
-                    return;
-                }
-                this.currentRoom = room - 1;
-                if(this.room){
-                    this.room.SkipRoom();
+
+                if(this.run && this.run.stage && this.run.stage.room){
+                    if(this.run.stage.rooms > room){
+                        return;
+                    }
+                    this.run.stage.room.SkipRoom();
                 }
             }
         }
-        */
     }
     
     OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void{

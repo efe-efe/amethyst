@@ -1,8 +1,8 @@
 modifier_dire_zombie_rage_aura = class({})
 
 function modifier_dire_zombie_rage_aura:OnCreated(params)
-    self.speed_buff_pct = 25
-    self.as_speed = 100
+    self.ms_buff_pct = self:GetAbility():GetSpecialValueFor("ms_buff_pct")
+    self.as_speed = self:GetAbility():GetSpecialValueFor("as_speed")
     if IsServer() then
         self.efx = EFX("particles/econ/items/lycan/ti9_immortal/lycan_ti9_immortal_howl_buff.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), {})
     end
@@ -28,7 +28,7 @@ function modifier_dire_zombie_rage_aura:GetModifierAttackSpeedBonus_Constant()
 end
 
 function modifier_dire_zombie_rage_aura:GetModifierMoveSpeedBonus_Percentage(params)
-    return self.speed_buff_pct
+    return self.ms_buff_pct
 end
 
 function modifier_dire_zombie_rage_aura:GetModifierPreAttack_BonusDamage()
