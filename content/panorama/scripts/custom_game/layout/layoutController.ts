@@ -131,9 +131,7 @@ export default class LayoutController{
                     this.UpdateResourceBoxOnAbility(abilityPanel, abilityManaCost, abilityEnergyCost);
                     
                     if(abilityEnergyCost > 0){
-                        if(entityData.playerId){
-                            this.UpdateAbilityEnergy(abilityPanel, abilityEnergyCost, (entityData as HeroData).energy);
-                        }                    
+                        this.UpdateAbilityEnergy(abilityPanel, abilityEnergyCost, (entityData as HeroData).energy);
                     }
                 }
             }
