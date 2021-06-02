@@ -12,6 +12,7 @@
 #base "pve\units\flying_skull.txt"
 #base "pve\units\radiant_zombie_meele.txt"
 #base "pve\units\dire_tower.txt"
+#base "pve\units\level_up.txt"
 
 
 

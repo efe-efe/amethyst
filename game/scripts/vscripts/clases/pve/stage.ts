@@ -78,28 +78,28 @@ export default class Stage extends GameState{
         } else {
             if(this.currentRoom < this.rooms){
                 const roomType = (this.currentRoom === this.rooms - 2) ? RoomType.BOSS : (this.currentRoom === 0 || this.currentRoom === this.rooms - 1) ? RoomType.BONUS : RoomType.REGULAR;
-                this.room = this.GenerateRoom(roomType);
+                this.room = this.GenerateRoom(roomType, this.currentRoom === 2 || this.currentRoom === 6);
             } else {
                 this.End();
             }
         }
     }
 
-    GenerateRoom(roomType: RoomType): Room{
+    GenerateRoom(roomType: RoomType, spawnDiamond: boolean): Room{
         if(roomType === RoomType.BOSS){
             const waves = [{
                 npcs: [this.possibleNPCs[this.possibleNPCs.length - 1]],
             }];
 
-            return new Room(this.alliances, -1, waves, this);
+            return new Room(this.alliances, -1, waves, this, spawnDiamond);
         }
         if(roomType === RoomType.BONUS){
-            return new Room(this.alliances, -1, [{ npcs: [] }], this);
+            return new Room(this.alliances, -1, [{ npcs: [] }], this, spawnDiamond);
         }
         if(RandomInt(1, 100) < 5){
             //return new Room(this.alliances, -1, [{ npcs: [] }], this);
         }
-        return new Room(this.alliances, -1, this.GenerateWaves(), this);
+        return new Room(this.alliances, -1, this.GenerateWaves(), this, spawnDiamond);
     }
 
     GenerateWave(): Wave{

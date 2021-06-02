@@ -1,0 +1,17 @@
+"level_up"	
+{
+    "Model"						"models/development/invisiblebox.vmdl"
+    "BaseClass"					"npc_dota_creature"
+    "Ability1"					""
+    "Ability2"					""
+    "Ability3"					""
+    "Ability4"					""
+    "ArmorPhysical"				"0"			
+    "RingRadius"				"60"
+    "HealthBarOffset"			"170"
+    "StatusHealthRegen"			"0.0"		
+    "StatusMana"				"0"			
+    "StatusManaRegen"			"0.0"
+    "TeamName"					"DOTA_TEAM_NEUTRALS"
+    "MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+}

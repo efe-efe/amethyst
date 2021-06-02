@@ -5,6 +5,7 @@ import Stage from './stage';
 import settings from '../../settings';
 import { CustomEvents } from '../../custom_events';
 import { RewardTypes } from '../../rewards/rewards';
+import { Diamond } from '../gem';
 
 export interface RoomData{
     waves: Wave[];
@@ -30,13 +31,16 @@ export default class Room extends GameState{
     remainingTotalNpcs: number;
     remainingWaveNpcs = 0;
     currentWave = 0;
+    diamond: Diamond | undefined;
+    spawnDiamond: boolean;
 
-    constructor(alliances: Alliance[], duration: number, waves: Wave[], stage: Stage){
+    constructor(alliances: Alliance[], duration: number, waves: Wave[], stage: Stage, spawnDiamond = false){
         super(alliances, duration);
         this.waves = waves;
         this.totalNpcs = this.GetTotalNPCs(waves);
         this.remainingTotalNpcs = this.totalNpcs;
         this.stage = stage;
+        this.spawnDiamond = spawnDiamond;
         this.StartWave(this.currentWave);
         this.SendDataToClient();
 
@@ -106,17 +110,17 @@ export default class Room extends GameState{
     }
 
     OnRewardApplied(): void{
-        let favorsReady = true;
+        let upgradesReady = true;
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
                 if(customNpc.IsSelectingFavor()){
-                    favorsReady = false;
+                    upgradesReady = false;
                 }
             }
         });
         
-        if(favorsReady){
+        if(upgradesReady){
             this.rewardsMenuDelay = 2 * 30;
         }
     }
@@ -126,24 +130,30 @@ export default class Room extends GameState{
 
         if(this.remainingWaveNpcs <= 0){
             if(this.currentWave === this.waves.length - 1){
-                if(this.applyRewardsDelay === 0){
-                    this.ApplyRewards();
-                    this.applyRewardsDelay = this.applyRewardsDelay - 1;
+                if(this.spawnDiamond && !this.diamond){
+                    this.diamond = new Diamond(Vector(0, 0, 256));
+                    this.spawnDiamond = false;
                 }
-                if(this.applyRewardsDelay > 0){
-                    this.applyRewardsDelay = this.applyRewardsDelay - 1;
-                }
+                if(!this.diamond){
+                    if(this.applyRewardsDelay === 0){
+                        this.ApplyRewards();
+                        this.applyRewardsDelay = this.applyRewardsDelay - 1;
+                    }
+                    if(this.applyRewardsDelay > 0){
+                        this.applyRewardsDelay = this.applyRewardsDelay - 1;
+                    }
 
-                if(this.rewardsMenuDelay === 0){
-                    this.GenerateRewards();
-                    this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
-                }
-                if(this.rewardsMenuDelay > 0){
-                    this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
-                }
+                    if(this.rewardsMenuDelay === 0){
+                        this.GenerateRewards();
+                        this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
+                    }
+                    if(this.rewardsMenuDelay > 0){
+                        this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
+                    }
 
-                if(this.time_remaining === 0){
-                    this.End();
+                    if(this.time_remaining === 0){
+                        this.End();
+                    }
                 }
             } else {
                 this.IncrementWave();
@@ -166,6 +176,15 @@ export default class Room extends GameState{
             this.ais.forEach((ai) => {
                 ai.Update();
             });
+        }
+        
+        if(this.diamond){
+            if(this.diamond.unit.IsAlive()){
+                this.diamond.Update();
+            } else {
+                this.diamond = undefined;
+            }
+
         }
     }
 

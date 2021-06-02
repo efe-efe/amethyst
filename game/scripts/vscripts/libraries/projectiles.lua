@@ -275,32 +275,20 @@ function Projectile:ProcessEntity(hEntity)
                 else
                     self.tHitLog[hEntity:entindex()] = self.fCurrentTime + 10000
                 end
-                 --[[   
-                local continue = true
                 
-                for _,modifier_name in pairs(CustomEntitiesLegacy:GetOnProjectileHit(hEntity)) do
-                    local modifier_handle = hEntity:FindModifierByName(modifier_name)
-                    
-                    if not modifier_handle:OnProjectileHitCustom({ projectile = self, target = hEntity }) then
-                        continue = false
-                    end
+                local status, action = pcall(self.OnUnitHit, self, hEntity)
+                if not status then
+                    print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
                 end
 
-                if continue then]]
-                    local status, action = pcall(self.OnUnitHit, self, hEntity)
-                    if not status then
-                        print('[PROJECTILES] Projectile OnUnitHit Failure!: ' .. action)
+                if not self.bIgnoreNextUnitBehavior then
+                    if self.UnitBehavior == PROJECTILES_DESTROY then
+                        self:Destroy(false)
+                        return false
                     end
-
-                    if not self.bIgnoreNextUnitBehavior then
-                        if self.UnitBehavior == PROJECTILES_DESTROY then
-                            self:Destroy(false)
-                            return false
-                        end
-                    else
-                        self.bIgnoreNextUnitBehavior = false
-                    end
-                --end
+                else
+                    self.bIgnoreNextUnitBehavior = false
+                end
             end
         end
     end

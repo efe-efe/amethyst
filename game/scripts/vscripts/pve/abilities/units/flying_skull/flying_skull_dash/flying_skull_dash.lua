@@ -58,8 +58,8 @@ function flying_skull_dash:OnSpellStart()
 end
 
 function flying_skull_dash:PlayEffectsOnFinish(pos)
-	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.ProjectileImpact", self:GetCaster())
-	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.StaticRemnantExplode", self:GetCaster())
+	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.ProjectileImpact", nil)
+	EmitSoundOnLocationWithCaster(pos, "Hero_StormSpirit.StaticRemnantExplode", nil)
 	
 	local particle_cast = "particles/units/heroes/hero_vengeful/vengeful_magic_missle_end.vpcf"
 	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)

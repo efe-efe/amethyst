@@ -6,6 +6,7 @@ export enum GemTypes{
     SAPPHIRE,
     RUBY,
     EMERALD,
+    DIAMOND,
 }
 
 const GEM_LIGHT_PARTICLE = {
@@ -14,6 +15,7 @@ const GEM_LIGHT_PARTICLE = {
     [GemTypes.SAPPHIRE]: 'particles/generic_gameplay/rune_doubledamage.vpcf',
     [GemTypes.RUBY]: 'particles/generic_gameplay/rune_haste.vpcf',
     [GemTypes.EMERALD]: 'particles/generic_gameplay/rune_regeneration.vpcf',
+    [GemTypes.DIAMOND]: 'particles/generic_gameplay/rune_regeneration.vpcf',
 };
 
 const GEM_COLOR = {
@@ -22,6 +24,7 @@ const GEM_COLOR = {
     [GemTypes.SAPPHIRE]: Vector(0, 101, 255),
     [GemTypes.RUBY]: Vector(255, 26, 0),
     [GemTypes.EMERALD]: Vector(26, 255, 0),
+    [GemTypes.DIAMOND]: Vector(26, 255, 0),
 };
 
 class Gem extends UnitEntity{
@@ -133,7 +136,42 @@ class Gem extends UnitEntity{
         //override this method
     }
 }
+export class Diamond extends Gem{
+    type = GemTypes.DIAMOND;
 
+    constructor(origin: Vector){
+        super(origin, 'particles/generic_gameplay/rune_doubledamage.vpcf', 'models/heroes/oracle/weapon.vmdl', 3.0);
+    }
+
+    Effect(killer: CDOTA_BaseNPC): void{
+        const allies = this.GetAllies(killer);
+
+        allies.forEach((ally) => {
+            if(ally.IsRealHero()){
+                ally.SetAbilityPoints(ally.GetAbilityPoints() + 1);
+            }
+        });
+    }
+
+    PlayEffectsOnTarget(target: CDOTA_BaseNPC): void{
+        EmitSoundOn('DOTA_Item.Refresher.Activate', target);
+        EFX('particles/items_fx/arcane_boots_recipient.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
+            release: true 
+        });
+        EFX('particles/gems/amethyst.vpcf', ParticleAttachment.CUSTOMORIGIN, target, {
+            cp0: {
+                ent: target,
+                point: 'attach_hitloc'
+            },
+            release: true 
+        });
+        EFX('particles/econ/items/crystal_maiden/crystal_maiden_maiden_of_icewrack/cm_arcana_pup_lvlup_godray.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
+            cp1: target.GetAbsOrigin(),
+            cp3: target.GetAbsOrigin(),
+            release: true 
+        });
+    }
+}
 class Sapphire extends Gem{
     shield = 20;
     duration = 10.0;
