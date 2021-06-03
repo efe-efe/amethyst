@@ -19,6 +19,7 @@
 		"Ability10"						"juggernaut_counter_recast"	
 		"Ability11"						"juggernaut_extra_recast"	
 		"Ability12"						"juggernaut_special_attack_recast"		
+		"Ability13"						"juggernaut_second_attack_recast"		
 
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"

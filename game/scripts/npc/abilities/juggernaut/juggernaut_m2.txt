@@ -35,6 +35,30 @@
 		}
 	}
 
+	"juggernaut_second_attack_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_second_attack/juggernaut_second_attack"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"juggernaut_counter_recast"
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityCastRange"				"900"
+		"AbilityCooldown"				"0.3"
+		"AbilityCastPoint"				"0.1"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_LINE"
+			"DisplayRange" 				"1"
+		}
+		
+		"AbilitySpecial"
+		{
+			"01"{ "var_type"	"FIELD_INTEGER"		"min_range"					"500" }
+		}
+	}
+
     "juggernaut_ex_second_attack"
 	{
 		"BaseClass"						"ability_lua"

@@ -1,9 +1,11 @@
 juggernaut_second_attack = class({})
+juggernaut_second_attack_recast = class({})
 juggernaut_ex_second_attack = class({})
 LinkLuaModifier("modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL)
 LinkLuaModifier("modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_HORIZONTAL)
 LinkLuaModifier("modifier_juggernaut_swiftness", "abilities/heroes/juggernaut/modifier_juggernaut_swiftness", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_juggernaut_second_attack", "abilities/heroes/juggernaut/juggernaut_second_attack/modifier_juggernaut_second_attack", LUA_MODIFIER_MOTION_NONE)
+LinkLuaModifier("modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/juggernaut_second_attack/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_NONE)
 
 function juggernaut_second_attack:OnAbilityPhaseStart()
 	local caster = self:GetCaster()
@@ -54,15 +56,16 @@ function juggernaut_second_attack:OnSpellStart()
 	self.shield_providers = 0
 
 	self.give_mana = false
-	local enemies = {}
 	self.damage_table = {
 		attacker = caster,
 		damage = final_damage,
 		damage_type = DAMAGE_TYPE_PHYSICAL,
 	}
 
+	local units = {}
+
 	if stacks <= 3 then
-		CustomEntitiesLegacy:MeeleAttack(caster, {
+		units = CustomEntitiesLegacy:MeeleAttack(caster, {
 			vDirection = direction,
 			vOrigin = origin, 
 			fRadius = radius,
@@ -75,7 +78,7 @@ function juggernaut_second_attack:OnSpellStart()
 	else
 		radius = radius * 1.15
 		
-		CustomEntitiesLegacy:AoeAttack(caster, {
+		units = CustomEntitiesLegacy:AoeAttack(caster, {
 			vOrigin = origin, 
 			fRadius = radius,
 			bTriggerCounters = true,
@@ -92,13 +95,19 @@ function juggernaut_second_attack:OnSpellStart()
 		CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
 	end
 	
-	if #enemies > 0 then
-		ScreenShake(point, 100, 300, 0.7, 1000, 0, true)
-	end
 
 	if self:GetLevel() >= 2 and stacks > 0 and self.shield_providers > 0 then
 		local final_shield = stacks * shield_per_stack * self.shield_providers
 		caster:AddNewModifier(caster, self, 'modifier_juggernaut_second_attack', { damage_block = final_shield, duration = duration })
+	end
+
+	if #units > 0 then
+		--if caster:HasModifier("pszScriptName") then
+			caster:AddNewModifier(caster, self, "modifier_juggernaut_second_attack_recast", { 
+				duration = 1.0 + ((stacks) * 1.0),
+				charges = 3,
+			})
+		--end
 	end
 
 	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")
@@ -272,7 +281,74 @@ function juggernaut_ex_second_attack:PlayEffectsOnMiss(pos)
 	EmitSoundOnLocationWithCaster(pos, "Hero_Juggernaut.PreAttack", self:GetCaster())
 end
 
+function juggernaut_second_attack:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_second_attack_recast")
+end
+function juggernaut_second_attack_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_second_attack")
+end
+
+function juggernaut_second_attack_recast:OnSpellStart()
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+	local min_range = self:GetSpecialValueFor("min_range")
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), min_range)
+	local damage = caster:GetAverageTrueAttackDamage(caster) * 1.5
+	
+	FindClearSpaceForUnit(caster, point, true)
+ 
+	local valid_targets = 0
+	local new_origin = caster:GetAbsOrigin()
+	local enemies = CustomEntitiesLegacy:FindUnitsInLine(
+	   	caster,
+		new_origin, 
+		origin, 
+		100, 
+		DOTA_UNIT_TARGET_TEAM_ENEMY, 
+		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
+		DOTA_UNIT_TARGET_FLAG_NONE
+	)
+
+
+	local damage_table = {
+	   attacker = caster,
+	   damage = damage,
+	   damage_type = DAMAGE_TYPE_PHYSICAL,
+	}
+	 
+	for _,enemy in pairs(enemies) do
+		CustomEntitiesLegacy:SingleAttack(caster, {
+			hTarget = enemy,
+			Callback = function(hTarget)
+				damage_table.victim = hTarget
+				ApplyDamage(damage_table)
+				self:PlayEffectsOnTarget(hTarget)
+			end
+		})
+	end
+
+	if #enemies == 0 then
+		caster:RemoveModifierByName("modifier_juggernaut_second_attack_recast")
+	end
+	
+	self:PlayEffectsOnSlash(origin, new_origin)
+end
+
+function juggernaut_second_attack_recast:PlayEffectsOnTarget(hTarget)
+	EmitSoundOn("Hero_Juggernaut.BladeDance.Arcana", hTarget)
+	EmitSoundOn("Hero_Juggernaut.BladeDance.Layer", hTarget)
+	EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
+end
+
+function juggernaut_second_attack_recast:PlayEffectsOnSlash(vOrigin, vNewOrigin)
+	EFX("particles/juggernaut/juggernaut_counter_recast.vpcf", PATTACH_WORLDORIGIN, nil, {
+	   cp0 = vOrigin,
+	   cp1 = vNewOrigin,
+	   release = true
+	})  
+ end
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(juggernaut_second_attack)
+Abilities.Castpoint(juggernaut_second_attack_recast)
 Abilities.Castpoint(juggernaut_ex_second_attack)

@@ -5,16 +5,31 @@ const Shards: Upgrade[] = [
 
 const Favors: Upgrade[] = [
     {
+        id: 'juggernaut_blade_dance_recast',
+        name: 'Blade Dance recast',
+        description: 'Blade Dance can be recasted to perform a slash. Can be used freely for a short time while not missing. The recast duration dependes on the stacks used.',
+        ability: 'juggernaut_second_attack',
+        maxStacks: 1,
+        modifier: {},
+        tier: 0,
+    },
+    {
         id: 'juggernaut_fury_reflects',
         name: 'Blade Fury reflects',
         description: 'Blade Fury reflect enemy projectiles.',
         ability: 'juggernaut_mobility',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_juggernaut_fury_reflects'
-        },
+        modifier: {},
         tier: 0,
-        type: UpgradeTypes.FAVOR,
+    },
+    {
+        id: 'juggernaut_fury_reflects',
+        name: 'Blade Fury reflects',
+        description: 'Blade Fury reflect enemy projectiles.',
+        ability: 'juggernaut_mobility',
+        maxStacks: 1,
+        modifier: {},
+        tier: 0,
     },
     {
         id: 'juggernaut_fury_attack',
@@ -22,11 +37,8 @@ const Favors: Upgrade[] = [
         description: 'Blade Fury damage count as basic attacks',
         ability: 'juggernaut_mobility',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_juggernaut_fury_attack'
-        },
+        modifier: {},
         tier: 0,
-        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'juggernaut_refresh_dagger',
@@ -34,11 +46,8 @@ const Favors: Upgrade[] = [
         description: 'Your dagger cooldown is drastically reduced when succesfully hitting enemies but increased when missing.',
         ability: 'juggernaut_special_attack',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_juggernaut_refresh_dagger'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'juggernaut_spinning_ward',
@@ -47,13 +56,17 @@ const Favors: Upgrade[] = [
         ability: 'juggernaut_extra',
         secondaryAbilities: ['juggernaut_mobility'],
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_juggernaut_spinning_ward'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },
-];
+].map((favor) => ({
+    ...favor,
+    type: UpgradeTypes.FAVOR,
+    modifier: {
+        ...favor.modifier,
+        name: `modifier_upgrade_${favor.id}`,
+    },
+}));
 
 const JuggernautRewards = {
     Shards,
