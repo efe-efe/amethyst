@@ -102,12 +102,12 @@ function juggernaut_second_attack:OnSpellStart()
 	end
 
 	if #units > 0 then
-		--if caster:HasModifier("pszScriptName") then
+		if caster:HasModifier("modifier_upgrade_juggernaut_blade_dance_recast") then
 			caster:AddNewModifier(caster, self, "modifier_juggernaut_second_attack_recast", { 
 				duration = 1.0 + ((stacks) * 1.0),
 				charges = 3,
 			})
-		--end
+		end
 	end
 
 	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_juggernaut_basic_attack_stacks")
