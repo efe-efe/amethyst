@@ -1,36 +1,50 @@
-modifier_upgrade_maelstrom = class({})
-modifier_upgrade_maelstrom_attack = class({})
+modifier_upgrade_item_maelstrom = class({})
+modifier_upgrade_item_maelstrom_attack = class({})
 
-function modifier_upgrade_maelstrom:RemoveOnDeath() return false end
-function modifier_upgrade_maelstrom:IsPurgable() return false end
+function modifier_upgrade_item_maelstrom:RemoveOnDeath() return false end
+function modifier_upgrade_item_maelstrom:IsPurgable() return false end
 
-function modifier_upgrade_maelstrom:OnCreated(params)
+function modifier_upgrade_item_maelstrom:OnCreated(params)
+    self.damage_per_stack = 10
     if IsServer() then
         self.proc_chance_pct =  50
     end
 end
 
-function modifier_upgrade_maelstrom:OnEvent(params)
+function modifier_upgrade_item_maelstrom:OnEvent(params)
     if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED then
-        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_upgrade_maelstrom_attack', {
+        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_upgrade_item_maelstrom_attack', {
             proc_chance_pct = self.proc_chance_pct
         })
     end
 end
 
+function modifier_upgrade_item_maelstrom:DeclareFunctions()
+    return { 
+        MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
+    }
+end
 
-function modifier_upgrade_maelstrom_attack:IsHidden()
+function modifier_upgrade_item_maelstrom:GetModifierPreAttack_BonusDamage(params)
+    return self.damage_per_stack
+end
+
+function modifier_upgrade_item_maelstrom:GetTexture()
+    return 'item_maelstrom'
+end
+
+function modifier_upgrade_item_maelstrom_attack:IsHidden()
     return true
 end
 
-function modifier_upgrade_maelstrom_attack:OnCreated(params)
+function modifier_upgrade_item_maelstrom_attack:OnCreated(params)
     if IsServer() then
         self.proc_chance_pct = params.proc_chance_pct
         self.radius = 850
         self.procs = 5
         self.damage_table = {
             attacker = self:GetParent(),
-            damage = 5,
+            damage = 25,
             damage_type = DAMAGE_TYPE_MAGICAL,
         }
         self.targets = {}
@@ -38,7 +52,7 @@ function modifier_upgrade_maelstrom_attack:OnCreated(params)
     end
 end
 
-function modifier_upgrade_maelstrom_attack:OnEvent(params)
+function modifier_upgrade_item_maelstrom_attack:OnEvent(params)
     if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED then
         self:Destroy()
     end
@@ -54,7 +68,7 @@ function modifier_upgrade_maelstrom_attack:OnEvent(params)
     end
 end
 
-function modifier_upgrade_maelstrom_attack:ReleaseBolt(hSource, hTarget)
+function modifier_upgrade_item_maelstrom_attack:ReleaseBolt(hSource, hTarget)
     EFX("particles/econ/events/ti10/maelstrom_ti10.vpcf", PATTACH_CUSTOMORIGIN, hSource, {
         cp0 = {
             ent = hSource,
@@ -83,10 +97,6 @@ function modifier_upgrade_maelstrom_attack:ReleaseBolt(hSource, hTarget)
     end
 end
 
-function modifier_upgrade_maelstrom:GetTexture()
-    return 'item_maelstrom'
-end
-
 if IsClient() then require("wrappers/modifiers") end
-Modifiers.OnEvent(modifier_upgrade_maelstrom)
-Modifiers.OnEvent(modifier_upgrade_maelstrom_attack)
+Modifiers.OnEvent(modifier_upgrade_item_maelstrom)
+Modifiers.OnEvent(modifier_upgrade_item_maelstrom_attack)

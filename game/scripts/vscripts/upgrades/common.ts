@@ -24,4 +24,5 @@ export interface Upgrade {
     abilityIconName?: string;
     secondaryAbilities?: string[];
     ingredients?: string[];
+    itemName?: string;
 }

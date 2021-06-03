@@ -834,7 +834,7 @@ function CustomEntitiesLegacy:ProjectileAttack(hEntity, tData)
 end
 
 function CustomEntitiesLegacy:GetMeeleExtraRadius(hEntity)
-	local modifier = CustomEntitiesLegacy:SafeGetModifier(hEntity, "modifier_upgrade_broom_handle")
+	local modifier = CustomEntitiesLegacy:SafeGetModifier(hEntity, "modifier_upgrade_item_broom_handle")
 
 	if modifier then
 		return modifier:GetExtraRadius()

@@ -420,8 +420,9 @@ export class GameMode{
                 }
             });
             LinkLuaModifier('modifier_combine_util',                'modifiers/modifier_combine_util', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_maelstrom_attack',  itemsPath + 'modifier_upgrade_maelstrom', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_basher_attack',  itemsPath + 'modifier_upgrade_basher', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_item_maelstrom_attack',  itemsPath + 'modifier_upgrade_item_maelstrom', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_item_basher_attack',  itemsPath + 'modifier_upgrade_item_basher', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_item_javelin_attack',  itemsPath + 'modifier_upgrade_item_javelin', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');
