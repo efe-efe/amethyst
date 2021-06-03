@@ -20,10 +20,10 @@ export enum CustomAITier {
 
 export enum NPCNames {
     DIRE_ZOMBIE = 0,
-    DIRE_ZOMBIE_RAGER,
-    DIRE_ZOMBIE_MEELE,
-    RADIANT_ZOMBIE_HEALER,
-    RADIANT_ZOMBIE_MEELE,
+    DIRE_ZOMBIE_RANGE_MEGA,
+    DIRE_ZOMBIE_MEELE_MEGA,
+    RADIANT_ZOMBIE_RANGE_MEGA,
+    RADIANT_ZOMBIE_MEELE_MEGA,
     FLYING_SKULL,
     DIRE_TOWER,
     QUEEN,
@@ -404,7 +404,7 @@ export const CustomAIMeta: {
         },
         tier: CustomAITier.BOSS,
     },
-    [NPCNames.RADIANT_ZOMBIE_HEALER]: {
+    [NPCNames.RADIANT_ZOMBIE_RANGE_MEGA]: {
         factory: (origin: Vector): CustomAI => {
             const ai = new CustomAI('radiant_zombie_healer', origin, {
                 behavior: CustomAIBehavior.WANDERER,
@@ -428,7 +428,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('dire_zombie', origin, {
+            const ai = new CustomAI('dire_zombie_range', origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true,
             });
@@ -444,9 +444,9 @@ export const CustomAIMeta: {
         },
         tier: CustomAITier.BASIC,
     },
-    [NPCNames.DIRE_ZOMBIE_RAGER]: {
+    [NPCNames.DIRE_ZOMBIE_RANGE_MEGA]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('dire_zombie_rager', origin, {
+            const ai = new CustomAI('dire_zombie_range_mega', origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true,
             });
@@ -466,9 +466,9 @@ export const CustomAIMeta: {
         },
         tier: CustomAITier.MID,
     },
-    [NPCNames.DIRE_ZOMBIE_MEELE]: {
+    [NPCNames.DIRE_ZOMBIE_MEELE_MEGA]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('dire_zombie_meele', origin, {
+            const ai = new CustomAI('dire_zombie_meele_mega', origin, {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -488,7 +488,7 @@ export const CustomAIMeta: {
         },
         tier: CustomAITier.MID,
     },
-    [NPCNames.RADIANT_ZOMBIE_MEELE]: {
+    [NPCNames.RADIANT_ZOMBIE_MEELE_MEGA]: {
         factory: (origin: Vector): CustomAI => {
             const ai = new CustomAI('radiant_zombie_meele', origin, {
                 followRange: 1500,

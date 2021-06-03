@@ -516,8 +516,8 @@ export class GameMode{
                 {
                     possibleNPCs: [
                         NPCNames.DIRE_ZOMBIE,
-                        NPCNames.DIRE_ZOMBIE_MEELE,
-                        NPCNames.DIRE_ZOMBIE_RAGER,
+                        NPCNames.DIRE_ZOMBIE_MEELE_MEGA,
+                        NPCNames.DIRE_ZOMBIE_RANGE_MEGA,
                         NPCNames.FLYING_SKULL,
                         NPCNames.DIRE_TOWER,
                         NPCNames.QUEEN,
@@ -525,8 +525,8 @@ export class GameMode{
                 },
                 {
                     possibleNPCs: [
-                        NPCNames.RADIANT_ZOMBIE_HEALER,
-                        NPCNames.RADIANT_ZOMBIE_MEELE,
+                        NPCNames.RADIANT_ZOMBIE_RANGE_MEGA,
+                        NPCNames.RADIANT_ZOMBIE_MEELE_MEGA,
                         NPCNames.FLYING_SKULL,
                         NPCNames.CENTAUR,
                     ]

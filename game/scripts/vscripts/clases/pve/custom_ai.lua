@@ -28,14 +28,14 @@ ____exports.CustomAITier[____exports.CustomAITier.BOSS] = "BOSS"
 ____exports.NPCNames = NPCNames or ({})
 ____exports.NPCNames.DIRE_ZOMBIE = 0
 ____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE] = "DIRE_ZOMBIE"
-____exports.NPCNames.DIRE_ZOMBIE_RAGER = 1
-____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE_RAGER] = "DIRE_ZOMBIE_RAGER"
-____exports.NPCNames.DIRE_ZOMBIE_MEELE = 2
-____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE_MEELE] = "DIRE_ZOMBIE_MEELE"
-____exports.NPCNames.RADIANT_ZOMBIE_HEALER = 3
-____exports.NPCNames[____exports.NPCNames.RADIANT_ZOMBIE_HEALER] = "RADIANT_ZOMBIE_HEALER"
-____exports.NPCNames.RADIANT_ZOMBIE_MEELE = 4
-____exports.NPCNames[____exports.NPCNames.RADIANT_ZOMBIE_MEELE] = "RADIANT_ZOMBIE_MEELE"
+____exports.NPCNames.DIRE_ZOMBIE_RANGE_MEGA = 1
+____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE_RANGE_MEGA] = "DIRE_ZOMBIE_RANGE_MEGA"
+____exports.NPCNames.DIRE_ZOMBIE_MEELE_MEGA = 2
+____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE_MEELE_MEGA] = "DIRE_ZOMBIE_MEELE_MEGA"
+____exports.NPCNames.RADIANT_ZOMBIE_RANGE_MEGA = 3
+____exports.NPCNames[____exports.NPCNames.RADIANT_ZOMBIE_RANGE_MEGA] = "RADIANT_ZOMBIE_RANGE_MEGA"
+____exports.NPCNames.RADIANT_ZOMBIE_MEELE_MEGA = 4
+____exports.NPCNames[____exports.NPCNames.RADIANT_ZOMBIE_MEELE_MEGA] = "RADIANT_ZOMBIE_MEELE_MEGA"
 ____exports.NPCNames.FLYING_SKULL = 5
 ____exports.NPCNames[____exports.NPCNames.FLYING_SKULL] = "FLYING_SKULL"
 ____exports.NPCNames.DIRE_TOWER = 6
@@ -370,7 +370,7 @@ ____exports.CustomAIMeta = {
         end,
         tier = ____exports.CustomAITier.BOSS
     },
-    [____exports.NPCNames.RADIANT_ZOMBIE_HEALER] = {
+    [____exports.NPCNames.RADIANT_ZOMBIE_RANGE_MEGA] = {
         factory = function(____, origin)
             local ai = __TS__New(____exports.CustomAI, "radiant_zombie_healer", origin, {behavior = CustomAIBehavior.WANDERER, shield = true})
             ai:RegisterAbility(
@@ -392,7 +392,7 @@ ____exports.CustomAIMeta = {
     },
     [____exports.NPCNames.DIRE_ZOMBIE] = {
         factory = function(____, origin)
-            local ai = __TS__New(____exports.CustomAI, "dire_zombie", origin, {behavior = CustomAIBehavior.WANDERER, shield = true})
+            local ai = __TS__New(____exports.CustomAI, "dire_zombie_range", origin, {behavior = CustomAIBehavior.WANDERER, shield = true})
             ai:RegisterAbility(
                 {
                     ability = ai.unit:FindAbilityByName("dire_zombie_attack"),
@@ -404,9 +404,9 @@ ____exports.CustomAIMeta = {
         end,
         tier = ____exports.CustomAITier.BASIC
     },
-    [____exports.NPCNames.DIRE_ZOMBIE_RAGER] = {
+    [____exports.NPCNames.DIRE_ZOMBIE_RANGE_MEGA] = {
         factory = function(____, origin)
-            local ai = __TS__New(____exports.CustomAI, "dire_zombie_rager", origin, {behavior = CustomAIBehavior.WANDERER, shield = true})
+            local ai = __TS__New(____exports.CustomAI, "dire_zombie_range_mega", origin, {behavior = CustomAIBehavior.WANDERER, shield = true})
             ai:RegisterAbility(
                 {
                     ability = ai.unit:FindAbilityByName("dire_zombie_rage_aura"),
@@ -424,9 +424,9 @@ ____exports.CustomAIMeta = {
         end,
         tier = ____exports.CustomAITier.MID
     },
-    [____exports.NPCNames.DIRE_ZOMBIE_MEELE] = {
+    [____exports.NPCNames.DIRE_ZOMBIE_MEELE_MEGA] = {
         factory = function(____, origin)
-            local ai = __TS__New(____exports.CustomAI, "dire_zombie_meele", origin, {followRange = 1500, minFollowRange = 200, behavior = CustomAIBehavior.FOLLOWER, shield = true})
+            local ai = __TS__New(____exports.CustomAI, "dire_zombie_meele_mega", origin, {followRange = 1500, minFollowRange = 200, behavior = CustomAIBehavior.FOLLOWER, shield = true})
             ai:RegisterAbility(
                 {
                     ability = ai.unit:FindAbilityByName("dire_zombie_attack_meele"),
@@ -439,7 +439,7 @@ ____exports.CustomAIMeta = {
         end,
         tier = ____exports.CustomAITier.MID
     },
-    [____exports.NPCNames.RADIANT_ZOMBIE_MEELE] = {
+    [____exports.NPCNames.RADIANT_ZOMBIE_MEELE_MEGA] = {
         factory = function(____, origin)
             local ai = __TS__New(____exports.CustomAI, "radiant_zombie_meele", origin, {followRange = 1500, minFollowRange = 200, behavior = CustomAIBehavior.FOLLOWER, shield = true})
             ai:RegisterAbility(

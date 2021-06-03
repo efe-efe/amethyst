@@ -7,7 +7,7 @@
 		"SoundSet"					"n_creep_Ranged"
 		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
-		"ModelScale" 				"1.25"
+		"ModelScale" 				"1.5"
 
 		"Ability1"					"dire_zombie_attack"			// Ability 1
 		"Ability2"					"radiant_zombie_heal_aura"			// Ability 2

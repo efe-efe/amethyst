@@ -1,6 +1,6 @@
 "DOTAUnits"
 {
-	"dire_zombie_meele"
+	"dire_zombie_meele_mega"
 	{
 		"Model"						"models/creeps/lane_creeps/creep_bad_melee/creep_bad_melee_mega.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"

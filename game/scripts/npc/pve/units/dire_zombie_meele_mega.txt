@@ -1,30 +1,29 @@
 "DOTAUnits"
 {
-	"dire_zombie"
+	"dire_zombie_meele_mega"
 	{
-		"Model"						"models/creeps/lane_creeps/creep_bad_ranged/lane_dire_ranged.vmdl"	// Model.
+		"Model"						"models/creeps/lane_creeps/creep_bad_melee/creep_bad_melee_mega.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"
 		"SoundSet"					"n_creep_Ranged"
 		"GameSoundsFile"			"soundevents/game_sounds_creeps.vsndevts"
 		"Level"						"1"
-		"ModelScale" 				"1"
+		"ModelScale" 				"2"
 
-		"Ability1"					"dire_zombie_attack"			// Ability 1
+		"Ability1"					"dire_zombie_attack_meele"			// Ability 1
 		"Ability2"					""			// Ability 2
 		"Ability3"					""			// Ability 3
 		"Ability4"					""			// Ability 4
 
-		"StatusHealth"				"20" 	
-		"MovementSpeed"				"300"
+		"StatusHealth"				"60" 	
+		"MovementSpeed"				"350"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"TeamName"					"DOTA_TEAM_NEUTRALS"
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
-		"HealthBarOffset"			"200" 	
 		
-		"AttackDamageMin"			"5"										
-		"AttackDamageMax"			"5"									
-		"AttackRate"				"1.0"									
-		"AttackAnimationPoint"		"0.35"
+		"AttackDamageMin"			"30"										
+		"AttackDamageMax"			"30"
+		"AttackRate"				"0.65"
+		"AttackAnimationPoint"		"0.45"
 	}
 }
 	

@@ -4,7 +4,7 @@ const Items: Upgrade[] = [
     {
         itemName: 'blade_of_alacrity',
         name: 'Blade of Alacrity',
-        description: 'Provides extra movement and attack speed',
+        description: 'Provides extra movement and attack speed.',
         maxStacks: 1,
         modifier: {},
         tier: 0,
@@ -78,7 +78,7 @@ const Items: Upgrade[] = [
         maxStacks: 1,
         modifier: {},
         ingredients: [
-            'belt_of_strength',
+            'upgrade_belt_of_strength',
             'upgrade_item_mithril_hammer'
         ],
         tier: 1,
@@ -91,7 +91,6 @@ const Items: Upgrade[] = [
         modifier: {},
         tier: 1,
     }
-
 ].map((item) => (
     {
         ...item,
