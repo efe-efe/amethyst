@@ -43,6 +43,8 @@ function phantom_basic_attack:TryThrowKnives(sModifier)
 		ApplyCallbackForUnitsInArea(caster, origin, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
 			damage_table.victim = unit
 			ApplyDamage(damage_table)
+
+			self:PlayEffectsOnImpact(unit)
 		end)
 
 		CreateRadiusMarker(caster, origin, radius, RADIUS_SCOPE_PUBLIC, 0.1)
