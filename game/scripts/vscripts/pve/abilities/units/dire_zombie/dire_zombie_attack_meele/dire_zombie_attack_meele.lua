@@ -44,29 +44,7 @@ function dire_zombie_attack_meele:OnSpellStart()
 	})
 
 	self:PlayEffectsOnMiss(point)
-    self:PlayEffectsOnFinish(direction, Vector(255, 0, 0))
-end
-
-function dire_zombie_attack_meele:PlayEffectsOnFinish(vDirection, vColor)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-
-	local efx = EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
-		cp0 = origin,
-		cp0f = vDirection,
-		cp3 = Vector(self.radius, 0, 0),
-	})
-
-	if vColor then
-		ParticleManager:SetParticleControl(efx, 60, vColor)
-		ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
-	end
-
-	ParticleManager:ReleaseParticleIndex(efx)
-
-	EFX('particles/juggernaut/juggernaut_basic_attack_dust.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
-		release = true,
-	})
+    MeeleEFX(caster, direction, self.radius, Vector(255, 0, 0))
 end
 
 function dire_zombie_attack_meele:PlayEffectsOnImpact(hTarget)

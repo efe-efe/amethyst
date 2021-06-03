@@ -366,6 +366,31 @@ function DEFX(index, force)
     ParticleManager:ReleaseParticleIndex(index)
 end
 
+function MeeleEFX(hCaster, vDirection, nRadius, vColor)
+	local origin = hCaster:GetAbsOrigin()
+
+	local efx = EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
+		cp0 = origin,
+		cp0f = vDirection,
+		cp3 = Vector(nRadius, 0, 0),
+	})
+
+	if vColor then
+		ParticleManager:SetParticleControl(efx, 60, vColor)
+		ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
+	end
+
+	ParticleManager:ReleaseParticleIndex(efx)
+
+	EFX('particles/juggernaut/juggernaut_basic_attack_dust.vpcf', PATTACH_ABSORIGIN_FOLLOW, hCaster, {
+		release = true,
+	})
+
+	if nRadius > 300 then
+		MeeleEFX(hCaster, vDirection, 200, vColor)
+	end
+end
+
 function ReplenishEFX(parent)
 	local particle_cast = "particles/units/heroes/hero_wisp/wisp_death.vpcf"
     local origin = parent:GetAbsOrigin()

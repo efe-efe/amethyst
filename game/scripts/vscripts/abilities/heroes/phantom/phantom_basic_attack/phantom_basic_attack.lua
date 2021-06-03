@@ -86,7 +86,7 @@ function phantom_basic_attack:OnSpellStart()
 		end
 	})
 
-	self:PlayEffectsOnFinish(direction, radius)
+    MeeleEFX(caster, direction, radius, Vector(43, 100, 125))
 	self:PlayEffectsOnCast()
 end
 
@@ -97,20 +97,6 @@ function phantom_basic_attack:ReduceCooldown(hCaster, sAbilityName, fCooldownRed
 
 	hAbility:EndCooldown()
 	hAbility:StartCooldown(fNewCooldown)
-end
-
-function phantom_basic_attack:PlayEffectsOnFinish(vDirection, nRadius)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-	
-	local efx = EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
-		cp0 = origin,
-		cp0f = vDirection,
-		cp3 = Vector(nRadius, 0, 0),
-	})
-	ParticleManager:SetParticleControl(efx, 60, Vector(43, 100, 125))
-	ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
-	ParticleManager:ReleaseParticleIndex(efx)
 end
 
 function phantom_basic_attack:PlayEffectsOnImpact(hTarget)

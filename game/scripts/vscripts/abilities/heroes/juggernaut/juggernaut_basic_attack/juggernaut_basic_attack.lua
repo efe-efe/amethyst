@@ -35,9 +35,9 @@ function juggernaut_basic_attack:OnSpellStart()
 
 	if modifier then
 		local color = Vector(0, 255, 0)
-		self:PlayEffectsOnFinish(direction, color)
+		MeeleEFX(caster, direction, self.radius, color)
 	else
-		self:PlayEffectsOnFinish(direction)
+		MeeleEFX(caster, direction, self.radius, nil)
 	end
 	
 	CustomEntitiesLegacy:MeeleAttack(caster, {
@@ -89,28 +89,6 @@ function juggernaut_basic_attack:ReduceCooldown(hCaster, sAbilityName, iCooldown
 			ability:StartCooldown(new_cd)
 		end
 	end
-end
-
-function juggernaut_basic_attack:PlayEffectsOnFinish(vDirection, vColor)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-
-	local efx = EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
-		cp0 = origin,
-		cp0f = vDirection,
-		cp3 = Vector(self.radius, 0, 0),
-	})
-
-	if vColor then
-		ParticleManager:SetParticleControl(efx, 60, vColor)
-		ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
-	end
-
-	ParticleManager:ReleaseParticleIndex(efx)
-
-	EFX('particles/juggernaut/juggernaut_basic_attack_dust.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
-		release = true,
-	})
 end
 
 function juggernaut_basic_attack:PlayEffectsOnImpact(hTarget)

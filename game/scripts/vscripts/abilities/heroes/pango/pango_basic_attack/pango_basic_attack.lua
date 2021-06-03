@@ -66,7 +66,7 @@ function pango_basic_attack:OnSpellStart()
 	})
 
 	self:PlayEffectsOnMiss(point)
-	self:PlayEffectsOnFinish(direction)
+	MeeleEFX(caster, direction, self.radius, nil)
 end
 
 function pango_basic_attack:TryProc(hTarget)
@@ -89,22 +89,6 @@ function pango_basic_attack:TryProc(hTarget)
 		}
 		ApplyDamage(damage_table)
 	end
-
-end
-
-function pango_basic_attack:PlayEffectsOnFinish(vDirection)
-	local caster = self:GetCaster()
-	local origin = caster:GetOrigin()
-
-	EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
-		cp0 = origin,
-		cp0f = vDirection,
-		cp3 = Vector(self.radius, 0, 0),
-		release = true,
-	})
-	EFX('particles/juggernaut/juggernaut_basic_attack_dust.vpcf', PATTACH_ABSORIGIN_FOLLOW, self:GetCaster(), {
-		release = true,
-	})
 end
 
 function pango_basic_attack:PlayEffectsOnImpact(hTarget)
