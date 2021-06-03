@@ -830,7 +830,7 @@ export class GameMode{
                 room = room - 1;
 
                 if(this.run && this.run.stage && this.run.stage.room){
-                    if(this.run.stage.rooms > room){
+                    if(this.run.stage.totalNpcRooms > room){
                         return;
                     }
                     this.run.stage.room.SkipRoom();

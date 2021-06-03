@@ -802,7 +802,7 @@ function GameMode.prototype.OnPlayerChat(self, event)
             end
             room = room - 1
             if (self.run and self.run.stage) and self.run.stage.room then
-                if self.run.stage.rooms > room then
+                if self.run.stage.totalNpcRooms > room then
                     return
                 end
                 self.run.stage.room:SkipRoom()
