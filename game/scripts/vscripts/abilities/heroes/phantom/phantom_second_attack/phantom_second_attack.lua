@@ -1,4 +1,6 @@
 phantom_second_attack = class({})
+phantom_second_attack_recast = class({})
+LinkLuaModifier("modifier_phantom_second_attack_recast", "abilities/heroes/phantom/phantom_second_attack/modifier_phantom_second_attack_recast", LUA_MODIFIER_MOTION_NONE)
 
 function phantom_second_attack:GetCastAnimationCustom()		return ACT_DOTA_ATTACK_EVENT end 
 function phantom_second_attack:GetPlaybackRateOverride() 	return 0.8 end
@@ -24,7 +26,7 @@ function phantom_second_attack:OnSpellStart()
 		damage_type = DAMAGE_TYPE_PHYSICAL,
 	}
 
-	CustomEntitiesLegacy:MeeleAttack(caster, {
+	local units = CustomEntitiesLegacy:MeeleAttack(caster, {
 		vDirection = direction,
 		vOrigin = origin, 
 		fRadius = radius,
@@ -56,6 +58,10 @@ function phantom_second_attack:OnSpellStart()
 	self:PlayEffectsOnFinish(direction, radius)
 	CustomEntitiesLegacy:SafeDestroyModifier(caster, "modifier_phantom_strike_stack")
 	self:PlayEffectsOnCast()
+
+	if #units > 0 then
+		caster:AddNewModifier(caster, self, "modifier_phantom_second_attack_recast", { duration = 3.0 })
+	end
 end
 
 function phantom_second_attack:PlayEffectsOnImpact(hTarget, stacks)
@@ -99,6 +105,51 @@ function phantom_second_attack:PlayEffectsOnFinish(vDirection, nRadius)
 	ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
 	ParticleManager:ReleaseParticleIndex(efx)
 end
+
+function phantom_second_attack:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_second_attack_recast")
+end
+
+function phantom_second_attack_recast:OnUpgrade()
+	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_second_attack")
+end
+
+function phantom_second_attack_recast:OnSpellStart()
+	local caster = self:GetCaster()
+	local origin = caster:GetAbsOrigin()
+	local radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
+	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	
+    EmitSoundOn("Hero_PhantomAssassin.Blur", caster)
+	EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf", PATTACH_WORLDORIGIN, nil, {
+        cp0 = origin,
+        cp3 = origin,
+        release = true,
+    })
+    FindClearSpaceForUnit(self:GetCaster(), point, true)
+    EmitSoundOn("Hero_PhantomAssassin.Blur.Break", caster)
+    EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf", PATTACH_ABSORIGIN_FOLLOW, self.parent, {
+        cp3 = caster:GetAbsOrigin(),
+        release = true,
+    })
+	local damage_table = {
+		attacker = caster,
+		damage = caster:GetAverageTrueAttackDamage(caster) * 2,
+		damage_type = DAMAGE_TYPE_PHYSICAL,
+	}
+	ApplyCallbackForUnitsInArea(caster, caster:GetAbsOrigin(), radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+		damage_table.victim = unit
+		ApplyDamage(damage_table)
+		self:PlayEffectsOnImpact(unit)
+		EmitSoundOn("Hero_PhantomAssassin.Spatter", unit)
+		EmitSoundOn("Hero_PhantomAssassin.Attack", caster)
+	end)
+
+	CreateRadiusMarker(caster, point, radius, RADIUS_SCOPE_PUBLIC, 0.1)
+	caster:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 1.5)
+end
+
+phantom_second_attack_recast.PlayEffectsOnImpact = phantom_second_attack.PlayEffectsOnImpact
 
 if IsClient() then require("wrappers/abilities") end
 Abilities.Castpoint(phantom_second_attack)

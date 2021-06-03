@@ -26,4 +26,31 @@
 			"03"{ "var_type"	"FIELD_FLOAT"		"damage_multiplier_per_stack"	"1.0" }
 		}
 	}
+
+    "phantom_second_attack_recast"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_second_attack/phantom_second_attack"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"phantom_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
+		"AbilityCastRange" 				"1200"
+		"AbilityCastPoint"				"0.4"
+
+		"TargetingIndicator" {
+			"Type" 						"TARGETING_INDICATOR_AOE"
+			"DisplayRange" 				"1"
+		}
+		
+		"AbilitySpecial"
+		{	
+			"01"{ "var_type"	"FIELD_INTEGER"		"radius"						"270" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"damage_multiplier_per_stack"	"1.0" }
+		}
+	}
 }

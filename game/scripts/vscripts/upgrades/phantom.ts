@@ -7,11 +7,8 @@ const Shards: Upgrade[] = [
         description: 'Your Swift leaves a fan of knives on its original position.',
         ability: 'phantom_mobility',
         maxStacks: 5,
-        modifier: {
-            name: 'modifier_upgrade_phantom_dash_damage'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.SHARD,
     },
     {
         id: 'phantom_dash_shield',
@@ -19,11 +16,8 @@ const Shards: Upgrade[] = [
         description: 'Your Swift gives you shield for a short period of time after passing through enemies and increases its range.',
         ability: 'phantom_mobility',
         maxStacks: 5,
-        modifier: {
-            name: 'modifier_upgrade_phantom_dash_shield'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.SHARD,
     },
     {
         id: 'phantom_strike_knives',
@@ -31,13 +25,17 @@ const Shards: Upgrade[] = [
         description: 'Your Phantom Strike leaves a fan of knives on the arival location.',
         ability: 'phantom_counter',
         maxStacks: 5,
-        modifier: {
-            name: 'modifier_upgrade_phantom_strike_knives'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.SHARD,
     },
-];
+].map((shard) => ({
+    ...shard,
+    type: UpgradeTypes.SHARD,
+    modifier: {
+        ...shard.modifier,
+        name: `modifier_upgrade_${shard.id}`,
+    },
+}));
 
 const Favors: Upgrade[] = [
     {
@@ -46,11 +44,8 @@ const Favors: Upgrade[] = [
         description: 'Your Stiffling Daggers throws 3 daggers.',
         ability: 'phantom_special_attack',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_extra_daggers'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },  
     {
         id: 'phantom_fast_daggers',
@@ -58,11 +53,8 @@ const Favors: Upgrade[] = [
         description: 'Your Stiffling Daggers cooldown is two times to your attack speed, but no longer apply slow.',
         ability: 'phantom_special_attack',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_fast_daggers'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },   
     {
         id: 'phantom_coup_cast_fast',
@@ -70,11 +62,8 @@ const Favors: Upgrade[] = [
         description: 'Reduces the cast time of Coup de Grace considerably.',
         ability: 'phantom_ultimate',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_coup_cast_fast'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'phantom_countering_stacks',
@@ -82,11 +71,8 @@ const Favors: Upgrade[] = [
         description: 'Your Phantom Strike consumes all your Phantom Stacks to multiply your damage while the attack speed buff is on.',
         ability: 'phantom_counter',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_countering_stacks'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'phantom_act_while_countering',
@@ -94,11 +80,8 @@ const Favors: Upgrade[] = [
         description: 'You can act while in counter state but the counter state duration its reduced.',
         ability: 'phantom_counter',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_act_while_countering'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'phantom_strike_instant',
@@ -106,11 +89,8 @@ const Favors: Upgrade[] = [
         description: 'Your Phantom Strike is activated instantly without the need to be activated by an attack, but no longer heals and the banish duration is reduced.',
         ability: 'phantom_counter',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_strike_instant'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },
     {
         id: 'phantom_quick_recast',
@@ -118,13 +98,26 @@ const Favors: Upgrade[] = [
         description: 'Your Quick Strike can be used again for free after hitting at least one enemy.',
         ability: 'phantom_extra',
         maxStacks: 1,
-        modifier: {
-            name: 'modifier_upgrade_phantom_quick_recast'
-        },
+        modifier: {},
         tier: 1,
-        type: UpgradeTypes.FAVOR,
     },
-];
+    {
+        id: 'phantom_critical_recast',
+        name: 'Phantom Critical Strike recast',
+        description: 'Your Critical Strike can be used again after hitting at least one enemy.',
+        ability: 'phantom_second_attack',
+        maxStacks: 1,
+        modifier: {},
+        tier: 1,
+    },
+].map((favor) => ({
+    ...favor,
+    type: UpgradeTypes.FAVOR,
+    modifier: {
+        ...favor.modifier,
+        name: `modifier_upgrade_${favor.id}`,
+    },
+}));
 
 const PhantomRewards = {
     Shards,

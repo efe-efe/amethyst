@@ -35,20 +35,20 @@ end
 function modifier_phantom_counter_banish:PlayEffectsOnCreated()
     EmitSoundOn("Hero_PhantomAssassin.Blur", self.parent)
 
-    local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf"
-    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-    ParticleManager:SetParticleControl(effect_cast, 0, self.parent:GetAbsOrigin())
-    ParticleManager:SetParticleControl(effect_cast, 3, self.parent:GetAbsOrigin())
-    ParticleManager:ReleaseParticleIndex(effect_cast)
+    EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf", PATTACH_WORLDORIGIN, nil, {
+        cp0 = self.parent:GetAbsOrigin(),
+        cp3 = self.parent:GetAbsOrigin(),
+        release = true,
+    })
 end
 
 function modifier_phantom_counter_banish:PlayEffectsOnCast()
     EmitSoundOn("Hero_PhantomAssassin.Blur.Break", self.parent )
 
-    local particle_cast = "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf"
-    local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_ABSORIGIN_FOLLOW, self.parent)
-    ParticleManager:SetParticleControl(effect_cast, 3, self.parent:GetAbsOrigin())
-    ParticleManager:ReleaseParticleIndex(effect_cast)
+    EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf", PATTACH_ABSORIGIN_FOLLOW, self.parent, {
+        cp3 = self.parent:GetAbsOrigin(),
+        release = true,
+    })
 end
 
 function modifier_phantom_counter_banish:CheckState()
