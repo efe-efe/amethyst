@@ -60,7 +60,9 @@ function phantom_second_attack:OnSpellStart()
 	self:PlayEffectsOnCast()
 
 	if #units > 0 then
-		caster:AddNewModifier(caster, self, "modifier_phantom_second_attack_recast", { duration = 3.0 })
+		if caster:HasModifier("modifier_upgrade_phantom_critical_recast") then
+			caster:AddNewModifier(caster, self, "modifier_phantom_second_attack_recast", { duration = 3.0 })
+		end
 	end
 end
 
