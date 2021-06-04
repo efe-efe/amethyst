@@ -185,6 +185,14 @@ export default class LayoutController{
         }
     }
 
+    public EnablePanel(panelName: string): void{
+        const panel = this.topPanel.FindChildTraverse(panelName);
+
+        if(panel){
+            panel.style.visibility = 'visible';
+        }
+    }
+
     public CollapsePanel(panelName: string): void{
         const panel = this.topPanel.FindChildTraverse(panelName);
 

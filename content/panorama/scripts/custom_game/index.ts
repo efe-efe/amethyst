@@ -188,6 +188,8 @@ import UnitOverhead from './overhead/unitOverhead';
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_HERO_SELECTION_TEAMS, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_ITEMS, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_INVENTORY_SHOP, false);
+    
+    layout.CollapsePanel('level_stats_frame');
     layout.CollapsePanel('inventory_tpscroll_container');
     layout.CollapsePanel('inventory_neutral_slot_container');
     layout.CollapsePanelByClass('AbilityInsetShadowRight');
@@ -215,7 +217,6 @@ import UnitOverhead from './overhead/unitOverhead';
 
     layout.SetPanelMargin('debuffs', { bottom: '95px' });
     layout.SetPanelMargin('buffs', { bottom: '95px' });
-
     layout.UpdateCurrency();
 
     customEntities.AddCallback((value: UnitData) => {
