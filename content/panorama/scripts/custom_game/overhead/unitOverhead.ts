@@ -38,6 +38,8 @@ export default class UnitOverhead extends Overhead{
         this.health = new Health(this.healthPanel, {
             color: this.color,
             rounded: true,
+            maxTreshold: unitData.maxHealth,
+            shieldOnFront: true,
         });
         this.UpdateData(unitData);
     }
@@ -79,7 +81,7 @@ export default class UnitOverhead extends Overhead{
             this.status.GetPanel().style.visibility = 'collapse';
         }
 
-        this.health.Update(unitData.health, 30, unitData.maxHealth, unitData.shield);
+        this.health.Update(unitData.health, unitData.health, unitData.maxHealth, unitData.shield);
     }
 }
 

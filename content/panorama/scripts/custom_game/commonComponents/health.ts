@@ -7,6 +7,8 @@ type HealthData = {
     showValue?: boolean;
     usePercentage?: boolean;
     rounded?: boolean;
+    maxTreshold?: number;
+    shieldOnFront?: boolean;
 }
 
 export default class Health{
@@ -20,14 +22,17 @@ export default class Health{
     showValue: boolean;
     usePercentage: boolean;
     rounded: boolean;
+    maxTreshold: number;
     borderRadius = '3';
-    maxTreshold = 30;
+    shieldOnFront: boolean;
 
     constructor(container: Panel, data: HealthData){
         const fontSize = (data.fontSize) ? data.fontSize : '13px';
         const showValue = (data.showValue) ? data.showValue : false;
         const usePercentage = (data.usePercentage) ? data.usePercentage : false;
         this.rounded = (data.rounded) ? data.rounded : false;
+        this.maxTreshold = (data.maxTreshold) ? data.maxTreshold : 30;
+        this.shieldOnFront = (data.shieldOnFront) ? data.shieldOnFront : false;
 
         this.color = data.color;
         this.showValue = showValue;
@@ -36,6 +41,10 @@ export default class Health{
         this.healthPanel =  panels.createPanelSimple(container, 'health');
         this.cellsPanel = panels.createPanelSimple(container, 'health__cells');
         this.valuePanel = panels.createPanelSimple(container, 'health__value', 'Label') as LabelPanel;
+
+        if(!this.shieldOnFront){
+            this.healthPanel.style.flowChildren = 'right';
+        }
 
         this.healthProgressBar = new ProgressBar('health__progress-bar', this.healthPanel, { 
             foreground_color: colors.Gradient(this.color), 
@@ -48,8 +57,7 @@ export default class Health{
             background_color: 'black',
             border_radius: (this.rounded) ? this.borderRadius + 'px' : '0',
         });
-        
-        this.healthPanel.style.flowChildren = 'right';
+
         this.healthPanel.style.height = '100%';
         this.healthPanel.style.width = '100%';
         
@@ -95,26 +103,32 @@ export default class Health{
             }
             healthTotalWidth = 100;
         } else {
-            this.shieldProgressBar.SetVisibility('visible');
-            this.healthProgressBar.SetBorder({right: '0'});
-            this.shieldProgressBar.SetBorder({left: '0'});
-            
-            if(this.rounded){
-                this.healthProgressBar.SetBorderRadius({topRight: '0', bottomRight: '0'});
-                this.shieldProgressBar.SetBorderRadius({topLeft: '0', bottomLeft: '0'});
+            if(this.shieldOnFront){
+                healthTotalWidth = 100;
+                const shieldTotalWidth = 100 * (shield)/(maxHealth);
+                this.shieldProgressBar.SetTotalWidth(shieldTotalWidth);
+            } else {
+                this.healthProgressBar.SetBorder({right: '0'});
+                this.shieldProgressBar.SetBorder({left: '0'});
+
+                if(this.rounded){
+                    this.healthProgressBar.SetBorderRadius({topRight: '0', bottomRight: '0'});
+                    this.shieldProgressBar.SetBorderRadius({topLeft: '0', bottomLeft: '0'});
+                }
+                healthTotalWidth = 100 * (health)/(maxHealth + shield);
+                const shieldTotalWidth = 100 * (maxHealth + shield - health)/(maxHealth + shield);
+                this.shieldProgressBar.SetTotalWidth(shieldTotalWidth);
             }
 
-            healthTotalWidth = 100 * (health)/(maxHealth + shield);
+            this.shieldProgressBar.SetVisibility('visible');
+
             healthPanelWidth = 100;
             healthProgress = 100;
-            
-            const shieldTotalWidth = 100 * (maxHealth + shield - health)/(maxHealth + shield);
-            const shieldPanelWidth = 100 * (shield + healeableAmount)/(maxHealth + shield - health);
+
             const shieldProgress = 100 * shield/(shield + healeableAmount);
-            
-            this.shieldProgressBar.SetTotalWidth(shieldTotalWidth);
-            this.shieldProgressBar.SetPanelWidth(shieldPanelWidth);
+            const shieldPanelWidth = 100 * (shield + healeableAmount)/(maxHealth + shield - health);
             this.shieldProgressBar.SetProgress(shieldProgress);
+            this.shieldProgressBar.SetPanelWidth(shieldPanelWidth);
         }
         this.healthProgressBar.SetTotalWidth(healthTotalWidth);
         this.healthProgressBar.SetPanelWidth(healthPanelWidth);
@@ -129,7 +143,15 @@ export default class Health{
             this.valuePanel.text = value;
         }
 
-        this.UpdateCells(health, healeableAmount, maxHealth, shield);
+        if(this.shieldOnFront){
+            this.UpdateCellsShieldOnFront(health, maxHealth);
+        } else {
+            this.UpdateCells(health, healeableAmount, maxHealth, shield);
+        }
+    }
+
+    UpdateCellsShieldOnFront(health: number, maxHealth: number): void{
+        this.UpdateCells(health, health, maxHealth, 0);
     }
 
     UpdateCells(health: number, healeableAmount: number, maxHealth: number, shield: number): void{
