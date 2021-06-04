@@ -23,6 +23,9 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"heal_per_second"			"8" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"radius"					"300" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"shield"					"30" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"damage_per_second"			"4" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"speed_buff_pct"			"20" }
+			"07"{ "var_type"	"FIELD_FLOAT"		"think_interval"			"0.25" }
 		}
 	}
 

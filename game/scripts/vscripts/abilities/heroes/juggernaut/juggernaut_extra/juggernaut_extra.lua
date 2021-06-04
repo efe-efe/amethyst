@@ -46,6 +46,11 @@ function juggernaut_extra:OnSpellStart()
     ParticleManager:SetParticleControlEnt(efx, 0, healing_ward, PATTACH_POINT_FOLLOW, "attach_hitloc", healing_ward:GetAbsOrigin(), true)
     ParticleManager:SetParticleControlEnt(efx, 1, caster, PATTACH_POINT_FOLLOW, "attach_hitloc", caster:GetAbsOrigin(), true)
     ParticleManager:ReleaseParticleIndex(efx)
+
+    
+	if caster:HasModifier("modifier_upgrade_juggernaut_spinning_ward") then
+        healing_ward:AddNewModifier(caster, self, "modifier_juggernaut_mobility", { duration = duration })
+	end
 end
 
 function juggernaut_extra:OnUpgrade()

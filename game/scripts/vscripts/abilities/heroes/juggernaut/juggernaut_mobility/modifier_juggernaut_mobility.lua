@@ -5,14 +5,13 @@ function modifier_juggernaut_mobility:IsDebuff()	            return false    end
 function modifier_juggernaut_mobility:IsPurgable()              return true     end
 function modifier_juggernaut_mobility:StatusEffectPriority()    return 2.0      end
 
-
 function modifier_juggernaut_mobility:OnCreated(kv)
     self.speed_buff_pct = self:GetAbility():GetSpecialValueFor("speed_buff_pct")
     self.parent = self:GetParent()
 
     if IsServer() then
         self.damage_table = {
-            attacker = self.parent,
+            attacker = self:GetCaster(),
             damage = self:GetAbility():GetSpecialValueFor("damage_per_second"),
             damage_type = DAMAGE_TYPE_PURE,
         }
@@ -36,8 +35,8 @@ function modifier_juggernaut_mobility:OnIntervalThink()
    )
 
     for _,enemy in pairs(enemies) do
-        if self.parent:HasModifier("modifier_upgrade_juggernaut_fury_attack") then
-            CustomEntitiesLegacy:SingleAttack(self.parent, {
+        if self:GetCaster():HasModifier("modifier_upgrade_juggernaut_fury_attack") then
+            CustomEntitiesLegacy:SingleAttack(self:GetCaster(), {
                 bIsBasicAttack = true,
                 hTarget = enemy,
                 Callback = function(hTarget)
