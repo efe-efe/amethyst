@@ -12,10 +12,19 @@ export enum RoomType {
     BOSS,
     BONUS,
 }
+
+export enum RoomCompletionCriteria {
+    KILL_ALL_ENEMIES = 0,
+    PICKUP_REWARD,
+    PICKUP_DIAMOND,
+    PICKUP_DIAMOND_AND_REWARD,
+}
+
 export interface RoomOptions{
     waves: Wave[];
     spawnDiamond: boolean;
     type: RoomType;
+    completitionCriteria: RoomCompletionCriteria;
 }
 export interface Wave {
     npcs: NPCNames[];
@@ -41,6 +50,7 @@ export default class Room extends GameState{
     diamond: Diamond | undefined;
     spawnDiamond: boolean;
     type: RoomType;
+    completitionCriteria: RoomCompletionCriteria;
 
     constructor(alliances: Alliance[], duration: number, stage: Stage, options: RoomOptions){
         super(alliances, duration);
@@ -50,6 +60,7 @@ export default class Room extends GameState{
         this.stage = stage;
         this.type = options.type;
         this.spawnDiamond = options.spawnDiamond;
+        this.completitionCriteria = options.completitionCriteria;
         this.StartWave(this.currentWave);
         this.SendDataToClient();
 

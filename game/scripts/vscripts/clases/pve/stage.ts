@@ -1,5 +1,5 @@
 import { CustomAIMeta, CustomAITier, NPCNames } from './custom_ai';
-import Room, { RoomType, Wave } from './room';
+import Room, { RoomCompletionCriteria, RoomType, Wave } from './room';
 import GameState from '../game_state';
 import Alliance from '../alliance';
 import Run from './run';
@@ -92,11 +92,13 @@ export default class Stage extends GameState{
 
     GenerateRoom(spawnDiamond: boolean): Room{
         const type = this.GenerateRoomType();
+        const completitionCriteria = RoomCompletionCriteria.KILL_ALL_ENEMIES;
 
         return new Room(this.alliances, -1, this, {
             waves: this.GenerateWaves(type), 
             spawnDiamond,
             type,
+            completitionCriteria,
         });
     }
 

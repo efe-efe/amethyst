@@ -133,21 +133,22 @@ export class CustomAI{
         }
     }
 
-    Follow(origin: Vector): boolean{
+    Follow(): boolean{
+        const origin = this.unit.GetAbsOrigin();
         this.UpdateTarget();
 
-        if(!this.followTarget || !this.followTarget.IsAlive()){
-            return false;
-        }
-        const distance = CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget);
-        let direction = Vector(0,0);
+        if(this.followTarget && this.followTarget.IsAlive()){
+            const distance = CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget);
+            let direction = Vector(0,0);
 
-        if(this.followTarget.IsAlive() && distance > this.minFollowRange){
-            direction = (this.followTarget.GetAbsOrigin().__sub(origin)).Normalized();
+            if(this.followTarget.IsAlive() && distance > this.minFollowRange){
+                direction = (this.followTarget.GetAbsOrigin().__sub(origin)).Normalized();
+            }
+            
+            CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
+            return true;
         }
-        
-        CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
-        return true;
+        return false;
     }
 
     IsAbilityReady(ability: CDOTABaseAbility): boolean{
@@ -251,7 +252,8 @@ export class CustomAI{
         CustomEntitiesLegacy.SetDirection(this.unit, 0, 0);
     }
 
-    MoveTowards(origin: Vector, point: Vector): boolean{
+    MoveTowards(point: Vector): boolean{
+        const origin = this.unit.GetAbsOrigin();
         const distance = (point.__sub(origin)).Length2D();
 
         if(distance < 10){
@@ -263,7 +265,8 @@ export class CustomAI{
         }
     }
 
-    PickTargetPosition(origin: Vector): void{
+    PickTargetPosition(): void{
+        const origin = this.unit.GetAbsOrigin();
         const worldLimits = 1500;
         const x = Clamp(origin.x + RandomInt(-400, 400), worldLimits, -worldLimits);
         const y = Clamp(origin.y + RandomInt(-400, 400), worldLimits, -worldLimits);
@@ -279,8 +282,6 @@ export class CustomAI{
     }
 
     Update(): void{
-        const origin = this.unit.GetAbsOrigin();
-
         if(this.tauntedRemainingDuration > 0){
             this.tauntedRemainingDuration = this.tauntedRemainingDuration - 1;
         } 
@@ -293,17 +294,17 @@ export class CustomAI{
             }
             if(this.behavior === CustomAIBehavior.WANDERER){
                 if(this.state === CustomAIState.WANDERING && this.targetPosition){
-                    if(!this.MoveTowards(origin, this.targetPosition)){
+                    if(!this.MoveTowards(this.targetPosition)){
                         this.state = CustomAIState.IDLE;
                         this.ClearTargetPosition();
                         this.StopMoving();
                     }
                 } else {
                     this.state = CustomAIState.WANDERING;
-                    this.PickTargetPosition(origin);
+                    this.PickTargetPosition();
                 }
             } else {
-                if(!this.Follow(origin)){
+                if(!this.Follow()){
                     this.StopMoving();
                 }
             }
@@ -514,7 +515,7 @@ export const CustomAIMeta: {
         factory: (origin: Vector): CustomAI => {
             const ai = new CustomAI('flying_skull', origin, {
                 followRange: 1000,
-                minFollowRange: 450,
+                minFollowRange: 150,
                 behavior: CustomAIBehavior.FOLLOWER,
                 shield: true,
             });

@@ -423,6 +423,7 @@ export class GameMode{
             LinkLuaModifier('modifier_upgrade_item_maelstrom_attack',  itemsPath + 'modifier_upgrade_item_maelstrom', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_item_basher_attack',  itemsPath + 'modifier_upgrade_item_basher', LuaModifierMotionType.NONE);
             LinkLuaModifier('modifier_upgrade_item_javelin_attack',  itemsPath + 'modifier_upgrade_item_javelin', LuaModifierMotionType.NONE);
+            LinkLuaModifier('modifier_upgrade_tarrasque',                'modifiers/upgrades/modifier_upgrade_tarrasque', LuaModifierMotionType.NONE);
         }
 
         print('[AMETHYST] Useful modifiers linked');
@@ -806,6 +807,7 @@ export class GameMode{
             }
 
             if(event.text == '-vitality'){
+                print('here')
                 customNpc.ApplyTarrasque();
             }
         }

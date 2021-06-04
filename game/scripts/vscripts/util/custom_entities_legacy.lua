@@ -426,7 +426,9 @@ function CustomEntitiesLegacy:RemoveModifierTracker(hEntity, sName, iType)
 end
 
 function CustomEntitiesLegacy:GetDistance(hEntityA, hEntityB)
-	return (hEntityA:GetAbsOrigin() - hEntityB:GetAbsOrigin()):Length2D()
+	local vOriginA = hEntityA:GetAbsOrigin()
+	local vOriginB = hEntityB:GetAbsOrigin()
+	return (vOriginA - vOriginB):Length2D()
 end
 
 function CustomEntitiesLegacy:GetDirection(hEntity)

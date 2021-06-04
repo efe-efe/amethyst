@@ -1,5 +1,9 @@
 modifier_flying_skull_dash = class({})
 
+function modifier_flying_skull_dash:GetAttributes()
+	return MODIFIER_ATTRIBUTE_MULTIPLE
+end
+
 function modifier_flying_skull_dash:OnCreated(params)
 	if IsServer() then
 		local particle_cast = "particles/econ/items/spectre/spectre_transversant_soul/spectre_transversant_spectral_dagger_path_owner.vpcf"

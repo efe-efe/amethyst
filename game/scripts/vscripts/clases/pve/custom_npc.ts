@@ -520,15 +520,6 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         this.unit.AddNewModifier(this.unit, undefined, 'modifier_upgrade_tarrasque', {});
         const customEvents = CustomEvents.GetInstance();
         customEvents.EmitEvent('pve:current_reward_applied', { customNpc: this });
-
-        EmitSoundOn('Hero_Oracle.FortunesEnd.Target', this.unit);
-        EFX('particles/gems/emerald.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
-            cp3: {
-                ent: this.unit,
-                point: 'attach_hitloc'
-            },
-            release: true,
-        });
     }
 
     SelectReward(reward: Reward): void{

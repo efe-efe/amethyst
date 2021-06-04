@@ -4,7 +4,7 @@ function modifier_flying_skull_dash_displacement:OnCreated(params)
 	if IsServer() then
 		self.damage_table = {
 			attacker = self:GetParent(),
-			damage = self:GetAbility():GetSpecialValueFor("ability_damage"),
+			damage = self:GetParent():GetAverageTrueAttackDamage(self:GetParent()),
 			damage_type = DAMAGE_TYPE_PURE,
 		}
 		self.original_scale = self:GetParent():GetModelScale()
@@ -35,7 +35,8 @@ function modifier_flying_skull_dash_displacement:OnCollide(params)
 	if IsServer() then
 		if params.type == UNIT_COLLISION then
 			for _,unit in pairs(params.units) do
-				if not unit:HasModifier("modifier_flying_skull_dash") then
+				local modifier = CustomEntitiesLegacy:SafeGetModifier(unit, "modifier_flying_skull_dash", self:GetParent())
+				if not modifier then
 					unit:AddNewModifier(self:GetCaster(), self:GetAbility(), 'modifier_flying_skull_dash', { duration = 1.0 })
 					self.damage_table.victim = unit
 					ApplyDamage(self.damage_table)

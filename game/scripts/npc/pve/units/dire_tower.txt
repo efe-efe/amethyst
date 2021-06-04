@@ -14,7 +14,7 @@
 		"Ability3"					""			// Ability 3
 		"Ability4"					""			// Ability 4
 
-		"StatusHealth"				"100" 	
+		"StatusHealth"				"120" 	
 		"MovementSpeed"				"0"
 		"AttackCapabilities"		"DOTA_UNIT_CAP_RANGED_ATTACK"
 		"TeamName"					"DOTA_TEAM_NEUTRALS"

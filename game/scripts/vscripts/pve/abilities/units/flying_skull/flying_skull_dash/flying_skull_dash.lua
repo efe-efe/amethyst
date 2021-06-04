@@ -26,7 +26,7 @@ function flying_skull_dash:OnSpellStart()
 	local origin = caster:GetAbsOrigin()
 	local point = self:GetCursorPosition()
     local direction = (point - origin):Normalized()
-    local distance = self:GetCastRange(Vector(0,0,0), nil)
+    local distance = self:GetSpecialValueFor("dash_range")
     local speed = 1200
 	self.projectile = nil
 
@@ -43,7 +43,7 @@ function flying_skull_dash:OnSpellStart()
             x = direction.x,
             y = direction.y,
             r = distance,
-            speed = speed,
+            speed = speed * RandomFloat(1.0, 1.2),
             peak = 2,
         }
     )

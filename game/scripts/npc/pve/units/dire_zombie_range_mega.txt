@@ -20,8 +20,8 @@
 		"TeamName"					"DOTA_TEAM_NEUTRALS"
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 
-		"AttackDamageMin"			"15"										
-		"AttackDamageMax"			"15"									
+		"AttackDamageMin"			"30"										
+		"AttackDamageMax"			"30"									
 		"AttackRate"				"1.0"									
 		"AttackAnimationPoint"		"0.35"	
 	}
