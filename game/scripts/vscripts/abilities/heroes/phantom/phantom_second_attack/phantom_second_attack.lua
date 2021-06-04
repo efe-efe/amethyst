@@ -13,12 +13,12 @@ function phantom_second_attack:OnSpellStart()
 	local damage = caster:GetAverageTrueAttackDamage(caster)
 	local radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
 	
-	local damage_multiplier_per_stack = self:GetSpecialValueFor("damage_multiplier_per_stack")
+	local damage_per_stack = self:GetSpecialValueFor("damage_per_stack")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
 
 	local direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
 	local stacks = CustomEntitiesLegacy:SafeGetModifierStacks(caster, "modifier_phantom_strike_stack")
-	local final_damage = damage * ((stacks + 1) * damage_multiplier_per_stack)
+	local final_damage = damage + (stacks * damage_per_stack)
 
 	local damage_table = {
 		attacker = caster,
@@ -121,6 +121,7 @@ function phantom_second_attack_recast:OnSpellStart()
 	local origin = caster:GetAbsOrigin()
 	local radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
 	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), nil)
+	local extra_damage = self:GetSpecialValueFor("extra_damage")
 	
     EmitSoundOn("Hero_PhantomAssassin.Blur", caster)
 	EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf", PATTACH_WORLDORIGIN, nil, {
@@ -136,7 +137,7 @@ function phantom_second_attack_recast:OnSpellStart()
     })
 	local damage_table = {
 		attacker = caster,
-		damage = caster:GetAverageTrueAttackDamage(caster) * 2,
+		damage = caster:GetAverageTrueAttackDamage(caster) + extra_damage,
 		damage_type = DAMAGE_TYPE_PHYSICAL,
 	}
 	ApplyCallbackForUnitsInArea(caster, caster:GetAbsOrigin(), radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)

@@ -22,7 +22,7 @@ function GenerateLocalizationData() {
             maxStacks: 1,
             attackCapability: undefined,
             modifier: {
-                name: 'modifier_upgrade_broom_handle'
+                name: 'modifier_upgrade_item_broom_handle'
             },
             tier: 0,
             type: specific_1.UpgradeTypes.ITEM,
@@ -34,7 +34,7 @@ function GenerateLocalizationData() {
             description: 'Increases your base damage by 1.',
             maxStacks: 1,
             modifier: {
-                name: 'modifier_upgrade_blades_of_attack'
+                name: 'modifier_upgrade_item_blades_of_attack'
             },
             tier: 1,
             type: specific_1.UpgradeTypes.ITEM,
@@ -46,7 +46,7 @@ function GenerateLocalizationData() {
             description: 'Increases your movement and attack speed.',
             maxStacks: 1,
             modifier: {
-                name: 'modifier_upgrade_yasha'
+                name: 'modifier_upgrade_item_yasha'
             },
             tier: 1,
             type: specific_1.UpgradeTypes.ITEM,
@@ -58,7 +58,7 @@ function GenerateLocalizationData() {
             description: 'Your attacks has a chance to release a bolt of electricity that leaps between enemy targets.',
             maxStacks: 1,
             modifier: {
-                name: 'modifier_upgrade_maelstrom'
+                name: 'modifier_upgrade_item_maelstrom'
             },
             tier: 1,
             type: specific_1.UpgradeTypes.ITEM,
@@ -70,7 +70,7 @@ function GenerateLocalizationData() {
             description: 'Your attacks has a chance to deal extra damage and stun the target.',
             maxStacks: 1,
             modifier: {
-                name: 'modifier_upgrade_basher'
+                name: 'modifier_upgrade_item_basher'
             },
             tier: 1,
             type: specific_1.UpgradeTypes.ITEM,

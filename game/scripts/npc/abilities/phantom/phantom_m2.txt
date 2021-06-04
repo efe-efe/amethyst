@@ -23,7 +23,7 @@
 		{	
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"						"270" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"            		"7" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"damage_multiplier_per_stack"	"1.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"damage_per_stack"				"7" }
 		}
 	}
 
@@ -40,7 +40,7 @@
 		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
 		"AbilityCastRange" 				"1200"
-		"AbilityCastPoint"				"0.3"
+		"AbilityCastPoint"				"0.15"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_AOE"
@@ -50,7 +50,7 @@
 		"AbilitySpecial"
 		{	
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"						"270" }
-			"02"{ "var_type"	"FIELD_FLOAT"		"damage_multiplier_per_stack"	"1.0" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"extra_damage"					"20" }
 		}
 	}
 }

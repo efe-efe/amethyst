@@ -52,7 +52,7 @@ function GenerateLocalizationData() {
         ability_classname: 'phantom_second_attack',
         name: 'Critical Strike',
         description: specific_1.Description({
-            description: 'Swings your weapon in a melee attack, dealing @{damage_multiplier_per_stack} times your ' + specific_1.Keywords.BaseDamage + ' to all enemies in front of you. Consumes all ' + specific_1.Keywords.PhantomStack.instance() + ' to increase the damage multiplier by @{damage_multiplier_per_stack} per stack. If you consume 3 stacks, instantly gives ' + Swift + ' a charge.',
+            description: 'Swings your weapon in a melee attack, dealing ' + specific_1.Keywords.BaseDamage + ' to all enemies in front of you. Consumes all ' + specific_1.Keywords.PhantomStack.instance() + ' to increase the damage done by @{damage_per_stack} per stack. If you consume 3 stacks, instantly gives ' + Swift + ' a charge.',
             level: 'Fully replenish ' + Swift + ' when used with 3 ' + specific_1.Keywords.PhantomStack.instance() + '.',
         }),
         lore: specific_1.Keywords.PhantomStack.definition,
@@ -80,7 +80,7 @@ function GenerateLocalizationData() {
         ability_classname: 'phantom_special_attack',
         name: 'Stifling Dagger',
         description: specific_1.Description({
-            description: 'Throws a dagger that deals @{damage_multiplier} times your ' + specific_1.Keywords.BaseDamage + ' to the target (rounded down), inflicts ' + specific_1.Keywords.FadingSlow.instance('@{fading_slow_pct}') + ' for @{fading_slow_duration}s and generates a ' + specific_1.Keywords.PhantomStack.instance() + '. You can stack up to @{max_charges} charges.',
+            description: 'Throws a dagger that deals ' + specific_1.Keywords.BaseDamage + ' to the target plus @{damage_modifier}, inflicts ' + specific_1.Keywords.FadingSlow.instance('@{fading_slow_pct}') + ' for @{fading_slow_duration}s and generates a ' + specific_1.Keywords.PhantomStack.instance() + '. You can stack up to @{max_charges} charges.',
             level: 'Adds another charge, increases the damage and also applies ' + specific_1.Keywords.Bleeding.instance() + '.',
         }),
         lore: specific_1.multipleKeywords([specific_1.Keywords.Bleeding.definition, specific_1.Keywords.FadingSlow.definition, specific_1.Keywords.PhantomStack.definition]),

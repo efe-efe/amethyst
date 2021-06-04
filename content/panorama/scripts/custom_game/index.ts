@@ -216,7 +216,7 @@ import UnitOverhead from './overhead/unitOverhead';
     centerBgPanel.style.height = '90px';
 
     layout.SetPanelMargin('debuffs', { bottom: '95px' });
-    layout.SetPanelMargin('buffs', { bottom: '95px' });
+    layout.SetPanelMargin('buffs', { left: '38.5%', bottom: '95px' });
     layout.UpdateCurrency();
 
     customEntities.AddCallback((value: UnitData) => {

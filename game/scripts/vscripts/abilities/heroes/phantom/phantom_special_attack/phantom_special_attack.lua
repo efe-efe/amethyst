@@ -50,7 +50,15 @@ end
 function phantom_special_attack:ThrowProjectile(vOrigin, vDirection)
 	local caster = self:GetCaster()
 	local bleed_duration = self:GetSpecialValueFor("bleed_duration")
-	local damage_multiplier = self:GetSpecialValueFor("damage_multiplier")
+	local damage_modifier = self:GetSpecialValueFor("damage_modifier")
+	local damage = caster:GetAverageTrueAttackDamage(caster)
+	local final_damage = damage + damage_modifier
+
+	local damage_table = {
+		attacker = caster,
+		damage = final_damage,
+		damage_type = DAMAGE_TYPE_PHYSICAL,
+	}
 
 	local fading_slow_duration = self:GetSpecialValueFor("fading_slow_duration")
 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
@@ -75,12 +83,9 @@ function phantom_special_attack:ThrowProjectile(vOrigin, vDirection)
 			fGroundOffset = 0,
 			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
 			OnUnitHit = function(_self, unit) 
-				CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
-					hTarget = unit,
-					hAbility = self,
-					nMultiplier = damage_multiplier,
-				})
-
+				damage_table.victim = unit
+				ApplyDamage(damage_table)
+				
 				if _self.Source == caster then
 					if CustomEntitiesLegacy:ProvidesMana(unit) then
 						CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)

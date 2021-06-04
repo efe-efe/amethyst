@@ -56,7 +56,7 @@ export function GenerateLocalizationData(): LocalizationData
         ability_classname: 'phantom_second_attack',
         name: 'Critical Strike',
         description: Description({
-            description: 'Swings your weapon in a melee attack, dealing @{damage_multiplier_per_stack} times your ' + Keywords.BaseDamage + ' to all enemies in front of you. Consumes all ' + Keywords.PhantomStack.instance() + ' to increase the damage multiplier by @{damage_multiplier_per_stack} per stack. If you consume 3 stacks, instantly gives ' + Swift + ' a charge.',
+            description: 'Swings your weapon in a melee attack, dealing ' + Keywords.BaseDamage + ' to all enemies in front of you. Consumes all ' + Keywords.PhantomStack.instance() + ' to increase the damage done by @{damage_per_stack} per stack. If you consume 3 stacks, instantly gives ' + Swift + ' a charge.',
             level: 'Fully replenish ' + Swift + ' when used with 3 ' + Keywords.PhantomStack.instance() + '.',
         }),
         lore: Keywords.PhantomStack.definition,
@@ -87,7 +87,7 @@ export function GenerateLocalizationData(): LocalizationData
         ability_classname: 'phantom_special_attack',
         name: 'Stifling Dagger',
         description: Description({
-            description: 'Throws a dagger that deals @{damage_multiplier} times your ' + Keywords.BaseDamage + ' to the target (rounded down), inflicts ' + Keywords.FadingSlow.instance('@{fading_slow_pct}') + ' for @{fading_slow_duration}s and generates a ' + Keywords.PhantomStack.instance() + '. You can stack up to @{max_charges} charges.',
+            description: 'Throws a dagger that deals ' + Keywords.BaseDamage + ' to the target plus @{damage_modifier}, inflicts ' + Keywords.FadingSlow.instance('@{fading_slow_pct}') + ' for @{fading_slow_duration}s and generates a ' + Keywords.PhantomStack.instance() + '. You can stack up to @{max_charges} charges.',
             level: 'Adds another charge, increases the damage and also applies ' + Keywords.Bleeding.instance() + '.', 
         }),
         lore: multipleKeywords([Keywords.Bleeding.definition, Keywords.FadingSlow.definition, Keywords.PhantomStack.definition]),
