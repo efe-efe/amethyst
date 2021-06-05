@@ -29,6 +29,14 @@ function sniper_mobility:OnSpellStart()
 			peak = 400,
         }
 	)
+	caster:AddNewModifier(
+        caster, -- player source
+        self, -- ability source
+        "modifier_generic_invencible", -- modifier name
+        {
+			duration = 0.5,
+        }
+	)
 
 	CreateModifierThinker(
 		caster, --hCaster
