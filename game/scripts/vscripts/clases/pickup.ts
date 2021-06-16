@@ -36,7 +36,7 @@ export default class Pickup extends Item{
         this.SetItem(CreateItem(PICKUP_ITEM_NAMES[this.type], undefined, undefined)!);
         this.item!.LaunchLootInitialHeight(false, 0, 50, 0.5, this.origin);
         this.drop = CreateItemOnPositionForLaunch(this.origin, this.item);
-        ParticleManager.CreateParticle(PICKUP_PARTICLES[this.type], ParticleAttachment.ABSORIGIN_FOLLOW, this.drop);
+        ParticleManager.CreateParticle(PICKUP_PARTICLES[this.type], ParticleAttachment.ABSORIGIN_FOLLOW, this.drop as unknown as CDOTA_BaseNPC);
         this.drop.SetModelScale(this.scale);
     }
 

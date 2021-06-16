@@ -1,4 +1,4 @@
-import UnitEntity from './unit_entity';
+import BreakableBounty from './breakable_bounty';
 
 export enum GemTypes{
     NO_TYPE = 0,
@@ -27,29 +27,11 @@ const GEM_COLOR = {
     [GemTypes.DIAMOND]: Vector(26, 255, 0),
 };
 
-class Gem extends UnitEntity{
-    max_health = 100;
-    model: string;
-    particle: string;
+class Gem extends BreakableBounty{
     type = GemTypes.NO_TYPE;
-    scale: number;
 
     constructor(origin: Vector, particle: string, model: string, scale = 1.0){
-        super({ properties: {
-            origin, 
-            name: 'npc_dota_creature_amethyst'
-        }});
-        this.particle = particle;
-        this.model = model;
-        this.scale = scale;
-
-        const unit = this.GetUnit();
-        unit.SetModel(this.model);
-        unit.SetModelScale(this.scale);
-        unit.SetMaxHealth(this.max_health);
-        unit.SetBaseMaxHealth(this.max_health);
-        unit.SetHealth(this.max_health);
-        this.PlayEffectsOnSpawn();
+        super(origin, { particle, model, scale, health: 100 });
     }
 
     Update(): void{
@@ -62,50 +44,14 @@ class Gem extends UnitEntity{
         }
     }
 
-    OnDeath(params: { killer: CDOTA_BaseNPC }): void{
-        const killer = params.killer;
-
-        if(killer === this.unit){
-            return;
-        }
-        
-        this.Effect(killer);
-        this.PlayEffectsOnDeath();
-        this.GetUnit().AddNoDraw();
+    BeforeRemoving(killer: CDOTA_BaseNPC): void{
+        super.BeforeRemoving(killer);
         CustomEntitiesLegacy.GetAlliance(killer).AddAmethsyt();
-
-        this.Destroy(false); //Or false? idk
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Effect(killer: CDOTA_BaseNPC): void{
         //override this method
-    }
-    
-    PlayEffectsOnSpawn(): void{
-        const unit = this.GetUnit();
-        EmitSoundOn('Hero_Oracle.FortunesEnd.Target', unit);
-        EFX('particles/units/heroes/hero_chen/chen_hand_of_god.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
-        EFX('particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
-        EFX(this.particle, ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
-    }
-
-    PlayEffectsOnDeath(): void{
-        const parent = this.GetUnit();
-        const origin = parent.GetAbsOrigin();
-
-        EmitSoundOn('Hero_Magnataur.ReversePolarity.Cast', parent);
-        EFX('particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf', ParticleAttachment.WORLDORIGIN, undefined, { 
-            cp0: origin,
-            cp2: Vector(255, 80, 230),
-            release: true 
-        });
-        EFX('particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf', ParticleAttachment.WORLDORIGIN, undefined, { 
-            cp0: origin,
-            cp5: origin,
-            release: true 
-        });
-        this.PlaySpecificEffectsOnDeath();
     }
 
     GetUnits(searcher: CDOTA_BaseNPC, iTeamFlags: UnitTargetTeam){
@@ -131,9 +77,16 @@ class Gem extends UnitEntity{
     ProcessValue(allies: CDOTA_BaseNPC[], heroes: CDOTA_BaseNPC[], value: number): number{
         return math.ceil(heroes.length * value/allies.length);
     }
-    
-    PlaySpecificEffectsOnDeath(){
-        //override this method
+
+    PlayEffectsOnSpawn(): void{
+        const unit = this.GetUnit();
+        EmitSoundOn('Hero_Oracle.FortunesEnd.Target', unit);
+        EFX('particles/units/heroes/hero_chen/chen_hand_of_god.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+        EFX('particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+
+        if(this.particle){
+            EFX(this.particle, ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+        }
     }
 }
 export class Diamond extends Gem{
@@ -420,7 +373,6 @@ export default class GemWrapper{
 
     Destroy(remove: boolean): void{
         if(this.entity){
-            this.entity.GetUnit().ForceKill(false);
             this.entity.Destroy(remove);
         }
         this.DestroyProgressCircle();

@@ -30,7 +30,7 @@ export default class modifier_generic_use_energy extends BaseModifier{
             }
 
             if(!GameRules.Addon.IsInWTFMode()){
-                CustomEntitiesLegacy.GiveEnergy(event.unit, -event.ability.GetEnergyCost());
+                CustomEntitiesLegacy.GiveEnergy(event.unit, -(event.ability as any).GetEnergyCost());
             }
         }
     }

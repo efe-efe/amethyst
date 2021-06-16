@@ -30,10 +30,6 @@ function flying_skull_dash:OnSpellStart()
     local speed = 1200
 	self.projectile = nil
 
-	if CustomAbilitiesLegacy:FakeAbility(self) then
-		return
-	end
-
     CustomEntitiesLegacy:FullyFaceTowards(caster, direction)
     caster:AddNewModifier(
         caster, -- player source

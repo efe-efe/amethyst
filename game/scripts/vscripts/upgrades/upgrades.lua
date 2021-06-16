@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 4,["10"] = 4,["11"] = 5,["12"] = 5,["13"] = 7,["14"] = 7,["15"] = 9,["19"] = 10,["22"] = 11,["25"] = 12,["28"] = 9,["29"] = 9,["30"] = 22,["31"] = 22,["32"] = 24,["33"] = 25,["34"] = 22,["35"] = 32,["36"] = 33,["37"] = 22,["38"] = 40,["39"] = 41,["40"] = 22,["41"] = 48,["42"] = 49,["43"] = 22,["44"] = 56,["45"] = 57,["46"] = 57,["47"] = 57,["48"] = 58,["49"] = 59,["51"] = 61,["52"] = 62,["54"] = 64,["55"] = 65,["57"] = 67,["58"] = 68,["60"] = 70,["61"] = 71,["63"] = 73,["64"] = 74,["66"] = 76,["67"] = 77,["69"] = 79,["70"] = 80,["72"] = 82,["73"] = 83,["75"] = 85,["76"] = 57,["77"] = 57,["78"] = 88,["79"] = 88,["80"] = 88,["81"] = 88,["82"] = 22,["83"] = 90,["84"] = 91,["85"] = 22,["86"] = 93,["87"] = 94,["88"] = 95,["90"] = 97,["91"] = 22,["92"] = 99,["93"] = 100,["94"] = 101,["96"] = 104,["97"] = 105,["98"] = 106,["100"] = 109,["101"] = 110,["104"] = 113,["105"] = 113,["106"] = 114,["107"] = 115,["108"] = 116,["109"] = 117,["111"] = 113,["114"] = 121,["115"] = 22,["116"] = 123,["117"] = 124,["118"] = 125,["120"] = 128,["121"] = 131,["123"] = 134,["124"] = 22,["125"] = 136,["126"] = 137,["127"] = 137,["128"] = 137,["129"] = 137,["130"] = 139,["131"] = 140,["133"] = 143,["134"] = 22,["135"] = 145,["136"] = 146,["137"] = 147,["139"] = 149,["140"] = 150,["142"] = 152,["143"] = 22,["144"] = 154,["145"] = 155,["146"] = 155,["147"] = 155,["148"] = 155,["149"] = 157,["150"] = 158,["152"] = 161,["153"] = 162,["155"] = 165,["156"] = 22,["157"] = 167,["158"] = 168,["159"] = 169,["162"] = 172,["163"] = 172,["164"] = 173,["165"] = 174,["166"] = 174,["167"] = 174,["168"] = 174,["169"] = 176,["170"] = 177,["172"] = 172,["175"] = 181,["176"] = 22,["177"] = 22,["178"] = 185,["179"] = 185,["180"] = 185,["181"] = 186,["182"] = 187,["183"] = 189,["184"] = 190,["185"] = 191,["186"] = 192,["187"] = 192,["188"] = 192,["189"] = 192,["190"] = 193,["191"] = 194,["195"] = 185,["196"] = 185,["197"] = 200});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 4,["10"] = 4,["11"] = 5,["12"] = 5,["13"] = 7,["14"] = 7,["15"] = 8,["16"] = 8,["17"] = 10,["21"] = 11,["24"] = 12,["27"] = 13,["30"] = 10,["31"] = 10,["32"] = 23,["33"] = 23,["34"] = 25,["35"] = 26,["36"] = 27,["37"] = 28,["38"] = 23,["39"] = 30,["40"] = 31,["41"] = 32,["42"] = 33,["43"] = 35,["44"] = 36,["45"] = 36,["46"] = 36,["47"] = 37,["48"] = 38,["49"] = 39,["51"] = 44,["52"] = 36,["53"] = 36,["54"] = 47,["55"] = 48,["56"] = 48,["57"] = 48,["58"] = 48,["61"] = 55,["62"] = 56,["64"] = 58,["65"] = 59,["67"] = 61,["68"] = 62,["70"] = 64,["71"] = 65,["73"] = 68,["74"] = 69,["75"] = 70,["76"] = 23,["77"] = 72,["78"] = 73,["79"] = 23,["80"] = 80,["81"] = 81,["82"] = 23,["83"] = 88,["84"] = 89,["85"] = 23,["86"] = 96,["87"] = 97,["88"] = 23,["89"] = 104,["90"] = 105,["91"] = 105,["92"] = 105,["93"] = 106,["94"] = 107,["96"] = 109,["97"] = 110,["99"] = 112,["100"] = 113,["102"] = 115,["103"] = 116,["105"] = 118,["106"] = 119,["108"] = 121,["109"] = 122,["111"] = 124,["112"] = 125,["114"] = 127,["115"] = 128,["117"] = 130,["118"] = 131,["120"] = 133,["121"] = 105,["122"] = 105,["123"] = 136,["124"] = 136,["125"] = 136,["126"] = 136,["127"] = 23,["128"] = 138,["129"] = 139,["130"] = 23,["131"] = 141,["132"] = 142,["133"] = 143,["135"] = 145,["136"] = 23,["137"] = 147,["138"] = 148,["139"] = 149,["141"] = 152,["142"] = 153,["143"] = 154,["145"] = 157,["146"] = 158,["149"] = 161,["150"] = 161,["151"] = 162,["152"] = 163,["153"] = 164,["154"] = 165,["156"] = 161,["159"] = 169,["160"] = 23,["161"] = 171,["162"] = 172,["163"] = 173,["165"] = 176,["166"] = 179,["168"] = 182,["169"] = 23,["170"] = 184,["171"] = 185,["172"] = 185,["173"] = 185,["174"] = 185,["175"] = 187,["176"] = 188,["178"] = 191,["179"] = 23,["180"] = 193,["181"] = 194,["182"] = 195,["184"] = 197,["185"] = 198,["187"] = 200,["188"] = 23,["189"] = 202,["190"] = 203,["191"] = 203,["192"] = 203,["193"] = 203,["194"] = 205,["195"] = 206,["197"] = 209,["198"] = 210,["200"] = 213,["201"] = 23,["202"] = 215,["203"] = 216,["204"] = 217,["207"] = 220,["208"] = 220,["209"] = 221,["210"] = 222,["211"] = 222,["212"] = 222,["213"] = 222,["214"] = 224,["215"] = 225,["217"] = 220,["220"] = 229,["221"] = 23,["222"] = 23,["223"] = 233,["224"] = 233,["225"] = 233,["226"] = 234,["227"] = 235,["228"] = 237,["229"] = 238,["230"] = 239,["231"] = 240,["232"] = 240,["233"] = 240,["234"] = 240,["235"] = 241,["236"] = 242,["240"] = 233,["241"] = 233,["242"] = 248});
 local ____exports = {}
 local ____items = require("upgrades.items")
 local Items = ____items.default
@@ -12,6 +12,8 @@ local ____common = require("upgrades.common")
 local UpgradeTypes = ____common.UpgradeTypes
 local ____math = require("util.math")
 local Math = ____math.default
+local ____custom_events = require("custom_events")
+local CustomEvents = ____custom_events.CustomEvents
 local Upgrades = {
     unpack(
         __TS__ArrayConcat(
@@ -29,6 +31,49 @@ local Upgrades = {
 }
 ____exports.UpgradeManager = {
     Upgrades = Upgrades,
+    ClearUpgrades = function(self, customNpc)
+        customNpc:ClearTable("custom_npc_favors")
+        local customEvents = CustomEvents:GetInstance()
+        customEvents:EmitEvent("pve:current_reward_applied", {customNpc = customNpc})
+    end,
+    ApplyUpgrade = function(self, customNpc, upgrade)
+        if upgrade.modifier then
+            local ability = ((upgrade.ability and (function() return customNpc.unit:FindAbilityByName(upgrade.ability) end)) or (function() return nil end))()
+            customNpc.unit:AddNewModifier(customNpc.unit, ability, upgrade.modifier.name, {duration = upgrade.modifier.duration})
+            local found = false
+            customNpc.heroUpgrades = __TS__ArrayMap(
+                customNpc.heroUpgrades,
+                function(____, heroUpgrade)
+                    if heroUpgrade.id == upgrade.id then
+                        found = true
+                        return __TS__ObjectAssign({}, heroUpgrade, {level = heroUpgrade.level + 1})
+                    end
+                    return heroUpgrade
+                end
+            )
+            if not found then
+                __TS__ArrayPush(
+                    customNpc.heroUpgrades,
+                    __TS__ObjectAssign({}, upgrade, {level = 1})
+                )
+            end
+        end
+        if upgrade.effect then
+            upgrade:effect(customNpc.unit)
+        end
+        if upgrade.type == UpgradeTypes.ITEM then
+            customNpc:ApplyItem(upgrade)
+        end
+        if upgrade.type == UpgradeTypes.FAVOR then
+            customNpc:ApplyFavor(upgrade)
+        end
+        if upgrade.type == UpgradeTypes.SHARD then
+            customNpc:ApplyShard(upgrade)
+        end
+        local customEvents = CustomEvents:GetInstance()
+        customEvents:EmitEvent("pve:current_reward_applied", {customNpc = customNpc})
+        self:ClearUpgrades(customNpc)
+    end,
     GenerateFavors = function(self, customNpc, amount)
         return self:GenerateUpgrades(customNpc, {amount = amount, type = UpgradeTypes.FAVOR, allowDuplicates = false, existingOnly = false})
     end,
@@ -188,7 +233,7 @@ CustomGameEventManager:RegisterListener(
                     function(____, currentUpgrade) return currentUpgrade.id == event.payload.upgradeId end
                 )[1]
                 if upgrade then
-                    customNpc:ApplyUpgrade(upgrade)
+                    ____exports.UpgradeManager:ApplyUpgrade(customNpc, upgrade)
                 end
             end
         end

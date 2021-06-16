@@ -19,10 +19,10 @@ declare interface CustomEntitiesLegacy {
     GetDirection(hEntity: CDOTA_BaseNPC): Vector;
     Reset(hEntity: CDOTA_BaseNPC): void;
     AutoUpgradeAbilities(hEntity: CDOTA_BaseNPC): void;
-    GetAlliance(hEntity: CDOTA_BaseNPC): Alliance;
+    GetAlliance(hEntity: CDOTA_BaseNPC): any;
     IsBanished(hEntity: CDOTA_BaseNPC): boolean;
-    SetParent(hEntity: CDOTA_BaseNPC, parent: UnitEntity): void;
-    GetParent(hEntity: CDOTA_BaseNPC): UnitEntity | undefined;
+    SetParent(hEntity: CDOTA_BaseNPC, parent: any): void;
+    GetParent(hEntity: CDOTA_BaseNPC): any | undefined;
     GetNormal(hEntity: CDOTA_BaseNPC, vPosition: Vector, fScale?: number): Vector;
     GetCollisionDirection(hEntity: CDOTA_BaseNPC): Vector;
     IsChanneling(hEntity: CDOTA_BaseNPC): boolean;

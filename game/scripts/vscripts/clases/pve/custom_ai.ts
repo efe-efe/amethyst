@@ -19,7 +19,7 @@ export enum CustomAITier {
 }
 
 export enum NPCNames {
-    DIRE_ZOMBIE = 0,
+    DIRE_ZOMBIE_RANGE = 0,
     DIRE_ZOMBIE_RANGE_MEGA,
     DIRE_ZOMBIE_MEELE_MEGA,
     RADIANT_ZOMBIE_RANGE_MEGA,
@@ -427,7 +427,7 @@ export const CustomAIMeta: {
         },
         tier: CustomAITier.MID,
     },
-    [NPCNames.DIRE_ZOMBIE]: {
+    [NPCNames.DIRE_ZOMBIE_RANGE]: {
         factory: (origin: Vector): CustomAI => {
             const ai = new CustomAI('dire_zombie_range', origin, {
                 behavior: CustomAIBehavior.WANDERER,

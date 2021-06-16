@@ -26,6 +26,7 @@ import { NPCNames } from './clases/pve/custom_ai';
 import Run from './clases/pve/run';
 import Upgrades from './upgrades/upgrades';
 import { UpgradeTypes } from './upgrades/common';
+import { RewardsManager } from './rewards/rewards';
 
 declare global {
     interface CDOTAGamerules {
@@ -516,7 +517,7 @@ export class GameMode{
             this.run = new Run(this.alliances, [
                 {
                     possibleNPCs: [
-                        NPCNames.DIRE_ZOMBIE,
+                        NPCNames.DIRE_ZOMBIE_RANGE,
                         NPCNames.DIRE_ZOMBIE_MEELE_MEGA,
                         NPCNames.DIRE_ZOMBIE_RANGE_MEGA,
                         NPCNames.FLYING_SKULL,
@@ -787,28 +788,28 @@ export class GameMode{
             }
 
             if(event.text == '-favor'){
-                customNpc.RequestFavors();
+                RewardsManager.OfferFavorsForHero(customNpc);
             }
             
             if(event.text == '-shard'){
-                customNpc.RequestShards();
+                RewardsManager.ClaimShards(customNpc);
             }
             
             if(event.text == '-tome'){
-                customNpc.RequestKnowledge();
+                RewardsManager.ClaimKnowledge(customNpc);
             }
             
             if(event.text == '-item'){
-                customNpc.RequestItems();
+                RewardsManager.ClaimItems(customNpc);
             }
 
             if(event.text == '-reward'){
-                customNpc.RequestRewards();
+                const rewards = RewardsManager.GenerateRewards(customNpc, {amount: 3});
+                RewardsManager.OfferRewardsForHero(customNpc, rewards);
             }
 
             if(event.text == '-vitality'){
-                print('here')
-                customNpc.ApplyTarrasque();
+                RewardsManager.ClaimVitality(customNpc);
             }
         }
 
@@ -943,16 +944,6 @@ export class GameMode{
 
     OnEntityKilled(event: EntityKilledEvent): void{
         const killed = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
-        const killer = EntIndexToHScript(event.entindex_attacker);
-
-        const parent = CustomEntitiesLegacy.GetParent(killed);
-        if(parent){
-            parent.OnDeath({ killer });
-        }
-        
-        if(this.run){
-            this.run.OnUnitDies(killed);
-        }
         
         if(killed.IsRealHero()){
             if(this.IsPVP()){
@@ -978,11 +969,6 @@ export class GameMode{
     OnEntityHurt(event: EntityHurtEvent): void{
         if(event.entindex_killed !== undefined){
             const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
-
-            if(this.run){
-                this.run.OnUnitHurt(victim);
-            }
-            
             if(event.entindex_attacker !== undefined){
                 SendOverheadDamageMessage(victim, event.damage);
             }

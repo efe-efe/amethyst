@@ -1,8 +1,9 @@
 import { CustomAIMeta, CustomAITier, NPCNames } from './custom_ai';
-import Room, { RoomCompletionCriteria, RoomType, Wave } from './room';
+import Room, { RoomHeroData, RoomPhases, RoomType, Wave } from './room';
 import GameState from '../game_state';
 import Alliance from '../alliance';
 import Run from './run';
+import { RewardsManager } from '../../rewards/rewards';
 
 export interface StageData {
     possibleNPCs: NPCNames[];
@@ -85,21 +86,75 @@ export default class Stage extends GameState{
             return RoomType.BOSS;
         }
         if(this.currentRoomNumber === 0){
-            return RoomType.BONUS;
+            return RoomType.LEVELUP;
         }
         return RoomType.REGULAR;
     }
 
     GenerateRoom(spawnDiamond: boolean): Room{
         const type = this.GenerateRoomType();
-        const completitionCriteria = RoomCompletionCriteria.KILL_ALL_ENEMIES;
 
         return new Room(this.alliances, -1, this, {
             waves: this.GenerateWaves(type), 
             spawnDiamond,
+            heroesData: this.GenerateHeroesData(),
             type,
-            completitionCriteria,
+            phases: this.GeneratePhases(type),
         });
+    }
+
+    GeneratePhases(type: RoomType): RoomPhases[]{
+        if(type === RoomType.LEVELUP){
+            return [
+                RoomPhases.DIAMOND,
+                RoomPhases.WAVES,
+                RoomPhases.REWARD_CLAIM,
+                RoomPhases.REWARD_OFFERING,
+            ];
+        }
+        
+        return [
+            RoomPhases.WAVES,
+            RoomPhases.REWARD_CLAIM,
+            RoomPhases.REWARD_OFFERING,
+        ];
+    }
+
+    GenerateHeroesData(): RoomHeroData[]{
+        const heroesData: RoomHeroData[] = [];
+
+        this.GetAllPlayers().forEach((player) => {
+            const customNpc = player.customNpc;
+            if(customNpc){
+                const nextRewardOfferings = RewardsManager.GenerateRewards(customNpc, {
+                    amount: this.GetRewardsAmount()
+                });
+
+                const currentReward = customNpc.reward;
+                if(currentReward){
+                    heroesData.push({
+                        customNpc,
+                        nextRewardOfferings,
+                        currentReward
+                    });
+                }
+                
+            }
+        });
+
+        return heroesData;
+    }
+
+    GetRewardsAmount(): number{
+        const percentage = RandomInt(1, 100);
+
+        if(percentage < 75){
+            return 1;
+        }
+        if(percentage >= 75 && percentage < 90){
+            return 2;
+        }
+        return 3;
     }
 
     GenerateWave(): Wave{
@@ -150,21 +205,9 @@ export default class Stage extends GameState{
         return this.possibleNPCs.filter((npc) => (CustomAIMeta[npc].tier === tier));
     }
 
-    OnUnitHurt(unit: CDOTA_BaseNPC): void{
-        if(this.room){
-            this.room.OnUnitHurt(unit);
-        }
-    }
-
-    OnUnitDies(unit: CDOTA_BaseNPC): void{
-        if(this.room){
-            this.room.OnUnitDies(unit);
-        }
-    }
-
     OnRoomCompleted(): void{
         if(this.room){
-            if(this.room.type === RoomType.REGULAR || this.room.type === RoomType.BOSS){
+            if(this.room.type === RoomType.REGULAR || this.room.type === RoomType.BOSS || this.room.type === RoomType.LEVELUP){
                 this.currentNpcRoomNumber++;
             }
             this.currentRoomNumber++;

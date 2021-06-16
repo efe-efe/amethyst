@@ -5,6 +5,7 @@ import Favors from './favors';
 import { Upgrade, UpgradeTypes } from './common';
 import { CustomPlayerHeroNPC } from '../clases/pve/custom_npc';
 import Math from '../util/math';
+import { CustomEvents } from '../custom_events';
 
 const Upgrades: Upgrade[] = [
     ...Items,
@@ -21,6 +22,53 @@ interface GenerateUpgradesOptions {
 
 export const UpgradeManager = {
     Upgrades,
+    ClearUpgrades(customNpc: CustomPlayerHeroNPC): void{
+        customNpc.ClearTable('custom_npc_favors' as never);
+        const customEvents = CustomEvents.GetInstance();
+        customEvents.EmitEvent('pve:current_reward_applied', { customNpc });
+    },
+    ApplyUpgrade(customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): void{
+        if(upgrade.modifier){
+            const ability = (upgrade.ability) ? customNpc.unit.FindAbilityByName(upgrade.ability) : undefined;
+            customNpc.unit.AddNewModifier(customNpc.unit, ability, upgrade.modifier.name, { duration: upgrade.modifier.duration });
+
+            let found = false;
+            customNpc.heroUpgrades = customNpc.heroUpgrades.map((heroUpgrade) => {
+                if(heroUpgrade.id === upgrade.id){
+                    found = true;
+                    return {
+                        ...heroUpgrade,
+                        level: heroUpgrade.level + 1
+                    };
+                } 
+                return heroUpgrade;
+            });
+
+            if(!found){
+                customNpc.heroUpgrades.push({
+                    ...upgrade,
+                    level: 1,
+                });
+            }
+        }
+
+        if(upgrade.effect){
+            upgrade.effect(customNpc.unit as CDOTA_BaseNPC_Hero);
+        }
+        if(upgrade.type === UpgradeTypes.ITEM){
+            customNpc.ApplyItem(upgrade);
+        }
+        if(upgrade.type === UpgradeTypes.FAVOR){
+            customNpc.ApplyFavor(upgrade);
+        }
+        if(upgrade.type === UpgradeTypes.SHARD){
+            customNpc.ApplyShard(upgrade);
+        }
+        
+        const customEvents = CustomEvents.GetInstance();
+        customEvents.EmitEvent('pve:current_reward_applied', { customNpc });
+        this.ClearUpgrades(customNpc);
+    },
     GenerateFavors(customNpc: CustomPlayerHeroNPC, amount: number): Upgrade[]{
         return this.GenerateUpgrades(customNpc, {
             amount,
@@ -191,7 +239,7 @@ CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_fav
         if(customNpc){
             const upgrade = Upgrades.filter((currentUpgrade) => currentUpgrade.id === event.payload.upgradeId)[0];
             if(upgrade){
-                customNpc.ApplyUpgrade(upgrade);
+                UpgradeManager.ApplyUpgrade(customNpc, upgrade);
             }
         }
     }

@@ -26,8 +26,8 @@ ____exports.CustomAITier[____exports.CustomAITier.HIGH] = "HIGH"
 ____exports.CustomAITier.BOSS = 4
 ____exports.CustomAITier[____exports.CustomAITier.BOSS] = "BOSS"
 ____exports.NPCNames = NPCNames or ({})
-____exports.NPCNames.DIRE_ZOMBIE = 0
-____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE] = "DIRE_ZOMBIE"
+____exports.NPCNames.DIRE_ZOMBIE_RANGE = 0
+____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE_RANGE] = "DIRE_ZOMBIE_RANGE"
 ____exports.NPCNames.DIRE_ZOMBIE_RANGE_MEGA = 1
 ____exports.NPCNames[____exports.NPCNames.DIRE_ZOMBIE_RANGE_MEGA] = "DIRE_ZOMBIE_RANGE_MEGA"
 ____exports.NPCNames.DIRE_ZOMBIE_MEELE_MEGA = 2
@@ -392,7 +392,7 @@ ____exports.CustomAIMeta = {
         end,
         tier = ____exports.CustomAITier.MID
     },
-    [____exports.NPCNames.DIRE_ZOMBIE] = {
+    [____exports.NPCNames.DIRE_ZOMBIE_RANGE] = {
         factory = function(____, origin)
             local ai = __TS__New(____exports.CustomAI, "dire_zombie_range", origin, {behavior = CustomAIBehavior.WANDERER, shield = true})
             ai:RegisterAbility(

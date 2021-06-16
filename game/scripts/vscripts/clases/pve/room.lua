@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 5,["10"] = 5,["11"] = 6,["12"] = 6,["13"] = 7,["14"] = 7,["15"] = 8,["16"] = 8,["17"] = 10,["18"] = 11,["19"] = 11,["20"] = 12,["21"] = 12,["22"] = 13,["23"] = 13,["24"] = 16,["25"] = 17,["26"] = 17,["27"] = 18,["28"] = 18,["29"] = 19,["30"] = 19,["31"] = 20,["32"] = 20,["33"] = 39,["34"] = 39,["35"] = 39,["36"] = 39,["37"] = 39,["38"] = 55,["39"] = 39,["40"] = 41,["41"] = 42,["42"] = 43,["43"] = 44,["44"] = 48,["45"] = 49,["46"] = 57,["47"] = 58,["48"] = 59,["49"] = 60,["50"] = 61,["51"] = 62,["52"] = 63,["53"] = 64,["54"] = 65,["55"] = 67,["56"] = 68,["57"] = 68,["58"] = 68,["59"] = 69,["60"] = 68,["61"] = 68,["62"] = 71,["63"] = 71,["64"] = 71,["65"] = 72,["66"] = 71,["67"] = 71,["68"] = 55,["69"] = 76,["70"] = 77,["71"] = 78,["72"] = 82,["73"] = 76,["74"] = 85,["75"] = 86,["76"] = 87,["77"] = 88,["78"] = 88,["79"] = 88,["80"] = 89,["81"] = 90,["82"] = 91,["83"] = 92,["84"] = 88,["85"] = 88,["86"] = 85,["87"] = 96,["88"] = 97,["89"] = 98,["90"] = 98,["91"] = 98,["92"] = 98,["93"] = 99,["94"] = 100,["95"] = 101,["96"] = 102,["98"] = 106,["99"] = 96,["100"] = 109,["101"] = 110,["102"] = 110,["103"] = 110,["104"] = 110,["105"] = 111,["106"] = 112,["108"] = 109,["109"] = 116,["110"] = 117,["111"] = 118,["112"] = 118,["113"] = 118,["114"] = 119,["115"] = 120,["116"] = 121,["117"] = 122,["120"] = 118,["121"] = 118,["122"] = 127,["123"] = 128,["125"] = 116,["126"] = 132,["127"] = 133,["128"] = 134,["129"] = 134,["130"] = 134,["131"] = 135,["132"] = 136,["133"] = 137,["134"] = 138,["137"] = 134,["138"] = 134,["139"] = 143,["140"] = 144,["142"] = 132,["143"] = 148,["144"] = 39,["145"] = 151,["146"] = 152,["147"] = 153,["148"] = 154,["149"] = 154,["150"] = 154,["151"] = 154,["152"] = 155,["154"] = 157,["155"] = 158,["156"] = 159,["157"] = 160,["159"] = 162,["160"] = 163,["162"] = 166,["163"] = 167,["164"] = 168,["166"] = 170,["167"] = 171,["169"] = 174,["170"] = 175,["174"] = 179,["177"] = 182,["178"] = 182,["179"] = 182,["180"] = 183,["181"] = 184,["183"] = 186,["184"] = 187,["185"] = 188,["186"] = 192,["187"] = 192,["188"] = 192,["189"] = 192,["190"] = 192,["191"] = 192,["193"] = 182,["194"] = 182,["195"] = 196,["196"] = 196,["197"] = 196,["198"] = 197,["199"] = 196,["200"] = 196,["202"] = 201,["203"] = 202,["204"] = 203,["206"] = 205,["209"] = 148,["210"] = 211,["211"] = 212,["212"] = 212,["213"] = 212,["214"] = 213,["215"] = 214,["216"] = 215,["217"] = 216,["219"] = 218,["220"] = 219,["222"] = 221,["223"] = 222,["225"] = 224,["226"] = 225,["228"] = 227,["229"] = 228,["232"] = 212,["233"] = 212,["234"] = 211,["235"] = 234,["236"] = 235,["237"] = 235,["238"] = 235,["239"] = 236,["240"] = 237,["241"] = 238,["243"] = 235,["244"] = 235,["245"] = 234,["246"] = 243,["247"] = 244,["248"] = 245,["249"] = 243,["250"] = 248,["251"] = 249,["252"] = 249,["253"] = 249,["254"] = 250,["255"] = 251,["257"] = 253,["258"] = 254,["259"] = 249,["260"] = 249,["261"] = 256,["262"] = 256,["263"] = 256,["264"] = 257,["265"] = 258,["267"] = 256,["268"] = 256,["269"] = 248,["270"] = 263,["271"] = 264,["272"] = 265,["273"] = 263,["274"] = 268,["275"] = 269,["276"] = 269,["277"] = 269,["278"] = 269,["279"] = 269,["280"] = 269,["281"] = 269,["282"] = 269,["283"] = 269,["284"] = 269,["285"] = 268,["286"] = 278,["287"] = 279,["288"] = 279,["289"] = 279,["290"] = 279,["291"] = 279,["292"] = 278,["293"] = 282,["294"] = 283,["295"] = 282,["296"] = 39,["297"] = 39});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 5,["10"] = 5,["11"] = 6,["12"] = 6,["13"] = 7,["14"] = 7,["15"] = 8,["16"] = 8,["17"] = 12,["18"] = 13,["19"] = 13,["20"] = 14,["21"] = 14,["22"] = 15,["23"] = 15,["24"] = 16,["25"] = 16,["26"] = 19,["27"] = 20,["28"] = 20,["29"] = 21,["30"] = 21,["31"] = 22,["32"] = 22,["33"] = 23,["34"] = 23,["35"] = 49,["36"] = 49,["37"] = 49,["38"] = 49,["39"] = 49,["40"] = 67,["41"] = 49,["42"] = 51,["43"] = 52,["44"] = 53,["45"] = 54,["46"] = 58,["47"] = 59,["48"] = 62,["49"] = 63,["50"] = 64,["51"] = 69,["52"] = 70,["53"] = 71,["54"] = 72,["55"] = 73,["56"] = 74,["57"] = 75,["58"] = 76,["59"] = 77,["60"] = 79,["61"] = 80,["62"] = 80,["63"] = 80,["64"] = 81,["65"] = 80,["66"] = 80,["67"] = 83,["68"] = 83,["69"] = 83,["70"] = 84,["71"] = 83,["72"] = 83,["73"] = 87,["74"] = 87,["75"] = 87,["76"] = 87,["77"] = 87,["78"] = 88,["79"] = 88,["80"] = 88,["81"] = 88,["82"] = 88,["83"] = 67,["84"] = 91,["85"] = 92,["86"] = 98,["87"] = 91,["88"] = 101,["89"] = 102,["90"] = 103,["91"] = 104,["92"] = 104,["93"] = 104,["94"] = 105,["95"] = 106,["96"] = 107,["97"] = 108,["98"] = 104,["99"] = 104,["100"] = 101,["101"] = 112,["102"] = 113,["103"] = 115,["104"] = 116,["105"] = 116,["106"] = 116,["107"] = 116,["108"] = 117,["109"] = 118,["110"] = 119,["111"] = 120,["113"] = 124,["114"] = 112,["115"] = 127,["116"] = 128,["117"] = 129,["118"] = 129,["119"] = 129,["120"] = 129,["121"] = 130,["122"] = 131,["124"] = 127,["125"] = 135,["126"] = 136,["127"] = 137,["128"] = 137,["129"] = 137,["130"] = 138,["131"] = 139,["132"] = 140,["133"] = 141,["136"] = 137,["137"] = 137,["138"] = 146,["139"] = 147,["141"] = 135,["142"] = 151,["143"] = 152,["144"] = 153,["145"] = 153,["146"] = 153,["147"] = 154,["148"] = 155,["149"] = 156,["150"] = 157,["153"] = 153,["154"] = 153,["155"] = 162,["156"] = 163,["158"] = 151,["159"] = 167,["160"] = 49,["161"] = 169,["162"] = 171,["163"] = 172,["165"] = 174,["166"] = 175,["168"] = 177,["169"] = 178,["171"] = 180,["172"] = 181,["174"] = 183,["175"] = 184,["177"] = 167,["178"] = 188,["179"] = 189,["180"] = 190,["181"] = 190,["182"] = 190,["183"] = 190,["185"] = 192,["186"] = 193,["188"] = 195,["189"] = 196,["192"] = 188,["193"] = 201,["194"] = 202,["195"] = 203,["197"] = 206,["198"] = 207,["199"] = 208,["201"] = 210,["204"] = 213,["205"] = 213,["206"] = 213,["207"] = 214,["208"] = 215,["210"] = 217,["211"] = 218,["212"] = 219,["213"] = 223,["214"] = 223,["215"] = 223,["216"] = 223,["217"] = 223,["218"] = 223,["220"] = 213,["221"] = 213,["222"] = 227,["223"] = 227,["224"] = 227,["225"] = 228,["226"] = 227,["227"] = 227,["229"] = 201,["230"] = 233,["231"] = 234,["232"] = 235,["233"] = 236,["234"] = 237,["235"] = 238,["237"] = 240,["238"] = 240,["239"] = 240,["240"] = 241,["241"] = 240,["242"] = 240,["243"] = 233,["244"] = 245,["245"] = 246,["246"] = 247,["247"] = 248,["248"] = 249,["249"] = 250,["251"] = 245,["252"] = 254,["253"] = 255,["254"] = 255,["255"] = 255,["256"] = 256,["257"] = 257,["258"] = 257,["259"] = 257,["260"] = 257,["261"] = 258,["262"] = 259,["264"] = 255,["265"] = 255,["266"] = 254,["267"] = 264,["268"] = 265,["269"] = 265,["270"] = 265,["271"] = 266,["272"] = 267,["273"] = 268,["274"] = 269,["275"] = 270,["278"] = 265,["279"] = 265,["280"] = 264,["281"] = 276,["282"] = 277,["283"] = 278,["284"] = 279,["286"] = 276,["287"] = 283,["288"] = 284,["289"] = 285,["290"] = 283,["291"] = 288,["292"] = 289,["293"] = 289,["294"] = 289,["295"] = 290,["296"] = 291,["298"] = 293,["299"] = 294,["300"] = 289,["301"] = 289,["302"] = 296,["303"] = 296,["304"] = 296,["305"] = 297,["306"] = 298,["308"] = 296,["309"] = 296,["310"] = 288,["311"] = 303,["312"] = 304,["313"] = 305,["314"] = 303,["315"] = 308,["316"] = 309,["317"] = 309,["318"] = 309,["319"] = 309,["320"] = 309,["321"] = 309,["322"] = 309,["323"] = 309,["324"] = 309,["325"] = 309,["326"] = 308,["327"] = 318,["328"] = 319,["329"] = 319,["330"] = 319,["331"] = 319,["332"] = 319,["333"] = 318,["334"] = 322,["335"] = 323,["336"] = 322,["337"] = 49,["338"] = 49});
 local ____exports = {}
 local ____custom_ai = require("clases.pve.custom_ai")
 local CustomAIMeta = ____custom_ai.CustomAIMeta
@@ -11,25 +11,27 @@ local settings = ____settings.default
 local ____custom_events = require("custom_events")
 local CustomEvents = ____custom_events.CustomEvents
 local ____rewards = require("rewards.rewards")
-local RewardTypes = ____rewards.RewardTypes
+local RewardsManager = ____rewards.RewardsManager
 local ____gem = require("clases.gem")
 local Diamond = ____gem.Diamond
 ____exports.RoomType = RoomType or ({})
 ____exports.RoomType.REGULAR = 0
 ____exports.RoomType[____exports.RoomType.REGULAR] = "REGULAR"
-____exports.RoomType.BOSS = 1
+____exports.RoomType.LEVELUP = 1
+____exports.RoomType[____exports.RoomType.LEVELUP] = "LEVELUP"
+____exports.RoomType.BOSS = 2
 ____exports.RoomType[____exports.RoomType.BOSS] = "BOSS"
-____exports.RoomType.BONUS = 2
+____exports.RoomType.BONUS = 3
 ____exports.RoomType[____exports.RoomType.BONUS] = "BONUS"
-____exports.RoomCompletionCriteria = RoomCompletionCriteria or ({})
-____exports.RoomCompletionCriteria.KILL_ALL_ENEMIES = 0
-____exports.RoomCompletionCriteria[____exports.RoomCompletionCriteria.KILL_ALL_ENEMIES] = "KILL_ALL_ENEMIES"
-____exports.RoomCompletionCriteria.PICKUP_REWARD = 1
-____exports.RoomCompletionCriteria[____exports.RoomCompletionCriteria.PICKUP_REWARD] = "PICKUP_REWARD"
-____exports.RoomCompletionCriteria.PICKUP_DIAMOND = 2
-____exports.RoomCompletionCriteria[____exports.RoomCompletionCriteria.PICKUP_DIAMOND] = "PICKUP_DIAMOND"
-____exports.RoomCompletionCriteria.PICKUP_DIAMOND_AND_REWARD = 3
-____exports.RoomCompletionCriteria[____exports.RoomCompletionCriteria.PICKUP_DIAMOND_AND_REWARD] = "PICKUP_DIAMOND_AND_REWARD"
+____exports.RoomPhases = RoomPhases or ({})
+____exports.RoomPhases.DIAMOND = 0
+____exports.RoomPhases[____exports.RoomPhases.DIAMOND] = "DIAMOND"
+____exports.RoomPhases.WAVES = 1
+____exports.RoomPhases[____exports.RoomPhases.WAVES] = "WAVES"
+____exports.RoomPhases.REWARD_CLAIM = 2
+____exports.RoomPhases[____exports.RoomPhases.REWARD_CLAIM] = "REWARD_CLAIM"
+____exports.RoomPhases.REWARD_OFFERING = 3
+____exports.RoomPhases[____exports.RoomPhases.REWARD_OFFERING] = "REWARD_OFFERING"
 ____exports.default = (function()
     ____exports.default = __TS__Class()
     local Room = ____exports.default
@@ -37,20 +39,23 @@ ____exports.default = (function()
     __TS__ClassExtends(Room, GameState)
     function Room.prototype.____constructor(self, alliances, duration, stage, options)
         GameState.prototype.____constructor(self, alliances, duration)
-        self.applyRewardsDelay = 1 * 30
-        self.rewardsMenuDelay = -1
+        self.claimRewardsDelay = 1 * 30
+        self.rewardsMenuDelay = 2 * 30
         self.spawnQueue = {}
         self.ais = {}
         self.remainingWaveNpcs = 0
-        self.currentWave = 0
+        self.currentWave = -1
+        self.rewardEntities = {}
+        self.phases = {}
+        self.phaseIndex = 0
         self.waves = options.waves
         self.totalNpcs = self:GetTotalNPCs(self.waves)
         self.remainingTotalNpcs = self.totalNpcs
         self.stage = stage
+        self.heroesData = options.heroesData
+        self.phases = options.phases
+        self.phaseIndex = 0
         self.type = options.type
-        self.spawnDiamond = options.spawnDiamond
-        self.completitionCriteria = options.completitionCriteria
-        self:StartWave(self.currentWave)
         self:SendDataToClient()
         local customEvents = CustomEvents:GetInstance()
         customEvents:RegisterListener(
@@ -65,11 +70,20 @@ ____exports.default = (function()
                 self:OnRewardSelected()
             end
         )
+        ListenToGameEvent(
+            "entity_killed",
+            function(event) return self:OnUnitDies(event) end,
+            nil
+        )
+        ListenToGameEvent(
+            "entity_hurt",
+            function(event) return self:OnUnitHurt(event) end,
+            nil
+        )
     end
     function Room.prototype.SendDataToClient(self)
-        local tableName = "main"
-        local data = {remainingEnemies = self.totalNpcs - self.remainingTotalNpcs, maxEnemies = self.totalNpcs}
-        CustomNetTables:SetTableValue(tableName, "pve", data)
+        local data = {remainingEnemies = self.totalNpcs - self.remainingTotalNpcs, maxEnemies = self.totalNpcs, roomPhase = ____exports.RoomPhases[self.phases[self.phaseIndex + 1]], roomType = ____exports.RoomType[self.type]}
+        CustomNetTables:SetTableValue("main", "pve", data)
     end
     function Room.prototype.StartWave(self, waveNumber)
         local wave = self.waves[waveNumber + 1]
@@ -84,23 +98,25 @@ ____exports.default = (function()
             end
         )
     end
-    function Room.prototype.OnUnitDies(self, unit)
+    function Room.prototype.OnUnitDies(self, event)
+        local killed = EntIndexToHScript(event.entindex_killed)
         local previousNpcs = #self.ais
         self.ais = __TS__ArrayFilter(
             self.ais,
-            function(____, ai) return ai.unit ~= unit end
+            function(____, ai) return ai.unit ~= killed end
         )
         if previousNpcs > #self.ais then
             self.remainingWaveNpcs = self.remainingWaveNpcs - 1
             self.remainingTotalNpcs = self.remainingTotalNpcs - 1
-            EFX("particles/econ/events/new_bloom/dragon_death.vpcf", PATTACH_ABSORIGIN_FOLLOW, unit, {release = true})
+            EFX("particles/econ/events/new_bloom/dragon_death.vpcf", PATTACH_ABSORIGIN_FOLLOW, killed, {release = true})
         end
         self:SendDataToClient()
     end
-    function Room.prototype.OnUnitHurt(self, unit)
+    function Room.prototype.OnUnitHurt(self, event)
+        local victim = EntIndexToHScript(event.entindex_killed)
         local ai = __TS__ArrayFilter(
             self.ais,
-            function(____, ai) return ai.unit == unit end
+            function(____, ai) return ai.unit == victim end
         )[1]
         if ai then
             ai:OnHurt()
@@ -119,8 +135,8 @@ ____exports.default = (function()
                 end
             end
         )
-        if rewardsReady then
-            self:SetDuration(settings.PreStageDuration)
+        if rewardsReady and (self.phases[self.phaseIndex + 1] == ____exports.RoomPhases.REWARD_OFFERING) then
+            self:IncrementPhase()
         end
     end
     function Room.prototype.OnRewardApplied(self)
@@ -130,46 +146,57 @@ ____exports.default = (function()
             function(____, player)
                 local customNpc = player.customNpc
                 if customNpc then
-                    if customNpc:IsSelectingFavor() then
+                    if customNpc:IsSelectingUpgrade() then
                         upgradesReady = false
                     end
                 end
             end
         )
-        if upgradesReady then
-            self.rewardsMenuDelay = 2 * 30
+        if upgradesReady and (self.phases[self.phaseIndex + 1] == ____exports.RoomPhases.REWARD_CLAIM) then
+            self:IncrementPhase()
         end
     end
     function Room.prototype.Update(self)
         GameState.prototype.Update(self)
+        local currentPhase = self.phases[self.phaseIndex + 1]
+        if currentPhase == ____exports.RoomPhases.DIAMOND then
+            self:UpdateDiamond()
+        end
+        if currentPhase == ____exports.RoomPhases.WAVES then
+            self:UpdateWaves()
+        end
+        if currentPhase == ____exports.RoomPhases.REWARD_CLAIM then
+            self:UpdateRewardClaim()
+        end
+        if currentPhase == ____exports.RoomPhases.REWARD_OFFERING then
+            self:UpdateRewardOffering()
+        end
+        if self.time_remaining == 0 then
+            self:End()
+        end
+    end
+    function Room.prototype.UpdateDiamond(self)
+        if not self.diamond then
+            self.diamond = __TS__New(
+                Diamond,
+                Vector(0, 0, 300)
+            )
+        else
+            if self.diamond.unit:IsAlive() then
+                self.diamond:Update()
+            else
+                self.diamond = nil
+                self:IncrementPhase()
+            end
+        end
+    end
+    function Room.prototype.UpdateWaves(self)
+        if self.currentWave == -1 then
+            self:IncrementWave()
+        end
         if self.remainingWaveNpcs <= 0 then
             if self.currentWave == (#self.waves - 1) then
-                if self.spawnDiamond and (not self.diamond) then
-                    self.diamond = __TS__New(
-                        Diamond,
-                        Vector(0, 0, 300)
-                    )
-                    self.spawnDiamond = false
-                end
-                if not self.diamond then
-                    if self.applyRewardsDelay == 0 then
-                        self:ApplyRewards()
-                        self.applyRewardsDelay = self.applyRewardsDelay - 1
-                    end
-                    if self.applyRewardsDelay > 0 then
-                        self.applyRewardsDelay = self.applyRewardsDelay - 1
-                    end
-                    if self.rewardsMenuDelay == 0 then
-                        self:GenerateRewards()
-                        self.rewardsMenuDelay = self.rewardsMenuDelay - 1
-                    end
-                    if self.rewardsMenuDelay > 0 then
-                        self.rewardsMenuDelay = self.rewardsMenuDelay - 1
-                    end
-                    if self.time_remaining == 0 then
-                        self:End()
-                    end
-                end
+                self:IncrementPhase()
             else
                 self:IncrementWave()
             end
@@ -199,49 +226,63 @@ ____exports.default = (function()
                 end
             )
         end
-        if self.diamond then
-            if self.diamond.unit:IsAlive() then
-                self.diamond:Update()
-            else
-                self.diamond = nil
+    end
+    function Room.prototype.UpdateRewardClaim(self)
+        if self.claimRewardsDelay == 0 then
+            self:ClaimRewards()
+            self.claimRewardsDelay = self.claimRewardsDelay - 1
+        elseif self.claimRewardsDelay > 0 then
+            self.claimRewardsDelay = self.claimRewardsDelay - 1
+        end
+        __TS__ArrayForEach(
+            self.rewardEntities,
+            function(____, rewardEntity)
+                rewardEntity:Update()
             end
+        )
+    end
+    function Room.prototype.UpdateRewardOffering(self)
+        if self.rewardsMenuDelay == 0 then
+            self:OfferRewards()
+            self.rewardsMenuDelay = self.rewardsMenuDelay - 1
+        elseif self.rewardsMenuDelay > 0 then
+            self.rewardsMenuDelay = self.rewardsMenuDelay - 1
         end
     end
-    function Room.prototype.ApplyRewards(self)
+    function Room.prototype.OfferRewards(self)
         __TS__ArrayForEach(
             self:GetAllPlayers(),
             function(____, player)
                 local customNpc = player.customNpc
-                if customNpc then
-                    if customNpc.reward and (customNpc.reward.type == RewardTypes.FAVOR) then
-                        customNpc:RequestFavors()
-                    end
-                    if customNpc.reward and (customNpc.reward.type == RewardTypes.KNOWLEDGE) then
-                        customNpc:RequestKnowledge()
-                    end
-                    if customNpc.reward and (customNpc.reward.type == RewardTypes.VITALITY) then
-                        customNpc:ApplyTarrasque()
-                    end
-                    if customNpc.reward and (customNpc.reward.type == RewardTypes.ITEM) then
-                        customNpc:RequestItems()
-                    end
-                    if customNpc.reward and (customNpc.reward.type == RewardTypes.SHARD) then
-                        customNpc:RequestShards()
+                local heroData = __TS__ArrayFilter(
+                    self.heroesData,
+                    function(____, heroData) return heroData.customNpc == customNpc end
+                )[1]
+                if customNpc and heroData then
+                    RewardsManager:OfferRewardsForHero(customNpc, heroData.nextRewardOfferings)
+                end
+            end
+        )
+    end
+    function Room.prototype.ClaimRewards(self)
+        __TS__ArrayForEach(
+            self:GetAllPlayers(),
+            function(____, player)
+                local customNpc = player.customNpc
+                if customNpc and customNpc.reward then
+                    local rewardEntity = RewardsManager:ClaimRewardForHero(customNpc, customNpc.reward)
+                    if rewardEntity then
+                        __TS__ArrayPush(self.rewardEntities, rewardEntity)
                     end
                 end
             end
         )
     end
-    function Room.prototype.GenerateRewards(self)
-        __TS__ArrayForEach(
-            self:GetAllPlayers(),
-            function(____, player)
-                local customNpc = player.customNpc
-                if customNpc then
-                    customNpc:RequestRewards()
-                end
-            end
-        )
+    function Room.prototype.IncrementPhase(self)
+        self.phaseIndex = self.phaseIndex + 1
+        if not self.phases[self.phaseIndex + 1] then
+            self:SetDuration(settings.PreStageDuration)
+        end
     end
     function Room.prototype.IncrementWave(self)
         self.currentWave = self.currentWave + 1

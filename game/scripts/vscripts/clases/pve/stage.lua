@@ -1,16 +1,18 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 1,["8"] = 2,["9"] = 2,["10"] = 2,["11"] = 2,["12"] = 3,["13"] = 3,["14"] = 11,["15"] = 45,["16"] = 45,["17"] = 45,["18"] = 45,["19"] = 45,["20"] = 53,["21"] = 45,["22"] = 50,["23"] = 51,["24"] = 55,["25"] = 56,["26"] = 57,["27"] = 58,["28"] = 53,["29"] = 61,["30"] = 62,["31"] = 63,["32"] = 66,["33"] = 61,["34"] = 69,["35"] = 45,["36"] = 71,["37"] = 72,["39"] = 74,["40"] = 75,["41"] = 76,["43"] = 78,["46"] = 69,["47"] = 83,["48"] = 84,["49"] = 85,["51"] = 87,["52"] = 88,["54"] = 90,["55"] = 83,["56"] = 93,["57"] = 94,["58"] = 95,["59"] = 97,["60"] = 97,["61"] = 97,["62"] = 97,["63"] = 97,["64"] = 97,["65"] = 97,["66"] = 97,["67"] = 97,["68"] = 97,["69"] = 97,["70"] = 97,["71"] = 93,["72"] = 105,["73"] = 106,["74"] = 110,["75"] = 111,["76"] = 111,["77"] = 111,["78"] = 112,["80"] = 114,["81"] = 114,["82"] = 115,["83"] = 116,["84"] = 114,["88"] = 119,["89"] = 119,["90"] = 120,["91"] = 121,["92"] = 122,["94"] = 119,["97"] = 111,["98"] = 111,["99"] = 127,["100"] = 105,["101"] = 130,["102"] = 131,["103"] = 132,["105"] = 134,["106"] = 135,["108"] = 140,["109"] = 141,["111"] = 142,["112"] = 142,["113"] = 143,["114"] = 143,["115"] = 143,["116"] = 143,["117"] = 142,["120"] = 146,["121"] = 130,["122"] = 149,["123"] = 150,["124"] = 150,["125"] = 150,["126"] = 150,["127"] = 149,["128"] = 153,["129"] = 154,["130"] = 155,["132"] = 153,["133"] = 159,["134"] = 160,["135"] = 161,["137"] = 159,["138"] = 165,["139"] = 166,["140"] = 167,["141"] = 168,["143"] = 170,["145"] = 172,["146"] = 173,["147"] = 165,["148"] = 176,["149"] = 177,["150"] = 176,["151"] = 45,["152"] = 45});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 1,["8"] = 2,["9"] = 2,["10"] = 2,["11"] = 2,["12"] = 3,["13"] = 3,["14"] = 6,["15"] = 6,["16"] = 12,["17"] = 46,["18"] = 46,["19"] = 46,["20"] = 46,["21"] = 46,["22"] = 54,["23"] = 46,["24"] = 51,["25"] = 52,["26"] = 56,["27"] = 57,["28"] = 58,["29"] = 59,["30"] = 54,["31"] = 62,["32"] = 63,["33"] = 64,["34"] = 67,["35"] = 62,["36"] = 70,["37"] = 46,["38"] = 72,["39"] = 73,["41"] = 75,["42"] = 76,["43"] = 77,["45"] = 79,["48"] = 70,["49"] = 84,["50"] = 85,["51"] = 86,["53"] = 88,["54"] = 89,["56"] = 91,["57"] = 84,["58"] = 94,["59"] = 95,["60"] = 97,["61"] = 97,["62"] = 97,["63"] = 97,["64"] = 97,["65"] = 97,["66"] = 97,["67"] = 97,["68"] = 97,["69"] = 97,["70"] = 97,["71"] = 97,["72"] = 97,["73"] = 94,["74"] = 106,["75"] = 107,["76"] = 108,["78"] = 116,["79"] = 106,["80"] = 123,["81"] = 124,["82"] = 126,["83"] = 126,["84"] = 126,["85"] = 127,["86"] = 128,["87"] = 129,["88"] = 129,["89"] = 129,["90"] = 129,["91"] = 129,["92"] = 129,["93"] = 133,["94"] = 134,["95"] = 135,["98"] = 126,["99"] = 126,["100"] = 145,["101"] = 123,["102"] = 148,["103"] = 149,["104"] = 151,["105"] = 152,["107"] = 154,["108"] = 155,["110"] = 157,["111"] = 148,["112"] = 160,["113"] = 161,["114"] = 165,["115"] = 166,["116"] = 166,["117"] = 166,["118"] = 167,["120"] = 169,["121"] = 169,["122"] = 170,["123"] = 171,["124"] = 169,["128"] = 174,["129"] = 174,["130"] = 175,["131"] = 176,["132"] = 177,["134"] = 174,["137"] = 166,["138"] = 166,["139"] = 182,["140"] = 160,["141"] = 185,["142"] = 186,["143"] = 187,["145"] = 189,["146"] = 190,["148"] = 195,["149"] = 196,["151"] = 197,["152"] = 197,["153"] = 198,["154"] = 198,["155"] = 198,["156"] = 198,["157"] = 197,["160"] = 201,["161"] = 185,["162"] = 204,["163"] = 205,["164"] = 205,["165"] = 205,["166"] = 205,["167"] = 204,["168"] = 208,["169"] = 209,["170"] = 210,["171"] = 211,["173"] = 213,["175"] = 215,["176"] = 216,["177"] = 208,["178"] = 219,["179"] = 220,["180"] = 219,["181"] = 46,["182"] = 46});
 local ____exports = {}
 local ____custom_ai = require("clases.pve.custom_ai")
 local CustomAIMeta = ____custom_ai.CustomAIMeta
 local CustomAITier = ____custom_ai.CustomAITier
 local ____room = require("clases.pve.room")
 local Room = ____room.default
-local RoomCompletionCriteria = ____room.RoomCompletionCriteria
+local RoomPhases = ____room.RoomPhases
 local RoomType = ____room.RoomType
 local ____game_state = require("clases.game_state")
 local GameState = ____game_state.default
+local ____rewards = require("rewards.rewards")
+local RewardsManager = ____rewards.RewardsManager
 local mobsDistribution = {{{tier = CustomAITier.BASIC, base = 4, optional = 1}, {tier = CustomAITier.MID, base = 0, optional = 0}}, {{tier = CustomAITier.BASIC, base = 4, optional = 2}, {tier = CustomAITier.MID, base = 0, optional = 0}}, {{tier = CustomAITier.BASIC, base = 4, optional = 1}, {tier = CustomAITier.MID, base = 1, optional = 0}}, {{tier = CustomAITier.BASIC, base = 4, optional = 1}, {tier = CustomAITier.MID, base = 1, optional = 1}}, {{tier = CustomAITier.BASIC, base = 4, optional = 1}, {tier = CustomAITier.MID, base = 1, optional = 1}, {tier = CustomAITier.HIGH, base = 1, optional = 0}}, {{tier = CustomAITier.BASIC, base = 4, optional = 2}, {tier = CustomAITier.MID, base = 1, optional = 1}, {tier = CustomAITier.HIGH, base = 2, optional = 0}}, {{tier = CustomAITier.BASIC, base = 2, optional = 1}, {tier = CustomAITier.MID, base = 2, optional = 1}, {tier = CustomAITier.HIGH, base = 3, optional = 0}}, {{tier = CustomAITier.BASIC, base = 2, optional = 1}, {tier = CustomAITier.MID, base = 2, optional = 1}, {tier = CustomAITier.HIGH, base = 3, optional = 0}}}
 ____exports.default = (function()
     ____exports.default = __TS__Class()
@@ -49,13 +51,12 @@ ____exports.default = (function()
             return RoomType.BOSS
         end
         if self.currentRoomNumber == 0 then
-            return RoomType.BONUS
+            return RoomType.LEVELUP
         end
         return RoomType.REGULAR
     end
     function Stage.prototype.GenerateRoom(self, spawnDiamond)
         local ____type = self:GenerateRoomType()
-        local completitionCriteria = RoomCompletionCriteria.KILL_ALL_ENEMIES
         return __TS__New(
             Room,
             self.alliances,
@@ -64,10 +65,49 @@ ____exports.default = (function()
             {
                 waves = self:GenerateWaves(____type),
                 spawnDiamond = spawnDiamond,
+                heroesData = self:GenerateHeroesData(),
                 type = ____type,
-                completitionCriteria = completitionCriteria
+                phases = self:GeneratePhases(____type)
             }
         )
+    end
+    function Stage.prototype.GeneratePhases(self, ____type)
+        if ____type == RoomType.LEVELUP then
+            return {RoomPhases.DIAMOND, RoomPhases.WAVES, RoomPhases.REWARD_CLAIM, RoomPhases.REWARD_OFFERING}
+        end
+        return {RoomPhases.WAVES, RoomPhases.REWARD_CLAIM, RoomPhases.REWARD_OFFERING}
+    end
+    function Stage.prototype.GenerateHeroesData(self)
+        local heroesData = {}
+        __TS__ArrayForEach(
+            self:GetAllPlayers(),
+            function(____, player)
+                local customNpc = player.customNpc
+                if customNpc then
+                    local nextRewardOfferings = RewardsManager:GenerateRewards(
+                        customNpc,
+                        {
+                            amount = self:GetRewardsAmount()
+                        }
+                    )
+                    local currentReward = customNpc.reward
+                    if currentReward then
+                        __TS__ArrayPush(heroesData, {customNpc = customNpc, nextRewardOfferings = nextRewardOfferings, currentReward = currentReward})
+                    end
+                end
+            end
+        )
+        return heroesData
+    end
+    function Stage.prototype.GetRewardsAmount(self)
+        local percentage = RandomInt(1, 100)
+        if percentage < 75 then
+            return 1
+        end
+        if (percentage >= 75) and (percentage < 90) then
+            return 2
+        end
+        return 3
     end
     function Stage.prototype.GenerateWave(self)
         local wave = {npcs = {}}
@@ -125,19 +165,9 @@ ____exports.default = (function()
             function(____, npc) return CustomAIMeta[npc].tier == tier end
         )
     end
-    function Stage.prototype.OnUnitHurt(self, unit)
-        if self.room then
-            self.room:OnUnitHurt(unit)
-        end
-    end
-    function Stage.prototype.OnUnitDies(self, unit)
-        if self.room then
-            self.room:OnUnitDies(unit)
-        end
-    end
     function Stage.prototype.OnRoomCompleted(self)
         if self.room then
-            if (self.room.type == RoomType.REGULAR) or (self.room.type == RoomType.BOSS) then
+            if ((self.room.type == RoomType.REGULAR) or (self.room.type == RoomType.BOSS)) or (self.room.type == RoomType.LEVELUP) then
                 self.currentNpcRoomNumber = self.currentNpcRoomNumber + 1
             end
             self.currentRoomNumber = self.currentRoomNumber + 1

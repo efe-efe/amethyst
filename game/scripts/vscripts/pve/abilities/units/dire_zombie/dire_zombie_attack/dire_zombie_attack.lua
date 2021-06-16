@@ -61,7 +61,7 @@ function dire_zombie_attack:OnSpellStart()
     })
 
 
-    EmitSoundOn("General.Attack", self:GetCaster())
+    EmitSoundOn("General.Attack", caster)
 end
 
 if IsClient() then require("wrappers/abilities") end

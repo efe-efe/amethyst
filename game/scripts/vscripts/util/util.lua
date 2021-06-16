@@ -453,3 +453,24 @@ function LinkAbilityCooldowns(hCaster, sLinkedSpell, tUnlinkLevels)
 		hLinkedSpell:StartCooldown(hLinkedSpell:GetCooldown(0))
 	end
 end
+
+function CurveProjectile(hCaster, vPoint, nSpeed, fCallback)
+	local nDistance = (hCaster:GetAbsOrigin() - vPoint):Length2D()
+	local nTime = nDistance/nSpeed
+    local hDummy = CreateModifierThinker(hCaster, nil, nil, {},	vPoint, hCaster:GetTeamNumber(), false)
+    local hProjectile = {
+        Target 				= hDummy,
+        Source 				= hCaster,
+        Ability 			= nil,
+        EffectName 			= "particles/curve_projectile.vpcf",
+        iMoveSpeed			= nSpeed,
+        flExpireTime 		= GameRules:GetGameTime() + 20,
+    }
+    
+	Timers:CreateTimer(nTime, function()
+		fCallback(vPoint)
+		hDummy:RemoveSelf()
+	end)
+
+    ProjectileManager:CreateTrackingProjectile(hProjectile)
+end

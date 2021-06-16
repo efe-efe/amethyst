@@ -26,7 +26,6 @@ export default class Run extends GameState{
                 customNpc.SelectReward(Rewards[0]);
             }
         });
-        
     }
 
     SendDataToClient(): void{
@@ -52,18 +51,6 @@ export default class Run extends GameState{
 
     GenerateStage(stageData: StageData): Stage{
         return new Stage(this.alliances, stageData, this);
-    }
-
-    OnUnitHurt(unit: CDOTA_BaseNPC): void{
-        if(this.stage){
-            this.stage.OnUnitHurt(unit);
-        }
-    }
-
-    OnUnitDies(unit: CDOTA_BaseNPC): void{
-        if(this.stage){
-            this.stage.OnUnitDies(unit);
-        }
     }
 
     OnStageEnd(): void{

@@ -70,11 +70,8 @@ export default class Warmup extends GameState{
         this.dummy_targets.forEach((dummyTarget) => {
             
             if(dummyTarget.entity){
-                dummyTarget.entity.GetUnit().ForceKill(false);
                 dummyTarget.entity.Destroy(true);
             }
-
-            dummyTarget = undefined;
         });
     }
 }

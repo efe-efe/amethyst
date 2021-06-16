@@ -8,7 +8,8 @@ export default class DummyTarget extends UnitEntity{
         }});
     }
 
-    OnDeath(): void{
+    OnDeath(event: EntityKilledEvent): void{
+        super.OnDeath(event);
         this.Destroy(false);
     }
 }

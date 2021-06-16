@@ -89,7 +89,7 @@
 		"HasInventory"				"0"
 	}
 	
-	"npc_dota_creature_amethyst"	
+	"breakable_bounty"	
 	{
 		"Model"						"models/development/invisiblebox.vmdl"
 		"BaseClass"					"npc_dota_creature"

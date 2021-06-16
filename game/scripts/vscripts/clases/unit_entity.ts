@@ -38,6 +38,7 @@ export default class UnitEntity{
         if((options as NonExistingEntityOptions).properties){
             this.unit.SetAbsOrigin(this.origin);
         }
+        ListenToGameEvent('entity_killed', (event) => this.OnUnitDied(event), undefined);
     }
 
     InitializeTeam(team: DotaTeam | undefined): DotaTeam{
@@ -61,11 +62,19 @@ export default class UnitEntity{
         this.destroyed = true;
 
         if(remove){
-            UTIL_Remove(this.GetUnit());
+            GameRules.Addon.RemoveUnit(this.unit);
+            UTIL_Remove(this.unit);
         }
     }
 
-    OnDeath(params: { killer: CDOTA_BaseNPC }): void{
+    OnUnitDied(event: EntityKilledEvent): void{
+        const killed = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
+        if(killed === this.unit){
+            this.OnDeath(event);
+        }
+    }
+
+    OnDeath(event: EntityKilledEvent): void{
         //override this method
     }
 

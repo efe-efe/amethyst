@@ -30,6 +30,8 @@ import UnitOverhead from './overhead/unitOverhead';
     const currentStagePanel = $('#current-stage') as LabelPanel;
     const enemiesCountPanel = $('#enemies-count') as LabelPanel;
     const nextRewardPanel = $('#next-reward') as LabelPanel;
+    const roomPhasePanel = $('#room-phase') as LabelPanel;
+    const roomTypePanel = $('#room-type') as LabelPanel;
     const refunderButton = $('#refunder__button') as Button;
     const refunderPanel = $('#refunder');
     const customHotkeysPanel = $('#custom-hotkeys');
@@ -231,7 +233,7 @@ import UnitOverhead from './overhead/unitOverhead';
 
             if(!heroInfoCards[entityIndex]){
                 let container: Panel | null;
-                const allianceName = (value as HeroData).allianceName
+                const allianceName = (value as HeroData).allianceName;
 
                 if(allianceName == 'DOTA_ALLIANCE_RADIANT'){
                     container = $('#alliances-status').FindChildTraverse('alliances-status__radiant');
@@ -323,6 +325,12 @@ import UnitOverhead from './overhead/unitOverhead';
         if(Game.IsInToolsMode()){
             if(data.nextReward){
                 nextRewardPanel.text = 'Next reward: ' + data.nextReward;
+            }
+            if(data.roomPhase){
+                roomPhasePanel.text = 'Room phase: ' + data.roomPhase;
+            }
+            if(data.roomType){
+                roomTypePanel.text = 'Room type: ' + data.roomType;
             }
         }
         if(data.currentStage){

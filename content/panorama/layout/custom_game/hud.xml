@@ -51,6 +51,8 @@
             <Label id="enemies-count" text="Killed enemies: 0/0" />
             <Label id="current-room" text="Room: 1" />
             <Label id="next-reward" text="Next reward: " />
+            <Label id="room-phase" text="Room phase: " />
+            <Label id="room-type" text="Room type: " />
         </Panel>
         
         <Panel class="upgrades pve">

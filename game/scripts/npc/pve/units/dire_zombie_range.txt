@@ -10,7 +10,7 @@
 		"ModelScale" 				"1.25"
 
 		"Ability1"					"dire_zombie_attack"			// Ability 1
-		"Ability2"					""			// Ability 2
+		"Ability2"					"dire_zombie_grenade"			// Ability 2
 		"Ability3"					""			// Ability 3
 		"Ability4"					""			// Ability 4
 

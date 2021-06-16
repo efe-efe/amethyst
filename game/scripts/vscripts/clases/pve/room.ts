@@ -4,27 +4,37 @@ import GameState from '../game_state';
 import Stage from './stage';
 import settings from '../../settings';
 import { CustomEvents } from '../../custom_events';
-import { RewardTypes } from '../../rewards/rewards';
+import { Reward, RewardsManager } from '../../rewards/rewards';
 import { Diamond } from '../gem';
+import CustomNPC from './custom_npc';
+import BreakableBounty from '../breakable_bounty';
 
 export enum RoomType {
     REGULAR = 0,
+    LEVELUP,
     BOSS,
     BONUS,
 }
 
-export enum RoomCompletionCriteria {
-    KILL_ALL_ENEMIES = 0,
-    PICKUP_REWARD,
-    PICKUP_DIAMOND,
-    PICKUP_DIAMOND_AND_REWARD,
+export enum RoomPhases {
+    DIAMOND = 0,
+    WAVES,
+    REWARD_CLAIM,
+    REWARD_OFFERING,
+}
+
+export interface RoomHeroData {
+    customNpc: CustomNPC;
+    nextRewardOfferings: Reward[];
+    currentReward: Reward;
 }
 
 export interface RoomOptions{
     waves: Wave[];
     spawnDiamond: boolean;
+    heroesData: RoomHeroData[];
+    phases: RoomPhases[];
     type: RoomType;
-    completitionCriteria: RoomCompletionCriteria;
 }
 export interface Wave {
     npcs: NPCNames[];
@@ -38,19 +48,21 @@ export interface Spawn {
 }
 export default class Room extends GameState{
     stage: Stage;
-    applyRewardsDelay = 1 * 30;
-    rewardsMenuDelay = -1;
+    claimRewardsDelay = 1 * 30;
+    rewardsMenuDelay = 2 * 30;
     spawnQueue: Spawn[] = []; 
     ais: CustomAI[] = [];
     waves: Wave[];
     totalNpcs: number;
     remainingTotalNpcs: number;
     remainingWaveNpcs = 0;
-    currentWave = 0;
+    currentWave = -1;
     diamond: Diamond | undefined;
-    spawnDiamond: boolean;
+    heroesData: RoomHeroData[];
+    rewardEntities: BreakableBounty[] = [];
+    phases: RoomPhases[] = [];
+    phaseIndex = 0;
     type: RoomType;
-    completitionCriteria: RoomCompletionCriteria;
 
     constructor(alliances: Alliance[], duration: number, stage: Stage, options: RoomOptions){
         super(alliances, duration);
@@ -58,10 +70,10 @@ export default class Room extends GameState{
         this.totalNpcs = this.GetTotalNPCs(this.waves);
         this.remainingTotalNpcs = this.totalNpcs;
         this.stage = stage;
+        this.heroesData = options.heroesData;
+        this.phases = options.phases;
+        this.phaseIndex = 0;
         this.type = options.type;
-        this.spawnDiamond = options.spawnDiamond;
-        this.completitionCriteria = options.completitionCriteria;
-        this.StartWave(this.currentWave);
         this.SendDataToClient();
 
         const customEvents = CustomEvents.GetInstance();
@@ -71,15 +83,19 @@ export default class Room extends GameState{
         customEvents.RegisterListener('pve:next_reward_selected', () => {
             this.OnRewardSelected();
         });
+
+        ListenToGameEvent('entity_killed', (event) => this.OnUnitDies(event), undefined);
+        ListenToGameEvent('entity_hurt', (event) => this.OnUnitHurt(event), undefined);
     }
     
     SendDataToClient(): void{
-        const tableName = 'main' as never;
         const data = { 
             remainingEnemies: this.totalNpcs - this.remainingTotalNpcs,
-            maxEnemies: this.totalNpcs
+            maxEnemies: this.totalNpcs,
+            roomPhase: RoomPhases[this.phases[this.phaseIndex]],
+            roomType: RoomType[this.type],
         } as never;
-        CustomNetTables.SetTableValue(tableName, 'pve', data);
+        CustomNetTables.SetTableValue('main' as never, 'pve', data);
     }
 
     StartWave(waveNumber: number): void{
@@ -93,21 +109,24 @@ export default class Room extends GameState{
         });
     }
 
-    OnUnitDies(unit: CDOTA_BaseNPC): void{
+    OnUnitDies(event: EntityKilledEvent): void{
+        const killed = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
+
         const previousNpcs = this.ais.length;
-        this.ais = this.ais.filter(ai => ai.unit !== unit);
+        this.ais = this.ais.filter(ai => ai.unit !== killed);
         if(previousNpcs > this.ais.length){
             this.remainingWaveNpcs--;
             this.remainingTotalNpcs--;
-            EFX('particles/econ/events/new_bloom/dragon_death.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, {
+            EFX('particles/econ/events/new_bloom/dragon_death.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, killed, {
                 release: true,
             });
         }
         this.SendDataToClient();
     }
 
-    OnUnitHurt(unit: CDOTA_BaseNPC): void{
-        const ai = this.ais.filter(ai => ai.unit === unit)[0];
+    OnUnitHurt(event: EntityHurtEvent): void{
+        const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
+        const ai = this.ais.filter(ai => ai.unit === victim)[0];
         if(ai){
             ai.OnHurt();
         }
@@ -124,8 +143,8 @@ export default class Room extends GameState{
             }
         });
         
-        if(rewardsReady){
-            this.SetDuration(settings.PreStageDuration);
+        if(rewardsReady && this.phases[this.phaseIndex] === RoomPhases.REWARD_OFFERING){
+            this.IncrementPhase();
         }
     }
 
@@ -134,47 +153,59 @@ export default class Room extends GameState{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
             if(customNpc){
-                if(customNpc.IsSelectingFavor()){
+                if(customNpc.IsSelectingUpgrade()){
                     upgradesReady = false;
                 }
             }
         });
         
-        if(upgradesReady){
-            this.rewardsMenuDelay = 2 * 30;
+        if(upgradesReady && this.phases[this.phaseIndex] === RoomPhases.REWARD_CLAIM){
+            this.IncrementPhase();
         }
     }
 
     Update(): void{
         super.Update();
+        const currentPhase = this.phases[this.phaseIndex];
+
+        if(currentPhase === RoomPhases.DIAMOND){
+            this.UpdateDiamond();
+        }
+        if(currentPhase === RoomPhases.WAVES){
+            this.UpdateWaves();
+        }
+        if(currentPhase === RoomPhases.REWARD_CLAIM){
+            this.UpdateRewardClaim();
+        }
+        if(currentPhase === RoomPhases.REWARD_OFFERING){
+            this.UpdateRewardOffering();
+        }
+        if(this.time_remaining === 0){
+            this.End();
+        }
+    }
+
+    UpdateDiamond(): void{
+        if(!this.diamond){
+            this.diamond = new Diamond(Vector(0, 0, 300));
+        } else {
+            if(this.diamond.unit.IsAlive()){
+                this.diamond.Update();
+            } else {
+                this.diamond = undefined;
+                this.IncrementPhase();
+            }
+        }
+    }
+
+    UpdateWaves(): void{
+        if(this.currentWave === -1){
+            this.IncrementWave();
+        }        
 
         if(this.remainingWaveNpcs <= 0){
             if(this.currentWave === this.waves.length - 1){
-                if(this.spawnDiamond && !this.diamond){
-                    this.diamond = new Diamond(Vector(0, 0, 300));
-                    this.spawnDiamond = false;
-                }
-                if(!this.diamond){
-                    if(this.applyRewardsDelay === 0){
-                        this.ApplyRewards();
-                        this.applyRewardsDelay = this.applyRewardsDelay - 1;
-                    }
-                    if(this.applyRewardsDelay > 0){
-                        this.applyRewardsDelay = this.applyRewardsDelay - 1;
-                    }
-
-                    if(this.rewardsMenuDelay === 0){
-                        this.GenerateRewards();
-                        this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
-                    }
-                    if(this.rewardsMenuDelay > 0){
-                        this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
-                    }
-
-                    if(this.time_remaining === 0){
-                        this.End();
-                    }
-                }
+                this.IncrementPhase();
             } else {
                 this.IncrementWave();
             }
@@ -197,47 +228,56 @@ export default class Room extends GameState{
                 ai.Update();
             });
         }
-        
-        if(this.diamond){
-            if(this.diamond.unit.IsAlive()){
-                this.diamond.Update();
-            } else {
-                this.diamond = undefined;
-            }
+    }
 
+    UpdateRewardClaim(): void{
+        if(this.claimRewardsDelay === 0){
+            this.ClaimRewards();
+            this.claimRewardsDelay = this.claimRewardsDelay - 1;
+        } else if(this.claimRewardsDelay > 0){
+            this.claimRewardsDelay = this.claimRewardsDelay - 1;
+        }
+        this.rewardEntities.forEach((rewardEntity) => {
+            rewardEntity.Update();
+        });
+    }
+
+    UpdateRewardOffering(): void{
+        if(this.rewardsMenuDelay === 0){
+            this.OfferRewards();
+            this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
+        } else if(this.rewardsMenuDelay > 0){
+            this.rewardsMenuDelay = this.rewardsMenuDelay - 1;
         }
     }
 
-    ApplyRewards(): void{
+    OfferRewards(): void{
         this.GetAllPlayers().forEach((player) => {
             const customNpc = player.customNpc;
-            if(customNpc){
-                if(customNpc.reward && customNpc.reward.type === RewardTypes.FAVOR){
-                    customNpc.RequestFavors();
-                }
-                if(customNpc.reward && customNpc.reward.type === RewardTypes.KNOWLEDGE){
-                    customNpc.RequestKnowledge();
-                }
-                if(customNpc.reward && customNpc.reward.type === RewardTypes.VITALITY){
-                    customNpc.ApplyTarrasque();
-                }
-                if(customNpc.reward && customNpc.reward.type === RewardTypes.ITEM){
-                    customNpc.RequestItems();
-                }
-                if(customNpc.reward && customNpc.reward.type === RewardTypes.SHARD){
-                    customNpc.RequestShards();
+            const heroData = this.heroesData.filter((heroData) => heroData.customNpc === customNpc)[0];
+            if(customNpc && heroData){
+                RewardsManager.OfferRewardsForHero(customNpc, heroData.nextRewardOfferings);
+            }
+        });
+    }
+
+    ClaimRewards(): void{
+        this.GetAllPlayers().forEach((player) => {
+            const customNpc = player.customNpc;
+            if(customNpc && customNpc.reward){
+                const rewardEntity = RewardsManager.ClaimRewardForHero(customNpc, customNpc.reward);
+                if(rewardEntity){
+                    this.rewardEntities.push(rewardEntity);
                 }
             }
         });
     }
 
-    GenerateRewards(): void{
-        this.GetAllPlayers().forEach((player) => {
-            const customNpc = player.customNpc;
-            if(customNpc){
-                customNpc.RequestRewards();
-            }
-        });
+    IncrementPhase(): void{
+        this.phaseIndex++;
+        if(!this.phases[this.phaseIndex]){
+            this.SetDuration(settings.PreStageDuration);
+        }
     }
 
     IncrementWave(): void{

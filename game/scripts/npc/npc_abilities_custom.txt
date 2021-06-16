@@ -105,6 +105,7 @@
 #base "pve\abilities\units\dire_zombie\dire_zombie_attack.txt"
 #base "pve\abilities\units\dire_zombie\dire_zombie_rage_aura.txt"
 #base "pve\abilities\units\dire_zombie\dire_zombie_attack_meele.txt"
+#base "pve\abilities\units\dire_zombie\dire_zombie_grenade.txt"
 
 #base "pve\abilities\units\radiant_zombie\radiant_zombie_heal_aura.txt"
 

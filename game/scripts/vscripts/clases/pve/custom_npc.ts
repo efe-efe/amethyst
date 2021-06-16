@@ -321,8 +321,8 @@ export default class CustomNPC extends UnitEntity{
             }
         }
     }
-    OnDeath(params: { killer: CDOTA_BaseNPC }): void{
-        super.OnDeath(params);
+    OnDeath(event: EntityKilledEvent): void{
+        super.OnDeath(event);
         this.Destroy(false);
     }
 }
@@ -413,7 +413,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         return ((this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() === Attributes.STRENGTH);
     }
 
-    IsSelectingFavor(): boolean{
+    IsSelectingUpgrade(): boolean{
         const tableName = 'custom_npc_favors' as never;
         const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; upgrades: Upgrade[] | undefined };
         return (value && (value.upgrades !== undefined));
@@ -427,52 +427,6 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
 
     ReleaseAbility(abilityName: string): void{
         //WIP
-    }
-
-    ApplyUpgrade(upgrade: Upgrade | undefined): void{
-        if(upgrade){
-            if(upgrade && upgrade.modifier){
-                const ability = (upgrade.ability) ? this.unit.FindAbilityByName(upgrade.ability) : undefined;
-                this.unit.AddNewModifier(this.unit, ability, upgrade.modifier.name, { duration: upgrade.modifier.duration });
-    
-                let found = false;
-                this.heroUpgrades = this.heroUpgrades.map((heroUpgrade) => {
-                    if(heroUpgrade.id === upgrade.id){
-                        found = true;
-                        return {
-                            ...heroUpgrade,
-                            level: heroUpgrade.level + 1
-                        };
-                    } 
-                    return heroUpgrade;
-                });
-    
-                if(!found){
-                    this.heroUpgrades.push({
-                        ...upgrade,
-                        level: 1,
-                    });
-                }
-            }
-    
-            if(upgrade.effect){
-                upgrade.effect(this.unit as CDOTA_BaseNPC_Hero);
-            }
-
-            if(upgrade.type === UpgradeTypes.ITEM){
-                this.ApplyItem(upgrade);
-            }
-            if(upgrade.type === UpgradeTypes.FAVOR){
-                this.ApplyFavor(upgrade);
-            }
-            if(upgrade.type === UpgradeTypes.SHARD){
-                this.ApplyShard(upgrade);
-            }
-        }
-        
-        this.ClearTable('custom_npc_favors' as never);
-        const customEvents = CustomEvents.GetInstance();
-        customEvents.EmitEvent('pve:current_reward_applied', { customNpc: this });
     }
 
     ApplyItem(upgrade: Upgrade): void{
@@ -516,12 +470,6 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         });
     }
 
-    ApplyTarrasque(): void{
-        this.unit.AddNewModifier(this.unit, undefined, 'modifier_upgrade_tarrasque', {});
-        const customEvents = CustomEvents.GetInstance();
-        customEvents.EmitEvent('pve:current_reward_applied', { customNpc: this });
-    }
-
     SelectReward(reward: Reward): void{
         this.reward = reward;
         this.ClearTable('custom_npc_rewards' as never);
@@ -533,101 +481,11 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
         } as never;
         CustomNetTables.SetTableValue('main' as never, 'pve', data);
     }
-
+    
     ClearTable(name: never): void{
         const data = {
             playerId: this.unit.GetPlayerOwnerID(),
         } as never;
         CustomNetTables.SetTableValue(name, this.unit.GetPlayerOwnerID().toString(), data);
     }
-
-    RequestRewards(): void{
-        const rewards = RewardsManager.GenerateRewards(this, { amount: RandomInt(1, 3) });
-        
-        if(rewards.length === 0){
-            print('Skipping rewards selection. No rewards available');
-            return;         
-        }
-        
-        const data = {
-            playerId: this.unit.GetPlayerOwnerID(),
-            rewards,
-        } as never;
-
-        const tableName = 'custom_npc_rewards' as never;
-        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
-    }
-
-    RequestFavors(): void{
-        const upgrades = UpgradeManager.GenerateFavors(this, 3);
-        
-        if(upgrades.length === 0){
-            print('Skipping favors selection. No rewards available');  
-            this.ApplyUpgrade(undefined);
-            return;          
-        }
-
-        const data = {
-            playerId: this.unit.GetPlayerOwnerID(),
-            upgrades,
-        } as never;
-
-        const tableName = 'custom_npc_favors' as never;
-        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
-    }
-
-    RequestShards(): void{
-        const upgrades = UpgradeManager.GenerateShards(this, 3);
-        
-        if(upgrades.length === 0){
-            print('Skipping shards selection. No rewards available');  
-            this.ApplyUpgrade(undefined);
-            return;          
-        }
-
-        const data = {
-            playerId: this.unit.GetPlayerOwnerID(),
-            upgrades
-        } as never;
-
-        const tableName = 'custom_npc_favors' as never;
-        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
-    }
-
-    RequestKnowledge(): void{
-        const upgrades = UpgradeManager.GenerateKnowledge(this, 3);
-        
-        if(upgrades.length === 0){
-            print('Skipping knowledge selection. No rewards available');  
-            this.ApplyUpgrade(undefined);
-            return;          
-        }
-        
-        const data = {
-            playerId: this.unit.GetPlayerOwnerID(),
-            upgrades,
-        } as never;
-
-        const tableName = 'custom_npc_favors' as never;
-        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
-    }
-
-    RequestItems(): void{
-        const upgrades = UpgradeManager.GenerateItems(this, RandomInt(4, 6));
-        
-        if(upgrades.length === 0){
-            print('Skipping items selection. No rewards available');  
-            this.ApplyUpgrade(undefined);
-            return;          
-        }
-        
-        const data = {
-            playerId: this.unit.GetPlayerOwnerID(),
-            upgrades,
-        } as never;
-
-        const tableName = 'custom_npc_favors' as never;
-        CustomNetTables.SetTableValue(tableName, this.unit.GetPlayerOwnerID().toString(), data);
-    }
-
 }
