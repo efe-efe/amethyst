@@ -11,6 +11,7 @@ import BreakableBounty from '../breakable_bounty';
 
 export enum RoomType {
     REGULAR = 0,
+    FIRST_ROOM,
     LEVELUP,
     BOSS,
     BONUS,
@@ -92,7 +93,8 @@ export default class Room extends GameState{
         const data = { 
             remainingEnemies: this.totalNpcs - this.remainingTotalNpcs,
             maxEnemies: this.totalNpcs,
-            roomPhase: RoomPhases[this.phases[this.phaseIndex]],
+            roomPhases: this.phases.map(phase => (RoomPhases[phase])),
+            roomPhaseIndex: this.phaseIndex,
             roomType: RoomType[this.type],
         } as never;
         CustomNetTables.SetTableValue('main' as never, 'pve', data);
@@ -278,11 +280,13 @@ export default class Room extends GameState{
         if(!this.phases[this.phaseIndex]){
             this.SetDuration(settings.PreStageDuration);
         }
+        this.SendDataToClient();
     }
 
     IncrementWave(): void{
         this.currentWave++;
         this.StartWave(this.currentWave);
+        this.SendDataToClient();
     }
 
     SkipWave(): void{

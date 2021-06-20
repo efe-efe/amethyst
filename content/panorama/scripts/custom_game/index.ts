@@ -326,8 +326,16 @@ import UnitOverhead from './overhead/unitOverhead';
             if(data.nextReward){
                 nextRewardPanel.text = 'Next reward: ' + data.nextReward;
             }
-            if(data.roomPhase){
-                roomPhasePanel.text = 'Room phase: ' + data.roomPhase;
+            if(data.roomPhases){
+                let phasesAsText = '';
+                for(const key in data.roomPhases){
+                    const phase = data.roomPhases[key];
+                    phasesAsText = `${phasesAsText} \n\t${phase}`;
+                    if(parseInt(key, 10) === (data.roomPhaseIndex + 1)){
+                        phasesAsText = phasesAsText + ' <==';
+                    }
+                }
+                roomPhasePanel.text = 'Room phases: ' + phasesAsText;
             }
             if(data.roomType){
                 roomTypePanel.text = 'Room type: ' + data.roomType;

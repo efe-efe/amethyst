@@ -82,10 +82,13 @@ export default class Stage extends GameState{
     }
 
     GenerateRoomType(): RoomType{
+        if(this.currentNpcRoomNumber === 0){
+            return RoomType.FIRST_ROOM;
+        }
         if(this.currentNpcRoomNumber === this.totalNpcRooms - 1){
             return RoomType.BOSS;
         }
-        if(this.currentRoomNumber === 0){
+        if(this.currentNpcRoomNumber === 3){
             return RoomType.LEVELUP;
         }
         return RoomType.REGULAR;
@@ -104,6 +107,14 @@ export default class Stage extends GameState{
     }
 
     GeneratePhases(type: RoomType): RoomPhases[]{
+        if(type === RoomType.FIRST_ROOM){
+            return [
+                RoomPhases.REWARD_CLAIM,
+                RoomPhases.WAVES,
+                RoomPhases.REWARD_OFFERING,
+            ];
+        }
+        
         if(type === RoomType.LEVELUP){
             return [
                 RoomPhases.DIAMOND,
@@ -207,7 +218,12 @@ export default class Stage extends GameState{
 
     OnRoomCompleted(): void{
         if(this.room){
-            if(this.room.type === RoomType.REGULAR || this.room.type === RoomType.BOSS || this.room.type === RoomType.LEVELUP){
+            if(
+                this.room.type === RoomType.REGULAR || 
+                this.room.type === RoomType.BOSS || 
+                this.room.type === RoomType.LEVELUP || 
+                this.room.type === RoomType.FIRST_ROOM
+            ){
                 this.currentNpcRoomNumber++;
             }
             this.currentRoomNumber++;
