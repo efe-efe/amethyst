@@ -40,18 +40,87 @@ export interface RoomOptions{
 export interface Wave {
     npcs: NPCNames[];
 }
-export interface Spawn {
+export interface SpawnerOptions {
+    delayTime: number;
+    remainingTime: number;
+    origin: Vector;
+    name: number;
+}
+
+class Spawner{
+    efx: ParticleID | undefined;
     delayTime: number;
     remainingTime: number;
     origin: Vector;
     name: number;
     marker: CDOTA_Buff | undefined;
+    ai: CustomAI | undefined;
+
+    constructor(options: SpawnerOptions){
+        this.delayTime = options.delayTime;
+        this.remainingTime = options.remainingTime * 30;
+        this.origin = options.origin;
+        this.name = options.name;
+        this.CreateEFX();
+    }
+
+    Update(): void{
+        if(this.remainingTime === -1){
+            return;
+        }
+        if(this.remainingTime > 0){
+            this.remainingTime--;
+        } else {
+            this.ai = CustomAIMeta[this.name].factory(this.origin);
+            EFX('particles/ai_spawn.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.ai.unit, {
+                release: true,
+            });
+            this.Destroy();
+        }
+    }
+
+    CreateEFX(): void{
+        this.marker = (CreateTimedRadiusMarker(
+            undefined, 
+            this.origin, 
+            150, 
+            this.delayTime, 
+            0.2, 
+            RADIUS_SCOPE_PUBLIC
+        ) as CDOTA_BaseNPC).FindModifierByName('radius_marker_thinker');
+        
+        this.efx = EFX('particles/econ/events/ti10/portal/portal_open_good.vpcf', ParticleAttachment.WORLDORIGIN, undefined, {
+            cp0: this.origin,
+        });
+    }
+
+    CleanEFX(): void{
+        if(this.efx){
+            ParticleManager.DestroyParticle(this.efx, false);
+            ParticleManager.ReleaseParticleIndex(this.efx);
+        }
+        
+        if(this.marker){
+            this.marker.Destroy();
+        }
+    }
+
+    Destroy(): void{
+        if(this.remainingTime !== -1){
+            this.CleanEFX();
+            this.remainingTime = -1;
+        }
+    }
+
+    GetAi(): CustomAI | undefined{
+        return this.ai;
+    }
 }
 export default class Room extends GameState{
     stage: Stage;
     claimRewardsDelay = 1 * 30;
     rewardsMenuDelay = 2 * 30;
-    spawnQueue: Spawn[] = []; 
+    spawners: Spawner[] = []; 
     ais: CustomAI[] = [];
     waves: Wave[];
     totalNpcs: number;
@@ -107,7 +176,13 @@ export default class Room extends GameState{
             const x = RandomInt(-1500, 1500);
             const y = RandomInt(-1500, 1500);
             const origin = Vector(x, y, 128);
-            this.SchedulAiSpawn(origin, npc, 1.0);
+            
+            this.spawners.push(new Spawner({
+                delayTime: 2.0,
+                remainingTime: 2.0,
+                origin,
+                name: npc,
+            }));
         });
     }
 
@@ -212,24 +287,28 @@ export default class Room extends GameState{
                 this.IncrementWave();
             }
         } else {
-            this.spawnQueue.forEach((scheduledSpawn) => {
-                if(scheduledSpawn.remainingTime > 0){
-                    scheduledSpawn.remainingTime = scheduledSpawn.remainingTime - 1;
-                } else {
-                    const ai = CustomAIMeta[scheduledSpawn.name].factory(scheduledSpawn.origin);
-                    this.ais.push(ai);
-                    EFX('particles/ai_spawn.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, ai.unit, {
-                        release: true,
-                    });
-
-                    this.spawnQueue = this.spawnQueue.filter((spawn) => { spawn !== scheduledSpawn; });
-                }
-            });
-
-            this.ais.forEach((ai) => {
-                ai.Update();
-            });
+            this.UpdateSpanwers();
+            this.UpdateAis();
         }
+    }
+
+    UpdateSpanwers(): void{
+        this.spawners.forEach((spawner)  => {
+            const ai = spawner.GetAi();
+            if(!ai){
+                spawner.Update();
+            } else {
+                this.ais.push(ai);
+                this.RemoveSpawner(spawner);
+            }
+        });
+
+    }
+
+    UpdateAis(): void{
+        this.ais.forEach((ai) => {
+            ai.Update();
+        });
     }
 
     UpdateRewardClaim(): void{
@@ -290,10 +369,8 @@ export default class Room extends GameState{
     }
 
     SkipWave(): void{
-        this.spawnQueue.forEach((scheduledSpawn) => {
-            if(scheduledSpawn.marker){
-                scheduledSpawn.marker.Destroy();
-            }
+        this.spawners.forEach((spawner) => {
+            this.RemoveSpawner(spawner);
             this.remainingWaveNpcs--;
             this.remainingTotalNpcs--;
         });
@@ -304,19 +381,14 @@ export default class Room extends GameState{
         });
     }
 
+    RemoveSpawner(spawner: Spawner): void{
+        spawner.Destroy();
+        this.spawners = this.spawners.filter((_spawner) => { spawner !== _spawner; });
+    }
+
     SkipRoom(): void{
         this.currentWave = this.waves.length - 1;
         this.SkipWave();
-    }
-
-    SchedulAiSpawn(origin: Vector, name: number, delayTime: number): void{
-        this.spawnQueue.push({
-            delayTime: delayTime * 30,
-            remainingTime: delayTime * 30,
-            origin,
-            name,
-            marker: (CreateTimedRadiusMarker(undefined, origin, 150, delayTime, 0.2, RADIUS_SCOPE_PUBLIC) as CDOTA_BaseNPC).FindModifierByName('radius_marker_thinker'),
-        });
     }
 
     GetTotalNPCs(waves: Wave[]): number{
