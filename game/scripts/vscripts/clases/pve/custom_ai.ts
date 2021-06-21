@@ -97,6 +97,7 @@ export class CustomAI{
         this.minFollowRange = options.minFollowRange || 0;
         this.behavior = options.behavior || CustomAIBehavior.FOLLOWER;
         this.originalPosition = origin;
+        ListenToGameEvent('entity_hurt', (event) => this.OnUnitHurt(event), undefined);
     }
 
     FindEnemy(radius: number): CDOTA_BaseNPC | undefined{
@@ -277,8 +278,11 @@ export class CustomAI{
         this.targetPosition = undefined;
     }
 
-    OnHurt(): void{
-        this.tauntedRemainingDuration = this.tauntedDuration * 30;
+    OnUnitHurt(event: EntityHurtEvent): void{
+        const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
+        if(this.unit === victim){
+            this.tauntedRemainingDuration = this.tauntedDuration * 30;
+        }
     }
 
     Update(): void{

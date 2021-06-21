@@ -77,7 +77,6 @@ export default class Room extends GameState{
         });
 
         ListenToGameEvent('entity_killed', (event) => this.OnUnitDies(event), undefined);
-        ListenToGameEvent('entity_hurt', (event) => this.OnUnitHurt(event), undefined);
     }
     
     SendDataToClient(): void{
@@ -121,14 +120,6 @@ export default class Room extends GameState{
             });
         }
         this.SendDataToClient();
-    }
-
-    OnUnitHurt(event: EntityHurtEvent): void{
-        const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
-        const ai = this.ais.filter(ai => ai.unit === victim)[0];
-        if(ai){
-            ai.OnHurt();
-        }
     }
 
     OnRewardSelected(): void{
