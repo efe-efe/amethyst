@@ -21,8 +21,8 @@
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
 		"HealthBarOffset"			"200" 	
 		
-		"AttackDamageMin"			"20"										
-		"AttackDamageMax"			"20"									
+		"AttackDamageMin"			"10"										
+		"AttackDamageMax"			"10"									
 		"AttackRate"				"1.0"									
 		"AttackAnimationPoint"		"0.35"
 	}

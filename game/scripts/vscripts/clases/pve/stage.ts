@@ -14,7 +14,7 @@ const mobsDistribution: {
     optional: number;
     tier: CustomAITier;
 }[][] = [[
-    { tier: CustomAITier.BASIC,     base: 4,    optional: 1, },
+    { tier: CustomAITier.BASIC,     base: 5,    optional: 1, },
     { tier: CustomAITier.MID,       base: 0,    optional: 0, }
 ],[
     { tier: CustomAITier.BASIC,     base: 4,    optional: 2, },
@@ -202,8 +202,12 @@ export default class Stage extends GameState{
                 npcs: [this.possibleNPCs[this.possibleNPCs.length - 1]],
             }];
         }
+
+        let amount = RandomInt(2, 3);
+        if(type === RoomType.FIRST_ROOM){
+            amount = 1;
+        }
         
-        const amount = RandomInt(2, 3);
         const waves: Wave[] = [];
         for(let i = 0; i < amount; i++){
             waves.push(this.GenerateWave());

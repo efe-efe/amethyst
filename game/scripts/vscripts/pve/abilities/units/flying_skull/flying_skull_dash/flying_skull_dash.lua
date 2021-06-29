@@ -3,6 +3,10 @@ LinkLuaModifier("modifier_flying_skull_dash_displacement", "pve/abilities/units/
 LinkLuaModifier("modifier_flying_skull_dash", "pve/abilities/units/flying_skull/flying_skull_dash/modifier_flying_skull_dash", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_flying_skull_dash_intrinsic", "pve/abilities/units/flying_skull/flying_skull_dash/modifier_flying_skull_dash_intrinsic", LUA_MODIFIER_MOTION_NONE)
 
+
+function flying_skull_dash:GetCastAnimationCustom()		return ACT_DOTA_ATTACK end
+function flying_skull_dash:GetPlaybackRateOverride()       return 0.5 end
+
 function flying_skull_dash:GetIntrinsicModifierName()
 	return "modifier_flying_skull_dash_intrinsic"
 end
@@ -27,7 +31,7 @@ function flying_skull_dash:OnSpellStart()
 	local point = self:GetCursorPosition()
     local direction = (point - origin):Normalized()
     local distance = self:GetSpecialValueFor("dash_range")
-    local speed = 1200
+    local speed = 1500
 	self.projectile = nil
 
     CustomEntitiesLegacy:FullyFaceTowards(caster, direction)

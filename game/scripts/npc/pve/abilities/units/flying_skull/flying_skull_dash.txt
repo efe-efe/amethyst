@@ -10,7 +10,7 @@
 		"AbilityCooldown"				"3.0"
 		"AbilityCastRange"				"750"
 		"LevelsBetweenUpgrades"			"0"
-		"AbilityCastPoint"				"0.35"
+		"AbilityCastPoint"				"0.65"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
