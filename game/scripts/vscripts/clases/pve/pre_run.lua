@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 5,["11"] = 5,["12"] = 5,["13"] = 5,["14"] = 5,["15"] = 6,["16"] = 5,["17"] = 8,["18"] = 8,["19"] = 8,["20"] = 8,["21"] = 8,["22"] = 6,["23"] = 11,["24"] = 5,["25"] = 13,["26"] = 14,["27"] = 14,["28"] = 14,["30"] = 16,["31"] = 17,["33"] = 11,["34"] = 21,["35"] = 22,["36"] = 23,["37"] = 23,["38"] = 23,["39"] = 24,["40"] = 25,["41"] = 26,["42"] = 27,["43"] = 28,["44"] = 29,["47"] = 33,["48"] = 34,["51"] = 23,["52"] = 23,["53"] = 39,["54"] = 40,["56"] = 21,["57"] = 44,["58"] = 45,["59"] = 44,["60"] = 5,["61"] = 5});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 5,["11"] = 5,["12"] = 5,["13"] = 5,["14"] = 5,["15"] = 6,["16"] = 5,["17"] = 9,["18"] = 6,["19"] = 12,["20"] = 5,["21"] = 14,["22"] = 15,["23"] = 15,["24"] = 15,["26"] = 17,["27"] = 18,["29"] = 12,["30"] = 22,["31"] = 23,["32"] = 24,["33"] = 24,["34"] = 24,["35"] = 25,["36"] = 26,["37"] = 27,["38"] = 28,["41"] = 24,["42"] = 24,["43"] = 33,["44"] = 34,["46"] = 22,["47"] = 38,["48"] = 39,["49"] = 38,["50"] = 5,["51"] = 5});
 local ____exports = {}
 local ____settings = require("settings")
 local settings = ____settings.default
@@ -14,11 +14,7 @@ ____exports.default = (function()
     __TS__ClassExtends(PreRun, GameState)
     function PreRun.prototype.____constructor(self, alliances, duration)
         GameState.prototype.____constructor(self, alliances, duration)
-        ListenToGameEvent(
-            "dota_player_learned_ability",
-            function(event) return self:OnLearnedAbilityEvent(event) end,
-            nil
-        )
+        self:SetDuration(settings.PreStageDuration)
     end
     function PreRun.prototype.Update(self)
         GameState.prototype.Update(self)
@@ -31,19 +27,13 @@ ____exports.default = (function()
             self:End()
         end
     end
-    function PreRun.prototype.OnLearnedAbilityEvent(self, event)
+    function PreRun.prototype.OnLearnedAbilityEvent(self)
         local abilitiesReady = true
         __TS__ArrayForEach(
             self:GetAllPlayers(),
             function(____, player)
                 local hero = player.hero
                 if hero then
-                    local ability = hero:FindAbilityByName(event.abilityname)
-                    if ability then
-                        if ability:GetLevel() == 2 then
-                            abilitiesReady = false
-                        end
-                    end
                     if hero:GetAbilityPoints() > 0 then
                         abilitiesReady = false
                     end

@@ -345,19 +345,13 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
 
     constructor(unit: CDOTA_BaseNPC){
         super(unit);
+        this.LevelAllAbilities(1);        
         if(GameRules.Addon.IsPVE()){
-            this.unit.GetAbilityByIndex(0)?.SetLevel(1);
-            this.unit.GetAbilityByIndex(5)?.SetLevel(1);
-            this.unit.GetAbilityByIndex(6)?.SetLevel(1);
-            (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(2);
+            (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(0);
             customEntities.ChangeMS(this.unit, 50);
             this.unit.RemoveAbility(this.unit.GetAbilityByIndex(7)!.GetName());
             this.unit.RemoveAbility(this.unit.GetAbilityByIndex(8)!.GetName());
-
-            ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
-        } else {
-            this.LevelAllAbilities(1);        
-            (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(2);    
+            //ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
         }
     }
     
