@@ -972,6 +972,7 @@ export class GameMode{
             if(event.entindex_attacker !== undefined){
                 SendOverheadDamageMessage(victim, event.damage);
             }
+            CustomEntitiesLegacy.SetBeenHurt(victim, true);
         }
     }
     

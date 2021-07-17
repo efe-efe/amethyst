@@ -2,11 +2,16 @@ import Overhead from './overhead';
 import Status from './status';
 import util, { Color, colors, panels } from '../util';
 import Health from '../commonComponents/health';
-import { UnitData } from '../types';
+import { StatusType, StatusTypes, UnitData } from '../types';
 
 enum StatusScope {
     STATUS_SCOPE_PUBLIC = 1,
     STATUS_SCOPE_LOCAL
+}
+
+enum BeenHurt {
+    BEEN_HURT = 1,
+    NOT_HURT = 0
 }
 
 export default class UnitOverhead extends Overhead{
@@ -15,16 +20,21 @@ export default class UnitOverhead extends Overhead{
     botPanel: Panel;
     healthPanel: Panel;
     color: Color;
+    active: boolean;
     
     botSwitchPanel: SwitchPanel | undefined;
 
     status: Status;
     health: Health;
     isLocalPlayer: boolean;
-    
+    hideWhenNotHurt: boolean;
+
     constructor(unitData: UnitData){
         super(unitData.entityIndex);
         const localPlayerId = Game.GetLocalPlayerID();
+
+        this.hideWhenNotHurt = unitData.hideWhenNotHurt ? unitData.hideWhenNotHurt : true;
+        this.active = !this.hideWhenNotHurt;
 
         this.isLocalPlayer = localPlayerId == unitData.playerId;
         this.color = colors.orange;
@@ -41,44 +51,77 @@ export default class UnitOverhead extends Overhead{
             maxTreshold: unitData.maxHealth,
             shieldOnFront: true,
         });
+
+        
+        if(unitData.beenHurt === BeenHurt.NOT_HURT && this.hideWhenNotHurt){
+            this.Hide();
+            this.status.Deactivate();
+            this.health.Deactivate();
+        }
+
         this.UpdateData(unitData);
     }
 
-    public UpdateData(unitData: UnitData): void{
-        if(!util.isEmptyObject(unitData.status)){
-            let currentStatus = undefined;
+    ShouldShowStatus(status: StatusTypes): boolean {
+        return !util.isEmptyObject(status);
+    }
 
-            for(const modifierName in unitData.status){
-                const tempStatus = unitData.status[modifierName];
-        
-                if(!currentStatus || (tempStatus.priority > currentStatus.priority)){
-                    if(tempStatus.scope == StatusScope.STATUS_SCOPE_LOCAL){
-                        if(this.isLocalPlayer){
-                            currentStatus = tempStatus;
-                        }
-                    } else {
+    ShouldActivate(beenHurt: BeenHurt): boolean {
+        if(this.hideWhenNotHurt && beenHurt === BeenHurt.NOT_HURT) {
+            return false;
+        }
+        return true;
+    }
+
+    GetCurrentStatus(status: StatusTypes): StatusType | undefined {
+        let currentStatus = undefined;
+
+        for(const modifierName in status){
+            const tempStatus = status[modifierName];
+    
+            if(!currentStatus || (tempStatus.priority > currentStatus.priority)){
+                if(tempStatus.scope == StatusScope.STATUS_SCOPE_LOCAL){
+                    if(this.isLocalPlayer){
                         currentStatus = tempStatus;
                     }
+                } else {
+                    currentStatus = tempStatus;
                 }
             }
+        }
 
-            if(currentStatus){
-                this.status.GetPanel().style.visibility = 'visible';
-                this.status.Activate(
-                    currentStatus.label,
-                    currentStatus.style_name,
-                    currentStatus.trigger,
-                    currentStatus.modifier_name,
-                    currentStatus.max_stacks,
-                    currentStatus.content,
-                );
+        return currentStatus;
+    }
+
+    public UpdateData(unitData: UnitData): void {
+        if(!this.active) {
+            if(this.ShouldActivate(unitData.beenHurt)){
+                this.Show();
+                this.status.Activate();
+                this.health.Activate();
+                this.active = true;
+            } else {
+                return;
+            }
+        }
+        if(this.ShouldShowStatus(unitData.status)){
+            const currentStatus = this.GetCurrentStatus(unitData.status);
+            if(currentStatus) {
+                const { label, style_name, trigger, modifier_name, max_stacks, content } = currentStatus;
+
+                if(!this.status.HasData()){
+                    this.status.SetData(label, style_name, trigger, modifier_name, max_stacks, content);
+                }
+
+                if(!this.status.IsActive()) {
+                    this.status.Activate();
+                }
+                    
             } else {
                 this.status.Deactivate();
-                this.status.GetPanel().style.visibility = 'collapse';
             }
         } else {
             this.status.Deactivate();
-            this.status.GetPanel().style.visibility = 'collapse';
         }
 
         this.health.Update(unitData.health, unitData.health, unitData.maxHealth, unitData.shield);

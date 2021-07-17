@@ -25,6 +25,7 @@ export default class Health{
     maxTreshold: number;
     borderRadius = '3';
     shieldOnFront: boolean;
+    active = true;
 
     constructor(container: Panel, data: HealthData){
         const fontSize = (data.fontSize) ? data.fontSize : '13px';
@@ -77,7 +78,21 @@ export default class Health{
         }
     }
 
+    Activate(): void {
+        this.healthPanel.style.visibility = 'visible';
+        this.active = true;
+    }
+
+    Deactivate(): void {
+        this.healthPanel.style.visibility = 'collapse';
+        this.active = false;
+    }
+
     Update(health: number, treshold: number, maxHealth: number, shield: number): void{
+        if(!this.active){
+            return;
+        }
+
         const healeableAmount = this.maxTreshold - treshold;
         const potentialHealth = health + (healeableAmount);
     

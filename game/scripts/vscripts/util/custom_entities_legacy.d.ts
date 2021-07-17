@@ -34,6 +34,7 @@ declare interface CustomEntitiesLegacy {
     GetDistance(hEntity: CDOTA_BaseNPC, hTarget: CDOTA_BaseNPC): number;
     SafeDestroyModifier(hEntity: CDOTA_BaseNPC, sModifierName: string): void;
     FindUnitsInRadius(hEntity: CDOTA_BaseNPC, origin: Vector, radius: number, nTeamFilter: UnitTargetTeam, nTypeFilter: UnitTargetType, nFlagFilter: UnitTargetFlags, nOrderFilter: FindOrder): CDOTA_BaseNPC[];
+    SetBeenHurt(hEntity: CDOTA_BaseNPC, bBeenHurt: boolean): void;
 }
 
 declare const CustomEntitiesLegacy: CustomEntitiesLegacy;

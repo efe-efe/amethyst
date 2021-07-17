@@ -10,7 +10,7 @@ import Health from '../commonComponents/health';
 import Alliances from '../alliances';
 import Castpoint from './castpoint';
 import MultipleBars from '../commonComponents/multipleBars';
-import { HeroData } from '../types';
+import { HeroData, StatusType, StatusTypes } from '../types';
 
 enum StatusScope {
     STATUS_SCOPE_PUBLIC = 1,
@@ -115,6 +115,30 @@ export default class HeroOverhead extends Overhead{
         this.UpdateData(heroData);
     }
 
+    ShouldShowStatus(status: StatusTypes): boolean {
+        return !util.isEmptyObject(status);
+    }
+
+    GetCurrentStatus(status: StatusTypes): StatusType | undefined {
+        let currentStatus = undefined;
+
+        for(const modifierName in status){
+            const tempStatus = status[modifierName];
+    
+            if(!currentStatus || (tempStatus.priority > currentStatus.priority)){
+                if(tempStatus.scope == StatusScope.STATUS_SCOPE_LOCAL){
+                    if(this.isLocalPlayer){
+                        currentStatus = tempStatus;
+                    }
+                } else {
+                    currentStatus = tempStatus;
+                }
+            }
+        }
+
+        return currentStatus;
+    }
+
     public UpdateData(heroData: HeroData): void{
         if(!util.isEmptyObject(heroData.recast) && this.isLocalPlayer){
             const currentRecast = util.getFirstObjectElement(heroData.recast);
@@ -123,33 +147,18 @@ export default class HeroOverhead extends Overhead{
             this.recast.Deactivate();
         }
 
-        if(!util.isEmptyObject(heroData.status)){
-            let currentStatus = undefined;
-
-            for(const modifierName in heroData.status){
-                const tempStatus = heroData.status[modifierName];
-        
-                if(!currentStatus || (tempStatus.priority > currentStatus.priority)){
-                    if(tempStatus.scope == StatusScope.STATUS_SCOPE_LOCAL){
-                        if(this.isLocalPlayer){
-                            currentStatus = tempStatus;
-                        }
-                    } else {
-                        currentStatus = tempStatus;
-                    }
-                }
-            }
-
+        if(this.ShouldShowStatus(heroData.status)){
+            const currentStatus = this.GetCurrentStatus(heroData.status);
             if(currentStatus){
-                this.status.Activate(
-                    currentStatus.label,
-                    currentStatus.style_name,
-                    currentStatus.trigger,
-                    currentStatus.modifier_name,
-                    currentStatus.max_stacks,
-                    currentStatus.content,
-                );
-                
+                const { label, style_name, trigger, modifier_name, max_stacks, content } = currentStatus;
+
+                if(!this.status.HasData()){
+                    this.status.SetData(label, style_name, trigger, modifier_name, max_stacks, content);
+                }
+
+                if(!this.status.IsActive()) {
+                    this.status.Activate();
+                }
                 this.midSwitchPanel.SetState(1);
             } else {
                 this.status.Deactivate();

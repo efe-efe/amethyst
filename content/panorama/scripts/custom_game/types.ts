@@ -37,6 +37,8 @@ export interface UnitData {
     maxHealth: number;
     shield: number;
     status: StatusTypes;
+    hideWhenNotHurt?: boolean;
+    beenHurt: 0 | 1;
 }
 
 export interface HeroData extends UnitData{

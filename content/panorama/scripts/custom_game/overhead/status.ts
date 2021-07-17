@@ -26,6 +26,8 @@ export default class Status{
     textGlowPanel: LabelPanel;
     progressBar: ProgressBar;
 
+    active = true;
+
     constructor(container: Panel, entityIndex: EntityIndex){
         this.panel = panels.createPanelSimple(container, 'status');
         this.entityIndex = entityIndex;
@@ -47,7 +49,21 @@ export default class Status{
         this.textPanel.text = text.toUpperCase();
     }
 
-    Activate(text: string, style: string, trigger: StatusTrigger, modifierName: string, maxStacks?: number, content?: StatusContent): void{
+    IsActive(): boolean {
+        return this.active;
+    }
+
+    Activate(): void {
+        this.active = true;
+        this.panel.style.visibility = 'visible';
+        this.Update();
+    }
+
+    HasData(): boolean {
+        return this.modifierName !== undefined;
+    }
+
+    SetData(text: string, style: string, trigger: StatusTrigger, modifierName: string, maxStacks?: number, content?: StatusContent): void {
         this.modifierName = modifierName;
         this.trigger = trigger;
         this.maxStacks = maxStacks;
@@ -55,7 +71,6 @@ export default class Status{
         this.content = content;
 
         this.SetText(text);
-        this.Update();
     }
 
     Deactivate(): void{
@@ -63,15 +78,17 @@ export default class Status{
         this.trigger = undefined;
         this.maxStacks = undefined;
         this.style = undefined;
+        this.panel.style.visibility = 'collapse';
+        this.active = false;
         
         this.SetText('Status');
     }
 
     Update(): void{
-        if(!this.modifierName){
+        if(!this.active || !this.HasData()){
             return;
         } else {
-            let modifierIndex = modifiers.findModifierByName(this.entityIndex, this.modifierName);
+            let modifierIndex = modifiers.findModifierByName(this.entityIndex, this.modifierName!);
     
             if(modifierIndex){
                 modifierIndex = modifierIndex as BuffID;

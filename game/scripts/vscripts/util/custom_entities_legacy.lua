@@ -23,6 +23,9 @@ MODIFIER_TYPES = {
 	RECAST = 14,
 }
 
+BEEN_HURT = 1
+NOT_HURT = 0
+
 MODIFIER_OBJECT_NAMES = {}
 for key,value in pairs(MODIFIER_TYPES) do
 	MODIFIER_OBJECT_NAMES[MODIFIER_TYPES[key]] = string.lower(key) .. '_modifiers'
@@ -44,6 +47,7 @@ function CustomEntitiesLegacy:Initialize(hEntity, bIsPVENPC)
 	hEntity.initialized = 					nil
 	hEntity.modifiers = 					{}
 	hEntity.parent =						nil
+	hEntity.been_hurt =						NOT_HURT
 
 	for key,value in pairs(MODIFIER_TYPES) do
 		hEntity.modifiers[MODIFIER_OBJECT_NAMES[MODIFIER_TYPES[key]]] = {}
@@ -189,7 +193,7 @@ function CustomEntitiesLegacy:SendDataToClient(hEntity)
 			abilities = CustomEntitiesLegacy:GetAbilities(hEntity),
 			energy = CustomEntitiesLegacy:GetEnergy(hEntity),
 			maxEnergy = CustomEntitiesLegacy:GetMaxEnergy(hEntity),
-			energyPerCell = CustomEntitiesLegacy:GetEnergyPerCell(hEntity)
+			energyPerCell = CustomEntitiesLegacy:GetEnergyPerCell(hEntity),
 		}
 		CustomNetTables:SetTableValue('units', tostring(hEntity:GetPlayerID()), data)
 	else
@@ -205,9 +209,25 @@ function CustomEntitiesLegacy:SendDataToClient(hEntity)
 			maxHealth = hEntity:GetMaxHealth(),
 			shield = CustomEntitiesLegacy:GetShield(hEntity),
 			status = CustomEntitiesLegacy:GetStatus(hEntity),
+			beenHurt = CustomEntitiesLegacy:GetBeenHurt(hEntity),
 		}
 		CustomNetTables:SetTableValue('units', tostring('_' .. hEntity:GetEntityIndex()), data)
 	end
+end
+
+function CustomEntitiesLegacy:GetBeenHurt(hEntity)
+	return hEntity.been_hurt
+end
+
+function CustomEntitiesLegacy:SetBeenHurt(hEntity, bBeenHurt)
+	if bBeenHurt then
+		hEntity.been_hurt = BEEN_HURT
+
+	else
+		hEntity.been_hurt = NOT_HURT
+	end
+
+	CustomEntitiesLegacy:SendDataToClient(hEntity)
 end
 
 function CustomEntitiesLegacy:AutoUpgradeAbilities(hEntity)

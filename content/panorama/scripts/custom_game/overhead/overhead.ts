@@ -64,12 +64,20 @@ export default class Overhead{
         const hide = modifiers.findModifierByName(this.entityIndex, 'modifier_hide_bar');
 
         if(!Entities.IsAlive(this.entityIndex) || !entities.isVisibleByLocal(this.entityIndex) || hide != false){
-            this.containerPanel.style.opacity = '0.0';
+            this.Hide();
             return false;
         } else {
-            this.containerPanel.style.opacity = '1.0';
+            this.Show();
             return true;
         }
+    }
+
+    Hide(): void{
+        this.containerPanel.style.opacity = '0.0';
+    }
+
+    Show(): void{
+        this.containerPanel.style.opacity = '1.0';
     }
 
     SetWidth(width: number): void{
