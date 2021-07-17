@@ -10,9 +10,15 @@ function modifier_storm_extra_displacement:OnCreated(params)
 		self.fading_slow_pct = self:GetAbility():GetSpecialValueFor("fading_slow_pct")
 	
 		local storm_ex_basic_attack = self.parent:FindAbilityByName('storm_ex_basic_attack')
-		local damage_per_level = storm_ex_basic_attack:GetSpecialValueFor('damage_per_level')
-		self.stun_duration = storm_ex_basic_attack:GetSpecialValueFor('stun_duration')
-		self.heal_multiplier = storm_ex_basic_attack:GetSpecialValueFor("heal_multiplier")
+		local damage_per_level = 0
+		self.stun_duration = 0
+		self.heal_multiplier = 0
+		
+		if storm_ex_basic_attack then
+			damage_per_level = storm_ex_basic_attack:GetSpecialValueFor('damage_per_level')
+			self.stun_duration = storm_ex_basic_attack:GetSpecialValueFor('stun_duration')
+			self.heal_multiplier = storm_ex_basic_attack:GetSpecialValueFor("heal_multiplier")
+		end
 		
 		local extra_damage = damage_per_level * self:GetStackCount()
 		self.damage = self:GetAbility():GetSpecialValueFor("ability_damage") + extra_damage
