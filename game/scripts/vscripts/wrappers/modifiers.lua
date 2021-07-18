@@ -1295,6 +1295,7 @@ function Modifiers.Shield(modifier)
     function modifier:GetModifierIncomingDamage_Percentage(params)
         for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(self:GetParent(), MODIFIER_TYPES.SHIELD)) do
             if value == self:GetName() then
+                CustomEntitiesLegacy:SetBeenHurt(self:GetParent(), true)
                 local shield_points = self:GetStackCount() - params.damage
         
                 if shield_points <= 0 then
