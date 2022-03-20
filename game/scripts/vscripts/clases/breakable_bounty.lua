@@ -25,9 +25,9 @@ ____exports.default = (function()
     end
     function BreakableBounty.prototype.Update(self)
         local currentAngle = (GameRules:GetGameTime() % (math.pi * 2)) * 2
-        if not CustomEntitiesLegacy:IsBanished(
+        if (not CustomEntitiesLegacy:IsBanished(
             self:GetUnit()
-        ) then
+        )) and self:Alive() then
             CustomEntitiesLegacy:FullyFaceTowards(
                 self:GetUnit(),
                 Vector(
