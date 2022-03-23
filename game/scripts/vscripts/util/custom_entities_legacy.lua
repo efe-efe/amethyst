@@ -566,6 +566,7 @@ end
 
 function CustomEntitiesLegacy:SetCollisionDirection(hEntity, iCollisionDirection)
 	if hEntity:IsRealHero() then
+		print("SETTING COLLISION DIRECTION")
 		hEntity.collision_direction = iCollisionDirection
 	end
 end
