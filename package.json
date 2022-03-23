@@ -12,7 +12,7 @@
     "dev": "run-p dev:*",
     "localization": "run-p localization:*",
     "dev:panorama": "tsc --project content/panorama/scripts/custom_game/tsconfig.json --watch",
-    "dev:vscripts": "tstl --project game/scripts/vscripts/tsconfig.json --watch",
+    "dev:vscripts": "tstl --project src/vscripts/tsconfig.json --watch",
     "dev:webpack": "npx webpack --watch",
     "dev:sass": "node-sass -w content/panorama/styles/custom_game/ -o content/panorama/styles/custom_game/",
     "localization:localizationCompiler": "tsc --project node_modules/~resource/tsconfig.json",
