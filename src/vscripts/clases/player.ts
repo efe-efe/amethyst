@@ -8,7 +8,7 @@ export default class Player{
     alliance: Alliance | undefined = undefined;
     customNpc: CustomPlayerHeroNPC | undefined = undefined;
     team = DotaTeam.NOTEAM;
-    cursor_position = Vector(0,0,0);
+    cursorPosition = Vector(0,0,0);
 
     constructor(id: PlayerID, userid: number){
         this.id = id;
@@ -29,7 +29,7 @@ export default class Player{
     }
 
     GetCursorPosition(): Vector{
-        return this.cursor_position;
+        return this.cursorPosition;
     }
     
     SetTeam(team: DotaTeam): void{
@@ -41,6 +41,6 @@ export default class Player{
     }
     
     UpdateCursorPosition(position: Vector): void{
-        this.cursor_position = position;
+        this.cursorPosition = position;
     }
 }

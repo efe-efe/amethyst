@@ -11,7 +11,7 @@ ____exports.default = (function()
         self.alliance = nil
         self.customNpc = nil
         self.team = DOTA_TEAM_NOTEAM
-        self.cursor_position = Vector(0, 0, 0)
+        self.cursorPosition = Vector(0, 0, 0)
         self.id = id
         self.userid = userid
     end
@@ -26,7 +26,7 @@ ____exports.default = (function()
         return self.id
     end
     function Player.prototype.GetCursorPosition(self)
-        return self.cursor_position
+        return self.cursorPosition
     end
     function Player.prototype.SetTeam(self, team)
         self.team = team
@@ -35,7 +35,7 @@ ____exports.default = (function()
         self.alliance = alliance
     end
     function Player.prototype.UpdateCursorPosition(self, position)
-        self.cursor_position = position
+        self.cursorPosition = position
     end
     return Player
 end)()
