@@ -28,11 +28,11 @@ export default class Handler{
     }
 
     public GetTableName(): string{
-        return '';
+        return "";
     }
 
     public GetTableKeyName(): string{
-        return '';
+        return "";
     }
 
     private SetNetTableListener(tableName: never){

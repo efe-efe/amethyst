@@ -1,7 +1,7 @@
-import Rewards from '../../rewards/rewards';
-import Alliance from '../alliance';
-import GameState, { CustomGameState } from '../game_state';
-import Stage, { StageData } from './stage';
+import Rewards from "../../rewards/rewards";
+import Alliance from "../alliance";
+import GameState, { CustomGameState } from "../game_state";
+import Stage, { StageData } from "./stage";
 
 enum RunStates {
     ROOM = 0,
@@ -29,11 +29,11 @@ export default class Run extends GameState{
     }
 
     SendDataToClient(): void{
-        const tableName = 'main' as never;
+        const tableName = "main" as never;
         const data = { 
             currentStage: this.currentStage + 1, 
         } as never;
-        CustomNetTables.SetTableValue(tableName, 'pve', data);
+        CustomNetTables.SetTableValue(tableName, "pve", data);
     }
 
     Update(): void{

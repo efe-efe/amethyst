@@ -1,5 +1,5 @@
-import ProgressBar from '../progressBar';
-import { colors } from '../util';
+import ProgressBar from "../progressBar";
+import { colors } from "../util";
 
 type MultipleBarsOptions = {
     value: number, 
@@ -78,10 +78,10 @@ export default class MultipleBars{
 
     AddCell(): void{
         const index = this.progressBars.length;
-        const progressBar = new ProgressBar(this.className + '__progress-bar__' + index, this.container, { foreground_color: colors.Gradient(colors.blue) });
+        const progressBar = new ProgressBar(this.className + "__progress-bar__" + index, this.container, { foreground_color: colors.Gradient(colors.blue) });
         
         if(index > 0){
-            progressBar.SetBorder({left: '0'});
+            progressBar.SetBorder({left: "0"});
         }
 
         this.progressBars.push(progressBar);
@@ -95,7 +95,7 @@ export default class MultipleBars{
     }
 
     RemoveCell(): void{
-        this.progressBars[this.progressBars.length - 1].SetVisibility('collapse');
+        this.progressBars[this.progressBars.length - 1].SetVisibility("collapse");
         this.progressBars.pop();
     }
 }

@@ -19,7 +19,7 @@ export default class MouseClickController{
             if (GameUI.GetClickBehaviors() !== CLICK_BEHAVIORS.DOTA_CLICK_BEHAVIOR_NONE){
                 return false;
             }
-            if (eventName === 'pressed'){
+            if (eventName === "pressed"){
                 if (nMouseButton === CUSTOM_MouseButtons.LEFT_CLICK){
                     if(GameUI.IsControlDown()){
                         return false;
@@ -42,7 +42,7 @@ export default class MouseClickController{
                     this.onRightClickPressed();
                     return true;
                 }
-            } else if( eventName === 'released'){
+            } else if( eventName === "released"){
                 if (nMouseButton === CUSTOM_MouseButtons.LEFT_CLICK){
                     this.onLeftClickReleased();
                     return true;
@@ -51,7 +51,7 @@ export default class MouseClickController{
                     this.onRightClickReleased();
                     return true;
                 }
-            } else if (eventName === 'doublepressed'){ 
+            } else if (eventName === "doublepressed"){ 
                 return true;
             }
             return false;

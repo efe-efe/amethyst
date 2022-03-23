@@ -1,11 +1,11 @@
 export enum Language
 {
-    None = 'none',
+    None = "none",
     // Brazilian = 'brazilian',    
     // Bulgarian = 'bulgarian',
     // Czech = 'czech',
     // Danish = 'danish',    
-    English = 'english',
+    English = "english",
     // Finnish = 'finnish',    
     // French = `french`,
     // German = `german`,

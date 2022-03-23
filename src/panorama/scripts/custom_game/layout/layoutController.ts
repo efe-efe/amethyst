@@ -1,6 +1,6 @@
-import CustomEntities from '../customEntities';
-import CustomAbilities from '../customAbilities';
-import { HeroData } from '../types';
+import CustomEntities from "../customEntities";
+import CustomAbilities from "../customAbilities";
+import { HeroData } from "../types";
 
 const customEntities = CustomEntities.GetInstance();
 const customAbilities = CustomAbilities.GetInstance();
@@ -20,18 +20,18 @@ export default class LayoutController{
         }
 
         this.topPanel = topPanel;
-        this.dimmerPanel = $.CreatePanelWithProperties('Panel', this.topPanel, 'customDimmer', {
-            class: 'customDimmer',
-            hittest: 'false',
-            hittestchildren: 'false',
+        this.dimmerPanel = $.CreatePanelWithProperties("Panel", this.topPanel, "customDimmer", {
+            class: "customDimmer",
+            hittest: "false",
+            hittestchildren: "false",
         });
 
-        this.dimmerPanel.style.height = '100%';
-        this.dimmerPanel.style.width = '100%';
-        this.dimmerPanel.style.backgroundColor = 'rgb(0, 0, 0)';
-        this.dimmerPanel.style.opacity = '0.0';
-        this.dimmerPanel.style.transitionProperty = 'opacity';
-        this.dimmerPanel.style.transitionDuration = '0.5s';
+        this.dimmerPanel.style.height = "100%";
+        this.dimmerPanel.style.width = "100%";
+        this.dimmerPanel.style.backgroundColor = "rgb(0, 0, 0)";
+        this.dimmerPanel.style.opacity = "0.0";
+        this.dimmerPanel.style.transitionProperty = "opacity";
+        this.dimmerPanel.style.transitionDuration = "0.5s";
         this.dimmerPanel.style.zIndex = -1;
     }
 
@@ -44,11 +44,11 @@ export default class LayoutController{
     }
 
     public ShowDimmer(): void{
-        this.dimmerPanel.style.opacity = '0.85';
+        this.dimmerPanel.style.opacity = "0.85";
     }
 
     public HideDimmer(): void{
-        this.dimmerPanel.style.opacity = '0.0';
+        this.dimmerPanel.style.opacity = "0.0";
     }
 
     public GetTopPanel(): Panel{
@@ -56,7 +56,7 @@ export default class LayoutController{
     }
 
     public ChangeAbilityTextBySlotIndex(text: string, slotIndex: number): void{
-        const boxName = 'Ability' + slotIndex;
+        const boxName = "Ability" + slotIndex;
         this.ChangeAbilityTextByBoxName(text, boxName);
     }
 
@@ -64,7 +64,7 @@ export default class LayoutController{
         const abilityPanel = this.topPanel.FindChildTraverse(boxName);
     
         if(abilityPanel){
-            const hotkey = abilityPanel.FindChildTraverse('HotkeyText') as LabelPanel;
+            const hotkey = abilityPanel.FindChildTraverse("HotkeyText") as LabelPanel;
     
             if(hotkey){
                 hotkey.text = text;
@@ -123,7 +123,7 @@ export default class LayoutController{
 
         if(entityData){
             for(let i = 0; i < 9; i++){
-                const abilityPanel = this.topPanel.FindChildTraverse('Ability' + i);
+                const abilityPanel = this.topPanel.FindChildTraverse("Ability" + i);
                 if(abilityPanel){
                     const abilityIndex = Entities.GetAbility(selectedEntity, i);
                     const abilityEnergyCost = customAbilities.GetEnergyCost(abilityIndex);
@@ -140,48 +140,48 @@ export default class LayoutController{
         
     public UpdateResourceBoxOnAbility(abilityPanel: Panel, abilityManaCost: number, abilityEnergyCost: number): void{
         if(abilityManaCost > 0 || abilityEnergyCost > 0){
-            abilityPanel.SetHasClass('no_mana_cost', false);
+            abilityPanel.SetHasClass("no_mana_cost", false);
             
-            const manaCost = abilityPanel.FindChildTraverse('ManaCost') as LabelPanel;
-            const bevel = abilityPanel.FindChildTraverse('AbilityBevel') as ImagePanel;
-            const image = abilityPanel.FindChildTraverse('AbilityImage') as ImagePanel;
+            const manaCost = abilityPanel.FindChildTraverse("ManaCost") as LabelPanel;
+            const bevel = abilityPanel.FindChildTraverse("AbilityBevel") as ImagePanel;
+            const image = abilityPanel.FindChildTraverse("AbilityImage") as ImagePanel;
 
             if(abilityEnergyCost > 0){
                 manaCost.text = abilityEnergyCost.toString();
-                manaCost.style.color = 'rgb(233, 53, 53)';
+                manaCost.style.color = "rgb(233, 53, 53)";
             }
             if(abilityManaCost > 0){
                 manaCost.text = abilityManaCost.toString();
-                manaCost.style.color = '#57b7ff';
-                bevel.style.washColor = '#6095FD';
+                manaCost.style.color = "#57b7ff";
+                bevel.style.washColor = "#6095FD";
                 //image.style.washColor = '#57b7ff';
             }
         } else {
-            abilityPanel.SetHasClass('no_mana_cost', true);
+            abilityPanel.SetHasClass("no_mana_cost", true);
         }
     }
 
     public UpdateAbilityEnergy(abilityPanel: Panel, abilityEnergyCost: number, entityEnergy: number): void{
-        const image = abilityPanel.FindChildTraverse('AbilityImage') as ImagePanel;
-        const bevel = abilityPanel.FindChildTraverse('AbilityBevel') as ImagePanel;
-        const abilityButton = abilityPanel.FindChildTraverse('AbilityButton')!;
+        const image = abilityPanel.FindChildTraverse("AbilityImage") as ImagePanel;
+        const bevel = abilityPanel.FindChildTraverse("AbilityBevel") as ImagePanel;
+        const abilityButton = abilityPanel.FindChildTraverse("AbilityButton")!;
 
         if(entityEnergy >= abilityEnergyCost){
-            abilityButton.style.preTransformScale2d = '1.0';
-            image.style.washColor = '#bc591600';
-            bevel.style.washColor = '#bc591600';
+            abilityButton.style.preTransformScale2d = "1.0";
+            image.style.washColor = "#bc591600";
+            bevel.style.washColor = "#bc591600";
         } else {
-            abilityButton.style.preTransformScale2d = '0.9';
-            image.style.washColor = '#bc5916';
-            bevel.style.washColor = '#bc5916';
+            abilityButton.style.preTransformScale2d = "0.9";
+            image.style.washColor = "#bc5916";
+            bevel.style.washColor = "#bc5916";
         }
     }
 
     public DisableAbilityEnergy(slotIndex: number): void{
-        const abilityPanel = this.topPanel.FindChildTraverse('Ability' + slotIndex);
+        const abilityPanel = this.topPanel.FindChildTraverse("Ability" + slotIndex);
         if(abilityPanel){
-            abilityPanel.SetHasClass('energy', false);
-            abilityPanel.SetHasClass('no_mana_cost', true);
+            abilityPanel.SetHasClass("energy", false);
+            abilityPanel.SetHasClass("no_mana_cost", true);
         }
     }
 
@@ -189,7 +189,7 @@ export default class LayoutController{
         const panel = this.topPanel.FindChildTraverse(panelName);
 
         if(panel){
-            panel.style.visibility = 'visible';
+            panel.style.visibility = "visible";
         }
     }
 
@@ -197,7 +197,7 @@ export default class LayoutController{
         const panel = this.topPanel.FindChildTraverse(panelName);
 
         if(panel){
-            panel.style.visibility = 'collapse';
+            panel.style.visibility = "collapse";
         }
     }
 
@@ -205,7 +205,7 @@ export default class LayoutController{
         const panel = this.topPanel.FindChildrenWithClassTraverse(className)[0];
 
         if(panel){
-            panel.style.visibility = 'collapse';
+            panel.style.visibility = "collapse";
         }
     }
 

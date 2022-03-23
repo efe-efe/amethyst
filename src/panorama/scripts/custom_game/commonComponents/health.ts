@@ -1,5 +1,5 @@
-import ProgressBar from '../progressBar';
-import { colors, Color, panels } from '../util';
+import ProgressBar from "../progressBar";
+import { colors, Color, panels } from "../util";
 
 type HealthData = {
     color: Color;
@@ -23,12 +23,12 @@ export default class Health{
     usePercentage: boolean;
     rounded: boolean;
     maxTreshold: number;
-    borderRadius = '3';
+    borderRadius = "3";
     shieldOnFront: boolean;
     active = true;
 
     constructor(container: Panel, data: HealthData){
-        const fontSize = (data.fontSize) ? data.fontSize : '13px';
+        const fontSize = (data.fontSize) ? data.fontSize : "13px";
         const showValue = (data.showValue) ? data.showValue : false;
         const usePercentage = (data.usePercentage) ? data.usePercentage : false;
         this.rounded = (data.rounded) ? data.rounded : false;
@@ -39,52 +39,52 @@ export default class Health{
         this.showValue = showValue;
         this.usePercentage = usePercentage;
 
-        this.healthPanel =  panels.createPanelSimple(container, 'health');
-        this.cellsPanel = panels.createPanelSimple(container, 'health__cells');
-        this.valuePanel = panels.createPanelSimple(container, 'health__value', 'Label') as LabelPanel;
+        this.healthPanel =  panels.createPanelSimple(container, "health");
+        this.cellsPanel = panels.createPanelSimple(container, "health__cells");
+        this.valuePanel = panels.createPanelSimple(container, "health__value", "Label") as LabelPanel;
 
         if(!this.shieldOnFront){
-            this.healthPanel.style.flowChildren = 'right';
+            this.healthPanel.style.flowChildren = "right";
         }
 
-        this.healthProgressBar = new ProgressBar('health__progress-bar', this.healthPanel, { 
+        this.healthProgressBar = new ProgressBar("health__progress-bar", this.healthPanel, { 
             foreground_color: colors.Gradient(this.color), 
             delayed: true, 
-            background_color: 'black',
-            border_radius: (this.rounded) ? this.borderRadius + 'px' : '0',
+            background_color: "black",
+            border_radius: (this.rounded) ? this.borderRadius + "px" : "0",
         });
-        this.shieldProgressBar = new ProgressBar('shield__progress-bar', this.healthPanel, { 
+        this.shieldProgressBar = new ProgressBar("shield__progress-bar", this.healthPanel, { 
             foreground_color: colors.Gradient(colors.gray),
-            background_color: 'black',
-            border_radius: (this.rounded) ? this.borderRadius + 'px' : '0',
+            background_color: "black",
+            border_radius: (this.rounded) ? this.borderRadius + "px" : "0",
         });
 
-        this.healthPanel.style.height = '100%';
-        this.healthPanel.style.width = '100%';
+        this.healthPanel.style.height = "100%";
+        this.healthPanel.style.width = "100%";
         
-        this.cellsPanel.style.flowChildren = 'right';
-        this.cellsPanel.style.height = '100%';
-        this.cellsPanel.style.width = '100%';
-        this.cellsPanel.style.borderRadius = (this.rounded) ? this.borderRadius + 'px' : '0';
+        this.cellsPanel.style.flowChildren = "right";
+        this.cellsPanel.style.height = "100%";
+        this.cellsPanel.style.width = "100%";
+        this.cellsPanel.style.borderRadius = (this.rounded) ? this.borderRadius + "px" : "0";
 
         if(this.showValue){
-            this.valuePanel.style.align = 'center center';
-            this.valuePanel.style.textShadow = '0px 0px 8px 7.0 #000000b0';
-            this.valuePanel.style.color = '#FAFAFA';
+            this.valuePanel.style.align = "center center";
+            this.valuePanel.style.textShadow = "0px 0px 8px 7.0 #000000b0";
+            this.valuePanel.style.color = "#FAFAFA";
             this.valuePanel.style.fontSize = fontSize;
-            this.valuePanel.style.fontFamily = 'Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim,MingLiU';
+            this.valuePanel.style.fontFamily = "Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim,MingLiU";
         } else {
-            this.valuePanel.style.visibility = 'collapse';
+            this.valuePanel.style.visibility = "collapse";
         }
     }
 
     Activate(): void {
-        this.healthPanel.style.visibility = 'visible';
+        this.healthPanel.style.visibility = "visible";
         this.active = true;
     }
 
     Deactivate(): void {
-        this.healthPanel.style.visibility = 'collapse';
+        this.healthPanel.style.visibility = "collapse";
         this.active = false;
     }
 
@@ -101,8 +101,8 @@ export default class Health{
         let healthTotalWidth;
         
         if(shield <= 0){
-            this.shieldProgressBar.SetVisibility('collapse');
-            this.healthProgressBar.SetBorder({right: '1'});
+            this.shieldProgressBar.SetVisibility("collapse");
+            this.healthProgressBar.SetBorder({right: "1"});
 
             if(this.rounded){
                 this.healthProgressBar.SetBorderRadius({topRight: this.borderRadius, bottomRight: this.borderRadius});
@@ -123,19 +123,19 @@ export default class Health{
                 const shieldTotalWidth = 100 * (shield)/(maxHealth);
                 this.shieldProgressBar.SetTotalWidth(shieldTotalWidth);
             } else {
-                this.healthProgressBar.SetBorder({right: '0'});
-                this.shieldProgressBar.SetBorder({left: '0'});
+                this.healthProgressBar.SetBorder({right: "0"});
+                this.shieldProgressBar.SetBorder({left: "0"});
 
                 if(this.rounded){
-                    this.healthProgressBar.SetBorderRadius({topRight: '0', bottomRight: '0'});
-                    this.shieldProgressBar.SetBorderRadius({topLeft: '0', bottomLeft: '0'});
+                    this.healthProgressBar.SetBorderRadius({topRight: "0", bottomRight: "0"});
+                    this.shieldProgressBar.SetBorderRadius({topLeft: "0", bottomLeft: "0"});
                 }
                 healthTotalWidth = 100 * (health)/(maxHealth + shield);
                 const shieldTotalWidth = 100 * (maxHealth + shield - health)/(maxHealth + shield);
                 this.shieldProgressBar.SetTotalWidth(shieldTotalWidth);
             }
 
-            this.shieldProgressBar.SetVisibility('visible');
+            this.shieldProgressBar.SetVisibility("visible");
 
             healthPanelWidth = 100;
             healthProgress = 100;
@@ -153,7 +153,7 @@ export default class Health{
             let value = health.toString();
 
             if(this.usePercentage){
-                value = Math.floor(100 * potentialHealth/maxHealth).toString() + '%';
+                value = Math.floor(100 * potentialHealth/maxHealth).toString() + "%";
             }
             this.valuePanel.text = value;
         }
@@ -172,7 +172,7 @@ export default class Health{
     UpdateCells(health: number, healeableAmount: number, maxHealth: number, shield: number): void{
         const potentialHealthPoints = health + shield + healeableAmount;
         const cellsTotalWidth = 100 * potentialHealthPoints/(maxHealth + shield);
-        this.cellsPanel.style.width = cellsTotalWidth + '%';
+        this.cellsPanel.style.width = cellsTotalWidth + "%";
 
         const rest = potentialHealthPoints % this.maxTreshold;
         const cells = Math.ceil(potentialHealthPoints/this.maxTreshold);
@@ -191,7 +191,7 @@ export default class Health{
                 cellWidth = this.GetCellWidth(rest, potentialHealthPoints);
             }
 
-            panel.style.width = cellWidth + '%';
+            panel.style.width = cellWidth + "%";
         });
     }
 
@@ -201,10 +201,10 @@ export default class Health{
 
     AddCell(): void{
         const index = this.cellsPanel.GetChildCount();
-        const panel = panels.createPanelSimple(this.cellsPanel, 'cell_panel_' + index);
+        const panel = panels.createPanelSimple(this.cellsPanel, "cell_panel_" + index);
 
-        panel.style.borderRight = '1px solid rgba(0, 0, 0, 0.6)';
-        panel.style.height = '100%';
+        panel.style.borderRight = "1px solid rgba(0, 0, 0, 0.6)";
+        panel.style.height = "100%";
 
         this.cellsPanels.push(panel);
     }

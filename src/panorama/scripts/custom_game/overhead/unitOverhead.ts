@@ -1,8 +1,8 @@
-import Overhead from './overhead';
-import Status from './status';
-import util, { Color, colors, panels } from '../util';
-import Health from '../commonComponents/health';
-import { StatusType, StatusTypes, UnitData } from '../types';
+import Overhead from "./overhead";
+import Status from "./status";
+import util, { Color, colors, panels } from "../util";
+import Health from "../commonComponents/health";
+import { StatusType, StatusTypes, UnitData } from "../types";
 
 enum StatusScope {
     STATUS_SCOPE_PUBLIC = 1,
@@ -38,11 +38,11 @@ export default class UnitOverhead extends Overhead{
 
         this.isLocalPlayer = localPlayerId == unitData.playerId;
         this.color = colors.orange;
-        this.topPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__top');
-        this.midPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__mid');
-        this.botPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__bot');
-        const resourcesPanel = panels.createPanelSimple(this.botPanel, 'unit-overhead-resources');
-        this.healthPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__health');
+        this.topPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__top");
+        this.midPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__mid");
+        this.botPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__bot");
+        const resourcesPanel = panels.createPanelSimple(this.botPanel, "unit-overhead-resources");
+        this.healthPanel = panels.createPanelSimple(resourcesPanel, "unit-overhead-resources__health");
         
         this.status = new Status(this.midPanel, unitData.entityIndex);
         this.health = new Health(this.healthPanel, {
@@ -139,19 +139,19 @@ class SwitchPanel{
     }
 
     ShutDownBoth(): void{
-        this.childrens[0].style.visibility = 'collapse';
-        this.childrens[1].style.visibility = 'collapse';
+        this.childrens[0].style.visibility = "collapse";
+        this.childrens[1].style.visibility = "collapse";
         this.state = -1;
     }
 
     Switch(): void{
         if(this.state == 0){
-            this.childrens[0].style.visibility = 'collapse';
-            this.childrens[1].style.visibility = 'visible';
+            this.childrens[0].style.visibility = "collapse";
+            this.childrens[1].style.visibility = "visible";
             this.state = 1;
         } else {
-            this.childrens[1].style.visibility = 'collapse';
-            this.childrens[0].style.visibility = 'visible';
+            this.childrens[1].style.visibility = "collapse";
+            this.childrens[0].style.visibility = "visible";
             this.state = 0;
         }
     }

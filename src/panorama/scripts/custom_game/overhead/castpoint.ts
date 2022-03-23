@@ -1,5 +1,5 @@
-import ProgressBar from '../progressBar';
-import { modifiers } from '../util';
+import ProgressBar from "../progressBar";
+import { modifiers } from "../util";
 
 export default class Castpoint{
     progressBar: ProgressBar;
@@ -7,7 +7,7 @@ export default class Castpoint{
     container: Panel;
 
     constructor(container: Panel, entityIndex: EntityIndex){
-        this.progressBar = new ProgressBar('castpoint__progress-bar', container, {});
+        this.progressBar = new ProgressBar("castpoint__progress-bar", container, {});
         this.entityIndex = entityIndex;
         this.container = container;
 
@@ -15,7 +15,7 @@ export default class Castpoint{
     }
 
     Update(): void{
-        let modifierIndex = modifiers.findModifierByName(this.entityIndex, 'modifier_casting');
+        let modifierIndex = modifiers.findModifierByName(this.entityIndex, "modifier_casting");
 
         if(modifierIndex){
             modifierIndex = modifierIndex as BuffID;
@@ -29,17 +29,17 @@ export default class Castpoint{
             progressRatio = 1 - progressRatio;
     
             this.progressBar.SetProgress(progressRatio * 100);
-            this.progressBar.SetForegroundColor('#FAFAFA');
+            this.progressBar.SetForegroundColor("#FAFAFA");
     
-            this.container.style.opacity = '1.0';
+            this.container.style.opacity = "1.0";
         } else {
             const fillness = this.progressBar.GetProgress();
             if(fillness < 100){     
-                this.progressBar.SetForegroundColor('rgb(238, 53, 0)');
+                this.progressBar.SetForegroundColor("rgb(238, 53, 0)");
             } else {
-                this.progressBar.SetForegroundColor('rgb(51, 162, 40)');
+                this.progressBar.SetForegroundColor("rgb(51, 162, 40)");
             }
-            this.container.style.opacity = '0.0';
+            this.container.style.opacity = "0.0";
         }
 
         $.Schedule(0.03, () => {

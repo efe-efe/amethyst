@@ -1,6 +1,6 @@
-import Alliance from '../alliance';
-import DummyTarget from '../dummy_target';
-import GameState, { CustomGameState } from '../game_state';
+import Alliance from "../alliance";
+import DummyTarget from "../dummy_target";
+import GameState, { CustomGameState } from "../game_state";
 
 const DUMMY_TARGET_RESPAWN = 5.0;
 
@@ -15,7 +15,7 @@ export default class Warmup extends GameState{
 
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
-        const dummyTargetsEnts = Entities.FindAllByName('dummy_target');
+        const dummyTargetsEnts = Entities.FindAllByName("dummy_target");
         
         dummyTargetsEnts.forEach((entity) => {
             this.dummy_targets.push({
@@ -33,7 +33,7 @@ export default class Warmup extends GameState{
 
             if(this.time_remaining <= 30 && this.time_remaining > 0){
                 const data = { text: tostring(this.time_remaining/30) } as never;
-                CustomGameEventManager.Send_ServerToAllClients('custom_message', data);
+                CustomGameEventManager.Send_ServerToAllClients("custom_message", data);
             }
 
             this.dummy_targets.forEach((dummyTarget) => {

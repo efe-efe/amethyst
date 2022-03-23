@@ -7,7 +7,7 @@ type AbilitiesMeta = {
   [key: string]: AbilityMeta
 }
 
-const abilitiesKv = LoadKeyValues('scripts/npc/npc_abilities_custom.txt');
+const abilitiesKv = LoadKeyValues("scripts/npc/npc_abilities_custom.txt");
 const meta: AbilitiesMeta = {};
 
 for (const [key, ability] of Object.entries(abilitiesKv)) {
@@ -17,4 +17,4 @@ for (const [key, ability] of Object.entries(abilitiesKv)) {
     };
 }
 
-CustomNetTables.SetTableValue('main' as never, 'abilities', meta as never);
+CustomNetTables.SetTableValue("main" as never, "abilities", meta as never);

@@ -8,11 +8,11 @@ export default class Action{
     }
 
     OnStart(): void{
-        $.Msg('Im starting the action: ', this.name);
+        $.Msg("Im starting the action: ", this.name);
     }
 
     OnEnd(): void{
-        $.Msg('Im ending the action: ', this.name);
+        $.Msg("Im ending the action: ", this.name);
     }
 }
 

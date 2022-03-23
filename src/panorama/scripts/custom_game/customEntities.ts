@@ -1,5 +1,5 @@
-import { UnitData } from './types';
-import { tables } from './util';
+import { UnitData } from "./types";
+import { tables } from "./util";
 
 type GenericData = {
     key: string | number | symbol;
@@ -12,7 +12,7 @@ export default class CustomEntities{
     private entities: UnitData[] = [];
         
     private constructor(){
-        const tableName = 'units' as never;
+        const tableName = "units" as never;
         tables.subscribeToNetTableAndLoadNow(tableName, (table: never, key: string | number | symbol, value: any) => {
             const entity = value as UnitData;
             this.SetEntity(entity);
@@ -54,7 +54,7 @@ export default class CustomEntities{
     }
 
     public OnReload(): void{
-        const tableName = 'units' as never;
+        const tableName = "units" as never;
         const data = CustomNetTables.GetAllTableValues(tableName);
         
         data.forEach((d) => {

@@ -1,5 +1,5 @@
-import { modifiers, entities, panels } from '../util';
-import LayoutController from '../layout/layoutController';
+import { modifiers, entities, panels } from "../util";
+import LayoutController from "../layout/layoutController";
 
 export default class Overhead{
     private entityIndex: EntityIndex;
@@ -10,11 +10,11 @@ export default class Overhead{
         this.entityIndex = entiyIndex;
 
         const layout = LayoutController.GetInstance();
-        const basePanel = layout.GetTopPanel().FindChildrenWithClassTraverse('main')[0];
+        const basePanel = layout.GetTopPanel().FindChildrenWithClassTraverse("main")[0];
 
-        this.containerPanel = panels.createPanelSimple(basePanel, 'overhead');
-        this.containerPanel.style.width = '160px'; 
-        this.containerPanel.style.flowChildren = 'down';
+        this.containerPanel = panels.createPanelSimple(basePanel, "overhead");
+        this.containerPanel.style.width = "160px"; 
+        this.containerPanel.style.flowChildren = "down";
         this.Update();
     }
 
@@ -45,23 +45,23 @@ export default class Overhead{
             const x = scale * Math.min(sw - this.containerPanel.actuallayoutwidth, Math.max(0, wx - this.containerPanel.actuallayoutwidth/2));
             const y = scale * Math.min(sh - this.containerPanel.actuallayoutheight, Math.max(0, wy - this.containerPanel.actuallayoutheight));
     
-            this.containerPanel.style.position = x + 'px ' + y + 'px 0px;';
+            this.containerPanel.style.position = x + "px " + y + "px 0px;";
             if(
                 this.containerPanel.actuallayoutwidth ==  0 &&
                 this.containerPanel.actuallayoutheight ==  0
             ){
-                this.containerPanel.style.position = '-1000px -1000px 0px;';
+                this.containerPanel.style.position = "-1000px -1000px 0px;";
                 return true;
             }
         } else {
-            this.containerPanel.style.position = '-1000px -1000px 0px;';
+            this.containerPanel.style.position = "-1000px -1000px 0px;";
             return false;
         }
         return true;
     }
     
     UpdateVisibility(): boolean{
-        const hide = modifiers.findModifierByName(this.entityIndex, 'modifier_hide_bar');
+        const hide = modifiers.findModifierByName(this.entityIndex, "modifier_hide_bar");
 
         if(!Entities.IsAlive(this.entityIndex) || !entities.isVisibleByLocal(this.entityIndex) || hide != false){
             this.Hide();
@@ -73,14 +73,14 @@ export default class Overhead{
     }
 
     Hide(): void{
-        this.containerPanel.style.opacity = '0.0';
+        this.containerPanel.style.opacity = "0.0";
     }
 
     Show(): void{
-        this.containerPanel.style.opacity = '1.0';
+        this.containerPanel.style.opacity = "1.0";
     }
 
     SetWidth(width: number): void{
-        this.containerPanel.style.width = width + 'px';
+        this.containerPanel.style.width = width + "px";
     }
 }

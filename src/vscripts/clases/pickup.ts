@@ -1,4 +1,4 @@
-import Item from './Item';
+import Item from "./Item";
 
 export enum PickupTypes {
     HEALTH = 0,
@@ -8,17 +8,17 @@ export enum PickupTypes {
 }
 
 const PICKUP_ITEM_NAMES = {
-    [PickupTypes.HEALTH]: 'item_health_orb',
-    [PickupTypes.MANA]: 'item_mana_orb',
-    [PickupTypes.SHIELD]: 'item_shield_orb',
-    [PickupTypes.DEATH]: 'item_death_orb'
+    [PickupTypes.HEALTH]: "item_health_orb",
+    [PickupTypes.MANA]: "item_mana_orb",
+    [PickupTypes.SHIELD]: "item_shield_orb",
+    [PickupTypes.DEATH]: "item_death_orb"
 };
 
 const PICKUP_PARTICLES = {
-    [PickupTypes.HEALTH]: 'particles/generic_gameplay/rune_regeneration.vpcf',
-    [PickupTypes.MANA]: 'particles/generic_gameplay/rune_doubledamage.vpcf',
-    [PickupTypes.SHIELD]: 'particles/generic_gameplay/rune_bounty.vpcf',
-    [PickupTypes.DEATH]: 'particles/generic_gameplay/rune_haste.vpcf'
+    [PickupTypes.HEALTH]: "particles/generic_gameplay/rune_regeneration.vpcf",
+    [PickupTypes.MANA]: "particles/generic_gameplay/rune_doubledamage.vpcf",
+    [PickupTypes.SHIELD]: "particles/generic_gameplay/rune_bounty.vpcf",
+    [PickupTypes.DEATH]: "particles/generic_gameplay/rune_haste.vpcf"
 };
 
 export default class Pickup extends Item{

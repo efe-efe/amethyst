@@ -1,6 +1,6 @@
-import { tables, math, modifiers } from './util';
-import { TargetingIndicator } from './types';
-import CustomAbilities from './customAbilities';
+import { tables, math, modifiers } from "./util";
+import { TargetingIndicator } from "./types";
+import CustomAbilities from "./customAbilities";
 
 (function(){
     const customAbilities = CustomAbilities.GetInstance();
@@ -12,11 +12,11 @@ import CustomAbilities from './customAbilities';
     let particleHalfCircle: ParticleID | undefined = undefined;
     
     const targetIndicatorModifiers = [ 
-        'modifier_sniper_ultimate_channeling',
-        'modifier_phantom_counter_banish',
-        'modifier_nevermore_counter_banish',
-        'modifier_mars_counter_countering',
-        'modifier_spectre_counter_countering',
+        "modifier_sniper_ultimate_channeling",
+        "modifier_phantom_counter_banish",
+        "modifier_nevermore_counter_banish",
+        "modifier_mars_counter_countering",
+        "modifier_spectre_counter_countering",
     ];
     
     function DEFX(efx: ParticleID){
@@ -78,8 +78,8 @@ import CustomAbilities from './customAbilities';
                     (mousePosition[2] - heroOrigin[2])
                 ]);	
                 const maxRange = Abilities.GetCastRange(active);
-                const minRange = Abilities.GetSpecialValueFor(active, 'min_range');
-                const radius = Abilities.GetSpecialValueFor(active, 'radius');
+                const minRange = Abilities.GetSpecialValueFor(active, "min_range");
+                const radius = Abilities.GetSpecialValueFor(active, "radius");
                 let target: [number, number, number] | undefined = undefined;
                 let length = 0;
                 let type = data.Type;
@@ -107,9 +107,9 @@ import CustomAbilities from './customAbilities';
                     }
                 }
     
-                if(type == 'TARGETING_INDICATOR_AOE'){
+                if(type == "TARGETING_INDICATOR_AOE"){
                     if(!particleAoe){
-                        particleAoe = Particles.CreateParticle('particles/ui_mouseactions/range_finder_aoe.vpcf', ParticleAttachment_t.PATTACH_WORLDORIGIN, heroIndex);
+                        particleAoe = Particles.CreateParticle("particles/ui_mouseactions/range_finder_aoe.vpcf", ParticleAttachment_t.PATTACH_WORLDORIGIN, heroIndex);
                     }
     
                     target = [
@@ -122,9 +122,9 @@ import CustomAbilities from './customAbilities';
                     Particles.SetParticleControl(particleAoe, 2, target);
                     Particles.SetParticleControl(particleAoe, 3, [radius, 0, 0]);
                 }
-                if(type == 'TARGETING_INDICATOR_LINE' || (type == 'TARGETING_INDICATOR_AOE' && data.DisplayRange == 1)){
+                if(type == "TARGETING_INDICATOR_LINE" || (type == "TARGETING_INDICATOR_AOE" && data.DisplayRange == 1)){
                     if(!particleLine){
-                        particleLine = Particles.CreateParticle('particles/targeting/line.vpcf', ParticleAttachment_t.PATTACH_WORLDORIGIN, heroIndex);
+                        particleLine = Particles.CreateParticle("particles/targeting/line.vpcf", ParticleAttachment_t.PATTACH_WORLDORIGIN, heroIndex);
                     }
     
                     length = length - radius;
@@ -145,9 +145,9 @@ import CustomAbilities from './customAbilities';
                     Particles.SetParticleControl(particleLine, 1, target);
                     Particles.SetParticleControl(particleLine, 2, target_offset);
                 }
-                if(type == 'TARGETING_INDICATOR_HALF_CIRCLE'){
+                if(type == "TARGETING_INDICATOR_HALF_CIRCLE"){
                     if(!particleHalfCircle){
-                        particleHalfCircle = Particles.CreateParticle('particles/targeting/half_circle.vpcf', ParticleAttachment_t.PATTACH_WORLDORIGIN, heroIndex);
+                        particleHalfCircle = Particles.CreateParticle("particles/targeting/half_circle.vpcf", ParticleAttachment_t.PATTACH_WORLDORIGIN, heroIndex);
                     }
     
                     target = [

@@ -1,9 +1,9 @@
 class Alliance{
     name: string;
-    color: 'local' | 'yellow' | 'lightgreen' | 'pink' | 'orange' | 'blue' | 'gray';
+    color: "local" | "yellow" | "lightgreen" | "pink" | "orange" | "blue" | "gray";
     teams: DOTATeam_t[];
 
-    constructor(name: string, color: 'yellow' | 'lightgreen' | 'pink' | 'orange' | 'blue' | 'gray', teams: DOTATeam_t[]){
+    constructor(name: string, color: "yellow" | "lightgreen" | "pink" | "orange" | "blue" | "gray", teams: DOTATeam_t[]){
         this.name = name;
         this.color = color;
         this.teams = teams;
@@ -27,18 +27,18 @@ class Alliance{
         return isLocal;
     }
 
-    GetColor(): 'local' | 'yellow' | 'lightgreen' | 'pink' | 'orange' | 'blue' | 'gray'{
-        return this.IsLocal() ? 'local' : this.color;
+    GetColor(): "local" | "yellow" | "lightgreen" | "pink" | "orange" | "blue" | "gray"{
+        return this.IsLocal() ? "local" : this.color;
     }
 }
 
 export default class Alliances{
     private static instance: Alliances;
     private alliances: Alliance[] = [
-        new Alliance('DOTA_ALLIANCE_RADIANT', 'orange', [DOTATeam_t.DOTA_TEAM_GOODGUYS, DOTATeam_t.DOTA_TEAM_BADGUYS]),
-        new Alliance('DOTA_ALLIANCE_DIRE', 'yellow', [DOTATeam_t.DOTA_TEAM_CUSTOM_1, DOTATeam_t.DOTA_TEAM_CUSTOM_2]),
-        new Alliance('DOTA_ALLIANCE_LEGION', 'blue', [DOTATeam_t.DOTA_TEAM_CUSTOM_3, DOTATeam_t.DOTA_TEAM_CUSTOM_4]),
-        new Alliance('DOTA_ALLIANCE_VOID', 'pink', [DOTATeam_t.DOTA_TEAM_CUSTOM_5, DOTATeam_t.DOTA_TEAM_CUSTOM_6]),
+        new Alliance("DOTA_ALLIANCE_RADIANT", "orange", [DOTATeam_t.DOTA_TEAM_GOODGUYS, DOTATeam_t.DOTA_TEAM_BADGUYS]),
+        new Alliance("DOTA_ALLIANCE_DIRE", "yellow", [DOTATeam_t.DOTA_TEAM_CUSTOM_1, DOTATeam_t.DOTA_TEAM_CUSTOM_2]),
+        new Alliance("DOTA_ALLIANCE_LEGION", "blue", [DOTATeam_t.DOTA_TEAM_CUSTOM_3, DOTATeam_t.DOTA_TEAM_CUSTOM_4]),
+        new Alliance("DOTA_ALLIANCE_VOID", "pink", [DOTATeam_t.DOTA_TEAM_CUSTOM_5, DOTATeam_t.DOTA_TEAM_CUSTOM_6]),
     ]
 
     private constructor(){

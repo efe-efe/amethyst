@@ -1,5 +1,5 @@
-import Alliance from './alliance';
-import { CustomPlayerHeroNPC } from './pve/custom_npc';
+import Alliance from "./alliance";
+import { CustomPlayerHeroNPC } from "./pve/custom_npc";
 
 export default class Player{
     id: PlayerID;

@@ -24,7 +24,7 @@ export default class MousePositionController{
             playerId: Players.GetLocalPlayer() 
         } as never;
 
-        GameEvents.SendCustomGameEventToServer('update_mouse_position', data);
+        GameEvents.SendCustomGameEventToServer("update_mouse_position", data);
         
         $.Schedule(this.thinkInterval, () => {
             this.Update();

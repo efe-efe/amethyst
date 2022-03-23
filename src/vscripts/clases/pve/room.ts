@@ -1,14 +1,14 @@
-import Alliance from '../alliance';
-import { CustomAI, NPCNames } from './custom_ai';
-import GameState from '../game_state';
-import Stage from './stage';
-import settings from '../../settings';
-import { CustomEvents } from '../../custom_events';
-import { Reward, RewardsManager } from '../../rewards/rewards';
-import { Diamond } from '../gem';
-import CustomNPC from './custom_npc';
-import BreakableBounty from '../breakable_bounty';
-import Spawner from './spawner';
+import Alliance from "../alliance";
+import { CustomAI, NPCNames } from "./custom_ai";
+import GameState from "../game_state";
+import Stage from "./stage";
+import settings from "../../settings";
+import { CustomEvents } from "../../custom_events";
+import { Reward, RewardsManager } from "../../rewards/rewards";
+import { Diamond } from "../gem";
+import CustomNPC from "./custom_npc";
+import BreakableBounty from "../breakable_bounty";
+import Spawner from "./spawner";
 
 export enum RoomType {
     REGULAR = 0,
@@ -69,14 +69,14 @@ export default class Room extends GameState{
         this.SendDataToClient();
 
         const customEvents = CustomEvents.GetInstance();
-        customEvents.RegisterListener('pve:current_reward_applied', () => {
+        customEvents.RegisterListener("pve:current_reward_applied", () => {
             this.OnRewardApplied();
         });
-        customEvents.RegisterListener('pve:next_reward_selected', () => {
+        customEvents.RegisterListener("pve:next_reward_selected", () => {
             this.OnRewardSelected();
         });
 
-        ListenToGameEvent('entity_killed', (event) => this.OnUnitDies(event), undefined);
+        ListenToGameEvent("entity_killed", (event) => this.OnUnitDies(event), undefined);
     }
     
     SendDataToClient(): void{
@@ -87,7 +87,7 @@ export default class Room extends GameState{
             roomPhaseIndex: this.phaseIndex,
             roomType: RoomType[this.type],
         } as never;
-        CustomNetTables.SetTableValue('main' as never, 'pve', data);
+        CustomNetTables.SetTableValue("main" as never, "pve", data);
     }
 
     StartWave(waveNumber: number): void{
@@ -115,7 +115,7 @@ export default class Room extends GameState{
         if(previousNpcs > this.ais.length){
             this.remainingWaveNpcs--;
             this.remainingTotalNpcs--;
-            EFX('particles/econ/events/new_bloom/dragon_death.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, killed, {
+            EFX("particles/econ/events/new_bloom/dragon_death.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, killed, {
                 release: true,
             });
         }

@@ -1,4 +1,4 @@
-import BreakableBounty from './breakable_bounty';
+import BreakableBounty from "./breakable_bounty";
 
 export enum GemTypes{
     NO_TYPE = 0,
@@ -10,12 +10,12 @@ export enum GemTypes{
 }
 
 const GEM_LIGHT_PARTICLE = {
-    [GemTypes.NO_TYPE]: '',
-    [GemTypes.AMETHYST]: 'particles/generic_gameplay/rune_arcane.vpcf',
-    [GemTypes.SAPPHIRE]: 'particles/generic_gameplay/rune_doubledamage.vpcf',
-    [GemTypes.RUBY]: 'particles/generic_gameplay/rune_haste.vpcf',
-    [GemTypes.EMERALD]: 'particles/generic_gameplay/rune_regeneration.vpcf',
-    [GemTypes.DIAMOND]: 'particles/generic_gameplay/rune_regeneration.vpcf',
+    [GemTypes.NO_TYPE]: "",
+    [GemTypes.AMETHYST]: "particles/generic_gameplay/rune_arcane.vpcf",
+    [GemTypes.SAPPHIRE]: "particles/generic_gameplay/rune_doubledamage.vpcf",
+    [GemTypes.RUBY]: "particles/generic_gameplay/rune_haste.vpcf",
+    [GemTypes.EMERALD]: "particles/generic_gameplay/rune_regeneration.vpcf",
+    [GemTypes.DIAMOND]: "particles/generic_gameplay/rune_regeneration.vpcf",
 };
 
 const GEM_COLOR = {
@@ -80,9 +80,9 @@ class Gem extends BreakableBounty{
 
     PlayEffectsOnSpawn(): void{
         const unit = this.GetUnit();
-        EmitSoundOn('Hero_Oracle.FortunesEnd.Target', unit);
-        EFX('particles/units/heroes/hero_chen/chen_hand_of_god.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
-        EFX('particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+        EmitSoundOn("Hero_Oracle.FortunesEnd.Target", unit);
+        EFX("particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+        EFX("particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
 
         if(this.particle){
             EFX(this.particle, ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
@@ -93,7 +93,7 @@ export class Diamond extends Gem{
     type = GemTypes.DIAMOND;
 
     constructor(origin: Vector){
-        super(origin, 'particles/generic_gameplay/rune_doubledamage.vpcf', 'models/heroes/oracle/weapon.vmdl', 3.0);
+        super(origin, "particles/generic_gameplay/rune_doubledamage.vpcf", "models/heroes/oracle/weapon.vmdl", 3.0);
     }
 
     Effect(killer: CDOTA_BaseNPC): void{
@@ -107,18 +107,18 @@ export class Diamond extends Gem{
     }
 
     PlayEffectsOnTarget(target: CDOTA_BaseNPC): void{
-        EmitSoundOn('DOTA_Item.Refresher.Activate', target);
-        EFX('particles/items_fx/arcane_boots_recipient.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
+        EmitSoundOn("DOTA_Item.Refresher.Activate", target);
+        EFX("particles/items_fx/arcane_boots_recipient.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
             release: true 
         });
-        EFX('particles/gems/amethyst.vpcf', ParticleAttachment.CUSTOMORIGIN, target, {
+        EFX("particles/gems/amethyst.vpcf", ParticleAttachment.CUSTOMORIGIN, target, {
             cp0: {
                 ent: target,
-                point: 'attach_hitloc'
+                point: "attach_hitloc"
             },
             release: true 
         });
-        EFX('particles/econ/items/crystal_maiden/crystal_maiden_maiden_of_icewrack/cm_arcana_pup_lvlup_godray.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
+        EFX("particles/econ/items/crystal_maiden/crystal_maiden_maiden_of_icewrack/cm_arcana_pup_lvlup_godray.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
             cp1: target.GetAbsOrigin(),
             cp3: target.GetAbsOrigin(),
             release: true 
@@ -131,7 +131,7 @@ class Sapphire extends Gem{
     type = GemTypes.SAPPHIRE;
 
     constructor(origin: Vector){
-        super(origin, 'particles/generic_gameplay/rune_doubledamage.vpcf', 'models/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_sphere.vmdl', 4.0);
+        super(origin, "particles/generic_gameplay/rune_doubledamage.vpcf", "models/items/disruptor/disruptor_ti8_immortal_weapon/disruptor_ti8_immortal_sphere.vmdl", 4.0);
     }
 
     Effect(killer: CDOTA_BaseNPC){
@@ -141,7 +141,7 @@ class Sapphire extends Gem{
 
         allies.forEach((ally) => {
             if(ally.IsRealHero()){
-                ally.AddNewModifier(ally, undefined, 'modifier_sapphire', { 
+                ally.AddNewModifier(ally, undefined, "modifier_sapphire", { 
                     duration: this.duration, 
                     damage_block: final_shield
                 });
@@ -156,7 +156,7 @@ class Amethyst extends Gem{
     type = GemTypes.AMETHYST;
 
     constructor(origin: Vector){
-        super(origin, 'particles/generic_gameplay/rune_arcane.vpcf', 'models/heroes/oracle/crystal_ball.vmdl', 3.0);
+        super(origin, "particles/generic_gameplay/rune_arcane.vpcf", "models/heroes/oracle/crystal_ball.vmdl", 3.0);
     }
 
     Effect(killer: CDOTA_BaseNPC): void{
@@ -178,18 +178,18 @@ class Amethyst extends Gem{
     }
 
     PlayEffectsOnTarget(target: CDOTA_BaseNPC): void{
-        EmitSoundOn('DOTA_Item.Refresher.Activate', target);
-        EFX('particles/items_fx/arcane_boots_recipient.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
+        EmitSoundOn("DOTA_Item.Refresher.Activate", target);
+        EFX("particles/items_fx/arcane_boots_recipient.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
             release: true 
         });
-        EFX('particles/gems/amethyst.vpcf', ParticleAttachment.CUSTOMORIGIN, target, {
+        EFX("particles/gems/amethyst.vpcf", ParticleAttachment.CUSTOMORIGIN, target, {
             cp0: {
                 ent: target,
-                point: 'attach_hitloc'
+                point: "attach_hitloc"
             },
             release: true 
         });
-        EFX('particles/econ/items/crystal_maiden/crystal_maiden_maiden_of_icewrack/cm_arcana_pup_lvlup_godray.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
+        EFX("particles/econ/items/crystal_maiden/crystal_maiden_maiden_of_icewrack/cm_arcana_pup_lvlup_godray.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, target, { 
             cp1: target.GetAbsOrigin(),
             cp3: target.GetAbsOrigin(),
             release: true 
@@ -204,7 +204,7 @@ class Emerald extends Gem{
     type = GemTypes.EMERALD;
 
     constructor(origin: Vector){
-        super(origin.__add(Vector(0, 0, 64)), 'particles/generic_gameplay/rune_regeneration.vpcf', 'models/items/rubick/rubick_arcana/rubick_arcana_cube.vmdl', 0.45);
+        super(origin.__add(Vector(0, 0, 64)), "particles/generic_gameplay/rune_regeneration.vpcf", "models/items/rubick/rubick_arcana/rubick_arcana_cube.vmdl", 0.45);
     }
 
     Effect(killer: CDOTA_BaseNPC){
@@ -217,15 +217,15 @@ class Emerald extends Gem{
             if(ally.IsRealHero()){
                 CustomEntitiesLegacy.TrueHeal(ally, final_true_heal);
                 
-                ally.AddNewModifier(ally, undefined, 'modifier_emerald', { 
+                ally.AddNewModifier(ally, undefined, "modifier_emerald", { 
                     duration: this.duration, 
                     heal_per_second: final_heal_per_second
                 });
 
-                EFX('particles/gems/emerald.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, ally, {
+                EFX("particles/gems/emerald.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, ally, {
                     cp3: {
                         ent: ally,
-                        point: 'attach_hitloc'
+                        point: "attach_hitloc"
                     },
                     release: true,
                 });
@@ -241,7 +241,7 @@ class Ruby extends Gem{
     type = GemTypes.RUBY;
 
     constructor(origin: Vector){
-        super(origin, 'particles/generic_gameplay/rune_haste.vpcf', 'models/items/furion/dark_staff/bulb.vmdl', 0.5);
+        super(origin, "particles/generic_gameplay/rune_haste.vpcf", "models/items/furion/dark_staff/bulb.vmdl", 0.5);
     }
     
     Effect(killer: CDOTA_BaseNPC): void{
@@ -252,7 +252,7 @@ class Ruby extends Gem{
 
         allies.forEach((ally) => {
             if(ally.IsRealHero()){
-                ally.AddNewModifier(ally, undefined, 'modifier_ruby', { 
+                ally.AddNewModifier(ally, undefined, "modifier_ruby", { 
                     duration: this.duration,
                     damage: final_damage 
                 });
@@ -262,7 +262,7 @@ class Ruby extends Gem{
     }
     
     PlaySpecificEffectsOnDeath(): void{
-        EFX('particles/econ/items/monkey_king/arcana/fire/monkey_king_spring_arcana_fire.vpcf', ParticleAttachment.WORLDORIGIN, undefined, {
+        EFX("particles/econ/items/monkey_king/arcana/fire/monkey_king_spring_arcana_fire.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
             cp0: GetGroundPosition(this.origin, undefined),
             release: true
         });
@@ -362,7 +362,7 @@ export default class GemWrapper{
     }
 
     CreateProgressCircle(): ParticleID{
-        return EFX('particles/progress_circle/generic_progress_circle.vpcf', ParticleAttachment.WORLDORIGIN, undefined, {
+        return EFX("particles/progress_circle/generic_progress_circle.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
             cp0f: Vector(0, -1, 0),
             cp0: this.origin - Vector(0, 0, 120),
             cp1: Vector(250, 0, 1),

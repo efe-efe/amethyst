@@ -1,5 +1,5 @@
-import Alliance from './alliance';
-import Player from './player';
+import Alliance from "./alliance";
+import Player from "./player";
 
 export enum CustomGameState {
     NONE = 0,
@@ -64,6 +64,6 @@ export default class GameState{
             timer_second_01: s01,
         } as never;
     
-        CustomGameEventManager.Send_ServerToAllClients('countdown', broadcast_gametimer);
+        CustomGameEventManager.Send_ServerToAllClients("countdown", broadcast_gametimer);
     }
 }

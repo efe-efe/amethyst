@@ -38,7 +38,7 @@ export default class UnitEntity{
         if((options as NonExistingEntityOptions).properties){
             this.unit.SetAbsOrigin(this.origin);
         }
-        ListenToGameEvent('entity_killed', (event) => this.OnUnitDied(event), undefined);
+        ListenToGameEvent("entity_killed", (event) => this.OnUnitDied(event), undefined);
     }
 
     InitializeTeam(team: DotaTeam | undefined): DotaTeam{

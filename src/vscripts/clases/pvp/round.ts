@@ -1,9 +1,9 @@
 
-import Alliance from '../alliance';
-import GameState, { CustomGameState } from '../game_state';
-import GemWrapper, { GemTypes } from '../gem';
-import Pickup, { PickupTypes } from '../pickup';
-import settings from '../../settings';
+import Alliance from "../alliance";
+import GameState, { CustomGameState } from "../game_state";
+import GemWrapper, { GemTypes } from "../gem";
+import Pickup, { PickupTypes } from "../pickup";
+import settings from "../../settings";
 
 interface PickupWrapper {
     origin: Vector;
@@ -40,12 +40,12 @@ export default class Round extends GameState{
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
 
-        this.gem_spawn_points = Entities.FindAllByName('orb_spawn').map((entity) => entity.GetAbsOrigin());
-        this.health_entities = Entities.FindAllByName('health_orb');
-        this.mana_entities = Entities.FindAllByName('mana_orb');
-        this.shield_entities = Entities.FindAllByName('shield_orb');
-        this.radiant_warmup_spawn = Entities.FindByName(undefined, 'radiant_warmup_spawn')!;
-        this.dire_warmup_spawn = Entities.FindByName(undefined, 'dire_warmup_spawn')!;
+        this.gem_spawn_points = Entities.FindAllByName("orb_spawn").map((entity) => entity.GetAbsOrigin());
+        this.health_entities = Entities.FindAllByName("health_orb");
+        this.mana_entities = Entities.FindAllByName("mana_orb");
+        this.shield_entities = Entities.FindAllByName("shield_orb");
+        this.radiant_warmup_spawn = Entities.FindByName(undefined, "radiant_warmup_spawn")!;
+        this.dire_warmup_spawn = Entities.FindByName(undefined, "dire_warmup_spawn")!;
 
         this.AddPickups(this.health_entities, PickupTypes.HEALTH);
         this.AddPickups(this.mana_entities, PickupTypes.MANA);
@@ -83,7 +83,7 @@ export default class Round extends GameState{
             this.gem_spawn_points.forEach((point, i) => {
                 if(i !== this.gem.index){ 
                     const direction = (this.gem_spawn_points[this.gem.index].__sub(point)).Normalized();
-                    const efx = ParticleManager.CreateParticle('particles/gem_finder.vpcf', ParticleAttachment.WORLDORIGIN, undefined);
+                    const efx = ParticleManager.CreateParticle("particles/gem_finder.vpcf", ParticleAttachment.WORLDORIGIN, undefined);
                     ParticleManager.SetParticleControl(efx, 0, point);
                     ParticleManager.SetParticleControl(efx, 2, point.__add(direction.__mul(Vector(128, 128, 0))));
                     ParticleManager.SetParticleControl(efx, 60, color);
@@ -201,7 +201,7 @@ export default class Round extends GameState{
             if(player.alliance && player.hero){
                 let target = this.radiant_warmup_spawn;
 
-                if(player.alliance.name == 'DOTA_ALLIANCE_DIRE'){
+                if(player.alliance.name == "DOTA_ALLIANCE_DIRE"){
                     target = this.dire_warmup_spawn;
                 }
 
@@ -229,7 +229,7 @@ export default class Round extends GameState{
                 return;
             }
         } else {
-            CustomGameEventManager.Send_ServerToAllClients('custom_message', { text: 'DRAW!' } as never);
+            CustomGameEventManager.Send_ServerToAllClients("custom_message", { text: "DRAW!" } as never);
         }
 
         this.alliances.forEach((alliance) => {
@@ -247,15 +247,15 @@ export default class Round extends GameState{
             max_score = 4;
         }
 
-        const tableName = 'main' as never;
-        CustomNetTables.SetTableValue(tableName, 'maxScore', { max_score } as never);
+        const tableName = "main" as never;
+        CustomNetTables.SetTableValue(tableName, "maxScore", { max_score } as never);
         GameRules.Addon.round = undefined;
 
         this.GetAllPlayers().forEach((player) => {
             const hero = player.hero;
             const playerId = player.GetId();
             if(hero){
-                CustomEntitiesLegacy.SafeDestroyModifier(hero, 'modifier_generic_provides_vision');
+                CustomEntitiesLegacy.SafeDestroyModifier(hero, "modifier_generic_provides_vision");
             }
             PlayerResource.SetCameraTarget(playerId, undefined);
         });
@@ -303,12 +303,12 @@ export default class Round extends GameState{
     }
 
     CreateDeathZone(): void{
-        const tableName = 'custom_message' as never;
-        CustomGameEventManager.Send_ServerToAllClients(tableName, { text: 'Death Zone has initiated!' } as never);
+        const tableName = "custom_message" as never;
+        CustomGameEventManager.Send_ServerToAllClients(tableName, { text: "Death Zone has initiated!" } as never);
         this.death_zone = CreateModifierThinker(
             undefined,
             undefined,
-            'modifier_death_zone',
+            "modifier_death_zone",
             {},
             this.gem_spawn_points[this.gem.index],
             DotaTeam.NOTEAM,

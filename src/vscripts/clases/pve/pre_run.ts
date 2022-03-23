@@ -1,6 +1,6 @@
-import settings from '../../settings';
-import Alliance from '../alliance';
-import GameState, { CustomGameState } from '../game_state';
+import settings from "../../settings";
+import Alliance from "../alliance";
+import GameState, { CustomGameState } from "../game_state";
 
 export default class PreRun extends GameState{
     constructor(alliances: Alliance[], duration: number){

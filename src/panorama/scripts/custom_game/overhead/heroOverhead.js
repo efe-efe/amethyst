@@ -1,15 +1,15 @@
-import Overhead from './overhead';
-import Recast from './recast';
-import Status from './status';
-import util, { colors, panels } from '../util';
-import Player from './player';
-import Charges from './charges';
-import Cooldown from './cooldown';
-import Stacks from './stacks';
-import Health from '../commonComponents/health';
-import Alliances from '../alliances';
-import Castpoint from './castpoint';
-import MultipleBars from '../commonComponents/multipleBars';
+import Overhead from "./overhead";
+import Recast from "./recast";
+import Status from "./status";
+import util, { colors, panels } from "../util";
+import Player from "./player";
+import Charges from "./charges";
+import Cooldown from "./cooldown";
+import Stacks from "./stacks";
+import Health from "../commonComponents/health";
+import Alliances from "../alliances";
+import Castpoint from "./castpoint";
+import MultipleBars from "../commonComponents/multipleBars";
 var StatusScope;
 (function (StatusScope) {
     StatusScope[StatusScope["STATUS_SCOPE_PUBLIC"] = 1] = "STATUS_SCOPE_PUBLIC";
@@ -23,30 +23,30 @@ export default class HeroOverhead extends Overhead {
         const localPlayerId = Game.GetLocalPlayerID();
         this.isLocalPlayer = localPlayerId == heroData.playerId;
         this.color = colors[alliance.GetColor()];
-        this.topPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__top');
-        this.midPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__mid');
-        this.botPanel = panels.createPanelSimple(this.containerPanel, 'unit-overhead__bot unit-overhead__bot--hero');
-        this.chargesPanel = panels.createPanelSimple(this.botPanel, 'unit-overhead-charges');
-        const resourcesPanel = panels.createPanelSimple(this.botPanel, 'unit-overhead-resources');
-        this.healthPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__health');
-        this.manaPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__mana');
-        this.energyPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__energy');
-        this.castpointPanel = panels.createPanelSimple(resourcesPanel, 'unit-overhead-resources__castpoint');
-        this.ammoPanel = panels.createPanelSimple(this.botPanel, 'unit-overhead-ammo');
-        this.stackbarsPanel = panels.createPanelSimple(this.ammoPanel, 'unit-overhead-ammo__stackbars');
-        this.cooldownPanel = panels.createPanelSimple(this.ammoPanel, 'unit-overhead-ammo__cooldown');
+        this.topPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__top");
+        this.midPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__mid");
+        this.botPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__bot unit-overhead__bot--hero");
+        this.chargesPanel = panels.createPanelSimple(this.botPanel, "unit-overhead-charges");
+        const resourcesPanel = panels.createPanelSimple(this.botPanel, "unit-overhead-resources");
+        this.healthPanel = panels.createPanelSimple(resourcesPanel, "unit-overhead-resources__health");
+        this.manaPanel = panels.createPanelSimple(resourcesPanel, "unit-overhead-resources__mana");
+        this.energyPanel = panels.createPanelSimple(resourcesPanel, "unit-overhead-resources__energy");
+        this.castpointPanel = panels.createPanelSimple(resourcesPanel, "unit-overhead-resources__castpoint");
+        this.ammoPanel = panels.createPanelSimple(this.botPanel, "unit-overhead-ammo");
+        this.stackbarsPanel = panels.createPanelSimple(this.ammoPanel, "unit-overhead-ammo__stackbars");
+        this.cooldownPanel = panels.createPanelSimple(this.ammoPanel, "unit-overhead-ammo__cooldown");
         if (alliance.IsLocal()) {
             this.mana = new MultipleBars(this.manaPanel, {
                 value: heroData.mana,
                 maxValue: heroData.maxMana,
-                className: 'mana',
+                className: "mana",
                 fullColor: colors.Gradient(colors.blue),
                 valuePerCell: 25,
             });
             this.energy = new MultipleBars(this.energyPanel, {
                 value: heroData.energy,
                 maxValue: heroData.maxEnergy,
-                className: 'energy',
+                className: "energy",
                 fullColor: colors.Gradient(colors.yellowRed),
                 valuePerCell: heroData.energyPerCell || 100,
             });
@@ -141,19 +141,19 @@ class SwitchPanel {
         this.Switch();
     }
     ShutDownBoth() {
-        this.childrens[0].style.visibility = 'collapse';
-        this.childrens[1].style.visibility = 'collapse';
+        this.childrens[0].style.visibility = "collapse";
+        this.childrens[1].style.visibility = "collapse";
         this.state = -1;
     }
     Switch() {
         if (this.state == 0) {
-            this.childrens[0].style.visibility = 'collapse';
-            this.childrens[1].style.visibility = 'visible';
+            this.childrens[0].style.visibility = "collapse";
+            this.childrens[1].style.visibility = "visible";
             this.state = 1;
         }
         else {
-            this.childrens[1].style.visibility = 'collapse';
-            this.childrens[0].style.visibility = 'visible';
+            this.childrens[1].style.visibility = "collapse";
+            this.childrens[0].style.visibility = "visible";
             this.state = 0;
         }
     }

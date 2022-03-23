@@ -1,6 +1,6 @@
 export enum Language
 {
-    English = 'english',
+    English = "english",
     German = "german",
     Russian = "russian",
     SChinese = "schinese"

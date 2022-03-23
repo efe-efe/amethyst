@@ -1,9 +1,9 @@
-import { CustomActionEvent } from '../addon_game_mode';
-import BreakableBounty, { BreakableBountyOptions } from '../clases/breakable_bounty';
-import { CustomPlayerHeroNPC } from '../clases/pve/custom_npc';
-import { CustomEvents } from '../custom_events';
-import { UpgradeManager } from '../upgrades/upgrades';
-import Math from '../util/math';
+import { CustomActionEvent } from "../addon_game_mode";
+import BreakableBounty, { BreakableBountyOptions } from "../clases/breakable_bounty";
+import { CustomPlayerHeroNPC } from "../clases/pve/custom_npc";
+import { CustomEvents } from "../custom_events";
+import { UpgradeManager } from "../upgrades/upgrades";
+import Math from "../util/math";
 export interface Reward {
     type: RewardTypes;
     name: string;
@@ -28,28 +28,28 @@ export enum RewardTypes {
 const Rewards: Reward[] = [
     {
         type: RewardTypes.FAVOR,
-        name: 'Favor',
-        description: 'Change the effect one of your abilities.',
+        name: "Favor",
+        description: "Change the effect one of your abilities.",
     },
     {
         type: RewardTypes.KNOWLEDGE,
-        name: 'Tome of Knowledge',
-        description: 'Enhances one of your existing shard effects.',
+        name: "Tome of Knowledge",
+        description: "Enhances one of your existing shard effects.",
     },
     {
         type: RewardTypes.VITALITY,
-        name: 'Vitality',
-        description: 'Increases your maximun health pool.',
+        name: "Vitality",
+        description: "Increases your maximun health pool.",
     },
     {
         type: RewardTypes.ITEM,
-        name: 'Item',
-        description: 'Artifacts that improves your hero powers.',
+        name: "Item",
+        description: "Artifacts that improves your hero powers.",
     },
     {
         type: RewardTypes.SHARD,
-        name: 'Shard',
-        description: 'Improves one of your abilities.',
+        name: "Shard",
+        description: "Improves one of your abilities.",
     },/*
     {
         id: 'bounty_shop',
@@ -66,22 +66,22 @@ const Rewards: Reward[] = [
 class RewardEntity extends BreakableBounty{
     owner: CustomPlayerHeroNPC;
     constructor(origin: Vector, owner: CustomPlayerHeroNPC, options: BreakableBountyOptions){
-        super(origin, { ...options, particle: 'particles/generic_gameplay/rune_doubledamage.vpcf', scale: 1.3 });
+        super(origin, { ...options, particle: "particles/generic_gameplay/rune_doubledamage.vpcf", scale: 1.3 });
         this.owner = owner;
     }
 
     PlayEffectsOnSpawn(): void{
         const unit = this.GetUnit();
-        EmitSoundOn('Hero_Oracle.FortunesEnd.Target', unit);
-        EFX('particles/units/heroes/hero_chen/chen_hand_of_god.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
-        EFX('particles/reward_effect_impact.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { 
+        EmitSoundOn("Hero_Oracle.FortunesEnd.Target", unit);
+        EFX("particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+        EFX("particles/reward_effect_impact.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, unit, { 
             cp1: unit.GetAbsOrigin(),
             release: true,
         });
-        EFX('particles/econ/items/zeus/arcana_chariot/zeus_arcana_blink_start.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
-        EFX('particles/econ/items/zeus/arcana_chariot/zeus_arcana_blink_end.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
-        EFX('particles/reward_effect_extra.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
-        EFX('particles/reward_effect.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, unit, { 
+        EFX("particles/econ/items/zeus/arcana_chariot/zeus_arcana_blink_start.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+        EFX("particles/econ/items/zeus/arcana_chariot/zeus_arcana_blink_end.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+        EFX("particles/reward_effect_extra.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, unit, { release: true });
+        EFX("particles/reward_effect.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, unit, { 
             cp1: Vector(100, 100, 100),
             release: true 
         });
@@ -93,7 +93,7 @@ class RewardEntity extends BreakableBounty{
 }
 class FavorEntity extends RewardEntity{
     constructor(origin: Vector, owner: CustomPlayerHeroNPC){
-        super(origin, owner, { model: 'models/props_gameplay/stout_shield.vmdl', health: 25 });
+        super(origin, owner, { model: "models/props_gameplay/stout_shield.vmdl", health: 25 });
     }
 
     Effect(killer: CDOTA_BaseNPC): void{
@@ -104,7 +104,7 @@ class FavorEntity extends RewardEntity{
 
 class ShardEntity extends RewardEntity{
     constructor(origin: Vector, owner: CustomPlayerHeroNPC){
-        super(origin, owner, { model: 'models/props_gameplay/aghanim_scepter.vmdl', health: 25 });
+        super(origin, owner, { model: "models/props_gameplay/aghanim_scepter.vmdl", health: 25 });
     }
 
     Effect(killer: CDOTA_BaseNPC): void{
@@ -115,7 +115,7 @@ class ShardEntity extends RewardEntity{
 
 class ItemEntity extends RewardEntity{
     constructor(origin: Vector, owner: CustomPlayerHeroNPC){
-        super(origin, owner, { model: 'models/props_gameplay/neutral_box.vmdl', health: 25 });
+        super(origin, owner, { model: "models/props_gameplay/neutral_box.vmdl", health: 25 });
     }
 
     Effect(killer: CDOTA_BaseNPC): void{
@@ -126,7 +126,7 @@ class ItemEntity extends RewardEntity{
 
 class KnowledgeEntity extends RewardEntity{
     constructor(origin: Vector, owner: CustomPlayerHeroNPC){
-        super(origin, owner, { model: 'models/props_items/necronomicon.vmdl', health: 25 });
+        super(origin, owner, { model: "models/props_items/necronomicon.vmdl", health: 25 });
     }
 
     Effect(killer: CDOTA_BaseNPC): void{
@@ -137,7 +137,7 @@ class KnowledgeEntity extends RewardEntity{
 
 class VitalityEntity extends RewardEntity{
     constructor(origin: Vector, owner: CustomPlayerHeroNPC){
-        super(origin, owner, { model: 'models/props_gameplay/heart001.vmdl', health: 25 });
+        super(origin, owner, { model: "models/props_gameplay/heart001.vmdl", health: 25 });
     }
 
     Effect(killer: CDOTA_BaseNPC): void{
@@ -150,7 +150,7 @@ export const RewardsManager = {
     Rewards,
     OfferRewardsForHero(hero: CustomPlayerHeroNPC, rewards: Reward[]): void{
         if(rewards.length === 0){
-            print('Skipping rewards selection. No rewards available');
+            print("Skipping rewards selection. No rewards available");
             return;         
         }
         
@@ -159,7 +159,7 @@ export const RewardsManager = {
             rewards,
         } as never;
 
-        CustomNetTables.SetTableValue('custom_npc_rewards' as never, hero.unit.GetPlayerOwnerID().toString(), data);
+        CustomNetTables.SetTableValue("custom_npc_rewards" as never, hero.unit.GetPlayerOwnerID().toString(), data);
     },
     ClaimRewardForHero(customNpc: CustomPlayerHeroNPC, reward: Reward): RewardEntity | undefined{
         const origin = customNpc.unit.GetAbsOrigin().__add(Vector(RandomFloat(-1, 1) * 150, RandomFloat(-1, 1) * 150, 128));
@@ -186,7 +186,7 @@ export const RewardsManager = {
         const upgrades = UpgradeManager.GenerateFavors(customNpc, 3);
         
         if(upgrades.length === 0){
-            print('Skipping favors selection. No rewards available');  
+            print("Skipping favors selection. No rewards available");  
             UpgradeManager.ClearUpgrades(customNpc);
             return;          
         }
@@ -196,14 +196,14 @@ export const RewardsManager = {
             upgrades,
         } as never;
 
-        const tableName = 'custom_npc_favors' as never;
+        const tableName = "custom_npc_favors" as never;
         CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
     },
     ClaimShards(customNpc: CustomPlayerHeroNPC): void{
         const upgrades = UpgradeManager.GenerateShards(customNpc, 3);
         
         if(upgrades.length === 0){
-            print('Skipping shards selection. No rewards available');  
+            print("Skipping shards selection. No rewards available");  
             UpgradeManager.ClearUpgrades(customNpc);
             return;          
         }
@@ -213,14 +213,14 @@ export const RewardsManager = {
             upgrades
         } as never;
 
-        const tableName = 'custom_npc_favors' as never;
+        const tableName = "custom_npc_favors" as never;
         CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
     },
     ClaimKnowledge(customNpc: CustomPlayerHeroNPC): void{
         const upgrades = UpgradeManager.GenerateKnowledge(customNpc, 3);
         
         if(upgrades.length === 0){
-            print('Skipping knowledge selection. No rewards available');  
+            print("Skipping knowledge selection. No rewards available");  
             UpgradeManager.ClearUpgrades(customNpc);
             return;          
         }
@@ -230,14 +230,14 @@ export const RewardsManager = {
             upgrades,
         } as never;
 
-        const tableName = 'custom_npc_favors' as never;
+        const tableName = "custom_npc_favors" as never;
         CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
     },
     ClaimItems(customNpc: CustomPlayerHeroNPC): void{
         const upgrades = UpgradeManager.GenerateItems(customNpc, RandomInt(4, 6));
         
         if(upgrades.length === 0){
-            print('Skipping items selection. No rewards available');  
+            print("Skipping items selection. No rewards available");  
             UpgradeManager.ClearUpgrades(customNpc);
             return;          
         }
@@ -247,14 +247,14 @@ export const RewardsManager = {
             upgrades,
         } as never;
 
-        const tableName = 'custom_npc_favors' as never;
+        const tableName = "custom_npc_favors" as never;
         CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
     },
     ClaimVitality(customNpc: CustomPlayerHeroNPC): void{
-        customNpc.unit.AddNewModifier(customNpc.unit, undefined, 'modifier_upgrade_tarrasque', {});
+        customNpc.unit.AddNewModifier(customNpc.unit, undefined, "modifier_upgrade_tarrasque", {});
         CustomEntitiesLegacy.SendDataToClient(customNpc.unit);
         const customEvents = CustomEvents.GetInstance();
-        customEvents.EmitEvent('pve:current_reward_applied', { customNpc });
+        customEvents.EmitEvent("pve:current_reward_applied", { customNpc });
     },
     GenerateRewards(customNpc: CustomPlayerHeroNPC, options: GenerateRewardsOptions): Reward[]{
         const rewards = Rewards.filter((reward) => (
@@ -300,7 +300,7 @@ export const RewardsManager = {
     },
 };
 
-CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:select_reward', (eventSourceIndex, event) => {
+CustomGameEventManager.RegisterListener<CustomActionEvent>("custom_npc:select_reward", (eventSourceIndex, event) => {
     const playerId = event.playerIndex;
     const player = GameRules.Addon.FindPlayerById(playerId);
 

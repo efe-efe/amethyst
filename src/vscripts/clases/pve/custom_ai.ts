@@ -87,8 +87,8 @@ export class CustomAI{
         );
 
         if(options.shield){
-            this.unit.AddNewModifier(this.unit, undefined, 'modifier_generic_npc_shield', { damage_block: this.unit.GetMaxHealth() });
-            this.unit.AddNewModifier(this.unit, undefined, 'modifier_generic_npc_mini_stun', {});
+            this.unit.AddNewModifier(this.unit, undefined, "modifier_generic_npc_shield", { damage_block: this.unit.GetMaxHealth() });
+            this.unit.AddNewModifier(this.unit, undefined, "modifier_generic_npc_mini_stun", {});
         }
 
         this.restTime = options.restTime || 1.0;
@@ -97,7 +97,7 @@ export class CustomAI{
         this.minFollowRange = options.minFollowRange || 0;
         this.behavior = options.behavior || CustomAIBehavior.FOLLOWER;
         this.originalPosition = origin;
-        ListenToGameEvent('entity_hurt', (event) => this.OnUnitHurt(event), undefined);
+        ListenToGameEvent("entity_hurt", (event) => this.OnUnitHurt(event), undefined);
     }
 
     FindEnemy(radius: number): CDOTA_BaseNPC | undefined{
@@ -225,7 +225,7 @@ export class CustomAI{
                     }
                 }
                 if(npcAbility.requirements.targetInRadius){
-                    abilityTarget = this.FindEnemy(ability.GetSpecialValueFor('radius'));
+                    abilityTarget = this.FindEnemy(ability.GetSpecialValueFor("radius"));
                     if(!abilityTarget){
                         return false;
                     }
@@ -328,38 +328,38 @@ export const CustomAIMeta: {
 } = {
     [NPCNames.QUEEN]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('npc_dota_hero_queenofpain', origin, {
+            const ai = new CustomAI("npc_dota_hero_queenofpain", origin, {
                 minFollowRange: 500,
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('queen_scream')!,
+                ability: ai.unit.FindAbilityByName("queen_scream")!,
                 orderType: UnitOrder.CAST_NO_TARGET,
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('queen_dodge')!,
+                ability: ai.unit.FindAbilityByName("queen_dodge")!,
                 orderType: UnitOrder.CAST_NO_TARGET,
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('queen_blink')!,
+                ability: ai.unit.FindAbilityByName("queen_blink")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true,
                 }
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('queen_daggers')!,
+                ability: ai.unit.FindAbilityByName("queen_daggers")!,
                 orderType: UnitOrder.CAST_NO_TARGET,
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('queen_attack')!,
+                ability: ai.unit.FindAbilityByName("queen_attack")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true,
                 }
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('queen_wave')!,
+                ability: ai.unit.FindAbilityByName("queen_wave")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -371,38 +371,38 @@ export const CustomAIMeta: {
     },
     [NPCNames.CENTAUR]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('npc_dota_hero_centaur', origin, {});
+            const ai = new CustomAI("npc_dota_hero_centaur", origin, {});
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('centaur_axe_attack')!,
+                ability: ai.unit.FindAbilityByName("centaur_axe_attack")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInRadius: true
                 }
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('centaur_range_attack')!,
+                ability: ai.unit.FindAbilityByName("centaur_range_attack")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true,
                 }
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('centaur_short_attack')!,
+                ability: ai.unit.FindAbilityByName("centaur_short_attack")!,
                 orderType: UnitOrder.CAST_NO_TARGET,
                 requirements: {
                     targetInRadius: true
                 }
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('centaur_charge')!,
+                ability: ai.unit.FindAbilityByName("centaur_charge")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true,
                 }
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('centaur_rage')!,
+                ability: ai.unit.FindAbilityByName("centaur_rage")!,
                 orderType: UnitOrder.CAST_NO_TARGET,
             });
             return ai;
@@ -411,17 +411,17 @@ export const CustomAIMeta: {
     },
     [NPCNames.RADIANT_ZOMBIE_RANGE_MEGA]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('radiant_zombie_healer', origin, {
+            const ai = new CustomAI("radiant_zombie_healer", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true,
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('radiant_zombie_heal_aura')!,
+                ability: ai.unit.FindAbilityByName("radiant_zombie_heal_aura")!,
                 orderType: UnitOrder.CAST_NO_TARGET,
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
+                ability: ai.unit.FindAbilityByName("dire_zombie_attack")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -433,13 +433,13 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE_RANGE]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('dire_zombie_range', origin, {
+            const ai = new CustomAI("dire_zombie_range", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true,
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
+                ability: ai.unit.FindAbilityByName("dire_zombie_attack")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -451,17 +451,17 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE_RANGE_MEGA]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('dire_zombie_range_mega', origin, {
+            const ai = new CustomAI("dire_zombie_range_mega", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true,
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('dire_zombie_rage_aura')!,
+                ability: ai.unit.FindAbilityByName("dire_zombie_rage_aura")!,
                 orderType: UnitOrder.CAST_NO_TARGET,
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('dire_zombie_attack')!,
+                ability: ai.unit.FindAbilityByName("dire_zombie_attack")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -473,7 +473,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE_MEELE_MEGA]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('dire_zombie_meele_mega', origin, {
+            const ai = new CustomAI("dire_zombie_meele_mega", origin, {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -481,7 +481,7 @@ export const CustomAIMeta: {
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('dire_zombie_attack_meele')!,
+                ability: ai.unit.FindAbilityByName("dire_zombie_attack_meele")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -495,7 +495,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.RADIANT_ZOMBIE_MEELE_MEGA]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('radiant_zombie_meele', origin, {
+            const ai = new CustomAI("radiant_zombie_meele", origin, {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -503,7 +503,7 @@ export const CustomAIMeta: {
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('dire_zombie_attack_meele')!,
+                ability: ai.unit.FindAbilityByName("dire_zombie_attack_meele")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -517,7 +517,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.FLYING_SKULL]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('flying_skull', origin, {
+            const ai = new CustomAI("flying_skull", origin, {
                 followRange: 1000,
                 minFollowRange: 150,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -525,7 +525,7 @@ export const CustomAIMeta: {
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('flying_skull_dash')!,
+                ability: ai.unit.FindAbilityByName("flying_skull_dash")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -538,12 +538,12 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_TOWER]: {
         factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI('dire_tower', origin, {
+            const ai = new CustomAI("dire_tower", origin, {
                 behavior: CustomAIBehavior.STATIC,
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName('dire_tower_attack')!,
+                ability: ai.unit.FindAbilityByName("dire_tower_attack")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true

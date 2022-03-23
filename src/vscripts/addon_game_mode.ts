@@ -1,32 +1,32 @@
-import './abilities_meta';
-import Alliance from './clases/alliance';
-import { CustomGameState } from './clases/game_state';
-import Warmup from './clases/pvp/warmup';
-import { reloadable } from './lib/tstl-utils';
-import './wrappers/abilities';
-import './wrappers/modifiers';
-import './util/custom_abilities_legacy';
-import './util/custom_entities_legacy';
-import './util/math_legacy';
-import './util/util';
-import './settings';
-import './constructors';
-import './libraries/timers';
-import './libraries/projectiles';
-import './overrides/abilities';
-import Player from './clases/player';
-import PreRound from './clases/pvp/pre_round';
-import Round from './clases/pvp/round';
-import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from './clases/pve/custom_npc';
-import { CustomItems } from './util/custom_items';
-import Pickup, { PickupTypes } from './clases/pickup';
-import settings from './settings';
-import PreRun from './clases/pve/pre_run';
-import { NPCNames } from './clases/pve/custom_ai';
-import Run from './clases/pve/run';
-import Upgrades from './upgrades/upgrades';
-import { UpgradeTypes } from './upgrades/common';
-import { RewardsManager } from './rewards/rewards';
+import "./abilities_meta";
+import Alliance from "./clases/alliance";
+import { CustomGameState } from "./clases/game_state";
+import Warmup from "./clases/pvp/warmup";
+import { reloadable } from "./lib/tstl-utils";
+import "./wrappers/abilities";
+import "./wrappers/modifiers";
+import "./util/custom_abilities_legacy";
+import "./util/custom_entities_legacy";
+import "./util/math_legacy";
+import "./util/util";
+import "./settings";
+import "./constructors";
+import "./libraries/timers";
+import "./libraries/projectiles";
+import "./overrides/abilities";
+import Player from "./clases/player";
+import PreRound from "./clases/pvp/pre_round";
+import Round from "./clases/pvp/round";
+import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from "./clases/pve/custom_npc";
+import { CustomItems } from "./util/custom_items";
+import Pickup, { PickupTypes } from "./clases/pickup";
+import settings from "./settings";
+import PreRun from "./clases/pve/pre_run";
+import { NPCNames } from "./clases/pve/custom_ai";
+import Run from "./clases/pve/run";
+import Upgrades from "./upgrades/upgrades";
+import { UpgradeTypes } from "./upgrades/common";
+import { RewardsManager } from "./rewards/rewards";
 
 declare global {
     interface CDOTAGamerules {
@@ -49,8 +49,8 @@ interface Thinker {
 }
 
 const Custom_MapNames = {
-    ['PVP']: 'pvp',
-    ['PVE']: 'pve',
+    ["PVP"]: "pvp",
+    ["PVE"]: "pve",
 };
 
 enum Custom_ActionTypes {
@@ -89,7 +89,7 @@ export class GameMode{
     public currentRoom = -1;
 
     constructor(){
-        GameRules.GetGameModeEntity().SetContextThink('OnThink', () => { return this.OnThink(); }, THINK_PERIOD);
+        GameRules.GetGameModeEntity().SetContextThink("OnThink", () => { return this.OnThink(); }, THINK_PERIOD);
         
         this.SetupEventHooks();
         this.SetupPanoramaEventHooks();
@@ -105,29 +105,29 @@ export class GameMode{
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     public static Precache(this: void, context: CScriptPrecacheContext): void{
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_oracle.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_silencer.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_furion.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_phoenix.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_sven.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_abaddon.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_zuus.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_heroes/game_sounds_doombringer.vsndevts', context);
-        PrecacheResource('soundfile', 'soundevents/game_sounds_items.vsndevts', context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_oracle.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_magnataur.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_silencer.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_furion.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_phoenix.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_sven.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_abaddon.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_zuus.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_heroes/game_sounds_doombringer.vsndevts", context);
+        PrecacheResource("soundfile", "soundevents/game_sounds_items.vsndevts", context);
 
-        PrecacheResource('particle', 'particles/units/heroes/hero_chen/chen_hand_of_god.vpcf', context);
-        PrecacheResource('particle', 'particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf', context);
-        PrecacheResource('particle', 'particles/base_attacks/ranged_badguy_persistent_glow_green.vpcf', context);
-        PrecacheResource('particle', 'particles/units/heroes/hero_wisp/wisp_overcharge_c.vpcf', context);
-        PrecacheResource('particle', 'models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf', context);
-        PrecacheResource('particle', 'particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf', context);
+        PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_hand_of_god.vpcf", context);
+        PrecacheResource("particle", "particles/units/heroes/hero_chen/chen_divine_favor_buff.vpcf", context);
+        PrecacheResource("particle", "particles/base_attacks/ranged_badguy_persistent_glow_green.vpcf", context);
+        PrecacheResource("particle", "particles/units/heroes/hero_wisp/wisp_overcharge_c.vpcf", context);
+        PrecacheResource("particle", "models/items/rubick/rubick_arcana/sfm/particles/rubick_arcana_temp_2_rocks_glow.vpcf", context);
+        PrecacheResource("particle", "particles/units/heroes/hero_omniknight/omniknight_purification_cast_b.vpcf", context);
         
-        PrecacheResource('particle', 'particles/items_fx/arcane_boots_recipient.vpcf', context);
-        PrecacheResource('particle', 'particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf', context);
-        PrecacheResource('particle', 'particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf', context);
+        PrecacheResource("particle", "particles/items_fx/arcane_boots_recipient.vpcf", context);
+        PrecacheResource("particle", "particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf", context);
+        PrecacheResource("particle", "particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf", context);
 
-        const heroes: any = LoadKeyValues('scripts/npc/npc_heroes_custom.txt');
+        const heroes: any = LoadKeyValues("scripts/npc/npc_heroes_custom.txt");
         for(const key in heroes){
             const hero = heroes[key];
             PrecacheUnitByNameSync(hero.override_hero, context);
@@ -152,7 +152,7 @@ export class GameMode{
         }
 
         this.RegisterThinker(0.01, () => {
-            CustomGameEventManager.Send_ServerToAllClients('get_mouse_position', {} as never);
+            CustomGameEventManager.Send_ServerToAllClients("get_mouse_position", {} as never);
             this.units.forEach(unit => {
                 unit.Update();
             });
@@ -164,9 +164,9 @@ export class GameMode{
         this.SetState(CustomGameState.WARMUP_IN_PROGRESS);
         this.warmup = new Warmup(this.alliances, settings.FirstWarmupDuration);
 
-        const tableName = 'main' as never;
+        const tableName = "main" as never;
         const data = { max_score: settings.RoundsDifferenceToWin } as never;
-        CustomNetTables.SetTableValue(tableName, 'maxScore', data);
+        CustomNetTables.SetTableValue(tableName, "maxScore", data);
         
         this.RegisterThinker(0.01, () => {
             if(this.state == CustomGameState.WARMUP_IN_PROGRESS && this.warmup){
@@ -231,7 +231,7 @@ export class GameMode{
         } else if(this.IsPVE()){
             this.SetupRulesPVE();
         }
-        print('[AMETHYST] GameRules set');
+        print("[AMETHYST] GameRules set");
     }
     
     SetupRulesPVP(): void{
@@ -250,17 +250,17 @@ export class GameMode{
     }
     
     SetupEventHooks(): void{
-        ListenToGameEvent('npc_spawned', (event) => this.OnNPCInGame(event), undefined);
-        ListenToGameEvent('game_rules_state_change',  () => this.OnGameRulesStateChange(), undefined);
-        ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
-        ListenToGameEvent('player_chat', (event) => this.OnPlayerChat(event), undefined);
-        ListenToGameEvent('entity_killed', (event) => this.OnEntityKilled(event), undefined);
-        ListenToGameEvent('entity_hurt', (event) => this.OnEntityHurt(event), undefined);
-        print('[AMETHYST] Event hooks set');
+        ListenToGameEvent("npc_spawned", (event) => this.OnNPCInGame(event), undefined);
+        ListenToGameEvent("game_rules_state_change",  () => this.OnGameRulesStateChange(), undefined);
+        ListenToGameEvent("dota_player_learned_ability", (event) => this.OnLearnedAbilityEvent(event), undefined);
+        ListenToGameEvent("player_chat", (event) => this.OnPlayerChat(event), undefined);
+        ListenToGameEvent("entity_killed", (event) => this.OnEntityKilled(event), undefined);
+        ListenToGameEvent("entity_hurt", (event) => this.OnEntityHurt(event), undefined);
+        print("[AMETHYST] Event hooks set");
     }
 
     SetupPanoramaEventHooks(): void{
-        CustomGameEventManager.RegisterListener<CustomActionEvent>('update_mouse_position', (eventSourceIndex, args) => {
+        CustomGameEventManager.RegisterListener<CustomActionEvent>("update_mouse_position", (eventSourceIndex, args) => {
             const position = Vector(args.x, args.y, args.z);
             const playerId = args.playerId;
             const player = this.FindPlayerById(playerId);
@@ -269,7 +269,7 @@ export class GameMode{
             }
         });
             
-        CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_action', (eventSourceIndex, event) => {
+        CustomGameEventManager.RegisterListener<CustomActionEvent>("custom_action", (eventSourceIndex, event) => {
             const playerId = event.playerIndex;
             const player = this.FindPlayerById(playerId);
 
@@ -283,7 +283,7 @@ export class GameMode{
                 if(type == Custom_ActionTypes.MOVEMENT && hero){
                     const currentDirection = CustomEntitiesLegacy.GetRawDirection(hero);
                     const incomingDirection = event.payload.direction;
-                    let vector = Vector(incomingDirection['0'], incomingDirection['1'], 0);
+                    let vector = Vector(incomingDirection["0"], incomingDirection["1"], 0);
 
                     if(mode == Custom_ActionModes.STOP){
                         vector = vector.__mul(-1);
@@ -306,7 +306,7 @@ export class GameMode{
             }
         });
 
-        CustomGameEventManager.RegisterListener<CustomActionEvent>('refund_points', (eventSourceIndex, event) => {
+        CustomGameEventManager.RegisterListener<CustomActionEvent>("refund_points", (eventSourceIndex, event) => {
             const playerId = event.playerIndex;
             const player = this.FindPlayerById(playerId);
 
@@ -333,7 +333,7 @@ export class GameMode{
             }
         });
 
-        CustomGameEventManager.RegisterListener<CustomActionEvent>('swap_r_f', (eventSourceIndex, event) => {
+        CustomGameEventManager.RegisterListener<CustomActionEvent>("swap_r_f", (eventSourceIndex, event) => {
             const playerId = event.playerIndex;
             const player = this.FindPlayerById(playerId);
 
@@ -355,57 +355,57 @@ export class GameMode{
         mode.SetModifyExperienceFilter(this.ModifyExperienceFilter, this);
         mode.SetHealingFilter(this.HealingFilter, this);
         mode.SetDamageFilter(this.DamageFilter, this);
-        print('[AMETHYST] Filters set');
+        print("[AMETHYST] Filters set");
     }
    
     LinkModifiers(): void{
-        LinkLuaModifier('modifier_death_zone',                      'modifiers/modifier_death_zone.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('wall_base',                                'modifiers/wall_base.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_adrenaline',                      'modifiers/modifier_adrenaline.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('radius_marker_thinker',                    'modifiers/radius_marker_thinker.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_miss',                            'modifiers/modifier_miss.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_restricted',                      'modifiers/modifier_restricted.lua', LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_death_zone",                      "modifiers/modifier_death_zone.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("wall_base",                                "modifiers/wall_base.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_adrenaline",                      "modifiers/modifier_adrenaline.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("radius_marker_thinker",                    "modifiers/radius_marker_thinker.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_miss",                            "modifiers/modifier_miss.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_restricted",                      "modifiers/modifier_restricted.lua", LuaModifierMotionType.NONE);
         
-        LinkLuaModifier('modifier_ruby',                            'modifiers/gems/modifier_ruby.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_ruby_attack',                     'modifiers/gems/modifier_ruby.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_sapphire',                        'modifiers/gems/modifier_sapphire.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_emerald',                         'modifiers/gems/modifier_emerald.lua', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_amethyst',                        'modifiers/gems/modifier_amethyst.lua', LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_ruby",                            "modifiers/gems/modifier_ruby.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_ruby_attack",                     "modifiers/gems/modifier_ruby.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_sapphire",                        "modifiers/gems/modifier_sapphire.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_emerald",                         "modifiers/gems/modifier_emerald.lua", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_amethyst",                        "modifiers/gems/modifier_amethyst.lua", LuaModifierMotionType.NONE);
 
-        LinkLuaModifier('modifier_generic_silence',                 'modifiers/generic/modifier_generic_silence', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_fading_slow',             'modifiers/generic/modifier_generic_fading_slow', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_fading_haste',            'modifiers/generic/modifier_generic_fading_haste', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_stunned',                 'modifiers/generic/modifier_generic_stunned', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_provides_vision',         'modifiers/generic/modifier_generic_provides_vision', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_knockback',               'modifiers/generic/modifier_generic_knockback', LuaModifierMotionType.BOTH);
-        LinkLuaModifier('modifier_generic_root',                    'modifiers/generic/modifier_generic_root', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_invencible',              'modifiers/generic/modifier_generic_invencible', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_confuse',                 'modifiers/generic/modifier_generic_confuse', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_sleep',                   'modifiers/generic/modifier_generic_sleep', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_fear',                    'modifiers/generic/modifier_generic_fear', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_phased',                  'modifiers/generic/modifier_generic_phased', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_flying',                  'modifiers/generic/modifier_generic_flying', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_ignore_ms_limit',         'modifiers/generic/modifier_generic_ignore_ms_limit', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_generic_change_ms',               'modifiers/generic/modifier_generic_change_ms', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_visible',                         'modifiers/generic/modifier_visible', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_casting',                         'modifiers/generic/modifier_casting', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_damage_fx',                       'modifiers/generic/modifier_damage_fx', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_shield',                          'modifiers/generic/modifier_shield', LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_silence",                 "modifiers/generic/modifier_generic_silence", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_fading_slow",             "modifiers/generic/modifier_generic_fading_slow", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_fading_haste",            "modifiers/generic/modifier_generic_fading_haste", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_stunned",                 "modifiers/generic/modifier_generic_stunned", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_provides_vision",         "modifiers/generic/modifier_generic_provides_vision", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_knockback",               "modifiers/generic/modifier_generic_knockback", LuaModifierMotionType.BOTH);
+        LinkLuaModifier("modifier_generic_root",                    "modifiers/generic/modifier_generic_root", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_invencible",              "modifiers/generic/modifier_generic_invencible", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_confuse",                 "modifiers/generic/modifier_generic_confuse", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_sleep",                   "modifiers/generic/modifier_generic_sleep", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_fear",                    "modifiers/generic/modifier_generic_fear", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_phased",                  "modifiers/generic/modifier_generic_phased", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_flying",                  "modifiers/generic/modifier_generic_flying", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_ignore_ms_limit",         "modifiers/generic/modifier_generic_ignore_ms_limit", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_generic_change_ms",               "modifiers/generic/modifier_generic_change_ms", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_visible",                         "modifiers/generic/modifier_visible", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_casting",                         "modifiers/generic/modifier_casting", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_damage_fx",                       "modifiers/generic/modifier_damage_fx", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_shield",                          "modifiers/generic/modifier_shield", LuaModifierMotionType.NONE);
         
-        LinkLuaModifier('modifier_hide_bar',                        'modifiers/generic/modifier_hide_bar', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_hidden',                          'modifiers/generic/modifier_hidden', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_banish',                          'modifiers/generic/modifier_banish', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_hero_movement',                   'modifiers/generic/modifier_hero_movement', LuaModifierMotionType.NONE);
-        LinkLuaModifier('modifier_tower_idle',                      'modifiers/generic/modifier_tower_idle', LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_hide_bar",                        "modifiers/generic/modifier_hide_bar", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_hidden",                          "modifiers/generic/modifier_hidden", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_banish",                          "modifiers/generic/modifier_banish", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_hero_movement",                   "modifiers/generic/modifier_hero_movement", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_tower_idle",                      "modifiers/generic/modifier_tower_idle", LuaModifierMotionType.NONE);
 
         if(this.IsPVE()){
-            LinkLuaModifier('modifier_combine_util',                'modifiers/modifier_combine_util', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_generic_npc_shield',              'modifiers/generic/modifier_generic_npc_shield', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_generic_npc_mini_stun',               'modifiers/generic/modifier_generic_npc_mini_stun', LuaModifierMotionType.NONE);
+            LinkLuaModifier("modifier_combine_util",                "modifiers/modifier_combine_util", LuaModifierMotionType.NONE);
+            LinkLuaModifier("modifier_generic_npc_shield",              "modifiers/generic/modifier_generic_npc_shield", LuaModifierMotionType.NONE);
+            LinkLuaModifier("modifier_generic_npc_mini_stun",               "modifiers/generic/modifier_generic_npc_mini_stun", LuaModifierMotionType.NONE);
             
-            const favorsPath = 'modifiers/upgrades/favors/';
-            const itemsPath = 'modifiers/upgrades/items/';
-            const shardsPath = 'modifiers/upgrades/shards/';
+            const favorsPath = "modifiers/upgrades/favors/";
+            const itemsPath = "modifiers/upgrades/items/";
+            const shardsPath = "modifiers/upgrades/shards/";
             
             Upgrades.forEach((upgrade) => {
                 if(upgrade.modifier){
@@ -420,14 +420,14 @@ export class GameMode{
                     }
                 }
             });
-            LinkLuaModifier('modifier_combine_util',                'modifiers/modifier_combine_util', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_item_maelstrom_attack',  itemsPath + 'modifier_upgrade_item_maelstrom', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_item_basher_attack',  itemsPath + 'modifier_upgrade_item_basher', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_item_javelin_attack',  itemsPath + 'modifier_upgrade_item_javelin', LuaModifierMotionType.NONE);
-            LinkLuaModifier('modifier_upgrade_tarrasque',                'modifiers/upgrades/modifier_upgrade_tarrasque', LuaModifierMotionType.NONE);
+            LinkLuaModifier("modifier_combine_util",                "modifiers/modifier_combine_util", LuaModifierMotionType.NONE);
+            LinkLuaModifier("modifier_upgrade_item_maelstrom_attack",  itemsPath + "modifier_upgrade_item_maelstrom", LuaModifierMotionType.NONE);
+            LinkLuaModifier("modifier_upgrade_item_basher_attack",  itemsPath + "modifier_upgrade_item_basher", LuaModifierMotionType.NONE);
+            LinkLuaModifier("modifier_upgrade_item_javelin_attack",  itemsPath + "modifier_upgrade_item_javelin", LuaModifierMotionType.NONE);
+            LinkLuaModifier("modifier_upgrade_tarrasque",                "modifiers/upgrades/modifier_upgrade_tarrasque", LuaModifierMotionType.NONE);
         }
 
-        print('[AMETHYST] Useful modifiers linked');
+        print("[AMETHYST] Useful modifiers linked");
     }
 
     IsInWTFMode(): boolean{
@@ -465,7 +465,7 @@ export class GameMode{
 
         if(playerID == -1){
             hero.Destroy();
-            print('ERROR: TRYING TO CREATE AN UNIT ON AN INVALID PLAYER: \n\t playerID: ' + playerID + '\n\t hero: ' + hero.GetName() + '\n\t team: ' + team);
+            print("ERROR: TRYING TO CREATE AN UNIT ON AN INVALID PLAYER: \n\t playerID: " + playerID + "\n\t hero: " + hero.GetName() + "\n\t team: " + team);
             return false;
         } else {
             let player = this.FindPlayerById(playerID);
@@ -475,7 +475,7 @@ export class GameMode{
                 const alliance = this.FindAllianceByTeam(team);
 
                 if(!alliance){ 
-                    print('ERROR: THE PLAYER TEAM IS NOT PART OF ANY ALLIANCE!');
+                    print("ERROR: THE PLAYER TEAM IS NOT PART OF ANY ALLIANCE!");
                     return false;
                 }
 
@@ -494,9 +494,9 @@ export class GameMode{
     SetState(state: CustomGameState): void{
         this.OnStateEnd(this.state);
         this.state = state;
-        const tableName = 'main' as never;
+        const tableName = "main" as never;
         const data = { gameState: state } as never;
-        CustomNetTables.SetTableValue(tableName, 'gameState', data);
+        CustomNetTables.SetTableValue(tableName, "gameState", data);
     }
 
     OnStateEnd(state: CustomGameState): void{
@@ -542,7 +542,7 @@ export class GameMode{
     }
 
     CreateBarrels(): CDOTA_BaseNPC[]{
-        const barrelEnts = Entities.FindAllByName('wall_spawn');
+        const barrelEnts = Entities.FindAllByName("wall_spawn");
         const barrels: CDOTA_BaseNPC[] = [];
 
         barrelEnts.forEach((entity) => {
@@ -553,18 +553,18 @@ export class GameMode{
     }
 
     CreateBarrel(origin: Vector): CDOTA_BaseNPC{
-        const fowBlocker = SpawnEntityFromTableSynchronous('point_simple_obstruction', { origin: origin, block_fow: true});
+        const fowBlocker = SpawnEntityFromTableSynchronous("point_simple_obstruction", { origin: origin, block_fow: true});
         const barrel = CreateUnitByName(
-            'npc_dota_creature_wall',
+            "npc_dota_creature_wall",
             origin,
             false,
             undefined,
             undefined,
             DotaTeam.NOTEAM
         );
-        barrel.Attribute_SetIntValue('barrel', 1);
+        barrel.Attribute_SetIntValue("barrel", 1);
         barrel.SetHullRadius(65);
-        barrel.AddNewModifier(barrel, undefined, 'wall_base', { fow_blocker: fowBlocker.GetEntityIndex() });
+        barrel.AddNewModifier(barrel, undefined, "wall_base", { fow_blocker: fowBlocker.GetEntityIndex() });
         return barrel;
     }
 
@@ -588,12 +588,12 @@ export class GameMode{
             orderType === UnitOrder.CAST_NO_TARGET
         ){
             const ability = EntIndexToHScript(event.entindex_ability) as CDOTA_Ability_Lua;
-            const caster = EntIndexToHScript(event.units['0']) as CDOTA_BaseNPC;
+            const caster = EntIndexToHScript(event.units["0"]) as CDOTA_BaseNPC;
             const energyCost = CustomAbilitiesLegacy.GetEnergyCost(ability);
             const energy = CustomEntitiesLegacy.GetEnergy(caster);
 
             if(energyCost > energy){ 
-                CustomGameEventManager.Send_ServerToAllClients('not_enough_energy', {} as never);
+                CustomGameEventManager.Send_ServerToAllClients("not_enough_energy", {} as never);
                 return false;
             }
 
@@ -622,7 +622,7 @@ export class GameMode{
         }
 
         if(orderType === UnitOrder.STOP || orderType === UnitOrder.HOLD_POSITION){
-            const caster = EntIndexToHScript(event.units['0']) as CDOTA_BaseNPC;
+            const caster = EntIndexToHScript(event.units["0"]) as CDOTA_BaseNPC;
             const ability = caster.GetCurrentActiveAbility() as CDOTA_Ability_Lua;
             if(ability){
                 if(ability.GetAbilityType() === 1){
@@ -631,7 +631,7 @@ export class GameMode{
             }
         }
         if(orderType === UnitOrder.HOLD_POSITION){
-            print('YOU ARE HOLDING POSITION; PROBABLY YOU WANT TO STOP INSTEAD');
+            print("YOU ARE HOLDING POSITION; PROBABLY YOU WANT TO STOP INSTEAD");
         }
         if(orderType === UnitOrder.MOVE_TO_POSITION || orderType === UnitOrder.MOVE_TO_TARGET){
             return false;
@@ -713,7 +713,7 @@ export class GameMode{
         }
         
         if(victim){
-            victim.AddNewModifier(victim, undefined, 'modifier_damage_fx', { duration: 0.1 });
+            victim.AddNewModifier(victim, undefined, "modifier_damage_fx", { duration: 0.1 });
             Timers.CreateTimer(0.05, function(){
                 CustomEntitiesLegacy.SendDataToClient(victim);
             });
@@ -750,7 +750,7 @@ export class GameMode{
         const playerId = event.playerid;
         const player = this.FindPlayerById(playerId);
 
-        if(event.text == '-unstuck'){
+        if(event.text == "-unstuck"){
             if(player){
                 const hero = player.hero;
                 if(hero){
@@ -763,16 +763,16 @@ export class GameMode{
             return;
         }
 
-        if(event.text == '-refresh'){
+        if(event.text == "-refresh"){
             this.RefreshHeroes();
         }
 
-        if(event.text == '-wtf'){
+        if(event.text == "-wtf"){
             this.RefreshHeroes();
             this.wtf = true;
         }
 
-        if(event.text == '-unwtf'){
+        if(event.text == "-unwtf"){
             this.wtf = false;
         }
         
@@ -787,33 +787,33 @@ export class GameMode{
                 return;
             }
 
-            if(event.text == '-favor'){
+            if(event.text == "-favor"){
                 RewardsManager.OfferFavorsForHero(customNpc);
             }
             
-            if(event.text == '-shard'){
+            if(event.text == "-shard"){
                 RewardsManager.ClaimShards(customNpc);
             }
             
-            if(event.text == '-tome'){
+            if(event.text == "-tome"){
                 RewardsManager.ClaimKnowledge(customNpc);
             }
             
-            if(event.text == '-item'){
+            if(event.text == "-item"){
                 RewardsManager.ClaimItems(customNpc);
             }
 
-            if(event.text == '-reward'){
+            if(event.text == "-reward"){
                 const rewards = RewardsManager.GenerateRewards(customNpc, {amount: 3});
                 RewardsManager.OfferRewardsForHero(customNpc, rewards);
             }
 
-            if(event.text == '-vitality'){
+            if(event.text == "-vitality"){
                 RewardsManager.ClaimVitality(customNpc);
             }
         }
 
-        if(event.text == '-skip'){
+        if(event.text == "-skip"){
             if(this.IsPVE()){
                 if(this.run && this.run.stage && this.run.stage.room){
                     this.run.stage.room.SkipWave();
@@ -821,12 +821,12 @@ export class GameMode{
             }
         }
 
-        if(event.text.split(' ')[0] == '-room'){
-            if(!event.text.split(' ')[1]){
+        if(event.text.split(" ")[0] == "-room"){
+            if(!event.text.split(" ")[1]){
                 return;
             }
             if(this.IsPVE()){
-                let room = parseInt(event.text.split(' ')[1], 10);
+                let room = parseInt(event.text.split(" ")[1], 10);
                 if(isNaN(room)){
                     return;
                 }
@@ -883,7 +883,7 @@ export class GameMode{
             return false;
         }
 
-        if(npc.GetName() === 'npc_dota_thinker' || npc.GetName() === 'npc_dota_base'){
+        if(npc.GetName() === "npc_dota_thinker" || npc.GetName() === "npc_dota_base"){
             return true;
         }
 
@@ -993,12 +993,12 @@ export class GameMode{
 
                 if(aliveAlly){
                     PlayerResource.SetCameraTarget(hero.GetPlayerID(), aliveAlly);
-                    aliveAlly.AddNewModifier(hero, undefined, 'modifier_generic_provides_vision', {});
+                    aliveAlly.AddNewModifier(hero, undefined, "modifier_generic_provides_vision", {});
                 } else {
                     const aliveHero = this.FindNextAliveHero();
                     if(aliveHero){
                         PlayerResource.SetCameraTarget(hero.GetPlayerID(), aliveHero);
-                        aliveHero.AddNewModifier(hero, undefined, 'modifier_generic_provides_vision', {});
+                        aliveHero.AddNewModifier(hero, undefined, "modifier_generic_provides_vision", {});
                     }
                 }
             }

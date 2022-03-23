@@ -1,4 +1,4 @@
-import { registerModifier, BaseModifier } from '../../lib/dota_ts_adapter';
+import { registerModifier, BaseModifier } from "../../lib/dota_ts_adapter";
 
 @registerModifier()
 export default class modifier_generic_use_energy extends BaseModifier{

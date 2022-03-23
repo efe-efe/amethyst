@@ -1,4 +1,4 @@
-import { modifiers, panels } from '../util';
+import { modifiers, panels } from "../util";
 
 export default class Stacks{
     panel: Panel;
@@ -6,14 +6,14 @@ export default class Stacks{
     modifierName: string;
 
     constructor(container: Panel, entityIndex: EntityIndex, modifierName: string){
-        this.panel = panels.createPanelSimple(container, 'stacks');
+        this.panel = panels.createPanelSimple(container, "stacks");
         this.entityIndex = entityIndex;
         this.modifierName = modifierName;
 
         const stackPanels: Panel[] = [];
 
         for(let i = 0; i < 4; i++){
-            stackPanels.push(panels.createPanelSimple(this.panel, 'stacks__stack'));
+            stackPanels.push(panels.createPanelSimple(this.panel, "stacks__stack"));
         }
         
         this.Update();
@@ -46,7 +46,7 @@ export default class Stacks{
     }
 
     ChangeStackState(index: number, full: boolean): void{
-        this.panel.GetChild(index)!.SetHasClass('stacks__stack--empty', !full);
+        this.panel.GetChild(index)!.SetHasClass("stacks__stack--empty", !full);
     }
 
     EmptyStack(index: number): void{

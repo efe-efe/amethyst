@@ -1,4 +1,4 @@
-import UnitEntity from './unit_entity';
+import UnitEntity from "./unit_entity";
 
 export interface BreakableBountyOptions {
     model: string;
@@ -15,7 +15,7 @@ export default class BreakableBounty extends UnitEntity{
     constructor(origin: Vector, options: BreakableBountyOptions){
         super({ properties: {
             origin, 
-            name: 'breakable_bounty'
+            name: "breakable_bounty"
         }});
         this.particle = (options.particle) ? options.particle : undefined;
         this.model = options.model;
@@ -73,13 +73,13 @@ export default class BreakableBounty extends UnitEntity{
         const parent = this.GetUnit();
         const origin = parent.GetAbsOrigin();
 
-        EmitSoundOn('Hero_Magnataur.ReversePolarity.Cast', parent);
-        EFX('particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf', ParticleAttachment.WORLDORIGIN, undefined, { 
+        EmitSoundOn("Hero_Magnataur.ReversePolarity.Cast", parent);
+        EFX("particles/units/heroes/hero_elder_titan/elder_titan_echo_stomp_magical.vpcf", ParticleAttachment.WORLDORIGIN, undefined, { 
             cp0: origin,
             cp2: Vector(255, 80, 230),
             release: true 
         });
-        EFX('particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf', ParticleAttachment.WORLDORIGIN, undefined, { 
+        EFX("particles/units/heroes/hero_abaddon/abaddon_aphotic_shield_explosion.vpcf", ParticleAttachment.WORLDORIGIN, undefined, { 
             cp0: origin,
             cp5: origin,
             release: true 

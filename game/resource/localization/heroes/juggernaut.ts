@@ -1,5 +1,5 @@
-import { AbilityLocalization, HeroTalents, Language, LocalizationData, ModifierLocalization, StandardLocalization } from '../../localizationInterfaces';
-import { Keywords, Description, multipleKeywords, Ability, UpgradeTypes, Upgrades, Upgrade } from '../specific';
+import { AbilityLocalization, HeroTalents, Language, LocalizationData, ModifierLocalization, StandardLocalization } from "../../localizationInterfaces";
+import { Keywords, Description, multipleKeywords, Ability, UpgradeTypes, Upgrades, Upgrade } from "../specific";
 
 export function GenerateLocalizationData(): LocalizationData
 {
@@ -16,189 +16,189 @@ export function GenerateLocalizationData(): LocalizationData
         TalentArray: Talents
     };
 
-    const BladeDance = Ability('Blade Dance', 'juggernaut_second_attack.png') ;
-    const Preparation = Ability('Preparation', 'juggernaut_counter.png');
-    const Swiftslash = Ability('Swiftslash', 'juggernaut_ex_counter.png');
-    const YurneroDash = Ability('Yurnero Dash', 'juggernaut_counter_recast.png');
-    const BladeMastery = Ability('Blade Mastery', 'juggernaut_basic_attack.png');
+    const BladeDance = Ability("Blade Dance", "juggernaut_second_attack.png") ;
+    const Preparation = Ability("Preparation", "juggernaut_counter.png");
+    const Swiftslash = Ability("Swiftslash", "juggernaut_ex_counter.png");
+    const YurneroDash = Ability("Yurnero Dash", "juggernaut_counter_recast.png");
+    const BladeMastery = Ability("Blade Mastery", "juggernaut_basic_attack.png");
     
     Abilities.push({
-        ability_classname: 'juggernaut_basic_attack',
-        name: 'Blade Mastery',
+        ability_classname: "juggernaut_basic_attack",
+        name: "Blade Mastery",
         description: Description({
-            description: 'Juggernaut attacks with his weapon dealing ' + Keywords.BaseDamage + ' to the enemy. Every successful attack generates a ' + Keywords.FuryStack.instance() + ' and reduces the cooldown of ' + BladeDance + '.',
-            level: 'Successful hits also reduces the cooldown from ' + Preparation + ' and ' + Swiftslash + '.',
+            description: "Juggernaut attacks with his weapon dealing " + Keywords.BaseDamage + " to the enemy. Every successful attack generates a " + Keywords.FuryStack.instance() + " and reduces the cooldown of " + BladeDance + ".",
+            level: "Successful hits also reduces the cooldown from " + Preparation + " and " + Swiftslash + ".",
         }),
         lore: Keywords.FuryStack.definition,
         ability_specials:
         [
             {
-                ability_special: 'mana_gain_pct',
-                text: '<font color="#00A6DE">MANA GAIN</font>',
+                ability_special: "mana_gain_pct",
+                text: "<font color=\"#00A6DE\">MANA GAIN</font>",
                 percentage: true,
             },
 
         ],
     });
     Abilities.push({
-        ability_classname: 'juggernaut_second_attack',
-        name: 'Blade Dance',
+        ability_classname: "juggernaut_second_attack",
+        name: "Blade Dance",
         description: Description({
-            description: 'Juggernaut swings his blade dealing @{damage_multiplier_per_stack} times your ' + Keywords.BaseDamage + ' to all enemies in front of you. Consumes all his current ' + Keywords.FuryStack.instance() + ' to increase the damage multiplier by @{damage_multiplier_per_stack} per stack. If 4 stacks are consumed, a spin attack is cast instead, dealing damage to all enemies around Juggernaut',
-            level: 'Increases damage per stack. Successful hits provides a shield that blocks @{shield_per_stack} damage per stack per target.',
+            description: "Juggernaut swings his blade dealing @{damage_multiplier_per_stack} times your " + Keywords.BaseDamage + " to all enemies in front of you. Consumes all his current " + Keywords.FuryStack.instance() + " to increase the damage multiplier by @{damage_multiplier_per_stack} per stack. If 4 stacks are consumed, a spin attack is cast instead, dealing damage to all enemies around Juggernaut",
+            level: "Increases damage per stack. Successful hits provides a shield that blocks @{shield_per_stack} damage per stack per target.",
         }),
         lore: Keywords.FuryStack.definition,
         ability_specials:
         [
             {
-                ability_special: 'mana_gain_pct',
-                text: '<font color="#00A6DE">MANA GAIN</font>',
+                ability_special: "mana_gain_pct",
+                text: "<font color=\"#00A6DE\">MANA GAIN</font>",
                 percentage: true,
             },
 
             {
-                ability_special: 'AbilityCastPoint',
-                text: '<font color="#B2B5B3">CAST POINT</font>',
+                ability_special: "AbilityCastPoint",
+                text: "<font color=\"#B2B5B3\">CAST POINT</font>",
             },
 
         ],
     });
     Abilities.push({
-        ability_classname: 'juggernaut_counter',
-        name: 'Preparation',
+        ability_classname: "juggernaut_counter",
+        name: "Preparation",
         description: Description({
-            description: 'Goes into counter state for a short period of time. During which, if Juggernaut is hit by a melee attack or projectile, he reflects the attack and gains ' + YurneroDash + ' as a recast of this spell.',
-            level: 'Increases the times that ' + YurneroDash + ' can be recasted.',
+            description: "Goes into counter state for a short period of time. During which, if Juggernaut is hit by a melee attack or projectile, he reflects the attack and gains " + YurneroDash + " as a recast of this spell.",
+            level: "Increases the times that " + YurneroDash + " can be recasted.",
             subAbility: {
-                name: 'Yurnero Dash',
-                iconPath: 'juggernaut_counter_recast.png', 
-                description: 'Performs a range slash attack towards the cursor location. If the slash attacks hits an enemy, it deals @{ability_damage} damage and allows ' + YurneroDash + ' re-casted once again. Can be re-casted up to @{recasts} times.',
+                name: "Yurnero Dash",
+                iconPath: "juggernaut_counter_recast.png", 
+                description: "Performs a range slash attack towards the cursor location. If the slash attacks hits an enemy, it deals @{ability_damage} damage and allows " + YurneroDash + " re-casted once again. Can be re-casted up to @{recasts} times.",
             }
         }),
     });
     Abilities.push({
-        ability_classname: 'juggernaut_special_attack',
-        name: 'Dagger Throw',
+        ability_classname: "juggernaut_special_attack",
+        name: "Dagger Throw",
         description: Description({
-            description: 'Throws a dagger that deals @{ability_damage} damage and applies ' + Keywords.FadingSlow.instance('@{fading_slow_pct}') + ' for @{fading_slow_duration}s on the target.',
-            level: 'When hitting an enemy, can be recasted to instantly teleport behind him.',
+            description: "Throws a dagger that deals @{ability_damage} damage and applies " + Keywords.FadingSlow.instance("@{fading_slow_pct}") + " for @{fading_slow_duration}s on the target.",
+            level: "When hitting an enemy, can be recasted to instantly teleport behind him.",
         }),
         lore: Keywords.FadingSlow.definition,
         ability_specials:
         [
             {
-                ability_special: 'mana_gain_pct',
-                text: '<font color="#00A6DE">MANA GAIN</font>',
+                ability_special: "mana_gain_pct",
+                text: "<font color=\"#00A6DE\">MANA GAIN</font>",
                 percentage: true,
             },
 
             {
-                ability_special: 'AbilityCastPoint',
-                text: '<font color="#B2B5B3">CAST POINT</font>',
+                ability_special: "AbilityCastPoint",
+                text: "<font color=\"#B2B5B3\">CAST POINT</font>",
             },
 
         ],
     });
     Abilities.push({
-        ability_classname: 'juggernaut_mobility',
-        name: 'Blade Fury',
+        ability_classname: "juggernaut_mobility",
+        name: "Blade Fury",
         description: Description({
-            description: 'Causes a bladestorm of destructive force around Juggernaut increasing his movement speed by @{speed_buff_pct}% and dealing @{damage_per_second} damage every @{think_interval}s to enemies in around. Juggernaut is Silenced during the duration. Lasts for @{duration}s. Purge negative effects on cast.',
-            level: 'Also reflects enemy projectiles.',
+            description: "Causes a bladestorm of destructive force around Juggernaut increasing his movement speed by @{speed_buff_pct}% and dealing @{damage_per_second} damage every @{think_interval}s to enemies in around. Juggernaut is Silenced during the duration. Lasts for @{duration}s. Purge negative effects on cast.",
+            level: "Also reflects enemy projectiles.",
         }),
         ability_specials:
         [
             {
-                ability_special: 'AbilityCastPoint',
-                text: '<font color="#B2B5B3">CAST POINT</font>',
+                ability_special: "AbilityCastPoint",
+                text: "<font color=\"#B2B5B3\">CAST POINT</font>",
             },
 
         ],
     });
     Abilities.push({
-        ability_classname: 'juggernaut_ultimate',
-        name: 'Omnislash',
-        description: 'Juggernaut very quickly leaps towards the mouse location. If an enemy is hit during the dash, Juggernaunt will start lunging between random targets around him, dealing <b><font color="#ffffff">base damage</font></b> every hit. The time between attacks is based on Juggernaut\'s attack rate. Juggernaut is invulnerable for the duration. Ability ends after there is no valid nearby target or after @{duration}s has passed. Consumes all ' + Keywords.FuryStack.instance() + ' to increase Juggernaut\'s attack speed by @{aspd_per_stack} per stack consumed for the ability duration.',
+        ability_classname: "juggernaut_ultimate",
+        name: "Omnislash",
+        description: "Juggernaut very quickly leaps towards the mouse location. If an enemy is hit during the dash, Juggernaunt will start lunging between random targets around him, dealing <b><font color=\"#ffffff\">base damage</font></b> every hit. The time between attacks is based on Juggernaut's attack rate. Juggernaut is invulnerable for the duration. Ability ends after there is no valid nearby target or after @{duration}s has passed. Consumes all " + Keywords.FuryStack.instance() + " to increase Juggernaut's attack speed by @{aspd_per_stack} per stack consumed for the ability duration.",
         lore: Keywords.FadingSlow.definition,
         ability_specials:
         [
             {
-                ability_special: 'AbilityCastPoint',
-                text: '<font color="#B2B5B3">CAST POINT</font>',
+                ability_special: "AbilityCastPoint",
+                text: "<font color=\"#B2B5B3\">CAST POINT</font>",
             },
 
         ],
     });
     Abilities.push({
-        ability_classname: 'juggernaut_extra',
-        name: 'Healing Ward',
+        ability_classname: "juggernaut_extra",
+        name: "Healing Ward",
         description: Description({
-            description: 'Summons a Healing Ward which heals all nearby allied units for @{heal_per_second} health every second. The Healing Ward moves towards Juggernaut after being summoned. Can be recasted to move the healing ward towards the cursor location. Lasts for @{duration}s.',
-            level: 'When invoked, the totem gives a shield that blocks @{shield} damage to all nearby allies.',
+            description: "Summons a Healing Ward which heals all nearby allied units for @{heal_per_second} health every second. The Healing Ward moves towards Juggernaut after being summoned. Can be recasted to move the healing ward towards the cursor location. Lasts for @{duration}s.",
+            level: "When invoked, the totem gives a shield that blocks @{shield} damage to all nearby allies.",
         }),
         ability_specials:
         [
             {
-                ability_special: 'AbilityCastPoint',
-                text: '<font color="#B2B5B3">CAST POINT</font>',
+                ability_special: "AbilityCastPoint",
+                text: "<font color=\"#B2B5B3\">CAST POINT</font>",
             },
 
         ],
     });
     Abilities.push({
-        ability_classname: 'juggernaut_ex_counter',
-        name: 'Swifthslash',
+        ability_classname: "juggernaut_ex_counter",
+        name: "Swifthslash",
         description: Description({
-            description: 'Performs a range slash attack towards the cursor location. If the slash attacks hits an enemy, it deals @{ability_damage}, imbues your ' + BladeMastery + ' with extra @{extra_damage} for the next attack and grants you ' + Keywords.Swiftness.instance('@{swiftness_pct}') + ' for @{swiftness_duration}s. Can be recasted up to @{recasts} times on successful hits.',
-            level: 'Increases the times this ability can be recasted.',
+            description: "Performs a range slash attack towards the cursor location. If the slash attacks hits an enemy, it deals @{ability_damage}, imbues your " + BladeMastery + " with extra @{extra_damage} for the next attack and grants you " + Keywords.Swiftness.instance("@{swiftness_pct}") + " for @{swiftness_duration}s. Can be recasted up to @{recasts} times on successful hits.",
+            level: "Increases the times this ability can be recasted.",
         }),
         lore: Keywords.Swiftness.definition,
     });
     Abilities.push({
-        ability_classname: 'juggernaut_ex_second_attack',
-        name: 'Weakspot',
+        ability_classname: "juggernaut_ex_second_attack",
+        name: "Weakspot",
         description: Description({
-            description: 'Performs a meele slash attack that deals @{ability_damage} damage and applies ' + Keywords.Sleep.instance() + ' for @{duration}s. Consumes all ' + Keywords.FuryStack.instance() + ' to increase the sleep duration in @{duration_per_stack}s per stack consumed.',
-            level: 'When hitting at least one enemy, replenish all ' + Keywords.FuryStack.instance() + ', refunds the mana spend and gives ' + Keywords.Swiftness.instance('@{swiftness_pct}') + ' for @{swiftness_duration}s</font></b>.',
+            description: "Performs a meele slash attack that deals @{ability_damage} damage and applies " + Keywords.Sleep.instance() + " for @{duration}s. Consumes all " + Keywords.FuryStack.instance() + " to increase the sleep duration in @{duration_per_stack}s per stack consumed.",
+            level: "When hitting at least one enemy, replenish all " + Keywords.FuryStack.instance() + ", refunds the mana spend and gives " + Keywords.Swiftness.instance("@{swiftness_pct}") + " for @{swiftness_duration}s</font></b>.",
         }),
         lore: multipleKeywords([Keywords.FuryStack.definition, Keywords.Sleep.definition, Keywords.Swiftness.definition]),
         ability_specials:
         [
             {
-                ability_special: 'AbilityCastPoint',
-                text: '<font color="#B2B5B3">CAST POINT</font>',
+                ability_special: "AbilityCastPoint",
+                text: "<font color=\"#B2B5B3\">CAST POINT</font>",
             },
 
         ],
     });
     
     Modifiers.push({
-        modifier_classname: 'modifier_juggernaut_basic_attack_stacks',
-        name: 'Fury Stacks',
-        description: 'Can be consumed to add extra effects on some abilities.',
+        modifier_classname: "modifier_juggernaut_basic_attack_stacks",
+        name: "Fury Stacks",
+        description: "Can be consumed to add extra effects on some abilities.",
     });
 
     Modifiers.push({
-        modifier_classname: 'modifier_juggernaut_extra_shield',
-        name: 'Totem Shield',
+        modifier_classname: "modifier_juggernaut_extra_shield",
+        name: "Totem Shield",
         description: `Blocks {${LocalizationModifierProperty.TOOLTIP}} incoming damage.`,
     });
 
     Modifiers.push({
-        modifier_classname: 'modifier_juggernaut_ex_counter',
-        name: 'Swiftslash',
+        modifier_classname: "modifier_juggernaut_ex_counter",
+        name: "Swiftslash",
         description: `Your next basic attack deals {${LocalizationModifierProperty.PREATTACK_BONUS_DAMAGE}} extra damage.`,
     });
 
     Modifiers.push({
-        modifier_classname: 'modifier_juggernaut_extra',
-        name: 'Healing Ward',
+        modifier_classname: "modifier_juggernaut_extra",
+        name: "Healing Ward",
         description: `Recovering {${LocalizationModifierProperty.TOOLTIP}} health per second.`,
     });
 
     Modifiers.push({
-        modifier_classname: 'modifier_juggernaut_swiftness',
-        name: 'Swiftness',
+        modifier_classname: "modifier_juggernaut_swiftness",
+        name: "Swiftness",
         description: `Moves {${LocalizationModifierProperty.MOVESPEED_BONUS_PERCENTAGE}}% faster.`,
     });
 
@@ -207,50 +207,50 @@ export function GenerateLocalizationData(): LocalizationData
     
     const Favors: Upgrade[] = [
         {
-            id: 'juggernaut_fury_reflects',
-            name: 'Blade Fury reflects',
-            description: 'Blade Fury reflect enemy projectiles.',
-            ability: 'juggernaut_mobility',
+            id: "juggernaut_fury_reflects",
+            name: "Blade Fury reflects",
+            description: "Blade Fury reflect enemy projectiles.",
+            ability: "juggernaut_mobility",
             maxStacks: 1,
             modifier: {
-                name: 'modifier_upgrade_juggernaut_fury_reflects'
+                name: "modifier_upgrade_juggernaut_fury_reflects"
             },
             tier: 0,
             type: UpgradeTypes.FAVOR,
         },
         {
-            id: 'juggernaut_fury_attack',
-            name: 'Blade Fury attacks',
-            description: 'Blade Fury damage count as basic attacks',
-            ability: 'juggernaut_mobility',
+            id: "juggernaut_fury_attack",
+            name: "Blade Fury attacks",
+            description: "Blade Fury damage count as basic attacks",
+            ability: "juggernaut_mobility",
             maxStacks: 1,
             modifier: {
-                name: 'modifier_upgrade_juggernaut_fury_attack'
+                name: "modifier_upgrade_juggernaut_fury_attack"
             },
             tier: 0,
             type: UpgradeTypes.FAVOR,
         },
         {
-            id: 'juggernaut_refresh_dagger',
-            name: 'Refreshing dagger',
-            description: 'Your dagger cooldown is drastically reduced when succesfully hitting enemies but increased when missing.',
-            ability: 'juggernaut_special_attack',
+            id: "juggernaut_refresh_dagger",
+            name: "Refreshing dagger",
+            description: "Your dagger cooldown is drastically reduced when succesfully hitting enemies but increased when missing.",
+            ability: "juggernaut_special_attack",
             maxStacks: 1,
             modifier: {
-                name: 'modifier_upgrade_juggernaut_refresh_dagger'
+                name: "modifier_upgrade_juggernaut_refresh_dagger"
             },
             tier: 1,
             type: UpgradeTypes.FAVOR,
         },
         {
-            id: 'juggernaut_spinning_ward',
-            name: 'Spinning Ward',
-            description: 'Your Healing Ward also spins when you activates your Blade Fury. It also resists 5 hits instead of 1.',
-            ability: 'juggernaut_extra',
-            secondaryAbilities: ['juggernaut_mobility'],
+            id: "juggernaut_spinning_ward",
+            name: "Spinning Ward",
+            description: "Your Healing Ward also spins when you activates your Blade Fury. It also resists 5 hits instead of 1.",
+            ability: "juggernaut_extra",
+            secondaryAbilities: ["juggernaut_mobility"],
             maxStacks: 1,
             modifier: {
-                name: 'modifier_upgrade_juggernaut_spinning_ward'
+                name: "modifier_upgrade_juggernaut_spinning_ward"
             },
             tier: 1,
             type: UpgradeTypes.FAVOR,

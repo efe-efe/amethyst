@@ -49,9 +49,9 @@ var LocalizationCompiler = /** @class */ (function () {
     };
     LocalizationCompiler.prototype.OnLocalizationDataChanged = function (allData) {
         // console.log("Localization event fired");
-        var Abilities = new Array();
-        var Modifiers = new Array();
-        var StandardTooltips = new Array();
+        var Abilities = [];
+        var Modifiers = [];
+        var StandardTooltips = [];
         //let Talents: Array<HeroTalents> = new Array<HeroTalents>();
         var localization_info = {
             AbilityArray: Abilities,
@@ -312,7 +312,7 @@ var LocalizationCompiler = /** @class */ (function () {
         // Set based on language
         var filepath = this.addon_filepath + language.toString() + this.filepath_format;
         // Remove file contents, or create a fresh one if it doesn't exists yet.
-        var fd = fs.openSync(filepath, 'w');
+        var fd = fs.openSync(filepath, "w");
         fs.closeSync(fd);
         // Add the opening tokens        
         var kv = { lang: { Language: language, Tokens: tokens } };

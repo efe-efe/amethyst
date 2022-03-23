@@ -1,4 +1,4 @@
-import Item from '../clases/Item';
+import Item from "../clases/Item";
 
 export class CustomItems{
     private static instance: CustomItems;

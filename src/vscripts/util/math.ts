@@ -33,7 +33,7 @@ const Math = {
     },
     GetRandomElementsFromArray<T>(array: T[], amount: number): T[]{
         if (amount > array.length){
-            print('GetRandomElementsFromArray ERROR: array lenght is smaller than amount requested');
+            print("GetRandomElementsFromArray ERROR: array lenght is smaller than amount requested");
             return [];
         }
 

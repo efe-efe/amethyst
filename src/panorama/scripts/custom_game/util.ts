@@ -63,10 +63,10 @@ export const colors = {
         light: [219, 213, 30],
         dark: [229, 0, 72]
     } as Color,
-    Gradient: function(color: Color, opacity = '1.0'): string{
-        const colorA = 'rgba(' + color.light[0] + ',' + color.light[1] + ',' + color.light[2] + ',' + opacity + ')';
-        const colorB = 'rgba(' + color.dark[0] + ',' + color.dark[1] + ',' + color.dark[2] + ',' + opacity + ')';
-        return 'gradient(linear, 0% 0%, 100% 0%, from(' + colorA + '), to(' + colorB + '));';
+    Gradient: function(color: Color, opacity = "1.0"): string{
+        const colorA = "rgba(" + color.light[0] + "," + color.light[1] + "," + color.light[2] + "," + opacity + ")";
+        const colorB = "rgba(" + color.dark[0] + "," + color.dark[1] + "," + color.dark[2] + "," + opacity + ")";
+        return "gradient(linear, 0% 0%, 100% 0%, from(" + colorA + "), to(" + colorB + "));";
     }
 };
 
@@ -91,7 +91,7 @@ export const modifiers = {
 
 export const entities = {
     isVisibleByLocal(entityIndex: EntityIndex): boolean{
-        if(modifiers.findModifierByName(entityIndex,'modifier_visible')){
+        if(modifiers.findModifierByName(entityIndex,"modifier_visible")){
             return true;
         }
         return false;
@@ -99,10 +99,10 @@ export const entities = {
 };
 
 export const panels = {
-    createPanelSimple(container: Panel, className: string, type = 'Panel'): Panel{
+    createPanelSimple(container: Panel, className: string, type = "Panel"): Panel{
         return $.CreatePanelWithProperties(type, container, className, {
             class: className,
-            hittest: 'true',
+            hittest: "true",
         });
     }
 };

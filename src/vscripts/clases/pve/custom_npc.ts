@@ -1,10 +1,10 @@
-import UnitEntity from '../unit_entity';
-import Math from '../../util/math';
-import customEntities from '../../util/custom_entities';
-import { Upgrade, UpgradeTypes } from '../../upgrades/common';
-import { UpgradeManager } from '../../upgrades/upgrades';
-import { Reward, RewardsManager } from '../../rewards/rewards';
-import { CustomEvents } from '../../custom_events';
+import UnitEntity from "../unit_entity";
+import Math from "../../util/math";
+import customEntities from "../../util/custom_entities";
+import { Upgrade, UpgradeTypes } from "../../upgrades/common";
+import { UpgradeManager } from "../../upgrades/upgrades";
+import { Reward, RewardsManager } from "../../rewards/rewards";
+import { CustomEvents } from "../../custom_events";
 
 const DEBUG = false;
 
@@ -58,7 +58,7 @@ export default class CustomNPC extends UnitEntity{
             DebugDrawCircle(futureOrigin, Vector(255,0,0), 5, offset, false, 0.03);
         }
 
-        if(this.unit.HasModifier('modifier_spectre_special_attack_buff')){
+        if(this.unit.HasModifier("modifier_spectre_special_attack_buff")){
             this.unit.SetAbsOrigin(futureOrigin);
             return CollisionTypes.SUCCESS;
         }
@@ -96,8 +96,8 @@ export default class CustomNPC extends UnitEntity{
         }
 
         if(!CustomEntitiesLegacy.IsAnimating(this.unit)){
-            if(!this.unit.HasModifier('modifier_hero_movement')){
-                this.unit.AddNewModifier(this.unit, undefined, 'modifier_hero_movement', {});
+            if(!this.unit.HasModifier("modifier_hero_movement")){
+                this.unit.AddNewModifier(this.unit, undefined, "modifier_hero_movement", {});
             }
         }
 
@@ -270,8 +270,8 @@ export default class CustomNPC extends UnitEntity{
         const speed = (this.unit.GetIdealSpeed()/25);
 
         if(CustomEntitiesLegacy.IsAnimating(this.unit)){
-            this.unit.RemoveModifierByName('modifier_hero_movement');
-            this.unit.RemoveModifierByName('modifier_tower_idle');
+            this.unit.RemoveModifierByName("modifier_hero_movement");
+            this.unit.RemoveModifierByName("modifier_tower_idle");
         }
 
         if((direction.x !== 0 || direction.y !== 0) && CustomEntitiesLegacy.CanWalk(this.unit)){
@@ -294,19 +294,19 @@ export default class CustomNPC extends UnitEntity{
                 }
             }
     
-            if(	!this.unit.HasModifier('modifier_casting') && 
-                !this.unit.HasModifier('modifier_mars_counter_countering') && 
-                !this.unit.HasModifier('modifier_spectre_counter_countering')
+            if(	!this.unit.HasModifier("modifier_casting") && 
+                !this.unit.HasModifier("modifier_mars_counter_countering") && 
+                !this.unit.HasModifier("modifier_spectre_counter_countering")
             ){ 
                 CustomEntitiesLegacy.FullyFaceTowards(this.unit, direction);
             }
         } else {
-            if(this.unit.GetUnitName() === 'dire_tower'){
-                if(!this.unit.HasModifier('modifier_tower_idle')){
-                    this.unit.AddNewModifier(this.unit, undefined, 'modifier_tower_idle', {});
+            if(this.unit.GetUnitName() === "dire_tower"){
+                if(!this.unit.HasModifier("modifier_tower_idle")){
+                    this.unit.AddNewModifier(this.unit, undefined, "modifier_tower_idle", {});
                 }
             }
-            this.unit.RemoveModifierByName('modifier_hero_movement');
+            this.unit.RemoveModifierByName("modifier_hero_movement");
         }
 
         if(IsInToolsMode() && DEBUG){
@@ -382,7 +382,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     PickupItems(): void{
-        const dropItems = Entities.FindAllByClassnameWithin('dota_item_drop', this.unit.GetAbsOrigin(), this.unit.GetHullRadius() * 2.5);
+        const dropItems = Entities.FindAllByClassnameWithin("dota_item_drop", this.unit.GetAbsOrigin(), this.unit.GetHullRadius() * 2.5);
         dropItems.forEach((drop) => {
             const item = (drop as CDOTA_Item_Physical).GetContainedItem();
             const owner = item.GetPurchaser();
@@ -408,13 +408,13 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
     }
 
     IsSelectingUpgrade(): boolean{
-        const tableName = 'custom_npc_favors' as never;
+        const tableName = "custom_npc_favors" as never;
         const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; upgrades: Upgrade[] | undefined };
         return (value && (value.upgrades !== undefined));
     }
 
     IsSelectingReward(): boolean{
-        const tableName = 'custom_npc_rewards' as never;
+        const tableName = "custom_npc_rewards" as never;
         const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as { playerId: PlayerID; rewards: Reward[] | undefined };
         return (value && (value.rewards !== undefined));
     }
@@ -433,47 +433,47 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC{
                 }
             });
 
-            EFX('particles/items_fx/item_sheepstick.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+            EFX("particles/items_fx/item_sheepstick.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
                 release: true,
             });
             
-            this.unit.AddNewModifier(this.unit, undefined, 'modifier_combine_util', { duration: 1.5 });
+            this.unit.AddNewModifier(this.unit, undefined, "modifier_combine_util", { duration: 1.5 });
             
-            EmitSoundOn('DOTA_Item.RepairKit.Target', this.unit);
+            EmitSoundOn("DOTA_Item.RepairKit.Target", this.unit);
         }
         
-        EFX('particles/econ/events/ti10/mekanism_ti10.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+        EFX("particles/econ/events/ti10/mekanism_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
             release: true,
         });
-        EmitSoundOn('DOTA_Item.Overwhelming_Blink.NailedIt', this.unit);
+        EmitSoundOn("DOTA_Item.Overwhelming_Blink.NailedIt", this.unit);
     }
 
     ApplyFavor(upgrade: Upgrade): void{
-        EmitSoundOn('DOTA_Item.Mekansm.Target', this.unit);
+        EmitSoundOn("DOTA_Item.Mekansm.Target", this.unit);
 
-        EFX('particles/econ/events/ti10/hero_levelup_ti10.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+        EFX("particles/econ/events/ti10/hero_levelup_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
             release: true
         });
     }
 
     ApplyShard(upgrade: Upgrade): void{
-        EmitSoundOn('Item.MoonShard.Consume', this.unit);
+        EmitSoundOn("Item.MoonShard.Consume", this.unit);
 
-        EFX('particles/econ/events/ti10/hero_levelup_ti10.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+        EFX("particles/econ/events/ti10/hero_levelup_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
             release: true
         });
     }
 
     SelectReward(reward: Reward): void{
         this.reward = reward;
-        this.ClearTable('custom_npc_rewards' as never);
+        this.ClearTable("custom_npc_rewards" as never);
         const customEvents = CustomEvents.GetInstance();
-        customEvents.EmitEvent('pve:next_reward_selected', { customNpc: this, reward });
+        customEvents.EmitEvent("pve:next_reward_selected", { customNpc: this, reward });
 
         const data = { 
             nextReward: this.reward.name,
         } as never;
-        CustomNetTables.SetTableValue('main' as never, 'pve', data);
+        CustomNetTables.SetTableValue("main" as never, "pve", data);
     }
     
     ClearTable(name: never): void{

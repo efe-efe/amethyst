@@ -1,11 +1,11 @@
-import { CustomActionEvent } from '../addon_game_mode';
-import Items from './items';
-import Shards from './shards';
-import Favors from './favors';
-import { Upgrade, UpgradeTypes } from './common';
-import { CustomPlayerHeroNPC } from '../clases/pve/custom_npc';
-import Math from '../util/math';
-import { CustomEvents } from '../custom_events';
+import { CustomActionEvent } from "../addon_game_mode";
+import Items from "./items";
+import Shards from "./shards";
+import Favors from "./favors";
+import { Upgrade, UpgradeTypes } from "./common";
+import { CustomPlayerHeroNPC } from "../clases/pve/custom_npc";
+import Math from "../util/math";
+import { CustomEvents } from "../custom_events";
 
 const Upgrades: Upgrade[] = [
     ...Items,
@@ -23,9 +23,9 @@ interface GenerateUpgradesOptions {
 export const UpgradeManager = {
     Upgrades,
     ClearUpgrades(customNpc: CustomPlayerHeroNPC): void{
-        customNpc.ClearTable('custom_npc_favors' as never);
+        customNpc.ClearTable("custom_npc_favors" as never);
         const customEvents = CustomEvents.GetInstance();
-        customEvents.EmitEvent('pve:current_reward_applied', { customNpc });
+        customEvents.EmitEvent("pve:current_reward_applied", { customNpc });
     },
     ApplyUpgrade(customNpc: CustomPlayerHeroNPC, upgrade: Upgrade): void{
         if(upgrade.modifier){
@@ -66,7 +66,7 @@ export const UpgradeManager = {
         }
         
         const customEvents = CustomEvents.GetInstance();
-        customEvents.EmitEvent('pve:current_reward_applied', { customNpc });
+        customEvents.EmitEvent("pve:current_reward_applied", { customNpc });
         this.ClearUpgrades(customNpc);
     },
     GenerateFavors(customNpc: CustomPlayerHeroNPC, amount: number): Upgrade[]{
@@ -230,7 +230,7 @@ export const UpgradeManager = {
     }
 };
 
-CustomGameEventManager.RegisterListener<CustomActionEvent>('custom_npc:apply_favor', (eventSourceIndex, event) => {
+CustomGameEventManager.RegisterListener<CustomActionEvent>("custom_npc:apply_favor", (eventSourceIndex, event) => {
     const playerId = event.playerIndex;
     const player = GameRules.Addon.FindPlayerById(playerId);
 

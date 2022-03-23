@@ -29,7 +29,7 @@ const server = {
             payload
         };
 
-        GameEvents.SendCustomGameEventToServer<CustomActionEvent>('custom_action', data);
+        GameEvents.SendCustomGameEventToServer<CustomActionEvent>("custom_action", data);
     },
     sendStopAbilitySignalToServer: (abilityEntityIndex: AbilityEntityIndex): void => {
         const payload = {

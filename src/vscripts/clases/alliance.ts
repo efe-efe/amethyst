@@ -1,11 +1,11 @@
-import Player from './player';
+import Player from "./player";
 
 const ALLIANCE_NAMES: {[key: number]: string} = {
-    [0]: 'DOTA_NO_ALLIANCE',
-    [1]: 'DOTA_ALLIANCE_RADIANT',
-    [2]: 'DOTA_ALLIANCE_DIRE',
-    [3]: 'DOTA_ALLIANCE_LEGION',
-    [4]: 'DOTA_ALLIANCE_VOID',
+    [0]: "DOTA_NO_ALLIANCE",
+    [1]: "DOTA_ALLIANCE_RADIANT",
+    [2]: "DOTA_ALLIANCE_DIRE",
+    [3]: "DOTA_ALLIANCE_LEGION",
+    [4]: "DOTA_ALLIANCE_VOID",
 };
 
 export default class Alliance{
@@ -34,7 +34,7 @@ export default class Alliance{
                 score:  this.wins,
             } as never;
 
-            const tableName = 'alliances' as never;
+            const tableName = "alliances" as never;
             CustomNetTables.SetTableValue(tableName, this.name, data);
         }
     }

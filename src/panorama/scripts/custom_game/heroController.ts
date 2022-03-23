@@ -1,4 +1,4 @@
-import server from './server';
+import server from "./server";
 
 export default class HeroController{
     static StartMoving(direction: number[]): void{

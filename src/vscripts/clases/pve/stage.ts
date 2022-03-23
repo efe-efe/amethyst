@@ -1,9 +1,9 @@
-import { CustomAIMeta, CustomAITier, NPCNames } from './custom_ai';
-import Room, { RoomHeroData, RoomPhases, RoomType, Wave } from './room';
-import GameState from '../game_state';
-import Alliance from '../alliance';
-import Run from './run';
-import { RewardsManager } from '../../rewards/rewards';
+import { CustomAIMeta, CustomAITier, NPCNames } from "./custom_ai";
+import Room, { RoomHeroData, RoomPhases, RoomType, Wave } from "./room";
+import GameState from "../game_state";
+import Alliance from "../alliance";
+import Run from "./run";
+import { RewardsManager } from "../../rewards/rewards";
 
 export interface StageData {
     possibleNPCs: NPCNames[];
@@ -60,11 +60,11 @@ export default class Stage extends GameState{
     }
 
     SendDataToClient(): void{
-        const tableName = 'main' as never;
+        const tableName = "main" as never;
         const data = { 
             currentRoom: this.currentNpcRoomNumber + 1, 
         } as never;
-        CustomNetTables.SetTableValue(tableName, 'pve', data);
+        CustomNetTables.SetTableValue(tableName, "pve", data);
     }
 
     Update(): void{

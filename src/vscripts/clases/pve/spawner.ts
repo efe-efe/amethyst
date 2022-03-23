@@ -1,4 +1,4 @@
-import { CustomAI, CustomAIMeta } from './custom_ai';
+import { CustomAI, CustomAIMeta } from "./custom_ai";
 
 export interface SpawnerOptions {
     delayTime: number;
@@ -32,7 +32,7 @@ export default class Spawner{
             this.remainingTime--;
         } else {
             this.ai = CustomAIMeta[this.name].factory(this.origin);
-            EFX('particles/ai_spawn.vpcf', ParticleAttachment.ABSORIGIN_FOLLOW, this.ai.unit, {
+            EFX("particles/ai_spawn.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.ai.unit, {
                 release: true,
             });
             this.Destroy();
@@ -47,9 +47,9 @@ export default class Spawner{
             this.delayTime, 
             0.2, 
             RADIUS_SCOPE_PUBLIC
-        ) as CDOTA_BaseNPC).FindModifierByName('radius_marker_thinker');
+        ) as CDOTA_BaseNPC).FindModifierByName("radius_marker_thinker");
         
-        this.efx = EFX('particles/econ/events/ti10/portal/portal_open_good.vpcf', ParticleAttachment.WORLDORIGIN, undefined, {
+        this.efx = EFX("particles/econ/events/ti10/portal/portal_open_good.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
             cp0: this.origin,
         });
     }
