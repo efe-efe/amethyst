@@ -1,17 +1,14 @@
 import "./controllers/cameraController";
 import "./controllers/mousePositionController";
 
-import Command from "./commands/commands";
-import Key, { GetKeyByKeyCode } from "./commands/key";
-import Action, { GetActionByActionCode } from "./commands/actions";
 import LayoutController from "./layout/layoutController";
-import HeroController from "./heroController";
 import HeroOverhead from "./overhead/heroOverhead";
 import HeroInfoCard from "./heroInfoCard";
 import AllianceBar from "./allianceBar";
 import util, { tables } from "./util";
 import "./pve";
 import "./targetIndicator";
+import "./actions";
 import CustomEntities from "./customEntities";
 import { CustomGameState, HeroData, UnitData } from "./types";
 import { ReadyBar } from "./readyBar";
@@ -47,140 +44,6 @@ import UnitOverhead from "./overhead/unitOverhead";
 
     let customHotkeysShowing = true;
     let maxScore = 3;
-    
-    const allKeys = [
-        new Key("W"),
-        new Key("A"),
-        new Key("S"),
-        new Key("D"),
-        new Key("R"),
-        new Key("E"),
-        new Key("F"),
-        new Key("Q"),
-        new Key("C"),
-        new Key("1"),
-        new Key("2"),
-        new Key("Space", "SPACE"),
-        new Key("MOUSE_1", "LMB"),
-        new Key("MOUSE_2", "RMB")
-    ];
-    
-    enum CUSTOM_HeroActionCodes {
-        MOVE_UP,
-        MOVE_LEFT,
-        MOVE_DOWN,
-        MOVE_RIGHT,
-        BASIC_ATTACK,
-        SECOND_ATTACK,
-        MOBILITY,
-        COUNTER,
-        SPECIAL_ATTACK,
-        EXTRA,
-        ULTIMATE,
-        EX_ONE,
-        EX_TWO,
-        CANCEL,
-    }
-    
-    class AbilityAction extends Action{
-        slotIndex: number;
-        showEffects: boolean;
-    
-        constructor(name: string, actionCode: CUSTOM_HeroActionCodes, slotIndex: number, showEffects = true){
-            super(name, actionCode);
-            this.slotIndex = slotIndex;
-            this.showEffects = showEffects;
-        }
-    
-        OnStart(): void{
-            HeroController.CastAbility(this.slotIndex, this.showEffects);
-        }
-    
-        OnEnd(): void {
-            HeroController.StopCastAbility(this.slotIndex);
-        }
-    }
-    
-    class MovementAction extends Action{
-        OnStart(): void{
-            const direction = this.GetDirectionFromActionCode(this.actionCode);
-            HeroController.StartMoving(direction);
-        }
-    
-        OnEnd(): void {
-            const direction = this.GetDirectionFromActionCode(this.actionCode);
-            HeroController.StopMoving(direction);
-        }
-    
-        GetDirectionFromActionCode(actionCode: CUSTOM_HeroActionCodes): number[]{
-            let direction = [0, 0];
-            
-            if(actionCode == CUSTOM_HeroActionCodes.MOVE_UP){
-                direction = [0, 1];
-            }
-            if(actionCode == CUSTOM_HeroActionCodes.MOVE_DOWN){
-                direction = [0, -1];
-            }
-            if(actionCode == CUSTOM_HeroActionCodes.MOVE_LEFT){
-                direction = [-1, 0];
-            }
-            if(actionCode == CUSTOM_HeroActionCodes.MOVE_RIGHT){
-                direction = [1, 0];
-            }
-    
-            return direction;
-        }
-    }
-    
-    class CancelAction extends Action{
-        OnStart(): void{
-            HeroController.Cancel();
-        }
-    }
-    
-    const allActions = [
-        new MovementAction("Move up", CUSTOM_HeroActionCodes.MOVE_UP),
-        new MovementAction("Move down", CUSTOM_HeroActionCodes.MOVE_DOWN),
-        new MovementAction("Move left", CUSTOM_HeroActionCodes.MOVE_LEFT),
-        new MovementAction("Move right", CUSTOM_HeroActionCodes.MOVE_RIGHT),
-        new AbilityAction("Basic attack", CUSTOM_HeroActionCodes.BASIC_ATTACK, 0, false),
-        new AbilityAction("Second attack", CUSTOM_HeroActionCodes.SECOND_ATTACK, 1),
-        new AbilityAction("Mobility", CUSTOM_HeroActionCodes.MOBILITY, 2),
-        new AbilityAction("Counter", CUSTOM_HeroActionCodes.COUNTER, 3),
-        new AbilityAction("Special attack", CUSTOM_HeroActionCodes.SPECIAL_ATTACK, 4),
-        new AbilityAction("Extra attack", CUSTOM_HeroActionCodes.EXTRA, 5),
-        new AbilityAction("Ultimate", CUSTOM_HeroActionCodes.ULTIMATE, 6),
-        new AbilityAction("EX one", CUSTOM_HeroActionCodes.EX_ONE, 7),
-        new AbilityAction("EX two", CUSTOM_HeroActionCodes.EX_TWO, 8),
-        new CancelAction("Cancel", CUSTOM_HeroActionCodes.CANCEL)
-    ];
-    
-    const CreateCommandByKeyAndActionCodes = (keyCode: string, actionCode: CUSTOM_HeroActionCodes, isAbility = false): Command => {
-        const key = GetKeyByKeyCode(allKeys, keyCode)!;
-        const action = GetActionByActionCode(allActions, actionCode)!;
-    
-        if(isAbility){
-            const actionAsSpell = action as AbilityAction;
-            layout.ChangeAbilityTextBySlotIndex(key.text, actionAsSpell.slotIndex);
-        }
-    
-        return new Command(key, action);
-    };
-
-    CreateCommandByKeyAndActionCodes("W", CUSTOM_HeroActionCodes.MOVE_UP),
-    CreateCommandByKeyAndActionCodes("A", CUSTOM_HeroActionCodes.MOVE_LEFT),
-    CreateCommandByKeyAndActionCodes("S", CUSTOM_HeroActionCodes.MOVE_DOWN),
-    CreateCommandByKeyAndActionCodes("D", CUSTOM_HeroActionCodes.MOVE_RIGHT),
-    CreateCommandByKeyAndActionCodes("R", CUSTOM_HeroActionCodes.ULTIMATE, true),
-    CreateCommandByKeyAndActionCodes("F", CUSTOM_HeroActionCodes.EXTRA, true),
-    CreateCommandByKeyAndActionCodes("E", CUSTOM_HeroActionCodes.SPECIAL_ATTACK, true),
-    CreateCommandByKeyAndActionCodes("Q", CUSTOM_HeroActionCodes.COUNTER, true),
-    CreateCommandByKeyAndActionCodes("C", CUSTOM_HeroActionCodes.CANCEL),
-    CreateCommandByKeyAndActionCodes("1", CUSTOM_HeroActionCodes.EX_ONE, true),
-    CreateCommandByKeyAndActionCodes("2", CUSTOM_HeroActionCodes.EX_TWO, true),
-    CreateCommandByKeyAndActionCodes("Space", CUSTOM_HeroActionCodes.MOBILITY, true),
-    CreateCommandByKeyAndActionCodes("MOUSE_1", CUSTOM_HeroActionCodes.BASIC_ATTACK, true),
-    CreateCommandByKeyAndActionCodes("MOUSE_2", CUSTOM_HeroActionCodes.SECOND_ATTACK, true),
     
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_TIMEOFDAY, false);
     GameUI.SetDefaultUIEnabled(DotaDefaultUIElement_t.DOTA_DEFAULT_UI_TOP_HEROES, false);
