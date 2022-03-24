@@ -11,8 +11,6 @@
     let heroOrigin = Entities.GetAbsOrigin(hero);
     let initialized = false;
 
-    Update();
-
     function Update(): void{
         heroOrigin = Entities.GetAbsOrigin(hero);
 
@@ -101,4 +99,6 @@
         }
         GameUI.SetCameraLookAtPositionHeightOffset(cameraDistanceActual);
     }
+    
+    Update();
 })();

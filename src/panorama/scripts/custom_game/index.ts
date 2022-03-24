@@ -1,5 +1,5 @@
-import "./camera/cameraController";
-import "./mouse/mousePositionController";
+import "./controllers/cameraController";
+import "./controllers/mousePositionController";
 
 import Command from "./commands/commands";
 import Key, { GetKeyByKeyCode } from "./commands/key";
