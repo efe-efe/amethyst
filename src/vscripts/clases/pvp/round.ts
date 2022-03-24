@@ -44,8 +44,8 @@ export default class Round extends GameState{
         this.healthEntities = Entities.FindAllByName("health_orb");
         this.manaEntities = Entities.FindAllByName("mana_orb");
         this.shieldEntities = Entities.FindAllByName("shield_orb");
-        this.radiantWarmupSpawn = Entities.FindByName(undefined, "radiantWarmupSpawn")!;
-        this.direWarmupSpawn = Entities.FindByName(undefined, "direWarmupSpawn")!;
+        this.radiantWarmupSpawn = Entities.FindByName(undefined, "radiant_warmup_spawn")!;
+        this.direWarmupSpawn = Entities.FindByName(undefined, "dire_warmup_spawn")!;
 
         this.AddPickups(this.healthEntities, PickupTypes.HEALTH);
         this.AddPickups(this.manaEntities, PickupTypes.MANA);
