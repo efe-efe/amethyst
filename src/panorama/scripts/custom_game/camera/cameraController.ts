@@ -1,148 +1,104 @@
-export default class CameraController{
-    private static instance: CameraController;
-    private thinkInterval = 0.01;
-    private LERP_INITIAL = 0.10;
-    private LERP_FAST = 0.05;
-    private cameraOffsetY = -120;
-    private cameraDistance = 0;
-    private cameraDistanceActual = 0;
-    private cameraDistanceLerp = 30;
+(function(){
+    const LERP_INITIAL = 0.10;
+    const LERP_FAST = 0.05;
+    const thinkInterval = 0.01;
+    const cameraOffsetY = -120;
+    const cameraDistance = 0;
+    const cameraDistanceLerp = 30;
+    let cameraDistanceActual = 0;
+    let playerId = Players.GetLocalPlayer();
+    let hero = Players.GetPlayerHeroEntityIndex(playerId);
+    let heroOrigin = Entities.GetAbsOrigin(hero);
+    let initialized = false;
 
-    private playerId = Players.GetLocalPlayer();
-    private hero = Players.GetPlayerHeroEntityIndex(this.playerId);
-    private heroOrigin = Entities.GetAbsOrigin(this.hero);
-    private initialized = false;
+    Update();
 
-    private constructor(){
-        this.Update();
-    }
+    function Update(): void{
+        heroOrigin = Entities.GetAbsOrigin(hero);
 
-    public static GetInstance(): CameraController {
-        if (!CameraController.instance) {
-            CameraController.instance = new CameraController();
-        }
-
-        return CameraController.instance;
-    }
-
-    private Update(): void{
-        this.heroOrigin = Entities.GetAbsOrigin(this.hero);
-
-        if(!this.heroOrigin){ 
-            this.playerId = Players.GetLocalPlayer();
-            this.hero = Players.GetPlayerHeroEntityIndex(this.playerId);
-            $.Schedule(this.thinkInterval, () => {
-                this.Update();
-            }); 
+        if(!heroOrigin){ 
+            playerId = Players.GetLocalPlayer();
+            hero = Players.GetPlayerHeroEntityIndex(playerId);
+            $.Schedule(thinkInterval, Update); 
             return; 
         }
 
             
         if(Game.IsInToolsMode()){
-            const heroIndex = Players.GetSelectedEntities(this.playerId)[0];
+            const heroIndex = Players.GetSelectedEntities(playerId)[0];
             if(heroIndex){
-                this.heroOrigin = Entities.GetAbsOrigin(heroIndex);
+                heroOrigin = Entities.GetAbsOrigin(heroIndex);
             }
         }
 
-        if(this.initialized === false){
-            GameUI.SetCameraTargetPosition(this.heroOrigin, 0.0);
-            this.initialized = true;
-            $.Schedule(this.thinkInterval, () => {
-                this.Update();
-            }); 
+        if(initialized === false){
+            GameUI.SetCameraTargetPosition(heroOrigin, 0.0);
+            initialized = true;
+            $.Schedule(thinkInterval, Update); 
             return; 
         }
 
-        this.UpdatePosition();
-        this.UpdateDistance();
-        $.Schedule(this.thinkInterval, () => {
-            this.Update();
-        }); 
+        UpdatePosition();
+        UpdateDistance();
+        $.Schedule(thinkInterval, Update); 
     }
 
-    private UpdatePosition(): void{
+    function UpdatePosition(): void{
         const mousePosition = GameUI.GetCursorPosition();
         const sw = Game.GetScreenWidth();
         const sh = Game.GetScreenHeight();
 
-        //$.Msg(heroScreenX, "<-- x ! y --> ", heroScreenY)
         let cameraPosition = [];
-        let cameraPositionLerp = this.LERP_INITIAL;
-        let heroScreenX = Game.WorldToScreenX(this.heroOrigin[0], this.heroOrigin[1], this.heroOrigin[2]);	
-        let heroScreenY = Game.WorldToScreenY(this.heroOrigin[0], this.heroOrigin[1], this.heroOrigin[2]);
+        let cameraPositionLerp = LERP_INITIAL;
+        let heroScreenX = Game.WorldToScreenX(heroOrigin[0], heroOrigin[1], heroOrigin[2]);	
+        let heroScreenY = Game.WorldToScreenY(heroOrigin[0], heroOrigin[1], heroOrigin[2]);
 
 
         if(heroScreenX == -1 && heroScreenY == -1){
-            cameraPosition = this.heroOrigin;
-            cameraPositionLerp = this.LERP_FAST;
+            cameraPosition = heroOrigin;
+            cameraPositionLerp = LERP_FAST;
         } else { 
-
             if(heroScreenX < 0){
                 heroScreenX = 0;
-                cameraPositionLerp = this.LERP_FAST;
+                cameraPositionLerp = LERP_FAST;
             }
             if(heroScreenX > sw){
                 heroScreenX = sw;
-                cameraPositionLerp = this.LERP_FAST;
+                cameraPositionLerp = LERP_FAST;
             }
 
             if(heroScreenY < 0){
                 heroScreenY = 0;
-                cameraPositionLerp = this.LERP_FAST;
+                cameraPositionLerp = LERP_FAST;
             }
             if(heroScreenY > sh){
                 heroScreenY = sh;
-                cameraPositionLerp = this.LERP_FAST;
+                cameraPositionLerp = LERP_FAST;
             }
 
             const distanceX = (heroScreenX - mousePosition[0]);
-            const distanceY = (heroScreenY - mousePosition[1]) + this.cameraOffsetY;
+            const distanceY = (heroScreenY - mousePosition[1]) + cameraOffsetY;
 
             const newScreenPosX = heroScreenX + distanceX * -1/2.5; 
             const newScreenPosY = heroScreenY + distanceY * -1/2.5;
-            
-            /*
-
-            const currentCameraPosition: number[] = GameUI.GetCameraPosition();
-            const currentScreenPositionX = Game.WorldToScreenX(
-                currentCameraPosition[0], currentCameraPosition[1], currentCameraPosition[2]
-            );
-            const currentScreenPositionY = Game.WorldToScreenY(
-                currentCameraPosition[0], currentCameraPosition[1], currentCameraPosition[2]
-            );
-
-            if(!GameUI.GetScreenWorldPosition([currentScreenPositionX, newScreenPosY])){
-                newScreenPosY = currentScreenPositionY;
-            }
-            */
-            
             
             if(!GameUI.GetScreenWorldPosition([newScreenPosX, newScreenPosY])){
                 return;
             } 
 
             cameraPosition = Game.ScreenXYToWorld(newScreenPosX, newScreenPosY);
-
-            /*
-            $.Msg(currentCameraPosition, '\n', cameraPosition, '\n\n');
-            $.Msg('[',newScreenPosX, ', ', newScreenPosY, ']\n', '[',currentScreenPositionX, ', ', currentScreenPositionY, ']\n\n');
-            */
         }
 
         GameUI.SetCameraTargetPosition(cameraPosition, cameraPositionLerp);
     }
 
-    private UpdateDistance(): void{
+    function UpdateDistance(): void{
         // Smooth camera distance changes
-        if (this.cameraDistanceActual < this.cameraDistance){
-            this.cameraDistanceActual = this.cameraDistanceActual + this.cameraDistanceLerp;
-        } else if(this.cameraDistanceActual > this.cameraDistance) {
-            this.cameraDistanceActual = this.cameraDistanceActual - this.cameraDistanceLerp;
+        if (cameraDistanceActual < cameraDistance){
+            cameraDistanceActual = cameraDistanceActual + cameraDistanceLerp;
+        } else if(cameraDistanceActual > cameraDistance) {
+            cameraDistanceActual = cameraDistanceActual - cameraDistanceLerp;
         }
-
-        GameUI.SetCameraLookAtPositionHeightOffset(this.cameraDistanceActual);
+        GameUI.SetCameraLookAtPositionHeightOffset(cameraDistanceActual);
     }
-}
-
-CameraController.GetInstance();
+})();
