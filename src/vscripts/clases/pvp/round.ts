@@ -24,32 +24,32 @@ export default class Round extends GameState{
     pickupWrappers: PickupWrapper[] = [];
     arrows: ParticleID[] = [];
     ended = false;
-    time_over = false;
-    hero_died = false;
-    is_trying_to_end = false;
+    timeOver = false;
+    heroDied = false;
+    isTryingToEnd = false;
     winner: Alliance | undefined = undefined;
-    time_remianing_until_end = settings.DrawTime;
-    gem_spawn_points: Vector[];
-    health_entities: CBaseEntity[];
-    mana_entities: CBaseEntity[];
-    shield_entities: CBaseEntity[];
-    radiant_warmup_spawn: CBaseEntity;
-    dire_warmup_spawn: CBaseEntity;
+    timeRemianingUntilEnd = settings.DrawTime;
+    gemSpawnPoints: Vector[];
+    healthEntities: CBaseEntity[];
+    manaEntities: CBaseEntity[];
+    shieldEntities: CBaseEntity[];
+    radiantWarmupSpawn: CBaseEntity;
+    direWarmupSpawn: CBaseEntity;
     gem: Gem;
 
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
 
-        this.gem_spawn_points = Entities.FindAllByName("orb_spawn").map((entity) => entity.GetAbsOrigin());
-        this.health_entities = Entities.FindAllByName("health_orb");
-        this.mana_entities = Entities.FindAllByName("mana_orb");
-        this.shield_entities = Entities.FindAllByName("shield_orb");
-        this.radiant_warmup_spawn = Entities.FindByName(undefined, "radiant_warmup_spawn")!;
-        this.dire_warmup_spawn = Entities.FindByName(undefined, "dire_warmup_spawn")!;
+        this.gemSpawnPoints = Entities.FindAllByName("orb_spawn").map((entity) => entity.GetAbsOrigin());
+        this.healthEntities = Entities.FindAllByName("health_orb");
+        this.manaEntities = Entities.FindAllByName("mana_orb");
+        this.shieldEntities = Entities.FindAllByName("shield_orb");
+        this.radiantWarmupSpawn = Entities.FindByName(undefined, "radiantWarmupSpawn")!;
+        this.direWarmupSpawn = Entities.FindByName(undefined, "direWarmupSpawn")!;
 
-        this.AddPickups(this.health_entities, PickupTypes.HEALTH);
-        this.AddPickups(this.mana_entities, PickupTypes.MANA);
-        this.AddPickups(this.shield_entities, PickupTypes.SHIELD);
+        this.AddPickups(this.healthEntities, PickupTypes.HEALTH);
+        this.AddPickups(this.manaEntities, PickupTypes.MANA);
+        this.AddPickups(this.shieldEntities, PickupTypes.SHIELD);
 
         this.gem = {
             index: RandomInt(0, 2),
@@ -80,9 +80,9 @@ export default class Round extends GameState{
         if(this.gem.entity){
             const color = this.gem.entity.GetColor();
 
-            this.gem_spawn_points.forEach((point, i) => {
+            this.gemSpawnPoints.forEach((point, i) => {
                 if(i !== this.gem.index){ 
-                    const direction = (this.gem_spawn_points[this.gem.index].__sub(point)).Normalized();
+                    const direction = (this.gemSpawnPoints[this.gem.index].__sub(point)).Normalized();
                     const efx = ParticleManager.CreateParticle("particles/gem_finder.vpcf", ParticleAttachment.WORLDORIGIN, undefined);
                     ParticleManager.SetParticleControl(efx, 0, point);
                     ParticleManager.SetParticleControl(efx, 2, point.__add(direction.__mul(Vector(128, 128, 0))));
@@ -96,13 +96,13 @@ export default class Round extends GameState{
 
     Update(): void{
         super.Update();
-        if(this.time_remaining >= 0){
-            this.UpdateGameTimer(math.floor(this.time_remaining/30));
+        if(this.timeRemaining >= 0){
+            this.UpdateGameTimer(math.floor(this.timeRemaining/30));
         }
 
-        if(this.time_remaining === 0 && !this.time_over){
-            if(this.max_duration !== -1){
-                this.time_over = true;
+        if(this.timeRemaining === 0 && !this.timeOver){
+            if(this.maxDuration !== -1){
+                this.timeOver = true;
                 this.CreateDeathZone();
             }
         }
@@ -139,31 +139,31 @@ export default class Round extends GameState{
             return;
         }
 
-        if(this.is_trying_to_end){
-            this.time_remianing_until_end = this.time_remianing_until_end - FrameTime();
+        if(this.isTryingToEnd){
+            this.timeRemianingUntilEnd = this.timeRemianingUntilEnd - FrameTime();
 
-            if(this.time_remianing_until_end <= 0){
+            if(this.timeRemianingUntilEnd <= 0){
                 this.winner = this.GetCompetingAlliances()[0];
                 this.EndRound();
             }
         }
 
-        if(this.hero_died){
-            this.hero_died = false;
+        if(this.heroDied){
+            this.heroDied = false;
 
             if(this.CheckEndConditions()){
-                this.is_trying_to_end = true;
+                this.isTryingToEnd = true;
             }
         }
     }
 
     CreateGem(): void{
         this.gem.type = RandomIntWithExeption(GemTypes.AMETHYST, GemTypes.EMERALD, this.gem.type);
-        if(!this.time_over){
-            this.gem.index = RandomIntWithExeption(0, this.gem_spawn_points.length - 1, this.gem.index);
+        if(!this.timeOver){
+            this.gem.index = RandomIntWithExeption(0, this.gemSpawnPoints.length - 1, this.gem.index);
         }
         const time = (this.gem.number === 0) ? settings.GemSpawnTime : settings.GemRespawnTime;
-        const origin = this.gem_spawn_points[this.gem.index];
+        const origin = this.gemSpawnPoints[this.gem.index];
         this.gem.number = this.gem.number + 1;
         this.gem.entity = new GemWrapper(time, origin, this.gem.type);
     }
@@ -199,10 +199,10 @@ export default class Round extends GameState{
 
         this.GetAllPlayers().forEach((player) => {
             if(player.alliance && player.hero){
-                let target = this.radiant_warmup_spawn;
+                let target = this.radiantWarmupSpawn;
 
                 if(player.alliance.name == "DOTA_ALLIANCE_DIRE"){
-                    target = this.dire_warmup_spawn;
+                    target = this.direWarmupSpawn;
                 }
 
                 if(!player.hero.IsAlive()){
@@ -310,7 +310,7 @@ export default class Round extends GameState{
             undefined,
             "modifier_death_zone",
             {},
-            this.gem_spawn_points[this.gem.index],
+            this.gemSpawnPoints[this.gem.index],
             DotaTeam.NOTEAM,
             false
         ) as CBaseEntity; 

@@ -170,7 +170,7 @@ ____exports.default = (function()
         if currentPhase == ____exports.RoomPhases.REWARD_OFFERING then
             self:UpdateRewardOffering()
         end
-        if self.time_remaining == 0 then
+        if self.timeRemaining == 0 then
             self:End()
         end
     end

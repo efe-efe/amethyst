@@ -11,10 +11,10 @@ export default class PreRun extends GameState{
 
     Update(): void{
         super.Update();
-        if(this.time_remaining >= 0){
-            this.UpdateGameTimer(math.floor(this.time_remaining/30));
+        if(this.timeRemaining >= 0){
+            this.UpdateGameTimer(math.floor(this.timeRemaining/30));
         }
-        if(this.time_remaining == 0){
+        if(this.timeRemaining == 0){
             this.End();
         }
     }

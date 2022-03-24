@@ -960,7 +960,7 @@ export class GameMode{
     
     OnHeroKilledPVP(killed: CDOTA_BaseNPC): void{
         if(this.round){
-            this.round.hero_died = true;
+            this.round.heroDied = true;
             this.CreateDeathOrb(killed);
             this.UpdateCameras();
         }

@@ -170,7 +170,7 @@ export default class Room extends GameState{
         if(currentPhase === RoomPhases.REWARD_OFFERING){
             this.UpdateRewardOffering();
         }
-        if(this.time_remaining === 0){
+        if(this.timeRemaining === 0){
             this.End();
         }
     }

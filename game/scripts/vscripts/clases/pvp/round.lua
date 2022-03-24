@@ -23,23 +23,23 @@ ____exports.default = (function()
         self.pickupWrappers = {}
         self.arrows = {}
         self.ended = false
-        self.time_over = false
-        self.hero_died = false
-        self.is_trying_to_end = false
+        self.timeOver = false
+        self.heroDied = false
+        self.isTryingToEnd = false
         self.winner = nil
-        self.time_remianing_until_end = settings.DrawTime
-        self.gem_spawn_points = __TS__ArrayMap(
+        self.timeRemianingUntilEnd = settings.DrawTime
+        self.gemSpawnPoints = __TS__ArrayMap(
             Entities:FindAllByName("orb_spawn"),
             function(____, entity) return entity:GetAbsOrigin() end
         )
-        self.health_entities = Entities:FindAllByName("health_orb")
-        self.mana_entities = Entities:FindAllByName("mana_orb")
-        self.shield_entities = Entities:FindAllByName("shield_orb")
-        self.radiant_warmup_spawn = Entities:FindByName(nil, "radiant_warmup_spawn")
-        self.dire_warmup_spawn = Entities:FindByName(nil, "dire_warmup_spawn")
-        self:AddPickups(self.health_entities, PickupTypes.HEALTH)
-        self:AddPickups(self.mana_entities, PickupTypes.MANA)
-        self:AddPickups(self.shield_entities, PickupTypes.SHIELD)
+        self.healthEntities = Entities:FindAllByName("health_orb")
+        self.manaEntities = Entities:FindAllByName("mana_orb")
+        self.shieldEntities = Entities:FindAllByName("shield_orb")
+        self.radiantWarmupSpawn = Entities:FindByName(nil, "radiantWarmupSpawn")
+        self.direWarmupSpawn = Entities:FindByName(nil, "direWarmupSpawn")
+        self:AddPickups(self.healthEntities, PickupTypes.HEALTH)
+        self:AddPickups(self.manaEntities, PickupTypes.MANA)
+        self:AddPickups(self.shieldEntities, PickupTypes.SHIELD)
         self.gem = {
             index = RandomInt(0, 2),
             type = RandomInt(GemTypes.AMETHYST, GemTypes.EMERALD),
@@ -72,10 +72,10 @@ ____exports.default = (function()
         if self.gem.entity then
             local color = self.gem.entity:GetColor()
             __TS__ArrayForEach(
-                self.gem_spawn_points,
+                self.gemSpawnPoints,
                 function(____, point, i)
                     if i ~= self.gem.index then
-                        local direction = self.gem_spawn_points[self.gem.index + 1]:__sub(point):Normalized()
+                        local direction = self.gemSpawnPoints[self.gem.index + 1]:__sub(point):Normalized()
                         local efx = ParticleManager:CreateParticle("particles/gem_finder.vpcf", PATTACH_WORLDORIGIN, nil)
                         ParticleManager:SetParticleControl(efx, 0, point)
                         ParticleManager:SetParticleControl(
@@ -101,14 +101,14 @@ ____exports.default = (function()
     end
     function Round.prototype.Update(self)
         GameState.prototype.Update(self)
-        if self.time_remaining >= 0 then
+        if self.timeRemaining >= 0 then
             self:UpdateGameTimer(
-                math.floor(self.time_remaining / 30)
+                math.floor(self.timeRemaining / 30)
             )
         end
-        if (self.time_remaining == 0) and (not self.time_over) then
-            if self.max_duration ~= -1 then
-                self.time_over = true
+        if (self.timeRemaining == 0) and (not self.timeOver) then
+            if self.maxDuration ~= -1 then
+                self.timeOver = true
                 self:CreateDeathZone()
             end
         end
@@ -145,27 +145,27 @@ ____exports.default = (function()
         else
             return
         end
-        if self.is_trying_to_end then
-            self.time_remianing_until_end = self.time_remianing_until_end - FrameTime()
-            if self.time_remianing_until_end <= 0 then
+        if self.isTryingToEnd then
+            self.timeRemianingUntilEnd = self.timeRemianingUntilEnd - FrameTime()
+            if self.timeRemianingUntilEnd <= 0 then
                 self.winner = self:GetCompetingAlliances()[1]
                 self:EndRound()
             end
         end
-        if self.hero_died then
-            self.hero_died = false
+        if self.heroDied then
+            self.heroDied = false
             if self:CheckEndConditions() then
-                self.is_trying_to_end = true
+                self.isTryingToEnd = true
             end
         end
     end
     function Round.prototype.CreateGem(self)
         self.gem.type = RandomIntWithExeption(GemTypes.AMETHYST, GemTypes.EMERALD, self.gem.type)
-        if not self.time_over then
-            self.gem.index = RandomIntWithExeption(0, #self.gem_spawn_points - 1, self.gem.index)
+        if not self.timeOver then
+            self.gem.index = RandomIntWithExeption(0, #self.gemSpawnPoints - 1, self.gem.index)
         end
         local time = ((self.gem.number == 0) and settings.GemSpawnTime) or settings.GemRespawnTime
-        local origin = self.gem_spawn_points[self.gem.index + 1]
+        local origin = self.gemSpawnPoints[self.gem.index + 1]
         self.gem.number = self.gem.number + 1
         self.gem.entity = __TS__New(GemWrapper, time, origin, self.gem.type)
     end
@@ -199,9 +199,9 @@ ____exports.default = (function()
             self:GetAllPlayers(),
             function(____, player)
                 if player.alliance and player.hero then
-                    local target = self.radiant_warmup_spawn
+                    local target = self.radiantWarmupSpawn
                     if player.alliance.name == "DOTA_ALLIANCE_DIRE" then
-                        target = self.dire_warmup_spawn
+                        target = self.direWarmupSpawn
                     end
                     if not player.hero:IsAlive() then
                         player.hero:RespawnHero(false, false)
@@ -303,7 +303,7 @@ ____exports.default = (function()
     function Round.prototype.CreateDeathZone(self)
         local tableName = "custom_message"
         CustomGameEventManager:Send_ServerToAllClients(tableName, {text = "Death Zone has initiated!"})
-        self.death_zone = CreateModifierThinker(nil, nil, "modifier_death_zone", {}, self.gem_spawn_points[self.gem.index + 1], DOTA_TEAM_NOTEAM, false)
+        self.death_zone = CreateModifierThinker(nil, nil, "modifier_death_zone", {}, self.gemSpawnPoints[self.gem.index + 1], DOTA_TEAM_NOTEAM, false)
     end
     function Round.prototype.DestroyDeathZone(self)
         if self.death_zone then

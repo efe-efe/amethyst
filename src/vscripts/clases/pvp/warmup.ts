@@ -11,14 +11,14 @@ interface DummyTargetData {
 }
 
 export default class Warmup extends GameState{
-    dummy_targets: DummyTargetData[] = [];
+    dummyTargets: DummyTargetData[] = [];
 
     constructor(alliances: Alliance[], duration: number){
         super(alliances, duration);
         const dummyTargetsEnts = Entities.FindAllByName("dummy_target");
         
         dummyTargetsEnts.forEach((entity) => {
-            this.dummy_targets.push({
+            this.dummyTargets.push({
                 origin: entity.GetAbsOrigin(),
                 timer: 0,
                 entity: new DummyTarget(entity.GetAbsOrigin()),
@@ -28,15 +28,15 @@ export default class Warmup extends GameState{
 
     Update(): void{
         super.Update();
-        if(this.time_remaining > 0){
-            this.UpdateGameTimer(math.floor(this.time_remaining/30));
+        if(this.timeRemaining > 0){
+            this.UpdateGameTimer(math.floor(this.timeRemaining/30));
 
-            if(this.time_remaining <= 30 && this.time_remaining > 0){
-                const data = { text: tostring(this.time_remaining/30) } as never;
+            if(this.timeRemaining <= 30 && this.timeRemaining > 0){
+                const data = { text: tostring(this.timeRemaining/30) } as never;
                 CustomGameEventManager.Send_ServerToAllClients("custom_message", data);
             }
 
-            this.dummy_targets.forEach((dummyTarget) => {
+            this.dummyTargets.forEach((dummyTarget) => {
                 if(!dummyTarget.entity){
                     dummyTarget.timer = dummyTarget.timer - 1;
                     if(dummyTarget.timer <= 0){
@@ -50,7 +50,7 @@ export default class Warmup extends GameState{
                 }
             });
         } else {
-            if(this.max_duration != -1){
+            if(this.maxDuration != -1){
                 this.EndWarmup();
             }
         }
@@ -67,7 +67,7 @@ export default class Warmup extends GameState{
     }
     
     DestroyAllDummyTargets(): void{
-        this.dummy_targets.forEach((dummyTarget) => {
+        this.dummyTargets.forEach((dummyTarget) => {
             
             if(dummyTarget.entity){
                 dummyTarget.entity.Destroy(true);

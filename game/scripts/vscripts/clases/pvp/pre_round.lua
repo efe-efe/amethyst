@@ -27,12 +27,12 @@ ____exports.default = (function()
     end
     function PreRound.prototype.Update(self)
         GameState.prototype.Update(self)
-        if self.time_remaining >= 0 then
+        if self.timeRemaining >= 0 then
             self:UpdateGameTimer(
-                math.floor(self.time_remaining / 30)
+                math.floor(self.timeRemaining / 30)
             )
         end
-        if self.time_remaining == 0 then
+        if self.timeRemaining == 0 then
             self:EndPreRound()
         end
     end

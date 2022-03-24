@@ -922,7 +922,7 @@ function GameMode.prototype.OnEntityKilled(self, event)
 end
 function GameMode.prototype.OnHeroKilledPVP(self, killed)
     if self.round then
-        self.round.hero_died = true
+        self.round.heroDied = true
         self:CreateDeathOrb(killed)
         self:UpdateCameras()
     end

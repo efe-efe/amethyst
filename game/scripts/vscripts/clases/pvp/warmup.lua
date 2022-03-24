@@ -15,13 +15,13 @@ ____exports.default = (function()
     __TS__ClassExtends(Warmup, GameState)
     function Warmup.prototype.____constructor(self, alliances, duration)
         GameState.prototype.____constructor(self, alliances, duration)
-        self.dummy_targets = {}
+        self.dummyTargets = {}
         local dummyTargetsEnts = Entities:FindAllByName("dummy_target")
         __TS__ArrayForEach(
             dummyTargetsEnts,
             function(____, entity)
                 __TS__ArrayPush(
-                    self.dummy_targets,
+                    self.dummyTargets,
                     {
                         origin = entity:GetAbsOrigin(),
                         timer = 0,
@@ -36,18 +36,18 @@ ____exports.default = (function()
     end
     function Warmup.prototype.Update(self)
         GameState.prototype.Update(self)
-        if self.time_remaining > 0 then
+        if self.timeRemaining > 0 then
             self:UpdateGameTimer(
-                math.floor(self.time_remaining / 30)
+                math.floor(self.timeRemaining / 30)
             )
-            if (self.time_remaining <= 30) and (self.time_remaining > 0) then
+            if (self.timeRemaining <= 30) and (self.timeRemaining > 0) then
                 local data = {
-                    text = tostring(self.time_remaining / 30)
+                    text = tostring(self.timeRemaining / 30)
                 }
                 CustomGameEventManager:Send_ServerToAllClients("custom_message", data)
             end
             __TS__ArrayForEach(
-                self.dummy_targets,
+                self.dummyTargets,
                 function(____, dummyTarget)
                     if not dummyTarget.entity then
                         dummyTarget.timer = dummyTarget.timer - 1
@@ -63,7 +63,7 @@ ____exports.default = (function()
                 end
             )
         else
-            if self.max_duration ~= -1 then
+            if self.maxDuration ~= -1 then
                 self:EndWarmup()
             end
         end
@@ -80,7 +80,7 @@ ____exports.default = (function()
     end
     function Warmup.prototype.DestroyAllDummyTargets(self)
         __TS__ArrayForEach(
-            self.dummy_targets,
+            self.dummyTargets,
             function(____, dummyTarget)
                 if dummyTarget.entity then
                     dummyTarget.entity:Destroy(true)

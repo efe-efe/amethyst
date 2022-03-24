@@ -14,18 +14,18 @@ export enum CustomGameState {
 
 export default class GameState{
     alliances: Alliance[];
-    time_remaining: number;
-    max_duration: number;
+    timeRemaining: number;
+    maxDuration: number;
 
     constructor(alliances: Alliance[], duration: number){
         this.alliances = alliances;
-        this.time_remaining = duration * 30;
-        this.max_duration = duration;
+        this.timeRemaining = duration * 30;
+        this.maxDuration = duration;
     }
 
     Update(): void{
-        if(this.time_remaining > 0){
-            this.time_remaining = this.time_remaining - 1;
+        if(this.timeRemaining > 0){
+            this.timeRemaining = this.timeRemaining - 1;
         }
     }
 
@@ -43,11 +43,11 @@ export default class GameState{
     }
 
     GetDuration(): number{
-        return math.floor(this.time_remaining/30);
+        return math.floor(this.timeRemaining/30);
     }
 
     SetDuration(duration: number): void{
-        this.time_remaining = duration * 30;
+        this.timeRemaining = duration * 30;
     }
 
     UpdateGameTimer(time: number): void{

@@ -25,12 +25,12 @@ ____exports.default = (function()
     GameState.name = "GameState"
     function GameState.prototype.____constructor(self, alliances, duration)
         self.alliances = alliances
-        self.time_remaining = duration * 30
-        self.max_duration = duration
+        self.timeRemaining = duration * 30
+        self.maxDuration = duration
     end
     function GameState.prototype.Update(self)
-        if self.time_remaining > 0 then
-            self.time_remaining = self.time_remaining - 1
+        if self.timeRemaining > 0 then
+            self.timeRemaining = self.timeRemaining - 1
         end
     end
     function GameState.prototype.GetAllPlayers(self)
@@ -51,10 +51,10 @@ ____exports.default = (function()
         return players
     end
     function GameState.prototype.GetDuration(self)
-        return math.floor(self.time_remaining / 30)
+        return math.floor(self.timeRemaining / 30)
     end
     function GameState.prototype.SetDuration(self, duration)
-        self.time_remaining = duration * 30
+        self.timeRemaining = duration * 30
     end
     function GameState.prototype.UpdateGameTimer(self, time)
         local minutes = math.floor(time / 60)
