@@ -8,7 +8,7 @@ type GenericData = {
     value: never;
 }
 
-export default {
+const utils = {
     isEmptyObject(object: any): boolean{
         return Object.keys(object).length == 0;
     },
@@ -30,6 +30,9 @@ export default {
         return playerId;
     },
 };
+
+export default utils;
+
 export const colors = {
     local: {
         light: [162, 249, 154],
@@ -91,7 +94,7 @@ export const modifiers = {
 
 export const entities = {
     isVisibleByLocal(entityIndex: EntityIndex): boolean{
-        if(modifiers.findModifierByName(entityIndex,"modifier_visible")){
+        if(modifiers.findModifierByName(entityIndex, "modifier_visible")){
             return true;
         }
         return false;

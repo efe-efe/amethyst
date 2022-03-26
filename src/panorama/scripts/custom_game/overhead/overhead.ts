@@ -1,6 +1,10 @@
 import { modifiers, entities, panels } from "../util";
 import LayoutController from "../layout/layoutController";
 
+const screenWidth = Game.GetScreenWidth();
+const sreenHeight = Game.GetScreenHeight();
+const scale = 1080 / sreenHeight;
+
 export default class Overhead{
     private entityIndex: EntityIndex;
     public containerPanel: Panel;
@@ -36,25 +40,26 @@ export default class Overhead{
         const wy = Game.WorldToScreenY(origin[0], origin[1], origin[2] + offset);
     
         const check = Game.ScreenXYToWorld(wx, wy);
-    
+
         if(check[1] != 0) {
-            const sw = Game.GetScreenWidth();
-            const sh = Game.GetScreenHeight();
-            const scale = 1080 / sh;
-    
-            const x = scale * Math.min(sw - this.containerPanel.actuallayoutwidth, Math.max(0, wx - this.containerPanel.actuallayoutwidth/2));
-            const y = scale * Math.min(sh - this.containerPanel.actuallayoutheight, Math.max(0, wy - this.containerPanel.actuallayoutheight));
+            if(wy > sreenHeight || wx < 0 || wx > screenWidth || wy < 0){
+                this.SoftHide();
+                return false;
+            }
+
+            const x = scale * Math.min(screenWidth - this.containerPanel.actuallayoutwidth, Math.max(0, wx - this.containerPanel.actuallayoutwidth/2));
+            const y = scale * Math.min(sreenHeight - this.containerPanel.actuallayoutheight, Math.max(0, wy - this.containerPanel.actuallayoutheight));
     
             this.containerPanel.style.position = x + "px " + y + "px 0px;";
             if(
                 this.containerPanel.actuallayoutwidth ==  0 &&
                 this.containerPanel.actuallayoutheight ==  0
             ){
-                this.containerPanel.style.position = "-1000px -1000px 0px;";
+                this.SoftHide();
                 return true;
             }
         } else {
-            this.containerPanel.style.position = "-1000px -1000px 0px;";
+            this.SoftHide();
             return false;
         }
         return true;
@@ -63,13 +68,17 @@ export default class Overhead{
     UpdateVisibility(): boolean{
         const hide = modifiers.findModifierByName(this.entityIndex, "modifier_hide_bar");
 
-        if(!Entities.IsAlive(this.entityIndex) || !entities.isVisibleByLocal(this.entityIndex) || hide != false){
-            this.Hide();
-            return false;
-        } else {
+        if(Entities.IsAlive(this.entityIndex) && entities.isVisibleByLocal(this.entityIndex) && !hide){
             this.Show();
             return true;
+        } else {
+            this.Hide();
+            return false;
         }
+    }
+
+    SoftHide(): void{
+        this.containerPanel.style.position = "-1000px -1000px 0px;";
     }
 
     Hide(): void{

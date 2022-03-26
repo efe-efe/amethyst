@@ -15,7 +15,8 @@ export default class BreakableBounty extends UnitEntity{
     constructor(origin: Vector, options: BreakableBountyOptions){
         super({ properties: {
             origin, 
-            name: "breakable_bounty"
+            name: "breakable_bounty",
+            team: DotaTeam.CUSTOM_8
         }});
         this.particle = (options.particle) ? options.particle : undefined;
         this.model = options.model;
