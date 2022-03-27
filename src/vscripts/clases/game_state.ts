@@ -15,12 +15,12 @@ export enum CustomGameState {
 export default class GameState{
     alliances: Alliance[];
     timeRemaining: number;
-    maxDuration: number;
+    infinite: boolean;
 
     constructor(alliances: Alliance[], duration: number){
         this.alliances = alliances;
         this.timeRemaining = duration * 30;
-        this.maxDuration = duration;
+        this.infinite = duration == -1;
     }
 
     Update(): void{

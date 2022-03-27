@@ -100,11 +100,9 @@ export default class Round extends GameState{
             this.UpdateGameTimer(math.floor(this.timeRemaining/30));
         }
 
-        if(this.timeRemaining === 0 && !this.timeOver){
-            if(this.maxDuration !== -1){
-                this.timeOver = true;
-                this.CreateDeathZone();
-            }
+        if(this.timeRemaining === 0 && !this.timeOver && !this.infinite){
+            this.timeOver = true;
+            this.CreateDeathZone();
         }
 
         if(!this.ended){

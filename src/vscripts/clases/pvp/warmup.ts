@@ -50,7 +50,7 @@ export default class Warmup extends GameState{
                 }
             });
         } else {
-            if(this.maxDuration != -1){
+            if(!this.infinite){
                 this.EndWarmup();
             }
         }

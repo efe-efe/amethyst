@@ -63,7 +63,7 @@ ____exports.default = (function()
                 end
             )
         else
-            if self.maxDuration ~= -1 then
+            if not self.infinite then
                 self:EndWarmup()
             end
         end

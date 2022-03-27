@@ -26,7 +26,7 @@ ____exports.default = (function()
     function GameState.prototype.____constructor(self, alliances, duration)
         self.alliances = alliances
         self.timeRemaining = duration * 30
-        self.maxDuration = duration
+        self.infinite = duration == -1
     end
     function GameState.prototype.Update(self)
         if self.timeRemaining > 0 then
