@@ -1,4 +1,4 @@
-import { CustomAI, CustomAIMeta } from "./custom_ai";
+import { CustomAIType, CustomAIMeta } from "./custom_ai";
 
 export interface SpawnerOptions {
     delayTime: number;
@@ -14,7 +14,7 @@ export default class Spawner{
     origin: Vector;
     name: number;
     marker: CDOTA_Buff | undefined;
-    ai: CustomAI | undefined;
+    ai: CustomAIType | undefined;
 
     constructor(options: SpawnerOptions){
         this.delayTime = options.delayTime;
@@ -72,7 +72,7 @@ export default class Spawner{
         }
     }
 
-    GetAi(): CustomAI | undefined{
+    GetAi(): CustomAIType | undefined{
         return this.ai;
     }
 }

@@ -1,5 +1,5 @@
 import Alliance from "../alliance";
-import { CustomAI, NPCNames } from "./custom_ai";
+import { CustomAIType, NPCNames } from "./custom_ai";
 import GameState from "../game_state";
 import Stage from "./stage";
 import settings from "../../settings";
@@ -43,7 +43,7 @@ export default class Room extends GameState{
     claimRewardsDelay = 1 * 30;
     rewardsMenuDelay = 2 * 30;
     spawners: Spawner[] = []; 
-    ais: CustomAI[] = [];
+    ais: CustomAIType[] = [];
     waves: Wave[];
     totalNpcs: number;
     remainingTotalNpcs: number;

@@ -58,52 +58,50 @@ interface CustomAIOptions {
     shield?: boolean;
 }
 
-export class CustomAI{
-    state = CustomAIState.IDLE ;
-    abilities: CustomAIAbility[] = [];
-    followRange: number;
-    tauntedFollowRange: number;
-    tauntedDuration = 3.0;
-    tauntedRemainingDuration = 0.0;
-    minFollowRange: number;
-    restTime: number;
-    remainingRestTime = 0;
-    rangeOfAction = 3000;
-    restDirection: Vector | undefined;
-    behavior: CustomAIBehavior;
-    originalPosition: Vector;
-    targetPosition: Vector | undefined;
+export type CustomAIType = {
     unit: CDOTA_BaseNPC;
-    followTarget: CDOTA_BaseNPC | undefined;
+    IsAbilityReady: (ability: CDOTABaseAbility) => boolean;
+    RegisterAbility: (options: CustomAIRegisterAbilityOptions) => void;
+    Update: () => void;
+    BackToOrigin: (origin: Vector) => boolean;
+}
 
-    constructor(name: string, origin: Vector, options: CustomAIOptions){
-        this.unit = CreateUnitByName(
-            name,
-            origin,
-            true,
-            undefined,
-            undefined,
-            DotaTeam.CUSTOM_1
-        );
+function CustomAI(name: string, origin: Vector, options: CustomAIOptions): CustomAIType{
+    const followRange = options.followRange ?? 2500;
+    const restTime = options.restTime ?? 1.0;
+    const tauntedFollowRange = followRange * 1.5;
+    const minFollowRange = options.minFollowRange ?? 0;
+    const behavior = options.behavior ?? CustomAIBehavior.FOLLOWER;
+    const originalPosition = origin;
+    const abilities: CustomAIAbility[] = [];
+    const tauntedDuration = 3.0;
+    const rangeOfAction = 3000;
+    const unit = CreateUnitByName(
+        name,
+        origin,
+        true,
+        undefined,
+        undefined,
+        DotaTeam.CUSTOM_1
+    );
+    let state = CustomAIState.IDLE ;
+    let tauntedRemainingDuration = 0.0;
+    let remainingRestTime = 0;
+    let targetPosition: Vector | undefined;
+    let followTarget: CDOTA_BaseNPC | undefined;
 
-        if(options.shield){
-            this.unit.AddNewModifier(this.unit, undefined, "modifier_generic_npc_shield", { damage_block: this.unit.GetMaxHealth() });
-            this.unit.AddNewModifier(this.unit, undefined, "modifier_generic_npc_mini_stun", {});
-        }
 
-        this.restTime = options.restTime || 1.0;
-        this.followRange = options.followRange || 2500;
-        this.tauntedFollowRange = this.followRange * 1.5;
-        this.minFollowRange = options.minFollowRange || 0;
-        this.behavior = options.behavior || CustomAIBehavior.FOLLOWER;
-        this.originalPosition = origin;
-        ListenToGameEvent("entity_hurt", (event) => this.OnUnitHurt(event), undefined);
+    if(options.shield){
+        unit.AddNewModifier(unit, undefined, "modifier_generic_npc_shield", { damage_block: unit.GetMaxHealth() });
+        unit.AddNewModifier(unit, undefined, "modifier_generic_npc_mini_stun", {});
     }
 
-    FindEnemy(radius: number): CDOTA_BaseNPC | undefined{
+    ListenToGameEvent("entity_hurt", (event) => OnUnitHurt(event), undefined);
+
+    function FindEnemy(radius: number): CDOTA_BaseNPC | undefined{
         const units = FindUnitsInRadius(
-            this.unit.GetTeamNumber(),
-            this.unit.GetAbsOrigin(),
+            unit.GetTeamNumber(),
+            unit.GetAbsOrigin(),
             undefined,
             radius,
             UnitTargetTeam.ENEMY, 
@@ -120,51 +118,51 @@ export class CustomAI{
         }
     }
 
-    UpdateTarget(): void{
-        const followRange = (this.tauntedRemainingDuration > 0) ? this.tauntedFollowRange : this.followRange;
+    function UpdateTarget(): void{
+        const currentFollowRange = (tauntedRemainingDuration > 0) ? tauntedFollowRange : followRange;
 
-        if(this.followTarget){
-            if(CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget) <= followRange && !this.followTarget.IsInvisible()){
+        if(followTarget){
+            if(CustomEntitiesLegacy.GetDistance(unit, followTarget) <= currentFollowRange && !followTarget.IsInvisible()){
                 return;
             } else {
-                this.followTarget = undefined;
+                followTarget = undefined;
             }
         } else {
-            this.followTarget = this.FindEnemy(followRange);
+            followTarget = FindEnemy(followRange);
         }
     }
 
-    Follow(): boolean{
-        const origin = this.unit.GetAbsOrigin();
-        this.UpdateTarget();
+    function Follow(): boolean{
+        const origin = unit.GetAbsOrigin();
+        UpdateTarget();
 
-        if(this.followTarget && this.followTarget.IsAlive()){
-            const distance = CustomEntitiesLegacy.GetDistance(this.unit, this.followTarget);
+        if(followTarget && followTarget.IsAlive()){
+            const distance = CustomEntitiesLegacy.GetDistance(unit, followTarget);
             let direction = Vector(0,0);
 
-            if(this.followTarget.IsAlive() && distance > this.minFollowRange){
-                direction = (this.followTarget.GetAbsOrigin().__sub(origin)).Normalized();
+            if(followTarget.IsAlive() && distance > minFollowRange){
+                direction = (followTarget.GetAbsOrigin().__sub(origin)).Normalized();
             }
             
-            CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
+            CustomEntitiesLegacy.SetDirection(unit, direction.x, direction.y);
             return true;
         }
         return false;
     }
 
-    IsAbilityReady(ability: CDOTABaseAbility): boolean{
+    function IsAbilityReady(ability: CDOTABaseAbility): boolean{
         return ability.IsCooldownReady() && !ability.IsInAbilityPhase();
     }
 
-    RegisterAbility(options: CustomAIRegisterAbilityOptions): void{
+    function RegisterAbility(options: CustomAIRegisterAbilityOptions): void{
         const npcAbility: CustomAIAbility = {
             ability: options.ability,
             orderType: options.orderType,
-            priority: this.abilities.length + 1,
+            priority: abilities.length + 1,
             cast: (ability: CDOTABaseAbility, target: CDOTA_BaseNPC) => {
                 ExecuteOrderFromTable({
                     OrderType: options.orderType,
-                    UnitIndex: this.unit.GetEntityIndex(),
+                    UnitIndex: unit.GetEntityIndex(),
                     AbilityIndex: ability.GetEntityIndex(),
                     Position: target && target.GetAbsOrigin() || undefined,
                 }); 
@@ -178,33 +176,33 @@ export class CustomAI{
                 phaseReady: true,
             }
         };
-        this.abilities.push(npcAbility);
+        abilities.push(npcAbility);
     }
 
-    StartRest(restTime: number): void{
-        this.remainingRestTime = restTime * 30;
+    function StartRest(restTime: number): void{
+        remainingRestTime = restTime * 30;
     }
 
-    BackToOrigin(origin: Vector): boolean{
-        const distanceFromOrigin = (this.originalPosition.__sub(origin)).Length2D();
+    function BackToOrigin(origin: Vector): boolean{
+        const distanceFromOrigin = (originalPosition.__sub(origin)).Length2D();
 
-        if(this.rangeOfAction > distanceFromOrigin){
+        if(rangeOfAction > distanceFromOrigin){
             return false;
         }
 
-        const direction = (this.originalPosition.__sub(origin)).Normalized();
-        CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
+        const direction = (originalPosition.__sub(origin)).Normalized();
+        CustomEntitiesLegacy.SetDirection(unit, direction.x, direction.y);
         return true;
     }
 
-    Cast(): boolean{
-        if(CustomEntitiesLegacy.IsDisplacing(this.unit) || CustomEntitiesLegacy.IsCasting(this.unit) || CustomEntitiesLegacy.IsChanneling(this.unit) || this.remainingRestTime > 0){
+    function Cast(): boolean{
+        if(CustomEntitiesLegacy.IsDisplacing(unit) || CustomEntitiesLegacy.IsCasting(unit) || CustomEntitiesLegacy.IsChanneling(unit) || remainingRestTime > 0){
             return false;
         }
         
         let abilityToExecute: CustomAIAbility | undefined = undefined; 
         let abilityTarget: CDOTA_BaseNPC | undefined = undefined;
-        this.abilities.forEach((npcAbility) => {
+        abilities.forEach((npcAbility) => {
             const ability = npcAbility.ability;
 
             if(npcAbility.requirements){
@@ -219,13 +217,13 @@ export class CustomAI{
                     }
                 }
                 if(npcAbility.requirements.targetInCastRange){
-                    abilityTarget = this.FindEnemy(ability.GetCastRange(Vector(0,0,0), undefined));
+                    abilityTarget = FindEnemy(ability.GetCastRange(Vector(0,0,0), undefined));
                     if(!abilityTarget){
                         return false;
                     }
                 }
                 if(npcAbility.requirements.targetInRadius){
-                    abilityTarget = this.FindEnemy(ability.GetSpecialValueFor("radius"));
+                    abilityTarget = FindEnemy(ability.GetSpecialValueFor("radius"));
                     if(!abilityTarget){
                         return false;
                     }
@@ -242,93 +240,101 @@ export class CustomAI{
         if(abilityToExecute){
             abilityToExecute = abilityToExecute as CustomAIAbility;
             abilityToExecute.cast(abilityToExecute.ability, abilityTarget);
-            this.StartRest(this.restTime);
+            StartRest(restTime);
             return true;
         } else {
             return false;
         }
     }
 
-    StopMoving(): void{
-        CustomEntitiesLegacy.SetDirection(this.unit, 0, 0);
+    function StopMoving(): void{
+        CustomEntitiesLegacy.SetDirection(unit, 0, 0);
     }
 
-    MoveTowards(point: Vector): boolean{
-        const origin = this.unit.GetAbsOrigin();
+    function MoveTowards(point: Vector): boolean{
+        const origin = unit.GetAbsOrigin();
         const distance = (point.__sub(origin)).Length2D();
 
         if(distance < 10){
             return false;
         } else {
             const direction = (point.__sub(origin)).Normalized();
-            CustomEntitiesLegacy.SetDirection(this.unit, direction.x, direction.y);
+            CustomEntitiesLegacy.SetDirection(unit, direction.x, direction.y);
             return true;
         }
     }
 
-    PickTargetPosition(): void{
-        const origin = this.unit.GetAbsOrigin();
+    function PickTargetPosition(): void{
+        const origin = unit.GetAbsOrigin();
         const worldLimits = 1500;
         const x = Clamp(origin.x + RandomInt(-400, 400), worldLimits, -worldLimits);
         const y = Clamp(origin.y + RandomInt(-400, 400), worldLimits, -worldLimits);
-        this.targetPosition = Vector(x, y);
+        targetPosition = Vector(x, y);
     }
 
-    ClearTargetPosition(): void{
-        this.targetPosition = undefined;
+    function ClearTargetPosition(): void{
+        targetPosition = undefined;
     }
 
-    OnUnitHurt(event: EntityHurtEvent): void{
+    function OnUnitHurt(event: EntityHurtEvent): void{
         const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
-        if(this.unit === victim){
-            this.tauntedRemainingDuration = this.tauntedDuration * 30;
+        if(unit === victim){
+            tauntedRemainingDuration = tauntedDuration * 30;
         }
     }
 
-    Update(): void{
-        if(this.tauntedRemainingDuration > 0){
-            this.tauntedRemainingDuration = this.tauntedRemainingDuration - 1;
+    function Update(): void{
+        if(tauntedRemainingDuration > 0){
+            tauntedRemainingDuration = tauntedRemainingDuration - 1;
         } 
-        if(this.remainingRestTime > 0){
-            this.remainingRestTime = this.remainingRestTime - 1;
+        if(remainingRestTime > 0){
+            remainingRestTime = remainingRestTime - 1;
         } 
-        if(!this.Cast()){
-            if(this.behavior === CustomAIBehavior.STATIC){
+        if(!Cast()){
+            if(behavior === CustomAIBehavior.STATIC){
                 return;
             }
-            if(this.behavior === CustomAIBehavior.WANDERER){
-                if(this.state === CustomAIState.WANDERING && this.targetPosition){
-                    if(!this.MoveTowards(this.targetPosition)){
-                        this.state = CustomAIState.IDLE;
-                        this.ClearTargetPosition();
-                        this.StopMoving();
+            if(behavior === CustomAIBehavior.WANDERER){
+                if(state === CustomAIState.WANDERING && targetPosition){
+                    if(!MoveTowards(targetPosition)){
+                        state = CustomAIState.IDLE;
+                        ClearTargetPosition();
+                        StopMoving();
                     }
                 } else {
-                    this.state = CustomAIState.WANDERING;
-                    this.PickTargetPosition();
+                    state = CustomAIState.WANDERING;
+                    PickTargetPosition();
                 }
             } else {
-                if(!this.Follow()){
-                    this.StopMoving();
+                if(!Follow()){
+                    StopMoving();
                 }
             }
         } else {
-            this.remainingRestTime = 1.0 * 30;
-            this.ClearTargetPosition();
-            this.StopMoving();
+            remainingRestTime = 1.0 * 30;
+            ClearTargetPosition();
+            StopMoving();
         }
     }
+
+    return {
+        unit,
+        IsAbilityReady,
+        RegisterAbility,
+        Update,
+        BackToOrigin,
+    };
 }
 
 export const CustomAIMeta: {
     [key: number]: {
-        factory: (origin: Vector) => CustomAI,
+        factory: (origin: Vector) => CustomAIType,
         tier?: number,
     }
 } = {
     [NPCNames.QUEEN]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("npc_dota_hero_queenofpain", origin, {
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("npc_dota_hero_queenofpain", origin, {
                 minFollowRange: 500,
             });
 
@@ -370,8 +376,8 @@ export const CustomAIMeta: {
         tier: CustomAITier.BOSS,
     },
     [NPCNames.CENTAUR]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("npc_dota_hero_centaur", origin, {});
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("npc_dota_hero_centaur", origin, {});
 
             ai.RegisterAbility({
                 ability: ai.unit.FindAbilityByName("centaur_axe_attack")!,
@@ -410,8 +416,8 @@ export const CustomAIMeta: {
         tier: CustomAITier.BOSS,
     },
     [NPCNames.RADIANT_ZOMBIE_RANGE_MEGA]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("radiant_zombie_healer", origin, {
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("radiant_zombie_healer", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true,
             });
@@ -432,8 +438,8 @@ export const CustomAIMeta: {
         tier: CustomAITier.MID,
     },
     [NPCNames.DIRE_ZOMBIE_RANGE]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("dire_zombie_range", origin, {
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("dire_zombie_range", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true,
             });
@@ -450,8 +456,8 @@ export const CustomAIMeta: {
         tier: CustomAITier.BASIC,
     },
     [NPCNames.DIRE_ZOMBIE_RANGE_MEGA]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("dire_zombie_range_mega", origin, {
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("dire_zombie_range_mega", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true,
             });
@@ -472,8 +478,8 @@ export const CustomAIMeta: {
         tier: CustomAITier.MID,
     },
     [NPCNames.DIRE_ZOMBIE_MEELE_MEGA]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("dire_zombie_meele_mega", origin, {
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("dire_zombie_meele_mega", origin, {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -494,8 +500,8 @@ export const CustomAIMeta: {
         tier: CustomAITier.MID,
     },
     [NPCNames.RADIANT_ZOMBIE_MEELE_MEGA]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("radiant_zombie_meele", origin, {
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("radiant_zombie_meele", origin, {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -516,8 +522,8 @@ export const CustomAIMeta: {
         tier: CustomAITier.BASIC,
     },
     [NPCNames.FLYING_SKULL]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("flying_skull", origin, {
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("flying_skull", origin, {
                 followRange: 1000,
                 minFollowRange: 150,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -537,8 +543,8 @@ export const CustomAIMeta: {
         tier: CustomAITier.BASIC,
     },
     [NPCNames.DIRE_TOWER]: {
-        factory: (origin: Vector): CustomAI => {
-            const ai = new CustomAI("dire_tower", origin, {
+        factory: (origin: Vector): CustomAIType => {
+            const ai = CustomAI("dire_tower", origin, {
                 behavior: CustomAIBehavior.STATIC,
             });
 
