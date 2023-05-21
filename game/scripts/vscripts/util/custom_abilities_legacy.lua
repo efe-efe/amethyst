@@ -21,9 +21,9 @@ function CustomAbilitiesLegacy:GetCursorPosition(hAbility)
 	local caster = hAbility:GetCaster();
 	local playerId = caster:GetPlayerOwnerID();
 
-	if IsInToolsMode() then
-		playerId = Entities:GetLocalPlayer():GetPlayerID();
-	end
+	--if IsInToolsMode() then
+	--	playerId = Entities:GetLocalPlayer():GetPlayerID();
+	--end
 
 	if not playerId then
 		return Vector(0, 0, 0)
