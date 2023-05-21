@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 3,["11"] = 3,["12"] = 4,["13"] = 3,["14"] = 4,["15"] = 11,["16"] = 3,["17"] = 13,["18"] = 11,["19"] = 3,["20"] = 3});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 3,["10"] = 3,["11"] = 3,["12"] = 4,["13"] = 3,["14"] = 4,["15"] = 13,["16"] = 3,["17"] = 15,["18"] = 13,["19"] = 3,["20"] = 3});
 local ____exports = {}
 local ____unit_entity = require("clases.unit_entity")
 local UnitEntity = ____unit_entity.default

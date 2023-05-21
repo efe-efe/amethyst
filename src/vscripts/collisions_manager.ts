@@ -6,18 +6,27 @@ const HORIZONTAL = 2;
 const VERTICAL = 3;
 
 type HammerEvent = {
-    activator: CDOTA_BaseNPC;
-}
+  activator: CDOTA_BaseNPC;
+};
 
-function OnStartTouchCollisionVertical(this: void, tEvent: HammerEvent): void{
-    CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, VERTICAL);
+function OnStartTouchCollisionVertical(this: void, tEvent: HammerEvent): void {
+  CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, VERTICAL);
 }
-function OnStartTouchCollisionHorizontal(this: void, tEvent: HammerEvent): void{
-    CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, HORIZONTAL);
+function OnStartTouchCollisionHorizontal(
+  this: void,
+  tEvent: HammerEvent
+): void {
+  CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, HORIZONTAL);
 }
-function OnStartTouchCollisionDiagonalLeft(this: void, tEvent: HammerEvent): void{
-    CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, DIAGONAL_LEFT);
+function OnStartTouchCollisionDiagonalLeft(
+  this: void,
+  tEvent: HammerEvent
+): void {
+  CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, DIAGONAL_LEFT);
 }
-function OnStartTouchCollisionDiagonalRight(this: void, tEvent: HammerEvent): void{
-    CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, DIAGONAL_RIGHT);
+function OnStartTouchCollisionDiagonalRight(
+  this: void,
+  tEvent: HammerEvent
+): void {
+  CustomEntitiesLegacy.SetCollisionDirection(tEvent.activator, DIAGONAL_RIGHT);
 }

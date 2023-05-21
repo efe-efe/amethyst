@@ -6,10 +6,10 @@ import StormRewards from "./storm";
 import SniperRewards from "./sniper";
 
 const Shards: Upgrade[] = [
-    ...JuggernautRewards.Shards,
-    ...PhantomRewards.Shards,
-    ...StormRewards.Shards,
-    ...SniperRewards.Shards,
+  ...JuggernautRewards.Shards,
+  ...PhantomRewards.Shards,
+  ...StormRewards.Shards,
+  ...SniperRewards.Shards,
 ];
 
 export default Shards;

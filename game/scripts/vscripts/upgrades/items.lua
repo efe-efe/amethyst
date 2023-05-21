@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 94,["10"] = 95,["11"] = 95,["12"] = 95,["13"] = 95,["14"] = 95,["15"] = 95,["16"] = 95,["17"] = 95,["18"] = 3,["19"] = 3,["20"] = 107});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 93,["10"] = 93,["11"] = 93,["12"] = 93,["13"] = 93,["14"] = 93,["15"] = 93,["16"] = 93,["17"] = 93,["18"] = 3,["19"] = 3,["20"] = 104});
 local ____exports = {}
 local ____common = require("upgrades.common")
 local UpgradeTypes = ____common.UpgradeTypes

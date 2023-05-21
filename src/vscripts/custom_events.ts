@@ -1,35 +1,37 @@
 interface CustomEventListener {
-    eventName: string;
-    callback: any;
+  eventName: string;
+  callback: any;
 }
 
 export class CustomEvents {
-    private static instance: CustomEvents;
-    private listeners: CustomEventListener[] = [];
+  private static instance: CustomEvents;
+  private listeners: CustomEventListener[] = [];
 
-    private constructor(){
-        //
+  private constructor() {
+    //
+  }
+
+  public static GetInstance(): CustomEvents {
+    if (!CustomEvents.instance) {
+      CustomEvents.instance = new CustomEvents();
     }
 
-    public static GetInstance(): CustomEvents {
-        if (!CustomEvents.instance) {
-            CustomEvents.instance = new CustomEvents();
-        }
+    return CustomEvents.instance;
+  }
 
-        return CustomEvents.instance;
-    }
+  RegisterListener(eventName: string, callback: any): void {
+    this.listeners.push({
+      eventName,
+      callback,
+    });
+  }
 
-    RegisterListener(eventName: string, callback: any): void{
-        this.listeners.push({
-            eventName,
-            callback
-        });
-    }
-
-    EmitEvent(eventName: string, event: any): void{
-        const listeners = this.listeners.filter((listener) => listener.eventName === eventName);
-        listeners.forEach((listener) => {
-            listener.callback(event);
-        });
-    }
+  EmitEvent(eventName: string, event: any): void {
+    const listeners = this.listeners.filter(
+      (listener) => listener.eventName === eventName
+    );
+    listeners.forEach((listener) => {
+      listener.callback(event);
+    });
+  }
 }

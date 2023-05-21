@@ -5,91 +5,110 @@ const screenWidth = Game.GetScreenWidth();
 const sreenHeight = Game.GetScreenHeight();
 const scale = 1080 / sreenHeight;
 
-export default class Overhead{
-    private entityIndex: EntityIndex;
-    public containerPanel: Panel;
-    private thinkInterval = 0.03;
-    
-    constructor(entiyIndex: EntityIndex){
-        this.entityIndex = entiyIndex;
+export default class Overhead {
+  private entityIndex: EntityIndex;
+  public containerPanel: Panel;
+  private thinkInterval = 0.03;
 
-        const layout = LayoutController.GetInstance();
-        const basePanel = layout.GetTopPanel().FindChildrenWithClassTraverse("main")[0];
+  constructor(entiyIndex: EntityIndex) {
+    this.entityIndex = entiyIndex;
 
-        this.containerPanel = panels.createPanelSimple(basePanel, "overhead");
-        this.containerPanel.style.width = "160px"; 
-        this.containerPanel.style.flowChildren = "down";
-        this.Update();
+    const layout = LayoutController.GetInstance();
+    const basePanel = layout
+      .GetTopPanel()
+      .FindChildrenWithClassTraverse("main")[0];
+
+    this.containerPanel = panels.createPanelSimple(basePanel, "overhead");
+    this.containerPanel.style.width = "160px";
+    this.containerPanel.style.flowChildren = "down";
+    this.Update();
+  }
+
+  Update(): void {
+    if (this.UpdateVisibility()) {
+      this.UpdatePosition();
     }
 
-    Update(): void{
-        if(this.UpdateVisibility()){
-            this.UpdatePosition();
-        }
+    $.Schedule(this.thinkInterval, () => {
+      this.Update();
+    });
+  }
 
-        $.Schedule(this.thinkInterval, () => {
-            this.Update();
-        }); 
-    }
+  UpdatePosition(): boolean {
+    const origin = Entities.GetAbsOrigin(this.entityIndex);
+    const offset = Entities.GetHealthBarOffset(this.entityIndex);
 
-    UpdatePosition(): boolean{
-        const origin = Entities.GetAbsOrigin(this.entityIndex);
-        const offset = Entities.GetHealthBarOffset(this.entityIndex);
-    
-        const wx = Game.WorldToScreenX(origin[0], origin[1], origin[2] + offset);
-        const wy = Game.WorldToScreenY(origin[0], origin[1], origin[2] + offset);
-    
-        const check = Game.ScreenXYToWorld(wx, wy);
+    const wx = Game.WorldToScreenX(origin[0], origin[1], origin[2] + offset);
+    const wy = Game.WorldToScreenY(origin[0], origin[1], origin[2] + offset);
 
-        if(check[1] != 0) {
-            if(wy > sreenHeight || wx < 0 || wx > screenWidth || wy < 0){
-                this.SoftHide();
-                return false;
-            }
+    const check = Game.ScreenXYToWorld(wx, wy);
 
-            const x = scale * Math.min(screenWidth - this.containerPanel.actuallayoutwidth, Math.max(0, wx - this.containerPanel.actuallayoutwidth/2));
-            const y = scale * Math.min(sreenHeight - this.containerPanel.actuallayoutheight, Math.max(0, wy - this.containerPanel.actuallayoutheight));
-    
-            this.containerPanel.style.position = x + "px " + y + "px 0px;";
-            if(
-                this.containerPanel.actuallayoutwidth ==  0 &&
-                this.containerPanel.actuallayoutheight ==  0
-            ){
-                this.SoftHide();
-                return true;
-            }
-        } else {
-            this.SoftHide();
-            return false;
-        }
+    if (check[1] != 0) {
+      if (wy > sreenHeight || wx < 0 || wx > screenWidth || wy < 0) {
+        this.SoftHide();
+        return false;
+      }
+
+      const x =
+        scale *
+        Math.min(
+          screenWidth - this.containerPanel.actuallayoutwidth,
+          Math.max(0, wx - this.containerPanel.actuallayoutwidth / 2)
+        );
+      const y =
+        scale *
+        Math.min(
+          sreenHeight - this.containerPanel.actuallayoutheight,
+          Math.max(0, wy - this.containerPanel.actuallayoutheight)
+        );
+
+      this.containerPanel.style.position = x + "px " + y + "px 0px;";
+      if (
+        this.containerPanel.actuallayoutwidth == 0 &&
+        this.containerPanel.actuallayoutheight == 0
+      ) {
+        this.SoftHide();
         return true;
+      }
+    } else {
+      this.SoftHide();
+      return false;
     }
-    
-    UpdateVisibility(): boolean{
-        const hide = modifiers.findModifierByName(this.entityIndex, "modifier_hide_bar");
+    return true;
+  }
 
-        if(Entities.IsAlive(this.entityIndex) && entities.isVisibleByLocal(this.entityIndex) && !hide){
-            this.Show();
-            return true;
-        } else {
-            this.Hide();
-            return false;
-        }
-    }
+  UpdateVisibility(): boolean {
+    const hide = modifiers.findModifierByName(
+      this.entityIndex,
+      "modifier_hide_bar"
+    );
 
-    SoftHide(): void{
-        this.containerPanel.style.position = "-1000px -1000px 0px;";
+    if (
+      Entities.IsAlive(this.entityIndex) &&
+      entities.isVisibleByLocal(this.entityIndex) &&
+      !hide
+    ) {
+      this.Show();
+      return true;
+    } else {
+      this.Hide();
+      return false;
     }
+  }
 
-    Hide(): void{
-        this.containerPanel.style.opacity = "0.0";
-    }
+  SoftHide(): void {
+    this.containerPanel.style.position = "-1000px -1000px 0px;";
+  }
 
-    Show(): void{
-        this.containerPanel.style.opacity = "1.0";
-    }
+  Hide(): void {
+    this.containerPanel.style.opacity = "0.0";
+  }
 
-    SetWidth(width: number): void{
-        this.containerPanel.style.width = width + "px";
-    }
+  Show(): void {
+    this.containerPanel.style.opacity = "1.0";
+  }
+
+  SetWidth(width: number): void {
+    this.containerPanel.style.width = width + "px";
+  }
 }

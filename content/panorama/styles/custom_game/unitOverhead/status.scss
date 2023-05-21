@@ -1,40 +1,39 @@
-.status{
-    height: 100%;
+.status {
+  height: 100%;
+  width: 100%;
+
+  align: center center;
+
+  opacity: 1;
+  flow-children: down;
+
+  &__top {
+    height: 70%;
     width: 100%;
+  }
+
+  &__bot {
+    height: 20%;
+    width: 100px;
 
     align: center center;
+  }
 
-    opacity: 1.0;
-    flow-children: down;
+  &__text {
+    width: 100%;
+    font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim, MingLiU;
+    font-size: 16px;
+    font-weight: bold;
 
-    &__top{
-        height: 70%;
-        width: 100%;
+    text-transform: uppercase;
+    vertical-align: center;
+    text-shadow: 0px 0px 3px 3 black;
+    text-align: center;
+    color: #fafafa;
+
+    &--glow {
+      text-shadow: none;
+      color: rgba(255, 255, 255, 0);
     }
-
-    &__bot{
-        height: 20%;
-        width: 100px;
-        
-        align: center center;
-    }
-
-    &__text{
-        width: 100%;
-        font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim,MingLiU;
-        font-size: 16px;
-        font-weight: bold;
-
-        text-transform: uppercase;
-        vertical-align: center;
-        text-shadow: 0px 0px 3px 3.0 black;
-        text-align: center;
-        color: #FAFAFA;
-
-        &--glow{
-            text-shadow: none;
-            color:rgba(255, 255, 255, 0.0);
-        }
-    }
-
+  }
 }

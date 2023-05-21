@@ -1,5 +1,5 @@
 {
-    "files.exclude": {
-        "**/*.css": {"when": "$(basename).scss"},
-    }
+  "files.exclude": {
+    "**/*.css": { "when": "$(basename).scss" }
+  }
 }
