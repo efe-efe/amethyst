@@ -16,7 +16,7 @@ let settings = {
 if (IsInToolsMode()) {
   settings = {
     ...settings,
-    FirstWarmupDuration: 1.0,
+    FirstWarmupDuration: 10.0,
     WarmupDuration: 1.0,
     PreRoundDuration: 1.0,
     RoundDuration: -1.0,

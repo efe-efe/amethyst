@@ -19,7 +19,7 @@ local settings = {
 }
 if IsInToolsMode() then
     settings = __TS__ObjectAssign({}, settings, {
-        FirstWarmupDuration = 1,
+        FirstWarmupDuration = 10,
         WarmupDuration = 1,
         PreRoundDuration = 1,
         RoundDuration = -1,

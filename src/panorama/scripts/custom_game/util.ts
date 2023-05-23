@@ -110,6 +110,7 @@ export const modifiers = {
         entityIndex,
         Entities.GetBuff(entityIndex, i)
       );
+
       if (buffName == name) {
         return Entities.GetBuff(entityIndex, i);
       }
@@ -120,7 +121,9 @@ export const modifiers = {
 
 export const entities = {
   isVisibleByLocal(entityIndex: EntityIndex): boolean {
-    if (modifiers.findModifierByName(entityIndex, "modifier_visible")) {
+    if (
+      modifiers.findModifierByName(entityIndex, "modifier_visible") !== false
+    ) {
       return true;
     }
     return false;
