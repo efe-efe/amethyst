@@ -111,7 +111,7 @@ localizeAbility("phantom_ex_counter", {
     ),
     upgrade: upgrade("No longer shares cooldown with " + phantomStrike + "."),
     lore: [keywords.sleep.description],
-    values: [castpointValue, ["recast", "Poisonus Dagger"], ["recast_AbilityCastPoint", '<font color="#B2B5B3">CAST POINT</font>']]
+    values: [castpointValue, ["recast", "Poisonus Dagger"], ["recast_AbilityCastPoint", "<font color=\"#B2B5B3\">CAST POINT</font>"]]
 });
 
 //     const Shards: Upgrade[] = [
