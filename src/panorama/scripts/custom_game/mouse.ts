@@ -4,61 +4,61 @@ let onRightClickPressed = () => {};
 let onRightClickReleased = () => {};
 
 enum MouseButtons {
-  LEFT_CLICK = 0,
-  RIGHT_CLICK = 1,
+    LEFT_CLICK = 0,
+    RIGHT_CLICK = 1
 }
 
 GameUI.SetMouseCallback((event, value) => {
-  if (event === "pressed") {
-    if (value === MouseButtons.LEFT_CLICK) {
-      if (GameUI.IsControlDown()) {
-        return false;
-      }
+    if (event === "pressed") {
+        if (value === MouseButtons.LEFT_CLICK) {
+            if (GameUI.IsControlDown()) {
+                return false;
+            }
 
-      onLeftClickPressed();
+            onLeftClickPressed();
 
-      const reTry = () => {
-        if (GameUI.IsMouseDown(MouseButtons.LEFT_CLICK)) {
-          onLeftClickPressed();
-          $.Schedule(0.05, reTry);
+            const reTry = () => {
+                if (GameUI.IsMouseDown(MouseButtons.LEFT_CLICK)) {
+                    onLeftClickPressed();
+                    $.Schedule(0.05, reTry);
+                }
+            };
+            $.Schedule(0.05, reTry);
+            return true;
         }
-      };
-      $.Schedule(0.05, reTry);
-      return true;
+
+        if (value === MouseButtons.RIGHT_CLICK) {
+            onRightClickPressed();
+            return true;
+        }
     }
 
-    if (value === MouseButtons.RIGHT_CLICK) {
-      onRightClickPressed();
-      return true;
-    }
-  }
+    if (event === "released") {
+        if (value === MouseButtons.LEFT_CLICK) {
+            onLeftClickReleased();
+            return true;
+        }
 
-  if (event === "released") {
-    if (value === MouseButtons.LEFT_CLICK) {
-      onLeftClickReleased();
-      return true;
+        if (value === MouseButtons.RIGHT_CLICK) {
+            onRightClickReleased();
+            return true;
+        }
     }
-
-    if (value === MouseButtons.RIGHT_CLICK) {
-      onRightClickReleased();
-      return true;
-    }
-  }
-  return false;
+    return false;
 });
 
 export function setOnLeftClickPressed(action: () => void) {
-  onLeftClickPressed = action;
+    onLeftClickPressed = action;
 }
 
 export function setOnRightClickPressed(action: () => void) {
-  onRightClickPressed = action;
+    onRightClickPressed = action;
 }
 
 export function setOnLeftClickReleased(action: () => void) {
-  onLeftClickReleased = action;
+    onLeftClickReleased = action;
 }
 
 export function setOnRightClickReleased(action: () => void) {
-  onRightClickReleased = action;
+    onRightClickReleased = action;
 }

@@ -1,69 +1,62 @@
 import { modifiers, panels } from "../util";
 
 export default class Stacks {
-  panel: Panel;
-  entityIndex: EntityIndex;
-  modifierName: string;
+    panel: Panel;
+    entityIndex: EntityIndex;
+    modifierName: string;
 
-  constructor(
-    container: Panel,
-    entityIndex: EntityIndex,
-    modifierName: string
-  ) {
-    this.panel = panels.createPanelSimple(container, "stacks");
-    this.entityIndex = entityIndex;
-    this.modifierName = modifierName;
+    constructor(container: Panel, entityIndex: EntityIndex, modifierName: string) {
+        this.panel = panels.createPanelSimple(container, "stacks");
+        this.entityIndex = entityIndex;
+        this.modifierName = modifierName;
 
-    const stackPanels: Panel[] = [];
+        const stackPanels: Panel[] = [];
 
-    for (let i = 0; i < 4; i++) {
-      stackPanels.push(panels.createPanelSimple(this.panel, "stacks__stack"));
-    }
-
-    this.Update();
-  }
-
-  Update(): void {
-    let modifierIndex = modifiers.findModifierByName(
-      this.entityIndex,
-      this.modifierName
-    );
-
-    if (modifierIndex) {
-      modifierIndex = modifierIndex as BuffID;
-      const stacks = Buffs.GetStackCount(this.entityIndex, modifierIndex);
-
-      for (let i = 0; i < 4; i++) {
-        if (i < stacks) {
-          this.FillStack(i);
-        } else {
-          this.EmptyStack(i);
+        for (let i = 0; i < 4; i++) {
+            stackPanels.push(panels.createPanelSimple(this.panel, "stacks__stack"));
         }
-      }
-    } else {
-      for (let i = 0; i < 4; i++) {
-        this.EmptyStack(i);
-      }
+
+        this.Update();
     }
 
-    $.Schedule(0.03, () => {
-      this.Update();
-    });
-  }
+    Update(): void {
+        let modifierIndex = modifiers.findModifierByName(this.entityIndex, this.modifierName);
 
-  ChangeStackState(index: number, full: boolean): void {
-    this.panel.GetChild(index)!.SetHasClass("stacks__stack--empty", !full);
-  }
+        if (modifierIndex) {
+            modifierIndex = modifierIndex as BuffID;
+            const stacks = Buffs.GetStackCount(this.entityIndex, modifierIndex);
 
-  EmptyStack(index: number): void {
-    this.ChangeStackState(index, false);
-  }
+            for (let i = 0; i < 4; i++) {
+                if (i < stacks) {
+                    this.FillStack(i);
+                } else {
+                    this.EmptyStack(i);
+                }
+            }
+        } else {
+            for (let i = 0; i < 4; i++) {
+                this.EmptyStack(i);
+            }
+        }
 
-  FillStack(index: number): void {
-    this.ChangeStackState(index, true);
-  }
+        $.Schedule(0.03, () => {
+            this.Update();
+        });
+    }
 
-  GetPanel(): Panel {
-    return this.panel;
-  }
+    ChangeStackState(index: number, full: boolean): void {
+        this.panel.GetChild(index)!.SetHasClass("stacks__stack--empty", !full);
+    }
+
+    EmptyStack(index: number): void {
+        this.ChangeStackState(index, false);
+    }
+
+    FillStack(index: number): void {
+        this.ChangeStackState(index, true);
+    }
+
+    GetPanel(): Panel {
+        return this.panel;
+    }
 }

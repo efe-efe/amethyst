@@ -9,574 +9,494 @@ import { CustomEvents } from "../../custom_events";
 const DEBUG = false;
 
 enum CollisionTypes {
-  SUCCESS = 0,
-  UNIT,
-  WALL,
-  TREE,
+    SUCCESS = 0,
+    UNIT,
+    WALL,
+    TREE
 }
 
 enum Orientations {
-  NONE = 0,
-  DIAGONAL_LEFT,
-  DIAGONAL_RIGHT,
-  HORIZONTAL,
-  VERTICAL,
+    NONE = 0,
+    DIAGONAL_LEFT,
+    DIAGONAL_RIGHT,
+    HORIZONTAL,
+    VERTICAL
 }
 
 interface HeroUpgrade extends Upgrade {
-  level: number;
+    level: number;
 }
 export default class CustomNPC extends UnitEntity {
-  constructor(unit: CDOTA_BaseNPC) {
-    CustomEntitiesLegacy.Initialize(unit, !unit.IsRealHero()); //Need this for SetParent bullshit
-    super({ unit });
-    customEntities.Disarm(this.unit);
-    customEntities.IgnoreMSLimit(this.unit);
-    customEntities.HideHealthBar(this.unit);
-  }
-  LevelAllAbilities(level: number): void {
-    for (let i = 0; i <= 23; i++) {
-      const ability = this.unit.GetAbilityByIndex(i);
-      if (ability) {
-        if (CustomAbilitiesLegacy.IsNotTalentNorAttribute(ability)) {
-          ability.SetLevel(level);
+    constructor(unit: CDOTA_BaseNPC) {
+        CustomEntitiesLegacy.Initialize(unit, !unit.IsRealHero()); //Need this for SetParent bullshit
+        super({ unit });
+        customEntities.Disarm(this.unit);
+        customEntities.IgnoreMSLimit(this.unit);
+        customEntities.HideHealthBar(this.unit);
+    }
+    LevelAllAbilities(level: number): void {
+        for (let i = 0; i <= 23; i++) {
+            const ability = this.unit.GetAbilityByIndex(i);
+            if (ability) {
+                if (CustomAbilitiesLegacy.IsNotTalentNorAttribute(ability)) {
+                    ability.SetLevel(level);
+                }
+            }
         }
-      }
     }
-  }
-  Move(direction: Vector, speed: number): CollisionTypes {
-    const offset = 70;
-    const origin = this.unit.GetAbsOrigin();
-    const futureOrigin = origin.__add(direction.__mul(speed));
-    const testOrigin = futureOrigin.__add(direction.__mul(offset));
-    futureOrigin.z = GetGroundPosition(futureOrigin, this.unit).z;
-    const normal = CustomEntitiesLegacy.GetNormal(this.unit, futureOrigin);
+    Move(direction: Vector, speed: number): CollisionTypes {
+        const offset = 70;
+        const origin = this.unit.GetAbsOrigin();
+        const futureOrigin = origin.__add(direction.__mul(speed));
+        const testOrigin = futureOrigin.__add(direction.__mul(offset));
+        futureOrigin.z = GetGroundPosition(futureOrigin, this.unit).z;
+        const normal = CustomEntitiesLegacy.GetNormal(this.unit, futureOrigin);
 
-    if (IsInToolsMode() && DEBUG) {
-      DebugDrawLine_vCol(
-        futureOrigin,
-        testOrigin,
-        Vector(255, 0, 0),
-        true,
-        1.0
-      );
-      DebugDrawLine_vCol(
-        futureOrigin,
-        futureOrigin.__add(normal.__mul(200)),
-        Vector(255, 255, 255),
-        true,
-        1
-      );
-      DebugDrawCircle(futureOrigin, Vector(255, 0, 0), 5, offset, false, 0.03);
-    }
-
-    if (this.unit.HasModifier("modifier_spectre_special_attack_buff")) {
-      this.unit.SetAbsOrigin(futureOrigin);
-      return CollisionTypes.SUCCESS;
-    }
-
-    const trees = GridNav.GetAllTreesAroundPoint(testOrigin, 5, true);
-
-    if (normal.z <= 0.9) {
-      return CollisionTypes.WALL;
-    }
-    if (trees.length > 0) {
-      return CollisionTypes.TREE;
-    }
-
-    if (!this.unit.IsPhased()) {
-      const units = FindUnitsInRadius(
-        this.unit.GetTeamNumber(),
-        testOrigin,
-        undefined,
-        5,
-        UnitTargetTeam.BOTH,
-        UnitTargetType.ALL,
-        UnitTargetFlags.NONE,
-        FindOrder.ANY,
-        false
-      );
-
-      for (let i = 0; i < units.length; i++) {
-        const unit = units[i];
-        if (unit !== this.unit) {
-          if (!unit.IsPhased()) {
-            return CollisionTypes.UNIT;
-          }
+        if (IsInToolsMode() && DEBUG) {
+            DebugDrawLine_vCol(futureOrigin, testOrigin, Vector(255, 0, 0), true, 1.0);
+            DebugDrawLine_vCol(futureOrigin, futureOrigin.__add(normal.__mul(200)), Vector(255, 255, 255), true, 1);
+            DebugDrawCircle(futureOrigin, Vector(255, 0, 0), 5, offset, false, 0.03);
         }
-      }
+
+        if (this.unit.HasModifier("modifier_spectre_special_attack_buff")) {
+            this.unit.SetAbsOrigin(futureOrigin);
+            return CollisionTypes.SUCCESS;
+        }
+
+        const trees = GridNav.GetAllTreesAroundPoint(testOrigin, 5, true);
+
+        if (normal.z <= 0.9) {
+            return CollisionTypes.WALL;
+        }
+        if (trees.length > 0) {
+            return CollisionTypes.TREE;
+        }
+
+        if (!this.unit.IsPhased()) {
+            const units = FindUnitsInRadius(
+                this.unit.GetTeamNumber(),
+                testOrigin,
+                undefined,
+                5,
+                UnitTargetTeam.BOTH,
+                UnitTargetType.ALL,
+                UnitTargetFlags.NONE,
+                FindOrder.ANY,
+                false
+            );
+
+            for (let i = 0; i < units.length; i++) {
+                const unit = units[i];
+                if (unit !== this.unit) {
+                    if (!unit.IsPhased()) {
+                        return CollisionTypes.UNIT;
+                    }
+                }
+            }
+        }
+
+        if (!CustomEntitiesLegacy.IsAnimating(this.unit)) {
+            if (!this.unit.HasModifier("modifier_hero_movement")) {
+                this.unit.AddNewModifier(this.unit, undefined, "modifier_hero_movement", {});
+            }
+        }
+
+        this.unit.SetAbsOrigin(futureOrigin);
+        return CollisionTypes.SUCCESS;
     }
+    AlternativeDirectionsWalls(direction: Vector): Vector[] {
+        const directions: Vector[] = [];
+        const collisionDirection = CustomEntitiesLegacy.GetCollisionDirection(this.unit);
+        const angle = VectorToAngles(direction).y;
 
-    if (!CustomEntitiesLegacy.IsAnimating(this.unit)) {
-      if (!this.unit.HasModifier("modifier_hero_movement")) {
-        this.unit.AddNewModifier(
-          this.unit,
-          undefined,
-          "modifier_hero_movement",
-          {}
-        );
-      }
-    }
+        if (Math.IsNorthEast(angle)) {
+            if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+                return directions;
+            }
+            directions.push(Math.NORTH);
+            directions.push(Math.EAST);
+        }
+        if (Math.IsNorthWest(angle)) {
+            if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+                return directions;
+            }
+            if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+                directions.push(Math.NORTH);
+                directions.push(Math.WEST);
+                return directions;
+            }
+            if (collisionDirection === Orientations.VERTICAL) {
+                directions.push(Math.NORTH);
+                directions.push(Math.WEST);
+                return directions;
+            }
+            directions.push(Math.NORTH);
+            directions.push(Math.WEST);
+        }
+        if (Math.IsSouthEast(angle)) {
+            if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+                return directions;
+            }
+            if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+                directions.push(Math.SOUTH);
+                directions.push(Math.EAST);
+            }
+            if (collisionDirection === Orientations.HORIZONTAL) {
+                directions.push(Math.EAST);
+                directions.push(Math.SOUTH);
+            }
+            if (collisionDirection === Orientations.VERTICAL) {
+                directions.push(Math.SOUTH);
+                directions.push(Math.EAST);
+            }
+        }
+        if (Math.IsSouthWest(angle)) {
+            if (collisionDirection === Orientations.HORIZONTAL) {
+                directions.push(Math.WEST);
+                directions.push(Math.SOUTH);
+            }
+            if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+                directions.push(Math.SOUTH_WEST);
+                directions.push(Math.WEST);
+                directions.push(Math.SOUTH);
+            }
+            if (collisionDirection === Orientations.VERTICAL) {
+                directions.push(Math.SOUTH);
+                directions.push(Math.WEST);
+            }
+        }
+        if (Math.IsEast(angle)) {
+            if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+                directions.push(Math.NORTH_EAST);
+                directions.push(Math.NORTH);
+            }
+            if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+                directions.push(Math.SOUTH_EAST);
+                directions.push(Math.SOUTH);
+            }
+        }
+        if (Math.IsWest(angle)) {
+            if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+                directions.push(Math.SOUTH_EAST);
+                directions.push(Math.SOUTH);
+            }
+            if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+                directions.push(Math.NORTH_WEST);
+                directions.push(Math.NORTH);
+            }
+            if (collisionDirection === Orientations.HORIZONTAL) {
+                directions.push(Math.SOUTH);
+                directions.push(Math.NORTH);
+            }
+        }
+        if (Math.IsNorth(angle)) {
+            if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+                directions.push(Math.NORTH_EAST);
+                directions.push(Math.EAST);
+            }
+            if (collisionDirection === Orientations.HORIZONTAL) {
+                return directions;
+            }
+            if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+                directions.push(Math.WEST);
+            }
+            if (collisionDirection === Orientations.VERTICAL) {
+                directions.push(Math.NORTH_WEST);
+                directions.push(Math.WEST);
+            }
+        }
+        if (Math.IsSouth(angle)) {
+            if (collisionDirection === Orientations.HORIZONTAL) {
+                return directions;
+            }
+            if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+                directions.push(Math.SOUTH_WEST);
+                directions.push(Math.WEST);
+            }
+            if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+                directions.push(Math.SOUTH_EAST);
+                directions.push(Math.EAST);
+            }
+            if (collisionDirection === Orientations.VERTICAL) {
+                directions.push(Math.EAST);
+            }
+        }
 
-    this.unit.SetAbsOrigin(futureOrigin);
-    return CollisionTypes.SUCCESS;
-  }
-  AlternativeDirectionsWalls(direction: Vector): Vector[] {
-    const directions: Vector[] = [];
-    const collisionDirection = CustomEntitiesLegacy.GetCollisionDirection(
-      this.unit
-    );
-    const angle = VectorToAngles(direction).y;
-
-    if (Math.IsNorthEast(angle)) {
-      if (collisionDirection === Orientations.DIAGONAL_LEFT) {
         return directions;
-      }
-      directions.push(Math.NORTH);
-      directions.push(Math.EAST);
     }
-    if (Math.IsNorthWest(angle)) {
-      if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
-        return directions;
-      }
-      if (collisionDirection === Orientations.DIAGONAL_LEFT) {
-        directions.push(Math.NORTH);
-        directions.push(Math.WEST);
-        return directions;
-      }
-      if (collisionDirection === Orientations.VERTICAL) {
-        directions.push(Math.NORTH);
-        directions.push(Math.WEST);
-        return directions;
-      }
-      directions.push(Math.NORTH);
-      directions.push(Math.WEST);
-    }
-    if (Math.IsSouthEast(angle)) {
-      if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
-        return directions;
-      }
-      if (collisionDirection === Orientations.DIAGONAL_LEFT) {
-        directions.push(Math.SOUTH);
-        directions.push(Math.EAST);
-      }
-      if (collisionDirection === Orientations.HORIZONTAL) {
-        directions.push(Math.EAST);
-        directions.push(Math.SOUTH);
-      }
-      if (collisionDirection === Orientations.VERTICAL) {
-        directions.push(Math.SOUTH);
-        directions.push(Math.EAST);
-      }
-    }
-    if (Math.IsSouthWest(angle)) {
-      if (collisionDirection === Orientations.HORIZONTAL) {
-        directions.push(Math.WEST);
-        directions.push(Math.SOUTH);
-      }
-      if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
-        directions.push(Math.SOUTH_WEST);
-        directions.push(Math.WEST);
-        directions.push(Math.SOUTH);
-      }
-      if (collisionDirection === Orientations.VERTICAL) {
-        directions.push(Math.SOUTH);
-        directions.push(Math.WEST);
-      }
-    }
-    if (Math.IsEast(angle)) {
-      if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
-        directions.push(Math.NORTH_EAST);
-        directions.push(Math.NORTH);
-      }
-      if (collisionDirection === Orientations.DIAGONAL_LEFT) {
-        directions.push(Math.SOUTH_EAST);
-        directions.push(Math.SOUTH);
-      }
-    }
-    if (Math.IsWest(angle)) {
-      if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
-        directions.push(Math.SOUTH_EAST);
-        directions.push(Math.SOUTH);
-      }
-      if (collisionDirection === Orientations.DIAGONAL_LEFT) {
-        directions.push(Math.NORTH_WEST);
-        directions.push(Math.NORTH);
-      }
-      if (collisionDirection === Orientations.HORIZONTAL) {
-        directions.push(Math.SOUTH);
-        directions.push(Math.NORTH);
-      }
-    }
-    if (Math.IsNorth(angle)) {
-      if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
-        directions.push(Math.NORTH_EAST);
-        directions.push(Math.EAST);
-      }
-      if (collisionDirection === Orientations.HORIZONTAL) {
-        return directions;
-      }
-      if (collisionDirection === Orientations.DIAGONAL_LEFT) {
-        directions.push(Math.WEST);
-      }
-      if (collisionDirection === Orientations.VERTICAL) {
-        directions.push(Math.NORTH_WEST);
-        directions.push(Math.WEST);
-      }
-    }
-    if (Math.IsSouth(angle)) {
-      if (collisionDirection === Orientations.HORIZONTAL) {
-        return directions;
-      }
-      if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
-        directions.push(Math.SOUTH_WEST);
-        directions.push(Math.WEST);
-      }
-      if (collisionDirection === Orientations.DIAGONAL_LEFT) {
-        directions.push(Math.SOUTH_EAST);
-        directions.push(Math.EAST);
-      }
-      if (collisionDirection === Orientations.VERTICAL) {
-        directions.push(Math.EAST);
-      }
-    }
+    AlternativeDirections(direction: Vector): Vector[] {
+        const directions = [];
+        const angle = VectorToAngles(direction).y;
 
-    return directions;
-  }
-  AlternativeDirections(direction: Vector): Vector[] {
-    const directions = [];
-    const angle = VectorToAngles(direction).y;
+        if (Math.IsNorthEast(angle)) {
+            directions.push(Math.NORTH);
+            directions.push(Math.EAST);
+        }
+        if (Math.IsNorthWest(angle)) {
+            directions.push(Math.NORTH);
+            directions.push(Math.WEST);
+        }
+        if (Math.IsSouthEast(angle)) {
+            directions.push(Math.SOUTH);
+            directions.push(Math.EAST);
+        }
+        if (Math.IsSouthWest(angle)) {
+            directions.push(Math.SOUTH);
+            directions.push(Math.WEST);
+        }
+        if (Math.IsEast(angle) || Math.IsWest(angle)) {
+            if (this.unit.GetAbsOrigin().y < 0) {
+                directions.push(Math.SOUTH);
+                directions.push(Math.NORTH);
+            }
 
-    if (Math.IsNorthEast(angle)) {
-      directions.push(Math.NORTH);
-      directions.push(Math.EAST);
+            if (this.unit.GetAbsOrigin().y > 0) {
+                directions.push(Math.NORTH);
+                directions.push(Math.SOUTH);
+            }
+        }
+        if (Math.IsNorth(angle) || Math.IsSouth(angle)) {
+            if (this.unit.GetAbsOrigin().x < 0) {
+                directions.push(Math.WEST);
+            }
+            if (this.unit.GetAbsOrigin().x > 0) {
+                directions.push(Math.EAST);
+            }
+        }
+        return directions;
     }
-    if (Math.IsNorthWest(angle)) {
-      directions.push(Math.NORTH);
-      directions.push(Math.WEST);
-    }
-    if (Math.IsSouthEast(angle)) {
-      directions.push(Math.SOUTH);
-      directions.push(Math.EAST);
-    }
-    if (Math.IsSouthWest(angle)) {
-      directions.push(Math.SOUTH);
-      directions.push(Math.WEST);
-    }
-    if (Math.IsEast(angle) || Math.IsWest(angle)) {
-      if (this.unit.GetAbsOrigin().y < 0) {
-        directions.push(Math.SOUTH);
-        directions.push(Math.NORTH);
-      }
+    Update(): void {
+        const direction = CustomEntitiesLegacy.GetDirection(this.unit).Normalized();
+        const speed = this.unit.GetIdealSpeed() / 25;
 
-      if (this.unit.GetAbsOrigin().y > 0) {
-        directions.push(Math.NORTH);
-        directions.push(Math.SOUTH);
-      }
-    }
-    if (Math.IsNorth(angle) || Math.IsSouth(angle)) {
-      if (this.unit.GetAbsOrigin().x < 0) {
-        directions.push(Math.WEST);
-      }
-      if (this.unit.GetAbsOrigin().x > 0) {
-        directions.push(Math.EAST);
-      }
-    }
-    return directions;
-  }
-  Update(): void {
-    const direction = CustomEntitiesLegacy.GetDirection(this.unit).Normalized();
-    const speed = this.unit.GetIdealSpeed() / 25;
+        if (CustomEntitiesLegacy.IsAnimating(this.unit)) {
+            this.unit.RemoveModifierByName("modifier_hero_movement");
+            this.unit.RemoveModifierByName("modifier_tower_idle");
+        }
 
-    if (CustomEntitiesLegacy.IsAnimating(this.unit)) {
-      this.unit.RemoveModifierByName("modifier_hero_movement");
-      this.unit.RemoveModifierByName("modifier_tower_idle");
-    }
+        if ((direction.x !== 0 || direction.y !== 0) && CustomEntitiesLegacy.CanWalk(this.unit)) {
+            const output = this.Move(direction, speed);
+            if (output !== CollisionTypes.SUCCESS) {
+                let alternativeDirections: Vector[] = [];
 
-    if (
-      (direction.x !== 0 || direction.y !== 0) &&
-      CustomEntitiesLegacy.CanWalk(this.unit)
-    ) {
-      const output = this.Move(direction, speed);
-      if (output !== CollisionTypes.SUCCESS) {
-        let alternativeDirections: Vector[] = [];
+                if (output === CollisionTypes.WALL) {
+                    alternativeDirections = this.AlternativeDirectionsWalls(direction);
+                } else {
+                    alternativeDirections = this.AlternativeDirections(direction);
+                }
 
-        if (output === CollisionTypes.WALL) {
-          alternativeDirections = this.AlternativeDirectionsWalls(direction);
+                for (let i = 0; i < alternativeDirections.length; i++) {
+                    const alternativeDireaction = alternativeDirections[i];
+                    const newOutput = this.Move(alternativeDireaction, speed * 0.8);
+                    if (newOutput === CollisionTypes.SUCCESS) {
+                        break;
+                    }
+                }
+            }
+
+            if (
+                !this.unit.HasModifier("modifier_casting") &&
+                !this.unit.HasModifier("modifier_mars_counter_countering") &&
+                !this.unit.HasModifier("modifier_spectre_counter_countering")
+            ) {
+                CustomEntitiesLegacy.FullyFaceTowards(this.unit, direction);
+            }
         } else {
-          alternativeDirections = this.AlternativeDirections(direction);
+            if (this.unit.GetUnitName() === "dire_tower") {
+                if (!this.unit.HasModifier("modifier_tower_idle")) {
+                    this.unit.AddNewModifier(this.unit, undefined, "modifier_tower_idle", {});
+                }
+            }
+            this.unit.RemoveModifierByName("modifier_hero_movement");
         }
 
-        for (let i = 0; i < alternativeDirections.length; i++) {
-          const alternativeDireaction = alternativeDirections[i];
-          const newOutput = this.Move(alternativeDireaction, speed * 0.8);
-          if (newOutput === CollisionTypes.SUCCESS) {
-            break;
-          }
-        }
-      }
+        if (IsInToolsMode() && DEBUG) {
+            if ((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID) {
+                const player = GameRules.Addon.FindPlayerById((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID());
 
-      if (
-        !this.unit.HasModifier("modifier_casting") &&
-        !this.unit.HasModifier("modifier_mars_counter_countering") &&
-        !this.unit.HasModifier("modifier_spectre_counter_countering")
-      ) {
-        CustomEntitiesLegacy.FullyFaceTowards(this.unit, direction);
-      }
-    } else {
-      if (this.unit.GetUnitName() === "dire_tower") {
-        if (!this.unit.HasModifier("modifier_tower_idle")) {
-          this.unit.AddNewModifier(
-            this.unit,
-            undefined,
-            "modifier_tower_idle",
-            {}
-          );
+                if (player) {
+                    const mouse = player.GetCursorPosition();
+                    DebugDrawLine_vCol(
+                        this.unit.GetAbsOrigin(),
+                        this.unit.GetAbsOrigin().__add(this.unit.GetForwardVector().__mul(500)),
+                        Vector(0, 0, 255),
+                        true,
+                        0.03
+                    );
+                    DebugDrawLine_vCol(this.unit.GetAbsOrigin(), mouse, Vector(0, 255, 0), true, 0.03);
+                }
+            }
         }
-      }
-      this.unit.RemoveModifierByName("modifier_hero_movement");
     }
-
-    if (IsInToolsMode() && DEBUG) {
-      if ((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID) {
-        const player = GameRules.Addon.FindPlayerById(
-          (this.unit as CDOTA_BaseNPC_Hero).GetPlayerID()
-        );
-
-        if (player) {
-          const mouse = player.GetCursorPosition();
-          DebugDrawLine_vCol(
-            this.unit.GetAbsOrigin(),
-            this.unit
-              .GetAbsOrigin()
-              .__add(this.unit.GetForwardVector().__mul(500)),
-            Vector(0, 0, 255),
-            true,
-            0.03
-          );
-          DebugDrawLine_vCol(
-            this.unit.GetAbsOrigin(),
-            mouse,
-            Vector(0, 255, 0),
-            true,
-            0.03
-          );
-        }
-      }
+    OnDeath(event: EntityKilledEvent): void {
+        super.OnDeath(event);
+        this.Destroy(false);
     }
-  }
-  OnDeath(event: EntityKilledEvent): void {
-    super.OnDeath(event);
-    this.Destroy(false);
-  }
 }
 export class CustomHeroNPC extends CustomNPC {
-  constructor(unit: CDOTA_BaseNPC) {
-    super(unit);
-    customEntities.SetUseEnergy(this.unit);
-  }
+    constructor(unit: CDOTA_BaseNPC) {
+        super(unit);
+        customEntities.SetUseEnergy(this.unit);
+    }
 }
 export class CustomNonPlayerHeroNPC extends CustomHeroNPC {
-  constructor(unit: CDOTA_BaseNPC) {
-    super(unit);
-    this.LevelAllAbilities(1);
-  }
+    constructor(unit: CDOTA_BaseNPC) {
+        super(unit);
+        this.LevelAllAbilities(1);
+    }
 }
 export class CustomPlayerHeroNPC extends CustomHeroNPC {
-  heroUpgrades: HeroUpgrade[] = [];
-  reward: Reward | undefined;
-  remainingTimeToRemoveMana = 1.0 * 30;
+    heroUpgrades: HeroUpgrade[] = [];
+    reward: Reward | undefined;
+    remainingTimeToRemoveMana = 1.0 * 30;
 
-  constructor(unit: CDOTA_BaseNPC) {
-    super(unit);
-    this.LevelAllAbilities(1);
-    if (GameRules.Addon.IsPVE()) {
-      (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(0);
-      customEntities.ChangeMS(this.unit, 50);
-      this.unit.RemoveAbility(this.unit.GetAbilityByIndex(7)!.GetName());
-      this.unit.RemoveAbility(this.unit.GetAbilityByIndex(8)!.GetName());
-      //ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
-    }
-  }
-
-  OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void {
-    if (event.PlayerID === this.unit.GetPlayerOwnerID()) {
-      const ability = this.unit.FindAbilityByName(event.abilityname);
-      if (ability) {
-        if (ability.GetLevel() === 2) {
-          ability.SetLevel(1);
-          (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(
-            (this.unit as CDOTA_BaseNPC_Hero).GetAbilityPoints() + 1
-          );
+    constructor(unit: CDOTA_BaseNPC) {
+        super(unit);
+        this.LevelAllAbilities(1);
+        if (GameRules.Addon.IsPVE()) {
+            (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(0);
+            customEntities.ChangeMS(this.unit, 50);
+            this.unit.RemoveAbility(this.unit.GetAbilityByIndex(7)!.GetName());
+            this.unit.RemoveAbility(this.unit.GetAbilityByIndex(8)!.GetName());
+            //ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
         }
-      }
-    }
-  }
-
-  Update(): void {
-    super.Update();
-    if (this.remainingTimeToRemoveMana > 0) {
-      this.remainingTimeToRemoveMana--;
-    } else if (this.remainingTimeToRemoveMana === 0) {
-      CustomEntitiesLegacy.SetManaCustom(this.unit, 0, true);
-      this.remainingTimeToRemoveMana = -1;
     }
 
-    if (this.unit.IsAlive()) {
-      this.PickupItems();
-    }
-  }
-
-  PickupItems(): void {
-    const dropItems = Entities.FindAllByClassnameWithin(
-      "dota_item_drop",
-      this.unit.GetAbsOrigin(),
-      this.unit.GetHullRadius() * 2.5
-    );
-    dropItems.forEach((drop) => {
-      const item = (drop as CDOTA_Item_Physical).GetContainedItem();
-      const owner = item.GetPurchaser();
-
-      //Only pickup items owned by teammates
-      if (
-        !owner ||
-        (owner &&
-          CustomEntitiesLegacy.Allies(this.unit, owner) &&
-          this.unit !== owner)
-      ) {
-        this.unit.AddItem(item);
-        item.OnSpellStart();
-
-        GameRules.Addon.OnPickedUp(item);
-        UTIL_Remove(drop);
-      }
-    });
-  }
-
-  IsRanged(): boolean {
-    return (
-      (this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() ===
-      Attributes.AGILITY
-    );
-  }
-
-  IsMeele(): boolean {
-    return (
-      (this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() ===
-      Attributes.STRENGTH
-    );
-  }
-
-  IsSelectingUpgrade(): boolean {
-    const tableName = "custom_npc_favors" as never;
-    const value = CustomNetTables.GetTableValue(
-      tableName,
-      this.unit.GetPlayerOwnerID().toString()
-    ) as { playerId: PlayerID; upgrades: Upgrade[] | undefined };
-    return value && value.upgrades !== undefined;
-  }
-
-  IsSelectingReward(): boolean {
-    const tableName = "custom_npc_rewards" as never;
-    const value = CustomNetTables.GetTableValue(
-      tableName,
-      this.unit.GetPlayerOwnerID().toString()
-    ) as { playerId: PlayerID; rewards: Reward[] | undefined };
-    return value && value.rewards !== undefined;
-  }
-
-  ReleaseAbility(abilityName: string): void {
-    //WIP
-  }
-
-  ApplyItem(upgrade: Upgrade): void {
-    if (upgrade.ingredients) {
-      upgrade.ingredients.forEach((ingredientId) => {
-        const ingredientUpgrade = this.heroUpgrades.find(
-          (heroUpgrade) => heroUpgrade.id === ingredientId
-        );
-
-        if (ingredientUpgrade) {
-          this.unit.RemoveModifierByName(ingredientUpgrade.modifier!.name);
+    OnLearnedAbilityEvent(event: DotaPlayerLearnedAbilityEvent): void {
+        if (event.PlayerID === this.unit.GetPlayerOwnerID()) {
+            const ability = this.unit.FindAbilityByName(event.abilityname);
+            if (ability) {
+                if (ability.GetLevel() === 2) {
+                    ability.SetLevel(1);
+                    (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints((this.unit as CDOTA_BaseNPC_Hero).GetAbilityPoints() + 1);
+                }
+            }
         }
-      });
-
-      EFX(
-        "particles/items_fx/item_sheepstick.vpcf",
-        ParticleAttachment.ABSORIGIN_FOLLOW,
-        this.unit,
-        {
-          release: true,
-        }
-      );
-
-      this.unit.AddNewModifier(this.unit, undefined, "modifier_combine_util", {
-        duration: 1.5,
-      });
-
-      EmitSoundOn("DOTA_Item.RepairKit.Target", this.unit);
     }
 
-    EFX(
-      "particles/econ/events/ti10/mekanism_ti10.vpcf",
-      ParticleAttachment.ABSORIGIN_FOLLOW,
-      this.unit,
-      {
-        release: true,
-      }
-    );
-    EmitSoundOn("DOTA_Item.Overwhelming_Blink.NailedIt", this.unit);
-  }
+    Update(): void {
+        super.Update();
+        if (this.remainingTimeToRemoveMana > 0) {
+            this.remainingTimeToRemoveMana--;
+        } else if (this.remainingTimeToRemoveMana === 0) {
+            CustomEntitiesLegacy.SetManaCustom(this.unit, 0, true);
+            this.remainingTimeToRemoveMana = -1;
+        }
 
-  ApplyFavor(upgrade: Upgrade): void {
-    EmitSoundOn("DOTA_Item.Mekansm.Target", this.unit);
+        if (this.unit.IsAlive()) {
+            this.PickupItems();
+        }
+    }
 
-    EFX(
-      "particles/econ/events/ti10/hero_levelup_ti10.vpcf",
-      ParticleAttachment.ABSORIGIN_FOLLOW,
-      this.unit,
-      {
-        release: true,
-      }
-    );
-  }
+    PickupItems(): void {
+        const dropItems = Entities.FindAllByClassnameWithin("dota_item_drop", this.unit.GetAbsOrigin(), this.unit.GetHullRadius() * 2.5);
+        dropItems.forEach(drop => {
+            const item = (drop as CDOTA_Item_Physical).GetContainedItem();
+            const owner = item.GetPurchaser();
 
-  ApplyShard(upgrade: Upgrade): void {
-    EmitSoundOn("Item.MoonShard.Consume", this.unit);
+            //Only pickup items owned by teammates
+            if (!owner || (owner && CustomEntitiesLegacy.Allies(this.unit, owner) && this.unit !== owner)) {
+                this.unit.AddItem(item);
+                item.OnSpellStart();
 
-    EFX(
-      "particles/econ/events/ti10/hero_levelup_ti10.vpcf",
-      ParticleAttachment.ABSORIGIN_FOLLOW,
-      this.unit,
-      {
-        release: true,
-      }
-    );
-  }
+                GameRules.Addon.OnPickedUp(item);
+                UTIL_Remove(drop);
+            }
+        });
+    }
 
-  SelectReward(reward: Reward): void {
-    this.reward = reward;
-    this.ClearTable("custom_npc_rewards" as never);
-    const customEvents = CustomEvents.GetInstance();
-    customEvents.EmitEvent("pve:next_reward_selected", {
-      customNpc: this,
-      reward,
-    });
+    IsRanged(): boolean {
+        return (this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() === Attributes.AGILITY;
+    }
 
-    const data = {
-      nextReward: this.reward.name,
-    } as never;
-    CustomNetTables.SetTableValue("main" as never, "pve", data);
-  }
+    IsMeele(): boolean {
+        return (this.unit as CDOTA_BaseNPC_Hero).GetPrimaryAttribute() === Attributes.STRENGTH;
+    }
 
-  ClearTable(name: never): void {
-    const data = {
-      playerId: this.unit.GetPlayerOwnerID(),
-    } as never;
-    CustomNetTables.SetTableValue(
-      name,
-      this.unit.GetPlayerOwnerID().toString(),
-      data
-    );
-  }
+    IsSelectingUpgrade(): boolean {
+        const tableName = "custom_npc_favors" as never;
+        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as {
+            playerId: PlayerID;
+            upgrades: Upgrade[] | undefined;
+        };
+        return value && value.upgrades !== undefined;
+    }
+
+    IsSelectingReward(): boolean {
+        const tableName = "custom_npc_rewards" as never;
+        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as {
+            playerId: PlayerID;
+            rewards: Reward[] | undefined;
+        };
+        return value && value.rewards !== undefined;
+    }
+
+    ReleaseAbility(abilityName: string): void {
+        //WIP
+    }
+
+    ApplyItem(upgrade: Upgrade): void {
+        if (upgrade.ingredients) {
+            upgrade.ingredients.forEach(ingredientId => {
+                const ingredientUpgrade = this.heroUpgrades.find(heroUpgrade => heroUpgrade.id === ingredientId);
+
+                if (ingredientUpgrade) {
+                    this.unit.RemoveModifierByName(ingredientUpgrade.modifier!.name);
+                }
+            });
+
+            EFX("particles/items_fx/item_sheepstick.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+                release: true
+            });
+
+            this.unit.AddNewModifier(this.unit, undefined, "modifier_combine_util", {
+                duration: 1.5
+            });
+
+            EmitSoundOn("DOTA_Item.RepairKit.Target", this.unit);
+        }
+
+        EFX("particles/econ/events/ti10/mekanism_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+            release: true
+        });
+        EmitSoundOn("DOTA_Item.Overwhelming_Blink.NailedIt", this.unit);
+    }
+
+    ApplyFavor(upgrade: Upgrade): void {
+        EmitSoundOn("DOTA_Item.Mekansm.Target", this.unit);
+
+        EFX("particles/econ/events/ti10/hero_levelup_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+            release: true
+        });
+    }
+
+    ApplyShard(upgrade: Upgrade): void {
+        EmitSoundOn("Item.MoonShard.Consume", this.unit);
+
+        EFX("particles/econ/events/ti10/hero_levelup_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+            release: true
+        });
+    }
+
+    SelectReward(reward: Reward): void {
+        this.reward = reward;
+        this.ClearTable("custom_npc_rewards" as never);
+        const customEvents = CustomEvents.GetInstance();
+        customEvents.EmitEvent("pve:next_reward_selected", {
+            customNpc: this,
+            reward
+        });
+
+        const data = {
+            nextReward: this.reward.name
+        } as never;
+        CustomNetTables.SetTableValue("main" as never, "pve", data);
+    }
+
+    ClearTable(name: never): void {
+        const data = {
+            playerId: this.unit.GetPlayerOwnerID()
+        } as never;
+        CustomNetTables.SetTableValue(name, this.unit.GetPlayerOwnerID().toString(), data);
+    }
 }

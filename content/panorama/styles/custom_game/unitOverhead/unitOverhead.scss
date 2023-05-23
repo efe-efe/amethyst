@@ -1,96 +1,96 @@
 .unit-overhead {
-  &__top {
-    width: 100%;
-    height: 60px;
-  }
-
-  &__mid {
-    width: 100%;
-    height: 30px;
-    margin-bottom: 2px;
-  }
-
-  &__bot {
-    width: 70%;
-    align: center center;
-    height: 10px;
-    flow-children: right;
-
-    &--hero {
-      width: 100%;
-      height: 31px;
+    &__top {
+        width: 100%;
+        height: 60px;
     }
-  }
+
+    &__mid {
+        width: 100%;
+        height: 30px;
+        margin-bottom: 2px;
+    }
+
+    &__bot {
+        width: 70%;
+        align: center center;
+        height: 10px;
+        flow-children: right;
+
+        &--hero {
+            width: 100%;
+            height: 31px;
+        }
+    }
 }
 
 .unit-overhead-charges {
-  height: 100%;
-  width: 30px;
+    height: 100%;
+    width: 30px;
 }
 
 .unit-overhead-resources {
-  height: 36px;
-  width: 100px;
-  flow-children: down;
-  margin-right: 2px;
-  align: center center;
+    height: 36px;
+    width: 100px;
+    flow-children: down;
+    margin-right: 2px;
+    align: center center;
 
-  &__energy {
-    width: 100%;
-    height: 5px;
+    &__energy {
+        width: 100%;
+        height: 5px;
 
-    flow-children: right;
+        flow-children: right;
 
-    padding: 0 1px;
-    margin-top: -2px;
-  }
+        padding: 0 1px;
+        margin-top: -2px;
+    }
 
-  &__health {
-    width: 100%;
-    height: 13px;
+    &__health {
+        width: 100%;
+        height: 13px;
 
-    margin-bottom: 1px;
-    background-color: rgba($color: #000000, $alpha: 0.2);
-    border-radius: 3px;
-  }
+        margin-bottom: 1px;
+        background-color: rgba($color: #000000, $alpha: 0.2);
+        border-radius: 3px;
+    }
 
-  &__mana {
-    width: 100%;
-    height: 5px;
+    &__mana {
+        width: 100%;
+        height: 5px;
 
-    flow-children: right;
+        flow-children: right;
 
-    padding: 0 1px;
-    margin-bottom: 1px;
-  }
+        padding: 0 1px;
+        margin-bottom: 1px;
+    }
 
-  &__castpoint {
-    opacity: 0;
-    width: 100%;
-    height: 6px;
-    padding: 0 1px;
+    &__castpoint {
+        opacity: 0;
+        width: 100%;
+        height: 6px;
+        padding: 0 1px;
 
-    transition-property: opacity;
-    transition-duration: 0.3s;
-  }
+        transition-property: opacity;
+        transition-duration: 0.3s;
+    }
 }
 
 .unit-overhead-ammo {
-  height: 100%;
-  width: 30px;
-
-  &__stackbars {
     height: 100%;
-    width: 100%;
-  }
+    width: 30px;
 
-  &__cooldown {
-    height: 100%;
-    width: 100%;
-  }
+    &__stackbars {
+        height: 100%;
+        width: 100%;
+    }
+
+    &__cooldown {
+        height: 100%;
+        width: 100%;
+    }
 }
 
 .switch-panel {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }

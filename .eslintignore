@@ -1,0 +1,8 @@
+node_modules
+content
+game
+scripts
+**/timers.d.ts
+**/dota_ts_adapter.ts
+**/tstl-utils.ts
+**/module.ts

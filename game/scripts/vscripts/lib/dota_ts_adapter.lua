@@ -1,16 +1,17 @@
 local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
+local __TS__Delete = ____lualib.__TS__Delete
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 158,["8"] = 133,["9"] = 134,["10"] = 135,["12"] = 133,["13"] = 139,["14"] = 140,["15"] = 141,["16"] = 142,["17"] = 143,["18"] = 144,["19"] = 144,["20"] = 144,["21"] = 144,["23"] = 147,["25"] = 139,["26"] = 158,["27"] = 159,["28"] = 159,["29"] = 160,["30"] = 161,["31"] = 164,["32"] = 165,["35"] = 169,["38"] = 10,["39"] = 10,["40"] = 10,["42"] = 10,["43"] = 13,["44"] = 13,["45"] = 13,["47"] = 13,["48"] = 16,["49"] = 16,["50"] = 16,["52"] = 16,["53"] = 17,["54"] = 24,["55"] = 17,["56"] = 35,["57"] = 35,["58"] = 35,["59"] = 35,["60"] = 39,["61"] = 39,["62"] = 39,["63"] = 39,["64"] = 43,["65"] = 43,["66"] = 43,["67"] = 43,["68"] = 46,["69"] = 49,["70"] = 52,["71"] = 56,["72"] = 59,["73"] = 61,["75"] = 63,["77"] = 66,["78"] = 68,["79"] = 69,["81"] = 71,["83"] = 74,["84"] = 76,["85"] = 77,["86"] = 78,["87"] = 79,["88"] = 80,["90"] = 77,["91"] = 57,["92"] = 85,["93"] = 87,["94"] = 89,["96"] = 91,["98"] = 94,["99"] = 95,["100"] = 97,["101"] = 98,["103"] = 100,["105"] = 103,["106"] = 105,["107"] = 106,["108"] = 107,["109"] = 108,["110"] = 109,["112"] = 106,["113"] = 113,["114"] = 114,["115"] = 115,["116"] = 116,["117"] = 117,["119"] = 119,["120"] = 120,["122"] = 122,["123"] = 123,["126"] = 127,["128"] = 130,["129"] = 86,["130"] = 151,["131"] = 152,["132"] = 153,["133"] = 154,["134"] = 153,["135"] = 151});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 150,["9"] = 150,["10"] = 151,["11"] = 152,["14"] = 156,["15"] = 157,["16"] = 158,["17"] = 159,["18"] = 160,["19"] = 161,["20"] = 161,["21"] = 161,["22"] = 161,["24"] = 164,["27"] = 168,["28"] = 169,["29"] = 169,["30"] = 170,["31"] = 171,["32"] = 174,["33"] = 175,["36"] = 179,["39"] = 2,["40"] = 2,["41"] = 2,["43"] = 2,["44"] = 5,["45"] = 5,["46"] = 5,["48"] = 5,["49"] = 8,["50"] = 8,["51"] = 8,["53"] = 8,["54"] = 9,["55"] = 16,["56"] = 9,["57"] = 20,["58"] = 20,["59"] = 33,["60"] = 33,["61"] = 33,["62"] = 33,["63"] = 36,["64"] = 36,["65"] = 36,["66"] = 36,["67"] = 39,["68"] = 39,["69"] = 39,["70"] = 39,["71"] = 42,["72"] = 45,["73"] = 48,["74"] = 55,["75"] = 56,["76"] = 58,["78"] = 60,["80"] = 63,["81"] = 65,["82"] = 66,["84"] = 68,["86"] = 71,["87"] = 73,["88"] = 74,["89"] = 75,["90"] = 76,["91"] = 77,["93"] = 79,["94"] = 80,["95"] = 81,["97"] = 74,["98"] = 55,["99"] = 86,["100"] = 87,["101"] = 89,["102"] = 91,["104"] = 93,["106"] = 96,["107"] = 97,["108"] = 99,["109"] = 100,["111"] = 102,["113"] = 105,["114"] = 107,["115"] = 108,["116"] = 109,["117"] = 110,["118"] = 111,["120"] = 113,["121"] = 114,["122"] = 115,["124"] = 108,["125"] = 119,["126"] = 120,["127"] = 121,["128"] = 122,["129"] = 123,["131"] = 125,["132"] = 126,["134"] = 128,["135"] = 129,["138"] = 133,["140"] = 136,["141"] = 86,["144"] = 143,["145"] = 144,["146"] = 145,["147"] = 146,["148"] = 145,["149"] = 143});
 local ____exports = {}
-local toDotaClassInstance
-function ____exports.clearTable(self, ____table)
+local clearTable, getFileScope, toDotaClassInstance
+function clearTable(self, ____table)
     for key in pairs(____table) do
-        ____table[key] = nil
+        __TS__Delete(____table, key)
     end
 end
-function ____exports.getFileScope(self)
+function getFileScope(self)
     local level = 1
     while true do
         local info = debug.getinfo(level, "S")
@@ -24,8 +25,8 @@ function ____exports.getFileScope(self)
     end
 end
 function toDotaClassInstance(self, instance, ____table)
-    local ____table_0 = ____table
-    local prototype = ____table_0.prototype
+    local ____table_2 = ____table
+    local prototype = ____table_2.prototype
     while prototype do
         for key in pairs(prototype) do
             if not (rawget(instance, key) ~= nil) then
@@ -51,7 +52,9 @@ BaseModifier.name = "BaseModifier"
 function BaseModifier.prototype.____constructor(self)
 end
 function BaseModifier.apply(self, target, caster, ability, modifierTable)
-    return target:AddNewModifier(caster, ability, self.name, modifierTable)
+    return target:AddNewModifier(caster or target, ability, self.name, modifierTable or ({}))
+end
+function BaseModifier.prototype.OnHealDone(self, event)
 end
 ____exports.BaseModifierMotionHorizontal = __TS__Class()
 local BaseModifierMotionHorizontal = ____exports.BaseModifierMotionHorizontal
@@ -67,44 +70,53 @@ BaseModifierMotionBoth.name = "BaseModifierMotionBoth"
 __TS__ClassExtends(BaseModifierMotionBoth, ____exports.BaseModifier)
 setmetatable(____exports.BaseAbility.prototype, {__index = CDOTA_Ability_Lua or C_DOTA_Ability_Lua})
 setmetatable(____exports.BaseItem.prototype, {__index = CDOTA_Item_Lua or C_DOTA_Item_Lua})
-setmetatable(____exports.BaseModifier.prototype, {__index = CDOTA_Modifier_Lua or C_DOTA_Modifier_Lua})
+setmetatable(____exports.BaseModifier.prototype, {__index = CDOTA_Modifier_Lua})
 ____exports.registerAbility = function(____, name) return function(____, ability)
     if name ~= nil then
         ability.name = name
     else
         name = ability.name
     end
-    local env = unpack(____exports.getFileScope(nil))
+    local env = unpack(getFileScope(nil))
     if env[name] then
-        ____exports.clearTable(nil, env[name])
+        clearTable(nil, env[name])
     else
         env[name] = {}
     end
     toDotaClassInstance(nil, env[name], ability)
     local originalSpawn = env[name].Spawn
     env[name].Spawn = function(self)
+        if beforeAbilitySpawn then
+            beforeAbilitySpawn(nil, self)
+            beforeAbilitySpawn = nil
+        end
         self:____constructor()
         if originalSpawn then
             originalSpawn(self)
         end
     end
 end end
-____exports.registerModifier = function(____, name) return function(____, modifier)
+____exports.registerModifier = function(____, params) return function(____, modifier)
+    local name = params and params.customNameForI18n
     if name ~= nil then
         modifier.name = name
     else
         name = modifier.name
     end
-    local env, source = unpack(____exports.getFileScope(nil))
+    local env, source = unpack(getFileScope(nil))
     local fileName = string.gsub(source, ".*scripts[\\/]vscripts[\\/]", "")
     if env[name] then
-        ____exports.clearTable(nil, env[name])
+        clearTable(nil, env[name])
     else
         env[name] = {}
     end
     toDotaClassInstance(nil, env[name], modifier)
     local originalOnCreated = env[name].OnCreated
     env[name].OnCreated = function(self, parameters)
+        if beforeModifierOnCreated then
+            beforeModifierOnCreated(nil, self)
+            beforeModifierOnCreated = nil
+        end
         self:____constructor()
         if originalOnCreated then
             originalOnCreated(self, parameters)
@@ -127,8 +139,10 @@ ____exports.registerModifier = function(____, name) return function(____, modifi
     end
     LinkLuaModifier(name, fileName, ____type)
 end end
-function ____exports.entityFunction(self, name, f)
-    local env = unpack(____exports.getFileScope(nil))
+--- Use to expose top-level functions in entity scripts.
+-- Usage: registerEntityFunction("OnStartTouch", (trigger: TriggerStartTouchEvent) => { <your code here> });
+function ____exports.registerEntityFunction(self, name, f)
+    local env = unpack(getFileScope(nil))
     env[name] = function(...)
         f(nil, ...)
     end

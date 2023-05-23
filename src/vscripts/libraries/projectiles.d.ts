@@ -1,5 +1,5 @@
 declare interface ProjectilesManager {
-  Update(): void;
+    Update(): void;
 }
 
 declare const ProjectilesManager: ProjectilesManager;

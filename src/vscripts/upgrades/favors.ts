@@ -5,11 +5,6 @@ import PhantomRewards from "./phantom";
 import StormRewards from "./storm";
 import SniperRewards from "./sniper";
 
-const Favors: Upgrade[] = [
-  ...JuggernautRewards.Favors,
-  ...PhantomRewards.Favors,
-  ...StormRewards.Favors,
-  ...SniperRewards.Favors,
-];
+const Favors: Upgrade[] = [...JuggernautRewards.Favors, ...PhantomRewards.Favors, ...StormRewards.Favors, ...SniperRewards.Favors];
 
 export default Favors;

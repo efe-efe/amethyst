@@ -1,0 +1,14 @@
+*.js
+*.lua
+*.md
+
+!/scripts/*.js
+
+content/panorama/scripts
+
+# Sass stuff
+/scripts/sass_diff.css
+/src/panorama/styles/generated
+/content/panorama/styles/custom_game/precache.css
+/content/panorama/styles/custom_game/main.css
+/content/panorama/styles/custom_game/custom_loading_screen.css

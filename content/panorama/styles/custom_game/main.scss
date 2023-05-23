@@ -1,156 +1,156 @@
 .main {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .ready-bar {
-  height: 0px;
-  width: 100%;
+    height: 0px;
+    width: 100%;
 
-  transition-property: height;
-  transition-duration: 0.2s;
+    transition-property: height;
+    transition-duration: 0.2s;
 
-  align: center center;
-  color: black;
-
-  background-color: rgba(0, 0, 0, 0.85);
-
-  &__title {
-    color: #ece4b7;
-    font-size: 96px;
     align: center center;
-    text-transform: uppercase;
-  }
+    color: black;
+
+    background-color: rgba(0, 0, 0, 0.85);
+
+    &__title {
+        color: #ece4b7;
+        font-size: 96px;
+        align: center center;
+        text-transform: uppercase;
+    }
 }
 
 .room-status {
-  margin-left: 11px;
-  margin-top: 500px;
-  flow-children: down;
-  color: #ece4b7;
-  font-size: 12px;
+    margin-left: 11px;
+    margin-top: 500px;
+    flow-children: down;
+    color: #ece4b7;
+    font-size: 12px;
 }
 
 .upgrades {
-  overflow: squish scroll;
-  height: 600px;
-  width: 800px;
-  flow-children: down;
-  align: center center;
-  padding: 40px 20px;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
-  visibility: collapse;
-  z-index: 2;
+    overflow: squish scroll;
+    height: 600px;
+    width: 800px;
+    flow-children: down;
+    align: center center;
+    padding: 40px 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    visibility: collapse;
+    z-index: 2;
 }
 
 .upgrade {
-  width: 100%;
-  height: 150px;
-  flow-children: right;
-  color: white;
-  margin-bottom: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 2px;
+    width: 100%;
+    height: 150px;
+    flow-children: right;
+    color: white;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
 
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-    border: 1px solid #8b8b8b;
-  }
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+        border: 1px solid #8b8b8b;
+    }
 
-  &--last {
-    margin-bottom: 0;
-  }
+    &--last {
+        margin-bottom: 0;
+    }
 
-  &-left {
-    height: 100%;
-    width: 20%;
-  }
-  &-right {
-    padding: 20px 20px 20px 20px;
-    width: 80%;
-    flow-children: down;
-  }
+    &-left {
+        height: 100%;
+        width: 20%;
+    }
+    &-right {
+        padding: 20px 20px 20px 20px;
+        width: 80%;
+        flow-children: down;
+    }
 
-  &__title {
-    font-size: 18px;
-  }
-  &__description {
-    font-size: 16px;
-  }
+    &__title {
+        font-size: 18px;
+    }
+    &__description {
+        font-size: 16px;
+    }
 
-  &__ability {
-    align: center center;
-    border: 5px solid black;
-  }
+    &__ability {
+        align: center center;
+        border: 5px solid black;
+    }
 }
 
 .rewards {
-  height: 600px;
-  width: 800px;
-  flow-children: down;
-  align: center center;
-  padding: 40px 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 2px;
-  z-index: 2;
-  color: white;
-  visibility: collapse;
+    height: 600px;
+    width: 800px;
+    flow-children: down;
+    align: center center;
+    padding: 40px 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    z-index: 2;
+    color: white;
+    visibility: collapse;
 
-  &__title {
-    font-size: 20px;
-    align: center center;
-  }
-  &__sub-title {
-    font-size: 15px;
-    align: center center;
-  }
+    &__title {
+        font-size: 20px;
+        align: center center;
+    }
+    &__sub-title {
+        font-size: 15px;
+        align: center center;
+    }
 }
 
 .rewards-container {
-  align: center center;
-  flow-children: right;
-  overflow: scroll squish;
+    align: center center;
+    flow-children: right;
+    overflow: scroll squish;
 }
 
 .reward {
-  background-color: rgba(0, 0, 0, 0.8);
-  width: 220px;
-  height: 250px;
-  margin-right: 20px;
-  flow-children: down;
-  border-radius: 5px;
-  padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 220px;
+    height: 250px;
+    margin-right: 20px;
+    flow-children: down;
+    border-radius: 5px;
+    padding: 20px;
 
-  &__title {
-    text-align: center;
-    align: center center;
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
+    &__title {
+        text-align: center;
+        align: center center;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
 
-  &__description {
-    text-align: center;
-    align: center center;
-    font-size: 16px;
-  }
+    &__description {
+        text-align: center;
+        align: center center;
+        font-size: 16px;
+    }
 
-  &--last {
-    margin-right: 0px;
-  }
+    &--last {
+        margin-right: 0px;
+    }
 
-  &__image-container {
-    height: 120px;
-    margin-bottom: 10px;
-    align: center center;
-  }
+    &__image-container {
+        height: 120px;
+        margin-bottom: 10px;
+        align: center center;
+    }
 
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 }
 
 .game-state {
-  color: white;
-  font-size: 12px;
+    color: white;
+    font-size: 12px;
 }

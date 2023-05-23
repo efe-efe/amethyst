@@ -1,152 +1,117 @@
 import { castpointValue, keywords, manaValue } from "../common";
 import { localizeAbility } from "../localization";
-import {
-  abilityWithIcon,
-  createKeyword,
-  heal,
-  secondaryAbility,
-  upgrade,
-} from "../util";
+import { abilityWithIcon, createKeyword, heal, secondaryAbility, upgrade } from "../util";
 
 const swift = abilityWithIcon("Swift", "phantom_mobility");
-const criticalStrike = abilityWithIcon(
-  "Critical Strike",
-  "phantom_second_attack"
-);
-const lesserStiflingDagger = abilityWithIcon(
-  "Lesser Stifling Dagger",
-  "phantom_basic_attack_related"
-);
-const poisonusDagger = abilityWithIcon(
-  "Poisonus Dagger",
-  "phantom_ex_counter_recast"
-);
+const criticalStrike = abilityWithIcon("Critical Strike", "phantom_second_attack");
+const lesserStiflingDagger = abilityWithIcon("Lesser Stifling Dagger", "phantom_basic_attack_related");
+const poisonusDagger = abilityWithIcon("Poisonus Dagger", "phantom_ex_counter_recast");
 const phantomStrike = abilityWithIcon("Phantom Strike", "phantom_counter");
 const coupDeGrace = abilityWithIcon("Coup De Grace", "phantom_ultimate");
 const blurStrike = abilityWithIcon("Blur Strike", "phantom_ex_counter");
 
 const phantomStack = createKeyword("Phantom Stack", {
-  description: `Extra effects on ${criticalStrike}, ${coupDeGrace}, and ${blurStrike}.`,
-  icon: "phantom_stack",
-  color: "#ff8da1",
+    description: `Extra effects on ${criticalStrike}, ${coupDeGrace}, and ${blurStrike}.`,
+    icon: "phantom_stack",
+    color: "#ff8da1"
 });
 
 const bleeding = createKeyword("Bleeding", {
-  description:
-    "Deals 1 damage per stack every 1.0s. Can be stacked up to 3 times. The duration is refreshed every time is reapplied.",
-  icon: "bleeding",
-  color: "#ed4747",
+    description: "Deals 1 damage per stack every 1.0s. Can be stacked up to 3 times. The duration is refreshed every time is reapplied.",
+    icon: "bleeding",
+    color: "#ed4747"
 });
 
 localizeAbility("phantom_basic_attack", {
-  title: "Blade Swing",
+    title: "Blade Swing",
 
-  description: `Melee attack that deals ${keywords.baseDamage.name()}. Successfully hitting a target generate a ${phantomStack.name()} and reduces the cooldown of ${criticalStrike} in %cooldown_reduction%s.`,
-  lore: [phantomStack.description],
-  values: [manaValue, ["related", "Lesser Stifling Dagger"]],
+    description: `Melee attack that deals ${keywords.baseDamage.name()}. Successfully hitting a target generate a ${phantomStack.name()} and reduces the cooldown of ${criticalStrike} in %cooldown_reduction%s.`,
+    lore: [phantomStack.description],
+    values: [manaValue, ["related", "Lesser Stifling Dagger"]]
 });
 
 localizeAbility("phantom_second_attack", {
-  title: "Critical Strike",
+    title: "Critical Strike",
 
-  description: `Swings your weapon in a melee attack, dealing ${keywords.baseDamage.name()} to all enemies in front of you. Consumes all ${phantomStack.name()} to increase the damage done by %damage_per_stack% per stack. If you consume 3 stacks, instantly gives ${swift} a charge.`,
-  upgrade: upgrade(
-    `Fully replenish ${swift} when used with 3 ${phantomStack.name()}.`
-  ),
-  lore: [phantomStack.description],
-  values: [manaValue, castpointValue],
+    description: `Swings your weapon in a melee attack, dealing ${keywords.baseDamage.name()} to all enemies in front of you. Consumes all ${phantomStack.name()} to increase the damage done by %damage_per_stack% per stack. If you consume 3 stacks, instantly gives ${swift} a charge.`,
+    upgrade: upgrade(`Fully replenish ${swift} when used with 3 ${phantomStack.name()}.`),
+    lore: [phantomStack.description],
+    values: [manaValue, castpointValue]
 });
 
 localizeAbility("phantom_counter", {
-  title: "Phantom Strike",
-  description: `Counters the next projectile or melee attack. Countering an attack banishes yourself for %banish_duration% second, after that, teleports you to target location, heals you in ${heal(
-    "%heal%"
-  )}, increases your attack speed by %as_speed% for %buff_duration%s and teleports you to a new location.`,
-  upgrade: upgrade(
-    "Can be recasted to get the attack speed buff again and gain a shield that blocks %shield% damage during %shield_duration%s."
-  ),
+    title: "Phantom Strike",
+    description: `Counters the next projectile or melee attack. Countering an attack banishes yourself for %banish_duration% second, after that, teleports you to target location, heals you in ${heal(
+        "%heal%"
+    )}, increases your attack speed by %as_speed% for %buff_duration%s and teleports you to a new location.`,
+    upgrade: upgrade(
+        "Can be recasted to get the attack speed buff again and gain a shield that blocks %shield% damage during %shield_duration%s."
+    )
 });
 
 localizeAbility("phantom_special_attack", {
-  title: "Stifling Dagger",
+    title: "Stifling Dagger",
 
-  description: `Throws a dagger that deals ${keywords.baseDamage.name()} to the target plus %damage_modifier%, inflicts ${keywords.fadingSlow.name(
-    "%fading_slow_pct%"
-  )} for %fading_slow_duration%s and generates a ${phantomStack.name()}. You can stack up to %max_charges% charges.`,
-  upgrade: upgrade(
-    `Adds another charge, increases the damage and also applies ${bleeding.name()}.`
-  ),
-  lore: [
-    bleeding.description,
-    keywords.fadingSlow.description,
-    phantomStack.description,
-  ],
-  values: [manaValue, castpointValue],
+    description: `Throws a dagger that deals ${keywords.baseDamage.name()} to the target plus %damage_modifier%, inflicts ${keywords.fadingSlow.name(
+        "%fading_slow_pct%"
+    )} for %fading_slow_duration%s and generates a ${phantomStack.name()}. You can stack up to %max_charges% charges.`,
+    upgrade: upgrade(`Adds another charge, increases the damage and also applies ${bleeding.name()}.`),
+    lore: [bleeding.description, keywords.fadingSlow.description, phantomStack.description],
+    values: [manaValue, castpointValue]
 });
 
 localizeAbility("phantom_mobility", {
-  title: "Swift",
+    title: "Swift",
 
-  description:
-    "Dashes towards your movement direction. You can stack up to %max_charges% charges.",
-  upgrade: upgrade("Adds another charge and reduces cooldown."),
+    description: "Dashes towards your movement direction. You can stack up to %max_charges% charges.",
+    upgrade: upgrade("Adds another charge and reduces cooldown.")
 });
 
 localizeAbility("phantom_ultimate", {
-  title: "Coup de Grace",
+    title: "Coup de Grace",
 
-  description: `Throws your weapon, dealing %damage_multiplier% times your ${keywords.baseDamage.name()} and blinking towards the first unit it strikes. The damage mulitplier is increased by %damage_multiplier_per_stack% per each ${phantomStack.name()} consumed.`,
-  lore: [phantomStack.description],
-  values: [castpointValue],
+    description: `Throws your weapon, dealing %damage_multiplier% times your ${keywords.baseDamage.name()} and blinking towards the first unit it strikes. The damage mulitplier is increased by %damage_multiplier_per_stack% per each ${phantomStack.name()} consumed.`,
+    lore: [phantomStack.description],
+    values: [castpointValue]
 });
 
 localizeAbility("phantom_extra", {
-  title: "Quick Strike",
-  description: `Dashes towards the pointing direction, dealing %ability_damage% damage and inflicting ${keywords.fadingSlow.name(
-    "%fading_slow_pct%%%"
-  )} for %fading_slow_duration%s to enemies in the way and at the arriving area.`,
-  upgrade: upgrade("Can be recasted when hit an enemy."),
-  lore: [keywords.fadingSlow.description],
-  values: [castpointValue],
+    title: "Quick Strike",
+    description: `Dashes towards the pointing direction, dealing %ability_damage% damage and inflicting ${keywords.fadingSlow.name(
+        "%fading_slow_pct%%%"
+    )} for %fading_slow_duration%s to enemies in the way and at the arriving area.`,
+    upgrade: upgrade("Can be recasted when hit an enemy."),
+    lore: [keywords.fadingSlow.description],
+    values: [castpointValue]
 });
 
 localizeAbility("phantom_ex_basic_attack", {
-  title: "Dancing Blades",
-  description: `Phantom Assassin replaces her basic attack with ${lesserStiflingDagger}. Lasts for %duration%s.`,
-  secondaryAbility: secondaryAbility(
-    "Lesser Stifling Dagger",
-    "phantom_basic_attack_related",
-    `Throws a dagger that deals %ability_damage% damage to the target, inflicts ${keywords.fadingSlow.name(
-      "%fading_slow_pct%%%"
-    )} for %fading_slow_duration%s and generates a ${phantomStack.name()}.`
-  ),
-  upgrade: upgrade(
-    `Your daggers applies an stacking ${bleeding.name()} debuff on target for %bleed_duration%s.`
-  ),
-  lore: [
-    phantomStack.description,
-    keywords.fadingSlow.description,
-    bleeding.description,
-  ],
-  values: [castpointValue],
+    title: "Dancing Blades",
+    description: `Phantom Assassin replaces her basic attack with ${lesserStiflingDagger}. Lasts for %duration%s.`,
+    secondaryAbility: secondaryAbility(
+        "Lesser Stifling Dagger",
+        "phantom_basic_attack_related",
+        `Throws a dagger that deals %ability_damage% damage to the target, inflicts ${keywords.fadingSlow.name(
+            "%fading_slow_pct%%%"
+        )} for %fading_slow_duration%s and generates a ${phantomStack.name()}.`
+    ),
+    upgrade: upgrade(`Your daggers applies an stacking ${bleeding.name()} debuff on target for %bleed_duration%s.`),
+    lore: [phantomStack.description, keywords.fadingSlow.description, bleeding.description],
+    values: [castpointValue]
 });
 
 localizeAbility("phantom_ex_counter", {
-  title: "Blur",
+    title: "Blur",
 
-  description: `Phantom Assassin blurs her body, causing her to be impossible to see and increasing her movement speed in %speed_buff_pct%%% for %duration%s. During that time, this spell can be recasted to throw a ${poisonusDagger}.`,
-  secondaryAbility: secondaryAbility(
-    "Poisonus Dagger",
-    "phantom_ex_counter_recast",
-    `Throws a dagger that deals %ability_damage% damage to the target, inflicts ${keywords.sleep.name()} for %sleep_duration%s and generates a ${phantomStack.name()}. Consumes all your courrent stacks to increase the duration of ${keywords.sleep.name()} by %duration_per_stack%s per stack.`
-  ),
-  upgrade: upgrade("No longer shares cooldown with " + phantomStrike + "."),
-  lore: [keywords.sleep.description],
-  values: [
-    castpointValue,
-    ["recast", "Poisonus Dagger"],
-    ["recast_AbilityCastPoint", '<font color="#B2B5B3">CAST POINT</font>'],
-  ],
+    description: `Phantom Assassin blurs her body, causing her to be impossible to see and increasing her movement speed in %speed_buff_pct%%% for %duration%s. During that time, this spell can be recasted to throw a ${poisonusDagger}.`,
+    secondaryAbility: secondaryAbility(
+        "Poisonus Dagger",
+        "phantom_ex_counter_recast",
+        `Throws a dagger that deals %ability_damage% damage to the target, inflicts ${keywords.sleep.name()} for %sleep_duration%s and generates a ${phantomStack.name()}. Consumes all your courrent stacks to increase the duration of ${keywords.sleep.name()} by %duration_per_stack%s per stack.`
+    ),
+    upgrade: upgrade("No longer shares cooldown with " + phantomStrike + "."),
+    lore: [keywords.sleep.description],
+    values: [castpointValue, ["recast", "Poisonus Dagger"], ["recast_AbilityCastPoint", '<font color="#B2B5B3">CAST POINT</font>']]
 });
 
 //     const Shards: Upgrade[] = [

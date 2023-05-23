@@ -2,90 +2,82 @@ import { UnitData } from "./types";
 import { tables } from "./util";
 
 type GenericData = {
-  key: string | number | symbol;
-  value: never;
+    key: string | number | symbol;
+    value: never;
 };
 
 export default class CustomEntities {
-  private static instance: CustomEntities;
-  private onUpdateCallbacks: any[] = [];
-  private entities: UnitData[] = [];
+    private static instance: CustomEntities;
+    private onUpdateCallbacks: any[] = [];
+    private entities: UnitData[] = [];
 
-  private constructor() {
-    const tableName = "units" as never;
-    tables.subscribeToNetTableAndLoadNow(
-      tableName,
-      (table: never, key: string | number | symbol, value: any) => {
-        const entity = value as UnitData;
-        this.SetEntity(entity);
-      }
-    );
-  }
-
-  public static GetInstance(): CustomEntities {
-    if (!CustomEntities.instance) {
-      CustomEntities.instance = new CustomEntities();
+    private constructor() {
+        const tableName = "units" as never;
+        tables.subscribeToNetTableAndLoadNow(tableName, (table: never, key: string | number | symbol, value: any) => {
+            const entity = value as UnitData;
+            this.SetEntity(entity);
+        });
     }
 
-    return CustomEntities.instance;
-  }
+    public static GetInstance(): CustomEntities {
+        if (!CustomEntities.instance) {
+            CustomEntities.instance = new CustomEntities();
+        }
 
-  public SetEntity(entity: UnitData): void {
-    const index = this.GetEntityArrayIndex(entity.entityIndex);
-    if (index !== undefined) {
-      this.UpdateEntity(index, entity);
-    } else {
-      this.entities.push(entity);
+        return CustomEntities.instance;
     }
 
-    this.onUpdateCallbacks.forEach((callback) => {
-      callback(entity);
-    });
-  }
+    public SetEntity(entity: UnitData): void {
+        const index = this.GetEntityArrayIndex(entity.entityIndex);
+        if (index !== undefined) {
+            this.UpdateEntity(index, entity);
+        } else {
+            this.entities.push(entity);
+        }
 
-  public GetEntity(entityIndex: EntityIndex): UnitData | undefined {
-    return this.entities.filter(
-      (entity) => entity.entityIndex === entityIndex
-    )[0];
-  }
+        this.onUpdateCallbacks.forEach(callback => {
+            callback(entity);
+        });
+    }
 
-  public UpdateEntity(index: number, entity: UnitData): void {
-    this.entities = [
-      ...this.entities.slice(0, index),
-      ...this.entities.slice(index + 1),
-    ];
-    this.entities.push(entity);
-  }
+    public GetEntity(entityIndex: EntityIndex): UnitData | undefined {
+        return this.entities.filter(entity => entity.entityIndex === entityIndex)[0];
+    }
 
-  public OnReload(): void {
-    const tableName = "units" as never;
-    const data = CustomNetTables.GetAllTableValues(tableName);
+    public UpdateEntity(index: number, entity: UnitData): void {
+        this.entities = [...this.entities.slice(0, index), ...this.entities.slice(index + 1)];
+        this.entities.push(entity);
+    }
 
-    data.forEach((d) => {
-      const parsedD = d as GenericData;
-      this.SetEntity(parsedD.value);
-    });
-  }
+    public OnReload(): void {
+        const tableName = "units" as never;
+        const data = CustomNetTables.GetAllTableValues(tableName);
 
-  public AddCallback(callback: any): void {
-    this.onUpdateCallbacks.push(callback);
-  }
+        data.forEach(d => {
+            const parsedD = d as GenericData;
+            this.SetEntity(parsedD.value);
+        });
+    }
 
-  public GetEntityArrayIndex(entityIndex: EntityIndex): number | undefined {
-    let index = undefined;
-    this.entities.forEach((entity, i) => {
-      if (entity.entityIndex === entityIndex) {
-        index = i;
-      }
-    });
+    public AddCallback(callback: any): void {
+        this.onUpdateCallbacks.push(callback);
+    }
 
-    return index;
-  }
+    public GetEntityArrayIndex(entityIndex: EntityIndex): number | undefined {
+        let index = undefined;
+        this.entities.forEach((entity, i) => {
+            if (entity.entityIndex === entityIndex) {
+                index = i;
+            }
+        });
 
-  public IsBeingSelectedByLocal(entityIndex: EntityIndex): boolean {
-    const localPlayerId = Game.GetLocalPlayerID();
-    const selectedEntity = Players.GetSelectedEntities(localPlayerId)[0];
+        return index;
+    }
 
-    return selectedEntity === entityIndex;
-  }
+    public IsBeingSelectedByLocal(entityIndex: EntityIndex): boolean {
+        const localPlayerId = Game.GetLocalPlayerID();
+        const selectedEntity = Players.GetSelectedEntities(localPlayerId)[0];
+
+        return selectedEntity === entityIndex;
+    }
 }

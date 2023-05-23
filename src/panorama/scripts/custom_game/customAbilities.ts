@@ -2,42 +2,40 @@ import { tables } from "./util";
 import { TargetingIndicator } from "./types";
 
 export default class CustomAbilities {
-  private static instance: CustomAbilities;
-  private abilities: any = {};
+    private static instance: CustomAbilities;
+    private abilities: any = {};
 
-  private constructor() {
-    const tableName = "main" as never;
+    private constructor() {
+        const tableName = "main" as never;
 
-    tables.subscribeToNetTableKey(tableName, "abilities", true, (data: any) => {
-      for (const key in data) {
-        this.abilities[key] = data[key];
-      }
-    });
-  }
-
-  public static GetInstance(): CustomAbilities {
-    if (!CustomAbilities.instance) {
-      CustomAbilities.instance = new CustomAbilities();
+        tables.subscribeToNetTableKey(tableName, "abilities", true, (data: any) => {
+            for (const key in data) {
+                this.abilities[key] = data[key];
+            }
+        });
     }
 
-    return CustomAbilities.instance;
-  }
+    public static GetInstance(): CustomAbilities {
+        if (!CustomAbilities.instance) {
+            CustomAbilities.instance = new CustomAbilities();
+        }
 
-  public GetTargetingIndicator(
-    abilityIndex: AbilityEntityIndex
-  ): TargetingIndicator | undefined {
-    const abilityName = Abilities.GetAbilityName(abilityIndex);
-    if (this.abilities[abilityName].targetingIndicator) {
-      return this.abilities[abilityName].targetingIndicator;
+        return CustomAbilities.instance;
     }
-    return undefined;
-  }
 
-  public GetEnergyCost(abilityIndex: AbilityEntityIndex): number {
-    const abilityName = Abilities.GetAbilityName(abilityIndex);
-    if (this.abilities[abilityName]) {
-      return this.abilities[abilityName].energyCost;
+    public GetTargetingIndicator(abilityIndex: AbilityEntityIndex): TargetingIndicator | undefined {
+        const abilityName = Abilities.GetAbilityName(abilityIndex);
+        if (this.abilities[abilityName].targetingIndicator) {
+            return this.abilities[abilityName].targetingIndicator;
+        }
+        return undefined;
     }
-    return 0;
-  }
+
+    public GetEnergyCost(abilityIndex: AbilityEntityIndex): number {
+        const abilityName = Abilities.GetAbilityName(abilityIndex);
+        if (this.abilities[abilityName]) {
+            return this.abilities[abilityName].energyCost;
+        }
+        return 0;
+    }
 }

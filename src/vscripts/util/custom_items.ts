@@ -1,26 +1,26 @@
 import Item from "../clases/Item";
 
 export class CustomItems {
-  private static instance: CustomItems;
-  private items: Item[] = [];
+    private static instance: CustomItems;
+    private items: Item[] = [];
 
-  private constructor() {
-    //Singleton initialization
-  }
-
-  public static GetInstance(): CustomItems {
-    if (!CustomItems.instance) {
-      CustomItems.instance = new CustomItems();
+    private constructor() {
+        //Singleton initialization
     }
 
-    return CustomItems.instance;
-  }
+    public static GetInstance(): CustomItems {
+        if (!CustomItems.instance) {
+            CustomItems.instance = new CustomItems();
+        }
 
-  GetParent(item: CDOTA_Item): Item | undefined {
-    return this.items.filter((_item) => _item.GetItem() === item)[0];
-  }
+        return CustomItems.instance;
+    }
 
-  AddItem(item: Item): void {
-    this.items.push(item);
-  }
+    GetParent(item: CDOTA_Item): Item | undefined {
+        return this.items.filter(_item => _item.GetItem() === item)[0];
+    }
+
+    AddItem(item: Item): void {
+        this.items.push(item);
+    }
 }
