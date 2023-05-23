@@ -492,9 +492,9 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC {
   ApplyItem(upgrade: Upgrade): void {
     if (upgrade.ingredients) {
       upgrade.ingredients.forEach((ingredientId) => {
-        const ingredientUpgrade = this.heroUpgrades.filter(
-          (_heroUpgrade) => _heroUpgrade.id === ingredientId
-        )[0];
+        const ingredientUpgrade = this.heroUpgrades.find(
+          (heroUpgrade) => heroUpgrade.id === ingredientId
+        );
 
         if (ingredientUpgrade) {
           this.unit.RemoveModifierByName(ingredientUpgrade.modifier!.name);

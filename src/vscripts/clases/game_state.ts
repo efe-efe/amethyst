@@ -31,13 +31,12 @@ export default class GameState {
 
   GetAllPlayers(): Player[] {
     const players: Player[] = [];
-    if (this.alliances) {
-      this.alliances.forEach((alliance) => {
-        alliance.players.forEach((player) => {
-          players.push(player);
-        });
+
+    this.alliances.forEach((alliance) => {
+      alliance.players.forEach((player) => {
+        players.push(player);
       });
-    }
+    });
 
     return players;
   }

@@ -2,7 +2,7 @@ local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ArrayForEach = ____lualib.__TS__ArrayForEach
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 4,["8"] = 5,["9"] = 5,["10"] = 6,["11"] = 6,["12"] = 7,["13"] = 7,["14"] = 8,["15"] = 8,["16"] = 9,["17"] = 9,["18"] = 10,["19"] = 10,["20"] = 11,["21"] = 11,["22"] = 12,["23"] = 12,["24"] = 15,["25"] = 15,["26"] = 15,["27"] = 20,["28"] = 21,["29"] = 22,["30"] = 23,["31"] = 20,["32"] = 26,["33"] = 27,["34"] = 28,["36"] = 26,["37"] = 32,["38"] = 33,["39"] = 34,["40"] = 35,["41"] = 35,["42"] = 35,["43"] = 36,["44"] = 36,["45"] = 36,["46"] = 37,["47"] = 36,["48"] = 36,["49"] = 35,["50"] = 35,["52"] = 42,["53"] = 32,["54"] = 45,["55"] = 46,["56"] = 45,["57"] = 49,["58"] = 50,["59"] = 49,["60"] = 53,["61"] = 54,["62"] = 55,["63"] = 56,["64"] = 57,["65"] = 58,["66"] = 59,["67"] = 60,["68"] = 67,["69"] = 53});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 4,["8"] = 5,["9"] = 5,["10"] = 6,["11"] = 6,["12"] = 7,["13"] = 7,["14"] = 8,["15"] = 8,["16"] = 9,["17"] = 9,["18"] = 10,["19"] = 10,["20"] = 11,["21"] = 11,["22"] = 12,["23"] = 12,["24"] = 15,["25"] = 15,["26"] = 15,["27"] = 20,["28"] = 21,["29"] = 22,["30"] = 23,["31"] = 20,["32"] = 26,["33"] = 27,["34"] = 28,["36"] = 26,["37"] = 32,["38"] = 33,["39"] = 35,["40"] = 35,["41"] = 35,["42"] = 36,["43"] = 36,["44"] = 36,["45"] = 37,["46"] = 36,["47"] = 36,["48"] = 35,["49"] = 35,["50"] = 41,["51"] = 32,["52"] = 44,["53"] = 45,["54"] = 44,["55"] = 48,["56"] = 49,["57"] = 48,["58"] = 52,["59"] = 53,["60"] = 54,["61"] = 55,["62"] = 56,["63"] = 57,["64"] = 58,["65"] = 59,["66"] = 66,["67"] = 52});
 local ____exports = {}
 ____exports.CustomGameState = CustomGameState or ({})
 ____exports.CustomGameState.NONE = 0
@@ -36,19 +36,17 @@ function GameState.prototype.Update(self)
 end
 function GameState.prototype.GetAllPlayers(self)
     local players = {}
-    if self.alliances then
-        __TS__ArrayForEach(
-            self.alliances,
-            function(____, alliance)
-                __TS__ArrayForEach(
-                    alliance.players,
-                    function(____, player)
-                        players[#players + 1] = player
-                    end
-                )
-            end
-        )
-    end
+    __TS__ArrayForEach(
+        self.alliances,
+        function(____, alliance)
+            __TS__ArrayForEach(
+                alliance.players,
+                function(____, player)
+                    players[#players + 1] = player
+                end
+            )
+        end
+    )
     return players
 end
 function GameState.prototype.GetDuration(self)

@@ -2,7 +2,6 @@
 {
 	maps = 
 	[
-		"pve",
 		"pvp",
 	]
 	IsPlayable = 1
@@ -97,7 +96,7 @@
 	HideInTools = false
 	IsTemplate = false
 	CheckAFKPlayers = false
-	DefaultMap = "pve"
+	DefaultMap = "pvp"
 	DisableIK = false
 	EnablePickRules = false
 	EventGame = false

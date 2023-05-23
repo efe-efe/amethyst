@@ -401,9 +401,9 @@ CustomGameEventManager.RegisterListener<CustomActionEvent>(
     if (player) {
       const customNpc = player.customNpc;
       if (customNpc) {
-        const reward = Rewards.filter(
-          (_reward) => _reward.type === event.payload.type
-        )[0];
+        const reward = Rewards.find(
+          (reward) => reward.type === event.payload.type
+        );
         if (reward) {
           customNpc.SelectReward(reward);
         }

@@ -873,7 +873,7 @@ export class GameMode {
       ]);
     } else if (state === CustomGameState.RUN_IN_PROGRESS) {
       this.run = undefined;
-      this.EndGame(0);
+      this.EndGame(DotaTeam.GOODGUYS);
     }
   }
 
@@ -974,7 +974,7 @@ export class GameMode {
 
     if (orderType === UnitOrder.STOP || orderType === UnitOrder.HOLD_POSITION) {
       const caster = EntIndexToHScript(event.units["0"]) as CDOTA_BaseNPC;
-      const ability = caster.GetCurrentActiveAbility() as CDOTA_Ability_Lua;
+      const ability = caster.GetCurrentActiveAbility();
       if (ability) {
         if (ability.GetAbilityType() === 1) {
           return false;
@@ -1059,12 +1059,8 @@ export class GameMode {
   }
 
   DamageFilter(event: DamageFilterEvent): boolean {
-    const attacker = EntIndexToHScript(
-      event.entindex_attacker_const
-    ) as CDOTA_BaseNPC;
-    const victim = EntIndexToHScript(
-      event.entindex_victim_const
-    ) as CDOTA_BaseNPC;
+    const attacker = EntIndexToHScript(event.entindex_attacker_const);
+    const victim = EntIndexToHScript(event.entindex_victim_const);
     //const damage_type = event.damagetype_const;
     const damage_after_reductions = math.floor(event.damage);
     //const ability = (event.entindex_inflictor_const) ? EntIndexToHScript(event.entindex_inflictor_const) : undefined;
@@ -1074,7 +1070,7 @@ export class GameMode {
       return false;
     }
 
-    if (victim) {
+    if (victim && victim.IsBaseNPC()) {
       victim.AddNewModifier(victim, undefined, "modifier_damage_fx", {
         duration: 0.1,
       });
@@ -1398,17 +1394,11 @@ export class GameMode {
     });
   }
 
-  FindNextAliveAlly(alliance: Alliance): CDOTA_BaseNPC_Hero | undefined {
-    const player = alliance.players.filter(
-      (_player) => _player.hero && _player.hero.IsAlive()
-    )[0];
-    if (player) {
-      return player.hero;
-    }
-    return undefined;
+  FindNextAliveAlly(alliance: Alliance) {
+    return alliance.players.find((player) => player.hero?.IsAlive())?.hero;
   }
 
-  FindNextAliveHero(): CDOTA_BaseNPC_Hero | undefined {
+  FindNextAliveHero() {
     const player = this.players.filter(
       (player) => player.hero && player.hero.IsAlive()
     )[0];

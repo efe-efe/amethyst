@@ -454,10 +454,8 @@ export default class GemWrapper {
 
   CleanLights(): void {
     this.lights.forEach((light) => {
-      if (light) {
-        ParticleManager.DestroyParticle(light, false);
-        ParticleManager.ReleaseParticleIndex(light);
-      }
+      ParticleManager.DestroyParticle(light, false);
+      ParticleManager.ReleaseParticleIndex(light);
     });
     this.lights = [];
   }
@@ -486,10 +484,8 @@ export default class GemWrapper {
   }
 
   DestroyProgressCircle(): void {
-    if (this.progress_circle) {
-      ParticleManager.DestroyParticle(this.progress_circle, false);
-      ParticleManager.ReleaseParticleIndex(this.progress_circle);
-    }
+    ParticleManager.DestroyParticle(this.progress_circle, false);
+    ParticleManager.ReleaseParticleIndex(this.progress_circle);
   }
 
   GetColor(): Vector {
