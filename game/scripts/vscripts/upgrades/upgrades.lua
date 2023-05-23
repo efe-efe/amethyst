@@ -1,6 +1,12 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 4,["10"] = 4,["11"] = 5,["12"] = 5,["13"] = 7,["14"] = 7,["15"] = 8,["16"] = 8,["17"] = 10,["21"] = 10,["24"] = 10,["27"] = 10,["30"] = 10,["31"] = 10,["32"] = 19,["33"] = 19,["34"] = 21,["35"] = 22,["36"] = 23,["37"] = 24,["38"] = 19,["39"] = 26,["40"] = 27,["41"] = 28,["42"] = 31,["43"] = 38,["44"] = 39,["45"] = 39,["46"] = 39,["47"] = 40,["48"] = 41,["49"] = 42,["51"] = 47,["52"] = 39,["53"] = 39,["54"] = 50,["55"] = 51,["56"] = 51,["57"] = 51,["58"] = 51,["61"] = 58,["62"] = 59,["64"] = 61,["65"] = 62,["67"] = 64,["68"] = 65,["70"] = 67,["71"] = 68,["73"] = 71,["74"] = 72,["75"] = 73,["76"] = 19,["77"] = 75,["78"] = 76,["79"] = 19,["80"] = 83,["81"] = 84,["82"] = 19,["83"] = 91,["84"] = 92,["85"] = 19,["86"] = 99,["87"] = 100,["88"] = 19,["89"] = 107,["90"] = 111,["91"] = 111,["92"] = 111,["93"] = 112,["94"] = 113,["96"] = 115,["97"] = 116,["99"] = 118,["100"] = 119,["102"] = 121,["103"] = 122,["105"] = 124,["106"] = 125,["108"] = 127,["109"] = 128,["111"] = 130,["112"] = 131,["114"] = 134,["115"] = 137,["117"] = 140,["118"] = 143,["120"] = 145,["121"] = 111,["122"] = 111,["123"] = 148,["124"] = 148,["125"] = 148,["126"] = 148,["127"] = 19,["128"] = 153,["129"] = 154,["130"] = 19,["131"] = 156,["132"] = 160,["133"] = 161,["135"] = 163,["136"] = 19,["137"] = 165,["138"] = 169,["139"] = 170,["141"] = 173,["142"] = 174,["143"] = 175,["145"] = 178,["146"] = 179,["149"] = 182,["150"] = 182,["151"] = 183,["152"] = 184,["153"] = 186,["154"] = 187,["156"] = 182,["159"] = 191,["160"] = 19,["161"] = 193,["162"] = 197,["163"] = 198,["165"] = 201,["166"] = 206,["168"] = 209,["169"] = 19,["170"] = 211,["171"] = 215,["172"] = 215,["173"] = 215,["174"] = 215,["175"] = 219,["176"] = 220,["178"] = 223,["179"] = 19,["180"] = 225,["181"] = 226,["182"] = 227,["184"] = 229,["185"] = 230,["187"] = 232,["188"] = 19,["189"] = 234,["190"] = 238,["191"] = 238,["192"] = 238,["193"] = 238,["194"] = 242,["195"] = 243,["197"] = 246,["198"] = 247,["200"] = 250,["201"] = 19,["202"] = 252,["203"] = 256,["204"] = 257,["207"] = 260,["208"] = 260,["209"] = 261,["210"] = 262,["211"] = 262,["212"] = 262,["213"] = 262,["214"] = 266,["215"] = 267,["217"] = 260,["220"] = 271,["221"] = 19,["222"] = 19,["223"] = 275,["224"] = 275,["225"] = 277,["226"] = 278,["227"] = 279,["228"] = 281,["229"] = 282,["230"] = 283,["231"] = 284,["232"] = 284,["233"] = 284,["234"] = 284,["235"] = 287,["236"] = 288,["240"] = 275,["241"] = 275,["242"] = 295});
+local ____lualib = require("lualib_bundle")
+local __TS__SparseArrayNew = ____lualib.__TS__SparseArrayNew
+local __TS__SparseArrayPush = ____lualib.__TS__SparseArrayPush
+local __TS__SparseArraySpread = ____lualib.__TS__SparseArraySpread
+local __TS__ObjectAssign = ____lualib.__TS__ObjectAssign
+local __TS__ArrayMap = ____lualib.__TS__ArrayMap
+local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 4,["16"] = 4,["17"] = 5,["18"] = 5,["19"] = 7,["20"] = 7,["21"] = 8,["22"] = 8,["23"] = 10,["26"] = 10,["30"] = 10,["32"] = 10,["33"] = 19,["34"] = 19,["35"] = 21,["36"] = 22,["37"] = 23,["38"] = 24,["39"] = 19,["40"] = 26,["41"] = 27,["42"] = 28,["43"] = 28,["44"] = 29,["46"] = 30,["48"] = 28,["49"] = 31,["50"] = 38,["51"] = 39,["52"] = 39,["53"] = 39,["54"] = 40,["55"] = 41,["56"] = 42,["58"] = 47,["59"] = 39,["60"] = 39,["61"] = 50,["62"] = 51,["63"] = 51,["66"] = 58,["67"] = 59,["69"] = 61,["70"] = 62,["72"] = 64,["73"] = 65,["75"] = 67,["76"] = 68,["78"] = 71,["79"] = 72,["80"] = 73,["81"] = 19,["82"] = 75,["83"] = 76,["84"] = 19,["85"] = 83,["86"] = 84,["87"] = 19,["88"] = 91,["89"] = 92,["90"] = 19,["91"] = 99,["92"] = 100,["93"] = 19,["94"] = 107,["95"] = 111,["96"] = 111,["97"] = 111,["98"] = 112,["99"] = 113,["101"] = 115,["102"] = 116,["104"] = 118,["105"] = 119,["107"] = 121,["108"] = 122,["110"] = 124,["111"] = 125,["113"] = 127,["114"] = 128,["116"] = 130,["117"] = 131,["119"] = 134,["120"] = 137,["122"] = 140,["123"] = 143,["125"] = 145,["126"] = 111,["127"] = 111,["128"] = 148,["129"] = 148,["130"] = 148,["131"] = 148,["132"] = 19,["133"] = 153,["134"] = 154,["135"] = 19,["136"] = 156,["137"] = 160,["138"] = 161,["140"] = 163,["141"] = 19,["142"] = 165,["143"] = 169,["144"] = 170,["146"] = 173,["147"] = 174,["148"] = 175,["150"] = 178,["151"] = 179,["154"] = 182,["155"] = 182,["156"] = 183,["157"] = 184,["158"] = 186,["159"] = 187,["161"] = 182,["164"] = 191,["165"] = 19,["166"] = 193,["167"] = 197,["168"] = 198,["170"] = 201,["171"] = 206,["173"] = 209,["174"] = 19,["175"] = 211,["176"] = 215,["177"] = 215,["178"] = 215,["179"] = 215,["180"] = 219,["181"] = 220,["183"] = 223,["184"] = 19,["185"] = 225,["186"] = 226,["187"] = 227,["189"] = 229,["190"] = 230,["192"] = 232,["193"] = 19,["194"] = 234,["195"] = 238,["196"] = 238,["197"] = 238,["198"] = 238,["199"] = 242,["200"] = 243,["202"] = 246,["203"] = 247,["205"] = 250,["206"] = 19,["207"] = 252,["208"] = 256,["209"] = 257,["212"] = 260,["213"] = 260,["214"] = 261,["215"] = 262,["216"] = 262,["217"] = 262,["218"] = 262,["219"] = 266,["220"] = 267,["222"] = 260,["225"] = 271,["226"] = 19,["227"] = 19,["228"] = 275,["229"] = 275,["230"] = 277,["231"] = 278,["232"] = 279,["233"] = 281,["234"] = 282,["235"] = 283,["236"] = 284,["237"] = 284,["238"] = 284,["239"] = 284,["240"] = 287,["241"] = 288,["245"] = 275,["246"] = 275,["247"] = 295});
 local ____exports = {}
 local ____items = require("upgrades.items")
 local Items = ____items.default
@@ -14,21 +20,16 @@ local ____math = require("util.math")
 local Math = ____math.default
 local ____custom_events = require("custom_events")
 local CustomEvents = ____custom_events.CustomEvents
-local Upgrades = {
-    unpack(
-        __TS__ArrayConcat(
-            {
-                unpack(Items)
-            },
-            {
-                unpack(Shards)
-            },
-            {
-                unpack(Favors)
-            }
-        )
-    )
-}
+local ____array_0 = __TS__SparseArrayNew(unpack(Items))
+__TS__SparseArrayPush(
+    ____array_0,
+    unpack(Shards)
+)
+__TS__SparseArrayPush(
+    ____array_0,
+    unpack(Favors)
+)
+local Upgrades = {__TS__SparseArraySpread(____array_0)}
 ____exports.UpgradeManager = {
     Upgrades = Upgrades,
     ClearUpgrades = function(self, customNpc)
@@ -38,7 +39,13 @@ ____exports.UpgradeManager = {
     end,
     ApplyUpgrade = function(self, customNpc, upgrade)
         if upgrade.modifier then
-            local ability = ((upgrade.ability and (function() return customNpc.unit:FindAbilityByName(upgrade.ability) end)) or (function() return nil end))()
+            local ____upgrade_ability_1
+            if upgrade.ability then
+                ____upgrade_ability_1 = customNpc.unit:FindAbilityByName(upgrade.ability)
+            else
+                ____upgrade_ability_1 = nil
+            end
+            local ability = ____upgrade_ability_1
             customNpc.unit:AddNewModifier(customNpc.unit, ability, upgrade.modifier.name, {duration = upgrade.modifier.duration})
             local found = false
             customNpc.heroUpgrades = __TS__ArrayMap(
@@ -52,10 +59,8 @@ ____exports.UpgradeManager = {
                 end
             )
             if not found then
-                __TS__ArrayPush(
-                    customNpc.heroUpgrades,
-                    __TS__ObjectAssign({}, upgrade, {level = 1})
-                )
+                local ____customNpc_heroUpgrades_2 = customNpc.heroUpgrades
+                ____customNpc_heroUpgrades_2[#____customNpc_heroUpgrades_2 + 1] = __TS__ObjectAssign({}, upgrade, {level = 1})
             end
         end
         if upgrade.effect then
@@ -111,10 +116,10 @@ ____exports.UpgradeManager = {
                 if not self:ValidateUpgradeIngredients(customNpc, upgrade) then
                     return false
                 end
-                if (not options.allowDuplicates) and self:ValidateUpgradeAlreadyExists(customNpc, upgrade) then
+                if not options.allowDuplicates and self:ValidateUpgradeAlreadyExists(customNpc, upgrade) then
                     return false
                 end
-                if options.existingOnly and (not self:ValidateUpgradeAlreadyExists(customNpc, upgrade)) then
+                if options.existingOnly and not self:ValidateUpgradeAlreadyExists(customNpc, upgrade) then
                     return false
                 end
                 return true
@@ -139,7 +144,7 @@ ____exports.UpgradeManager = {
             return true
         end
         local ability = customNpc.unit:FindAbilityByName(upgrade.ability)
-        if (not ability) or (ability:GetLevel() == 0) then
+        if not ability or ability:GetLevel() == 0 then
             return false
         end
         if not upgrade.secondaryAbilities then
@@ -150,7 +155,7 @@ ____exports.UpgradeManager = {
             while i < #upgrade.secondaryAbilities do
                 local secondaryAbilityName = upgrade.secondaryAbilities[i + 1]
                 local secondaryAbility = customNpc.unit:FindAbilityByName(secondaryAbilityName)
-                if (not secondaryAbility) or (secondaryAbility:GetLevel() == 0) then
+                if not secondaryAbility or secondaryAbility:GetLevel() == 0 then
                     return false
                 end
                 i = i + 1
@@ -162,7 +167,7 @@ ____exports.UpgradeManager = {
         if not upgrade.attackCapability then
             return true
         end
-        if ((upgrade.attackCapability == DOTA_UNIT_CAP_MELEE_ATTACK) and (not customNpc:IsMeele())) or ((upgrade.attackCapability == DOTA_UNIT_CAP_RANGED_ATTACK) and (not customNpc:IsRanged())) then
+        if upgrade.attackCapability == DOTA_UNIT_CAP_MELEE_ATTACK and not customNpc:IsMeele() or upgrade.attackCapability == DOTA_UNIT_CAP_RANGED_ATTACK and not customNpc:IsRanged() then
             return false
         end
         return true
@@ -181,7 +186,7 @@ ____exports.UpgradeManager = {
         if not upgrade.minLevel then
             return true
         end
-        if GameRules.Addon.currentRoom < (upgrade.minLevel - 1) then
+        if GameRules.Addon.currentRoom < upgrade.minLevel - 1 then
             return false
         end
         return true

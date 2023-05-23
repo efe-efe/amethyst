@@ -1,5 +1,5 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
+local ____lualib = require("lualib_bundle")
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
 __TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 6,["6"] = 7,["7"] = 7,["8"] = 8,["9"] = 8,["10"] = 9,["11"] = 9});
 local ____exports = {}
 ____exports.UpgradeTypes = UpgradeTypes or ({})

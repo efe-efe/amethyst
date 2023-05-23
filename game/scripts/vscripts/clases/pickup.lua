@@ -1,6 +1,8 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 4,["9"] = 4,["10"] = 5,["11"] = 5,["12"] = 6,["13"] = 6,["14"] = 7,["15"] = 7,["16"] = 10,["17"] = 17,["18"] = 24,["19"] = 24,["20"] = 24,["21"] = 24,["22"] = 24,["23"] = 30,["24"] = 30,["25"] = 30,["27"] = 24,["28"] = 32,["29"] = 33,["30"] = 34,["31"] = 36,["32"] = 36,["33"] = 36,["34"] = 39,["35"] = 40,["36"] = 41,["37"] = 46,["38"] = 30,["39"] = 49,["40"] = 50,["41"] = 51,["42"] = 51,["43"] = 51,["45"] = 54,["46"] = 55,["48"] = 49,["49"] = 24,["50"] = 24});
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__ClassExtends = ____lualib.__TS__ClassExtends
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 1,["8"] = 1,["9"] = 3,["10"] = 4,["11"] = 4,["12"] = 5,["13"] = 5,["14"] = 6,["15"] = 6,["16"] = 7,["17"] = 7,["18"] = 10,["19"] = 17,["20"] = 24,["21"] = 24,["22"] = 24,["23"] = 24,["24"] = 30,["25"] = 30,["26"] = 30,["28"] = 24,["29"] = 32,["30"] = 33,["31"] = 34,["32"] = 36,["33"] = 39,["34"] = 39,["35"] = 39,["36"] = 39,["37"] = 39,["38"] = 39,["39"] = 39,["40"] = 40,["41"] = 41,["42"] = 46,["43"] = 30,["44"] = 49,["45"] = 50,["46"] = 51,["48"] = 54,["49"] = 55,["51"] = 49});
 local ____exports = {}
 local ____Item = require("clases.Item")
 local Item = ____Item.default
@@ -15,37 +17,36 @@ ____exports.PickupTypes.DEATH = 3
 ____exports.PickupTypes[____exports.PickupTypes.DEATH] = "DEATH"
 local PICKUP_ITEM_NAMES = {[____exports.PickupTypes.HEALTH] = "item_health_orb", [____exports.PickupTypes.MANA] = "item_mana_orb", [____exports.PickupTypes.SHIELD] = "item_shield_orb", [____exports.PickupTypes.DEATH] = "item_death_orb"}
 local PICKUP_PARTICLES = {[____exports.PickupTypes.HEALTH] = "particles/generic_gameplay/rune_regeneration.vpcf", [____exports.PickupTypes.MANA] = "particles/generic_gameplay/rune_doubledamage.vpcf", [____exports.PickupTypes.SHIELD] = "particles/generic_gameplay/rune_bounty.vpcf", [____exports.PickupTypes.DEATH] = "particles/generic_gameplay/rune_haste.vpcf"}
-____exports.default = (function()
-    ____exports.default = __TS__Class()
-    local Pickup = ____exports.default
-    Pickup.name = "Pickup"
-    __TS__ClassExtends(Pickup, Item)
-    function Pickup.prototype.____constructor(self, ____type, origin, scale)
-        if scale == nil then
-            scale = 1
-        end
-        Item.prototype.____constructor(self)
-        self.type = ____type
-        self.origin = origin
-        self.scale = scale
-        self:SetItem(
-            CreateItem(PICKUP_ITEM_NAMES[self.type], nil, nil)
-        )
-        self.item:LaunchLootInitialHeight(false, 0, 50, 0.5, self.origin)
-        self.drop = CreateItemOnPositionForLaunch(self.origin, self.item)
-        ParticleManager:CreateParticle(PICKUP_PARTICLES[self.type], PATTACH_ABSORIGIN_FOLLOW, self.drop)
-        self.drop:SetModelScale(self.scale)
+____exports.default = __TS__Class()
+local Pickup = ____exports.default
+Pickup.name = "Pickup"
+__TS__ClassExtends(Pickup, Item)
+function Pickup.prototype.____constructor(self, ____type, origin, scale)
+    if scale == nil then
+        scale = 1
     end
-    function Pickup.prototype.Destroy(self)
-        if not self.picked then
-            UTIL_Remove(
-                self:GetItem()
-            )
-        end
-        if (self.drop ~= nil) and (not self.drop:IsNull()) then
-            UTIL_Remove(self.drop)
-        end
+    Item.prototype.____constructor(self)
+    self.type = ____type
+    self.origin = origin
+    self.scale = scale
+    self:SetItem(CreateItem(PICKUP_ITEM_NAMES[self.type], nil, nil))
+    self.item:LaunchLootInitialHeight(
+        false,
+        0,
+        50,
+        0.5,
+        self.origin
+    )
+    self.drop = CreateItemOnPositionForLaunch(self.origin, self.item)
+    ParticleManager:CreateParticle(PICKUP_PARTICLES[self.type], PATTACH_ABSORIGIN_FOLLOW, self.drop)
+    self.drop:SetModelScale(self.scale)
+end
+function Pickup.prototype.Destroy(self)
+    if not self.picked then
+        UTIL_Remove(self:GetItem())
     end
-    return Pickup
-end)()
+    if self.drop ~= nil and not self.drop:IsNull() then
+        UTIL_Remove(self.drop)
+    end
+end
 return ____exports

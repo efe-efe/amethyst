@@ -180,27 +180,26 @@ export namespace std {
     startActive?: boolean;
   }
 
-  //TODO: Fix this bullshit
-  // export function particleScenePanel(
-  //   parent: Panel,
-  //   options?: PanelOptions & ParticleScenePanelOptions
-  // ) {
-  //   const properties: Record<string, string | number> = {};
+  export function particleScenePanel(
+    parent: Panel,
+    options?: PanelOptions & ParticleScenePanelOptions
+  ) {
+    const properties: Record<string, string | number> = {};
 
-  //   if (options) {
-  //     properties.particleName = options.particleName;
-  //     properties.particleOnly = String(options.particleonly ?? false);
-  //     properties.cameraOrigin = options.cameraOrigin ?? "0 0 50";
-  //     properties.lookAt = options.lookAt ?? "0 0 0";
-  //     properties.fov = options.fov ?? "90";
-  //     properties.startActive = String(options.startActive ?? true);
-  //   }
+    if (options) {
+      properties.particleName = options.particleName;
+      properties.particleOnly = String(options.particleonly ?? false);
+      properties.cameraOrigin = options.cameraOrigin ?? "0 0 50";
+      properties.lookAt = options.lookAt ?? "0 0 0";
+      properties.fov = options.fov ?? "90";
+      properties.startActive = String(options.startActive ?? true);
+    }
 
-  //   return panelTyped("DOTAParticleScenePanel", parent, {
-  //     ...options,
-  //     properties,
-  //   });
-  // }
+    return panelTyped("DOTAParticleScenePanel", parent, {
+      ...options,
+      properties,
+    });
+  }
 
   export function heroImage(
     parent: Panel,

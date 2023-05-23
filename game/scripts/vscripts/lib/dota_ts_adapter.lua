@@ -1,6 +1,8 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 158,["6"] = 133,["7"] = 134,["8"] = 135,["10"] = 133,["11"] = 139,["12"] = 140,["13"] = 141,["14"] = 142,["15"] = 143,["16"] = 144,["17"] = 144,["18"] = 144,["19"] = 144,["21"] = 147,["23"] = 139,["24"] = 158,["25"] = 159,["26"] = 160,["27"] = 161,["28"] = 164,["29"] = 165,["32"] = 169,["34"] = 158,["35"] = 10,["36"] = 10,["37"] = 10,["39"] = 10,["40"] = 13,["41"] = 13,["42"] = 13,["44"] = 13,["45"] = 16,["46"] = 16,["47"] = 16,["49"] = 16,["50"] = 17,["51"] = 24,["52"] = 17,["53"] = 35,["54"] = 35,["55"] = 35,["56"] = 35,["57"] = 39,["58"] = 39,["59"] = 39,["60"] = 39,["61"] = 43,["62"] = 43,["63"] = 43,["64"] = 43,["65"] = 46,["66"] = 49,["67"] = 52,["68"] = 56,["69"] = 59,["70"] = 61,["72"] = 63,["74"] = 66,["75"] = 66,["76"] = 66,["77"] = 68,["78"] = 69,["80"] = 71,["82"] = 74,["83"] = 76,["84"] = 77,["85"] = 78,["86"] = 79,["87"] = 80,["89"] = 77,["90"] = 57,["91"] = 85,["92"] = 87,["93"] = 89,["95"] = 91,["97"] = 94,["98"] = 94,["99"] = 94,["100"] = 95,["101"] = 97,["102"] = 98,["104"] = 100,["106"] = 103,["107"] = 105,["108"] = 106,["109"] = 107,["110"] = 108,["111"] = 109,["113"] = 106,["114"] = 113,["115"] = 114,["116"] = 115,["117"] = 116,["118"] = 117,["120"] = 119,["121"] = 120,["123"] = 122,["124"] = 123,["127"] = 127,["129"] = 130,["130"] = 86,["131"] = 151,["132"] = 152,["133"] = 152,["134"] = 152,["135"] = 153,["136"] = 154,["137"] = 153,["138"] = 151});
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__ClassExtends = ____lualib.__TS__ClassExtends
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["7"] = 158,["8"] = 133,["9"] = 134,["10"] = 135,["12"] = 133,["13"] = 139,["14"] = 140,["15"] = 141,["16"] = 142,["17"] = 143,["18"] = 144,["19"] = 144,["20"] = 144,["21"] = 144,["23"] = 147,["25"] = 139,["26"] = 158,["27"] = 159,["28"] = 159,["29"] = 160,["30"] = 161,["31"] = 164,["32"] = 165,["35"] = 169,["38"] = 10,["39"] = 10,["40"] = 10,["42"] = 10,["43"] = 13,["44"] = 13,["45"] = 13,["47"] = 13,["48"] = 16,["49"] = 16,["50"] = 16,["52"] = 16,["53"] = 17,["54"] = 24,["55"] = 17,["56"] = 35,["57"] = 35,["58"] = 35,["59"] = 35,["60"] = 39,["61"] = 39,["62"] = 39,["63"] = 39,["64"] = 43,["65"] = 43,["66"] = 43,["67"] = 43,["68"] = 46,["69"] = 49,["70"] = 52,["71"] = 56,["72"] = 59,["73"] = 61,["75"] = 63,["77"] = 66,["78"] = 68,["79"] = 69,["81"] = 71,["83"] = 74,["84"] = 76,["85"] = 77,["86"] = 78,["87"] = 79,["88"] = 80,["90"] = 77,["91"] = 57,["92"] = 85,["93"] = 87,["94"] = 89,["96"] = 91,["98"] = 94,["99"] = 95,["100"] = 97,["101"] = 98,["103"] = 100,["105"] = 103,["106"] = 105,["107"] = 106,["108"] = 107,["109"] = 108,["110"] = 109,["112"] = 106,["113"] = 113,["114"] = 114,["115"] = 115,["116"] = 116,["117"] = 117,["119"] = 119,["120"] = 120,["122"] = 122,["123"] = 123,["126"] = 127,["128"] = 130,["129"] = 86,["130"] = 151,["131"] = 152,["132"] = 153,["133"] = 154,["134"] = 153,["135"] = 151});
 local ____exports = {}
 local toDotaClassInstance
 function ____exports.clearTable(self, ____table)
@@ -12,7 +14,7 @@ function ____exports.getFileScope(self)
     local level = 1
     while true do
         local info = debug.getinfo(level, "S")
-        if info and (info.what == "main") then
+        if info and info.what == "main" then
             return {
                 getfenv(level),
                 info.source
@@ -22,7 +24,8 @@ function ____exports.getFileScope(self)
     end
 end
 function toDotaClassInstance(self, instance, ____table)
-    local prototype = ____table.prototype
+    local ____table_0 = ____table
+    local prototype = ____table_0.prototype
     while prototype do
         for key in pairs(prototype) do
             if not (rawget(instance, key) ~= nil) then
@@ -71,9 +74,7 @@ ____exports.registerAbility = function(____, name) return function(____, ability
     else
         name = ability.name
     end
-    local env = unpack(
-        ____exports.getFileScope(nil)
-    )
+    local env = unpack(____exports.getFileScope(nil))
     if env[name] then
         ____exports.clearTable(nil, env[name])
     else
@@ -94,9 +95,7 @@ ____exports.registerModifier = function(____, name) return function(____, modifi
     else
         name = modifier.name
     end
-    local env, source = unpack(
-        ____exports.getFileScope(nil)
-    )
+    local env, source = unpack(____exports.getFileScope(nil))
     local fileName = string.gsub(source, ".*scripts[\\/]vscripts[\\/]", "")
     if env[name] then
         ____exports.clearTable(nil, env[name])
@@ -129,9 +128,7 @@ ____exports.registerModifier = function(____, name) return function(____, modifi
     LinkLuaModifier(name, fileName, ____type)
 end end
 function ____exports.entityFunction(self, name, f)
-    local env = unpack(
-        ____exports.getFileScope(nil)
-    )
+    local env = unpack(____exports.getFileScope(nil))
     env[name] = function(...)
         f(nil, ...)
     end

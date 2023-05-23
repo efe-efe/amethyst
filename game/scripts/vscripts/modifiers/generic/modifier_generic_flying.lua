@@ -1,6 +1,9 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 1,["8"] = 3,["9"] = 4,["10"] = 3,["11"] = 4,["12"] = 5,["13"] = 6,["14"] = 5,["15"] = 8,["16"] = 9,["17"] = 8,["18"] = 11,["19"] = 12,["20"] = 11,["21"] = 14,["22"] = 15,["23"] = 14,["24"] = 4,["26"] = 3,["28"] = 4});
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__ClassExtends = ____lualib.__TS__ClassExtends
+local __TS__Decorate = ____lualib.__TS__Decorate
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 1,["9"] = 1,["10"] = 1,["11"] = 3,["12"] = 4,["13"] = 3,["14"] = 4,["15"] = 5,["16"] = 6,["17"] = 5,["18"] = 8,["19"] = 9,["20"] = 8,["21"] = 11,["22"] = 12,["23"] = 11,["24"] = 14,["25"] = 15,["26"] = 14,["27"] = 4,["28"] = 3,["29"] = 4,["31"] = 4});
 local ____exports = {}
 local ____dota_ts_adapter = require("lib.dota_ts_adapter")
 local BaseModifier = ____dota_ts_adapter.BaseModifier
@@ -22,9 +25,8 @@ function modifier_generic_flying.prototype.CheckState(self)
     return {[MODIFIER_STATE_FLYING] = true}
 end
 modifier_generic_flying = __TS__Decorate(
-    {
-        registerModifier(nil)
-    },
+    {registerModifier(nil)},
     modifier_generic_flying
 )
+____exports.modifier_generic_flying = modifier_generic_flying
 return ____exports

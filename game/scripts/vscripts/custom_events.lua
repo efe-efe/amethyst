@@ -1,6 +1,10 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 6,["6"] = 6,["7"] = 6,["9"] = 8,["10"] = 10,["11"] = 14,["12"] = 15,["13"] = 16,["15"] = 19,["16"] = 14,["17"] = 22,["18"] = 23,["19"] = 22,["20"] = 29,["21"] = 30,["22"] = 30,["23"] = 30,["24"] = 30,["25"] = 33,["26"] = 33,["27"] = 33,["28"] = 34,["29"] = 33,["30"] = 33,["31"] = 29});
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__New = ____lualib.__TS__New
+local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
+local __TS__ArrayForEach = ____lualib.__TS__ArrayForEach
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 6,["10"] = 6,["11"] = 6,["13"] = 8,["14"] = 10,["15"] = 14,["16"] = 15,["17"] = 16,["19"] = 19,["20"] = 14,["21"] = 22,["22"] = 23,["23"] = 23,["24"] = 22,["25"] = 29,["26"] = 30,["27"] = 30,["28"] = 30,["29"] = 30,["30"] = 33,["31"] = 33,["32"] = 33,["33"] = 34,["34"] = 33,["35"] = 33,["36"] = 29});
 local ____exports = {}
 ____exports.CustomEvents = __TS__Class()
 local CustomEvents = ____exports.CustomEvents
@@ -15,7 +19,8 @@ function CustomEvents.GetInstance(self)
     return ____exports.CustomEvents.instance
 end
 function CustomEvents.prototype.RegisterListener(self, eventName, callback)
-    __TS__ArrayPush(self.listeners, {eventName = eventName, callback = callback})
+    local ____self_listeners_0 = self.listeners
+    ____self_listeners_0[#____self_listeners_0 + 1] = {eventName = eventName, callback = callback}
 end
 function CustomEvents.prototype.EmitEvent(self, eventName, event)
     local listeners = __TS__ArrayFilter(

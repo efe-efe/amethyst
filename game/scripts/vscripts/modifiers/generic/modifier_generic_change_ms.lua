@@ -1,6 +1,9 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 1,["8"] = 3,["9"] = 4,["10"] = 3,["11"] = 4,["12"] = 5,["13"] = 6,["14"] = 7,["16"] = 5,["17"] = 10,["18"] = 11,["19"] = 10,["20"] = 13,["21"] = 14,["22"] = 13,["23"] = 16,["24"] = 17,["25"] = 16,["26"] = 19,["27"] = 20,["28"] = 19,["29"] = 22,["30"] = 23,["31"] = 22,["32"] = 25,["33"] = 26,["34"] = 25,["35"] = 4,["37"] = 3,["39"] = 4});
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__ClassExtends = ____lualib.__TS__ClassExtends
+local __TS__Decorate = ____lualib.__TS__Decorate
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 1,["9"] = 1,["10"] = 1,["11"] = 3,["12"] = 4,["13"] = 3,["14"] = 4,["15"] = 5,["16"] = 6,["17"] = 7,["19"] = 5,["20"] = 10,["21"] = 11,["22"] = 10,["23"] = 13,["24"] = 14,["25"] = 13,["26"] = 16,["27"] = 17,["28"] = 16,["29"] = 19,["30"] = 20,["31"] = 19,["32"] = 22,["33"] = 23,["34"] = 22,["35"] = 25,["36"] = 26,["37"] = 25,["38"] = 4,["39"] = 3,["40"] = 4,["42"] = 4});
 local ____exports = {}
 local ____dota_ts_adapter = require("lib.dota_ts_adapter")
 local BaseModifier = ____dota_ts_adapter.BaseModifier
@@ -33,9 +36,8 @@ function modifier_generic_change_ms.prototype.GetModifierMoveSpeedBonus_Constant
     return self:GetStackCount()
 end
 modifier_generic_change_ms = __TS__Decorate(
-    {
-        registerModifier(nil)
-    },
+    {registerModifier(nil)},
     modifier_generic_change_ms
 )
+____exports.modifier_generic_change_ms = modifier_generic_change_ms
 return ____exports

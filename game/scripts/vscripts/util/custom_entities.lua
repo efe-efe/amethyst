@@ -1,5 +1,5 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
+local ____lualib = require("lualib_bundle")
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
 __TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 2,["7"] = 3,["8"] = 4,["9"] = 6,["10"] = 7,["11"] = 8,["12"] = 6,["13"] = 10,["14"] = 11,["15"] = 6,["16"] = 18,["17"] = 19,["18"] = 6,["19"] = 21,["20"] = 22,["21"] = 6,["22"] = 29,["23"] = 30,["24"] = 6,["25"] = 6,["26"] = 36});
 local ____exports = {}
 require("modifiers.generic.modifier_generic_no_health_bar")

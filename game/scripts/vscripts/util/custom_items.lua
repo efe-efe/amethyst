@@ -1,6 +1,9 @@
---[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
-require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 3,["9"] = 5,["10"] = 7,["11"] = 11,["12"] = 12,["13"] = 13,["15"] = 16,["16"] = 11,["17"] = 19,["18"] = 20,["19"] = 20,["20"] = 20,["21"] = 20,["22"] = 19,["23"] = 23,["24"] = 24,["25"] = 23});
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__New = ____lualib.__TS__New
+local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 3,["9"] = 3,["10"] = 3,["12"] = 5,["13"] = 7,["14"] = 11,["15"] = 12,["16"] = 13,["18"] = 16,["19"] = 11,["20"] = 19,["21"] = 20,["22"] = 20,["23"] = 20,["24"] = 20,["25"] = 19,["26"] = 23,["27"] = 24,["28"] = 24,["29"] = 23});
 local ____exports = {}
 ____exports.CustomItems = __TS__Class()
 local CustomItems = ____exports.CustomItems
@@ -21,6 +24,7 @@ function CustomItems.prototype.GetParent(self, item)
     )[1]
 end
 function CustomItems.prototype.AddItem(self, item)
-    __TS__ArrayPush(self.items, item)
+    local ____self_items_0 = self.items
+    ____self_items_0[#____self_items_0 + 1] = item
 end
 return ____exports
