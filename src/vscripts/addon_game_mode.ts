@@ -402,7 +402,7 @@ export class GameMode {
         );
         LinkLuaModifier("modifier_generic_change_ms", "modifiers/generic/modifier_generic_change_ms", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_visible", "modifiers/generic/modifier_visible", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_casting", "modifiers/generic/modifier_casting", LuaModifierMotionType.NONE);
+        LinkLuaModifier("modifier_casting", "modifiers/modifier_casting", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_damage_fx", "modifiers/generic/modifier_damage_fx", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_shield", "modifiers/generic/modifier_shield", LuaModifierMotionType.NONE);
 
