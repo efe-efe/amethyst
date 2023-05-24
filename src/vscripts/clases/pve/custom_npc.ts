@@ -311,21 +311,22 @@ export default class CustomNPC extends UnitEntity {
         }
 
         if (IsInToolsMode() && DEBUG) {
-            if ((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID) {
-                const player = GameRules.Addon.FindPlayerById((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID());
+            // Don't quote me on this, im just fixing warnings
+            // if ((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID) {
+            const player = GameRules.Addon.FindPlayerById((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID());
 
-                if (player) {
-                    const mouse = player.GetCursorPosition();
-                    DebugDrawLine_vCol(
-                        this.unit.GetAbsOrigin(),
-                        this.unit.GetAbsOrigin().__add(this.unit.GetForwardVector().__mul(500)),
-                        Vector(0, 0, 255),
-                        true,
-                        0.03
-                    );
-                    DebugDrawLine_vCol(this.unit.GetAbsOrigin(), mouse, Vector(0, 255, 0), true, 0.03);
-                }
+            if (player) {
+                const mouse = player.GetCursorPosition();
+                DebugDrawLine_vCol(
+                    this.unit.GetAbsOrigin(),
+                    this.unit.GetAbsOrigin().__add(this.unit.GetForwardVector().__mul(500)),
+                    Vector(0, 0, 255),
+                    true,
+                    0.03
+                );
+                DebugDrawLine_vCol(this.unit.GetAbsOrigin(), mouse, Vector(0, 255, 0), true, 0.03);
             }
+            // }
         }
     }
     OnDeath(event: EntityKilledEvent): void {

@@ -163,14 +163,14 @@ function CustomAI(name: string, origin: Vector, options: CustomAIOptions): Custo
             },
             requirements: options.requirements
                 ? {
-                    ...options.requirements,
-                    cooldownReady: options.requirements.cooldownReady !== undefined ? options.requirements.cooldownReady : true,
-                    phaseReady: options.requirements.phaseReady !== undefined ? options.requirements.phaseReady : true
-                }
+                      ...options.requirements,
+                      cooldownReady: options.requirements.cooldownReady !== undefined ? options.requirements.cooldownReady : true,
+                      phaseReady: options.requirements.phaseReady !== undefined ? options.requirements.phaseReady : true
+                  }
                 : {
-                    cooldownReady: true,
-                    phaseReady: true
-                }
+                      cooldownReady: true,
+                      phaseReady: true
+                  }
         };
         abilities.push(npcAbility);
     }
@@ -206,30 +206,31 @@ function CustomAI(name: string, origin: Vector, options: CustomAIOptions): Custo
         abilities.forEach(npcAbility => {
             const ability = npcAbility.ability;
 
-            if (npcAbility.requirements) {
-                if (npcAbility.requirements.cooldownReady) {
-                    if (!npcAbility.ability.IsCooldownReady()) {
-                        return false;
-                    }
-                }
-                if (npcAbility.requirements.phaseReady) {
-                    if (npcAbility.ability.IsInAbilityPhase()) {
-                        return false;
-                    }
-                }
-                if (npcAbility.requirements.targetInCastRange) {
-                    abilityTarget = FindEnemy(ability.GetCastRange(Vector(0, 0, 0), undefined));
-                    if (!abilityTarget) {
-                        return false;
-                    }
-                }
-                if (npcAbility.requirements.targetInRadius) {
-                    abilityTarget = FindEnemy(ability.GetSpecialValueFor("radius"));
-                    if (!abilityTarget) {
-                        return false;
-                    }
+            // Don't quote me on this, im just fixing warnings
+            // if (npcAbility.requirements) {
+            if (npcAbility.requirements.cooldownReady) {
+                if (!npcAbility.ability.IsCooldownReady()) {
+                    return false;
                 }
             }
+            if (npcAbility.requirements.phaseReady) {
+                if (npcAbility.ability.IsInAbilityPhase()) {
+                    return false;
+                }
+            }
+            if (npcAbility.requirements.targetInCastRange) {
+                abilityTarget = FindEnemy(ability.GetCastRange(Vector(0, 0, 0), undefined));
+                if (!abilityTarget) {
+                    return false;
+                }
+            }
+            if (npcAbility.requirements.targetInRadius) {
+                abilityTarget = FindEnemy(ability.GetSpecialValueFor("radius"));
+                if (!abilityTarget) {
+                    return false;
+                }
+            }
+            // }
             if (abilityToExecute == undefined) {
                 abilityToExecute = npcAbility;
             }

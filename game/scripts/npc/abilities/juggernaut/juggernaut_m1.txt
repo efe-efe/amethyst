@@ -2,7 +2,7 @@
     "juggernaut_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_basic_attack/juggernaut_basic_attack"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_basic_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

@@ -1,17 +1,17 @@
 local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["6"] = 18,["7"] = 18,["8"] = 18,["9"] = 25,["10"] = 22,["11"] = 26,["12"] = 29,["13"] = 32,["14"] = 35,["15"] = 37,["16"] = 37,["17"] = 37,["18"] = 37,["19"] = 37,["20"] = 37,["21"] = 37,["22"] = 39,["23"] = 40,["25"] = 42,["26"] = 42,["27"] = 42,["28"] = 42,["29"] = 42,["30"] = 25,["31"] = 45,["32"] = 46,["33"] = 45,["34"] = 49,["35"] = 50,["36"] = 51,["37"] = 49,["38"] = 54,["39"] = 55,["40"] = 54,["41"] = 58,["42"] = 59,["43"] = 58,["44"] = 62,["45"] = 63,["46"] = 65,["47"] = 66,["48"] = 67,["50"] = 62,["51"] = 71,["52"] = 72,["53"] = 73,["54"] = 74,["56"] = 71,["57"] = 78,["58"] = 78,["59"] = 82,["60"] = 83,["61"] = 82});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["6"] = 17,["7"] = 17,["8"] = 17,["9"] = 24,["10"] = 21,["11"] = 25,["12"] = 26,["13"] = 27,["14"] = 28,["15"] = 31,["16"] = 31,["17"] = 31,["18"] = 31,["19"] = 31,["20"] = 31,["21"] = 31,["22"] = 33,["23"] = 34,["25"] = 36,["26"] = 36,["27"] = 36,["28"] = 36,["29"] = 36,["30"] = 24,["31"] = 39,["32"] = 40,["33"] = 39,["34"] = 43,["35"] = 44,["36"] = 45,["37"] = 43,["38"] = 48,["39"] = 49,["40"] = 48,["41"] = 52,["42"] = 53,["43"] = 52,["44"] = 56,["45"] = 57,["46"] = 59,["47"] = 60,["48"] = 61,["50"] = 56,["51"] = 65,["52"] = 66,["53"] = 67,["54"] = 68,["56"] = 65,["57"] = 72,["58"] = 72,["59"] = 76,["60"] = 77,["61"] = 76});
 local ____exports = {}
 ____exports.default = __TS__Class()
 local UnitEntity = ____exports.default
 UnitEntity.name = "UnitEntity"
 function UnitEntity.prototype.____constructor(self, options)
     self.destroyed = false
-    self.team = options.unit and options.unit:GetTeam() or self:InitializeTeam(options.properties.team)
-    self.origin = options.unit and options.unit:GetAbsOrigin() or options.properties.origin
-    self.name = options.unit and options.unit:GetName() or options.properties.name
-    self.unit = options.unit and self:SetUnit(options.unit) or self:SetUnit(CreateUnitByName(
+    self.team = options.unit ~= nil and options.unit:GetTeam() or self:InitializeTeam(options.properties.team)
+    self.origin = options.unit ~= nil and options.unit:GetAbsOrigin() or options.properties.origin
+    self.name = options.unit ~= nil and options.unit:GetName() or options.properties.name
+    self.unit = options.unit ~= nil and self:SetUnit(options.unit) or self:SetUnit(CreateUnitByName(
         self.name,
         self.origin,
         true,
@@ -19,7 +19,7 @@ function UnitEntity.prototype.____constructor(self, options)
         nil,
         self.team
     ))
-    if options.properties then
+    if options.properties ~= nil then
         self.unit:SetAbsOrigin(self.origin)
     end
     ListenToGameEvent(

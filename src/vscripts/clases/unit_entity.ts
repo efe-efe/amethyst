@@ -1,19 +1,18 @@
-export interface ExistingEntityOptions {
-    unit: CDOTA_BaseNPC;
-}
-export interface NonExistingEntityOptions {
-    properties: {
-        origin: Vector;
-        name: string;
-        team?: DotaTeam;
-    };
-}
-
 export interface Component {
     Activate(unitEntity: UnitEntity): void;
 }
 
-export type UnitEntityOptions = ExistingEntityOptions | NonExistingEntityOptions;
+type UnitEntityOptions =
+    | {
+          unit: CDOTA_BaseNPC;
+      }
+    | {
+          properties: {
+              origin: Vector;
+              name: string;
+              team?: DotaTeam;
+          };
+      };
 
 export default class UnitEntity {
     origin: Vector;
@@ -23,20 +22,15 @@ export default class UnitEntity {
     unit: CDOTA_BaseNPC;
 
     constructor(options: UnitEntityOptions) {
-        this.team = (options as ExistingEntityOptions).unit
-            ? (options as ExistingEntityOptions).unit.GetTeam()
-            : this.InitializeTeam((options as NonExistingEntityOptions).properties.team);
-        this.origin = (options as ExistingEntityOptions).unit
-            ? (options as ExistingEntityOptions).unit.GetAbsOrigin()
-            : (options as NonExistingEntityOptions).properties.origin;
-        this.name = (options as ExistingEntityOptions).unit
-            ? (options as ExistingEntityOptions).unit.GetName()
-            : (options as NonExistingEntityOptions).properties.name;
-        this.unit = (options as ExistingEntityOptions).unit
-            ? this.SetUnit((options as ExistingEntityOptions).unit)
-            : this.SetUnit(CreateUnitByName(this.name, this.origin, true, undefined, undefined, this.team));
+        this.team = "unit" in options ? options.unit.GetTeam() : this.InitializeTeam(options.properties.team);
+        this.origin = "unit" in options ? options.unit.GetAbsOrigin() : options.properties.origin;
+        this.name = "unit" in options ? options.unit.GetName() : options.properties.name;
+        this.unit =
+            "unit" in options
+                ? this.SetUnit(options.unit)
+                : this.SetUnit(CreateUnitByName(this.name, this.origin, true, undefined, undefined, this.team));
 
-        if ((options as NonExistingEntityOptions).properties) {
+        if ("properties" in options) {
             this.unit.SetAbsOrigin(this.origin);
         }
         ListenToGameEvent("entity_killed", event => this.OnUnitDied(event), undefined);

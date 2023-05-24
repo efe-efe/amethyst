@@ -1,127 +1,86 @@
-modifier_ruby = class({})
-modifier_ruby_attack = class({})
-
-function modifier_ruby:OnCreated(params)
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__ClassExtends = ____lualib.__TS__ClassExtends
+local __TS__Decorate = ____lualib.__TS__Decorate
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 1,["9"] = 1,["10"] = 2,["11"] = 2,["12"] = 4,["13"] = 5,["14"] = 4,["15"] = 5,["16"] = 9,["17"] = 10,["18"] = 9,["19"] = 13,["20"] = 14,["21"] = 15,["22"] = 16,["24"] = 13,["25"] = 24,["26"] = 25,["27"] = 26,["28"] = 27,["30"] = 24,["31"] = 31,["32"] = 32,["33"] = 33,["34"] = 33,["35"] = 33,["36"] = 33,["37"] = 33,["38"] = 33,["39"] = 33,["40"] = 33,["41"] = 33,["42"] = 31,["43"] = 39,["44"] = 40,["45"] = 39,["46"] = 5,["47"] = 4,["48"] = 5,["50"] = 5,["51"] = 49,["52"] = 50,["53"] = 49,["54"] = 50,["55"] = 53,["56"] = 54,["57"] = 55,["59"] = 53,["60"] = 59,["61"] = 60,["62"] = 61,["64"] = 59,["65"] = 65,["66"] = 66,["67"] = 67,["68"] = 74,["69"] = 75,["70"] = 75,["71"] = 75,["72"] = 75,["73"] = 75,["74"] = 75,["75"] = 75,["76"] = 75,["77"] = 75,["78"] = 75,["80"] = 65,["81"] = 50,["82"] = 49,["83"] = 50,["85"] = 50});
+local ____exports = {}
+local ____dota_ts_adapter = require("lib.dota_ts_adapter")
+local registerModifier = ____dota_ts_adapter.registerModifier
+local ____modifier_combat_events = require("modifiers.modifier_combat_events")
+local ModifierCombatEvents = ____modifier_combat_events.ModifierCombatEvents
+____exports.ModifierRuby = __TS__Class()
+local ModifierRuby = ____exports.ModifierRuby
+ModifierRuby.name = "ModifierRuby"
+__TS__ClassExtends(ModifierRuby, ModifierCombatEvents)
+function ModifierRuby.prototype.IsHidden(self)
+    return false
+end
+function ModifierRuby.prototype.OnCreated(self, params)
     if IsServer() then
         self.damage = params.damage
-        self.efx_index = ParticleManager:CreateParticle("particles/generic_gameplay/rune_haste_owner.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent())
+        self.particleId = ParticleManager:CreateParticle("particles/generic_gameplay/rune_haste_owner.vpcf", PATTACH_ABSORIGIN_FOLLOW, self.parent)
     end
 end
-
-function modifier_ruby:OnDestroy()
+function ModifierRuby.prototype.OnDestroy(self)
     if IsServer() then
-        ParticleManager:DestroyParticle(self.efx_index, false)
-        ParticleManager:ReleaseParticleIndex(self.efx_index)
+        ParticleManager:DestroyParticle(self.particleId, false)
+        ParticleManager:ReleaseParticleIndex(self.particleId)
     end
 end
-
-function modifier_ruby:DeclareFunctions()
-    return { 
-        MODIFIER_EVENT_ON_ABILITY_FULLY_CAST,
-        --MODIFIER_EVENT_ON_ATTACK_LANDED,
-        --MODIFIER_EVENT_ON_ATTACK_FAIL,
-        --MODIFIER_EVENT_ON_ATTACK,
-    }
-end
-
-function modifier_ruby:OnAbilityFullyCast(params)
-    if IsServer() then
-        if params.unit ~= self:GetParent() then
-            return
-        end
-
-        if params.ability == self:GetParent():GetAbilityByIndex(0) then
-            EFX("particles/gems/ruby_rings.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetParent(), {
-                cp1 = self:GetParent():GetAbsOrigin(),
-                release = true
-            })
-        end
-    end
-end
-
-function modifier_ruby:OnEvent(params)
-    if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED then
-        self:GetParent():AddNewModifier(self:GetParent(), nil, 'modifier_ruby_attack', {
-            damage = self.damage
-        })
-    end
-end
-
---[[
-function modifier_ruby:OnAttack(params)
-    if params.attacker ~= self:GetParent() then
-        return
-    end
-
-    EmitSoundOn("Hero_DoomBringer.LvlDeath", params.target)
-    EFX("particles/gems/ruby.vpcf", PATTACH_WORLDORIGIN, nil, {
-        cp0 = params.target:GetAbsOrigin(),
-        cp1 = params.target:GetAbsOrigin(),
-        release = true
-    })
-end 
-
-function modifier_ruby:OnAttackLanded(params)
-    if params.attacker ~= self:GetParent() then
-        return
-    end
-
-    if IsServer() then
-        self.damage_table.victim = params.target
-        ApplyDamage(self.damage_table)
-    end
-end
-
-function modifier_ruby:OnAttackFail(params)
-    if params.attacker ~= self:GetParent() then
-        return
-    end
-end
-]]
-
-function modifier_ruby:GetTexture()
-	return 'modifier_ruby'
-end
-
-function modifier_ruby:GetStatusLabel() return "Ruby" end
-function modifier_ruby:GetStatusPriority() return 2 end
-function modifier_ruby:GetStatusStyle() return "Ruby" end
-
-if IsClient() then require("wrappers/modifiers") end
-Modifiers.Status(modifier_ruby)
-Modifiers.OnEvent(modifier_ruby)
-
-function modifier_ruby_attack:IsHidden()
-    return true
-end
-
-function modifier_ruby_attack:OnCreated(params)
-    if IsServer() then
-        self.damage_table = {
-            attacker = self:GetParent(),
-            damage = params.damage,
-            damage_type = DAMAGE_TYPE_PURE,
+function ModifierRuby.prototype.OnBasicAttackStarted(self)
+    ____exports.ModifierRubyAttack:apply(self.parent, self.parent, nil, {damage = self.damage})
+    EFX(
+        "particles/gems/ruby_rings.vpcf",
+        PATTACH_ABSORIGIN_FOLLOW,
+        self.parent,
+        {
+            cp1 = self.parent:GetAbsOrigin(),
+            release = true
         }
+    )
+end
+function ModifierRuby.prototype.GetTexture(self)
+    return "modifier_ruby"
+end
+ModifierRuby = __TS__Decorate(
+    {registerModifier(nil, {customNameForI18n = "modifier_ruby"})},
+    ModifierRuby
+)
+____exports.ModifierRuby = ModifierRuby
+____exports.ModifierRubyAttack = __TS__Class()
+local ModifierRubyAttack = ____exports.ModifierRubyAttack
+ModifierRubyAttack.name = "ModifierRubyAttack"
+__TS__ClassExtends(ModifierRubyAttack, ModifierCombatEvents)
+function ModifierRubyAttack.prototype.OnCreated(self, params)
+    if IsServer() then
+        self.damage = params.damage
     end
 end
-
-function modifier_ruby_attack:OnEvent(params)
-    if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED then
+function ModifierRubyAttack.prototype.OnBasicAttackEnded(self)
+    if IsServer() then
         self:Destroy()
     end
-    if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED then
-        if IsServer() then
-            self.damage_table.victim = params.hTarget
-            ApplyDamage(self.damage_table)
-
-            EmitSoundOn("Hero_DoomBringer.LvlDeath", params.hTarget)
-            EFX("particles/gems/ruby.vpcf", PATTACH_WORLDORIGIN, nil, {
-                cp0 = params.hTarget:GetAbsOrigin(),
-                cp1 = params.hTarget:GetAbsOrigin(),
+end
+function ModifierRubyAttack.prototype.OnBasicAttackLanded(self, event)
+    if IsServer() then
+        ApplyDamage({victim = event.target, attacker = self.parent, damage = self.damage, damage_type = DAMAGE_TYPE_PURE})
+        EmitSoundOn("Hero_DoomBringer.LvlDeath", event.target)
+        EFX(
+            "particles/gems/ruby.vpcf",
+            PATTACH_WORLDORIGIN,
+            nil,
+            {
+                cp0 = event.target:GetAbsOrigin(),
+                cp1 = event.target:GetAbsOrigin(),
                 release = true
-            })
-        end
+            }
+        )
     end
 end
-
-Modifiers.OnEvent(modifier_ruby_attack)
+ModifierRubyAttack = __TS__Decorate(
+    {registerModifier(nil, {customNameForI18n = "modifier_ruby_attack"})},
+    ModifierRubyAttack
+)
+____exports.ModifierRubyAttack = ModifierRubyAttack
+return ____exports

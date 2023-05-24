@@ -1,116 +1,191 @@
-import { BaseModifier, registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { Translate } from "../../../modifiers/modifier_casting";
+import {
+    attackWithBaseDamage,
+    clampPosition,
+    direction2D,
+    giveManaAndEnergyPercent,
+    isGem,
+    isObstacle,
+    meeleEFX,
+    replenishEFX
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
+import { CustomModifier } from "../../framework/custom_modifier";
 
-@registerAbility()
+@registerAbility("juggernaut_basic_attack")
 class JuggernautBasicAttack extends CustomAbility {
     GetCastPoint() {
-        return this.caster;
+        return this.caster.GetAttackAnimationPoint();
+    }
+
+    GetCooldown(level: number) {
+        const attacksPerSecond = this.caster.GetAttacksPerSecond();
+        const attackSpeed = 1 / attacksPerSecond;
+
+        return super.GetCooldown(level) + attackSpeed;
+    }
+
+    GetAnimation() {
+        return GameActivity.DOTA_ATTACK_EVENT;
+    }
+
+    GetPlaybackRateOverride() {
+        return 1.2;
+    }
+
+    GetAnimationTranslate() {
+        return Translate.odachi;
+    }
+
+    GetCastPointSpeed() {
+        return this.GetSpecialValueFor("cast_point_speed_pct");
+    }
+
+    OnSpellStart() {
+        const origin = this.caster.GetOrigin();
+        //TODO: @Refactor Refactor the cursor
+        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+
+        const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
+        const point = clampPosition(origin, cursor, {
+            maxRange: castRange,
+            minRange: castRange
+        });
+        //TODO: @Refactor Handle the extra radius
+        const meeleExtraRadius = 0; //CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
+
+        const radius = this.GetSpecialValueFor("radius") + meeleExtraRadius;
+        const cooldownReduction = this.GetSpecialValueFor("cooldown_reduction");
+        const cooldownReductionCounter = this.GetSpecialValueFor("cooldown_reduction_counter");
+        const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
+        const direction = direction2D(origin, point);
+        const modifier = this.caster.FindModifierByName("modifier_juggernaut_ex_counter");
+
+        meeleEFX(this.caster, direction, radius, modifier ? Vector(0, 255, 0) : undefined);
+
+        this.MeeleAttack({
+            direction,
+            origin,
+            radius,
+            maxTargets: 1,
+            attackType: "basic",
+            effect: (target: CDOTA_BaseNPC) => {
+                attackWithBaseDamage({ source: this.caster, target: target });
+
+                if (!isObstacle(target)) {
+                    if (!isGem(target)) {
+                        giveManaAndEnergyPercent(this.caster, manaGainPct, true);
+                    }
+
+                    ModifierJuggernautStacks.apply(this.caster, this.caster, this, {});
+
+                    this.ReduceCooldown("juggernaut_second_attack", cooldownReduction);
+                    this.ReduceCooldown("juggernaut_ex_second_attack", cooldownReduction);
+
+                    if (this.GetLevel() >= 2) {
+                        this.ReduceCooldown("juggernaut_counter", cooldownReductionCounter);
+                        this.ReduceCooldown("juggernaut_ex_counter", cooldownReductionCounter);
+                    }
+                }
+
+                this.PlayEffectsOnImpact(target);
+            },
+            baseSound: "Hero_Juggernaut.PreAttack"
+        });
+    }
+
+    ReduceCooldown(abilityName: string, cooldownReduction: number) {
+        const ability = this.caster.FindAbilityByName(abilityName);
+
+        if (ability) {
+            const abilityCooldown = ability.GetCooldownTimeRemaining();
+            const newCooldown = abilityCooldown - cooldownReduction;
+
+            if (newCooldown < 0) {
+                ability.EndCooldown();
+            } else {
+                ability.EndCooldown();
+                ability.StartCooldown(newCooldown);
+            }
+        }
+    }
+
+    PlayEffectsOnImpact(target: CDOTA_BaseNPC) {
+        EFX("particles/juggernaut/juggernaut_basic_attack_impact.vpcf", ParticleAttachment.ABSORIGIN, target, {
+            release: true
+        });
+
+        EmitSoundOn("Hero_Juggernaut.Attack", target);
     }
 }
 
-@registerModifier()
-class ModifierJuggernautStacks extends BaseModifier {}
-// function juggernaut_basic_attack:GetCastPoint()
-// 	if IsServer() then
-// 		return self:GetCaster():GetAttackAnimationPoint()
-// 	end
-// end
+@registerModifier({ customNameForI18n: "modifier_juggernaut_basic_attack_stacks" })
+class ModifierJuggernautStacks extends CustomModifier<JuggernautBasicAttack> {
+    particleIds: ParticleID[] = [];
 
-// function juggernaut_basic_attack:GetCooldown(iLevel)
-// 	if IsServer() then
-//         local attacks_per_second = self:GetCaster():GetAttacksPerSecond()
-//         local attack_speed = (1 / attacks_per_second)
+    IsHidden() {
+        return false;
+    }
 
-// 		return self.BaseClass.GetCooldown(self, self:GetLevel()) + attack_speed
-// 	end
-// end
+    IsDebuff() {
+        return false;
+    }
 
-// function juggernaut_basic_attack:GetCastAnimationCustom()	return ACT_DOTA_ATTACK_EVENT end
-// function juggernaut_basic_attack:GetPlaybackRateOverride() 	return 1.2 end
-// function juggernaut_basic_attack:GetAnimationTranslate() 	return "odachi" end
-// function juggernaut_basic_attack:GetCastPointSpeed() 		return self:GetSpecialValueFor('cast_point_speed_pct') end
+    IsStunDebuff() {
+        return false;
+    }
 
-// function juggernaut_basic_attack:OnSpellStart()
-// 	local caster = self:GetCaster()
-// 	local origin = caster:GetOrigin()
-// 	local point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), self:GetCastRange(Vector(0,0,0), nil), self:GetCastRange(Vector(0,0,0), nil))
+    IsPurgable() {
+        return true;
+    }
 
-// 	self.radius = self:GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
-// 	local cooldown_reduction = self:GetSpecialValueFor("cooldown_reduction")
-// 	local cooldown_reduction_counter = self:GetSpecialValueFor("cooldown_reduction_counter")
-// 	local mana_gain_pct = self:GetSpecialValueFor("mana_gain_pct")
-// 	local direction = Direction2D(origin, point)
-// 	local modifier = CustomEntitiesLegacy:SafeGetModifier(caster, "modifier_juggernaut_ex_counter")
+    OnCreated() {
+        if (IsServer()) {
+            this.SetStackCount(1);
+        }
+    }
 
-// 	if modifier then
-// 		local color = Vector(0, 255, 0)
-// 		MeeleEFX(caster, direction, self.radius, color)
-// 	else
-// 		MeeleEFX(caster, direction, self.radius, nil)
-// 	end
+    OnRefresh() {
+        const maxStacks = this.Value("max_stacks");
 
-// 	CustomEntitiesLegacy:MeeleAttack(caster, {
-// 		vDirection = direction,
-// 		vOrigin = origin,
-// 		fRadius = self.radius,
-// 		bIsBasicAttack = true,
-// 		iMaxTargets = 1,
-// 		Callback = function(hTarget)
-// 			CustomEntitiesLegacy:AttackWithBaseDamage(caster, {
-// 				hTarget = hTarget,
-// 				hAbility = self,
-// 			})
+        if (IsServer() && this.GetStackCount() < maxStacks) {
+            this.IncrementStackCount();
 
-// 			if not CustomEntitiesLegacy:IsObstacle(hTarget) then
-// 				if CustomEntitiesLegacy:ProvidesMana(hTarget) then
-// 					CustomEntitiesLegacy:GiveManaAndEnergyPercent(caster, mana_gain_pct, true)
-// 				end
+            if (this.GetStackCount() == maxStacks) {
+                this.PlayEffectsCharged();
+            }
+        }
+    }
 
-// 				caster:AddNewModifier(caster, self, "modifier_juggernaut_basic_attack_stacks", {})
+    OnDestroy() {
+        if (IsServer()) {
+            this.StopEffects();
+        }
+    }
 
-// 				self:ReduceCooldown(caster, 'juggernaut_second_attack', cooldown_reduction)
-// 				self:ReduceCooldown(caster, 'juggernaut_ex_second_attack', cooldown_reduction)
+    PlayEffectsCharged() {
+        replenishEFX(this.GetParent());
 
-// 				if self:GetLevel() >= 2 then
-// 					self:ReduceCooldown(caster, 'juggernaut_counter', cooldown_reduction_counter)
-// 					self:ReduceCooldown(caster, 'juggernaut_ex_counter', cooldown_reduction_counter)
-// 				end
-// 			end
+        for (let i = 0; i < 5; i++) {
+            this.particleIds.push(
+                ParticleManager.CreateParticle(
+                    "particles/units/heroes/hero_invoker_kid/invoker_kid_forge_spirit_ambient_fire.vpcf",
+                    ParticleAttachment.ABSORIGIN_FOLLOW,
+                    this.caster
+                )
+            );
+        }
+    }
 
-// 			self:PlayEffectsOnImpact(hTarget)
-// 		end
-// 	})
+    StopEffects() {
+        for (const particleId of this.particleIds) {
+            ParticleManager.DestroyParticle(particleId, false);
+            ParticleManager.ReleaseParticleIndex(particleId);
+        }
+    }
 
-// 	self:PlayEffectsOnMiss(point)
-// end
-
-// function juggernaut_basic_attack:ReduceCooldown(hCaster, sAbilityName, iCooldownReduction)
-// 	local ability = hCaster:FindAbilityByName(sAbilityName)
-
-// 	if ability then
-// 		local ability_cd = ability:GetCooldownTimeRemaining()
-// 		local new_cd = ability_cd - iCooldownReduction
-
-// 		if (new_cd) < 0 then
-// 			ability:EndCooldown()
-// 		else
-// 			ability:EndCooldown()
-// 			ability:StartCooldown(new_cd)
-// 		end
-// 	end
-// end
-
-// function juggernaut_basic_attack:PlayEffectsOnImpact(hTarget)
-// 	EFX('particles/juggernaut/juggernaut_basic_attack_impact.vpcf', PATTACH_ABSORIGIN, hTarget, {
-// 		release = true
-// 	})
-
-// 	EmitSoundOn("Hero_Juggernaut.Attack", hTarget)
-// end
-
-// function juggernaut_basic_attack:PlayEffectsOnMiss(pos)
-// 	EmitSoundOnLocationWithCaster(pos, "Hero_Juggernaut.PreAttack", self:GetCaster())
-// end
-
-// if IsClient() then require("wrappers/abilities") end
-// Abilities.Castpoint(juggernaut_basic_attack)
+    GetTexture() {
+        return "juggernaut_blade_dance";
+    }
+}

@@ -106,7 +106,7 @@ localizeAbility("juggernaut_ex_second_attack", {
     values: [castpointValue]
 });
 
-//TODO: Finish modifiers
+//TODO @Refactor: Finish modifiers
 // Modifiers.push({
 //   modifier_classname: "modifier_juggernaut_basic_attack_stacks",
 //   name: "Fury Stacks",

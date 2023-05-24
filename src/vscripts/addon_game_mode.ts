@@ -27,9 +27,10 @@ import Run from "./clases/pve/run";
 import Upgrades from "./upgrades/upgrades";
 import { UpgradeTypes } from "./upgrades/common";
 import { RewardsManager } from "./rewards/rewards";
+import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 
 declare global {
-    interface CDOTAGamerules {
+    interface CDOTAGameRules {
         Addon: GameMode;
     }
 }
@@ -584,6 +585,7 @@ export class GameMode {
         const fowBlocker = SpawnEntityFromTableSynchronous("point_simple_obstruction", { origin: origin, block_fow: true });
         const barrel = CreateUnitByName("npc_dota_creature_wall", origin, false, undefined, undefined, DotaTeam.NOTEAM);
         barrel.Attribute_SetIntValue("barrel", 1);
+        ModifierObstacle.apply(barrel, barrel, undefined, {});
         barrel.SetHullRadius(65);
         barrel.AddNewModifier(barrel, undefined, "wall_base", {
             fow_blocker: fowBlocker.GetEntityIndex()
@@ -1034,11 +1036,7 @@ export class GameMode {
     }
 
     FindNextAliveHero() {
-        const player = this.players.filter(player => player.hero && player.hero.IsAlive())[0];
-        if (player) {
-            return player.hero;
-        }
-        return undefined;
+        return this.players.map(player => player.hero).find(hero => hero?.IsAlive());
     }
 
     FindPlayerById(playerId: PlayerID): Player | undefined {
@@ -1089,6 +1087,6 @@ Object.assign(getfenv(), {
     Precache: GameMode.Precache
 });
 
-if (GameRules.Addon) {
+if (GameRules.Addon !== undefined) {
     GameRules.Addon.Reload();
 }

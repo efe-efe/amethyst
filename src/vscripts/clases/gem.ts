@@ -1,3 +1,4 @@
+import { ModifierGem } from "../modifiers/modifier_gem";
 import BreakableBounty from "./breakable_bounty";
 
 export enum GemTypes {
@@ -32,6 +33,8 @@ class Gem extends BreakableBounty {
 
     constructor(origin: Vector, particle: string, model: string, scale = 1.0) {
         super(origin, { particle, model, scale, health: 100 });
+
+        ModifierGem.apply(this.GetUnit(), this.GetUnit(), undefined, {});
     }
 
     Update(): void {
@@ -240,7 +243,7 @@ class Emerald extends Gem {
 
                 ally.AddNewModifier(ally, undefined, "modifier_emerald", {
                     duration: this.duration,
-                    heal_per_second: final_heal_per_second
+                    healPerSecond: final_heal_per_second
                 });
 
                 EFX("particles/gems/emerald.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, ally, {
