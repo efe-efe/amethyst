@@ -1,5 +1,6 @@
 import { modifiers, entities, panels } from "../util";
-import LayoutController from "../layout/layoutController";
+import { toplevelRoot } from "../components/topLevelRoot";
+import { std } from "../std";
 
 const screenWidth = Game.GetScreenWidth();
 const sreenHeight = Game.GetScreenHeight();
@@ -13,26 +14,23 @@ export default class Overhead {
     constructor(entiyIndex: EntityIndex) {
         this.entityIndex = entiyIndex;
 
-        const layout = LayoutController.GetInstance();
-        const basePanel = layout.GetTopPanel().FindChildrenWithClassTraverse("main")[0];
+        const root = toplevelRoot("overheadHUD");
+        this.containerPanel = std.panel(root, { class: "overhead" });
 
-        this.containerPanel = panels.createPanelSimple(basePanel, "overhead");
-        this.containerPanel.style.width = "160px";
-        this.containerPanel.style.flowChildren = "down";
-        this.Update();
+        this.ScheduleUpdate();
     }
 
-    Update(): void {
+    ScheduleUpdate() {
         if (this.UpdateVisibility()) {
             this.UpdatePosition();
         }
 
         $.Schedule(this.thinkInterval, () => {
-            this.Update();
+            this.ScheduleUpdate();
         });
     }
 
-    UpdatePosition(): boolean {
+    UpdatePosition() {
         const origin = Entities.GetAbsOrigin(this.entityIndex);
         const offset = Entities.GetHealthBarOffset(this.entityIndex);
 
@@ -66,7 +64,7 @@ export default class Overhead {
         return true;
     }
 
-    UpdateVisibility(): boolean {
+    UpdateVisibility() {
         const hide = modifiers.findModifierByName(this.entityIndex, "modifier_hide_bar");
 
         if (Entities.IsAlive(this.entityIndex) && entities.isVisibleByLocal(this.entityIndex) && !hide) {
@@ -78,19 +76,19 @@ export default class Overhead {
         }
     }
 
-    SoftHide(): void {
+    SoftHide() {
         this.containerPanel.style.position = "-1000px -1000px 0px;";
     }
 
-    Hide(): void {
-        this.containerPanel.style.opacity = "0.0";
+    Hide() {
+        this.containerPanel.SetHasClass("overhead--hide", true);
     }
 
-    Show(): void {
-        this.containerPanel.style.opacity = "1.0";
+    Show() {
+        this.containerPanel.SetHasClass("overhead--hide", false);
     }
 
-    SetWidth(width: number): void {
+    SetWidth(width: number) {
         this.containerPanel.style.width = width + "px";
     }
 }

@@ -1,3 +1,18 @@
+.overheadHUD {
+    height: 100%;
+    width: 100%;
+}
+
+.overhead {
+    width: 160px;
+    flow-children: down;
+    opacity: 1;
+
+    &--hide {
+        opacity: 0;
+    }
+}
+
 .unit-overhead {
     &__top {
         width: 100%;
