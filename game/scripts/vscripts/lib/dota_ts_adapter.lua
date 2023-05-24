@@ -118,7 +118,7 @@ ____exports.registerModifier = function(____, params) return function(____, modi
             beforeModifierOnCreated = nil
         end
         self:____constructor()
-        if originalOnCreated then
+        if originalOnCreated ~= nil then
             originalOnCreated(self, parameters)
         end
     end

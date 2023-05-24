@@ -111,7 +111,7 @@ export const registerModifier = (params?: { customNameForI18n?: string }) => (mo
             beforeModifierOnCreated = undefined;
         }
         this.____constructor();
-        if (originalOnCreated) {
+        if (originalOnCreated !== undefined) {
             originalOnCreated.call(this, parameters);
         }
     };
