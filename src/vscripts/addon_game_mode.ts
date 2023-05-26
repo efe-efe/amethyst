@@ -279,7 +279,7 @@ export class GameMode {
             }
         });
 
-        CustomGameEventManager.RegisterListener<CustomActionEvent>("custom_action", (eventSourceIndex, event) => {
+        CustomGameEventManager.RegisterListener("customAction", (eventSourceIndex, event) => {
             const playerId = event.playerIndex;
             const player = this.FindPlayerById(playerId);
 
@@ -315,7 +315,7 @@ export class GameMode {
             }
         });
 
-        CustomGameEventManager.RegisterListener<CustomActionEvent>("refund_points", (eventSourceIndex, event) => {
+        CustomGameEventManager.RegisterListener("refundPoints", (eventSourceIndex, event) => {
             const playerId = event.playerIndex;
             const player = this.FindPlayerById(playerId);
 
@@ -342,7 +342,7 @@ export class GameMode {
             }
         });
 
-        CustomGameEventManager.RegisterListener<CustomActionEvent>("swap_r_f", (eventSourceIndex, event) => {
+        CustomGameEventManager.RegisterListener("swapRF", (eventSourceIndex, event) => {
             const playerId = event.playerIndex;
             const player = this.FindPlayerById(playerId);
 

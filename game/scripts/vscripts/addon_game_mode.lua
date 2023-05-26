@@ -305,7 +305,7 @@ function GameMode.prototype.SetupPanoramaEventHooks(self)
         end
     )
     CustomGameEventManager:RegisterListener(
-        "custom_action",
+        "customAction",
         function(eventSourceIndex, event)
             local playerId = event.playerIndex
             local player = self:FindPlayerById(playerId)
@@ -337,7 +337,7 @@ function GameMode.prototype.SetupPanoramaEventHooks(self)
         end
     )
     CustomGameEventManager:RegisterListener(
-        "refund_points",
+        "refundPoints",
         function(eventSourceIndex, event)
             local playerId = event.playerIndex
             local player = self:FindPlayerById(playerId)
@@ -366,7 +366,7 @@ function GameMode.prototype.SetupPanoramaEventHooks(self)
         end
     )
     CustomGameEventManager:RegisterListener(
-        "swap_r_f",
+        "swapRF",
         function(eventSourceIndex, event)
             local playerId = event.playerIndex
             local player = self:FindPlayerById(playerId)

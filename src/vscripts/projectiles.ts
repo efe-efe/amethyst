@@ -152,7 +152,7 @@ function projectile(options: ProjectileOptions) {
     let currentTime = GameRules.GetGameTime(); //Should I be doing this?
     let currentPosition = spawnOrigin;
     let currentVelocity = velocity.__div(Vector(PROJECTILES_VISUAL_OFFSET, PROJECTILES_VISUAL_OFFSET, PROJECTILES_VISUAL_OFFSET));
-    let previousVelocity = currentVelocity;
+    const previousVelocity = currentVelocity;
     let previousPosition = spawnOrigin; // Should be undefined?
     let remainingChanges = maxChanges ?? 1;
     let currentRadius = startRadius;

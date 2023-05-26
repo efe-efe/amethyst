@@ -163,14 +163,14 @@ function CustomAI(name: string, origin: Vector, options: CustomAIOptions): Custo
             },
             requirements: options.requirements
                 ? {
-                      ...options.requirements,
-                      cooldownReady: options.requirements.cooldownReady !== undefined ? options.requirements.cooldownReady : true,
-                      phaseReady: options.requirements.phaseReady !== undefined ? options.requirements.phaseReady : true
-                  }
+                    ...options.requirements,
+                    cooldownReady: options.requirements.cooldownReady !== undefined ? options.requirements.cooldownReady : true,
+                    phaseReady: options.requirements.phaseReady !== undefined ? options.requirements.phaseReady : true
+                }
                 : {
-                      cooldownReady: true,
-                      phaseReady: true
-                  }
+                    cooldownReady: true,
+                    phaseReady: true
+                }
         };
         abilities.push(npcAbility);
     }

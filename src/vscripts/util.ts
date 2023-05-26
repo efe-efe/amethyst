@@ -44,7 +44,7 @@ export function sendDataToClient(unit: CDOTA_BaseNPC) {
             // energyPerCell: CustomEntitiesLegacy:GetEnergyPerCell(unit),
         };
         //TODO: @Refactor Fix the "nevers";
-        CustomNetTables.SetTableValue("units" as never, tostring(unit.GetPlayerID()), data as never);
+        CustomNetTables.SetTableValue("units", tostring(unit.GetPlayerID()), data);
     } else {
         if (unit.IsIllusion()) {
             return;

@@ -214,7 +214,3 @@ export namespace std {
         return panel;
     }
 }
-
-//TODO: This should be moved to a commons file between panorama and server
-type ParticlePath = `particles/${string}.vpcf`;
-type HeroName = string & { heroNameBrand: unknown };

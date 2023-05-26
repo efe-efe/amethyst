@@ -1,20 +1,9 @@
-export const enum Custom_ActionModes {
-    START = 0,
-    STOP = 1
-}
-
-export const enum Custom_ActionTypes {
-    MOVEMENT = 0,
-    ABILITY = 1
-}
-
-export interface CustomActionEvent {
-    playerIndex: number;
-    payload?: any;
-}
-
 const server = {
-    sendActionSignalToServer: (payload: any): void => {
+    sendActionSignalToServer: (
+        payload:
+            | { type: number; mode: Custom_ActionModes; abilityEntityIndex: AbilityEntityIndex }
+            | { type: number; mode: Custom_ActionModes; direction: number[] }
+    ): void => {
         let playerId = Players.GetLocalPlayer();
 
         if (Game.IsInToolsMode()) {
@@ -24,12 +13,12 @@ const server = {
             }
         }
 
-        const data: CustomActionEvent = {
+        const data = {
             playerIndex: playerId,
             payload
         };
 
-        GameEvents.SendCustomGameEventToServer<CustomActionEvent>("custom_action", data);
+        GameEvents.SendCustomGameEventToServer("customAction", data);
     },
     sendStopAbilitySignalToServer: (abilityEntityIndex: AbilityEntityIndex): void => {
         const payload = {
