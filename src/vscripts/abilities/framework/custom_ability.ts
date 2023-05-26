@@ -1,11 +1,12 @@
 import { BaseAbility } from "../../lib/dota_ts_adapter";
 import { ModifierCasting, Translate } from "../../modifiers/modifier_casting";
 import { ModifierCombatEvents } from "../../modifiers/modifier_combat_events";
+import { ProjectileOptions, createProjectile } from "../../projectiles";
 import { callEntityFuncSafe } from "../../util";
 
 //minProjection is a value from -1 to 1, 1 when the unit is aligned with direction, -1 is the vector opposite to direction
 function findUnitsInCone(
-    team: DotaTeam,
+    source: CDOTA_BaseNPC, //TODO: @Refactor Change this for team
     direction: Vector,
     minProjection: number,
     center: Vector,
@@ -15,8 +16,8 @@ function findUnitsInCone(
     flagFilter: UnitTargetFlags,
     orderFilter: FindOrder
 ) {
-    //TODO: @Refactor @Important Change this for custom finder, to use alliances!
-    const units = FindUnitsInRadius(team, center, undefined, radius, teamFilter, typeFilter, flagFilter, orderFilter, false);
+    //TODO: @Refactor Change this for a TS finder
+    const units = CustomEntitiesLegacy.FindUnitsInRadius(source, center, radius, teamFilter, typeFilter, flagFilter, orderFilter);
 
     const targets = [];
 
@@ -63,7 +64,6 @@ export class CustomAbility extends BaseAbility {
             this.caster.StartGestureWithPlaybackRate(animation, this.GetPlaybackRateOverride());
         }
 
-        // if onAbilityPhaseStart then return onAbilityPhaseStart(self) end
         return true;
     }
 
@@ -129,7 +129,7 @@ export class CustomAbility extends BaseAbility {
         // }
 
         const units = findUnitsInCone(
-            this.caster.GetTeam(),
+            this.caster,
             options.direction,
             0,
             options.origin,
@@ -185,7 +185,7 @@ export class CustomAbility extends BaseAbility {
             }
         }
 
-        // if( iTargets == 0 ){
+        // if( hitTargets == 0 ){
         //     if( options.isBasicAttack ){
         //         CustomEntitiesLegacy:EmitModifierEvent(this.caster, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
         //     }
@@ -208,5 +208,267 @@ export class CustomAbility extends BaseAbility {
         }
 
         return units;
+    }
+
+    AoeAttack(options: {
+        origin: Vector;
+        radius: number;
+        triggerCounters?: boolean;
+        teamFilter?: UnitTargetTeam;
+        typeFilter?: UnitTargetType;
+        flagFilter?: UnitTargetFlags;
+        orderFilter?: FindOrder;
+        maxTargets?: number;
+        attackType?: AttackType;
+        effect: (target: CDOTA_BaseNPC) => void;
+        baseSound?: string;
+    }) {
+        const triggerCounters = options.triggerCounters ?? false;
+        const teamFilter = options.teamFilter ?? UnitTargetTeam.ENEMY;
+        const typeFilter = options.typeFilter ?? UnitTargetType.HERO + UnitTargetType.BASIC;
+        const flagFilter = options.flagFilter ?? UnitTargetFlags.NONE;
+        const orderFilter = options.orderFilter ?? FindOrder.CLOSEST;
+        const attackType = options.attackType ?? "other";
+
+        if (options.attackType == "basic") {
+            for (const modifier of this.caster.FindAllModifiers()) {
+                if (modifier instanceof ModifierCombatEvents) {
+                    callEntityFuncSafe(modifier, "OnBasicAttackStarted");
+                }
+            }
+        }
+
+        const units = CustomEntitiesLegacy.FindUnitsInRadius(
+            this.caster,
+            options.origin,
+            options.radius,
+            teamFilter,
+            typeFilter,
+            flagFilter,
+            orderFilter
+        );
+
+        let hitTargets = 0;
+
+        for (const unit of units) {
+            // const tOnHitModifiers = CustomEntitiesLegacy:GetAllModifiersWithType(unit, MODIFIER_TYPES.ON_HIT)
+
+            // if #tOnHitModifiers > 0 then
+            //     for _,sModifierName in pairs(tOnHitModifiers) do
+            //         const hModifier = unit:FindModifierByName(sModifierName)
+            //         const bProcessEffect = hModifier:OnHit({
+            //             hSource = hEntity,
+            //             triggerCounters = triggerCounters,
+            //             Callback = tData.Callback,
+            //             iType = AOE_HIT
+            //         })
+
+            //         if bProcessEffect then
+            //             tData.Callback(unit)
+            //             if tData.bIsBasicAttack then
+            //                 CustomEntitiesLegacy:EmitModifierEvent(hEntity, {
+            //                     iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+            //                     hTarget = unit,
+            //                 })
+            //             end
+            //         end
+            //     end
+            // else
+            options.effect(unit);
+            if (attackType == "basic") {
+                for (const modifier of this.caster.FindAllModifiers()) {
+                    if (modifier instanceof ModifierCombatEvents) {
+                        // TODO: @Refactor Find a way to use this method with params
+                        // callEntityFuncSafe(modifier, "OnBasicAttackLanded");
+                        modifier.OnBasicAttackLanded({ target: unit });
+                    }
+                }
+            }
+            // end
+
+            hitTargets++;
+
+            if (options.maxTargets == hitTargets) {
+                break;
+            }
+        }
+
+        if (hitTargets == 0) {
+            // if tData.bIsBasicAttack then
+            //     CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+            // end
+        }
+
+        if (attackType == "basic") {
+            for (const modifier of this.caster.FindAllModifiers()) {
+                if (modifier instanceof ModifierCombatEvents) {
+                    callEntityFuncSafe(modifier, "OnBasicAttackEnded");
+                }
+            }
+        }
+
+        return units;
+    }
+
+    SingleAttack(options: {
+        target: CDOTA_BaseNPC;
+        triggerCounters?: boolean;
+        teamFilter?: UnitTargetTeam;
+        typeFilter?: UnitTargetType;
+        flagFilter?: UnitTargetFlags;
+        orderFilter?: FindOrder;
+        attackType?: AttackType;
+        effect: (target: CDOTA_BaseNPC) => void;
+        baseSound?: string;
+    }) {
+        const triggerCounters = options.triggerCounters ?? true;
+        const teamFilter = options.teamFilter ?? UnitTargetTeam.ENEMY;
+        const typeFilter = options.typeFilter ?? UnitTargetType.HERO + UnitTargetType.BASIC;
+        const flagFilter = options.flagFilter ?? UnitTargetFlags.NONE;
+        const orderFilter = options.orderFilter ?? FindOrder.CLOSEST;
+        const attackType = options.attackType ?? "other";
+
+        if (options.attackType == "basic") {
+            for (const modifier of this.caster.FindAllModifiers()) {
+                if (modifier instanceof ModifierCombatEvents) {
+                    callEntityFuncSafe(modifier, "OnBasicAttackStarted");
+                }
+            }
+        }
+
+        // const tOnHitModifiers = CustomEntitiesLegacy:GetAllModifiersWithType(tData.hTarget, MODIFIER_TYPES.ON_HIT)
+
+        // if #tOnHitModifiers > 0 then
+        // 	for _,sModifierName in pairs(tOnHitModifiers) do
+        // 		const hModifier = tData.hTarget:FindModifierByName(sModifierName)
+        // 		const bProcessEffect = hModifier:OnHit({
+        // 			hSource = hEntity,
+        // 			triggerCounters = triggerCounters,
+        // 			Callback = tData.Callback,
+        // 			iType = SINGLE_HIT
+        // 		})
+
+        // 		if bProcessEffect then
+        // 			tData.Callback(tData.hTarget)
+        // 			if tData.bIsBasicAttack then
+        // 				CustomEntitiesLegacy:EmitModifierEvent(hEntity, {
+        // 					iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+        // 					hTarget = tData.hTarget,
+        // 				})
+        // 			end
+        // 		end
+        // 	end
+        // else
+        options.effect(options.target);
+        if (attackType == "basic") {
+            for (const modifier of this.caster.FindAllModifiers()) {
+                if (modifier instanceof ModifierCombatEvents) {
+                    // TODO: @Refactor Find a way to use this method with params
+                    // callEntityFuncSafe(modifier, "OnBasicAttackLanded");
+                    modifier.OnBasicAttackLanded({ target: options.target });
+                }
+            }
+        }
+        // end
+
+        if (attackType == "basic") {
+            for (const modifier of this.caster.FindAllModifiers()) {
+                if (modifier instanceof ModifierCombatEvents) {
+                    callEntityFuncSafe(modifier, "OnBasicAttackEnded");
+                }
+            }
+        }
+
+        return options.target;
+    }
+
+    ProjectileAttack(options: { triggerCounters?: boolean; attackType?: AttackType } & ProjectileOptions) {
+        const triggerCounters = options.triggerCounters ?? true;
+        const attackType = options.attackType ?? "other";
+        const valueDistance = this.GetSpecialValueFor("projectile_distance");
+        const distance = options.distance ?? valueDistance != 0 ? valueDistance : this.GetCastRange(Vector(0, 0, 0), undefined);
+        const startRadius = options.startRadius ?? this.GetSpecialValueFor("hitbox");
+
+        const onUnitHit = (unit: CDOTA_BaseNPC, projectile: { source: CDOTA_BaseNPC }) => {
+            //     tData.tProjectile.OnUnitHit = function(hProjectile, hTarget)
+            //         const tOnHitModifiers = CustomEntitiesLegacy:GetAllModifiersWithType(hTarget, MODIFIER_TYPES.ON_HIT)
+
+            //         if #tOnHitModifiers > 0 then
+            //             for _,sModifierName in pairs(tOnHitModifiers) do
+            //                 const hModifier = hTarget:FindModifierByName(sModifierName)
+            //                 const bProcessEffect = hModifier:OnHit({
+            //                     hProjectile = hProjectile,
+            //                     bTriggerCounters = bTriggerCounters,
+            //                     iType = PROJECTILE_HIT,
+            //                 })
+
+            //                 if bProcessEffect then
+            //                     onUnitHit(hProjectile, hTarget)
+            //                     if tData.bIsBasicAttack then
+            //                         CustomEntitiesLegacy:EmitModifierEvent(hEntity, {
+            //                             iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED,
+            //                             hTarget = hTarget,
+            //                         })
+            //                     end
+            //                 else
+            //                     hProjectile:IgnoreNextUnitBehavior()
+            //                 end
+            //             end
+            //         else
+            options.onUnitHit?.(unit, projectile);
+            if (attackType == "basic") {
+                for (const modifier of this.caster.FindAllModifiers()) {
+                    if (modifier instanceof ModifierCombatEvents) {
+                        // TODO: @Refactor Find a way to use this method with params
+                        // callEntityFuncSafe(modifier, "OnBasicAttackLanded");
+                        modifier.OnBasicAttackLanded({ target: unit });
+                    }
+                }
+            }
+            //         end
+            //     end
+        };
+
+        const onFinish = (position: Vector) => {
+            options.onFinish?.(position);
+
+            //     tData.tProjectile.OnFinish = function(hProjectile, vPosition)
+            //         if next(hProjectile.tHitLog) == nil then
+            //             if tData.bIsBasicAttack then
+            //                 CustomEntitiesLegacy:EmitModifierEvent(hEntity, { iEventId = MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED })
+            //             end
+            //         end
+
+            if (attackType == "basic") {
+                for (const modifier of this.caster.FindAllModifiers()) {
+                    if (modifier instanceof ModifierCombatEvents) {
+                        callEntityFuncSafe(modifier, "OnBasicAttackEnded");
+                    }
+                }
+            }
+            //     end
+        };
+
+        if (options.attackType == "basic") {
+            for (const modifier of this.caster.FindAllModifiers()) {
+                if (modifier instanceof ModifierCombatEvents) {
+                    callEntityFuncSafe(modifier, "OnBasicAttackStarted");
+                }
+            }
+        }
+
+        const projectile = createProjectile({
+            ...options,
+            distance,
+            startRadius,
+            onUnitHit,
+            onFinish
+        });
+
+        //     if tData.OnProjectileCreated then
+        //         tData.OnProjectileCreated(hProjectile)
+        //     end
+
+        return projectile;
     }
 }

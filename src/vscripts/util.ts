@@ -5,6 +5,12 @@ import {
 } from "./abilities/framework/custom_modifier";
 import { ModifierGem } from "./modifiers/modifier_gem";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
+import { ModifierRecast } from "./modifiers/modifier_recast";
+import { ModifierWall } from "./modifiers/modifier_wall";
+
+function getRecastModifiers(unit: CDOTA_BaseNPC) {
+    return ModifierRecast.findAll(unit);
+}
 
 export function sendDataToClient(unit: CDOTA_BaseNPC) {
     if (unit.IsRealHero() && !unit.IsIllusion()) {
@@ -163,7 +169,7 @@ export function giveManaAndEnergyPercent(unit: CDOTA_BaseNPC, percentage: number
     }
 }
 
-export function giveManaAndEnergy(unit: CDOTA_BaseNPC, amount: number, informClient: boolean, showOverhead: boolean) {
+export function giveManaAndEnergy(unit: CDOTA_BaseNPC, amount: number, informClient: boolean, showOverhead = true) {
     giveEnergy(unit, amount, false, showOverhead);
     giveMana(unit, amount, false, showOverhead);
 
@@ -228,6 +234,10 @@ export function meeleEFX(caster: CDOTA_BaseNPC, direction: Vector, radius: numbe
     if (radius > 300) {
         meeleEFX(caster, direction, 200, color);
     }
+}
+
+export function isConsideredWall(unit: CDOTA_BaseNPC) {
+    return ModifierWall.findOne(unit);
 }
 
 export function isObstacle(unit: CDOTA_BaseNPC) {
@@ -297,4 +307,8 @@ export function fullyFaceTowards(unit: CDOTA_BaseNPC, direction: Vector) {
         unit.SetForwardVector(direction);
         unit.FaceTowards(unit.GetAbsOrigin().__add(direction));
     }
+}
+
+export function strongPurge(unit: CDOTA_BaseNPC) {
+    unit.Purge(false, true, false, true, false);
 }

@@ -14,9 +14,12 @@ import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
 @registerAbility("juggernaut_basic_attack")
-class JuggernautBasicAttack extends CustomAbility {
+export class JuggernautBasicAttack extends CustomAbility {
     GetCastPoint() {
-        return this.caster.GetAttackAnimationPoint();
+        if (IsServer()) {
+            return this.caster.GetAttackAnimationPoint();
+        }
+        return 0;
     }
 
     GetCooldown(level: number) {
@@ -121,7 +124,7 @@ class JuggernautBasicAttack extends CustomAbility {
 }
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_basic_attack_stacks" })
-class ModifierJuggernautStacks extends CustomModifier<JuggernautBasicAttack> {
+export class ModifierJuggernautStacks extends CustomModifier<JuggernautBasicAttack> {
     particleIds: ParticleID[] = [];
 
     IsHidden() {

@@ -28,6 +28,7 @@ import Upgrades from "./upgrades/upgrades";
 import { UpgradeTypes } from "./upgrades/common";
 import { RewardsManager } from "./rewards/rewards";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
+import { updateProjectiles } from "./projectiles";
 
 declare global {
     interface CDOTAGameRules {
@@ -90,6 +91,8 @@ export class GameMode {
     public currentRoom = -1;
 
     constructor() {
+        updateProjectiles();
+
         GameRules.GetGameModeEntity().SetContextThink(
             "OnThink",
             () => {

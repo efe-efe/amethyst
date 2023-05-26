@@ -2,7 +2,7 @@
 	"juggernaut_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_special_attack/juggernaut_special_attack"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_special_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"juggernaut_special_attack"
