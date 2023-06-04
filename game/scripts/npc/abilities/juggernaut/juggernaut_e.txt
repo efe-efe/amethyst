@@ -36,7 +36,7 @@
 	"juggernaut_special_attack_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_special_attack/juggernaut_special_attack"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_special_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"juggernaut_special_attack"

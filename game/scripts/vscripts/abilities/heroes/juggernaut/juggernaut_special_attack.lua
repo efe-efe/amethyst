@@ -3,9 +3,8 @@ local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__Decorate = ____lualib.__TS__Decorate
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 206,["9"] = 1,["10"] = 1,["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 4,["16"] = 4,["17"] = 5,["18"] = 5,["19"] = 206,["21"] = 10,["22"] = 10,["23"] = 11,["24"] = 12,["25"] = 13,["26"] = 12,["27"] = 16,["28"] = 17,["29"] = 16,["30"] = 20,["31"] = 21,["32"] = 20,["33"] = 24,["34"] = 25,["35"] = 24,["36"] = 28,["37"] = 29,["38"] = 30,["39"] = 31,["40"] = 32,["41"] = 33,["42"] = 34,["43"] = 35,["44"] = 36,["45"] = 37,["46"] = 39,["47"] = 39,["48"] = 39,["49"] = 39,["50"] = 39,["51"] = 39,["52"] = 39,["53"] = 39,["54"] = 39,["55"] = 39,["56"] = 50,["57"] = 51,["58"] = 57,["59"] = 62,["60"] = 63,["61"] = 64,["65"] = 39,["66"] = 74,["67"] = 75,["68"] = 39,["69"] = 39,["70"] = 91,["71"] = 11,["72"] = 28,["73"] = 95,["74"] = 96,["75"] = 97,["76"] = 102,["77"] = 103,["78"] = 95,["79"] = 106,["80"] = 107,["81"] = 108,["82"] = 109,["83"] = 106,["84"] = 11,["85"] = 10,["86"] = 11,["88"] = 184,["89"] = 184,["91"] = 184,["92"] = 184,["93"] = 186,["94"] = 186,["95"] = 186,["96"] = 187,["97"] = 187,["99"] = 188,["100"] = 189,["101"] = 190,["102"] = 192,["103"] = 192,["104"] = 192,["105"] = 193});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 1,["9"] = 1,["10"] = 2,["11"] = 2,["12"] = 3,["13"] = 3,["14"] = 4,["15"] = 4,["16"] = 4,["17"] = 4,["18"] = 4,["19"] = 5,["20"] = 5,["21"] = 7,["22"] = 7,["23"] = 8,["24"] = 9,["25"] = 10,["26"] = 9,["27"] = 13,["28"] = 14,["29"] = 13,["30"] = 17,["31"] = 18,["32"] = 17,["33"] = 21,["34"] = 22,["35"] = 21,["36"] = 25,["37"] = 26,["38"] = 27,["39"] = 28,["40"] = 29,["41"] = 30,["42"] = 31,["43"] = 32,["44"] = 33,["45"] = 34,["46"] = 36,["47"] = 36,["48"] = 36,["49"] = 36,["50"] = 36,["51"] = 36,["52"] = 36,["53"] = 36,["54"] = 36,["55"] = 36,["56"] = 46,["57"] = 47,["58"] = 53,["59"] = 58,["60"] = 59,["61"] = 60,["64"] = 66,["65"] = 67,["68"] = 36,["69"] = 71,["70"] = 72,["71"] = 36,["72"] = 36,["73"] = 88,["74"] = 8,["75"] = 25,["76"] = 92,["77"] = 93,["78"] = 94,["79"] = 99,["80"] = 100,["81"] = 92,["82"] = 103,["83"] = 104,["84"] = 105,["85"] = 106,["86"] = 103,["87"] = 8,["88"] = 7,["89"] = 8});
 local ____exports = {}
-local modifier_juggernaut_special_attack_recast
 local ____dota_ts_adapter = require("lib.dota_ts_adapter")
 local registerAbility = ____dota_ts_adapter.registerAbility
 local ____modifier_casting = require("modifiers.modifier_casting")
@@ -14,10 +13,11 @@ local ____projectiles = require("projectiles")
 local ProjectileBehavior = ____projectiles.ProjectileBehavior
 local ____util = require("util")
 local direction2D = ____util.direction2D
+local giveManaAndEnergyPercent = ____util.giveManaAndEnergyPercent
+local isGem = ____util.isGem
+local isObstacle = ____util.isObstacle
 local ____custom_ability = require("abilities.framework.custom_ability")
 local CustomAbility = ____custom_ability.CustomAbility
-function modifier_juggernaut_special_attack_recast(self)
-end
 local JuggernautSpecialAttack = __TS__Class()
 JuggernautSpecialAttack.name = "JuggernautSpecialAttack"
 __TS__ClassExtends(JuggernautSpecialAttack, CustomAbility)
@@ -61,6 +61,9 @@ function JuggernautSpecialAttack.prototype.OnSpellStart(self)
                     if unit:IsAlive() then
                     end
                 end
+                if not isObstacle(nil, unit) and not isGem(nil, unit) then
+                    giveManaAndEnergyPercent(nil, projectile.source, manaGainPct, true)
+                end
             end
         end,
         onFinish = function(____, position)
@@ -85,21 +88,4 @@ JuggernautSpecialAttack = __TS__Decorate(
     {registerAbility(nil, "juggernaut_special_attack")},
     JuggernautSpecialAttack
 )
-local ____class_0 = __TS__Class()
-____class_0.name = ""
-function ____class_0.prototype.____constructor(self)
-end
-modifier_juggernaut_special_attack_recast = ____class_0(nil, {})
-local function modifier_juggernaut_special_attack_recast(self)
-end
-local ____ = params
-if IsServer() then
-    local ____ = ____then
-end
-self.target_index = params.target_index
-local ____ = ____end
-local ____ = ____end
-local function modifier_juggernaut_special_attack_recast(self)
-end
-local ____ = ____
-return self.target_index
+return ____exports

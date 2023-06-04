@@ -28,7 +28,7 @@ function modifier_juggernaut_ex_counter:DeclareFunctions()
 end
 
 function modifier_juggernaut_ex_counter:OnEvent(params)
-    if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED or params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_MISSED then
+    if params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED then
         self:DecrementStackCount()
     end
 end

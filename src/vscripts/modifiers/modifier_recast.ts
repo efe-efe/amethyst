@@ -3,21 +3,37 @@ import { registerModifier } from "../lib/dota_ts_adapter";
 
 @registerModifier()
 export class ModifierRecast extends CustomModifier<undefined> {
-    OnCreated() {
+    abilityLeft!: CDOTABaseAbility;
+    abilityRight?: CDOTABaseAbility;
+    duration!: number;
+
+    IsHidden() {
+        return true;
+    }
+
+    OnCreated(params: { abilityLeft: string; abilityRight?: string; charges?: number; duration: number }) {
         if (IsServer()) {
-            // if self:GetRecastCharges() then
-            //     self:SetStackCount(self:GetRecastCharges())
-            // end
-            // if self:GetAbility() == self:GetRecastAbility() then
-            //     self:GetAbility():EndCooldown()
-            // else
-            //     self:GetParent():SwapAbilities(
-            //         self:GetAbility():GetName(),
-            //         self:GetRecastAbility():GetName(),
-            //         false,
-            //         true
-            //     )
-            // end
+            const abilityLeft = this.parent.FindAbilityByName(params.abilityLeft);
+
+            this.duration = params.duration;
+
+            if (!abilityLeft) {
+                print(`[ERROR] AbilityLeft (${params.abilityLeft}) not found on ModifierRecast`);
+                this.Destroy();
+                return;
+            }
+
+            this.abilityLeft = abilityLeft;
+
+            if (params.abilityRight) {
+                this.abilityRight = this.parent.FindAbilityByName(params.abilityRight);
+                this.parent.SwapAbilities(params.abilityLeft, params.abilityRight, false, true);
+            }
+
+            const charges = params.charges ?? 1;
+
+            this.SetStackCount(this.abilityRight ? charges : charges + 1);
+
             // CustomEntitiesLegacy:SendDataToClient(self:GetParent())
         }
     }
@@ -30,73 +46,59 @@ export class ModifierRecast extends CustomModifier<undefined> {
     //     }
     // end
 
-    // function modifier:OnDestroy()
-    //     if IsServer() then
-    //         if self:GetAbility() == self:GetRecastAbility() then
-    //             self:GetAbility():StartCooldown(self:GetAbility():GetCooldown(self:GetAbility():GetLevel()))
-    //         else
-    //             self:GetParent():SwapAbilities(
-    //                 self:GetAbility():GetName(),
-    //                 self:GetRecastAbility():GetName(),
-    //                 true,
-    //                 false
-    //            )
-    //         end
-    //         CustomEntitiesLegacy:SendDataToClient(self:GetParent())
-    //     end
-    //     if onDestroy then onDestroy(self) end
-    // end
+    OnDestroy() {
+        if (IsServer()) {
+            if (this.abilityRight) {
+                this.parent.SwapAbilities(this.abilityLeft.GetName(), this.abilityRight.GetName(), true, false);
+            }
 
-    // function modifier:OnRefresh()
-    //     self:IncrementStackCount()
-    //     if onRefresh then onRefresh(self) end
-    // end
+            this.abilityLeft.StartCooldown(this.abilityLeft.GetCooldown(this.abilityLeft.GetLevel()));
+            //         CustomEntitiesLegacy:SendDataToClient(self:GetParent())
+        }
+    }
 
-    // function modifier:OnStackCountChanged(old)
-    //     if IsServer() then
-    //         if self:GetStackCount() <= 0 then
-    //             self:Destroy()
-    //         end
-    //     end
-    // end
+    OnRefresh() {
+        if (IsServer()) {
+            this.IncrementStackCount();
+        }
+    }
 
-    // function modifier:DeclareFunctions()
-    //     local funcs = {}
+    OnStackCountChanged() {
+        if (IsServer()) {
+            if (this.GetStackCount() <= 0) {
+                this.Destroy();
+                return;
+            }
 
-    //     if declareFunctions then
-    //         for _,func in pairs(declareFunctions()) do
-    //             table.insert(funcs, func)
-    //         end
-    //     end
+            if (!this.abilityRight) {
+                print("this.abilityLeft.EndCooldown()");
+                this.abilityLeft.EndCooldown();
+            } else {
+                this.abilityRight.EndCooldown();
+                print("this.abilityRight.EndCooldown()");
+            }
+        }
+    }
 
-    //     table.insert(funcs, MODIFIER_EVENT_ON_ABILITY_EXECUTED)
+    DeclareFunctions() {
+        return [ModifierFunction.ON_ABILITY_FULLY_CAST];
+    }
 
-    //     return funcs
-    // end
+    OnAbilityFullyCast(event: ModifierAbilityEvent) {
+        if (IsServer()) {
+            if (event.unit != this.parent) {
+                return;
+            }
 
-    // function modifier:OnAbilityExecuted(params)
-    //     if IsServer() then
-    //         if params.unit ~= self:GetParent() then
-    //             return
-    //         end
+            if (!this.abilityRight && event.ability == this.abilityLeft) {
+                this.DecrementStackCount();
+            }
 
-    //         if params.ability == self:GetRecastAbility() then
-    //             if self:GetRecastCharges() then
-    //                 self:DecrementStackCount()
-    //             end
-    //         end
-    //     end
-    // end
-
-    // function modifier:GetRecastCharges()
-    //     if getRecastCharges then return getRecastCharges(self) end
-    //     return nil
-    // end
-
-    // function modifier:GetRecastAbility()
-    //     if getRecastAbility then return getRecastAbility(self) end
-    //     return self:GetAbility()
-    // end
+            if (event.ability == this.abilityRight) {
+                this.DecrementStackCount();
+            }
+        }
+    }
 
     // function modifier:GetRecastKey()
     //     if getRecastKey then return getRecastKey(self) end

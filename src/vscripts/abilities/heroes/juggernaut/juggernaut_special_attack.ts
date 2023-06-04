@@ -1,11 +1,8 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
-import { ProjectileBehavior, createProjectile } from "../../../projectiles";
-import { direction2D } from "../../../util";
+import { ProjectileBehavior } from "../../../projectiles";
+import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
-
-// juggernaut_special_attack_recast = class({})
-// LinkLuaModifier("modifier_juggernaut_special_attack_recast", "abilities/heroes/juggernaut/juggernaut_special_attack/modifier_juggernaut_special_attack_recast", LUA_MODIFIER_MOTION_NONE)
 
 @registerAbility("juggernaut_special_attack")
 class JuggernautSpecialAttack extends CustomAbility {
@@ -45,7 +42,6 @@ class JuggernautSpecialAttack extends CustomAbility {
             groundBehavior: ProjectileBehavior.NOTHING,
             groundOffset: 0,
             draw: true,
-            //@Refactor this shit uses "this.caster" but maybe it needs the source of the projectile
             unitTest: (unit, projectile) => unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.source, unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
@@ -66,9 +62,10 @@ class JuggernautSpecialAttack extends CustomAbility {
                             // this.caster.AddNewModifier(this.caster, self, "modifier_juggernaut_special_attack_recast", { duration = recastTime })
                         }
                     }
-                    // if CustomEntitiesLegacy:ProvidesMana(unit) then
-                    // 	CustomEntitiesLegacy:GiveManaAndEnergyPercent(this.caster, manaGainPct, true)
-                    // }
+
+                    if (!isObstacle(unit) && !isGem(unit)) {
+                        giveManaAndEnergyPercent(projectile.source, manaGainPct, true);
+                    }
                 }
             },
             onFinish: (position: Vector) => {
@@ -141,6 +138,9 @@ class JuggernautSpecialAttack extends CustomAbility {
 
 // }
 
+// juggernaut_special_attack_recast = class({})
+// LinkLuaModifier("modifier_juggernaut_special_attack_recast", "abilities/heroes/juggernaut/juggernaut_special_attack/modifier_juggernaut_special_attack_recast", LUA_MODIFIER_MOTION_NONE)
+
 // function juggernaut_special_attack_recast:SetTargetIndex(target_index)
 //     self.target_index = target_index
 // }
@@ -152,60 +152,31 @@ class JuggernautSpecialAttack extends CustomAbility {
 // if IsClient() then require("wrappers/abilities") }
 // Abilities.Castpoint(juggernaut_special_attack)
 
+// modifier_juggernaut_special_attack_recast = class({})
 
+// function modifier_juggernaut_special_attack_recast:OnCreated(params)
+//     if IsServer() then
+//         self.target_index = params.target_index
+//     end
+// end
 
+// function modifier_juggernaut_special_attack_recast:GetTargetIndex()
+//     return self.target_index
+// end
 
+// function modifier_juggernaut_special_attack_recast:GetRecastAbility()
+//     if IsServer() then
+//         return self:GetParent():FindAbilityByName("juggernaut_special_attack_recast")
+//     end
+// end
 
+// function modifier_juggernaut_special_attack_recast:GetRecastCharges()
+// 	return 1
+// end
 
+// function modifier_juggernaut_special_attack_recast:GetRecastKey()
+// 	return "E"
+// end
 
-//
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-modifier_juggernaut_special_attack_recast = class({})
-
-function modifier_juggernaut_special_attack_recast:OnCreated(params)
-    if IsServer() then
-        self.target_index = params.target_index
-    end
-end
-
-function modifier_juggernaut_special_attack_recast:GetTargetIndex()
-    return self.target_index
-end
-
-function modifier_juggernaut_special_attack_recast:GetRecastAbility()
-    if IsServer() then
-        return self:GetParent():FindAbilityByName("juggernaut_special_attack_recast") 
-    end
-end
-
-function modifier_juggernaut_special_attack_recast:GetRecastCharges()
-	return 1
-end
-
-function modifier_juggernaut_special_attack_recast:GetRecastKey()
-	return "E"
-end
-
-if IsClient() then require("wrappers/modifiers") end
-Modifiers.Recast(modifier_juggernaut_special_attack_recast)
+// if IsClient() then require("wrappers/modifiers") end
+// Modifiers.Recast(modifier_juggernaut_special_attack_recast)

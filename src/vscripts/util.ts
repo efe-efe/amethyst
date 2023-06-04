@@ -4,12 +4,29 @@ import {
     CustomModifierMotionVertical
 } from "./abilities/framework/custom_modifier";
 import { ModifierGem } from "./modifiers/modifier_gem";
+import { ModifierHideBar } from "./modifiers/modifier_hide_bar";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { ModifierRecast } from "./modifiers/modifier_recast";
 import { ModifierWall } from "./modifiers/modifier_wall";
 
 function getRecastModifiers(unit: CDOTA_BaseNPC) {
     return ModifierRecast.findAll(unit);
+}
+
+//@Refactor maybe this should change... for now I'll keep it as it is
+export function deactivateNonPriorityAbilities(unit: CDOTA_BaseNPC) {
+    if (IsServer()) {
+        //@Refactor Maybe this is the reason why we use yield thing in AA
+        for (let i = 0; i <= 10; i++) {
+            const ability = unit.GetAbilityByIndex(i);
+
+            if (ability) {
+                // if (!ability.IsCounter() && !ability.IsMobility() && !ability.IsUltimate() && !ability.HasPriority()) {
+                ability.SetActivated(false);
+                // }
+            }
+        }
+    }
 }
 
 export function sendDataToClient(unit: CDOTA_BaseNPC) {
@@ -74,7 +91,7 @@ export function clamp(value: number, max: number, min: number) {
     return value;
 }
 
-export function overheadMessageEFX(unit: CDOTA_BaseNPC, value: number, wordLength: number, color: Vector, shield: 1 | 0) {
+export function overheadMessageEFX(unit: CDOTA_BaseNPC, value: number, wordLength: number, color: Vector, shield: 7 | 0) {
     const duration = math.max(1, value / 10);
 
     EFX("particles/msg_damage.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
@@ -84,6 +101,13 @@ export function overheadMessageEFX(unit: CDOTA_BaseNPC, value: number, wordLengt
         cp3: color,
         release: true
     });
+}
+
+export function sendOverheadShieldMessage(unit: CDOTA_BaseNPC, value: number) {
+    const wordLength = string.len(tostring(math.floor(value))) + 1; //TODO: @Refactor Improve this
+    const color = Vector(255, 255, 255);
+
+    overheadMessageEFX(unit, value, wordLength, color, 7);
 }
 
 export function sendOverheadEnergyMessage(unit: CDOTA_BaseNPC, value: number) {
@@ -311,4 +335,58 @@ export function fullyFaceTowards(unit: CDOTA_BaseNPC, direction: Vector) {
 
 export function strongPurge(unit: CDOTA_BaseNPC) {
     unit.Purge(false, true, false, true, false);
+}
+
+export function hideHealthBar(unit: CDOTA_BaseNPC, duration?: number) {
+    ModifierHideBar.apply(unit, unit, undefined, { duration });
+}
+
+export function unhideHealthBar(unit: CDOTA_BaseNPC) {
+    unit.RemoveModifierByName(ModifierHideBar.name);
+}
+
+function radiusMarkerEfx(particleId: ParticleID, origin: Vector, radius: number, color: Vector, duration: number) {
+    ParticleManager.SetParticleControl(particleId, 0, origin);
+    ParticleManager.SetParticleControl(particleId, 1, Vector(radius, 1, 1));
+    ParticleManager.SetParticleControl(particleId, 2, color);
+    ParticleManager.SetParticleControl(particleId, 3, Vector(duration, 0, 0));
+    ParticleManager.ReleaseParticleIndex(particleId);
+}
+
+export function createRadiusMarker(unit: CDOTA_BaseNPC, origin: Vector, radius: number, scope: "public" | "local", duration: number) {
+    const red = Vector(255, 1, 1);
+    const green = Vector(1, 255, 1);
+
+    if (scope == "public") {
+        for (const alliance of GameRules.Addon.alliances) {
+            for (const team of alliance.teams) {
+                const color = unit.GetTeamNumber() == team ? green : red;
+                radiusMarkerEfx(
+                    ParticleManager.CreateParticleForTeam("particles/aoe_marker.vpcf", ParticleAttachment.WORLDORIGIN, undefined, team),
+                    origin,
+                    radius,
+                    color,
+                    duration
+                );
+            }
+        }
+        return;
+    }
+
+    radiusMarkerEfx(
+        ParticleManager.CreateParticleForPlayer(
+            "particles/aoe_marker.vpcf",
+            ParticleAttachment.WORLDORIGIN,
+            undefined,
+            unit.GetPlayerOwner()
+        ),
+        origin,
+        radius,
+        green,
+        duration
+    );
+}
+
+export function randomInArray<T>(array: readonly T[]): T {
+    return array[RandomInt(0, array.length - 1)];
 }

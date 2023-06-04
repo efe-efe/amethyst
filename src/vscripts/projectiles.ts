@@ -7,6 +7,18 @@ export enum ProjectileBehavior {
     FOLLOW = "FOLLOW"
 }
 
+export type ProjectileHandler = {
+    source: CDOTA_BaseNPC;
+    getIsReflectable: () => boolean;
+    getIsDestructible: () => boolean;
+    getVelocity: () => Vector;
+    getPosition: () => Vector;
+    scheduleDestroy: () => void;
+    setVelocity: (newVelocity: Vector, newPosition: Vector, ignoreChanges?: boolean) => void;
+    setSource: (unit: CDOTA_BaseNPC) => void;
+    resetDistanceTraveled: () => void;
+};
+
 export type ProjectileOptions = {
     source: CDOTA_BaseNPC;
     velocity: Vector;
@@ -45,15 +57,15 @@ export type ProjectileOptions = {
     recreateOnChange?: boolean;
     groundLock?: boolean;
     //     bIsSlowable =                   true,
-    //     bIsReflectable =                true,
+    isReflectable?: boolean;
     //     bIsReflectableByAllies =        false,
-    //     bIsDestructible =               true,
+    isDestructible?: boolean;
     treeFullCollision?: boolean;
     providesVision?: boolean;
     flyingVision?: boolean;
     draw?: boolean;
-    unitTest?: (unit: CDOTA_BaseNPC, projectile: { source: CDOTA_BaseNPC }) => boolean;
-    onUnitHit?: (unit: CDOTA_BaseNPC, projectile: { source: CDOTA_BaseNPC }) => void; // This should also have the projectile as parameter
+    unitTest?: (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => boolean;
+    onUnitHit?: (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => boolean | void;
     //     OnTreeHit =                     function() return end,
     //     OnWallHit =                     function() return end,
     //     OnGroundHit =                   function() return end,
@@ -138,6 +150,8 @@ function projectile(options: ProjectileOptions) {
     const groundBehavior = options.groundBehavior ?? ProjectileBehavior.DESTROY;
     const wallBehavior = options.wallBehavior ?? ProjectileBehavior.DESTROY;
     const treeFullCollision = options.treeFullCollision ?? false;
+    const isReflectable = options.isReflectable ?? true;
+    const isDestructible = options.isDestructible ?? true;
     const changeDelay = options.changeDelay ?? 0.1;
     const recreateOnChange = options.recreateOnChange ?? true;
     const visionRadius = options.visionRadius ?? 200;
@@ -161,8 +175,8 @@ function projectile(options: ProjectileOptions) {
     let currentFrame = visionTick;
     let source = options.source;
 
-    let unitTest: (unit: CDOTA_BaseNPC, projectile: { source: CDOTA_BaseNPC }) => boolean = () => false;
-    let onUnitHit: (unit: CDOTA_BaseNPC, projectile: { source: CDOTA_BaseNPC }) => void = () => {};
+    let unitTest: (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => boolean = () => false;
+    let onUnitHit: (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => boolean | void = () => {};
     let onFinish: (position: Vector) => void = () => {};
 
     if (options.unitTest) {
@@ -187,6 +201,14 @@ function projectile(options: ProjectileOptions) {
         : (endRadius - startRadius) / distance / currentVelocity.Length();
 
     ParticleManager.SetParticleControl(particleId, velocityCp, currentVelocity.__mul(PROJECTILES_VISUAL_OFFSET));
+
+    function getIsReflectable() {
+        return isReflectable;
+    }
+
+    function getIsDestructible() {
+        return isDestructible;
+    }
 
     function createParticle(position?: Vector) {
         const particleId = ParticleManager.CreateParticle(options.effectName, ParticleAttachment.CUSTOMORIGIN, undefined);
@@ -405,8 +427,20 @@ function projectile(options: ProjectileOptions) {
             //     --VectorDistanceSq(position2D, origin) <= self.radiusSquare and position.z >= orgz and position.z <= orgz + height then
             const time = hitLog.get(entity.entindex());
             if (time == undefined || currentTime > time) {
-                if (unitTest(entity, { source })) {
-                    // @Refactor refactor this iswall
+                if (
+                    unitTest(entity, {
+                        source,
+                        getIsReflectable,
+                        getIsDestructible,
+                        scheduleDestroy,
+                        getVelocity,
+                        getPosition,
+                        resetDistanceTraveled,
+                        setSource,
+                        setVelocity
+                    })
+                ) {
+                    // @Refactor refactor this isWall
                     if (isConsideredWall(entity)) {
                         if (CustomEntitiesLegacy.Allies(source, entity)) {
                             return true;
@@ -422,16 +456,23 @@ function projectile(options: ProjectileOptions) {
                         hitLog.set(entity.entindex(), currentTime + 10000);
                     }
 
-                    onUnitHit(entity, { source });
+                    const bypass =
+                        onUnitHit(entity, {
+                            source,
+                            getIsReflectable,
+                            getIsDestructible,
+                            scheduleDestroy,
+                            getVelocity,
+                            getPosition,
+                            resetDistanceTraveled,
+                            setSource,
+                            setVelocity
+                        }) ?? false;
 
-                    // if not self.bIgnoreNextUnitBehavior then
-                    if (unitBehavior == ProjectileBehavior.DESTROY) {
+                    if (!bypass && unitBehavior == ProjectileBehavior.DESTROY) {
                         destroy(false);
                         return false;
                     }
-                    // else
-                    //     self.bIgnoreNextUnitBehavior = false
-                    // end
                 }
             }
         }
@@ -591,8 +632,17 @@ function projectile(options: ProjectileOptions) {
         endTime = time;
     }
 
-    function setSource(unit: CDOTA_BaseNPC_Shop) {
+    function setSource(unit: CDOTA_BaseNPC) {
         source = unit;
+    }
+
+    //@Refactor this needs revision, I don't remember the PROJECTILES_VISUAL_OFFSET thing
+    function getVelocity() {
+        return currentVelocity.__mul(PROJECTILES_VISUAL_OFFSET);
+    }
+
+    function getPosition() {
+        return currentPosition;
     }
 
     return {
@@ -602,10 +652,6 @@ function projectile(options: ProjectileOptions) {
         scheduleDestroy
     };
 }
-
-// function Projectile:IgnoreNextUnitBehavior()
-//     self.bIgnoreNextUnitBehavior = true
-// end
 
 // function Projectile:GetSlope(vPosition, hEntity, vDirection)
 //     local m_dir = Vector(vDirection.x, vDirection.y, 0):Normalized()
@@ -627,12 +673,4 @@ function projectile(options: ProjectileOptions) {
 
 // function Projectile:SetVisionTeam(iTeam)
 //     self.visionTeamNumber = iTeam
-// end
-
-// function Projectile:GetPosition()
-//     return self.currentPosition
-// end
-
-// function Projectile:GetVelocity()
-// return self.currentVelocity * PROJECTILES_VISUAL_OFFSET
 // end

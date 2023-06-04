@@ -2,7 +2,7 @@
 	"juggernaut_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"juggernaut_counter"
@@ -24,7 +24,7 @@
 	"juggernaut_counter_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"juggernaut_counter_recast"
@@ -48,7 +48,7 @@
 	"juggernaut_ex_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter/juggernaut_counter"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_counter"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"juggernaut_swift_slash"

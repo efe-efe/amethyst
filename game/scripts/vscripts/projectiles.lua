@@ -3,7 +3,7 @@ local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local Map = ____lualib.Map
 local __TS__New = ____lualib.__TS__New
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 65,["9"] = 1,["10"] = 1,["11"] = 101,["12"] = 102,["13"] = 102,["14"] = 102,["15"] = 102,["17"] = 112,["18"] = 114,["19"] = 191,["20"] = 192,["21"] = 193,["22"] = 195,["23"] = 196,["25"] = 199,["26"] = 200,["28"] = 216,["29"] = 217,["30"] = 217,["31"] = 217,["32"] = 217,["33"] = 217,["35"] = 219,["37"] = 225,["39"] = 247,["40"] = 248,["41"] = 249,["42"] = 250,["43"] = 251,["45"] = 253,["48"] = 261,["49"] = 262,["51"] = 265,["52"] = 266,["54"] = 287,["55"] = 288,["56"] = 290,["57"] = 291,["60"] = 295,["61"] = 296,["62"] = 296,["63"] = 296,["65"] = 296,["67"] = 296,["68"] = 297,["70"] = 382,["71"] = 383,["72"] = 384,["73"] = 385,["76"] = 389,["78"] = 392,["79"] = 393,["80"] = 394,["81"] = 395,["82"] = 397,["83"] = 404,["84"] = 406,["85"] = 407,["86"] = 408,["87"] = 410,["88"] = 411,["89"] = 412,["90"] = 413,["91"] = 414,["92"] = 415,["95"] = 419,["96"] = 420,["97"] = 420,["98"] = 420,["99"] = 420,["101"] = 422,["102"] = 422,["103"] = 422,["104"] = 422,["106"] = 425,["107"] = 428,["108"] = 429,["109"] = 430,["114"] = 439,["116"] = 442,["117"] = 443,["118"] = 444,["119"] = 445,["120"] = 446,["121"] = 447,["122"] = 449,["127"] = 474,["129"] = 477,["130"] = 478,["131"] = 480,["132"] = 482,["133"] = 483,["134"] = 483,["135"] = 483,["136"] = 483,["137"] = 483,["138"] = 491,["139"] = 492,["140"] = 493,["141"] = 494,["142"] = 496,["143"] = 497,["144"] = 499,["145"] = 503,["149"] = 507,["151"] = 510,["152"] = 511,["153"] = 512,["154"] = 519,["155"] = 528,["158"] = 546,["160"] = 567,["161"] = 568,["162"] = 569,["163"] = 569,["164"] = 569,["165"] = 569,["166"] = 569,["167"] = 569,["168"] = 569,["169"] = 570,["171"] = 572,["174"] = 576,["175"] = 577,["176"] = 578,["177"] = 579,["178"] = 579,["179"] = 579,["180"] = 579,["181"] = 580,["182"] = 580,["183"] = 580,["184"] = 580,["185"] = 581,["186"] = 581,["187"] = 581,["188"] = 581,["189"] = 582,["190"] = 582,["191"] = 582,["192"] = 582,["193"] = 583,["195"] = 113,["196"] = 114,["197"] = 115,["198"] = 116,["199"] = 117,["200"] = 118,["201"] = 119,["202"] = 120,["203"] = 121,["204"] = 122,["205"] = 123,["206"] = 124,["207"] = 124,["208"] = 124,["210"] = 124,["211"] = 125,["212"] = 126,["213"] = 127,["214"] = 127,["215"] = 127,["217"] = 127,["218"] = 128,["219"] = 128,["220"] = 128,["222"] = 128,["223"] = 129,["224"] = 130,["225"] = 130,["226"] = 130,["228"] = 130,["229"] = 131,["230"] = 132,["231"] = 132,["232"] = 132,["234"] = 132,["235"] = 133,["236"] = 133,["237"] = 133,["239"] = 133,["240"] = 134,["241"] = 135,["242"] = 135,["243"] = 135,["245"] = 135,["246"] = 136,["247"] = 137,["248"] = 138,["249"] = 139,["250"] = 140,["251"] = 140,["252"] = 140,["254"] = 140,["255"] = 141,["256"] = 142,["257"] = 142,["258"] = 142,["260"] = 142,["261"] = 143,["262"] = 144,["263"] = 144,["264"] = 144,["266"] = 144,["267"] = 145,["268"] = 145,["269"] = 145,["271"] = 145,["272"] = 146,["273"] = 147,["274"] = 148,["275"] = 149,["276"] = 151,["277"] = 152,["278"] = 153,["279"] = 154,["280"] = 155,["281"] = 156,["282"] = 157,["283"] = 158,["284"] = 159,["285"] = 160,["286"] = 161,["287"] = 162,["288"] = 164,["289"] = 165,["290"] = 165,["291"] = 166,["292"] = 166,["293"] = 168,["294"] = 169,["296"] = 172,["297"] = 173,["299"] = 176,["300"] = 177,["302"] = 180,["303"] = 181,["304"] = 182,["305"] = 183,["306"] = 185,["307"] = 189,["308"] = 189,["309"] = 189,["310"] = 189,["311"] = 189,["312"] = 228,["313"] = 229,["314"] = 228,["315"] = 232,["316"] = 233,["317"] = 232,["318"] = 236,["319"] = 237,["320"] = 238,["321"] = 240,["322"] = 241,["323"] = 241,["324"] = 241,["325"] = 241,["326"] = 241,["327"] = 241,["328"] = 241,["329"] = 241,["331"] = 243,["332"] = 243,["333"] = 243,["334"] = 243,["335"] = 243,["336"] = 243,["337"] = 243,["338"] = 243,["340"] = 236,["341"] = 257,["342"] = 258,["343"] = 257,["344"] = 269,["345"] = 270,["346"] = 271,["348"] = 273,["349"] = 273,["350"] = 273,["351"] = 273,["352"] = 273,["353"] = 273,["354"] = 273,["355"] = 273,["356"] = 273,["357"] = 273,["358"] = 273,["360"] = 269,["361"] = 300,["362"] = 301,["363"] = 307,["364"] = 308,["366"] = 311,["367"] = 312,["370"] = 316,["371"] = 317,["372"] = 318,["373"] = 318,["374"] = 318,["375"] = 318,["376"] = 319,["377"] = 321,["378"] = 322,["379"] = 323,["380"] = 325,["381"] = 326,["382"] = 328,["383"] = 329,["384"] = 331,["385"] = 332,["386"] = 333,["388"] = 336,["389"] = 336,["390"] = 337,["393"] = 340,["396"] = 344,["399"] = 348,["402"] = 352,["403"] = 353,["404"] = 354,["405"] = 356,["406"] = 357,["409"] = 361,["410"] = 362,["412"] = 336,["415"] = 366,["416"] = 367,["418"] = 370,["419"] = 371,["420"] = 372,["421"] = 373,["422"] = 375,["423"] = 376,["425"] = 379,["426"] = 300,["427"] = 550,["428"] = 551,["429"] = 552,["430"] = 553,["431"] = 554,["433"] = 557,["434"] = 559,["435"] = 560,["436"] = 561,["438"] = 563,["440"] = 550,["441"] = 586,["442"] = 587,["443"] = 586,["444"] = 590,["445"] = 591,["446"] = 590,["447"] = 594,["448"] = 595,["449"] = 594,["450"] = 598,["452"] = 3,["453"] = 4,["454"] = 5,["455"] = 6,["456"] = 7,["457"] = 65,["458"] = 66,["459"] = 68,["460"] = 70,["461"] = 71,["462"] = 73,["463"] = 74,["464"] = 74,["465"] = 74,["466"] = 75,["467"] = 77,["468"] = 78,["470"] = 81,["471"] = 82,["472"] = 84,["473"] = 85,["474"] = 86,["475"] = 87,["476"] = 88,["478"] = 90,["482"] = 95,["483"] = 95,["484"] = 95,["485"] = 96,["486"] = 95,["487"] = 95,["488"] = 74,["489"] = 74,["490"] = 73,["491"] = 105,["492"] = 106,["493"] = 107,["494"] = 109,["495"] = 105});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 77,["9"] = 1,["10"] = 1,["11"] = 113,["12"] = 114,["13"] = 114,["14"] = 114,["15"] = 114,["17"] = 124,["18"] = 126,["19"] = 205,["20"] = 206,["22"] = 209,["23"] = 210,["25"] = 213,["26"] = 214,["27"] = 215,["28"] = 217,["29"] = 218,["31"] = 221,["32"] = 222,["34"] = 238,["35"] = 239,["36"] = 239,["37"] = 239,["38"] = 239,["39"] = 239,["41"] = 241,["43"] = 247,["45"] = 254,["46"] = 255,["48"] = 269,["49"] = 270,["50"] = 271,["51"] = 272,["52"] = 273,["54"] = 275,["57"] = 283,["58"] = 284,["60"] = 287,["61"] = 288,["63"] = 309,["64"] = 310,["65"] = 312,["66"] = 313,["69"] = 317,["70"] = 318,["71"] = 318,["72"] = 318,["74"] = 318,["76"] = 318,["77"] = 319,["79"] = 404,["80"] = 405,["81"] = 406,["82"] = 407,["85"] = 411,["87"] = 414,["88"] = 415,["89"] = 416,["90"] = 417,["91"] = 419,["92"] = 426,["93"] = 428,["94"] = 429,["95"] = 431,["96"] = 431,["97"] = 431,["98"] = 431,["99"] = 431,["100"] = 431,["101"] = 431,["102"] = 431,["103"] = 431,["104"] = 431,["105"] = 431,["106"] = 444,["107"] = 445,["108"] = 446,["109"] = 447,["110"] = 448,["111"] = 449,["114"] = 453,["115"] = 454,["116"] = 454,["117"] = 454,["118"] = 454,["120"] = 456,["121"] = 456,["122"] = 456,["123"] = 456,["125"] = 460,["126"] = 460,["127"] = 460,["128"] = 460,["129"] = 460,["130"] = 460,["131"] = 460,["132"] = 460,["133"] = 460,["134"] = 460,["135"] = 460,["136"] = 460,["137"] = 460,["139"] = 459,["140"] = 472,["141"] = 473,["142"] = 474,["147"] = 480,["149"] = 483,["150"] = 484,["151"] = 485,["152"] = 486,["153"] = 487,["154"] = 488,["155"] = 490,["160"] = 515,["162"] = 518,["163"] = 519,["164"] = 521,["165"] = 523,["166"] = 524,["167"] = 524,["168"] = 524,["169"] = 524,["170"] = 524,["171"] = 532,["172"] = 533,["173"] = 534,["174"] = 535,["175"] = 537,["176"] = 538,["177"] = 540,["178"] = 544,["182"] = 548,["184"] = 551,["185"] = 552,["186"] = 553,["187"] = 560,["188"] = 569,["191"] = 587,["193"] = 591,["194"] = 592,["195"] = 593,["196"] = 594,["197"] = 595,["199"] = 598,["200"] = 600,["201"] = 601,["202"] = 602,["204"] = 604,["207"] = 608,["208"] = 609,["209"] = 610,["210"] = 610,["211"] = 610,["212"] = 610,["213"] = 610,["214"] = 610,["215"] = 610,["216"] = 611,["218"] = 613,["221"] = 617,["222"] = 618,["223"] = 619,["224"] = 620,["225"] = 620,["226"] = 620,["227"] = 620,["228"] = 621,["229"] = 621,["230"] = 621,["231"] = 621,["232"] = 622,["233"] = 622,["234"] = 622,["235"] = 622,["236"] = 623,["237"] = 623,["238"] = 623,["239"] = 623,["240"] = 624,["242"] = 627,["243"] = 628,["245"] = 635,["246"] = 636,["248"] = 640,["249"] = 641,["251"] = 644,["252"] = 645,["254"] = 125,["255"] = 126,["256"] = 127,["257"] = 128,["258"] = 129,["259"] = 130,["260"] = 131,["261"] = 132,["262"] = 133,["263"] = 134,["264"] = 135,["265"] = 136,["266"] = 136,["267"] = 136,["269"] = 136,["270"] = 137,["271"] = 138,["272"] = 139,["273"] = 139,["274"] = 139,["276"] = 139,["277"] = 140,["278"] = 140,["279"] = 140,["281"] = 140,["282"] = 141,["283"] = 142,["284"] = 142,["285"] = 142,["287"] = 142,["288"] = 143,["289"] = 144,["290"] = 144,["291"] = 144,["293"] = 144,["294"] = 145,["295"] = 145,["296"] = 145,["298"] = 145,["299"] = 146,["300"] = 147,["301"] = 147,["302"] = 147,["304"] = 147,["305"] = 148,["306"] = 149,["307"] = 150,["308"] = 151,["309"] = 152,["310"] = 152,["311"] = 152,["313"] = 152,["314"] = 153,["315"] = 153,["316"] = 153,["318"] = 153,["319"] = 154,["320"] = 154,["321"] = 154,["323"] = 154,["324"] = 155,["325"] = 156,["326"] = 156,["327"] = 156,["329"] = 156,["330"] = 157,["331"] = 158,["332"] = 158,["333"] = 158,["335"] = 158,["336"] = 159,["337"] = 159,["338"] = 159,["340"] = 159,["341"] = 160,["342"] = 161,["343"] = 162,["344"] = 163,["345"] = 165,["346"] = 166,["347"] = 167,["348"] = 168,["349"] = 169,["350"] = 170,["351"] = 171,["352"] = 172,["353"] = 173,["354"] = 174,["355"] = 175,["356"] = 176,["357"] = 178,["358"] = 179,["359"] = 179,["360"] = 180,["361"] = 180,["362"] = 182,["363"] = 183,["365"] = 186,["366"] = 187,["368"] = 190,["369"] = 191,["371"] = 194,["372"] = 195,["373"] = 196,["374"] = 197,["375"] = 199,["376"] = 203,["377"] = 203,["378"] = 203,["379"] = 203,["380"] = 203,["381"] = 250,["382"] = 251,["383"] = 250,["384"] = 258,["385"] = 259,["386"] = 260,["387"] = 262,["388"] = 263,["389"] = 263,["390"] = 263,["391"] = 263,["392"] = 263,["393"] = 263,["394"] = 263,["395"] = 263,["397"] = 265,["398"] = 265,["399"] = 265,["400"] = 265,["401"] = 265,["402"] = 265,["403"] = 265,["404"] = 265,["406"] = 258,["407"] = 279,["408"] = 280,["409"] = 279,["410"] = 291,["411"] = 292,["412"] = 293,["414"] = 295,["415"] = 295,["416"] = 295,["417"] = 295,["418"] = 295,["419"] = 295,["420"] = 295,["421"] = 295,["422"] = 295,["423"] = 295,["424"] = 295,["426"] = 291,["427"] = 322,["428"] = 323,["429"] = 329,["430"] = 330,["432"] = 333,["433"] = 334,["436"] = 338,["437"] = 339,["438"] = 340,["439"] = 340,["440"] = 340,["441"] = 340,["442"] = 341,["443"] = 343,["444"] = 344,["445"] = 345,["446"] = 347,["447"] = 348,["448"] = 350,["449"] = 351,["450"] = 353,["451"] = 354,["452"] = 355,["454"] = 358,["455"] = 358,["456"] = 359,["459"] = 362,["462"] = 366,["465"] = 370,["468"] = 374,["469"] = 375,["470"] = 376,["471"] = 378,["472"] = 379,["475"] = 383,["476"] = 384,["478"] = 358,["481"] = 388,["482"] = 389,["484"] = 392,["485"] = 393,["486"] = 394,["487"] = 395,["488"] = 397,["489"] = 398,["491"] = 401,["492"] = 322,["493"] = 631,["494"] = 632,["495"] = 631,["496"] = 648,["498"] = 3,["499"] = 4,["500"] = 5,["501"] = 6,["502"] = 7,["503"] = 77,["504"] = 78,["505"] = 80,["506"] = 82,["507"] = 83,["508"] = 85,["509"] = 86,["510"] = 86,["511"] = 86,["512"] = 87,["513"] = 89,["514"] = 90,["516"] = 93,["517"] = 94,["518"] = 96,["519"] = 97,["520"] = 98,["521"] = 99,["522"] = 100,["524"] = 102,["528"] = 107,["529"] = 107,["530"] = 107,["531"] = 108,["532"] = 107,["533"] = 107,["534"] = 86,["535"] = 86,["536"] = 85,["537"] = 117,["538"] = 118,["539"] = 119,["540"] = 121,["541"] = 117});
 local ____exports = {}
 local removeProjectile, projectile, SPEED_FACTOR, PROJECTILES_VISUAL_OFFSET, projectiles
 local ____util = require("util")
@@ -15,7 +15,13 @@ function removeProjectile(self, projectileId)
     )
 end
 function projectile(self, options)
-    local createParticle, getSpawnOrigin, hasTimeExpired, hasDistanceExpired, destroy, testEntity, processEntities, processEntity, processTrees, processWalls, processGround, provideVision, getNormal, visionTeamNumber, spawnOrigin, visionLingerDuration, positionCP, controlPoints, controlPointForwards, zCheck, expireTime, distance, destroyImmediate, groundOffset, ignoreSource, cutTrees, unitBehavior, treeBehavior, groundBehavior, wallBehavior, treeFullCollision, visionRadius, flyingVision, multipleHits, rehitDelay, visionTick, spawnTime, hitLog, currentTime, currentPosition, currentVelocity, remainingChanges, currentRadius, changeTime, distanceTraveled, currentFrame, source, unitTest, onUnitHit, onFinish, particleId
+    local getIsReflectable, getIsDestructible, createParticle, resetDistanceTraveled, getSpawnOrigin, hasTimeExpired, hasDistanceExpired, destroy, testEntity, processEntities, processEntity, processTrees, processWalls, processGround, setVelocity, provideVision, getNormal, scheduleDestroy, setSource, getVelocity, getPosition, visionTeamNumber, spawnOrigin, visionLingerDuration, positionCP, velocityCp, controlPoints, controlPointForwards, zCheck, expireTime, distance, destroyImmediate, groundOffset, ignoreSource, cutTrees, unitBehavior, treeBehavior, groundBehavior, wallBehavior, treeFullCollision, isReflectable, isDestructible, changeDelay, recreateOnChange, visionRadius, flyingVision, multipleHits, rehitDelay, visionTick, spawnTime, hitLog, currentTime, currentPosition, currentVelocity, remainingChanges, currentRadius, changeTime, distanceTraveled, currentFrame, source, unitTest, onUnitHit, onFinish, particleId, scheduledToDestroy
+    function getIsReflectable(self)
+        return isReflectable
+    end
+    function getIsDestructible(self)
+        return isDestructible
+    end
     function createParticle(self, position)
         local particleId = ParticleManager:CreateParticle(options.effectName, PATTACH_CUSTOMORIGIN, nil)
         ParticleManager:SetParticleAlwaysSimulate(particleId)
@@ -35,6 +41,9 @@ function projectile(self, options)
             ParticleManager:SetParticleControl(particleId, positionCP, spawnOrigin)
         end
         return particleId
+    end
+    function resetDistanceTraveled(self)
+        distanceTraveled = 0
     end
     function getSpawnOrigin(self)
         if options.spawnOrigin.unit ~= nil then
@@ -58,13 +67,13 @@ function projectile(self, options)
         end
     end
     function testEntity(self, entity, zCheck)
-        local ____ignoreSource_11
+        local ____ignoreSource_13
         if ignoreSource then
-            ____ignoreSource_11 = entity ~= source
+            ____ignoreSource_13 = entity ~= source
         else
-            ____ignoreSource_11 = true
+            ____ignoreSource_13 = true
         end
-        local sourceTest = ____ignoreSource_11
+        local sourceTest = ____ignoreSource_13
         return IsValidEntity(entity) and entity:IsAlive() and sourceTest
     end
     function processEntities(self, entities, position)
@@ -83,7 +92,17 @@ function projectile(self, options)
         if testEntity(nil, entity, zCheck) then
             local time = hitLog:get(entity:entindex())
             if time == nil or currentTime > time then
-                if unitTest(nil, entity, {source = source}) then
+                if unitTest(nil, entity, {
+                    source = source,
+                    getIsReflectable = getIsReflectable,
+                    getIsDestructible = getIsDestructible,
+                    scheduleDestroy = scheduleDestroy,
+                    getVelocity = getVelocity,
+                    getPosition = getPosition,
+                    resetDistanceTraveled = resetDistanceTraveled,
+                    setSource = setSource,
+                    setVelocity = setVelocity
+                }) then
                     if isConsideredWall(nil, entity) then
                         if CustomEntitiesLegacy:Allies(source, entity) then
                             return true
@@ -103,8 +122,22 @@ function projectile(self, options)
                             currentTime + 10000
                         )
                     end
-                    onUnitHit(nil, entity, {source = source})
-                    if unitBehavior == ____exports.ProjectileBehavior.DESTROY then
+                    local ____onUnitHit_result_14 = onUnitHit(nil, entity, {
+                        source = source,
+                        getIsReflectable = getIsReflectable,
+                        getIsDestructible = getIsDestructible,
+                        scheduleDestroy = scheduleDestroy,
+                        getVelocity = getVelocity,
+                        getPosition = getPosition,
+                        resetDistanceTraveled = resetDistanceTraveled,
+                        setSource = setSource,
+                        setVelocity = setVelocity
+                    })
+                    if ____onUnitHit_result_14 == nil then
+                        ____onUnitHit_result_14 = false
+                    end
+                    local bypass = ____onUnitHit_result_14
+                    if not bypass and unitBehavior == ____exports.ProjectileBehavior.DESTROY then
                         destroy(nil, false)
                         return false
                     end
@@ -157,6 +190,20 @@ function projectile(self, options)
         end
         return true
     end
+    function setVelocity(self, newVelocity, newPosition, ignoreChanges)
+        if remainingChanges > 0 or ignoreChanges then
+            if not ignoreChanges then
+                remainingChanges = remainingChanges - 1
+                changeTime = GameRules:GetGameTime() + changeDelay
+            end
+            currentVelocity = newVelocity:__div(Vector(PROJECTILES_VISUAL_OFFSET, PROJECTILES_VISUAL_OFFSET, PROJECTILES_VISUAL_OFFSET))
+            if recreateOnChange then
+                ParticleManager:DestroyParticle(particleId, destroyImmediate)
+                particleId = createParticle(nil, newPosition or currentPosition)
+            end
+            ParticleManager:SetParticleControl(particleId, velocityCp, newVelocity)
+        end
+    end
     function provideVision(self)
         if currentFrame == visionTick then
             AddFOWViewer(
@@ -192,6 +239,18 @@ function projectile(self, options)
         ).z
         return Vector(zl - zr, zd - zu, 2 * mScale):Normalized()
     end
+    function scheduleDestroy(self)
+        scheduledToDestroy = true
+    end
+    function setSource(self, unit)
+        source = unit
+    end
+    function getVelocity(self)
+        return currentVelocity:__mul(PROJECTILES_VISUAL_OFFSET)
+    end
+    function getPosition(self)
+        return currentPosition
+    end
     local visionTickTime = math.max(options.visionTickTime or 0.1, 0.1)
     visionTeamNumber = options.visionTeamNumber or options.source:GetTeam()
     spawnOrigin = getSpawnOrigin(nil)
@@ -200,7 +259,7 @@ function projectile(self, options)
     local maxChanges = options.maxChanges or 1
     local startRadius = options.startRadius or 100
     positionCP = options.positionCP or 0
-    local velocityCp = options.velocityCp or 1
+    velocityCp = options.velocityCp or 1
     controlPoints = options.controlPoints or ({})
     controlPointForwards = options.controlPointForwards or ({})
     local ____options_zCheck_0 = options.zCheck
@@ -252,23 +311,33 @@ function projectile(self, options)
         ____options_treeFullCollision_7 = false
     end
     treeFullCollision = ____options_treeFullCollision_7
-    local changeDelay = options.changeDelay or 0.1
-    local ____options_recreateOnChange_8 = options.recreateOnChange
-    if ____options_recreateOnChange_8 == nil then
-        ____options_recreateOnChange_8 = true
+    local ____options_isReflectable_8 = options.isReflectable
+    if ____options_isReflectable_8 == nil then
+        ____options_isReflectable_8 = true
     end
-    local recreateOnChange = ____options_recreateOnChange_8
+    isReflectable = ____options_isReflectable_8
+    local ____options_isDestructible_9 = options.isDestructible
+    if ____options_isDestructible_9 == nil then
+        ____options_isDestructible_9 = true
+    end
+    isDestructible = ____options_isDestructible_9
+    changeDelay = options.changeDelay or 0.1
+    local ____options_recreateOnChange_10 = options.recreateOnChange
+    if ____options_recreateOnChange_10 == nil then
+        ____options_recreateOnChange_10 = true
+    end
+    recreateOnChange = ____options_recreateOnChange_10
     visionRadius = options.visionRadius or 200
-    local ____options_flyingVision_9 = options.flyingVision
-    if ____options_flyingVision_9 == nil then
-        ____options_flyingVision_9 = false
+    local ____options_flyingVision_11 = options.flyingVision
+    if ____options_flyingVision_11 == nil then
+        ____options_flyingVision_11 = false
     end
-    flyingVision = ____options_flyingVision_9
-    local ____options_multipleHits_10 = options.multipleHits
-    if ____options_multipleHits_10 == nil then
-        ____options_multipleHits_10 = false
+    flyingVision = ____options_flyingVision_11
+    local ____options_multipleHits_12 = options.multipleHits
+    if ____options_multipleHits_12 == nil then
+        ____options_multipleHits_12 = false
     end
-    multipleHits = ____options_multipleHits_10
+    multipleHits = ____options_multipleHits_12
     rehitDelay = options.rehitDelay or 1
     visionTick = math.ceil(visionTickTime * PROJECTILES_VISUAL_OFFSET)
     spawnTime = GameRules:GetGameTime()
@@ -302,7 +371,7 @@ function projectile(self, options)
     local radiusSquare = 0
     particleId = createParticle(nil)
     local id = particleId
-    local scheduledToDestroy = false
+    scheduledToDestroy = false
     local radiusStep = options.radiusStep and options.radiusStep / PROJECTILES_VISUAL_OFFSET or (endRadius - startRadius) / distance / currentVelocity:Length()
     ParticleManager:SetParticleControl(
         particleId,
@@ -311,9 +380,6 @@ function projectile(self, options)
     )
     local function resetRehit(self)
         hitLog:clear()
-    end
-    local function resetDistanceTraveled(self)
-        distanceTraveled = 0
     end
     local function debugDraw(self)
         local alpha = 1
@@ -424,28 +490,8 @@ function projectile(self, options)
         end
         return currentTime
     end
-    local function setVelocity(self, newVelocity, newPosition, ignoreChanges)
-        if remainingChanges > 0 or ignoreChanges then
-            if not ignoreChanges then
-                remainingChanges = remainingChanges - 1
-                changeTime = GameRules:GetGameTime() + changeDelay
-            end
-            currentVelocity = newVelocity:__div(Vector(PROJECTILES_VISUAL_OFFSET, PROJECTILES_VISUAL_OFFSET, PROJECTILES_VISUAL_OFFSET))
-            if recreateOnChange then
-                ParticleManager:DestroyParticle(particleId, destroyImmediate)
-                particleId = createParticle(nil, newPosition or currentPosition)
-            end
-            ParticleManager:SetParticleControl(particleId, velocityCp, newVelocity)
-        end
-    end
-    local function scheduleDestroy(self)
-        scheduledToDestroy = true
-    end
     local function setEndTime(self, time)
         endTime = time
-    end
-    local function setSource(self, unit)
-        source = unit
     end
     return {id = id, update = update, setEndTime = setEndTime, scheduleDestroy = scheduleDestroy}
 end

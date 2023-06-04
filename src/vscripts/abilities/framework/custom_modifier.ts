@@ -146,7 +146,7 @@ export class CustomModifierMotionHorizontal<A extends CDOTABaseAbility | undefin
     }
 }
 
-export class CustomModifierMotionVertical<A extends CDOTABaseAbility = CustomAbility> extends BaseModifierMotionVertical {
+export class CustomModifierMotionVertical<A extends CDOTABaseAbility | undefined = CustomAbility> extends BaseModifierMotionVertical {
     caster = this.GetCaster() as CDOTA_BaseNPC;
     parent = this.GetParent();
     ability = this.GetAbility() as A;
@@ -167,7 +167,7 @@ export class CustomModifierMotionVertical<A extends CDOTABaseAbility = CustomAbi
     }
 }
 
-export class CustomModifierMotionBoth<A extends CDOTABaseAbility = CustomAbility> extends BaseModifierMotionBoth {
+export class CustomModifierMotionBoth<A extends CDOTABaseAbility | undefined = CustomAbility> extends BaseModifierMotionBoth {
     caster = this.GetCaster() as CDOTA_BaseNPC;
     parent = this.GetParent();
     ability = this.GetAbility() as A;

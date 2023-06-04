@@ -23,16 +23,16 @@ const server = {
     sendStopAbilitySignalToServer: (abilityEntityIndex: AbilityEntityIndex): void => {
         const payload = {
             abilityEntityIndex,
-            type: Custom_ActionTypes.ABILITY,
-            mode: Custom_ActionModes.STOP
+            type: 1,
+            mode: 1
         };
         server.sendActionSignalToServer(payload);
     },
     sendStartMovementSignalToServer: (direction: number[]): void => {
         const payload = {
             direction,
-            type: Custom_ActionTypes.MOVEMENT,
-            mode: Custom_ActionModes.START
+            type: 0,
+            mode: 0
         };
 
         server.sendActionSignalToServer(payload);
@@ -40,8 +40,8 @@ const server = {
     sendStopMovementSignalToServer: (direction: number[]): void => {
         const payload = {
             direction,
-            type: Custom_ActionTypes.MOVEMENT,
-            mode: Custom_ActionModes.STOP
+            type: 0,
+            mode: 1
         };
 
         server.sendActionSignalToServer(payload);

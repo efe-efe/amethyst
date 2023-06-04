@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierCombatEvents, OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -20,7 +21,7 @@ class JuggernautMobility extends CustomAbility {
 }
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_mobility" })
-class ModifierJuggernautMobility extends CustomModifier<JuggernautMobility> {
+class ModifierJuggernautMobility extends ModifierCombatEvents {
     particleId!: ParticleID;
 
     IsHidden() {
@@ -181,29 +182,29 @@ class ModifierJuggernautMobility extends CustomModifier<JuggernautMobility> {
         return ParticleAttachment.ABSORIGIN_FOLLOW;
     }
 
-    // OnHit(params){
-    //     if(IsServer()){
-    //         if(params.iType == PROJECTILE_HIT){
-    //             if(not this.ShouldReflect()){
-    //                 return true
-    //             }
+    OnHit(event: OnHitEvent) {
+        if (IsServer()) {
+            if (event.attackCategory == "projectile") {
+                if (!this.ShouldReflect()) {
+                    return true;
+                }
 
-    //             const projectile = params.hProjectile
+                if (event.projectile.getIsReflectable() == true) {
+                    event.projectile.setVelocity(event.projectile.getVelocity().__mul(-1.2), event.projectile.getPosition());
+                    event.projectile.setSource(this.parent);
+                    // event.projectile.SetVisionTeam(this.parent:GetTeam())
+                    event.projectile.resetDistanceTraveled();
+                    // event.projectile.ResetRehit()
+                    EmitSoundOn("Hero_Juggernaut.Attack", this.parent);
+                }
 
-    //             if(projectile.bIsReflectable == true){
-    //                 projectile:SetVelocity(projectile:GetVelocity() * -1.2, projectile:GetPosition())
-    //                 projectile:SetSource(this.GetParent())
-    //                 projectile:SetVisionTeam(this.GetParent():GetTeam())
-    //                 projectile:ResetDistanceTraveled()
-    //                 projectile:ResetRehit()
-    //                 EmitSoundOn("Hero_Juggernaut.Attack", this.GetParent())
-    //             }
+                return false;
+            }
+            return true;
+        }
 
-    //             return false
-    //         }
-    //         return true
-    //     }
-    // }
+        return true;
+    }
 }
 
 // function modifier_juggernaut_mobility:GetStatusLabel() return "Blade Fury" }

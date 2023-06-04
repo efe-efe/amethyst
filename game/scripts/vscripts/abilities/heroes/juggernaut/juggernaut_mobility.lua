@@ -3,17 +3,17 @@ local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__Decorate = ____lualib.__TS__Decorate
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 1,["9"] = 1,["10"] = 1,["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 4,["16"] = 4,["17"] = 6,["18"] = 6,["19"] = 7,["20"] = 8,["21"] = 9,["22"] = 11,["23"] = 12,["24"] = 13,["25"] = 15,["26"] = 16,["27"] = 17,["28"] = 17,["29"] = 17,["30"] = 17,["32"] = 8,["33"] = 7,["34"] = 6,["35"] = 7,["37"] = 22,["38"] = 22,["39"] = 23,["40"] = 26,["41"] = 27,["42"] = 26,["43"] = 30,["44"] = 31,["45"] = 30,["46"] = 34,["47"] = 35,["48"] = 34,["49"] = 38,["50"] = 39,["51"] = 38,["52"] = 42,["53"] = 43,["54"] = 44,["55"] = 45,["56"] = 46,["58"] = 42,["59"] = 50,["60"] = 51,["61"] = 51,["62"] = 51,["63"] = 51,["64"] = 51,["65"] = 51,["66"] = 51,["67"] = 51,["68"] = 51,["69"] = 61,["70"] = 62,["71"] = 63,["72"] = 63,["73"] = 63,["74"] = 66,["75"] = 67,["76"] = 67,["77"] = 67,["78"] = 67,["79"] = 67,["80"] = 67,["81"] = 73,["82"] = 63,["83"] = 63,["85"] = 77,["86"] = 77,["87"] = 77,["88"] = 77,["89"] = 77,["90"] = 77,["91"] = 83,["94"] = 50,["95"] = 88,["96"] = 89,["97"] = 90,["98"] = 91,["100"] = 88,["101"] = 95,["102"] = 96,["103"] = 96,["104"] = 96,["105"] = 96,["106"] = 96,["107"] = 96,["108"] = 96,["109"] = 95,["110"] = 105,["111"] = 106,["112"] = 107,["113"] = 108,["116"] = 105,["117"] = 113,["118"] = 114,["119"] = 113,["120"] = 117,["121"] = 118,["122"] = 117,["123"] = 121,["124"] = 122,["125"] = 121,["126"] = 125,["127"] = 126,["128"] = 125,["129"] = 129,["130"] = 130,["131"] = 129,["132"] = 136,["133"] = 137,["134"] = 138,["135"] = 139,["136"] = 136,["137"] = 144,["138"] = 145,["139"] = 147,["140"] = 149,["141"] = 150,["143"] = 153,["144"] = 154,["145"] = 154,["146"] = 154,["147"] = 154,["148"] = 154,["149"] = 154,["150"] = 154,["151"] = 154,["152"] = 154,["153"] = 155,["154"] = 155,["155"] = 155,["156"] = 155,["157"] = 155,["158"] = 144,["159"] = 158,["160"] = 159,["161"] = 158,["162"] = 162,["163"] = 163,["164"] = 165,["165"] = 166,["166"] = 168,["167"] = 168,["168"] = 168,["169"] = 168,["170"] = 168,["171"] = 173,["172"] = 162,["173"] = 176,["174"] = 177,["175"] = 176,["176"] = 180,["177"] = 181,["178"] = 180,["179"] = 23,["180"] = 22,["181"] = 23});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 1,["9"] = 1,["10"] = 1,["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 4,["16"] = 4,["17"] = 7,["18"] = 7,["19"] = 8,["20"] = 9,["21"] = 10,["22"] = 12,["23"] = 13,["24"] = 14,["25"] = 16,["26"] = 17,["27"] = 18,["28"] = 18,["29"] = 18,["30"] = 18,["32"] = 9,["33"] = 8,["34"] = 7,["35"] = 8,["37"] = 23,["38"] = 23,["39"] = 24,["40"] = 27,["41"] = 28,["42"] = 27,["43"] = 31,["44"] = 32,["45"] = 31,["46"] = 35,["47"] = 36,["48"] = 35,["49"] = 39,["50"] = 40,["51"] = 39,["52"] = 43,["53"] = 44,["54"] = 45,["55"] = 46,["56"] = 47,["58"] = 43,["59"] = 51,["60"] = 52,["61"] = 52,["62"] = 52,["63"] = 52,["64"] = 52,["65"] = 52,["66"] = 52,["67"] = 52,["68"] = 52,["69"] = 62,["70"] = 63,["71"] = 64,["72"] = 64,["73"] = 64,["74"] = 67,["75"] = 68,["76"] = 68,["77"] = 68,["78"] = 68,["79"] = 68,["80"] = 68,["81"] = 74,["82"] = 64,["83"] = 64,["85"] = 78,["86"] = 78,["87"] = 78,["88"] = 78,["89"] = 78,["90"] = 78,["91"] = 84,["94"] = 51,["95"] = 89,["96"] = 90,["97"] = 91,["98"] = 92,["100"] = 89,["101"] = 96,["102"] = 97,["103"] = 97,["104"] = 97,["105"] = 97,["106"] = 97,["107"] = 97,["108"] = 97,["109"] = 96,["110"] = 106,["111"] = 107,["112"] = 108,["113"] = 109,["116"] = 106,["117"] = 114,["118"] = 115,["119"] = 114,["120"] = 118,["121"] = 119,["122"] = 118,["123"] = 122,["124"] = 123,["125"] = 122,["126"] = 126,["127"] = 127,["128"] = 126,["129"] = 130,["130"] = 131,["131"] = 130,["132"] = 137,["133"] = 138,["134"] = 139,["135"] = 140,["136"] = 137,["137"] = 145,["138"] = 146,["139"] = 148,["140"] = 150,["141"] = 151,["143"] = 154,["144"] = 155,["145"] = 155,["146"] = 155,["147"] = 155,["148"] = 155,["149"] = 155,["150"] = 155,["151"] = 155,["152"] = 155,["153"] = 156,["154"] = 156,["155"] = 156,["156"] = 156,["157"] = 156,["158"] = 145,["159"] = 159,["160"] = 160,["161"] = 159,["162"] = 163,["163"] = 164,["164"] = 166,["165"] = 167,["166"] = 169,["167"] = 169,["168"] = 169,["169"] = 169,["170"] = 169,["171"] = 174,["172"] = 163,["173"] = 177,["174"] = 178,["175"] = 177,["176"] = 181,["177"] = 182,["178"] = 181,["179"] = 185,["180"] = 186,["181"] = 187,["182"] = 188,["183"] = 189,["185"] = 192,["186"] = 193,["187"] = 193,["188"] = 193,["189"] = 193,["190"] = 194,["191"] = 196,["192"] = 198,["194"] = 201,["196"] = 203,["198"] = 206,["199"] = 185,["200"] = 24,["201"] = 23,["202"] = 24});
 local ____exports = {}
 local ____dota_ts_adapter = require("lib.dota_ts_adapter")
 local registerAbility = ____dota_ts_adapter.registerAbility
 local registerModifier = ____dota_ts_adapter.registerModifier
+local ____modifier_combat_events = require("modifiers.modifier_combat_events")
+local ModifierCombatEvents = ____modifier_combat_events.ModifierCombatEvents
 local ____util = require("util")
 local strongPurge = ____util.strongPurge
 local ____custom_ability = require("abilities.framework.custom_ability")
 local CustomAbility = ____custom_ability.CustomAbility
-local ____custom_modifier = require("abilities.framework.custom_modifier")
-local CustomModifier = ____custom_modifier.CustomModifier
 local JuggernautMobility = __TS__Class()
 JuggernautMobility.name = "JuggernautMobility"
 __TS__ClassExtends(JuggernautMobility, CustomAbility)
@@ -36,7 +36,7 @@ JuggernautMobility = __TS__Decorate(
 )
 local ModifierJuggernautMobility = __TS__Class()
 ModifierJuggernautMobility.name = "ModifierJuggernautMobility"
-__TS__ClassExtends(ModifierJuggernautMobility, CustomModifier)
+__TS__ClassExtends(ModifierJuggernautMobility, ModifierCombatEvents)
 function ModifierJuggernautMobility.prototype.IsHidden(self)
     return false
 end
@@ -175,6 +175,27 @@ function ModifierJuggernautMobility.prototype.GetEffectName(self)
 end
 function ModifierJuggernautMobility.prototype.GetEffectAttachType(self)
     return PATTACH_ABSORIGIN_FOLLOW
+end
+function ModifierJuggernautMobility.prototype.OnHit(self, event)
+    if IsServer() then
+        if event.attackCategory == "projectile" then
+            if not self:ShouldReflect() then
+                return true
+            end
+            if event.projectile:getIsReflectable() == true then
+                event.projectile:setVelocity(
+                    event.projectile:getVelocity():__mul(-1.2),
+                    event.projectile:getPosition()
+                )
+                event.projectile:setSource(self.parent)
+                event.projectile:resetDistanceTraveled()
+                EmitSoundOn("Hero_Juggernaut.Attack", self.parent)
+            end
+            return false
+        end
+        return true
+    end
+    return true
 end
 ModifierJuggernautMobility = __TS__Decorate(
     {registerModifier(nil, {customNameForI18n = "modifier_juggernaut_mobility"})},

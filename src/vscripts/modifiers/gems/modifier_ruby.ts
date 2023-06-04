@@ -47,7 +47,7 @@ export class ModifierRuby extends ModifierCombatEvents {
 // Modifiers.Status(modifier_ruby)
 
 @registerModifier({ customNameForI18n: "modifier_ruby_attack" })
-export class ModifierRubyAttack extends ModifierCombatEvents {
+export class ModifierRubyAttack extends ModifierCombatEvents<undefined> {
     damage!: number;
 
     OnCreated(params: { damage: number }) {

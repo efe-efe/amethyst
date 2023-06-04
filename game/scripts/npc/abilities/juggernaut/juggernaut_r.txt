@@ -2,7 +2,7 @@
     "juggernaut_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_ultimate/juggernaut_ultimate"
+		"ScriptFile"					"abilities/heroes/juggernaut/juggernaut_ultimate"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"juggernaut_omni_slash"

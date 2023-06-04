@@ -42,6 +42,15 @@ declare interface CustomEntitiesLegacy {
         nFlagFilter: UnitTargetFlags,
         nOrderFilter: FindOrder
     ): CDOTA_BaseNPC[];
+    FindUnitsInLine(
+        hEntity: CDOTA_BaseNPC,
+        startPosition: Vector,
+        endPosition: Vector,
+        radius: number,
+        nTeamFilter: UnitTargetTeam,
+        nTypeFilter: UnitTargetType,
+        nFlagFilter: UnitTargetFlags
+    ): CDOTA_BaseNPC[];
     SetBeenHurt(hEntity: CDOTA_BaseNPC, bBeenHurt: boolean): void;
 }
 

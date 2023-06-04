@@ -1,10 +1,10 @@
 local ____lualib = require("lualib_bundle")
+local __TS__InstanceOf = ____lualib.__TS__InstanceOf
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
-local __TS__InstanceOf = ____lualib.__TS__InstanceOf
 local __TS__ObjectAssign = ____lualib.__TS__ObjectAssign
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 1,["10"] = 1,["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 4,["16"] = 4,["17"] = 5,["18"] = 5,["19"] = 8,["20"] = 20,["21"] = 20,["22"] = 20,["23"] = 20,["24"] = 20,["25"] = 20,["26"] = 20,["27"] = 20,["28"] = 20,["29"] = 22,["30"] = 24,["31"] = 25,["32"] = 26,["33"] = 28,["34"] = 29,["37"] = 33,["38"] = 8,["39"] = 38,["40"] = 38,["41"] = 38,["42"] = 38,["44"] = 38,["45"] = 39,["46"] = 38,["47"] = 41,["49"] = 41,["50"] = 46,["51"] = 47,["52"] = 46,["53"] = 50,["54"] = 51,["55"] = 50,["56"] = 54,["57"] = 55,["58"] = 55,["59"] = 55,["60"] = 55,["61"] = 55,["62"] = 55,["63"] = 55,["64"] = 55,["65"] = 55,["66"] = 55,["67"] = 62,["68"] = 63,["69"] = 64,["70"] = 64,["71"] = 64,["72"] = 64,["74"] = 67,["75"] = 54,["76"] = 70,["77"] = 71,["78"] = 73,["79"] = 74,["81"] = 76,["82"] = 70,["83"] = 79,["84"] = 88,["85"] = 79,["86"] = 91,["87"] = 105,["88"] = 105,["89"] = 105,["91"] = 105,["92"] = 106,["93"] = 107,["94"] = 108,["95"] = 109,["96"] = 110,["97"] = 115,["98"] = 116,["99"] = 117,["100"] = 118,["104"] = 131,["105"] = 131,["106"] = 131,["107"] = 131,["108"] = 131,["109"] = 131,["110"] = 131,["111"] = 131,["112"] = 131,["113"] = 131,["114"] = 131,["115"] = 131,["116"] = 143,["117"] = 145,["118"] = 169,["119"] = 170,["120"] = 171,["121"] = 172,["122"] = 175,["126"] = 181,["127"] = 183,["131"] = 198,["132"] = 199,["133"] = 200,["134"] = 201,["138"] = 206,["139"] = 207,["141"] = 210,["142"] = 91,["143"] = 213,["144"] = 226,["145"] = 226,["146"] = 226,["148"] = 226,["149"] = 227,["150"] = 228,["151"] = 229,["152"] = 230,["153"] = 231,["154"] = 233,["155"] = 234,["156"] = 235,["157"] = 236,["161"] = 241,["162"] = 241,["163"] = 241,["164"] = 241,["165"] = 241,["166"] = 241,["167"] = 241,["168"] = 241,["169"] = 241,["170"] = 251,["171"] = 253,["172"] = 277,["173"] = 278,["174"] = 279,["175"] = 280,["176"] = 283,["180"] = 289,["181"] = 291,["185"] = 296,["187"] = 302,["188"] = 303,["189"] = 304,["190"] = 305,["194"] = 310,["195"] = 213,["196"] = 313,["197"] = 324,["198"] = 324,["199"] = 324,["201"] = 324,["202"] = 325,["203"] = 326,["204"] = 327,["205"] = 328,["206"] = 329,["207"] = 331,["208"] = 332,["209"] = 333,["210"] = 334,["214"] = 362,["215"] = 363,["216"] = 364,["217"] = 365,["218"] = 368,["222"] = 374,["223"] = 375,["224"] = 376,["225"] = 377,["229"] = 382,["230"] = 313,["231"] = 385,["232"] = 386,["233"] = 386,["234"] = 386,["236"] = 386,["237"] = 387,["238"] = 388,["239"] = 389,["240"] = 389,["241"] = 389,["242"] = 389,["243"] = 390,["244"] = 392,["246"] = 418,["247"] = 418,["249"] = 418,["251"] = 419,["252"] = 420,["253"] = 421,["254"] = 424,["258"] = 392,["259"] = 432,["261"] = 433,["262"] = 433,["264"] = 433,["266"] = 442,["267"] = 443,["268"] = 444,["269"] = 445,["273"] = 432,["274"] = 452,["275"] = 453,["276"] = 454,["277"] = 455,["281"] = 460,["282"] = 460,["283"] = 460,["284"] = 460,["285"] = 472,["286"] = 385});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["9"] = 1,["10"] = 1,["11"] = 2,["12"] = 2,["13"] = 3,["14"] = 3,["15"] = 4,["16"] = 4,["17"] = 5,["18"] = 5,["19"] = 8,["20"] = 20,["21"] = 20,["22"] = 20,["23"] = 20,["24"] = 20,["25"] = 20,["26"] = 20,["27"] = 20,["28"] = 20,["29"] = 22,["30"] = 24,["31"] = 25,["32"] = 26,["33"] = 28,["34"] = 29,["37"] = 33,["38"] = 8,["39"] = 36,["40"] = 37,["41"] = 38,["42"] = 39,["45"] = 36,["46"] = 44,["47"] = 45,["48"] = 46,["49"] = 47,["52"] = 44,["53"] = 52,["54"] = 53,["55"] = 54,["56"] = 57,["59"] = 52,["60"] = 62,["61"] = 63,["62"] = 64,["63"] = 65,["64"] = 69,["65"] = 70,["66"] = 71,["69"] = 79,["71"] = 82,["74"] = 85,["75"] = 62,["76"] = 91,["77"] = 91,["78"] = 91,["79"] = 91,["81"] = 91,["82"] = 92,["83"] = 91,["84"] = 94,["86"] = 94,["87"] = 99,["88"] = 100,["89"] = 99,["90"] = 103,["91"] = 104,["92"] = 103,["93"] = 107,["94"] = 108,["95"] = 108,["96"] = 108,["97"] = 108,["98"] = 108,["99"] = 108,["100"] = 108,["101"] = 108,["102"] = 108,["103"] = 108,["104"] = 115,["105"] = 116,["106"] = 117,["107"] = 117,["108"] = 117,["109"] = 117,["111"] = 120,["112"] = 107,["113"] = 123,["114"] = 124,["115"] = 126,["116"] = 127,["118"] = 129,["119"] = 123,["120"] = 132,["121"] = 141,["122"] = 132,["123"] = 144,["124"] = 158,["125"] = 158,["126"] = 158,["128"] = 158,["129"] = 159,["130"] = 160,["131"] = 161,["132"] = 162,["133"] = 163,["134"] = 168,["135"] = 169,["137"] = 180,["138"] = 180,["139"] = 180,["140"] = 180,["141"] = 180,["142"] = 180,["143"] = 180,["144"] = 180,["145"] = 180,["146"] = 180,["147"] = 180,["148"] = 180,["149"] = 192,["150"] = 194,["151"] = 195,["152"] = 197,["153"] = 198,["154"] = 199,["155"] = 200,["158"] = 204,["159"] = 206,["163"] = 215,["164"] = 216,["166"] = 219,["167"] = 220,["169"] = 223,["170"] = 144,["171"] = 226,["172"] = 239,["173"] = 239,["174"] = 239,["176"] = 239,["177"] = 240,["178"] = 241,["179"] = 242,["180"] = 243,["181"] = 244,["182"] = 246,["183"] = 247,["185"] = 250,["186"] = 250,["187"] = 250,["188"] = 250,["189"] = 250,["190"] = 250,["191"] = 250,["192"] = 250,["193"] = 250,["194"] = 260,["195"] = 262,["196"] = 263,["197"] = 265,["198"] = 266,["199"] = 267,["200"] = 268,["203"] = 272,["204"] = 274,["208"] = 279,["209"] = 280,["211"] = 283,["212"] = 226,["213"] = 286,["214"] = 297,["215"] = 297,["216"] = 297,["218"] = 297,["219"] = 298,["220"] = 299,["221"] = 300,["222"] = 301,["223"] = 302,["224"] = 304,["225"] = 305,["227"] = 308,["228"] = 310,["229"] = 311,["230"] = 312,["231"] = 313,["234"] = 317,["235"] = 318,["237"] = 321,["238"] = 286,["239"] = 324,["240"] = 330,["241"] = 330,["242"] = 330,["244"] = 330,["245"] = 331,["246"] = 332,["247"] = 333,["248"] = 333,["249"] = 333,["250"] = 333,["251"] = 334,["252"] = 336,["253"] = 337,["254"] = 337,["255"] = 337,["256"] = 337,["257"] = 337,["258"] = 337,["259"] = 337,["260"] = 339,["262"] = 340,["263"] = 340,["265"] = 340,["267"] = 341,["268"] = 342,["271"] = 346,["272"] = 336,["273"] = 349,["275"] = 350,["276"] = 350,["278"] = 350,["280"] = 352,["281"] = 353,["283"] = 349,["284"] = 357,["285"] = 358,["287"] = 361,["288"] = 361,["289"] = 361,["290"] = 361,["291"] = 373,["292"] = 324});
 local ____exports = {}
 local ____dota_ts_adapter = require("lib.dota_ts_adapter")
 local BaseAbility = ____dota_ts_adapter.BaseAbility
@@ -35,6 +35,43 @@ local function findUnitsInCone(self, source, direction, minProjection, center, r
         end
     end
     return targets
+end
+local function triggerBasicAttackStarted(self, unit)
+    for ____, modifier in ipairs(unit:FindAllModifiers()) do
+        if __TS__InstanceOf(modifier, ModifierCombatEvents) then
+            callEntityFuncSafe(nil, modifier, "OnBasicAttackStarted")
+        end
+    end
+end
+local function triggerBasicAttackEnded(self, unit)
+    for ____, modifier in ipairs(unit:FindAllModifiers()) do
+        if __TS__InstanceOf(modifier, ModifierCombatEvents) then
+            callEntityFuncSafe(nil, modifier, "OnBasicAttackEnded")
+        end
+    end
+end
+local function triggerBasicAttackLanded(self, unit, target)
+    for ____, modifier in ipairs(unit:FindAllModifiers()) do
+        if __TS__InstanceOf(modifier, ModifierCombatEvents) then
+            modifier:OnBasicAttackLanded({target = target})
+        end
+    end
+end
+local function triggerOnHit(self, unit, attackCategory, triggerCounters, projectile)
+    local bypass = false
+    for ____, modifier in ipairs(unit:FindAllModifiers()) do
+        if __TS__InstanceOf(modifier, ModifierCombatEvents) then
+            if attackCategory == "projectile" then
+                if projectile then
+                    bypass = not modifier:OnHit({source = unit, triggerCounters = triggerCounters, attackCategory = attackCategory, projectile = projectile})
+                end
+            else
+                bypass = not modifier:OnHit({source = unit, triggerCounters = triggerCounters, attackCategory = attackCategory})
+            end
+            modifier:AfterHit()
+        end
+    end
+    return bypass
 end
 ____exports.CustomAbility = __TS__Class()
 local CustomAbility = ____exports.CustomAbility
@@ -95,11 +132,7 @@ function CustomAbility.prototype.MeeleAttack(self, options)
     local orderFilter = options.orderFilter or FIND_CLOSEST
     local attackType = options.attackType or "other"
     if attackType == "basic" then
-        for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-            if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                callEntityFuncSafe(nil, modifier, "OnBasicAttackStarted")
-            end
-        end
+        triggerBasicAttackStarted(nil, self.caster)
     end
     local units = findUnitsInCone(
         nil,
@@ -115,12 +148,11 @@ function CustomAbility.prototype.MeeleAttack(self, options)
     )
     local hitTargets = 0
     for ____, unit in ipairs(units) do
-        options:effect(unit)
-        if attackType == "basic" then
-            for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-                if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                    modifier:OnBasicAttackLanded({target = unit})
-                end
+        local bypass = triggerOnHit(nil, unit, "meele", triggerCounters)
+        if not bypass then
+            options:effect(unit)
+            if attackType == "basic" then
+                triggerBasicAttackLanded(nil, self.caster, unit)
             end
         end
         hitTargets = hitTargets + 1
@@ -129,11 +161,7 @@ function CustomAbility.prototype.MeeleAttack(self, options)
         end
     end
     if attackType == "basic" then
-        for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-            if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                callEntityFuncSafe(nil, modifier, "OnBasicAttackEnded")
-            end
-        end
+        triggerBasicAttackEnded(nil, self.caster)
     end
     if options.baseSound then
         EmitSoundOn(options.baseSound, self.caster)
@@ -152,11 +180,7 @@ function CustomAbility.prototype.AoeAttack(self, options)
     local orderFilter = options.orderFilter or FIND_CLOSEST
     local attackType = options.attackType or "other"
     if options.attackType == "basic" then
-        for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-            if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                callEntityFuncSafe(nil, modifier, "OnBasicAttackStarted")
-            end
-        end
+        triggerBasicAttackStarted(nil, self.caster)
     end
     local units = CustomEntitiesLegacy:FindUnitsInRadius(
         self.caster,
@@ -169,12 +193,11 @@ function CustomAbility.prototype.AoeAttack(self, options)
     )
     local hitTargets = 0
     for ____, unit in ipairs(units) do
-        options:effect(unit)
-        if attackType == "basic" then
-            for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-                if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                    modifier:OnBasicAttackLanded({target = unit})
-                end
+        local bypass = triggerOnHit(nil, unit, "aoe", triggerCounters)
+        if not bypass then
+            options:effect(unit)
+            if attackType == "basic" then
+                triggerBasicAttackLanded(nil, self.caster, unit)
             end
         end
         hitTargets = hitTargets + 1
@@ -182,14 +205,8 @@ function CustomAbility.prototype.AoeAttack(self, options)
             break
         end
     end
-    if hitTargets == 0 then
-    end
     if attackType == "basic" then
-        for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-            if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                callEntityFuncSafe(nil, modifier, "OnBasicAttackEnded")
-            end
-        end
+        triggerBasicAttackEnded(nil, self.caster)
     end
     return units
 end
@@ -205,26 +222,17 @@ function CustomAbility.prototype.SingleAttack(self, options)
     local orderFilter = options.orderFilter or FIND_CLOSEST
     local attackType = options.attackType or "other"
     if options.attackType == "basic" then
-        for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-            if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                callEntityFuncSafe(nil, modifier, "OnBasicAttackStarted")
-            end
-        end
+        triggerBasicAttackStarted(nil, self.caster)
     end
-    options:effect(options.target)
-    if attackType == "basic" then
-        for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-            if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                modifier:OnBasicAttackLanded({target = options.target})
-            end
+    local bypass = triggerOnHit(nil, options.target, "single", triggerCounters)
+    if not bypass then
+        options:effect(options.target)
+        if attackType == "basic" then
+            triggerBasicAttackLanded(nil, self.caster, options.target)
         end
     end
     if attackType == "basic" then
-        for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-            if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                callEntityFuncSafe(nil, modifier, "OnBasicAttackEnded")
-            end
-        end
+        triggerBasicAttackEnded(nil, self.caster)
     end
     return options.target
 end
@@ -242,19 +250,25 @@ function CustomAbility.prototype.ProjectileAttack(self, options)
     )
     local startRadius = options.startRadius or self:GetSpecialValueFor("hitbox")
     local function onUnitHit(____, unit, projectile)
-        local ____this_5
-        ____this_5 = options
-        local ____opt_4 = ____this_5.onUnitHit
-        if ____opt_4 ~= nil then
-            ____opt_4(____this_5, unit, projectile)
-        end
-        if attackType == "basic" then
-            for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-                if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                    modifier:OnBasicAttackLanded({target = unit})
-                end
+        local bypass = triggerOnHit(
+            nil,
+            unit,
+            "projectile",
+            triggerCounters,
+            projectile
+        )
+        if not bypass then
+            local ____this_5
+            ____this_5 = options
+            local ____opt_4 = ____this_5.onUnitHit
+            if ____opt_4 ~= nil then
+                ____opt_4(____this_5, unit, projectile)
+            end
+            if attackType == "basic" then
+                triggerBasicAttackLanded(nil, self.caster, unit)
             end
         end
+        return bypass
     end
     local function onFinish(____, position)
         local ____this_7
@@ -264,19 +278,11 @@ function CustomAbility.prototype.ProjectileAttack(self, options)
             ____opt_6(____this_7, position)
         end
         if attackType == "basic" then
-            for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-                if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                    callEntityFuncSafe(nil, modifier, "OnBasicAttackEnded")
-                end
-            end
+            triggerBasicAttackEnded(nil, self.caster)
         end
     end
     if options.attackType == "basic" then
-        for ____, modifier in ipairs(self.caster:FindAllModifiers()) do
-            if __TS__InstanceOf(modifier, ModifierCombatEvents) then
-                callEntityFuncSafe(nil, modifier, "OnBasicAttackStarted")
-            end
-        end
+        triggerBasicAttackStarted(nil, self.caster)
     end
     local projectile = createProjectile(
         nil,
