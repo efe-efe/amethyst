@@ -42,8 +42,7 @@ class ModifierJuggernautMobility extends ModifierCombatEvents {
 
     OnCreated() {
         if (IsServer()) {
-            const think_interval = this.ability.GetSpecialValueFor("think_interval");
-            this.StartIntervalThink(think_interval);
+            this.StartIntervalThink(this.Value("think_interval"));
             this.PlayEffects();
         }
     }
@@ -68,7 +67,7 @@ class ModifierJuggernautMobility extends ModifierCombatEvents {
                         ApplyDamage({
                             victim: target,
                             attacker: this.caster,
-                            damage: this.ability.GetSpecialValueFor("damage_per_second"),
+                            damage: this.Value("damage_per_second"),
                             damage_type: DamageTypes.PURE
                         });
                         this.PlayEffectsOnImpact(target);
@@ -78,7 +77,7 @@ class ModifierJuggernautMobility extends ModifierCombatEvents {
                 ApplyDamage({
                     victim: enemy,
                     attacker: this.caster,
-                    damage: this.ability.GetSpecialValueFor("damage_per_second"),
+                    damage: this.Value("damage_per_second"),
                     damage_type: DamageTypes.PURE
                 });
                 this.PlayEffectsOnImpact(enemy);

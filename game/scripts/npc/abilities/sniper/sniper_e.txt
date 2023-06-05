@@ -2,7 +2,7 @@
     "sniper_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -35,7 +35,7 @@
 	"sniper_special_attack_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack_recast"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -66,7 +66,7 @@
 	"sniper_ex_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack/sniper_special_attack"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_special_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

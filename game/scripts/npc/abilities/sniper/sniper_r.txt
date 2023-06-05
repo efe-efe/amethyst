@@ -2,7 +2,7 @@
     "sniper_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_ultimate/sniper_ultimate"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_ultimate"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"sniper_take_aim"

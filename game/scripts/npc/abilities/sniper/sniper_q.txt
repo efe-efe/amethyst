@@ -2,7 +2,7 @@
 	"sniper_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_counter/sniper_counter"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_counter"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 		

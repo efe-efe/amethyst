@@ -166,7 +166,6 @@ class ModifierJuggernautExtraShield extends ModifierShield {
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_extra_ward" })
 class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
-    radius = 0;
     health = 1;
     particleIds: ParticleID[] = [];
 
@@ -179,7 +178,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
     }
 
     GetAuraRadius() {
-        return this.radius;
+        return this.Value("radius");
     }
 
     GetAuraDuration() {
@@ -199,7 +198,6 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
     }
 
     OnCreated() {
-        this.radius = this.ability.GetSpecialValueFor("radius");
         if (IsServer()) {
             if (this.caster.HasModifier("modifier_upgrade_juggernaut_spinning_ward")) {
                 this.health = 5;
@@ -241,7 +239,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
     OnIntervalThink() {
         const percentage = (this.GetDuration() - this.GetRemainingTime()) / this.GetDuration() + 0.03;
         ParticleManager.SetParticleControl(this.particleIds[1], 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
-        ParticleManager.SetParticleControl(this.particleIds[1], 1, Vector(this.radius, percentage, 0));
+        ParticleManager.SetParticleControl(this.particleIds[1], 1, Vector(this.Value("radius"), percentage, 0));
     }
 
     PlayEffectsOnCreated() {
@@ -259,7 +257,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
             this.parent
         );
         ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 100)));
-        ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, 1, 1));
+        ParticleManager.SetParticleControl(particleId, 1, Vector(this.Value("radius"), 1, 1));
         ParticleManager.SetParticleControlEnt(
             particleId,
             2,
@@ -278,7 +276,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
         );
         ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
         ParticleManager.SetParticleControlForward(particleId, 0, Vector(0, -1, 0));
-        ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, 0, 1));
+        ParticleManager.SetParticleControl(particleId, 1, Vector(this.Value("radius"), 0, 1));
         ParticleManager.SetParticleControl(particleId, 15, Vector(1, 255, 1));
         ParticleManager.SetParticleControl(particleId, 16, Vector(1, 0, 0));
         this.particleIds.push(particleId);
@@ -322,11 +320,7 @@ class ModifierJuggernautExtraRecast extends ModifierRecast {
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_extra" })
 class ModifierJuggernautExtra extends CustomModifier<JuggernautExtra> {
-    healPerSecond = 0;
-
     OnCreated() {
-        this.healPerSecond = this.ability.GetSpecialValueFor("heal_per_second");
-
         if (IsServer()) {
             this.OnIntervalThink();
             this.StartIntervalThink(1.0);
@@ -334,7 +328,7 @@ class ModifierJuggernautExtra extends CustomModifier<JuggernautExtra> {
     }
 
     OnIntervalThink() {
-        this.parent.Heal(this.healPerSecond, this.ability);
+        this.parent.Heal(this.Value("heal_per_second"), this.ability);
     }
 
     DeclareFunctions() {
@@ -342,7 +336,6 @@ class ModifierJuggernautExtra extends CustomModifier<JuggernautExtra> {
     }
 
     OnTooltip() {
-        //@Refactor: This will not work
-        return this.healPerSecond;
+        return this.Value("heal_per_second");
     }
 }

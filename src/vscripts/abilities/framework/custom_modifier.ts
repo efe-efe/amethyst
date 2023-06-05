@@ -176,6 +176,8 @@ export class CustomModifierMotionBoth<A extends CDOTABaseAbility | undefined = C
     public static findAll = findAll;
     public static createThinker = createThinker;
 
+    private specialValueCache: Partial<Record<string, number>> = {};
+
     static apply<T extends typeof BaseModifier>(
         this: T,
         target: CDOTA_BaseNPC,
@@ -185,5 +187,32 @@ export class CustomModifierMotionBoth<A extends CDOTABaseAbility | undefined = C
     ): InstanceType<T> | undefined {
         // eslint-disable-next-line no-restricted-syntax
         return target.AddNewModifier(caster, ability, this.name, modifierTable) as InstanceType<T>;
+    }
+
+    // We have to make an unused kv: unknown even though we are overriding an interface method here and have no choice
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    OnRefresh(kv: unknown) {
+        if (!IsValidEntity(this.ability)) {
+            return;
+        }
+
+        for (const key of Object.keys(this.specialValueCache)) {
+            this.specialValueCache[key] = this.ability.GetSpecialValueFor(key);
+        }
+    }
+
+    Value(name: string) {
+        if (!this.ability) {
+            throw "Trying to call this.Value for a modifier applied without an ability";
+        }
+
+        const cached = this.specialValueCache[name];
+        if (cached == undefined) {
+            const value = this.ability.GetSpecialValueFor(name);
+            this.specialValueCache[name] = value;
+            return value;
+        } else {
+            return cached;
+        }
     }
 }

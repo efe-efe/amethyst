@@ -23,30 +23,29 @@ class JuggernautSpecialAttack extends CustomAbility {
     }
 
     OnSpellStart() {
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
         const origin = this.caster.GetAbsOrigin();
+        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
         const damage = this.GetSpecialValueFor("ability_damage");
         const fading_slow_pct = this.GetSpecialValueFor("fading_slow_pct");
         const fading_slow_duration = this.GetSpecialValueFor("fading_slow_duration");
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const recastTime = this.GetSpecialValueFor("recast_time");
-        const projectile_speed = this.GetSpecialValueFor("projectile_speed");
-        const projectile_direction = direction2D(origin, point);
+        const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
+        const projectileDirection = direction2D(origin, point);
 
         this.ProjectileAttack({
             source: this.caster,
-            velocity: projectile_direction.__mul(projectile_speed),
-            spawnOrigin: origin.__add(Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96)),
+            velocity: projectileDirection.__mul(projectileSpeed),
+            spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
             effectName: "particles/juggernaut/juggernaut_special_attack.vpcf",
-            treeBehavior: ProjectileBehavior.NOTHING,
-            groundBehavior: ProjectileBehavior.NOTHING,
             groundOffset: 0,
             draw: true,
-            unitTest: (unit, projectile) => unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.source, unit),
+            unitTest: (unit, projectile) =>
+                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,
-                    attacker: projectile.source,
+                    attacker: projectile.getSource(),
                     damage: damage,
                     damage_type: DamageTypes.MAGICAL
                 });
@@ -55,7 +54,7 @@ class JuggernautSpecialAttack extends CustomAbility {
                     max_slow_pct: fading_slow_pct
                 });
 
-                if (projectile.source == this.caster) {
+                if (projectile.getSource() == this.caster) {
                     if (this.GetLevel() == 2) {
                         if (unit.IsAlive()) {
                             // this.caster.FindAbilityByName("juggernaut_special_attack_recast"):SetTargetIndex(unit:GetEntityIndex())
@@ -64,12 +63,12 @@ class JuggernautSpecialAttack extends CustomAbility {
                     }
 
                     if (!isObstacle(unit) && !isGem(unit)) {
-                        giveManaAndEnergyPercent(projectile.source, manaGainPct, true);
+                        giveManaAndEnergyPercent(projectile.getSource(), manaGainPct, true);
                     }
                 }
             },
-            onFinish: (position: Vector) => {
-                this.PlayEffectsOnFinish(position);
+            onFinish: projectile => {
+                this.PlayEffectsOnFinish(projectile.getPosition());
                 // if this.caster.HasModifier("modifier_upgrade_juggernaut_refresh_dagger") then
                 // 	const counter = 0
                 // 	for k, v in pairs(_self.tHitLog) do

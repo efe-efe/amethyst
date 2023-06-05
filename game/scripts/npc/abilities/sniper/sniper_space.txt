@@ -2,7 +2,7 @@
     "sniper_mobility"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_mobility/sniper_mobility"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_mobility"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

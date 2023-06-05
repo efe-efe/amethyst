@@ -346,8 +346,8 @@ export class CustomAbility extends BaseAbility {
             return bypass;
         };
 
-        const onFinish = (position: Vector) => {
-            options.onFinish?.(position);
+        const onFinish = (projectile: ProjectileHandler) => {
+            options.onFinish?.(projectile);
 
             if (attackType == "basic") {
                 triggerBasicAttackEnded(this.caster);

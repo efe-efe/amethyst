@@ -2,7 +2,7 @@
 	"sniper_extra"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_extra/sniper_extra"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_extra"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

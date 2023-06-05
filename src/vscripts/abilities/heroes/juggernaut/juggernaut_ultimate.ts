@@ -95,15 +95,10 @@ class JuggernautUltimate extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_displacement" })
 class ModifierJuggernautUltimateDisplacement extends ModifierDisplacement<JuggernautUltimate> {
-    slashingDuration!: number;
-    aspdPerStack!: number;
     stacks!: number;
 
     OnCreated(params: DisplacementParams) {
         super.OnCreated(params);
-
-        this.slashingDuration = this.ability.GetSpecialValueFor("duration");
-        this.aspdPerStack = this.ability.GetSpecialValueFor("aspd_per_stack");
 
         if (IsServer()) {
             const modifier = ModifierJuggernautStacks.findOne(this.parent);
@@ -121,8 +116,8 @@ class ModifierJuggernautUltimateDisplacement extends ModifierDisplacement<Jugger
                     EmitSoundOn("Hero_PhantomAssassin.Attack", enemy);
 
                     ModifierJuggernautUltimateSlashing.apply(this.parent, this.parent, this.ability, {
-                        duration: this.slashingDuration,
-                        aspdBuff: this.aspdPerStack * this.stacks
+                        duration: this.Value("duration"),
+                        aspdBuff: this.Value("aspd_per_stack") * this.stacks
                     });
                     this.Destroy();
                 }
@@ -162,7 +157,6 @@ class ModifierJuggernautUltimateDisplacement extends ModifierDisplacement<Jugger
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_slashing" })
 class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltimate> {
-    radius!: number;
     attackSpeed!: number;
     currentPosition!: Vector;
     previousPosition!: Vector;
@@ -181,7 +175,6 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
     }
 
     OnCreated(params: { aspdBuff: number }) {
-        this.radius = this.ability.GetSpecialValueFor("find_radius");
         if (IsServer()) {
             this.currentPosition = this.parent.GetAbsOrigin();
             this.previousPosition = this.currentPosition;
@@ -203,12 +196,12 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
 
     FindTargets() {
         const findOrigin = this.currentTarget?.GetAbsOrigin() ?? this.parent.GetAbsOrigin();
-        createRadiusMarker(this.parent, findOrigin, this.radius, "public", 0.1);
+        createRadiusMarker(this.parent, findOrigin, this.Value("find_radius"), "public", 0.1);
 
         return CustomEntitiesLegacy.FindUnitsInRadius(
             this.parent,
             findOrigin,
-            this.radius,
+            this.Value("find_radius"),
             UnitTargetTeam.ENEMY,
             UnitTargetType.HERO + UnitTargetType.BASIC,
             UnitTargetFlags.MAGIC_IMMUNE_ENEMIES + UnitTargetFlags.NO_INVIS,
@@ -245,7 +238,9 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
         } else {
             this.currentTarget = undefined;
 
-            const effectOrigin = this.parent.GetAbsOrigin().__add(RandomVector(RandomInt(this.radius / 2, this.radius)));
+            const effectOrigin = this.parent
+                .GetAbsOrigin()
+                .__add(RandomVector(RandomInt(this.Value("find_radius") / 2, this.Value("find_radius"))));
             EmitSoundOn("Hero_Juggernaut.ArcanaHaste.Anim", this.parent);
             EFX("particles/juggernaut/juggernaut_ultimate_glitch.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
                 cp0: effectOrigin,

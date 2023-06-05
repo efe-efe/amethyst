@@ -270,12 +270,12 @@ function CustomAbility.prototype.ProjectileAttack(self, options)
         end
         return bypass
     end
-    local function onFinish(____, position)
+    local function onFinish(____, projectile)
         local ____this_7
         ____this_7 = options
         local ____opt_6 = ____this_7.onFinish
         if ____opt_6 ~= nil then
-            ____opt_6(____this_7, position)
+            ____opt_6(____this_7, projectile)
         end
         if attackType == "basic" then
             triggerBasicAttackEnded(nil, self.caster)

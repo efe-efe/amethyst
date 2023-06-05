@@ -8,7 +8,8 @@ export enum ProjectileBehavior {
 }
 
 export type ProjectileHandler = {
-    source: CDOTA_BaseNPC;
+    hitLog: Map<EntityIndex, number>;
+    getSource: () => CDOTA_BaseNPC;
     getIsReflectable: () => boolean;
     getIsDestructible: () => boolean;
     getVelocity: () => Vector;
@@ -69,7 +70,7 @@ export type ProjectileOptions = {
     //     OnTreeHit =                     function() return end,
     //     OnWallHit =                     function() return end,
     //     OnGroundHit =                   function() return end,
-    onFinish?: (position: Vector) => void; // This should also have the projectile as parameter
+    onFinish?: (projectile: ProjectileHandler) => void; // This should also have the projectile as parameter
     //     OnIntervalThink =               function() return end,
     radiusStep?: number;
 };
@@ -146,8 +147,8 @@ function projectile(options: ProjectileOptions) {
     const endRadius = options.endRadius ?? 100;
     const cutTrees = options.cutTrees ?? false;
     const unitBehavior = options.unitBehavior ?? ProjectileBehavior.DESTROY;
-    const treeBehavior = options.treeBehavior ?? ProjectileBehavior.DESTROY;
-    const groundBehavior = options.groundBehavior ?? ProjectileBehavior.DESTROY;
+    const treeBehavior = options.treeBehavior ?? ProjectileBehavior.NOTHING;
+    const groundBehavior = options.groundBehavior ?? ProjectileBehavior.NOTHING;
     const wallBehavior = options.wallBehavior ?? ProjectileBehavior.DESTROY;
     const treeFullCollision = options.treeFullCollision ?? false;
     const isReflectable = options.isReflectable ?? true;
@@ -177,7 +178,7 @@ function projectile(options: ProjectileOptions) {
 
     let unitTest: (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => boolean = () => false;
     let onUnitHit: (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => boolean | void = () => {};
-    let onFinish: (position: Vector) => void = () => {};
+    let onFinish: (projectile: ProjectileHandler) => void = () => {};
 
     if (options.unitTest) {
         unitTest = options.unitTest;
@@ -310,7 +311,18 @@ function projectile(options: ProjectileOptions) {
         ParticleManager.DestroyParticle(particleId, destroyImmediate);
 
         if (!immediate) {
-            onFinish(currentPosition);
+            onFinish({
+                getSource,
+                getIsReflectable,
+                getIsDestructible,
+                scheduleDestroy,
+                getVelocity,
+                getPosition,
+                resetDistanceTraveled,
+                setSource,
+                setVelocity,
+                hitLog
+            });
         }
     }
 
@@ -429,7 +441,7 @@ function projectile(options: ProjectileOptions) {
             if (time == undefined || currentTime > time) {
                 if (
                     unitTest(entity, {
-                        source,
+                        getSource,
                         getIsReflectable,
                         getIsDestructible,
                         scheduleDestroy,
@@ -437,7 +449,8 @@ function projectile(options: ProjectileOptions) {
                         getPosition,
                         resetDistanceTraveled,
                         setSource,
-                        setVelocity
+                        setVelocity,
+                        hitLog
                     })
                 ) {
                     // @Refactor refactor this isWall
@@ -458,7 +471,7 @@ function projectile(options: ProjectileOptions) {
 
                     const bypass =
                         onUnitHit(entity, {
-                            source,
+                            getSource,
                             getIsReflectable,
                             getIsDestructible,
                             scheduleDestroy,
@@ -466,7 +479,8 @@ function projectile(options: ProjectileOptions) {
                             getPosition,
                             resetDistanceTraveled,
                             setSource,
-                            setVelocity
+                            setVelocity,
+                            hitLog
                         }) ?? false;
 
                     if (!bypass && unitBehavior == ProjectileBehavior.DESTROY) {
@@ -643,6 +657,10 @@ function projectile(options: ProjectileOptions) {
 
     function getPosition() {
         return currentPosition;
+    }
+
+    function getSource() {
+        return source;
     }
 
     return {

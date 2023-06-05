@@ -2,7 +2,7 @@
     "sniper_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack/sniper_second_attack"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -37,7 +37,7 @@
     "sniper_ex_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack/sniper_second_attack"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_second_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

@@ -2,7 +2,7 @@
 	"sniper_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/sniper/sniper_basic_attack/sniper_basic_attack"
+		"ScriptFile"					"abilities/heroes/sniper/sniper_basic_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
