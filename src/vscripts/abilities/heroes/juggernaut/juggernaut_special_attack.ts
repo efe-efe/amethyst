@@ -1,8 +1,9 @@
-import { registerAbility } from "../../../lib/dota_ts_adapter";
+import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
-import { ProjectileBehavior } from "../../../projectiles";
+import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
+import { CustomModifier } from "../../framework/custom_modifier";
 
 @registerAbility("juggernaut_special_attack")
 class JuggernautSpecialAttack extends CustomAbility {
@@ -57,8 +58,12 @@ class JuggernautSpecialAttack extends CustomAbility {
                 if (projectile.getSource() == this.caster) {
                     if (this.GetLevel() == 2) {
                         if (unit.IsAlive()) {
-                            // this.caster.FindAbilityByName("juggernaut_special_attack_recast"):SetTargetIndex(unit:GetEntityIndex())
-                            // this.caster.AddNewModifier(this.caster, self, "modifier_juggernaut_special_attack_recast", { duration = recastTime })
+                            ModifierJuggernautSpecialAttackMark.apply(this.caster, unit, this, { duration: recastTime });
+                            ModifierJuggernautSpecialAttackRecast.apply(this.caster, this.caster, undefined, {
+                                duration: recastTime,
+                                abilityLeft: JuggernautSpecialAttack.name,
+                                abilityRight: JuggernautSpecialAttackRecast.name
+                            });
                         }
                     }
 
@@ -104,78 +109,57 @@ class JuggernautSpecialAttack extends CustomAbility {
         EmitSoundOn("Hero_Juggernaut.ArcanaTrigger", this.caster);
         EmitSoundOn("Hero_Juggernaut.BladeDance", this.caster);
     }
+
+    // function juggernaut_special_attack:OnUpgrade()
+    // 	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_special_attack_recast")
+    // }
 }
 
-// function juggernaut_special_attack:OnUpgrade()
-// 	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_special_attack_recast")
-// }
+@registerAbility("juggernaut_special_attack_recast")
+class JuggernautSpecialAttackRecast extends CustomAbility {
+    OnSpellStart() {
+        const origin = this.caster.GetAbsOrigin();
+        const target = ModifierJuggernautSpecialAttackMark.findOne(this.caster)?.caster;
+        const randomNumber = RandomInt(1, 9);
 
-// function juggernaut_special_attack_recast:IsHidden()
-//     return true
-// }
+        if (target) {
+            if (randomNumber > 1) {
+                EmitSoundOn(`juggernaut_jug_ability_bladefury_0${randomNumber}`, this.caster);
+            }
 
-// function juggernaut_special_attack_recast:OnSpellStart()
-//     const this.caster = this.GetCaster()
-//     const origin = this.caster.GetAbsOrigin()
-//     const target_entity = EntIndexToHScript(self.target_index)
+            FindClearSpaceForUnit(this.caster, target.GetAbsOrigin().__add(target.GetForwardVector().__mul(Vector(-80, -80, -80))), true);
+            const particleId = ParticleManager.CreateParticle(
+                "particles/juggernaut/special_attack_recast.vpcf",
+                ParticleAttachment.WORLDORIGIN,
+                undefined
+            );
+            ParticleManager.SetParticleControl(particleId, 0, origin);
+            ParticleManager.SetParticleControl(particleId, 1, origin);
+            ParticleManager.SetParticleControl(particleId, 3, origin);
+            ParticleManager.ReleaseParticleIndex(particleId);
+            this.caster.StartGestureWithPlaybackRate(GameActivity.DOTA_SPAWN, 2.0);
+        }
+    }
 
-// 	const random_number = RandomInt(1, 9)
-// 	if random_number > 1 then
-// 		EmitSoundOn("juggernaut_jug_ability_bladefury_0" .. random_number, this.caster)
-// 	}
+    // function juggernaut_special_attack_recast:SetTargetIndex(target_index)
+    //     self.target_index = target_index
+    // }
 
-//     FindClearSpaceForUnit(this.caster, target_entity:GetAbsOrigin() + target_entity:GetForwardVector() * - 80, true)
-
-// 	const particle_cast = "particles/juggernaut/special_attack_recast.vpcf"
-//     const effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_WORLDORIGIN, nil)
-//     ParticleManager:SetParticleControl(effect_cast, 0, origin)
-//     ParticleManager:SetParticleControl(effect_cast, 1, this.GetCaster():GetAbsOrigin())
-//     ParticleManager:SetParticleControl(effect_cast, 3, this.GetCaster():GetAbsOrigin())
-//     ParticleManager:ReleaseParticleIndex(effect_cast)
-
-//     this.caster.StartGestureWithPlaybackRate(ACT_DOTA_SPAWN, 2.0)
-
-// }
-
-// juggernaut_special_attack_recast = class({})
-// LinkLuaModifier("modifier_juggernaut_special_attack_recast", "abilities/heroes/juggernaut/juggernaut_special_attack/modifier_juggernaut_special_attack_recast", LUA_MODIFIER_MOTION_NONE)
-
-// function juggernaut_special_attack_recast:SetTargetIndex(target_index)
-//     self.target_index = target_index
-// }
-
-// function juggernaut_special_attack_recast:OnUpgrade()
-// 	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_special_attack")
-// }
-
+    // function juggernaut_special_attack_recast:OnUpgrade()
+    // 	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_special_attack")
+    // }
+}
 // if IsClient() then require("wrappers/abilities") }
 // Abilities.Castpoint(juggernaut_special_attack)
 
-// modifier_juggernaut_special_attack_recast = class({})
-
-// function modifier_juggernaut_special_attack_recast:OnCreated(params)
-//     if IsServer() then
-//         self.target_index = params.target_index
-//     end
-// end
-
-// function modifier_juggernaut_special_attack_recast:GetTargetIndex()
-//     return self.target_index
-// end
-
-// function modifier_juggernaut_special_attack_recast:GetRecastAbility()
-//     if IsServer() then
-//         return self:GetParent():FindAbilityByName("juggernaut_special_attack_recast")
-//     end
-// end
-
-// function modifier_juggernaut_special_attack_recast:GetRecastCharges()
-// 	return 1
-// end
-
-// function modifier_juggernaut_special_attack_recast:GetRecastKey()
-// 	return "E"
-// end
-
+@registerModifier({ customNameForI18n: "modifier_juggernaut_special_attack_recast" })
+class ModifierJuggernautSpecialAttackRecast extends ModifierRecast {
+    // function modifier_juggernaut_special_attack_recast:GetRecastKey()
+    // 	return "E"
+    // end
+}
 // if IsClient() then require("wrappers/modifiers") end
 // Modifiers.Recast(modifier_juggernaut_special_attack_recast)
+
+@registerModifier({ customNameForI18n: "modifier_juggernaut_special_attack_mark" })
+class ModifierJuggernautSpecialAttackMark extends CustomModifier {}

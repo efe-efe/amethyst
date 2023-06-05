@@ -248,17 +248,14 @@ class JuggernautExCounter extends JuggernautSlash {
         const damage = this.GetSpecialValueFor("ability_damage") ?? 0;
 
         if (!ModifierJuggernautExCounterRecast.findOne(this.caster)) {
-            print("Im applaying it...");
             ModifierJuggernautExCounterRecast.apply(this.caster, this.caster, undefined, {
                 abilityLeft: JuggernautExCounter.name,
                 charges: this.GetSpecialValueFor("recasts"),
                 duration: this.GetSpecialValueFor("recast_time")
             });
         }
-
         this.Slash(point, damage, "particles/juggernaut/juggernaut_ex_counter.vpcf");
-
-        //    LinkAbilityCooldowns(caster, 'juggernaut_counter')
+        // LinkAbilityCooldowns(caster, 'juggernaut_counter')
     }
 
     GetManaCost(level: number) {

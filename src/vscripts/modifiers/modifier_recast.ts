@@ -71,11 +71,9 @@ export class ModifierRecast extends CustomModifier<undefined> {
             }
 
             if (!this.abilityRight) {
-                print("this.abilityLeft.EndCooldown()");
                 this.abilityLeft.EndCooldown();
             } else {
                 this.abilityRight.EndCooldown();
-                print("this.abilityRight.EndCooldown()");
             }
         }
     }

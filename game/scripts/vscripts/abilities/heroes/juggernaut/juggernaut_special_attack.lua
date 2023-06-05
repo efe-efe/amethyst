@@ -3,12 +3,16 @@ local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__Decorate = ____lualib.__TS__Decorate
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 1,["9"] = 1,["10"] = 2,["11"] = 2,["12"] = 4,["13"] = 4,["14"] = 4,["15"] = 4,["16"] = 4,["17"] = 5,["18"] = 5,["19"] = 7,["20"] = 7,["21"] = 8,["22"] = 9,["23"] = 10,["24"] = 9,["25"] = 13,["26"] = 14,["27"] = 13,["28"] = 17,["29"] = 18,["30"] = 17,["31"] = 21,["32"] = 22,["33"] = 21,["34"] = 25,["35"] = 26,["36"] = 27,["37"] = 28,["38"] = 29,["39"] = 30,["40"] = 31,["41"] = 32,["42"] = 33,["43"] = 34,["44"] = 36,["45"] = 36,["46"] = 36,["47"] = 36,["48"] = 36,["49"] = 36,["50"] = 36,["51"] = 43,["52"] = 44,["53"] = 44,["54"] = 36,["55"] = 45,["56"] = 46,["57"] = 46,["58"] = 46,["59"] = 46,["60"] = 46,["61"] = 46,["62"] = 52,["63"] = 57,["64"] = 58,["65"] = 59,["68"] = 65,["69"] = 66,["70"] = 66,["71"] = 66,["72"] = 66,["73"] = 66,["74"] = 66,["77"] = 36,["78"] = 70,["79"] = 71,["80"] = 36,["81"] = 36,["82"] = 87,["83"] = 8,["84"] = 25,["85"] = 91,["86"] = 92,["87"] = 93,["88"] = 98,["89"] = 99,["90"] = 91,["91"] = 102,["92"] = 103,["93"] = 104,["94"] = 105,["95"] = 102,["96"] = 8,["97"] = 7,["98"] = 8});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 119,["9"] = 1,["10"] = 1,["11"] = 1,["12"] = 2,["13"] = 2,["14"] = 3,["15"] = 3,["16"] = 4,["17"] = 4,["18"] = 4,["19"] = 4,["20"] = 4,["21"] = 5,["22"] = 5,["23"] = 6,["24"] = 6,["25"] = 8,["26"] = 8,["27"] = 9,["28"] = 10,["29"] = 11,["30"] = 10,["31"] = 14,["32"] = 15,["33"] = 14,["34"] = 18,["35"] = 19,["36"] = 18,["37"] = 22,["38"] = 23,["39"] = 22,["40"] = 26,["41"] = 27,["42"] = 28,["43"] = 29,["44"] = 30,["45"] = 31,["46"] = 32,["47"] = 33,["48"] = 34,["49"] = 35,["50"] = 37,["51"] = 37,["52"] = 37,["53"] = 37,["54"] = 37,["55"] = 37,["56"] = 37,["57"] = 44,["58"] = 45,["59"] = 45,["60"] = 37,["61"] = 46,["62"] = 47,["63"] = 47,["64"] = 47,["65"] = 47,["66"] = 47,["67"] = 47,["68"] = 53,["69"] = 58,["70"] = 59,["71"] = 60,["72"] = 61,["73"] = 62,["76"] = 70,["77"] = 71,["78"] = 71,["79"] = 71,["80"] = 71,["81"] = 71,["82"] = 71,["85"] = 37,["86"] = 75,["87"] = 76,["88"] = 37,["89"] = 37,["90"] = 92,["91"] = 9,["92"] = 26,["93"] = 96,["94"] = 97,["95"] = 98,["96"] = 103,["97"] = 104,["98"] = 96,["99"] = 107,["100"] = 108,["101"] = 109,["102"] = 110,["103"] = 107,["104"] = 9,["105"] = 8,["106"] = 9,["108"] = 118,["109"] = 118,["110"] = 119,["111"] = 120,["112"] = 121,["113"] = 122,["114"] = 122,["115"] = 123,["116"] = 125,["117"] = 126,["118"] = 127,["119"] = 127,["120"] = 127,["121"] = 127,["123"] = 130,["124"] = 130,["125"] = 130,["126"] = 130,["127"] = 130,["128"] = 131,["129"] = 136,["130"] = 137,["131"] = 138,["132"] = 139,["133"] = 140,["135"] = 120,["136"] = 119,["137"] = 118,["138"] = 119,["140"] = 155,["141"] = 155,["142"] = 156,["143"] = 156,["144"] = 155,["145"] = 156,["147"] = 164,["148"] = 164,["149"] = 165,["150"] = 165,["151"] = 164,["152"] = 165});
 local ____exports = {}
+local JuggernautSpecialAttackRecast, ModifierJuggernautSpecialAttackRecast, ModifierJuggernautSpecialAttackMark
 local ____dota_ts_adapter = require("lib.dota_ts_adapter")
 local registerAbility = ____dota_ts_adapter.registerAbility
+local registerModifier = ____dota_ts_adapter.registerModifier
 local ____modifier_casting = require("modifiers.modifier_casting")
 local Translate = ____modifier_casting.Translate
+local ____modifier_recast = require("modifiers.modifier_recast")
+local ModifierRecast = ____modifier_recast.ModifierRecast
 local ____util = require("util")
 local direction2D = ____util.direction2D
 local giveManaAndEnergyPercent = ____util.giveManaAndEnergyPercent
@@ -16,6 +20,8 @@ local isGem = ____util.isGem
 local isObstacle = ____util.isObstacle
 local ____custom_ability = require("abilities.framework.custom_ability")
 local CustomAbility = ____custom_ability.CustomAbility
+local ____custom_modifier = require("abilities.framework.custom_modifier")
+local CustomModifier = ____custom_modifier.CustomModifier
 local JuggernautSpecialAttack = __TS__Class()
 JuggernautSpecialAttack.name = "JuggernautSpecialAttack"
 __TS__ClassExtends(JuggernautSpecialAttack, CustomAbility)
@@ -63,6 +69,8 @@ function JuggernautSpecialAttack.prototype.OnSpellStart(self)
             if projectile:getSource() == self.caster then
                 if self:GetLevel() == 2 then
                     if unit:IsAlive() then
+                        ModifierJuggernautSpecialAttackMark:apply(self.caster, unit, self, {duration = recastTime})
+                        ModifierJuggernautSpecialAttackRecast:apply(self.caster, self.caster, nil, {duration = recastTime, abilityLeft = JuggernautSpecialAttack.name, abilityRight = JuggernautSpecialAttackRecast.name})
                     end
                 end
                 if not isObstacle(nil, unit) and not isGem(nil, unit) then
@@ -96,5 +104,51 @@ end
 JuggernautSpecialAttack = __TS__Decorate(
     {registerAbility(nil, "juggernaut_special_attack")},
     JuggernautSpecialAttack
+)
+JuggernautSpecialAttackRecast = __TS__Class()
+JuggernautSpecialAttackRecast.name = "JuggernautSpecialAttackRecast"
+__TS__ClassExtends(JuggernautSpecialAttackRecast, CustomAbility)
+function JuggernautSpecialAttackRecast.prototype.OnSpellStart(self)
+    local origin = self.caster:GetAbsOrigin()
+    local ____opt_0 = ModifierJuggernautSpecialAttackMark:findOne(self.caster)
+    local target = ____opt_0 and ____opt_0.caster
+    local randomNumber = RandomInt(1, 9)
+    if target then
+        if randomNumber > 1 then
+            EmitSoundOn(
+                "juggernaut_jug_ability_bladefury_0" .. tostring(randomNumber),
+                self.caster
+            )
+        end
+        FindClearSpaceForUnit(
+            self.caster,
+            target:GetAbsOrigin():__add(target:GetForwardVector():__mul(Vector(-80, -80, -80))),
+            true
+        )
+        local particleId = ParticleManager:CreateParticle("particles/juggernaut/special_attack_recast.vpcf", PATTACH_WORLDORIGIN, nil)
+        ParticleManager:SetParticleControl(particleId, 0, origin)
+        ParticleManager:SetParticleControl(particleId, 1, origin)
+        ParticleManager:SetParticleControl(particleId, 3, origin)
+        ParticleManager:ReleaseParticleIndex(particleId)
+        self.caster:StartGestureWithPlaybackRate(ACT_DOTA_SPAWN, 2)
+    end
+end
+JuggernautSpecialAttackRecast = __TS__Decorate(
+    {registerAbility(nil, "juggernaut_special_attack_recast")},
+    JuggernautSpecialAttackRecast
+)
+ModifierJuggernautSpecialAttackRecast = __TS__Class()
+ModifierJuggernautSpecialAttackRecast.name = "ModifierJuggernautSpecialAttackRecast"
+__TS__ClassExtends(ModifierJuggernautSpecialAttackRecast, ModifierRecast)
+ModifierJuggernautSpecialAttackRecast = __TS__Decorate(
+    {registerModifier(nil, {customNameForI18n = "modifier_juggernaut_special_attack_recast"})},
+    ModifierJuggernautSpecialAttackRecast
+)
+ModifierJuggernautSpecialAttackMark = __TS__Class()
+ModifierJuggernautSpecialAttackMark.name = "ModifierJuggernautSpecialAttackMark"
+__TS__ClassExtends(ModifierJuggernautSpecialAttackMark, CustomModifier)
+ModifierJuggernautSpecialAttackMark = __TS__Decorate(
+    {registerModifier(nil, {customNameForI18n = "modifier_juggernaut_special_attack_mark"})},
+    ModifierJuggernautSpecialAttackMark
 )
 return ____exports
