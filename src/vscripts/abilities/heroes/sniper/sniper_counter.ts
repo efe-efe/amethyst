@@ -45,7 +45,7 @@ class SniperCounter extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_counter " })
+@registerModifier({ customNameForI18n: "modifier_sniper_counter" })
 class ModifierSniperCounter extends CustomModifier<SniperCounter> {
     IsHidden() {
         return false;
@@ -83,9 +83,4 @@ class ModifierSniperCounter extends CustomModifier<SniperCounter> {
             [ModifierState.TRUESIGHT_IMMUNE]: false
         };
     }
-    // function modifier_sniper_counter:GetStatusLabel() return "Invisibile" end
-    // function modifier_sniper_counter:GetStatusPriority() return 1 end
-    // function modifier_sniper_counter:GetStatusStyle() return "Invisible" end
 }
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Status(modifier_sniper_counter)

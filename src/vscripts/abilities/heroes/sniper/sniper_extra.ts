@@ -1,5 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
-import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
+import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { direction2D } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
@@ -102,8 +102,6 @@ class SniperExtra extends CustomAbility {
         ParticleManager.ReleaseParticleIndex(particleId);
     }
 }
-// if(IsClient()){ require("wrappers/abilities") }
-// Abilities.Castpoint(sniper_extra)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_extra_displacement" })
 class ModifierSniperExtra extends ModifierDisplacement {
@@ -129,9 +127,6 @@ class ModifierSniperExtra extends ModifierDisplacement {
         };
     }
 }
-// if(IsClient()){ require("wrappers/modifiers") }
-// Modifiers.Displacement(modifier_sniper_extra_displacement)
-// Modifiers.Animation(modifier_sniper_extra_displacement)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_extra_displacement_enemy" })
 class ModifierSniperExtraEnemy extends ModifierDisplacement {
@@ -168,7 +163,3 @@ class ModifierSniperExtraEnemy extends ModifierDisplacement {
         };
     }
 }
-
-// if(IsClient()){ require("wrappers/modifiers") }
-// Modifiers.Displacement(modifier_sniper_extra_displacement_enemy)
-// Modifiers.Animation(modifier_sniper_extra_displacement_enemy)

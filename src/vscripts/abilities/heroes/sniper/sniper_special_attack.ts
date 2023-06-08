@@ -82,9 +82,6 @@ class SniperExSpecialAttack extends SniperSpecialAttackCommon {
         // 	LinkAbilityCooldowns(caster, 'sniper_special_attack')
     }
 }
-// if IsClient() then require("wrappers/abilities") }
-// Abilities.Castpoint(sniper_special_attack)
-// Abilities.Castpoint(sniper_ex_special_attack)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_shrapnel_debuff" })
 class ModifierSniperSpecialAttackDebuff extends CustomModifier {
@@ -191,8 +188,6 @@ export class ModifierSniperSpecialAttackThinker extends ModifierThinker {
         StopSoundOn("Hero_Sniper.MKG_ShrapnelShatter", this.parent);
     }
 }
-// if IsClient() then require("wrappers/modifiers") }
-// Modifiers.Thinker(modifier_sniper_shrapnel_thinker_custom)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_ex_special_attack_thinker" })
 class ModifierSniperExSpecialAttackThinker extends ModifierThinker {
@@ -282,8 +277,6 @@ class ModifierSniperExSpecialAttackThinker extends ModifierThinker {
         StopSoundOn("Hero_Sniper.MKG_ShrapnelShatter", this.parent);
     }
 }
-// if IsClient() then require("wrappers/modifiers") }
-// Modifiers.Thinker(modifier_sniper_ex_special_attack_thinker)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_ex_special_attack_buff" })
 class ModifierSniperExSpecialAttack extends CustomModifier {

@@ -149,17 +149,9 @@ class JuggernautSpecialAttackRecast extends CustomAbility {
     // 	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_special_attack")
     // }
 }
-// if IsClient() then require("wrappers/abilities") }
-// Abilities.Castpoint(juggernaut_special_attack)
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_special_attack_recast" })
-class ModifierJuggernautSpecialAttackRecast extends ModifierRecast {
-    // function modifier_juggernaut_special_attack_recast:GetRecastKey()
-    // 	return "E"
-    // end
-}
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Recast(modifier_juggernaut_special_attack_recast)
+class ModifierJuggernautSpecialAttackRecast extends ModifierRecast {}
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_special_attack_mark" })
 class ModifierJuggernautSpecialAttackMark extends CustomModifier {}

@@ -36,8 +36,6 @@ class SniperUltimate extends CustomAbility {
         EmitGlobalSound("sniper_snip_laugh_08");
     }
 }
-// if(IsClient()){ require("wrappers/abilities") }
-// Abilities.Castpoint(sniper_ultimate)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_ultimate_channeling" })
 class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
@@ -186,13 +184,9 @@ class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
         ParticleManager.SetParticleControl(particleId, 3, position);
         ParticleManager.ReleaseParticleIndex(particleId);
     }
-    // function modifier_sniper_ultimate_channeling:GetStatusLabel() return "Ultimate" }
-    // function modifier_sniper_ultimate_channeling:GetStatusPriority() return 5 }
-    // function modifier_sniper_ultimate_channeling:GetStatusStyle() return "Ultimate" }
 }
 // if(IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Channeling(modifier_sniper_ultimate_channeling)
-// Modifiers.Status(modifier_sniper_ultimate_channeling)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_ultimate_displacement" })
 class ModifierSniperUltimateDisplacement extends ModifierDisplacement {}
@@ -201,4 +195,3 @@ class ModifierSniperUltimateDisplacement extends ModifierDisplacement {}
 
 @registerModifier({ customNameForI18n: "modifier_sniper_ultimate_hit" })
 class ModifierSniperUltimate extends CustomModifier {}
-// modifier_sniper_ultimate_hit = class({})

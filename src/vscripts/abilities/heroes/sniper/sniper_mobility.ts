@@ -66,8 +66,6 @@ class SniperMobility extends CustomAbility {
         ParticleManager.ReleaseParticleIndex(particleId);
     }
 }
-// if IsClient() then require("wrappers/abilities") }
-// Abilities.Castpoint(sniper_mobility)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_mobility_displacement" })
 class ModifierSniperMobility extends ModifierDisplacement {
@@ -147,6 +145,3 @@ class ModifierSniperMobility extends ModifierDisplacement {
         };
     }
 }
-// if IsClient() then require("wrappers/modifiers") }
-// Modifiers.Displacement(modifier_sniper_mobility_displacement)
-// Modifiers.Animation(modifier_sniper_mobility_displacement)

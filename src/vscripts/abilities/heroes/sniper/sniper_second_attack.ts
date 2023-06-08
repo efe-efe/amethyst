@@ -250,7 +250,3 @@ class SniperExSecondAttack extends SniperSecondAttackCommon {
         });
     }
 }
-
-// if(IsClient()){ require("wrappers/abilities") }
-// Abilities.Castpoint(sniper_second_attack)
-// Abilities.Castpoint(sniper_ex_second_attack)

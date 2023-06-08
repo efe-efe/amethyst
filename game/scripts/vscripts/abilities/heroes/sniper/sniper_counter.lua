@@ -85,7 +85,7 @@ function ModifierSniperCounter.prototype.CheckState(self)
     return {[MODIFIER_STATE_INVISIBLE] = true, [MODIFIER_STATE_TRUESIGHT_IMMUNE] = false}
 end
 ModifierSniperCounter = __TS__Decorate(
-    {registerModifier(nil, {customNameForI18n = "modifier_sniper_counter "})},
+    {registerModifier(nil, {customNameForI18n = "modifier_sniper_counter"})},
     ModifierSniperCounter
 )
 return ____exports

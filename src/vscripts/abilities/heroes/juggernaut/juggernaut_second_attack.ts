@@ -220,7 +220,6 @@ export class ModifierJuggernautSpin extends CustomModifier<undefined> {
         return 1.5;
     }
 }
-// Modifiers.Animation(modifier_juggernaut_spin_animation)
 
 @registerAbility("juggernaut_ex_second_attack")
 class JuggernautExSecondAttack extends CustomAbility {
@@ -421,8 +420,3 @@ class JuggernautExSecondAttack extends CustomAbility {
 // 	   release = true
 // 	})
 //  }
-
-// if(IsClient()){ require("wrappers/abilities") }
-// Abilities.Castpoint(juggernaut_second_attack)
-// Abilities.Castpoint(juggernaut_second_attack_recast)
-// Abilities.Castpoint(juggernaut_ex_second_attack)

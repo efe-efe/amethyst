@@ -90,8 +90,6 @@ class JuggernautUltimate extends CustomAbility {
         ParticleManager.ReleaseParticleIndex(particleId);
     }
 }
-// if IsClient() then require("wrappers/abilities") end
-// Abilities.Castpoint(juggernaut_ultimate)
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_displacement" })
 class ModifierJuggernautUltimateDisplacement extends ModifierDisplacement<JuggernautUltimate> {
@@ -151,9 +149,6 @@ class ModifierJuggernautUltimateDisplacement extends ModifierDisplacement<Jugger
         return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
     }
 }
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Displacement(modifier_juggernaut_ultimate_displacement)
-// Modifiers.Animation(modifier_juggernaut_ultimate_displacement)
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_slashing" })
 class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltimate> {
@@ -306,9 +301,6 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
     }
 }
 
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Animation(modifier_juggernaut_ultimate_slashing)
-
 @registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_banish" })
 class ModifierJuggernautBanish extends ModifierBanish {
     CheckState() {
@@ -318,6 +310,3 @@ class ModifierJuggernautBanish extends ModifierBanish {
         };
     }
 }
-
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Banish(modifier_juggernaut_ultimate_banish)

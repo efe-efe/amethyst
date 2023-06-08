@@ -1,5 +1,5 @@
 import { castpointValue, keywords, manaValue } from "../common";
-import { localizeAbility } from "../localization";
+import { localizeAbility, localizeModifier } from "../localization";
 import { abilityWithIcon, upgrade } from "../util";
 
 const snipe = abilityWithIcon("Snipe", "sniper_second_attack.png");
@@ -71,6 +71,15 @@ localizeAbility("sniper_ex_special_attack", {
     description: `Deploys a grenade that leaves the impact area covered in electricity, increasing the movement speed by %ms_pct%%% to the allies in the area and constatly reloading Sniper's ${dualShoot} and increasing his ${keywords.baseDamage.name()} in %extra_damage%. Lasts for %duration%s.`,
     upgrade: upgrade("Increases the damage buff."),
     values: [castpointValue]
+});
+
+localizeModifier("modifier_sniper_counter", {
+    title: "Inivisible",
+    description: "Invisible. Moving faster."
+});
+
+localizeModifier("modifier_sniper_ultimate_channeling", {
+    title: "Ultimate"
 });
 
 //     const Shards: Upgrade[] = [];

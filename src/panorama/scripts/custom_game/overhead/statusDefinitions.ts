@@ -75,6 +75,18 @@ function defineCounterStatus(modifierCode: string) {
     });
 }
 
+function defineUltimateStatus(modifierCode: string, content: "fillup" | "clearout") {
+    return defineStatus(modifierCode, {
+        backgroundColor: "#F5E767",
+        textShadow: createTextShadow("#F5E767"),
+        content: content
+    });
+}
+
+function defineShieldStatus(modifierCode: string) {
+    return defineStatus(modifierCode, { backgroundColor: "#E8C070" });
+}
+
 const SKY_BLUE = "#84f4eb";
 const LIGHT_GREEN = "#b2f7bd";
 const PURPLE = "#C655C4";
@@ -111,11 +123,6 @@ defineStatus("modifier_emerald", {
     backgroundColor: LIGHT_GREEN,
     textShadow: createTextShadow(LIGHT_GREEN)
 });
-defineStatus("modifier_casting", {
-    backgroundColor: "#F5E767",
-    textShadow: createTextShadow("#F5E767"),
-    content: "fillup"
-});
 defineStatus("modifier_generic_fading_slow", {
     backgroundColor: "#C2AB71",
     color: "#C2AB71"
@@ -140,6 +147,13 @@ defineStatus("modifier_adrenaline", {
     backgroundColor: "#CEDCFF",
     color: "#CEDCFF"
 });
+defineStatus("modifier_sniper_counter", {
+    backgroundColor: "#AEB3A3",
+    color: "#AEB3A3"
+});
+
+defineUltimateStatus("modifier_casting", "fillup");
+defineUltimateStatus("modifier_sniper_ultimate_channeling", "clearout");
 
 defineCounterStatus("modifier_juggernaut_counter_countering");
 
@@ -148,13 +162,14 @@ defineRecastStatus("modifier_juggernaut_extra_recast", "juggernaut_extra_recast"
 defineRecastStatus("modifier_juggernaut_counter_recast", "juggernaut_counter_recast", "Q");
 defineRecastStatus("modifier_juggernaut_ex_counter_recast", "juggernaut_ex_counter", "1");
 
+defineShieldStatus("modifier_juggernaut_extra_shield");
+
 // styles["Generic"] = {
 //     backgroundColor: "#F5E767",
 //     textShadow: createTextShadow("#F5E767")
 // };
 // styles["Heal"] = { backgroundColor: LIGHT_GREEN, color: LIGHT_GREEN };
 // styles["Mana"] = { backgroundColor: LIGHT_BLUE, color: LIGHT_BLUE };
-// styles["Shield"] = { backgroundColor: "#E8C070" };
 
 // styles["Channeling"] = { backgroundColor: "#F5E767" };
 // styles["Invisible"] = { backgroundColor: "#AEB3A3", color: "#AEB3A3" };

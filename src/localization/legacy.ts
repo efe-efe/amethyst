@@ -904,12 +904,6 @@
 //     });
 
 //     Modifiers.push({
-//       modifier_classname: "modifier_sniper_counter",
-//       name: "Inivisible",
-//       description: "Invisible. Moving faster.",
-//     });
-
-//     Modifiers.push({
 //       modifier_classname: "modifier_sniper_shrapnel_debuff",
 //       name: "Shrapnel",
 //       description: "Moving slower. Reciving shrapnel damage",

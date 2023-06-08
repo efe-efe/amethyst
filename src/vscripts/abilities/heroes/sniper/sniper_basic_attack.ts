@@ -82,8 +82,6 @@ export class SniperBasicAttack extends CustomAbility {
         ParticleManager.ReleaseParticleIndex(particleId);
     }
 }
-// if(IsClient()){ require("wrappers/abilities") }
-// Abilities.Castpoint(sniper_basic_attack)
 
 @registerModifier({ customNameForI18n: "modifier_sniper_basic_attack_charges" })
 export class ModifierSniperCharges extends ModifierCharges {
@@ -99,5 +97,3 @@ export class ModifierSniperCharges extends ModifierCharges {
         return 0;
     }
 }
-// if(IsClient()){ require("wrappers/modifiers") }
-// Modifiers.Charges(modifier_sniper_basic_attack_charges)
