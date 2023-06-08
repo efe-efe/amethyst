@@ -1,17 +1,17 @@
 import { localizeModifier } from "../localization";
 
 localizeModifier("modifier_emerald", {
-    title: "Emerald buff",
+    title: "Emerald",
     description: "Healing %MODIFIER_PROPERTY_TOOLTIP% HP per second."
 });
 
 localizeModifier("modifier_ruby", {
-    title: "Ruby buff",
+    title: "Ruby",
     description: "Your basic attacks deals extra fire damage."
 });
 
 localizeModifier("modifier_sapphire", {
-    title: "Sapphire buff",
+    title: "Sapphire",
     description: "Blocks %MODIFIER_PROPERTY_TOOLTIP% damage. Duplicates the mana gain."
 });
 

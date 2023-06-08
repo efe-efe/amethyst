@@ -1,6 +1,6 @@
 import { castpointValue, keywords, manaValue } from "../common";
-import { localizeAbility } from "../localization";
-import { abilityWithIcon, createKeyword, secondaryAbility, upgrade } from "../util";
+import { localizeAbility, localizeModifier } from "../localization";
+import { abilityWithIcon, createKeyword, heal, secondaryAbility, upgrade } from "../util";
 
 const bladeDance = abilityWithIcon("Blade Dance", "juggernaut_second_attack");
 const preparation = abilityWithIcon("Preparation", "juggernaut_counter");
@@ -72,15 +72,16 @@ localizeAbility("juggernaut_mobility", {
 
 localizeAbility("juggernaut_ultimate", {
     title: "Omnislash",
-    description: `Juggernaut very quickly leaps towards the mouse location. If an enemy is hit during the dash, Juggernaunt will start lunging between random targets around him, dealing ${keywords.baseDamage.name()} every hit. The time between attacks is based on Juggernaut\'s attack rate. Juggernaut is invulnerable for the duration. Ability ends after there is no valid nearby target or after %duration%s has passed. Consumes all ${furyStack.name()} to increase Juggernaut's attack speed by %aspd_per_stack% per stack consumed for the ability duration.`,
+    description: `Juggernaut very quickly leaps towards the mouse location. If an enemy is hit during the dash, Juggernaunt will start lunging between random targets around him, dealing ${keywords.baseDamage.name()} every hit. The time between attacks is based on Juggernaut's attack rate. Juggernaut is invulnerable for the duration. Ability ends after there is no valid nearby target or after %duration%s has passed. Consumes all ${furyStack.name()} to increase Juggernaut's attack speed by %aspd_per_stack% per stack consumed for the ability duration.`,
     lore: [keywords.fadingSlow.description],
     values: [castpointValue]
 });
 
 localizeAbility("juggernaut_extra", {
     title: "Healing Ward",
-    description:
-        "Summons a Healing Ward which heals all nearby allied units for %heal_per_second% health every second. The Healing Ward moves towards Juggernaut after being summoned. Can be recasted to move the healing ward towards the cursor location. Lasts for %duration%s.",
+    description: `Summons a Healing Ward which heals all nearby allied units for ${heal(
+        "%heal_per_second%"
+    )} health every second. The Healing Ward moves towards Juggernaut after being summoned. Can be recasted to move the healing ward towards the cursor location. Lasts for %duration%s.`,
     upgrade: upgrade("When invoked, the totem gives a shield that blocks %shield% damage to all nearby allies."),
     values: [castpointValue]
 });
@@ -106,36 +107,50 @@ localizeAbility("juggernaut_ex_second_attack", {
     values: [castpointValue]
 });
 
-//TODO @Refactor: Finish modifiers
-// Modifiers.push({
-//   modifier_classname: "modifier_juggernaut_basic_attack_stacks",
-//   name: "Fury Stacks",
-//   description: "Can be consumed to add extra effects on some abilities.",
-// });
+localizeModifier("modifier_juggernaut_mobility", {
+    title: "Blade Fury"
+});
 
-// Modifiers.push({
-//   modifier_classname: "modifier_juggernaut_extra_shield",
-//   name: "Totem Shield",
-//   description: `Blocks {${LocalizationModifierProperty.TOOLTIP}} incoming damage.`,
-// });
+localizeModifier("modifier_juggernaut_swiftness", {
+    title: "Swiftness",
+    description: "Moves %MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE%%% faster."
+});
 
-// Modifiers.push({
-//   modifier_classname: "modifier_juggernaut_ex_counter",
-//   name: "Swiftslash",
-//   description: `Your next basic attack deals {${LocalizationModifierProperty.PREATTACK_BONUS_DAMAGE}} extra damage.`,
-// });
+localizeModifier("modifier_juggernaut_basic_attack_stacks", {
+    title: "Fury Stacks",
+    description: "Can be consumed to add extra effects on some abilities."
+});
 
-// Modifiers.push({
-//   modifier_classname: "modifier_juggernaut_extra",
-//   name: "Healing Ward",
-//   description: `Recovering {${LocalizationModifierProperty.TOOLTIP}} health per second.`,
-// });
+localizeModifier("modifier_juggernaut_extra_shield", {
+    title: "Totem Shield",
+    description: "Blocks %MODIFIER_PROPERTY_TOOLTIP% incoming damage."
+});
 
-// Modifiers.push({
-//   modifier_classname: "modifier_juggernaut_swiftness",
-//   name: "Swiftness",
-//   description: `Moves {${LocalizationModifierProperty.MOVESPEED_BONUS_PERCENTAGE}}% faster.`,
-// });
+localizeModifier("modifier_juggernaut_ex_counter", {
+    title: "Swiftslash",
+    description: "Your next basic attack deals %MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE% extra damage."
+});
+
+localizeModifier("modifier_juggernaut_extra", {
+    title: "Healing Ward",
+    description: "Recovering %MODIFIER_PROPERTY_TOOLTIP% health per second."
+});
+
+localizeModifier("modifier_juggernaut_counter_countering", {
+    title: "Counter"
+});
+
+localizeModifier("modifier_juggernaut_counter_recast", {
+    title: "Recast"
+});
+
+localizeModifier("modifier_juggernaut_special_attack_recast", {
+    title: "Recast"
+});
+
+localizeModifier("modifier_juggernaut_extra_recast", {
+    title: "Recast"
+});
 
 // const Shards: Upgrade[] = [];
 

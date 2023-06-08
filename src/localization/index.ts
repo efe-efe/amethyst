@@ -3,7 +3,7 @@ import settings from "./settings";
 import { writeFileSync, readdirSync } from "fs";
 import { join } from "path";
 
-const folders = ["./heroes"];
+const folders = ["./heroes", "./general"];
 
 async function main() {
     await Promise.all(
