@@ -280,7 +280,7 @@ export class GameMode {
         });
 
         CustomGameEventManager.RegisterListener("customAction", (eventSourceIndex, event) => {
-            const playerId = event.playerIndex;
+            const playerId = event.playerIndex as PlayerID;
             const player = this.FindPlayerById(playerId);
 
             if (player) {
@@ -306,7 +306,7 @@ export class GameMode {
 
                 if (type == Custom_ActionTypes.ABILITY && hero) {
                     if (mode == Custom_ActionModes.STOP) {
-                        const ability = EntIndexToHScript(event.payload.abilityEntityIndex);
+                        const ability = EntIndexToHScript(event.payload.abilityEntityIndex as EntityIndex);
                         if (customNpc && ability) {
                             customNpc.ReleaseAbility(ability.GetName());
                         }
@@ -316,7 +316,7 @@ export class GameMode {
         });
 
         CustomGameEventManager.RegisterListener("refundPoints", (eventSourceIndex, event) => {
-            const playerId = event.playerIndex;
+            const playerId = event.playerIndex as PlayerID;
             const player = this.FindPlayerById(playerId);
 
             if (player) {
@@ -343,7 +343,7 @@ export class GameMode {
         });
 
         CustomGameEventManager.RegisterListener("swapRF", (eventSourceIndex, event) => {
-            const playerId = event.playerIndex;
+            const playerId = event.playerIndex as PlayerID;
             const player = this.FindPlayerById(playerId);
 
             if (player) {

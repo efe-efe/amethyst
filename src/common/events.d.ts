@@ -14,9 +14,9 @@
 interface CustomNetTableDeclarations {
     units: {
         [key: string]: {
-            entityIndex: EntityIndex;
-            teamId: DOTATeam_t;
-            playerId: PlayerID;
+            entityIndex: number;
+            teamId: number;
+            playerId: number;
             allianceName: string;
             name: string;
             health: number;
@@ -38,12 +38,12 @@ interface CustomNetTableDeclarations {
 // Separate definition
 interface CustomGameEventDeclarations {
     customAction: {
-        playerIndex: PlayerID;
+        playerIndex: number;
         payload:
             | {
                   type: Custom_ActionTypes.ABILITY;
                   mode: Custom_ActionModes;
-                  abilityEntityIndex: AbilityEntityIndex;
+                  abilityEntityIndex: number;
               }
             | {
                   type: Custom_ActionTypes.MOVEMENT;
@@ -52,7 +52,7 @@ interface CustomGameEventDeclarations {
               };
     };
 
-    refundPoints: { playerIndex: PlayerID };
+    refundPoints: { playerIndex: number };
 
-    swapRF: { playerIndex: PlayerID };
+    swapRF: { playerIndex: number };
 }
