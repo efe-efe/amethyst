@@ -5,15 +5,6 @@ import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { JuggernautBasicAttack, ModifierJuggernautStacks } from "./juggernaut_basic_attack";
 
-// juggernaut_second_attack = class({})
-// juggernaut_second_attack_recast = class({})
-// juggernaut_ex_second_attack = class({})
-// LinkLuaModifier("modifier_juggernaut_spin_animation", "abilities/heroes/juggernaut/modifier_juggernaut_spin_animation", LUA_MODIFIER_MOTION_HORIZONTAL)
-// LinkLuaModifier("modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_HORIZONTAL)
-// LinkLuaModifier("modifier_juggernaut_swiftness", "abilities/heroes/juggernaut/modifier_juggernaut_swiftness", LUA_MODIFIER_MOTION_NONE)
-// LinkLuaModifier("modifier_juggernaut_second_attack", "abilities/heroes/juggernaut/juggernaut_second_attack/modifier_juggernaut_second_attack", LUA_MODIFIER_MOTION_NONE)
-// LinkLuaModifier("modifier_juggernaut_second_attack_recast", "abilities/heroes/juggernaut/juggernaut_second_attack/modifier_juggernaut_second_attack_recast", LUA_MODIFIER_MOTION_NONE)
-
 @registerAbility("juggernaut_second_attack")
 class JuggernautSecondAttack extends CustomAbility {
     particleId!: ParticleID;
@@ -252,24 +243,26 @@ class JuggernautExSecondAttack extends CustomAbility {
     }
 
     OnAbilityPhaseStart() {
-        super.OnAbilityPhaseStart();
+        if (super.OnAbilityPhaseStart()) {
+            ModifierJuggernautSpin.apply(this.caster, this.caster, undefined, { duration: 0.3 });
+            EmitSoundOn("juggernaut_jugg_ability_bladefury_12", this.caster);
 
-        ModifierJuggernautSpin.apply(this.caster, this.caster, undefined, { duration: 0.3 });
-        EmitSoundOn("juggernaut_jugg_ability_bladefury_12", this.caster);
-
-        EFX("particles/juggernaut/juggernaut_ex_second_attack_casting_owner.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
-            release: true
-        });
-        this.particleId = EFX(
-            "particles/juggernaut/juggernaut_ex_second_attack_casting.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.caster,
-            {}
-        );
-        return true;
+            EFX("particles/juggernaut/juggernaut_ex_second_attack_casting_owner.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
+                release: true
+            });
+            this.particleId = EFX(
+                "particles/juggernaut/juggernaut_ex_second_attack_casting.vpcf",
+                ParticleAttachment.ABSORIGIN_FOLLOW,
+                this.caster,
+                {}
+            );
+            return true;
+        }
+        return false;
     }
 
     OnAbilityPhaseInterrupted() {
+        super.OnAbilityPhaseInterrupted();
         DEFX(this.particleId, true);
     }
 

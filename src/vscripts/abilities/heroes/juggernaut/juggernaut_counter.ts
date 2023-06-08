@@ -288,7 +288,7 @@ class JuggernautExCounter extends JuggernautSlash {
 // if IsClient() then require("wrappers/abilities") end
 // Abilities.Castpoint(juggernaut_ex_counter)
 
-@registerModifier()
+@registerModifier({ customNameForI18n: "modifier_juggernaut_ex_counter_recast" })
 class ModifierJuggernautExCounterRecast extends ModifierRecast {
     GetEffectName() {
         return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
