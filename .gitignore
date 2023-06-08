@@ -45,3 +45,4 @@ game/resource/overviews/*
 
 #Github dump
 *.stackdump
+game/resource/addon_english.txt
