@@ -1,8 +1,9 @@
 import Overhead from "./overhead";
-import Status from "./status";
+import { statusComponent } from "./status";
 import util, { Color, colors, panels } from "../util";
 import Health from "../commonComponents/health";
 import { StatusType, StatusTypes, UnitData } from "../types";
+import { std } from "../std";
 
 enum StatusScope {
     STATUS_SCOPE_PUBLIC = 1,
@@ -15,8 +16,6 @@ enum BeenHurt {
 }
 
 export default class UnitOverhead extends Overhead {
-    topPanel: Panel;
-    midPanel: Panel;
     botPanel: Panel;
     healthPanel: Panel;
     color: Color;
@@ -24,7 +23,6 @@ export default class UnitOverhead extends Overhead {
 
     botSwitchPanel: SwitchPanel | undefined;
 
-    status: Status;
     health: Health;
     isLocalPlayer: boolean;
     hideWhenNotHurt: boolean;
@@ -38,13 +36,13 @@ export default class UnitOverhead extends Overhead {
 
         this.isLocalPlayer = localPlayerId == unitData.playerId;
         this.color = colors.orange;
-        this.topPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__top");
-        this.midPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__mid");
+        const statusPanel = std.panel(this.containerPanel, { class: "unit-overhead__status" });
         this.botPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__bot");
         const resourcesPanel = panels.createPanelSimple(this.botPanel, "unit-overhead-resources");
         this.healthPanel = panels.createPanelSimple(resourcesPanel, "unit-overhead-resources__health");
 
-        this.status = new Status(this.midPanel, unitData.entityIndex);
+        statusComponent(statusPanel, unitData.entityIndex);
+
         this.health = new Health(this.healthPanel, {
             color: this.color,
             rounded: true,
@@ -54,7 +52,6 @@ export default class UnitOverhead extends Overhead {
 
         if (unitData.beenHurt === BeenHurt.NOT_HURT && this.hideWhenNotHurt) {
             this.Hide();
-            this.status.Deactivate();
             this.health.Deactivate();
         }
 
@@ -96,7 +93,6 @@ export default class UnitOverhead extends Overhead {
         if (!this.active) {
             if (this.ShouldActivate(unitData.beenHurt)) {
                 this.Show();
-                this.status.Activate();
                 this.health.Activate();
                 this.active = true;
             } else {
@@ -107,19 +103,7 @@ export default class UnitOverhead extends Overhead {
             const currentStatus = this.GetCurrentStatus(unitData.status);
             if (currentStatus) {
                 const { label, style_name, trigger, modifier_name, max_stacks, content } = currentStatus;
-
-                if (!this.status.HasData()) {
-                    this.status.SetData(label, style_name, trigger, modifier_name, max_stacks, content);
-                }
-
-                if (!this.status.IsActive()) {
-                    this.status.Activate();
-                }
-            } else {
-                this.status.Deactivate();
             }
-        } else {
-            this.status.Deactivate();
         }
 
         this.health.Update(unitData.health, unitData.health, unitData.maxHealth, unitData.shield);

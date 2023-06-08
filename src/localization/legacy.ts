@@ -868,42 +868,6 @@
 //     });
 
 //     Modifiers.push({
-//       modifier_classname: "modifier_adrenaline",
-//       name: "Adrenaline",
-//       description: `Moving {${LocalizationModifierProperty.MOVESPEED_BONUS_PERCENTAGE}}% faster. Removed on casting any ability or getting hit by an enemy ability.`,
-//     });
-
-//     Modifiers.push({
-//       modifier_classname: "modifier_generic_silence",
-//       name: "Silenced",
-//       description: "Can't cast spells.",
-//     });
-
-//     Modifiers.push({
-//       modifier_classname: "modifier_generic_fading_slow",
-//       name: "Fading slow",
-//       description: "This unit moves slower. Gains movement speed every second.",
-//     });
-
-//     Modifiers.push({
-//       modifier_classname: "modifier_generic_stunned",
-//       name: "Stunned",
-//       description: "Can't act.",
-//     });
-
-//     Modifiers.push({
-//       modifier_classname: "modifier_generic_sleep",
-//       name: "Sleep",
-//       description: "Unable to act. Any damage recivied will awakens the hero",
-//     });
-
-//     Modifiers.push({
-//       modifier_classname: "modifier_generic_root",
-//       name: "Rooted",
-//       description: "Unable to move",
-//     });
-
-//     Modifiers.push({
 //       modifier_classname: "modifier_spectre_desolate_custom",
 //       name: "Desolate",
 //       description: "This unit is desolated by Spectre's weapon.",

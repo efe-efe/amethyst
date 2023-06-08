@@ -39,12 +39,7 @@ export class ModifierRuby extends ModifierCombatEvents {
     GetTexture() {
         return "modifier_ruby";
     }
-
-    // function modifier_ruby:GetStatusLabel() return "Ruby" end
-    // function modifier_ruby:GetStatusPriority() return 2 end
-    // function modifier_ruby:GetStatusStyle() return "Ruby" end
 }
-// Modifiers.Status(modifier_ruby)
 
 @registerModifier({ customNameForI18n: "modifier_ruby_attack" })
 export class ModifierRubyAttack extends ModifierCombatEvents<undefined> {

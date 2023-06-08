@@ -14,15 +14,10 @@
 }
 
 .unit-overhead {
-    &__top {
+    &__status {
         width: 100%;
-        height: 60px;
-    }
-
-    &__mid {
-        width: 100%;
-        height: 30px;
         margin-bottom: 2px;
+        flow-children: down;
     }
 
     &__bot {

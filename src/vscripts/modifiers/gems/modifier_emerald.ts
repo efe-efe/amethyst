@@ -64,15 +64,4 @@ class ModifierRuby extends CustomModifier {
     GetTexture() {
         return "modifier_emerald";
     }
-
-    // GetStatusLabel() {
-    //     return "Emerald";
-    // }
-    // GetStatusPriority() {
-    //     return 2;
-    // }
-    // GetStatusStyle() {
-    //     return "Emerald";
-    // }
 }
-// Modifiers.Status(modifier_emerald)

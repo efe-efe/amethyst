@@ -2,7 +2,6 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierCombatEvents, OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
-import { CustomModifier } from "../../framework/custom_modifier";
 
 @registerAbility("juggernaut_mobility")
 class JuggernautMobility extends CustomAbility {
@@ -205,12 +204,3 @@ class ModifierJuggernautMobility extends ModifierCombatEvents {
         return true;
     }
 }
-
-// function modifier_juggernaut_mobility:GetStatusLabel() return "Blade Fury" }
-// function modifier_juggernaut_mobility:GetStatusPriority() return 4 }
-// function modifier_juggernaut_mobility:GetStatusStyle() return "BladeFury" }
-
-// if(IsClient()){ require("wrappers/modifiers") }
-// Modifiers.Animation(modifier_juggernaut_mobility)
-// Modifiers.Status(modifier_juggernaut_mobility)
-// Modifiers.OnHit(modifier_juggernaut_mobility)

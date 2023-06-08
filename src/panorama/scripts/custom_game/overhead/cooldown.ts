@@ -1,4 +1,4 @@
-import { modifiers, panels } from "../util";
+import { findModifierByName, panels } from "../util";
 
 export default class Cooldown {
     panel: Panel;
@@ -19,7 +19,7 @@ export default class Cooldown {
     }
 
     Update(): void {
-        let modifierIndex = modifiers.findModifierByName(this.entityIndex, this.modifierName);
+        let modifierIndex = findModifierByName(this.entityIndex, this.modifierName);
 
         if (modifierIndex) {
             modifierIndex = modifierIndex as BuffID;

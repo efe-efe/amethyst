@@ -5,7 +5,6 @@
         <include src="file://{resources}/styles/custom_game/unitOverhead/unitOverhead.css" />
         <include src="file://{resources}/styles/custom_game/unitOverhead/charges.css" />
         <include src="file://{resources}/styles/custom_game/unitOverhead/player.css" />
-        <include src="file://{resources}/styles/custom_game/unitOverhead/recast.css" />
         <include src="file://{resources}/styles/custom_game/unitOverhead/status.css" />
         <include src="file://{resources}/styles/custom_game/unitOverhead/cooldown.css" />
         <include src="file://{resources}/styles/custom_game/unitOverhead/stacks.css" />

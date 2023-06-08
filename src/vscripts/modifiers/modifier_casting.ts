@@ -114,9 +114,4 @@ export class ModifierCasting extends CustomModifier {
     // 		return true
     // 	end
     // end
-    // function modifier_casting:GetStatusLabel() return "Ultimate" end
-    // function modifier_casting:GetStatusPriority() return 5 end
-    // function modifier_casting:GetStatusStyle() return "Ultimate" end
-    // function modifier_casting:GetStatusContentType() return STATUS_CONTENT_FILLUP end
 }
-// Modifiers.Status(modifier_casting)

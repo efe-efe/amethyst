@@ -185,8 +185,6 @@ function CustomEntitiesLegacy:SendDataToClient(hEntity)
 			shield = CustomEntitiesLegacy:GetShield(hEntity),
 			mana = hEntity:GetMana(),
 			maxMana = hEntity:GetMaxMana(),
-			status = CustomEntitiesLegacy:GetStatus(hEntity),
-			recast = CustomEntitiesLegacy:GetRecast(hEntity),
 			stackbars = CustomEntitiesLegacy:GetStackbars(hEntity),
 			charges = CustomEntitiesLegacy:GetCharges(hEntity),
 			cooldown = CustomEntitiesLegacy:GetCooldown(hEntity),

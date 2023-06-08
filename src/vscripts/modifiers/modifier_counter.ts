@@ -78,19 +78,9 @@ export class ModifierCounter extends ModifierCombatEvents<undefined> {
     GetStatusEffectName() {
         return "particles/status_fx/status_effect_avatar.vpcf";
     }
+
+    //     function modifier:DeactivateAbilities()
+    //         if deactivateAbilities then return deactivateAbilities(self) end
+    //         return true
+    //     end
 }
-
-// function Modifiers.Counter(modifier)
-//     function modifier:DeactivateAbilities()
-//         if deactivateAbilities then return deactivateAbilities(self) end
-//         return true
-//     end
-
-//     function modifier:GetStatusLabel() return "Counter" end
-//     function modifier:GetStatusPriority() return 4 end
-//     function modifier:GetStatusStyle() return "Counter" end
-
-//     if IsClient() then require("wrappers/modifiers") end
-//     Modifiers.Status(modifier)
-//     Modifiers.StartTracking(modifier, MODIFIER_TYPES.COUNTER)
-// end

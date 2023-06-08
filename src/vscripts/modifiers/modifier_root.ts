@@ -23,9 +23,3 @@ export class ModifierRoot extends CustomModifier {
         return ParticleAttachment.ABSORIGIN_FOLLOW;
     }
 }
-// function modifier_generic_root:GetStatusLabel() return "Root" }
-// function modifier_generic_root:GetStatusPriority() return 4 }
-// function modifier_generic_root:GetStatusStyle() return "Root" }
-
-// if IsClient() then require("wrappers/modifiers") }
-// Modifiers.Status(modifier_generic_root)

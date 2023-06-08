@@ -46,3 +46,4 @@ game/resource/overviews/*
 #Github dump
 *.stackdump
 game/resource/addon_english.txt
+content/panorama/scripts/custom_game/bundle.js.map

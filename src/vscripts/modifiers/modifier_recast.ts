@@ -33,18 +33,8 @@ export class ModifierRecast extends CustomModifier<undefined> {
             const charges = params.charges ?? 1;
 
             this.SetStackCount(this.abilityRight ? charges : charges + 1);
-
-            // CustomEntitiesLegacy:SendDataToClient(self:GetParent())
         }
     }
-
-    // function modifier:GetRecastData()
-    //     return {
-    //         key = self:GetRecastKey(),
-    //         modifier_name = self:GetName(),
-    //         ability_name = self:GetRecastAbility():GetName(),
-    //     }
-    // end
 
     OnDestroy() {
         if (IsServer()) {
@@ -53,7 +43,6 @@ export class ModifierRecast extends CustomModifier<undefined> {
             }
 
             this.abilityLeft.StartCooldown(this.abilityLeft.GetCooldown(this.abilityLeft.GetLevel()));
-            //         CustomEntitiesLegacy:SendDataToClient(self:GetParent())
         }
     }
 
@@ -97,18 +86,4 @@ export class ModifierRecast extends CustomModifier<undefined> {
             }
         }
     }
-
-    // function modifier:GetRecastKey()
-    //     if getRecastKey then return getRecastKey(self) end
-    //     return "NO KEY"
-    // end
-
-    // function modifier:GetStatusLabel() return "Recast" end
-    // function modifier:GetStatusPriority() return 10 end
-    // function modifier:GetStatusStyle() return "Recast" end
-    // function modifier:GetStatusScope() return STATUS_SCOPE_LOCAL end
 }
-
-//     if IsClient() then require("wrappers/modifiers") end
-//     Modifiers.Status(modifier)
-//     Modifiers.StartTracking(modifier, MODIFIER_TYPES.RECAST)

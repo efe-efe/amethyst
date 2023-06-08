@@ -1,8 +1,6 @@
 import Overhead from "./overhead";
-import Recast from "./recast";
-import Status from "./status";
-import util, { Color, colors, panels } from "../util";
-import Player from "./player";
+import { statusComponent } from "./status";
+import util, { colors, panels } from "../util";
 import Charges from "./charges";
 import Cooldown from "./cooldown";
 import Stacks from "./stacks";
@@ -20,8 +18,6 @@ enum StatusScope {
 const alliances = Alliances.GetInstance();
 
 export default class HeroOverhead extends Overhead {
-    topPanel: Panel;
-    midPanel: Panel;
     botPanel: Panel;
     chargesPanel: Panel;
     healthPanel: Panel;
@@ -32,13 +28,8 @@ export default class HeroOverhead extends Overhead {
     cooldownPanel: Panel;
     energyPanel: Panel;
 
-    color: Color;
-
-    midSwitchPanel: SwitchPanel;
     botSwitchPanel: SwitchPanel | undefined;
 
-    recast: Recast;
-    status: Status;
     health: Health;
     energy: MultipleBars | undefined;
     mana: MultipleBars | undefined;
@@ -53,11 +44,10 @@ export default class HeroOverhead extends Overhead {
         super(heroData.entityIndex);
         const alliance = alliances.findAllianceByTeam(heroData.teamId)!;
         const localPlayerId = Game.GetLocalPlayerID();
+        const color = colors[alliance.GetColor()];
 
         this.isLocalPlayer = localPlayerId == heroData.playerId;
-        this.color = colors[alliance.GetColor()];
-        this.topPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__top");
-        this.midPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__mid");
+        const statusPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__status");
         this.botPanel = panels.createPanelSimple(this.containerPanel, "unit-overhead__bot unit-overhead__bot--hero");
         this.chargesPanel = panels.createPanelSimple(this.botPanel, "unit-overhead-charges");
         const resourcesPanel = panels.createPanelSimple(this.botPanel, "unit-overhead-resources");
@@ -87,17 +77,12 @@ export default class HeroOverhead extends Overhead {
             });
         }
 
-        this.recast = new Recast(this.topPanel);
-        this.status = new Status(this.midPanel, heroData.entityIndex);
-        const player = new Player(this.midPanel, heroData.playerId, this.color);
-
+        statusComponent(statusPanel, heroData.entityIndex, { playerId: heroData.playerId, color: color });
         this.health = new Health(this.healthPanel, {
-            color: this.color,
+            color: color,
             rounded: true
         });
         this.castpoint = new Castpoint(this.castpointPanel, heroData.entityIndex);
-
-        this.midSwitchPanel = new SwitchPanel(player.GetPanel(), this.status.GetPanel());
         this.botSwitchPanel = new SwitchPanel(this.cooldownPanel, this.stackbarsPanel);
 
         if (heroData.cooldown && this.isLocalPlayer) {
@@ -140,35 +125,6 @@ export default class HeroOverhead extends Overhead {
     }
 
     public UpdateData(heroData: HeroData): void {
-        if (!util.isEmptyObject(heroData.recast) && this.isLocalPlayer) {
-            const currentRecast = util.getFirstObjectElement(heroData.recast);
-            this.recast.Activate(currentRecast.ability_name, currentRecast.key);
-        } else {
-            this.recast.Deactivate();
-        }
-
-        if (this.ShouldShowStatus(heroData.status)) {
-            const currentStatus = this.GetCurrentStatus(heroData.status);
-            if (currentStatus) {
-                const { label, style_name, trigger, modifier_name, max_stacks, content } = currentStatus;
-
-                if (!this.status.HasData()) {
-                    this.status.SetData(label, style_name, trigger, modifier_name, max_stacks, content);
-                }
-
-                if (!this.status.IsActive()) {
-                    this.status.Activate();
-                }
-                this.midSwitchPanel.SetState(1);
-            } else {
-                this.status.Deactivate();
-                this.midSwitchPanel.SetState(0);
-            }
-        } else {
-            this.status.Deactivate();
-            this.midSwitchPanel.SetState(0);
-        }
-
         this.health.Update(heroData.health, heroData.treshold, heroData.maxHealth, heroData.shield);
         if (this.mana) {
             this.mana.Update(heroData.mana, heroData.maxMana);

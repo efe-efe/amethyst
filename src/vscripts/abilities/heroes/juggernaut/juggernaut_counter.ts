@@ -104,9 +104,6 @@ class ModifierJuggernautCounter extends ModifierCounter {
         return 0.1;
     }
 }
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Counter(modifier_juggernaut_counter_countering)
-// Modifiers.OnHit(modifier_juggernaut_counter_countering)
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_counter_recast" })
 class ModifierJuggernautCounterRecast extends ModifierRecast {
@@ -118,15 +115,6 @@ class ModifierJuggernautCounterRecast extends ModifierRecast {
         return ParticleAttachment.ABSORIGIN_FOLLOW;
     }
 }
-
-// function modifier_juggernaut_counter_recast:GetRecastKey()
-// 	return "Q"
-// end
-
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Recast(modifier_juggernaut_counter_recast)
-
-// juggernaut_ex_counter = class(juggernaut_counter_helper)
 
 abstract class JuggernautSlash extends CustomAbility {
     Slash(point: Vector, damage: number, particle: string) {
@@ -285,8 +273,6 @@ class JuggernautExCounter extends JuggernautSlash {
         });
     }
 }
-// if IsClient() then require("wrappers/abilities") end
-// Abilities.Castpoint(juggernaut_ex_counter)
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_ex_counter_recast" })
 class ModifierJuggernautExCounterRecast extends ModifierRecast {
@@ -298,13 +284,6 @@ class ModifierJuggernautExCounterRecast extends ModifierRecast {
         return ParticleAttachment.ABSORIGIN_FOLLOW;
     }
 }
-
-// function modifier_juggernaut_ex_counter_recast:GetRecastKey()
-// 	return "1"
-// end
-
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Recast(modifier_juggernaut_ex_counter_recast)
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_swiftness" })
 class ModifierJuggernautSwiftness extends CustomModifier<undefined> {
@@ -351,9 +330,4 @@ class ModifierJuggernautSwiftness extends CustomModifier<undefined> {
     GetTexture() {
         return "modifier_swiftness";
     }
-    // function modifier_juggernaut_swiftness:GetStatusLabel() return "Swiftness" end
-    // function modifier_juggernaut_swiftness:GetStatusPriority() return 1 end
-    // function modifier_juggernaut_swiftness:GetStatusStyle() return "Swiftness" end
 }
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Status(modifier_juggernaut_swiftness)

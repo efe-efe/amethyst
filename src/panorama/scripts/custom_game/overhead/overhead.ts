@@ -1,4 +1,4 @@
-import { modifiers, entities, panels } from "../util";
+import { findModifierByName, entities } from "../util";
 import { toplevelRoot } from "../components/topLevelRoot";
 import { std } from "../std";
 
@@ -65,7 +65,7 @@ export default class Overhead {
     }
 
     UpdateVisibility() {
-        const hide = modifiers.findModifierByName(this.entityIndex, "modifier_hide_bar");
+        const hide = findModifierByName(this.entityIndex, "modifier_hide_bar");
 
         if (Entities.IsAlive(this.entityIndex) && entities.isVisibleByLocal(this.entityIndex) && !hide) {
             this.Show();

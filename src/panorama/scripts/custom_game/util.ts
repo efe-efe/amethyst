@@ -79,22 +79,23 @@ export const math = {
     }
 };
 
-export const modifiers = {
-    findModifierByName(entityIndex: EntityIndex, name: string): BuffID | boolean {
-        for (let i = 0; i < Entities.GetNumBuffs(entityIndex); i++) {
-            const buffName = Buffs.GetName(entityIndex, Entities.GetBuff(entityIndex, i));
+export function findModifierByName(entityIndex: EntityIndex, name: string) {
+    return findAllModifiers(entityIndex).find(modifier => name == Buffs.GetName(entityIndex, modifier));
+}
 
-            if (buffName == name) {
-                return Entities.GetBuff(entityIndex, i);
-            }
-        }
-        return false;
+export function findAllModifiers(entityIndex: EntityIndex) {
+    const modifiers = [];
+
+    for (let i = 0; i < Entities.GetNumBuffs(entityIndex); i++) {
+        modifiers.push(Entities.GetBuff(entityIndex, i));
     }
-};
+
+    return modifiers;
+}
 
 export const entities = {
     isVisibleByLocal(entityIndex: EntityIndex): boolean {
-        if (modifiers.findModifierByName(entityIndex, "modifier_visible") !== false) {
+        if (findModifierByName(entityIndex, "modifier_visible") != undefined) {
             return true;
         }
         return false;

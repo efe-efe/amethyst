@@ -1,5 +1,5 @@
 import ProgressBar from "../progressBar";
-import { modifiers } from "../util";
+import { findModifierByName } from "../util";
 
 export default class Castpoint {
     progressBar: ProgressBar;
@@ -15,7 +15,7 @@ export default class Castpoint {
     }
 
     Update(): void {
-        let modifierIndex = modifiers.findModifierByName(this.entityIndex, "modifier_casting");
+        let modifierIndex = findModifierByName(this.entityIndex, "modifier_casting");
 
         if (modifierIndex) {
             modifierIndex = modifierIndex as BuffID;

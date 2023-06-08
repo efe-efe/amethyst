@@ -1,4 +1,4 @@
-import { tables, math, modifiers } from "./util";
+import { tables, math, findModifierByName } from "./util";
 import { TargetingIndicator } from "./types";
 import CustomAbilities from "./customAbilities";
 
@@ -36,7 +36,7 @@ import CustomAbilities from "./customAbilities";
 
         let activeModifier: boolean | BuffID = false;
         targetIndicatorModifiers.forEach(modifier => {
-            const tempModifier = modifiers.findModifierByName(heroIndex as EntityIndex, modifier);
+            const tempModifier = findModifierByName(heroIndex as EntityIndex, modifier);
 
             if (tempModifier) {
                 activeModifier = tempModifier;
@@ -90,8 +90,8 @@ import CustomAbilities from "./customAbilities";
                     length = math.clamp(Game.Length2D(mousePosition, heroOrigin), minRange, maxRange);
                 }
 
-                if (data.ModifierName && modifiers.findModifierByName(heroIndex, data.ModifierName)) {
-                    const modifierIndex = modifiers.findModifierByName(heroIndex, data.ModifierName);
+                if (data.ModifierName && findModifierByName(heroIndex, data.ModifierName)) {
+                    const modifierIndex = findModifierByName(heroIndex, data.ModifierName);
 
                     if (modifierIndex) {
                         if (data.ModifierStacks) {

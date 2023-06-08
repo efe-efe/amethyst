@@ -152,6 +152,10 @@ localizeModifier("modifier_juggernaut_extra_recast", {
     title: "Recast"
 });
 
+localizeModifier("modifier_juggernaut_ex_counter_recast", {
+    title: "Recast"
+});
+
 // const Shards: Upgrade[] = [];
 
 // const Favors: Upgrade[] = [

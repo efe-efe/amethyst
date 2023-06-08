@@ -39,11 +39,4 @@ export class ModifierStun extends CustomModifier {
     GetEffectAttachType() {
         return ParticleAttachment.OVERHEAD_FOLLOW;
     }
-
-    // function modifier_generic_stunned:GetStatusLabel() return "Stun" }
-    // function modifier_generic_stunned:GetStatusPriority() return 4 }
-    // function modifier_generic_stunned:GetStatusStyle() return "Stun" }
 }
-// if IsClient() then require("wrappers/modifiers") }
-// Modifiers.Status(modifier_generic_stunned)
-// Modifiers.Animation(modifier_generic_stunned)
