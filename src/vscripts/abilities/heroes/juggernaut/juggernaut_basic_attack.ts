@@ -46,10 +46,9 @@ export class JuggernautBasicAttack extends CustomAbility {
     }
 
     OnSpellStart() {
-        const origin = this.caster.GetOrigin();
+        const origin = this.caster.GetAbsOrigin();
         //TODO: @Refactor Refactor the cursor
         const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
-
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, {
             maxRange: castRange,

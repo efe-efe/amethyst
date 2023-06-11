@@ -300,16 +300,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
 }
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_extra_recast" })
-class ModifierJuggernautExtraRecast extends ModifierRecast {
-    // function modifier_juggernaut_extra_recast:GetRecastKey()
-    // 	if self:GetRecastAbility():GetAbilityIndex() == 6 then
-    // 		return "R"
-    // 	end
-    // 	return "F"
-    // end
-}
-// if IsClient() then require("wrappers/modifiers") end
-// Modifiers.Recast(modifier_juggernaut_extra_recast)
+class ModifierJuggernautExtraRecast extends ModifierRecast<undefined> {}
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_extra" })
 class ModifierJuggernautExtra extends CustomModifier<JuggernautExtra> {

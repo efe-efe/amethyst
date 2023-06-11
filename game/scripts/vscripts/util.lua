@@ -255,8 +255,8 @@ function ____exports.clampPosition(self, origin, target, options)
     end
     return result
 end
-function ____exports.direction2D(self, origin, target)
-    return Vector(target.x - origin.x, target.y - origin.y, 0):Normalized()
+function ____exports.direction2D(self, from, to)
+    return Vector(to.x - from.x, to.y - from.y, 0):Normalized()
 end
 function ____exports.meeleEFX(self, caster, direction, radius, color)
     local origin = caster:GetAbsOrigin()

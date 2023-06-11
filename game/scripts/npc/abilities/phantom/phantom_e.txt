@@ -2,7 +2,7 @@
 	"phantom_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_special_attack/phantom_special_attack"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_special_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"phantom_special_attack"

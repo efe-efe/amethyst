@@ -100,11 +100,6 @@ defineStatus("modifier_juggernaut_mobility", {
     textShadow: createTextShadow("#DC8668"),
     color: "#FFF5D7"
 });
-defineStatus("modifier_juggernaut_mobility", {
-    backgroundColor: ORANGE,
-    textShadow: createTextShadow("#DC8668"),
-    color: "#FFF5D7"
-});
 defineStatus("modifier_juggernaut_swiftness", {
     backgroundColor: LIGHT_GREEN,
     color: LIGHT_GREEN
@@ -151,18 +146,34 @@ defineStatus("modifier_sniper_counter", {
     backgroundColor: "#AEB3A3",
     color: "#AEB3A3"
 });
+defineStatus("modifier_phantom_bleed", {
+    backgroundColor: ORANGE,
+    textShadow: createTextShadow(PURPLE),
+    color: RED
+});
+defineStatus("modifier_phantom_ex_basic_attack", {
+    backgroundColor: "#DC8668",
+    color: "#DC8668"
+});
+defineStatus("modifier_phantom_counter");
 
 defineUltimateStatus("modifier_casting", "fillup");
 defineUltimateStatus("modifier_sniper_ultimate_channeling", "clearout");
 
 defineCounterStatus("modifier_juggernaut_counter_countering");
+defineCounterStatus("modifier_phantom_counter_countering");
 
 defineRecastStatus("modifier_juggernaut_special_attack_recast", "juggernaut_special_attack_recast", "E");
 defineRecastStatus("modifier_juggernaut_extra_recast", "juggernaut_extra_recast", "F");
 defineRecastStatus("modifier_juggernaut_counter_recast", "juggernaut_counter_recast", "Q");
 defineRecastStatus("modifier_juggernaut_ex_counter_recast", "juggernaut_ex_counter", "1");
 
+defineRecastStatus("modifier_phantom_counter_recast", "phantom_counter_recast", "Q");
+defineRecastStatus("modifier_phantom_ex_counter_recast", "phantom_ex_counter_recast", "2");
+defineRecastStatus("modifier_phantom_extra_recast", "phantom_extra", "F");
+
 defineShieldStatus("modifier_juggernaut_extra_shield");
+defineShieldStatus("modifier_phantom_counter_shield");
 
 // styles["Generic"] = {
 //     backgroundColor: "#F5E767",
@@ -214,7 +225,6 @@ defineShieldStatus("modifier_juggernaut_extra_shield");
 //     textShadow: createTextShadow(LIGHT_BLUE)
 // };
 // styles["Desolate"] = { backgroundColor: "#C655C4", color: "#C655C4" };
-// styles["DancingBlades"] = { backgroundColor: "#DC8668", color: "#DC8668" };
 // styles["Raze"] = {
 //     backgroundColor: ORANGE,
 //     textShadow: createTextShadow("#DC8668"),
@@ -229,11 +239,6 @@ defineShieldStatus("modifier_juggernaut_extra_shield");
 //     backgroundColor: BLUE,
 //     textShadow: createTextShadow(LIGHT_BLUE),
 //     color: SKY_BLUE
-// };
-// styles["Bleeding"] = {
-//     backgroundColor: ORANGE,
-//     textShadow: createTextShadow(PURPLE),
-//     color: RED
 // };
 // styles["Revenant"] = {
 //     backgroundColor: ORANGE,

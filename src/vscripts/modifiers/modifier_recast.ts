@@ -1,8 +1,9 @@
+import { CustomAbility } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
 @registerModifier()
-export class ModifierRecast extends CustomModifier<undefined> {
+export class ModifierRecast<A extends CDOTABaseAbility | undefined = CustomAbility> extends CustomModifier<A> {
     abilityLeft!: CDOTABaseAbility;
     abilityRight?: CDOTABaseAbility;
     duration!: number;

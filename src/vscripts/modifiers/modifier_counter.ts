@@ -1,8 +1,9 @@
+import { CustomAbility } from "../abilities/framework/custom_ability";
 import { registerModifier } from "../lib/dota_ts_adapter";
 import { ModifierCombatEvents } from "./modifier_combat_events";
 
 @registerModifier()
-export class ModifierCounter extends ModifierCombatEvents<undefined> {
+export class ModifierCounter<A extends CDOTABaseAbility | undefined = CustomAbility> extends ModifierCombatEvents<A> {
     particleIds: ParticleID[] = [];
 
     OnCreated() {

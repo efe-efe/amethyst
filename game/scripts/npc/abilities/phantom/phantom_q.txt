@@ -2,7 +2,7 @@
     "phantom_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_counter"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"phantom_assassin_blur"
@@ -31,7 +31,7 @@
     "phantom_counter_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_counter"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"phantom_assassin_blur"
@@ -53,7 +53,7 @@
     "phantom_ex_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_counter"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -81,7 +81,7 @@
 	"phantom_ex_counter_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_counter/phantom_counter"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_counter"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

@@ -2,7 +2,7 @@
     "phantom_mobility"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_mobility/phantom_mobility"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_mobility"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"phantom_mobility"

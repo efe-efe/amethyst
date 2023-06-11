@@ -59,11 +59,9 @@ class SniperSecondAttack extends SniperSecondAttackCommon {
             // if(this.caster.FindModifierByName('modifier_upgrade_sniper_snipe_cast_fast')){
             //     return 0.3
             // }
-
-            return super.GetCastPoint();
         }
 
-        return 0;
+        return super.GetCastPoint();
     }
 
     OnAbilityPhaseStart() {

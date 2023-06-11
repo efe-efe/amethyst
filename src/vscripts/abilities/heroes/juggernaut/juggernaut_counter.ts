@@ -21,7 +21,7 @@ class JuggernautCounter extends CustomAbility {
 }
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_counter_countering" })
-class ModifierJuggernautCounter extends ModifierCounter {
+class ModifierJuggernautCounter extends ModifierCounter<undefined> {
     OnDestroy() {
         super.OnDestroy();
 
@@ -106,7 +106,7 @@ class ModifierJuggernautCounter extends ModifierCounter {
 }
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_counter_recast" })
-class ModifierJuggernautCounterRecast extends ModifierRecast {
+class ModifierJuggernautCounterRecast extends ModifierRecast<undefined> {
     GetEffectName() {
         return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
     }
@@ -275,7 +275,7 @@ class JuggernautExCounter extends JuggernautSlash {
 }
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_ex_counter_recast" })
-class ModifierJuggernautExCounterRecast extends ModifierRecast {
+class ModifierJuggernautExCounterRecast extends ModifierRecast<undefined> {
     GetEffectName() {
         return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
     }

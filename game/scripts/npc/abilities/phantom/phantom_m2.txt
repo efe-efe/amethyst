@@ -2,7 +2,7 @@
     "phantom_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_second_attack/phantom_second_attack"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_second_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -30,7 +30,7 @@
     "phantom_second_attack_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_second_attack/phantom_second_attack"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_second_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

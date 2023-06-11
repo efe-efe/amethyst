@@ -2,7 +2,7 @@
 	"phantom_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_ultimate/phantom_ultimate"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_ultimate"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"phantom_assassin_coup_de_grace"
@@ -23,8 +23,10 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_FLOAT"		"damage_multiplier"					"3.5" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"damage_multiplier_per_stack"		"1.5" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox"							"90" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"damage_multiplier_per_stack"		"1.5" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"start_hitbox"						"70" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"end_hitbox"						"90" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"					"4000" }
 		}
 	}
 }

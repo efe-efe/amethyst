@@ -3,7 +3,7 @@
     "phantom_extra"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_extra/phantom_extra"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_extra"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -22,11 +22,11 @@
 
 		"AbilitySpecial"
 		{
-			"02"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
-			"03"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0 6.0" }
-			"04"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
-			"05"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
+			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
+			"02"{ "var_type"	"FIELD_FLOAT"		"duration"               	"4.0 6.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"3.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"radius"					"200" }
 		}
 	}
 }

@@ -2,7 +2,7 @@
     "phantom_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack/phantom_basic_attack"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"phantom_basic_attack"
@@ -18,13 +18,14 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"240" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "5" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"cooldown_reduction"		"2.0" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"max_stacks"				"3" }
 		}
 	}
 
     "phantom_basic_attack_related"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack/phantom_basic_attack_related"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"phantom_assassin_stifling_dagger"
@@ -51,7 +52,7 @@
     "phantom_ex_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack/phantom_basic_attack"
+		"ScriptFile"					"abilities/heroes/phantom/phantom_basic_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

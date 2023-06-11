@@ -230,8 +230,8 @@ export function clampPosition(origin: Vector, target: Vector, options?: { maxRan
     return result;
 }
 
-export function direction2D(origin: Vector, target: Vector) {
-    return Vector(target.x - origin.x, target.y - origin.y, 0).Normalized();
+export function direction2D(from: Vector, to: Vector) {
+    return Vector(to.x - from.x, to.y - from.y, 0).Normalized();
 }
 
 export function meeleEFX(caster: CDOTA_BaseNPC, direction: Vector, radius: number, color?: Vector) {

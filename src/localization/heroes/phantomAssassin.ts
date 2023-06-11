@@ -1,5 +1,5 @@
 import { castpointValue, keywords, manaValue } from "../common";
-import { localizeAbility } from "../localization";
+import { localizeAbility, localizeModifier } from "../localization";
 import { abilityWithIcon, createKeyword, heal, secondaryAbility, upgrade } from "../util";
 
 const swift = abilityWithIcon("Swift", "phantom_mobility");
@@ -111,7 +111,39 @@ localizeAbility("phantom_ex_counter", {
     ),
     upgrade: upgrade("No longer shares cooldown with " + phantomStrike + "."),
     lore: [keywords.sleep.description],
-    values: [castpointValue, ["recast", "Poisonus Dagger"], ["recast_AbilityCastPoint", "<font color=\"#B2B5B3\">CAST POINT</font>"]]
+    values: [castpointValue, ["recast", "Poisonus Dagger"], ["recast_AbilityCastPoint", "<font color='#B2B5B3'>CAST POINT</font>"]]
+});
+
+localizeModifier("modifier_phantom_bleed", {
+    title: "Bleeding"
+});
+
+localizeModifier("modifier_phantom_ex_basic_attack", {
+    title: "Dancing Blades"
+});
+
+localizeModifier("modifier_phantom_counter_countering", {
+    title: "Counter"
+});
+
+localizeModifier("modifier_phantom_counter", {
+    title: "Attack Speed"
+});
+
+localizeModifier("modifier_phantom_counter_recast", {
+    title: "Recast"
+});
+
+localizeModifier("modifier_phantom_ex_counter_recast", {
+    title: "Recast"
+});
+
+localizeModifier("modifier_phantom_extra_recast", {
+    title: "Recast"
+});
+
+localizeModifier("modifier_phantom_counter_shield", {
+    title: "Shield"
 });
 
 //     const Shards: Upgrade[] = [

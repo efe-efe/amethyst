@@ -302,7 +302,7 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
 }
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_banish" })
-class ModifierJuggernautBanish extends ModifierBanish {
+class ModifierJuggernautBanish extends ModifierBanish<undefined> {
     CheckState() {
         return {
             ...super.CheckState(),
