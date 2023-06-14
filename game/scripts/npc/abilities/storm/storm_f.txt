@@ -3,7 +3,7 @@
     "storm_extra"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/storm/storm_extra/storm_extra"
+		"ScriptFile"					"abilities/heroes/storm/storm_extra"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

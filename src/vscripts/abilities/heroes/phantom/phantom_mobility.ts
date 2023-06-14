@@ -15,7 +15,7 @@ class PhantomMobility extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const point = CustomAbilitiesLegacy.GetCursorPosition(this);
-        const phantomBasicAttack = this.caster.FindAbilityByName("phantom_basic_attack");
+        const phantomBasicAttack = PhantomBasicAttack.findOne(this.caster);
         const distance = this.GetCastRange(Vector(0, 0, 0), this.caster) + this.caster.GetCastRangeBonus();
         const casterDirection = CustomEntitiesLegacy.GetDirection(this.caster);
         const direction = casterDirection.x != 0 || casterDirection.y != 0 ? casterDirection : direction2D(origin, point);
@@ -30,7 +30,7 @@ class PhantomMobility extends CustomAbility {
         });
 
         if (phantomBasicAttack) {
-            (phantomBasicAttack as PhantomBasicAttack).TryThrowKnives("modifier_upgrade_phantom_dash_damage");
+            phantomBasicAttack.TryThrowKnives("modifier_upgrade_phantom_dash_damage");
         }
         this.PlayEffectsOnCast();
     }

@@ -2,7 +2,7 @@
 	"puck_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack/puck_basic_attack"
+		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -34,7 +34,7 @@
 	"puck_basic_attack_related"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack/puck_basic_attack"
+		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -65,7 +65,7 @@
 	"puck_ex_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack/puck_basic_attack"
+		"ScriptFile"					"abilities/heroes/puck/puck_basic_attack"
 		"MaxLevel"						"2"
 		
 		"AbilityTextureName"			"puck_ex_basic_attack"

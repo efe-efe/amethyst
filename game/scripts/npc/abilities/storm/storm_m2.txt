@@ -2,7 +2,7 @@
 	"storm_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/storm/storm_second_attack/storm_second_attack"
+		"ScriptFile"					"abilities/heroes/storm/storm_second_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

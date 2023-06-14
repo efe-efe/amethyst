@@ -61,8 +61,8 @@ class JuggernautExtra extends CustomAbility {
         ResolveNPCPositions(healingWard.GetAbsOrigin(), healingWard.GetHullRadius() + healingWard.GetCollisionPadding());
         ModifierJuggernautExtraWard.apply(healingWard, this.caster, this, { duration });
 
-        const juggernautExtraRecast = this.caster.FindAbilityByName(JuggernautExtraRecast.name) as JuggernautExtraRecast; //@Refactor: Find a better way to do this
-        juggernautExtraRecast.SetHealingWardIndex(healingWard.GetEntityIndex());
+        const juggernautExtraRecast = JuggernautExtraRecast.findOne(this.caster);
+        juggernautExtraRecast?.SetHealingWardIndex(healingWard.GetEntityIndex());
 
         ModifierJuggernautExtraRecast.apply(this.caster, this.caster, undefined, {
             duration,

@@ -66,7 +66,7 @@ function ModifierSniperUltimateChanneling.prototype.OnIntervalThink(self)
     self.parent:StartGestureWithPlaybackRate(ACT_DOTA_ATTACK, 1.5)
     local origin = self.parent:GetAbsOrigin()
     local point = CustomAbilitiesLegacy:GetCursorPosition(self.ability)
-    local projectileSpeed = self.ability:GetSpecialValueFor("projectile_speed")
+    local projectileSpeed = self:Value("projectile_speed")
     local projectileDirection = direction2D(nil, origin, point)
     self.ability:ProjectileAttack({
         source = self.parent,
@@ -82,7 +82,7 @@ function ModifierSniperUltimateChanneling.prototype.OnIntervalThink(self)
             ApplyDamage({
                 victim = unit,
                 attacker = projectile:getSource(),
-                damage = self.ability:GetSpecialValueFor("ability_damage"),
+                damage = self:Value("ability_damage"),
                 damage_type = DAMAGE_TYPE_MAGICAL
             })
             ModifierSniperUltimate:apply(
@@ -114,7 +114,7 @@ function ModifierSniperUltimateChanneling.prototype.OnIntervalThink(self)
                     ApplyDamage({
                         victim = enemy,
                         attacker = source,
-                        damage = self.ability:GetSpecialValueFor("aoe_damage"),
+                        damage = self:Value("aoe_damage"),
                         damage_type = DAMAGE_TYPE_PURE
                     })
                 end

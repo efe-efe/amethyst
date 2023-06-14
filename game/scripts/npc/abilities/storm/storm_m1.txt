@@ -2,7 +2,7 @@
 	"storm_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/storm/storm_basic_attack/storm_basic_attack"
+		"ScriptFile"					"abilities/heroes/storm/storm_basic_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"storm_spirit_overload"
@@ -21,7 +21,7 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"50" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.5" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"70" }
@@ -33,7 +33,7 @@
 
 	"storm_ex_basic_attack"{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/storm/storm_basic_attack/storm_basic_attack"
+		"ScriptFile"					"abilities/heroes/storm/storm_basic_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 		

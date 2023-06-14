@@ -58,8 +58,8 @@ class PhantomSpecialAttack extends CustomAbility {
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
 
-        const phantomBasicAttack = this.caster.FindAbilityByName(PhantomBasicAttack.name);
-        const phantomExBasicAttack = this.caster.FindAbilityByName(PhantomExBasicAttack.name);
+        const phantomBasicAttack = PhantomBasicAttack.findOne(this.caster);
+        const phantomExBasicAttack = PhantomExBasicAttack.findOne(this.caster);
 
         const bleedDuration = phantomExBasicAttack?.GetSpecialValueFor("bleed_duration") ?? 0;
         const fadingSlowPct = phantomExBasicAttack?.GetSpecialValueFor("fading_slow_pct") ?? 0;

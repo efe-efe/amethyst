@@ -85,11 +85,18 @@ function triggerOnHit(unit: CDOTA_BaseNPC, attackCategory: AttackCategory, trigg
     return bypass;
 }
 
+function findOne<T extends typeof BaseAbility>(this: T, target: CDOTA_BaseNPC): InstanceType<T> | undefined {
+    // eslint-disable-next-line no-restricted-syntax
+    return target.FindAbilityByName(this.name) as InstanceType<T>;
+}
+
 type AttackType = "basic" | "other";
 export type AttackCategory = "projectile" | "meele" | "aoe" | "single";
 
 export class CustomAbility extends BaseAbility {
     caster = this.GetCaster();
+
+    public static findOne = findOne;
 
     GetCastingCrawl(): number | undefined {
         //TODO: @Refactor should be the opposite, return the slowed amount pct

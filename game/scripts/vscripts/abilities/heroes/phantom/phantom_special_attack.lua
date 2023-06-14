@@ -75,8 +75,8 @@ end
 function PhantomSpecialAttack.prototype.ThrowProjectile(self, origin, direction)
     local manaGainPct = self:GetSpecialValueFor("mana_gain_pct")
     local projectileSpeed = self:GetSpecialValueFor("projectile_speed")
-    local phantomBasicAttack = self.caster:FindAbilityByName(PhantomBasicAttack.name)
-    local phantomExBasicAttack = self.caster:FindAbilityByName(PhantomExBasicAttack.name)
+    local phantomBasicAttack = PhantomBasicAttack:findOne(self.caster)
+    local phantomExBasicAttack = PhantomExBasicAttack:findOne(self.caster)
     local bleedDuration = phantomExBasicAttack and phantomExBasicAttack:GetSpecialValueFor("bleed_duration") or 0
     local fadingSlowPct = phantomExBasicAttack and phantomExBasicAttack:GetSpecialValueFor("fading_slow_pct") or 0
     local fadingSlowDuration = phantomExBasicAttack and phantomExBasicAttack:GetSpecialValueFor("fading_slow_duration") or 0

@@ -41,7 +41,7 @@ class PhantomCounter extends CustomAbility {
 class PhantomCounterRecast extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const phantomCounter = this.caster.FindAbilityByName("phantom_counter");
+        const phantomCounter = PhantomCounter.findOne(this.caster);
         const duration = phantomCounter?.GetSpecialValueFor("buff_duration") ?? 0;
         const shield = phantomCounter?.GetSpecialValueFor("shield") ?? 0;
         const shieldDuration = phantomCounter?.GetSpecialValueFor("shield_duration") ?? 0;
@@ -150,8 +150,8 @@ class PhantomExCounterRecast extends CustomAbility {
         const modifier = ModifierPhantomStacks.findOne(this.caster);
         const stacks = modifier?.GetStackCount() ?? 0;
 
-        const phantomBasicAttack = this.caster.FindAbilityByName("phantom_basic_attack");
-        const phantomExCounter = this.caster.FindAbilityByName("phantom_ex_counter");
+        const phantomBasicAttack = PhantomBasicAttack.findOne(this.caster);
+        const phantomExCounter = PhantomExCounter.findOne(this.caster);
         const durationPerStack = phantomExCounter?.GetSpecialValueFor("duration_per_stack") ?? 0;
         const sleepDuration = (phantomExCounter?.GetSpecialValueFor("sleep_duration") ?? 0) + durationPerStack * stacks;
 
@@ -403,7 +403,12 @@ class ModifierPhantomCounter extends ModifierCounter {
     // }
 
     DeclareFunctions() {
-        return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE, ModifierFunction.ON_ORDER];
+        return [
+            ...super.DeclareFunctions(),
+            ModifierFunction.OVERRIDE_ANIMATION,
+            ModifierFunction.OVERRIDE_ANIMATION_RATE,
+            ModifierFunction.ON_ORDER
+        ];
     }
 
     GetOverrideAnimation() {
@@ -431,7 +436,7 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
             const point = clampPosition(this.parent.GetAbsOrigin(), cursor, {
                 maxRange: this.ability.GetCastRange(Vector(0, 0, 0), undefined)
             });
-            const phantomBasicAttack = this.parent.FindAbilityByName(PhantomBasicAttack.name);
+            const phantomBasicAttack = PhantomBasicAttack.findOne(this.parent);
 
             FindClearSpaceForUnit(this.parent, point, true);
             if (!this.parent.HasModifier("modifier_upgrade_phantom_strike_instant")) {
@@ -439,7 +444,7 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
             }
 
             if (phantomBasicAttack) {
-                (phantomBasicAttack as PhantomBasicAttack).TryThrowKnives("modifier_upgrade_phantom_strike_knives");
+                phantomBasicAttack.TryThrowKnives("modifier_upgrade_phantom_strike_knives");
             }
 
             if (this.ability.GetLevel() >= 2) {

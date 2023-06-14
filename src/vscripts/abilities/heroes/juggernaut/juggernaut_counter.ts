@@ -43,7 +43,7 @@ class ModifierJuggernautCounter extends ModifierCounter<undefined> {
                 return true;
             }
 
-            const juggernautCounter = this.parent.FindAbilityByName(JuggernautCounter.name);
+            const juggernautCounter = JuggernautCounter.findOne(this.parent);
 
             ModifierJuggernautCounterRecast.apply(this.parent, this.parent, undefined, {
                 abilityLeft: JuggernautCounter.name,
@@ -182,7 +182,7 @@ class JuggernautCounterRecast extends JuggernautSlash {
         const minRange = this.GetSpecialValueFor("min_range");
         const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined), minRange });
-        const juggernautCounter = this.caster.FindAbilityByName(JuggernautCounter.name);
+        const juggernautCounter = JuggernautCounter.findOne(this.caster);
         const damage = juggernautCounter?.GetSpecialValueFor("ability_damage") ?? 0;
         //  const juggernaut_ex_counter = caster:FindAbilityByName("juggernaut_ex_counter")
         this.Slash(point, damage, "particles/juggernaut/juggernaut_counter_recast.vpcf");

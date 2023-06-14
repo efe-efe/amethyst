@@ -54,7 +54,7 @@ function ModifierJuggernautCounter.prototype.OnHit(self, event)
         if not event.triggerCounters then
             return true
         end
-        local juggernautCounter = self.parent:FindAbilityByName(JuggernautCounter.name)
+        local juggernautCounter = JuggernautCounter:findOne(self.parent)
         ModifierJuggernautCounterRecast:apply(
             self.parent,
             self.parent,
@@ -180,7 +180,7 @@ function JuggernautCounterRecast.prototype.OnSpellStart(self)
             minRange = minRange
         }
     )
-    local juggernautCounter = self.caster:FindAbilityByName(JuggernautCounter.name)
+    local juggernautCounter = JuggernautCounter:findOne(self.caster)
     local damage = juggernautCounter and juggernautCounter:GetSpecialValueFor("ability_damage") or 0
     self:Slash(point, damage, "particles/juggernaut/juggernaut_counter_recast.vpcf")
 end

@@ -71,7 +71,6 @@ class JuggernautSecondAttack extends CustomAbility {
 
         const duration = this.GetSpecialValueFor("duration");
         const shieldPerStack = this.GetSpecialValueFor("shield_per_stack");
-        const juggernautExSecondAttack = this.caster.FindAbilityByName("juggernaut_ex_second_attack");
 
         const damageMultiplier = this.GetSpecialValueFor("damage_multiplier");
         const damageMultiplierPerStack = this.GetSpecialValueFor("damage_multiplier_per_stack");
@@ -277,7 +276,7 @@ class JuggernautExSecondAttack extends CustomAbility {
         const radius = this.GetSpecialValueFor("radius");
         const swiftnessDuration = this.GetSpecialValueFor("swiftness_duration");
         const swiftnessPct = this.GetSpecialValueFor("swiftness_pct");
-        const juggernautBasicAttack = this.caster.FindAbilityByName("juggernaut_basic_attack") as JuggernautBasicAttack;
+        const juggernautBasicAttack = JuggernautBasicAttack.findOne(this.caster);
         const direction = direction2D(origin, point);
 
         const stacks = this.caster.FindModifierByName("modifier_juggernaut_basic_attack_stacks")?.GetStackCount() ?? 0;
@@ -307,8 +306,10 @@ class JuggernautExSecondAttack extends CustomAbility {
         if (this.GetLevel() >= 2 && giveMana) {
             giveManaAndEnergy(this.caster, this.GetManaCost(this.GetLevel()), true);
 
-            for (let i = 0; i < 3; i++) {
-                ModifierJuggernautStacks.apply(this.caster, this.caster, juggernautBasicAttack, {});
+            if (juggernautBasicAttack) {
+                for (let i = 0; i < 3; i++) {
+                    ModifierJuggernautStacks.apply(this.caster, this.caster, juggernautBasicAttack, {});
+                }
             }
 
             this.caster.AddNewModifier(this.caster, this, "modifier_juggernaut_swiftness", {

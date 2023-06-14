@@ -6,6 +6,7 @@ import {
 import { ModifierGem } from "./modifiers/modifier_gem";
 import { ModifierHideBar } from "./modifiers/modifier_hide_bar";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
+import { ModifierRadiusMarker } from "./modifiers/modifier_radius_marker";
 import { ModifierRecast } from "./modifiers/modifier_recast";
 import { ModifierWall } from "./modifiers/modifier_wall";
 
@@ -389,4 +390,25 @@ export function createRadiusMarker(unit: CDOTA_BaseNPC, origin: Vector, radius: 
 
 export function randomInArray<T>(array: readonly T[]): T {
     return array[RandomInt(0, array.length - 1)];
+}
+
+//@Refactor check if this is neccesary
+export function createTimedRadiusMarker(
+    caster: CDOTA_BaseNPC,
+    origin: Vector,
+    radius: number,
+    delay: number,
+    duration: number,
+    scope: "public" | "local"
+) {
+    const [, modifier] = ModifierRadiusMarker.createThinker(caster, undefined, origin, {
+        afterDelay: duration,
+        radius: radius,
+        delay: delay,
+        scope: scope
+    });
+
+    return {
+        destroy: () => modifier?.Destroy()
+    };
 }

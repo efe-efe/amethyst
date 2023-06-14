@@ -2,7 +2,7 @@
 	"storm_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/storm/storm_ultimate/storm_ultimate"
+		"ScriptFile"					"abilities/heroes/storm/storm_ultimate"
 		"MaxLevel"						"1"
 		
 		"AbilityTextureName"			"storm_ultimate"

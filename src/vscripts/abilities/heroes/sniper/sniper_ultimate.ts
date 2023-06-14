@@ -51,7 +51,7 @@ class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
 
         const origin = this.parent.GetAbsOrigin();
         const point = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
-        const projectileSpeed = this.ability.GetSpecialValueFor("projectile_speed");
+        const projectileSpeed = this.Value("projectile_speed");
         const projectileDirection = direction2D(origin, point);
 
         this.ability.ProjectileAttack({
@@ -66,7 +66,7 @@ class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
                 ApplyDamage({
                     victim: unit,
                     attacker: projectile.getSource(),
-                    damage: this.ability.GetSpecialValueFor("ability_damage"),
+                    damage: this.Value("ability_damage"),
                     damage_type: DamageTypes.MAGICAL
                 });
                 ModifierSniperUltimate.apply(unit, projectile.getSource(), this.ability, { duration: 0.1 });
@@ -89,7 +89,7 @@ class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
                         ApplyDamage({
                             victim: enemy,
                             attacker: source,
-                            damage: this.ability.GetSpecialValueFor("aoe_damage"),
+                            damage: this.Value("aoe_damage"),
                             damage_type: DamageTypes.PURE
                         });
                     }

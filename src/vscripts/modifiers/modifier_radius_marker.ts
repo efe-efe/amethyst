@@ -1,105 +1,68 @@
-import { CustomAbility } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
-// @Refactor Create an "attachTo" method so I can have OnIntervalThink
-export type ModifierThinkerParams = {
-    delayTime?: number;
-    radius?: number;
-    visibility?: "visible" | "collapse";
-    scope?: "public" | "local";
-    behavior?: "follow" | "static";
-    content?: "clearout" | "fillout" | "static";
-};
-
-@registerModifier()
-export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbility> extends CustomModifier<A> {
-    initialized = false;
-    delayTime!: number;
-    radius!: number;
-    scope!: "public" | "local";
-    behavior!: "follow" | "static";
-    content!: "clearout" | "fillout" | "static";
+//@Refactor check if this is neccesary
+// @Refactor Maybe i should use ModifierThinker
+@registerModifier({ customNameForI18n: "modifier_radius_marker" })
+export class ModifierRadiusMarker extends CustomModifier<undefined> {
     particleIds: ParticleID[] = [];
     counter = 0;
+    initialized = false;
+    radius!: number;
+    delay!: number;
+    afterDelay!: number;
+    scope!: "public" | "local";
 
-    OnCreated(params: ModifierThinkerParams) {
-        this.initialized = true;
-
-        this.delayTime = params.delayTime ?? 0;
-        this.radius = params.radius ?? 0;
-        this.scope = params.scope ?? "public";
-        this.behavior = params.behavior ?? "static";
-        this.content = params.content ?? "static";
-
-        const visibility = params.visibility ?? "visible";
-
+    OnCreated(params: { radius: number; delay: number; afterDelay: number; scope: "public" | "local" }) {
         if (IsServer()) {
-            if (this.radius > 0 && visibility == "visible") {
-                this.DrawVisuals(this.delayTime > 0 ? 0 : 1);
+            this.radius = params.radius;
+            this.delay = params.delay;
+            this.afterDelay = params.afterDelay;
+            this.scope = params.scope;
+
+            this.DrawVisuals();
+
+            if (this.delay > 0) {
+                this.StartIntervalThink(0.03);
+            } else {
+                this.initialized = true;
+                this.OnIntervalThink();
             }
         }
-
-        this.initialized = this.delayTime <= 0;
-        this.StartIntervalThink(0.03);
     }
 
     OnDestroy() {
         if (IsServer()) {
             this.RemoveVisuals();
+            UTIL_Remove(this.GetParent());
         }
     }
 
     OnIntervalThink() {
         if (!this.initialized) {
-            const percentage = this.counter / (this.delayTime * 30);
+            const percentage = this.counter / (this.delay * 30);
 
             if (IsServer()) {
-                if (this.behavior == "follow") {
-                    this.parent.SetAbsOrigin(this.caster.GetAbsOrigin());
-                }
-
                 for (const particleId of this.particleIds) {
                     ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
                     ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, percentage, 0));
                 }
-
-                // if(self:GetTimedActions()[self.counter/30]){
-                //     self:GetTimedActions()[self.counter/30](self)
-                // }
             }
-
-            this.counter++;
 
             if (percentage >= 1.0) {
                 this.initialized = true;
-                this.OnReady();
-                this.counter = 0;
-            }
-        } else {
-            if (this.counter == 0) {
-                this.RemoveVisuals();
-                this.DrawVisuals(this.GetDuration() - this.delayTime);
             }
 
-            if (this.content == "clearout") {
-                const percentage = this.counter / ((this.GetDuration() - this.delayTime) * 30);
-
-                if (IsServer()) {
-                    for (const particleId of this.particleIds) {
-                        ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
-                        ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, percentage, 0));
-                    }
-                }
-            }
             this.counter = this.counter + 1;
+        } else {
+            this.SetDuration(this.afterDelay, true);
+            this.StartIntervalThink(-1);
         }
     }
 
-    OnReady() {}
-
-    DrawVisuals(percentage: number) {
-        const casterAlliance = CustomEntitiesLegacy.GetAlliance(this.caster);
+    DrawVisuals() {
+        const percentage = this.delay > 0 ? 0 : 1.0;
+        const caster_alliance = CustomEntitiesLegacy.GetAlliance(this.caster);
 
         if (this.scope == "public") {
             for (const alliance of GameRules.Addon.alliances) {
@@ -110,12 +73,13 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
                         this.caster,
                         team
                     );
+
                     ParticleManager.SetParticleControlForward(particleId, 0, Vector(0, -1, 0));
                     ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
                     ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, percentage, 1));
                     ParticleManager.SetParticleControl(particleId, 16, Vector(1, 0, 0));
                     const alliance = GameRules.Addon.FindAllianceByTeam(team);
-                    if (alliance == casterAlliance) {
+                    if (alliance == caster_alliance) {
                         ParticleManager.SetParticleControl(particleId, 15, Vector(70, 70, 250));
                     } else {
                         ParticleManager.SetParticleControl(particleId, 15, Vector(250, 70, 70));
@@ -124,7 +88,6 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
                 }
             }
         }
-
         if (this.scope == "local") {
             const parentOwner = this.caster.GetPlayerOwner();
             const particleId = ParticleManager.CreateParticleForPlayer(
@@ -133,6 +96,7 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
                 this.caster,
                 parentOwner
             );
+
             ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
             ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, percentage, 1));
             ParticleManager.SetParticleControl(particleId, 15, Vector(70, 70, 250));
@@ -145,12 +109,5 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
             ParticleManager.DestroyParticle(particleId, false);
             ParticleManager.ReleaseParticleIndex(particleId);
         }
-
-        this.particleIds = [];
     }
-
-    //     function modifier:GetTimedActions()
-    //         if getTimedActions then return getTimedActions(self) }
-    //         return {}
-    //     }
 }

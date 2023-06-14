@@ -293,8 +293,8 @@ function PhantomBasicAttackRelated.prototype.OnSpellStart(self)
     local manaGainPct = self:GetSpecialValueFor("mana_gain_pct")
     local projectileSpeed = self:GetSpecialValueFor("projectile_speed")
     local projectileDirection = direction2D(nil, origin, point)
-    local phantomBasicAttack = self.caster:FindAbilityByName(____exports.PhantomBasicAttack.name)
-    local phantomExBasicAttack = self.caster:FindAbilityByName(____exports.PhantomExBasicAttack.name)
+    local phantomBasicAttack = ____exports.PhantomBasicAttack:findOne(self.caster)
+    local phantomExBasicAttack = ____exports.PhantomExBasicAttack:findOne(self.caster)
     local bleedDuration = phantomExBasicAttack and phantomExBasicAttack:GetSpecialValueFor("bleed_duration") or 0
     local fadingSlowPct = phantomExBasicAttack and phantomExBasicAttack:GetSpecialValueFor("fading_slow_pct") or 0
     local fadingSlowDuration = phantomExBasicAttack and phantomExBasicAttack:GetSpecialValueFor("fading_slow_duration") or 0
