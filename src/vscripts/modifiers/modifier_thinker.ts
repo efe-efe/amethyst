@@ -25,17 +25,16 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
     counter = 0;
 
     OnCreated(params: ModifierThinkerParams) {
-        this.initialized = true;
-
-        this.delayTime = params.delayTime ?? 0;
-        this.radius = params.radius ?? 0;
-        this.scope = params.scope ?? "public";
-        this.behavior = params.behavior ?? "static";
-        this.content = params.content ?? "static";
-
-        const visibility = params.visibility ?? "visible";
-
         if (IsServer()) {
+            this.initialized = true;
+            this.delayTime = params.delayTime ?? 0;
+            this.radius = params.radius ?? 0;
+            this.scope = params.scope ?? "public";
+            this.behavior = params.behavior ?? "static";
+            this.content = params.content ?? "static";
+
+            const visibility = params.visibility ?? "visible";
+
             if (this.radius > 0 && visibility == "visible") {
                 this.DrawVisuals(this.delayTime > 0 ? 0 : 1);
             }
@@ -52,52 +51,47 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
     }
 
     OnIntervalThink() {
+        if (this.behavior == "follow") {
+            this.parent.SetAbsOrigin(this.caster.GetAbsOrigin());
+        }
+
         if (!this.initialized) {
             const percentage = this.counter / (this.delayTime * 30);
+            this.UpdateVisuals(percentage);
 
-            if (IsServer()) {
-                if (this.behavior == "follow") {
-                    this.parent.SetAbsOrigin(this.caster.GetAbsOrigin());
-                }
-
-                for (const particleId of this.particleIds) {
-                    ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
-                    ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, percentage, 0));
-                }
-
-                // if(self:GetTimedActions()[self.counter/30]){
-                //     self:GetTimedActions()[self.counter/30](self)
-                // }
-            }
+            // if(self:GetTimedActions()[self.counter/30]){
+            //     self:GetTimedActions()[self.counter/30](self)
+            // }
 
             this.counter++;
 
             if (percentage >= 1.0) {
                 this.initialized = true;
-                this.OnReady();
                 this.counter = 0;
             }
         } else {
             if (this.counter == 0) {
+                this.OnReady();
                 this.RemoveVisuals();
                 this.DrawVisuals(this.GetDuration() - this.delayTime);
             }
 
             if (this.content == "clearout") {
                 const percentage = this.counter / ((this.GetDuration() - this.delayTime) * 30);
-
-                if (IsServer()) {
-                    for (const particleId of this.particleIds) {
-                        ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
-                        ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, percentage, 0));
-                    }
-                }
+                this.UpdateVisuals(percentage);
             }
             this.counter = this.counter + 1;
         }
     }
 
     OnReady() {}
+
+    UpdateVisuals(percentage: number) {
+        for (const particleId of this.particleIds) {
+            ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
+            ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, percentage, 0));
+        }
+    }
 
     DrawVisuals(percentage: number) {
         const casterAlliance = CustomEntitiesLegacy.GetAlliance(this.caster);

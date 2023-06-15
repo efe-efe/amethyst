@@ -3,7 +3,7 @@ local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__Decorate = ____lualib.__TS__Decorate
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 2,["9"] = 2,["10"] = 3,["11"] = 3,["12"] = 16,["13"] = 17,["14"] = 16,["15"] = 17,["17"] = 17,["18"] = 18,["19"] = 24,["20"] = 25,["21"] = 16,["22"] = 27,["23"] = 28,["24"] = 30,["25"] = 31,["26"] = 32,["27"] = 33,["28"] = 34,["29"] = 36,["30"] = 38,["31"] = 39,["32"] = 40,["34"] = 43,["35"] = 44,["37"] = 27,["38"] = 48,["39"] = 49,["40"] = 50,["42"] = 48,["43"] = 54,["44"] = 55,["45"] = 56,["46"] = 58,["47"] = 59,["48"] = 60,["50"] = 63,["51"] = 64,["52"] = 64,["53"] = 64,["54"] = 64,["55"] = 64,["56"] = 65,["57"] = 65,["58"] = 65,["59"] = 65,["60"] = 65,["63"] = 73,["64"] = 75,["65"] = 76,["66"] = 77,["67"] = 78,["70"] = 81,["71"] = 82,["72"] = 83,["74"] = 86,["75"] = 87,["76"] = 89,["77"] = 90,["78"] = 91,["79"] = 91,["80"] = 91,["81"] = 91,["82"] = 91,["83"] = 92,["84"] = 92,["85"] = 92,["86"] = 92,["87"] = 92,["91"] = 96,["93"] = 54,["94"] = 100,["95"] = 100,["96"] = 102,["97"] = 103,["98"] = 105,["99"] = 106,["100"] = 107,["101"] = 108,["102"] = 114,["103"] = 114,["104"] = 114,["105"] = 114,["106"] = 114,["107"] = 115,["108"] = 115,["109"] = 115,["110"] = 115,["111"] = 115,["112"] = 116,["113"] = 116,["114"] = 116,["115"] = 116,["116"] = 116,["117"] = 117,["118"] = 117,["119"] = 117,["120"] = 117,["121"] = 117,["122"] = 118,["123"] = 119,["124"] = 120,["125"] = 120,["126"] = 120,["127"] = 120,["128"] = 120,["130"] = 122,["131"] = 122,["132"] = 122,["133"] = 122,["134"] = 122,["136"] = 124,["137"] = 124,["141"] = 129,["142"] = 130,["143"] = 131,["144"] = 137,["145"] = 137,["146"] = 137,["147"] = 137,["148"] = 137,["149"] = 138,["150"] = 138,["151"] = 138,["152"] = 138,["153"] = 138,["154"] = 139,["155"] = 139,["156"] = 139,["157"] = 139,["158"] = 139,["159"] = 140,["160"] = 140,["162"] = 102,["163"] = 144,["164"] = 145,["165"] = 146,["166"] = 147,["168"] = 150,["169"] = 144,["170"] = 17,["171"] = 16,["172"] = 17,["174"] = 17});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 2,["9"] = 2,["10"] = 3,["11"] = 3,["12"] = 16,["13"] = 17,["14"] = 16,["15"] = 17,["17"] = 17,["18"] = 18,["19"] = 24,["20"] = 25,["21"] = 16,["22"] = 27,["23"] = 28,["24"] = 29,["25"] = 30,["26"] = 31,["27"] = 32,["28"] = 33,["29"] = 34,["30"] = 36,["31"] = 38,["32"] = 39,["34"] = 42,["35"] = 43,["37"] = 27,["38"] = 47,["39"] = 48,["40"] = 49,["42"] = 47,["43"] = 53,["44"] = 54,["45"] = 55,["47"] = 58,["48"] = 59,["49"] = 60,["50"] = 66,["51"] = 68,["52"] = 69,["53"] = 70,["56"] = 73,["57"] = 74,["58"] = 75,["59"] = 76,["61"] = 79,["62"] = 80,["63"] = 81,["65"] = 83,["67"] = 53,["68"] = 87,["69"] = 87,["70"] = 89,["71"] = 90,["72"] = 91,["73"] = 91,["74"] = 91,["75"] = 91,["76"] = 91,["77"] = 92,["78"] = 92,["79"] = 92,["80"] = 92,["81"] = 92,["83"] = 89,["84"] = 96,["85"] = 97,["86"] = 99,["87"] = 100,["88"] = 101,["89"] = 102,["90"] = 108,["91"] = 108,["92"] = 108,["93"] = 108,["94"] = 108,["95"] = 109,["96"] = 109,["97"] = 109,["98"] = 109,["99"] = 109,["100"] = 110,["101"] = 110,["102"] = 110,["103"] = 110,["104"] = 110,["105"] = 111,["106"] = 111,["107"] = 111,["108"] = 111,["109"] = 111,["110"] = 112,["111"] = 113,["112"] = 114,["113"] = 114,["114"] = 114,["115"] = 114,["116"] = 114,["118"] = 116,["119"] = 116,["120"] = 116,["121"] = 116,["122"] = 116,["124"] = 118,["125"] = 118,["129"] = 123,["130"] = 124,["131"] = 125,["132"] = 131,["133"] = 131,["134"] = 131,["135"] = 131,["136"] = 131,["137"] = 132,["138"] = 132,["139"] = 132,["140"] = 132,["141"] = 132,["142"] = 133,["143"] = 133,["144"] = 133,["145"] = 133,["146"] = 133,["147"] = 134,["148"] = 134,["150"] = 96,["151"] = 138,["152"] = 139,["153"] = 140,["154"] = 141,["156"] = 144,["157"] = 138,["158"] = 17,["159"] = 16,["160"] = 17,["162"] = 17});
 local ____exports = {}
 local ____custom_modifier = require("abilities.framework.custom_modifier")
 local CustomModifier = ____custom_modifier.CustomModifier
@@ -20,14 +20,14 @@ function ModifierThinker.prototype.____constructor(self, ...)
     self.counter = 0
 end
 function ModifierThinker.prototype.OnCreated(self, params)
-    self.initialized = true
-    self.delayTime = params.delayTime or 0
-    self.radius = params.radius or 0
-    self.scope = params.scope or "public"
-    self.behavior = params.behavior or "static"
-    self.content = params.content or "static"
-    local visibility = params.visibility or "visible"
     if IsServer() then
+        self.initialized = true
+        self.delayTime = params.delayTime or 0
+        self.radius = params.radius or 0
+        self.scope = params.scope or "public"
+        self.behavior = params.behavior or "static"
+        self.content = params.content or "static"
+        local visibility = params.visibility or "visible"
         if self.radius > 0 and visibility == "visible" then
             self:DrawVisuals(self.delayTime > 0 and 0 or 1)
         end
@@ -41,57 +41,45 @@ function ModifierThinker.prototype.OnDestroy(self)
     end
 end
 function ModifierThinker.prototype.OnIntervalThink(self)
+    if self.behavior == "follow" then
+        self.parent:SetAbsOrigin(self.caster:GetAbsOrigin())
+    end
     if not self.initialized then
         local percentage = self.counter / (self.delayTime * 30)
-        if IsServer() then
-            if self.behavior == "follow" then
-                self.parent:SetAbsOrigin(self.caster:GetAbsOrigin())
-            end
-            for ____, particleId in ipairs(self.particleIds) do
-                ParticleManager:SetParticleControl(
-                    particleId,
-                    0,
-                    self.parent:GetAbsOrigin():__add(Vector(0, 0, 16))
-                )
-                ParticleManager:SetParticleControl(
-                    particleId,
-                    1,
-                    Vector(self.radius, percentage, 0)
-                )
-            end
-        end
+        self:UpdateVisuals(percentage)
         self.counter = self.counter + 1
         if percentage >= 1 then
             self.initialized = true
-            self:OnReady()
             self.counter = 0
         end
     else
         if self.counter == 0 then
+            self:OnReady()
             self:RemoveVisuals()
             self:DrawVisuals(self:GetDuration() - self.delayTime)
         end
         if self.content == "clearout" then
             local percentage = self.counter / ((self:GetDuration() - self.delayTime) * 30)
-            if IsServer() then
-                for ____, particleId in ipairs(self.particleIds) do
-                    ParticleManager:SetParticleControl(
-                        particleId,
-                        0,
-                        self.parent:GetAbsOrigin():__add(Vector(0, 0, 16))
-                    )
-                    ParticleManager:SetParticleControl(
-                        particleId,
-                        1,
-                        Vector(self.radius, percentage, 0)
-                    )
-                end
-            end
+            self:UpdateVisuals(percentage)
         end
         self.counter = self.counter + 1
     end
 end
 function ModifierThinker.prototype.OnReady(self)
+end
+function ModifierThinker.prototype.UpdateVisuals(self, percentage)
+    for ____, particleId in ipairs(self.particleIds) do
+        ParticleManager:SetParticleControl(
+            particleId,
+            0,
+            self.parent:GetAbsOrigin():__add(Vector(0, 0, 16))
+        )
+        ParticleManager:SetParticleControl(
+            particleId,
+            1,
+            Vector(self.radius, percentage, 0)
+        )
+    end
 end
 function ModifierThinker.prototype.DrawVisuals(self, percentage)
     local casterAlliance = CustomEntitiesLegacy:GetAlliance(self.caster)

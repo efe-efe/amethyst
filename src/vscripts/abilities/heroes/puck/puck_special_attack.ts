@@ -66,6 +66,11 @@ class ModifierPuckSpecialAttack extends ModifierThinker {
 
         if (IsServer()) {
             this.origin = this.parent.GetAbsOrigin();
+            this.damage = params.damage;
+            this.silenceDuration = params.silenceDuration;
+            this.stunDuration = params.stunDuration;
+            this.fairyDustDuration = params.fairyDustDuration;
+            this.fairyDustSlowPct = params.fairyDustSlowPct;
             this.manaGainPct = this.ability.GetSpecialValueFor("mana_gain_pct");
         }
     }

@@ -144,11 +144,12 @@ export class PuckBasicAttackRelated extends PuckBasicAttackCommon {
         const origin = this.caster.GetAbsOrigin();
         const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
+        const puckExBasicAttack = PuckExBasicAttack.findOne(this.caster)?.GetSpecialValueFor("delay_time") ?? 0;
 
         ModifierPuckExBasicAttackThinker.createThinker(this.caster, this, point, {
             radius: this.GetSpecialValueFor("radius"),
             status: ModifierPuckBasicAttack.findOne(this.caster)?.IsCooldownReady() ? "charged" : "notCharged",
-            delayTime: this.GetSpecialValueFor("delay_time")
+            delayTime: puckExBasicAttack
         });
 
         EFX("particles/econ/items/invoker/invoker_ti7/invoker_ti7_alacrity_cast.vpcf", ParticleAttachment.CUSTOMORIGIN, this.caster, {
