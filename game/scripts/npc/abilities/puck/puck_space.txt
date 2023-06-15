@@ -2,7 +2,7 @@
 	"puck_mobility"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
+		"ScriptFile"					"abilities/heroes/puck/puck_mobility"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -35,7 +35,7 @@
 	"puck_mobility_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
+		"ScriptFile"					"abilities/heroes/puck/puck_mobility"
 		"MaxLevel"						"1"
 
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"
@@ -47,7 +47,7 @@
 	"puck_ex_mobility"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
+		"ScriptFile"					"abilities/heroes/puck/puck_mobility"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -82,7 +82,7 @@
 	"puck_ex_mobility_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_mobility/puck_mobility"
+		"ScriptFile"					"abilities/heroes/puck/puck_mobility"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"puck_ex_mobility"

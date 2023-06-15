@@ -311,18 +311,7 @@ function projectile(options: ProjectileOptions) {
         ParticleManager.DestroyParticle(particleId, destroyImmediate);
 
         if (!immediate) {
-            onFinish({
-                getSource,
-                getIsReflectable,
-                getIsDestructible,
-                scheduleDestroy,
-                getVelocity,
-                getPosition,
-                resetDistanceTraveled,
-                setSource,
-                setVelocity,
-                hitLog
-            });
+            onFinish(getHandler());
         }
     }
 
@@ -469,19 +458,7 @@ function projectile(options: ProjectileOptions) {
                         hitLog.set(entity.entindex(), currentTime + 10000);
                     }
 
-                    const bypass =
-                        onUnitHit(entity, {
-                            getSource,
-                            getIsReflectable,
-                            getIsDestructible,
-                            scheduleDestroy,
-                            getVelocity,
-                            getPosition,
-                            resetDistanceTraveled,
-                            setSource,
-                            setVelocity,
-                            hitLog
-                        }) ?? false;
+                    const bypass = onUnitHit(entity, getHandler()) ?? false;
 
                     if (!bypass && unitBehavior == ProjectileBehavior.DESTROY) {
                         destroy(false);
@@ -663,11 +640,26 @@ function projectile(options: ProjectileOptions) {
         return source;
     }
 
+    function getHandler() {
+        return {
+            getSource,
+            getIsReflectable,
+            getIsDestructible,
+            scheduleDestroy,
+            getVelocity,
+            getPosition,
+            resetDistanceTraveled,
+            setSource,
+            setVelocity,
+            hitLog
+        };
+    }
+
     return {
         id,
         update,
         setEndTime,
-        scheduleDestroy
+        ...getHandler()
     };
 }
 

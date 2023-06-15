@@ -2,7 +2,7 @@
 	"puck_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_counter/puck_counter"
+		"ScriptFile"					"abilities/heroes/puck/puck_counter"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 		

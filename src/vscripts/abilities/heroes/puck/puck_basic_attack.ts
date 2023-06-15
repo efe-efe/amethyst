@@ -1,8 +1,9 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierCombatEvents } from "../../../modifiers/modifier_combat_events";
 import { ModifierCooldown } from "../../../modifiers/modifier_cooldown";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { attackWithBaseDamage, clampPosition, direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { attackWithBaseDamage, clampPosition, direction2D, giveManaAndEnergyPercent, isGem, isObstacle, replenishEFX } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -26,7 +27,7 @@ class PuckBasicAttackCommon extends CustomAbility {
 }
 
 @registerAbility("puck_basic_attack")
-class PuckBasicAttack extends PuckBasicAttackCommon {
+export class PuckBasicAttack extends PuckBasicAttackCommon {
     GetCastPoint() {
         if (IsServer()) {
             return super.GetCastPoint() + this.caster.GetAttackAnimationPoint();
@@ -54,6 +55,11 @@ class PuckBasicAttack extends PuckBasicAttackCommon {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+
+        this.LaunchProjectile(origin, point);
+    }
+
+    LaunchProjectile(origin: Vector, point: Vector) {
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);
@@ -121,7 +127,7 @@ class PuckBasicAttack extends PuckBasicAttackCommon {
 }
 
 @registerAbility("puck_basic_attack_related")
-class PuckBasicAttackRelated extends PuckBasicAttackCommon {
+export class PuckBasicAttackRelated extends PuckBasicAttackCommon {
     GetAnimation() {
         return GameActivity.DOTA_CAST_ABILITY_2;
     }
@@ -166,60 +172,64 @@ class PuckBasicAttackRelated extends PuckBasicAttackCommon {
 }
 
 @registerModifier({ customNameForI18n: "modifier_puck_basic_attack_cooldown" })
-class ModifierPuckBasicAttack extends ModifierCooldown {
-    // DeclareFunctions(){
-    //     return {
-    //         MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE,
-    //         --MODIFIER_EVENT_ON_ATTACK,
-    //     }
-    // }
-    // OnEvent(params){
-    //     if(params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_STARTED){
-    //         if(this.GetRemainingTime() > 0){
-    //             return
-    //         }
-    //         if(IsServer()){
-    //             this.parent.AddNewModifier(this.parent, this.ability, 'modifier_puck_basic_attack_buff', {})
-    //         }
-    //         this.StartCooldown()
-    //     }
-    // }
-    // GetModifierPreAttack_BonusDamage(){
-    //     if(not this.IsCooldownReady()){ return 0 }
-    //     return this.ability.GetSpecialValueFor("charged_damage")
-    // }
-    // OnReplenish(){
-    //     if(IsServer()){
-    //         ReplenishEFX(this.parent)
-    //     }
-    // }
-    // GetReplenishTime(){
-    //     return this.ability.GetSpecialValueFor("replenish_time")
-    // }
+export class ModifierPuckBasicAttack extends ModifierCooldown {
+    DeclareFunctions() {
+        return [ModifierFunction.PREATTACK_BONUS_DAMAGE];
+    }
+
+    OnBasicAttackStarted() {
+        if (this.GetRemainingTime() > 0) {
+            return;
+        }
+
+        if (IsServer()) {
+            ModifierPuckBasicAttackBuff.apply(this.parent, this.parent, this.ability, {});
+        }
+
+        this.StartCooldown();
+    }
+
+    GetModifierPreAttack_BonusDamage() {
+        if (!this.IsCooldownReady()) {
+            return 0;
+        }
+
+        return this.Value("charged_damage");
+    }
+
+    OnReplenish() {
+        if (IsServer()) {
+            replenishEFX(this.parent);
+        }
+    }
+
+    GetReplenishTime() {
+        return this.Value("replenish_time");
+    }
 }
 // if(IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Cooldown(modifier_puck_basic_attack_cooldown)
 // Modifiers.OnEvent(modifier_puck_basic_attack_cooldown)
 
 @registerModifier({ customNameForI18n: "modifier_puck_basic_attack_buff" })
-class ModifierPuckBasicAttackBuff extends CustomModifier {
-    // IsHidden(){
-    //     return true
-    // }
-    // OnEvent(params){
-    //     if(params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED){
-    //         this.Destroy()
-    //     }
-    // }
-    // GetPreAttackDamage(params){
-    //     return this.ability.GetSpecialValueFor("charged_damage")
+class ModifierPuckBasicAttackBuff extends ModifierCombatEvents {
+    IsHidden() {
+        return true;
+    }
+
+    OnBasicAttackEnded() {
+        this.Destroy();
+    }
+
+    // GetPreAttackDamage() {
+    //     return this.Value("charged_damage");
     // }
 }
 // Modifiers.OnEvent(modifier_puck_basic_attack_buff)
 // Modifiers.PreAttackDamage(modifier_puck_basic_attack_buff)
 
 @registerModifier({ customNameForI18n: "modifier_puck_fairy_dust" })
-class ModifierPuckFairyDust extends CustomModifier {
+export class ModifierPuckFairyDust extends CustomModifier {
     particleId?: ParticleID;
 
     OnCreated(params: { slowPct: number }) {
@@ -354,7 +364,7 @@ class ModifierPuckExBasicAttackThinker extends ModifierThinker {
         if (IsServer()) {
             this.origin = this.parent.GetAbsOrigin();
             this.manaGainPct = this.ability.GetSpecialValueFor("mana_gain_pct");
-            this.exBasicAttack = PuckExBasicAttack.findOne(this.parent);
+            this.exBasicAttack = PuckExBasicAttack.findOne(this.caster);
 
             if (!this.exBasicAttack) {
                 print("[ERROR] On PuckBasicAttackRelated: Can't find PuckExBasicAttack to get the values!");

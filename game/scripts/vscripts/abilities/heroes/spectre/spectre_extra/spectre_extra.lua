@@ -1,98 +1,44 @@
-spectre_extra = class({})
-spectre_extra_recast = class({})
+local ____lualib = require("lualib_bundle")
+local __TS__Class = ____lualib.__TS__Class
+local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 15,["6"] = 15,["7"] = 93,["8"] = 93,["9"] = 186,["10"] = 186,["11"] = 203,["12"] = 203,["13"] = 249,["14"] = 249,["15"] = 1,["16"] = 1,["18"] = 1,["19"] = 1,["20"] = 2,["21"] = 2,["23"] = 2,["24"] = 2,["25"] = 3,["26"] = 4,["27"] = 5,["28"] = 7,["29"] = 7,["30"] = 7,["31"] = 8,["32"] = 8,["33"] = 8,["34"] = 9,["35"] = 9,["36"] = 9,["37"] = 10,["38"] = 13,["39"] = 15,["40"] = 17,["41"] = 19,["42"] = 19,["43"] = 19,["44"] = 19});
+function spectre_extra(self)
+end
+function spectre_extra_recast(self)
+end
+function modifier_spectre_extra(self)
+end
+function modifier_spectre_extra_recast(self)
+end
+function modifier_spectre_debuff(self)
+end
+____class_0 = __TS__Class()
+____class_0.name = ""
+function ____class_0.prototype.____constructor(self)
+end
+spectre_extra = ____class_0(nil, {})
+____class_1 = __TS__Class()
+____class_1.name = ""
+function ____class_1.prototype.____constructor(self)
+end
+spectre_extra_recast = ____class_1(nil, {})
 LinkLuaModifier("modifier_spectre_extra", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_debuff", "abilities/heroes/spectre/spectre_extra/modifier_spectre_debuff", LUA_MODIFIER_MOTION_NONE)
 LinkLuaModifier("modifier_spectre_extra_recast", "abilities/heroes/spectre/spectre_extra/modifier_spectre_extra_recast", LUA_MODIFIER_MOTION_NONE)
-
-function spectre_extra:OnSpellStart()
-    local caster = self:GetCaster()
-    local duration = self:GetSpecialValueFor("duration")
-	caster:FindAbilityByName('spectre_extra_recast'):ResetDamage()
-
-    caster:AddNewModifier(caster, self, "modifier_spectre_extra", { duration = duration })
+function spectre_extra(self)
 end
-
-function spectre_extra:OnUpgrade()
-	CustomAbilitiesLegacy:LinkUpgrades(self, "spectre_extra_recast")
+local ____ = ____
+local ____ = ____local
+caster = self
+GetCaster(nil)
+local ____ = ____local
+duration = self
+GetSpecialValueFor(nil, "duration")
+ResetDamage(nil)
+local ____ = ____end
+local ____ = ____
+local ____ = ____end
+function spectre_extra_recast(self)
 end
-
-function spectre_extra_recast:GetCastAnimationCustom()     return ACT_DOTA_CAST_ABILITY_1 end
-function spectre_extra_recast:GetPlaybackRateOverride()    return 1.0 end
-function spectre_extra_recast:GetCastPointSpeed() 			return 80 end
-function spectre_extra_recast:GetIgnoreActivationCycle()   return true end
-
-function spectre_extra_recast:OnSpellStart()
-	local caster = self:GetCaster()
-	local point = CustomAbilitiesLegacy:GetCursorPosition(self)
-    local origin = caster:GetOrigin()
-
-	local spectre_extra = caster:FindAbilityByName('spectre_extra')
-	local damage = spectre_extra:GetSpecialValueFor("recast_damage")
-	local max_damage = spectre_extra:GetSpecialValueFor("max_damage")
-
-	if self.extra_damage then
-		damage = Clamp(damage + self.extra_damage, max_damage, 0)
-	end
-	
-	local projectile_direction = Direction2D(origin, point)
-	local projectile_speed = self:GetSpecialValueFor("projectile_speed")
-
-	CustomEntitiesLegacy:ProjectileAttack(caster, {
-		tProjectile = {
-			EffectName =			"particles/spectre/spectre_extra_recast.vpcf",
-			vSpawnOrigin = 			origin + Vector(projectile_direction.x * 45, projectile_direction.y * 45, 96),
-			fDistance = 			self:GetSpecialValueFor("projectile_distance") ~= 0 and self:GetSpecialValueFor("projectile_distance") or self:GetCastRange(Vector(0,0,0), nil),
-			fStartRadius =			self:GetSpecialValueFor("hitbox"),
-			Source = 				caster,
-			vVelocity = 			projectile_direction * projectile_speed,
-			UnitBehavior = 			PROJECTILES_DESTROY,
-			WallBehavior = 			PROJECTILES_DESTROY,
-			TreeBehavior = 			PROJECTILES_NOTHING,
-			GroundBehavior = 		PROJECTILES_NOTHING,
-			fGroundOffset = 		0,
-			UnitTest = function(_self, unit) return unit:GetUnitName() ~= "npc_dummy_unit" and not CustomEntitiesLegacy:Allies(_self.Source, unit) end,
-			OnUnitHit = function(_self, unit) 
-				local damage_table = {
-					victim = unit,
-					attacker = caster,
-					damage = damage,
-					damage_type = DAMAGE_TYPE_MAGICAL,
-				}
-
-				ApplyDamage(damage_table)
-			end,
-			OnFinish = function(_self, pos)
-				self:PlayEffectsOnFinish(pos)
-			end
-		}
-	})
-
-	EmitSoundOn("Hero_Nevermore.Raze_Flames", caster)
-end
-
-function spectre_extra_recast:PlayEffectsOnFinish(vOrigin)
-	EFX('particles/units/heroes/hero_arc_warden/arc_warden_wraith_cast.vpcf', PATTACH_WORLDORIGIN, self:GetCaster(), {
-		cp0 = vOrigin,
-		cp1 = vOrigin,
-		cp2 = vOrigin,
-		release = true,
-	})
-end
-
-function spectre_extra_recast:AddDamage(iDamage)
-	if self.extra_damage == nil then
-		self.extra_damage = 0
-	end
-	self.extra_damage = self.extra_damage + iDamage
-end
-
-function spectre_extra_recast:ResetDamage()
-	self.extra_damage = 0
-end
-
-function spectre_extra_recast:OnUpgrade()
-	CustomAbilitiesLegacy:LinkUpgrades(self, "spectre_extra")
-end
-
-if IsClient() then require("wrappers/abilities") end
-Abilities.Castpoint(spectre_extra_recast)
+local ____ = ____
+return ACT_DOTA_CAST_ABILITY_1

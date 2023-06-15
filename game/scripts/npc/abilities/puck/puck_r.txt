@@ -2,7 +2,7 @@
 	"puck_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_ultimate/puck_ultimate"
+		"ScriptFile"					"abilities/heroes/puck/puck_ultimate"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"puck_dream_coil"

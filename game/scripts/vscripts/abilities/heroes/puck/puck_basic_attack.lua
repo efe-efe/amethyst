@@ -3,12 +3,14 @@ local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__Decorate = ____lualib.__TS__Decorate
 local __TS__SourceMapTraceBack = ____lualib.__TS__SourceMapTraceBack
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 169,["9"] = 1,["10"] = 1,["11"] = 1,["12"] = 2,["13"] = 2,["14"] = 3,["15"] = 3,["16"] = 4,["17"] = 4,["18"] = 5,["19"] = 5,["20"] = 5,["21"] = 5,["22"] = 5,["23"] = 5,["24"] = 5,["25"] = 6,["26"] = 6,["27"] = 7,["28"] = 7,["29"] = 9,["30"] = 9,["31"] = 9,["32"] = 10,["33"] = 11,["34"] = 12,["35"] = 13,["36"] = 9,["38"] = 9,["39"] = 10,["40"] = 20,["41"] = 21,["42"] = 22,["43"] = 23,["45"] = 20,["46"] = 28,["47"] = 28,["48"] = 29,["49"] = 30,["50"] = 31,["51"] = 29,["53"] = 29,["54"] = 30,["55"] = 38,["56"] = 39,["57"] = 38,["58"] = 42,["59"] = 43,["60"] = 42,["61"] = 46,["62"] = 47,["63"] = 46,["64"] = 50,["65"] = 51,["66"] = 50,["67"] = 54,["68"] = 55,["69"] = 56,["70"] = 57,["71"] = 58,["72"] = 59,["73"] = 61,["74"] = 62,["75"] = 64,["76"] = 64,["77"] = 64,["78"] = 64,["80"] = 64,["81"] = 66,["82"] = 66,["83"] = 66,["84"] = 66,["85"] = 66,["86"] = 66,["87"] = 66,["88"] = 73,["89"] = 74,["90"] = 74,["91"] = 66,["92"] = 75,["93"] = 76,["94"] = 76,["95"] = 76,["96"] = 76,["97"] = 76,["98"] = 76,["99"] = 76,["100"] = 76,["101"] = 82,["102"] = 83,["103"] = 83,["104"] = 83,["105"] = 83,["106"] = 83,["107"] = 83,["109"] = 89,["110"] = 90,["111"] = 91,["112"] = 91,["113"] = 91,["114"] = 91,["115"] = 91,["116"] = 91,["118"] = 94,["119"] = 95,["121"] = 95,["125"] = 66,["126"] = 99,["127"] = 100,["128"] = 100,["129"] = 100,["130"] = 100,["131"] = 66,["132"] = 66,["133"] = 54,["134"] = 105,["135"] = 106,["136"] = 107,["137"] = 110,["138"] = 111,["139"] = 112,["140"] = 105,["141"] = 29,["142"] = 28,["143"] = 29,["145"] = 123,["146"] = 123,["147"] = 124,["148"] = 125,["149"] = 126,["150"] = 125,["151"] = 129,["152"] = 130,["153"] = 129,["154"] = 133,["155"] = 134,["156"] = 133,["157"] = 137,["158"] = 138,["159"] = 139,["160"] = 140,["161"] = 140,["162"] = 140,["163"] = 140,["164"] = 140,["165"] = 140,["166"] = 140,["167"] = 140,["168"] = 140,["169"] = 142,["170"] = 142,["171"] = 142,["172"] = 143,["173"] = 144,["174"] = 142,["175"] = 142,["176"] = 142,["177"] = 142,["178"] = 142,["179"] = 142,["180"] = 142,["181"] = 142,["182"] = 142,["183"] = 142,["184"] = 142,["185"] = 148,["186"] = 148,["187"] = 148,["188"] = 148,["189"] = 148,["190"] = 148,["191"] = 148,["192"] = 148,["193"] = 148,["194"] = 148,["195"] = 148,["196"] = 137,["197"] = 124,["198"] = 123,["199"] = 124,["201"] = 168,["202"] = 168,["203"] = 169,["204"] = 169,["205"] = 168,["206"] = 169,["208"] = 204,["209"] = 204,["210"] = 205,["211"] = 205,["212"] = 204,["213"] = 205,["215"] = 221,["216"] = 221,["217"] = 222,["218"] = 225,["219"] = 226,["220"] = 227,["221"] = 228,["223"] = 225,["224"] = 236,["225"] = 237,["226"] = 238,["227"] = 239,["229"] = 236,["230"] = 243,["231"] = 244,["232"] = 245,["233"] = 246,["236"] = 243,["237"] = 251,["238"] = 252,["239"] = 251,["240"] = 255,["241"] = 256,["242"] = 255,["243"] = 259,["244"] = 260,["245"] = 259,["246"] = 263,["247"] = 264,["248"] = 263,["249"] = 222,["250"] = 221,["251"] = 222,["253"] = 274,["254"] = 274,["255"] = 275,["256"] = 276,["257"] = 277,["258"] = 278,["259"] = 279,["260"] = 282,["261"] = 283,["262"] = 284,["263"] = 276,["264"] = 275,["265"] = 274,["266"] = 275,["268"] = 288,["269"] = 288,["270"] = 289,["272"] = 289,["273"] = 290,["274"] = 288,["275"] = 292,["276"] = 293,["277"] = 294,["278"] = 295,["279"] = 295,["280"] = 302,["281"] = 302,["283"] = 292,["284"] = 308,["285"] = 309,["286"] = 310,["287"] = 311,["288"] = 313,["289"] = 314,["290"] = 315,["292"] = 317,["293"] = 324,["295"] = 308,["296"] = 327,["297"] = 328,["298"] = 327,["299"] = 289,["300"] = 288,["301"] = 289,["303"] = 338,["304"] = 338,["305"] = 339,["306"] = 351,["307"] = 339,["308"] = 354,["309"] = 355,["310"] = 356,["311"] = 357,["312"] = 359,["313"] = 360,["314"] = 361,["317"] = 365,["318"] = 366,["319"] = 367,["320"] = 368,["321"] = 369,["322"] = 370,["324"] = 351,["325"] = 374,["326"] = 375,["327"] = 376,["328"] = 377,["329"] = 379,["330"] = 380,["331"] = 380,["332"] = 380,["333"] = 380,["334"] = 384,["335"] = 384,["336"] = 384,["337"] = 384,["338"] = 384,["339"] = 384,["340"] = 384,["341"] = 380,["342"] = 380,["344"] = 395,["345"] = 402,["346"] = 402,["347"] = 402,["348"] = 402,["349"] = 406,["350"] = 407,["351"] = 407,["352"] = 407,["353"] = 407,["354"] = 407,["355"] = 407,["356"] = 407,["357"] = 407,["358"] = 407,["359"] = 407,["360"] = 408,["361"] = 413,["362"] = 414,["364"] = 402,["365"] = 402,["366"] = 419,["367"] = 420,["368"] = 421,["370"] = 421,["373"] = 424,["374"] = 425,["376"] = 428,["377"] = 433,["379"] = 435,["380"] = 374,["381"] = 339,["382"] = 338,["383"] = 339,["385"] = 439,["386"] = 439,["387"] = 440,["388"] = 440,["389"] = 439,["390"] = 440});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["8"] = 215,["9"] = 1,["10"] = 1,["11"] = 1,["12"] = 2,["13"] = 2,["14"] = 3,["15"] = 3,["16"] = 4,["17"] = 4,["18"] = 5,["19"] = 5,["20"] = 6,["21"] = 6,["22"] = 6,["23"] = 6,["24"] = 6,["25"] = 6,["26"] = 6,["27"] = 6,["28"] = 7,["29"] = 7,["30"] = 8,["31"] = 8,["32"] = 10,["33"] = 10,["34"] = 10,["35"] = 11,["36"] = 12,["37"] = 13,["38"] = 14,["39"] = 10,["41"] = 10,["42"] = 11,["43"] = 21,["44"] = 22,["45"] = 23,["46"] = 24,["48"] = 21,["49"] = 29,["50"] = 30,["51"] = 29,["52"] = 30,["53"] = 31,["54"] = 32,["55"] = 30,["57"] = 30,["58"] = 31,["59"] = 39,["60"] = 40,["61"] = 39,["62"] = 43,["63"] = 44,["64"] = 43,["65"] = 47,["66"] = 48,["67"] = 47,["68"] = 51,["69"] = 52,["70"] = 51,["71"] = 55,["72"] = 56,["73"] = 57,["74"] = 59,["75"] = 55,["76"] = 62,["77"] = 63,["78"] = 64,["79"] = 65,["80"] = 67,["81"] = 68,["82"] = 70,["83"] = 70,["84"] = 70,["85"] = 70,["87"] = 70,["88"] = 72,["89"] = 72,["90"] = 72,["91"] = 72,["92"] = 72,["93"] = 72,["94"] = 72,["95"] = 79,["96"] = 80,["97"] = 80,["98"] = 72,["99"] = 81,["100"] = 82,["101"] = 82,["102"] = 82,["103"] = 82,["104"] = 82,["105"] = 82,["106"] = 82,["107"] = 82,["108"] = 88,["109"] = 89,["110"] = 89,["111"] = 89,["112"] = 89,["113"] = 89,["114"] = 89,["116"] = 95,["117"] = 96,["118"] = 97,["119"] = 97,["120"] = 97,["121"] = 97,["122"] = 97,["123"] = 97,["125"] = 100,["126"] = 101,["128"] = 101,["132"] = 72,["133"] = 105,["134"] = 106,["135"] = 106,["136"] = 106,["137"] = 106,["138"] = 72,["139"] = 72,["140"] = 62,["141"] = 111,["142"] = 112,["143"] = 113,["144"] = 116,["145"] = 117,["146"] = 118,["147"] = 111,["148"] = 30,["149"] = 29,["150"] = 30,["152"] = 30,["153"] = 129,["154"] = 130,["155"] = 129,["156"] = 130,["157"] = 131,["158"] = 132,["159"] = 131,["160"] = 135,["161"] = 136,["162"] = 135,["163"] = 139,["164"] = 140,["165"] = 139,["166"] = 143,["167"] = 144,["168"] = 145,["169"] = 146,["170"] = 146,["171"] = 146,["172"] = 146,["173"] = 146,["174"] = 146,["175"] = 146,["176"] = 146,["177"] = 146,["178"] = 148,["179"] = 148,["180"] = 148,["181"] = 149,["182"] = 150,["183"] = 148,["184"] = 148,["185"] = 148,["186"] = 148,["187"] = 148,["188"] = 148,["189"] = 148,["190"] = 148,["191"] = 148,["192"] = 148,["193"] = 148,["194"] = 154,["195"] = 154,["196"] = 154,["197"] = 154,["198"] = 154,["199"] = 154,["200"] = 154,["201"] = 154,["202"] = 154,["203"] = 154,["204"] = 154,["205"] = 143,["206"] = 130,["207"] = 129,["208"] = 130,["210"] = 130,["211"] = 174,["212"] = 175,["213"] = 174,["214"] = 175,["215"] = 176,["216"] = 177,["217"] = 176,["218"] = 180,["219"] = 181,["222"] = 185,["223"] = 186,["225"] = 189,["226"] = 180,["227"] = 192,["228"] = 193,["229"] = 194,["231"] = 197,["232"] = 192,["233"] = 200,["234"] = 201,["235"] = 202,["237"] = 200,["238"] = 206,["239"] = 207,["240"] = 206,["241"] = 175,["242"] = 174,["243"] = 175,["245"] = 175,["246"] = 214,["247"] = 214,["248"] = 215,["249"] = 216,["250"] = 217,["251"] = 216,["252"] = 220,["253"] = 221,["254"] = 220,["255"] = 215,["256"] = 214,["257"] = 215,["259"] = 231,["260"] = 232,["261"] = 231,["262"] = 232,["263"] = 235,["264"] = 236,["265"] = 237,["266"] = 238,["268"] = 235,["269"] = 246,["270"] = 247,["271"] = 248,["272"] = 249,["274"] = 246,["275"] = 253,["276"] = 254,["277"] = 255,["278"] = 256,["281"] = 253,["282"] = 261,["283"] = 262,["284"] = 261,["285"] = 265,["286"] = 266,["287"] = 265,["288"] = 269,["289"] = 270,["290"] = 269,["291"] = 273,["292"] = 274,["293"] = 273,["294"] = 232,["295"] = 231,["296"] = 232,["298"] = 232,["299"] = 284,["300"] = 284,["301"] = 285,["302"] = 286,["303"] = 287,["304"] = 288,["305"] = 289,["306"] = 292,["307"] = 293,["308"] = 294,["309"] = 286,["310"] = 285,["311"] = 284,["312"] = 285,["314"] = 298,["315"] = 298,["316"] = 299,["318"] = 299,["319"] = 300,["320"] = 298,["321"] = 302,["322"] = 303,["323"] = 304,["324"] = 305,["325"] = 305,["326"] = 312,["327"] = 312,["329"] = 302,["330"] = 318,["331"] = 319,["332"] = 320,["333"] = 321,["334"] = 323,["335"] = 324,["336"] = 325,["338"] = 327,["339"] = 334,["341"] = 318,["342"] = 337,["343"] = 338,["344"] = 337,["345"] = 299,["346"] = 298,["347"] = 299,["349"] = 348,["350"] = 348,["351"] = 349,["352"] = 361,["353"] = 349,["354"] = 364,["355"] = 365,["356"] = 366,["357"] = 367,["358"] = 369,["359"] = 370,["360"] = 371,["363"] = 375,["364"] = 376,["365"] = 377,["366"] = 378,["367"] = 379,["368"] = 380,["370"] = 361,["371"] = 384,["372"] = 385,["373"] = 386,["374"] = 387,["375"] = 389,["376"] = 390,["377"] = 390,["378"] = 390,["379"] = 390,["380"] = 394,["381"] = 394,["382"] = 394,["383"] = 394,["384"] = 394,["385"] = 394,["386"] = 394,["387"] = 390,["388"] = 390,["390"] = 405,["391"] = 412,["392"] = 412,["393"] = 412,["394"] = 412,["395"] = 416,["396"] = 417,["397"] = 417,["398"] = 417,["399"] = 417,["400"] = 417,["401"] = 417,["402"] = 417,["403"] = 417,["404"] = 417,["405"] = 417,["406"] = 418,["407"] = 423,["408"] = 424,["410"] = 412,["411"] = 412,["412"] = 429,["413"] = 430,["414"] = 431,["416"] = 431,["419"] = 434,["420"] = 435,["422"] = 438,["423"] = 443,["425"] = 445,["426"] = 384,["427"] = 349,["428"] = 348,["429"] = 349,["431"] = 449,["432"] = 449,["433"] = 450,["434"] = 450,["435"] = 449,["436"] = 450});
 local ____exports = {}
-local ModifierPuckBasicAttack, ModifierPuckFairyDust, ModifierPuckExBasicAttack, ModifierPuckExBasicAttackThinker, ModifierPuckExBasicAttackShield
+local ModifierPuckBasicAttackBuff, ModifierPuckExBasicAttack, ModifierPuckExBasicAttackThinker, ModifierPuckExBasicAttackShield
 local ____dota_ts_adapter = require("lib.dota_ts_adapter")
 local registerAbility = ____dota_ts_adapter.registerAbility
 local registerModifier = ____dota_ts_adapter.registerModifier
+local ____modifier_combat_events = require("modifiers.modifier_combat_events")
+local ModifierCombatEvents = ____modifier_combat_events.ModifierCombatEvents
 local ____modifier_cooldown = require("modifiers.modifier_cooldown")
 local ModifierCooldown = ____modifier_cooldown.ModifierCooldown
 local ____modifier_shield = require("modifiers.modifier_shield")
@@ -22,6 +24,7 @@ local direction2D = ____util.direction2D
 local giveManaAndEnergyPercent = ____util.giveManaAndEnergyPercent
 local isGem = ____util.isGem
 local isObstacle = ____util.isObstacle
+local replenishEFX = ____util.replenishEFX
 local ____custom_ability = require("abilities.framework.custom_ability")
 local CustomAbility = ____custom_ability.CustomAbility
 local ____custom_modifier = require("abilities.framework.custom_modifier")
@@ -43,7 +46,8 @@ function PuckBasicAttackCommon.prototype.PlayEffectsOnCast(self, charged)
         EmitSoundOn("Hero_Oracle.FortunesEnd.Attack", self.caster)
     end
 end
-local PuckBasicAttack = __TS__Class()
+____exports.PuckBasicAttack = __TS__Class()
+local PuckBasicAttack = ____exports.PuckBasicAttack
 PuckBasicAttack.name = "PuckBasicAttack"
 __TS__ClassExtends(PuckBasicAttack, PuckBasicAttackCommon)
 function PuckBasicAttack.prototype.GetCastPoint(self)
@@ -62,17 +66,20 @@ function PuckBasicAttack.prototype.GetCastingCrawl(self)
     return 10
 end
 function PuckBasicAttack.prototype.GetIntrinsicModifierName(self)
-    return ModifierPuckBasicAttack.name
+    return ____exports.ModifierPuckBasicAttack.name
 end
 function PuckBasicAttack.prototype.OnSpellStart(self)
     local origin = self.caster:GetAbsOrigin()
     local point = CustomAbilitiesLegacy:GetCursorPosition(self)
+    self:LaunchProjectile(origin, point)
+end
+function PuckBasicAttack.prototype.LaunchProjectile(self, origin, point)
     local manaGainPct = self:GetSpecialValueFor("mana_gain_pct")
     local projectileSpeed = self:GetSpecialValueFor("projectile_speed")
     local projectileDirection = direction2D(nil, origin, point)
     local fairyDustDuration = self:GetSpecialValueFor("fairy_dust_duration")
     local fairyDustSlowPct = self:GetSpecialValueFor("fairy_dust_slow_pct")
-    local ____opt_0 = ModifierPuckBasicAttack:findOne(self.caster)
+    local ____opt_0 = ____exports.ModifierPuckBasicAttack:findOne(self.caster)
     local ____temp_2 = ____opt_0 and ____opt_0:IsCooldownReady()
     if ____temp_2 == nil then
         ____temp_2 = false
@@ -99,7 +106,7 @@ function PuckBasicAttack.prototype.OnSpellStart(self)
                 }
             )
             if isCharged then
-                ModifierPuckFairyDust:apply(
+                ____exports.ModifierPuckFairyDust:apply(
                     unit,
                     projectile:getSource(),
                     self,
@@ -116,7 +123,7 @@ function PuckBasicAttack.prototype.OnSpellStart(self)
                     )
                 end
                 if self:GetLevel() >= 2 then
-                    local ____opt_3 = ModifierPuckBasicAttack:findOne(self.caster)
+                    local ____opt_3 = ____exports.ModifierPuckBasicAttack:findOne(self.caster)
                     if ____opt_3 ~= nil then
                         ____opt_3:Replenish()
                     end
@@ -142,7 +149,9 @@ PuckBasicAttack = __TS__Decorate(
     {registerAbility(nil, "puck_basic_attack")},
     PuckBasicAttack
 )
-local PuckBasicAttackRelated = __TS__Class()
+____exports.PuckBasicAttack = PuckBasicAttack
+____exports.PuckBasicAttackRelated = __TS__Class()
+local PuckBasicAttackRelated = ____exports.PuckBasicAttackRelated
 PuckBasicAttackRelated.name = "PuckBasicAttackRelated"
 __TS__ClassExtends(PuckBasicAttackRelated, PuckBasicAttackCommon)
 function PuckBasicAttackRelated.prototype.GetAnimation(self)
@@ -170,7 +179,7 @@ function PuckBasicAttackRelated.prototype.OnSpellStart(self)
     local ____ModifierPuckExBasicAttackThinker_createThinker_10 = ModifierPuckExBasicAttackThinker.createThinker
     local ____self_caster_8 = self.caster
     local ____temp_7 = self:GetSpecialValueFor("radius")
-    local ____opt_5 = ModifierPuckBasicAttack:findOne(self.caster)
+    local ____opt_5 = ____exports.ModifierPuckBasicAttack:findOne(self.caster)
     ____ModifierPuckExBasicAttackThinker_createThinker_10(
         ____ModifierPuckExBasicAttackThinker_9,
         ____self_caster_8,
@@ -198,21 +207,57 @@ PuckBasicAttackRelated = __TS__Decorate(
     {registerAbility(nil, "puck_basic_attack_related")},
     PuckBasicAttackRelated
 )
-ModifierPuckBasicAttack = __TS__Class()
+____exports.PuckBasicAttackRelated = PuckBasicAttackRelated
+____exports.ModifierPuckBasicAttack = __TS__Class()
+local ModifierPuckBasicAttack = ____exports.ModifierPuckBasicAttack
 ModifierPuckBasicAttack.name = "ModifierPuckBasicAttack"
 __TS__ClassExtends(ModifierPuckBasicAttack, ModifierCooldown)
+function ModifierPuckBasicAttack.prototype.DeclareFunctions(self)
+    return {MODIFIER_PROPERTY_PREATTACK_BONUS_DAMAGE}
+end
+function ModifierPuckBasicAttack.prototype.OnBasicAttackStarted(self)
+    if self:GetRemainingTime() > 0 then
+        return
+    end
+    if IsServer() then
+        ModifierPuckBasicAttackBuff:apply(self.parent, self.parent, self.ability, {})
+    end
+    self:StartCooldown()
+end
+function ModifierPuckBasicAttack.prototype.GetModifierPreAttack_BonusDamage(self)
+    if not self:IsCooldownReady() then
+        return 0
+    end
+    return self:Value("charged_damage")
+end
+function ModifierPuckBasicAttack.prototype.OnReplenish(self)
+    if IsServer() then
+        replenishEFX(nil, self.parent)
+    end
+end
+function ModifierPuckBasicAttack.prototype.GetReplenishTime(self)
+    return self:Value("replenish_time")
+end
 ModifierPuckBasicAttack = __TS__Decorate(
     {registerModifier(nil, {customNameForI18n = "modifier_puck_basic_attack_cooldown"})},
     ModifierPuckBasicAttack
 )
-local ModifierPuckBasicAttackBuff = __TS__Class()
+____exports.ModifierPuckBasicAttack = ModifierPuckBasicAttack
+ModifierPuckBasicAttackBuff = __TS__Class()
 ModifierPuckBasicAttackBuff.name = "ModifierPuckBasicAttackBuff"
-__TS__ClassExtends(ModifierPuckBasicAttackBuff, CustomModifier)
+__TS__ClassExtends(ModifierPuckBasicAttackBuff, ModifierCombatEvents)
+function ModifierPuckBasicAttackBuff.prototype.IsHidden(self)
+    return true
+end
+function ModifierPuckBasicAttackBuff.prototype.OnBasicAttackEnded(self)
+    self:Destroy()
+end
 ModifierPuckBasicAttackBuff = __TS__Decorate(
     {registerModifier(nil, {customNameForI18n = "modifier_puck_basic_attack_buff"})},
     ModifierPuckBasicAttackBuff
 )
-ModifierPuckFairyDust = __TS__Class()
+____exports.ModifierPuckFairyDust = __TS__Class()
+local ModifierPuckFairyDust = ____exports.ModifierPuckFairyDust
 ModifierPuckFairyDust.name = "ModifierPuckFairyDust"
 __TS__ClassExtends(ModifierPuckFairyDust, CustomModifier)
 function ModifierPuckFairyDust.prototype.OnCreated(self, params)
@@ -250,6 +295,7 @@ ModifierPuckFairyDust = __TS__Decorate(
     {registerModifier(nil, {customNameForI18n = "modifier_puck_fairy_dust"})},
     ModifierPuckFairyDust
 )
+____exports.ModifierPuckFairyDust = ModifierPuckFairyDust
 local PuckExBasicAttack = __TS__Class()
 PuckExBasicAttack.name = "PuckExBasicAttack"
 __TS__ClassExtends(PuckExBasicAttack, CustomAbility)
@@ -274,7 +320,7 @@ function ModifierPuckExBasicAttack.prototype.____constructor(self, ...)
 end
 function ModifierPuckExBasicAttack.prototype.OnCreated(self)
     if IsServer() then
-        self.parent:SwapAbilities(PuckBasicAttack.name, PuckBasicAttackRelated.name, false, true)
+        self.parent:SwapAbilities(____exports.PuckBasicAttack.name, ____exports.PuckBasicAttackRelated.name, false, true)
         local ____self_particleIds_11 = self.particleIds
         ____self_particleIds_11[#____self_particleIds_11 + 1] = ParticleManager:CreateParticle("particles/econ/items/mirana/mirana_ti8_immortal_mount/mirana_ti8_immortal_leap_trail_embers.vpcf", PATTACH_ABSORIGIN_FOLLOW, self.parent)
         local ____self_particleIds_12 = self.particleIds
@@ -284,7 +330,7 @@ end
 function ModifierPuckExBasicAttack.prototype.OnDestroy(self)
     StopSoundOn("Hero_Puck.Phase_Shift", self.parent)
     if IsServer() then
-        self.parent:SwapAbilities(PuckBasicAttack.name, PuckBasicAttackRelated.name, true, false)
+        self.parent:SwapAbilities(____exports.PuckBasicAttack.name, ____exports.PuckBasicAttackRelated.name, true, false)
         for ____, particleId in ipairs(self.particleIds) do
             ParticleManager:DestroyParticle(particleId, false)
             ParticleManager:ReleaseParticleIndex(particleId)
@@ -308,7 +354,7 @@ function ModifierPuckExBasicAttackThinker.prototype.OnCreated(self, params)
     if IsServer() then
         self.origin = self.parent:GetAbsOrigin()
         self.manaGainPct = self.ability:GetSpecialValueFor("mana_gain_pct")
-        self.exBasicAttack = PuckExBasicAttack:findOne(self.parent)
+        self.exBasicAttack = PuckExBasicAttack:findOne(self.caster)
         if not self.exBasicAttack then
             print("[ERROR] On PuckBasicAttackRelated: Can't find PuckExBasicAttack to get the values!")
             self:Destroy()
@@ -357,7 +403,7 @@ function ModifierPuckExBasicAttackThinker.prototype.OnReady(self)
                 false,
                 true
             )
-            ModifierPuckFairyDust:apply(self.caster, self.caster, self.ability, {duration = self.fairyDustDuration, slowPct = self.fairyDustSlowPct})
+            ____exports.ModifierPuckFairyDust:apply(self.caster, self.caster, self.ability, {duration = self.fairyDustDuration, slowPct = self.fairyDustSlowPct})
             if not isObstacle(nil, target) then
                 giveMana = true
             end
@@ -365,7 +411,7 @@ function ModifierPuckExBasicAttackThinker.prototype.OnReady(self)
     })
     if giveMana then
         if self.ability:GetLevel() >= 2 then
-            local ____opt_13 = ModifierPuckBasicAttack:findOne(self.caster)
+            local ____opt_13 = ____exports.ModifierPuckBasicAttack:findOne(self.caster)
             if ____opt_13 ~= nil then
                 ____opt_13:Replenish()
             end

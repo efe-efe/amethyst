@@ -3,6 +3,7 @@ import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
 // @Refactor Create an "attachTo" method so I can have OnIntervalThink
+// @Refactor Maybe I should consider the delay and calculate the duration based on that..
 export type ModifierThinkerParams = {
     delayTime?: number;
     radius?: number;
@@ -38,10 +39,10 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
             if (this.radius > 0 && visibility == "visible") {
                 this.DrawVisuals(this.delayTime > 0 ? 0 : 1);
             }
-        }
 
-        this.initialized = this.delayTime <= 0;
-        this.StartIntervalThink(0.03);
+            this.initialized = this.delayTime <= 0;
+            this.StartIntervalThink(0.03);
+        }
     }
 
     OnDestroy() {

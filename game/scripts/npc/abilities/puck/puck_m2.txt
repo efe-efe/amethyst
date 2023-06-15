@@ -2,7 +2,7 @@
 	"puck_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_second_attack/puck_second_attack"
+		"ScriptFile"					"abilities/heroes/puck/puck_second_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
