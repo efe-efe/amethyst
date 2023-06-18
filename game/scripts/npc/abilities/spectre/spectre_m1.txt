@@ -2,7 +2,7 @@
     "spectre_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_basic_attack/spectre_basic_attack"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_basic_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -36,6 +36,7 @@
 			"08"{ "var_type"	"FIELD_FLOAT"		"silence_duration"			"0.5 1.0" }
 			"09"{ "var_type"	"FIELD_FLOAT"		"replenish_time"			"8.0" }
 			"10"{ "var_type"	"FIELD_INTEGER"		"heal_charged"				"8 16" }
+			"11"{ "var_type"	"FIELD_INTEGER"		"charged_extra_radius"		"50" }
 		}
 	}
 }

@@ -3,7 +3,7 @@ import { Translate } from "../../../modifiers/modifier_casting";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { clamp, clampPosition, isObstacle, strongPurge } from "../../../util";
+import { clamp, clampPosition, isCountering, isObstacle, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -193,7 +193,7 @@ class JuggernautCounterRecast extends JuggernautSlash {
     }
 
     OnSlashEnded(targets: CDOTA_BaseNPC[]): void {
-        const validTargets = targets.filter(target => !isObstacle(target) /*&& isCountering(target) */).length;
+        const validTargets = targets.filter(target => !isObstacle(target) && !isCountering(target)).length;
         const modifier = ModifierJuggernautCounterRecast.findOne(this.caster);
 
         if (modifier) {
@@ -254,7 +254,7 @@ class JuggernautExCounter extends JuggernautSlash {
     }
 
     OnSlashEnded(targets: CDOTA_BaseNPC[]): void {
-        const validTargets = targets.filter(target => !isObstacle(target) /*&& isCountering(target) */).length;
+        const validTargets = targets.filter(target => !isObstacle(target) && !isCountering(target)).length;
         const modifier = ModifierJuggernautExCounterRecast.findOne(this.caster);
 
         if (modifier) {

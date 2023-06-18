@@ -2,7 +2,7 @@
     "spectre_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_ultimate/spectre_ultimate"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_ultimate"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"spectre_haunt"

@@ -2,7 +2,7 @@
 	"spectre_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 		
@@ -31,13 +31,14 @@
 			"06"{ "var_type"	"FIELD_FLOAT"		"debuff_duration"			"3.5" }
 			"07"{ "var_type"	"FIELD_FLOAT"		"path_duration"				"3.0" }
 			"08"{ "var_type"	"FIELD_FLOAT"		"speed_buff_pct"			"35" }
+			"09"{ "var_type"	"FIELD_INTEGER"		"radius"					"100" }
 		}
 	}
 
 	"spectre_ex_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -69,7 +70,7 @@
 	"spectre_ex_special_attack_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack/spectre_special_attack"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_special_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

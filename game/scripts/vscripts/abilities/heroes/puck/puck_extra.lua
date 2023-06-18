@@ -57,7 +57,7 @@ function PuckExtra.prototype.OnSpellStart(self)
         self.caster,
         point,
         radius,
-        DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+        DOTA_UNIT_TARGET_TEAM_ENEMY,
         DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC,
         DOTA_UNIT_TARGET_FLAG_NONE,
         FIND_ANY_ORDER

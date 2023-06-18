@@ -42,7 +42,7 @@ class PuckExtra extends CustomAbility {
             this.caster,
             point,
             radius,
-            UnitTargetTeam.FRIENDLY,
+            UnitTargetTeam.ENEMY,
             UnitTargetType.HERO + UnitTargetType.BASIC,
             UnitTargetFlags.NONE,
             FindOrder.ANY

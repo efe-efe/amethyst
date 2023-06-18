@@ -1,326 +1,367 @@
-// spectre_basic_attack = class({})
-// LinkLuaModifier("modifier_spectre_desolate_custom", "abilities/heroes/spectre/spectre_shared_modifiers/modifier_spectre_desolate_custom/modifier_spectre_desolate_custom", LUA_MODIFIER_MOTION_NONE)
-// LinkLuaModifier("modifier_spectre_basic_attack_cooldown", "abilities/heroes/spectre/spectre_basic_attack/modifier_spectre_basic_attack_cooldown", LUA_MODIFIER_MOTION_NONE)
+import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierCooldown } from "../../../modifiers/modifier_cooldown";
+import {
+    attackWithBaseDamage,
+    clampPosition,
+    direction2D,
+    giveManaAndEnergyPercent,
+    isCountering,
+    isGem,
+    isObstacle,
+    lock,
+    replenishEFX,
+    tryLock
+} from "../../../util";
+import { CustomAbility } from "../../framework/custom_ability";
+import { CustomModifier } from "../../framework/custom_modifier";
 
-// function spectre_basic_attack:GetIntrinsicModifierName(){
-// 	return "modifier_spectre_basic_attack_cooldown"
-// }
+@registerAbility("spectre_basic_attack")
+class SpectreBasicAttack extends CustomAbility {
+    GetIntrinsicModifierName() {
+        return ModifierSpectreBasicAttack.name;
+    }
 
-// function spectre_basic_attack:GetCastPoint()
-// 	if (IsServer()){
-// 		return this.caster.GetAttackAnimationPoint()
-// 	}
-// }
+    GetCastPoint() {
+        if (IsServer()) {
+            return this.caster.GetAttackAnimationPoint();
+        }
 
-// function spectre_basic_attack:GetCooldown(iLevel)
-// 	if (IsServer()){
-//         const attacks_per_second = this.caster.GetAttacksPerSecond()
-//         const attack_speed = (1 / attacks_per_second)
+        return 0;
+    }
 
-// 		return this.BaseClass.GetCooldown(this, this.GetLevel()) + attack_speed
-// 	}
-// }
+    GetCooldown(level: number) {
+        if (IsServer()) {
+            const attacksPerSecond = this.caster.GetAttacksPerSecond();
+            const attackSpeed = 1 / attacksPerSecond;
+            return super.GetCooldown(level) + attackSpeed;
+        }
 
-// function spectre_basic_attack:GetAnimation()	return GameActivity.DOTA_ATTACK }
-// function spectre_basic_attack:GetPlaybackRateOverride()
-// 	if (IsServer()){
-// 		const slow = this.caster.FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady() and 0.3 or 0.0
+        return super.GetCooldown(level);
+    }
 
-// 		return 1.1 - slow
-// 	}
-// }
-// function spectre_basic_attack:GetCastingCrawl() 		return this.GetSpecialValueFor('cast_point_speed_pct') }
+    GetAnimation() {
+        return GameActivity.DOTA_ATTACK;
+    }
 
-// function spectre_basic_attack:OnSpellStart()
-// 	const this.caster = this.caster
-// 	const origin = this.caster.GetAbsOrigin()
-// 	const cast_range = this.GetCastRange(Vector(0,0,0), undefined)
-// 	const point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(this), cast_range, cast_range)
-// 	const radius = this.GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(this.caster)
-// 	const mana_gain_pct = this.GetSpecialValueFor("mana_gain_pct")
-// 	const direction = (Vector(point.x - origin.x, point.y - origin.y, 0)):Normalized()
-// 	const max_targets = 1
-// 	const is_charged = this.caster.FindModifierByName("modifier_spectre_basic_attack_cooldown"):IsCooldownReady()
+    GetPlaybackRateOverride() {
+        if (IsServer()) {
+            const slow = ModifierSpectreBasicAttack.findOne(this.caster)?.IsCooldownReady() ? 0.3 : 0.0;
+            return 1.1 - slow;
+        }
 
-// 	if (is_charged){
-// 		radius = radius + 50
-// 		max_targets = -1
-// 		ScreenShake(point, 100, 100, 0.45, 1000, 0, true)
-// 	}
+        return 0;
+    }
 
-// 	CustomEntitiesLegacy:MeeleAttack(this.caster, {
-// 		vDirection = direction,
-// 		vOrigin = origin,
-// 		fRadius = radius,
-// 		iMaxTargets = max_targets,
-// 		bIsBasicAttack = true,
-// 		bShakeOnHeroes = not is_charged,
-// 		Callback = function(target)
-// 			CustomEntitiesLegacy:AttackWithBaseDamage(this.caster, {
-// 				target = target,
-// 				hAbility = this,
-// 			})
+    GetCastingCrawl() {
+        return this.GetSpecialValueFor("cast_point_speed_pct");
+    }
 
-// 			if (CustomEntitiesLegacy:ProvidesMana(target)){
-// 				CustomEntitiesLegacy:GiveManaAndEnergyPercent(this.caster, mana_gain_pct, true)
-// 			}
+    OnSpellStart() {
+        const origin = this.caster.GetAbsOrigin();
+        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
+        const point = clampPosition(origin, cursor, {
+            maxRange: castRange,
+            minRange: castRange
+        });
+        //TODO: @Refactor Handle the extra radius
+        const meeleExtraRadius = 0; //CustomEntitiesLegacy:GetMeeleExtraRadius(caster)
 
-// 			this.PlayEffectsOnImpact(target, target:GetAbsOrigin(), is_charged)
-// 		}
-// 	})
+        const cooldownReduction = this.GetSpecialValueFor("cooldown_reduction");
+        const cooldownReductionCounter = this.GetSpecialValueFor("cooldown_reduction_counter");
+        const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
+        const direction = direction2D(origin, point);
+        const charged = ModifierSpectreBasicAttack.findOne(this.caster)?.IsCooldownReady() ?? false;
+        const radius =
+            this.GetSpecialValueFor("radius") + meeleExtraRadius + (charged ? this.GetSpecialValueFor("charged_extra_radius") : 0);
 
-// 	this.PlayEffectsOnFinish(direction, is_charged, radius)
-// 	this.PlayEffectsOnCast(is_charged)
-// }
+        if (charged) {
+            ScreenShake(point, 100, 100, 0.45, 1000, 0, true);
+        }
 
-// function spectre_basic_attack:PlayEffectsOnFinish(vDirection, bCharged, nRadius)
-// 	const this.caster = this.caster
-// 	const origin = this.caster.GetAbsOrigin()
-// 	const color = Vector(107, 14, 103)
+        this.MeeleAttack({
+            direction,
+            origin,
+            radius,
+            maxTargets: charged ? undefined : 1,
+            attackType: "basic",
+            effect: (target: CDOTA_BaseNPC) => {
+                attackWithBaseDamage({ source: this.caster, target });
 
-// 	const efx = EFX('particles/spectre/spectre_basic_attack_parent.vpcf', ParticleAttachment.WORLDORIGIN, undefined, {
-// 		cp0 = origin,
-// 		cp0f = vDirection,
-// 		cp3 = Vector(nRadius, 0, 0),
-// 	})
+                if (!isObstacle(target) && !isGem(target)) {
+                    giveManaAndEnergyPercent(this.caster, manaGainPct, true);
+                }
 
-// 	ParticleManager.SetParticleControl(efx, 60, color)
-// 	ParticleManager.SetParticleControl(efx, 61, Vector(1, 0, 0))
+                this.PlayEffectsOnImpact(target, target.GetAbsOrigin(), charged);
+            },
+            baseSound: "Hero_Juggernaut.PreAttack"
+        });
 
-// 	if (bCharged){
-// 		ParticleManager.SetParticleControl(efx, 4, Vector(1, 0, 0))
+        this.PlayEffectsOnFinish(direction, charged, radius);
+        this.PlayEffectsOnCast(charged);
+    }
 
-// 		const particle_cast = "particles/econ/items/dragon_knight/dk_immortal_dragon/dragon_knight_dragon_tail_dragonform_iron_dragon.vpcf"
-// 		const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster)
-// 		ParticleManager.SetParticleControl(particleId, 2, origin)
-// 		ParticleManager.SetParticleControl(particleId, 4, origin)
-// 		ParticleManager.ReleaseParticleIndex(particleId)
+    PlayEffectsOnFinish(direction: Vector, charged: boolean, radius: number) {
+        const origin = this.caster.GetAbsOrigin();
 
-// 		particleId = ParticleManager.CreateParticle('particles/spectre/spectre_basic_attack_charged.vpcf', ParticleAttachment.WORLDORIGIN, undefined)
-// 		ParticleManager.SetParticleControl(particleId, 0, origin)
-// 		ParticleManager.SetParticleControl(particleId, 1, Vector(nRadius, nRadius, nRadius))
-// 		ParticleManager.SetParticleControlForward(particleId, 0, vDirection)
-// 		ParticleManager.ReleaseParticleIndex(particleId)
-// 	}
+        this.PlayEffectsMeele(origin, direction, radius, charged);
 
-// 	ParticleManager.ReleaseParticleIndex(efx)
-// }
+        if (charged) {
+            this.PlayEffectsMeeleExplosion(origin);
+            this.PlayEffectsMeeleDecorators(origin, direction, radius);
+        }
+    }
 
-// function spectre_basic_attack:PlayEffectsOnCast(bCharged)
-// 	EmitSoundOn("Hero_Spectre.PreAttack", this.caster)
+    PlayEffectsMeele(origin: Vector, direction: Vector, radius: number, charged: boolean) {
+        const particleId = EFX("particles/spectre/spectre_basic_attack_parent.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+            cp0: origin,
+            cp0f: direction,
+            cp3: Vector(radius, 0, 0)
+        });
+        ParticleManager.SetParticleControl(particleId, 60, Vector(107, 14, 103));
+        ParticleManager.SetParticleControl(particleId, 61, Vector(1, 0, 0));
 
-// 	if (bCharged){
-// 		EmitSoundOn('Hero_Sven.Layer.GodsStrength', this.caster)
-// 	}
-// }
+        if (charged) {
+            ParticleManager.SetParticleControl(particleId, 4, Vector(1, 0, 0));
+        }
 
-// function spectre_basic_attack:PlayEffectsOnImpact(target, vPosition, bCharged)
-// 	if (bCharged){
-// 		EmitSoundOn("Hero_BountyHunter.Jinada", target)
+        ParticleManager.ReleaseParticleIndex(particleId);
+    }
 
-// 		const particle_cast = "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf"
-// 		const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.POINT, target)
-// 		ParticleManager.ReleaseParticleIndex(particleId)
-// 	else
-// 		EmitSoundOn("Hero_Spectre.Attack", target)
+    PlayEffectsMeeleDecorators(origin: Vector, direction: Vector, radius: number) {
+        const particleId = ParticleManager.CreateParticle(
+            "particles/spectre/spectre_basic_attack_charged.vpcf",
+            ParticleAttachment.WORLDORIGIN,
+            undefined
+        );
+        ParticleManager.SetParticleControl(particleId, 0, origin);
+        ParticleManager.SetParticleControl(particleId, 1, Vector(radius, radius, radius));
+        ParticleManager.SetParticleControlForward(particleId, 0, direction);
+        ParticleManager.ReleaseParticleIndex(particleId);
+    }
 
-// 		EFX('particles/phantom/phantom_basic_attack.vpcf', ParticleAttachment.ABSORIGIN, target, {
-// 			release = true
-// 		})
+    PlayEffectsMeeleExplosion(origin: Vector) {
+        const particleId = ParticleManager.CreateParticle(
+            "particles/econ/items/dragon_knight/dk_immortal_dragon/dragon_knight_dragon_tail_dragonform_iron_dragon.vpcf",
+            ParticleAttachment.ABSORIGIN_FOLLOW,
+            this.caster
+        );
+        ParticleManager.SetParticleControl(particleId, 2, origin);
+        ParticleManager.SetParticleControl(particleId, 4, origin);
+        ParticleManager.ReleaseParticleIndex(particleId);
+    }
 
-// 		const this.caster = this.caster
-// 		const offset = 50
-// 		const new_position = this.caster.GetAbsOrigin() + (vPosition - this.caster.GetAbsOrigin()):Normalized() * offset
+    PlayEffectsOnCast(charged: boolean) {
+        EmitSoundOn("Hero_Spectre.PreAttack", this.caster);
+        if (charged) {
+            EmitSoundOn("Hero_Sven.Layer.GodsStrength", this.caster);
+        }
+    }
 
-// 		const particle_cast = "particles/units/heroes/hero_spectre/spectre_desolate.vpcf"
-// 		const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.POINT, this.caster)
-// 		ParticleManager.SetParticleControl(particleId, 0, vPosition)
-// 		ParticleManager.SetParticleControlForward(particleId, 0, (vPosition - this.caster.GetAbsOrigin()):Normalized())
-// 		ParticleManager.ReleaseParticleIndex(particleId)
-// 	}
-// }
+    PlayEffectsOnImpact(target: CDOTA_BaseNPC, position: Vector, charged: boolean) {
+        if (charged) {
+            EmitSoundOn("Hero_BountyHunter.Jinada", target);
+            const particleId = ParticleManager.CreateParticle(
+                "particles/econ/items/slark/slark_ti6_blade/slark_ti6_blade_essence_shift.vpcf",
+                ParticleAttachment.POINT,
+                target
+            );
+            ParticleManager.ReleaseParticleIndex(particleId);
+            return;
+        }
 
-// if (IsClient()){ require("wrappers/abilities") }
-// Abilities.Castpoint(spectre_basic_attack)
+        EmitSoundOn("Hero_Spectre.Attack", target);
+        EFX("particles/phantom/phantom_basic_attack.vpcf", ParticleAttachment.ABSORIGIN, target, {
+            release: true
+        });
+        const particleId = ParticleManager.CreateParticle(
+            "particles/units/heroes/hero_spectre/spectre_desolate.vpcf",
+            ParticleAttachment.POINT,
+            this.caster
+        );
+        ParticleManager.SetParticleControl(particleId, 0, position);
+        ParticleManager.SetParticleControlForward(particleId, 0, direction2D(this.caster.GetAbsOrigin(), position));
+        ParticleManager.ReleaseParticleIndex(particleId);
+    }
+}
 
-// modifier_spectre_basic_attack_cooldown = class({})
-// modifier_spectre_basic_attack_attack = class({})
+@registerModifier({ customNameForI18n: "modifier_spectre_basic_attack_cooldown" })
+export class ModifierSpectreBasicAttack extends ModifierCooldown {
+    attackSpeedLock = lock();
 
-// function modifier_spectre_basic_attack_cooldown:OnCreated(params)
-//     this.damage_bonus_desolate = this.ability.GetSpecialValueFor("damage_bonus_desolate")
-//     this.heal_desolate = this.ability.GetSpecialValueFor("heal_desolate")
-// 	this.heal_charged = this.ability.GetSpecialValueFor("heal_charged")
-// 	this.desolate_duration = this.ability.GetSpecialValueFor("desolate_duration")
-//     this.silence_duration = this.ability.GetSpecialValueFor("silence_duration")
-//     this.mana_gain_pct = this.ability.GetSpecialValueFor("mana_gain_pct")
+    particleId?: ParticleID;
 
-//     if (IsServer()){
-// 	    this.attack_speed_bonus = 0.2 + this.caster.GetAttackAnimationPoint()
-//     }
-// }
+    OnCreated() {
+        super.OnCreated();
 
-// function modifier_spectre_basic_attack_cooldown:DeclareFunctions()
-//     return {
-//         --MODIFIER_EVENT_ON_ATTACK,
-//         ModifierFunction.PREATTACK_BONUS_DAMAGE,
-//         ModifierFunction.ATTACK_POINT_CONSTANT,
-//         --MODIFIER_EVENT_ON_ATTACK_LANDED,
-//     }
-// }
+        // this.damage_bonus_desolate = this.ability.GetSpecialValueFor("damage_bonus_desolate");
+    }
 
-// function modifier_spectre_basic_attack_cooldown:OnEvent(params)
-//     if (params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_ENDED){
-//         if (this.GetRemainingTime() > 0){
-//             return
-//         else
-//             this.StartCooldown()
-//         }
-//     }
+    DeclareFunctions() {
+        return [ModifierFunction.PREATTACK_BONUS_DAMAGE, ModifierFunction.ATTACK_POINT_CONSTANT];
+    }
 
-//     if (params.iEventId == MODIFIER_EVENTS.ON_BASIC_ATTACK_LANDED){
-//         if (this.IsCooldownReady()){
-//             params.target:AddNewModifier(this.parent, this.ability, "modifier_generic_silence", { duration = this.silence_duration })
+    OnBasicAttackEnded() {
+        if (this.GetRemainingTime() > 0) {
+            return;
+        } else {
+            this.StartCooldown();
+        }
+    }
 
-//             if (CustomEntitiesLegacy:ProvidesMana(params.target)){
-//                 params.target:AddNewModifier(this.parent, this.ability, "modifier_spectre_desolate_custom", { duration = this.desolate_duration })
-//             }
+    OnBasicAttackLanded(event: { target: CDOTA_BaseNPC }): void {
+        if (this.IsCooldownReady()) {
+            event.target.AddNewModifier(this.parent, this.ability, "modifier_generic_silence", {
+                duration: this.Value("silence_duration")
+            });
 
-//             if (not CustomEntitiesLegacy:IsObstacle(params.target) and not CustomEntitiesLegacy:IsCountering(params.target)){
-//                 this.parent.Heal(this.heal_charged, this.parent)
-//             }
-//         }
-//     }
-// }
+            if (!isObstacle(event.target) && !isGem(event.target)) {
+                giveManaAndEnergyPercent(this.caster, this.Value("mana_gain_pct"), true);
+                ModifierSpectreDesolate.apply(event.target, this.parent, this.ability, { duration: this.Value("desolate_duration") });
+            }
 
-// function modifier_spectre_basic_attack_cooldown:GetModifierPreAttack_BonusDamage(params)
-//     if (not this.IsCooldownReady()){
-//         return 0
-//     }
-//     return this.ability.GetSpecialValueFor("charged_damage")
-// }
+            if (!isObstacle(event.target) && !isCountering(event.target)) {
+                this.parent.Heal(this.Value("heal_charged"), this.ability);
+            }
+        }
+    }
 
-// function modifier_spectre_basic_attack_cooldown:OnAttackLanded(params)
-//     if (params.attacker ~= this.parent){
-//         return
-//     }
-//     if (params.target:HasModifier("modifier_spectre_desolate_custom")){
-//         if (not CustomEntitiesLegacy:IsObstacle(params.target)){
-//             this.parent.Heal(this.heal_desolate, this.parent)
-//             this.PlayEffectsLifeSteal()
-//         }
-//     }
-// }
+    GetModifierPreAttack_BonusDamage() {
+        if (!this.IsCooldownReady()) {
+            return 0;
+        }
+        return this.ability.GetSpecialValueFor("charged_damage");
+    }
 
-// function modifier_spectre_basic_attack_cooldown:GetModifierAttackPointConstant()
-//     if (not this.IsCooldownReady()){ return 0 }
-//     if (IsServer()){
-//         return this.attack_speed_bonus
-//     }
-// }
+    OnAttackLanded(event: ModifierAttackEvent) {
+        if (event.attacker != this.parent) {
+            return;
+        }
 
-// function modifier_spectre_basic_attack_cooldown:OnReplenish()
-// 	ReplenishEFX(this.parent)
-//     this.PlayEffectsWeapon()
-// }
+        if (ModifierSpectreDesolate.findOne(event.target) && !isObstacle(event.target)) {
+            this.parent.Heal(this.Value("heal_desolate"), this.ability);
+            this.PlayEffectsLifeSteal();
+        }
+    }
 
-// function modifier_spectre_basic_attack_cooldown:OnCooldownStart()
-//     this.StopEffectsWeapon()
-// }
+    GetModifierAttackPointConstant() {
+        if (!this.IsCooldownReady() || !IsServer()) {
+            return 0;
+        }
 
-// function modifier_spectre_basic_attack_cooldown:PlayEffectsLifeSteal()
-// 	const particle_cast = "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf"
-// 	const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster)
-// 	ParticleManager.ReleaseParticleIndex(particleId)
-// }
+        return tryLock(this.attackSpeedLock, () => 0.2 + this.caster.GetAttackAnimationPoint(), 0);
+    }
 
-// function modifier_spectre_basic_attack_cooldown:PlayEffectsWeapon()
-//     if (IsServer()){
-//         const this.caster = this.parent
+    OnReplenish() {
+        replenishEFX(this.parent);
+        this.PlayEffectsWeapon();
+    }
 
-//         const particle_cast = "particles/units/heroes/hero_nevermore/nevermore_base_attack_c.vpcf"
-//         const origin = this.caster.GetAbsOrigin()
-//         this.particleId = ParticleManager.CreateParticle(
-//             particle_cast,
-//             ParticleAttachment.CUSTOMORIGIN,
-//             this.caster
-//        )
+    OnCooldownStart() {
+        this.StopEffectsWeapon();
+    }
 
-//         ParticleManager.SetParticleControlEnt(
-//             this.particleId,
-//             0,
-//             this.caster,
-//             ParticleAttachment.POINT_FOLLOW,
-//             "attach_attack1",
-//             origin,
-//             true
-//        )
-//         ParticleManager.SetParticleControlEnt(
-//             this.particleId,
-//             3,
-//             this.caster,
-//             ParticleAttachment.POINT_FOLLOW,
-//             "attach_attack1",
-//             origin,
-//             true
-//        )
-//     }
-// }
+    PlayEffectsLifeSteal() {
+        ParticleManager.ReleaseParticleIndex(
+            ParticleManager.CreateParticle(
+                "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_heal_eztzhok.vpcf",
+                ParticleAttachment.ABSORIGIN_FOLLOW,
+                this.caster
+            )
+        );
+    }
 
-// function modifier_spectre_basic_attack_cooldown:StopEffectsWeapon()
-//     if (IsServer()){
-//         if (this.particleId){
-//             ParticleManager.DestroyParticle(this.particleId, false)
-//             ParticleManager.ReleaseParticleIndex(this.particleId)
-//         }
-//     }
-// }
+    PlayEffectsWeapon() {
+        if (IsServer()) {
+            const origin = this.caster.GetAbsOrigin();
+            this.particleId = ParticleManager.CreateParticle(
+                "particles/units/heroes/hero_nevermore/nevermore_base_attack_c.vpcf",
+                ParticleAttachment.CUSTOMORIGIN,
+                this.caster
+            );
+            ParticleManager.SetParticleControlEnt(
+                this.particleId,
+                0,
+                this.caster,
+                ParticleAttachment.POINT_FOLLOW,
+                "attach_attack1",
+                origin,
+                true
+            );
+            ParticleManager.SetParticleControlEnt(
+                this.particleId,
+                3,
+                this.caster,
+                ParticleAttachment.POINT_FOLLOW,
+                "attach_attack1",
+                origin,
+                true
+            );
+        }
+    }
+    StopEffectsWeapon() {
+        if (IsServer() && this.particleId) {
+            ParticleManager.DestroyParticle(this.particleId, false);
+            ParticleManager.ReleaseParticleIndex(this.particleId);
+        }
+    }
 
-// function modifier_spectre_basic_attack_cooldown:GetEffectName()
-// 	return "particles/econ/items/dark_willow/dark_willow_ti8_immortal_head/dw_crimson_ti8_immortal_ambient_embers_b.vpcf"
-// }
+    GetEffectName() {
+        return "particles/econ/items/dark_willow/dark_willow_ti8_immortal_head/dw_crimson_ti8_immortal_ambient_embers_b.vpcf";
+    }
 
-// function modifier_spectre_basic_attack_cooldown:GetEffectAttachType()
-// 	return ParticleAttachment.ABSORIGIN_FOLLOW
-// }
+    GetEffectAttachType() {
+        return ParticleAttachment.ABSORIGIN_FOLLOW;
+    }
 
-// function modifier_spectre_basic_attack_cooldown:GetReplenishTime()
-//     return this.ability.GetSpecialValueFor("replenish_time")
-// }
+    GetReplenishTime() {
+        return this.Value("replenish_time");
+    }
 
-// function modifier_spectre_basic_attack_cooldown:GetPreAttackDamage(params)
-//     if (params.victim:HasModifier("modifier_spectre_desolate_custom")){
-//         return this.damage_bonus_desolate
-//     }
-
-//     return 0
-// }
+    // GetPreAttackDamage(params){
+    //     if (params.victim:HasModifier("modifier_spectre_desolate_custom")){
+    //         return this.damage_bonus_desolate
+    //     }
+    //     return 0
+    // }
+}
 
 // if (IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Cooldown(modifier_spectre_basic_attack_cooldown)
 // Modifiers.OnEvent(modifier_spectre_basic_attack_cooldown)
 // Modifiers.PreAttackDamage(modifier_spectre_basic_attack_cooldown)
 
-// modifier_spectre_desolate_custom = class({})
+@registerModifier({ customNameForI18n: "modifier_spectre_basic_attack_attack" })
+class ModifierSpectreBasicAttackBuff extends CustomModifier {}
 
-// function modifier_spectre_desolate_custom:IsDebuff() return true }
-// function modifier_spectre_desolate_custom:IsHidden() return false }
-// function modifier_spectre_desolate_custom:IsPurgable() return true }
+@registerModifier({ customNameForI18n: "modifier_spectre_desolate_custom" })
+class ModifierSpectreDesolate extends CustomModifier {
+    IsDebuff() {
+        return true;
+    }
 
-// function modifier_spectre_desolate_custom:GetEffectName()
-// 	return "particles/units/heroes/hero_spectre/spectre_desolate_debuff.vpcf"
-// }
+    IsHidden() {
+        return false;
+    }
 
-// function modifier_spectre_desolate_custom:GetEffectAttachType()
-// 	return ParticleAttachment.ABSORIGIN_FOLLOW
-// }
+    IsPurgable() {
+        return true;
+    }
 
-// function modifier_spectre_desolate_custom:GetTexture()
-// 	return "spectre_desolate_modifier"
-// }
+    GetEffectName() {
+        return "particles/units/heroes/hero_spectre/spectre_desolate_debuff.vpcf";
+    }
 
-// function modifier_spectre_desolate_custom:GetStatusLabel() return "Desolate" }
-// function modifier_spectre_desolate_custom:GetStatusPriority() return 6 }
-// function modifier_spectre_desolate_custom:GetStatusStyle() return "Desolate" }
+    GetEffectAttachType() {
+        return ParticleAttachment.ABSORIGIN_FOLLOW;
+    }
 
+    GetTexture() {
+        return "spectre_desolate_modifier";
+    }
+    // function modifier_spectre_desolate_custom:GetStatusLabel() return "Desolate" }
+    // function modifier_spectre_desolate_custom:GetStatusPriority() return 6 }
+    // function modifier_spectre_desolate_custom:GetStatusStyle() return "Desolate" }
+}
 // if (IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Status(modifier_spectre_desolate_custom)

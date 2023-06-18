@@ -70,8 +70,8 @@ export type ProjectileOptions = {
     //     OnTreeHit =                     function() return end,
     //     OnWallHit =                     function() return end,
     //     OnGroundHit =                   function() return end,
-    onFinish?: (projectile: ProjectileHandler) => void; // This should also have the projectile as parameter
-    //     OnIntervalThink =               function() return end,
+    onFinish?: (projectile: ProjectileHandler) => void;
+    afterUpdate?: (projectile: ProjectileHandler) => void;
     radiusStep?: number;
 };
 
@@ -179,6 +179,7 @@ function projectile(options: ProjectileOptions) {
     let unitTest: (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => boolean = () => false;
     let onUnitHit: (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => boolean | void = () => {};
     let onFinish: (projectile: ProjectileHandler) => void = () => {};
+    let afterUpdate: (projectile: ProjectileHandler) => void = () => {};
 
     if (options.unitTest) {
         unitTest = options.unitTest;
@@ -190,6 +191,10 @@ function projectile(options: ProjectileOptions) {
 
     if (options.onFinish) {
         onFinish = options.onFinish;
+    }
+
+    if (options.afterUpdate) {
+        afterUpdate = options.afterUpdate;
     }
 
     const radiusSquare = 0.0;
@@ -398,6 +403,8 @@ function projectile(options: ProjectileOptions) {
         if (draw) {
             debugDraw();
         }
+
+        afterUpdate(getHandler());
 
         return currentTime;
     }

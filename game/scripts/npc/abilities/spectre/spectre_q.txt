@@ -2,7 +2,7 @@
     "spectre_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_counter"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -32,7 +32,7 @@
     "spectre_counter_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter_recast"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_counter"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"spectre_counter_recast"
@@ -58,14 +58,16 @@
 		"AbilitySpecial"
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"2500" }
-			"02"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed_return"   "3000" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"hitbox_return"				"80" }
 		}
 	}
 
     "spectre_ex_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_counter/spectre_counter"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_counter"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

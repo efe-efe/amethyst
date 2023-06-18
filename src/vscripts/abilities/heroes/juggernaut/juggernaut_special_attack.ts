@@ -40,7 +40,6 @@ class JuggernautSpecialAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
             effectName: "particles/juggernaut/juggernaut_special_attack.vpcf",
             groundOffset: 0,
-            draw: true,
             unitTest: (unit, projectile) =>
                 unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {

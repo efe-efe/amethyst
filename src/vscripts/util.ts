@@ -3,6 +3,7 @@ import {
     CustomModifierMotionHorizontal,
     CustomModifierMotionVertical
 } from "./abilities/framework/custom_modifier";
+import { ModifierCounter } from "./modifiers/modifier_counter";
 import { ModifierGem } from "./modifiers/modifier_gem";
 import { ModifierHideBar } from "./modifiers/modifier_hide_bar";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
@@ -273,6 +274,10 @@ export function isGem(unit: CDOTA_BaseNPC) {
     return ModifierGem.findOne(unit);
 }
 
+export function isCountering(unit: CDOTA_BaseNPC) {
+    return unit.FindAllModifiers().some(modifier => modifier instanceof ModifierCounter);
+}
+
 export function attackWithBaseDamage(options: {
     source: CDOTA_BaseNPC;
     target: CDOTA_BaseNPC;
@@ -411,4 +416,25 @@ export function createTimedRadiusMarker(
     return {
         destroy: () => modifier?.Destroy()
     };
+}
+
+export interface Lock {
+    locked: boolean;
+}
+
+export function lock(): Lock {
+    return {
+        locked: false
+    };
+}
+
+export function tryLock<T>(lock: Lock, thenDo: () => T, orElse: T) {
+    if (lock.locked) {
+        return orElse;
+    } else {
+        lock.locked = true;
+        const value = thenDo();
+        lock.locked = false;
+        return value;
+    }
 }

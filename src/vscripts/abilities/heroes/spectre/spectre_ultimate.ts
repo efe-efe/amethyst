@@ -1,166 +1,176 @@
-// spectre_ultimate = class({})
-// LinkLuaModifier("modifier_spectre_ultimate", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate", LUA_MODIFIER_MOTION_NONE)
-// LinkLuaModifier("modifier_spectre_ultimate_thinker", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_thinker", LUA_MODIFIER_MOTION_NONE)
-// LinkLuaModifier("modifier_spectre_ultimate_helper", "abilities/heroes/spectre/spectre_ultimate/modifier_spectre_ultimate_helper", LUA_MODIFIER_MOTION_NONE)
+import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
+import { clampPosition } from "../../../util";
+import { CustomAbility } from "../../framework/custom_ability";
+import { CustomModifier } from "../../framework/custom_modifier";
+import { ModifierSpectreSpecialAttackBuff, ModifierSpectreSpecialAttackDebuff } from "./spectre_special_attack";
 
-// function spectre_ultimate:GetAnimation()		return GameActivity.DOTA_CAST_ABILITY_1 }
-// function spectre_ultimate:GetPlaybackRateOverride() 	return 0.6 }
-// function spectre_ultimate:GetCastingCrawl() 			return 0 }
+@registerAbility("spectre_ultimate")
+class SpectreUltimate extends CustomAbility {
+    GetAnimation() {
+        return GameActivity.DOTA_CAST_ABILITY_1;
+    }
 
-// function spectre_ultimate:OnSpellStart()
-//     const this.caster = this.caster
-//     const origin = this.caster.GetAbsOrigin()
-//     const point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(this), this.GetCastRange(Vector(0,0,0), undefined), undefined)
+    GetPlaybackRateOverride() {
+        return 0.6;
+    }
 
-//     CreateModifierThinker(
-//         this.caster, --hCaster
-//         this, --hAbility
-//         "modifier_spectre_ultimate_thinker", --modifierName
-//         {},
-//         point, --vOrigin
-//         this.caster.GetTeamNumber(), --nTeamNumber
-//         false --bPhantomBlocker
-//     )
+    GetCastingCrawl() {
+        return 0;
+    }
 
-//     EmitSoundOn("Hero_Spectre.HauntCast", this.caster)
-// }
+    OnSpellStart() {
+        const origin = this.caster.GetAbsOrigin();
+        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
+        ModifierSpectreUltimateThinker.createThinker(this.caster, this, point, {
+            delayTime: this.GetSpecialValueFor("delay_time"),
+            radius: this.GetSpecialValueFor("radius"),
+            duration: this.GetSpecialValueFor("duration"),
+            content: "clearout"
+        });
+        EmitSoundOn("Hero_Spectre.HauntCast", this.caster);
+    }
+}
 // if (IsClient()){ require("wrappers/abilities") }
 // Abilities.Castpoint(spectre_ultimate)
 
-// modifier_spectre_ultimate = class({})
+@registerModifier({ customNameForI18n: "modifier_spectre_ultimate" })
+export class ModifierSpectreUltimate extends CustomModifier {
+    OnCreated() {
+        if (IsServer()) {
+            if (this.caster == this.parent) {
+                ModifierSpectreSpecialAttackBuff.apply(this.parent, this.parent, this.ability, {});
+                this.SetStackCount(1);
+            } else {
+                this.SetStackCount(2);
+            }
+        }
+    }
 
-// function modifier_spectre_ultimate:OnCreated(params)
-//     this.bonus_damage = this.ability.GetSpecialValueFor("bonus_damage")
+    OnDestroy() {
+        if (IsServer()) {
+            if (this.IsDebuff() && this.GetStackCount() == 2) {
+                EmitSoundOn("Hero_Spectre.DaggerImpact", this.parent);
 
-//     if (IsServer()){
-//         if (this.caster == this.parent){
-//             this.parent.AddNewModifier(this.parent, this.ability, 'modifier_spectre_special_attack_buff', {})
-//             this.SetStackCount(1)
-//         else
-//             this.damage_table = {
-//                 victim = this.parent,
-//                 attacker = this.caster,
-//                 damage = this.ability.GetSpecialValueFor("ability_damage"),
-//                 damage_type = DAMAGE_TYPE_PURE
-//             }
-//             this.SetStackCount(2)
-//         }
-//     }
-// }
+                ModifierSpectreSpecialAttackDebuff.apply(this.parent, this.caster, this.ability, {
+                    duration: 5.0
+                });
+                this.parent.AddNewModifier(this.caster, this.ability, "modifier_generic_fading_slow", {
+                    duration: 5.0,
+                    max_slow_pct: 50
+                });
+                if (IsServer()) {
+                    ApplyDamage({
+                        victim: this.parent,
+                        attacker: this.caster,
+                        damage: this.Value("ability_damage"),
+                        damage_type: DamageTypes.PURE
+                    });
+                }
+            } else {
+                this.parent.RemoveModifierByName(ModifierSpectreSpecialAttackBuff.name);
+            }
+        }
+    }
 
-// function modifier_spectre_ultimate:OnDestroy()
-//     if (IsServer()){
-//         if (this.IsDebuff()){
-//             if (this.GetStackCount() == 2){
-//                 EmitSoundOn("Hero_Spectre.DaggerImpact", this.parent)
-//                 this.parent.AddNewModifier(this.caster, this.ability, "modifier_spectre_special_attack_debuff", {
-//                     duration = 5.0
-//                 })
-//                 this.parent.AddNewModifier(this.caster, this.ability, "modifier_generic_fading_slow", {
-//                     duration = 5.0,
-//                     max_slow_pct = 50
-//                 })
+    IsDebuff() {
+        return this.GetStackCount() == 2 && !CustomEntitiesLegacy.Allies(this.caster, this.parent);
+    }
 
-//                 if (IsServer()){
-//                     ApplyDamage(this.damage_table)
-//                 }
-//             }
-//         else
-//             this.parent.RemoveModifierByName('modifier_spectre_special_attack_buff')
-//         }
-//     }
-// }
+    DeclareFunctions() {
+        return [ModifierFunction.BONUS_VISION_PERCENTAGE, ModifierFunction.PREATTACK_BONUS_DAMAGE];
+    }
 
-// function modifier_spectre_ultimate:IsDebuff()
-//     if (IsServer()){
-//         return this.GetStackCount() == 2 and not CustomEntitiesLegacy:Allies(this.caster, this.parent)
-//     }
-// }
+    GetBonusVisionPercentage() {
+        if (this.IsDebuff()) {
+            return -80;
+        }
 
-// function modifier_spectre_ultimate:DeclareFunctions()
-// 	return {
-// 		ModifierFunction.BONUS_VISION_PERCENTAGE,
-//         ModifierFunction.PREATTACK_BONUS_DAMAGE,
-// 	}
-// }
+        return 0;
+    }
 
-// function modifier_spectre_ultimate:GetBonusVisionPercentage()
-//     if (this.IsDebuff()){
-//         return -80
-//     }
-//     return 0
-// }
+    GetModifierPreAttack_BonusDamage() {
+        if (!this.IsDebuff()) {
+            return this.Value("bonus_damage");
+        }
 
-// function modifier_spectre_ultimate:GetModifierPreAttack_BonusDamage()
-//     if (not this.IsDebuff()){
-//         return this.bonus_damage
-//     }
-// }
+        return 0;
+    }
+}
 
-// modifier_spectre_ultimate_thinker = class({})
+@registerModifier({ customNameForI18n: "modifier_spectre_ultimate_thinker" })
+class ModifierSpectreUltimateThinker extends ModifierThinker {
+    origin!: Vector;
+    particleId?: ParticleID;
 
-// function modifier_spectre_ultimate_thinker:IsAura()
-// 	return this.initialized
-// }
-// function modifier_spectre_ultimate_thinker:GetModifierAura()
-// 	return "modifier_spectre_ultimate"
-// }
-// function modifier_spectre_ultimate_thinker:GetAuraRadius()
-// 	return this.radius
-// }
-// function modifier_spectre_ultimate_thinker:GetAuraDuration()
-// 	return 0.0
-// }
-// function modifier_spectre_ultimate_thinker:GetAuraSearchTeam()
-// 	return DOTA_UNIT_TARGET_TEAM_BOTH
-// }
-// function modifier_spectre_ultimate_thinker:GetAuraSearchType()
-// 	return DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC
-// }
+    IsAura() {
+        return this.initialized;
+    }
 
-// function modifier_spectre_ultimate_thinker:OnCreated()
-//     if (IsServer()){
-//         const delay_time = this.ability.GetSpecialValueFor("delay_time")
-//         this.radius = this.ability.GetSpecialValueFor("radius")
-//         this.origin = this.parent.GetAbsOrigin()
-//         this.duration = this.ability.GetSpecialValueFor("duration")
-//         this.initialized = false
-//         CreateTimedRadiusMarker(this.caster, this.origin, this.radius, delay_time, 0.2, RADIUS_SCOPE_PUBLIC)
-//         this.StartIntervalThink(delay_time)
-//     }
-// }
+    GetModifierAura() {
+        return ModifierSpectreUltimate.name;
+    }
 
-// function modifier_spectre_ultimate_thinker:OnDestroy()
-//     if (IsServer()){
-//         ApplyCallbackForUnitsInArea(this.caster, this.origin, this.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
+    GetAuraRadius() {
+        return this.radius;
+    }
 
-//             const modifier = unit:FindModifierByName("modifier_spectre_ultimate")
-//             if (modifier ~= undefined){
-//                 if (not modifier:IsNull()){
-//                     modifier:SetStackCount(1)
-//                 }
-//             }
-//         })
+    GetAuraDuration() {
+        return 0.0;
+    }
 
-//         ParticleManager.DestroyParticle(this.efx, false)
-//         ParticleManager.ReleaseParticleIndex(this.efx)
+    GetAuraSearchTeam() {
+        return UnitTargetTeam.BOTH;
+    }
 
-//         UTIL_Remove(this.parent)
-//     }
-// }
+    GetAuraSearchType() {
+        return UnitTargetType.HERO + UnitTargetType.BASIC;
+    }
 
-// function modifier_spectre_ultimate_thinker:OnIntervalThink()
-//     if (not this.initialized){
-//         this.efx = ParticleManager.CreateParticle("particles/spectre/spectre_ultimate.vpcf", ParticleAttachment.WORLDORIGIN, undefined)
-//         ParticleManager.SetParticleControl(this.efx, 0, this.origin)
-//         ParticleManager.SetParticleControl(this.efx, 1, Vector(this.radius, this.radius, 1))
+    OnCreated(params: ModifierThinkerParams) {
+        super.OnCreated(params);
 
-//         this.initialized = true
-//         this.StartIntervalThink(this.duration)
-//         EmitSoundOn("Hero_Spectre.HauntCast", this.parent)
-//         EmitSoundOn("Hero_Spectre.Reality", this.parent)
-//     else
-//         this.Destroy()
-//     }
-// }
+        if (IsServer()) {
+            this.origin = this.parent.GetAbsOrigin();
+        }
+    }
+
+    OnDestroy() {
+        super.OnDestroy();
+
+        if (IsServer()) {
+            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+                this.caster,
+                this.origin,
+                this.radius,
+                UnitTargetTeam.ENEMY,
+                UnitTargetType.HERO + UnitTargetType.BASIC,
+                UnitTargetFlags.NONE,
+                FindOrder.ANY
+            );
+
+            for (const enemy of enemies) {
+                ModifierSpectreUltimate.findOne(enemy)?.SetStackCount(1);
+            }
+
+            if (this.particleId) {
+                ParticleManager.DestroyParticle(this.particleId, false);
+                ParticleManager.ReleaseParticleIndex(this.particleId);
+            }
+        }
+    }
+
+    OnReady() {
+        this.particleId = ParticleManager.CreateParticle(
+            "particles/spectre/spectre_ultimate.vpcf",
+            ParticleAttachment.WORLDORIGIN,
+            undefined
+        );
+        ParticleManager.SetParticleControl(this.particleId, 0, this.origin);
+        ParticleManager.SetParticleControl(this.particleId, 1, Vector(this.radius, this.radius, 1));
+        EmitSoundOn("Hero_Spectre.HauntCast", this.parent);
+        EmitSoundOn("Hero_Spectre.Reality", this.parent);
+    }
+}

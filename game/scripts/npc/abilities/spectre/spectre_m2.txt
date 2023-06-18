@@ -2,7 +2,7 @@
     "spectre_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_second_attack/spectre_second_attack"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_second_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

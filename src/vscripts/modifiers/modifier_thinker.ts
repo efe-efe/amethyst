@@ -10,7 +10,7 @@ export type ModifierThinkerParams = {
     visibility?: "visible" | "collapse";
     scope?: "public" | "local";
     behavior?: "follow" | "static";
-    content?: "clearout" | "fillout" | "static";
+    content?: "clearout" | "fillup" | "static";
 };
 
 @registerModifier()
@@ -20,7 +20,9 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
     radius!: number;
     scope!: "public" | "local";
     behavior!: "follow" | "static";
-    content!: "clearout" | "fillout" | "static";
+    content!: "clearout" | "fillup" | "static";
+    visibility!: "visible" | "collapse";
+
     particleIds: ParticleID[] = [];
     counter = 0;
 
@@ -32,10 +34,9 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
             this.scope = params.scope ?? "public";
             this.behavior = params.behavior ?? "static";
             this.content = params.content ?? "static";
+            this.visibility = params.visibility ?? "visible";
 
-            const visibility = params.visibility ?? "visible";
-
-            if (this.radius > 0 && visibility == "visible") {
+            if (this.radius > 0 && this.visibility == "visible") {
                 this.DrawVisuals(this.delayTime > 0 ? 0 : 1);
             }
 
@@ -73,7 +74,9 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
             if (this.counter == 0) {
                 this.OnReady();
                 this.RemoveVisuals();
-                this.DrawVisuals(this.GetDuration() - this.delayTime);
+                if (this.visibility == "visible") {
+                    this.DrawVisuals(this.GetDuration() - this.delayTime);
+                }
             }
 
             if (this.content == "clearout") {

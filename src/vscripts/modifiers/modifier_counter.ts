@@ -46,11 +46,6 @@ export class ModifierCounter<A extends CDOTABaseAbility | undefined = CustomAbil
     }
 
     OnOrder(event: ModifierUnitEvent) {
-        // if onOrder then
-        //     onOrder(self, params)
-        //     return
-        // end
-
         if (event.unit == this.parent) {
             if (
                 event.order_type == UnitOrder.STOP ||

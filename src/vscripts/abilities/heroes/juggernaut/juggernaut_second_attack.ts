@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
-import { clampPosition, direction2D, giveManaAndEnergy, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { clampPosition, direction2D, giveManaAndEnergy, giveManaAndEnergyPercent, isCountering, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { JuggernautBasicAttack, ModifierJuggernautStacks } from "./juggernaut_basic_attack";
@@ -113,7 +113,7 @@ class JuggernautSecondAttack extends CustomAbility {
         }
 
         const giveMana = units.filter(unit => !isGem(unit) && !isObstacle(unit)).length > 0;
-        const shieldProviders = units.filter(unit => !isObstacle(unit) /* && !isCountering(unit) */).length;
+        const shieldProviders = units.filter(unit => !isObstacle(unit) && !isCountering(unit)).length;
 
         if (giveMana) {
             giveManaAndEnergyPercent(this.caster, manaGainPct, true);

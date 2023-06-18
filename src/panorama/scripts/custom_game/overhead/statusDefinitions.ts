@@ -172,6 +172,8 @@ defineRecastStatus("modifier_phantom_counter_recast", "phantom_counter_recast", 
 defineRecastStatus("modifier_phantom_ex_counter_recast", "phantom_ex_counter_recast", "2");
 defineRecastStatus("modifier_phantom_extra_recast", "phantom_extra", "F");
 
+defineRecastStatus("modifier_spectre_counter_recast", "spectre_counter_recast", "Q");
+
 defineShieldStatus("modifier_juggernaut_extra_shield");
 defineShieldStatus("modifier_phantom_counter_shield");
 

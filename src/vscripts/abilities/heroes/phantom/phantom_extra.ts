@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { direction2D } from "../../../util";
+import { direction2D, isCountering } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -103,11 +103,13 @@ class ModifierPhantomExtraDisplacement extends ModifierDisplacement {
             this.ability.SingleAttack({
                 target: target,
                 effect: target => {
-                    // if(! CustomEntitiesLegacy:IsCountering(target) and ! this.recast){
-                    // target:AddNewModifier(this.parent, this.ability, "modifier_generic_fading_slow", {
-                    //     duration = this.Value("fading_slow_duration"),
-                    //     max_slow_pct = this.Value("fading_slow_pct")
-                    // })
+                    if (!isCountering(target)) {
+                        target.AddNewModifier(this.parent, this.ability, "modifier_generic_fading_slow", {
+                            duration: this.Value("fading_slow_duration"),
+                            max_slow_pct: this.Value("fading_slow_pct")
+                        });
+                    }
+
                     ModifierPhantomExtraMark.apply(target, this.parent, this.ability, { duration: 0.3 });
 
                     if (this.ability.GetLevel() >= 2 || this.parent.HasModifier("modifier_upgrade_phantom_quick_recast")) {

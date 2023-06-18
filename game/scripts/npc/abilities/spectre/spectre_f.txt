@@ -2,7 +2,7 @@
     "spectre_extra"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_extra/spectre_extra"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_extra"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
@@ -32,7 +32,7 @@
     "spectre_extra_recast"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/spectre/spectre_extra/spectre_extra"
+		"ScriptFile"					"abilities/heroes/spectre/spectre_extra"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

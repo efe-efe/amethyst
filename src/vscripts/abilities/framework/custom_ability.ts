@@ -337,7 +337,12 @@ export class CustomAbility extends BaseAbility {
         const triggerCounters = options.triggerCounters ?? true;
         const attackType = options.attackType ?? "other";
         const valueDistance = this.GetSpecialValueFor("projectile_distance");
-        const distance = options.distance ?? valueDistance != 0 ? valueDistance : this.GetCastRange(Vector(0, 0, 0), undefined);
+        const distance = options.distance
+            ? options.distance
+            : valueDistance != 0
+            ? valueDistance
+            : this.GetCastRange(Vector(0, 0, 0), undefined);
+
         const startRadius = options.startRadius ?? this.GetSpecialValueFor("hitbox");
 
         const onUnitHit = (unit: CDOTA_BaseNPC, projectile: ProjectileHandler) => {
@@ -372,10 +377,6 @@ export class CustomAbility extends BaseAbility {
             onUnitHit,
             onFinish
         });
-
-        //     if tData.OnProjectileCreated then
-        //         tData.OnProjectileCreated(hProjectile)
-        //     end
 
         return projectile;
     }
