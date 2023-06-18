@@ -1,1 +1,0 @@
-modifier_storm_extra = class({})
