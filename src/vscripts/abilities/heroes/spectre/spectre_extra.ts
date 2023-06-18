@@ -39,7 +39,6 @@ class SpectreExtraRecast extends CustomAbility {
         const origin = this.caster.GetAbsOrigin();
         const point = CustomAbilitiesLegacy.GetCursorPosition(this);
         const spectreExtra = SpectreExtra.findOne(this.caster);
-        const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);
         const damage = spectreExtra?.GetSpecialValueFor("recast_damage") ?? 0;
@@ -58,7 +57,7 @@ class SpectreExtraRecast extends CustomAbility {
                 ApplyDamage({
                     victim: unit,
                     attacker: projectile.getSource(),
-                    damage: damage,
+                    damage: finalDamage,
                     damage_type: DamageTypes.MAGICAL
                 });
             },
