@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
+import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -103,7 +104,7 @@ class ModifierStormSecondAttack extends CustomModifier {
         EFX("particles/econ/events/ti9/shivas_guard_ti9_impact.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
             release: true
         });
-        this.parent.AddNewModifier(this.parent, this.ability, "modifier_generic_stunned", { duration: this.Value("stun_duration") });
+        ModifierStun.apply(this.parent, this.parent, this.ability, { duration: this.Value("stun_duration") });
     }
     // function modifier_storm_second_attack:GetStatusLabel() return "Unstable Energy" }
     // function modifier_storm_second_attack:GetStatusPriority() return 4 }

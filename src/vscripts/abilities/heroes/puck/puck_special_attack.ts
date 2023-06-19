@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -95,7 +96,7 @@ class ModifierPuckSpecialAttack extends ModifierThinker {
             radius: this.radius,
             effect: target => {
                 if (this.ability.GetLevel() >= 2) {
-                    target.AddNewModifier(this.caster, this.ability, "modifier_generic_stunned", { duration: this.stunDuration });
+                    ModifierStun.apply(target, this.caster, this.ability, { duration: this.stunDuration });
                 }
 
                 if (this.silenceDuration) {

@@ -1,6 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
+import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { clampPosition, createRadiusMarker, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -105,7 +106,7 @@ export class ModifierStormExtraDisplacement extends ModifierDisplacement {
         }
 
         if (this.GetStackCount() == 2) {
-            target.AddNewModifier(this.parent, this.GetAbility(), "modifier_generic_stunned", { duration: this.stunDuration });
+            ModifierStun.apply(target, this.parent, this.ability, { duration: this.stunDuration });
         }
 
         ApplyDamage({

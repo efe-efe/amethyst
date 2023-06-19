@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -80,7 +81,7 @@ class ModifierPuckUltimateThinker extends ModifierThinker {
                     y: this.parent.GetAbsOrigin().y,
                     z: this.parent.GetAbsOrigin().z
                 });
-                enemy.AddNewModifier(this.caster, this.ability, "modifier_generic_stunned", {
+                ModifierStun.apply(enemy, this.caster, this.ability, {
                     duration: this.Value("initial_stun_duration")
                 });
             }
@@ -172,7 +173,7 @@ class ModifierPuckUltimateCheck extends CustomModifier {
                     damage_type: DamageTypes.PURE
                 });
                 this.parent.RemoveModifierByName(ModifierPuckUltimate.name);
-                this.parent.AddNewModifier(this.caster, this.ability, "modifier_generic_stunned", {
+                ModifierStun.apply(this.parent, this.caster, this.ability, {
                     duration: this.Value("snap_stun_duration")
                 });
                 EmitSoundOn("Hero_Puck.Dream_Coil_Snap", this.parent);

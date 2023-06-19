@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition, direction2D, giveEnergyPercent, giveManaPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -99,7 +100,7 @@ class ModifierStormSpecialAttackThinker extends ModifierThinker {
                 originY: this.origin.y
             });
 
-            enemy.AddNewModifier(this.caster, this.ability, "modifier_generic_stunned", { duration: 0.1 });
+            ModifierStun.apply(enemy, this.caster, this.ability, { duration: 0.1 });
 
             if (!isObstacle(enemy) && !isGem(enemy)) {
                 if (this.ability.GetLevel() >= 2) {

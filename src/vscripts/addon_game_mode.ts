@@ -373,7 +373,6 @@ export class GameMode {
 
         LinkLuaModifier("modifier_generic_silence", "modifiers/generic/modifier_generic_silence", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_fading_haste", "modifiers/generic/modifier_generic_fading_haste", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_generic_stunned", "modifiers/generic/modifier_generic_stunned", LuaModifierMotionType.NONE);
         LinkLuaModifier(
             "modifier_generic_provides_vision",
             "modifiers/generic/modifier_generic_provides_vision",
@@ -399,7 +398,6 @@ export class GameMode {
         LinkLuaModifier("modifier_shield", "modifiers/generic/modifier_shield", LuaModifierMotionType.NONE);
 
         LinkLuaModifier("modifier_hide_bar", "modifiers/generic/modifier_hide_bar", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_hidden", "modifiers/generic/modifier_hidden", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_hero_movement", "modifiers/generic/modifier_hero_movement", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_tower_idle", "modifiers/generic/modifier_tower_idle", LuaModifierMotionType.NONE);
 
