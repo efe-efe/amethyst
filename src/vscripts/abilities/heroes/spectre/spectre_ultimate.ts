@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -57,9 +58,9 @@ export class ModifierSpectreUltimate extends CustomModifier {
                 ModifierSpectreSpecialAttackDebuff.apply(this.parent, this.caster, this.ability, {
                     duration: 5.0
                 });
-                this.parent.AddNewModifier(this.caster, this.ability, "modifier_generic_fading_slow", {
+                ModifierFadingSlow.apply(this.parent, this.caster, undefined, {
                     duration: 5.0,
-                    max_slow_pct: 50
+                    maxSlowPct: 50
                 });
                 if (IsServer()) {
                     ApplyDamage({

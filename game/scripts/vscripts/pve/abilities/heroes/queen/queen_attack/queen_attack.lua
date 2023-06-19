@@ -47,7 +47,7 @@ function queen_attack:LaunchProjectile(vPoint, nSpeed, nDistance, nDamage)
                 unit:AddNewModifier(_self.Source, self, "modifier_queen_attack", { duration = poison_duration })
                 unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
                     duration = fading_slow_duration,
-                    max_slow_pct = fading_slow_pct 
+                    maxSlowPct = fading_slow_pct 
                 })
             end,
             OnFinish = function(_self, pos)

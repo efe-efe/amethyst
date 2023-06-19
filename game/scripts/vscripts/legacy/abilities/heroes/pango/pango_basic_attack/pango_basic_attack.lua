@@ -77,7 +77,7 @@ function pango_basic_attack:TryProc(hTarget)
 		hTarget:AddNewModifier(caster, self, "modifier_generic_silence", { duration = 1.0 })
 		hTarget:AddNewModifier(caster, self, "modifier_generic_fading_slow", { 
 			duration = 1.0,
-			max_slow_pct = 100 
+			maxSlowPct = 100 
 		})
 		EmitSoundOn("Hero_Pangolier.LuckyShot.Proc", hTarget)
 		

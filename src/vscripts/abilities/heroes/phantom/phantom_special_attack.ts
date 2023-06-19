@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomBleed, ModifierPhantomStacks, PhantomBasicAttack, PhantomExBasicAttack } from "./phantom_basic_attack";
@@ -99,9 +100,9 @@ class PhantomSpecialAttack extends CustomAbility {
                 }
 
                 if (!projectile.getSource().HasModifier("modifier_upgrade_phantom_fast_daggers")) {
-                    unit.AddNewModifier(projectile.getSource(), this, "modifier_generic_fading_slow", {
+                    ModifierFadingSlow.apply(unit, projectile.getSource(), undefined, {
                         duration: fadingSlowDuration,
-                        max_slow_pct: fadingSlowPct
+                        maxSlowPct: fadingSlowPct
                     });
                 }
 

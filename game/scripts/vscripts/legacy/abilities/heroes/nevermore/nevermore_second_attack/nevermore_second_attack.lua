@@ -48,7 +48,7 @@ function nevermore_second_attack:OnSpellStart()
 			
 			unit:AddNewModifier(_self.Source, self, "modifier_generic_fading_slow", { 
 				duration = fading_slow_duration,
-				max_slow_pct = fading_slow_pct 
+				maxSlowPct = fading_slow_pct 
 			})
 
 			if _self.Source == caster and not CustomEntitiesLegacy:IsObstacle(unit) then

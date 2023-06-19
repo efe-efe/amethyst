@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { ProjectileBehavior } from "../../../projectiles";
@@ -510,9 +511,9 @@ class ModifierSpectreExSpecialAttackBanish extends ModifierBanish {
             ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin());
             ParticleManager.SetParticleControl(particleId, 3, this.parent.GetAbsOrigin());
             ParticleManager.ReleaseParticleIndex(particleId);
-            this.parent.AddNewModifier(this.caster, this.ability, "modifier_generic_fading_slow", {
+            ModifierFadingSlow.apply(this.parent, this.caster, undefined, {
                 duration: this.Value("fading_slow_duration"),
-                max_slow_pct: this.Value("fading_slow_pct")
+                maxSlowPct: this.Value("fading_slow_pct")
             });
         }
     }

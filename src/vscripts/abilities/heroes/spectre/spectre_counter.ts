@@ -1,6 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ProjectileBehavior } from "../../../projectiles";
 import { createRadiusMarker, direction2D, fullyFaceTowards, isGem, isObstacle } from "../../../util";
@@ -354,9 +355,9 @@ class ModifierSpectreExCounter extends CustomModifier {
                     damage_type: DamageTypes.PURE
                 });
 
-                enemy.AddNewModifier(this.caster, this.ability, "modifier_generic_fading_slow", {
+                ModifierFadingSlow.apply(enemy, this.caster, undefined, {
                     duration: this.Value("fading_slow_duration"),
-                    max_slow_pct: this.Value("fading_slow_pct")
+                    maxSlowPct: this.Value("fading_slow_pct")
                 });
 
                 ModifierSpectreExCounterDebuff.apply(enemy, this.caster, this.ability, {

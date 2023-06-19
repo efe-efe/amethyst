@@ -57,7 +57,7 @@ function modifier_nevermore_mobility_displacement:OnCollide(params)
                     unit:AddNewModifier(self:GetParent(), self, "modifier_nevermore_mobility_hit", { duration = 1.0 })
                     unit:AddNewModifier(self:GetParent(), self, "modifier_generic_fading_slow", { 
                         duration = self.fading_slow_duration,
-                        max_slow_pct = self.fading_slow_pct
+                        maxSlowPct = self.fading_slow_pct
                     })
                 end
             end

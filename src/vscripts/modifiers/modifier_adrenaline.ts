@@ -1,5 +1,6 @@
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
+import { ModifierFadingSlow } from "./modifier_fading_slow";
 
 @registerModifier({ customNameForI18n: "modifier_adrenaline" })
 export class ModifierAdrenaline extends CustomModifier<undefined> {
@@ -33,10 +34,11 @@ export class ModifierAdrenaline extends CustomModifier<undefined> {
                 return;
             }
 
-            event.unit.AddNewModifier(event.unit, undefined, "modifier_generic_fading_slow", {
+            ModifierFadingSlow.apply(event.unit, event.unit, undefined, {
                 duration: this.slowDuration,
-                max_slow_pct: this.maxSlowPct
+                maxSlowPct: this.maxSlowPct
             });
+
             this.Destroy();
         }
     }

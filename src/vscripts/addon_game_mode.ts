@@ -378,7 +378,6 @@ export class GameMode {
         LinkLuaModifier("modifier_amethyst", "modifiers/gems/modifier_amethyst.lua", LuaModifierMotionType.NONE);
 
         LinkLuaModifier("modifier_generic_silence", "modifiers/generic/modifier_generic_silence", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_generic_fading_slow", "modifiers/generic/modifier_generic_fading_slow", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_fading_haste", "modifiers/generic/modifier_generic_fading_haste", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_stunned", "modifiers/generic/modifier_generic_stunned", LuaModifierMotionType.NONE);
         LinkLuaModifier(

@@ -13,7 +13,7 @@ function modifier_invoker_blast_custom_displacement:OnDestroy()
 
         self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_fading_slow", { 
             duration = fading_slow_duration,
-            max_slow_pct = fading_slow_pct 
+            maxSlowPct = fading_slow_pct 
         })
 
         if IsServer() then

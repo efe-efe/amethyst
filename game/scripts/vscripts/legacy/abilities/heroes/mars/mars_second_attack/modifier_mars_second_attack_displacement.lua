@@ -11,7 +11,7 @@ function modifier_mars_second_attack_displacement:OnDestroy()
 	if IsServer() then
 		self:GetParent():AddNewModifier(self:GetCaster(), self:GetAbility(), "modifier_generic_fading_slow", { 
 			duration = self.fading_slow_duration,
-			max_slow_pct = self.fading_slow_pct 
+			maxSlowPct = self.fading_slow_pct 
 		})
     end
 end

@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -49,9 +50,10 @@ class JuggernautSpecialAttack extends CustomAbility {
                     damage: damage,
                     damage_type: DamageTypes.MAGICAL
                 });
-                unit.AddNewModifier(this.caster, this, "modifier_generic_fading_slow", {
+
+                ModifierFadingSlow.apply(unit, this.caster, undefined, {
                     duration: fading_slow_duration,
-                    max_slow_pct: fading_slow_pct
+                    maxSlowPct: fading_slow_pct
                 });
 
                 if (projectile.getSource() == this.caster) {

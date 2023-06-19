@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { clampPosition, createRadiusMarker, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -121,9 +122,9 @@ export class ModifierStormExtraDisplacement extends ModifierDisplacement {
 
     OnImpactEnemyAOE(target: CDOTA_BaseNPC) {
         this.OnImpactEnemy(target, this.damageAoe);
-        target.AddNewModifier(this.parent, this.ability, "modifier_generic_fading_slow", {
+        ModifierFadingSlow.apply(target, this.parent, undefined, {
             duration: this.Value("fading_slow_duration"),
-            max_slow_pct: this.Value("fading_slow_pct")
+            maxSlowPct: this.Value("fading_slow_pct")
         });
     }
 

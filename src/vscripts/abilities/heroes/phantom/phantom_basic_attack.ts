@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import {
     attackWithBaseDamage,
     clampPosition,
@@ -337,9 +338,9 @@ class PhantomBasicAttackRelated extends CustomAbility {
                     }
                 }
 
-                unit.AddNewModifier(this.caster, this, "modifier_generic_fading_slow", {
+                ModifierFadingSlow.apply(unit, this.caster, undefined, {
                     duration: fadingSlowDuration,
-                    max_slow_pct: fadingSlowPct
+                    maxSlowPct: fadingSlowPct
                 });
 
                 if (level >= 2 && phantomExBasicAttack) {

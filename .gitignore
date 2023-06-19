@@ -319,3 +319,4 @@ game/scripts/vscripts/modifiers/generic/modifier_generic_use_energy.lua
 game/scripts/vscripts/modifiers/modifier_adrenaline.lua
 game/scripts/vscripts/modifiers/modifier_banish.lua
 game/scripts/vscripts/modifiers/modifier_death_zone.lua
+game/scripts/vscripts/modifiers/modifier_fading_slow.lua

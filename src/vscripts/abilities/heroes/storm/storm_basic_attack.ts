@@ -1,6 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierCooldown } from "../../../modifiers/modifier_cooldown";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import {
     attackWithBaseDamage,
     createRadiusMarker,
@@ -106,9 +107,9 @@ class StormBasicAttack extends CustomAbility {
                     );
 
                     for (const enemy of enemies) {
-                        enemy.AddNewModifier(projectile.getSource(), this, "modifier_generic_fading_slow", {
+                        ModifierFadingSlow.apply(enemy, projectile.getSource(), undefined, {
                             duration: fadingSlowDuration,
-                            max_slow_pct: fadingSlowPct
+                            maxSlowPct: fadingSlowPct
                         });
 
                         ApplyDamage({

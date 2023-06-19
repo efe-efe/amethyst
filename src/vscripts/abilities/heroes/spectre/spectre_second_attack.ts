@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
+import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
@@ -76,9 +77,9 @@ class SpectreSecondAttack extends CustomAbility {
                     speed: knockbackDistance / 0.125,
                     peak: 0
                 });
-                unit.AddNewModifier(projectile.getSource(), this, "modifier_generic_fading_slow", {
+                ModifierFadingSlow.apply(unit, projectile.getSource(), undefined, {
                     duration: fadingSlowDuration,
-                    max_slow_pct: fadingSlowPct
+                    maxSlowPct: fadingSlowPct
                 });
                 ApplyDamage({
                     victim: unit,
