@@ -1,8 +1,35 @@
+import { CustomModifier } from "../../abilities/framework/custom_modifier";
+import { registerModifier } from "../../lib/dota_ts_adapter";
 import { ModifierAdrenaline } from "../../modifiers/modifier_adrenaline";
 import Alliance from "../alliance";
 import GameState, { CustomGameState } from "../game_state";
 
 const ADRENALINE_DURATION = 25.0;
+
+@registerModifier({ customNameForI18n: "modifier_restricted" })
+class ModifierRestricted extends CustomModifier<undefined> {
+    IsHidden() {
+        return true;
+    }
+
+    IsDebuff() {
+        return false;
+    }
+
+    IsPurgable() {
+        return false;
+    }
+
+    RemoveOnDeath() {
+        return false;
+    }
+
+    CheckState() {
+        return {
+            [ModifierState.COMMAND_RESTRICTED]: true
+        };
+    }
+}
 
 export default class PreRound extends GameState {
     radiant_spawn: Vector;
@@ -16,7 +43,7 @@ export default class PreRound extends GameState {
         this.GetAllPlayers().forEach(player => {
             const hero = player.hero;
             if (hero) {
-                hero.AddNewModifier(hero, undefined, "modifier_restricted", {});
+                ModifierRestricted.apply(hero, hero, undefined, {});
             }
         });
     }

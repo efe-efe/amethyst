@@ -286,7 +286,6 @@ game/scripts/vscripts/upgrades/upgrades.lua
 game/scripts/vscripts/util/custom_entities.lua
 game/scripts/vscripts/util/custom_items.lua
 game/scripts/vscripts/util/math.lua
-game/scripts/vscripts/modifiers/modifier_banish.lua
 game/scripts/vscripts/modifiers/modifier_casting.lua
 game/scripts/vscripts/modifiers/modifier_charges.lua
 game/scripts/vscripts/modifiers/modifier_combat_events.lua
@@ -318,3 +317,5 @@ game/scripts/vscripts/modifiers/generic/modifier_generic_ignore_ms_limit.lua
 game/scripts/vscripts/modifiers/generic/modifier_generic_no_health_bar.lua
 game/scripts/vscripts/modifiers/generic/modifier_generic_use_energy.lua
 game/scripts/vscripts/modifiers/modifier_adrenaline.lua
+game/scripts/vscripts/modifiers/modifier_banish.lua
+game/scripts/vscripts/modifiers/modifier_death_zone.lua

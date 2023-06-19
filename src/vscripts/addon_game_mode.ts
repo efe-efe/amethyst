@@ -368,12 +368,8 @@ export class GameMode {
     }
 
     LinkModifiers(): void {
-        LinkLuaModifier("modifier_death_zone", "modifiers/modifier_death_zone.lua", LuaModifierMotionType.NONE);
         LinkLuaModifier("wall_base", "modifiers/wall_base.lua", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_adrenaline", "modifiers/modifier_adrenaline.lua", LuaModifierMotionType.NONE);
         LinkLuaModifier("radius_marker_thinker", "modifiers/radius_marker_thinker.lua", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_miss", "modifiers/modifier_miss.lua", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_restricted", "modifiers/modifier_restricted.lua", LuaModifierMotionType.NONE);
 
         LinkLuaModifier("modifier_ruby", "modifiers/gems/modifier_ruby.lua", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_ruby_attack", "modifiers/gems/modifier_ruby.lua", LuaModifierMotionType.NONE);
@@ -411,12 +407,10 @@ export class GameMode {
 
         LinkLuaModifier("modifier_hide_bar", "modifiers/generic/modifier_hide_bar", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_hidden", "modifiers/generic/modifier_hidden", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_banish", "modifiers/generic/modifier_banish", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_hero_movement", "modifiers/generic/modifier_hero_movement", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_tower_idle", "modifiers/generic/modifier_tower_idle", LuaModifierMotionType.NONE);
 
         if (this.IsPVE()) {
-            LinkLuaModifier("modifier_combine_util", "modifiers/modifier_combine_util", LuaModifierMotionType.NONE);
             LinkLuaModifier("modifier_generic_npc_shield", "modifiers/generic/modifier_generic_npc_shield", LuaModifierMotionType.NONE);
             LinkLuaModifier(
                 "modifier_generic_npc_mini_stun",

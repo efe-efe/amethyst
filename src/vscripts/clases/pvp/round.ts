@@ -3,6 +3,7 @@ import GameState, { CustomGameState } from "../game_state";
 import GemWrapper, { GemTypes } from "../gem";
 import Pickup, { PickupTypes } from "../pickup";
 import settings from "../../settings";
+import { ModifierDeathZone } from "../../modifiers/modifier_death_zone";
 
 interface PickupWrapper {
     origin: Vector;
@@ -311,15 +312,7 @@ export default class Round extends GameState {
         CustomGameEventManager.Send_ServerToAllClients(tableName, {
             text: "Death Zone has initiated!"
         } as never);
-        this.death_zone = CreateModifierThinker(
-            undefined,
-            undefined,
-            "modifier_death_zone",
-            {},
-            this.gemSpawnPoints[this.gem.index],
-            DotaTeam.NOTEAM,
-            false
-        ) as CBaseEntity;
+        this.death_zone = ModifierDeathZone.createThinker(undefined, undefined, this.gemSpawnPoints[this.gem.index], {})[0];
     }
 
     DestroyDeathZone(): void {

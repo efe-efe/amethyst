@@ -1,10 +1,11 @@
 import UnitEntity from "../unit_entity";
 import Math from "../../util/math";
 import customEntities from "../../util/custom_entities";
-import { Upgrade, UpgradeTypes } from "../../upgrades/common";
-import { UpgradeManager } from "../../upgrades/upgrades";
-import { Reward, RewardsManager } from "../../rewards/rewards";
+import { Upgrade } from "../../upgrades/common";
+import { Reward } from "../../rewards/rewards";
 import { CustomEvents } from "../../custom_events";
+import { registerModifier } from "../../lib/dota_ts_adapter";
+import { CustomModifier } from "../../abilities/framework/custom_modifier";
 
 const DEBUG = false;
 
@@ -25,6 +26,30 @@ enum Orientations {
 
 interface HeroUpgrade extends Upgrade {
     level: number;
+}
+
+@registerModifier({ customNameForI18n: "modifier_combine_util" })
+class ModifierCombineUtilVFX extends CustomModifier<undefined> {
+    particleId?: ParticleID;
+
+    OnCreated() {
+        if (IsServer()) {
+            this.particleId = EFX("particles/items5_fx/repair_kit_overhead.vpcf", ParticleAttachment.OVERHEAD_FOLLOW, this.parent, {
+                cp2: {
+                    ent: this.parent,
+                    attach: ParticleAttachment.OVERHEAD_FOLLOW
+                },
+                release: false
+            });
+        }
+    }
+
+    OnDestroy() {
+        if (IsServer() && this.particleId) {
+            ParticleManager.DestroyParticle(this.particleId, false);
+            ParticleManager.ReleaseParticleIndex(this.particleId);
+        }
+    }
 }
 export default class CustomNPC extends UnitEntity {
     constructor(unit: CDOTA_BaseNPC) {
@@ -450,7 +475,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC {
                 release: true
             });
 
-            this.unit.AddNewModifier(this.unit, undefined, "modifier_combine_util", {
+            ModifierCombineUtilVFX.apply(this.unit, this.unit, undefined, {
                 duration: 1.5
             });
 
