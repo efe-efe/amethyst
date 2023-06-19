@@ -76,36 +76,34 @@ class ModifierPuckExtra extends CustomModifier {
     }
 
     OnOrder(event: ModifierUnitEvent) {
-        if (event.unit == this.parent) {
-            if (event.order_type == UnitOrder.CAST_POSITION || event.order_type == UnitOrder.CAST_NO_TARGET) {
-                if (this.ability.GetLevel() >= 2) {
-                    if (!ModifierPuckExtraMark.findOne(this.caster)) {
-                        ModifierPuckExtraMark.apply(this.caster, this.caster, this.ability, { duration: 5.0 });
-                        ModifierPuckExtraRecast.apply(this.caster, this.caster, this.ability, {
-                            abilityLeft: PuckExtra.name,
-                            duration: 5.0
-                        });
-                        EFX("particles/puck/puck_ex_base_attack.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
-                            release: true
-                        });
-                    } else {
-                        this.caster.RemoveModifierByName(ModifierPuckExtraMark.name);
-                    }
+        if (event.unit == this.parent && (event.order_type == UnitOrder.CAST_POSITION || event.order_type == UnitOrder.CAST_NO_TARGET)) {
+            if (this.ability.GetLevel() >= 2) {
+                if (!ModifierPuckExtraMark.findOne(this.caster)) {
+                    ModifierPuckExtraMark.apply(this.caster, this.caster, this.ability, { duration: 5.0 });
+                    ModifierPuckExtraRecast.apply(this.caster, this.caster, this.ability, {
+                        abilityLeft: PuckExtra.name,
+                        duration: 5.0
+                    });
+                    EFX("particles/puck/puck_ex_base_attack.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
+                        release: true
+                    });
+                } else {
+                    this.caster.RemoveModifierByName(ModifierPuckExtraMark.name);
                 }
-
-                this.parent.AddNewModifier(this.caster, this.ability, "modifier_generic_silence", {
-                    duration: this.Value("silence_duration")
-                });
-                EmitSoundOn("Hero_Puck.IIllusory_Orb_Damage", this.parent);
-                const particleId = ParticleManager.CreateParticle(
-                    "particles/units/heroes/hero_puck/puck_waning_rift.vpcf",
-                    ParticleAttachment.ABSORIGIN_FOLLOW,
-                    this.parent
-                );
-                ParticleManager.SetParticleControl(particleId, 1, Vector(100, 100, 100));
-                ParticleManager.ReleaseParticleIndex(particleId);
-                this.Destroy();
             }
+
+            this.parent.AddNewModifier(this.caster, this.ability, "modifier_generic_silence", {
+                duration: this.Value("silence_duration")
+            });
+            EmitSoundOn("Hero_Puck.IIllusory_Orb_Damage", this.parent);
+            const particleId = ParticleManager.CreateParticle(
+                "particles/units/heroes/hero_puck/puck_waning_rift.vpcf",
+                ParticleAttachment.ABSORIGIN_FOLLOW,
+                this.parent
+            );
+            ParticleManager.SetParticleControl(particleId, 1, Vector(100, 100, 100));
+            ParticleManager.ReleaseParticleIndex(particleId);
+            this.Destroy();
         }
     }
     // function modifier_puck_extra_debuff:GetStatusLabel() return "SpellBlock" }

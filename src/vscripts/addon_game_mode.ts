@@ -371,12 +371,6 @@ export class GameMode {
         LinkLuaModifier("wall_base", "modifiers/wall_base.lua", LuaModifierMotionType.NONE);
         LinkLuaModifier("radius_marker_thinker", "modifiers/radius_marker_thinker.lua", LuaModifierMotionType.NONE);
 
-        LinkLuaModifier("modifier_ruby", "modifiers/gems/modifier_ruby.lua", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_ruby_attack", "modifiers/gems/modifier_ruby.lua", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_sapphire", "modifiers/gems/modifier_sapphire.lua", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_emerald", "modifiers/gems/modifier_emerald.lua", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_amethyst", "modifiers/gems/modifier_amethyst.lua", LuaModifierMotionType.NONE);
-
         LinkLuaModifier("modifier_generic_silence", "modifiers/generic/modifier_generic_silence", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_fading_haste", "modifiers/generic/modifier_generic_fading_haste", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_stunned", "modifiers/generic/modifier_generic_stunned", LuaModifierMotionType.NONE);

@@ -35,16 +35,9 @@ export class ModifierShield extends CustomModifier<undefined> {
     //             end
     //         end
     //     end
-    //     function modifier:DeclareFunctions()
-    //         local funcs = {}
-    //         if declareFunctions then
-    //             for _,func in pairs(declareFunctions()) do
-    //                 table.insert(funcs, func)
-    //             end
-    //         end
-    //         table.insert(funcs, MODIFIER_PROPERTY_INCOMING_DAMAGE_PERCENTAGE)
-    //         return funcs
-    //     end
+    DeclareFunctions() {
+        return [ModifierFunction.INCOMING_PHYSICAL_DAMAGE_PERCENTAGE];
+    }
     //     function modifier:GetModifierIncomingDamage_Percentage(params)
     //         for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(self:GetParent(), MODIFIER_TYPES.SHIELD)) do
     //             if value == self:GetName() then

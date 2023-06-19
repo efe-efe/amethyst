@@ -3,6 +3,7 @@ import {
     CustomModifierMotionHorizontal,
     CustomModifierMotionVertical
 } from "./abilities/framework/custom_modifier";
+import { ModifierSapphire } from "./modifiers/gems/modifier_sapphire";
 import { ModifierCounter } from "./modifiers/modifier_counter";
 import { ModifierGem } from "./modifiers/modifier_gem";
 import { ModifierHideBar } from "./modifiers/modifier_hide_bar";
@@ -150,7 +151,8 @@ export function giveMana(unit: CDOTA_BaseNPC, amount: number, informClient: bool
     // 	amount = amount / 2
     // }
 
-    if (unit.HasModifier("modifier_sapphire")) {
+    //@Refactor this is too specific
+    if (ModifierSapphire.findOne(unit)) {
         amount = amount * 2;
     }
 

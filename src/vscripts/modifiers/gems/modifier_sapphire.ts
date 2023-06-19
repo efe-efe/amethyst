@@ -1,11 +1,13 @@
-import { CustomModifier } from "../../abilities/framework/custom_modifier";
 import { registerModifier } from "../../lib/dota_ts_adapter";
+import { ModifierShield } from "../modifier_shield";
 
 @registerModifier({ customNameForI18n: "modifier_sapphire" })
-class ModifierSapphire extends CustomModifier {
+export class ModifierSapphire extends ModifierShield {
     particleId!: ParticleID;
 
-    OnCreated() {
+    OnCreated(params: { damageBlock: number }) {
+        super.OnCreated(params);
+
         if (IsServer()) {
             this.particleId = ParticleManager.CreateParticle(
                 "particles/generic_gameplay/rune_doubledamage_owner.vpcf",
@@ -16,6 +18,8 @@ class ModifierSapphire extends CustomModifier {
     }
 
     OnDestroy() {
+        super.OnDestroy();
+
         if (IsServer()) {
             ParticleManager.DestroyParticle(this.particleId, false);
             ParticleManager.ReleaseParticleIndex(this.particleId);
@@ -27,22 +31,22 @@ class ModifierSapphire extends CustomModifier {
     }
 
     DeclareFunctions() {
-        return [ModifierFunction.TOOLTIP];
+        return [...super.DeclareFunctions(), ModifierFunction.TOOLTIP];
     }
 
     OnTooltip() {
         return this.GetStackCount();
     }
 
-    GetStatusLabel() {
-        return "Sapphire";
-    }
-    GetStatusPriority() {
-        return 2;
-    }
-    GetStatusStyle() {
-        return "Sapphire";
-    }
+    // GetStatusLabel() {
+    //     return "Sapphire";
+    // }
+    // GetStatusPriority() {
+    //     return 2;
+    // }
+    // GetStatusStyle() {
+    //     return "Sapphire";
+    // }
 }
 
 // Modifiers.Status(modifier_sapphire)

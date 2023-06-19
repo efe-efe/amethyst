@@ -1,3 +1,6 @@
+import { ModifierEmerald } from "../modifiers/gems/modifier_emerald";
+import { ModifierRuby } from "../modifiers/gems/modifier_ruby";
+import { ModifierSapphire } from "../modifiers/gems/modifier_sapphire";
 import { ModifierGem } from "../modifiers/modifier_gem";
 import BreakableBounty from "./breakable_bounty";
 
@@ -156,9 +159,9 @@ class Sapphire extends Gem {
 
         allies.forEach(ally => {
             if (ally.IsRealHero()) {
-                ally.AddNewModifier(ally, undefined, "modifier_sapphire", {
+                ModifierSapphire.apply(ally, ally, undefined, {
                     duration: this.duration,
-                    damage_block: final_shield
+                    damageBlock: final_shield
                 });
             }
         });
@@ -189,6 +192,8 @@ class Amethyst extends Gem {
                 this.PlayEffectsOnTarget(ally);
             }
         });
+
+        //ModifierAmethyst.apply(killer, killer, undefined, { duration: 5 })
     }
 
     PlayEffectsOnTarget(target: CDOTA_BaseNPC): void {
@@ -241,7 +246,7 @@ class Emerald extends Gem {
             if (ally.IsRealHero()) {
                 CustomEntitiesLegacy.TrueHeal(ally, final_true_heal);
 
-                ally.AddNewModifier(ally, undefined, "modifier_emerald", {
+                ModifierEmerald.apply(ally, ally, undefined, {
                     duration: this.duration,
                     healPerSecond: final_heal_per_second
                 });
@@ -276,7 +281,7 @@ class Ruby extends Gem {
 
         allies.forEach(ally => {
             if (ally.IsRealHero()) {
-                ally.AddNewModifier(ally, undefined, "modifier_ruby", {
+                ModifierRuby.apply(ally, ally, undefined, {
                     duration: this.duration,
                     damage: final_damage
                 });
