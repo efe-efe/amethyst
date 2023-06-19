@@ -1,3 +1,4 @@
+import { ModifierAdrenaline } from "../../modifiers/modifier_adrenaline";
 import Alliance from "../alliance";
 import GameState, { CustomGameState } from "../game_state";
 
@@ -48,7 +49,7 @@ export default class PreRound extends GameState {
                     CustomEntitiesLegacy.Reset(hero);
                     CustomEntitiesLegacy.AutoUpgradeAbilities(hero);
                     hero.RemoveModifierByName("modifier_restricted");
-                    hero.AddNewModifier(hero, undefined, "modifier_adrenaline", {
+                    ModifierAdrenaline.apply(hero, hero, undefined, {
                         duration: ADRENALINE_DURATION
                     });
                 }

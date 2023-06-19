@@ -317,3 +317,4 @@ game/scripts/vscripts/modifiers/generic/modifier_generic_flying.lua
 game/scripts/vscripts/modifiers/generic/modifier_generic_ignore_ms_limit.lua
 game/scripts/vscripts/modifiers/generic/modifier_generic_no_health_bar.lua
 game/scripts/vscripts/modifiers/generic/modifier_generic_use_energy.lua
+game/scripts/vscripts/modifiers/modifier_adrenaline.lua
