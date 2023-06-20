@@ -2,7 +2,7 @@
 	"invoker_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_basic_attack/invoker_basic_attack"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_basic_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

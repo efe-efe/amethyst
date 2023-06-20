@@ -64,10 +64,6 @@ export class SniperBasicAttack extends CustomAbility {
                 this.PlayEffectsOnFinish(projectile.getPosition());
             }
         });
-        this.PlayEffectsOnCast();
-    }
-
-    PlayEffectsOnCast() {
         EmitSoundOn("Hero_Sniper.MKG_attack", this.caster);
     }
 

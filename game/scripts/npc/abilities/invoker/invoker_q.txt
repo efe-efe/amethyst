@@ -2,7 +2,7 @@
 	"invoker_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_orb"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_counter"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_quas"

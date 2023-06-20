@@ -7,6 +7,12 @@
 
 		"AbilityTextureName"			"invoker_exort"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_HIDDEN"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"	
+		"AbilityUnitDamageType"			"DAMAGE_TYPE_MAGICAL"
+
+		"AbilityValues"
+		{
+            "max_charges" "3"
+			"replenish_time" "1"
+		}
 	}
 }

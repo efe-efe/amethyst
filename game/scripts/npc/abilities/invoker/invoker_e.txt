@@ -2,7 +2,7 @@
 	"invoker_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_orb"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_special_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_exort"

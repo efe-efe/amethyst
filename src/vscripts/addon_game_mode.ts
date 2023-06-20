@@ -12,7 +12,6 @@ import "./util/util";
 import "./settings";
 import "./constructors";
 import "./libraries/timers";
-import "./libraries/projectiles";
 import "./overrides/abilities";
 import Player from "./clases/player";
 import PreRound from "./clases/pvp/pre_round";

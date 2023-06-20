@@ -2,7 +2,7 @@
 	"invoker_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_orb"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_ultimate"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_wex"

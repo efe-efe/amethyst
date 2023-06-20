@@ -2,7 +2,7 @@
 	"invoker_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_second_attack/invoker_second_attack"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_second_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_second_attack"
@@ -23,6 +23,8 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"22 30" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1800" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"70" }
+			"04"{ "var_type"	"FIELD_INTEGER"		"duration"					"3" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"dps"						"1" }
 		}
 	}
 }

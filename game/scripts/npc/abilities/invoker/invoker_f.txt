@@ -2,7 +2,7 @@
 	"invoker_extra"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_extra"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_extra"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_invoke"
@@ -18,7 +18,7 @@
 	"invoker_tornado_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_tornado_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_tornado_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_tornado"
@@ -40,13 +40,15 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"0.5" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"100" }
 		}
 	}
 	
 	"invoker_walk_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_walk_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_walk_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_ghost_walk"
@@ -65,7 +67,7 @@
 	"invoker_meteor_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_meteor_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_meteor_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_chaos_meteor"
@@ -88,13 +90,18 @@
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"radius"					"250" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"min_range"					"550" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"0.5" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"radius_linger"				"200" }
+			"08"{ "var_type"	"FIELD_INTEGER"		"damage_linger"				"3" }
+			"09"{ "var_type"	"FIELD_INTEGER"		"projectile_distance"		"1200" }
+			"10"{ "var_type"	"FIELD_FLOAT"		"duration_linger"			"3.0" }
 		}
 	}
 
 	"invoker_sun_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_sun_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_sun_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_sun_strike"
@@ -121,7 +128,7 @@
 	"invoker_snap_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_snap_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_snap_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_cold_snap"
@@ -151,7 +158,7 @@
 	"invoker_emp_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_emp_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_emp_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_emp"
@@ -165,13 +172,14 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"radius"					"400" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"delay_time"				"2.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"mana_burn"					"25" }
 		}
 	}
 
 	"invoker_alacrity_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_alacrity_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_alacrity_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_alacrity"
@@ -183,13 +191,14 @@
 		{
 			"01"{ "var_type"	"FIELD_INTEGER"		"extra_damage"			"5" }
 			"02"{ "var_type"	"FIELD_FLOAT"		"duration"				"5.0" }
+			"03"{ "var_type"	"FIELD_INTEGER"		"attack_speed"			"50" }
 		}
 	}
 
 	"invoker_spirit_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_spirit_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_spirit_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_forge_spirit"
@@ -199,15 +208,20 @@
 		"AbilityCooldown"				"12"
 		"AbilityCastRange"				"750"
 
-		"AbilitySpecial"
+		"AbilityValues"
 		{
+            "duration" "7"
+			"mana_gain_pct" "3"
+			"projectile_speed" "2000"
+			"projectile_distance" "1200"
+			"hitbox" "70"
 		}
 	}
 	
 	"invoker_wall_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_wall_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_wall_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_ice_wall"
@@ -216,15 +230,18 @@
 		"AbilityManaCost"				"25"
 		"AbilityCooldown"				"12"
 
-		"AbilitySpecial"
+		"AbilityValues"
 		{
+            "duration" "5"
+			"ms_pct_debuff" "50"
+            "duration_linger" "0.5"
 		}
 	}
 
 	"invoker_blast_custom"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_extra/invoker_blast_custom"
+		"ScriptFile"					"abilities/heroes/invoker/invocations/invoker_blast_custom"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_deafening_blast"
@@ -246,6 +263,8 @@
 			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"10" }
 			"02"{ "var_type"	"FIELD_INTEGER"		"projectile_speed"			"1500" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"hitbox"					"130" }
+			"04"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"0.5" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"100" }
 		}
 	}
 }

@@ -2,7 +2,7 @@
     "invoker_mobility"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/invoker/invoker_mobility/invoker_mobility"
+		"ScriptFile"					"abilities/heroes/invoker/invoker_mobility"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"invoker_mobility"
