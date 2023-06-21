@@ -381,7 +381,6 @@ export class GameMode {
         LinkLuaModifier("modifier_generic_root", "modifiers/generic/modifier_generic_root", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_invencible", "modifiers/generic/modifier_generic_invencible", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_confuse", "modifiers/generic/modifier_generic_confuse", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_generic_sleep", "modifiers/generic/modifier_generic_sleep", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_fear", "modifiers/generic/modifier_generic_fear", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_phased", "modifiers/generic/modifier_generic_phased", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_flying", "modifiers/generic/modifier_generic_flying", LuaModifierMotionType.NONE);

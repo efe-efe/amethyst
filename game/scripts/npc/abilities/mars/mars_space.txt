@@ -2,7 +2,7 @@
     "mars_mobility"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/mars/mars_mobility/mars_mobility"
+		"ScriptFile"					"abilities/heroes/mars/mars_mobility"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"mars_mobility"

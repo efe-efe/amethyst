@@ -2,7 +2,7 @@
 	"mars_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/mars/mars_second_attack/mars_second_attack"
+		"ScriptFile"					"abilities/heroes/mars/mars_second_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"mars_gods_rebuke"
@@ -34,7 +34,7 @@
 	"mars_ex_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/mars/mars_second_attack/mars_second_attack"
+		"ScriptFile"					"abilities/heroes/mars/mars_second_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"mars_ex_second_attack"

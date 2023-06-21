@@ -33,7 +33,7 @@ class ModifierInvokerAlacrity extends CustomModifier {
     }
 
     GetModifierAttackSpeedBonus_Constant() {
-        return this.Value("attack_speed");
+        return this.Value("attackSpeed");
     }
 
     GetModifierPreAttack_BonusDamage() {

@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
+import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -259,7 +260,7 @@ class ModifierStormExMobilityThinker extends ModifierThinker {
                     damage: this.Value("ability_damage"),
                     damage_type: DamageTypes.PURE
                 });
-                enemy.AddNewModifier(this.caster, this.ability, "modifier_generic_sleep", { duration: this.Value("sleep_duration") });
+                ModifierSleep.apply(enemy, this.caster, undefined, { duration: this.Value("sleep_duration") });
             }
 
             if (enemies.length > 0) {

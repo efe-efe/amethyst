@@ -439,3 +439,7 @@ export function tryLock<T>(lock: Lock, thenDo: () => T, orElse: T) {
         return value;
     }
 }
+
+export function interpolate(value: number, min: number, max: number) {
+    return value * (max - min) + min;
+}

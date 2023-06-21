@@ -2,7 +2,7 @@
 	"mars_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/mars/mars_special_attack/mars_special_attack"
+		"ScriptFile"					"abilities/heroes/mars/mars_special_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"mars_spear"

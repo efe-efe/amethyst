@@ -68,7 +68,7 @@ class ModifierSpectreCounter extends ModifierCounter {
     }
 
     DeclareFunctions() {
-        return [ModifierFunction.ON_ABILITY_EXECUTED];
+        return [ModifierFunction.ON_ABILITY_EXECUTED, ModifierFunction.ON_ORDER];
     }
 
     OnAbilityExecuted(event: ModifierAbilityEvent) {

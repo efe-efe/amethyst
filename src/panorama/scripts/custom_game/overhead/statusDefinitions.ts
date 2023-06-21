@@ -155,6 +155,15 @@ defineStatus("modifier_phantom_ex_basic_attack", {
     backgroundColor: "#DC8668",
     color: "#DC8668"
 });
+defineStatus("modifier_invoker_spirit_custom", {
+    backgroundColor: "#DC8668",
+    color: "#DC8668"
+});
+defineStatus("modifier_mars_soldier_duration", {
+    backgroundColor: "#DC8668",
+    color: "#DC8668"
+});
+
 defineStatus("modifier_phantom_counter");
 
 defineUltimateStatus("modifier_casting", "fillup");

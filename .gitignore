@@ -341,3 +341,11 @@ game/scripts/vscripts/abilities/heroes/invoker/invocations/invoker_walk_custom.l
 game/scripts/vscripts/abilities/heroes/invoker/invoker_extra/invoker_alacrity_custom.lua
 game/scripts/vscripts/abilities/heroes/invoker/invocations/invoker_tornado_custom.lua
 game/scripts/vscripts/abilities/heroes/invoker/invocations/invoker_wall_custom.lua
+game/scripts/vscripts/modifiers/modifier_sleep.lua
+game/scripts/vscripts/abilities/heroes/mars/mars_basic_attack.lua
+game/scripts/vscripts/abilities/heroes/mars/mars_counter.lua
+game/scripts/vscripts/abilities/heroes/mars/mars_mobility.lua
+game/scripts/vscripts/abilities/heroes/mars/mars_second_attack.lua
+game/scripts/vscripts/abilities/heroes/mars/mars_extra.lua
+game/scripts/vscripts/abilities/heroes/mars/mars_special_attack.lua
+game/scripts/vscripts/abilities/heroes/mars/mars_ultimate.lua

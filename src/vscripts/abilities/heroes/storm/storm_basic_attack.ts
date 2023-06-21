@@ -26,10 +26,10 @@ class StormBasicAttack extends CustomAbility {
 
     GetCooldown(level: number) {
         if (IsServer()) {
-            const attacks_per_second = this.caster.GetAttacksPerSecond();
-            const attack_speed = 1 / attacks_per_second;
+            const attacksPerSecond = this.caster.GetAttacksPerSecond();
+            const attackSpeed = 1 / attacksPerSecond;
 
-            return super.GetCooldown(level) + attack_speed;
+            return super.GetCooldown(level) + attackSpeed;
         }
 
         return super.GetCooldown(level);

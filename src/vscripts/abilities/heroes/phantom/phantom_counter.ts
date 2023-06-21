@@ -4,6 +4,7 @@ import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
+import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { clampPosition, direction2D, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -179,7 +180,7 @@ class PhantomExCounterRecast extends CustomAbility {
                     }
                 }
 
-                unit.AddNewModifier(this.caster, this, "modifier_generic_sleep", { duration: sleepDuration });
+                ModifierSleep.apply(unit, this.caster, undefined, { duration: sleepDuration });
             },
             onFinish: projectile => {
                 this.PlayEffectsOnFinish(projectile.getPosition());

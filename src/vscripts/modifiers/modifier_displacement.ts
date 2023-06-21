@@ -177,10 +177,6 @@ export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = Custo
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     OnCollide(params: OnCollisionEvent) {}
 
-    //     function modifier:GetDirection()
-    //         return self.direction
-    //     end
-
     GetIsCommandRestricted() {
         return true;
     }

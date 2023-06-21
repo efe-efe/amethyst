@@ -16,7 +16,7 @@
 		"Ability7"						"mars_ultimate"          
 		"Ability8"						"mars_ex_basic_attack"             
 		"Ability9"						"mars_ex_second_attack"	        
-		"Ability10"						"mars_extra_recast"	
+		"Ability10"						""	
 
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"

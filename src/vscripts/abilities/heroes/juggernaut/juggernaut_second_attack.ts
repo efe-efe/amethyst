@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
+import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { clampPosition, direction2D, giveManaAndEnergy, giveManaAndEnergyPercent, isCountering, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -294,7 +295,7 @@ class JuggernautExSecondAttack extends CustomAbility {
                     damage_type: DamageTypes.PHYSICAL
                 });
 
-                target.AddNewModifier(this.caster, this, "modifier_generic_sleep", { duration: finalDebuffDuration });
+                ModifierSleep.apply(target, this.caster, undefined, { duration: finalDebuffDuration });
                 this.PlayEffectsOnImpact(target);
             },
             baseSound: "DOTA_Item.SkullBasher"

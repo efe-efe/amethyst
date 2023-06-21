@@ -2,7 +2,7 @@
     "mars_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/mars/mars_basic_attack/mars_basic_attack"
+		"ScriptFile"					"abilities/heroes/mars/mars_basic_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"mars_basic_attack"
@@ -24,7 +24,7 @@
 	"mars_ex_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/mars/mars_basic_attack/mars_basic_attack"
+		"ScriptFile"					"abilities/heroes/mars/mars_basic_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"mars_ex_basic_attack"

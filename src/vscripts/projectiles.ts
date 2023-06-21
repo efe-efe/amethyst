@@ -13,6 +13,7 @@ export type ProjectileHandler = {
     getIsReflectable: () => boolean;
     getIsDestructible: () => boolean;
     getVelocity: () => Vector;
+    getDistanceTraveled: () => number;
     getPosition: () => Vector;
     scheduleDestroy: () => void;
     setVelocity: (newVelocity: Vector, newPosition: Vector, ignoreChanges?: boolean) => void;
@@ -435,20 +436,7 @@ function projectile(options: ProjectileOptions) {
             //     --VectorDistanceSq(position2D, origin) <= self.radiusSquare and position.z >= orgz and position.z <= orgz + height then
             const time = hitLog.get(entity.entindex());
             if (time == undefined || currentTime > time) {
-                if (
-                    unitTest(entity, {
-                        getSource,
-                        getIsReflectable,
-                        getIsDestructible,
-                        scheduleDestroy,
-                        getVelocity,
-                        getPosition,
-                        resetDistanceTraveled,
-                        setSource,
-                        setVelocity,
-                        hitLog
-                    })
-                ) {
+                if (unitTest(entity, getHandler())) {
                     // @Refactor refactor this isWall
                     if (isConsideredWall(entity)) {
                         if (CustomEntitiesLegacy.Allies(source, entity)) {
@@ -647,6 +635,10 @@ function projectile(options: ProjectileOptions) {
         return source;
     }
 
+    function getDistanceTraveled() {
+        return distanceTraveled;
+    }
+
     function getHandler() {
         return {
             getSource,
@@ -655,6 +647,7 @@ function projectile(options: ProjectileOptions) {
             scheduleDestroy,
             getVelocity,
             getPosition,
+            getDistanceTraveled,
             resetDistanceTraveled,
             setSource,
             setVelocity,

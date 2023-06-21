@@ -2,7 +2,7 @@
     "mars_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/mars/mars_ultimate/mars_ultimate"
+		"ScriptFile"					"abilities/heroes/mars/mars_ultimate"
 		"MaxLevel"						"1"
 
 		"SpellImmunityType"				"SPELL_IMMUNITY_ENEMIES_YES"

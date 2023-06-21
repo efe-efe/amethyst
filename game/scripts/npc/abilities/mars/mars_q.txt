@@ -2,7 +2,7 @@
     "mars_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/mars/mars_counter/mars_counter"
+		"ScriptFile"					"abilities/heroes/mars/mars_counter"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"mars_bulwark"

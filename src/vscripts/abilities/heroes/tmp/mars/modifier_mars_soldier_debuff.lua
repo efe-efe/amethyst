@@ -1,1 +1,0 @@
-modifier_mars_soldier_debuff = class({})
