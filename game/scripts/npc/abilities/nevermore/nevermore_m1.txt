@@ -2,7 +2,7 @@
 	"nevermore_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_basic_attack/nevermore_basic_attack"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_basic_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"nevermore_necromastery"

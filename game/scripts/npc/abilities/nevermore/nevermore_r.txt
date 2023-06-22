@@ -2,7 +2,7 @@
     "nevermore_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_ultimate/nevermore_ultimate"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_ultimate"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"nevermore_requiem"

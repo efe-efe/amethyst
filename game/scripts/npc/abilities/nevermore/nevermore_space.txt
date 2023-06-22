@@ -2,7 +2,7 @@
     "nevermore_mobility"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_mobility/nevermore_mobility"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_mobility"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"nevermore_mobility"

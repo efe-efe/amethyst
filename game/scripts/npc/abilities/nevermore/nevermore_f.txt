@@ -2,7 +2,7 @@
 	"nevermore_extra"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_extra/nevermore_extra"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_extra"
 		"MaxLevel"						"2"
 
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
@@ -22,8 +22,7 @@
 			"03"{ "var_type"	"FIELD_FLOAT" 		"duration"				"3.0 4.0" }
 			"04"{ "var_type"	"FIELD_FLOAT" 		"think_interval"		"0.5" }
 			"05"{ "var_type"	"FIELD_INTEGER"		"slow_pct"				"40" }
-			"06"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"		"4" }
-			"07"{ "var_type"	"FIELD_INTEGER"		"damage_per_soul"		"2" }
+			"06"{ "var_type"	"FIELD_INTEGER"		"damage_per_think"		"8" }
 		}
 	}
 }

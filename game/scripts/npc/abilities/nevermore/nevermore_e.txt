@@ -2,7 +2,7 @@
 	"nevermore_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_special_attack/nevermore_special_attack"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_special_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"nevermore_shadowraze1"
@@ -35,7 +35,7 @@
 	"nevermore_ex_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/nevermore/nevermore_special_attack/nevermore_special_attack"
+		"ScriptFile"					"abilities/heroes/nevermore/nevermore_special_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"nevermore_ex_special_attack"
