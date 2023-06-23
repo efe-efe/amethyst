@@ -2,7 +2,7 @@
     "pango_ultimate"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/pango/pango_ultimate/pango_ultimate"
+		"ScriptFile"					"abilities/heroes/pango/pango_ultimate"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"pangolier_gyroshell"

@@ -2,7 +2,7 @@
     "pango_mobility"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/pango/pango_mobility/pango_mobility"
+		"ScriptFile"					"abilities/heroes/pango/pango_mobility"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"pangolier_gyroshell"

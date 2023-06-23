@@ -2,7 +2,7 @@
     "pango_basic_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/pango/pango_basic_attack/pango_basic_attack"
+		"ScriptFile"					"abilities/heroes/pango/pango_basic_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"pangolier_lucky_shot"
@@ -18,6 +18,9 @@
 			"02"{ "var_type"	"FIELD_INTEGER"		"radius"					"240" }
 			"03"{ "var_type"	"FIELD_INTEGER"		"mana_gain_pct"             "7" }
 			"04"{ "var_type"	"FIELD_INTEGER"		"max_stacks"				"4" }
+			"05"{ "var_type"	"FIELD_INTEGER"		"proc_damage"				"6" }
+			"06"{ "var_type"	"FIELD_FLOAT"		"fading_slow_duration"		"1.0" }
+			"07"{ "var_type"	"FIELD_INTEGER"		"fading_slow_pct"			"100" }
 		}
 	}
 }

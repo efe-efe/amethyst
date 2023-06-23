@@ -2,7 +2,7 @@
     "pango_second_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/pango/pango_second_attack/pango_second_attack"
+		"ScriptFile"					"abilities/heroes/pango/pango_second_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"pangolier_swashbuckle"
@@ -18,8 +18,10 @@
 			"Fixed"						"1"
 		}
 		
-		"AbilitySpecial"
+		"AbilityValues"
 		{
+            "attacks" "4"
+			"ability_damage" "5"
 		}
 	}
 }

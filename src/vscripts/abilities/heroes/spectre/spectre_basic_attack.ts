@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCooldown } from "../../../modifiers/modifier_cooldown";
+import { ModifierSilence } from "../../../modifiers/modifier_silence";
 import {
     attackWithBaseDamage,
     clampPosition,
@@ -211,7 +212,7 @@ export class ModifierSpectreBasicAttack extends ModifierCooldown {
 
     OnBasicAttackLanded(event: { target: CDOTA_BaseNPC }): void {
         if (this.IsCooldownReady()) {
-            event.target.AddNewModifier(this.parent, this.ability, "modifier_generic_silence", {
+            ModifierSilence.apply(event.target, this.parent, this.ability, {
                 duration: this.Value("silence_duration")
             });
 

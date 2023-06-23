@@ -2,7 +2,7 @@
 	"pango_counter"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/pango/pango_counter/pango_counter"
+		"ScriptFile"					"abilities/heroes/pango/pango_counter"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"juggernaut_counter"

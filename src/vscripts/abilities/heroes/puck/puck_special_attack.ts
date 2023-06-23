@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierSilence } from "../../../modifiers/modifier_silence";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
@@ -100,7 +101,7 @@ class ModifierPuckSpecialAttack extends ModifierThinker {
                 }
 
                 if (this.silenceDuration) {
-                    target.AddNewModifier(this.caster, this.ability, "modifier_generic_silence", { duration: this.silenceDuration });
+                    ModifierSilence.apply(target, this.caster, this.ability, { duration: this.silenceDuration });
                 }
 
                 if (this.fairyDustDuration && this.fairyDustSlowPct) {

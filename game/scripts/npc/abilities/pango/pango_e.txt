@@ -2,7 +2,7 @@
     "pango_special_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/pango/pango_special_attack/pango_special_attack"
+		"ScriptFile"					"abilities/heroes/pango/pango_special_attack"
 		"MaxLevel"						"2"
 
 		"AbilityTextureName"			"pangolier_shield_crash"

@@ -1,4 +1,5 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
+import { ModifierSilence } from "../../../modifiers/modifier_silence";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPuckFairyDust } from "./puck_basic_attack";
@@ -45,7 +46,7 @@ class PuckSecondAttack extends CustomAbility {
                 });
 
                 if (ModifierPuckFairyDust.findOne(unit)) {
-                    unit.AddNewModifier(projectile.getSource(), this, "modifier_generic_silence", { duration: silenceDuration });
+                    ModifierSilence.apply(unit, projectile.getSource(), this, { duration: silenceDuration });
                     unit.RemoveModifierByName(ModifierPuckFairyDust.name);
 
                     EmitSoundOn("Hero_Puck.EtherealJaunt", unit);

@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
+import { ModifierSilence } from "../../../modifiers/modifier_silence";
 import { clampPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -92,7 +93,7 @@ class ModifierPuckExtra extends CustomModifier {
                 }
             }
 
-            this.parent.AddNewModifier(this.caster, this.ability, "modifier_generic_silence", {
+            ModifierSilence.apply(this.parent, this.caster, this.ability, {
                 duration: this.Value("silence_duration")
             });
             EmitSoundOn("Hero_Puck.IIllusory_Orb_Damage", this.parent);
