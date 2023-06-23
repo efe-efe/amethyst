@@ -5,10 +5,6 @@ local constructors = {
     ["npc_dota_hero_juggernaut"] = function(hTarget)
         CustomEntitiesLegacy:AddStackbars(hTarget, "modifier_juggernaut_basic_attack_stacks")
     end,
-    ["npc_dota_hero_vengefulspirit"] = function(hTarget)
-        CustomEntitiesLegacy:AddStackbars(hTarget, "modifier_vengeful_basic_attack")
-        CustomEntitiesLegacy:SetEnergyPerCell(hTarget, 25)
-    end,
     ["npc_dota_hero_phantom_assassin"] = function(hTarget)
         CustomEntitiesLegacy:AddStackbars(hTarget, "modifier_phantom_strike_stack")
         CustomEntitiesLegacy:AddCharges(hTarget, "modifier_phantom_special_attack_charges")
