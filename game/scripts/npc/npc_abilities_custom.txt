@@ -103,15 +103,35 @@
 
 #base "pve\abilities\units\flying_skull_dash.txt"
 
-#base "abilities\dummies\passive_shoot.txt"
-#base "abilities\dummies\passive_walk.txt"
 
 "DOTAAbilities"
 {
-	"orb_timer_apply_glow_lua"
+	"passive_shoot"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/units/orb_timer_apply_glow_lua/orb_timer_apply_glow_lua.lua"
+		"ScriptFile"					"abilities/passive_shoot"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"batrider_flamebreak"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityDamage"					"1"
+	}
+
+	"passive_walk"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/passive_walk"
+		"MaxLevel"						"1"
+
+		"AbilityTextureName"			"batrider_flamebreak"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityDamage"					"1"
+	}
+
+	"glow"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"abilities/units/glow"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"drow_ranger_frost_arrows"

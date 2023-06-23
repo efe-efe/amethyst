@@ -385,3 +385,5 @@ game/scripts/vscripts/pve/abilities/heroes/queen/queen_daggers.lua
 game/scripts/vscripts/pve/abilities/heroes/queen/queen_dodge.lua
 game/scripts/vscripts/pve/abilities/heroes/queen/queen_scream.lua
 game/scripts/vscripts/pve/abilities/heroes/queen/queen_wave.lua
+game/scripts/vscripts/abilities/glow.lua
+game/scripts/vscripts/abilities/passive_walk.lua
