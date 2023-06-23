@@ -5,13 +5,14 @@
 #base "units\shooter.txt"
 #base "units\walker.txt"
 
-#base "pve\units\radiant_zombie_healer.txt"
-#base "pve\units\dire_zombie_range.txt"
-#base "pve\units\dire_zombie_meele.txt"
-#base "pve\units\dire_zombie_range_mega.txt"
-#base "pve\units\dire_zombie_meele_mega.txt"
+#base "pve\units\dire_creep_range.txt"
+#base "pve\units\dire_creep_meele.txt"
+#base "pve\units\dire_creep_range_mega.txt"
+#base "pve\units\dire_creep_meele_mega.txt"
+
+#base "pve\units\radiant_creep_range_mega.txt"
 #base "pve\units\flying_skull.txt"
-#base "pve\units\radiant_zombie_meele.txt"
+#base "pve\units\radiant_creep_meele_mega.txt"
 #base "pve\units\dire_tower.txt"
 #base "pve\units\level_up.txt"
 

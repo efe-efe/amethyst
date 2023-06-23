@@ -2,7 +2,7 @@
     "queen_dodge"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/queen/queen_dodge/queen_dodge"
+		"ScriptFile"					"pve/abilities/heroes/queen/queen_dodge"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"sniper_take_aim"

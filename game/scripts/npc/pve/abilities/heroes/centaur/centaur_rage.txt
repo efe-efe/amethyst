@@ -2,7 +2,7 @@
     "centaur_rage"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_rage/centaur_rage"
+		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_rage"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"sniper_take_aim"

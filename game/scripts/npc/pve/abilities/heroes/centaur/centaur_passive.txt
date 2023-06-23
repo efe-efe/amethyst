@@ -2,7 +2,7 @@
     "centaur_passive"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_passive/centaur_passive"
+		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_passive"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"nevermore_requiem"

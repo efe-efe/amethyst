@@ -2,7 +2,7 @@
 	"puck_extra"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"abilities/heroes/puck/puck_extra/puck_extra"
+		"ScriptFile"					"abilities/heroes/puck/puck_extra"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

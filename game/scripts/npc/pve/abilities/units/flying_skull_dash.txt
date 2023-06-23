@@ -1,21 +1,26 @@
 "DOTAAbilities" {
-    "centaur_charge"
+    "flying_skull_dash"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_charge"
+		"ScriptFile"					"pve/abilities/units/flying_skull_dash"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"nevermore_requiem"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
 		"AbilityCooldown"				"3.0"
-		"AbilityCastRange"				"1400"
+		"AbilityCastRange"				"750"
 		"LevelsBetweenUpgrades"			"0"
-		"AbilityCastPoint"				"0.3"
+		"AbilityCastPoint"				"0.65"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
 			"DisplayRange" 				"1"
 			"Fixed"						"1"
+		}
+
+		"AbilitySpecial"
+		{
+            "01"{ "var_type"	"FIELD_INTEGER"		"dash_range"						"1000" }
 		}
 	}
 }

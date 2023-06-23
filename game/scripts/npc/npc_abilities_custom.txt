@@ -92,16 +92,16 @@
 #base "pve\abilities\heroes\queen\queen_scream.txt"
 #base "pve\abilities\heroes\queen\queen_dodge.txt"
 
-#base "pve\abilities\units\dire_tower\dire_tower_attack.txt"
+#base "pve\abilities\units\dire_tower_attack.txt"
 
-#base "pve\abilities\units\dire_zombie\dire_zombie_attack.txt"
-#base "pve\abilities\units\dire_zombie\dire_zombie_rage_aura.txt"
-#base "pve\abilities\units\dire_zombie\dire_zombie_attack_meele.txt"
-#base "pve\abilities\units\dire_zombie\dire_zombie_grenade.txt"
+#base "pve\abilities\units\dire_creep_attack_range.txt"
+#base "pve\abilities\units\dire_creep_attack_meele.txt"
+#base "pve\abilities\units\dire_creep_rage_aura.txt"
+#base "pve\abilities\units\dire_creep_grenade.txt"
 
-#base "pve\abilities\units\radiant_zombie\radiant_zombie_heal_aura.txt"
+#base "pve\abilities\units\radiant_creep_heal_aura.txt"
 
-#base "pve\abilities\units\flying_skull\flying_skull_dash.txt"
+#base "pve\abilities\units\flying_skull_dash.txt"
 
 #base "abilities\dummies\passive_shoot.txt"
 #base "abilities\dummies\passive_walk.txt"

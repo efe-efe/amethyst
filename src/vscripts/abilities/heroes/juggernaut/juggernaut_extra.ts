@@ -288,11 +288,11 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
         }
     }
 
-    GetModifierIncomingDamage_Percentage() {
+    GetModifierIncomingDamage_Percentage(event: ModifierAttackEvent) {
         if (IsServer()) {
             this.health = this.health - 1;
             if (this.health == 0) {
-                this.parent.ForceKill(false);
+                this.parent.Kill(undefined, event.attacker);
             }
         }
         return -100;

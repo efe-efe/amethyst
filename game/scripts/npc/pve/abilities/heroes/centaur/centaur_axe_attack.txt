@@ -2,7 +2,7 @@
     "centaur_axe_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_axe_attack/centaur_axe_attack"
+		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_axe_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"nevermore_requiem"

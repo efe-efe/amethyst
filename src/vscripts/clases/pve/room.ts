@@ -290,7 +290,7 @@ export default class Room extends GameState {
         });
         this.ais.forEach(ai => {
             if (ai.unit.IsAlive()) {
-                ai.unit.ForceKill(false);
+                ai.unit.Kill(undefined, ai.unit);
             }
         });
     }

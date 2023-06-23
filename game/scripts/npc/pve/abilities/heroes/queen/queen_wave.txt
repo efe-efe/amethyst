@@ -2,7 +2,7 @@
     "queen_wave"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/queen/queen_wave/queen_wave"
+		"ScriptFile"					"pve/abilities/heroes/queen/queen_wave"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

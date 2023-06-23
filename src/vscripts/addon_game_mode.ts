@@ -545,7 +545,7 @@ export class GameMode {
                         NPCNames.RADIANT_ZOMBIE_RANGE_MEGA,
                         NPCNames.RADIANT_ZOMBIE_MEELE_MEGA,
                         NPCNames.FLYING_SKULL,
-                        NPCNames.CENTAUR
+                        NPCNames.QUEEN
                     ]
                 }
             ]);

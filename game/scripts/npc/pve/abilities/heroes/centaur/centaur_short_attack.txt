@@ -2,7 +2,7 @@
     "centaur_short_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_short_attack/centaur_short_attack"
+		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_short_attack"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"nevermore_requiem"

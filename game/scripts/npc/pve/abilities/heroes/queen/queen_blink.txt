@@ -2,7 +2,7 @@
     "queen_blink"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/queen/queen_blink/queen_blink"
+		"ScriptFile"					"pve/abilities/heroes/queen/queen_blink"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

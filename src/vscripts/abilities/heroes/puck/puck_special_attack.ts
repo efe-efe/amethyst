@@ -73,7 +73,6 @@ class ModifierPuckSpecialAttack extends ModifierThinker {
             this.stunDuration = params.stunDuration;
             this.fairyDustDuration = params.fairyDustDuration;
             this.fairyDustSlowPct = params.fairyDustSlowPct;
-            this.manaGainPct = this.ability.GetSpecialValueFor("mana_gain_pct");
         }
     }
 
@@ -127,7 +126,7 @@ class ModifierPuckSpecialAttack extends ModifierThinker {
         this.PlayEffectsExplode(this.radius, 0);
 
         if (giveMana) {
-            giveManaAndEnergyPercent(this.caster, this.manaGainPct, true);
+            giveManaAndEnergyPercent(this.caster, this.Value("mana_gain_pct"), true);
         }
 
         this.Destroy();

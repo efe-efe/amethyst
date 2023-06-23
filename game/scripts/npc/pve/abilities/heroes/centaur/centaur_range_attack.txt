@@ -2,7 +2,7 @@
     "centaur_range_attack"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_range_attack/centaur_range_attack"
+		"ScriptFile"					"pve/abilities/heroes/centaur/centaur_range_attack"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 

@@ -2,7 +2,7 @@
     "queen_scream"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/queen/queen_scream/queen_scream"
+		"ScriptFile"					"pve/abilities/heroes/queen/queen_scream"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"sniper_take_aim"

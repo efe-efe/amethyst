@@ -163,14 +163,14 @@ function CustomAI(name: string, origin: Vector, options: CustomAIOptions): Custo
             },
             requirements: options.requirements
                 ? {
-                    ...options.requirements,
-                    cooldownReady: options.requirements.cooldownReady !== undefined ? options.requirements.cooldownReady : true,
-                    phaseReady: options.requirements.phaseReady !== undefined ? options.requirements.phaseReady : true
-                }
+                      ...options.requirements,
+                      cooldownReady: options.requirements.cooldownReady !== undefined ? options.requirements.cooldownReady : true,
+                      phaseReady: options.requirements.phaseReady !== undefined ? options.requirements.phaseReady : true
+                  }
                 : {
-                    cooldownReady: true,
-                    phaseReady: true
-                }
+                      cooldownReady: true,
+                      phaseReady: true
+                  }
         };
         abilities.push(npcAbility);
     }
@@ -419,7 +419,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.RADIANT_ZOMBIE_RANGE_MEGA]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("radiant_zombie_healer", origin, {
+            const ai = CustomAI("radiant_creep_range_mega", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true
             });
@@ -441,13 +441,13 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE_RANGE]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("dire_zombie_range", origin, {
+            const ai = CustomAI("dire_creep_range", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName("dire_zombie_attack")!,
+                ability: ai.unit.FindAbilityByName("dire_creep_attack_range")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -459,17 +459,17 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE_RANGE_MEGA]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("dire_zombie_range_mega", origin, {
+            const ai = CustomAI("dire_creep_range_mega", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName("dire_zombie_rage_aura")!,
+                ability: ai.unit.FindAbilityByName("dire_creep_rage_aura")!,
                 orderType: UnitOrder.CAST_NO_TARGET
             });
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName("dire_zombie_attack")!,
+                ability: ai.unit.FindAbilityByName("dire_creep_attack_range")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -481,7 +481,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE_MEELE_MEGA]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("dire_zombie_meele_mega", origin, {
+            const ai = CustomAI("dire_creep_meele_mega", origin, {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -489,7 +489,7 @@ export const CustomAIMeta: {
             });
 
             ai.RegisterAbility({
-                ability: ai.unit.FindAbilityByName("dire_zombie_attack_meele")!,
+                ability: ai.unit.FindAbilityByName("dire_creep_attack_meele")!,
                 orderType: UnitOrder.CAST_POSITION,
                 requirements: {
                     targetInCastRange: true
@@ -503,7 +503,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.RADIANT_ZOMBIE_MEELE_MEGA]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("radiant_zombie_meele", origin, {
+            const ai = CustomAI("radiant_creep_meele_mega", origin, {
                 followRange: 1500,
                 minFollowRange: 200,
                 behavior: CustomAIBehavior.FOLLOWER,

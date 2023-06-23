@@ -1,0 +1,18 @@
+"DOTAAbilities" {
+    "dire_creep_attack_meele"
+	{
+		"BaseClass"						"ability_lua"
+		"ScriptFile"					"pve/abilities/units/dire_creep_attack_meele"
+		"MaxLevel"						"2"
+		"LevelsBetweenUpgrades"			"0"
+
+		"AbilityTextureName"			"sniper_second_attack"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityCastRange"				"300"
+
+		"AbilitySpecial"
+		{
+            "01"{ "var_type"	"FIELD_INTEGER"		"radius"						"300" }
+		}
+	}
+}

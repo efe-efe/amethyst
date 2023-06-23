@@ -1,26 +1,19 @@
 "DOTAAbilities" {
-    "queen_attack"
+    "dire_creep_attack_range"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/queen/queen_attack"
+		"ScriptFile"					"pve/abilities/units/dire_creep_attack_range"
 		"MaxLevel"						"2"
 		"LevelsBetweenUpgrades"			"0"
 
 		"AbilityTextureName"			"sniper_second_attack"
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
-		"AbilityCastRange"				"2000"
-		"AbilityCooldown"				"3.0"
-		"AbilityCastPoint"				"0.3"
+		"AbilityCastRange"				"1200"
 
 		"TargetingIndicator" {
 			"Type" 						"TARGETING_INDICATOR_LINE"
 			"DisplayRange" 				"1"
 			"Fixed"						"1"
-		}
-        
-		"AbilitySpecial"
-		{
-			"01"{ "var_type"	"FIELD_INTEGER"		"ability_damage"			"18" }
 		}
 	}
 }

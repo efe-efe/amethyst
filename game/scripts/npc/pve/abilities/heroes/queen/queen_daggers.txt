@@ -2,7 +2,7 @@
     "queen_daggers"
 	{
 		"BaseClass"						"ability_lua"
-		"ScriptFile"					"pve/abilities/heroes/queen/queen_daggers/queen_daggers"
+		"ScriptFile"					"pve/abilities/heroes/queen/queen_daggers"
 		"MaxLevel"						"1"
 
 		"AbilityTextureName"			"sniper_take_aim"

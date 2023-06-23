@@ -100,7 +100,7 @@ export default class Stage extends GameState {
         if (this.currentNpcRoomNumber === 3) {
             return RoomType.LEVELUP;
         }
-        return RoomType.REGULAR;
+        return RoomType.BOSS;
     }
 
     GenerateRoom(spawnDiamond: boolean): Room {
