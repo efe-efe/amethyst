@@ -357,3 +357,12 @@ game/scripts/vscripts/abilities/heroes/nevermore/nevermore_second_attack.lua
 game/scripts/vscripts/abilities/heroes/nevermore/nevermore_special_attack.lua
 game/scripts/vscripts/abilities/heroes/nevermore/nevermore_ultimate.lua
 game/scripts/vscripts/abilities/heroes/nevermore/nevermore_extra/nevermore_extra.lua
+game/scripts/vscripts/modifiers/modifier_silence.lua
+game/scripts/vscripts/abilities/heroes/pango/modifier_pango_mobility.lua
+game/scripts/vscripts/abilities/heroes/pango/modifier_pango_roll_end_animation.lua
+game/scripts/vscripts/abilities/heroes/pango/pango_basic_attack.lua
+game/scripts/vscripts/abilities/heroes/pango/pango_mobility.lua
+game/scripts/vscripts/abilities/heroes/pango/pango_second_attack.lua
+game/scripts/vscripts/abilities/heroes/pango/pango_special_attack.lua
+game/scripts/vscripts/abilities/heroes/pango/pango_counter.lua
+game/scripts/vscripts/abilities/heroes/pango/pango_ultimate.lua
