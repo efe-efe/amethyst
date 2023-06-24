@@ -1,6 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
+import { ModifierUpgradeStormUnleashedKnockback } from "../../../modifiers/modifier_favors";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition, direction2D } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -144,7 +145,7 @@ class ModifierStormUltimateThinker extends ModifierThinker {
                 damage_type: DamageTypes.PURE
             });
 
-            if (this.caster.HasModifier("modifier_upgrade_storm_unleashed_knockback")) {
+            if (ModifierUpgradeStormUnleashedKnockback.findOne(this.caster)) {
                 const direction = direction2D(this.origin, enemy.GetAbsOrigin());
 
                 ModifierStormUltimateDisplacement.apply(enemy, this.caster, this.ability, {

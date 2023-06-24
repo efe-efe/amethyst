@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCombatEvents, OnHitEvent } from "../../../modifiers/modifier_combat_events";
+import { ModifierUpgradeJuggernautFuryAttack, ModifierUpgradeJuggernautFuryReflects } from "../../../modifiers/modifier_favors";
 import { ModifierHeroMovement } from "../../../modifiers/modifier_hero_movement";
 import { strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -21,7 +22,7 @@ class JuggernautMobility extends CustomAbility {
 }
 
 @registerModifier({ customNameForI18n: "modifier_juggernaut_mobility" })
-class ModifierJuggernautMobility extends ModifierCombatEvents {
+export class ModifierJuggernautMobility extends ModifierCombatEvents {
     particleId!: ParticleID;
 
     IsHidden() {
@@ -59,7 +60,7 @@ class ModifierJuggernautMobility extends ModifierCombatEvents {
         );
 
         for (const enemy of enemies) {
-            if (this.parent.HasModifier("modifier_upgrade_juggernaut_fury_attack")) {
+            if (ModifierUpgradeJuggernautFuryAttack.findOne(this.parent)) {
                 this.ability.SingleAttack({
                     attackType: "basic",
                     target: enemy,
@@ -156,7 +157,7 @@ class ModifierJuggernautMobility extends ModifierCombatEvents {
     }
 
     ShouldReflect() {
-        return this.ability.GetLevel() >= 2 || this.caster.HasModifier("modifier_upgrade_juggernaut_fury_reflects");
+        return this.ability.GetLevel() >= 2 || ModifierUpgradeJuggernautFuryReflects.findOne(this.caster);
     }
 
     StopEffects() {

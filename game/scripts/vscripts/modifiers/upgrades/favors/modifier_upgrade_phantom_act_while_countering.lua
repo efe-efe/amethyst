@@ -1,3 +1,0 @@
-modifier_upgrade_phantom_act_while_countering = class({})
-function modifier_upgrade_phantom_act_while_countering:RemoveOnDeath() return false end
-function modifier_upgrade_phantom_act_while_countering:IsPurgable() return false end

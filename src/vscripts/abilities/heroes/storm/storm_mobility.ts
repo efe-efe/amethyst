@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
+import { ModifierUpgradeStormRangedRemnant } from "../../../modifiers/modifier_favors";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
@@ -30,7 +31,7 @@ class StormMobility extends CustomAbility {
                 return 0;
             }
 
-            if (this.caster.HasModifier("modifier_upgrade_storm_ranged_remnant")) {
+            if (ModifierUpgradeStormRangedRemnant.findOne(this.caster)) {
                 return 650;
             }
         }
@@ -51,7 +52,7 @@ class StormMobility extends CustomAbility {
         });
 
         const groundPosition = GetGroundPosition(point, this.caster);
-        if (this.caster.HasModifier("modifier_upgrade_storm_ranged_remnant")) {
+        if (ModifierUpgradeStormRangedRemnant.findOne(this.caster)) {
             EFX("particles/spectre/spectre_illusion_warp.vpcf", ParticleAttachment.CUSTOMORIGIN, this.caster, {
                 cp0: {
                     ent: this.caster,

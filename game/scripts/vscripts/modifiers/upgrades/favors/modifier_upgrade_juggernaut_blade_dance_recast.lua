@@ -1,3 +1,0 @@
-modifier_upgrade_juggernaut_blade_dance_recast = class({})
-function modifier_upgrade_juggernaut_blade_dance_recast:RemoveOnDeath() return false end
-function modifier_upgrade_juggernaut_blade_dance_recast:IsPurgable() return false end

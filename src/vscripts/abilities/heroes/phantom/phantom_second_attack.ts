@@ -1,4 +1,5 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
+import { ModifierUpgradePhantomCritRecast } from "../../../modifiers/modifier_favors";
 import { clampPosition, direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomStacks } from "./phantom_basic_attack";
@@ -67,11 +68,12 @@ class PhantomSecondAttack extends CustomAbility {
         this.PlayEffectsOnFinish(direction, radius);
         this.caster.RemoveModifierByName(ModifierPhantomStacks.name);
         EmitSoundOn("Hero_PhantomAssassin.Attack", this.caster);
-        // 	if #units > 0 then
-        // 		if this.caster.HasModifier("modifier_upgrade_phantom_critical_recast") then
-        // 			this.caster.AddNewModifier(this.caster, self, "modifier_phantom_second_attack_recast", { duration = 3.0 })
-        // 		}
-        // 	}
+
+        if (units.length > 0) {
+            if (ModifierUpgradePhantomCritRecast.findOne(this.caster)) {
+                // this.caster.AddNewModifier(this.caster, self, "modifier_phantom_second_attack_recast", { duration = 3.0 })
+            }
+        }
     }
 
     PlayEffectsOnImpact(target: CDOTA_BaseNPC, stacks: number) {

@@ -1,5 +1,6 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
+import { ModifierUpgradeSniperFastSnipe } from "../../../modifiers/modifier_favors";
 import { ModifierRoot } from "../../../modifiers/modifier_root";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ProjectileBehavior } from "../../../projectiles";
@@ -55,10 +56,8 @@ class SniperSecondAttack extends SniperSecondAttackCommon {
     }
 
     GetCastPoint() {
-        if (IsServer()) {
-            // if(this.caster.FindModifierByName('modifier_upgrade_sniper_snipe_cast_fast')){
-            //     return 0.3
-            // }
+        if (IsServer() && ModifierUpgradeSniperFastSnipe.findOne(this.caster)) {
+            return 0.3;
         }
 
         return super.GetCastPoint();

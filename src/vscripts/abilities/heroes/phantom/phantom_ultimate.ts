@@ -1,4 +1,5 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
+import { ModifierUpgradePhantomFastCoup } from "../../../modifiers/modifier_favors";
 import { ProjectileBehavior } from "../../../projectiles";
 import { direction2D } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -13,10 +14,7 @@ class PhantomUltimate extends CustomAbility {
     }
 
     GetPlaybackRateOverride() {
-        if (this.caster.HasModifier("modifier_upgrade_phantom_coup_cast_fast")) {
-            return 1.2;
-        }
-        return 0.7;
+        return ModifierUpgradePhantomFastCoup.findOne(this.caster) ? 1.2 : 0.7;
     }
 
     GetCastingCrawl() {
@@ -24,10 +22,7 @@ class PhantomUltimate extends CustomAbility {
     }
 
     GetCastPoint() {
-        if (this.caster.HasModifier("modifier_upgrade_phantom_coup_cast_fast")) {
-            return 0.3;
-        }
-        return 1.0;
+        return ModifierUpgradePhantomFastCoup.findOne(this.caster) ? 0.3 : 1.0;
     }
 
     OnAbilityPhaseStart() {

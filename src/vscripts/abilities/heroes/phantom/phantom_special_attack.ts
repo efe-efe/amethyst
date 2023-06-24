@@ -1,6 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
+import { ModifierUpgradePhantomExtraDaggers, ModifierUpgradePhantomFastDaggers } from "../../../modifiers/modifier_favors";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomBleed, ModifierPhantomStacks, PhantomBasicAttack, PhantomExBasicAttack } from "./phantom_basic_attack";
@@ -28,7 +29,7 @@ class PhantomSpecialAttack extends CustomAbility {
     }
 
     GetCooldown(level: number) {
-        if (this.caster.HasModifier("modifier_upgrade_phantom_fast_daggers")) {
+        if (ModifierUpgradePhantomFastDaggers.findOne(this.caster)) {
             const attacksPerSecond = this.caster.GetAttacksPerSecond();
             const attackSpeed = 1 / attacksPerSecond;
             return attackSpeed * 2;
@@ -43,7 +44,7 @@ class PhantomSpecialAttack extends CustomAbility {
         const straightDirection = direction2D(origin, point);
         const directions = [straightDirection];
 
-        if (this.caster.HasModifier("modifier_upgrade_phantom_extra_daggers")) {
+        if (ModifierUpgradePhantomExtraDaggers.findOne(this.caster)) {
             directions.push(RotatePoint(Vector(0, 0, 0), straightDirection, -30).Normalized());
             directions.push(RotatePoint(Vector(0, 0, 0), straightDirection, 30).Normalized());
         }
@@ -99,7 +100,7 @@ class PhantomSpecialAttack extends CustomAbility {
                     }
                 }
 
-                if (!projectile.getSource().HasModifier("modifier_upgrade_phantom_fast_daggers")) {
+                if (!ModifierUpgradePhantomFastDaggers.findOne(projectile.getSource())) {
                     ModifierFadingSlow.apply(unit, projectile.getSource(), undefined, {
                         duration: fadingSlowDuration,
                         maxSlowPct: fadingSlowPct
@@ -139,7 +140,7 @@ class PhantomSpecialAttack extends CustomAbility {
 @registerModifier({ customNameForI18n: "modifier_phantom_special_attack_charges" })
 class ModifierPhantomSpecialAttackCharges extends ModifierCharges {
     GetMaxCharges() {
-        return this.caster.HasModifier("modifier_upgrade_phantom_fast_daggers") ? 1 : this.Value("max_charges");
+        return ModifierUpgradePhantomFastDaggers.findOne(this.caster) ? 1 : this.Value("max_charges");
     }
 
     GetReplenishTime() {

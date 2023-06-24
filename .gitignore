@@ -419,3 +419,4 @@ game/scripts/vscripts/modifiers/modifier_hero_movement.lua
 game/scripts/vscripts/modifiers/modifier_provides_vision.lua
 game/scripts/vscripts/modifiers/modifier_tower_idle.lua
 game/scripts/vscripts/modifiers/modifier_fear.lua
+game/scripts/vscripts/modifiers/modifier_favors.lua

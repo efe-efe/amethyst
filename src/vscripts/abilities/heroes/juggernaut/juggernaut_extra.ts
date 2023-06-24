@@ -1,9 +1,11 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierUpgradeJuggernautSpinningWard } from "../../../modifiers/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { clampPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
+import { ModifierJuggernautMobility } from "./juggernaut_mobility";
 
 @registerAbility("juggernaut_extra")
 class JuggernautExtra extends CustomAbility {
@@ -72,9 +74,9 @@ class JuggernautExtra extends CustomAbility {
         });
         this.PlayEffects(healingWard);
 
-        // 	if caster:HasModifier("modifier_upgrade_juggernaut_spinning_ward") then
-        //         healingWard:AddNewModifier(caster, self, "modifier_juggernaut_mobility", { duration = duration })
-        // 	end
+        if (ModifierUpgradeJuggernautSpinningWard.findOne(this.caster)) {
+            ModifierJuggernautMobility.apply(healingWard, this.caster, this, { duration: duration });
+        }
     }
 
     PlayEffects(target: CDOTA_BaseNPC) {
@@ -192,7 +194,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
 
     OnCreated() {
         if (IsServer()) {
-            if (this.caster.HasModifier("modifier_upgrade_juggernaut_spinning_ward")) {
+            if (ModifierUpgradeJuggernautSpinningWard.findOne(this.caster)) {
                 this.health = 5;
             }
 

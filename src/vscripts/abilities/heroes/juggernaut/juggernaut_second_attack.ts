@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
+import { ModifierUpgradeJuggernautBladeDanceReacast } from "../../../modifiers/modifier_favors";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { clampPosition, direction2D, giveManaAndEnergy, giveManaAndEnergyPercent, isCountering, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -128,14 +129,12 @@ class JuggernautSecondAttack extends CustomAbility {
             });
         }
 
-        //     if(#units > 0){
-        //         if(this.caster.HasModifier("modifier_upgrade_juggernaut_blade_dance_recast")){
-        //             this.caster.AddNewModifier(this.caster, this, "modifier_juggernaut_second_attack_recast", {
-        //                 duration = 1.0 + ((stacks) * 1.0),
-        //                 charges = 3,
-        //             })
-        //         }
-        //     }
+        if (units.length > 0 && ModifierUpgradeJuggernautBladeDanceReacast.findOne(this.caster)) {
+            // this.caster.AddNewModifier(this.caster, this, "modifier_juggernaut_second_attack_recast", {
+            //     duration = 1.0 + stacks * 1.0,
+            //     charges = 3
+            // });
+        }
 
         this.caster.RemoveModifierByName(ModifierJuggernautStacks.name);
         //     LinkAbilityCooldowns(this.caster, 'juggernaut_ex_second_attack')

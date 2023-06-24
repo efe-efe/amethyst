@@ -1,6 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
+import { ModifierUpgradePhantomQuickRecast } from "../../../modifiers/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { direction2D, isCountering } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -113,7 +114,7 @@ class ModifierPhantomExtraDisplacement extends ModifierDisplacement {
 
                     ModifierPhantomExtraMark.apply(target, this.parent, this.ability, { duration: 0.3 });
 
-                    if (this.ability.GetLevel() >= 2 || this.parent.HasModifier("modifier_upgrade_phantom_quick_recast")) {
+                    if (this.ability.GetLevel() >= 2 || ModifierUpgradePhantomQuickRecast.findOne(this.parent)) {
                         if (!ModifierPhantomExtraMark.findOne(this.parent)) {
                             const recastDuration = 3;
 

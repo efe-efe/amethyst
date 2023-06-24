@@ -1,6 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
+import { ModifierUpgradeJuggernautRefreshDagger } from "../../../modifiers/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
@@ -75,18 +76,14 @@ class JuggernautSpecialAttack extends CustomAbility {
             },
             onFinish: projectile => {
                 this.PlayEffectsOnFinish(projectile.getPosition());
-                // if this.caster.HasModifier("modifier_upgrade_juggernaut_refresh_dagger") then
-                // 	const counter = 0
-                // 	for k, v in pairs(_self.tHitLog) do
-                // 		counter = counter + 1
-                // 	}
-                // 	if counter == 0 then
-                // 		this.StartCooldown(this.GetCooldown(0) * 1.5)
-                // 	else
-                // 		this.EndCooldown()
-                // 		this.StartCooldown(this.GetCooldown(0)/5)
-                // 	}
-                // }
+                if (projectile.getSource() == this.caster && ModifierUpgradeJuggernautRefreshDagger.findOne(this.caster)) {
+                    if (projectile.hitLog.size == 0) {
+                        this.StartCooldown(this.GetCooldown(this.GetLevel()) * 1.5);
+                    } else {
+                        this.EndCooldown();
+                        this.StartCooldown(this.GetCooldown(this.GetLevel()) / 5);
+                    }
+                }
             }
         });
 

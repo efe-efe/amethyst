@@ -2,6 +2,11 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
+import {
+    ModifierUpgradePhantomActCounter,
+    ModifierUpgradePhantomCounterStacks,
+    ModifierUpgradeSniperStrikeInstant
+} from "../../../modifiers/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
@@ -14,12 +19,12 @@ import { ModifierPhantomStacks, PhantomBasicAttack } from "./phantom_basic_attac
 class PhantomCounter extends CustomAbility {
     OnSpellStart() {
         let duration = this.GetSpecialValueFor("counter_duration");
-        if (this.caster.HasModifier("modifier_upgrade_phantom_strike_instant")) {
+        if (ModifierUpgradeSniperStrikeInstant.findOne(this.caster)) {
             duration = duration / 2;
         }
 
         const modifier = ModifierPhantomCounter.apply(this.caster, this.caster, this, { duration: duration });
-        if (modifier && this.caster.HasModifier("modifier_upgrade_phantom_strike_instant")) {
+        if (modifier && ModifierUpgradeSniperStrikeInstant.findOne(this.caster)) {
             modifier.OnHit({
                 triggerCounters: true,
                 attackCategory: "single",
@@ -269,7 +274,7 @@ class ModifierPhantomExCounterRecast extends ModifierRecast {
 class ModifierPhantomCounterBuff extends CustomModifier {
     OnCreated() {
         if (IsServer()) {
-            if (this.parent.HasModifier("modifier_upgrade_phantom_countering_stacks")) {
+            if (ModifierUpgradePhantomCounterStacks.findOne(this.parent)) {
                 const modifier = ModifierPhantomStacks.findOne(this.parent);
                 const stacks = modifier?.GetStackCount() ?? 0;
                 modifier?.Destroy();
@@ -324,9 +329,7 @@ class ModifierPhantomCounterRecast extends ModifierRecast {
 @registerModifier({ customNameForI18n: "modifier_phantom_counter_countering" })
 class ModifierPhantomCounter extends ModifierCounter {
     GetBanishDuration() {
-        return this.parent.HasModifier("modifier_upgrade_phantom_strike_instant")
-            ? this.Value("banish_duration") / 2
-            : this.Value("banish_duration");
+        return ModifierUpgradeSniperStrikeInstant.findOne(this.parent) ? this.Value("banish_duration") / 2 : this.Value("banish_duration");
     }
 
     OnDestroy() {
@@ -372,36 +375,36 @@ class ModifierPhantomCounter extends ModifierCounter {
 
     // DeactivateAbilities(){
     // 	if(IsServer()){
-    // 		if(this.parent.HasModifier('modifier_upgrade_phantom_act_while_countering')){
+    // 		if(ModifierUpgradePhantomActCounter.findOne(this.parent)){
     // 			return false
     // 		}
     // 		return true
     // 	}
     // }
 
-    OnOrder(params) {
-        // if(IsServer()){
-        // 	if(this.parent.HasModifier('modifier_upgrade_phantom_act_while_countering')){
-        // 		return
-        // 	}
-        // 	if(params.unit == this.parent){
-        // 		if( params.order_type == DOTA_UNIT_ORDER_STOP or
-        // 			params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION or
-        // 			params.order_type == DOTA_UNIT_ORDER_CAST_POSITION or
-        // 			params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
-        // 		then
-        // 			this.Destroy()
-        // 		}
-        // 	}
-        // }
+    OnOrder(event: ModifierUnitEvent) {
+        if (IsServer() && event.unit == this.parent) {
+            if (ModifierUpgradePhantomActCounter.findOne(this.parent)) {
+                return;
+            }
+
+            if (
+                event.order_type == UnitOrder.STOP ||
+                event.order_type == UnitOrder.HOLD_POSITION ||
+                event.order_type == UnitOrder.CAST_POSITION ||
+                event.order_type == UnitOrder.CAST_NO_TARGET
+            ) {
+                this.Destroy();
+            }
+        }
     }
 
-    // GetMovementSpeedPercentage(){
-    // 	if(this.parent.HasModifier('modifier_upgrade_phantom_act_while_countering')){
-    // 		return 100
-    // 	}
-    // 	return 0
-    // }
+    GetMovementSpeedPercentage() {
+        if (ModifierUpgradePhantomActCounter.findOne(this.parent)) {
+            return 100;
+        }
+        return 0;
+    }
 
     DeclareFunctions() {
         return [
@@ -440,7 +443,7 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
             const phantomBasicAttack = PhantomBasicAttack.findOne(this.parent);
 
             FindClearSpaceForUnit(this.parent, point, true);
-            if (!this.parent.HasModifier("modifier_upgrade_phantom_strike_instant")) {
+            if (!ModifierUpgradeSniperStrikeInstant.findOne(this.parent)) {
                 this.parent.Heal(this.Value("heal"), this.ability);
             }
 
