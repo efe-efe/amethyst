@@ -2,6 +2,7 @@ import { CustomAbility } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../lib/dota_ts_adapter";
 import { ModifierBanish } from "../modifiers/modifier_banish";
+import { ModifierHideBar } from "../modifiers/modifier_hide_bar";
 
 @registerAbility("item_butterfly_custom")
 class ItemButterfly extends CustomAbility {
@@ -32,7 +33,7 @@ class ModifeirItemButterfly extends CustomModifier {
 
     OnIntervalThink() {
         ModifierItemButterflyBanish.apply(this.caster, this.caster, this.ability, { duration: this.Value("banish_duration") });
-        this.caster.AddNewModifier(this.caster, this.ability, "modifier_hide_bar", { duration: this.Value("banish_duration") });
+        ModifierHideBar.apply(this.caster, this.caster, undefined, { duration: this.Value("banish_duration") });
         this.PlayEffectsOnBanish();
     }
 

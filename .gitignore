@@ -413,3 +413,9 @@ game/scripts/vscripts/modifiers/modifier_invencible.lua
 game/scripts/vscripts/modifiers/modifier_mini_stun.lua
 game/scripts/vscripts/modifiers/modifier_npc_shield.lua
 game/scripts/vscripts/modifiers/modifier_base.lua
+game/scripts/vscripts/abilities/passive_shoot.lua
+game/scripts/vscripts/modifiers/modifier_visible.lua
+game/scripts/vscripts/modifiers/modifier_hero_movement.lua
+game/scripts/vscripts/modifiers/modifier_provides_vision.lua
+game/scripts/vscripts/modifiers/modifier_tower_idle.lua
+game/scripts/vscripts/modifiers/modifier_fear.lua

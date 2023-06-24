@@ -7,6 +7,8 @@ import { CustomEvents } from "../../custom_events";
 import { registerModifier } from "../../lib/dota_ts_adapter";
 import { CustomModifier } from "../../abilities/framework/custom_modifier";
 import { ModifierBase } from "../../modifiers/modifier_base";
+import { ModifierHeroMovement } from "../../modifiers/modifier_hero_movement";
+import { ModifierTowerIdle } from "../../modifiers/modifier_tower_idle";
 
 const DEBUG = false;
 
@@ -123,8 +125,8 @@ export default class CustomNPC extends UnitEntity {
         }
 
         if (!CustomEntitiesLegacy.IsAnimating(this.unit)) {
-            if (!this.unit.HasModifier("modifier_hero_movement")) {
-                this.unit.AddNewModifier(this.unit, undefined, "modifier_hero_movement", {});
+            if (!ModifierHeroMovement.findOne(this.unit)) {
+                ModifierHeroMovement.apply(this.unit, this.unit, undefined, {});
             }
         }
 
@@ -297,8 +299,8 @@ export default class CustomNPC extends UnitEntity {
         const speed = this.unit.GetIdealSpeed() / 25;
 
         if (CustomEntitiesLegacy.IsAnimating(this.unit)) {
-            this.unit.RemoveModifierByName("modifier_hero_movement");
-            this.unit.RemoveModifierByName("modifier_tower_idle");
+            this.unit.RemoveModifierByName(ModifierHeroMovement.name);
+            this.unit.RemoveModifierByName(ModifierTowerIdle.name);
         }
 
         if ((direction.x !== 0 || direction.y !== 0) && CustomEntitiesLegacy.CanWalk(this.unit)) {
@@ -330,11 +332,11 @@ export default class CustomNPC extends UnitEntity {
             }
         } else {
             if (this.unit.GetUnitName() === "dire_tower") {
-                if (!this.unit.HasModifier("modifier_tower_idle")) {
-                    this.unit.AddNewModifier(this.unit, undefined, "modifier_tower_idle", {});
+                if (!ModifierTowerIdle.findOne(this.unit)) {
+                    ModifierTowerIdle.apply(this.unit, this.unit, undefined, {});
                 }
             }
-            this.unit.RemoveModifierByName("modifier_hero_movement");
+            this.unit.RemoveModifierByName(ModifierHeroMovement.name);
         }
 
         if (IsInToolsMode() && DEBUG) {

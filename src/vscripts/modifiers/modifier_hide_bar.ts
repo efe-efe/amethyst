@@ -7,7 +7,7 @@ export class ModifierHideBar extends CustomModifier<undefined> {
         return true;
     }
 
-    IsPurgable() {
-        return false;
+    IsPermanent() {
+        return true;
     }
 }

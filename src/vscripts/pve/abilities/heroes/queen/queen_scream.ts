@@ -1,6 +1,7 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { CustomModifier } from "../../../../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
+import { ModifierFear } from "../../../../modifiers/modifier_fear";
 import { direction2D } from "../../../../util";
 
 @registerAbility("queen_scream")
@@ -87,7 +88,7 @@ class ModifierQueenScream extends CustomModifier {
         const projectileSpeed = 800;
         const projectileDistance = 2000;
         const damage = 12;
-        // const fearDuration = 1.0;
+        const fearDuration = 1.0;
 
         this.ability.ProjectileAttack({
             source: this.caster,
@@ -108,7 +109,7 @@ class ModifierQueenScream extends CustomModifier {
                     ability: this.ability
                 });
 
-                // unit:AddNewModifier(_self.Source, this, "modifier_generic_fear", { duration = fear_duration })
+                ModifierFear.apply(unit, projectile.getSource(), this, { duration: fearDuration });
             },
             onFinish: projectile => {
                 EFX(

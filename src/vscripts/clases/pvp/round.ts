@@ -4,6 +4,7 @@ import GemWrapper, { GemTypes } from "../gem";
 import Pickup, { PickupTypes } from "../pickup";
 import settings from "../../settings";
 import { ModifierDeathZone } from "../../modifiers/modifier_death_zone";
+import { ModifierProvidesVision } from "../../modifiers/modifier_provides_vision";
 
 interface PickupWrapper {
     origin: Vector;
@@ -260,7 +261,7 @@ export default class Round extends GameState {
             const hero = player.hero;
             const playerId = player.GetId();
             if (hero) {
-                CustomEntitiesLegacy.SafeDestroyModifier(hero, "modifier_generic_provides_vision");
+                hero.RemoveModifierByName(ModifierProvidesVision.name);
             }
             PlayerResource.SetCameraTarget(playerId, undefined);
         });

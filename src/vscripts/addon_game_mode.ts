@@ -29,6 +29,7 @@ import { RewardsManager } from "./rewards/rewards";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { updateProjectiles } from "./projectiles";
 import { ModifierDamageVFX } from "./modifiers/modifier_damage_vfx";
+import { ModifierProvidesVision } from "./modifiers/modifier_provides_vision";
 
 declare global {
     interface CDOTAGameRules {
@@ -370,15 +371,6 @@ export class GameMode {
     LinkModifiers(): void {
         LinkLuaModifier("wall_base", "modifiers/wall_base.lua", LuaModifierMotionType.NONE);
         LinkLuaModifier("radius_marker_thinker", "modifiers/radius_marker_thinker.lua", LuaModifierMotionType.NONE);
-
-        LinkLuaModifier(
-            "modifier_generic_provides_vision",
-            "modifiers/generic/modifier_generic_provides_vision",
-            LuaModifierMotionType.NONE
-        );
-        LinkLuaModifier("modifier_generic_knockback", "modifiers/generic/modifier_generic_knockback", LuaModifierMotionType.BOTH);
-        LinkLuaModifier("modifier_generic_fear", "modifiers/generic/modifier_generic_fear", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_generic_phased", "modifiers/generic/modifier_generic_phased", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_flying", "modifiers/generic/modifier_generic_flying", LuaModifierMotionType.NONE);
         LinkLuaModifier(
             "modifier_generic_ignore_ms_limit",
@@ -386,11 +378,6 @@ export class GameMode {
             LuaModifierMotionType.NONE
         );
         LinkLuaModifier("modifier_generic_change_ms", "modifiers/generic/modifier_generic_change_ms", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_visible", "modifiers/generic/modifier_visible", LuaModifierMotionType.NONE);
-
-        LinkLuaModifier("modifier_hide_bar", "modifiers/generic/modifier_hide_bar", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_hero_movement", "modifiers/generic/modifier_hero_movement", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_tower_idle", "modifiers/generic/modifier_tower_idle", LuaModifierMotionType.NONE);
 
         if (this.IsPVE()) {
             const favorsPath = "modifiers/upgrades/favors/";
@@ -992,12 +979,12 @@ export class GameMode {
 
                 if (aliveAlly) {
                     PlayerResource.SetCameraTarget(hero.GetPlayerID(), aliveAlly);
-                    aliveAlly.AddNewModifier(hero, undefined, "modifier_generic_provides_vision", {});
+                    ModifierProvidesVision.apply(aliveAlly, hero, undefined, {});
                 } else {
                     const aliveHero = this.FindNextAliveHero();
                     if (aliveHero) {
                         PlayerResource.SetCameraTarget(hero.GetPlayerID(), aliveHero);
-                        aliveHero.AddNewModifier(hero, undefined, "modifier_generic_provides_vision", {});
+                        ModifierProvidesVision.apply(aliveHero, hero, undefined, {});
                     }
                 }
             }

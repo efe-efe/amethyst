@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCombatEvents, OnHitEvent } from "../../../modifiers/modifier_combat_events";
+import { ModifierHeroMovement } from "../../../modifiers/modifier_hero_movement";
 import { strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
@@ -9,7 +10,7 @@ class JuggernautMobility extends CustomAbility {
         const duration = this.GetSpecialValueFor("duration");
 
         strongPurge(this.caster);
-        this.caster.RemoveModifierByName("modifier_hero_movement");
+        this.caster.RemoveModifierByName(ModifierHeroMovement.name);
         this.caster.AddNewModifier(this.caster, this, "modifier_juggernaut_mobility", { duration: duration });
 
         const random = RandomInt(1, 9);
