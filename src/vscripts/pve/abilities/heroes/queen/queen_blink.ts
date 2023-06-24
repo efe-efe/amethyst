@@ -1,7 +1,7 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
 import { ModifierSilence } from "../../../../modifiers/modifier_silence";
-import { clampPosition } from "../../../../util";
+import { clampPosition, createTimedRadiusMarker } from "../../../../util";
 
 @registerAbility("queen_blink")
 export class QueenBlink extends CustomAbility {
@@ -20,10 +20,12 @@ export class QueenBlink extends CustomAbility {
     OnAbilityPhaseStart() {
         if (super.OnAbilityPhaseStart()) {
             const origin = this.caster.GetOrigin();
-            // const point = ClampPosition(origin, this.GetCursorPosition(), this.GetCastRange(Vector(0,0,0), nil), nil)
-            // const radius = this.GetSpecialValueFor("radius")
-            // CreateTimedRadiusMarker(this.caster, point, radius, this.GetCastPoint(), 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
-            // CreateTimedRadiusMarker(this.caster, origin, radius, this.GetCastPoint(), 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
+            const point = clampPosition(origin, this.GetCursorPosition(), {
+                maxRange: this.GetCastRange(Vector(0, 0, 0), undefined)
+            });
+            const radius = this.GetSpecialValueFor("radius");
+            createTimedRadiusMarker(this.caster, point, radius, this.GetCastPoint(), 0.2, "public");
+            createTimedRadiusMarker(this.caster, origin, radius, this.GetCastPoint(), 0.2, "public");
 
             return true;
         }

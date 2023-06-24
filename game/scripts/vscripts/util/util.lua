@@ -264,24 +264,6 @@ function OverheadMessageEFX(unit, value, word_length, color, shield)
 	})
 end
 
-function CreateTimedRadiusMarker(caster, origin, radius, delay, duration, scope)
-	local team = caster and caster:GetTeamNumber() or DOTA_TEAM_NOTEAM
-	return CreateModifierThinker(
-        caster, --hCaster
-        nil, --hAbility
-        "radius_marker_thinker", --modifierName
-        { 
-			afterDelay = duration,
-			radius = radius,
-			delay = delay,
-			scope = scope,
-		},
-        origin, --vOrigin
-        team, --nTeamNumber
-        false --bPhantomBlocker
-   	)
-end
-
 function CreateRadiusMarker(caster, origin, radius, scope, duration)
 	local effect_cast
 	local color = GREEN

@@ -29,7 +29,7 @@ class DireCreepGrenade extends CustomAbility {
         //         damage = damage,
         //         damage_type = DAMAGE_TYPE_MAGICAL,
         //     }
-        //     // CreateTimedRadiusMarker(this.caster, point, radius, time, 0.2, RADIUS_SCOPE_PUBLIC)
+        // createTimedRadiusMarker(this.caster, point, radius, time, 0.2, RADIUS_SCOPE_PUBLIC)
         //     CurveProjectile(this.caster, point, projectile_speed, function()
         //         ApplyCallbackForUnitsInArea(this.caster, point, radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
         //             damage_table.victim = unit

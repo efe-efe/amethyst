@@ -1,3 +1,4 @@
+import { createTimedRadiusMarker } from "../../util";
 import { CustomAIType, CustomAIMeta } from "./custom_ai";
 
 export interface SpawnerOptions {
@@ -13,7 +14,7 @@ export default class Spawner {
     remainingTime: number;
     origin: Vector;
     name: number;
-    marker: CDOTA_Buff | undefined;
+    marker?: ReturnType<typeof createTimedRadiusMarker>;
     ai: CustomAIType | undefined;
 
     constructor(options: SpawnerOptions) {
@@ -40,9 +41,7 @@ export default class Spawner {
     }
 
     CreateEFX(): void {
-        this.marker = (
-            CreateTimedRadiusMarker(undefined, this.origin, 150, this.delayTime, 0.2, RADIUS_SCOPE_PUBLIC) as CDOTA_BaseNPC
-        ).FindModifierByName("radius_marker_thinker");
+        this.marker = createTimedRadiusMarker(undefined, this.origin, 150, this.delayTime, 0.2, "public");
 
         this.efx = EFX("particles/econ/events/ti10/portal/portal_open_good.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
             cp0: this.origin
@@ -55,9 +54,7 @@ export default class Spawner {
             ParticleManager.ReleaseParticleIndex(this.efx);
         }
 
-        if (this.marker) {
-            this.marker.Destroy();
-        }
+        this.marker?.destroy();
     }
 
     Destroy(): void {

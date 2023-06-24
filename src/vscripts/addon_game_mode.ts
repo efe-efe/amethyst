@@ -370,7 +370,6 @@ export class GameMode {
 
     LinkModifiers(): void {
         LinkLuaModifier("wall_base", "modifiers/wall_base.lua", LuaModifierMotionType.NONE);
-        LinkLuaModifier("radius_marker_thinker", "modifiers/radius_marker_thinker.lua", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_flying", "modifiers/generic/modifier_generic_flying", LuaModifierMotionType.NONE);
         LinkLuaModifier(
             "modifier_generic_ignore_ms_limit",

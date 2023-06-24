@@ -1,9 +1,12 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
 import { ModifierStun } from "../../../../modifiers/modifier_stunned";
+import { createTimedRadiusMarker } from "../../../../util";
 
 @registerAbility("centaur_short_attack")
 class CentaurShortAttack extends CustomAbility {
+    marker?: ReturnType<typeof createTimedRadiusMarker>;
+
     GetAnimation() {
         return GameActivity.DOTA_CAST_ABILITY_1;
     }
@@ -18,9 +21,14 @@ class CentaurShortAttack extends CustomAbility {
 
     OnAbilityPhaseStart() {
         if (super.OnAbilityPhaseStart()) {
-            // const origin = this.caster.GetAbsOrigin()
-            // this.radius = this.GetSpecialValueFor("radius")
-            // this.radius_marker_modifier = CreateTimedRadiusMarker(this.caster, origin, this.radius, this.GetCastPoint(), 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
+            this.marker = createTimedRadiusMarker(
+                this.caster,
+                this.caster.GetAbsOrigin(),
+                this.GetSpecialValueFor("radius"),
+                this.GetCastPoint(),
+                0.2,
+                "public"
+            );
 
             return true;
         }

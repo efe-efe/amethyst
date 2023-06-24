@@ -2,6 +2,7 @@ import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierCombatEvents } from "../../../../modifiers/modifier_combat_events";
 import { ModifierStun } from "../../../../modifiers/modifier_stunned";
+import { createTimedRadiusMarker } from "../../../../util";
 import { QueenBlink } from "./queen_blink";
 
 @registerAbility("queen_dodge")
@@ -22,24 +23,25 @@ class ModifierQueenDodge extends ModifierCombatEvents {
     origin!: Vector;
     jumps!: number;
     angleDiff!: number;
+    marker?: ReturnType<typeof createTimedRadiusMarker>;
 
     particleId?: ParticleID;
     radius = 700;
     count = 0;
     nextTarget = 0;
+    aoeRadius = 250;
+    delayTime = 0.7;
 
     OnCreated(params: { jumps: number }) {
         if (IsServer()) {
             this.origin = this.parent.GetAbsOrigin();
             this.jumps = params.jumps;
             this.angleDiff = 360 / this.jumps;
-            const delayTime = 0.7;
-            // this.aoe_radius = 250;
 
             this.OnIntervalThink();
-            this.StartIntervalThink(delayTime);
+            this.StartIntervalThink(this.delayTime);
 
-            // this.radius_marker_modifier = CreateTimedRadiusMarker(this.caster, this.origin, this.radius, 1.0 * this.jumps, 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
+            this.marker = createTimedRadiusMarker(this.caster, this.origin, this.radius, 1.0 * this.jumps, 0.2, "public");
             this.particleId = ParticleManager.CreateParticle("particles/queen/queenDodge.vpcf", ParticleAttachment.WORLDORIGIN, undefined);
             ParticleManager.SetParticleControl(this.particleId, 0, this.parent.GetAbsOrigin());
             ParticleManager.SetParticleControl(this.particleId, 1, this.parent.GetAbsOrigin());
@@ -58,11 +60,8 @@ class ModifierQueenDodge extends ModifierCombatEvents {
                 ParticleManager.DestroyParticle(this.particleId, false);
                 ParticleManager.ReleaseParticleIndex(this.particleId);
             }
-            // if(this.radius_marker_modifier ~= nil){
-            //     if(not this.radius_marker_modifier:IsNull()){
-            //         this.radius_marker_modifier:Destroy()
-            //     }
-            // }
+
+            this.marker?.destroy();
 
             this.ability.StartCooldown(this.ability.GetLevel());
         }
@@ -87,13 +86,18 @@ class ModifierQueenDodge extends ModifierCombatEvents {
 
         this.count = this.count++;
 
-        // const newPoint = this.origin;
+        let newPoint = this.origin;
+
         if (this.count != this.jumps) {
             this.nextTarget = RandomIntWithExeption(0, this.jumps, this.nextTarget);
-            // newPoint = RotatePosition(
-            RotatePosition(this.origin, QAngle(0, this.angleDiff * this.nextTarget - 1, 0), this.origin.__add(Vector(this.radius, 0, 0)));
+            newPoint = RotatePosition(
+                this.origin,
+                QAngle(0, this.angleDiff * this.nextTarget - 1, 0),
+                this.origin.__add(Vector(this.radius, 0, 0))
+            );
         }
-        // CreateTimedRadiusMarker(this.caster, newPoint, this.aoe_radius, this.delay_time, 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
+
+        createTimedRadiusMarker(this.caster, newPoint, this.aoeRadius, this.delayTime, 0.2, "public");
     }
 
     OnHit() {

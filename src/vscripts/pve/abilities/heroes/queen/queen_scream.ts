@@ -2,7 +2,7 @@ import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { CustomModifier } from "../../../../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierFear } from "../../../../modifiers/modifier_fear";
-import { direction2D } from "../../../../util";
+import { createTimedRadiusMarker, direction2D } from "../../../../util";
 
 @registerAbility("queen_scream")
 class QueenScream extends CustomAbility {
@@ -29,6 +29,7 @@ class ModifierQueenScream extends CustomModifier {
     origin!: Vector;
     screams!: number;
     count = 0;
+    marker?: ReturnType<typeof createTimedRadiusMarker>;
 
     OnCreated(params: { screams: number }) {
         if (IsServer()) {
@@ -36,17 +37,13 @@ class ModifierQueenScream extends CustomModifier {
             this.screams = params.screams;
             this.OnIntervalThink();
             this.StartIntervalThink(1.0);
-            // this.radius_marker_modifier = CreateTimedRadiusMarker(this.caster, this.origin, 250, 1.25* this.screams, 0.2, RADIUS_SCOPE_PUBLIC):FindModifierByName('radius_marker_thinker')
+            this.marker = createTimedRadiusMarker(this.caster, this.origin, 250, 1.25 * this.screams, 0.2, "public");
         }
     }
 
     OnDestroy() {
         if (IsServer()) {
-            // if(this.radius_marker_modifier ~= nil){
-            //     if(not this.radius_marker_modifier:IsNull()){
-            //         this.radius_marker_modifier:Destroy()
-            //     }
-            // }
+            this.marker?.destroy();
             this.ability.StartCooldown(this.ability.GetLevel());
         }
     }
@@ -109,7 +106,7 @@ class ModifierQueenScream extends CustomModifier {
                     ability: this.ability
                 });
 
-                ModifierFear.apply(unit, projectile.getSource(), this, { duration: fearDuration });
+                ModifierFear.apply(unit, projectile.getSource(), undefined, { duration: fearDuration });
             },
             onFinish: projectile => {
                 EFX(

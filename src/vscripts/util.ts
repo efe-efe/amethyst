@@ -398,9 +398,8 @@ export function randomInArray<T>(array: readonly T[]): T {
     return array[RandomInt(0, array.length - 1)];
 }
 
-//@Refactor check if this is neccesary
 export function createTimedRadiusMarker(
-    caster: CDOTA_BaseNPC,
+    caster: CDOTA_BaseNPC | undefined,
     origin: Vector,
     radius: number,
     delay: number,
@@ -408,9 +407,9 @@ export function createTimedRadiusMarker(
     scope: "public" | "local"
 ) {
     const [, modifier] = ModifierRadiusMarker.createThinker(caster, undefined, origin, {
-        afterDelay: duration,
         radius: radius,
-        delay: delay,
+        delayTime: delay,
+        duration: duration + delay,
         scope: scope
     });
 

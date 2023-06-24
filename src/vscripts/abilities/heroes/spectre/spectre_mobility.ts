@@ -169,7 +169,7 @@ class ModifierSpectreMobilityThinker extends ModifierThinker {
     //         this.heal = this.ability.GetSpecialValueFor('heal')
     //         this.desolate_duration = this.ability.GetSpecialValueFor('desolate_duration')
     //         this.fear_duration = this.ability.GetSpecialValueFor('fear_duration')
-    //         CreateTimedRadiusMarker(this.caster, origin, this.radius, this.GetDuration(), 0.2, RADIUS_SCOPE_PUBLIC)
+    //         createTimedRadiusMarker(this.caster, origin, this.radius, this.GetDuration(), 0.2, "public")
     //     }
     // }
     // function modifier_spectre_mobility_thinker:OnDestroy()
