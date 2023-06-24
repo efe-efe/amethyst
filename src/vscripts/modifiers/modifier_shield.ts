@@ -11,49 +11,33 @@ export class ModifierShield extends CustomModifier<undefined> {
         }
     }
 
-    //     function modifier:OnRefresh(params)
-    //         if IsServer() then
-    //             if self:GetStackeable() then
-    //                 self:SetStackCount(self:GetStackCount() + params.damageBlock)
-    //             else
-    //                 self:SetStackCount(params.damageBlock)
-    //             end
-    //             SendOverheadShieldMessage(self:GetParent(), params.damageBlock)
-    //         end
-    //     end
-    //     function modifier:OnDestroy()
-    //         if IsServer() then
-    //             self:InformClient()
-    //         end
-    //         if onDestroy then onDestroy(self) end
-    //     end
-    //     function modifier:OnStackCountChanged(old)
-    //         if IsServer() then
-    //             self:InformClient()
-    //             if self:GetStackCount() < 0 then
-    //                 self:Destroy()
-    //             end
-    //         end
-    //     end
-    DeclareFunctions() {
-        return [ModifierFunction.INCOMING_PHYSICAL_DAMAGE_PERCENTAGE];
+    OnRefresh(params: { damageBlock: number }) {
+        if (IsServer()) {
+            if (this.GetStackeable()) {
+                this.SetStackCount(this.GetStackCount() + params.damageBlock);
+            } else {
+                this.SetStackCount(params.damageBlock);
+            }
+            // SendOverheadShieldMessage(self:GetParent(), params.damageBlock)
+        }
     }
-    //     function modifier:GetModifierIncomingDamage_Percentage(params)
-    //         for key, value in pairs(CustomEntitiesLegacy:GetAllModifiersWithType(self:GetParent(), MODIFIER_TYPES.SHIELD)) do
-    //             if value == self:GetName() then
-    //                 CustomEntitiesLegacy:SetBeenHurt(self:GetParent(), true)
-    //                 local shield_points = self:GetStackCount() - params.damage
-    //                 if shield_points <= 0 then
-    //                     local reduction = 100 - (100 * shield_points * (-1) / params.damage)
-    //                     self:Destroy()
-    //                     return -reduction
-    //                 end
-    //                 self:SetStackCount(shield_points)
-    //                 return -100
-    //             end
-    //             return 0
-    //         end
+
+    // function modifier:OnDestroy()
+    //     if IsServer() then
+    //         self:InformClient()
     //     end
+    //     if onDestroy then onDestroy(self) end
+    // end
+
+    OnStackCountChanged() {
+        if (IsServer()) {
+            // self:InformClient()
+            if (this.GetStackCount() <= 0) {
+                this.Destroy();
+            }
+        }
+    }
+
     //     function modifier:InformClient()
     //         CustomEntitiesLegacy:SendDataToClient(self:GetParent())
     //         local alliance = CustomEntitiesLegacy:GetAlliance(self:GetParent())
@@ -61,9 +45,8 @@ export class ModifierShield extends CustomModifier<undefined> {
     //             alliance:SendDataToClient()
     //         end
     //     end
-    //     function modifier:GetStackeable()
-    //         if getStackeable then return getStackeable(self) end
-    //         return false
-    //     end
-    //     Modifiers.StartTracking(modifier, MODIFIER_TYPES.SHIELD)
+
+    GetStackeable() {
+        return false;
+    }
 }

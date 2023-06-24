@@ -81,7 +81,7 @@ class ModifierPuckUltimateThinker extends ModifierThinker {
                     y: this.parent.GetAbsOrigin().y,
                     z: this.parent.GetAbsOrigin().z
                 });
-                ModifierStun.apply(enemy, this.caster, this.ability, {
+                ModifierStun.apply(enemy, this.caster, undefined, {
                     duration: this.Value("initial_stun_duration")
                 });
             }
@@ -173,7 +173,7 @@ class ModifierPuckUltimateCheck extends CustomModifier {
                     damage_type: DamageTypes.PURE
                 });
                 this.parent.RemoveModifierByName(ModifierPuckUltimate.name);
-                ModifierStun.apply(this.parent, this.caster, this.ability, {
+                ModifierStun.apply(this.parent, this.caster, undefined, {
                     duration: this.Value("snap_stun_duration")
                 });
                 EmitSoundOn("Hero_Puck.Dream_Coil_Snap", this.parent);

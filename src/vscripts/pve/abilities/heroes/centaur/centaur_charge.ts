@@ -75,7 +75,7 @@ class ModifierCentaurChargeDisplacement extends ModifierDisplacement {
                         maxSlowPct: 100
                     });
 
-                    ModifierStun.apply(unit, this.caster, this.ability, { duration: 0.5 });
+                    ModifierStun.apply(unit, this.caster, undefined, { duration: 0.5 });
                 }
             }
         }

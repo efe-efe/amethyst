@@ -104,7 +104,7 @@ class ModifierStormSecondAttack extends CustomModifier {
         EFX("particles/econ/events/ti9/shivas_guard_ti9_impact.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
             release: true
         });
-        ModifierStun.apply(this.parent, this.parent, this.ability, { duration: this.Value("stun_duration") });
+        ModifierStun.apply(this.parent, this.parent, undefined, { duration: this.Value("stun_duration") });
     }
     // function modifier_storm_second_attack:GetStatusLabel() return "Unstable Energy" }
     // function modifier_storm_second_attack:GetStatusPriority() return 4 }

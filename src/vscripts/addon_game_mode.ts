@@ -28,6 +28,7 @@ import { UpgradeTypes } from "./upgrades/common";
 import { RewardsManager } from "./rewards/rewards";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { updateProjectiles } from "./projectiles";
+import { ModifierDamageVFX } from "./modifiers/modifier_damage_vfx";
 
 declare global {
     interface CDOTAGameRules {
@@ -370,15 +371,12 @@ export class GameMode {
         LinkLuaModifier("wall_base", "modifiers/wall_base.lua", LuaModifierMotionType.NONE);
         LinkLuaModifier("radius_marker_thinker", "modifiers/radius_marker_thinker.lua", LuaModifierMotionType.NONE);
 
-        LinkLuaModifier("modifier_generic_fading_haste", "modifiers/generic/modifier_generic_fading_haste", LuaModifierMotionType.NONE);
         LinkLuaModifier(
             "modifier_generic_provides_vision",
             "modifiers/generic/modifier_generic_provides_vision",
             LuaModifierMotionType.NONE
         );
         LinkLuaModifier("modifier_generic_knockback", "modifiers/generic/modifier_generic_knockback", LuaModifierMotionType.BOTH);
-        LinkLuaModifier("modifier_generic_invencible", "modifiers/generic/modifier_generic_invencible", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_generic_confuse", "modifiers/generic/modifier_generic_confuse", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_fear", "modifiers/generic/modifier_generic_fear", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_phased", "modifiers/generic/modifier_generic_phased", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_flying", "modifiers/generic/modifier_generic_flying", LuaModifierMotionType.NONE);
@@ -389,22 +387,12 @@ export class GameMode {
         );
         LinkLuaModifier("modifier_generic_change_ms", "modifiers/generic/modifier_generic_change_ms", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_visible", "modifiers/generic/modifier_visible", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_casting", "modifiers/modifier_casting", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_damage_fx", "modifiers/generic/modifier_damage_fx", LuaModifierMotionType.NONE);
-        LinkLuaModifier("modifier_shield", "modifiers/generic/modifier_shield", LuaModifierMotionType.NONE);
 
         LinkLuaModifier("modifier_hide_bar", "modifiers/generic/modifier_hide_bar", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_hero_movement", "modifiers/generic/modifier_hero_movement", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_tower_idle", "modifiers/generic/modifier_tower_idle", LuaModifierMotionType.NONE);
 
         if (this.IsPVE()) {
-            LinkLuaModifier("modifier_generic_npc_shield", "modifiers/generic/modifier_generic_npc_shield", LuaModifierMotionType.NONE);
-            LinkLuaModifier(
-                "modifier_generic_npc_mini_stun",
-                "modifiers/generic/modifier_generic_npc_mini_stun",
-                LuaModifierMotionType.NONE
-            );
-
             const favorsPath = "modifiers/upgrades/favors/";
             const itemsPath = "modifiers/upgrades/items/";
             const shardsPath = "modifiers/upgrades/shards/";
@@ -720,7 +708,7 @@ export class GameMode {
         }
 
         if (victim && victim.IsBaseNPC()) {
-            victim.AddNewModifier(victim, undefined, "modifier_damage_fx", {
+            ModifierDamageVFX.apply(victim, victim, undefined, {
                 duration: 0.1
             });
             Timers.CreateTimer(0.05, function () {

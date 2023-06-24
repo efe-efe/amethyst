@@ -6,6 +6,7 @@ import { Reward } from "../../rewards/rewards";
 import { CustomEvents } from "../../custom_events";
 import { registerModifier } from "../../lib/dota_ts_adapter";
 import { CustomModifier } from "../../abilities/framework/custom_modifier";
+import { ModifierBase } from "../../modifiers/modifier_base";
 
 const DEBUG = false;
 
@@ -53,6 +54,7 @@ class ModifierCombineUtilVFX extends CustomModifier<undefined> {
 }
 export default class CustomNPC extends UnitEntity {
     constructor(unit: CDOTA_BaseNPC) {
+        ModifierBase.apply(unit, unit, undefined, {});
         CustomEntitiesLegacy.Initialize(unit, !unit.IsRealHero()); //Need this for SetParent bullshit
         super({ unit });
         customEntities.Disarm(this.unit);

@@ -32,7 +32,7 @@ class ItemBasher extends CustomAbility {
             origin,
             radius,
             effect: (target: CDOTA_BaseNPC) => {
-                ModifierStun.apply(target, this.caster, this, { duration: duration });
+                ModifierStun.apply(target, this.caster, undefined, { duration: duration });
                 ApplyDamage({
                     victim: target,
                     attacker: this.caster,

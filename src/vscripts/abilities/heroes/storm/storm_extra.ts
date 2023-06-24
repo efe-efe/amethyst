@@ -106,7 +106,7 @@ export class ModifierStormExtraDisplacement extends ModifierDisplacement {
         }
 
         if (this.GetStackCount() == 2) {
-            ModifierStun.apply(target, this.parent, this.ability, { duration: this.stunDuration });
+            ModifierStun.apply(target, this.parent, undefined, { duration: this.stunDuration });
         }
 
         ApplyDamage({

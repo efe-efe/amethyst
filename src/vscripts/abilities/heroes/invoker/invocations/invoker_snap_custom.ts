@@ -93,7 +93,7 @@ class ModifierInvokerSnap extends CustomModifier {
             this.inCooldown = true;
             this.StartIntervalThink(this.Value("off_time"));
 
-            ModifierStun.apply(this.parent, this.caster, this.ability, {
+            ModifierStun.apply(this.parent, this.caster, undefined, {
                 duration: this.Value("stun_duration")
             });
             this.PlayEffects(event.attacker);

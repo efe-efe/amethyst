@@ -99,7 +99,7 @@ class ModifierQueenDodge extends ModifierCombatEvents {
     OnHit() {
         if (IsServer()) {
             this.Destroy();
-            ModifierStun.apply(this.parent, this.parent, this.ability, { duration: 2.5 });
+            ModifierStun.apply(this.parent, this.parent, undefined, { duration: 2.5 });
             return true;
         }
 

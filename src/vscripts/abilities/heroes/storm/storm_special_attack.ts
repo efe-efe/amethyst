@@ -100,7 +100,7 @@ class ModifierStormSpecialAttackThinker extends ModifierThinker {
                 originY: this.origin.y
             });
 
-            ModifierStun.apply(enemy, this.caster, this.ability, { duration: 0.1 });
+            ModifierStun.apply(enemy, this.caster, undefined, { duration: 0.1 });
 
             if (!isObstacle(enemy) && !isGem(enemy)) {
                 if (this.ability.GetLevel() >= 2) {

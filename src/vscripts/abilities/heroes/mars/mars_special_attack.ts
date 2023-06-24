@@ -136,7 +136,7 @@ export class ModifierMarsSpecialAttack extends ModifierDisplacement {
                 });
 
                 if (this.ability.GetLevel() >= 2) {
-                    ModifierStun.apply(this.parent, this.caster, this.ability, { duration: this.Value("debuff_duration") });
+                    ModifierStun.apply(this.parent, this.caster, undefined, { duration: this.Value("debuff_duration") });
                 } else {
                     ModifierRoot.apply(this.parent, this.caster, this.ability, { duration: this.Value("debuff_duration") });
                 }

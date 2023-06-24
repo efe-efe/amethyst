@@ -31,7 +31,7 @@ export class ModifierSapphire extends ModifierShield {
     }
 
     DeclareFunctions() {
-        return [...super.DeclareFunctions(), ModifierFunction.TOOLTIP];
+        return [ModifierFunction.TOOLTIP];
     }
 
     OnTooltip() {

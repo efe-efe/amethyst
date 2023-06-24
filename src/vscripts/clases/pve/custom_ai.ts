@@ -1,3 +1,7 @@
+import { ModifierMiniStun } from "../../modifiers/modifier_mini_stun";
+import { ModifierNPCShield } from "../../modifiers/modifier_npc_shield";
+import { ModifierShield } from "../../modifiers/modifier_shield";
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 enum CustomAIState {
     IDLE = 0,
@@ -84,10 +88,10 @@ function CustomAI(name: string, origin: Vector, options: CustomAIOptions): Custo
     let followTarget: CDOTA_BaseNPC | undefined;
 
     if (options.shield) {
-        unit.AddNewModifier(unit, undefined, "modifier_generic_npc_shield", {
-            damage_block: unit.GetMaxHealth()
+        ModifierNPCShield.apply(unit, unit, undefined, {
+            damageBlock: unit.GetMaxHealth()
         });
-        unit.AddNewModifier(unit, undefined, "modifier_generic_npc_mini_stun", {});
+        ModifierMiniStun.apply(unit, unit, undefined, {});
     }
 
     ListenToGameEvent("entity_hurt", event => OnUnitHurt(event), undefined);

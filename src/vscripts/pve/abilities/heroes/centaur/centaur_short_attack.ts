@@ -51,7 +51,7 @@ class CentaurShortAttack extends CustomAbility {
                 damage_type: DamageTypes.PURE
             });
 
-            ModifierStun.apply(enemy, this.caster, this, { duration: 0.5 });
+            ModifierStun.apply(enemy, this.caster, undefined, { duration: 0.5 });
         }
 
         EFX("particles/econ/items/centaur/centaur_ti6/centaur_ti6_warstomp.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {

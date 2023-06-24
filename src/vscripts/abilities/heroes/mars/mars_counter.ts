@@ -187,7 +187,7 @@ class ModifierMarsCounterDisplacement extends ModifierDisplacement {
         super.OnDestroy();
 
         if (IsServer()) {
-            ModifierStun.apply(this.parent, this.caster, this.ability, { duration: this.Value("meele_stun_duration") });
+            ModifierStun.apply(this.parent, this.caster, undefined, { duration: this.Value("meele_stun_duration") });
         }
     }
 

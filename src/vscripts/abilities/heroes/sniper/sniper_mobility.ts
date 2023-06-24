@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
+import { ModifierInvencible } from "../../../modifiers/modifier_invencible";
 import { clampPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { SniperBasicAttack } from "./sniper_basic_attack";
@@ -32,14 +33,9 @@ class SniperMobility extends CustomAbility {
             peak: 400
         });
 
-        // caster:AddNewModifier(
-        //     caster, -- player source
-        //     self, -- ability source
-        //     "modifier_generic_invencible", -- modifier name
-        //     {
-        // 		duration = 0.5,
-        //     }
-        // )
+        ModifierInvencible.apply(this.caster, this.caster, this, {
+            duration: 0.5
+        });
 
         ModifierSniperSpecialAttackThinker.createThinker(this.caster, this, origin, {
             duration: this.GetSpecialValueFor("duration"),

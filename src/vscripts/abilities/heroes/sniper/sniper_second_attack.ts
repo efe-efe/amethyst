@@ -138,7 +138,7 @@ class SniperSecondAttack extends SniperSecondAttackCommon {
                     damage_type: DamageTypes.MAGICAL
                 });
 
-                ModifierStun.apply(unit, projectile.getSource(), this, { duration: stunDuration });
+                ModifierStun.apply(unit, projectile.getSource(), undefined, { duration: stunDuration });
                 this.PlayEffectsOnHit(unit);
             },
             onFinish: projectile => {

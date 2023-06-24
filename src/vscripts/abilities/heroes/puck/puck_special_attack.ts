@@ -96,7 +96,7 @@ class ModifierPuckSpecialAttack extends ModifierThinker {
             radius: this.radius,
             effect: target => {
                 if (this.ability.GetLevel() >= 2) {
-                    ModifierStun.apply(target, this.caster, this.ability, { duration: this.stunDuration });
+                    ModifierStun.apply(target, this.caster, undefined, { duration: this.stunDuration });
                 }
 
                 if (this.silenceDuration) {
