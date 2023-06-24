@@ -377,7 +377,6 @@ export class GameMode {
             LuaModifierMotionType.NONE
         );
         LinkLuaModifier("modifier_generic_knockback", "modifiers/generic/modifier_generic_knockback", LuaModifierMotionType.BOTH);
-        LinkLuaModifier("modifier_generic_root", "modifiers/generic/modifier_generic_root", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_invencible", "modifiers/generic/modifier_generic_invencible", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_confuse", "modifiers/generic/modifier_generic_confuse", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_fear", "modifiers/generic/modifier_generic_fear", LuaModifierMotionType.NONE);

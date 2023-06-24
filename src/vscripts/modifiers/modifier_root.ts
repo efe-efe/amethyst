@@ -6,9 +6,11 @@ export class ModifierRoot extends CustomModifier {
     IsDebuff() {
         return true;
     }
+
     IsStunDebuff() {
         return true;
     }
+
     CheckState() {
         return {
             [ModifierState.ROOTED]: true
