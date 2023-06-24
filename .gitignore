@@ -408,3 +408,8 @@ game/scripts/vscripts/items/item_salve_custom.lua
 game/scripts/vscripts/items/item_shadow_blade_custom.lua
 game/scripts/vscripts/items/item_shield_orb.lua
 game/scripts/vscripts/items/item_vitality_custom.lua
+game/scripts/vscripts/modifiers/modifier_damage_vfx.lua
+game/scripts/vscripts/modifiers/modifier_invencible.lua
+game/scripts/vscripts/modifiers/modifier_mini_stun.lua
+game/scripts/vscripts/modifiers/modifier_npc_shield.lua
+game/scripts/vscripts/modifiers/modifier_base.lua
