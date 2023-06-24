@@ -5,7 +5,7 @@
 		"ID"							"2020"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_faerie_fire"	
-        "ScriptFile"                    "items/item_faerie_custom/item_faerie_custom.lua"
+        "ScriptFile"                    "items/item_faerie_custom"
 
 		"ItemCost"						"1"
 		"ItemShopTags"					"consumable"

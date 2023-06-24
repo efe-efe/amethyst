@@ -5,7 +5,7 @@
 		"ID"							"2010"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_orchid"	
-        "ScriptFile"                    "items/item_orchid_custom/item_orchid_custom.lua"
+        "ScriptFile"                    "items/item_orchid_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

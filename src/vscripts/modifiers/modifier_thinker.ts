@@ -1,4 +1,4 @@
-import { CustomAbility } from "../abilities/framework/custom_ability";
+import { CustomAbility, CustomItem } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
@@ -14,7 +14,7 @@ export type ModifierThinkerParams = {
 };
 
 @registerModifier()
-export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbility> extends CustomModifier<A> {
+export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbility | CustomItem> extends CustomModifier<A> {
     initialized = false;
     delayTime!: number;
     radius!: number;

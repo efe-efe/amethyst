@@ -5,7 +5,7 @@
 		"ID"							"2029"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_clarity"	
-        "ScriptFile"                    "items/item_clarity_custom/item_clarity_custom.lua"
+        "ScriptFile"                    "items/item_clarity_custom"
 
 		"ItemCost"						"1"
 		"ItemShopTags"					"consumable"

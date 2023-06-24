@@ -5,7 +5,7 @@
 		"ID"							"2016"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_butterfly"	
-        "ScriptFile"                    "items/item_butterfly_custom/item_butterfly_custom.lua"
+        "ScriptFile"                    "items/item_butterfly_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

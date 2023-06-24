@@ -5,7 +5,7 @@
 		"ID"							"2015"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_diffusal_blade"	
-        "ScriptFile"                    "items/item_diffusal_custom/item_diffusal_custom.lua"
+        "ScriptFile"                    "items/item_diffusal_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

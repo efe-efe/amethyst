@@ -1,5 +1,5 @@
 import { BaseModifier, BaseModifierMotionHorizontal, BaseModifierMotionVertical, BaseModifierMotionBoth } from "../../lib/dota_ts_adapter";
-import { CustomAbility } from "./custom_ability";
+import { CustomAbility, CustomItem } from "./custom_ability";
 
 type OnCreatedCustomParams<T extends typeof BaseModifier> = Parameters<InstanceType<T>["OnCreated"]>[0];
 type OnCreatedParams<T extends typeof BaseModifier> = OnCreatedCustomParams<T> extends undefined
@@ -46,7 +46,7 @@ function createThinker<T extends typeof BaseModifier>(
     return [thinker, modifier];
 }
 
-export class CustomModifier<A extends CDOTABaseAbility | undefined = CustomAbility> extends BaseModifier {
+export class CustomModifier<A extends CDOTABaseAbility | undefined = CustomAbility | CustomItem> extends BaseModifier {
     caster = this.GetCaster() as CDOTA_BaseNPC;
     parent = this.GetParent();
     ability = this.GetAbility() as A;

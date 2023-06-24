@@ -5,7 +5,7 @@
 		"ID"							"2027"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_boots"	
-        "ScriptFile"                    "items/item_boots_custom/item_boots_custom.lua"
+        "ScriptFile"                    "items/item_boots_custom"
 
 		"ItemCost"						"2"
 		"ItemShopTags"					"consumable"

@@ -5,7 +5,7 @@
 		"ID"							"2012"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_rod_of_atos"	
-        "ScriptFile"                    "items/item_atos_custom/item_atos_custom"
+        "ScriptFile"                    "items/item_atos_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

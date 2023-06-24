@@ -1,9 +1,9 @@
-import { CustomAbility } from "../abilities/framework/custom_ability";
+import { CustomAbility, CustomItem } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
 @registerModifier()
-export class ModifierBanish<A extends CDOTABaseAbility | undefined = CustomAbility> extends CustomModifier<A> {
+export class ModifierBanish<A extends CDOTABaseAbility | undefined = CustomAbility | CustomItem> extends CustomModifier<A> {
     originalScale!: number;
 
     OnCreated() {

@@ -6,7 +6,7 @@
 		"ID"							"2022"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_energy_booster"	
-        "ScriptFile"                    "items/item_energy_custom/item_energy_custom.lua"
+        "ScriptFile"                    "items/item_energy_custom"
 
 		"ItemCost"						"2"
 		"ItemShopTags"					"consumable"

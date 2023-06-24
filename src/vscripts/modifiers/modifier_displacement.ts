@@ -1,4 +1,4 @@
-import { CustomAbility } from "../abilities/framework/custom_ability";
+import { CustomAbility, CustomItem } from "../abilities/framework/custom_ability";
 import { CustomModifierMotionBoth } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
@@ -20,7 +20,7 @@ export type DisplacementParams = {
 };
 
 @registerModifier()
-export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = CustomAbility> extends CustomModifierMotionBoth<A> {
+export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = CustomAbility | CustomItem> extends CustomModifierMotionBoth<A> {
     distance!: number;
     speed!: number;
     peak!: number;

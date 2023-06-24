@@ -5,7 +5,7 @@
 		"ID"							"2017"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_mekansm"	
-        "ScriptFile"                    "items/item_mekansm_custom/item_mekansm_custom.lua"
+        "ScriptFile"                    "items/item_mekansm_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

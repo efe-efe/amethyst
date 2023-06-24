@@ -5,7 +5,7 @@
 		"ID"							"2025"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_yasha"	
-        "ScriptFile"                    "items/item_yasha_custom/item_yasha_custom.lua"
+        "ScriptFile"                    "items/item_yasha_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

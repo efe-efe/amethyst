@@ -5,7 +5,7 @@
 		"ID"							"2009"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_moon_shard"	
-        "ScriptFile"                    "items/item_moon_custom/item_moon_custom.lua"
+        "ScriptFile"                    "items/item_moon_custom"
 
 		"ItemCost"						"2"
 		"ItemShopTags"					"consumable"

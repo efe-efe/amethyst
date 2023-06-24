@@ -21,18 +21,18 @@ class RadiantCreepHealAura extends CustomAbility {
         const radius = this.GetSpecialValueFor("radius");
         const heal = this.GetSpecialValueFor("heal");
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const allies = CustomEntitiesLegacy.FindUnitsInRadius(
             this.caster,
             origin,
             radius,
-            UnitTargetTeam.ENEMY,
+            UnitTargetTeam.FRIENDLY,
             UnitTargetType.HERO + UnitTargetType.BASIC,
             UnitTargetFlags.NONE,
             FindOrder.ANY
         );
 
-        for (const enemy of enemies) {
-            enemy.Heal(heal, this);
+        for (const ally of allies) {
+            ally.Heal(heal, this);
         }
 
         createRadiusMarker(this.caster, this.caster.GetAbsOrigin(), radius, "public", 0.15);

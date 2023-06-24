@@ -5,7 +5,7 @@
 		"ID"							"2011"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_nullifier"	
-        "ScriptFile"                    "items/item_nullifier_custom/item_nullifier_custom.lua"
+        "ScriptFile"                    "items/item_nullifier_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

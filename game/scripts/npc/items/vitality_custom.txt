@@ -6,7 +6,7 @@
 		"ID"							"2024"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_vitality_booster"	
-        "ScriptFile"                    "items/item_vitality_custom/item_vitality_custom.lua"
+        "ScriptFile"                    "items/item_vitality_custom"
 
 		"ItemCost"						"2"
 		"ItemShopTags"					"consumable"

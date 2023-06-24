@@ -7,6 +7,6 @@
         "AbilityTextureName"            "item_mini_haste"
         "AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
         "Model"							"models/props_items/bloodstone.vmdl"
-        "ScriptFile"                    "items/item_death_orb/item_death_orb.lua"
+        "ScriptFile"                    "items/item_death_orb"
     }    
 }

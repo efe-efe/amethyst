@@ -5,7 +5,7 @@
 		"ID"							"2008"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_blink"	
-        "ScriptFile"                    "items/item_blink_custom/item_blink_custom.lua"
+        "ScriptFile"                    "items/item_blink_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

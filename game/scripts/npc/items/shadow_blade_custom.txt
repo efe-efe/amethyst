@@ -6,7 +6,7 @@
 		"ID"							"2019"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_invis_sword"	
-        "ScriptFile"                    "items/item_shadow_blade_custom/item_shadow_blade_custom.lua"
+        "ScriptFile"                    "items/item_shadow_blade_custom"
 
 		"ItemCost"						"3"
 		"ItemShopTags"					"consumable"

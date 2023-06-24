@@ -5,7 +5,7 @@
 		"ID"							"2021"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_enchanted_mango"	
-        "ScriptFile"                    "items/item_mango_custom/item_mango_custom.lua"
+        "ScriptFile"                    "items/item_mango_custom"
 
 		"ItemCost"						"1"
 		"ItemShopTags"					"consumable"

@@ -603,8 +603,9 @@ export class GameMode {
             const energyCost = CustomAbilitiesLegacy.GetEnergyCost(ability);
             const energy = CustomEntitiesLegacy.GetEnergy(caster);
 
-            if (energyCost > energy) {
-                CustomGameEventManager.Send_ServerToAllClients("not_enough_energy", {} as never);
+            const player = PlayerResource.GetPlayer(event.issuer_player_id_const);
+            if (energyCost > energy && player) {
+                CustomGameEventManager.Send_ServerToPlayer(player, "not_enough_energy", {} as never);
                 return false;
             }
 

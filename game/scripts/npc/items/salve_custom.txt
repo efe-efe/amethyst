@@ -5,7 +5,7 @@
 		"ID"							"2028"
 		"BaseClass"						"item_lua"	
 		"AbilityTextureName" 			"item_flask"	
-        "ScriptFile"                    "items/item_salve_custom/item_salve_custom.lua"
+        "ScriptFile"                    "items/item_salve_custom"
 
 		"ItemCost"						"1"
 		"ItemShopTags"					"consumable"
