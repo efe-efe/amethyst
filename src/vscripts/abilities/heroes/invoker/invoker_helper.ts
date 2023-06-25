@@ -32,7 +32,7 @@ export class ModifierInvokerHelper extends ModifierCharges {
         super.OnAbilityFullyCast(event);
 
         const orb = abilityToOrb[event.ability.GetName()];
-        if (orb) {
+        if (orb != undefined) {
             this.RemoveCharge();
             this.AddOrb(orb.type);
             this.Update();
