@@ -59,17 +59,17 @@ class ModifierPuckCounter extends ModifierBanish {
         return [ModifierFunction.ON_ORDER];
     }
 
-    OnOrder(params) {
-        // if (params.unit == this.parent) {
-        //     if (
-        //         params.order_type == DOTA_UNIT_ORDER_STOP ||
-        //         params.order_type == DOTA_UNIT_ORDER_HOLD_POSITION ||
-        //         params.order_type == DOTA_UNIT_ORDER_CAST_POSITION ||
-        //         params.order_type == DOTA_UNIT_ORDER_CAST_NO_TARGET
-        //     ) {
-        //         this.Destroy();
-        //     }
-        // }
+    OnOrder(event: ModifierUnitEvent) {
+        if (IsServer() && event.unit == this.parent) {
+            if (
+                event.order_type == UnitOrder.STOP ||
+                event.order_type == UnitOrder.HOLD_POSITION ||
+                event.order_type == UnitOrder.CAST_POSITION ||
+                event.order_type == UnitOrder.CAST_NO_TARGET
+            ) {
+                this.Destroy();
+            }
+        }
     }
 
     CheckState() {
