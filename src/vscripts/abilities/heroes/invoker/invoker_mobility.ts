@@ -85,7 +85,7 @@ class InvokerMobility extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_mobility_thinker" })
+@registerModifier()
 class ModifierInvokerMobilityThinker extends ModifierThinker {
     particleId?: ParticleID;
 
@@ -161,7 +161,7 @@ class ModifierInvokerMobilityThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_mobility_banish" })
+@registerModifier()
 class ModifierInvokerMobilityBanish extends ModifierBanish {
     CheckState() {
         return {

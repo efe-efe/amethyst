@@ -26,7 +26,7 @@ class InvokerWalk extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_walk_custom" })
+@registerModifier()
 class ModifierInvokerWalk extends CustomModifier {
     IsHidden() {
         return false;

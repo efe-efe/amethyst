@@ -10,7 +10,7 @@ class InvokerAlacrity extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_alacrity_custom" })
+@registerModifier()
 class ModifierInvokerAlacrity extends CustomModifier {
     OnCreated() {
         if (IsServer()) {

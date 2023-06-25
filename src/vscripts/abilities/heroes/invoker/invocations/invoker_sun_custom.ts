@@ -25,7 +25,7 @@ class InvokerSun extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_sun_custom_thinker" })
+@registerModifier()
 class ModifierInvokerSunThiner extends ModifierThinker {
     particleId?: ParticleID;
 

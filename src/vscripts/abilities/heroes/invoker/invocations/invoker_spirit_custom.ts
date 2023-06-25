@@ -31,7 +31,7 @@ class InvokerSpirit extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_spirit_custom" })
+@registerModifier()
 class ModifierInvokerSpirit extends CustomModifier {
     particleId?: ParticleID;
 

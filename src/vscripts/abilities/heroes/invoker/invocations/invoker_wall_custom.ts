@@ -16,7 +16,7 @@ class InvokerWall extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_ice_wall_custom" })
+@registerModifier()
 class ModifierInvokerWall extends CustomModifier {
     OnCreated() {
         if (IsServer()) {
@@ -38,7 +38,7 @@ class ModifierInvokerWall extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_ice_wall_custom_thinker" })
+@registerModifier()
 class ModifierInvokerWallThinker extends CustomModifier {
     origin!: Vector;
     destination!: Vector;

@@ -70,7 +70,7 @@ class InvokerTornado extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_tornado_custom_displacement" })
+@registerModifier()
 class ModifierInvokerTornado extends ModifierDisplacement {
     particleId?: ParticleID;
 

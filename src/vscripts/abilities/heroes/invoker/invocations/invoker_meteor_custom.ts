@@ -44,7 +44,7 @@ class InvokerMeteor extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_meteor_custom_impact_thinker" })
+@registerModifier()
 class ModifierInvokerMeteorImpactThinker extends ModifierThinker {
     direction!: Vector;
 
@@ -148,7 +148,7 @@ class ModifierInvokerMeteorImpactThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_meteor_custom_thinker" })
+@registerModifier()
 class ModifierInvokerMeteorThinker extends CustomModifier {
     origin!: Vector;
     particleId?: ParticleID;

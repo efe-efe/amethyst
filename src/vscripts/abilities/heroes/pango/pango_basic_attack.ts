@@ -131,7 +131,7 @@ export class PangoBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_pango_basic_attack_stacks" })
+@registerModifier()
 export class ModifierPangoStacks extends CustomModifier {
     particleIds: ParticleID[] = [];
 

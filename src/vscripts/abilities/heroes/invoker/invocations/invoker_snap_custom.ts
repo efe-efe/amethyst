@@ -69,7 +69,7 @@ class InvokerSnap extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_snap_custom" })
+@registerModifier()
 class ModifierInvokerSnap extends CustomModifier {
     inCooldown = false;
 

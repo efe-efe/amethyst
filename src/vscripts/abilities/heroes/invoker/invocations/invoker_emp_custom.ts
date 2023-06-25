@@ -27,7 +27,7 @@ class InvokerEMP extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_emp_custom_thinker" })
+@registerModifier()
 class ModifierInvokerEMP extends ModifierThinker {
     particleId?: ParticleID;
 

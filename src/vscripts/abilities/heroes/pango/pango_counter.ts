@@ -14,7 +14,7 @@ class PangoCounter extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_pango_counter_countering" })
+@registerModifier()
 class ModifierPangoCounter extends ModifierCounter {
     OnDestroy() {
         super.OnDestroy();

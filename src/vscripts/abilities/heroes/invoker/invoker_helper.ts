@@ -114,7 +114,7 @@ abstract class ModifierInvokerOrb extends CustomModifier<undefined> {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_orb_quas" })
+@registerModifier()
 class ModifierInvokerQuas extends ModifierInvokerOrb {
     GetParticleName() {
         return "particles/units/heroes/hero_invoker/invoker_quas_orb.vpcf";
@@ -133,7 +133,7 @@ class ModifierInvokerQuas extends ModifierInvokerOrb {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_orb_exort" })
+@registerModifier()
 class ModifierInvokerExort extends ModifierInvokerOrb {
     GetParticleName() {
         return "particles/units/heroes/hero_invoker/invoker_exort_orb.vpcf";
@@ -152,7 +152,7 @@ class ModifierInvokerExort extends ModifierInvokerOrb {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_orb_wex" })
+@registerModifier()
 class ModifierInvokerWex extends ModifierInvokerOrb {
     OnCreated(params: { index: number }) {
         super.OnCreated(params);

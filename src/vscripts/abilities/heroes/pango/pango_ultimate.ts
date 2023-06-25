@@ -68,7 +68,7 @@ class PangoUltimate extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_pango_ultimate_displacement" })
+@registerModifier()
 class ModifierPangoUltimate extends ModifierDisplacement {
     particleId?: ParticleID;
     bounces = 5;
@@ -182,7 +182,7 @@ class ModifierPangoUltimate extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_pango_mobility_displacement_enemy" })
+@registerModifier()
 class ModifierPangoUltimateDisplacement extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];

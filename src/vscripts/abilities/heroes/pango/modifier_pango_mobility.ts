@@ -4,7 +4,7 @@ import { direction2D } from "../../../util";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPangoRollEndAnimation } from "./modifier_pango_roll_end_animation";
 
-@registerModifier({ customNameForI18n: "modifier_pango_mobility" })
+@registerModifier()
 export class ModifierPangoMobility extends CustomModifier {
     particleId?: ParticleID;
 
@@ -138,7 +138,7 @@ export class ModifierPangoMobility extends CustomModifier {
 // Modifiers.Status(modifier_pango_mobility)
 // Modifiers.MoveForced(modifier_pango_mobility)
 
-@registerModifier({ customNameForI18n: "modifier_pango_mobility_displacement" })
+@registerModifier()
 class ModifierPangoMobilityDisplacement extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];
@@ -160,7 +160,7 @@ class ModifierPangoMobilityDisplacement extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_pango_mobility_marker" })
+@registerModifier()
 class ModifierPangoMobilityMark extends CustomModifier {
     IsPermanent() {
         return true;

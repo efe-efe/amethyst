@@ -75,7 +75,7 @@ class InvokerBlast extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_blast_custom_displacement" })
+@registerModifier()
 class ModifierInvokerBlastDisplacement extends ModifierDisplacement {
     particleId?: ParticleID;
     OnCreated(params: DisplacementParams) {

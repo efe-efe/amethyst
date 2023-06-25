@@ -99,7 +99,7 @@ export class PangoSpecialAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_pango_special_attack_displacement" })
+@registerModifier()
 class ModifierPangoSpecialAttack extends ModifierDisplacement<PangoSpecialAttack> {
     OnDestroy() {
         super.OnDestroy();

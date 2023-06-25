@@ -65,7 +65,7 @@ export class PangoSecondAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_pango_second_attack_displacement" })
+@registerModifier()
 class ModifierPangoSecondAttackDisplacement extends ModifierDisplacement<PangoSecondAttack> {
     OnDestroy() {
         super.OnDestroy();
@@ -111,7 +111,7 @@ class ModifierPangoSecondAttackDisplacement extends ModifierDisplacement<PangoSe
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_pango_second_attack_thinker" })
+@registerModifier()
 class ModifierPangoSecondAttack extends CustomModifier {
     point!: Vector;
     attacks!: number;

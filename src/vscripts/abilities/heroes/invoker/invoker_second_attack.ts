@@ -62,7 +62,7 @@ class InvokerSecondAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_second_attack" })
+@registerModifier()
 class ModifierInvokerSecondAttack extends CustomModifier {
     OnCreated() {
         if (IsServer()) {
