@@ -1,53 +1,53 @@
 import { registerModifier } from "../../lib/dota_ts_adapter";
 import { ModifierUpgrade } from "./modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_juggernaut_blade_dance_recast" })
+@registerModifier()
 export class ModifierUpgradeJuggernautBladeDanceReacast extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_juggernaut_fury_attack" })
+@registerModifier()
 export class ModifierUpgradeJuggernautFuryAttack extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_juggernaut_fury_reflects" })
+@registerModifier()
 export class ModifierUpgradeJuggernautFuryReflects extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_juggernaut_refresh_dagger" })
+@registerModifier()
 export class ModifierUpgradeJuggernautRefreshDagger extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_juggernaut_spinning_ward" })
+@registerModifier()
 export class ModifierUpgradeJuggernautSpinningWard extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_act_while_countering" })
+@registerModifier()
 export class ModifierUpgradePhantomActCounter extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_countering_stacks" })
+@registerModifier()
 export class ModifierUpgradePhantomCounterStacks extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_coup_cast_fast" })
+@registerModifier()
 export class ModifierUpgradePhantomFastCoup extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_critical_recast" })
+@registerModifier()
 export class ModifierUpgradePhantomCritRecast extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_extra_daggers" })
+@registerModifier()
 export class ModifierUpgradePhantomExtraDaggers extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_fast_daggers" })
+@registerModifier()
 export class ModifierUpgradePhantomFastDaggers extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_quick_recast" })
+@registerModifier()
 export class ModifierUpgradePhantomQuickRecast extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_strike_instant" })
+@registerModifier()
 export class ModifierUpgradeSniperStrikeInstant extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_sniper_jump_knockback" })
+@registerModifier()
 export class ModifierUpgradeSniperJumpKnockback extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_sniper_snipe_cast_fast" })
+@registerModifier()
 export class ModifierUpgradeSniperFastSnipe extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_storm_ranged_remnant" })
+@registerModifier()
 export class ModifierUpgradeStormRangedRemnant extends ModifierUpgrade {}
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_storm_unleashed_knockback" })
+@registerModifier()
 export class ModifierUpgradeStormUnleashedKnockback extends ModifierUpgrade {}

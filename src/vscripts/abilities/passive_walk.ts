@@ -9,7 +9,7 @@ class PassiveWalk extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_passive_walk" })
+@registerModifier()
 class ModifierPassiveWalk extends CustomModifier {
     direction = Vector(1, 0, 0);
     OnCreated() {

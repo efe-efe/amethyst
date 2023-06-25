@@ -12,7 +12,7 @@ class InvokerHelper extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_invoker_helper" })
+@registerModifier()
 export class ModifierInvokerHelper extends ModifierCharges {
     orbs: InvokerOrbType[] = [];
 

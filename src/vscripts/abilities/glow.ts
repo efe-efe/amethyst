@@ -9,7 +9,7 @@ class Glow extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_glow" })
+@registerModifier()
 class ModifierGlow extends CustomModifier {
     particleId?: ParticleID;
 

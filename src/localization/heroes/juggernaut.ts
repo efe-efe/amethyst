@@ -166,7 +166,7 @@ localizeModifier("modifier_juggernaut_ex_counter_recast", {
 //     ability: "juggernaut_mobility",
 //     maxStacks: 1,
 //     modifier: {
-//       name: "modifier_upgrade_juggernaut_fury_reflects",
+//       name: "ModifierUpgradeJuggernautFuryReflects",
 //     },
 //     tier: 0,
 //     type: UpgradeTypes.FAVOR,
@@ -178,7 +178,7 @@ localizeModifier("modifier_juggernaut_ex_counter_recast", {
 //     ability: "juggernaut_mobility",
 //     maxStacks: 1,
 //     modifier: {
-//       name: "modifier_upgrade_juggernaut_fury_attack",
+//       name: "ModifierUpgradeJuggernautFuryAttack",
 //     },
 //     tier: 0,
 //     type: UpgradeTypes.FAVOR,
@@ -191,7 +191,7 @@ localizeModifier("modifier_juggernaut_ex_counter_recast", {
 //     ability: "juggernaut_special_attack",
 //     maxStacks: 1,
 //     modifier: {
-//       name: "modifier_upgrade_juggernaut_refresh_dagger",
+//       name: "ModifierUpgradeJuggernautRefreshDagger",
 //     },
 //     tier: 1,
 //     type: UpgradeTypes.FAVOR,
@@ -205,7 +205,7 @@ localizeModifier("modifier_juggernaut_ex_counter_recast", {
 //     secondaryAbilities: ["juggernaut_mobility"],
 //     maxStacks: 1,
 //     modifier: {
-//       name: "modifier_upgrade_juggernaut_spinning_ward",
+//       name: "ModifierUpgradeJuggernautSpinningWard",
 //     },
 //     tier: 1,
 //     type: UpgradeTypes.FAVOR,

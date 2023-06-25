@@ -209,7 +209,7 @@ localizeModifier("modifier_phantom_counter_shield", {
 //         ability: "phantom_special_attack",
 //         maxStacks: 1,
 //         modifier: {
-//           {title:"modifier_upgrade_phantom_fast_daggers",
+//           {title:"ModifierUpgradePhantomFastDaggers",
 //         },
 //         tier: 1,
 //         type: UpgradeTypes.FAVOR,
@@ -221,7 +221,7 @@ localizeModifier("modifier_phantom_counter_shield", {
 //         ability: "phantom_ultimate",
 //         maxStacks: 1,
 //         modifier: {
-//           {title:"modifier_upgrade_phantom_coup_cast_fast",
+//           {title:"ModifierUpgradePhantomFastCoup",
 //         },
 //         tier: 1,
 //         type: UpgradeTypes.FAVOR,
@@ -234,7 +234,7 @@ localizeModifier("modifier_phantom_counter_shield", {
 //         ability: "phantom_counter",
 //         maxStacks: 1,
 //         modifier: {
-//           {title:"modifier_upgrade_phantom_countering_stacks",
+//           {title:"ModifierUpgradePhantomCounterStacks",
 //         },
 //         tier: 1,
 //         type: UpgradeTypes.FAVOR,
@@ -247,7 +247,7 @@ localizeModifier("modifier_phantom_counter_shield", {
 //         ability: "phantom_counter",
 //         maxStacks: 1,
 //         modifier: {
-//           {title:"modifier_upgrade_phantom_act_while_countering",
+//           {title:"ModifierUpgradePhantomActCounter",
 //         },
 //         tier: 1,
 //         type: UpgradeTypes.FAVOR,
@@ -260,7 +260,7 @@ localizeModifier("modifier_phantom_counter_shield", {
 //         ability: "phantom_counter",
 //         maxStacks: 1,
 //         modifier: {
-//           {title:"modifier_upgrade_phantom_strike_instant",
+//           {title:"ModifierUpgradeSniperStrikeInstant",
 //         },
 //         tier: 1,
 //         type: UpgradeTypes.FAVOR,
@@ -273,7 +273,7 @@ localizeModifier("modifier_phantom_counter_shield", {
 //         ability: "phantom_extra",
 //         maxStacks: 1,
 //         modifier: {
-//           {title:"modifier_upgrade_phantom_quick_recast",
+//           {title:"ModifierUpgradePhantomQuickRecast",
 //         },
 //         tier: 1,
 //         type: UpgradeTypes.FAVOR,

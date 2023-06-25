@@ -10,7 +10,7 @@ class PassiveShot extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_passive_shoot" })
+@registerModifier()
 class ModifierPassiveShot extends CustomModifier {
     radius = 700;
 

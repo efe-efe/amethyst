@@ -10,7 +10,7 @@ const Favors: Upgrade[] = [
         ability: "sniper_second_attack",
         maxStacks: 1,
         modifier: {
-            name: "modifier_upgrade_sniper_snipe_cast_fast"
+            name: "ModifierUpgradeSniperFastSnipe"
         },
         tier: 1,
         type: UpgradeTypes.FAVOR
@@ -22,7 +22,7 @@ const Favors: Upgrade[] = [
         ability: "sniper_mobility",
         maxStacks: 1,
         modifier: {
-            name: "modifier_upgrade_sniper_jump_knockback"
+            name: "ModifierUpgradeSniperJumpKnockback"
         },
         tier: 1,
         type: UpgradeTypes.FAVOR

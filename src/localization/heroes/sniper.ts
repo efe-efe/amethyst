@@ -92,7 +92,7 @@ localizeModifier("modifier_sniper_ultimate_channeling", {
 //         ability: "sniper_second_attack",
 //         maxStacks: 1,
 //         modifier: {
-//           {title:"modifier_upgrade_sniper_snipe_cast_fast",
+//           {title:"ModifierUpgradeSniperFastSnipe",
 //         },
 //         tier: 1,
 //         type: UpgradeTypes.FAVOR,

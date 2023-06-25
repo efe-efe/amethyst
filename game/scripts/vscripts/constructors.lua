@@ -27,7 +27,7 @@ local constructors = {
         CustomEntitiesLegacy:AddCooldown(hTarget, "modifier_storm_basic_attack_cooldown")
     end,
     ["npc_dota_hero_invoker"] = function(hTarget)
-        CustomEntitiesLegacy:AddCharges(hTarget, "modifier_invoker_helper")
+        CustomEntitiesLegacy:AddCharges(hTarget, "ModifierInvokerHelper")
         CustomEntitiesLegacy:SetEnergyPerCell(hTarget, 50)
     end,
     ["npc_dota_hero_centaur"] = function(hTarget)

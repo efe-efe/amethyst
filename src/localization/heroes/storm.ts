@@ -90,7 +90,7 @@ localizeAbility("storm_ex_mobility", {
 //       ability: "storm_mobility",
 //       maxStacks: 1,
 //       modifier: {
-//         name: "modifier_upgrade_storm_ranged_remnant",
+//         name: "ModifierUpgradeStormRangedRemnant",
 //       },
 //       tier: 0,
 //       type: UpgradeTypes.FAVOR,
@@ -102,7 +102,7 @@ localizeAbility("storm_ex_mobility", {
 //       ability: "storm_ultimate",
 //       maxStacks: 1,
 //       modifier: {
-//         name: "modifier_upgrade_storm_unleashed_knockback",
+//         name: "ModifierUpgradeStormUnleashedKnockback",
 //       },
 //       tier: 0,
 //       type: UpgradeTypes.FAVOR,
