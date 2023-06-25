@@ -1,6 +1,7 @@
 import { ModifierMiniStun } from "../../modifiers/modifier_mini_stun";
 import { ModifierNPCShield } from "../../modifiers/modifier_npc_shield";
 import { ModifierShield } from "../../modifiers/modifier_shield";
+import { distanceBetweenEntities } from "../../util";
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 enum CustomAIState {
@@ -120,7 +121,7 @@ function CustomAI(name: string, origin: Vector, options: CustomAIOptions): Custo
         const currentFollowRange = tauntedRemainingDuration > 0 ? tauntedFollowRange : followRange;
 
         if (followTarget) {
-            if (CustomEntitiesLegacy.GetDistance(unit, followTarget) <= currentFollowRange && !followTarget.IsInvisible()) {
+            if (distanceBetweenEntities(unit, followTarget) <= currentFollowRange && !followTarget.IsInvisible()) {
                 return;
             } else {
                 followTarget = undefined;
@@ -135,7 +136,7 @@ function CustomAI(name: string, origin: Vector, options: CustomAIOptions): Custo
         UpdateTarget();
 
         if (followTarget && followTarget.IsAlive()) {
-            const distance = CustomEntitiesLegacy.GetDistance(unit, followTarget);
+            const distance = distanceBetweenEntities(unit, followTarget);
             let direction = Vector(0, 0);
 
             if (followTarget.IsAlive() && distance > minFollowRange) {

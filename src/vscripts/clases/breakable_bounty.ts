@@ -1,3 +1,4 @@
+import { fullyFaceTowards, isBanished } from "../util";
 import UnitEntity from "./unit_entity";
 
 export interface BreakableBountyOptions {
@@ -37,8 +38,8 @@ export default class BreakableBounty extends UnitEntity {
     Update(): void {
         const currentAngle = (GameRules.GetGameTime() % (math.pi * 2)) * 2.0;
 
-        if (!CustomEntitiesLegacy.IsBanished(this.GetUnit()) && this.Alive()) {
-            CustomEntitiesLegacy.FullyFaceTowards(this.GetUnit(), Vector(math.cos(currentAngle), math.sin(currentAngle)));
+        if (this.Alive() && !isBanished(this.GetUnit())) {
+            fullyFaceTowards(this.GetUnit(), Vector(math.cos(currentAngle), math.sin(currentAngle)));
             this.GetUnit().SetModel(this.model);
             this.GetUnit().SetModelScale(this.scale);
         }

@@ -401,7 +401,7 @@ class ModifierPhantomCounter extends ModifierCounter {
     }
 
     GetMovementSpeedPercentage() {
-        if (ModifierUpgradePhantomActCounter.findOne(this.parent)) {
+        if (IsServer() && ModifierUpgradePhantomActCounter.findOne(this.parent)) {
             return 100;
         }
         return 0;

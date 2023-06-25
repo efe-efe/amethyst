@@ -43,12 +43,6 @@ About "IsServer()"
     IsServer() is only required inside ability_lua scripts and lua modifiers. It's used to prevent running into problems with client-server difference (because the clients know less things than the server). In datadriven RunScripts, the lua functions only execute on the server.
 
 //=================================================================================	
-To print a table
-//=================================================================================
-
-For some reason, DebugPrintTable doesn't works. Use PrintTable instead
-
-//=================================================================================	
 On setting MaxHealth
 //=================================================================================
 
@@ -78,16 +72,6 @@ Projectiles and flags
 
     Flags can be used to make projectiles hit or ignore units overriden the default behavior. For example you can hit invisible units.
 
-    
-//=================================================================================	
-Saving a modifier
-//=================================================================================
-
-    When creating a modifier with "Base_NPC:AddNewModifier()", the function actually returns the modifier itself, so you can save it as following:
-
-    local modifier = self:GetCaster():AddNewModifier(params)
-
-    And then do things like  "modifier:Destroy()"
 
 //=================================================================================	
 Attack speed
@@ -95,7 +79,7 @@ Attack speed
 
 The methods "Base_NPC:GetAttackSpeed()" and "Base_NPC:GetAttacksPerSecond()" don't work as you could expect.
 
-The method "Base_NPC:GetAttackSpeed()" should return the attack speed of a unit in seconds, meaning that the return value is the time it takes for the unit from the begining to the end of the attack. On the other side, the method "Base_NPC:GetAttacksPerSecond()" should return the number of attacks a unit can perform in one second. 
+In an ideal world, the method "Base_NPC:GetAttackSpeed()" should return the attack speed of a unit in seconds, meaning that the return value is the time it takes for the unit from the begining to the end of the attack. On the other side, the method "Base_NPC:GetAttacksPerSecond()" should return the number of attacks a unit can perform in one second. 
 
 In reality, the first one is broken, and returns the same value than the second (attacks per second). So, you have to use the next simple formula: "AttackSpeed = (1 / AttacksPerSecond)"
 

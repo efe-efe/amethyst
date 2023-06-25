@@ -355,63 +355,6 @@ function CustomEntitiesLegacy:GetAbilities(hEntity)
 	return abilities
 end
 
-function CustomEntitiesLegacy:GiveManaCustom(hEntity, fMana, bInformClient, bShowOverhead)
-	if GameRules.Addon:IsPVE() then
-		fMana = fMana / 2
-	end
-
-	if hEntity:HasModifier("modifier_sapphire") then
-		fMana = fMana * 2
-	end
-
-	hEntity:GiveMana(fMana)
-
-	if bInformClient then
-		CustomEntitiesLegacy:SendDataToClient(hEntity)
-	end
-	if bShowOverhead then
-		SendOverheadManaMessage(hEntity, fMana)
-	end
-end
-
-function CustomEntitiesLegacy:GiveManaPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
-	local mana = hEntity:GetMaxMana() * iPercentage/100
-	CustomEntitiesLegacy:GiveManaCustom(hEntity, mana, bInformClient, bShowOverhead)
-end
-
-function CustomEntitiesLegacy:GiveEnergyPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
-	local energy = CustomEntitiesLegacy:GetMaxEnergy(hEntity) * iPercentage/100
-	CustomEntitiesLegacy:GiveEnergy(hEntity, energy, bInformClient, bShowOverhead)
-end
-
-function CustomEntitiesLegacy:GiveEnergy(hEntity, iEnergy, bInformClient, bShowOverhead)
-	if GameRules.Addon:IsPVE() then
-		iEnergy = iEnergy / 2
-	end
-
-	CustomEntitiesLegacy:SetEnergy(hEntity, CustomEntitiesLegacy:GetEnergy(hEntity) + iEnergy, bInformClient)
-
-	if bShowOverhead then
-		SendOverheadEnergyMessage(hEntity, iEnergy)
-	end
-end
-
-function CustomEntitiesLegacy:GiveManaAndEnergyPercent(hEntity, iPercentage, bInformClient, bShowOverhead)
-	CustomEntitiesLegacy:GiveManaPercent(hEntity, iPercentage, false, bShowOverhead)
-	CustomEntitiesLegacy:GiveEnergyPercent(hEntity, iPercentage, false, bShowOverhead)
-	if bInformClient then
-		CustomEntitiesLegacy:SendDataToClient(hEntity)
-	end
-end
-
-function CustomEntitiesLegacy:GiveManaAndEnergy(hEntity, fAmount, bInformClient, bShowOverhead)
-	CustomEntitiesLegacy:GiveEnergy(hEntity, fAmount, false, bShowOverhead)
-	CustomEntitiesLegacy:GiveManaCustom(hEntity, fAmount, false, bShowOverhead)
-	if bInformClient then
-		CustomEntitiesLegacy:SendDataToClient(hEntity)
-	end
-end
-
 function CustomEntitiesLegacy:SetHealthCustom(hEntity, fHealth)
 	hEntity:SetHealth(fHealth)
 	CustomEntitiesLegacy:SendDataToClient(hEntity)
@@ -442,12 +385,6 @@ function CustomEntitiesLegacy:RemoveModifierTracker(hEntity, sName, iType)
 	end
 end
 
-function CustomEntitiesLegacy:GetDistance(hEntityA, hEntityB)
-	local vOriginA = hEntityA:GetAbsOrigin()
-	local vOriginB = hEntityB:GetAbsOrigin()
-	return (vOriginA - vOriginB):Length2D()
-end
-
 function CustomEntitiesLegacy:GetDirection(hEntity)
 	if CustomEntitiesLegacy:IsFeared(hEntity) then
 		local fear_modifier_name = CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, MODIFIER_TYPES.FEAR)[1]
@@ -464,10 +401,6 @@ function CustomEntitiesLegacy:GetDirection(hEntity)
 		end	
 	end
 	return hEntity.direction
-end
-
-function CustomEntitiesLegacy:IsBanished(hEntity)
-	return hEntity.banished_modifiers and #hEntity.banished_modifiers > 0
 end
 
 function CustomEntitiesLegacy:IsFeared(hEntity)
@@ -490,14 +423,6 @@ function CustomEntitiesLegacy:IsCountering(hEntity)
 	if CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.COUNTER) then
 		return true
 	end
-end
-
-function CustomEntitiesLegacy:FullyFaceTowards(hEntity, vDirection)
-	if CustomEntitiesLegacy:IsDisplacing(hEntity) then
-		return
-	end
-	hEntity:SetForwardVector(vDirection)
-	hEntity:FaceTowards(hEntity:GetAbsOrigin() + vDirection)
 end
 
 function CustomEntitiesLegacy:HasModifiersFromType(hEntity, iType)

@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierSilence } from "../../../modifiers/modifier_silence";
-import { clampPosition, getCursorPosition } from "../../../util";
+import { clampPosition, createRadiusMarker, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -54,7 +54,7 @@ class PuckExtra extends CustomAbility {
         }
 
         this.PlayEffectsOnCast(radius);
-        // CreateRadiusMarker(caster, point, self.radius, RADIUS_SCOPE_PUBLIC);
+        createRadiusMarker(this.caster, point, radius, "public", 0.2);
     }
 
     PlayEffectsOnCast(radius: number) {

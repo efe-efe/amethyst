@@ -1,5 +1,5 @@
 import { registerModifier, BaseModifier } from "../../lib/dota_ts_adapter";
-import { getAbilityEnergyCost } from "../../util";
+import { getAbilityEnergyCost, giveEnergy } from "../../util";
 
 @registerModifier()
 export default class modifier_generic_use_energy extends BaseModifier {
@@ -28,7 +28,7 @@ export default class modifier_generic_use_energy extends BaseModifier {
             }
 
             if (!GameRules.Addon.IsInWTFMode()) {
-                CustomEntitiesLegacy.GiveEnergy(event.unit, -getAbilityEnergyCost(event.ability));
+                giveEnergy(event.unit, -getAbilityEnergyCost(event.ability), true, false);
             }
         }
     }

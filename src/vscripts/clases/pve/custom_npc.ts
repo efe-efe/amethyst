@@ -10,7 +10,7 @@ import { ModifierBase } from "../../modifiers/modifier_base";
 import { ModifierHeroMovement } from "../../modifiers/modifier_hero_movement";
 import { ModifierTowerIdle } from "../../modifiers/modifier_tower_idle";
 import { ModifierVisible } from "../../modifiers/modifier_visible";
-import { isRegularAbility } from "../../util";
+import { fullyFaceTowards, isRegularAbility } from "../../util";
 
 const DEBUG = false;
 
@@ -331,7 +331,7 @@ export default class CustomNPC extends UnitEntity {
                 !this.unit.HasModifier("modifier_mars_counter_countering") &&
                 !this.unit.HasModifier("modifier_spectre_counter_countering")
             ) {
-                CustomEntitiesLegacy.FullyFaceTowards(this.unit, direction);
+                fullyFaceTowards(this.unit, direction);
             }
         } else {
             if (this.unit.GetUnitName() === "dire_tower") {

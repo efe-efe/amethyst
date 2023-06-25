@@ -2,7 +2,7 @@ import { ModifierEmerald } from "../modifiers/gems/modifier_emerald";
 import { ModifierRuby } from "../modifiers/gems/modifier_ruby";
 import { ModifierSapphire } from "../modifiers/gems/modifier_sapphire";
 import { ModifierGem } from "../modifiers/modifier_gem";
-import { giveMana } from "../util";
+import { fullyFaceTowards, giveEnergy, giveMana, isBanished } from "../util";
 import BreakableBounty from "./breakable_bounty";
 
 export enum GemTypes {
@@ -44,8 +44,8 @@ class Gem extends BreakableBounty {
     Update(): void {
         const currentAngle = (GameRules.GetGameTime() % (math.pi * 2)) * 2.0;
 
-        if (!CustomEntitiesLegacy.IsBanished(this.GetUnit())) {
-            CustomEntitiesLegacy.FullyFaceTowards(this.GetUnit(), Vector(math.cos(currentAngle), math.sin(currentAngle)));
+        if (!isBanished(this.GetUnit())) {
+            fullyFaceTowards(this.GetUnit(), Vector(math.cos(currentAngle), math.sin(currentAngle)));
             this.GetUnit().SetModel(this.model);
             this.GetUnit().SetModelScale(this.scale);
         }
@@ -286,7 +286,7 @@ class Ruby extends Gem {
                     duration: this.duration,
                     damage: final_damage
                 });
-                CustomEntitiesLegacy.GiveEnergy(ally, final_energy, true, true);
+                giveEnergy(ally, final_energy, true, true);
             }
         });
     }

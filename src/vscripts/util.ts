@@ -3,6 +3,7 @@ import {
     CustomModifierMotionHorizontal,
     CustomModifierMotionVertical
 } from "./abilities/framework/custom_modifier";
+import { ModifierBanish } from "./modifiers/modifier_banish";
 import { ModifierCounter } from "./modifiers/modifier_counter";
 import { ModifierGem } from "./modifiers/modifier_gem";
 import { ModifierHideBar } from "./modifiers/modifier_hide_bar";
@@ -10,6 +11,8 @@ import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { ModifierRadiusMarker } from "./modifiers/modifier_radius_marker";
 import { ModifierRecast } from "./modifiers/modifier_recast";
 import { ModifierWall } from "./modifiers/modifier_wall";
+
+//@Refactor the amount of imports on an utils file SCREAMS for an import loop...
 
 function getRecastModifiers(unit: CDOTA_BaseNPC) {
     return ModifierRecast.findAll(unit);
@@ -279,6 +282,10 @@ export function isCountering(unit: CDOTA_BaseNPC) {
     return unit.FindAllModifiers().some(modifier => modifier instanceof ModifierCounter);
 }
 
+export function isBanished(unit: CDOTA_BaseNPC) {
+    return unit.FindAllModifiers().some(modifier => modifier instanceof ModifierBanish);
+}
+
 export function attackWithBaseDamage(options: {
     source: CDOTA_BaseNPC;
     target: CDOTA_BaseNPC;
@@ -492,3 +499,11 @@ export function isRegularAbility(ability: CDOTABaseAbility) {
 //         linkedAbility:UpgradeAbility(true)
 //     end
 // end
+
+export function distanceBetweenEntities(entity1: CBaseEntity, entity2: CBaseEntity): number {
+    return distanceBetweenPoints(entity1.GetAbsOrigin(), entity2.GetAbsOrigin());
+}
+
+export function distanceBetweenPoints(point1: Vector, point2: Vector): number {
+    return ((point1 - point2) as Vector).Length2D();
+}

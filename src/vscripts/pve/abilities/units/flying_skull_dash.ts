@@ -56,7 +56,7 @@ class FlyingSkullDash extends CustomAbility {
             effectName: "particles/vengeful/vengeful_ex_second_attack.vpcf",
             distance: distance,
             startRadius: 1,
-            spawnOrigin: origin.__add(Vector(direction.x * 45, direction.y * 45, 96)),
+            spawnOrigin: origin.__add(Vector(0, 0, 96)),
             velocity: direction.__mul(projectileSpeed),
             groundOffset: 0,
             wallBehavior: ProjectileBehavior.NOTHING,

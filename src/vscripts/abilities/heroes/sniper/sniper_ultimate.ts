@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
-import { direction2D, getCursorPosition } from "../../../util";
+import { direction2D, fullyFaceTowards, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -109,7 +109,7 @@ class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
             }
         });
 
-        CustomEntitiesLegacy.FullyFaceTowards(this.parent, projectileDirection);
+        fullyFaceTowards(this.parent, projectileDirection);
         EmitSoundOn("Ability.Assassinate", this.parent);
     }
 

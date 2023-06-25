@@ -1,63 +1,3 @@
-function PrintBoolean(sPrefix, bBoolean)
-	print(sPrefix, bBoolean and 'TRUE' or 'FALSE')
-end
-
-function PrintTable(t, indent, done)
-	--print (string.format ('PrintTable type %s', type(keys)))
-	if type(t) ~= "table" then return end
-
-	done = done or {}
-	done[t] = true
-	indent = indent or 0
-
-	local l = {}
-	local canCompare = true
-	for k, v in pairs(t) do
-		table.insert(l, k)
-		if type(k) == "table" then
-			canCompare = false
-		end
-	end
-
-	if canCompare then
-		table.sort(l)
-	end
-	for k, v in ipairs(l) do
-		-- Ignore FDesc
-		if v ~= 'FDesc' then
-		local value = t[v]
-
-		if type(value) == "table" and not done[value] then
-			done [value] = true
-			print(string.rep ("\t", indent)..tostring(v)..":")
-			PrintTable (value, indent + 2, done)
-		elseif type(value) == "userdata" and not done[value] then
-			done [value] = true
-			print(string.rep ("\t", indent)..tostring(v)..": "..tostring(value))
-			PrintTable ((getmetatable(value) and getmetatable(value).__index) or getmetatable(value), indent + 2, done)
-		else
-			if t.FDesc and t.FDesc[v] then
-			print(string.rep ("\t", indent)..tostring(t.FDesc[v]))
-			else
-			print(string.rep ("\t", indent)..tostring(v)..": "..tostring(value))
-			end
-		end
-		end
-	end
-end
-
-function array_sub(t1, t2)
-	local t = {}
-	for i = 1, #t1 do
-		t[t1[i]] = true;
-	end
-	for i = #t2, 1, -1 do
-		if t[t2[i]] then
-		table.remove(t2, i);
-		end
-	end
-end
-
 function NearestValue(table, number)
     local smallestSoFar, smallestIndex
     for i, y in ipairs(table) do
@@ -67,27 +7,6 @@ function NearestValue(table, number)
         end
     end
     return table[smallestIndex]
-end
-
-function FlagExist(a,b)--Bitwise Exist
-	local p,c,d=1,0,b
-	while a>0 and b>0 do
-		local ra,rb=a%2,b%2
-		if ra+rb>1 then c=c+p end
-		a,b,p=(a-ra)/2,(b-rb)/2,p*2
-	end
-	return c==d
-end
-
-function string.split(str, sep)
-  local result = {}
-  local regex = ("([^%s]+)"):format(sep)
-  
-  for each in str:gmatch(regex) do
-     table.insert(result, each)
-  end
-
-  return result
 end
 
 function string.ends(str, ending)
@@ -182,40 +101,11 @@ function FindUnitsInCirclesProjection(nTeamNumber, vCenterPos, vStartPos, vEndPo
 	return targets
 end
 
-function DuplicateTable(obj, seen)
-	if type(obj) ~= 'table' then return obj end
-	if seen and seen[obj] then return seen[obj] end
-	local s = seen or {}
-	local res = setmetatable({}, getmetatable(obj))
-	s[obj] = res
-	for k, v in pairs(obj) do res[DuplicateTable(k, s)] = DuplicateTable(v, s) end
-	return res
-end
-
 RADIUS_SCOPE_PUBLIC = 1
 RADIUS_SCOPE_LOCAL = 2
 
 local RED = Vector(255, 1, 1)
 local GREEN = Vector(1, 255, 1)
-
-function GetCurrentLevelValue(ability, key)
-	local ability_key_values = ability:GetAbilityKeyValues()
-	local value = nil
-
-	if ability_key_values then
-		local m_value = ability_key_values[key]
-
-		if m_value then
-			if type(m_value) == 'number' then
-				value = m_value
-			else
-				value = tonumber(string.split(m_value, ' ')[ability:GetLevel()])
-			end
-		end
-	end
-
-	return value
-end
 
 function SendOverheadDamageMessage(unit, value)
 	local word_length = string.len(tostring(math.floor(value)))
@@ -262,38 +152,6 @@ function OverheadMessageEFX(unit, value, word_length, color, shield)
 		cp3 = color,
 		release = true,
 	})
-end
-
-function CreateRadiusMarker(caster, origin, radius, scope, duration)
-	local effect_cast
-	local color = GREEN
-	local particle_cast = "particles/aoe_marker.vpcf"
-	
-	if scope == RADIUS_SCOPE_PUBLIC then
-		for _,alliance in pairs(GameRules.Addon.alliances) do
-			for _,team in pairs(alliance.teams) do
-				if caster:GetTeam() == team then
-					color = GREEN
-				else
-					color = RED
-				end
-				effect_cast = ParticleManager:CreateParticleForTeam(particle_cast, PATTACH_WORLDORIGIN, nil, team)
-				RadiusMarkerEfx(effect_cast, origin, radius, color, duration)
-			end
-		end
-	else
-		effect_cast = ParticleManager:CreateParticleForPlayer(particle_cast, PATTACH_WORLDORIGIN, nil, caster:GetPlayerOwner())
-		color = GREEN
-		RadiusMarkerEfx(effect_cast, origin, radius, color, duration)
-	end
-end
-
-function RadiusMarkerEfx(effect_cast, origin, radius, color, duration)
-	ParticleManager:SetParticleControl(effect_cast, 0, origin)
-	ParticleManager:SetParticleControl(effect_cast, 1, Vector(radius, 1 , 1))
-	ParticleManager:SetParticleControl(effect_cast, 2, color)
-    ParticleManager:SetParticleControl(effect_cast, 3, Vector(duration, 0, 0))
-	ParticleManager:ReleaseParticleIndex(effect_cast)
 end
 
 function EFX(path, attach, parent, options)
@@ -346,66 +204,6 @@ function DEFX(index, force)
 
     ParticleManager:DestroyParticle(index, force)
     ParticleManager:ReleaseParticleIndex(index)
-end
-
-function MeeleEFX(hCaster, vDirection, nRadius, vColor)
-	local origin = hCaster:GetAbsOrigin()
-
-	local efx = EFX('particles/juggernaut/juggernaut_basic_attack_parent.vpcf', PATTACH_WORLDORIGIN, nil, {
-		cp0 = origin,
-		cp0f = vDirection,
-		cp3 = Vector(nRadius, 0, 0),
-	})
-
-	if vColor then
-		ParticleManager:SetParticleControl(efx, 60, vColor)
-		ParticleManager:SetParticleControl(efx, 61, Vector(1, 0, 0))
-	end
-
-	ParticleManager:ReleaseParticleIndex(efx)
-
-	EFX('particles/juggernaut/juggernaut_basic_attack_dust.vpcf', PATTACH_ABSORIGIN_FOLLOW, hCaster, {
-		release = true,
-	})
-
-	if nRadius > 300 then
-		MeeleEFX(hCaster, vDirection, 200, vColor)
-	end
-end
-
-function ReplenishEFX(parent)
-	local particle_cast = "particles/units/heroes/hero_wisp/wisp_death.vpcf"
-    local origin = parent:GetAbsOrigin()
-
-	local effect_cast = ParticleManager:CreateParticle(particle_cast, PATTACH_CUSTOMORIGIN, parent)
-	ParticleManager:SetParticleControlEnt(
-		effect_cast, 
-		0, 
-		parent, 
-		PATTACH_POINT_FOLLOW, 
-		"attach_attack1", 
-		origin, 
-		true 
-	)
-	ParticleManager:ReleaseParticleIndex(effect_cast)
-end
-
-function ApplyCallbackForUnitsInArea(hCaster, vOrigin, nRadius, nTeamFilter, fCallback)
-	local units = CustomEntitiesLegacy:FindUnitsInRadius(
-		hCaster,
-		vOrigin, 
-		nRadius, 
-		nTeamFilter, 
-		DOTA_UNIT_TARGET_HERO + DOTA_UNIT_TARGET_BASIC, 
-		DOTA_UNIT_TARGET_FLAG_NONE,
-		FIND_ANY_ORDER
-	)
-
-	for _,unit in pairs(units) do 
-		fCallback(unit)
-	end
-
-	return units
 end
 
 function LinkAbilityCooldowns(hCaster, sLinkedSpell, tUnlinkLevels)

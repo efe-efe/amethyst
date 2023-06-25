@@ -26,7 +26,7 @@ import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { updateProjectiles } from "./projectiles";
 import { ModifierDamageVFX } from "./modifiers/modifier_damage_vfx";
 import { ModifierProvidesVision } from "./modifiers/modifier_provides_vision";
-import { abilityHasBehavior, getAbilityEnergyCost, giveEnergy } from "./util";
+import { abilityHasBehavior, fullyFaceTowards, getAbilityEnergyCost, giveEnergy } from "./util";
 
 declare global {
     interface CDOTAGameRules {
@@ -555,7 +555,7 @@ export class GameMode {
                 const max_range = ability.GetCastRange(Vector(0, 0, 0), undefined);
 
                 if (!abilityHasBehavior(ability, AbilityBehavior.IMMEDIATE)) {
-                    CustomEntitiesLegacy.FullyFaceTowards(caster, direction);
+                    fullyFaceTowards(caster, direction);
                 }
 
                 if (current_range > max_range) {

@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
-import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
+import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierUpgradePhantomDashDamage } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_damage";
 import { ModifierUpgradePhantomDashShield } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_shield";
@@ -14,6 +14,7 @@ class PhantomMobility extends CustomAbility {
     GetIntrinsicModifierName() {
         return ModifierPhantomMobilityCharges.name;
     }
+
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const point = getCursorPosition(this.caster);
@@ -36,6 +37,7 @@ class PhantomMobility extends CustomAbility {
         }
         this.PlayEffectsOnCast();
     }
+
     PlayEffectsOnCast() {
         EmitSoundOn("Hero_PhantomAssassin.Strike.Start", this.GetCaster());
         const effect_cast = ParticleManager.CreateParticle(
@@ -65,13 +67,6 @@ class ModifierPhantomMobilityCharges extends ModifierCharges {
 
 @registerModifier({ customNameForI18n: "modifier_phantom_mobility_displacement" })
 class ModifierPhantomMobilityDisplacement extends ModifierDisplacement {
-    OnCreated(params: DisplacementParams) {
-        super.OnCreated(params);
-        if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
-        }
-    }
-
     OnDestroy() {
         if (IsServer()) {
             const particleId = ParticleManager.CreateParticle(
