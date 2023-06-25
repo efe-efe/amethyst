@@ -12,7 +12,7 @@ class JuggernautMobility extends CustomAbility {
 
         strongPurge(this.caster);
         this.caster.RemoveModifierByName(ModifierHeroMovement.name);
-        this.caster.AddNewModifier(this.caster, this, "modifier_juggernaut_mobility", { duration: duration });
+        ModifierJuggernautMobility.apply(this.caster, this.caster, this, { duration: duration });
 
         const random = RandomInt(1, 9);
         if (random > 1) {
