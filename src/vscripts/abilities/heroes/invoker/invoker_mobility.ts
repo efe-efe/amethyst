@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { clampPosition } from "../../../util";
+import { clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("invoker_mobility")
@@ -43,7 +43,7 @@ class InvokerMobility extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, {
             maxRange: this.GetCastRange(Vector(0, 0, 0), undefined),
             minRange: this.GetSpecialValueFor("min_range")

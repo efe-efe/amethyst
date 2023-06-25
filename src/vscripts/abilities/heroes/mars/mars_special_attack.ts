@@ -3,7 +3,7 @@ import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modif
 import { ModifierRoot } from "../../../modifiers/modifier_root";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ProjectileBehavior } from "../../../projectiles";
-import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierMarsStacks } from "./mars_basic_attack";
 
@@ -23,7 +23,7 @@ class MarsSpecialAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);

@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierInvencible } from "../../../modifiers/modifier_invencible";
-import { clampPosition } from "../../../util";
+import { clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { SniperBasicAttack } from "./sniper_basic_attack";
 import { ModifierSniperSpecialAttackThinker } from "./sniper_special_attack";
@@ -19,7 +19,7 @@ class SniperMobility extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const minRange = this.GetSpecialValueFor("min_range");
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined), minRange });
         // const shrapnel = this.caster.FindAbilityByName(SniperBasicAttack.name);
         const direction = point.__sub(origin).Normalized();

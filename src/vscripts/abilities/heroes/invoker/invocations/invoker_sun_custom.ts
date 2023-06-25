@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierThinker, ModifierThinkerParams } from "../../../../modifiers/modifier_thinker";
+import { getCursorPosition } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 
 @registerAbility("invoker_sun_custom")
@@ -15,7 +16,7 @@ class InvokerSun extends CustomAbility {
     }
 
     OnSpellStart() {
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
 
         ModifierInvokerSunThiner.createThinker(this.caster, this, point, {
             radius: this.GetSpecialValueFor("radius"),

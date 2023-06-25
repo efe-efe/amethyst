@@ -442,3 +442,53 @@ export function tryLock<T>(lock: Lock, thenDo: () => T, orElse: T) {
 export function interpolate(value: number, min: number, max: number) {
     return value * (max - min) + min;
 }
+
+export function fakeAbility(ability: CDOTABaseAbility) {
+    if (RandomInt(1, 10) < 3) {
+        ability.StartCooldown(0.35);
+        return true;
+    }
+
+    return false;
+}
+
+export function getCursorPosition(source: CDOTA_BaseNPC) {
+    const playerId = IsInToolsMode() ? 0 : source.GetPlayerOwnerID();
+    return GameRules.Addon.GetCursorPositionForPlayer(playerId);
+}
+
+type AbilityKV = Partial<Record<"AbilityEnergyCost", string | number>>;
+
+export function getAbilityEnergyCost(ability: CDOTABaseAbility) {
+    function getValueFromKV(ability: CDOTABaseAbility, key: keyof AbilityKV) {
+        const abilityKV = ability.GetAbilityKeyValues() as AbilityKV;
+
+        const value = abilityKV[key];
+
+        if (value) {
+            return typeof value == "number" ? value : parseInt(value.split(" ")[ability.GetLevel()]);
+        }
+    }
+
+    return getValueFromKV(ability, "AbilityEnergyCost") ?? 0;
+}
+
+export function abilityHasBehavior(ability: CDOTABaseAbility, behavior: AbilityBehavior) {
+    const behaviorAsNumber = tonumber(tostring(ability.GetBehavior()));
+
+    if (behaviorAsNumber) {
+        return bit.band(behaviorAsNumber, behavior) == behavior;
+    }
+}
+
+export function isRegularAbility(ability: CDOTABaseAbility) {
+    return ability.GetAbilityType() != 2 && ability.GetName() != "special_bonus_attributes";
+}
+
+// function CustomAbilitiesLegacy:LinkUpgrades(hAbility, sLinkedAbilityName)
+//     local caster = hAbility:GetCaster()
+//     local linkedAbility = caster:FindAbilityByName(sLinkedAbilityName)
+//     if linkedAbility and linkedAbility:GetLevel() == 0 then
+//         linkedAbility:UpgradeAbility(true)
+//     end
+// end

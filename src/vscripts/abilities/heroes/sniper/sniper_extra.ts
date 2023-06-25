@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
-import { direction2D } from "../../../util";
+import { direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("sniper_extra")
@@ -27,7 +27,7 @@ class SniperExtra extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const knockbackDistance = this.GetSpecialValueFor("knockback_distance");
         const damage = this.GetSpecialValueFor("damage_per_bullet");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");

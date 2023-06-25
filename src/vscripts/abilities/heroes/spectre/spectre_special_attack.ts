@@ -4,7 +4,7 @@ import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { ProjectileBehavior } from "../../../projectiles";
-import { clampPosition, direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { clampPosition, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -25,7 +25,7 @@ class SpectreSpecialAttack extends CustomAbility {
     OnSpellStart() {
         const damage = this.GetSpecialValueFor("ability_damage");
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const projectileName = "particles/spectre/spectre_special_attack.vpcf";
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const hitbox = this.GetSpecialValueFor("hitbox");
@@ -128,7 +128,7 @@ class SpectreExSpecialAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
         EmitSoundOn("Hero_Spectre.Haunt", this.caster);
 
@@ -166,7 +166,7 @@ class SpectreExSpecialAttackRecast extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
         for (const target of this.targets) {

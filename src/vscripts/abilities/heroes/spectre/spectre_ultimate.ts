@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
-import { clampPosition } from "../../../util";
+import { clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierSpectreSpecialAttackBuff, ModifierSpectreSpecialAttackDebuff } from "./spectre_special_attack";
@@ -22,7 +22,7 @@ class SpectreUltimate extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
         ModifierSpectreUltimateThinker.createThinker(this.caster, this, point, {

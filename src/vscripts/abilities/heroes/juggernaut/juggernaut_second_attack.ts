@@ -2,7 +2,16 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierUpgradeJuggernautBladeDanceReacast } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
-import { clampPosition, direction2D, giveManaAndEnergy, giveManaAndEnergyPercent, isCountering, isGem, isObstacle } from "../../../util";
+import {
+    clampPosition,
+    direction2D,
+    getCursorPosition,
+    giveManaAndEnergy,
+    giveManaAndEnergyPercent,
+    isCountering,
+    isGem,
+    isObstacle
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { JuggernautBasicAttack, ModifierJuggernautStacks } from "./juggernaut_basic_attack";
@@ -63,7 +72,7 @@ class JuggernautSecondAttack extends CustomAbility {
 
         const origin = this.caster.GetOrigin();
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: castRange, minRange: castRange });
         const damage = this.caster.GetAverageTrueAttackDamage(this.caster);
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
@@ -267,7 +276,7 @@ class JuggernautExSecondAttack extends CustomAbility {
     OnSpellStart() {
         DEFX(this.particleId, true);
         const origin = this.caster.GetOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, { maxRange: castRange, minRange: castRange });
         const abilityDamage = this.GetSpecialValueFor("ability_damage");

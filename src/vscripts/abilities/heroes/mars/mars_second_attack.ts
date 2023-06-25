@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
-import { clampPosition, direction2D, meeleEFX } from "../../../util";
+import { clampPosition, direction2D, getCursorPosition, meeleEFX } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 class MarsSecondAttackCommon extends CustomAbility {
@@ -40,7 +40,7 @@ class MarsSecondAttackCommon extends CustomAbility {
 class MarsSecondAttack extends MarsSecondAttackCommon {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, {
             maxRange: castRange
@@ -92,7 +92,7 @@ class MarsSecondAttack extends MarsSecondAttackCommon {
 class MarsExSecondAttack extends MarsSecondAttackCommon {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, {
             maxRange: castRange

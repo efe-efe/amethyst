@@ -3,7 +3,7 @@ import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierUpgradeJuggernautRefreshDagger } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -27,7 +27,7 @@ class JuggernautSpecialAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const damage = this.GetSpecialValueFor("ability_damage");
         const fading_slow_pct = this.GetSpecialValueFor("fading_slow_pct");
         const fading_slow_duration = this.GetSpecialValueFor("fading_slow_duration");

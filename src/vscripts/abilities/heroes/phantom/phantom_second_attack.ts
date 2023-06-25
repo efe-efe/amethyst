@@ -1,6 +1,6 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgradePhantomCritRecast } from "../../../modifiers/upgrades/modifier_favors";
-import { clampPosition, direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { clampPosition, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomStacks } from "./phantom_basic_attack";
 
@@ -21,7 +21,7 @@ class PhantomSecondAttack extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: castRange, minRange: castRange });
         const damage = this.caster.GetAverageTrueAttackDamage(this.caster);
 

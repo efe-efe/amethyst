@@ -3,7 +3,16 @@ import { ModifierCombatEvents } from "../../../modifiers/modifier_combat_events"
 import { ModifierCooldown } from "../../../modifiers/modifier_cooldown";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { attackWithBaseDamage, clampPosition, direction2D, giveManaAndEnergyPercent, isGem, isObstacle, replenishEFX } from "../../../util";
+import {
+    attackWithBaseDamage,
+    clampPosition,
+    direction2D,
+    getCursorPosition,
+    giveManaAndEnergyPercent,
+    isGem,
+    isObstacle,
+    replenishEFX
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -54,7 +63,7 @@ export class PuckBasicAttack extends PuckBasicAttackCommon {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
 
         this.LaunchProjectile(origin, point);
     }
@@ -142,7 +151,7 @@ export class PuckBasicAttackRelated extends PuckBasicAttackCommon {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
         const puckExBasicAttack = PuckExBasicAttack.findOne(this.caster)?.GetSpecialValueFor("delay_time") ?? 0;
 

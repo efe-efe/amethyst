@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
-import { direction2D } from "../../../util";
+import { direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -50,7 +50,7 @@ class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
         this.parent.StartGestureWithPlaybackRate(GameActivity.DOTA_ATTACK, 1.5);
 
         const origin = this.parent.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
+        const point = getCursorPosition(this.caster);
         const projectileSpeed = this.Value("projectile_speed");
         const projectileDirection = direction2D(origin, point);
 

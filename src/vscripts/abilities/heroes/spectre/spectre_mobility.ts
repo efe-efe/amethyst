@@ -3,7 +3,7 @@ import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
 import { ProjectileBehavior } from "../../../projectiles";
-import { clampPosition, direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { clampPosition, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierSpectreBasicAttack } from "./spectre_basic_attack";
@@ -24,7 +24,7 @@ class SpectreMobility extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, {
             maxRange: this.GetCastRange(Vector(0, 0, 0), undefined),
             minRange: this.GetSpecialValueFor("min_range")

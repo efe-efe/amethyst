@@ -3,7 +3,7 @@ import { Translate } from "../../../modifiers/modifier_casting";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { clamp, clampPosition, isCountering, isObstacle, strongPurge } from "../../../util";
+import { clamp, clampPosition, getCursorPosition, isCountering, isObstacle, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -180,7 +180,7 @@ class JuggernautCounterRecast extends JuggernautSlash {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const minRange = this.GetSpecialValueFor("min_range");
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined), minRange });
         const juggernautCounter = JuggernautCounter.findOne(this.caster);
         const damage = juggernautCounter?.GetSpecialValueFor("ability_damage") ?? 0;
@@ -231,7 +231,7 @@ class JuggernautExCounter extends JuggernautSlash {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const minRange = this.GetSpecialValueFor("min_range");
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined), minRange });
         const damage = this.GetSpecialValueFor("ability_damage") ?? 0;
 

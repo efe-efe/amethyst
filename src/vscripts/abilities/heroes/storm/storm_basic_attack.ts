@@ -6,6 +6,7 @@ import {
     attackWithBaseDamage,
     createRadiusMarker,
     direction2D,
+    getCursorPosition,
     giveManaAndEnergyPercent,
     giveManaPercent,
     isGem,
@@ -57,7 +58,7 @@ class StormBasicAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);

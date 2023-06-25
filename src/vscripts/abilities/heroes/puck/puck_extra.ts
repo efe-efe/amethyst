@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierSilence } from "../../../modifiers/modifier_silence";
-import { clampPosition } from "../../../util";
+import { clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -32,7 +32,7 @@ class PuckExtra extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
         const preSilenceDuration = this.GetSpecialValueFor("pre_silence_duration");
         const radius = this.GetSpecialValueFor("radius");

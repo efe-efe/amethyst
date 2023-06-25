@@ -4,7 +4,7 @@ import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ProjectileBehavior } from "../../../projectiles";
-import { createRadiusMarker, direction2D, fullyFaceTowards, isGem, isObstacle } from "../../../util";
+import { createRadiusMarker, direction2D, fullyFaceTowards, getCursorPosition, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierSpectreBasicAttack } from "./spectre_basic_attack";
@@ -43,7 +43,7 @@ class ModifierSpectreCounter extends ModifierCounter {
     }
 
     OnIntervalThink() {
-        const mouse = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
+        const mouse = getCursorPosition(this.caster);
         const direction = direction2D(this.parent.GetAbsOrigin(), mouse);
         this.PlayEffectsOnCast();
         fullyFaceTowards(this.parent, Vector(direction.x, direction.y, this.parent.GetForwardVector().z));
@@ -193,7 +193,7 @@ class SpectreCounterRecast extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const spectreCounter = SpectreCounter.findOne(this.caster);
 
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");

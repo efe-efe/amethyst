@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { clampPosition } from "../../../util";
+import { clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { PuckBasicAttack, PuckBasicAttackRelated } from "./puck_basic_attack";
@@ -21,7 +21,7 @@ class PuckUltimate extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
         ModifierPuckUltimateThinker.createThinker(this.caster, this, point, {
@@ -115,7 +115,7 @@ class ModifierPuckUltimateThinker extends ModifierThinker {
             const counter = PuckCounter.findOne(this.caster);
             const basicAttackRelated = PuckBasicAttackRelated.findOne(this.caster);
             if (event.ability == counter || event.ability == basicAttackRelated || event.ability == basicAttack) {
-                basicAttack?.LaunchProjectile(this.parent.GetAbsOrigin(), CustomAbilitiesLegacy.GetCursorPosition(this.ability));
+                basicAttack?.LaunchProjectile(this.parent.GetAbsOrigin(), getCursorPosition(this.caster));
             }
         }
     }

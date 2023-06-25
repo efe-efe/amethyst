@@ -5,6 +5,7 @@ import {
     clampPosition,
     createRadiusMarker,
     direction2D,
+    getCursorPosition,
     giveManaAndEnergyPercent,
     isGem,
     isObstacle,
@@ -80,7 +81,7 @@ export class PhantomBasicAttack extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         //TODO: @Refactor Refactor the cursor
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, {
             maxRange: castRange,
@@ -294,7 +295,7 @@ class PhantomBasicAttackRelated extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);

@@ -1,6 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
+import { getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPuckBasicAttack, PuckBasicAttack } from "./puck_basic_attack";
 
@@ -12,7 +13,7 @@ export class PuckCounter extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const banishDuration = this.GetSpecialValueFor("banish_duration");
 
         ModifierPuckCounter.apply(this.caster, this.caster, this, { duration: banishDuration });

@@ -3,7 +3,7 @@ import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { clampPosition, createRadiusMarker, strongPurge } from "../../../util";
+import { clampPosition, createRadiusMarker, getCursorPosition, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 class NevermoreCounterCommon extends CustomAbility {
@@ -187,7 +187,7 @@ class ModifierNevermoreCounterBanish extends ModifierBanish {
 
         if (IsServer()) {
             const origin = this.caster.GetAbsOrigin();
-            const cursor = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
+            const cursor = getCursorPosition(this.caster);
             const point = clampPosition(origin, cursor, {
                 maxRange: this.ability.GetCastRange(Vector(0, 0, 0), undefined)
             });

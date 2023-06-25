@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapt
 import { DisplacementParams, ModifierDisplacement } from "../../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../../modifiers/modifier_fading_slow";
 import { ProjectileBehavior } from "../../../../projectiles";
-import { clampPosition, direction2D } from "../../../../util";
+import { clampPosition, direction2D, getCursorPosition } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 
 @registerAbility("invoker_blast_custom")
@@ -19,7 +19,7 @@ class InvokerBlast extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);
         const damage = this.GetSpecialValueFor("ability_damage");

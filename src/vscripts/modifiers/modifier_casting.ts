@@ -14,7 +14,7 @@ const translateKeys = Object.keys(Translate) as (keyof typeof Translate)[];
 
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
-import { fullyFaceTowards } from "../util";
+import { fullyFaceTowards, getCursorPosition } from "../util";
 
 @registerModifier({ customNameForI18n: "modifier_casting" })
 export class ModifierCasting extends CustomModifier {
@@ -72,7 +72,7 @@ export class ModifierCasting extends CustomModifier {
 
         if (this.parent.GetPlayerOwnerID() != -1) {
             // TODO: @Refactor refactor GetCursorPosition
-            const mouse = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
+            const mouse = getCursorPosition(this.caster);
             const direction = mouse.__sub(this.parent.GetAbsOrigin()).Normalized();
 
             fullyFaceTowards(this.parent, Vector(direction.x, direction.y, this.parent.GetForwardVector().z));

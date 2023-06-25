@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierThinker, ModifierThinkerParams } from "../../../../modifiers/modifier_thinker";
 import { ProjectileBehavior } from "../../../../projectiles";
-import { clampPosition, direction2D } from "../../../../util";
+import { clampPosition, direction2D, getCursorPosition } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 import { CustomModifier } from "../../../framework/custom_modifier";
 
@@ -21,7 +21,7 @@ class InvokerMeteor extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, {
             maxRange: this.GetCastRange(Vector(0, 0, 0), undefined),
             minRange: this.GetSpecialValueFor("min_range")
@@ -74,7 +74,7 @@ class ModifierInvokerMeteorImpactThinker extends ModifierThinker {
     OnReady() {
         let counter = 0;
 
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
+        const point = getCursorPosition(this.caster);
         const projectileSpeed = this.ability.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(this.origin, point);
         const projectileDistance = this.Value("projectile_distance");

@@ -1,6 +1,6 @@
 import { CustomAbility } from "../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../lib/dota_ts_adapter";
-import { attackWithBaseDamage, direction2D } from "../../../util";
+import { attackWithBaseDamage, direction2D, fakeAbility } from "../../../util";
 
 @registerAbility("dire_creep_attack_range")
 class DireCreepAttackRange extends CustomAbility {
@@ -41,7 +41,7 @@ class DireCreepAttackRange extends CustomAbility {
         const projectileDirection = direction2D(origin, point);
         const projectileSpeed = RandomInt(1500, 2000);
 
-        if (CustomAbilitiesLegacy.FakeAbility(this)) {
+        if (fakeAbility(this)) {
             return;
         }
 

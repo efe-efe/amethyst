@@ -1,5 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
-import { direction2D } from "../../../util";
+import { direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -17,7 +17,7 @@ class InvokerSecondAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);
         const damage = this.GetSpecialValueFor("ability_damage");

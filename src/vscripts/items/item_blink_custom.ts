@@ -1,12 +1,12 @@
 import { CustomAbility } from "../abilities/framework/custom_ability";
 import { registerAbility } from "../lib/dota_ts_adapter";
-import { clampPosition } from "../util";
+import { clampPosition, getCursorPosition } from "../util";
 
 @registerAbility("item_blink_custom")
 class ItemBlink extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, {
             maxRange: this.GetCastRange(Vector(0, 0, 0), undefined),
             minRange: this.GetSpecialValueFor("min_range")

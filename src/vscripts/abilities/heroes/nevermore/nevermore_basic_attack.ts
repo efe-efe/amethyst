@@ -1,5 +1,13 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
-import { attackWithBaseDamage, direction2D, giveManaAndEnergyPercent, isGem, isObstacle, replenishEFX } from "../../../util";
+import {
+    attackWithBaseDamage,
+    direction2D,
+    getCursorPosition,
+    giveManaAndEnergyPercent,
+    isGem,
+    isObstacle,
+    replenishEFX
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -42,7 +50,7 @@ class NevermoreBasicAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);

@@ -1,7 +1,7 @@
 import { CustomAbility } from "../abilities/framework/custom_ability";
 import { registerAbility } from "../lib/dota_ts_adapter";
 import { ModifierStun } from "../modifiers/modifier_stunned";
-import { clampPosition, direction2D, meeleEFX } from "../util";
+import { clampPosition, direction2D, getCursorPosition, meeleEFX } from "../util";
 
 @registerAbility("item_basher_custom")
 class ItemBasher extends CustomAbility {
@@ -14,7 +14,7 @@ class ItemBasher extends CustomAbility {
     }
 
     OnSpellStart() {
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const origin = this.caster.GetOrigin();
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, {

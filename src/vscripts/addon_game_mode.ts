@@ -3,9 +3,7 @@ import Alliance from "./clases/alliance";
 import { CustomGameState } from "./clases/game_state";
 import Warmup from "./clases/pvp/warmup";
 import { reloadable } from "./lib/tstl-utils";
-import "./wrappers/abilities";
 import "./wrappers/modifiers";
-import "./util/custom_abilities_legacy";
 import "./util/custom_entities_legacy";
 import "./util/math_legacy";
 import "./util/util";
@@ -23,14 +21,12 @@ import settings from "./settings";
 import PreRun from "./clases/pve/pre_run";
 import { NPCNames } from "./clases/pve/custom_ai";
 import Run from "./clases/pve/run";
-import Upgrades from "./upgrades/upgrades";
-import { UpgradeTypes } from "./upgrades/common";
 import { RewardsManager } from "./rewards/rewards";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { updateProjectiles } from "./projectiles";
 import { ModifierDamageVFX } from "./modifiers/modifier_damage_vfx";
 import { ModifierProvidesVision } from "./modifiers/modifier_provides_vision";
-import { giveEnergy } from "./util";
+import { abilityHasBehavior, getAbilityEnergyCost, giveEnergy } from "./util";
 
 declare global {
     interface CDOTAGameRules {
@@ -543,7 +539,7 @@ export class GameMode {
         ) {
             const ability = EntIndexToHScript(event.entindex_ability) as CDOTA_Ability_Lua;
             const caster = EntIndexToHScript(event.units["0"]) as CDOTA_BaseNPC;
-            const energyCost = CustomAbilitiesLegacy.GetEnergyCost(ability);
+            const energyCost = getAbilityEnergyCost(ability);
             const energy = CustomEntitiesLegacy.GetEnergy(caster);
 
             const player = PlayerResource.GetPlayer(event.issuer_player_id_const);
@@ -558,7 +554,7 @@ export class GameMode {
                 const direction = point.__sub(caster.GetAbsOrigin()).Normalized();
                 const max_range = ability.GetCastRange(Vector(0, 0, 0), undefined);
 
-                if (!CustomAbilitiesLegacy.HasBehavior(ability, AbilityBehavior.IMMEDIATE)) {
+                if (!abilityHasBehavior(ability, AbilityBehavior.IMMEDIATE)) {
                     CustomEntitiesLegacy.FullyFaceTowards(caster, direction);
                 }
 

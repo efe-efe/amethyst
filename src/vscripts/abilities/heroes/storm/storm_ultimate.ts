@@ -3,7 +3,7 @@ import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierUpgradeStormUnleashedKnockback } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
-import { clampPosition, direction2D } from "../../../util";
+import { clampPosition, direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -59,7 +59,7 @@ class StormUltimate extends CustomAbility {
         }
 
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
         ModifierStormUltimateThinker.createThinker(this.caster, this, point, {

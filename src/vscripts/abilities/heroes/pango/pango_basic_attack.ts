@@ -5,6 +5,7 @@ import {
     attackWithBaseDamage,
     clampPosition,
     direction2D,
+    getCursorPosition,
     giveManaAndEnergyPercent,
     isGem,
     isObstacle,
@@ -51,7 +52,7 @@ export class PangoBasicAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, {
             maxRange: castRange,

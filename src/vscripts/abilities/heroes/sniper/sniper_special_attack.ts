@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
-import { clampPosition } from "../../../util";
+import { clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierSniperCharges } from "./sniper_basic_attack";
@@ -43,7 +43,7 @@ class SniperSpecialAttack extends SniperSpecialAttackCommon {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
         ModifierSniperSpecialAttackThinker.createThinker(this.caster, this, Vector(point.x, point.y, origin.z), {
@@ -69,7 +69,7 @@ class SniperExSpecialAttack extends SniperSpecialAttackCommon {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
         ModifierSniperExSpecialAttackThinker.createThinker(this.caster, this, Vector(point.x, point.y, origin.z), {

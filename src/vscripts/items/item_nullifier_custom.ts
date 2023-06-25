@@ -1,7 +1,7 @@
 import { CustomAbility } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../lib/dota_ts_adapter";
-import { direction2D } from "../util";
+import { direction2D, getCursorPosition } from "../util";
 
 @registerAbility("item_nullifier_custom")
 class ItemNullifier extends CustomAbility {
@@ -15,7 +15,7 @@ class ItemNullifier extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const projectileDirection = direction2D(origin, point);
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const initialDuration = this.GetSpecialValueFor("initial_duration");

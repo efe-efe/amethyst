@@ -6,6 +6,7 @@ import {
     attackWithBaseDamage,
     createRadiusMarker,
     direction2D,
+    getCursorPosition,
     hideHealthBar,
     isObstacle,
     randomInArray,
@@ -51,7 +52,7 @@ class JuggernautUltimate extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const distance = this.GetCastRange(Vector(0, 0, 0), undefined);
         const direction = direction2D(origin, point);
 

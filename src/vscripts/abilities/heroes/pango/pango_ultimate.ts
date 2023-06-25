@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
-import { direction2D } from "../../../util";
+import { direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPangoRollEndAnimation } from "./modifier_pango_roll_end_animation";
 
@@ -52,7 +52,7 @@ class PangoUltimate extends CustomAbility {
         }
 
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const direction = direction2D(origin, point);
 
         ModifierPangoUltimate.apply(this.caster, this.caster, this, {

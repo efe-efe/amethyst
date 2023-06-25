@@ -1,7 +1,7 @@
 import { CustomAbility } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../lib/dota_ts_adapter";
-import { clampPosition, direction2D, meeleEFX } from "../util";
+import { clampPosition, direction2D, getCursorPosition, meeleEFX } from "../util";
 
 @registerAbility("item_diffusal_custom")
 class ItemDiffusal extends CustomAbility {
@@ -14,7 +14,7 @@ class ItemDiffusal extends CustomAbility {
     }
 
     OnSpellStart() {
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const origin = this.caster.GetOrigin();
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, {

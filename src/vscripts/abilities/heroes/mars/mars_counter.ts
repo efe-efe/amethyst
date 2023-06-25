@@ -3,7 +3,7 @@ import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
-import { direction2D, fullyFaceTowards } from "../../../util";
+import { direction2D, fullyFaceTowards, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("mars_counter")
@@ -51,7 +51,7 @@ class ModifierMarsCounter extends ModifierCounter {
     }
 
     OnIntervalThink() {
-        const mouse = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
+        const mouse = getCursorPosition(this.caster);
         const direction = direction2D(this.parent.GetAbsOrigin(), mouse);
         this.PlayEffectsOnCast();
         fullyFaceTowards(this.parent, Vector(direction.x, direction.y, this.parent.GetForwardVector().z));

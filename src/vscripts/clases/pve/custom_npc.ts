@@ -10,6 +10,7 @@ import { ModifierBase } from "../../modifiers/modifier_base";
 import { ModifierHeroMovement } from "../../modifiers/modifier_hero_movement";
 import { ModifierTowerIdle } from "../../modifiers/modifier_tower_idle";
 import { ModifierVisible } from "../../modifiers/modifier_visible";
+import { isRegularAbility } from "../../util";
 
 const DEBUG = false;
 
@@ -69,7 +70,7 @@ export default class CustomNPC extends UnitEntity {
         for (let i = 0; i <= 23; i++) {
             const ability = this.unit.GetAbilityByIndex(i);
             if (ability) {
-                if (CustomAbilitiesLegacy.IsNotTalentNorAttribute(ability)) {
+                if (isRegularAbility(ability)) {
                     ability.SetLevel(level);
                 }
             }

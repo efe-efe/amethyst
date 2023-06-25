@@ -1,5 +1,13 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
-import { clampPosition, direction2D, fullyFaceTowards, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../../util";
+import {
+    clampPosition,
+    direction2D,
+    fullyFaceTowards,
+    getCursorPosition,
+    giveManaAndEnergyPercent,
+    isGem,
+    isObstacle
+} from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 import { CustomModifier } from "../../../framework/custom_modifier";
 import { InvokerBasicAttack } from "../invoker_basic_attack";
@@ -8,7 +16,7 @@ import { InvokerBasicAttack } from "../invoker_basic_attack";
 class InvokerSpirit extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
         const spirit = CreateUnitByName(
@@ -51,7 +59,7 @@ class ModifierInvokerSpirit extends CustomModifier {
             const invokerBasicAttack = InvokerBasicAttack.findOne(this.caster);
             if (event.ability == invokerBasicAttack) {
                 const origin = this.parent.GetAbsOrigin();
-                const point = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
+                const point = getCursorPosition(this.caster);
                 const direction = direction2D(origin, point);
 
                 fullyFaceTowards(this.parent, direction);

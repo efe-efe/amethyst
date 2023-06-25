@@ -4,7 +4,7 @@ import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierRoot } from "../../../modifiers/modifier_root";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
-import { clampPosition, direction2D, fullyFaceTowards, interpolate } from "../../../util";
+import { clampPosition, direction2D, fullyFaceTowards, getCursorPosition, interpolate } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierMarsSpecialAttack } from "./mars_special_attack";
@@ -25,7 +25,7 @@ class MarsExtra extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(origin, cursor, {
             maxRange: this.GetCastRange(Vector(0, 0, 0), undefined)
         });

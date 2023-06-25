@@ -4,7 +4,7 @@ import { ModifierUpgradeSniperFastSnipe } from "../../../modifiers/upgrades/modi
 import { ModifierRoot } from "../../../modifiers/modifier_root";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ProjectileBehavior } from "../../../projectiles";
-import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 class SniperSecondAttackCommon extends CustomAbility {
@@ -102,7 +102,7 @@ class SniperSecondAttack extends SniperSecondAttackCommon {
         }
 
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);
@@ -188,7 +188,7 @@ class SniperExSecondAttack extends SniperSecondAttackCommon {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const projectileDirection = direction2D(origin, point);
         const projectileOrigin = origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96));
         this.ThrowProjectile(origin.__add(Vector(0, 0, 96)), projectileDirection, true, this.caster);

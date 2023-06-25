@@ -1,7 +1,7 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
 import { ProjectileBehavior } from "../../../../projectiles";
-import { direction2D } from "../../../../util";
+import { direction2D, fakeAbility } from "../../../../util";
 
 @registerAbility("centaur_range_attack")
 class CentaurRangeAttack extends CustomAbility {
@@ -49,7 +49,7 @@ class CentaurRangeAttack extends CustomAbility {
         const origin = this.caster.GetOrigin();
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
 
-        if (CustomAbilitiesLegacy.FakeAbility(this)) {
+        if (fakeAbility(this)) {
             return;
         }
 

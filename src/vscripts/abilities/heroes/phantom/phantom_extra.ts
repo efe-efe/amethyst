@@ -3,7 +3,7 @@ import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../.
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierUpgradePhantomQuickRecast } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { direction2D, isCountering } from "../../../util";
+import { direction2D, getCursorPosition, isCountering } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -30,7 +30,7 @@ class PhantomExtra extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const direction = direction2D(origin, point);
         const distance = this.GetCastRange(Vector(0, 0, 0), undefined);
 

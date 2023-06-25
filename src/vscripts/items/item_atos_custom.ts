@@ -1,7 +1,7 @@
 import { CustomAbility } from "../abilities/framework/custom_ability";
 import { registerAbility } from "../lib/dota_ts_adapter";
 import { ModifierRoot } from "../modifiers/modifier_root";
-import { direction2D } from "../util";
+import { direction2D, getCursorPosition } from "../util";
 
 @registerAbility("item_atos_custom")
 class ItemAtos extends CustomAbility {
@@ -15,7 +15,7 @@ class ItemAtos extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const duration = this.GetSpecialValueFor("duration");
         const projectileDirection = direction2D(origin, point);
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");

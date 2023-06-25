@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("spectre_second_attack")
@@ -41,7 +41,7 @@ class SpectreSecondAttack extends CustomAbility {
         }
 
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);

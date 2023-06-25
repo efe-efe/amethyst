@@ -1,6 +1,6 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { ModifierSilence } from "../../../modifiers/modifier_silence";
-import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPuckFairyDust } from "./puck_basic_attack";
 import { PuckSpecialAttack } from "./puck_special_attack";
@@ -21,7 +21,7 @@ class PuckSecondAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const manaGainPct = this.GetSpecialValueFor("mana_gain_pct");
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);

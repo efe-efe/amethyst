@@ -3,7 +3,7 @@ import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierUpgradeStormRangedRemnant } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { clampPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { clampPosition, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierStormExtraDisplacement } from "./storm_extra";
 
@@ -45,7 +45,7 @@ class StormMobility extends CustomAbility {
 
     OnSpellStart() {
         const duration = this.GetSpecialValueFor("duration");
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(this.caster.GetAbsOrigin(), cursor, {
             maxRange: castRange
@@ -198,7 +198,7 @@ class StormExMobility extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const duration = this.GetSpecialValueFor("duration");
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const castRange = this.GetCastRange(Vector(0, 0, 0), undefined);
         const point = clampPosition(origin, cursor, {
             maxRange: castRange

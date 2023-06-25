@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierUpgradeJuggernautSpinningWard } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
-import { clampPosition } from "../../../util";
+import { clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierJuggernautMobility } from "./juggernaut_mobility";
@@ -26,7 +26,7 @@ class JuggernautExtra extends CustomAbility {
         const radius = this.GetSpecialValueFor("radius");
         const shield = this.GetSpecialValueFor("shield");
 
-        const cursor = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const cursor = getCursorPosition(this.caster);
         const point = clampPosition(this.caster.GetAbsOrigin(), cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
         const healingWard = CreateUnitByName(
@@ -118,7 +118,7 @@ class JuggernautExtraRecast extends CustomAbility {
     healingWardIndex?: EntityIndex;
 
     OnSpellStart() {
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         if (this.healingWardIndex) {
             const healingWard = EntIndexToHScript(this.healingWardIndex) as CDOTA_BaseNPC;
             healingWard.MoveToPosition(point);

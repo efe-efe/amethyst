@@ -4,7 +4,7 @@ import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../.
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierUpgradePhantomDashDamage } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_damage";
 import { ModifierUpgradePhantomDashShield } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_shield";
-import { direction2D } from "../../../util";
+import { direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { PhantomBasicAttack } from "./phantom_basic_attack";
@@ -16,7 +16,7 @@ class PhantomMobility extends CustomAbility {
     }
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const phantomBasicAttack = PhantomBasicAttack.findOne(this.caster);
         const distance = this.GetCastRange(Vector(0, 0, 0), this.caster) + this.caster.GetCastRangeBonus();
         const casterDirection = CustomEntitiesLegacy.GetDirection(this.caster);

@@ -1,7 +1,7 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgradePhantomFastCoup } from "../../../modifiers/upgrades/modifier_favors";
 import { ProjectileBehavior } from "../../../projectiles";
-import { direction2D } from "../../../util";
+import { direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomStacks } from "./phantom_basic_attack";
 
@@ -40,7 +40,7 @@ class PhantomUltimate extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);
         const damage = this.caster.GetAverageTrueAttackDamage(this.caster);

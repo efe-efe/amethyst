@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierUpgradePhantomExtraDaggers, ModifierUpgradePhantomFastDaggers } from "../../../modifiers/upgrades/modifier_favors";
-import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomBleed, ModifierPhantomStacks, PhantomBasicAttack, PhantomExBasicAttack } from "./phantom_basic_attack";
 
@@ -39,7 +39,7 @@ class PhantomSpecialAttack extends CustomAbility {
     }
 
     OnSpellStart() {
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const origin = this.caster.GetAbsOrigin();
         const straightDirection = direction2D(origin, point);
         const directions = [straightDirection];

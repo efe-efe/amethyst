@@ -10,7 +10,7 @@ import {
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
-import { clampPosition, direction2D, isObstacle } from "../../../util";
+import { clampPosition, direction2D, getCursorPosition, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPhantomStacks, PhantomBasicAttack } from "./phantom_basic_attack";
@@ -150,7 +150,7 @@ class PhantomExCounterRecast extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const projectileSpeed = this.GetSpecialValueFor("projectile_speed");
         const projectileDirection = direction2D(origin, point);
         const damage = this.GetSpecialValueFor("ability_damage");
@@ -437,7 +437,7 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
     OnDestroy() {
         super.OnDestroy();
         if (IsServer()) {
-            const cursor = CustomAbilitiesLegacy.GetCursorPosition(this.ability);
+            const cursor = getCursorPosition(this.caster);
             const point = clampPosition(this.parent.GetAbsOrigin(), cursor, {
                 maxRange: this.ability.GetCastRange(Vector(0, 0, 0), undefined)
             });

@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
-import { direction2D, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPangoStacks, PangoBasicAttack } from "./pango_basic_attack";
@@ -25,7 +25,7 @@ export class PangoSecondAttack extends CustomAbility {
 
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
-        const point = CustomAbilitiesLegacy.GetCursorPosition(this);
+        const point = getCursorPosition(this.caster);
         const distance = this.GetCastRange(Vector(0, 0, 0), undefined);
         const direction = direction2D(origin, point);
 
@@ -72,7 +72,7 @@ class ModifierPangoSecondAttackDisplacement extends ModifierDisplacement<PangoSe
         if (IsServer()) {
             const origin = this.caster.GetAbsOrigin();
             const range = this.ability.GetCastRange(Vector(0, 0, 0), undefined);
-            const direction = direction2D(origin, CustomAbilitiesLegacy.GetCursorPosition(this.ability));
+            const direction = direction2D(origin, getCursorPosition(this.caster));
             this.ability.Cut(origin, direction, range);
 
             const trail_pfx = ParticleManager.CreateParticle(
