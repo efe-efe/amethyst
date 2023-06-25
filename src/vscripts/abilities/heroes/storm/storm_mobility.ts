@@ -93,14 +93,12 @@ class ModifierStormMobility extends ModifierCharges {
 
 @registerModifier({ customNameForI18n: "modifier_storm_mobility_thinker" })
 class ModifierStormMobilityThinker extends ModifierThinker {
-    origin!: Vector;
     particleId!: ParticleID;
 
     OnCreated(params: ModifierThinkerParams) {
         super.OnCreated(params);
 
         if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
             this.PlayEffectsOnCreated();
         }
     }
@@ -225,16 +223,7 @@ class StormExMobility extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_storm_ex_mobility_thinker" })
 class ModifierStormExMobilityThinker extends ModifierThinker {
-    origin!: Vector;
     particleId!: ParticleID;
-
-    OnCreated(params: ModifierThinkerParams) {
-        super.OnCreated(params);
-
-        if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
-        }
-    }
 
     OnReady() {
         this.PlayEffectsOnCreated();
@@ -271,10 +260,11 @@ class ModifierStormExMobilityThinker extends ModifierThinker {
     }
 
     OnDestroy() {
+        super.OnDestroy();
+
         if (IsServer()) {
             EmitSoundOn("Hero_StormSpirit.StaticRemnantExplode", this.parent);
             DEFX(this.particleId, false);
-            UTIL_Remove(this.parent);
         }
     }
 

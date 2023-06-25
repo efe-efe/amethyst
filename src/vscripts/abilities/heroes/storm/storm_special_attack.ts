@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
-import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
+import { ModifierThinker } from "../../../modifiers/modifier_thinker";
 import { clampPosition, direction2D, giveEnergyPercent, giveManaPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -59,13 +59,6 @@ class StormSpecialAttack extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_storm_special_attack_thinker" })
 class ModifierStormSpecialAttackThinker extends ModifierThinker {
-    origin!: Vector;
-    OnCreated(params: ModifierThinkerParams) {
-        super.OnCreated(params);
-
-        this.origin = this.parent.GetAbsOrigin();
-    }
-
     OnReady() {
         EFX("particles/units/heroes/hero_zeus/zeus_cloud_strike.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
             cp0: this.origin,

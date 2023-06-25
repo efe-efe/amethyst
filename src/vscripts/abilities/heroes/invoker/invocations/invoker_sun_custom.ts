@@ -26,14 +26,12 @@ class InvokerSun extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_invoker_sun_custom_thinker" })
 class ModifierInvokerSunThiner extends ModifierThinker {
-    origin!: Vector;
     particleId?: ParticleID;
 
     OnCreated(params: ModifierThinkerParams) {
         super.OnCreated(params);
 
         if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
             AddFOWViewer(this.caster.GetTeamNumber(), this.origin, this.radius, this.delayTime + 0.2, true);
 
             this.particleId = EFX(

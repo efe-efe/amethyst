@@ -254,7 +254,6 @@ class ModifierSpectreSpecialAttackThinker extends ModifierThinker {
 
         if (IsServer()) {
             this.StopEffects();
-            UTIL_Remove(this.parent);
         }
     }
 
@@ -409,13 +408,11 @@ export class ModifierSpectreSpecialAttackBuff extends CustomModifier {
 @registerModifier({ customNameForI18n: "modifier_spectre_ex_special_attack_thinker" })
 class ModifierSpectreExSpecialAttackThinker extends ModifierThinker {
     particleId?: ParticleID;
-    origin!: Vector;
 
     OnCreated(params: ModifierThinkerParams) {
         super.OnCreated(params);
 
         if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
             this.particleId = ParticleManager.CreateParticle(
                 "particles/spectre/spectre_illusion_warp_ground.vpcf",
                 ParticleAttachment.WORLDORIGIN,
@@ -469,8 +466,6 @@ class ModifierSpectreExSpecialAttackThinker extends ModifierThinker {
 
     OnDestroy() {
         if (IsServer()) {
-            UTIL_Remove(this.parent);
-
             if (this.particleId) {
                 ParticleManager.DestroyParticle(this.particleId, false);
                 ParticleManager.ReleaseParticleIndex(this.particleId);

@@ -22,6 +22,7 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
     behavior!: "follow" | "static";
     content!: "clearout" | "fillup" | "static";
     visibility!: "visible" | "collapse";
+    origin!: Vector;
 
     particleIds: ParticleID[] = [];
     counter = 0;
@@ -35,6 +36,7 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
             this.behavior = params.behavior ?? "static";
             this.content = params.content ?? "static";
             this.visibility = params.visibility ?? "visible";
+            this.origin = this.parent.GetAbsOrigin();
 
             if (this.radius > 0 && this.visibility == "visible") {
                 this.DrawVisuals(this.delayTime > 0 ? 0 : 1);
@@ -47,7 +49,9 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
 
     OnDestroy() {
         if (IsServer()) {
+            this.StartIntervalThink(-1);
             this.RemoveVisuals();
+            UTIL_Remove(this.parent);
         }
     }
 
@@ -72,11 +76,12 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
             }
         } else {
             if (this.counter == 0) {
-                this.OnReady();
                 this.RemoveVisuals();
                 if (this.visibility == "visible") {
                     this.DrawVisuals(this.GetDuration() - this.delayTime);
                 }
+
+                this.OnReady();
             }
 
             if (this.content == "clearout") {

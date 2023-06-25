@@ -81,9 +81,11 @@ class ModifierCentaureRageChanneling extends CustomModifier {
 @registerModifier({ customNameForI18n: "modifier_centaur_rage_thinker" })
 class ModifierCentaurRageThinker extends ModifierThinker {
     OnIntervalThink() {
+        super.OnIntervalThink();
+
         const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
             this.caster,
-            this.parent.GetAbsOrigin(),
+            this.origin,
             this.radius,
             UnitTargetTeam.ENEMY,
             UnitTargetType.HERO + UnitTargetType.BASIC,
@@ -101,16 +103,10 @@ class ModifierCentaurRageThinker extends ModifierThinker {
         }
 
         EFX("particles/units/heroes/hero_sandking/sandking_epicenter.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
-            cp0: this.parent.GetAbsOrigin(),
+            cp0: this.origin,
             cp1: Vector(this.radius, 0, 0),
             release: true
         });
         this.Destroy();
-    }
-
-    OnDestroy() {
-        if (IsServer()) {
-            UTIL_Remove(this.parent);
-        }
     }
 }

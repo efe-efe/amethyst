@@ -151,14 +151,12 @@ class NevermoreUltimate extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_nevermore_ultimate_thinker" })
 class ModifierNevermoreUltimateThinker extends ModifierThinker {
-    origin!: Vector;
     particleId?: ParticleID;
 
     OnCreated(params: ModifierThinkerParams) {
         super.OnCreated(params);
 
         if (IsServer()) {
-            this.origin = this.caster.GetAbsOrigin();
             this.PlayEffects();
         }
     }

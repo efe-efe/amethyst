@@ -29,13 +29,10 @@ class InvokerEMP extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_invoker_emp_custom_thinker" })
 class ModifierInvokerEMP extends ModifierThinker {
-    origin!: Vector;
     particleId?: ParticleID;
 
     OnCreated(params: ModifierThinkerParams) {
         super.OnCreated(params);
-
-        this.origin = this.parent.GetAbsOrigin();
 
         if (IsServer()) {
             AddFOWViewer(this.caster.GetTeamNumber(), this.origin, this.radius, this.GetDuration() + 0.2, true);

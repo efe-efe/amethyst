@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierUpgradeStormUnleashedKnockback } from "../../../modifiers/modifier_favors";
-import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
+import { ModifierThinker } from "../../../modifiers/modifier_thinker";
 import { clampPosition, direction2D } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -95,21 +95,7 @@ export class ModifierStormUltimate extends CustomModifier {
 
 @registerModifier({ customNameForI18n: "modifier_storm_ultimate_thinker" })
 class ModifierStormUltimateThinker extends ModifierThinker {
-    origin!: Vector;
     knockbackDistance = 500;
-
-    OnCreated(params: ModifierThinkerParams) {
-        super.OnCreated(params);
-        this.origin = this.parent.GetAbsOrigin();
-    }
-
-    OnDestroy() {
-        super.OnDestroy();
-
-        if (IsServer()) {
-            UTIL_Remove(this.parent);
-        }
-    }
 
     OnReady() {
         EFX("particles/units/heroes/hero_zeus/zeus_cloud_strike.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {

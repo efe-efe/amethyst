@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
+import { ModifierThinker } from "../../../modifiers/modifier_thinker";
 import { clampPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -103,7 +103,6 @@ export class ModifierSpectreUltimate extends CustomModifier {
 
 @registerModifier({ customNameForI18n: "modifier_spectre_ultimate_thinker" })
 class ModifierSpectreUltimateThinker extends ModifierThinker {
-    origin!: Vector;
     particleId?: ParticleID;
 
     IsAura() {
@@ -128,14 +127,6 @@ class ModifierSpectreUltimateThinker extends ModifierThinker {
 
     GetAuraSearchType() {
         return UnitTargetType.HERO + UnitTargetType.BASIC;
-    }
-
-    OnCreated(params: ModifierThinkerParams) {
-        super.OnCreated(params);
-
-        if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
-        }
     }
 
     OnDestroy() {

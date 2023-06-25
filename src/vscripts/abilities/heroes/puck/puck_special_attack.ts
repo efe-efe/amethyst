@@ -46,7 +46,6 @@ export class PuckSpecialAttack extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_puck_special_attack_thinker" })
 class ModifierPuckSpecialAttack extends ModifierThinker {
-    origin!: Vector;
     damage!: number;
     manaGainPct!: number;
     stunDuration!: number;
@@ -67,7 +66,6 @@ class ModifierPuckSpecialAttack extends ModifierThinker {
         super.OnCreated(params);
 
         if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
             this.damage = params.damage;
             this.silenceDuration = params.silenceDuration;
             this.stunDuration = params.stunDuration;

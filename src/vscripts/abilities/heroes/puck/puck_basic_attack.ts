@@ -349,7 +349,6 @@ class ModifierPuckExBasicAttack extends CustomModifier {
 @registerModifier({ customNameForI18n: "modifier_puck_basic_attack_thinker" })
 class ModifierPuckExBasicAttackThinker extends ModifierThinker {
     charged!: boolean;
-    origin!: Vector;
     duration!: number;
     shieldPerHit!: number;
     healPerHit!: number;
@@ -363,7 +362,6 @@ class ModifierPuckExBasicAttackThinker extends ModifierThinker {
         super.OnCreated(params);
 
         if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
             this.manaGainPct = this.ability.GetSpecialValueFor("mana_gain_pct");
             this.exBasicAttack = PuckExBasicAttack.findOne(this.caster);
 

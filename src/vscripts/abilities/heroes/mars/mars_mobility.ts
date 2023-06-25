@@ -91,14 +91,12 @@ class ModifierMarsMobilityBanish extends ModifierBanish {
 
 @registerModifier({ customNameForI18n: "modifier_mars_mobility_thinker" })
 class ModifierMarsMobilityThinker extends ModifierThinker {
-    origin!: Vector;
     particleId?: ParticleID;
 
     OnCreated(params: ModifierThinkerParams) {
         super.OnCreated(params);
 
         if (IsServer()) {
-            this.origin = this.parent.GetAbsOrigin();
             this.PlayEffects();
             ModifierMarsMobilityBanish.apply(this.caster, this.caster, this.ability, { duration: this.delayTime });
         }

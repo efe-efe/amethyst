@@ -253,6 +253,8 @@ class ModifierNevermoreCounterThinker extends ModifierThinker {
 
             // this.ability.PlayEffectsFear();
             this.caster.StartGesture(GameActivity.DOTA_RAZE_2);
+
+            this.Destroy();
         }
     }
 

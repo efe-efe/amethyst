@@ -87,12 +87,10 @@ class InvokerMobility extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_invoker_mobility_thinker" })
 class ModifierInvokerMobilityThinker extends ModifierThinker {
-    origin!: Vector;
     particleId?: ParticleID;
 
     OnCreated(params: ModifierThinkerParams) {
         super.OnCreated(params);
-        this.origin = this.parent.GetAbsOrigin();
 
         if (IsServer()) {
             AddFOWViewer(this.caster.GetTeamNumber(), this.origin, this.radius, this.delayTime + 0.2, true);

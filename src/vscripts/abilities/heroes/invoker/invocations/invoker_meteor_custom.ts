@@ -46,12 +46,10 @@ class InvokerMeteor extends CustomAbility {
 
 @registerModifier({ customNameForI18n: "modifier_invoker_meteor_custom_impact_thinker" })
 class ModifierInvokerMeteorImpactThinker extends ModifierThinker {
-    origin!: Vector;
     direction!: Vector;
 
     OnCreated(params: ModifierThinkerParams & { x: number; y: number }) {
         super.OnCreated(params);
-        this.origin = this.parent.GetAbsOrigin();
 
         if (IsServer()) {
             const casterOrigin = Vector(params.x, params.y);

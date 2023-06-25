@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
-import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
+import { ModifierThinker } from "../../../modifiers/modifier_thinker";
 import { clampPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -124,13 +124,6 @@ class ModifierNevermoreSpecialAttackCharges extends ModifierCharges {
 
 @registerModifier({ customNameForI18n: "modifier_nevermore_special_attack_thinker" })
 class ModifierNevermoreSpecialAttackThinker extends ModifierThinker {
-    origin!: Vector;
-
-    OnCreated(params: ModifierThinkerParams) {
-        super.OnCreated(params);
-        this.origin = this.parent.GetAbsOrigin();
-    }
-
     OnReady() {
         const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
             this.caster,

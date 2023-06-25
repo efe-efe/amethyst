@@ -166,7 +166,6 @@ export class ModifierSniperSpecialAttackThinker extends ModifierThinker {
 
         if (IsServer()) {
             this.StopEffects();
-            UTIL_Remove(this.parent);
         }
     }
 
