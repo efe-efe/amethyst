@@ -33,7 +33,7 @@ interface HeroUpgrade extends Upgrade {
     level: number;
 }
 
-@registerModifier({ customNameForI18n: "modifier_combine_util" })
+@registerModifier()
 class ModifierCombineUtilVFX extends CustomModifier<undefined> {
     particleId?: ParticleID;
 

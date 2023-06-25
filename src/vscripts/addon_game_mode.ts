@@ -102,7 +102,6 @@ export class GameMode {
         this.SetupEventHooks();
         this.SetupPanoramaEventHooks();
         this.SetupRules();
-        this.LinkModifiers();
         this.SetupFilters();
 
         const mode = GameRules.GetGameModeEntity();
@@ -363,22 +362,6 @@ export class GameMode {
         mode.SetHealingFilter(this.HealingFilter, this);
         mode.SetDamageFilter(this.DamageFilter, this);
         print("[AMETHYST] Filters set");
-    }
-
-    LinkModifiers(): void {
-        LinkLuaModifier("modifier_generic_flying", "modifiers/generic/modifier_generic_flying", LuaModifierMotionType.NONE);
-        LinkLuaModifier(
-            "modifier_generic_ignore_ms_limit",
-            "modifiers/generic/modifier_generic_ignore_ms_limit",
-            LuaModifierMotionType.NONE
-        );
-        LinkLuaModifier("modifier_generic_change_ms", "modifiers/generic/modifier_generic_change_ms", LuaModifierMotionType.NONE);
-
-        if (this.IsPVE()) {
-            LinkLuaModifier("modifier_combine_util", "modifiers/modifier_combine_util", LuaModifierMotionType.NONE);
-        }
-
-        print("[AMETHYST] Useful modifiers linked");
     }
 
     IsInWTFMode(): boolean {

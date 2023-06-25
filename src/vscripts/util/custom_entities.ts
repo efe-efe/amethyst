@@ -1,7 +1,8 @@
 import "../modifiers/generic/modifier_generic_no_health_bar";
 import "../modifiers/generic/modifier_generic_disarm";
 import "../modifiers/generic/modifier_generic_use_energy";
-import "../modifiers/generic/modifier_generic_ignore_ms_limit";
+import { ModifierUnlimitedSpeed } from "../modifiers/modifier_unlimited_speed";
+import { ModifierMovementSpeed } from "../modifiers/modifier_movement_speed";
 
 const customEntities = {
     Disarm(entity: CDOTA_BaseNPC): void {
@@ -14,10 +15,10 @@ const customEntities = {
         entity.AddNewModifier(entity, undefined, "modifier_generic_use_energy", {});
     },
     IgnoreMSLimit(entity: CDOTA_BaseNPC): void {
-        entity.AddNewModifier(entity, undefined, "modifier_generic_ignore_ms_limit", {});
+        ModifierUnlimitedSpeed.apply(entity, entity, undefined, {});
     },
     ChangeMS(entity: CDOTA_BaseNPC, amount: number): void {
-        entity.AddNewModifier(entity, undefined, "modifier_generic_change_ms", {
+        ModifierMovementSpeed.apply(entity, entity, undefined, {
             amount
         });
     }
