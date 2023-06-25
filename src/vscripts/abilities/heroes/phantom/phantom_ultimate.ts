@@ -1,5 +1,5 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
-import { ModifierUpgradePhantomFastCoup } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradePhantomFastCoup } from "../../../modifiers/upgrades/modifier_favors";
 import { ProjectileBehavior } from "../../../projectiles";
 import { direction2D } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";

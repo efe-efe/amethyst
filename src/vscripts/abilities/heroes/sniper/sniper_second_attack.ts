@@ -1,6 +1,6 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
-import { ModifierUpgradeSniperFastSnipe } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradeSniperFastSnipe } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRoot } from "../../../modifiers/modifier_root";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ProjectileBehavior } from "../../../projectiles";

@@ -6,7 +6,7 @@ import {
     ModifierUpgradePhantomActCounter,
     ModifierUpgradePhantomCounterStacks,
     ModifierUpgradeSniperStrikeInstant
-} from "../../../modifiers/modifier_favors";
+} from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
@@ -14,6 +14,7 @@ import { clampPosition, direction2D, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPhantomStacks, PhantomBasicAttack } from "./phantom_basic_attack";
+import { ModifierUpgradePhantomStrikeKnives } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_strike_knives";
 
 @registerAbility("phantom_counter")
 class PhantomCounter extends CustomAbility {
@@ -448,7 +449,7 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
             }
 
             if (phantomBasicAttack) {
-                phantomBasicAttack.TryThrowKnives("modifier_upgrade_phantom_strike_knives");
+                phantomBasicAttack.TryThrowKnives(ModifierUpgradePhantomStrikeKnives.name);
             }
 
             if (this.ability.GetLevel() >= 2) {

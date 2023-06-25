@@ -379,36 +379,7 @@ export class GameMode {
         LinkLuaModifier("modifier_generic_change_ms", "modifiers/generic/modifier_generic_change_ms", LuaModifierMotionType.NONE);
 
         if (this.IsPVE()) {
-            const favorsPath = "modifiers/upgrades/favors/";
-            const itemsPath = "modifiers/upgrades/items/";
-            const shardsPath = "modifiers/upgrades/shards/";
-
-            Upgrades.forEach(upgrade => {
-                if (upgrade.modifier) {
-                    if (upgrade.type === UpgradeTypes.FAVOR) {
-                        LinkLuaModifier(upgrade.modifier.name, favorsPath + upgrade.modifier.name, LuaModifierMotionType.NONE);
-                    }
-                    if (upgrade.type === UpgradeTypes.SHARD) {
-                        LinkLuaModifier(upgrade.modifier.name, shardsPath + upgrade.modifier.name, LuaModifierMotionType.NONE);
-                    }
-                    if (upgrade.type === UpgradeTypes.ITEM) {
-                        LinkLuaModifier(upgrade.modifier.name, itemsPath + upgrade.modifier.name, LuaModifierMotionType.NONE);
-                    }
-                }
-            });
             LinkLuaModifier("modifier_combine_util", "modifiers/modifier_combine_util", LuaModifierMotionType.NONE);
-            LinkLuaModifier(
-                "modifier_upgrade_item_maelstrom_attack",
-                itemsPath + "modifier_upgrade_item_maelstrom",
-                LuaModifierMotionType.NONE
-            );
-            LinkLuaModifier("modifier_upgrade_item_basher_attack", itemsPath + "modifier_upgrade_item_basher", LuaModifierMotionType.NONE);
-            LinkLuaModifier(
-                "modifier_upgrade_item_javelin_attack",
-                itemsPath + "modifier_upgrade_item_javelin",
-                LuaModifierMotionType.NONE
-            );
-            LinkLuaModifier("modifier_upgrade_tarrasque", "modifiers/upgrades/modifier_upgrade_tarrasque", LuaModifierMotionType.NONE);
         }
 
         print("[AMETHYST] Useful modifiers linked");

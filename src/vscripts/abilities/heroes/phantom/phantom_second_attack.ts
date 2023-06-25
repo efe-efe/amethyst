@@ -1,5 +1,5 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
-import { ModifierUpgradePhantomCritRecast } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradePhantomCritRecast } from "../../../modifiers/upgrades/modifier_favors";
 import { clampPosition, direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomStacks } from "./phantom_basic_attack";

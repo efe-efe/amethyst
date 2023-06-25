@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
-import { ModifierUpgradeStormRangedRemnant } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradeStormRangedRemnant } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { clampPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";

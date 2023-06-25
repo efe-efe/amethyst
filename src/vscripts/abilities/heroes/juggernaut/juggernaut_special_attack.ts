@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { ModifierUpgradeJuggernautRefreshDagger } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradeJuggernautRefreshDagger } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";

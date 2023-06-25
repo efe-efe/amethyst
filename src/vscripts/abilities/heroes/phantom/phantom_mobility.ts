@@ -2,6 +2,8 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
+import { ModifierUpgradePhantomDashDamage } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_damage";
+import { ModifierUpgradePhantomDashShield } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_shield";
 import { direction2D } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
@@ -30,7 +32,7 @@ class PhantomMobility extends CustomAbility {
         });
 
         if (phantomBasicAttack) {
-            phantomBasicAttack.TryThrowKnives("modifier_upgrade_phantom_dash_damage");
+            phantomBasicAttack.TryThrowKnives(ModifierUpgradePhantomDashDamage.name);
         }
         this.PlayEffectsOnCast();
     }
@@ -92,12 +94,11 @@ class ModifierPhantomMobilityDisplacement extends ModifierDisplacement {
                     if (!ModifierPhantomMobility.findOne(unit)) {
                         ModifierPhantomMobility.apply(unit, this.parent, this.ability, { duration: 5 });
 
-                        const shieldModifier = this.parent.FindModifierByName("modifier_upgrade_phantom_dash_shield");
+                        const shieldModifier = ModifierUpgradePhantomDashShield.findOne(this.parent);
                         if (shieldModifier) {
                             ModifierPhantomMobilityShield.apply(this.parent, this.parent, undefined, {
                                 duration: 5.0,
-                                damageBlock: 0 //@Refactor fix this
-                                // damageBlock: shieldModifier.GetDamageBlock()
+                                damageBlock: shieldModifier.GetDamageBlock()
                             });
                         }
                     }

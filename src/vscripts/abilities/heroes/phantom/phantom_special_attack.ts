@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { ModifierUpgradePhantomExtraDaggers, ModifierUpgradePhantomFastDaggers } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradePhantomExtraDaggers, ModifierUpgradePhantomFastDaggers } from "../../../modifiers/upgrades/modifier_favors";
 import { direction2D, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomBleed, ModifierPhantomStacks, PhantomBasicAttack, PhantomExBasicAttack } from "./phantom_basic_attack";

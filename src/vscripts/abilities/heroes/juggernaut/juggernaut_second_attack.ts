@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
-import { ModifierUpgradeJuggernautBladeDanceReacast } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradeJuggernautBladeDanceReacast } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { clampPosition, direction2D, giveManaAndEnergy, giveManaAndEnergyPercent, isCountering, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";

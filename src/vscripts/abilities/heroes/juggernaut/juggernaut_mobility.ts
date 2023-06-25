@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCombatEvents, OnHitEvent } from "../../../modifiers/modifier_combat_events";
-import { ModifierUpgradeJuggernautFuryAttack, ModifierUpgradeJuggernautFuryReflects } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradeJuggernautFuryAttack, ModifierUpgradeJuggernautFuryReflects } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierHeroMovement } from "../../../modifiers/modifier_hero_movement";
 import { strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";

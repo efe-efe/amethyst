@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { ModifierUpgradePhantomQuickRecast } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradePhantomQuickRecast } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { direction2D, isCountering } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";

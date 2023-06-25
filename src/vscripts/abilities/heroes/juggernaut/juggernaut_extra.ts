@@ -1,5 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
-import { ModifierUpgradeJuggernautSpinningWard } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradeJuggernautSpinningWard } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { clampPosition } from "../../../util";

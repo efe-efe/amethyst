@@ -2,6 +2,7 @@ import { CustomActionEvent } from "../addon_game_mode";
 import BreakableBounty, { BreakableBountyOptions } from "../clases/breakable_bounty";
 import { CustomPlayerHeroNPC } from "../clases/pve/custom_npc";
 import { CustomEvents } from "../custom_events";
+import { ModifierVitality } from "../modifiers/upgrades/modifier_vitality";
 import { UpgradeManager } from "../upgrades/upgrades";
 import Math from "../util/math";
 export interface Reward {
@@ -274,7 +275,7 @@ export const RewardsManager = {
         CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
     },
     ClaimVitality(customNpc: CustomPlayerHeroNPC): void {
-        customNpc.unit.AddNewModifier(customNpc.unit, undefined, "modifier_upgrade_tarrasque", {});
+        ModifierVitality.apply(customNpc.unit, customNpc.unit, undefined, {});
         CustomEntitiesLegacy.SendDataToClient(customNpc.unit);
         const customEvents = CustomEvents.GetInstance();
         customEvents.EmitEvent("pve:current_reward_applied", { customNpc });

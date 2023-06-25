@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
-import { ModifierUpgradeStormUnleashedKnockback } from "../../../modifiers/modifier_favors";
+import { ModifierUpgradeStormUnleashedKnockback } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
 import { clampPosition, direction2D } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";

@@ -1,14 +1,5 @@
-import { CustomModifier } from "../abilities/framework/custom_modifier";
-import { registerModifier } from "../lib/dota_ts_adapter";
-
-class ModifierUpgrade extends CustomModifier {
-    RemoveOnDeath() {
-        return false;
-    }
-    IsPurgable() {
-        return false;
-    }
-}
+import { registerModifier } from "../../lib/dota_ts_adapter";
+import { ModifierUpgrade } from "./modifier_upgrade";
 
 @registerModifier({ customNameForI18n: "modifier_upgrade_juggernaut_blade_dance_recast" })
 export class ModifierUpgradeJuggernautBladeDanceReacast extends ModifierUpgrade {}

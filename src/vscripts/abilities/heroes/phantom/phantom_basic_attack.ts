@@ -51,33 +51,30 @@ export class PhantomBasicAttack extends CustomAbility {
     TryThrowKnives(modifierName: string) {
         const origin = this.caster.GetAbsOrigin();
         const radius = 300;
-        const modifier = this.caster.FindModifierByName(modifierName);
-        if (modifier) {
-            const stacks = modifier.GetStackCount();
-            EFX("particles/phantom/phantom_aoe_daggers_small.vpcf", ParticleAttachment.ABSORIGIN, this.caster, {
-                release: true
-            });
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
-                this.caster,
-                origin,
-                radius,
-                UnitTargetTeam.ENEMY,
-                UnitTargetType.HERO + UnitTargetType.BASIC,
-                UnitTargetFlags.NONE,
-                FindOrder.ANY
-            );
+        const stacks = this.caster.FindModifierByName(modifierName)?.GetStackCount() ?? 1;
+        EFX("particles/phantom/phantom_aoe_daggers_small.vpcf", ParticleAttachment.ABSORIGIN, this.caster, {
+            release: true
+        });
+        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            this.caster,
+            origin,
+            radius,
+            UnitTargetTeam.ENEMY,
+            UnitTargetType.HERO + UnitTargetType.BASIC,
+            UnitTargetFlags.NONE,
+            FindOrder.ANY
+        );
 
-            for (const enemy of enemies) {
-                ApplyDamage({
-                    victim: enemy,
-                    attacker: this.caster,
-                    damage: this.caster.GetAverageTrueAttackDamage(this.caster) * (0.5 * stacks),
-                    damage_type: DamageTypes.PHYSICAL
-                });
-                this.PlayEffectsOnImpact(enemy);
-            }
-            createRadiusMarker(this.caster, origin, radius, "public", 0.1);
+        for (const enemy of enemies) {
+            ApplyDamage({
+                victim: enemy,
+                attacker: this.caster,
+                damage: this.caster.GetAverageTrueAttackDamage(this.caster) * (0.5 * stacks),
+                damage_type: DamageTypes.PHYSICAL
+            });
+            this.PlayEffectsOnImpact(enemy);
         }
+        createRadiusMarker(this.caster, origin, radius, "public", 0.1);
     }
 
     OnSpellStart() {
