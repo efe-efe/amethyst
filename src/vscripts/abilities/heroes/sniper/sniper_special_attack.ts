@@ -361,5 +361,3 @@ class SniperSpecialAttackRecast extends CustomAbility {
     //     CustomAbilitiesLegacy:LinkUpgrades(self, "sniper_special_attack")
     // end
 }
-// if IsClient() then require("wrappers/abilities") end
-// Abilities.Castpoint(sniper_special_attack_recast)

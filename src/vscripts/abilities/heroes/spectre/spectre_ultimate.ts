@@ -34,8 +34,6 @@ class SpectreUltimate extends CustomAbility {
         EmitSoundOn("Hero_Spectre.HauntCast", this.caster);
     }
 }
-// if (IsClient()){ require("wrappers/abilities") }
-// Abilities.Castpoint(spectre_ultimate)
 
 @registerModifier({ customNameForI18n: "modifier_spectre_ultimate" })
 export class ModifierSpectreUltimate extends CustomModifier {
