@@ -30,6 +30,7 @@ import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { updateProjectiles } from "./projectiles";
 import { ModifierDamageVFX } from "./modifiers/modifier_damage_vfx";
 import { ModifierProvidesVision } from "./modifiers/modifier_provides_vision";
+import { giveEnergy } from "./util";
 
 declare global {
     interface CDOTAGameRules {
@@ -369,7 +370,6 @@ export class GameMode {
     }
 
     LinkModifiers(): void {
-        LinkLuaModifier("wall_base", "modifiers/wall_base.lua", LuaModifierMotionType.NONE);
         LinkLuaModifier("modifier_generic_flying", "modifiers/generic/modifier_generic_flying", LuaModifierMotionType.NONE);
         LinkLuaModifier(
             "modifier_generic_ignore_ms_limit",
@@ -540,14 +540,13 @@ export class GameMode {
     }
 
     CreateBarrel(origin: Vector): CDOTA_BaseNPC {
-        const fowBlocker = SpawnEntityFromTableSynchronous("point_simple_obstruction", { origin: origin, block_fow: true });
-        const barrel = CreateUnitByName("npc_dota_creature_wall", origin, false, undefined, undefined, DotaTeam.NOTEAM);
-        barrel.Attribute_SetIntValue("barrel", 1);
-        ModifierObstacle.apply(barrel, barrel, undefined, {});
-        barrel.SetHullRadius(65);
-        barrel.AddNewModifier(barrel, undefined, "wall_base", {
-            fow_blocker: fowBlocker.GetEntityIndex()
+        const fowBlocker = SpawnEntityFromTableSynchronous("point_simple_obstruction", {
+            origin: origin,
+            block_fow: true
         });
+        const barrel = CreateUnitByName("npc_dota_creature_wall", origin, false, undefined, undefined, DotaTeam.NOTEAM);
+        ModifierObstacle.apply(barrel, barrel, undefined, {})?.SetFowBlocker(fowBlocker);
+        barrel.SetHullRadius(65);
         return barrel;
     }
 
@@ -964,7 +963,7 @@ export class GameMode {
     RefreshHeroes(): void {
         this.players.forEach(player => {
             if (player.hero && !player.hero.IsNull() && player.hero.IsAlive()) {
-                CustomEntitiesLegacy.GiveEnergy(player.hero, CustomEntitiesLegacy.GetMaxEnergy(player.hero));
+                giveEnergy(player.hero, CustomEntitiesLegacy.GetMaxEnergy(player.hero), false, false);
                 CustomEntitiesLegacy.SendDataToClient(player.hero);
             }
         });

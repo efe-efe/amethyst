@@ -2,6 +2,7 @@ import { ModifierEmerald } from "../modifiers/gems/modifier_emerald";
 import { ModifierRuby } from "../modifiers/gems/modifier_ruby";
 import { ModifierSapphire } from "../modifiers/gems/modifier_sapphire";
 import { ModifierGem } from "../modifiers/modifier_gem";
+import { giveMana } from "../util";
 import BreakableBounty from "./breakable_bounty";
 
 export enum GemTypes {
@@ -188,7 +189,7 @@ class Amethyst extends Gem {
             if (ally.IsRealHero()) {
                 CustomEntitiesLegacy.RefreshCooldowns(ally);
                 CustomEntitiesLegacy.TrueHeal(ally, final_heal);
-                CustomEntitiesLegacy.GiveManaCustom(ally, final_mana, true, true);
+                giveMana(ally, final_mana, true, true);
                 this.PlayEffectsOnTarget(ally);
             }
         });

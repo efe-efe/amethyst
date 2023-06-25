@@ -5,16 +5,16 @@ import { giveManaAndEnergy } from "../util";
 @registerAbility("item_mango_custom")
 class ItemMango extends CustomItem {
     OnSpellStart() {
-        giveManaAndEnergy(this.caster, this.GetSpecialValueFor("mana"), true);
+        giveManaAndEnergy(this.GetCaster(), this.GetSpecialValueFor("mana"), true);
         this.PlayEffects();
         this.SpendCharge();
     }
 
     PlayEffects() {
-        EmitSoundOn("DOTA_Item.Mango.Activate", this.caster);
+        EmitSoundOn("DOTA_Item.Mango.Activate", this.GetCaster());
 
         const particle_cast = "particles/items3_fx/mango_active.vpcf";
-        const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster);
+        const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.ABSORIGIN_FOLLOW, this.GetCaster());
         ParticleManager.ReleaseParticleIndex(particleId);
     }
 }

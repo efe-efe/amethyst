@@ -5,12 +5,12 @@ import { registerAbility, registerModifier } from "../lib/dota_ts_adapter";
 @registerAbility("item_salve_custom")
 class ItemSalve extends CustomItem {
     OnSpellStart() {
-        ModifierItemSalve.apply(this.caster, this.caster, this, {
+        ModifierItemSalve.apply(this.GetCaster(), this.GetCaster(), this, {
             duration: this.GetSpecialValueFor("duration"),
             thinkInterval: this.GetSpecialValueFor("think_interval"),
             healPerTick: this.GetSpecialValueFor("heal_per_tick")
         });
-        EmitSoundOn("DOTA_Item.HealingSalve.Activate", this.caster);
+        EmitSoundOn("DOTA_Item.HealingSalve.Activate", this.GetCaster());
         this.SpendCharge();
     }
 }

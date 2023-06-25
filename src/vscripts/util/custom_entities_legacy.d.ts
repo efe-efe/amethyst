@@ -32,7 +32,6 @@ declare interface CustomEntitiesLegacy {
     CanWalk(hEntity: CDOTA_BaseNPC): boolean;
     Allies(hEntityA: CDOTA_BaseNPC, hEntityB: CDOTA_BaseNPC): boolean;
     GetDistance(hEntity: CDOTA_BaseNPC, hTarget: CDOTA_BaseNPC): number;
-    SafeDestroyModifier(hEntity: CDOTA_BaseNPC, sModifierName: string): void;
     FindUnitsInRadius(
         hEntity: CDOTA_BaseNPC,
         origin: Vector,

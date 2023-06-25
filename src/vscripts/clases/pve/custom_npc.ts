@@ -9,6 +9,7 @@ import { CustomModifier } from "../../abilities/framework/custom_modifier";
 import { ModifierBase } from "../../modifiers/modifier_base";
 import { ModifierHeroMovement } from "../../modifiers/modifier_hero_movement";
 import { ModifierTowerIdle } from "../../modifiers/modifier_tower_idle";
+import { ModifierVisible } from "../../modifiers/modifier_visible";
 
 const DEBUG = false;
 
@@ -58,6 +59,7 @@ export default class CustomNPC extends UnitEntity {
     constructor(unit: CDOTA_BaseNPC) {
         ModifierBase.apply(unit, unit, undefined, {});
         CustomEntitiesLegacy.Initialize(unit, !unit.IsRealHero()); //Need this for SetParent bullshit
+        ModifierVisible.apply(unit, unit, undefined, {});
         super({ unit });
         customEntities.Disarm(this.unit);
         customEntities.IgnoreMSLimit(this.unit);

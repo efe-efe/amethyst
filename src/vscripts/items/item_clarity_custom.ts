@@ -6,12 +6,12 @@ import { giveManaAndEnergy } from "../util";
 @registerAbility("item_clarity_custom")
 class ItemClarity extends CustomItem {
     OnSpellStart() {
-        ModifierItemClarity.apply(this.caster, this.caster, this, {
+        ModifierItemClarity.apply(this.GetCaster(), this.GetCaster(), this, {
             duration: this.GetSpecialValueFor("duration"),
             thinkInterval: this.GetSpecialValueFor("think_interval"),
             manaPerTick: this.GetSpecialValueFor("mana_per_tick")
         });
-        EmitSoundOn("DOTA_Item.ClarityPotion.Activate", this.caster);
+        EmitSoundOn("DOTA_Item.ClarityPotion.Activate", this.GetCaster());
         this.SpendCharge();
     }
 }

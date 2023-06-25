@@ -8,10 +8,10 @@ class ItemDeathOrb extends CustomItem {
         const charges = this.GetCurrentCharges();
         const heal = 24;
 
-        giveManaAndEnergy(this.caster, charges, true, true);
+        giveManaAndEnergy(this.GetCaster(), charges, true, true);
 
         if (charges == 100) {
-            CustomEntitiesLegacy.TrueHeal(this.caster, heal);
+            CustomEntitiesLegacy.TrueHeal(this.GetCaster(), heal);
         }
     }
 }

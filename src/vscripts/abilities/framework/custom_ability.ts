@@ -384,8 +384,6 @@ export class CustomAbility extends BaseAbility {
 
 // @Refactor this is so repeated
 export class CustomItem extends BaseItem {
-    caster = this.GetCaster();
-
     public static findOne = findOne;
 
     GetCastingCrawl(): number | undefined {
@@ -402,7 +400,7 @@ export class CustomItem extends BaseItem {
     }
 
     OnAbilityPhaseStart() {
-        ModifierCasting.apply(this.caster, this.caster, this, {
+        ModifierCasting.apply(this.GetCaster(), this.GetCaster(), this, {
             duration: this.GetCastPoint(),
             movementSpeed: this.GetCastingCrawl(),
             translate: this.GetAnimationTranslate()
@@ -411,7 +409,7 @@ export class CustomItem extends BaseItem {
 
         const animation = this.GetAnimation();
         if (animation) {
-            this.caster.StartGestureWithPlaybackRate(animation, this.GetPlaybackRateOverride());
+            this.GetCaster().StartGestureWithPlaybackRate(animation, this.GetPlaybackRateOverride());
         }
 
         return true;
@@ -421,7 +419,7 @@ export class CustomItem extends BaseItem {
         const animation = this.GetAnimation();
 
         if (animation) {
-            this.caster.FadeGesture(animation);
+            this.GetCaster().FadeGesture(animation);
         }
         this.GetCaster().RemoveModifierByName(ModifierCasting.name);
     }
@@ -435,7 +433,7 @@ export class CustomItem extends BaseItem {
         // if onSpellStart then onSpellStart(self) end
 
         //TODO: @Refactor Idk why I did this
-        this.caster.Stop();
+        this.GetCaster().Stop();
     }
 
     MeeleAttack(options: {
@@ -463,7 +461,7 @@ export class CustomItem extends BaseItem {
         // const shouldShake = false
 
         if (attackType == "basic") {
-            triggerBasicAttackStarted(this.caster);
+            triggerBasicAttackStarted(this.GetCaster());
         }
 
         // const callback = options.Callback
@@ -475,7 +473,7 @@ export class CustomItem extends BaseItem {
         // }
 
         const units = findUnitsInCone(
-            this.caster,
+            this.GetCaster(),
             options.direction,
             0,
             options.origin,
@@ -494,7 +492,7 @@ export class CustomItem extends BaseItem {
             if (!bypass) {
                 options.effect(unit);
                 if (attackType == "basic") {
-                    triggerBasicAttackLanded(this.caster, unit);
+                    triggerBasicAttackLanded(this.GetCaster(), unit);
                 }
             }
 
@@ -510,11 +508,11 @@ export class CustomItem extends BaseItem {
         // }
 
         if (attackType == "basic") {
-            triggerBasicAttackEnded(this.caster);
+            triggerBasicAttackEnded(this.GetCaster());
         }
 
         if (options.baseSound) {
-            EmitSoundOn(options.baseSound, this.caster);
+            EmitSoundOn(options.baseSound, this.GetCaster());
         }
 
         return units;
@@ -541,11 +539,11 @@ export class CustomItem extends BaseItem {
         const attackType = options.attackType ?? "other";
 
         if (options.attackType == "basic") {
-            triggerBasicAttackStarted(this.caster);
+            triggerBasicAttackStarted(this.GetCaster());
         }
 
         const units = CustomEntitiesLegacy.FindUnitsInRadius(
-            this.caster,
+            this.GetCaster(),
             options.origin,
             options.radius,
             teamFilter,
@@ -562,7 +560,7 @@ export class CustomItem extends BaseItem {
             if (!bypass) {
                 options.effect(unit);
                 if (attackType == "basic") {
-                    triggerBasicAttackLanded(this.caster, unit);
+                    triggerBasicAttackLanded(this.GetCaster(), unit);
                 }
             }
 
@@ -574,7 +572,7 @@ export class CustomItem extends BaseItem {
         }
 
         if (attackType == "basic") {
-            triggerBasicAttackEnded(this.caster);
+            triggerBasicAttackEnded(this.GetCaster());
         }
 
         return units;
@@ -599,7 +597,7 @@ export class CustomItem extends BaseItem {
         const attackType = options.attackType ?? "other";
 
         if (options.attackType == "basic") {
-            triggerBasicAttackStarted(this.caster);
+            triggerBasicAttackStarted(this.GetCaster());
         }
 
         const bypass = triggerOnHit(options.target, "single", triggerCounters);
@@ -607,12 +605,12 @@ export class CustomItem extends BaseItem {
         if (!bypass) {
             options.effect(options.target);
             if (attackType == "basic") {
-                triggerBasicAttackLanded(this.caster, options.target);
+                triggerBasicAttackLanded(this.GetCaster(), options.target);
             }
         }
 
         if (attackType == "basic") {
-            triggerBasicAttackEnded(this.caster);
+            triggerBasicAttackEnded(this.GetCaster());
         }
 
         return options.target;
@@ -641,7 +639,7 @@ export class CustomItem extends BaseItem {
             if (!bypass) {
                 options.onUnitHit?.(unit, projectile);
                 if (attackType == "basic") {
-                    triggerBasicAttackLanded(this.caster, unit);
+                    triggerBasicAttackLanded(this.GetCaster(), unit);
                 }
             }
 
@@ -652,12 +650,12 @@ export class CustomItem extends BaseItem {
             options.onFinish?.(projectile);
 
             if (attackType == "basic") {
-                triggerBasicAttackEnded(this.caster);
+                triggerBasicAttackEnded(this.GetCaster());
             }
         };
 
         if (options.attackType == "basic") {
-            triggerBasicAttackStarted(this.caster);
+            triggerBasicAttackStarted(this.GetCaster());
         }
 
         const projectile = createProjectile({

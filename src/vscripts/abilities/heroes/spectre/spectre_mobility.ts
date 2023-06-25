@@ -180,7 +180,7 @@ class ModifierSpectreMobilityThinker extends ModifierThinker {
     //         CustomEntitiesLegacy:SafeDestroyModifier(this.caster, "modifier_spectre_banish")
     //         const heal = false
     //         const enemies = ApplyCallbackForUnitsInArea(this.caster, this.parent.GetAbsOrigin(), this.radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(enemy)
-    //             if (CustomEntitiesLegacy:ProvidesMana(enemy)){
+    //             if (!isObstacle(enemy) && !isGem(enemy)){
     //                 enemy:AddNewModifier(this.caster, this, "modifier_spectre_desolate_custom", { duration = this.desolate_duration })
     //                 heal = true
     //             }

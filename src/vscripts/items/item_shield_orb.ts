@@ -1,15 +1,15 @@
-import { CustomAbility } from "../abilities/framework/custom_ability";
+import { CustomItem } from "../abilities/framework/custom_ability";
 import { registerAbility } from "../lib/dota_ts_adapter";
 import { ModifierShield } from "../modifiers/modifier_shield";
 
 @registerAbility("item_shield_orb")
-class ItemShieldOrb extends CustomAbility {
+class ItemShieldOrb extends CustomItem {
     OnSpellStart() {
         const damage_block = 16;
 
-        ModifierShield.apply(this.caster, this.caster, undefined, { duration: 6.0, damageBlock: damage_block });
+        ModifierShield.apply(this.GetCaster(), this.GetCaster(), undefined, { duration: 6.0, damageBlock: damage_block });
 
-        EmitSoundOn("Hero_Sven.GodsStrength.Attack", this.caster);
-        EmitSoundOn("Hero_Abaddon.AphoticShield.Cast", this.caster);
+        EmitSoundOn("Hero_Sven.GodsStrength.Attack", this.GetCaster());
+        EmitSoundOn("Hero_Abaddon.AphoticShield.Cast", this.GetCaster());
     }
 }

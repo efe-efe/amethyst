@@ -6,9 +6,9 @@ import { giveManaAndEnergy } from "../util";
 class ItemManaOrb extends CustomItem {
     OnSpellStart() {
         const mana = 8;
-        giveManaAndEnergy(this.caster, mana, true, true);
+        giveManaAndEnergy(this.GetCaster(), mana, true, true);
 
-        EmitSoundOn("DOTA_Item.ClarityPotion.Activate", this.caster);
+        EmitSoundOn("DOTA_Item.ClarityPotion.Activate", this.GetCaster());
         this.SpendCharge();
     }
 }

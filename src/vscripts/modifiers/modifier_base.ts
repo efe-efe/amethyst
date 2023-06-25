@@ -9,7 +9,7 @@ export class ModifierBase extends CustomModifier<undefined> {
     }
 
     IsHidden() {
-        return false; //true;
+        return true;
     }
 
     DeclareFunctions() {
@@ -21,7 +21,6 @@ export class ModifierBase extends CustomModifier<undefined> {
 
         for (const modifier of this.parent.FindAllModifiers()) {
             if (modifier instanceof ModifierShield) {
-                print(modifier.GetName());
                 // CustomEntitiesLegacy:SetBeenHurt(self:GetParent(), true)
                 const remainingShield = Math.max(0, modifier.GetStackCount() - remainingDamage);
                 remainingDamage = Math.max(0, remainingDamage - modifier.GetStackCount());
@@ -33,8 +32,6 @@ export class ModifierBase extends CustomModifier<undefined> {
                 }
             }
         }
-
-        print("Hey, im here", remainingDamage);
 
         return -(100 - (100 * remainingDamage) / remainingDamage);
     }
