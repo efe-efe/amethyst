@@ -16,7 +16,7 @@ import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 import { fullyFaceTowards, getCursorPosition } from "../util";
 
-@registerModifier({ customNameForI18n: "modifier_casting" })
+@registerModifier("modifier_casting")
 export class ModifierCasting extends CustomModifier {
     movementSpeed?: number;
 

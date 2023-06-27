@@ -44,7 +44,7 @@ export class PuckSpecialAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_special_attack_thinker" })
+@registerModifier("modifier_puck_special_attack_thinker")
 class ModifierPuckSpecialAttack extends ModifierThinker {
     damage!: number;
     manaGainPct!: number;

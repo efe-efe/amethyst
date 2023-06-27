@@ -49,7 +49,7 @@ class NevermoreExtra extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_extra" })
+@registerModifier("modifier_nevermore_extra")
 class ModifierNevermoreExtra extends CustomModifier {
     particleId?: ParticleID;
 
@@ -118,7 +118,7 @@ class ModifierNevermoreExtra extends CustomModifier {
 // if(IsClient() ) { require("wrappers/modifiers") }
 // Modifiers.Status(modifier_nevermore_extra)
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_extra_debuff" })
+@registerModifier("modifier_nevermore_extra_debuff")
 class ModifierNevermoreExtraDebuff extends CustomModifier {
     IsHidden() {
         return false;

@@ -81,7 +81,7 @@ class DireTowerAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_dire_tower_attack" })
+@registerModifier("modifier_dire_tower_attack")
 class ModifierDireTowerAttack extends CustomModifier {
     OnCreated() {
         if (IsServer()) {

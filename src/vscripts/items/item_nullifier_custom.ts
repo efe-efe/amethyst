@@ -64,7 +64,7 @@ class ItemNullifier extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_nullifier_custom_slow" })
+@registerModifier("modifier_item_nullifier_custom_slow")
 class ModifierItemNullifierSlow extends CustomModifier {
     DeclareFunctions() {
         return [ModifierFunction.MOVESPEED_BONUS_PERCENTAGE];
@@ -83,7 +83,7 @@ class ModifierItemNullifierSlow extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_nullifier_custom" })
+@registerModifier("modifier_item_nullifier_custom")
 class ModifierItemNullifier extends CustomModifier {
     OnCreated() {
         if (IsServer()) {

@@ -437,3 +437,4 @@ game/scripts/vscripts/modifiers/upgrades/shards/modifier_upgrade_phantom_dash_sh
 game/scripts/vscripts/modifiers/upgrades/shards/modifier_upgrade_phantom_strike_knives.lua
 game/scripts/vscripts/modifiers/modifier_unlimited_speed.lua
 game/scripts/vscripts/modifiers/modifier_movement_speed.lua
+game/scripts/vscripts/lualib_bundle.lua

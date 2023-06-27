@@ -4,7 +4,7 @@ import { ModifierCombatEvents } from "../../modifier_combat_events";
 import { ModifierStun } from "../../modifier_stunned";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_basher" })
+@registerModifier("modifier_upgrade_item_basher")
 class ModifierItemBasher extends ModifierUpgrade {
     damagePerStack = 10;
     extraHealth = 100;
@@ -29,7 +29,7 @@ class ModifierItemBasher extends ModifierUpgrade {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_basher_attack" })
+@registerModifier("modifier_upgrade_item_basher_attack")
 class ModifierItemBasherAttack extends ModifierCombatEvents<undefined> {
     stunDuration = 1.0;
     damage = 10;

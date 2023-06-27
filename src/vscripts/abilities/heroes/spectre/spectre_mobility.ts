@@ -159,7 +159,7 @@ class SpectreExMobility extends CustomAbility {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_mobility_thinker" })
+@registerModifier("modifier_spectre_mobility_thinker")
 class ModifierSpectreMobilityThinker extends ModifierThinker {
     // function modifier_spectre_mobility_thinker:OnCreated(params)
     //     if (IsServer()){
@@ -206,7 +206,7 @@ class ModifierSpectreMobilityThinker extends ModifierThinker {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_mobility_charges" })
+@registerModifier("modifier_spectre_mobility_charges")
 class ModifierSpectreMobility extends ModifierCharges {
     GetMaxCharges() {
         return this.ability.GetSpecialValueFor("max_charges");
@@ -221,12 +221,12 @@ class ModifierSpectreMobility extends ModifierCharges {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_ex_mobility_fear" })
+@registerModifier("modifier_spectre_ex_mobility_fear")
 class ModifierSpectreExMobility extends CustomModifier {}
 // if (IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Fear(modifier_spectre_ex_mobility_fear)
 
-@registerModifier({ customNameForI18n: "modifier_spectre_banish" })
+@registerModifier("modifier_spectre_banish")
 class ModifierSpectreMobilityBanish extends ModifierBanish {
     // function modifier_spectre_banish:IsHidden() return false
     // }

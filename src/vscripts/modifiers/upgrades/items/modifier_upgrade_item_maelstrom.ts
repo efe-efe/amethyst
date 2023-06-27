@@ -2,7 +2,7 @@ import { registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCombatEvents } from "../../modifier_combat_events";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_maelstrom" })
+@registerModifier("modifier_upgrade_item_maelstrom")
 class ModifierItemMaelstrom extends ModifierUpgrade {
     damagePerStack = 10;
     procChancePct = 50;
@@ -26,7 +26,7 @@ class ModifierItemMaelstrom extends ModifierUpgrade {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_maelstrom_attack" })
+@registerModifier("modifier_upgrade_item_maelstrom_attack")
 class ModifierItemMaelstromAttack extends ModifierCombatEvents<undefined> {
     hitLog: CDOTA_BaseNPC[] = [];
     radius = 850;

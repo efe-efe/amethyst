@@ -181,7 +181,7 @@ export class PuckBasicAttackRelated extends PuckBasicAttackCommon {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_basic_attack_cooldown" })
+@registerModifier("modifier_puck_basic_attack_cooldown")
 export class ModifierPuckBasicAttack extends ModifierCooldown {
     DeclareFunctions() {
         return [ModifierFunction.PREATTACK_BONUS_DAMAGE];
@@ -221,7 +221,7 @@ export class ModifierPuckBasicAttack extends ModifierCooldown {
 // Modifiers.Cooldown(modifier_puck_basic_attack_cooldown)
 // Modifiers.OnEvent(modifier_puck_basic_attack_cooldown)
 
-@registerModifier({ customNameForI18n: "modifier_puck_basic_attack_buff" })
+@registerModifier("modifier_puck_basic_attack_buff")
 class ModifierPuckBasicAttackBuff extends ModifierCombatEvents {
     IsHidden() {
         return true;
@@ -238,7 +238,7 @@ class ModifierPuckBasicAttackBuff extends ModifierCombatEvents {
 // Modifiers.OnEvent(modifier_puck_basic_attack_buff)
 // Modifiers.PreAttackDamage(modifier_puck_basic_attack_buff)
 
-@registerModifier({ customNameForI18n: "modifier_puck_fairy_dust" })
+@registerModifier("modifier_puck_fairy_dust")
 export class ModifierPuckFairyDust extends CustomModifier {
     particleId?: ParticleID;
 
@@ -305,7 +305,7 @@ class PuckExBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_ex_basic_attack" })
+@registerModifier("modifier_puck_ex_basic_attack")
 class ModifierPuckExBasicAttack extends CustomModifier {
     particleIds: ParticleID[] = [];
 
@@ -355,7 +355,7 @@ class ModifierPuckExBasicAttack extends CustomModifier {
 // Modifiers.Status(modifier_puck_ex_basic_attack)
 
 //@Refactor maybe I should use the PuckExBasicAttack as the ability instead of the PuckBasicAttackRelated
-@registerModifier({ customNameForI18n: "modifier_puck_basic_attack_thinker" })
+@registerModifier("modifier_puck_basic_attack_thinker")
 class ModifierPuckExBasicAttackThinker extends ModifierThinker {
     charged!: boolean;
     duration!: number;
@@ -454,7 +454,7 @@ class ModifierPuckExBasicAttackThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_ex_basic_attack_shield" })
+@registerModifier("modifier_puck_ex_basic_attack_shield")
 class ModifierPuckExBasicAttackShield extends ModifierShield {
     // function modifier_puck_ex_basic_attack_shield:GetStatusLabel() return "Fairy Shield" }
     // function modifier_puck_ex_basic_attack_shield:GetStatusPriority() return 3 }

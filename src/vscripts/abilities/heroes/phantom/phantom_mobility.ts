@@ -49,7 +49,7 @@ class PhantomMobility extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_mobility_charges" })
+@registerModifier("modifier_phantom_mobility_charges")
 class ModifierPhantomMobilityCharges extends ModifierCharges {
     GetMaxCharges() {
         //@Refactor this might not work
@@ -65,7 +65,7 @@ class ModifierPhantomMobilityCharges extends ModifierCharges {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_mobility_displacement" })
+@registerModifier("modifier_phantom_mobility_displacement")
 class ModifierPhantomMobilityDisplacement extends ModifierDisplacement {
     OnDestroy() {
         if (IsServer()) {
@@ -118,7 +118,7 @@ class ModifierPhantomMobilityDisplacement extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_mobility_debuff" })
+@registerModifier("modifier_phantom_mobility_debuff")
 class ModifierPhantomMobility extends CustomModifier {
     IsHidden() {
         return true;
@@ -129,7 +129,7 @@ class ModifierPhantomMobility extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_mobility_shield" })
+@registerModifier("modifier_phantom_mobility_shield")
 class ModifierPhantomMobilityShield extends ModifierShield {
     // function modifier_phantom_mobility_shield:GetStatusLabel() return "Dash Shield" }
     // function modifier_phantom_mobility_shield:GetStatusPriority() return 3 }

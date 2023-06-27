@@ -1,7 +1,7 @@
 import { CustomModifier } from "../../../abilities/framework/custom_modifier";
 import { registerModifier } from "../../../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_mithril_hammer" })
+@registerModifier("modifier_upgrade_item_mithril_hammer")
 class ModifierItemMithrilHammer extends CustomModifier {
     damagePerStack = 4;
 

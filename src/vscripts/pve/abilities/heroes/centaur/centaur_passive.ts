@@ -10,7 +10,7 @@ class CentaurPassive extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_centaur_passive" })
+@registerModifier("modifier_centaur_passive")
 class ModifierCentaurPassive extends ModifierCombatEvents {
     OnHit(event: OnHitEvent) {
         if (IsServer()) {

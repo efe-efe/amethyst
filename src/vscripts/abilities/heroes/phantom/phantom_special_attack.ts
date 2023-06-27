@@ -29,13 +29,12 @@ class PhantomSpecialAttack extends CustomAbility {
     }
 
     GetCooldown(level: number) {
-        if (ModifierUpgradePhantomFastDaggers.findOne(this.caster)) {
+        if (IsServer() && ModifierUpgradePhantomFastDaggers.findOne(this.caster)) {
             const attacksPerSecond = this.caster.GetAttacksPerSecond();
             const attackSpeed = 1 / attacksPerSecond;
             return attackSpeed * 2;
-        } else {
-            return super.GetCooldown(level);
         }
+        return super.GetCooldown(level);
     }
 
     OnSpellStart() {
@@ -137,7 +136,7 @@ class PhantomSpecialAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_special_attack_charges" })
+@registerModifier("modifier_phantom_special_attack_charges")
 class ModifierPhantomSpecialAttackCharges extends ModifierCharges {
     GetMaxCharges() {
         return ModifierUpgradePhantomFastDaggers.findOne(this.caster) ? 1 : this.Value("max_charges");

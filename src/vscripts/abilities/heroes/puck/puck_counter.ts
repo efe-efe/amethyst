@@ -26,7 +26,7 @@ export class PuckCounter extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_counter_banish" })
+@registerModifier("modifier_puck_counter_banish")
 class ModifierPuckCounter extends ModifierBanish {
     particleId?: ParticleID;
 
@@ -87,7 +87,7 @@ class ModifierPuckCounter extends ModifierBanish {
 // Modifiers.Banish(modifier_puck_counter_banish)
 // Modifiers.Status(modifier_puck_counter_banish)
 
-@registerModifier({ customNameForI18n: "modifier_puck_counter_charges" })
+@registerModifier("modifier_puck_counter_charges")
 class ModifierPuckCounterCharges extends ModifierCharges {
     GetMaxCharges() {
         return this.Value("max_charges");

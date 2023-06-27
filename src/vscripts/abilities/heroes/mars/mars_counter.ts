@@ -25,7 +25,7 @@ class MarsCounter extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_counter_countering" })
+@registerModifier("modifier_mars_counter_countering")
 class ModifierMarsCounter extends ModifierCounter {
     OnCreated() {
         super.OnCreated();
@@ -181,7 +181,7 @@ class ModifierMarsCounter extends ModifierCounter {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_counter_displacement" })
+@registerModifier("modifier_mars_counter_displacement")
 class ModifierMarsCounterDisplacement extends ModifierDisplacement {
     OnDestroy() {
         super.OnDestroy();

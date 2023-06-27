@@ -57,7 +57,7 @@ class StormSpecialAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_special_attack_thinker" })
+@registerModifier("modifier_storm_special_attack_thinker")
 class ModifierStormSpecialAttackThinker extends ModifierThinker {
     OnReady() {
         EFX("particles/units/heroes/hero_zeus/zeus_cloud_strike.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
@@ -122,7 +122,7 @@ class ModifierStormSpecialAttackThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_special_attack_efx" })
+@registerModifier("modifier_storm_special_attack_efx")
 class ModifierStormSpecialAttack extends CustomModifier {
     particleId!: ParticleID;
     origin!: Vector;

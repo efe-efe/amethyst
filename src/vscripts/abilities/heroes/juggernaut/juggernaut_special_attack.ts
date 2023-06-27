@@ -148,8 +148,8 @@ class JuggernautSpecialAttackRecast extends CustomAbility {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_special_attack_recast" })
+@registerModifier("modifier_juggernaut_special_attack_recast")
 class ModifierJuggernautSpecialAttackRecast extends ModifierRecast<undefined> {}
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_special_attack_mark" })
+@registerModifier("modifier_juggernaut_special_attack_mark")
 class ModifierJuggernautSpecialAttackMark extends CustomModifier {}

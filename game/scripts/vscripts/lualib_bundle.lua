@@ -859,6 +859,25 @@ local function __TS__CloneDescriptor(____bindingPattern0)
     return descriptor
 end
 
+local function __TS__Decorate(self, originalValue, decorators, context)
+    local result = originalValue
+    do
+        local i = #decorators
+        while i >= 0 do
+            local decorator = decorators[i + 1]
+            if decorator ~= nil then
+                local ____decorator_result_0 = decorator(self, result, context)
+                if ____decorator_result_0 == nil then
+                    ____decorator_result_0 = result
+                end
+                result = ____decorator_result_0
+            end
+            i = i - 1
+        end
+    end
+    return result
+end
+
 local function __TS__ObjectAssign(target, ...)
     local sources = {...}
     for i = 1, #sources do
@@ -960,7 +979,7 @@ do
     end
 end
 
-local function __TS__Decorate(decorators, target, key, desc)
+local function __TS__DecorateLegacy(decorators, target, key, desc)
     local result = target
     do
         local i = #decorators
@@ -2398,6 +2417,7 @@ return {
   __TS__CloneDescriptor = __TS__CloneDescriptor,
   __TS__CountVarargs = __TS__CountVarargs,
   __TS__Decorate = __TS__Decorate,
+  __TS__DecorateLegacy = __TS__DecorateLegacy,
   __TS__DecorateParam = __TS__DecorateParam,
   __TS__Delete = __TS__Delete,
   __TS__DelegatedYield = __TS__DelegatedYield,

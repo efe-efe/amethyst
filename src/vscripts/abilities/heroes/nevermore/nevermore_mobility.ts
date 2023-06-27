@@ -45,7 +45,7 @@ class NevermoreMobility extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_mobility_displacement" })
+@registerModifier("modifier_nevermore_mobility_displacement")
 class ModifierNevermoreMobility extends ModifierDisplacement {
     OnCreated(params: DisplacementParams) {
         super.OnCreated(params);
@@ -155,7 +155,7 @@ class ModifierNevermoreMobility extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_mobility_hit" })
+@registerModifier("modifier_nevermore_mobility_hit")
 class ModifierNevermoreMobilityMark extends CustomModifier {
     IsPermanent() {
         return true;

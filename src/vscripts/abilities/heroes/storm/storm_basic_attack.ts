@@ -165,7 +165,7 @@ class StormBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_basic_attack_cooldown" })
+@registerModifier("modifier_storm_basic_attack_cooldown")
 class ModifierStormBasicAttack extends ModifierCooldown {
     particleId?: ParticleID;
 
@@ -231,7 +231,7 @@ export class StormExBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_ex_basic_attack" })
+@registerModifier("modifier_storm_ex_basic_attack")
 export class ModifierStormExBasicAttack extends CustomModifier {
     particleId!: ParticleID;
 

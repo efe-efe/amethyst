@@ -2,7 +2,7 @@ import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 import { strongPurge } from "../util";
 
-@registerModifier({ customNameForI18n: "modifier_generic_invencible" })
+@registerModifier("modifier_generic_invencible")
 export class ModifierInvencible extends CustomModifier {
     IsHidden() {
         return false;

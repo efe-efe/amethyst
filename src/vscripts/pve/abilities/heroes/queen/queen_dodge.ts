@@ -18,7 +18,7 @@ class QueenDodge extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_queen_dodge" })
+@registerModifier("modifier_queen_dodge")
 class ModifierQueenDodge extends ModifierCombatEvents {
     origin!: Vector;
     jumps!: number;

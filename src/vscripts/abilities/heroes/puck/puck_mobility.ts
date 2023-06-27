@@ -145,7 +145,7 @@ class PuckMobility extends PuckMobilityCommon {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_mobility_recast" })
+@registerModifier("modifier_puck_mobility_recast")
 class ModifierPuckMobilityRecast extends ModifierRecast {}
 
 @registerAbility("puck_mobility_recast")
@@ -282,10 +282,10 @@ class PuckExMobilityRecast extends CustomAbility {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_ex_mobility_recast" })
+@registerModifier("modifier_puck_ex_mobility_recast")
 class ModifierPuckExMobilityRecast extends ModifierRecast {}
 
-@registerModifier({ customNameForI18n: "modifier_puck_ex_mobility_fear" })
+@registerModifier("modifier_puck_ex_mobility_fear")
 class ModifierPuckExMobility extends CustomModifier {}
 // if IsClient() then require("wrappers/modifiers") }
 // Modifiers.Fear(modifier_puck_ex_mobility_fear)

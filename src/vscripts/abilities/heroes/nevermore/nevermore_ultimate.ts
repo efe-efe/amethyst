@@ -149,7 +149,7 @@ class NevermoreUltimate extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_ultimate_thinker" })
+@registerModifier("modifier_nevermore_ultimate_thinker")
 class ModifierNevermoreUltimateThinker extends ModifierThinker {
     particleId?: ParticleID;
 

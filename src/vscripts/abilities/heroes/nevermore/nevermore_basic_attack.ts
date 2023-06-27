@@ -120,7 +120,7 @@ class NevermoreBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_souls" })
+@registerModifier("modifier_nevermore_souls")
 export class ModifierNevermoreStacks extends CustomModifier {
     particleIds: ParticleID[] = [];
 

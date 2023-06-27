@@ -13,19 +13,7 @@ export class BaseModifier {
         ability?: CDOTABaseAbility,
         modifierTable?: object
     ): InstanceType<T> | undefined {
-        return target.AddNewModifier(caster || target, ability, this.name, modifierTable || {}) as any;
-    }
-
-    // Custom event
-    OnHealDone(event: ModifierHealDoneEvent): void {}
-}
-
-declare global {
-    interface ModifierHealDoneEvent {
-        healer: CDOTA_BaseNPC;
-        target: CDOTA_BaseNPC;
-        ability?: CDOTABaseAbility;
-        heal: number;
+        return target.AddNewModifier(caster, ability, this.name, modifierTable) as any;
     }
 }
 
@@ -39,77 +27,54 @@ export interface BaseModifierMotionBoth extends CDOTA_Modifier_Lua_Motion_Both {
 export class BaseModifierMotionBoth extends BaseModifier {}
 
 // Add standard base classes to prototype chain to make `super.*` work as `self.BaseClass.*`
-setmetatable(BaseAbility.prototype, {
-    __index: CDOTA_Ability_Lua ?? C_DOTA_Ability_Lua
-});
-setmetatable(BaseItem.prototype, {
-    __index: CDOTA_Item_Lua ?? C_DOTA_Item_Lua
-});
-setmetatable(BaseModifier.prototype, { __index: CDOTA_Modifier_Lua });
+setmetatable(BaseAbility.prototype, { __index: CDOTA_Ability_Lua ?? C_DOTA_Ability_Lua });
+setmetatable(BaseItem.prototype, { __index: CDOTA_Item_Lua ?? C_DOTA_Item_Lua });
+setmetatable(BaseModifier.prototype, { __index: CDOTA_Modifier_Lua ?? CDOTA_Modifier_Lua });
 
-declare global {
-    let beforeModifierOnCreated: ((modifier: CDOTA_Modifier_Lua) => void) | undefined;
-    let beforeAbilitySpawn: ((ability: CDOTABaseAbility) => void) | undefined;
-}
+export const registerAbility =
+    (name?: string) => (ability: new () => CDOTA_Ability_Lua | CDOTA_Item_Lua, context: ClassDecoratorContext) => {
+        if (name !== undefined) {
+            // @ts-ignore
+            ability.name = name;
+        } else if (context.name) {
+            name = context.name;
+        } else {
+            throw "Unable to determine name of this ability class!";
+        }
+        const [env] = getFileScope();
 
-export const registerAbility = (name?: string) => (ability: new () => CDOTA_Ability_Lua | CDOTA_Item_Lua) => {
-    if (name !== undefined) {
-        // @ts-ignore
-        ability.name = name;
-    } else {
-        name = ability.name;
-    }
-
-    const [env] = getFileScope();
-
-    if (env[name]) {
-        clearTable(env[name]);
-    } else {
         env[name] = {};
-    }
 
-    toDotaClassInstance(env[name], ability);
+        toDotaClassInstance(env[name], ability);
 
-    const originalSpawn = (env[name] as CDOTA_Ability_Lua).Spawn;
-    env[name].Spawn = function () {
-        if (beforeAbilitySpawn) {
-            beforeAbilitySpawn(this);
-            beforeAbilitySpawn = undefined;
-        }
-        this.____constructor();
-        if (originalSpawn) {
-            originalSpawn.call(this);
-        }
+        const originalSpawn = (env[name] as CDOTA_Ability_Lua).Spawn;
+        env[name].Spawn = function () {
+            this.____constructor();
+            if (originalSpawn) {
+                originalSpawn.call(this);
+            }
+        };
     };
-};
 
-export const registerModifier = (params?: { customNameForI18n?: string }) => (modifier: new () => CDOTA_Modifier_Lua) => {
-    let name = params?.customNameForI18n;
-
+export const registerModifier = (name?: string) => (modifier: new () => CDOTA_Modifier_Lua, context: ClassDecoratorContext) => {
     if (name !== undefined) {
         // @ts-ignore
         modifier.name = name;
+    } else if (context.name) {
+        name = context.name;
     } else {
-        name = modifier.name;
+        throw "Unable to determine name of this modifier class!";
     }
 
     const [env, source] = getFileScope();
     const [fileName] = string.gsub(source, ".*scripts[\\/]vscripts[\\/]", "");
 
-    if (env[name]) {
-        clearTable(env[name]);
-    } else {
-        env[name] = {};
-    }
+    env[name] = {};
 
     toDotaClassInstance(env[name], modifier);
 
     const originalOnCreated = (env[name] as CDOTA_Modifier_Lua).OnCreated;
     env[name].OnCreated = function (parameters: any) {
-        if (beforeModifierOnCreated) {
-            beforeModifierOnCreated(this);
-            beforeModifierOnCreated = undefined;
-        }
         this.____constructor();
         if (originalOnCreated !== undefined) {
             originalOnCreated.call(this, parameters);

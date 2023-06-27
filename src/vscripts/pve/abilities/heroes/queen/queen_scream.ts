@@ -24,7 +24,7 @@ class QueenScream extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_queen_scream" })
+@registerModifier("modifier_queen_scream")
 class ModifierQueenScream extends CustomModifier {
     origin!: Vector;
     screams!: number;

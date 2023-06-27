@@ -89,16 +89,6 @@ export class GameMode {
     public currentRoom = -1;
 
     constructor() {
-        updateProjectiles();
-
-        GameRules.GetGameModeEntity().SetContextThink(
-            "OnThink",
-            () => {
-                return this.OnThink();
-            },
-            THINK_PERIOD
-        );
-
         this.SetupEventHooks();
         this.SetupPanoramaEventHooks();
         this.SetupRules();
@@ -258,7 +248,7 @@ export class GameMode {
 
     SetupEventHooks(): void {
         ListenToGameEvent("npc_spawned", event => this.OnNPCInGame(event), undefined);
-        ListenToGameEvent("game_rules_state_change", () => this.OnGameRulesStateChange(), undefined);
+        ListenToGameEvent("game_rules_state_change", () => onNativeStateChange(GameRules.State_Get()), undefined);
         ListenToGameEvent("dota_player_learned_ability", event => this.OnLearnedAbilityEvent(event), undefined);
         ListenToGameEvent("player_chat", event => this.OnPlayerChat(event), undefined);
         ListenToGameEvent("entity_killed", event => this.OnEntityKilled(event), undefined);
@@ -416,7 +406,7 @@ export class GameMode {
                 const alliance = this.FindAllianceByTeam(team);
 
                 if (!alliance) {
-                    print("ERROR: THE PLAYER TEAM IS NOT PART OF ANY ALLIANCE!");
+                    print(`ERROR: THE PLAYER ${playerID} IN TEAM ${team} IS NOT PART OF ANY ALLIANCE!`);
                     return false;
                 }
 
@@ -668,14 +658,6 @@ export class GameMode {
         }
 
         return true;
-    }
-
-    OnGameRulesStateChange(): void {
-        const state = GameRules.State_Get();
-
-        if (state === GameState.GAME_IN_PROGRESS) {
-            this.OnGameInProgress();
-        }
     }
 
     OnPlayerChat(event: PlayerChatEvent): void {
@@ -971,19 +953,24 @@ export class GameMode {
         const mana_given = NearestValue([25, 50, 75, 100], current_mana);
         const entity = new Pickup(PickupTypes.DEATH, hero.GetOrigin(), mana_given / 100 + 0.25);
 
-        this.round!.pickupWrappers.push({
+        this.round?.pickupWrappers.push({
             origin,
             type: PickupTypes.DEATH,
             timer: -1,
             entity: entity
         });
 
-        entity.GetItem()!.SetCurrentCharges(mana_given);
-        entity.GetItem()!.SetPurchaser(hero);
+        entity.GetItem()?.SetCurrentCharges(mana_given);
+        entity.GetItem()?.SetPurchaser(hero);
     }
 
     EndGame(victoryTeam: DotaTeam): void {
         GameRules.SetGameWinner(victoryTeam);
+    }
+
+    UpdateProjectiles() {
+        // This is neccesary to work with script_reload...
+        updateProjectiles();
     }
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -997,4 +984,31 @@ Object.assign(getfenv(), {
 
 if (GameRules.Addon !== undefined) {
     GameRules.Addon.Reload();
+}
+
+function update() {
+    GameRules.Addon.UpdateProjectiles();
+    GameRules.Addon.OnThink();
+}
+
+function onNativeStateChange(state: GameState) {
+    print(`Native state changed to ${state}`);
+
+    if (state == GameState.CUSTOM_GAME_SETUP) {
+        // Need to wait a frame otherwise player in tools doesn't connect
+        Timers.CreateTimer(() => {
+            GameRules.GetGameModeEntity().SetContextThink(
+                "update_think",
+                () => {
+                    update();
+                    return 0;
+                },
+                0
+            );
+        });
+    }
+
+    if (state === GameState.GAME_IN_PROGRESS) {
+        GameRules.Addon.OnGameInProgress();
+    }
 }

@@ -47,7 +47,7 @@ class CentaurCharge extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_centaur_charge_displacement" })
+@registerModifier("modifier_centaur_charge_displacement")
 class ModifierCentaurChargeDisplacement extends ModifierDisplacement {
     OnDestroy() {
         super.OnDestroy();
@@ -95,7 +95,7 @@ class ModifierCentaurChargeDisplacement extends ModifierDisplacement {
 }
 
 //@Refactor im not using this nowhere D:
-@registerModifier({ customNameForI18n: "modifier_centaur_charge_knockback_displacement" })
+@registerModifier("modifier_centaur_charge_knockback_displacement")
 class ModifierCentaurChargeKnockback extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];

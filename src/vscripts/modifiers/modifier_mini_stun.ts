@@ -3,7 +3,7 @@ import { ModifierCombatEvents, OnHitEvent } from "./modifier_combat_events";
 import { ModifierNPCShield } from "./modifier_npc_shield";
 import { ModifierStun } from "./modifier_stunned";
 
-@registerModifier({ customNameForI18n: "modifier_mini_stun" })
+@registerModifier("modifier_mini_stun")
 export class ModifierMiniStun extends ModifierCombatEvents<undefined> {
     OnHit(event: OnHitEvent) {
         if (IsServer() && event.triggerCounters) {

@@ -187,7 +187,7 @@ class SpectreBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_basic_attack_cooldown" })
+@registerModifier("modifier_spectre_basic_attack_cooldown")
 export class ModifierSpectreBasicAttack extends ModifierCooldown {
     attackSpeedLock = lock();
 
@@ -333,10 +333,10 @@ export class ModifierSpectreBasicAttack extends ModifierCooldown {
 // Modifiers.OnEvent(modifier_spectre_basic_attack_cooldown)
 // Modifiers.PreAttackDamage(modifier_spectre_basic_attack_cooldown)
 
-@registerModifier({ customNameForI18n: "modifier_spectre_basic_attack_attack" })
+@registerModifier("modifier_spectre_basic_attack_attack")
 class ModifierSpectreBasicAttackBuff extends CustomModifier {}
 
-@registerModifier({ customNameForI18n: "modifier_spectre_desolate_custom" })
+@registerModifier("modifier_spectre_desolate_custom")
 class ModifierSpectreDesolate extends CustomModifier {
     IsDebuff() {
         return true;

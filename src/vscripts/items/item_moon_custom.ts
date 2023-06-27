@@ -9,7 +9,7 @@ class ItemMoonshard extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_moon_custom" })
+@registerModifier("modifier_item_moon_custom")
 class ModifierItemMoonshard extends CustomModifier {
     DeclareFunctions() {
         return [ModifierFunction.ATTACKSPEED_BONUS_CONSTANT];

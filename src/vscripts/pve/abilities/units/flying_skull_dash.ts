@@ -84,7 +84,7 @@ class FlyingSkullDash extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_flying_skull_dash_intrinsic" })
+@registerModifier("modifier_flying_skull_dash_intrinsic")
 class ModifierFlyingSkullDashIntrinsic extends CustomModifier<FlyingSkullDash> {
     DeclareFunctions() {
         return [ModifierFunction.ON_DEATH];
@@ -97,7 +97,7 @@ class ModifierFlyingSkullDashIntrinsic extends CustomModifier<FlyingSkullDash> {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_flying_skull_dash_displacement" })
+@registerModifier("modifier_flying_skull_dash_displacement")
 class ModifierFlyingSkullDashDisplacement extends ModifierDisplacement {
     originalScale!: number;
 
@@ -160,7 +160,7 @@ class ModifierFlyingSkullDashDisplacement extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_flying_skull_dash" })
+@registerModifier("modifier_flying_skull_dash")
 class ModifierFlyingSkullDash extends CustomModifier {
     particleId?: ParticleID;
 

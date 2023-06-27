@@ -1,7 +1,7 @@
 import { registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_yasha" })
+@registerModifier("modifier_upgrade_item_yasha")
 class ModifierItemYasha extends ModifierUpgrade {
     speedBuffPct = 30;
     asSpeed = 80;

@@ -1,7 +1,7 @@
 import { registerModifier } from "../../lib/dota_ts_adapter";
 import { ModifierCombatEvents } from "../modifier_combat_events";
 
-@registerModifier({ customNameForI18n: "modifier_ruby" })
+@registerModifier("modifier_ruby")
 export class ModifierRuby extends ModifierCombatEvents<undefined> {
     damage!: number;
     particleId!: ParticleID;
@@ -41,7 +41,7 @@ export class ModifierRuby extends ModifierCombatEvents<undefined> {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_ruby_attack" })
+@registerModifier("modifier_ruby_attack")
 export class ModifierRubyAttack extends ModifierCombatEvents<undefined> {
     damage!: number;
 

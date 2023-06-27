@@ -207,7 +207,7 @@ class PhantomExCounterRecast extends CustomAbility {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_ex_counter_recast" })
+@registerModifier("modifier_phantom_ex_counter_recast")
 class ModifierPhantomExCounterRecast extends ModifierRecast {
     particleId!: ParticleID;
 
@@ -271,7 +271,7 @@ class ModifierPhantomExCounterRecast extends ModifierRecast {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_counter" })
+@registerModifier("modifier_phantom_counter")
 class ModifierPhantomCounterBuff extends CustomModifier {
     OnCreated() {
         if (IsServer()) {
@@ -306,13 +306,13 @@ class ModifierPhantomCounterBuff extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_counter_shield" })
+@registerModifier("modifier_phantom_counter_shield")
 class ModifierPhantomCounterShield extends ModifierShield {}
 // if(IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Status(modifier_phantom_counter_shield)
 // Modifiers.Shield(modifier_phantom_counter_shield)
 
-@registerModifier({ customNameForI18n: "modifier_phantom_counter_recast" })
+@registerModifier("modifier_phantom_counter_recast")
 class ModifierPhantomCounterRecast extends ModifierRecast {
     IsHidden() {
         return false;
@@ -327,7 +327,7 @@ class ModifierPhantomCounterRecast extends ModifierRecast {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_counter_countering" })
+@registerModifier("modifier_phantom_counter_countering")
 class ModifierPhantomCounter extends ModifierCounter {
     GetBanishDuration() {
         return ModifierUpgradeSniperStrikeInstant.findOne(this.parent) ? this.Value("banish_duration") / 2 : this.Value("banish_duration");
@@ -425,7 +425,7 @@ class ModifierPhantomCounter extends ModifierCounter {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_counter_banish" })
+@registerModifier("modifier_phantom_counter_banish")
 class ModifierPhantomCounterBanish extends ModifierBanish {
     OnCreated() {
         super.OnCreated();

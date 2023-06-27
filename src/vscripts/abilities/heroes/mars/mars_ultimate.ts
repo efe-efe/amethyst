@@ -40,10 +40,10 @@ class MarsUltimate extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_ultimate_area_check" })
+@registerModifier("modifier_mars_ultimate_area_check")
 class ModifierMarsUltimateMark extends CustomModifier {}
 
-@registerModifier({ customNameForI18n: "modifier_mars_ultimate_thinker" })
+@registerModifier("modifier_mars_ultimate_thinker")
 class ModifierMarsUltimateThinker extends ModifierThinker {
     particleId?: ParticleID;
 

@@ -21,7 +21,7 @@ class JuggernautMobility extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_mobility" })
+@registerModifier("modifier_juggernaut_mobility")
 export class ModifierJuggernautMobility extends ModifierCombatEvents {
     particleId!: ParticleID;
 

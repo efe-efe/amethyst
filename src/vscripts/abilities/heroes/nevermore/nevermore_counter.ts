@@ -101,7 +101,7 @@ class NevermoreExCounter extends NevermoreCounterCommon {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_counter_countering" })
+@registerModifier("modifier_nevermore_counter_countering")
 class ModifierNevermoreCounter extends ModifierCounter {
     OnDestroy() {
         super.OnDestroy();
@@ -180,7 +180,7 @@ class ModifierNevermoreCounter extends ModifierCounter {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_counter_banish" })
+@registerModifier("modifier_nevermore_counter_banish")
 class ModifierNevermoreCounterBanish extends ModifierBanish {
     OnDestroy() {
         super.OnDestroy();
@@ -207,7 +207,7 @@ class ModifierNevermoreCounterBanish extends ModifierBanish {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_counter_thinker" })
+@registerModifier("modifier_nevermore_counter_thinker")
 class ModifierNevermoreCounterThinker extends ModifierThinker {
     particleId?: ParticleID;
 

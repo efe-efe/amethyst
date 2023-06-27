@@ -33,7 +33,7 @@ class PuckUltimate extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_ultimate_thinker" })
+@registerModifier("modifier_puck_ultimate_thinker")
 class ModifierPuckUltimateThinker extends ModifierThinker {
     particleId?: ParticleID;
 
@@ -121,7 +121,7 @@ class ModifierPuckUltimateThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_ultimate_debuff" })
+@registerModifier("modifier_puck_ultimate_debuff")
 class ModifierPuckUltimate extends CustomModifier {
     origin!: Vector;
 
@@ -153,7 +153,7 @@ class ModifierPuckUltimate extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_ultimate_area_check" })
+@registerModifier("modifier_puck_ultimate_area_check")
 class ModifierPuckUltimateCheck extends CustomModifier {
     IsHidden() {
         return true;

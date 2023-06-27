@@ -153,7 +153,7 @@ export class PhantomBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_strike_stack" })
+@registerModifier("modifier_phantom_strike_stack")
 export class ModifierPhantomStacks extends CustomModifier<PhantomBasicAttack> {
     particleIds: ParticleID[] = [];
 
@@ -375,7 +375,7 @@ class PhantomBasicAttackRelated extends CustomAbility {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_ex_basic_attack" })
+@registerModifier("modifier_phantom_ex_basic_attack")
 class ModifierPhantomExBasicAttack extends CustomModifier {
     particleId!: ParticleID;
 
@@ -465,7 +465,7 @@ class ModifierPhantomExBasicAttack extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_bleed" })
+@registerModifier("modifier_phantom_bleed")
 export class ModifierPhantomBleed extends CustomModifier<PhantomExBasicAttack> {
     particleId!: ParticleID;
     bleedDamagePerStack = 1;

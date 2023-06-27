@@ -76,7 +76,7 @@ class StormMobility extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_mobility_charges" })
+@registerModifier("modifier_storm_mobility_charges")
 class ModifierStormMobility extends ModifierCharges {
     GetMaxCharges() {
         return this.ability.GetSpecialValueFor("max_charges");
@@ -91,7 +91,7 @@ class ModifierStormMobility extends ModifierCharges {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_mobility_thinker" })
+@registerModifier("modifier_storm_mobility_thinker")
 class ModifierStormMobilityThinker extends ModifierThinker {
     particleId!: ParticleID;
 
@@ -221,7 +221,7 @@ class StormExMobility extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_ex_mobility_thinker" })
+@registerModifier("modifier_storm_ex_mobility_thinker")
 class ModifierStormExMobilityThinker extends ModifierThinker {
     particleId!: ParticleID;
 

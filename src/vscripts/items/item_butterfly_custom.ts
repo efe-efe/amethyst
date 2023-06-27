@@ -22,7 +22,7 @@ class ItemButterfly extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_butterfly_custom" })
+@registerModifier("modifier_item_butterfly_custom")
 class ModifeirItemButterfly extends CustomModifier {
     OnCreated() {
         if (IsServer()) {
@@ -76,7 +76,7 @@ class ModifeirItemButterfly extends CustomModifier {
 // if(IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Status(modifier_item_butterfly_custom)
 
-@registerModifier({ customNameForI18n: "modifier_item_butterfly_custom_banish" })
+@registerModifier("modifier_item_butterfly_custom_banish")
 class ModifierItemButterflyBanish extends ModifierBanish {
     OnDestroy() {
         super.OnDestroy();

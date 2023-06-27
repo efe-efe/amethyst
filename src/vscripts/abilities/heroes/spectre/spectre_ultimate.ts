@@ -35,7 +35,7 @@ class SpectreUltimate extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_ultimate" })
+@registerModifier("modifier_spectre_ultimate")
 export class ModifierSpectreUltimate extends CustomModifier {
     OnCreated() {
         if (IsServer()) {
@@ -99,7 +99,7 @@ export class ModifierSpectreUltimate extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_ultimate_thinker" })
+@registerModifier("modifier_spectre_ultimate_thinker")
 class ModifierSpectreUltimateThinker extends ModifierThinker {
     particleId?: ParticleID;
 

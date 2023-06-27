@@ -1,7 +1,7 @@
 import { registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_blades_of_attack" })
+@registerModifier("modifier_upgrade_item_blades_of_attack")
 class ModifierItemBladesOfAttack extends ModifierUpgrade {
     damagePerStack = 2;
 

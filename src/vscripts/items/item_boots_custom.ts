@@ -9,7 +9,7 @@ class ItemBoots extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_boots_custom" })
+@registerModifier("modifier_item_boots_custom")
 class ModifierItemBoots extends CustomModifier {
     DeclareFunctions() {
         return [ModifierFunction.MOVESPEED_BONUS_PERCENTAGE];

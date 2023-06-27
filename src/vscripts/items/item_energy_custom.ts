@@ -9,7 +9,7 @@ class ItemEnergyBooster extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_energy_custom" })
+@registerModifier("modifier_item_energy_custom")
 class ModifierItemEnergyBooster extends CustomModifier {
     DeclareFunctions() {
         return [ModifierFunction.EXTRA_MANA_BONUS];

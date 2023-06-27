@@ -85,7 +85,7 @@ class ItemDiffusal extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_diffusal_custom" })
+@registerModifier("modifier_item_diffusal_custom")
 class ModifierItemDiffusal extends CustomModifier {
     OnCreated() {
         EmitSoundOn("DOTA_Item.DiffusalBlade.Target", this.parent);

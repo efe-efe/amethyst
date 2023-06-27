@@ -63,7 +63,7 @@ class SniperMobility extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_mobility_displacement" })
+@registerModifier("modifier_sniper_mobility_displacement")
 class ModifierSniperMobility extends ModifierDisplacement {
     // function modifier_sniper_mobility_displacement:OnDestroy()
     // 	if IsServer() then

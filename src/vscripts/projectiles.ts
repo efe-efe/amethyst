@@ -77,39 +77,31 @@ export type ProjectileOptions = {
 };
 
 const SPEED_FACTOR = 1.0;
-const PROJECTILES_VISUAL_OFFSET = 15;
-
-const PROJECTILES_THINK = 0.01;
+const PROJECTILES_VISUAL_OFFSET = 30;
 
 let projectiles: ReturnType<typeof projectile>[] = [];
 let previousUpdate: number | undefined = undefined;
 
 export function updateProjectiles() {
-    Timers.CreateTimer(PROJECTILES_THINK, () => {
-        const now = Time();
+    const now = Time();
 
-        if (!previousUpdate) {
-            previousUpdate = now;
-        }
-
-        const dt = now - previousUpdate;
+    if (!previousUpdate) {
         previousUpdate = now;
+    }
 
-        if (dt > 0) {
-            for (const projectile of projectiles) {
-                const nextCallTime = projectile.update();
-                if (nextCallTime) {
-                    projectile.setEndTime(nextCallTime);
-                } else {
-                    removeProjectile(projectile.id);
-                }
+    const dt = now - previousUpdate;
+    previousUpdate = now;
+
+    if (dt > 0) {
+        for (const projectile of projectiles) {
+            const nextCallTime = projectile.update();
+            if (nextCallTime) {
+                projectile.setEndTime(nextCallTime);
+            } else {
+                removeProjectile(projectile.id);
             }
         }
-
-        Timers.CreateTimer(PROJECTILES_THINK, () => {
-            updateProjectiles();
-        });
-    });
+    }
 }
 
 function removeProjectile(projectileId: number) {
@@ -168,7 +160,6 @@ function projectile(options: ProjectileOptions) {
     let currentTime = GameRules.GetGameTime(); //Should I be doing this?
     let currentPosition = spawnOrigin;
     let currentVelocity = velocity.__div(Vector(PROJECTILES_VISUAL_OFFSET, PROJECTILES_VISUAL_OFFSET, PROJECTILES_VISUAL_OFFSET));
-    const previousVelocity = currentVelocity;
     let previousPosition = spawnOrigin; // Should be undefined?
     let remainingChanges = maxChanges ?? 1;
     let currentRadius = startRadius;

@@ -83,7 +83,7 @@ class SniperExSpecialAttack extends SniperSpecialAttackCommon {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_shrapnel_debuff" })
+@registerModifier("modifier_sniper_shrapnel_debuff")
 class ModifierSniperSpecialAttackDebuff extends CustomModifier {
     IsHidden() {
         return false;
@@ -121,7 +121,7 @@ class ModifierSniperSpecialAttackDebuff extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_shrapnel_thinker_custom" })
+@registerModifier("modifier_sniper_shrapnel_thinker_custom")
 export class ModifierSniperSpecialAttackThinker extends ModifierThinker {
     particleId!: ParticleID;
 
@@ -188,7 +188,7 @@ export class ModifierSniperSpecialAttackThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_ex_special_attack_thinker" })
+@registerModifier("modifier_sniper_ex_special_attack_thinker")
 class ModifierSniperExSpecialAttackThinker extends ModifierThinker {
     particleId!: ParticleID;
 
@@ -277,7 +277,7 @@ class ModifierSniperExSpecialAttackThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_ex_special_attack_buff" })
+@registerModifier("modifier_sniper_ex_special_attack_buff")
 class ModifierSniperExSpecialAttack extends CustomModifier {
     particleId!: ParticleID;
 

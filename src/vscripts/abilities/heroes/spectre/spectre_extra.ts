@@ -89,7 +89,7 @@ class SpectreExtraRecast extends CustomAbility {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_extra" })
+@registerModifier("modifier_spectre_extra")
 class ModifierSpectreExtra extends CustomModifier {
     particleIdMain?: ParticleID;
     particleIdSecond?: ParticleID;
@@ -197,12 +197,12 @@ class ModifierSpectreExtra extends CustomModifier {
 // if (IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Status(modifier_spectre_extra)
 
-@registerModifier({ customNameForI18n: "modifier_spectre_extra_recast" })
+@registerModifier("modifier_spectre_extra_recast")
 class ModifierSpectreRecast extends ModifierRecast {}
 // if (IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Recast(modifier_spectre_extra_recast)
 
-@registerModifier({ customNameForI18n: "modifier_spectre_debuff" })
+@registerModifier("modifier_spectre_debuff")
 class ModifierSpectreDebuff extends CustomModifier {
     damageDone = 0;
 

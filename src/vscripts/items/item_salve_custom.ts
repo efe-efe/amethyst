@@ -15,7 +15,7 @@ class ItemSalve extends CustomItem {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_salve_custom" })
+@registerModifier("modifier_item_salve_custom")
 class ModifierItemSalve extends CustomModifier {
     healPerTick!: number;
 

@@ -1,7 +1,7 @@
 import { CustomModifier } from "../../abilities/framework/custom_modifier";
 import { registerModifier } from "../../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_emerald" })
+@registerModifier("modifier_emerald")
 export class ModifierEmerald extends CustomModifier<undefined> {
     particleId!: ParticleID;
 

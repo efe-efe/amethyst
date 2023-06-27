@@ -2,7 +2,7 @@ import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 import { ModifierFadingSlow } from "./modifier_fading_slow";
 
-@registerModifier({ customNameForI18n: "modifier_adrenaline" })
+@registerModifier("modifier_adrenaline")
 export class ModifierAdrenaline extends CustomModifier<undefined> {
     speedBuffPct = 20;
     slowDuration = 2.0;

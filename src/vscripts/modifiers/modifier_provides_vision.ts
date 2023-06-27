@@ -1,7 +1,7 @@
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_generic_provides_vision" })
+@registerModifier("modifier_generic_provides_vision")
 export class ModifierProvidesVision extends CustomModifier<undefined> {
     IsDebuff() {
         return false;

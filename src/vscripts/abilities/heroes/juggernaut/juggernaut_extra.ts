@@ -146,7 +146,7 @@ class JuggernautExtraRecast extends CustomAbility {
     // end
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_extra_shield" })
+@registerModifier("modifier_juggernaut_extra_shield")
 class ModifierJuggernautExtraShield extends ModifierShield {
     DeclareFunctions() {
         return [ModifierFunction.TOOLTIP];
@@ -159,7 +159,7 @@ class ModifierJuggernautExtraShield extends ModifierShield {
 // if IsClient() then require("wrappers/modifiers") end
 // Modifiers.Shield(modifier_juggernaut_extra_shield)
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_extra_ward" })
+@registerModifier("modifier_juggernaut_extra_ward")
 class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
     health = 1;
     particleIds: ParticleID[] = [];
@@ -301,10 +301,10 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_extra_recast" })
+@registerModifier("modifier_juggernaut_extra_recast")
 class ModifierJuggernautExtraRecast extends ModifierRecast<undefined> {}
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_extra" })
+@registerModifier("modifier_juggernaut_extra")
 class ModifierJuggernautExtra extends CustomModifier<JuggernautExtra> {
     OnCreated() {
         if (IsServer()) {

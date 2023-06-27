@@ -92,7 +92,7 @@ class JuggernautUltimate extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_displacement" })
+@registerModifier("modifier_juggernaut_ultimate_displacement")
 class ModifierJuggernautUltimateDisplacement extends ModifierDisplacement<JuggernautUltimate> {
     stacks!: number;
 
@@ -151,7 +151,7 @@ class ModifierJuggernautUltimateDisplacement extends ModifierDisplacement<Jugger
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_slashing" })
+@registerModifier("modifier_juggernaut_ultimate_slashing")
 class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltimate> {
     attackSpeed!: number;
     currentPosition!: Vector;
@@ -302,7 +302,7 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_ultimate_banish" })
+@registerModifier("modifier_juggernaut_ultimate_banish")
 class ModifierJuggernautBanish extends ModifierBanish<undefined> {
     CheckState() {
         return {

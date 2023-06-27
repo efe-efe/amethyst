@@ -1,7 +1,7 @@
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_tower_idle" })
+@registerModifier("modifier_tower_idle")
 export class ModifierTowerIdle extends CustomModifier<undefined> {
     IsHidden() {
         return true;

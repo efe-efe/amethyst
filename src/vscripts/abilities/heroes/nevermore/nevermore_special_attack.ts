@@ -106,7 +106,7 @@ class NevermoreExSpecialAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_special_attack_charges" })
+@registerModifier("modifier_nevermore_special_attack_charges")
 class ModifierNevermoreSpecialAttackCharges extends ModifierCharges {
     GetMaxCharges() {
         return this.Value("max_charges");
@@ -122,7 +122,7 @@ class ModifierNevermoreSpecialAttackCharges extends ModifierCharges {
 // if(IsClient() ) { require("wrappers/modifiers") }
 // Modifiers.Charges(modifier_nevermore_special_attack_charges)
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_special_attack_thinker" })
+@registerModifier("modifier_nevermore_special_attack_thinker")
 class ModifierNevermoreSpecialAttackThinker extends ModifierThinker {
     OnReady() {
         const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
@@ -164,7 +164,7 @@ class ModifierNevermoreSpecialAttackThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_nevermore_special_attack_stacks" })
+@registerModifier("modifier_nevermore_special_attack_stacks")
 class ModifierNevermoreSpecialAttack extends CustomModifier {
     OnCreated() {
         if (IsServer()) {

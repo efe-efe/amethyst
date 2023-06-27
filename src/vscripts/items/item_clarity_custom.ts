@@ -16,7 +16,7 @@ class ItemClarity extends CustomItem {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_clarity_custom" })
+@registerModifier("modifier_item_clarity_custom")
 class ModifierItemClarity extends CustomModifier {
     manaPerTick!: number;
 

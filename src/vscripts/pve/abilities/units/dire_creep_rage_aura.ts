@@ -56,7 +56,7 @@ class DireCreepRageAura extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_dire_creep_rage_aura" })
+@registerModifier("modifier_dire_creep_rage_aura")
 class ModifierDireCreepRageAura extends CustomModifier {
     particleId?: ParticleID;
 

@@ -57,7 +57,7 @@ class StormExtra extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_extra_displacement" })
+@registerModifier("modifier_storm_extra_displacement")
 export class ModifierStormExtraDisplacement extends ModifierDisplacement {
     stunDuration!: number;
     healMultiplier!: number;
@@ -218,5 +218,5 @@ export class ModifierStormExtraDisplacement extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_extra" })
+@registerModifier("modifier_storm_extra")
 class ModifierStormExtra extends CustomModifier {}

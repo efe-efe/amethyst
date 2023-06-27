@@ -1,7 +1,7 @@
 import { registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_phantom_dash_shield" })
+@registerModifier("modifier_upgrade_phantom_dash_shield")
 export class ModifierUpgradePhantomDashShield extends ModifierUpgrade {
     rangeBonus = 25;
     damageBlock = 10;

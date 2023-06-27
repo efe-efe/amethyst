@@ -2,7 +2,7 @@ import { registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCombatEvents } from "../../modifier_combat_events";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_javelin" })
+@registerModifier("modifier_upgrade_item_javelin")
 class ModifierItemJavelin extends ModifierUpgrade {
     procChancePct = 25;
 
@@ -13,7 +13,7 @@ class ModifierItemJavelin extends ModifierUpgrade {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_javelin_attack" })
+@registerModifier("modifier_upgrade_item_javelin_attack")
 class ModifierItemJavelinAttack extends ModifierCombatEvents<undefined> {
     IsHidden() {
         return true;

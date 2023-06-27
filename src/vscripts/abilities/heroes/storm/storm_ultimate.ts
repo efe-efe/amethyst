@@ -69,7 +69,7 @@ class StormUltimate extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_ultimate" })
+@registerModifier("modifier_storm_ultimate")
 export class ModifierStormUltimate extends CustomModifier {
     OnDestroy() {
         if (IsServer()) {
@@ -93,7 +93,7 @@ export class ModifierStormUltimate extends CustomModifier {
 // if(IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Status(modifier_storm_ultimate)
 
-@registerModifier({ customNameForI18n: "modifier_storm_ultimate_thinker" })
+@registerModifier("modifier_storm_ultimate_thinker")
 class ModifierStormUltimateThinker extends ModifierThinker {
     knockbackDistance = 500;
 
@@ -149,7 +149,7 @@ class ModifierStormUltimateThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_ultimate_banish" })
+@registerModifier("modifier_storm_ultimate_banish")
 class ModifierStormUltimateBanish extends ModifierBanish {
     CheckState() {
         return {
@@ -159,7 +159,7 @@ class ModifierStormUltimateBanish extends ModifierBanish {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_ultimate_displacement" })
+@registerModifier("modifier_storm_ultimate_displacement")
 class ModifierStormUltimateDisplacement extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];

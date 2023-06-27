@@ -1,7 +1,7 @@
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_damage_fx" })
+@registerModifier("modifier_damage_fx")
 export class ModifierDamageVFX extends CustomModifier<undefined> {
     IsHidden() {
         return true;

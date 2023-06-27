@@ -1,7 +1,7 @@
 import { registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_belt_of_strength" })
+@registerModifier("modifier_upgrade_item_belt_of_strength")
 class ModifierItemBeltOfStrength extends ModifierUpgrade {
     extraHealth = 50;
 

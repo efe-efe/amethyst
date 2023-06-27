@@ -1,7 +1,7 @@
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_death_zone" })
+@registerModifier("modifier_death_zone")
 export class ModifierDeathZone extends CustomModifier<undefined> {
     origin!: Vector;
     radiusReduction = 30;
@@ -111,7 +111,7 @@ export class ModifierDeathZone extends CustomModifier<undefined> {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_death_zone_damage" })
+@registerModifier("modifier_death_zone_damage")
 class ModifierDeathZoneDamage extends CustomModifier<undefined> {
     particleIds: ParticleID[] = [];
 

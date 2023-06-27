@@ -24,7 +24,7 @@ class CentaurRage extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_centaur_rage_channeling" })
+@registerModifier("modifier_centaur_rage_channeling")
 class ModifierCentaureRageChanneling extends CustomModifier {
     count = 7;
     angleDiff = 360 / this.count;
@@ -78,7 +78,7 @@ class ModifierCentaureRageChanneling extends CustomModifier {
 // Modifiers.Channeling(modifier_centaur_rage_channeling)
 // Modifiers.Status(modifier_centaur_rage_channeling)
 
-@registerModifier({ customNameForI18n: "modifier_centaur_rage_thinker" })
+@registerModifier("modifier_centaur_rage_thinker")
 class ModifierCentaurRageThinker extends ModifierThinker {
     OnIntervalThink() {
         super.OnIntervalThink();

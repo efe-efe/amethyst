@@ -139,7 +139,7 @@ class SpectreSecondAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_second_attack_displacement" })
+@registerModifier("modifier_spectre_second_attack_displacement")
 class ModifierSpectreSecondAttack extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];

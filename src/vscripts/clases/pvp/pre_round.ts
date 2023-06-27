@@ -6,7 +6,7 @@ import GameState, { CustomGameState } from "../game_state";
 
 const ADRENALINE_DURATION = 25.0;
 
-@registerModifier({ customNameForI18n: "modifier_restricted" })
+@registerModifier("modifier_restricted")
 class ModifierRestricted extends CustomModifier<undefined> {
     IsHidden() {
         return true;

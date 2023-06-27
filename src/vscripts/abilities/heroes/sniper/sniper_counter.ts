@@ -45,7 +45,7 @@ class SniperCounter extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_counter" })
+@registerModifier("modifier_sniper_counter")
 class ModifierSniperCounter extends CustomModifier<SniperCounter> {
     IsHidden() {
         return false;

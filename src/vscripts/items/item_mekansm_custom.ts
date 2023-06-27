@@ -58,7 +58,7 @@ class ItemMekansm extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_mekansm_custom" })
+@registerModifier("modifier_item_mekansm_custom")
 class ModifierItemMekansm extends CustomModifier {
     OnCreated() {
         if (IsServer()) {

@@ -9,7 +9,7 @@ class ItemVitalityBooster extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_vitality_custom" })
+@registerModifier("modifier_item_vitality_custom")
 class ModifierItemVitalityBooster extends CustomModifier {
     DeclareFunctions() {
         return [ModifierFunction.EXTRA_HEALTH_BONUS];

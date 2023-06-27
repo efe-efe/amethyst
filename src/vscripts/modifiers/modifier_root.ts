@@ -1,7 +1,7 @@
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_generic_root" })
+@registerModifier("modifier_generic_root")
 export class ModifierRoot extends CustomModifier {
     IsDebuff() {
         return true;

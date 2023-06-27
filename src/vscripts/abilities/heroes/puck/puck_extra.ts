@@ -70,7 +70,7 @@ class PuckExtra extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_puck_extra_debuff" })
+@registerModifier("modifier_puck_extra_debuff")
 class ModifierPuckExtra extends CustomModifier {
     DeclareFunctions() {
         return [ModifierFunction.ON_ORDER];
@@ -115,8 +115,8 @@ class ModifierPuckExtra extends CustomModifier {
 // Modifiers.Status(modifier_puck_extra_debuff)
 
 //@Refactor maybe it should be a generic modifier (but that would make it not repeteable... mm)
-@registerModifier({ customNameForI18n: "modifier_puck_extra_recast" })
+@registerModifier("modifier_puck_extra_recast")
 class ModifierPuckExtraRecast extends ModifierRecast {}
 
-@registerModifier({ customNameForI18n: "modifier_puck_extra_recast_used" })
+@registerModifier("modifier_puck_extra_recast_used")
 class ModifierPuckExtraMark extends CustomModifier {}

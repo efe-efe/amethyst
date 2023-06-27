@@ -57,7 +57,7 @@ class ItemOrchid extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_item_orchid_custom" })
+@registerModifier("modifier_item_orchid_custom")
 class ModifierItemOrchid extends CustomModifier {
     particleId?: ParticleID;
 

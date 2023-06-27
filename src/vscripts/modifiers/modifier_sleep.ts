@@ -1,7 +1,7 @@
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_generic_sleep" })
+@registerModifier("modifier_generic_sleep")
 export class ModifierSleep extends CustomModifier<undefined> {
     IsDebuff() {
         return true;

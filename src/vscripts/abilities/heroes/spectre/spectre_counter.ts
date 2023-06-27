@@ -27,7 +27,7 @@ class SpectreCounter extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_counter_countering" })
+@registerModifier("modifier_spectre_counter_countering")
 class ModifierSpectreCounter extends ModifierCounter {
     particleId?: ParticleID;
 
@@ -158,7 +158,7 @@ class ModifierSpectreCounter extends ModifierCounter {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_counter_recast" })
+@registerModifier("modifier_spectre_counter_recast")
 class ModifierSpectreCounterRecast extends ModifierRecast {}
 
 @registerAbility("spectre_counter_recast")
@@ -298,7 +298,7 @@ class SpectreExCounter extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_ex_counter" })
+@registerModifier("modifier_spectre_ex_counter")
 class ModifierSpectreExCounter extends CustomModifier {
     OnCreated() {
         if (IsServer()) {
@@ -414,7 +414,7 @@ class ModifierSpectreExCounter extends CustomModifier {
 // if (IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Status(modifier_spectre_ex_counter)
 
-@registerModifier({ customNameForI18n: "modifier_spectre_ex_counter_debuff" })
+@registerModifier("modifier_spectre_ex_counter_debuff")
 class ModifierSpectreExCounterDebuff extends CustomModifier {
     OnCreated() {
         if (IsServer()) {

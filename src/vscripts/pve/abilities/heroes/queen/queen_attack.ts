@@ -74,7 +74,7 @@ export class QueenAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_queen_attack" })
+@registerModifier("modifier_queen_attack")
 class ModifierQueenAttack extends CustomModifier {
     OnCreated() {
         if (IsServer()) {

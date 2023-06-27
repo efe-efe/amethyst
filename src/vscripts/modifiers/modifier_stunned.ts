@@ -1,7 +1,7 @@
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
-@registerModifier({ customNameForI18n: "modifier_generic_stunned" })
+@registerModifier("modifier_generic_stunned")
 export class ModifierStun extends CustomModifier<undefined> {
     OnCreated() {
         if (IsServer()) {

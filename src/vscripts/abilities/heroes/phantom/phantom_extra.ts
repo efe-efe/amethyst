@@ -53,7 +53,7 @@ class PhantomExtra extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_extra_displacement" })
+@registerModifier("modifier_phantom_extra_displacement")
 class ModifierPhantomExtraDisplacement extends ModifierDisplacement {
     OnCreated(params: DisplacementParams) {
         super.OnCreated(params);
@@ -162,7 +162,7 @@ class ModifierPhantomExtraDisplacement extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_extra" })
+@registerModifier("modifier_phantom_extra")
 class ModifierPhantomExtraMark extends CustomModifier {
     IsPurgable() {
         return false;
@@ -173,7 +173,7 @@ class ModifierPhantomExtraMark extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_phantom_extra_recast" })
+@registerModifier("modifier_phantom_extra_recast")
 class ModifierPhantomExtraRecast extends ModifierRecast {
     IsHidden(): boolean {
         return false;

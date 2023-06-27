@@ -79,7 +79,7 @@ export class SniperBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_basic_attack_charges" })
+@registerModifier("modifier_sniper_basic_attack_charges")
 export class ModifierSniperCharges extends ModifierCharges {
     GetMaxCharges() {
         return this.Value("max_charges");

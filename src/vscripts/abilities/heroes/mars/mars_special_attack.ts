@@ -99,7 +99,7 @@ class MarsSpecialAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_special_attack_displacement" })
+@registerModifier("modifier_mars_special_attack_displacement")
 export class ModifierMarsSpecialAttack extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];

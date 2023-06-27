@@ -154,7 +154,7 @@ class MarsExBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_basic_attack_stacks" })
+@registerModifier("modifier_mars_basic_attack_stacks")
 export class ModifierMarsStacks extends CustomModifier {
     particleIds: ParticleID[] = [];
 
@@ -217,7 +217,7 @@ export class ModifierMarsStacks extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_ex_basic_attack" })
+@registerModifier("modifier_mars_ex_basic_attack")
 class ModifierMarsExBasicAttack extends CustomModifier {
     particleId?: ParticleID;
     OnCreated() {

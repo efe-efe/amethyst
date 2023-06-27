@@ -20,7 +20,7 @@ class JuggernautCounter extends CustomAbility {
     // end
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_counter_countering" })
+@registerModifier("modifier_juggernaut_counter_countering")
 class ModifierJuggernautCounter extends ModifierCounter<undefined> {
     OnDestroy() {
         super.OnDestroy();
@@ -105,7 +105,7 @@ class ModifierJuggernautCounter extends ModifierCounter<undefined> {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_counter_recast" })
+@registerModifier("modifier_juggernaut_counter_recast")
 class ModifierJuggernautCounterRecast extends ModifierRecast<undefined> {
     GetEffectName() {
         return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
@@ -274,7 +274,7 @@ class JuggernautExCounter extends JuggernautSlash {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_ex_counter_recast" })
+@registerModifier("modifier_juggernaut_ex_counter_recast")
 class ModifierJuggernautExCounterRecast extends ModifierRecast<undefined> {
     GetEffectName() {
         return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
@@ -285,7 +285,7 @@ class ModifierJuggernautExCounterRecast extends ModifierRecast<undefined> {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_swiftness" })
+@registerModifier("modifier_juggernaut_swiftness")
 class ModifierJuggernautSwiftness extends CustomModifier<undefined> {
     maxSpeedPct = 100;
 

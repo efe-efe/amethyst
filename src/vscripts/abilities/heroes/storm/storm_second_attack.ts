@@ -85,7 +85,7 @@ export class StormSecondAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_second_attack" })
+@registerModifier("modifier_storm_second_attack")
 class ModifierStormSecondAttack extends CustomModifier {
     OnCreated() {
         if (IsServer()) {

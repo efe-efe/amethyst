@@ -185,7 +185,7 @@ class JuggernautSecondAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_spin_animation" })
+@registerModifier("modifier_juggernaut_spin_animation")
 export class ModifierJuggernautSpin extends CustomModifier<undefined> {
     particleId!: ParticleID;
 

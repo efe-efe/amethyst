@@ -79,7 +79,7 @@ class MarsMobility extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_mobility_banish" })
+@registerModifier("modifier_mars_mobility_banish")
 class ModifierMarsMobilityBanish extends ModifierBanish {
     CheckState() {
         return {
@@ -89,7 +89,7 @@ class ModifierMarsMobilityBanish extends ModifierBanish {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_mobility_thinker" })
+@registerModifier("modifier_mars_mobility_thinker")
 class ModifierMarsMobilityThinker extends ModifierThinker {
     particleId?: ParticleID;
 

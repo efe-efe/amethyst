@@ -5,7 +5,7 @@ import { registerModifier } from "../lib/dota_ts_adapter";
 // 	["bulwark"] = 1,
 // }
 
-@registerModifier({ customNameForI18n: "modifier_hero_movement" })
+@registerModifier("modifier_hero_movement")
 export class ModifierHeroMovement extends CustomModifier<undefined> {
     IsHidden() {
         return true;

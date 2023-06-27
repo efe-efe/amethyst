@@ -1,7 +1,7 @@
 import { registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
-@registerModifier({ customNameForI18n: "modifier_upgrade_item_blade_of_alacrity" })
+@registerModifier("modifier_upgrade_item_blade_of_alacrity")
 class ModifierItemBladeOfAlacrity extends ModifierUpgrade {
     speedBuffPct = 15;
     asSpeed = 50;

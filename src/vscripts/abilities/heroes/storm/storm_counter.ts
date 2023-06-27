@@ -13,7 +13,7 @@ class StormCounter extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_counter_countering" })
+@registerModifier("modifier_storm_counter_countering")
 class ModifierStormCounter extends ModifierCounter {
     OnDestroy() {
         super.OnDestroy();
@@ -129,7 +129,7 @@ class ModifierStormCounter extends ModifierCounter {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_storm_counter_displacement" })
+@registerModifier("modifier_storm_counter_displacement")
 class ModifierStormCounterDisplacement extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];

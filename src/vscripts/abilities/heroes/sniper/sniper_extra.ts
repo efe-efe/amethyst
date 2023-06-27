@@ -103,7 +103,7 @@ class SniperExtra extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_extra_displacement" })
+@registerModifier("modifier_sniper_extra_displacement")
 class ModifierSniperExtra extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];
@@ -128,7 +128,7 @@ class ModifierSniperExtra extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_extra_displacement_enemy" })
+@registerModifier("modifier_sniper_extra_displacement_enemy")
 class ModifierSniperExtraEnemy extends ModifierDisplacement {
     OnCollide(event: OnCollisionEvent) {
         if (IsServer()) {

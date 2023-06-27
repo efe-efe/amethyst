@@ -80,10 +80,10 @@ class MarsExtra extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_extra_recast" })
+@registerModifier("modifier_mars_extra_recast")
 class ModifierMarsExtraRecast extends ModifierRecast {}
 
-@registerModifier({ customNameForI18n: "modifier_mars_soldier" })
+@registerModifier("modifier_mars_soldier")
 export class ModifierMarsSoldier extends ModifierCombatEvents {
     behavior!: "fade" | "notFade";
     visibility!: "visible" | "notVisible";
@@ -232,7 +232,7 @@ export class ModifierMarsSoldier extends ModifierCombatEvents {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_soldier_displacement" })
+@registerModifier("modifier_mars_soldier_displacement")
 class ModifierMarsSoldierDisplacement extends ModifierDisplacement {
     DeclareFunctions() {
         return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];
@@ -254,7 +254,7 @@ class ModifierMarsSoldierDisplacement extends ModifierDisplacement {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_soldier_duration" })
+@registerModifier("modifier_mars_soldier_duration")
 class ModifierMarsSoldierDuration extends CustomModifier {
     IsPermanent() {
         return true;
@@ -265,7 +265,7 @@ class ModifierMarsSoldierDuration extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_soldier_debuff" })
+@registerModifier("modifier_mars_soldier_debuff")
 class ModifierMarsSoldierMark extends CustomModifier {
     IsPermanent() {
         return true;

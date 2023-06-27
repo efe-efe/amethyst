@@ -1,7 +1,7 @@
 import { registerModifier } from "../../lib/dota_ts_adapter";
 import { ModifierShield } from "../modifier_shield";
 
-@registerModifier({ customNameForI18n: "modifier_sapphire" })
+@registerModifier("modifier_sapphire")
 export class ModifierSapphire extends ModifierShield {
     particleId!: ParticleID;
 

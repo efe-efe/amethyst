@@ -208,7 +208,7 @@ class SpectreExSpecialAttackRecast extends CustomAbility {
     // }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_special_attack_thinker" })
+@registerModifier("modifier_spectre_special_attack_thinker")
 class ModifierSpectreSpecialAttackThinker extends ModifierThinker {
     particleIdMain?: ParticleID;
     particleIdSecond?: ParticleID;
@@ -287,7 +287,7 @@ class ModifierSpectreSpecialAttackThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_special_attack_debuff" })
+@registerModifier("modifier_spectre_special_attack_debuff")
 export class ModifierSpectreSpecialAttackDebuff extends CustomModifier {
     OnCreated() {
         if (IsServer()) {
@@ -317,7 +317,7 @@ export class ModifierSpectreSpecialAttackDebuff extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_special_attack_buff" })
+@registerModifier("modifier_spectre_special_attack_buff")
 export class ModifierSpectreSpecialAttackBuff extends CustomModifier {
     particleId?: ParticleID;
 
@@ -405,7 +405,7 @@ export class ModifierSpectreSpecialAttackBuff extends CustomModifier {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_ex_special_attack_thinker" })
+@registerModifier("modifier_spectre_ex_special_attack_thinker")
 class ModifierSpectreExSpecialAttackThinker extends ModifierThinker {
     particleId?: ParticleID;
 
@@ -481,12 +481,12 @@ class ModifierSpectreExSpecialAttackThinker extends ModifierThinker {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_spectre_ex_special_attack_recast" })
+@registerModifier("modifier_spectre_ex_special_attack_recast")
 class ModifierSpectreExSpecialAttackRecast extends ModifierRecast {}
 // if (IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Recast(modifier_spectre_ex_special_attack_recast)
 
-@registerModifier({ customNameForI18n: "modifier_spectre_ex_special_attack_banish" })
+@registerModifier("modifier_spectre_ex_special_attack_banish")
 class ModifierSpectreExSpecialAttackBanish extends ModifierBanish {
     CheckState() {
         return {

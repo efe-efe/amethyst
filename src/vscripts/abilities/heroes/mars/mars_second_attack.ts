@@ -148,7 +148,7 @@ class MarsExSecondAttack extends MarsSecondAttackCommon {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_mars_second_attack_displacement" })
+@registerModifier("modifier_mars_second_attack_displacement")
 class ModifierMarsSecondAttack extends ModifierDisplacement {
     OnDestroy() {
         super.OnDestroy();

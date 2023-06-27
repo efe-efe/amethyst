@@ -37,7 +37,7 @@ class SniperUltimate extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_sniper_ultimate_channeling" })
+@registerModifier("modifier_sniper_ultimate_channeling")
 class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
     OnCreated() {
         if (IsServer()) {
@@ -188,10 +188,10 @@ class ModifierSniperUltimateChanneling extends CustomModifier<SniperUltimate> {
 // if(IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Channeling(modifier_sniper_ultimate_channeling)
 
-@registerModifier({ customNameForI18n: "modifier_sniper_ultimate_displacement" })
+@registerModifier("modifier_sniper_ultimate_displacement")
 class ModifierSniperUltimateDisplacement extends ModifierDisplacement {}
 // if(IsClient()){ require("wrappers/modifiers") }
 // Modifiers.Displacement(modifier_sniper_ultimate_displacement)
 
-@registerModifier({ customNameForI18n: "modifier_sniper_ultimate_hit" })
+@registerModifier("modifier_sniper_ultimate_hit")
 class ModifierSniperUltimate extends CustomModifier {}

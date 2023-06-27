@@ -122,7 +122,7 @@ export class JuggernautBasicAttack extends CustomAbility {
     }
 }
 
-@registerModifier({ customNameForI18n: "modifier_juggernaut_basic_attack_stacks" })
+@registerModifier("modifier_juggernaut_basic_attack_stacks")
 export class ModifierJuggernautStacks extends CustomModifier<JuggernautBasicAttack> {
     particleIds: ParticleID[] = [];
 
