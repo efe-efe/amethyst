@@ -20,9 +20,9 @@ function Update(): void {
         y: mousePosition[1],
         z: mousePosition[2],
         playerId: Players.GetLocalPlayer()
-    } as never;
+    };
 
-    GameEvents.SendCustomGameEventToServer("update_mouse_position", data);
+    GameEvents.SendCustomGameEventToServer("updateMousePosition", data);
 
     $.Schedule(thinkInterval, () => {
         Update();

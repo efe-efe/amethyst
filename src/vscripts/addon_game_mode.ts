@@ -147,13 +147,6 @@ export class GameMode {
         } else if (this.IsPVE()) {
             this.StartPVEMap();
         }
-
-        this.RegisterThinker(0.01, () => {
-            CustomGameEventManager.Send_ServerToAllClients("get_mouse_position", {} as never);
-            this.units.forEach(unit => {
-                unit.Update();
-            });
-        });
     }
 
     StartPVPMap(): void {
@@ -257,9 +250,9 @@ export class GameMode {
     }
 
     SetupPanoramaEventHooks(): void {
-        CustomGameEventManager.RegisterListener<CustomActionEvent>("update_mouse_position", (eventSourceIndex, args) => {
+        CustomGameEventManager.RegisterListener("updateMousePosition", (eventSourceIndex, args) => {
             const position = Vector(args.x, args.y, args.z);
-            const playerId = args.playerId;
+            const playerId = args.playerId as PlayerID;
             const player = this.FindPlayerById(playerId);
             if (player) {
                 player.UpdateCursorPosition(position);

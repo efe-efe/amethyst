@@ -55,4 +55,11 @@ interface CustomGameEventDeclarations {
     refundPoints: { playerIndex: number };
 
     swapRF: { playerIndex: number };
+
+    updateMousePosition: {
+        playerId: number;
+        x: number;
+        y: number;
+        z: number;
+    };
 }
