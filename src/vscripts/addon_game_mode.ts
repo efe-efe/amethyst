@@ -48,10 +48,10 @@ interface Thinker {
     next: number;
 }
 
-const Custom_MapNames = {
-    ["PVP"]: "pvp",
-    ["PVE"]: "pve"
-};
+enum MapNames {
+    "pvp" = "pvp",
+    "pve" = "pve"
+}
 
 enum Custom_ActionTypes {
     MOVEMENT = 0,
@@ -142,9 +142,10 @@ export class GameMode {
         this.alliances.push(new Alliance(DOTA_ALLIANCE_LEGION, [DotaTeam.CUSTOM_3, DotaTeam.CUSTOM_4]));
         this.alliances.push(new Alliance(DOTA_ALLIANCE_VOID, [DotaTeam.CUSTOM_5, DotaTeam.CUSTOM_6]));
 
-        if (this.IsPVP()) {
+        if (this.getMode() == "pvp") {
             this.StartPVPMap();
-        } else if (this.IsPVE()) {
+        }
+        if (this.getMode() == "pve") {
             this.StartPVEMap();
         }
     }
@@ -216,9 +217,10 @@ export class GameMode {
         GameRules.GetGameModeEntity().SetLoseGoldOnDeath(false);
         GameRules.SetTimeOfDay(0.5);
 
-        if (this.IsPVP()) {
+        if (this.getMode() == "pvp") {
             this.SetupRulesPVP();
-        } else if (this.IsPVE()) {
+        }
+        if (this.getMode() == "pve") {
             this.SetupRulesPVE();
         }
         print("[AMETHYST] GameRules set");
@@ -329,9 +331,12 @@ export class GameMode {
             if (player) {
                 const hero = player.hero;
                 if (hero) {
-                    const ability_name_one = hero.GetAbilityByIndex(5)!.GetName();
-                    const ability_name_two = hero.GetAbilityByIndex(6)!.GetName();
-                    hero.SwapAbilities(ability_name_one, ability_name_two, true, true);
+                    const ability_name_one = hero.GetAbilityByIndex(5)?.GetName();
+                    const ability_name_two = hero.GetAbilityByIndex(6)?.GetName();
+
+                    if (ability_name_one && ability_name_two) {
+                        hero.SwapAbilities(ability_name_one, ability_name_two, true, true);
+                    }
                 }
             }
         });
@@ -339,7 +344,7 @@ export class GameMode {
 
     SetupFilters(): void {
         const mode = GameRules.GetGameModeEntity();
-        mode.SetModifyGoldFilter(this.ModifyGoldFilter, this);
+        mode.SetModifyGoldFilter(() => false, this);
         mode.SetExecuteOrderFilter(this.ExecuteOrderFilter, this);
         mode.SetModifyExperienceFilter(this.ModifyExperienceFilter, this);
         mode.SetHealingFilter(this.HealingFilter, this);
@@ -483,11 +488,8 @@ export class GameMode {
         return barrel;
     }
 
-    public OnPickedUp(item: CDOTA_Item): void {
-        const parent = CustomItems.GetInstance().GetParent(item);
-        if (parent) {
-            parent.OnPickedUp();
-        }
+    public OnPickedUp(item: CDOTA_Item) {
+        CustomItems.GetInstance().GetParent(item)?.OnPickedUp();
     }
 
     ModifyExperienceFilter(): boolean {
@@ -551,10 +553,6 @@ export class GameMode {
         }
 
         return true;
-    }
-
-    ModifyGoldFilter(): boolean {
-        return false;
     }
 
     HealingFilter(this: this, event: HealingFilterEvent): boolean {
@@ -683,7 +681,7 @@ export class GameMode {
             this.wtf = false;
         }
 
-        if (this.IsPVE()) {
+        if (this.getMode() == "pve") {
             if (!player) {
                 return;
             }
@@ -723,7 +721,7 @@ export class GameMode {
         }
 
         if (event.text == "-skip") {
-            if (this.IsPVE()) {
+            if (this.getMode() == "pve") {
                 if (this.run && this.run.stage && this.run.stage.room) {
                     this.run.stage.room.SkipWave();
                 }
@@ -734,7 +732,7 @@ export class GameMode {
             if (!event.text.split(" ")[1]) {
                 return;
             }
-            if (this.IsPVE()) {
+            if (this.getMode() == "pve") {
                 let room = parseInt(event.text.split(" ")[1], 10);
                 if (isNaN(room)) {
                     return;
@@ -801,13 +799,14 @@ export class GameMode {
         }
 
         const customNpc = this.RegisterUnit(npc);
+
         if (npc.IsRealHero()) {
-            if (this.IsPVP()) {
+            const mode = this.getMode();
+            if (mode == "pvp") {
                 return this.RegisterPlayer(npc, customNpc as CustomPlayerHeroNPC);
-            } else if (this.IsPVE()) {
-                if (npc.GetTeamNumber() !== DotaTeam.CUSTOM_1) {
-                    return this.RegisterPlayer(npc, customNpc as CustomPlayerHeroNPC);
-                }
+            }
+            if (mode == "pve" && npc.GetTeamNumber() !== DotaTeam.CUSTOM_1) {
+                return this.RegisterPlayer(npc, customNpc as CustomPlayerHeroNPC);
             }
         }
 
@@ -823,12 +822,8 @@ export class GameMode {
         this.currentRoom = this.currentRoom + 1;
     }
 
-    IsPVP(): boolean {
-        return GetMapName() === Custom_MapNames.PVP;
-    }
-
-    IsPVE(): boolean {
-        return GetMapName() === Custom_MapNames.PVE;
+    getMode() {
+        return GetMapName() === MapNames.pvp ? MapNames.pvp : GetMapName() === MapNames.pve ? MapNames.pve : "none";
     }
 
     RegisterUnit(unit: CDOTA_BaseNPC): CustomPlayerHeroNPC | CustomNonPlayerHeroNPC | CustomNPC {
@@ -855,7 +850,7 @@ export class GameMode {
         const killed = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
 
         if (killed.IsRealHero()) {
-            if (this.IsPVP()) {
+            if (this.getMode() == "pvp") {
                 this.OnHeroKilledPVP(killed);
             }
             if (!this.IsPlayerHero(killed)) {
