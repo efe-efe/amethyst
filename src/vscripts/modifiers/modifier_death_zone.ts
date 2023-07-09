@@ -9,16 +9,16 @@ export class ModifierDeathZone extends CustomModifier<undefined> {
         radiusReduction: number;
         startTime: number;
     }[] = [
-        { radiusReduction: 20, startTime: 100 },
-        { radiusReduction: 15, startTime: 200 },
-        { radiusReduction: 10, startTime: 250 },
-        { radiusReduction: 8, startTime: 300 },
-        { radiusReduction: 6, startTime: 350 },
-        { radiusReduction: 3, startTime: 400 },
-        { radiusReduction: 2, startTime: 450 },
-        { radiusReduction: 0, startTime: 550 },
-        { radiusReduction: 1, startTime: 700 }
-    ];
+            { radiusReduction: 20, startTime: 100 },
+            { radiusReduction: 15, startTime: 200 },
+            { radiusReduction: 10, startTime: 250 },
+            { radiusReduction: 8, startTime: 300 },
+            { radiusReduction: 6, startTime: 350 },
+            { radiusReduction: 3, startTime: 400 },
+            { radiusReduction: 2, startTime: 450 },
+            { radiusReduction: 0, startTime: 550 },
+            { radiusReduction: 1, startTime: 700 }
+        ];
     minRadius = 1;
     maxRadius = 8000;
     radius = this.maxRadius;

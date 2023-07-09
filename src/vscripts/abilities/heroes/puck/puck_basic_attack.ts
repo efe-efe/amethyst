@@ -4,6 +4,7 @@ import { ModifierCooldown } from "../../../modifiers/modifier_cooldown";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import {
+    areUnitsAllied,
     attackWithBaseDamage,
     clampPosition,
     direction2D,
@@ -85,8 +86,7 @@ export class PuckBasicAttack extends PuckBasicAttackCommon {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 attackWithBaseDamage({
                     source: projectile.getSource(),
@@ -164,7 +164,7 @@ export class PuckBasicAttackRelated extends PuckBasicAttackCommon {
         EFX("particles/econ/items/invoker/invoker_ti7/invoker_ti7_alacrity_cast.vpcf", ParticleAttachment.CUSTOMORIGIN, this.caster, {
             cp0: {
                 ent: this.caster,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             cp1: point + Vector(0, 0, 1000),
             cp2: point + Vector(0, 0, 1000),

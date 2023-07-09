@@ -1,8 +1,9 @@
+import { createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
-import { createRadiusMarker, direction2D, giveManaAndEnergy, strongPurge } from "../../../util";
+import { direction2D, giveManaAndEnergy, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("storm_counter")
@@ -36,7 +37,7 @@ class ModifierStormCounter extends ModifierCounter {
             }
 
             giveManaAndEnergy(this.parent, this.Value("mana_gain"), true);
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.parent,
                 this.parent.GetAbsOrigin(),
                 this.Value("radius"),
@@ -121,7 +122,7 @@ class ModifierStormCounter extends ModifierCounter {
             1,
             this.parent,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.parent.GetAbsOrigin(),
             true
         );

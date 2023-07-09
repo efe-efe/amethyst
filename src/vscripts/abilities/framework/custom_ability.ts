@@ -2,36 +2,7 @@ import { BaseAbility, BaseItem } from "../../lib/dota_ts_adapter";
 import { ModifierCasting, Translate } from "../../modifiers/modifier_casting";
 import { ModifierCombatEvents } from "../../modifiers/modifier_combat_events";
 import { ProjectileHandler, ProjectileOptions, createProjectile } from "../../projectiles";
-import { callEntityFuncSafe } from "../../util";
-
-//minProjection is a value from -1 to 1, 1 when the unit is aligned with direction, -1 is the vector opposite to direction
-function findUnitsInCone(
-    source: CDOTA_BaseNPC, //TODO: @Refactor Change this for team
-    direction: Vector,
-    minProjection: number,
-    center: Vector,
-    radius: number,
-    teamFilter: UnitTargetTeam,
-    typeFilter: UnitTargetType,
-    flagFilter: UnitTargetFlags,
-    orderFilter: FindOrder
-) {
-    //TODO: @Refactor Change this for a TS finder
-    const units = CustomEntitiesLegacy.FindUnitsInRadius(source, center, radius, teamFilter, typeFilter, flagFilter, orderFilter);
-
-    const targets = [];
-
-    for (const unit of units) {
-        const directionToUnit = unit.GetAbsOrigin().__sub(center).Normalized();
-        const projection = directionToUnit.x * direction.x + directionToUnit.y * direction.y;
-
-        if (projection >= minProjection) {
-            targets.push(unit);
-        }
-    }
-
-    return targets;
-}
+import { callEntityFuncSafe, findUnitsInCone, findUnitsInRadius } from "../../util";
 
 function triggerBasicAttackStarted(unit: CDOTA_BaseNPC) {
     for (const modifier of unit.FindAllModifiers()) {
@@ -254,15 +225,7 @@ export class CustomAbility extends BaseAbility {
             triggerBasicAttackStarted(this.caster);
         }
 
-        const units = CustomEntitiesLegacy.FindUnitsInRadius(
-            this.caster,
-            options.origin,
-            options.radius,
-            teamFilter,
-            typeFilter,
-            flagFilter,
-            orderFilter
-        );
+        const units = findUnitsInRadius(this.caster, options.origin, options.radius, teamFilter, typeFilter, flagFilter, orderFilter);
 
         let hitTargets = 0;
 
@@ -340,8 +303,8 @@ export class CustomAbility extends BaseAbility {
         const distance = options.distance
             ? options.distance
             : valueDistance != 0
-            ? valueDistance
-            : this.GetCastRange(Vector(0, 0, 0), undefined);
+                ? valueDistance
+                : this.GetCastRange(Vector(0, 0, 0), undefined);
 
         const startRadius = options.startRadius ?? this.GetSpecialValueFor("hitbox");
 
@@ -542,15 +505,7 @@ export class CustomItem extends BaseItem {
             triggerBasicAttackStarted(this.GetCaster());
         }
 
-        const units = CustomEntitiesLegacy.FindUnitsInRadius(
-            this.GetCaster(),
-            options.origin,
-            options.radius,
-            teamFilter,
-            typeFilter,
-            flagFilter,
-            orderFilter
-        );
+        const units = findUnitsInRadius(this.GetCaster(), options.origin, options.radius, teamFilter, typeFilter, flagFilter, orderFilter);
 
         let hitTargets = 0;
 
@@ -628,8 +583,8 @@ export class CustomItem extends BaseItem {
         const distance = options.distance
             ? options.distance
             : valueDistance != 0
-            ? valueDistance
-            : this.GetCastRange(Vector(0, 0, 0), undefined);
+                ? valueDistance
+                : this.GetCastRange(Vector(0, 0, 0), undefined);
 
         const startRadius = options.startRadius ?? this.GetSpecialValueFor("hitbox");
 

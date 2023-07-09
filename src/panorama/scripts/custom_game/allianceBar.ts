@@ -1,7 +1,6 @@
 import Alliances from "./alliances";
 import Health from "./commonComponents/health";
 import { Color, colors, panels } from "./util";
-import { AllianceData } from "./types";
 
 const alliances = Alliances.GetInstance();
 
@@ -17,7 +16,7 @@ export default class AllianceBar {
     color: Color;
 
     constructor(container: Panel, allianceData: AllianceData) {
-        const alliance = alliances.findAllianceByName(allianceData.name)!;
+        const alliance = alliances.findAllianceByName(allianceData.id)!;
         this.color = colors[alliance.GetColor()];
 
         this.panel = panels.createPanelSimple(container, "alliance-bar");

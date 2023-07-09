@@ -2,7 +2,7 @@ import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { CustomModifier } from "../../../../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierFear } from "../../../../modifiers/modifier_fear";
-import { createTimedRadiusMarker, direction2D } from "../../../../util";
+import { areUnitsAllied, createTimedRadiusMarker, direction2D } from "../../../../util";
 
 @registerAbility("queen_scream")
 class QueenScream extends CustomAbility {
@@ -95,8 +95,7 @@ class ModifierQueenScream extends CustomModifier {
             startRadius: 70,
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,

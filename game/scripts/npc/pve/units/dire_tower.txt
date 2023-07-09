@@ -1,6 +1,6 @@
 "DOTAUnits"
 {
-	"dire_tower"
+	"npc_dota_dire_tower"
 	{
 		"Model"						"models/props_structures/rock_golem/tower_dire_rock_golem.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"

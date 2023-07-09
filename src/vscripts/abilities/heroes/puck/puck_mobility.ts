@@ -1,7 +1,8 @@
+import { areUnitsAllied, createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ProjectileBehavior, ProjectileHandler } from "../../../projectiles";
-import { createRadiusMarker, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -71,8 +72,7 @@ class PuckMobility extends PuckMobilityCommon {
             groundOffset: 0,
             wallBehavior: ProjectileBehavior.NOTHING,
             unitBehavior: ProjectileBehavior.NOTHING,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,
@@ -90,7 +90,7 @@ class PuckMobility extends PuckMobilityCommon {
                 }
             },
             onFinish: projectile => {
-                const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+                const enemies = findUnitsInRadius(
                     projectile.getSource(),
                     point,
                     radius,
@@ -192,8 +192,7 @@ class PuckExMobility extends PuckMobilityCommon {
             groundOffset: 0,
             wallBehavior: ProjectileBehavior.NOTHING,
             unitBehavior: ProjectileBehavior.NOTHING,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,
@@ -203,7 +202,7 @@ class PuckExMobility extends PuckMobilityCommon {
                 });
             },
             onFinish: projectile => {
-                const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+                const enemies = findUnitsInRadius(
                     projectile.getSource(),
                     point,
                     radius,

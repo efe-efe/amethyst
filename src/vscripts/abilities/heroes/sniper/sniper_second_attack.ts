@@ -4,7 +4,7 @@ import { ModifierUpgradeSniperFastSnipe } from "../../../modifiers/upgrades/modi
 import { ModifierRoot } from "../../../modifiers/modifier_root";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ProjectileBehavior } from "../../../projectiles";
-import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 class SniperSecondAttackCommon extends CustomAbility {
@@ -77,7 +77,7 @@ class SniperSecondAttack extends SniperSecondAttackCommon {
                 1,
                 this.caster,
                 ParticleAttachment.ABSORIGIN_FOLLOW,
-                "attach_hitloc",
+                AttachLocation.hitloc,
                 this.caster.GetAbsOrigin(),
                 false
             );
@@ -118,8 +118,7 @@ class SniperSecondAttack extends SniperSecondAttackCommon {
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
             unitBehavior: ProjectileBehavior.NOTHING,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 const hits = projectile.hitLog.size;
                 const finalDamage = Math.max(minDamage, damage * (1 - hits * reductionPerHit));
@@ -212,8 +211,7 @@ class SniperExSecondAttack extends SniperSecondAttackCommon {
             velocity: direction.__mul(speed),
             groundOffset: 0,
             unitBehavior: ProjectileBehavior.NOTHING,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 const hits = projectile.hitLog.size;
                 const finalDamage = Math.max(minDamage, damage * (1 - hits * reductionPerHit));

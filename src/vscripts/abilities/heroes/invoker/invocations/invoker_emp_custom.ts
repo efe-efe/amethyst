@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierThinker, ModifierThinkerParams } from "../../../../modifiers/modifier_thinker";
-import { clampPosition, direction2D, getCursorPosition, giveMana } from "../../../../util";
+import { clampPosition, direction2D, findUnitsInRadius, getCursorPosition, giveMana } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 
 @registerAbility("invoker_emp_custom")
@@ -64,7 +64,7 @@ class ModifierInvokerEMP extends ModifierThinker {
     }
 
     ManaBurnEnemies(radius: number) {
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             this.origin,
             radius,
@@ -89,7 +89,7 @@ class ModifierInvokerEMP extends ModifierThinker {
         super.OnIntervalThink();
 
         if (IsServer()) {
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 this.origin,
                 this.radius,

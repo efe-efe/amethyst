@@ -1,9 +1,10 @@
+import { createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { clampPosition, createRadiusMarker, getCursorPosition, strongPurge } from "../../../util";
+import { clampPosition, getCursorPosition, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 class NevermoreCounterCommon extends CustomAbility {
@@ -74,7 +75,7 @@ class NevermoreExCounter extends NevermoreCounterCommon {
 
         createRadiusMarker(this.caster, origin, radius, "public", 0.1);
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             origin,
             radius,
@@ -229,7 +230,7 @@ class ModifierNevermoreCounterThinker extends ModifierThinker {
         if (IsServer()) {
             FindClearSpaceForUnit(this.caster, this.parent.GetAbsOrigin(), true);
 
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 this.parent.GetAbsOrigin(),
                 this.radius,

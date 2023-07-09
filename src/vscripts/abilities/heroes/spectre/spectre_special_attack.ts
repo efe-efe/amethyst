@@ -4,7 +4,16 @@ import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { ProjectileBehavior } from "../../../projectiles";
-import { clampPosition, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import {
+    areUnitsAllied,
+    clampPosition,
+    direction2D,
+    findUnitsInRadius,
+    getCursorPosition,
+    giveManaAndEnergyPercent,
+    isGem,
+    isObstacle
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -48,8 +57,7 @@ class SpectreSpecialAttack extends CustomAbility {
             groundLock: true,
             isDestructible: false,
             // bIsReflectable = false,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,
@@ -135,12 +143,12 @@ class SpectreExSpecialAttack extends CustomAbility {
         EFX("particles/spectre/spectre_illusion_warp.vpcf", ParticleAttachment.CUSTOMORIGIN, this.caster, {
             cp0: {
                 ent: this.caster,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             cp1: point.__add(Vector(0, 0, 128)),
             cp2: {
                 ent: this.caster,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             release: true
         });
@@ -177,12 +185,12 @@ class SpectreExSpecialAttackRecast extends CustomAbility {
         EFX("particles/spectre/spectre_illusion_warp.vpcf", ParticleAttachment.CUSTOMORIGIN, this.caster, {
             cp0: {
                 ent: this.caster,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             cp1: point.__add(Vector(0, 0, 128)),
             cp2: {
                 ent: this.caster,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             release: true
         });
@@ -234,7 +242,7 @@ class ModifierSpectreSpecialAttackThinker extends ModifierThinker {
     }
 
     GetAuraEntityReject(unit: CDOTA_BaseNPC) {
-        return !CustomEntitiesLegacy.Allies(this.caster, unit);
+        return !areUnitsAllied(this.caster, unit);
     }
 
     GetAuraSearchType() {
@@ -391,7 +399,7 @@ export class ModifierSpectreSpecialAttackBuff extends CustomModifier {
             2,
             this.parent,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.parent.GetAbsOrigin(),
             true
         );
@@ -430,7 +438,7 @@ class ModifierSpectreExSpecialAttackThinker extends ModifierThinker {
         const spectreExBasicAttackRecast = SpectreExSpecialAttackRecast.findOne(this.caster);
         spectreExBasicAttackRecast?.ClearTargets();
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             this.origin,
             this.radius,

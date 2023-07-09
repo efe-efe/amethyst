@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
-import { clampPosition, getCursorPosition } from "../../../util";
+import { areUnitsAllied, clampPosition, findUnitsInRadius, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierSpectreSpecialAttackBuff, ModifierSpectreSpecialAttackDebuff } from "./spectre_special_attack";
@@ -75,7 +75,7 @@ export class ModifierSpectreUltimate extends CustomModifier {
     }
 
     IsDebuff() {
-        return this.GetStackCount() == 2 && !CustomEntitiesLegacy.Allies(this.caster, this.parent);
+        return this.GetStackCount() == 2 && !areUnitsAllied(this.caster, this.parent);
     }
 
     DeclareFunctions() {
@@ -131,7 +131,7 @@ class ModifierSpectreUltimateThinker extends ModifierThinker {
         super.OnDestroy();
 
         if (IsServer()) {
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 this.origin,
                 this.radius,

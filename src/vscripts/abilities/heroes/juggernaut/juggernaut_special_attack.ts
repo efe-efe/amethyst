@@ -3,7 +3,7 @@ import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierUpgradeJuggernautRefreshDagger } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -42,8 +42,7 @@ class JuggernautSpecialAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
             effectName: "particles/juggernaut/juggernaut_special_attack.vpcf",
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,

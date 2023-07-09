@@ -3,19 +3,34 @@ import {
     CustomModifierMotionHorizontal,
     CustomModifierMotionVertical
 } from "./abilities/framework/custom_modifier";
+import { allianceDefinitions, findAllianceDefinitionByUnit } from "./alliance_definitions";
 import { ModifierBanish } from "./modifiers/modifier_banish";
+import { ModifierChanneling } from "./modifiers/modifier_channeling";
+import { ModifierCharges } from "./modifiers/modifier_charges";
 import { ModifierCounter } from "./modifiers/modifier_counter";
+import { ModifierEnergy } from "./modifiers/modifier_energy";
 import { ModifierGem } from "./modifiers/modifier_gem";
 import { ModifierHideBar } from "./modifiers/modifier_hide_bar";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { ModifierRadiusMarker } from "./modifiers/modifier_radius_marker";
 import { ModifierRecast } from "./modifiers/modifier_recast";
+import { ModifierShield } from "./modifiers/modifier_shield";
 import { ModifierWall } from "./modifiers/modifier_wall";
 
 //@Refactor the amount of imports on an utils file SCREAMS for an import loop...
 
 function getRecastModifiers(unit: CDOTA_BaseNPC) {
     return ModifierRecast.findAll(unit);
+}
+
+export function* allAbilities(unit: CDOTA_BaseNPC) {
+    for (let index = 0; index < unit.GetAbilityCount(); index++) {
+        const ability = unit.GetAbilityByIndex(index);
+
+        if (ability) {
+            yield ability;
+        }
+    }
 }
 
 //@Refactor maybe this should change... for now I'll keep it as it is
@@ -36,11 +51,10 @@ export function deactivateNonPriorityAbilities(unit: CDOTA_BaseNPC) {
 
 export function sendDataToClient(unit: CDOTA_BaseNPC) {
     if (unit.IsRealHero() && !unit.IsIllusion()) {
-        let allianceName = "NOT_ALLIANCE";
-
-        if (CustomEntitiesLegacy.GetAlliance(unit)) {
-            allianceName = CustomEntitiesLegacy.GetAlliance(unit).GetName();
-        }
+        const allianceName = "NOT_ALLIANCE";
+        // if (CustomEntitiesLegacy.GetAlliance(unit)) {
+        //     allianceName = CustomEntitiesLegacy.GetAlliance(unit).GetName();
+        // }
 
         //TODO: @Refactor Fix the rest
         const data = {
@@ -51,7 +65,7 @@ export function sendDataToClient(unit: CDOTA_BaseNPC) {
             name: unit.GetName(),
             health: unit.GetHealth(),
             maxHealth: unit.GetMaxHealth(),
-            // treshold: CustomEntitiesLegacy:GetTreshold(unit),
+            // threshold: CustomEntitiesLegacy:GetThreshold(unit),
             // shield: CustomEntitiesLegacy:GetShield(unit),
             mana: unit.GetMana(),
             maxMana: unit.GetMaxMana()
@@ -82,7 +96,7 @@ export function sendDataToClient(unit: CDOTA_BaseNPC) {
             // status: CustomEntitiesLegacy:GetStatus(unit),
             // beenHurt: CustomEntitiesLegacy:GetBeenHurt(unit),
         };
-        CustomNetTables.SetTableValue("units" as never, tostring("_" + unit.GetEntityIndex()), data as never);
+        CustomNetTables.SetTableValue("units", tostring("_" + unit.GetEntityIndex()), data);
     }
 }
 
@@ -108,6 +122,20 @@ export function overheadMessageEFX(unit: CDOTA_BaseNPC, value: number, wordLengt
     });
 }
 
+export function sendOverheadDamageMessage(unit: CDOTA_BaseNPC, value: number) {
+    const wordLength = string.len(tostring(math.floor(value)));
+    const color = Vector(250, 70, 70);
+
+    overheadMessageEFX(unit, value, wordLength, color, 0);
+}
+
+export function sendOverheadHealMessage(unit: CDOTA_BaseNPC, value: number) {
+    const wordLength = string.len(tostring(math.floor(value))) + 1; //TODO: @Refactor Improve this
+    const color = Vector(70, 250, 70);
+
+    overheadMessageEFX(unit, value, wordLength, color, 0);
+}
+
 export function sendOverheadShieldMessage(unit: CDOTA_BaseNPC, value: number) {
     const wordLength = string.len(tostring(math.floor(value))) + 1; //TODO: @Refactor Improve this
     const color = Vector(255, 255, 255);
@@ -129,23 +157,20 @@ export function sendOverheadManaMessage(unit: CDOTA_BaseNPC, value: number) {
     overheadMessageEFX(unit, value, wordLength, color, 0);
 }
 
-export function getMaxEnergy(unit: CDOTA_BaseNPC) {
-    //TODO: @Refactor This should be a modifier
-    return 0; //unit.max_energy
-}
-
 export function setEnergy(unit: CDOTA_BaseNPC, amount: number, informClient: boolean) {
-    //TODO: @Refactor This should be a modifier
-    // unit.energy = clamp(amount, getMaxEnergy(unit), 0)
+    ModifierEnergy.findOne(unit)?.SetStackCount(Math.max(0, Math.min(Constants.maxEnergy, amount)));
 
     if (informClient) {
         // CustomEntitiesLegacy:SendDataToClient(unit)
     }
 }
 
+export function getMaxEnergy() {
+    return Constants.maxEnergy;
+}
+
 export function getEnergy(unit: CDOTA_BaseNPC) {
-    //TODO: @Refactor This should be a modifier
-    return 0; //unit.energy
+    return ModifierEnergy.findOne(unit)?.GetStackCount() ?? 0;
 }
 
 export function giveMana(unit: CDOTA_BaseNPC, amount: number, informClient: boolean, showOverhead: boolean) {
@@ -174,7 +199,7 @@ export function giveManaPercent(unit: CDOTA_BaseNPC, percentage: number, informC
 }
 
 export function giveEnergyPercent(unit: CDOTA_BaseNPC, percentage: number, informClient: boolean, showOverhead: boolean) {
-    const energy = (getMaxEnergy(unit) * percentage) / 100;
+    const energy = (getMaxEnergy() * percentage) / 100;
     giveEnergy(unit, energy, informClient, showOverhead);
 }
 
@@ -282,6 +307,10 @@ export function isCountering(unit: CDOTA_BaseNPC) {
     return unit.FindAllModifiers().some(modifier => modifier instanceof ModifierCounter);
 }
 
+export function isChanneling(unit: CDOTA_BaseNPC) {
+    return unit.FindAllModifiers().some(modifier => modifier instanceof ModifierChanneling);
+}
+
 export function isBanished(unit: CDOTA_BaseNPC) {
     return unit.FindAllModifiers().some(modifier => modifier instanceof ModifierBanish);
 }
@@ -359,52 +388,6 @@ export function unhideHealthBar(unit: CDOTA_BaseNPC) {
     unit.RemoveModifierByName(ModifierHideBar.name);
 }
 
-function radiusMarkerEfx(particleId: ParticleID, origin: Vector, radius: number, color: Vector, duration: number) {
-    ParticleManager.SetParticleControl(particleId, 0, origin);
-    ParticleManager.SetParticleControl(particleId, 1, Vector(radius, 1, 1));
-    ParticleManager.SetParticleControl(particleId, 2, color);
-    ParticleManager.SetParticleControl(particleId, 3, Vector(duration, 0, 0));
-    ParticleManager.ReleaseParticleIndex(particleId);
-}
-
-export function createRadiusMarker(unit: CDOTA_BaseNPC, origin: Vector, radius: number, scope: "public" | "local", duration: number) {
-    const red = Vector(255, 1, 1);
-    const green = Vector(1, 255, 1);
-
-    if (scope == "public") {
-        for (const alliance of GameRules.Addon.alliances) {
-            for (const team of alliance.teams) {
-                const color = unit.GetTeamNumber() == team ? green : red;
-                radiusMarkerEfx(
-                    ParticleManager.CreateParticleForTeam("particles/aoe_marker.vpcf", ParticleAttachment.WORLDORIGIN, undefined, team),
-                    origin,
-                    radius,
-                    color,
-                    duration
-                );
-            }
-        }
-        return;
-    }
-
-    radiusMarkerEfx(
-        ParticleManager.CreateParticleForPlayer(
-            "particles/aoe_marker.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            undefined,
-            unit.GetPlayerOwner()
-        ),
-        origin,
-        radius,
-        green,
-        duration
-    );
-}
-
-export function randomInArray<T>(array: readonly T[]): T {
-    return array[RandomInt(0, array.length - 1)];
-}
-
 export function createTimedRadiusMarker(
     caster: CDOTA_BaseNPC | undefined,
     origin: Vector,
@@ -480,16 +463,36 @@ export function getAbilityEnergyCost(ability: CDOTABaseAbility) {
     return getValueFromKV(ability, "AbilityEnergyCost") ?? 0;
 }
 
-export function abilityHasBehavior(ability: CDOTABaseAbility, behavior: AbilityBehavior) {
-    const behaviorAsNumber = tonumber(tostring(ability.GetBehavior()));
+const flagToPowerOfTwo = new LuaMap<AbilityBehavior, number>();
 
-    if (behaviorAsNumber) {
-        return bit.band(behaviorAsNumber, behavior) == behavior;
+function getBehaviorBit(behavior: AbilityBehavior) {
+    function whichBitSet() {
+        for (let bit = 0; bit < 32; bit++) {
+            if (Math.pow(2, bit) >= behavior) {
+                return bit;
+            }
+        }
+
+        return -1;
+    }
+
+    const stored = flagToPowerOfTwo.get(behavior);
+
+    if (stored == undefined) {
+        const computed = whichBitSet();
+        flagToPowerOfTwo.set(behavior, computed);
+        return computed;
+    } else {
+        return stored;
     }
 }
 
-export function isRegularAbility(ability: CDOTABaseAbility) {
-    return ability.GetAbilityType() != 2 && ability.GetName() != "special_bonus_attributes";
+export function hasBehavior(behavior: Uint64 | AbilityBehavior, flag: AbilityBehavior) {
+    if (typeof behavior == "number") {
+        return (behavior & flag) != 0;
+    } else {
+        return behavior.IsBitSet(getBehaviorBit(flag));
+    }
 }
 
 // function CustomAbilitiesLegacy:LinkUpgrades(hAbility, sLinkedAbilityName)
@@ -506,4 +509,270 @@ export function distanceBetweenEntities(entity1: CBaseEntity, entity2: CBaseEnti
 
 export function distanceBetweenPoints(point1: Vector, point2: Vector): number {
     return ((point1 - point2) as Vector).Length2D();
+}
+
+export function isPlayerHero(hero: CDOTA_BaseNPC) {
+    return hero.GetPlayerOwnerID() != -1;
+}
+
+export function canUnitWalk(unit: CDOTA_BaseNPC) {
+    return !(unit.IsStunned() || unit.IsCommandRestricted() || unit.IsRooted() || unit.IsNightmared() || !unit.IsAlive());
+}
+
+export function createRadiusMarker(unit: CDOTA_BaseNPC, origin: Vector, radius: number, scope: "public" | "local", duration: number) {
+    function radiusMarkerEfx(particleId: ParticleID, origin: Vector, radius: number, color: Vector, duration: number) {
+        ParticleManager.SetParticleControl(particleId, 0, origin);
+        ParticleManager.SetParticleControl(particleId, 1, Vector(radius, 1, 1));
+        ParticleManager.SetParticleControl(particleId, 2, color);
+        ParticleManager.SetParticleControl(particleId, 3, Vector(duration, 0, 0));
+        ParticleManager.ReleaseParticleIndex(particleId);
+    }
+
+    const red = Vector(255, 1, 1);
+    const green = Vector(1, 255, 1);
+
+    if (scope == "public") {
+        for (const alliance of allianceDefinitions) {
+            for (const team of alliance.teams) {
+                const color = unit.GetTeamNumber() == team ? green : red;
+                radiusMarkerEfx(
+                    ParticleManager.CreateParticleForTeam("particles/aoe_marker.vpcf", ParticleAttachment.WORLDORIGIN, undefined, team),
+                    origin,
+                    radius,
+                    color,
+                    duration
+                );
+            }
+        }
+        return;
+    }
+
+    radiusMarkerEfx(
+        ParticleManager.CreateParticleForPlayer(
+            "particles/aoe_marker.vpcf",
+            ParticleAttachment.WORLDORIGIN,
+            undefined,
+            unit.GetPlayerOwner()
+        ),
+        origin,
+        radius,
+        green,
+        duration
+    );
+}
+
+export function areUnitsAllied(unitLeft: CDOTA_BaseNPC, unitRight: CDOTA_BaseNPC) {
+    return findAllianceDefinitionByUnit(unitLeft) == findAllianceDefinitionByUnit(unitRight);
+}
+
+export function findUnitsInRadius(
+    source: CDOTA_BaseNPC,
+    origin: Vector,
+    radius: number,
+    teamFilter: UnitTargetTeam,
+    typeFilter: UnitTargetType,
+    flagFilter: UnitTargetFlags,
+    orderFilter: FindOrder
+) {
+    const units = FindUnitsInRadius(
+        source.GetTeamNumber(),
+        origin,
+        undefined,
+        radius,
+        UnitTargetTeam.BOTH,
+        typeFilter,
+        flagFilter,
+        orderFilter,
+        false
+    );
+
+    return filterUnitsByTeamConsideringAlliances(source, units, teamFilter);
+}
+
+export function findUnitsInLine(
+    source: CDOTA_BaseNPC,
+    startPosition: Vector,
+    endPosition: Vector,
+    radius: number,
+    teamFilter: UnitTargetTeam,
+    typeFilter: UnitTargetType,
+    flagFilter: UnitTargetFlags
+) {
+    const units = FindUnitsInLine(
+        source.GetTeamNumber(),
+        startPosition,
+        endPosition,
+        undefined,
+        radius,
+        teamFilter,
+        typeFilter,
+        flagFilter
+    );
+
+    return filterUnitsByTeamConsideringAlliances(source, units, teamFilter);
+}
+
+export function findUnitsInCone(
+    source: CDOTA_BaseNPC, //TODO: @Refactor Change this for team
+    direction: Vector,
+    minProjection: number,
+    center: Vector,
+    radius: number,
+    teamFilter: UnitTargetTeam,
+    typeFilter: UnitTargetType,
+    flagFilter: UnitTargetFlags,
+    orderFilter: FindOrder
+) {
+    //minProjection is a value from -1 to 1, 1 when the unit is aligned with direction, -1 is the vector opposite to direction
+    return findUnitsInRadius(source, center, radius, teamFilter, typeFilter, flagFilter, orderFilter).filter(unit => {
+        const directionToUnit = direction2D(center, unit.GetAbsOrigin());
+        const projection = directionToUnit.x * direction.x + directionToUnit.y * direction.y;
+
+        return projection >= minProjection;
+    });
+}
+
+function filterUnitsByTeamConsideringAlliances(source: CDOTA_BaseNPC, units: CDOTA_BaseNPC[], teamFilter: UnitTargetTeam) {
+    return units.filter(
+        unit =>
+            (teamFilter == UnitTargetTeam.FRIENDLY && areUnitsAllied(source, unit)) ||
+            (teamFilter == UnitTargetTeam.ENEMY && !areUnitsAllied(source, unit)) ||
+            teamFilter == UnitTargetTeam.BOTH
+    );
+}
+
+export interface SimpleTrigger {
+    triggerAt: number;
+    triggered: boolean;
+}
+
+export function simpleTrigger(triggerAt: number): SimpleTrigger {
+    return {
+        triggerAt,
+        triggered: false
+    };
+}
+
+export function triggerNow(timer: SimpleTrigger) {
+    if (GameRules.GetGameTime() >= timer.triggerAt && !timer.triggered) {
+        timer.triggered = true;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export function refreshCooldowns(unit: CDOTA_BaseNPC) {
+    for (const ability of allAbilities(unit)) {
+        ability.EndCooldown();
+
+        if (ability.GetToggleState()) {
+            ability.ToggleAbility();
+        }
+    }
+
+    for (const modifier of unit.FindAllModifiers()) {
+        if (modifier instanceof ModifierCharges) {
+            modifier.RefreshCharges();
+        }
+    }
+}
+
+export function randomInArray<T>(array: readonly T[]): T {
+    return array[RandomInt(0, array.length - 1)];
+}
+
+export function randomInArraySafe<T>(array: readonly T[]): T | undefined {
+    return randomInArray(array);
+}
+
+export function shuffleArray<T>(array: readonly T[]) {
+    return nRandomInArray(array, array.length);
+}
+
+export function nRandomInArray<T>(array: readonly T[], n: number): T[] {
+    const copy = [...array];
+    const result: T[] = [];
+
+    for (; n > 0; n--) {
+        const taken = takeRandomFromArray(copy);
+        if (taken) {
+            result.push(taken);
+        }
+    }
+
+    return result;
+}
+
+export function takeNRandomFromArrayWeighted<T>(array: T[], n: number, scale: (value: T) => number): T[] {
+    const result: T[] = [];
+
+    for (; n > 0; n--) {
+        const taken = takeRandomFromArrayWeighted(array, scale);
+        if (taken) {
+            result.push(taken);
+        }
+    }
+
+    return result;
+}
+
+export function takeRandomFromArrayUnsafe<T>(array: T[]): T {
+    const randomIndex = RandomInt(0, array.length - 1);
+    return array.splice(randomIndex, 1)[0];
+}
+
+export function takeRandomFromArray<T>(array: T[]): T | undefined {
+    return takeRandomFromArrayUnsafe(array);
+}
+
+export function takeRandomFromArrayWeightedUnsafe<T>(entries: T[], scale: (element: T) => number): T {
+    const sum = entries.reduce((prev, curr) => prev + scale(curr), 0);
+
+    if (sum == 0) {
+        return takeRandomFromArrayUnsafe(entries);
+    }
+
+    const selected = RandomFloat(0, sum);
+
+    for (let index = 0, total = 0; index < entries.length; index++) {
+        const entry = entries[index];
+        total += scale(entry);
+
+        if (selected <= total) {
+            return entries.splice(index, 1)[0];
+        }
+    }
+
+    return entries.splice(0, 1)[0];
+}
+
+export function takeRandomFromArrayWeighted<T>(entries: T[], scale: (element: T) => number): T | undefined {
+    if (entries.length == 0) return;
+
+    return takeRandomFromArrayWeightedUnsafe(entries, scale);
+}
+
+export function isInDeveloperMode() {
+    return IsInToolsMode();
+}
+
+export function findElementWithSmallestValue<T>(elements: readonly T[], valueFunction: (value: T) => number): T | undefined {
+    let min: number = math.huge;
+    let smallest: T | undefined;
+
+    for (const element of elements) {
+        const value = valueFunction(element);
+
+        if (value < min) {
+            min = value;
+            smallest = element;
+        }
+    }
+
+    return smallest;
+}
+
+export function valueOrSpecial(ability: CDOTABaseAbility, valueOrName: number | string): number {
+    return typeof valueOrName == "number" ? valueOrName : ability.GetSpecialValueFor(valueOrName);
 }

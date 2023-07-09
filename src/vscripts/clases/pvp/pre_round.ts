@@ -1,10 +1,8 @@
 import { CustomModifier } from "../../abilities/framework/custom_modifier";
+import { Alliance } from "../../alliances";
 import { registerModifier } from "../../lib/dota_ts_adapter";
 import { ModifierAdrenaline } from "../../modifiers/modifier_adrenaline";
-import Alliance from "../alliance";
 import GameState, { CustomGameState } from "../game_state";
-
-const ADRENALINE_DURATION = 25.0;
 
 @registerModifier("modifier_restricted")
 class ModifierRestricted extends CustomModifier<undefined> {
@@ -41,7 +39,7 @@ export default class PreRound extends GameState {
         this.dire_spawn = Entities.FindByName(undefined, "dire_spawn")!.GetAbsOrigin();
 
         this.GetAllPlayers().forEach(player => {
-            const hero = player.hero;
+            const hero = player.entity?.handle;
             if (hero) {
                 ModifierRestricted.apply(hero, hero, undefined, {});
             }
@@ -60,15 +58,15 @@ export default class PreRound extends GameState {
 
     EndPreRound(): void {
         this.GetAllPlayers().forEach(player => {
-            const hero = player.hero;
+            const hero = player.entity?.handle;
             if (hero) {
                 if (player.alliance) {
-                    const allianceName = player.alliance.name;
+                    const allianceName = player.alliance.id;
                     let target = undefined;
 
-                    if (allianceName == "DOTA_ALLIANCE_RADIANT") {
+                    if (allianceName == AllianceId.radiant) {
                         target = this.radiant_spawn;
-                    } else if (allianceName == "DOTA_ALLIANCE_DIRE") {
+                    } else if (allianceName == AllianceId.dire) {
                         target = this.dire_spawn;
                     }
 
@@ -77,7 +75,7 @@ export default class PreRound extends GameState {
                     CustomEntitiesLegacy.AutoUpgradeAbilities(hero);
                     hero.RemoveModifierByName("modifier_restricted");
                     ModifierAdrenaline.apply(hero, hero, undefined, {
-                        duration: ADRENALINE_DURATION
+                        // duration: ADRENALINE_DURATION
                     });
                 }
             }

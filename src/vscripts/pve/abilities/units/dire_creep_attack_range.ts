@@ -1,6 +1,12 @@
 import { CustomAbility } from "../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../lib/dota_ts_adapter";
-import { attackWithBaseDamage, direction2D, fakeAbility } from "../../../util";
+import { precache, resource } from "../../../precache";
+import { areUnitsAllied, attackWithBaseDamage, direction2D, fakeAbility } from "../../../util";
+
+const resources = precache({
+    projectile: resource.fx("particles/dire_zombie/dire_zombie_projectile.vpcf"),
+    projectileEnd: resource.fx("particles/base_attacks/ti9_dire_ranged_explosion.vpcf")
+});
 
 @registerAbility("dire_creep_attack_range")
 class DireCreepAttackRange extends CustomAbility {
@@ -48,14 +54,13 @@ class DireCreepAttackRange extends CustomAbility {
         this.ProjectileAttack({
             source: this.caster,
             attackType: "basic",
-            effectName: "particles/dire_zombie/dire_zombie_projectile.vpcf",
+            effectName: resources.projectile.path,
             distance: this.GetCastRange(Vector(0, 0, 0), undefined),
             startRadius: 70,
             spawnOrigin: origin.__add(Vector(0, 0, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 attackWithBaseDamage({
                     source: projectile.getSource(),
@@ -64,7 +69,7 @@ class DireCreepAttackRange extends CustomAbility {
                 });
             },
             onFinish: projectile => {
-                EFX("particles/base_attacks/ti9_dire_ranged_explosion.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+                EFX(resources.projectileEnd.path, ParticleAttachment.WORLDORIGIN, undefined, {
                     cp0: projectile.getPosition(),
                     cp3: projectile.getPosition()
                 });

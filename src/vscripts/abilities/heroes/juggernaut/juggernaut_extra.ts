@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierUpgradeJuggernautSpinningWard } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
-import { clampPosition, getCursorPosition } from "../../../util";
+import { areUnitsAllied, clampPosition, findUnitsInRadius, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierJuggernautMobility } from "./juggernaut_mobility";
@@ -41,7 +41,7 @@ class JuggernautExtra extends CustomAbility {
         healingWard.SetControllableByPlayer(this.caster.GetPlayerOwnerID(), true);
 
         if (this.GetLevel() >= 2) {
-            const units = CustomEntitiesLegacy.FindUnitsInRadius(
+            const units = findUnitsInRadius(
                 this.caster,
                 point,
                 radius,
@@ -92,7 +92,7 @@ class JuggernautExtra extends CustomAbility {
             0,
             target,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             target.GetAbsOrigin(),
             true
         );
@@ -101,7 +101,7 @@ class JuggernautExtra extends CustomAbility {
             1,
             this.caster,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.caster.GetAbsOrigin(),
             true
         );
@@ -185,7 +185,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
     }
 
     GetAuraEntityReject(unit: CDOTA_BaseNPC) {
-        return !CustomEntitiesLegacy.Allies(this.caster, unit);
+        return !areUnitsAllied(this.caster, unit);
     }
 
     GetAuraSearchType() {
@@ -258,7 +258,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
             2,
             this.parent,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.parent.GetAbsOrigin(),
             true
         );

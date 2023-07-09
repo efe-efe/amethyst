@@ -1,6 +1,6 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierNevermoreStacks } from "./nevermore_basic_attack";
 
@@ -37,8 +37,7 @@ class NevermoreSecondAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(0, 0, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 const damage_table = {
                     victim: unit,

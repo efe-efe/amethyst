@@ -3,7 +3,7 @@ import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modif
 import { ModifierRoot } from "../../../modifiers/modifier_root";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ProjectileBehavior } from "../../../projectiles";
-import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierMarsStacks } from "./mars_basic_attack";
 
@@ -42,8 +42,7 @@ class MarsSpecialAttack extends CustomAbility {
             distance: projectileDistance,
             unitBehavior: ProjectileBehavior.NOTHING,
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 if (projectile.hitLog.size > 1) {
                     return;

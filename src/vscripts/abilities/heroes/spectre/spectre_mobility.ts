@@ -3,7 +3,15 @@ import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
 import { ProjectileBehavior } from "../../../projectiles";
-import { clampPosition, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import {
+    clampPosition,
+    direction2D,
+    findUnitsInRadius,
+    getCursorPosition,
+    giveManaAndEnergyPercent,
+    isGem,
+    isObstacle
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierSpectreBasicAttack } from "./spectre_basic_attack";
@@ -50,7 +58,7 @@ class SpectreMobility extends CustomAbility {
             // bIsReflectable = false,
             // bIsSlowable = false,
             onFinish: projectile => {
-                const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+                const enemies = findUnitsInRadius(
                     this.caster,
                     origin,
                     radius,

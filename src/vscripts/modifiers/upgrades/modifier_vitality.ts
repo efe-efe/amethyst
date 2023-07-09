@@ -23,7 +23,7 @@ export class ModifierVitality extends ModifierUpgrade<undefined> {
             EFX("particles/gems/emerald.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
                 cp3: {
                     ent: this.parent,
-                    point: "attach_hitloc"
+                    point: AttachLocation.hitloc
                 },
                 release: true
             });

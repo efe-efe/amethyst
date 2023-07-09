@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("spectre_second_attack")
@@ -53,8 +53,7 @@ class SpectreSecondAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 const knockbackDistance = this.GetLevel() >= 2 ? 100 : 75;
                 const fadingSlowDuration = this.GetLevel() >= 2 ? 0.7 : 0.5;
@@ -122,7 +121,7 @@ class SpectreSecondAttack extends CustomAbility {
             1,
             this.caster,
             ParticleAttachment.ABSORIGIN_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.caster.GetAbsOrigin(),
             false
         );

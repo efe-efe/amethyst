@@ -1,7 +1,8 @@
+import { createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierSilence } from "../../../modifiers/modifier_silence";
-import { clampPosition, createRadiusMarker, getCursorPosition } from "../../../util";
+import { clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -39,7 +40,7 @@ class PuckExtra extends CustomAbility {
 
         FindClearSpaceForUnit(this.caster, point, true);
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             point,
             radius,

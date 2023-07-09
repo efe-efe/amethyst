@@ -1,6 +1,6 @@
 "DOTAUnits"
 {
-	"dire_creep_range"
+	"npc_dota_dire_creep_range"
 	{
 		"Model"						"models/creeps/lane_creeps/creep_bad_ranged/lane_dire_ranged.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"

@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import {
+    areUnitsAllied,
     attackWithBaseDamage,
     direction2D,
     getCursorPosition,
@@ -62,8 +63,7 @@ class NevermoreBasicAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(0, 0, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 attackWithBaseDamage({
                     source: projectile.getSource(),

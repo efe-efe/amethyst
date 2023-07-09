@@ -10,7 +10,7 @@ import {
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
-import { clampPosition, direction2D, getCursorPosition, isObstacle } from "../../../util";
+import { areUnitsAllied, clampPosition, direction2D, getCursorPosition, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPhantomStacks, PhantomBasicAttack } from "./phantom_basic_attack";
@@ -170,8 +170,7 @@ class PhantomExCounterRecast extends CustomAbility {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 30, projectileDirection.y * 30, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,

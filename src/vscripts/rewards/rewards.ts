@@ -1,7 +1,8 @@
-import { CustomActionEvent } from "../addon_game_mode";
 import BreakableBounty, { BreakableBountyOptions } from "../clases/breakable_bounty";
 import { CustomPlayerHeroNPC } from "../clases/pve/custom_npc";
 import { CustomEvents } from "../custom_events";
+import { findPlayerById } from "../game";
+import { CustomActionEvent } from "../game_init";
 import { ModifierVitality } from "../modifiers/upgrades/modifier_vitality";
 import { UpgradeManager } from "../upgrades/upgrades";
 import Math from "../util/math";
@@ -178,12 +179,10 @@ export const RewardsManager = {
             return;
         }
 
-        const data = {
+        CustomNetTables.SetTableValue("custom_npc_rewards", hero.unit.GetPlayerOwnerID().toString(), {
             playerId: hero.unit.GetPlayerOwnerID(),
             rewards
-        } as never;
-
-        CustomNetTables.SetTableValue("custom_npc_rewards" as never, hero.unit.GetPlayerOwnerID().toString(), data);
+        });
     },
     ClaimRewardForHero(customNpc: CustomPlayerHeroNPC, reward: Reward): RewardEntity | undefined {
         const origin = customNpc.unit.GetAbsOrigin().__add(Vector(RandomFloat(-1, 1) * 150, RandomFloat(-1, 1) * 150, 128));
@@ -215,13 +214,10 @@ export const RewardsManager = {
             return;
         }
 
-        const data = {
+        CustomNetTables.SetTableValue("custom_npc_favors", customNpc.unit.GetPlayerOwnerID().toString(), {
             playerId: customNpc.unit.GetPlayerOwnerID(),
             upgrades
-        } as never;
-
-        const tableName = "custom_npc_favors" as never;
-        CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
+        });
     },
     ClaimShards(customNpc: CustomPlayerHeroNPC): void {
         const upgrades = UpgradeManager.GenerateShards(customNpc, 3);
@@ -232,13 +228,10 @@ export const RewardsManager = {
             return;
         }
 
-        const data = {
+        CustomNetTables.SetTableValue("custom_npc_favors", customNpc.unit.GetPlayerOwnerID().toString(), {
             playerId: customNpc.unit.GetPlayerOwnerID(),
             upgrades
-        } as never;
-
-        const tableName = "custom_npc_favors" as never;
-        CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
+        });
     },
     ClaimKnowledge(customNpc: CustomPlayerHeroNPC): void {
         const upgrades = UpgradeManager.GenerateKnowledge(customNpc, 3);
@@ -249,13 +242,10 @@ export const RewardsManager = {
             return;
         }
 
-        const data = {
+        CustomNetTables.SetTableValue("custom_npc_favors", customNpc.unit.GetPlayerOwnerID().toString(), {
             playerId: customNpc.unit.GetPlayerOwnerID(),
             upgrades
-        } as never;
-
-        const tableName = "custom_npc_favors" as never;
-        CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
+        });
     },
     ClaimItems(customNpc: CustomPlayerHeroNPC): void {
         const upgrades = UpgradeManager.GenerateItems(customNpc, RandomInt(4, 6));
@@ -266,13 +256,10 @@ export const RewardsManager = {
             return;
         }
 
-        const data = {
+        CustomNetTables.SetTableValue("custom_npc_favors", customNpc.unit.GetPlayerOwnerID().toString(), {
             playerId: customNpc.unit.GetPlayerOwnerID(),
             upgrades
-        } as never;
-
-        const tableName = "custom_npc_favors" as never;
-        CustomNetTables.SetTableValue(tableName, customNpc.unit.GetPlayerOwnerID().toString(), data);
+        });
     },
     ClaimVitality(customNpc: CustomPlayerHeroNPC): void {
         ModifierVitality.apply(customNpc.unit, customNpc.unit, undefined, {});
@@ -325,7 +312,7 @@ export const RewardsManager = {
 
 CustomGameEventManager.RegisterListener<CustomActionEvent>("custom_npc:select_reward", (eventSourceIndex, event) => {
     const playerId = event.playerIndex;
-    const player = GameRules.Addon.FindPlayerById(playerId);
+    const player = findPlayerById(playerId);
 
     if (player) {
         const customNpc = player.customNpc;

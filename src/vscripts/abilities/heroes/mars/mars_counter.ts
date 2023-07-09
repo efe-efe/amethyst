@@ -79,7 +79,7 @@ class ModifierMarsCounter extends ModifierCounter {
             1,
             target,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             target.GetAbsOrigin(),
             true
         );

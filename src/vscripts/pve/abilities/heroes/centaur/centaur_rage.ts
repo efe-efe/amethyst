@@ -1,7 +1,8 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
-import { CustomModifier } from "../../../../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
+import { ModifierChanneling } from "../../../../modifiers/modifier_channeling";
 import { ModifierThinker } from "../../../../modifiers/modifier_thinker";
+import { findUnitsInRadius } from "../../../../util";
 
 @registerAbility("centaur_rage")
 class CentaurRage extends CustomAbility {
@@ -18,14 +19,14 @@ class CentaurRage extends CustomAbility {
     }
 
     OnSpellStart() {
-        this.caster.AddNewModifier(this.caster, this, "modifier_centaur_rage_channeling", {
+        ModifierCentaureRageChanneling.apply(this.caster, this.caster, this, {
             duration: this.GetSpecialValueFor("duration")
         });
     }
 }
 
 @registerModifier("modifier_centaur_rage_channeling")
-class ModifierCentaureRageChanneling extends CustomModifier {
+class ModifierCentaureRageChanneling extends ModifierChanneling {
     count = 7;
     angleDiff = 360 / this.count;
     radius!: number;
@@ -46,7 +47,7 @@ class ModifierCentaureRageChanneling extends CustomModifier {
         EmitSoundOn("Hero_Centaur.HoofStomp", this.caster);
 
         for (let i = 0; i < this.count; i++) {
-            const direction = RotatePosition(Vector(0, 0, 0), QAngle(0, 200 + this.angleDiff * i, 0), Vector(1, 0, 0));
+            RotatePosition(Vector(0, 0, 0), QAngle(0, 200 + this.angleDiff * i, 0), Vector(1, 0, 0));
             let previousRange = 0;
 
             for (let j = 0; j < 2; j++) {
@@ -80,10 +81,8 @@ class ModifierCentaureRageChanneling extends CustomModifier {
 
 @registerModifier("modifier_centaur_rage_thinker")
 class ModifierCentaurRageThinker extends ModifierThinker {
-    OnIntervalThink() {
-        super.OnIntervalThink();
-
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+    OnReady() {
+        const enemies = findUnitsInRadius(
             this.caster,
             this.origin,
             this.radius,

@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import {
+    areUnitsAllied,
     clampPosition,
     direction2D,
     fullyFaceTowards,
@@ -92,8 +93,7 @@ class ModifierInvokerSpirit extends CustomModifier {
                 spawnOrigin: origin.__add(Vector(0, 0, 96)),
                 velocity: projectileDirection.__mul(projectileSpeed),
                 groundOffset: 0,
-                unitTest: (unit, projectile) =>
-                    unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+                unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
                 onUnitHit: (unit, projectile) => {
                     ApplyDamage({
                         victim: unit,

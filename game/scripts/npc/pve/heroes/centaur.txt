@@ -13,8 +13,7 @@
 		"Ability3"						"centaur_charge"
 		"Ability4"						"centaur_passive"
 		"Ability5"						"centaur_range_attack"
-		"Ability6"						"juggernaut_extra"           
-		"Ability7"						"centaur_rage"
+		"Ability6"						"centaur_rage"
 
 		"VisionDaytimeRange"		"2000"
 		"VisionNighttimeRange"		"2000"

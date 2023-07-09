@@ -1,4 +1,4 @@
-import { isConsideredWall } from "./util";
+import { areUnitsAllied, isConsideredWall } from "./util";
 
 export enum ProjectileBehavior {
     NOTHING = "NOTHING",
@@ -428,9 +428,8 @@ function projectile(options: ProjectileOptions) {
             const time = hitLog.get(entity.entindex());
             if (time == undefined || currentTime > time) {
                 if (unitTest(entity, getHandler())) {
-                    // @Refactor refactor this isWall
                     if (isConsideredWall(entity)) {
-                        if (CustomEntitiesLegacy.Allies(source, entity)) {
+                        if (areUnitsAllied(source, entity)) {
                             return true;
                         } else if (wallBehavior == ProjectileBehavior.DESTROY) {
                             destroy(false);

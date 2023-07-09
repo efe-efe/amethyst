@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { clampPosition, getCursorPosition } from "../../../util";
+import { clampPosition, findUnitsInRadius, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("mars_mobility")
@@ -114,7 +114,7 @@ class ModifierMarsMobilityThinker extends ModifierThinker {
         if (IsServer()) {
             FindClearSpaceForUnit(this.caster, this.parent.GetAbsOrigin(), true);
 
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 this.origin,
                 this.radius,

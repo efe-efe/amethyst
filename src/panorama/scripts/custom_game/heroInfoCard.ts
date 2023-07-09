@@ -2,7 +2,6 @@ import Alliances from "./alliances";
 import Health from "./commonComponents/health";
 import MultipleBars from "./commonComponents/multipleBars";
 import { Color, colors, panels } from "./util";
-import { HeroData } from "./types";
 
 const alliances = Alliances.GetInstance();
 
@@ -37,7 +36,7 @@ export default class HeroInfoCard {
         this.leftBotPanel = panels.createPanelSimple(this.leftPanel, "hero-info-card__bot");
         this.abilitiesPanel = panels.createPanelSimple(this.rightPanel, "hero-info-card__abilities");
 
-        if (heroData.allianceName == "DOTA_ALLIANCE_DIRE") {
+        if (heroData.allianceId == AllianceId.dire) {
             this.containerPanel.SetHasClass("hero-info-card--right", true);
             this.abilitiesPanel.SetHasClass("hero-info-card__abilities--right", true);
         }
@@ -74,13 +73,13 @@ export default class HeroInfoCard {
     }
 
     public UpdateData(heroData: HeroData): void {
-        this.health.Update(heroData.health, heroData.treshold, heroData.maxHealth, heroData.shield);
+        // this.health.Update(heroData.health, heroData.threshold, heroData.maxHealth, heroData.shield);
 
         if (this.mana) {
             this.mana.Update(heroData.mana, heroData.maxMana);
         }
 
-        this.UpdateAbilities(heroData.abilities);
+        // this.UpdateAbilities(heroData.abilities);
     }
 
     private UpdateAbilities(abilities: {

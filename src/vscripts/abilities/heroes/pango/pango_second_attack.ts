@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
-import { direction2D, getCursorPosition, isObstacle } from "../../../util";
+import { direction2D, findUnitsInLine, getCursorPosition, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPangoStacks, PangoBasicAttack } from "./pango_basic_attack";
@@ -141,7 +141,7 @@ class ModifierPangoSecondAttack extends CustomModifier {
     }
 
     OnIntervalThink() {
-        const enemies = CustomEntitiesLegacy.FindUnitsInLine(
+        const enemies = findUnitsInLine(
             this.caster,
             this.parent.GetAbsOrigin(),
             this.point,

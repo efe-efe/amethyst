@@ -1,5 +1,6 @@
 import { CustomAbility, CustomItem } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
+import { allianceDefinitions, findAllianceDefinitionByTeam, findAllianceDefinitionByUnit } from "../alliance_definitions";
 import { registerModifier } from "../lib/dota_ts_adapter";
 
 // @Refactor Create an "attachTo" method so I can have OnIntervalThink
@@ -102,10 +103,10 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
     }
 
     DrawVisuals(percentage: number) {
-        const casterAlliance = CustomEntitiesLegacy.GetAlliance(this.caster);
+        const casterAlliance = findAllianceDefinitionByUnit(this.caster);
 
         if (this.scope == "public") {
-            for (const alliance of GameRules.Addon.alliances) {
+            for (const alliance of allianceDefinitions) {
                 for (const team of alliance.teams) {
                     const particleId = ParticleManager.CreateParticleForTeam(
                         "particles/progress_circle/generic_progress_circle.vpcf",
@@ -117,7 +118,7 @@ export class ModifierThinker<A extends CDOTABaseAbility | undefined = CustomAbil
                     ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
                     ParticleManager.SetParticleControl(particleId, 1, Vector(this.radius, percentage, 1));
                     ParticleManager.SetParticleControl(particleId, 16, Vector(1, 0, 0));
-                    const alliance = GameRules.Addon.FindAllianceByTeam(team);
+                    const alliance = findAllianceDefinitionByTeam(team);
                     if (alliance == casterAlliance) {
                         ParticleManager.SetParticleControl(particleId, 15, Vector(70, 70, 250));
                     } else {

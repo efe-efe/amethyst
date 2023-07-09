@@ -1,8 +1,9 @@
+import { findAllianceByUnit } from "../alliances";
 import { ModifierEmerald } from "../modifiers/gems/modifier_emerald";
 import { ModifierRuby } from "../modifiers/gems/modifier_ruby";
 import { ModifierSapphire } from "../modifiers/gems/modifier_sapphire";
 import { ModifierGem } from "../modifiers/modifier_gem";
-import { fullyFaceTowards, giveEnergy, giveMana, isBanished } from "../util";
+import { findUnitsInRadius, fullyFaceTowards, giveEnergy, giveMana, isBanished } from "../util";
 import BreakableBounty from "./breakable_bounty";
 
 export enum GemTypes {
@@ -53,7 +54,11 @@ class Gem extends BreakableBounty {
 
     BeforeRemoving(killer: CDOTA_BaseNPC): void {
         super.BeforeRemoving(killer);
-        CustomEntitiesLegacy.GetAlliance(killer).AddAmethsyt();
+        const alliance = findAllianceByUnit(killer);
+
+        if (alliance) {
+            alliance.gems++;
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -62,7 +67,7 @@ class Gem extends BreakableBounty {
     }
 
     GetUnits(searcher: CDOTA_BaseNPC, iTeamFlags: UnitTargetTeam) {
-        return CustomEntitiesLegacy.FindUnitsInRadius(
+        return findUnitsInRadius(
             searcher,
             this.GetUnit().GetAbsOrigin(),
             FIND_UNITS_EVERYWHERE,
@@ -123,7 +128,7 @@ export class Diamond extends Gem {
         EFX("particles/gems/amethyst.vpcf", ParticleAttachment.CUSTOMORIGIN, target, {
             cp0: {
                 ent: target,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             release: true
         });
@@ -205,7 +210,7 @@ class Amethyst extends Gem {
         EFX("particles/gems/amethyst.vpcf", ParticleAttachment.CUSTOMORIGIN, target, {
             cp0: {
                 ent: target,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             release: true
         });
@@ -255,7 +260,7 @@ class Emerald extends Gem {
                 EFX("particles/gems/emerald.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, ally, {
                     cp3: {
                         ent: ally,
-                        point: "attach_hitloc"
+                        point: AttachLocation.hitloc
                     },
                     release: true
                 });

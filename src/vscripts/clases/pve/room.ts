@@ -1,4 +1,3 @@
-import Alliance from "../alliance";
 import { CustomAIType, NPCNames } from "./custom_ai";
 import GameState from "../game_state";
 import Stage from "./stage";
@@ -9,6 +8,7 @@ import { Diamond } from "../gem";
 import CustomNPC from "./custom_npc";
 import BreakableBounty from "../breakable_bounty";
 import Spawner from "./spawner";
+import { Alliance } from "../../alliances";
 
 export enum RoomType {
     REGULAR = 0,
@@ -80,14 +80,13 @@ export default class Room extends GameState {
     }
 
     SendDataToClient(): void {
-        const data = {
+        CustomNetTables.SetTableValue("main", "pve", {
             remainingEnemies: this.totalNpcs - this.remainingTotalNpcs,
             maxEnemies: this.totalNpcs,
             roomPhases: this.phases.map(phase => RoomPhases[phase]),
             roomPhaseIndex: this.phaseIndex,
             roomType: RoomType[this.type]
-        } as never;
-        CustomNetTables.SetTableValue("main" as never, "pve", data);
+        });
     }
 
     StartWave(waveNumber: number): void {

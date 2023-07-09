@@ -3,11 +3,6 @@ export type Color = {
     dark: [number, number, number];
 };
 
-type GenericData = {
-    key: string | number | symbol;
-    value: never;
-};
-
 const utils = {
     isEmptyObject(object: any): boolean {
         return Object.keys(object).length == 0;
@@ -112,34 +107,37 @@ export const panels = {
 };
 
 export const tables = {
-    subscribeToNetTableAndLoadNow(
-        tableName: never,
-        callback: (tableName: never, key: string | number | symbol, value: never) => void
-    ): void {
+    subscribeToNetTableAndLoadNow<TName extends keyof CustomNetTableDeclarations, T extends CustomNetTableDeclarations[TName]>(
+        tableName: TName,
+        callback: (tableName: TName, key: keyof T, value: NetworkedData<T[keyof T]>) => void
+    ) {
         CustomNetTables.SubscribeNetTableListener(tableName, callback);
-        const data = CustomNetTables.GetAllTableValues(tableName);
+        const table = CustomNetTables.GetAllTableValues(tableName);
 
-        data.forEach(d => {
-            const parsedD = d as GenericData;
-            callback(tableName, parsedD.key, parsedD.value);
+        table.forEach(element => {
+            callback(tableName, element.key, element.value as NetworkedData<T[keyof T]>);
         });
     },
-    subscribeToNetTableKey(table: never, key: string, loadNow: boolean, callback: any): NetTableListenerID | undefined {
-        const listener = CustomNetTables.SubscribeNetTableListener(table, function (table, tableKey, data) {
-            if (key == tableKey) {
+    subscribeToNetTableKey<
+        TName extends keyof CustomNetTableDeclarations,
+        T extends CustomNetTableDeclarations[TName],
+        TKey extends keyof T
+    >(tableName: TName, toKey: TKey, loadNow: boolean, callback: (data: NetworkedData<T[TKey]>) => void) {
+        const listener = CustomNetTables.SubscribeNetTableListener(tableName, function (table, key, data) {
+            if ((key as keyof T) == toKey) {
                 if (!data) {
                     return;
                 }
 
-                callback(data);
+                callback(data as NetworkedData<T[TKey]>);
             }
         });
 
         if (loadNow) {
-            const data = CustomNetTables.GetTableValue(table, key);
+            const data = CustomNetTables.GetTableValue(tableName, toKey as unknown as keyof CustomNetTableDeclarations[TName]);
 
             if (data) {
-                callback(data);
+                callback(data as NetworkedData<T[TKey]>);
             }
         }
 

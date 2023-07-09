@@ -1,7 +1,7 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgradePhantomFastCoup } from "../../../modifiers/upgrades/modifier_favors";
 import { ProjectileBehavior } from "../../../projectiles";
-import { direction2D, getCursorPosition } from "../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomStacks } from "./phantom_basic_attack";
 
@@ -60,8 +60,7 @@ class PhantomUltimate extends CustomAbility {
             wallBehavior: ProjectileBehavior.NOTHING,
             //isSlowable: false,
             isReflectable: false,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 const finalDamage = damage * (damageMultiplier + stacks * damageMultiplierPerStack);
 
@@ -141,7 +140,7 @@ class PhantomUltimate extends CustomAbility {
             1,
             this.caster,
             ParticleAttachment.ABSORIGIN_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.caster.GetAbsOrigin(),
             false
         );

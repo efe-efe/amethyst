@@ -1,6 +1,6 @@
 "DOTAUnits"
 {
-	"radiant_zombie"
+	"npc_dota_radiant_creep_range"
 	{
 		"Model"						"models/creeps/lane_creeps/creep_radiant_ranged/radiant_ranged.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"

@@ -11,18 +11,83 @@
  *     to change them back into arrays yourself! See 'toArray()' in src/panorama/hud.ts
  */
 
+interface AbilityMeta {
+    targetingIndicator: string;
+    energyCost: number;
+}
+
+type AbilitiesMeta = {
+    [key: string]: AbilityMeta;
+};
+
+type UnitData = {
+    entityIndex: number;
+    playerId: number;
+    allianceId: string;
+    teamId: number;
+    name: string;
+    health: number;
+    maxHealth: number;
+    mana: number;
+    maxMana: number;
+    shield: number;
+};
+
+type HeroData = UnitData & {
+    threshold: number;
+    stackbars: string;
+    charges: string;
+    cooldown: string;
+    energy: number;
+    maxEnergy: number;
+    energyPerCell?: number;
+};
+
+type AllianceData = {
+    id: AllianceId;
+    health: number;
+    max_health: number;
+    shield: number;
+    amethysts: number;
+    score: number;
+};
+
 interface CustomNetTableDeclarations {
+    alliances: {
+        [key: string]: AllianceData;
+    };
     units: {
+        [key: string]: UnitData;
+    };
+    main: {
+        maxScore: {
+            max_score: number;
+        };
+        pve: {
+            currentRoom?: number;
+            nextReward?: string;
+            remainingEnemies?: number;
+            maxEnemies?: number;
+            roomPhases?: string[];
+            roomPhaseIndex?: number;
+            roomType?: string;
+            currentStage?: number;
+        };
+        abilities: AbilitiesMeta;
+        gameState: {
+            gameState: number;
+        };
+    };
+    custom_npc_rewards: {
         [key: string]: {
-            entityIndex: number;
-            teamId: number;
             playerId: number;
-            allianceName: string;
-            name: string;
-            health: number;
-            maxHealth: number;
-            mana: number;
-            maxMana: number;
+            rewards?: any[];
+        };
+    };
+    custom_npc_favors: {
+        [key: string]: {
+            playerId: number;
+            upgrades?: any[];
         };
     };
 }
@@ -62,4 +127,17 @@ interface CustomGameEventDeclarations {
         y: number;
         z: number;
     };
+
+    countdown: {
+        timer_minute_10: number;
+        timer_minute_01: number;
+        timer_second_10: number;
+        timer_second_01: number;
+    };
+
+    custom_message: {
+        text: string;
+    };
+
+    not_enough_energy: Nothing;
 }

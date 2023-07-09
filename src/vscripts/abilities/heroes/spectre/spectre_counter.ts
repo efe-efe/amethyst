@@ -1,10 +1,11 @@
+import { areUnitsAllied, createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ProjectileBehavior } from "../../../projectiles";
-import { createRadiusMarker, direction2D, fullyFaceTowards, getCursorPosition, isGem, isObstacle } from "../../../util";
+import { direction2D, fullyFaceTowards, getCursorPosition, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierSpectreBasicAttack } from "./spectre_basic_attack";
@@ -206,8 +207,7 @@ class SpectreCounterRecast extends CustomAbility {
             spawnOrigin: origin.__add(Vector(0, 0, 80)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,
@@ -314,7 +314,7 @@ class ModifierSpectreExCounter extends CustomModifier {
                 3,
                 this.parent,
                 ParticleAttachment.ABSORIGIN_FOLLOW,
-                "attach_hitloc",
+                AttachLocation.hitloc,
                 origin,
                 true
             );
@@ -335,7 +335,7 @@ class ModifierSpectreExCounter extends CustomModifier {
         if (IsServer()) {
             const origin = this.parent.GetAbsOrigin();
 
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 origin,
                 this.Value("radius"),

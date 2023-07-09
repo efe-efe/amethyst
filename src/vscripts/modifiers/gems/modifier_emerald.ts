@@ -47,7 +47,7 @@ export class ModifierEmerald extends CustomModifier<undefined> {
         EFX("particles/gems/emerald_hammers.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
             cp3: {
                 ent: this.parent,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             release: true
         });

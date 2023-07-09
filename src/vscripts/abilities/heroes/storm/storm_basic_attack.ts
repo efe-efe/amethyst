@@ -1,10 +1,10 @@
+import { areUnitsAllied, createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierCooldown } from "../../../modifiers/modifier_cooldown";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import {
     attackWithBaseDamage,
-    createRadiusMarker,
     direction2D,
     getCursorPosition,
     giveManaAndEnergyPercent,
@@ -76,8 +76,7 @@ class StormBasicAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 attackWithBaseDamage({
                     source: projectile.getSource(),
@@ -97,7 +96,7 @@ class StormBasicAttack extends CustomAbility {
                 }
 
                 if (isCharged) {
-                    const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+                    const enemies = findUnitsInRadius(
                         projectile.getSource(),
                         projectile.getPosition(),
                         radius,

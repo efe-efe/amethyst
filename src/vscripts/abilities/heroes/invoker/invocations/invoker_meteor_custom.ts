@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierThinker, ModifierThinkerParams } from "../../../../modifiers/modifier_thinker";
 import { ProjectileBehavior } from "../../../../projectiles";
-import { clampPosition, direction2D, getCursorPosition } from "../../../../util";
+import { areUnitsAllied, clampPosition, direction2D, findUnitsInRadius, getCursorPosition } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 import { CustomModifier } from "../../../framework/custom_modifier";
 
@@ -95,8 +95,7 @@ class ModifierInvokerMeteorImpactThinker extends ModifierThinker {
             wallBehavior: ProjectileBehavior.NOTHING,
             // bIsReflectable =        false,
             isDestructible: false,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 const damage_table = {
                     victim: unit,
@@ -170,7 +169,7 @@ class ModifierInvokerMeteorThinker extends CustomModifier {
     }
 
     OnIntervalThink() {
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             this.origin,
             this.Value("radius_linger"),

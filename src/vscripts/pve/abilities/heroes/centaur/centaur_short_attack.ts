@@ -1,7 +1,7 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
 import { ModifierStun } from "../../../../modifiers/modifier_stunned";
-import { createTimedRadiusMarker } from "../../../../util";
+import { createTimedRadiusMarker, findUnitsInRadius } from "../../../../util";
 
 @registerAbility("centaur_short_attack")
 class CentaurShortAttack extends CustomAbility {
@@ -41,7 +41,7 @@ class CentaurShortAttack extends CustomAbility {
 
         EmitSoundOn("Hero_Centaur.HoofStomp", this.caster);
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             origin,
             radius,

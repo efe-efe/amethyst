@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierUpgradePhantomExtraDaggers, ModifierUpgradePhantomFastDaggers } from "../../../modifiers/upgrades/modifier_favors";
-import { direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomBleed, ModifierPhantomStacks, PhantomBasicAttack, PhantomExBasicAttack } from "./phantom_basic_attack";
 
@@ -77,8 +77,7 @@ class PhantomSpecialAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(direction.x * 30, direction.y * 30, 96)),
             velocity: direction.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,

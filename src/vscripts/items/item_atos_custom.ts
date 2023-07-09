@@ -1,7 +1,7 @@
 import { CustomAbility } from "../abilities/framework/custom_ability";
 import { registerAbility } from "../lib/dota_ts_adapter";
 import { ModifierRoot } from "../modifiers/modifier_root";
-import { direction2D, getCursorPosition } from "../util";
+import { areUnitsAllied, direction2D, getCursorPosition } from "../util";
 
 @registerAbility("item_atos_custom")
 class ItemAtos extends CustomAbility {
@@ -26,8 +26,7 @@ class ItemAtos extends CustomAbility {
             spawnOrigin: origin.__add(Vector(0, 0, 80)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ModifierRoot.apply(unit, projectile.getSource(), this, { duration: duration });
                 this.PlayEffectsOnImpact(unit);

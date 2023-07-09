@@ -2,7 +2,7 @@ import Overhead from "./overhead";
 import { statusComponent } from "./status";
 import util, { Color, colors, panels } from "../util";
 import Health from "../commonComponents/health";
-import { StatusType, StatusTypes, UnitData } from "../types";
+import { StatusType, StatusTypes } from "../types";
 import { std } from "../std";
 
 enum StatusScope {
@@ -25,14 +25,15 @@ export default class UnitOverhead extends Overhead {
 
     health: Health;
     isLocalPlayer: boolean;
-    hideWhenNotHurt: boolean;
+    // hideWhenNotHurt: boolean;
 
     constructor(unitData: UnitData) {
-        super(unitData.entityIndex);
+        super(unitData.entityIndex as EntityIndex);
         const localPlayerId = Game.GetLocalPlayerID();
 
-        this.hideWhenNotHurt = unitData.hideWhenNotHurt ? unitData.hideWhenNotHurt : true;
-        this.active = !this.hideWhenNotHurt;
+        // this.hideWhenNotHurt = unitData.hideWhenNotHurt ? unitData.hideWhenNotHurt : true;
+        // this.active = !this.hideWhenNotHurt;
+        this.active = true;
 
         this.isLocalPlayer = localPlayerId == unitData.playerId;
         this.color = colors.orange;
@@ -41,7 +42,7 @@ export default class UnitOverhead extends Overhead {
         const resourcesPanel = panels.createPanelSimple(this.botPanel, "unit-overhead-resources");
         this.healthPanel = panels.createPanelSimple(resourcesPanel, "unit-overhead-resources__health");
 
-        statusComponent(statusPanel, unitData.entityIndex);
+        // statusComponent(statusPanel, unitData.entityIndex);
 
         this.health = new Health(this.healthPanel, {
             color: this.color,
@@ -50,10 +51,10 @@ export default class UnitOverhead extends Overhead {
             shieldOnFront: true
         });
 
-        if (unitData.beenHurt === BeenHurt.NOT_HURT && this.hideWhenNotHurt) {
-            this.Hide();
-            this.health.Deactivate();
-        }
+        // if (unitData.beenHurt === BeenHurt.NOT_HURT && this.hideWhenNotHurt) {
+        //     this.Hide();
+        //     this.health.Deactivate();
+        // }
 
         this.UpdateData(unitData);
     }
@@ -63,9 +64,9 @@ export default class UnitOverhead extends Overhead {
     }
 
     ShouldActivate(beenHurt: BeenHurt): boolean {
-        if (this.hideWhenNotHurt && beenHurt === BeenHurt.NOT_HURT) {
-            return false;
-        }
+        // if (this.hideWhenNotHurt && beenHurt === BeenHurt.NOT_HURT) {
+        //     return false;
+        // }
         return true;
     }
 
@@ -91,22 +92,22 @@ export default class UnitOverhead extends Overhead {
 
     public UpdateData(unitData: UnitData): void {
         if (!this.active) {
-            if (this.ShouldActivate(unitData.beenHurt)) {
-                this.Show();
-                this.health.Activate();
-                this.active = true;
-            } else {
-                return;
-            }
+            // if (this.ShouldActivate(unitData.beenHurt)) {
+            this.Show();
+            this.health.Activate();
+            this.active = true;
+            // } else {
+            //     return;
+            // }
         }
-        if (this.ShouldShowStatus(unitData.status)) {
-            const currentStatus = this.GetCurrentStatus(unitData.status);
-            if (currentStatus) {
-                const { label, style_name, trigger, modifier_name, max_stacks, content } = currentStatus;
-            }
-        }
+        // if (this.ShouldShowStatus(unitData.status)) {
+        //     const currentStatus = this.GetCurrentStatus(unitData.status);
+        //     if (currentStatus) {
+        //         const { label, style_name, trigger, modifier_name, max_stacks, content } = currentStatus;
+        //     }
+        // }
 
-        this.health.Update(unitData.health, unitData.health, unitData.maxHealth, unitData.shield);
+        // this.health.Update(unitData.health, unitData.health, unitData.maxHealth, unitData.shield);
     }
 }
 

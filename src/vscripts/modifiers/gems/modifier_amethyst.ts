@@ -11,16 +11,16 @@ export class ModifierAmethyst extends CustomModifier {
             this.particleId = ParticleManager.CreateParticle(
                 "particles/generic_gameplay/rune_arcane_owner.vpcf",
                 ParticleAttachment.ABSORIGIN_FOLLOW,
-                this.GetParent()
+                this.parent
             );
-            // CustomEntitiesLegacy:SendDataToClient(this.GetParent())
+            // CustomEntitiesLegacy:SendDataToClient(this.parent)
         }
     }
 
     OnRefresh(params: { mana: number }) {
         if (IsServer()) {
             this.SetStackCount(this.GetStackCount() + params.mana);
-            // CustomEntitiesLegacy:SendDataToClient(this.GetParent())
+            // CustomEntitiesLegacy:SendDataToClient(this.parent)
         }
     }
 

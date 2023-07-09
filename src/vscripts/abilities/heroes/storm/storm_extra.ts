@@ -1,8 +1,9 @@
+import { createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
-import { clampPosition, createRadiusMarker, getCursorPosition, isGem, isObstacle } from "../../../util";
+import { clampPosition, getCursorPosition, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierStormExBasicAttack, StormExBasicAttack } from "./storm_basic_attack";
@@ -137,7 +138,7 @@ export class ModifierStormExtraDisplacement extends ModifierDisplacement {
         super.OnDestroy();
 
         if (IsServer()) {
-            const units = CustomEntitiesLegacy.FindUnitsInRadius(
+            const units = findUnitsInRadius(
                 this.parent,
                 this.parent.GetAbsOrigin(),
                 this.radius,

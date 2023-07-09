@@ -1,10 +1,10 @@
+import { createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { Translate } from "../../../modifiers/modifier_casting";
 import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import {
     attackWithBaseDamage,
-    createRadiusMarker,
     direction2D,
     getCursorPosition,
     hideHealthBar,
@@ -194,7 +194,7 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
         const findOrigin = this.currentTarget?.GetAbsOrigin() ?? this.parent.GetAbsOrigin();
         createRadiusMarker(this.parent, findOrigin, this.Value("find_radius"), "public", 0.1);
 
-        return CustomEntitiesLegacy.FindUnitsInRadius(
+        return findUnitsInRadius(
             this.parent,
             findOrigin,
             this.Value("find_radius"),

@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
-import { clampPosition, getCursorPosition } from "../../../util";
+import { areUnitsAllied, clampPosition, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierSniperCharges } from "./sniper_basic_attack";
@@ -146,7 +146,7 @@ export class ModifierSniperSpecialAttackThinker extends ModifierThinker {
     }
 
     GetAuraEntityReject(unit: CDOTA_BaseNPC) {
-        return CustomEntitiesLegacy.Allies(this.caster, unit);
+        return areUnitsAllied(this.caster, unit);
     }
 
     GetAuraSearchType() {
@@ -213,7 +213,7 @@ class ModifierSniperExSpecialAttackThinker extends ModifierThinker {
     }
 
     GetAuraEntityReject(unit: CDOTA_BaseNPC) {
-        return !CustomEntitiesLegacy.Allies(this.caster, unit);
+        return !areUnitsAllied(this.caster, unit);
     }
 
     GetAuraSearchType() {

@@ -1,5 +1,5 @@
+import { Alliance } from "../../alliances";
 import Rewards from "../../rewards/rewards";
-import Alliance from "../alliance";
 import GameState, { CustomGameState } from "../game_state";
 import Stage, { StageData } from "./stage";
 
@@ -28,11 +28,9 @@ export default class Run extends GameState {
     }
 
     SendDataToClient(): void {
-        const tableName = "main" as never;
-        const data = {
+        CustomNetTables.SetTableValue("main", "pve", {
             currentStage: this.currentStage + 1
-        } as never;
-        CustomNetTables.SetTableValue(tableName, "pve", data);
+        });
     }
 
     Update(): void {

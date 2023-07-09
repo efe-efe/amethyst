@@ -1,23 +1,28 @@
-import { BaseModifier, registerModifier } from "../../lib/dota_ts_adapter";
+import { CustomModifier } from "../abilities/framework/custom_modifier";
+import { registerModifier } from "../lib/dota_ts_adapter";
 
 @registerModifier()
-export class modifier_generic_disarm extends BaseModifier {
-    IsHidden(): boolean {
+export class ModifierDisarm extends CustomModifier<undefined> {
+    IsHidden() {
         return true;
     }
-    IsDebuff(): boolean {
-        return false;
-    }
-    IsPurgable(): boolean {
-        return false;
-    }
-    RemoveOnDeath(): boolean {
+
+    IsDebuff() {
         return false;
     }
 
-    DeclareFunctions(): ModifierFunction[] {
+    IsPurgable() {
+        return false;
+    }
+
+    RemoveOnDeath() {
+        return false;
+    }
+
+    DeclareFunctions() {
         return [ModifierFunction.DISABLE_AUTOATTACK];
     }
+
     CheckState(): Partial<Record<ModifierState, boolean>> {
         return {
             [ModifierState.DISARMED]: true

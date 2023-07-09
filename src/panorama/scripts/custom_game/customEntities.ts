@@ -1,4 +1,3 @@
-import { UnitData } from "./types";
 import { tables } from "./util";
 
 type GenericData = {
@@ -12,10 +11,8 @@ export default class CustomEntities {
     private entities: UnitData[] = [];
 
     private constructor() {
-        const tableName = "units" as never;
-        tables.subscribeToNetTableAndLoadNow(tableName, (table: never, key: string | number | symbol, value: any) => {
-            const entity = value as UnitData;
-            this.SetEntity(entity);
+        tables.subscribeToNetTableAndLoadNow("units", (table, key, value) => {
+            this.SetEntity(value);
         });
     }
 
@@ -28,7 +25,7 @@ export default class CustomEntities {
     }
 
     public SetEntity(entity: UnitData): void {
-        const index = this.GetEntityArrayIndex(entity.entityIndex);
+        const index = this.GetEntityArrayIndex(entity.entityIndex as EntityIndex);
         if (index !== undefined) {
             this.UpdateEntity(index, entity);
         } else {
@@ -50,16 +47,14 @@ export default class CustomEntities {
     }
 
     public OnReload(): void {
-        const tableName = "units" as never;
-        const data = CustomNetTables.GetAllTableValues(tableName);
+        const units = CustomNetTables.GetAllTableValues("units");
 
-        data.forEach(d => {
-            const parsedD = d as GenericData;
-            this.SetEntity(parsedD.value);
+        units.forEach(unit => {
+            this.SetEntity(unit.value);
         });
     }
 
-    public AddCallback(callback: any): void {
+    public AddCallback(callback: (value: UnitData | HeroData) => void) {
         this.onUpdateCallbacks.push(callback);
     }
 

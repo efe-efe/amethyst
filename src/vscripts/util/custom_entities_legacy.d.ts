@@ -1,7 +1,7 @@
 declare interface CustomEntitiesLegacy {
     SetManaCustom(hEntity: CDOTA_BaseNPC, fMana: number, bInformClient: boolean): void;
-    SetTreshold(hEntity: CDOTA_BaseNPC, nTreshold: number): void;
-    GetTreshold(hEntity: CDOTA_BaseNPC): number;
+    SetThreshold(hEntity: CDOTA_BaseNPC, nTreshold: number): void;
+    GetThreshold(hEntity: CDOTA_BaseNPC): number;
     SetCollisionDirection(hEntity: CDOTA_BaseNPC, iCollisionDirection: number): void;
     TrueHeal(hEntity: CDOTA_BaseNPC, nHealAmount: number): void;
     RefreshCooldowns(hEntity: CDOTA_BaseNPC): void;
@@ -26,25 +26,6 @@ declare interface CustomEntitiesLegacy {
     IsAnimating(hEntity: CDOTA_BaseNPC): boolean;
     IsCasting(hEntity: CDOTA_BaseNPC): boolean;
     CanWalk(hEntity: CDOTA_BaseNPC): boolean;
-    Allies(hEntityA: CDOTA_BaseNPC, hEntityB: CDOTA_BaseNPC): boolean;
-    FindUnitsInRadius(
-        hEntity: CDOTA_BaseNPC,
-        origin: Vector,
-        radius: number,
-        nTeamFilter: UnitTargetTeam,
-        nTypeFilter: UnitTargetType,
-        nFlagFilter: UnitTargetFlags,
-        nOrderFilter: FindOrder
-    ): CDOTA_BaseNPC[];
-    FindUnitsInLine(
-        hEntity: CDOTA_BaseNPC,
-        startPosition: Vector,
-        endPosition: Vector,
-        radius: number,
-        nTeamFilter: UnitTargetTeam,
-        nTypeFilter: UnitTargetType,
-        nFlagFilter: UnitTargetFlags
-    ): CDOTA_BaseNPC[];
     SetBeenHurt(hEntity: CDOTA_BaseNPC, bBeenHurt: boolean): void;
 }
 

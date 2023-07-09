@@ -1,6 +1,7 @@
 import { CustomAbility, CustomItem } from "../abilities/framework/custom_ability";
 import { CustomModifierMotionBoth } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
+import { findUnitsInRadius } from "../util";
 
 export type Collision = "wall" | "unit" | "tree";
 
@@ -103,15 +104,7 @@ export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = Custo
 
         const origin = Vector(this.direction.x, this.direction.y, 0).__mul(this.offset).__add(this.parent.GetAbsOrigin());
         const trees = GridNav.GetAllTreesAroundPoint(origin, this.radius / 2, true);
-        const units = CustomEntitiesLegacy.FindUnitsInRadius(
-            this.parent,
-            origin,
-            this.radius,
-            this.teamFilter,
-            this.targetType,
-            this.flagFilter,
-            FindOrder.ANY
-        );
+        const units = findUnitsInRadius(this.parent, origin, this.radius, this.teamFilter, this.targetType, this.flagFilter, FindOrder.ANY);
 
         const zLeft = GetGroundPosition(origin.__add(Vector(-1, 0, 0)), this.parent).z;
         const zRight = GetGroundPosition(origin.__add(Vector(1, 0, 0)), this.parent).z;

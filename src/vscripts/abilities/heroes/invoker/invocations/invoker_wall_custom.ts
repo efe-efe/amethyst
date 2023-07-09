@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
+import { findUnitsInLine } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 import { CustomModifier } from "../../../framework/custom_modifier";
 
@@ -80,7 +81,7 @@ class ModifierInvokerWallThinker extends CustomModifier {
     }
 
     OnIntervalThink() {
-        const enemies = CustomEntitiesLegacy.FindUnitsInLine(
+        const enemies = findUnitsInLine(
             this.caster,
             this.origin,
             this.destination,

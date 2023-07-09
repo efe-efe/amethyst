@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { clamp, direction2D, getCursorPosition, isGem, isObstacle } from "../../../util";
+import { areUnitsAllied, clamp, direction2D, getCursorPosition, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -51,8 +51,7 @@ class SpectreExtraRecast extends CustomAbility {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,
@@ -127,7 +126,7 @@ class ModifierSpectreExtra extends CustomModifier {
     }
 
     GetAuraEntityReject(unit: CDOTA_BaseNPC) {
-        return CustomEntitiesLegacy.Allies(this.caster, unit);
+        return areUnitsAllied(this.caster, unit);
     }
 
     GetAuraSearchType() {

@@ -88,12 +88,12 @@ export default class Health {
         this.active = false;
     }
 
-    Update(health: number, treshold: number, maxHealth: number, shield: number): void {
+    Update(health: number, threshold: number, maxHealth: number, shield: number): void {
         if (!this.active) {
             return;
         }
 
-        const healeableAmount = this.maxTreshold - treshold;
+        const healeableAmount = this.maxTreshold - threshold;
         const potentialHealth = health + healeableAmount;
 
         let healthPanelWidth;

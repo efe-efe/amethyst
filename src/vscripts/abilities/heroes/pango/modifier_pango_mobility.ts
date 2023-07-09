@@ -1,6 +1,6 @@
 import { registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
-import { direction2D } from "../../../util";
+import { direction2D, findUnitsInRadius } from "../../../util";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPangoRollEndAnimation } from "./modifier_pango_roll_end_animation";
 
@@ -19,7 +19,7 @@ export class ModifierPangoMobility extends CustomModifier {
                 {
                     cp0: {
                         ent: this.parent,
-                        point: "attach_hitloc"
+                        point: AttachLocation.hitloc
                     }
                 }
             );
@@ -46,7 +46,7 @@ export class ModifierPangoMobility extends CustomModifier {
         // CustomEntitiesLegacy:DeactivateNonPriorityAbilities(this.parent)
         const origin = this.parent.GetAbsOrigin();
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             origin,
             this.Value("radius"),

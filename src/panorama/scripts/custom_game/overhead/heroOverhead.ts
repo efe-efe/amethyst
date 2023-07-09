@@ -8,7 +8,7 @@ import Health from "../commonComponents/health";
 import Alliances from "../alliances";
 import Castpoint from "./castpoint";
 import MultipleBars from "../commonComponents/multipleBars";
-import { HeroData, StatusType, StatusTypes } from "../types";
+import { StatusType, StatusTypes } from "../types";
 
 enum StatusScope {
     STATUS_SCOPE_PUBLIC = 1,
@@ -41,7 +41,7 @@ export default class HeroOverhead extends Overhead {
     isLocalPlayer: boolean;
 
     constructor(heroData: HeroData) {
-        super(heroData.entityIndex);
+        super(heroData.entityIndex as EntityIndex);
         const alliance = alliances.findAllianceByTeam(heroData.teamId)!;
         const localPlayerId = Game.GetLocalPlayerID();
         const color = colors[alliance.GetColor()];
@@ -77,24 +77,24 @@ export default class HeroOverhead extends Overhead {
             });
         }
 
-        statusComponent(statusPanel, heroData.entityIndex, { playerId: heroData.playerId, color: color });
+        statusComponent(statusPanel, this.entityIndex, { playerId: heroData.playerId as PlayerID, color: color });
         this.health = new Health(this.healthPanel, {
             color: color,
             rounded: true
         });
-        this.castpoint = new Castpoint(this.castpointPanel, heroData.entityIndex);
+        this.castpoint = new Castpoint(this.castpointPanel, this.entityIndex);
         this.botSwitchPanel = new SwitchPanel(this.cooldownPanel, this.stackbarsPanel);
 
         if (heroData.cooldown && this.isLocalPlayer) {
-            this.cooldown = new Cooldown(this.cooldownPanel, heroData.entityIndex, heroData.cooldown);
+            this.cooldown = new Cooldown(this.cooldownPanel, this.entityIndex, heroData.cooldown);
             this.botSwitchPanel.SetState(0);
         }
         if (heroData.stackbars && this.isLocalPlayer) {
-            this.stacks = new Stacks(this.ammoPanel, heroData.entityIndex, heroData.stackbars);
+            this.stacks = new Stacks(this.ammoPanel, this.entityIndex, heroData.stackbars);
             this.botSwitchPanel.SetState(1);
         }
         if (heroData.charges && this.isLocalPlayer) {
-            this.charges = new Charges(this.chargesPanel, heroData.entityIndex, heroData.charges);
+            this.charges = new Charges(this.chargesPanel, this.entityIndex, heroData.charges);
         }
 
         this.UpdateData(heroData);
@@ -124,8 +124,8 @@ export default class HeroOverhead extends Overhead {
         return currentStatus;
     }
 
-    public UpdateData(heroData: HeroData): void {
-        this.health.Update(heroData.health, heroData.treshold, heroData.maxHealth, heroData.shield);
+    public UpdateData(heroData: HeroData) {
+        this.health.Update(heroData.health, heroData.threshold, heroData.maxHealth, heroData.shield);
         if (this.mana) {
             this.mana.Update(heroData.mana, heroData.maxMana);
         }

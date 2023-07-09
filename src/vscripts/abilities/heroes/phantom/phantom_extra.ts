@@ -3,7 +3,7 @@ import { DisplacementParams, ModifierDisplacement, OnCollisionEvent } from "../.
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierUpgradePhantomQuickRecast } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { direction2D, getCursorPosition, isCountering } from "../../../util";
+import { direction2D, findUnitsInRadius, getCursorPosition, isCountering } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -67,7 +67,7 @@ class ModifierPhantomExtraDisplacement extends ModifierDisplacement {
         super.OnDestroy();
 
         if (IsServer()) {
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.parent,
                 this.parent.GetAbsOrigin(),
                 this.Value("radius"),

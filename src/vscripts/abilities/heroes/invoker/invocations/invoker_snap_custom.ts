@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierStun } from "../../../../modifiers/modifier_stunned";
-import { direction2D, getCursorPosition } from "../../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 import { CustomModifier } from "../../../framework/custom_modifier";
 
@@ -30,8 +30,7 @@ class InvokerSnap extends CustomAbility {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ModifierInvokerSnap.apply(unit, projectile.getSource(), this, { duration: duration });
 
@@ -108,7 +107,15 @@ class ModifierInvokerSnap extends CustomModifier {
             ParticleAttachment.POINT_FOLLOW,
             this.parent
         );
-        ParticleManager.SetParticleControlEnt(efx, 0, this.parent, ParticleAttachment.POINT_FOLLOW, "attach_hitloc", Vector(0, 0, 0), true);
+        ParticleManager.SetParticleControlEnt(
+            efx,
+            0,
+            this.parent,
+            ParticleAttachment.POINT_FOLLOW,
+            AttachLocation.hitloc,
+            Vector(0, 0, 0),
+            true
+        );
         ParticleManager.SetParticleControl(efx, 1, this.parent.GetAbsOrigin().__add(direction));
         ParticleManager.ReleaseParticleIndex(efx);
 

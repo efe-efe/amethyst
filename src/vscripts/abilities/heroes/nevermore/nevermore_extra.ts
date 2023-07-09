@@ -1,4 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { areUnitsAllied } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -74,7 +75,7 @@ class ModifierNevermoreExtra extends CustomModifier {
     }
 
     GetAuraEntityReject(entity: CDOTA_BaseNPC) {
-        if (CustomEntitiesLegacy.Allies(this.caster, entity)) {
+        if (areUnitsAllied(this.caster, entity)) {
             return true;
         }
         return false;
@@ -97,7 +98,7 @@ class ModifierNevermoreExtra extends CustomModifier {
                 1,
                 this.caster,
                 ParticleAttachment.POINT_FOLLOW,
-                "attach_hitloc",
+                AttachLocation.hitloc,
                 origin,
                 true
             );

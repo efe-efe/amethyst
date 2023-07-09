@@ -3,7 +3,7 @@ import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierUpgradeStormUnleashedKnockback } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
-import { clampPosition, direction2D, getCursorPosition } from "../../../util";
+import { clampPosition, direction2D, findUnitsInRadius, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -113,7 +113,7 @@ class ModifierStormUltimateThinker extends ModifierThinker {
         FindClearSpaceForUnit(this.caster, this.origin, true);
         ScreenShake(this.origin, 100, 300, 0.45, 1000, 0, true);
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.parent,
             this.parent.GetAbsOrigin(),
             this.Value("radius"),

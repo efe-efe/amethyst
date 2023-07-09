@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
-import { direction2D, getCursorPosition } from "../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("sniper_extra")
@@ -45,8 +45,7 @@ class SniperExtra extends CustomAbility {
                 spawnOrigin: origin.__add(Vector(0, 0, 60)),
                 velocity: direction.__mul(projectileSpeed),
                 groundOffset: 0,
-                unitTest: (unit, projectile) =>
-                    unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+                unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
                 onUnitHit: (unit, projectile) => {
                     const x = unit.GetAbsOrigin().x - origin.x;
                     const y = unit.GetAbsOrigin().y - origin.y;

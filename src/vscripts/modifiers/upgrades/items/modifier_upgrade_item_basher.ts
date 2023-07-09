@@ -53,7 +53,7 @@ class ModifierItemBasherAttack extends ModifierCombatEvents<undefined> {
         EFX("particles/units/heroes/hero_spirit_breaker/spirit_breaker_greater_bash.vpcf", ParticleAttachment.CUSTOMORIGIN, target, {
             cp0: {
                 ent: target,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             cp0f: direction,
             release: true

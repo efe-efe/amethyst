@@ -1,4 +1,4 @@
-import Alliance from "../alliance";
+import { Alliance, setAllianceGems } from "../../alliances";
 import DummyTarget from "../dummy_target";
 import GameState, { CustomGameState } from "../game_state";
 
@@ -32,8 +32,7 @@ export default class Warmup extends GameState {
             this.UpdateGameTimer(math.floor(this.timeRemaining / 30));
 
             if (this.timeRemaining <= 30 && this.timeRemaining > 0) {
-                const data = { text: tostring(this.timeRemaining / 30) } as never;
-                CustomGameEventManager.Send_ServerToAllClients("custom_message", data);
+                CustomGameEventManager.Send_ServerToAllClients("custom_message", { text: tostring(this.timeRemaining / 30) });
             }
 
             this.dummyTargets.forEach(dummyTarget => {
@@ -60,7 +59,7 @@ export default class Warmup extends GameState {
         this.DestroyAllDummyTargets();
 
         this.alliances.forEach(alliance => {
-            alliance.SetAmethysts(0);
+            setAllianceGems(alliance, 0);
         });
 
         GameRules.Addon.SetState(CustomGameState.PRE_ROUND);
@@ -69,6 +68,8 @@ export default class Warmup extends GameState {
     DestroyAllDummyTargets(): void {
         this.dummyTargets.forEach(dummyTarget => {
             if (dummyTarget.entity) {
+                const unit = dummyTarget.entity.GetUnit();
+                unit.Kill(undefined, unit);
                 dummyTarget.entity.Destroy(true);
             }
         });

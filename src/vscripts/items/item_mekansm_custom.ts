@@ -1,7 +1,7 @@
 import { CustomAbility } from "../abilities/framework/custom_ability";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../lib/dota_ts_adapter";
-import { createRadiusMarker } from "../util";
+import { createRadiusMarker, findUnitsInRadius } from "../util";
 
 @registerAbility("item_mekansm_custom")
 class ItemMekansm extends CustomAbility {
@@ -18,7 +18,7 @@ class ItemMekansm extends CustomAbility {
         const duration = this.GetSpecialValueFor("duration");
         const heal = this.GetSpecialValueFor("heal");
 
-        const allies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const allies = findUnitsInRadius(
             this.caster,
             this.caster.GetAbsOrigin(),
             radius,

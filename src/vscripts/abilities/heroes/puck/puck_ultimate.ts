@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { clampPosition, getCursorPosition } from "../../../util";
+import { clampPosition, findUnitsInRadius, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { PuckBasicAttack, PuckBasicAttackRelated } from "./puck_basic_attack";
@@ -64,7 +64,7 @@ class ModifierPuckUltimateThinker extends ModifierThinker {
     OnCreated(params: ModifierThinkerParams) {
         super.OnCreated(params);
         if (IsServer()) {
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 this.parent.GetAbsOrigin(),
                 this.radius,
@@ -144,7 +144,7 @@ class ModifierPuckUltimate extends CustomModifier {
             1,
             this.parent,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.parent.GetAbsOrigin(),
             true
         );

@@ -4,7 +4,7 @@ import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierRoot } from "../../../modifiers/modifier_root";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
-import { clampPosition, direction2D, fullyFaceTowards, getCursorPosition, interpolate } from "../../../util";
+import { clampPosition, direction2D, findUnitsInRadius, fullyFaceTowards, getCursorPosition, interpolate } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierMarsSpecialAttack } from "./mars_special_attack";
@@ -128,7 +128,7 @@ export class ModifierMarsSoldier extends ModifierCombatEvents {
     }
 
     OnIntervalThink() {
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             this.origin,
             this.radius,
@@ -175,7 +175,7 @@ export class ModifierMarsSoldier extends ModifierCombatEvents {
     }
 
     GetAlphaValue() {
-        const enemy = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemy = findUnitsInRadius(
             this.caster,
             this.origin,
             this.radius,

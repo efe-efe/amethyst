@@ -1,4 +1,5 @@
 import { registerModifier } from "../../../lib/dota_ts_adapter";
+import { findUnitsInRadius } from "../../../util";
 import { ModifierCombatEvents } from "../../modifier_combat_events";
 import { ModifierUpgrade } from "../modifier_upgrade";
 
@@ -55,11 +56,11 @@ class ModifierItemMaelstromAttack extends ModifierCombatEvents<undefined> {
         EFX("particles/econ/events/ti10/maelstrom_ti10.vpcf", ParticleAttachment.CUSTOMORIGIN, source, {
             cp0: {
                 ent: source,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             cp1: {
                 ent: target,
-                point: "attach_hitloc"
+                point: AttachLocation.hitloc
             },
             release: true
         });
@@ -72,7 +73,7 @@ class ModifierItemMaelstromAttack extends ModifierCombatEvents<undefined> {
         });
 
         if (this.remainingProcs > 0) {
-            const enemy = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemy = findUnitsInRadius(
                 this.parent,
                 target.GetAbsOrigin(),
                 this.radius,

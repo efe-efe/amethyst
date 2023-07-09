@@ -1,5 +1,13 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
-import { attackWithBaseDamage, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import {
+    areUnitsAllied,
+    attackWithBaseDamage,
+    direction2D,
+    getCursorPosition,
+    giveManaAndEnergyPercent,
+    isGem,
+    isObstacle
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("invoker_basic_attack")
@@ -48,8 +56,7 @@ export class InvokerBasicAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(0, 0, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 attackWithBaseDamage({
                     source: projectile.getSource(),

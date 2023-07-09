@@ -1,6 +1,6 @@
 "DOTAUnits"
 {
-	"radiant_creep_range_mega"
+	"npc_dota_radiant_creep_range_mega"
 	{
 		"Model"						"models/creeps/lane_creeps/creep_radiant_ranged/radiant_ranged_mega.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"

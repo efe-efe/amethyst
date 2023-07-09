@@ -1,7 +1,8 @@
+import { createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierDisplacement } from "../../../modifiers/modifier_displacement";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
-import { createRadiusMarker, direction2D, getCursorPosition, isObstacle } from "../../../util";
+import { direction2D, getCursorPosition, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPangoMobility } from "./modifier_pango_mobility";
 import { PangoSecondAttack } from "./pango_second_attack";
@@ -21,7 +22,7 @@ export class PangoSpecialAttack extends CustomAbility {
     }
 
     GetCastRange(location: Vector, target?: CDOTA_BaseNPC) {
-        if (ModifierPangoMobility.findOne(this.caster)) {
+        if (ModifierPangoMobility.findOne(this.caster) && IsServer()) {
             return super.GetCastRange(location, target) * 1.2;
         }
         return super.GetCastRange(location, target);
@@ -63,7 +64,7 @@ export class PangoSpecialAttack extends CustomAbility {
         const origin = this.caster.GetAbsOrigin();
         const damageBlock = this.GetSpecialValueFor("damage_block");
         const shieldDuration = this.GetSpecialValueFor("duration");
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             origin,
             radius,

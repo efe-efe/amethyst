@@ -7,7 +7,7 @@ const sreenHeight = Game.GetScreenHeight();
 const scale = 1080 / sreenHeight;
 
 export default class Overhead {
-    private entityIndex: EntityIndex;
+    public entityIndex: EntityIndex;
     public containerPanel: Panel;
     private thinkInterval = 0.03;
 

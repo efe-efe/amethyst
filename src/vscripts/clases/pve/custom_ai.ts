@@ -1,7 +1,7 @@
 import { ModifierMiniStun } from "../../modifiers/modifier_mini_stun";
 import { ModifierNPCShield } from "../../modifiers/modifier_npc_shield";
 import { ModifierShield } from "../../modifiers/modifier_shield";
-import { distanceBetweenEntities } from "../../util";
+import { clamp, distanceBetweenEntities } from "../../util";
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 enum CustomAIState {
@@ -274,8 +274,8 @@ function CustomAI(name: string, origin: Vector, options: CustomAIOptions): Custo
     function PickTargetPosition(): void {
         const origin = unit.GetAbsOrigin();
         const worldLimits = 1500;
-        const x = Clamp(origin.x + RandomInt(-400, 400), worldLimits, -worldLimits);
-        const y = Clamp(origin.y + RandomInt(-400, 400), worldLimits, -worldLimits);
+        const x = clamp(origin.x + RandomInt(-400, 400), worldLimits, -worldLimits);
+        const y = clamp(origin.y + RandomInt(-400, 400), worldLimits, -worldLimits);
         targetPosition = Vector(x, y);
     }
 
@@ -424,7 +424,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.RADIANT_ZOMBIE_RANGE_MEGA]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("radiant_creep_range_mega", origin, {
+            const ai = CustomAI("npc_dota_radiant_creep_range_mega", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true
             });
@@ -446,7 +446,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_ZOMBIE_RANGE]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("dire_creep_range", origin, {
+            const ai = CustomAI("npc_dota_dire_creep_range", origin, {
                 behavior: CustomAIBehavior.WANDERER,
                 shield: true
             });
@@ -530,7 +530,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.FLYING_SKULL]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("flying_skull", origin, {
+            const ai = CustomAI("npc_dota_flying_skull", origin, {
                 followRange: 1000,
                 minFollowRange: 150,
                 behavior: CustomAIBehavior.FOLLOWER,
@@ -551,7 +551,7 @@ export const CustomAIMeta: {
     },
     [NPCNames.DIRE_TOWER]: {
         factory: (origin: Vector): CustomAIType => {
-            const ai = CustomAI("dire_tower", origin, {
+            const ai = CustomAI("npc_dota_dire_tower", origin, {
                 behavior: CustomAIBehavior.STATIC
             });
 

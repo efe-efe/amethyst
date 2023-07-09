@@ -1,7 +1,16 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierStun } from "../../../modifiers/modifier_stunned";
 import { ModifierThinker } from "../../../modifiers/modifier_thinker";
-import { clampPosition, direction2D, getCursorPosition, giveEnergyPercent, giveManaPercent, isGem, isObstacle } from "../../../util";
+import {
+    clampPosition,
+    direction2D,
+    findUnitsInRadius,
+    getCursorPosition,
+    giveEnergyPercent,
+    giveManaPercent,
+    isGem,
+    isObstacle
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierStormUltimate } from "./storm_ultimate";
@@ -69,7 +78,7 @@ class ModifierStormSpecialAttackThinker extends ModifierThinker {
 
         let giveMana = true;
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.parent,
             this.parent.GetAbsOrigin(),
             this.Value("radius"),
@@ -143,7 +152,7 @@ class ModifierStormSpecialAttack extends CustomModifier {
                 1,
                 this.parent,
                 ParticleAttachment.POINT_FOLLOW,
-                "attach_hitloc",
+                AttachLocation.hitloc,
                 Vector(0, 0, 0),
                 true
             );

@@ -1,9 +1,9 @@
+import { areUnitsAllied, createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import {
     attackWithBaseDamage,
     clampPosition,
-    createRadiusMarker,
     direction2D,
     getCursorPosition,
     giveManaAndEnergyPercent,
@@ -59,7 +59,7 @@ export class PhantomBasicAttack extends CustomAbility {
             EFX("particles/phantom/phantom_aoe_daggers_small.vpcf", ParticleAttachment.ABSORIGIN, this.caster, {
                 release: true
             });
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 origin,
                 radius,
@@ -319,8 +319,7 @@ class PhantomBasicAttackRelated extends CustomAbility {
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 30, projectileDirection.y * 30, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 attackWithBaseDamage({
                     source: projectile.getSource(),
@@ -416,7 +415,7 @@ class ModifierPhantomExBasicAttack extends CustomModifier {
                 0,
                 this.parent,
                 ParticleAttachment.POINT_FOLLOW,
-                "attach_hitloc",
+                AttachLocation.hitloc,
                 origin,
                 true
             );
@@ -425,7 +424,7 @@ class ModifierPhantomExBasicAttack extends CustomModifier {
                 1,
                 this.parent,
                 ParticleAttachment.POINT_FOLLOW,
-                "attach_hitloc",
+                AttachLocation.hitloc,
                 origin,
                 true
             );
@@ -453,7 +452,7 @@ class ModifierPhantomExBasicAttack extends CustomModifier {
             0,
             this.parent,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             origin,
             true
         );

@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapt
 import { DisplacementParams, ModifierDisplacement } from "../../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../../modifiers/modifier_fading_slow";
 import { ProjectileBehavior } from "../../../../projectiles";
-import { direction2D, getCursorPosition } from "../../../../util";
+import { areUnitsAllied, direction2D, getCursorPosition } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 
 @registerAbility("invoker_tornado_custom")
@@ -37,8 +37,7 @@ class InvokerTornado extends CustomAbility {
             wallBehavior: ProjectileBehavior.NOTHING,
             // bIsReflectable =        false,
             isDestructible: false,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     damage: damage,

@@ -1,7 +1,7 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
 import { ProjectileBehavior } from "../../../../projectiles";
-import { direction2D, fakeAbility } from "../../../../util";
+import { areUnitsAllied, direction2D, fakeAbility } from "../../../../util";
 
 @registerAbility("centaur_range_attack")
 class CentaurRangeAttack extends CustomAbility {
@@ -61,8 +61,7 @@ class CentaurRangeAttack extends CustomAbility {
             velocity: direction.__mul(projectileSpeed),
             groundOffset: 0,
             unitBehavior: ProjectileBehavior.NOTHING,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,

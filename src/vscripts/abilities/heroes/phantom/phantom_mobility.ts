@@ -1,3 +1,4 @@
+import { findEntityByHandle } from "../../../entities";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
@@ -20,7 +21,7 @@ class PhantomMobility extends CustomAbility {
         const point = getCursorPosition(this.caster);
         const phantomBasicAttack = PhantomBasicAttack.findOne(this.caster);
         const distance = this.GetCastRange(Vector(0, 0, 0), this.caster) + this.caster.GetCastRangeBonus();
-        const casterDirection = CustomEntitiesLegacy.GetDirection(this.caster);
+        const casterDirection = findEntityByHandle(this.caster)?.direction ?? Vector(0, 0, 0);
         const direction = casterDirection.x != 0 || casterDirection.y != 0 ? casterDirection : direction2D(origin, point);
 
         ModifierPhantomMobilityDisplacement.apply(this.caster, this.caster, this, {

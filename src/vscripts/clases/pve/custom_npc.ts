@@ -1,16 +1,15 @@
 import UnitEntity from "../unit_entity";
 import Math from "../../util/math";
-import customEntities from "../../util/custom_entities";
 import { Upgrade } from "../../upgrades/common";
 import { Reward } from "../../rewards/rewards";
 import { CustomEvents } from "../../custom_events";
 import { registerModifier } from "../../lib/dota_ts_adapter";
 import { CustomModifier } from "../../abilities/framework/custom_modifier";
-import { ModifierBase } from "../../modifiers/modifier_base";
 import { ModifierHeroMovement } from "../../modifiers/modifier_hero_movement";
 import { ModifierTowerIdle } from "../../modifiers/modifier_tower_idle";
-import { ModifierVisible } from "../../modifiers/modifier_visible";
-import { fullyFaceTowards, isRegularAbility } from "../../util";
+import { areUnitsAllied, fullyFaceTowards } from "../../util";
+import { MapNames, findPlayerById, getMode } from "../../game";
+import { ModifierMovementSpeed } from "../../modifiers/modifier_movement_speed";
 
 const DEBUG = false;
 
@@ -56,17 +55,17 @@ class ModifierCombineUtilVFX extends CustomModifier<undefined> {
         }
     }
 }
+
 export default class CustomNPC extends UnitEntity {
     constructor(unit: CDOTA_BaseNPC) {
-        ModifierBase.apply(unit, unit, undefined, {});
-        CustomEntitiesLegacy.Initialize(unit, !unit.IsRealHero()); //Need this for SetParent bullshit
-        ModifierVisible.apply(unit, unit, undefined, {});
         super({ unit });
-        customEntities.Disarm(this.unit);
-        customEntities.IgnoreMSLimit(this.unit);
-        customEntities.HideHealthBar(this.unit);
     }
+
     LevelAllAbilities(level: number): void {
+        function isRegularAbility(ability: CDOTABaseAbility) {
+            return ability.GetAbilityType() != 2 && ability.GetName() != "special_bonus_attributes";
+        }
+
         for (let i = 0; i <= 23; i++) {
             const ability = this.unit.GetAbilityByIndex(i);
             if (ability) {
@@ -334,7 +333,7 @@ export default class CustomNPC extends UnitEntity {
                 fullyFaceTowards(this.unit, direction);
             }
         } else {
-            if (this.unit.GetUnitName() === "dire_tower") {
+            if (this.unit.GetUnitName() === "npc_dota_dire_tower") {
                 if (!ModifierTowerIdle.findOne(this.unit)) {
                     ModifierTowerIdle.apply(this.unit, this.unit, undefined, {});
                 }
@@ -342,13 +341,11 @@ export default class CustomNPC extends UnitEntity {
             this.unit.RemoveModifierByName(ModifierHeroMovement.name);
         }
 
-        if (IsInToolsMode() && DEBUG) {
-            // Don't quote me on this, im just fixing warnings
-            // if ((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID) {
-            const player = GameRules.Addon.FindPlayerById((this.unit as CDOTA_BaseNPC_Hero).GetPlayerID());
+        if (IsInToolsMode() && DEBUG && this.unit.IsRealHero()) {
+            const player = findPlayerById(this.unit.GetPlayerID());
 
             if (player) {
-                const mouse = player.GetCursorPosition();
+                const mouse = player.cursorPosition;
                 DebugDrawLine_vCol(
                     this.unit.GetAbsOrigin(),
                     this.unit.GetAbsOrigin().__add(this.unit.GetForwardVector().__mul(500)),
@@ -369,7 +366,7 @@ export default class CustomNPC extends UnitEntity {
 export class CustomHeroNPC extends CustomNPC {
     constructor(unit: CDOTA_BaseNPC) {
         super(unit);
-        customEntities.SetUseEnergy(this.unit);
+        // customEntities.SetUseEnergy(this.unit);
     }
 }
 export class CustomNonPlayerHeroNPC extends CustomHeroNPC {
@@ -386,9 +383,11 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC {
     constructor(unit: CDOTA_BaseNPC) {
         super(unit);
         this.LevelAllAbilities(1);
-        if (GameRules.Addon.IsPVE()) {
+        if (getMode() == MapNames.pve) {
             (this.unit as CDOTA_BaseNPC_Hero).SetAbilityPoints(0);
-            customEntities.ChangeMS(this.unit, 50);
+            ModifierMovementSpeed.apply(this.unit, this.unit, undefined, {
+                amount: 50
+            });
             this.unit.RemoveAbility(this.unit.GetAbilityByIndex(7)!.GetName());
             this.unit.RemoveAbility(this.unit.GetAbilityByIndex(8)!.GetName());
             //ListenToGameEvent('dota_player_learned_ability', (event) => this.OnLearnedAbilityEvent(event), undefined);
@@ -428,7 +427,7 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC {
             const owner = item.GetPurchaser();
 
             //Only pickup items owned by teammates
-            if (!owner || (owner && CustomEntitiesLegacy.Allies(this.unit, owner) && this.unit !== owner)) {
+            if (!owner || (owner && areUnitsAllied(this.unit, owner) && this.unit !== owner)) {
                 this.unit.AddItem(item);
                 item.OnSpellStart();
 
@@ -447,20 +446,12 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC {
     }
 
     IsSelectingUpgrade(): boolean {
-        const tableName = "custom_npc_favors" as never;
-        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as {
-            playerId: PlayerID;
-            upgrades: Upgrade[] | undefined;
-        };
+        const value = CustomNetTables.GetTableValue("custom_npc_favors", this.unit.GetPlayerOwnerID().toString());
         return value && value.upgrades !== undefined;
     }
 
     IsSelectingReward(): boolean {
-        const tableName = "custom_npc_rewards" as never;
-        const value = CustomNetTables.GetTableValue(tableName, this.unit.GetPlayerOwnerID().toString()) as {
-            playerId: PlayerID;
-            rewards: Reward[] | undefined;
-        };
+        const value = CustomNetTables.GetTableValue("custom_npc_rewards", this.unit.GetPlayerOwnerID().toString());
         return value && value.rewards !== undefined;
     }
 
@@ -513,23 +504,21 @@ export class CustomPlayerHeroNPC extends CustomHeroNPC {
 
     SelectReward(reward: Reward): void {
         this.reward = reward;
-        this.ClearTable("custom_npc_rewards" as never);
+        this.ClearTable("custom_npc_rewards");
         const customEvents = CustomEvents.GetInstance();
         customEvents.EmitEvent("pve:next_reward_selected", {
             customNpc: this,
             reward
         });
 
-        const data = {
+        CustomNetTables.SetTableValue("main", "pve", {
             nextReward: this.reward.name
-        } as never;
-        CustomNetTables.SetTableValue("main" as never, "pve", data);
+        });
     }
 
-    ClearTable(name: never): void {
-        const data = {
+    ClearTable(name: "custom_npc_rewards" | "custom_npc_favors"): void {
+        CustomNetTables.SetTableValue(name, this.unit.GetPlayerOwnerID().toString(), {
             playerId: this.unit.GetPlayerOwnerID()
-        } as never;
-        CustomNetTables.SetTableValue(name, this.unit.GetPlayerOwnerID().toString(), data);
+        });
     }
 }

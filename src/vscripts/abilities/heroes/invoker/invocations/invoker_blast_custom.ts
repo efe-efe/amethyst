@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapt
 import { DisplacementParams, ModifierDisplacement } from "../../../../modifiers/modifier_displacement";
 import { ModifierFadingSlow } from "../../../../modifiers/modifier_fading_slow";
 import { ProjectileBehavior } from "../../../../projectiles";
-import { clampPosition, direction2D, getCursorPosition } from "../../../../util";
+import { areUnitsAllied, clampPosition, direction2D, getCursorPosition } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 
 @registerAbility("invoker_blast_custom")
@@ -38,8 +38,7 @@ class InvokerBlast extends CustomAbility {
             wallBehavior: ProjectileBehavior.NOTHING,
             // bIsReflectable =        false,
             isDestructible: false,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 const distance = finalPoint.__sub(unit.GetAbsOrigin()).Length2D();
                 ModifierInvokerBlastDisplacement.apply(unit, projectile.getSource(), this, {

@@ -3,7 +3,7 @@ import { Translate } from "../../../modifiers/modifier_casting";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
-import { clamp, clampPosition, getCursorPosition, isCountering, isObstacle, strongPurge } from "../../../util";
+import { clamp, clampPosition, findUnitsInLine, getCursorPosition, isCountering, isObstacle, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -122,7 +122,7 @@ abstract class JuggernautSlash extends CustomAbility {
         FindClearSpaceForUnit(this.caster, point, true);
         const to = this.caster.GetAbsOrigin();
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInLine(
+        const enemies = findUnitsInLine(
             this.caster,
             to,
             from,

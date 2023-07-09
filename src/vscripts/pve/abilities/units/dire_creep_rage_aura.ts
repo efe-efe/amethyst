@@ -1,7 +1,7 @@
 import { CustomAbility } from "../../../abilities/framework/custom_ability";
 import { CustomModifier } from "../../../abilities/framework/custom_modifier";
+import { createRadiusMarker, findUnitsInRadius } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
-import { createRadiusMarker } from "../../../util";
 
 @registerAbility("dire_creep_rage_aura")
 class DireCreepRageAura extends CustomAbility {
@@ -22,7 +22,7 @@ class DireCreepRageAura extends CustomAbility {
         const radius = this.GetSpecialValueFor("radius");
         const duration = this.GetSpecialValueFor("duration");
 
-        const allies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const allies = findUnitsInRadius(
             this.caster,
             origin,
             radius,

@@ -1,7 +1,3 @@
-export interface Component {
-    Activate(unitEntity: UnitEntity): void;
-}
-
 type UnitEntityOptions =
     | {
           unit: CDOTA_BaseNPC;
@@ -71,9 +67,5 @@ export default class UnitEntity {
 
     OnDeath(event: EntityKilledEvent): void {
         //override this method
-    }
-
-    AddComponent(component: Component): void {
-        component.Activate(this);
     }
 }

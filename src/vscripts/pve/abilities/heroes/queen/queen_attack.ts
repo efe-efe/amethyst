@@ -2,7 +2,7 @@ import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { CustomModifier } from "../../../../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierFadingSlow } from "../../../../modifiers/modifier_fading_slow";
-import { direction2D } from "../../../../util";
+import { areUnitsAllied, direction2D } from "../../../../util";
 
 @registerAbility("queen_attack")
 export class QueenAttack extends CustomAbility {
@@ -41,8 +41,7 @@ export class QueenAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(0, 0, 96)),
             velocity: projectileDirection.__mul(speed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,

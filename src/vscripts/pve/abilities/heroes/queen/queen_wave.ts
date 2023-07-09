@@ -1,7 +1,7 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
 import { ProjectileBehavior } from "../../../../projectiles";
-import { direction2D } from "../../../../util";
+import { areUnitsAllied, direction2D } from "../../../../util";
 
 @registerAbility("queen_wave")
 class QueenWave extends CustomAbility {
@@ -45,8 +45,7 @@ class QueenWave extends CustomAbility {
             velocity: projectileDirection.__mul(projectileSpeed),
             unitBehavior: ProjectileBehavior.NOTHING,
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 ApplyDamage({
                     victim: unit,

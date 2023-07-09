@@ -1,7 +1,7 @@
 import { CustomAbility } from "../../../abilities/framework/custom_ability";
 import { CustomModifier } from "../../../abilities/framework/custom_modifier";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
-import { attackWithBaseDamage, direction2D } from "../../../util";
+import { areUnitsAllied, attackWithBaseDamage, direction2D } from "../../../util";
 
 @registerAbility("dire_tower_attack")
 class DireTowerAttack extends CustomAbility {
@@ -54,8 +54,7 @@ class DireTowerAttack extends CustomAbility {
             spawnOrigin: origin.__add(Vector(0, 0, 200)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
-            unitTest: (unit, projectile) =>
-                unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+            unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
                 attackWithBaseDamage({
                     source: projectile.getSource(),

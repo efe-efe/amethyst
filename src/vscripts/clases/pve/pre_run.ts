@@ -1,5 +1,5 @@
+import { Alliance } from "../../alliances";
 import settings from "../../settings";
-import Alliance from "../alliance";
 import GameState, { CustomGameState } from "../game_state";
 
 export default class PreRun extends GameState {
@@ -22,8 +22,8 @@ export default class PreRun extends GameState {
     OnLearnedAbilityEvent(): void {
         let abilitiesReady = true;
         this.GetAllPlayers().forEach(player => {
-            const hero = player.hero;
-            if (hero) {
+            const hero = player.entity?.handle;
+            if (hero && hero.IsRealHero()) {
                 if (hero.GetAbilityPoints() > 0) {
                     abilitiesReady = false;
                 }

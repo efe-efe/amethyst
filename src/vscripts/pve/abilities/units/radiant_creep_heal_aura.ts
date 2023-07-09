@@ -1,6 +1,6 @@
 import { CustomAbility } from "../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../lib/dota_ts_adapter";
-import { createRadiusMarker } from "../../../util";
+import { createRadiusMarker, findUnitsInRadius } from "../../../util";
 
 @registerAbility("radiant_creep_heal_aura")
 class RadiantCreepHealAura extends CustomAbility {
@@ -21,7 +21,7 @@ class RadiantCreepHealAura extends CustomAbility {
         const radius = this.GetSpecialValueFor("radius");
         const heal = this.GetSpecialValueFor("heal");
 
-        const allies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const allies = findUnitsInRadius(
             this.caster,
             origin,
             radius,

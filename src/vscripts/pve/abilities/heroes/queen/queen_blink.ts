@@ -1,7 +1,7 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
 import { ModifierSilence } from "../../../../modifiers/modifier_silence";
-import { clampPosition, createTimedRadiusMarker } from "../../../../util";
+import { clampPosition, createTimedRadiusMarker, findUnitsInRadius } from "../../../../util";
 
 @registerAbility("queen_blink")
 export class QueenBlink extends CustomAbility {
@@ -52,7 +52,7 @@ export class QueenBlink extends CustomAbility {
         const origin = this.caster.GetOrigin();
         const silenceDuration = 1.0;
 
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             origin,
             radius,

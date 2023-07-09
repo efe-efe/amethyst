@@ -1,10 +1,10 @@
-import Alliance from "../alliance";
 import GameState, { CustomGameState } from "../game_state";
 import GemWrapper, { GemTypes } from "../gem";
 import Pickup, { PickupTypes } from "../pickup";
 import settings from "../../settings";
 import { ModifierDeathZone } from "../../modifiers/modifier_death_zone";
 import { ModifierProvidesVision } from "../../modifiers/modifier_provides_vision";
+import { Alliance } from "../../alliances";
 
 interface PickupWrapper {
     origin: Vector;
@@ -197,19 +197,21 @@ export default class Round extends GameState {
         this.CleanArrows();
 
         this.GetAllPlayers().forEach(player => {
-            if (player.alliance && player.hero) {
+            const hero = player.entity?.handle;
+
+            if (player.alliance && hero && hero.IsRealHero()) {
                 let target = this.radiantWarmupSpawn;
 
-                if (player.alliance.name == "DOTA_ALLIANCE_DIRE") {
+                if (player.alliance.id == AllianceId.dire) {
                     target = this.direWarmupSpawn;
                 }
 
-                if (!player.hero.IsAlive()) {
-                    player.hero.RespawnHero(false, false);
+                if (!hero.IsAlive()) {
+                    hero.RespawnHero(false, false);
                 }
 
-                FindClearSpaceForUnit(player.hero, target.GetAbsOrigin(), true);
-                CustomEntitiesLegacy.Reset(player.hero);
+                FindClearSpaceForUnit(hero, target.GetAbsOrigin(), true);
+                CustomEntitiesLegacy.Reset(hero);
             }
         });
 
@@ -220,26 +222,23 @@ export default class Round extends GameState {
         this.DestroyAllPickups(); //Remove death orbs
 
         if (this.winner) {
-            const new_score = this.winner.GetScore() + 1;
-            this.winner.SetScore(new_score);
+            const new_score = this.winner.wins + 1;
+            this.winner.wins = new_score;
 
-            if (
-                this.winner.GetScore() >= settings.RoundsToWin ||
-                this.GetHighestWinsDifference(this.winner) >= settings.RoundsDifferenceToWin
-            ) {
+            if (this.winner.wins >= settings.RoundsToWin || this.GetHighestWinsDifference(this.winner) >= settings.RoundsDifferenceToWin) {
                 GameRules.Addon.EndGame(this.winner.teams[1]);
                 return;
             }
         } else {
             CustomGameEventManager.Send_ServerToAllClients("custom_message", {
                 text: "DRAW!"
-            } as never);
+            });
         }
 
         this.alliances.forEach(alliance => {
-            if (alliance.GetScore() === 1) {
+            if (alliance.wins === 1) {
                 allinaces_with_one_point = allinaces_with_one_point + 1;
-            } else if (alliance.GetScore() > 1) {
+            } else if (alliance.wins > 1) {
                 allinaces_with_one_point = allinaces_with_one_point + 1;
                 allinaces_with_two_points = allinaces_with_two_points + 1;
             }
@@ -251,15 +250,14 @@ export default class Round extends GameState {
             max_score = 4;
         }
 
-        const tableName = "main" as never;
-        CustomNetTables.SetTableValue(tableName, "maxScore", {
+        CustomNetTables.SetTableValue("main", "maxScore", {
             max_score
-        } as never);
+        });
         GameRules.Addon.round = undefined;
 
         this.GetAllPlayers().forEach(player => {
-            const hero = player.hero;
-            const playerId = player.GetId();
+            const hero = player.entity?.handle;
+            const playerId = player.id;
             if (hero) {
                 hero.RemoveModifierByName(ModifierProvidesVision.name);
             }
@@ -274,7 +272,7 @@ export default class Round extends GameState {
 
         this.alliances.forEach(_alliance => {
             if (_alliance !== alliance) {
-                if (_alliance.IsActive()) {
+                if (_alliance.active) {
                     const _difference = alliance.wins - _alliance.wins;
 
                     if (_difference > difference) {
@@ -291,9 +289,11 @@ export default class Round extends GameState {
         const alliances: Alliance[] = [];
 
         this.GetAllPlayers().forEach(player => {
-            if (player.hero && !player.hero.IsNull() && player.hero.IsAlive() && player.alliance) {
+            const hero = player.entity?.handle;
+
+            if (hero && !hero.IsNull() && hero.IsAlive() && player.alliance) {
                 const playerAlliance = player.alliance;
-                const alreadyAdded = alliances.filter(alliance => alliance.name === playerAlliance.name).length > 0;
+                const alreadyAdded = alliances.filter(alliance => alliance.id === playerAlliance.id).length > 0;
 
                 if (!alreadyAdded) {
                     alliances.push(playerAlliance);
@@ -309,10 +309,9 @@ export default class Round extends GameState {
     }
 
     CreateDeathZone(): void {
-        const tableName = "custom_message" as never;
-        CustomGameEventManager.Send_ServerToAllClients(tableName, {
+        CustomGameEventManager.Send_ServerToAllClients("custom_message", {
             text: "Death Zone has initiated!"
-        } as never);
+        });
         this.death_zone = ModifierDeathZone.createThinker(undefined, undefined, this.gemSpawnPoints[this.gem.index], {})[0];
     }
 

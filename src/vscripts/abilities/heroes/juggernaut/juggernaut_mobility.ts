@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierCombatEvents, OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierUpgradeJuggernautFuryAttack, ModifierUpgradeJuggernautFuryReflects } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierHeroMovement } from "../../../modifiers/modifier_hero_movement";
-import { strongPurge } from "../../../util";
+import { findUnitsInRadius, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 
 @registerAbility("juggernaut_mobility")
@@ -49,7 +49,7 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
     }
 
     OnIntervalThink() {
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.parent,
             this.parent.GetAbsOrigin(),
             this.Value("radius"),

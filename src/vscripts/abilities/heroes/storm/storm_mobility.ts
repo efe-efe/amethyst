@@ -3,7 +3,7 @@ import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierUpgradeStormRangedRemnant } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
-import { clampPosition, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { clampPosition, findUnitsInRadius, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierStormExtraDisplacement } from "./storm_extra";
 
@@ -56,12 +56,12 @@ class StormMobility extends CustomAbility {
             EFX("particles/spectre/spectre_illusion_warp.vpcf", ParticleAttachment.CUSTOMORIGIN, this.caster, {
                 cp0: {
                     ent: this.caster,
-                    point: "attach_hitloc"
+                    point: AttachLocation.hitloc
                 },
                 cp1: groundPosition,
                 cp2: {
                     ent: this.caster,
-                    point: "attach_hitloc"
+                    point: AttachLocation.hitloc
                 },
                 release: true
             });
@@ -171,7 +171,7 @@ class ModifierStormMobilityThinker extends ModifierThinker {
             1,
             this.caster,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.origin,
             true
         );
@@ -233,7 +233,7 @@ class ModifierStormExMobilityThinker extends ModifierThinker {
         super.OnIntervalThink();
 
         if (this.initialized) {
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 this.origin,
                 this.radius,
@@ -285,7 +285,7 @@ class ModifierStormExMobilityThinker extends ModifierThinker {
             1,
             this.caster,
             ParticleAttachment.POINT_FOLLOW,
-            "attach_hitloc",
+            AttachLocation.hitloc,
             this.origin,
             true
         );

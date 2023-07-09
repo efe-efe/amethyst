@@ -6,9 +6,7 @@ export default class CustomAbilities {
     private abilities: any = {};
 
     private constructor() {
-        const tableName = "main" as never;
-
-        tables.subscribeToNetTableKey(tableName, "abilities", true, (data: any) => {
+        tables.subscribeToNetTableKey("main", "abilities", true, data => {
             for (const key in data) {
                 this.abilities[key] = data[key];
             }

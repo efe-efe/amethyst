@@ -177,7 +177,7 @@ enum RewardTypes {
         }
     };
 
-    tables.subscribeToNetTableAndLoadNow("custom_npc_rewards" as never, (table: never, key: string | number | symbol, value: any) => {
+    tables.subscribeToNetTableAndLoadNow("custom_npc_rewards", (table, key, value) => {
         const playerId = util.getCurrentPlayer();
         if (playerId === value.playerId) {
             if (value.rewards) {
@@ -188,7 +188,7 @@ enum RewardTypes {
         }
     });
 
-    tables.subscribeToNetTableAndLoadNow("custom_npc_favors" as never, (table: never, key: string | number | symbol, value: any) => {
+    tables.subscribeToNetTableAndLoadNow("custom_npc_favors", (table, key, value) => {
         const playerId = util.getCurrentPlayer();
         if (playerId === value.playerId) {
             if (value.upgrades) {

@@ -1,7 +1,7 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierThinker, ModifierThinkerParams } from "../../../modifiers/modifier_thinker";
 import { ProjectileBehavior } from "../../../projectiles";
-import { direction2D } from "../../../util";
+import { areUnitsAllied, direction2D, findUnitsInRadius } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierNevermoreStacks } from "./nevermore_basic_attack";
 
@@ -85,8 +85,7 @@ class NevermoreUltimate extends CustomAbility {
                 distance: radius,
                 unitBehavior: ProjectileBehavior.NOTHING,
                 wallBehavior: ProjectileBehavior.NOTHING,
-                unitTest: (unit, projectile) =>
-                    unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+                unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
                 onFinish: projectile => {
                     this.PlayEffectsOnFinish(projectile.getPosition());
                 }
@@ -104,7 +103,7 @@ class NevermoreUltimate extends CustomAbility {
     }
 
     DamageEnemiesInArea(origin: Vector, radius: number, damage: number) {
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             origin,
             radius,
@@ -192,7 +191,7 @@ class ModifierNevermoreUltimateThinker extends ModifierThinker {
         super.OnIntervalThink();
 
         if (IsServer()) {
-            const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+            const enemies = findUnitsInRadius(
                 this.caster,
                 this.origin,
                 this.radius,

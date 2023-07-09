@@ -85,7 +85,7 @@ class ModifierPangoUltimate extends ModifierDisplacement {
                 {
                     cp0: {
                         ent: this.parent,
-                        point: "attach_hitloc"
+                        point: AttachLocation.hitloc
                     }
                 }
             );

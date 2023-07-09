@@ -1,5 +1,5 @@
 import { registerAbility, registerModifier } from "../lib/dota_ts_adapter";
-import { createRadiusMarker, direction2D, fullyFaceTowards } from "../util";
+import { areUnitsAllied, createRadiusMarker, direction2D, findUnitsInRadius, fullyFaceTowards } from "../util";
 import { CustomAbility } from "./framework/custom_ability";
 import { CustomModifier } from "./framework/custom_modifier";
 
@@ -29,7 +29,7 @@ class ModifierPassiveShot extends CustomModifier {
 
         createRadiusMarker(this.parent, origin, this.radius, "public", 0.1);
 
-        const enemy = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemy = findUnitsInRadius(
             this.caster,
             origin,
             this.radius,
@@ -57,8 +57,7 @@ class ModifierPassiveShot extends CustomModifier {
                 spawnOrigin: origin.__add(Vector(projectileDirection.x * 30, projectileDirection.y * 30, 96)),
                 velocity: projectileDirection.__mul(projectileSpeed),
                 groundOffset: 0,
-                unitTest: (unit, projectile) =>
-                    unit.GetUnitName() != "npc_dummy_unit" && !CustomEntitiesLegacy.Allies(projectile.getSource(), unit),
+                unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
                 onUnitHit: (unit, projectile) => {
                     ApplyDamage({
                         victim: unit,

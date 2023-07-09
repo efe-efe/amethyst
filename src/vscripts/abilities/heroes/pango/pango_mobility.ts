@@ -32,7 +32,7 @@ class PangoMobility extends CustomAbility {
                 1,
                 this.caster,
                 ParticleAttachment.ABSORIGIN_FOLLOW,
-                "attach_hitloc",
+                AttachLocation.hitloc,
                 this.caster.GetAbsOrigin(),
                 false
             );

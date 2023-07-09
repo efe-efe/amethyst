@@ -39,11 +39,10 @@ MODIFIER_EVENTS = {
 }
 
 function CustomEntitiesLegacy:Initialize(hEntity, bIsPVENPC)
-	hEntity.treshold = 				        0
+	hEntity.threshold = 				    0
 	hEntity.energy = 					    0
 	hEntity.max_energy = 				    100
 	hEntity.energy_per_cell = 				100
-	hEntity.healing_reduction_pct = 		0
 	hEntity.initialized = 					nil
 	hEntity.modifiers = 					{}
 	hEntity.parent =						nil
@@ -57,7 +56,7 @@ function CustomEntitiesLegacy:Initialize(hEntity, bIsPVENPC)
 	hEntity.charges_modifiers =				nil
 	hEntity.cooldown_modifiers =			nil
 
-    CustomEntitiesLegacy:SetTreshold(hEntity, GameRules.Addon.max_treshold)
+    CustomEntitiesLegacy:SetThreshold(hEntity, GameRules.Addon.max_treshold)
     
 
 	if hEntity:IsRealHero() or bIsPVENPC then
@@ -118,7 +117,7 @@ function CustomEntitiesLegacy:Reset(hEntity)
 		CustomEntitiesLegacy:SetEnergy(hEntity, 0)
 	end
 	CustomEntitiesLegacy:SetHealthCustom(hEntity, hEntity:GetMaxHealth())
-	CustomEntitiesLegacy:SetTreshold(hEntity, GameRules.Addon.max_treshold)
+	CustomEntitiesLegacy:SetThreshold(hEntity, GameRules.Addon.max_treshold)
 	CustomEntitiesLegacy:RefreshCooldowns(hEntity)	
 	CustomEntitiesLegacy:InterruptCastPoint(hEntity)
 	hEntity:Purge(true, true, false, true, false)
@@ -155,8 +154,8 @@ function CustomEntitiesLegacy:GetMaxEnergy(hEntity)
 	return hEntity.max_energy
 end
 
-function CustomEntitiesLegacy:SetTreshold(hEntity, iTreshold)	
-	hEntity.treshold = iTreshold
+function CustomEntitiesLegacy:SetThreshold(hEntity, iTreshold)	
+	hEntity.threshold = iTreshold
 	CustomEntitiesLegacy:SendDataToClient(hEntity)
 end
 
@@ -180,7 +179,7 @@ function CustomEntitiesLegacy:SendDataToClient(hEntity)
 			name = hEntity:GetName(),
 			health = hEntity:GetHealth(),
 			maxHealth = hEntity:GetMaxHealth(),
-			treshold = CustomEntitiesLegacy:GetTreshold(hEntity),
+			threshold = CustomEntitiesLegacy:GetThreshold(hEntity),
 			shield = CustomEntitiesLegacy:GetShield(hEntity),
 			mana = hEntity:GetMana(),
 			maxMana = hEntity:GetMaxMana(),
@@ -273,8 +272,8 @@ function CustomEntitiesLegacy:GetEnergy(hEntity)
 	return hEntity.energy
 end
 
-function CustomEntitiesLegacy:GetTreshold(hEntity)
-	return hEntity.treshold
+function CustomEntitiesLegacy:GetThreshold(hEntity)
+	return hEntity.threshold
 end
 
 function CustomEntitiesLegacy:GetAllModifiersWithType(hEntity, iType)
@@ -496,81 +495,6 @@ function CustomEntitiesLegacy:InterruptCastPoint(hEntity)
 	hEntity:RemoveModifierByName("modifier_casting")
 end
 
-function CustomEntitiesLegacy:FindUnitsInCone(hEntity, vDirection, fMinProjection, vCenterPos, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
-	local tUnits = FindUnitsInCone(
-		hEntity:GetTeamNumber(), 
-		vDirection, 
-		fMinProjection,
-		vCenterPos, 
-		fRadius, 
-		nil, 
-		nTeamFilter, 
-		nTypeFilter, 
-		nFlagFilter, 
-		nOrderFilter, 
-		false
-	)
-
-	return CustomEntitiesLegacy:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
-end
-
-function CustomEntitiesLegacy:FindUnitsInRadius(hEntity, vOrigin, fRadius, nTeamFilter, nTypeFilter, nFlagFilter, nOrderFilter)
-    local tUnits = FindUnitsInRadius(
-        hEntity:GetTeamNumber(),
-        vOrigin,
-        nil,
-        fRadius,
-        DOTA_UNIT_TARGET_TEAM_BOTH,
-        nTypeFilter,
-        nFlagFilter,
-        nOrderFilter,
-        false
-	)
-
-	return CustomEntitiesLegacy:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
-end
-
-function CustomEntitiesLegacy:FindUnitsInLine(hEntity, vStartPos, vEndPos, nRadius, nTeamFilter, nTypeFilter, nFlagFilter)
-	local tUnits = FindUnitsInLine(
-		hEntity:GetTeamNumber(),
-		vStartPos,
-		vEndPos,
-		nil,
-		nRadius,
-		DOTA_UNIT_TARGET_TEAM_BOTH,
-		nTypeFilter,
-		nFlagFilter
-	)
-
-	return CustomEntitiesLegacy:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
-end
-
-function CustomEntitiesLegacy:FilterUnitsByTeamConsideringAlliances(hEntity, tUnits, nTeamFilter)
-	local tFilteredUnits = {}
-	local nCounter = 1
-	
-	for _,hUnit in pairs(tUnits) do
-		if nTeamFilter == DOTA_UNIT_TARGET_TEAM_FRIENDLY and CustomEntitiesLegacy:Allies(hEntity, hUnit) then
-			tFilteredUnits[nCounter] = hUnit
-			nCounter = nCounter + 1
-		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_ENEMY and not CustomEntitiesLegacy:Allies(hEntity, hUnit) then
-			tFilteredUnits[nCounter] = hUnit
-			nCounter = nCounter + 1
-		elseif nTeamFilter == DOTA_UNIT_TARGET_TEAM_BOTH then
-			tFilteredUnits[nCounter] = hUnit
-			nCounter = nCounter + 1
-		end
-	end
-
-	return tFilteredUnits
-end
-
-function CustomEntitiesLegacy:Allies(hEntity, hTarget)
-	local playerID = hEntity:GetPlayerOwnerID()
-
-	return CustomEntitiesLegacy:GetAlliance(hEntity) == CustomEntitiesLegacy:GetAlliance(hTarget)
-end
-
 function CustomEntitiesLegacy:DeactivateNonPriorityAbilities(hEntity)
 	if IsServer() then
 		for i = 0, 10 do
@@ -625,11 +549,11 @@ function CustomEntitiesLegacy:TrueHeal(hEntity, iHeal)
 	local base_health = hEntity:GetHealth()
     CustomEntitiesLegacy:SetHealthCustom(hEntity, base_health + iHeal)
 
-    local new_treshold = CustomEntitiesLegacy:GetTreshold(hEntity) + iHeal
+    local new_treshold = CustomEntitiesLegacy:GetThreshold(hEntity) + iHeal
 	if new_treshold > GameRules.Addon.max_treshold then
-		CustomEntitiesLegacy:SetTreshold(hEntity, GameRules.Addon.max_treshold)
+		CustomEntitiesLegacy:SetThreshold(hEntity, GameRules.Addon.max_treshold)
 	else
-		CustomEntitiesLegacy:SetTreshold(hEntity, new_treshold)
+		CustomEntitiesLegacy:SetThreshold(hEntity, new_treshold)
     end
 
 	if hEntity:GetHealth() < hEntity:GetMaxHealth() then

@@ -1,4 +1,3 @@
-import { CustomActionEvent } from "../addon_game_mode";
 import Items from "./items";
 import Shards from "./shards";
 import Favors from "./favors";
@@ -6,6 +5,8 @@ import { Upgrade, UpgradeTypes } from "./common";
 import { CustomPlayerHeroNPC } from "../clases/pve/custom_npc";
 import Math from "../util/math";
 import { CustomEvents } from "../custom_events";
+import { findPlayerById } from "../game";
+import { CustomActionEvent } from "../game_init";
 
 const Upgrades: Upgrade[] = [...Items, ...Shards, ...Favors];
 
@@ -19,7 +20,7 @@ interface GenerateUpgradesOptions {
 export const UpgradeManager = {
     Upgrades,
     ClearUpgrades(customNpc: CustomPlayerHeroNPC): void {
-        customNpc.ClearTable("custom_npc_favors" as never);
+        customNpc.ClearTable("custom_npc_favors");
         const customEvents = CustomEvents.GetInstance();
         customEvents.EmitEvent("pve:current_reward_applied", { customNpc });
     },
@@ -228,7 +229,7 @@ export const UpgradeManager = {
 
 CustomGameEventManager.RegisterListener<CustomActionEvent>("custom_npc:apply_favor", (eventSourceIndex, event) => {
     const playerId = event.playerIndex;
-    const player = GameRules.Addon.FindPlayerById(playerId);
+    const player = findPlayerById(playerId);
 
     if (player) {
         const customNpc = player.customNpc;

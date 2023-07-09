@@ -1,6 +1,6 @@
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierThinker, ModifierThinkerParams } from "../../../../modifiers/modifier_thinker";
-import { getCursorPosition } from "../../../../util";
+import { findUnitsInRadius, getCursorPosition } from "../../../../util";
 import { CustomAbility } from "../../../framework/custom_ability";
 
 @registerAbility("invoker_sun_custom")
@@ -49,7 +49,7 @@ class ModifierInvokerSunThiner extends ModifierThinker {
     }
 
     OnReady() {
-        const enemies = CustomEntitiesLegacy.FindUnitsInRadius(
+        const enemies = findUnitsInRadius(
             this.caster,
             this.origin,
             this.radius,

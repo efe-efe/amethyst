@@ -10,7 +10,7 @@ import "./pve";
 import "./targetIndicator";
 import "./actions";
 import CustomEntities from "./customEntities";
-import { CustomGameState, HeroData, UnitData } from "./types";
+import { CustomGameState } from "./types";
 import { ReadyBar } from "./readyBar";
 import UnitOverhead from "./overhead/unitOverhead";
 
@@ -36,8 +36,8 @@ const swapButton = $("#custom-hotkeys__swap-button") as Button;
 const customHotkeysAllRowsPanel = $("#custom-hotkeys__hotkeys");
 const customHotkeysTextPanel = hideShowButton.FindChildrenWithClassTraverse("custom-hotkeys__button-text")[0] as LabelPanel;
 
-const heroOverheads: any = {};
-const unitOverheads: any = {};
+const heroOverheads = new Map<EntityIndex, HeroOverhead>();
+const unitOverheads = new Map<EntityIndex, UnitOverhead>();
 const heroInfoCards: any = {};
 const allianceBars: any = {};
 
@@ -83,30 +83,30 @@ layout.SetPanelMargin("debuffs", { bottom: "95px" });
 layout.SetPanelMargin("buffs", { left: "38.5%", bottom: "95px" });
 layout.UpdateCurrency();
 
-customEntities.AddCallback((value: UnitData) => {
-    const entityIndex = value.entityIndex;
+customEntities.AddCallback((value: UnitData | HeroData) => {
+    const entityIndex = value.entityIndex as EntityIndex;
 
-    if (value.playerId !== undefined) {
-        if (!heroOverheads[entityIndex]) {
-            heroOverheads[entityIndex] = new HeroOverhead(value as HeroData);
-        } else {
-            heroOverheads[entityIndex].UpdateData(value);
+    if (Entities.IsRealHero(entityIndex)) {
+        const overhead = heroOverheads.get(entityIndex) ?? new HeroOverhead(value);
+
+        if (!heroOverheads.has(entityIndex)) {
+            heroOverheads.set(entityIndex, overhead);
         }
+
+        overhead.UpdateData(value);
 
         if (!heroInfoCards[entityIndex]) {
             let container: Panel | null;
-            const allianceName = (value as HeroData).allianceName;
-
-            if (allianceName == "DOTA_ALLIANCE_RADIANT") {
+            if (value.allianceId == AllianceId.radiant) {
                 container = $("#alliances-status").FindChildTraverse("alliances-status__radiant");
             }
-            if (allianceName == "DOTA_ALLIANCE_DIRE") {
+            if (value.allianceId == AllianceId.dire) {
                 container = $("#alliances-status").FindChildTraverse("alliances-status__dire");
             }
-            if (allianceName == "DOTA_ALLIANCE_LEGION") {
+            if (value.allianceId == AllianceId.legion) {
                 container = $("#alliances-status").FindChildTraverse("alliances-status__legion");
             }
-            if (allianceName == "DOTA_ALLIANCE_VOID") {
+            if (value.allianceId == AllianceId.void) {
                 container = $("#alliances-status").FindChildTraverse("alliances-status__void");
             }
 
@@ -114,34 +114,35 @@ customEntities.AddCallback((value: UnitData) => {
         } else {
             heroInfoCards[entityIndex].UpdateData(value);
         }
-    } else {
-        if (!unitOverheads[entityIndex]) {
-            unitOverheads[entityIndex] = new UnitOverhead(value);
-        } else {
-            unitOverheads[entityIndex].UpdateData(value);
-        }
+        return;
+    }
+
+    const overhead = unitOverheads.get(entityIndex) ?? new UnitOverhead(value);
+
+    if (!unitOverheads.has(entityIndex)) {
+        unitOverheads.set(entityIndex, overhead);
+
+        overhead.UpdateData(value);
     }
 });
 customEntities.OnReload();
+tables.subscribeToNetTableAndLoadNow("alliances", (table, key, value) => {
+    const allianceName = value.id;
 
-const tableNameAlliance = "alliances" as never;
-tables.subscribeToNetTableAndLoadNow(tableNameAlliance, (table: never, key: string | number | symbol, value: any) => {
-    const allianceName = value.name as string;
-
-    if (!allianceBars[allianceName]) {
+    if (!allianceBars[value.id]) {
         const topBarContainerPanel = $("#top-bar");
         let topBarPanel: Panel | null = null;
 
-        if (allianceName == "DOTA_ALLIANCE_RADIANT") {
+        if (allianceName == AllianceId.radiant) {
             topBarPanel = topBarContainerPanel.FindChildTraverse("top-bar__radiant");
         }
-        if (allianceName == "DOTA_ALLIANCE_DIRE") {
+        if (allianceName == AllianceId.dire) {
             topBarPanel = topBarContainerPanel.FindChildTraverse("top-bar__dire");
         }
-        if (allianceName == "DOTA_ALLIANCE_LEGION") {
+        if (allianceName == AllianceId.legion) {
             topBarPanel = topBarContainerPanel.FindChildTraverse("top-bar__legion");
         }
-        if (allianceName == "DOTA_ALLIANCE_VOID") {
+        if (allianceName == AllianceId.void) {
             topBarPanel = topBarContainerPanel.FindChildTraverse("top-bar__void");
         }
 
@@ -154,8 +155,7 @@ tables.subscribeToNetTableAndLoadNow(tableNameAlliance, (table: never, key: stri
     }
 });
 
-const tableNameMain = "main" as never;
-tables.subscribeToNetTableKey(tableNameMain, "gameState", true, function (data: any) {
+tables.subscribeToNetTableKey("main", "gameState", true, function (data) {
     const state = data.gameState;
 
     if (Game.IsInToolsMode()) {
@@ -173,7 +173,7 @@ tables.subscribeToNetTableKey(tableNameMain, "gameState", true, function (data: 
     }
 });
 
-tables.subscribeToNetTableKey(tableNameMain, "maxScore", true, function (data: any) {
+tables.subscribeToNetTableKey("main", "maxScore", true, function (data) {
     maxScore = data.max_score;
 
     for (const allianceName in allianceBars) {
@@ -182,7 +182,7 @@ tables.subscribeToNetTableKey(tableNameMain, "maxScore", true, function (data: a
     }
 });
 
-tables.subscribeToNetTableKey(tableNameMain, "pve", true, function (data: any) {
+tables.subscribeToNetTableKey("main", "pve", true, function (data) {
     if (Game.IsInToolsMode()) {
         if (data.nextReward) {
             nextRewardPanel.text = "Next reward: " + data.nextReward;
@@ -192,7 +192,7 @@ tables.subscribeToNetTableKey(tableNameMain, "pve", true, function (data: any) {
             for (const key in data.roomPhases) {
                 const phase = data.roomPhases[key];
                 phasesAsText = `${phasesAsText} \n\t${phase}`;
-                if (parseInt(key, 10) === data.roomPhaseIndex + 1) {
+                if (parseInt(key, 10) === (data.roomPhaseIndex ?? 0) + 1) {
                     phasesAsText = phasesAsText + " <==";
                 }
             }
@@ -202,6 +202,7 @@ tables.subscribeToNetTableKey(tableNameMain, "pve", true, function (data: any) {
             roomTypePanel.text = "Room type: " + data.roomType;
         }
     }
+
     if (data.currentStage) {
         currentStagePanel.text = "Stage: " + data.currentStage;
     }
