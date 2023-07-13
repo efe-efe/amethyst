@@ -22,7 +22,7 @@ export default class HeroInfoCard {
     mana: MultipleBars | undefined;
     color: Color;
 
-    constructor(heroData: HeroData, alliancePanel: Panel) {
+    constructor(heroData: any, alliancePanel: Panel) {
         const alliance = alliances.findAllianceByTeam(heroData.teamId)!;
 
         this.color = colors[alliance.GetColor()];
@@ -72,7 +72,7 @@ export default class HeroInfoCard {
         this.UpdateData(heroData);
     }
 
-    public UpdateData(heroData: HeroData): void {
+    public UpdateData(heroData: any): void {
         // this.health.Update(heroData.health, heroData.threshold, heroData.maxHealth, heroData.shield);
 
         if (this.mana) {

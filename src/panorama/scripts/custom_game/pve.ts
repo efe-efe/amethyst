@@ -1,5 +1,5 @@
 import LayoutController from "./layout/layoutController";
-import util, { tables } from "./util";
+import util, { subscribeToNetTableAndLoadNow } from "./util";
 
 enum RewardTypes {
     FAVOR = 0,
@@ -177,7 +177,7 @@ enum RewardTypes {
         }
     };
 
-    tables.subscribeToNetTableAndLoadNow("custom_npc_rewards", (table, key, value) => {
+    subscribeToNetTableAndLoadNow("custom_npc_rewards", (table, key, value) => {
         const playerId = util.getCurrentPlayer();
         if (playerId === value.playerId) {
             if (value.rewards) {
@@ -188,7 +188,7 @@ enum RewardTypes {
         }
     });
 
-    tables.subscribeToNetTableAndLoadNow("custom_npc_favors", (table, key, value) => {
+    subscribeToNetTableAndLoadNow("custom_npc_favors", (table, key, value) => {
         const playerId = util.getCurrentPlayer();
         if (playerId === value.playerId) {
             if (value.upgrades) {

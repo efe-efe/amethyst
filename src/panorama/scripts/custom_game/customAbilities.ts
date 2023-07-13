@@ -1,4 +1,4 @@
-import { tables } from "./util";
+import { subscribeToNetTableKey } from "./util";
 import { TargetingIndicator } from "./types";
 
 export default class CustomAbilities {
@@ -6,7 +6,7 @@ export default class CustomAbilities {
     private abilities: any = {};
 
     private constructor() {
-        tables.subscribeToNetTableKey("main", "abilities", true, data => {
+        subscribeToNetTableKey("main", "abilities", true, data => {
             for (const key in data) {
                 this.abilities[key] = data[key];
             }

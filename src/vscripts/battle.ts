@@ -1,5 +1,5 @@
 import { CustomModifier } from "./abilities/framework/custom_modifier";
-import { updateMovement } from "./common";
+import { updateEntityData, updateEntityMovement } from "./common";
 import { Entity, findEntityByHandle, trueHealEntity } from "./entities";
 import { FindStage, Game } from "./game";
 import { registerModifier } from "./lib/dota_ts_adapter";
@@ -156,7 +156,8 @@ function updateFight(game: BattleStage) {
                 .filter((entity): entity is Entity => entity != undefined);
 
             for (const entity of entities) {
-                updateMovement(entity);
+                updateEntityMovement(entity);
+                updateEntityData(entity);
             }
 
             for (const respawnable of game.state.respawnables) {
@@ -268,7 +269,7 @@ function updateFight(game: BattleStage) {
                 .filter((entity): entity is Entity => entity != undefined);
 
             for (const entity of entities) {
-                updateMovement(entity);
+                updateEntityMovement(entity);
             }
 
             for (const pickup of [...game.state.healthOrbs, ...game.state.manaOrbs, ...game.state.shieldOrbs]) {

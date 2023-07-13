@@ -24,6 +24,8 @@ class PhantomCounter extends CustomAbility {
             duration = duration / 2;
         }
 
+        ModifierPhantomCounterShield.apply(this.caster, this.caster, undefined, { duration: 20, damageBlock: 10 });
+
         const modifier = ModifierPhantomCounter.apply(this.caster, this.caster, this, { duration: duration });
         if (modifier && ModifierUpgradeSniperStrikeInstant.findOne(this.caster)) {
             modifier.OnHit({

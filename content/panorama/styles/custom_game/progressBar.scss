@@ -1,54 +1,72 @@
-.ProgressBar,
-.ProgressBar__Resizable,
-.ProgressBar__Fixed {
-    height: 100%;
-    width: 100%;
-}
-
-.ProgressBar__Background {
+.progressBar {
     height: 100%;
     width: 100%;
 
-    border-top: 1px solid rgb(36, 42, 53);
-    border-bottom: 1px solid rgb(36, 42, 53);
-    border-left: 1px solid rgb(36, 42, 53);
-    border-right: 1px solid rgb(36, 42, 53);
-}
+    &--rounded {
+        .progressBar {
+            &__background,
+            &__delay,
+            &__foreground {
+                border-radius: 3px;
+            }
+        }
+    }
 
-.ProgressBar__Foreground {
-    height: 100%;
-}
+    &__resizable {
+        height: 100%;
+        width: 100%;
+    }
 
-.ProgressBar__Delay {
-    height: 100%;
+    &__fixed {
+        height: 100%;
+        width: 100%;
+    }
 
-    transition-property: width;
-    transition-duration: 0.5s;
+    &__background {
+        height: 100%;
+        width: 100%;
 
-    background-color: #fafafa;
-}
+        border-top: 1px solid rgb(36, 42, 53);
+        border-bottom: 1px solid rgb(36, 42, 53);
+        border-left: 1px solid rgb(36, 42, 53);
+        border-right: 1px solid rgb(36, 42, 53);
+    }
 
-.ProgressBar__Cells {
-    height: 100%;
-    width: 100%;
+    &__foreground {
+        height: 100%;
+    }
 
-    flow-children: right;
-}
+    &__delay {
+        height: 100%;
 
-.ProgressBar__Cell {
-    height: 100%;
+        transition-property: width;
+        transition-duration: 0.5s;
 
-    border-left: 1px solid rgb(36, 42, 53);
-}
+        background-color: #fafafa;
+    }
 
-.ProgressBar__Text {
-    align: center center;
-    width: 100%;
-    text-align: center;
+    &__cells {
+        height: 100%;
+        width: 100%;
 
-    text-shadow: 0px 0px 8px 7 #000000b0;
-    color: #fafafa;
-    font-size: 12px;
+        flow-children: right;
+    }
 
-    font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim, MingLiU;
+    &__cell {
+        height: 100%;
+
+        border-left: 1px solid rgb(36, 42, 53);
+    }
+
+    &__text {
+        align: center center;
+        width: 100%;
+        text-align: center;
+
+        text-shadow: 0px 0px 8px 7 #000000b0;
+        color: #fafafa;
+        font-size: 12px;
+
+        font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim, MingLiU;
+    }
 }

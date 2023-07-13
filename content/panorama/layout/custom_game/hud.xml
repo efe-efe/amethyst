@@ -1,5 +1,10 @@
 <root>
     <styles>
+        <include src="file://{resources}/styles/custom_game/components/health.css" />
+        <include src="file://{resources}/styles/custom_game/components/resource.css" />
+        <include src="file://{resources}/styles/custom_game/components/castpoint.css" />
+        <include src="file://{resources}/styles/custom_game/components/delayedProgressBar.css" />
+        <include src="file://{resources}/styles/custom_game/components/cells.css" />
         <include src="file://{resources}/styles/custom_game/main.css" />
         <include src="file://{resources}/styles/custom_game/progressBar.css" />
         <include src="file://{resources}/styles/custom_game/unitOverhead/unitOverhead.css" />

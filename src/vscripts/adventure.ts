@@ -1,20 +1,12 @@
 import { UnitAIContext, updateUnitAI } from "./ai";
-import { updateMovement } from "./common";
+import { updateEntityData, updateEntityMovement } from "./common";
 import { Entity, findEntityByHandle, setEntityDirection } from "./entities";
 import { FindStage, Game } from "./game";
 import { ModifierMiniStun } from "./modifiers/modifier_mini_stun";
 import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
 import { precache, resource } from "./precache";
-import {
-    SimpleTrigger,
-    allAbilities,
-    direction2D,
-    distanceBetweenPoints,
-    simpleTrigger,
-    takeRandomFromArrayWeightedUnsafe,
-    triggerNow
-} from "./util";
+import { SimpleTrigger, allAbilities, simpleTrigger, takeRandomFromArrayWeightedUnsafe, triggerNow } from "./util";
 
 const resources = precache({
     spawn: resource.fx("particles/econ/events/ti10/portal/portal_open_good.vpcf")
@@ -212,102 +204,6 @@ export function initAdventureStage(config: GameConfig): AdventureStage {
 }
 
 export function updateAdventureStage(game: AdventureStage) {
-    function updateAI(npc: WaveNpc) {
-        if (npc.instance.id != "created") {
-            return;
-        }
-
-        // ListenToGameEvent("entity_hurt", event => OnUnitHurt(event), undefined);
-        // function FindEnemy(radius: number): CDOTA_BaseNPC | undefined {
-        //     const units = FindUnitsInRadius(
-        //         unit.GetTeamNumber(),
-        //         unit.GetAbsOrigin(),
-        //         undefined,
-        //         radius,
-        //         UnitTargetTeam.ENEMY,
-        //         UnitTargetType.HERO + UnitTargetType.BASIC,
-        //         UnitTargetFlags.NO_INVIS,
-        //         FindOrder.ANY,
-        //         false
-        //     );
-        //     if (units.length > 0) {
-        //         return units[0];
-        //     } else {
-        //         return undefined;
-        //     }
-        // }
-        // function UpdateTarget(): void {
-        //     const currentFollowRange = tauntedRemainingDuration > 0 ? tauntedFollowRange : followRange;
-        //     if (followTarget) {
-        //         if (distanceBetweenEntities(unit, followTarget) <= currentFollowRange && !followTarget.IsInvisible()) {
-        //             return;
-        //         } else {
-        //             followTarget = undefined;
-        //         }
-        //     } else {
-        //         followTarget = FindEnemy(followRange);
-        //     }
-        // }
-        function follow(unit: CDOTA_BaseNPC) {
-            // const origin = unit.GetAbsOrigin();
-            // UpdateTarget();
-            // if (followTarget && followTarget.IsAlive()) {
-            //     const distance = distanceBetweenEntities(unit, followTarget);
-            //     let direction = Vector(0, 0);
-            //     if (followTarget.IsAlive() && distance > minFollowRange) {
-            //         direction = followTarget.GetAbsOrigin().__sub(origin).Normalized();
-            //     }
-            //     CustomEntitiesLegacy.SetDirection(unit, direction.x, direction.y);
-            //     return true;
-            // }
-            // return false;
-        }
-
-        // function StartRest(restTime: number): void {
-        //     remainingRestTime = restTime * 30;
-        // }
-        // function BackToOrigin(origin: Vector): boolean {
-        //     const distanceFromOrigin = originalPosition.__sub(origin).Length2D();
-        //     if (rangeOfAction > distanceFromOrigin) {
-        //         return false;
-        //     }
-        //     const direction = originalPosition.__sub(origin).Normalized();
-        //     CustomEntitiesLegacy.SetDirection(unit, direction.x, direction.y);
-        //     return true;
-        // }
-
-        // function ClearTargetPosition(): void {
-        //     targetPosition = undefined;
-        // }
-        // function OnUnitHurt(event: EntityHurtEvent): void {
-        //     const victim = EntIndexToHScript(event.entindex_killed) as CDOTA_BaseNPC;
-        //     if (unit === victim) {
-        //         tauntedRemainingDuration = tauntedDuration * 30;
-        //     }
-        // }
-
-        if (npc.definition.behavior == "follower") {
-            //             if (!Follow()) {
-            //                 StopMoving();
-            //             }
-        }
-
-        if (npc.instance.tauntTrigger && triggerNow(npc.instance.tauntTrigger)) {
-        }
-        //     if (remainingRestTime > 0) {
-        //         remainingRestTime = remainingRestTime - 1;
-        //     }
-        //     if (!Cast()) {
-        //         if (behavior === CustomAIBehavior.WANDERER) {
-        //         } else {
-        //         }
-        //     } else {
-        //         remainingRestTime = 1.0 * 30;
-        //         ClearTargetPosition();
-        //         StopMoving();
-        //     }
-    }
-
     function canCreateUnit(wave: Wave) {
         if (!wave.maxNpcs) {
             return true;
@@ -325,7 +221,8 @@ export function updateAdventureStage(game: AdventureStage) {
         .filter((entity): entity is Entity => entity != undefined);
 
     for (const entity of entities) {
-        updateMovement(entity);
+        updateEntityMovement(entity);
+        updateEntityData(entity);
     }
 
     switch (game.state.id) {
@@ -411,7 +308,8 @@ export function updateAdventureStage(game: AdventureStage) {
                             minFollowRange: npc.definition.minFollowRange,
                             followRange: npc.definition.followRange
                         });
-                        updateMovement(npc.instance.entity);
+                        updateEntityMovement(npc.instance.entity);
+                        updateEntityData(npc.instance.entity);
                     }
                 }
             }

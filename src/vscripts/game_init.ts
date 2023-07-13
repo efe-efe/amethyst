@@ -44,8 +44,6 @@ import { Player, players } from "./players";
 import { createEntity, entities, findEntityByHandle, removeEntity } from "./entities";
 import { initBattleStage, updateBattleState } from "./battle";
 import { initAdventureStage, updateAdventureStage } from "./adventure";
-import { findAllianceDefinitionByUnit } from "./alliance_definitions";
-import { getUnitShieldPoints } from "./modifiers/modifier_shield";
 
 declare global {
     interface CDOTAGameRules {
@@ -856,61 +854,6 @@ function update() {
             updateBattleState(game);
             break;
         }
-    }
-
-    for (const player of game.config.players) {
-        if (player.entity && player.entity.handle.IsRealHero()) {
-            const unit = player.entity.handle;
-            const allianceId = findAllianceDefinitionByUnit(unit)?.id ?? AllianceId.none;
-
-            // if (CustomEntitiesLegacy.GetAlliance(unit)) {
-            //     allianceName = CustomEntitiesLegacy.GetAlliance(unit).GetName();
-            // }
-
-            //TODO: @Refactor Fix the rest
-            const data = {
-                entityIndex: unit.GetEntityIndex(),
-                teamId: unit.GetTeam(),
-                playerId: unit.GetPlayerOwnerID(),
-                allianceId: allianceId,
-                name: unit.GetName(),
-                health: unit.GetHealth(),
-                maxHealth: unit.GetMaxHealth(),
-                threshold: player.entity.threshold,
-                shield: getUnitShieldPoints(unit),
-                mana: unit.GetMana(),
-                maxMana: unit.GetMaxMana()
-                // status: CustomEntitiesLegacy:GetStatus(unit),
-                // recast: CustomEntitiesLegacy:GetRecast(unit),
-                // stackbars: CustomEntitiesLegacy:GetStackbars(unit),
-                // charges: CustomEntitiesLegacy:GetCharges(unit),
-                // cooldown: CustomEntitiesLegacy:GetCooldown(unit),
-                // abilities: CustomEntitiesLegacy:GetAbilities(unit),
-                // energy: CustomEntitiesLegacy:GetEnergy(unit),
-                // maxEnergy: CustomEntitiesLegacy:GetMaxEnergy(unit),
-                // energyPerCell: CustomEntitiesLegacy:GetEnergyPerCell(unit),
-            };
-            //TODO: @Refactor Fix the "nevers";
-            CustomNetTables.SetTableValue("units", tostring(unit.GetPlayerID()), data);
-        }
-
-        // else {
-        //     if (unit.IsIllusion()) {
-        //         return;
-        //     }
-
-        //     const data = {
-        //         playerId: undefined,
-        //         entityIndex: unit.GetEntityIndex(),
-        //         teamId: unit.GetTeam(),
-        //         health: unit.GetHealth(),
-        //         maxHealth: unit.GetMaxHealth()
-        //         // shield: CustomEntitiesLegacy:GetShield(unit),
-        //         // status: CustomEntitiesLegacy:GetStatus(unit),
-        //         // beenHurt: CustomEntitiesLegacy:GetBeenHurt(unit),
-        //     };
-        //     CustomNetTables.SetTableValue("units", tostring("_" + unit.GetEntityIndex()), data as never);
-        // }
     }
 
     GameRules.Addon.UpdateProjectiles();

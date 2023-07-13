@@ -40,7 +40,7 @@ export default class HeroOverhead extends Overhead {
 
     isLocalPlayer: boolean;
 
-    constructor(heroData: HeroData) {
+    constructor(heroData: any) {
         super(heroData.entityIndex as EntityIndex);
         const alliance = alliances.findAllianceByTeam(heroData.teamId)!;
         const localPlayerId = Game.GetLocalPlayerID();
@@ -124,7 +124,7 @@ export default class HeroOverhead extends Overhead {
         return currentStatus;
     }
 
-    public UpdateData(heroData: HeroData) {
+    public UpdateData(heroData: any) {
         this.health.Update(heroData.health, heroData.threshold, heroData.maxHealth, heroData.shield);
         if (this.mana) {
             this.mana.Update(heroData.mana, heroData.maxMana);

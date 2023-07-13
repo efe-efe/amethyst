@@ -1,4 +1,4 @@
-type PanelOptions = {
+export type PanelOptions = {
     id?: string;
     class?: string | string[];
     hitTest?: boolean;

@@ -1,4 +1,4 @@
-import { findModifierByName, entities } from "../util";
+import { findModifierByName } from "../util";
 import { toplevelRoot } from "../components/topLevelRoot";
 import { std } from "../std";
 
@@ -67,13 +67,15 @@ export default class Overhead {
     UpdateVisibility() {
         const hide = findModifierByName(this.entityIndex, "modifier_hide_bar");
 
-        if (Entities.IsAlive(this.entityIndex) && entities.isVisibleByLocal(this.entityIndex) && !hide) {
-            this.Show();
-            return true;
-        } else {
-            this.Hide();
-            return false;
-        }
+        // if (Entities.IsAlive(this.entityIndex) && entities.isVisibleByLocal(this.entityIndex) && !hide) {
+        //     this.Show();
+        //     return true;
+        // } else {
+        //     this.Hide();
+        //     return false;
+        // }
+
+        return true;
     }
 
     SoftHide() {

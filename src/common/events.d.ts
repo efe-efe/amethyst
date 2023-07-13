@@ -31,16 +31,15 @@ type UnitData = {
     mana: number;
     maxMana: number;
     shield: number;
-};
-
-type HeroData = UnitData & {
-    threshold: number;
-    stackbars: string;
-    charges: string;
-    cooldown: string;
-    energy: number;
-    maxEnergy: number;
-    energyPerCell?: number;
+    heroData?: {
+        threshold: number;
+        energy: number;
+        maxEnergy: number;
+        stackbars?: string;
+        charges?: string;
+        cooldown?: string;
+        energyPerCell?: number;
+    };
 };
 
 type AllianceData = {

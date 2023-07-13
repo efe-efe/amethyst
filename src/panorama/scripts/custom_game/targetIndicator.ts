@@ -1,4 +1,4 @@
-import { tables, math, findModifierByName } from "./util";
+import { math, findModifierByName } from "./util";
 import { TargetingIndicator } from "./types";
 import CustomAbilities from "./customAbilities";
 

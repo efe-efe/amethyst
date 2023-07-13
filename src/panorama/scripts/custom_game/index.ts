@@ -5,14 +5,15 @@ import LayoutController from "./layout/layoutController";
 import HeroOverhead from "./overhead/heroOverhead";
 import HeroInfoCard from "./heroInfoCard";
 import AllianceBar from "./allianceBar";
-import util, { tables } from "./util";
+import util, { subscribeToNetTableAndLoadNow, subscribeToNetTableKey } from "./util";
 import "./pve";
 import "./targetIndicator";
 import "./actions";
 import CustomEntities from "./customEntities";
 import { CustomGameState } from "./types";
 import { ReadyBar } from "./readyBar";
-import UnitOverhead from "./overhead/unitOverhead";
+
+import "./hud/overheadHud";
 
 const customEntities = CustomEntities.GetInstance();
 const layout = LayoutController.GetInstance();
@@ -36,8 +37,6 @@ const swapButton = $("#custom-hotkeys__swap-button") as Button;
 const customHotkeysAllRowsPanel = $("#custom-hotkeys__hotkeys");
 const customHotkeysTextPanel = hideShowButton.FindChildrenWithClassTraverse("custom-hotkeys__button-text")[0] as LabelPanel;
 
-const heroOverheads = new Map<EntityIndex, HeroOverhead>();
-const unitOverheads = new Map<EntityIndex, UnitOverhead>();
 const heroInfoCards: any = {};
 const allianceBars: any = {};
 
@@ -83,18 +82,10 @@ layout.SetPanelMargin("debuffs", { bottom: "95px" });
 layout.SetPanelMargin("buffs", { left: "38.5%", bottom: "95px" });
 layout.UpdateCurrency();
 
-customEntities.AddCallback((value: UnitData | HeroData) => {
+customEntities.AddCallback((value: any) => {
     const entityIndex = value.entityIndex as EntityIndex;
 
     if (Entities.IsRealHero(entityIndex)) {
-        const overhead = heroOverheads.get(entityIndex) ?? new HeroOverhead(value);
-
-        if (!heroOverheads.has(entityIndex)) {
-            heroOverheads.set(entityIndex, overhead);
-        }
-
-        overhead.UpdateData(value);
-
         if (!heroInfoCards[entityIndex]) {
             let container: Panel | null;
             if (value.allianceId == AllianceId.radiant) {
@@ -110,23 +101,14 @@ customEntities.AddCallback((value: UnitData | HeroData) => {
                 container = $("#alliances-status").FindChildTraverse("alliances-status__void");
             }
 
-            heroInfoCards[entityIndex] = new HeroInfoCard(value as HeroData, container!);
+            heroInfoCards[entityIndex] = new HeroInfoCard(value, container!);
         } else {
             heroInfoCards[entityIndex].UpdateData(value);
         }
         return;
     }
-
-    const overhead = unitOverheads.get(entityIndex) ?? new UnitOverhead(value);
-
-    if (!unitOverheads.has(entityIndex)) {
-        unitOverheads.set(entityIndex, overhead);
-
-        overhead.UpdateData(value);
-    }
 });
-customEntities.OnReload();
-tables.subscribeToNetTableAndLoadNow("alliances", (table, key, value) => {
+subscribeToNetTableAndLoadNow("alliances", (table, key, value) => {
     const allianceName = value.id;
 
     if (!allianceBars[value.id]) {
@@ -155,7 +137,7 @@ tables.subscribeToNetTableAndLoadNow("alliances", (table, key, value) => {
     }
 });
 
-tables.subscribeToNetTableKey("main", "gameState", true, function (data) {
+subscribeToNetTableKey("main", "gameState", true, function (data) {
     const state = data.gameState;
 
     if (Game.IsInToolsMode()) {
@@ -173,7 +155,7 @@ tables.subscribeToNetTableKey("main", "gameState", true, function (data) {
     }
 });
 
-tables.subscribeToNetTableKey("main", "maxScore", true, function (data) {
+subscribeToNetTableKey("main", "maxScore", true, function (data) {
     maxScore = data.max_score;
 
     for (const allianceName in allianceBars) {
@@ -182,7 +164,7 @@ tables.subscribeToNetTableKey("main", "maxScore", true, function (data) {
     }
 });
 
-tables.subscribeToNetTableKey("main", "pve", true, function (data) {
+subscribeToNetTableKey("main", "pve", true, function (data) {
     if (Game.IsInToolsMode()) {
         if (data.nextReward) {
             nextRewardPanel.text = "Next reward: " + data.nextReward;

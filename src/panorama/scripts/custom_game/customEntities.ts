@@ -1,9 +1,4 @@
-import { tables } from "./util";
-
-type GenericData = {
-    key: string | number | symbol;
-    value: never;
-};
+import { subscribeToNetTableAndLoadNow } from "./util";
 
 export default class CustomEntities {
     private static instance: CustomEntities;
@@ -11,7 +6,7 @@ export default class CustomEntities {
     private entities: UnitData[] = [];
 
     private constructor() {
-        tables.subscribeToNetTableAndLoadNow("units", (table, key, value) => {
+        subscribeToNetTableAndLoadNow("units", (table, key, value) => {
             this.SetEntity(value);
         });
     }
@@ -46,15 +41,7 @@ export default class CustomEntities {
         this.entities.push(entity);
     }
 
-    public OnReload(): void {
-        const units = CustomNetTables.GetAllTableValues("units");
-
-        units.forEach(unit => {
-            this.SetEntity(unit.value);
-        });
-    }
-
-    public AddCallback(callback: (value: UnitData | HeroData) => void) {
+    public AddCallback(callback: (value: UnitData) => void) {
         this.onUpdateCallbacks.push(callback);
     }
 
@@ -67,12 +54,5 @@ export default class CustomEntities {
         });
 
         return index;
-    }
-
-    public IsBeingSelectedByLocal(entityIndex: EntityIndex): boolean {
-        const localPlayerId = Game.GetLocalPlayerID();
-        const selectedEntity = Players.GetSelectedEntities(localPlayerId)[0];
-
-        return selectedEntity === entityIndex;
     }
 }

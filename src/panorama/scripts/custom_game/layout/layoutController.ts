@@ -118,7 +118,7 @@ export default class LayoutController {
     public UpdateCurrencyValues(): void {
         const localPlayerId = Game.GetLocalPlayerID();
         const selectedEntity = Players.GetSelectedEntities(localPlayerId)[0];
-        const entityData = customEntities.GetEntity(selectedEntity);
+        const entityData = customEntities.GetEntity(selectedEntity) as any;
 
         if (entityData) {
             for (let i = 0; i < 9; i++) {
@@ -130,7 +130,7 @@ export default class LayoutController {
                     this.UpdateResourceBoxOnAbility(abilityPanel, abilityManaCost, abilityEnergyCost);
 
                     if (abilityEnergyCost > 0) {
-                        this.UpdateAbilityEnergy(abilityPanel, abilityEnergyCost, (entityData as HeroData).energy);
+                        this.UpdateAbilityEnergy(abilityPanel, abilityEnergyCost, entityData.energy);
                     }
                 }
             }

@@ -49,57 +49,6 @@ export function deactivateNonPriorityAbilities(unit: CDOTA_BaseNPC) {
     }
 }
 
-export function sendDataToClient(unit: CDOTA_BaseNPC) {
-    if (unit.IsRealHero() && !unit.IsIllusion()) {
-        const allianceName = "NOT_ALLIANCE";
-        // if (CustomEntitiesLegacy.GetAlliance(unit)) {
-        //     allianceName = CustomEntitiesLegacy.GetAlliance(unit).GetName();
-        // }
-
-        //TODO: @Refactor Fix the rest
-        const data = {
-            entityIndex: unit.GetEntityIndex(),
-            teamId: unit.GetTeam(),
-            playerId: unit.GetPlayerOwnerID(),
-            allianceName: allianceName,
-            name: unit.GetName(),
-            health: unit.GetHealth(),
-            maxHealth: unit.GetMaxHealth(),
-            // threshold: CustomEntitiesLegacy:GetThreshold(unit),
-            // shield: CustomEntitiesLegacy:GetShield(unit),
-            mana: unit.GetMana(),
-            maxMana: unit.GetMaxMana()
-            // status: CustomEntitiesLegacy:GetStatus(unit),
-            // recast: CustomEntitiesLegacy:GetRecast(unit),
-            // stackbars: CustomEntitiesLegacy:GetStackbars(unit),
-            // charges: CustomEntitiesLegacy:GetCharges(unit),
-            // cooldown: CustomEntitiesLegacy:GetCooldown(unit),
-            // abilities: CustomEntitiesLegacy:GetAbilities(unit),
-            // energy: CustomEntitiesLegacy:GetEnergy(unit),
-            // maxEnergy: CustomEntitiesLegacy:GetMaxEnergy(unit),
-            // energyPerCell: CustomEntitiesLegacy:GetEnergyPerCell(unit),
-        };
-        //TODO: @Refactor Fix the "nevers";
-        CustomNetTables.SetTableValue("units", tostring(unit.GetPlayerID()), data);
-    } else {
-        if (unit.IsIllusion()) {
-            return;
-        }
-
-        const data = {
-            playerId: undefined,
-            entityIndex: unit.GetEntityIndex(),
-            teamId: unit.GetTeam(),
-            health: unit.GetHealth(),
-            maxHealth: unit.GetMaxHealth()
-            // shield: CustomEntitiesLegacy:GetShield(unit),
-            // status: CustomEntitiesLegacy:GetStatus(unit),
-            // beenHurt: CustomEntitiesLegacy:GetBeenHurt(unit),
-        };
-        CustomNetTables.SetTableValue("units", tostring("_" + unit.GetEntityIndex()), data);
-    }
-}
-
 export function clamp(value: number, max: number, min: number) {
     if (max && value > max) {
         return max;
@@ -186,7 +135,7 @@ export function giveMana(unit: CDOTA_BaseNPC, amount: number, informClient: bool
     unit.GiveMana(amount);
 
     if (informClient) {
-        sendDataToClient(unit);
+        // sendDataToClient(unit);
     }
     if (showOverhead) {
         sendOverheadManaMessage(unit, amount);

@@ -61,7 +61,7 @@ export const colors = {
         light: [219, 213, 30],
         dark: [229, 0, 72]
     } as Color,
-    Gradient: function (color: Color, opacity = "1.0"): string {
+    Gradient: function (color: Color, opacity = "1.0") {
         const colorA = "rgba(" + color.light[0] + "," + color.light[1] + "," + color.light[2] + "," + opacity + ")";
         const colorB = "rgba(" + color.dark[0] + "," + color.dark[1] + "," + color.dark[2] + "," + opacity + ")";
         return "gradient(linear, 0% 0%, 100% 0%, from(" + colorA + "), to(" + colorB + "));";
@@ -88,15 +88,6 @@ export function findAllModifiers(entityIndex: EntityIndex) {
     return modifiers;
 }
 
-export const entities = {
-    isVisibleByLocal(entityIndex: EntityIndex): boolean {
-        if (findModifierByName(entityIndex, "modifier_visible") != undefined) {
-            return true;
-        }
-        return false;
-    }
-};
-
 export const panels = {
     createPanelSimple(container: Panel, className: string, type = "Panel"): Panel {
         return $.CreatePanelWithProperties(type, container, className, {
@@ -106,41 +97,40 @@ export const panels = {
     }
 };
 
-export const tables = {
-    subscribeToNetTableAndLoadNow<TName extends keyof CustomNetTableDeclarations, T extends CustomNetTableDeclarations[TName]>(
-        tableName: TName,
-        callback: (tableName: TName, key: keyof T, value: NetworkedData<T[keyof T]>) => void
-    ) {
-        CustomNetTables.SubscribeNetTableListener(tableName, callback);
-        const table = CustomNetTables.GetAllTableValues(tableName);
+export function subscribeToNetTableAndLoadNow<TName extends keyof CustomNetTableDeclarations, T extends CustomNetTableDeclarations[TName]>(
+    tableName: TName,
+    callback: (tableName: TName, key: keyof T, value: NetworkedData<T[keyof T]>) => void
+) {
+    CustomNetTables.SubscribeNetTableListener(tableName, callback);
+    const table = CustomNetTables.GetAllTableValues(tableName);
 
-        table.forEach(element => {
-            callback(tableName, element.key, element.value as NetworkedData<T[keyof T]>);
-        });
-    },
-    subscribeToNetTableKey<
-        TName extends keyof CustomNetTableDeclarations,
-        T extends CustomNetTableDeclarations[TName],
-        TKey extends keyof T
-    >(tableName: TName, toKey: TKey, loadNow: boolean, callback: (data: NetworkedData<T[TKey]>) => void) {
-        const listener = CustomNetTables.SubscribeNetTableListener(tableName, function (table, key, data) {
-            if ((key as keyof T) == toKey) {
-                if (!data) {
-                    return;
-                }
+    table.forEach(element => {
+        callback(tableName, element.key, element.value as NetworkedData<T[keyof T]>);
+    });
+}
 
-                callback(data as NetworkedData<T[TKey]>);
+export function subscribeToNetTableKey<
+    TName extends keyof CustomNetTableDeclarations,
+    T extends CustomNetTableDeclarations[TName],
+    TKey extends keyof T
+>(tableName: TName, toKey: TKey, loadNow: boolean, callback: (data: NetworkedData<T[TKey]>) => void) {
+    const listener = CustomNetTables.SubscribeNetTableListener(tableName, function (table, key, data) {
+        if ((key as keyof T) == toKey) {
+            if (!data) {
+                return;
             }
-        });
 
-        if (loadNow) {
-            const data = CustomNetTables.GetTableValue(tableName, toKey as unknown as keyof CustomNetTableDeclarations[TName]);
-
-            if (data) {
-                callback(data as NetworkedData<T[TKey]>);
-            }
+            callback(data as NetworkedData<T[TKey]>);
         }
+    });
 
-        return listener;
+    if (loadNow) {
+        const data = CustomNetTables.GetTableValue(tableName, toKey as unknown as keyof CustomNetTableDeclarations[TName]);
+
+        if (data) {
+            callback(data as NetworkedData<T[TKey]>);
+        }
     }
-};
+
+    return listener;
+}

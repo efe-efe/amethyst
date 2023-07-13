@@ -1,12 +1,53 @@
+import { findAllianceDefinitionByUnit } from "./alliance_definitions";
 import { Entity } from "./entities";
 import { findPlayerById } from "./game";
-import { canUnitWalk, fullyFaceTowards } from "./util";
+import { getUnitShieldPoints } from "./modifiers/modifier_shield";
+import { canUnitWalk, fullyFaceTowards, getEnergy, getMaxEnergy } from "./util";
 
-export function updateMovement(entity: Entity) {
-    function isAnimating(entity: Entity) {
-        // return CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.ANIMATION)
-        return false;
-    }
+export function updateEntityData(entity: Entity) {
+    const unit = entity.handle;
+    const allianceId = findAllianceDefinitionByUnit(unit)?.id ?? AllianceId.none;
+
+    // if (CustomEntitiesLegacy.GetAlliance(unit)) {
+    //     allianceName = CustomEntitiesLegacy.GetAlliance(unit).GetName();
+    // }
+
+    //TODO: @Refactor Fix the rest
+    const data = {
+        entityIndex: unit.GetEntityIndex(),
+        teamId: unit.GetTeam(),
+        playerId: unit.GetPlayerOwnerID(),
+        allianceId: allianceId,
+        name: unit.GetName(),
+        health: unit.GetHealth(),
+        maxHealth: unit.GetMaxHealth(),
+        shield: getUnitShieldPoints(unit),
+        mana: unit.GetMana(),
+        maxMana: unit.GetMaxMana(),
+        // status: CustomEntitiesLegacy:GetStatus(unit),
+        // recast: CustomEntitiesLegacy:GetRecast(unit),
+        // stackbars: CustomEntitiesLegacy:GetStackbars(unit),
+        // charges: CustomEntitiesLegacy:GetCharges(unit),
+        // cooldown: CustomEntitiesLegacy:GetCooldown(unit),
+        // abilities: CustomEntitiesLegacy:GetAbilities(unit),
+        // maxEnergy: CustomEntitiesLegacy:GetMaxEnergy(unit),
+        // energyPerCell: CustomEntitiesLegacy:GetEnergyPerCell(unit),
+        heroData: unit.IsRealHero()
+            ? {
+                  threshold: entity.threshold,
+                  energy: getEnergy(entity.handle),
+                  maxEnergy: getMaxEnergy()
+              }
+            : undefined
+    };
+    CustomNetTables.SetTableValue("units", tostring("_" + entity.handle.GetEntityIndex()), data);
+}
+
+export function updateEntityMovement(entity: Entity) {
+    // function isAnimating(entity: Entity) {
+    // return CustomEntitiesLegacy:HasModifiersFromType(hEntity, MODIFIER_TYPES.ANIMATION)
+    //     return false;
+    // }
 
     function moveEntity(entity: Entity, direction: Vector, speed: number) {
         const offset = 70;
