@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { UnitAIContext, updateUnitAI } from "./ai";
 import { updateAnimations } from "./animation";
 import { updateEntityData, updateEntityMovement } from "./common";
@@ -24,10 +25,12 @@ declare global {
                 | {
                       id: "fight";
                       wave: Wave;
-                      chamber: Chamber;
+                      waveDefinitions: WaveDefinition[];
+                      mapHandle: SpawnGroupHandle;
                   }
                 | {
                       id: "reward";
+                      mapHandle: SpawnGroupHandle;
                   };
         };
     }
@@ -39,12 +42,11 @@ type WorldDefinition = {
 
 type ChamberDefinition = {
     variations: {
-        waves: WaveDefinition[];
+        waveDefinitions: WaveDefinition[];
+        map: string;
         chance: number;
     }[];
 };
-
-type Chamber = WaveDefinition[];
 
 type WaveDefinition = {
     npcs: {
@@ -108,14 +110,14 @@ const rangedsWave = defineWave([
             id: NpcId.direRange,
             shieldPct: 50
         },
-        amount: 5
+        amount: 1
     },
     {
         npc: {
             id: NpcId.direRangeMega,
             shieldPct: 0
         },
-        amount: 5
+        amount: 1
     }
 ]);
 
@@ -167,10 +169,10 @@ const centaurWave = defineWave([{ npc: { id: NpcId.centaur, shieldPct: 0 }, amou
 const direWorldDefinition: WorldDefinition = {
     chamberDefinitions: [
         {
-            variations: [{ waves: [rangedsWave, onlyRangeWave], chance: 100 }]
+            variations: [{ waveDefinitions: [rangedsWave], chance: 100, map: "dire_1" }]
         },
         {
-            variations: [{ waves: [centaurWave], chance: 100 }]
+            variations: [{ waveDefinitions: [centaurWave], chance: 100, map: "dire_2" }]
         }
     ]
 };
@@ -207,8 +209,17 @@ export function initAdventureStage(config: GameConfig): AdventureStage {
         throw "Unable to find chamber definition";
     }
 
-    const chamber = takeRandomFromArrayWeightedUnsafe(chamberDefinition.variations, variation => variation.chance).waves;
-    const wave = serializeWave(chamber.splice(0, 1)[0]);
+    const chamber = takeRandomFromArrayWeightedUnsafe(chamberDefinition.variations, variation => variation.chance);
+    const wave = serializeWave(chamber.waveDefinitions.splice(0, 1)[0]);
+
+    const mapHandle = DOTA_SpawnMapAtPosition(
+        chamber.map,
+        Vector(0, 0, 0),
+        true,
+        maps => ManuallyTriggerSpawnGroupCompletion(maps),
+        () => {},
+        undefined
+    );
 
     return {
         stage: Stage.adventure,
@@ -218,7 +229,8 @@ export function initAdventureStage(config: GameConfig): AdventureStage {
         state: {
             id: "fight",
             wave: wave,
-            chamber: chamber
+            waveDefinitions: chamber.waveDefinitions,
+            mapHandle: mapHandle
         },
         players: () => config.players
     };
@@ -249,11 +261,12 @@ export function updateAdventureStage(game: AdventureStage) {
     switch (game.state.id) {
         case "fight":
             if (game.state.wave.npcs.every(npc => npc.instance.id == "removed")) {
-                const waveDefinition = game.state.chamber.splice(0, 1)[0];
+                const waveDefinition = game.state.waveDefinitions.splice(0, 1)[0];
 
                 if (!waveDefinition) {
                     game.state = {
-                        id: "reward"
+                        id: "reward",
+                        mapHandle: game.state.mapHandle
                     };
 
                     break;
@@ -344,13 +357,25 @@ export function updateAdventureStage(game: AdventureStage) {
                 break;
             }
 
-            const chamber = takeRandomFromArrayWeightedUnsafe(chamberDefinition.variations, variation => variation.chance).waves;
-            const wave = serializeWave(chamber.splice(0, 1)[0]);
+            const chamber = takeRandomFromArrayWeightedUnsafe(chamberDefinition.variations, variation => variation.chance);
+            const wave = serializeWave(chamber.waveDefinitions.splice(0, 1)[0]);
+
+            UnloadSpawnGroupByHandle(game.state.mapHandle);
+
+            const mapHandle = DOTA_SpawnMapAtPosition(
+                chamber.map,
+                Vector(0, 0, 0),
+                true,
+                maps => ManuallyTriggerSpawnGroupCompletion(maps),
+                () => {},
+                undefined
+            );
 
             game.state = {
                 id: "fight",
-                chamber: chamber,
-                wave: wave
+                waveDefinitions: chamber.waveDefinitions,
+                wave: wave,
+                mapHandle: mapHandle
             };
 
             break;
