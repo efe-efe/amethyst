@@ -2,9 +2,15 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { ModifierUpgradePhantomExtraDaggers, ModifierUpgradePhantomFastDaggers } from "../../../modifiers/upgrades/modifier_favors";
+import { precache, resource } from "../../../precache";
 import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomBleed, ModifierPhantomStacks, PhantomBasicAttack, PhantomExBasicAttack } from "./phantom_basic_attack";
+
+const resources = precache({
+    dagger: resource.fx("particles/phantom/phantom_special_attack.vpcf"),
+    impact: resource.fx("particles/phantom/phantom_special_attack_explosion.vpcf")
+});
 
 @registerAbility("phantom_special_attack")
 class PhantomSpecialAttack extends CustomAbility {
@@ -73,7 +79,7 @@ class PhantomSpecialAttack extends CustomAbility {
         this.ProjectileAttack({
             source: this.caster,
             attackType: "basic",
-            effectName: "particles/phantom/phantom_special_attack.vpcf",
+            effectName: resources.dagger.path,
             spawnOrigin: origin.__add(Vector(direction.x * 30, direction.y * 30, 96)),
             velocity: direction.__mul(projectileSpeed),
             groundOffset: 0,
@@ -125,11 +131,7 @@ class PhantomSpecialAttack extends CustomAbility {
 
     PlayEffectsOnFinish(position: Vector) {
         EmitSoundOnLocationWithCaster(position, "Hero_PhantomAssassin.Dagger.Target", this.caster);
-        const particleId = ParticleManager.CreateParticle(
-            "particles/phantom/phantom_special_attack_explosion.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            undefined
-        );
+        const particleId = ParticleManager.CreateParticle(resources.impact.path, ParticleAttachment.WORLDORIGIN, undefined);
         ParticleManager.SetParticleControl(particleId, 3, position);
         ParticleManager.ReleaseParticleIndex(particleId);
     }

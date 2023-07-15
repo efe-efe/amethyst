@@ -2,7 +2,12 @@ import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility, registerModifier } from "../../../../lib/dota_ts_adapter";
 import { ModifierChanneling } from "../../../../modifiers/modifier_channeling";
 import { ModifierThinker } from "../../../../modifiers/modifier_thinker";
+import { precache, resource } from "../../../../precache";
 import { findUnitsInRadius } from "../../../../util";
+
+const resources = precache({
+    aoe: resource.fx("particles/units/heroes/hero_sandking/sandking_epicenter.vpcf")
+});
 
 @registerAbility("centaur_rage")
 class CentaurRage extends CustomAbility {
@@ -101,7 +106,7 @@ class ModifierCentaurRageThinker extends ModifierThinker {
             });
         }
 
-        EFX("particles/units/heroes/hero_sandking/sandking_epicenter.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+        EFX(resources.aoe.path, ParticleAttachment.WORLDORIGIN, undefined, {
             cp0: this.origin,
             cp1: Vector(this.radius, 0, 0),
             release: true

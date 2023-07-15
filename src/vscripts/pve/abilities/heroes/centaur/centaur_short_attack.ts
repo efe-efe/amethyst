@@ -1,7 +1,12 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
 import { ModifierStun } from "../../../../modifiers/modifier_stunned";
+import { precache, resource } from "../../../../precache";
 import { createTimedRadiusMarker, findUnitsInRadius } from "../../../../util";
+
+const resources = precache({
+    cast: resource.fx("particles/econ/items/centaur/centaur_ti6/centaur_ti6_warstomp.vpcf")
+});
 
 @registerAbility("centaur_short_attack")
 class CentaurShortAttack extends CustomAbility {
@@ -62,7 +67,7 @@ class CentaurShortAttack extends CustomAbility {
             ModifierStun.apply(enemy, this.caster, undefined, { duration: 0.5 });
         }
 
-        EFX("particles/econ/items/centaur/centaur_ti6/centaur_ti6_warstomp.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+        EFX(resources.cast.path, ParticleAttachment.WORLDORIGIN, undefined, {
             cp0: origin,
             cp1: Vector(radius, 0, 0),
             release: true

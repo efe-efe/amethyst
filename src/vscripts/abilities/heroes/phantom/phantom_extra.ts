@@ -6,6 +6,13 @@ import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { direction2D, findUnitsInRadius, getCursorPosition, isCountering } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
+import { precache, resource } from "../../../precache";
+
+const resources = precache({
+    blinkStart: resource.fx("particles/blink_purple.vpcf"),
+    trail: resource.fx("particles/phantom/mobility_trail.vpcf"),
+    impact: resource.fx("particles/phantom/phantom_basic_attack.vpcf")
+});
 
 @registerAbility("phantom_extra")
 class PhantomExtra extends CustomAbility {
@@ -48,7 +55,7 @@ class PhantomExtra extends CustomAbility {
 
     PlayEffectsOnCast() {
         EmitSoundOn("Hero_PhantomAssassin.Strike.Start", this.caster);
-        const particleId = ParticleManager.CreateParticle("particles/blink_purple.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.caster);
+        const particleId = ParticleManager.CreateParticle(resources.blinkStart.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster);
         ParticleManager.ReleaseParticleIndex(particleId);
     }
 }
@@ -81,11 +88,7 @@ class ModifierPhantomExtraDisplacement extends ModifierDisplacement {
                 this.OnImpact(enemy);
             }
 
-            const particleId = ParticleManager.CreateParticle(
-                "particles/phantom/mobility_trail.vpcf",
-                ParticleAttachment.ABSORIGIN,
-                this.parent
-            );
+            const particleId = ParticleManager.CreateParticle(resources.trail.path, ParticleAttachment.ABSORIGIN, this.parent);
             ParticleManager.SetParticleControl(particleId, 0, this.origin);
             ParticleManager.SetParticleControl(particleId, 1, this.parent.GetAbsOrigin());
             ParticleManager.ReleaseParticleIndex(particleId);
@@ -143,7 +146,7 @@ class ModifierPhantomExtraDisplacement extends ModifierDisplacement {
     }
 
     PlayEffectsOnImpact(target: CDOTA_BaseNPC) {
-        EFX("particles/phantom/phantom_basic_attack.vpcf", ParticleAttachment.ABSORIGIN, target, {
+        EFX(resources.impact.path, ParticleAttachment.ABSORIGIN, target, {
             release: true
         });
         EmitSoundOn("Hero_PhantomAssassin.Attack", target);

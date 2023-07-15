@@ -87,3 +87,4 @@ game/scripts/vscripts/npc_definitions.lua
 game/scripts/vscripts/common.lua
 game/scripts/vscripts/animation.lua
 game/scripts/vscripts/ai.lua
+game/scripts/vscripts/abilities.lua

@@ -15,6 +15,20 @@ import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPhantomStacks, PhantomBasicAttack } from "./phantom_basic_attack";
 import { ModifierUpgradePhantomStrikeKnives } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_strike_knives";
+import { precache, resource } from "../../../precache";
+
+const resources = precache({
+    sparksStart: resource.fx(
+        "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf"
+    ),
+    sparksEnd: resource.fx("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf"),
+    blurStart: resource.fx("particles/econ/items/phantom_assassin/pa_fall20_immortal_shoulders/pa_fall20_blur_start.vpcf"),
+    blurStatus: resource.fx("particles/units/heroes/hero_phantom_assassin/phantom_assassin_active_blur.vpcf"),
+    explosion: resource.fx("particles/phantom/phantom_special_attack_explosion.vpcf"),
+    invisible: resource.fx("particles/econ/items/phantom_assassin/pa_fall20_immortal_shoulders/pa_fall20_blur_ambient.vpcf"),
+    dagger: resource.fx("particles/phantom/phantom_counter_recast.vpcf"),
+    counterActivate: resource.fx("particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_omni_slash_tgt_bonus.vpcf")
+});
 
 @registerAbility("phantom_counter")
 class PhantomCounter extends CustomAbility {
@@ -23,8 +37,6 @@ class PhantomCounter extends CustomAbility {
         if (ModifierUpgradeSniperStrikeInstant.findOne(this.caster)) {
             duration = duration / 2;
         }
-
-        ModifierPhantomCounterShield.apply(this.caster, this.caster, undefined, { duration: 20, damageBlock: 10 });
 
         const modifier = ModifierPhantomCounter.apply(this.caster, this.caster, this, { duration: duration });
         if (modifier && ModifierUpgradeSniperStrikeInstant.findOne(this.caster)) {
@@ -60,24 +72,14 @@ class PhantomCounterRecast extends CustomAbility {
             duration: shieldDuration,
             damageBlock: shield
         });
-        EFX(
-            "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.caster,
-            {
-                cp3: origin,
-                release: true
-            }
-        );
-        EFX(
-            "particles/econ/items/phantom_assassin/pa_fall20_immortal_shoulders/pa_fall20_blur_start.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.caster,
-            {
-                cp3: origin,
-                release: true
-            }
-        );
+        EFX(resources.sparksEnd.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
+            cp3: origin,
+            release: true
+        });
+        EFX(resources.blurStart.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
+            cp3: origin,
+            release: true
+        });
         EmitSoundOn("Hero_Sven.GodsStrength.Attack", this.caster);
         EmitSoundOn("Hero_Abaddon.AphoticShield.Cast", this.caster);
     }
@@ -107,25 +109,15 @@ class PhantomExCounter extends CustomAbility {
     PlayEffectsOnCast() {
         const origin = this.caster.GetAbsOrigin();
         EmitSoundOn("Hero_PhantomAssassin.Blur.Break", this.caster);
-        EFX(
-            "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.caster,
-            {
-                cp3: origin,
-                release: true
-            }
-        );
-        EFX(
-            "particles/econ/items/phantom_assassin/pa_fall20_immortal_shoulders/pa_fall20_blur_start.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            undefined,
-            {
-                cp0: origin,
-                cp3: origin,
-                release: true
-            }
-        );
+        EFX(resources.sparksEnd.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
+            cp3: origin,
+            release: true
+        });
+        EFX(resources.blurStart.path, ParticleAttachment.WORLDORIGIN, undefined, {
+            cp0: origin,
+            cp3: origin,
+            release: true
+        });
     }
     // OnUpgrade(){
     // 	CustomAbilitiesLegacy:LinkUpgrades(this, "phantom_ex_counter_recast")
@@ -168,7 +160,7 @@ class PhantomExCounterRecast extends CustomAbility {
 
         this.ProjectileAttack({
             source: this.caster,
-            effectName: "particles/phantom/phantom_counter_recast.vpcf",
+            effectName: resources.dagger.path,
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 30, projectileDirection.y * 30, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
@@ -198,8 +190,7 @@ class PhantomExCounterRecast extends CustomAbility {
 
     PlayEffectsOnFinish(position: Vector) {
         EmitSoundOnLocationWithCaster(position, "Hero_PhantomAssassin.Dagger.Target", this.caster);
-        const particle_cast = "particles/phantom/phantom_special_attack_explosion.vpcf";
-        const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.WORLDORIGIN, undefined);
+        const particleId = ParticleManager.CreateParticle(resources.explosion.path, ParticleAttachment.WORLDORIGIN, undefined);
         ParticleManager.SetParticleControl(particleId, 3, position);
         ParticleManager.ReleaseParticleIndex(particleId);
     }
@@ -227,12 +218,7 @@ class ModifierPhantomExCounterRecast extends ModifierRecast {
     OnCreated(params: { abilityLeft: string; abilityRight: string; duration: number }) {
         super.OnCreated(params);
         if (IsServer()) {
-            this.particleId = EFX(
-                "particles/econ/items/phantom_assassin/pa_fall20_immortal_shoulders/pa_fall20_blur_ambient.vpcf",
-                ParticleAttachment.ABSORIGIN_FOLLOW,
-                this.parent,
-                {}
-            );
+            this.particleId = EFX(resources.invisible.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {});
         }
     }
 
@@ -240,15 +226,10 @@ class ModifierPhantomExCounterRecast extends ModifierRecast {
         super.OnDestroy();
         if (IsServer()) {
             DEFX(this.particleId, false);
-            EFX(
-                "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf",
-                ParticleAttachment.ABSORIGIN_FOLLOW,
-                this.parent,
-                {
-                    cp3: this.parent.GetAbsOrigin(),
-                    release: true
-                }
-            );
+            EFX(resources.sparksEnd.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
+                cp3: this.parent.GetAbsOrigin(),
+                release: true
+            });
         }
     }
 
@@ -303,7 +284,7 @@ class ModifierPhantomCounterBuff extends CustomModifier {
     }
 
     GetStatusEffectName() {
-        return "particles/units/heroes/hero_phantom_assassin/phantom_assassin_active_blur.vpcf";
+        return resources.blurStatus.path;
     }
 }
 
@@ -339,7 +320,7 @@ class ModifierPhantomCounter extends ModifierCounter {
 
         if (IsServer()) {
             const particleId = ParticleManager.CreateParticle(
-                "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_omni_slash_tgt_bonus.vpcf",
+                resources.counterActivate.path,
                 ParticleAttachment.ABSORIGIN_FOLLOW,
                 this.caster
             );
@@ -467,29 +448,19 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
 
     PlayEffectsOnCreated() {
         EmitSoundOn("Hero_PhantomAssassin.Blur", this.parent);
-        EFX(
-            "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            undefined,
-            {
-                cp0: this.parent.GetAbsOrigin(),
-                cp3: this.parent.GetAbsOrigin(),
-                release: true
-            }
-        );
+        EFX(resources.sparksStart.path, ParticleAttachment.WORLDORIGIN, undefined, {
+            cp0: this.parent.GetAbsOrigin(),
+            cp3: this.parent.GetAbsOrigin(),
+            release: true
+        });
     }
 
     PlayEffectsOnCast() {
         EmitSoundOn("Hero_PhantomAssassin.Blur.Break", this.parent);
-        EFX(
-            "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.parent,
-            {
-                cp3: this.parent.GetAbsOrigin(),
-                release: true
-            }
-        );
+        EFX(resources.sparksEnd.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
+            cp3: this.parent.GetAbsOrigin(),
+            release: true
+        });
     }
 
     CheckState() {

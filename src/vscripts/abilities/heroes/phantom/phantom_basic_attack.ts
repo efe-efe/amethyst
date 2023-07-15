@@ -14,6 +14,20 @@ import {
 } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
+import { precache, resource } from "../../../precache";
+
+const resources = precache({
+    dagger: resource.fx("particles/phantom/phantom_special_attack.vpcf"),
+    daggerImpact: resource.fx("particles/phantom/phantom_special_attack_explosion.vpcf"),
+    daggerAoe: resource.fx("particles/phantom/phantom_aoe_daggers_small.vpcf"),
+    attackImpact: resource.fx("particles/phantom/phantom_basic_attack.vpcf"),
+    charged: resource.fx("particles/econ/items/antimage/antimage_weapon_godeater/antimage_godeater_bracer_ambient.vpcf"),
+    invisPoof: resource.fx("particles/econ/events/ti5/blink_dagger_end_sparkles_end_lvl2_ti5.vpcf"),
+    bleed: resource.fx("particles/econ/items/bloodseeker/bloodseeker_ti7/bloodseeker_ti7_thirst_owner.vpcf"),
+    bleedRibbon: resource.fx("particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_eztzhok_ribbon.vpcf"),
+    bleedSplash: resource.fx("particles/econ/items/dazzle/dazzle_darkclaw/dazzle_darkclaw_poison_touch_blood.vpcf"),
+    yellowSparks: resource.fx("particles/econ/courier/courier_axolotl_ambient/courier_axolotl_ambient_lvl4_trail_steam.vpcf")
+});
 
 @registerAbility("phantom_basic_attack")
 export class PhantomBasicAttack extends CustomAbility {
@@ -56,7 +70,7 @@ export class PhantomBasicAttack extends CustomAbility {
 
         if (modifier) {
             const stacks = modifier.GetStackCount();
-            EFX("particles/phantom/phantom_aoe_daggers_small.vpcf", ParticleAttachment.ABSORIGIN, this.caster, {
+            EFX(resources.daggerAoe.path, ParticleAttachment.ABSORIGIN, this.caster, {
                 release: true
             });
             const enemies = findUnitsInRadius(
@@ -142,7 +156,7 @@ export class PhantomBasicAttack extends CustomAbility {
     }
 
     PlayEffectsOnImpact(target: CDOTA_BaseNPC) {
-        EFX("particles/phantom/phantom_basic_attack.vpcf", ParticleAttachment.ABSORIGIN, target, {
+        EFX(resources.attackImpact.path, ParticleAttachment.ABSORIGIN, target, {
             release: true
         });
         EmitSoundOn("Hero_PhantomAssassin.Attack", target);
@@ -202,11 +216,7 @@ export class ModifierPhantomStacks extends CustomModifier<PhantomBasicAttack> {
         const origin = this.parent.GetAbsOrigin();
 
         for (let i = 0; i < 5; i++) {
-            const particleId = ParticleManager.CreateParticle(
-                "particles/econ/items/antimage/antimage_weapon_godeater/antimage_godeater_bracer_ambient.vpcf",
-                ParticleAttachment.CUSTOMORIGIN,
-                this.caster
-            );
+            const particleId = ParticleManager.CreateParticle(resources.charged.path, ParticleAttachment.CUSTOMORIGIN, this.caster);
             ParticleManager.SetParticleControlEnt(
                 particleId,
                 0,
@@ -247,11 +257,7 @@ export class PhantomExBasicAttack extends CustomAbility {
 
     PlayEffects() {
         EmitSoundOn("Hero_PhantomAssassin.Blur", this.caster);
-        const particleId = ParticleManager.CreateParticle(
-            "particles/econ/events/ti5/blink_dagger_end_sparkles_end_lvl2_ti5.vpcf",
-            ParticleAttachment.POINT,
-            this.caster
-        );
+        const particleId = ParticleManager.CreateParticle(resources.invisPoof.path, ParticleAttachment.POINT, this.caster);
         ParticleManager.SetParticleControl(particleId, 3, this.caster.GetOrigin());
         ParticleManager.ReleaseParticleIndex(particleId);
     }
@@ -315,7 +321,7 @@ class PhantomBasicAttackRelated extends CustomAbility {
         this.ProjectileAttack({
             source: this.caster,
             attackType: "basic",
-            effectName: "particles/phantom/phantom_special_attack.vpcf",
+            effectName: resources.dagger.path,
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 30, projectileDirection.y * 30, 96)),
             velocity: projectileDirection.__mul(projectileSpeed),
             groundOffset: 0,
@@ -360,11 +366,7 @@ class PhantomBasicAttackRelated extends CustomAbility {
 
     PlayEffectsOnFinish(position: Vector) {
         EmitSoundOnLocationWithCaster(position, "Hero_PhantomAssassin.Dagger.Target", this.caster);
-        const particleId = ParticleManager.CreateParticle(
-            "particles/phantom/phantom_special_attack_explosion.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            undefined
-        );
+        const particleId = ParticleManager.CreateParticle(resources.daggerImpact.path, ParticleAttachment.WORLDORIGIN, undefined);
         ParticleManager.SetParticleControl(particleId, 3, position);
         ParticleManager.ReleaseParticleIndex(particleId);
     }
@@ -405,11 +407,7 @@ class ModifierPhantomExBasicAttack extends CustomModifier {
         if (IsServer()) {
             this.parent.SwapAbilities(PhantomBasicAttack.name, PhantomBasicAttackRelated.name, true, false);
             const origin = this.parent.GetAbsOrigin();
-            const particleId = ParticleManager.CreateParticle(
-                "particles/econ/events/ti5/blink_dagger_end_sparkles_end_lvl2_ti5.vpcf",
-                ParticleAttachment.CUSTOMORIGIN,
-                this.parent
-            );
+            const particleId = ParticleManager.CreateParticle(resources.invisPoof.path, ParticleAttachment.CUSTOMORIGIN, this.parent);
             ParticleManager.SetParticleControlEnt(
                 particleId,
                 0,
@@ -442,11 +440,7 @@ class ModifierPhantomExBasicAttack extends CustomModifier {
 
     PlayEffectsOnCast() {
         const origin = this.parent.GetAbsOrigin();
-        this.particleId = ParticleManager.CreateParticle(
-            "particles/econ/courier/courier_axolotl_ambient/courier_axolotl_ambient_lvl4_trail_steam.vpcf",
-            ParticleAttachment.CUSTOMORIGIN,
-            this.parent
-        );
+        this.particleId = ParticleManager.CreateParticle(resources.yellowSparks.path, ParticleAttachment.CUSTOMORIGIN, this.parent);
         ParticleManager.SetParticleControlEnt(
             this.particleId,
             0,
@@ -475,12 +469,7 @@ export class ModifierPhantomBleed extends CustomModifier<PhantomExBasicAttack> {
             this.SetStackCount(1);
             this.OnIntervalThink();
             this.StartIntervalThink(1);
-            this.particleId = EFX(
-                "particles/econ/items/bloodseeker/bloodseeker_ti7/bloodseeker_ti7_thirst_owner.vpcf",
-                ParticleAttachment.ABSORIGIN_FOLLOW,
-                this.parent,
-                {}
-            );
+            this.particleId = EFX(resources.bleed.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {});
         }
     }
 
@@ -506,23 +495,13 @@ export class ModifierPhantomBleed extends CustomModifier<PhantomExBasicAttack> {
             attacker: this.caster,
             damage_type: DamageTypes.PURE
         });
-        EFX(
-            "particles/econ/items/bloodseeker/bloodseeker_eztzhok_weapon/bloodseeker_bloodbath_eztzhok_ribbon.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.parent,
-            {
-                release: true
-            }
-        );
-        EFX(
-            "particles/econ/items/dazzle/dazzle_darkclaw/dazzle_darkclaw_poison_touch_blood.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.parent,
-            {
-                cp3: this.parent.GetAbsOrigin(),
-                release: true
-            }
-        );
+        EFX(resources.bleedRibbon.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
+            release: true
+        });
+        EFX(resources.bleedSplash.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
+            cp3: this.parent.GetAbsOrigin(),
+            release: true
+        });
         EmitSoundOn("Hero_PhantomAssassin.Attack", this.parent);
         EmitSoundOn("Hero_PhantomAssassin.Dagger.Target", this.parent);
         EmitSoundOn("Hero_PhantomAssassin.Spatter", this.parent);

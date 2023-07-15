@@ -1,8 +1,17 @@
 import { registerAbility } from "../../../lib/dota_ts_adapter";
 import { ModifierUpgradePhantomCritRecast } from "../../../modifiers/upgrades/modifier_favors";
+import { precache, resource } from "../../../precache";
 import { clampPosition, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomStacks } from "./phantom_basic_attack";
+
+const resources = precache({
+    swoop: resource.fx("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop.vpcf"),
+    swoopExtra: resource.fx(
+        "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_r.vpcf"
+    ),
+    impact: resource.fx("particles/juggernaut/juggernaut_second_attack_parent.vpcf")
+});
 
 @registerAbility("phantom_second_attack")
 class PhantomSecondAttack extends CustomAbility {
@@ -85,12 +94,10 @@ class PhantomSecondAttack extends CustomAbility {
         let particle_cast = "";
 
         if (stacks == 3) {
-            particle_cast =
-                "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop.vpcf";
+            particle_cast = resources.swoop.path;
             EmitSoundOn("Hero_PhantomAssassin.Spatter", target);
         } else {
-            particle_cast =
-                "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_r.vpcf";
+            particle_cast = resources.swoopExtra.path;
         }
         const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.POINT, this.caster);
         ParticleManager.SetParticleControl(particleId, 1, finalPosition);
@@ -100,7 +107,7 @@ class PhantomSecondAttack extends CustomAbility {
 
     PlayEffectsOnFinish(direction: Vector, radius: number) {
         const origin = this.caster.GetAbsOrigin();
-        const efx = EFX("particles/juggernaut/juggernaut_second_attack_parent.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+        const efx = EFX(resources.impact.path, ParticleAttachment.WORLDORIGIN, undefined, {
             cp0: origin,
             cp0f: direction,
             cp3: Vector(radius, 0, 0)

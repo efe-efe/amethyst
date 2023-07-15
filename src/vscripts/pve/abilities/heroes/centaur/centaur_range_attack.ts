@@ -1,7 +1,15 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
+import { precache, resource } from "../../../../precache";
 import { ProjectileBehavior } from "../../../../projectiles";
 import { areUnitsAllied, direction2D, fakeAbility } from "../../../../util";
+
+const resources = precache({
+    castPoint: resource.fx("particles/units/heroes/hero_dawnbreaker/dawnbreaker_converge.vpcf"),
+    projectile: resource.fx("particles/units/heroes/hero_invoker/invoker_deafening_blast.vpcf"),
+    impact: resource.fx("particles/units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"),
+    impactBlood: resource.fx("particles/units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf")
+});
 
 @registerAbility("centaur_range_attack")
 class CentaurRangeAttack extends CustomAbility {
@@ -19,7 +27,7 @@ class CentaurRangeAttack extends CustomAbility {
 
     OnAbilityPhaseStart() {
         if (super.OnAbilityPhaseStart()) {
-            EFX("particles/units/heroes/hero_dawnbreaker/dawnbreaker_converge.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
+            EFX(resources.castPoint.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
                 relese: true
             });
             return true;
@@ -55,7 +63,7 @@ class CentaurRangeAttack extends CustomAbility {
 
         this.ProjectileAttack({
             source: this.caster,
-            effectName: "particles/units/heroes/hero_invoker/invoker_deafening_blast.vpcf",
+            effectName: resources.projectile.path,
             distance: this.GetCastRange(Vector(0, 0, 0), undefined),
             spawnOrigin: origin.__add(Vector(direction.x * 45, direction.y * 45, 96)),
             velocity: direction.__mul(projectileSpeed),
@@ -72,10 +80,7 @@ class CentaurRangeAttack extends CustomAbility {
                 this.PlayEffectsOnHit(unit);
             },
             onFinish: projectile => {
-                this.PlayEffectsOnFinish(
-                    projectile.getPosition(),
-                    "particles/units/heroes/hero_sniper/sniper_assassinate_impact_sparks.vpcf"
-                );
+                this.PlayEffectsOnFinish(projectile.getPosition(), resources.impact.path);
             }
         });
     }
@@ -96,11 +101,7 @@ class CentaurRangeAttack extends CustomAbility {
     PlayEffectsOnHit(target: CDOTA_BaseNPC) {
         EmitSoundOn("Hero_Sniper.AssassinateDamage", this.caster);
 
-        const particleId = ParticleManager.CreateParticle(
-            "particles/units/heroes/hero_sniper/sniper_assassinate_impact_blood.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            target
-        );
+        const particleId = ParticleManager.CreateParticle(resources.impactBlood.path, ParticleAttachment.ABSORIGIN_FOLLOW, target);
         ParticleManager.SetParticleControl(particleId, 0, target.GetAbsOrigin());
         ParticleManager.SetParticleControl(particleId, 1, target.GetAbsOrigin());
         ParticleManager.ReleaseParticleIndex(particleId);

@@ -5,10 +5,16 @@ import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modif
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierUpgradePhantomDashDamage } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_damage";
 import { ModifierUpgradePhantomDashShield } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_shield";
+import { precache, resource } from "../../../precache";
 import { direction2D, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { PhantomBasicAttack } from "./phantom_basic_attack";
+
+const resources = precache({
+    blinkStart: resource.fx("particles/blink_purple.vpcf"),
+    trail: resource.fx("particles/phantom/mobility_trail.vpcf")
+});
 
 @registerAbility("phantom_mobility")
 class PhantomMobility extends CustomAbility {
@@ -42,7 +48,7 @@ class PhantomMobility extends CustomAbility {
     PlayEffectsOnCast() {
         EmitSoundOn("Hero_PhantomAssassin.Strike.Start", this.GetCaster());
         const effect_cast = ParticleManager.CreateParticle(
-            "particles/blink_purple.vpcf",
+            resources.blinkStart.path,
             ParticleAttachment.ABSORIGIN_FOLLOW,
             this.GetCaster()
         );
@@ -70,11 +76,7 @@ class ModifierPhantomMobilityCharges extends ModifierCharges {
 class ModifierPhantomMobilityDisplacement extends ModifierDisplacement {
     OnDestroy() {
         if (IsServer()) {
-            const particleId = ParticleManager.CreateParticle(
-                "particles/phantom/mobility_trail.vpcf",
-                ParticleAttachment.ABSORIGIN,
-                this.parent
-            );
+            const particleId = ParticleManager.CreateParticle(resources.trail.path, ParticleAttachment.ABSORIGIN, this.parent);
             ParticleManager.SetParticleControl(particleId, 0, this.origin);
             ParticleManager.SetParticleControl(particleId, 1, this.parent.GetAbsOrigin());
             ParticleManager.SetParticleControl(particleId, 60, Vector(188, 7, 229));

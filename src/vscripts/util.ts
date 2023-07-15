@@ -14,10 +14,17 @@ import { ModifierHideBar } from "./modifiers/modifier_hide_bar";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { ModifierRadiusMarker } from "./modifiers/modifier_radius_marker";
 import { ModifierRecast } from "./modifiers/modifier_recast";
-import { ModifierShield } from "./modifiers/modifier_shield";
 import { ModifierWall } from "./modifiers/modifier_wall";
-
+import { precache, resource } from "./precache";
 //@Refactor the amount of imports on an utils file SCREAMS for an import loop...
+
+const resources = precache({
+    damage: resource.fx("particles/msg_damage.vpcf"),
+    replenishStart: resource.fx("particles/units/heroes/hero_wisp/wisp_death.vpcf"),
+    meele: resource.fx("particles/juggernaut/juggernaut_basic_attack_parent.vpcf"),
+    meeleDust: resource.fx("particles/juggernaut/juggernaut_basic_attack_dust.vpcf"),
+    aoeMark: resource.fx("particles/aoe_marker.vpcf")
+});
 
 function getRecastModifiers(unit: CDOTA_BaseNPC) {
     return ModifierRecast.findAll(unit);
@@ -62,7 +69,7 @@ export function clamp(value: number, max: number, min: number) {
 export function overheadMessageEFX(unit: CDOTA_BaseNPC, value: number, wordLength: number, color: Vector, shield: 7 | 0) {
     const duration = math.max(1, value / 10);
 
-    EFX("particles/msg_damage.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+    EFX(resources.damage.path, ParticleAttachment.WORLDORIGIN, undefined, {
         cp0: unit.GetAbsOrigin(),
         cp1: Vector(0, value, shield),
         cp2: Vector(duration, wordLength, 0),
@@ -185,11 +192,7 @@ export function giveManaAndEnergy(unit: CDOTA_BaseNPC, amount: number, informCli
 export function replenishEFX(target: CDOTA_BaseNPC) {
     const origin = target.GetAbsOrigin();
 
-    const particleId = ParticleManager.CreateParticle(
-        "particles/units/heroes/hero_wisp/wisp_death.vpcf",
-        ParticleAttachment.CUSTOMORIGIN,
-        target
-    );
+    const particleId = ParticleManager.CreateParticle(resources.replenishStart.path, ParticleAttachment.CUSTOMORIGIN, target);
     ParticleManager.SetParticleControlEnt(particleId, 0, target, ParticleAttachment.POINT_FOLLOW, "attach_attack1", origin, true);
     ParticleManager.ReleaseParticleIndex(particleId);
 }
@@ -217,8 +220,7 @@ export function direction2D(from: Vector, to: Vector) {
 export function meeleEFX(caster: CDOTA_BaseNPC, direction: Vector, radius: number, color?: Vector) {
     const origin = caster.GetAbsOrigin();
 
-    //TODO: @Refactor EFX should be re-implemented
-    const efx = EFX("particles/juggernaut/juggernaut_basic_attack_parent.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+    const efx = EFX(resources.meele.path, ParticleAttachment.WORLDORIGIN, undefined, {
         cp0: origin,
         cp0f: direction,
         cp3: Vector(radius, 0, 0)
@@ -231,7 +233,7 @@ export function meeleEFX(caster: CDOTA_BaseNPC, direction: Vector, radius: numbe
 
     ParticleManager.ReleaseParticleIndex(efx);
 
-    EFX("particles/juggernaut/juggernaut_basic_attack_dust.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, caster, {
+    EFX(resources.meeleDust.path, ParticleAttachment.ABSORIGIN_FOLLOW, caster, {
         release: true
     });
 
@@ -485,7 +487,7 @@ export function createRadiusMarker(unit: CDOTA_BaseNPC, origin: Vector, radius: 
             for (const team of alliance.teams) {
                 const color = unit.GetTeamNumber() == team ? green : red;
                 radiusMarkerEfx(
-                    ParticleManager.CreateParticleForTeam("particles/aoe_marker.vpcf", ParticleAttachment.WORLDORIGIN, undefined, team),
+                    ParticleManager.CreateParticleForTeam(resources.aoeMark.path, ParticleAttachment.WORLDORIGIN, undefined, team),
                     origin,
                     radius,
                     color,
@@ -497,12 +499,7 @@ export function createRadiusMarker(unit: CDOTA_BaseNPC, origin: Vector, radius: 
     }
 
     radiusMarkerEfx(
-        ParticleManager.CreateParticleForPlayer(
-            "particles/aoe_marker.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            undefined,
-            unit.GetPlayerOwner()
-        ),
+        ParticleManager.CreateParticleForPlayer(resources.aoeMark.path, ParticleAttachment.WORLDORIGIN, undefined, unit.GetPlayerOwner()),
         origin,
         radius,
         green,

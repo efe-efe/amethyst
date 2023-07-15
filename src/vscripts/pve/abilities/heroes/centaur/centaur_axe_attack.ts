@@ -1,6 +1,11 @@
 import { CustomAbility } from "../../../../abilities/framework/custom_ability";
 import { registerAbility } from "../../../../lib/dota_ts_adapter";
+import { precache, resource } from "../../../../precache";
 import { direction2D, meeleEFX } from "../../../../util";
+
+const resources = precache({
+    swoop: resource.fx("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop.vpcf")
+});
 
 @registerAbility("centaur_axe_attack")
 class CentaurAxeAttack extends CustomAbility {
@@ -58,11 +63,7 @@ class CentaurAxeAttack extends CustomAbility {
         const direction = direction2D(origin, target.GetAbsOrigin());
         const finalPosition = origin.__add(Vector(direction.x * offset, direction.y * offset, 0));
 
-        const particleId = ParticleManager.CreateParticle(
-            "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop.vpcf",
-            ParticleAttachment.POINT,
-            this.caster
-        );
+        const particleId = ParticleManager.CreateParticle(resources.swoop.path, ParticleAttachment.POINT, this.caster);
         ParticleManager.SetParticleControl(particleId, 1, finalPosition);
         ParticleManager.SetParticleControlForward(particleId, 1, direction2D(finalPosition, origin));
         ParticleManager.ReleaseParticleIndex(particleId);
