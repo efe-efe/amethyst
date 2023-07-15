@@ -1,3 +1,4 @@
+import { addAnimation } from "../../animation";
 import { BaseAbility, BaseItem } from "../../lib/dota_ts_adapter";
 import { ModifierCasting, Translate } from "../../modifiers/modifier_casting";
 import { ModifierCombatEvents } from "../../modifiers/modifier_combat_events";
@@ -92,7 +93,7 @@ export class CustomAbility extends BaseAbility {
 
         const animation = this.GetAnimation();
         if (animation) {
-            this.caster.StartGestureWithPlaybackRate(animation, this.GetPlaybackRateOverride());
+            addAnimation(this.caster, animation, { duration: this.GetCastPoint() + 0.15, rate: this.GetPlaybackRateOverride() });
         }
 
         return true;
@@ -303,8 +304,8 @@ export class CustomAbility extends BaseAbility {
         const distance = options.distance
             ? options.distance
             : valueDistance != 0
-                ? valueDistance
-                : this.GetCastRange(Vector(0, 0, 0), undefined);
+            ? valueDistance
+            : this.GetCastRange(Vector(0, 0, 0), undefined);
 
         const startRadius = options.startRadius ?? this.GetSpecialValueFor("hitbox");
 
@@ -583,8 +584,8 @@ export class CustomItem extends BaseItem {
         const distance = options.distance
             ? options.distance
             : valueDistance != 0
-                ? valueDistance
-                : this.GetCastRange(Vector(0, 0, 0), undefined);
+            ? valueDistance
+            : this.GetCastRange(Vector(0, 0, 0), undefined);
 
         const startRadius = options.startRadius ?? this.GetSpecialValueFor("hitbox");
 

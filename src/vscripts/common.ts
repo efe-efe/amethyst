@@ -1,4 +1,5 @@
 import { findAllianceDefinitionByUnit } from "./alliance_definitions";
+import { addAnimation, removeAnimation } from "./animation";
 import { Entity } from "./entities";
 import { findPlayerById } from "./game";
 import { getUnitShieldPoints } from "./modifiers/modifier_shield";
@@ -96,10 +97,6 @@ export function updateEntityMovement(entity: Entity) {
             }
         }
 
-        // if (!isAnimating(entity) && !ModifierHeroMovement.findOne(unit)) {
-        //     ModifierHeroMovement.apply(unit, unit, undefined, {});
-        // }
-
         unit.SetAbsOrigin(futureOrigin);
         return "success";
     }
@@ -113,7 +110,28 @@ export function updateEntityMovement(entity: Entity) {
     //     this.unit.RemoveModifierByName(ModifierTowerIdle.name);
     // }
 
-    if ((direction.x != 0 || direction.y != 0) && canUnitWalk(unit)) {
+    if (IsInToolsMode() && unit.IsRealHero()) {
+        const player = findPlayerById(unit.GetPlayerID());
+
+        if (player) {
+            const mouse = player.cursorPosition;
+            DebugDrawLine_vCol(
+                unit.GetAbsOrigin(),
+                unit.GetAbsOrigin().__add(unit.GetForwardVector().__mul(500)),
+                Vector(0, 0, 255),
+                true,
+                0.03
+            );
+            DebugDrawLine_vCol(unit.GetAbsOrigin(), mouse, Vector(0, 255, 0), true, 0.03);
+        }
+    }
+
+    if (direction.x == 0 && direction.y == 0) {
+        removeAnimation(unit, GameActivity.DOTA_RUN);
+        return;
+    }
+
+    if (canUnitWalk(unit)) {
         const output = moveEntity(entity, direction, speed);
 
         if (output != "success") {
@@ -141,28 +159,17 @@ export function updateEntityMovement(entity: Entity) {
         ) {
             fullyFaceTowards(unit, direction);
         }
-    } else {
-        if (unit.GetUnitName() === "npc_dota_dire_tower") {
-            // if (!ModifierTowerIdle.findOne(unit)) {
-            //     ModifierTowerIdle.apply(unit, unit, undefined, {});
-            // }
-        }
-        // unit.RemoveModifierByName(ModifierHeroMovement.name);
+
+        addAnimation(unit, GameActivity.DOTA_RUN);
+        return;
     }
 
-    if (IsInToolsMode() && unit.IsRealHero()) {
-        const player = findPlayerById(unit.GetPlayerID());
+    removeAnimation(unit, GameActivity.DOTA_RUN);
 
-        if (player) {
-            const mouse = player.cursorPosition;
-            DebugDrawLine_vCol(
-                unit.GetAbsOrigin(),
-                unit.GetAbsOrigin().__add(unit.GetForwardVector().__mul(500)),
-                Vector(0, 0, 255),
-                true,
-                0.03
-            );
-            DebugDrawLine_vCol(unit.GetAbsOrigin(), mouse, Vector(0, 255, 0), true, 0.03);
-        }
+    if (unit.GetUnitName() === "npc_dota_dire_tower") {
+        // if (!ModifierTowerIdle.findOne(unit)) {
+        //     ModifierTowerIdle.apply(unit, unit, undefined, {});
+        // }
     }
+    // unit.RemoveModifierByName(ModifierHeroMovement.name);
 }

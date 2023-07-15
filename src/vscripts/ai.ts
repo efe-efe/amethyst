@@ -204,19 +204,38 @@ export function decideHowToCastAbilityByAI(
         case "none":
             return { outcome: "targetNothing" };
         case "unit":
+            //Experimental
+            // eslint-disable-next-line no-case-declarations
+            const target = findClosestGuy(unit, maybeTargets) ?? maybeTargets[0];
+            if (!isInCastRange(unit, ability, target.GetAbsOrigin())) {
+                return { outcome: "dontCast" };
+            }
+
             return {
                 outcome: "targetUnit",
-                target: findClosestGuy(unit, maybeTargets) ?? maybeTargets[0]
+                target: target
             };
         case "ground": {
+            //Experimental
+            const target = findCastPositionSafe(maybeTargets);
+            if (!isInCastRange(unit, ability, target)) {
+                return { outcome: "dontCast" };
+            }
+
             return {
                 outcome: "targetGround",
-                target: findCastPositionSafe(maybeTargets)
+                target: target
             };
         }
         default:
             return unreachable(abilityTarget);
     }
+}
+
+function isInCastRange(unit: CDOTA_BaseNPC, ability: CDOTABaseAbility, target: Vector) {
+    // Spells with no defined cast range should be treated as if they have an infinite cast range.
+    const castRange = ability.GetEffectiveCastRange(Vector(0, 0, 0), unit);
+    return castRange == 0 || distanceBetweenPoints(target, unit.GetAbsOrigin()) <= castRange;
 }
 
 export function updateUnitAI({
@@ -244,12 +263,6 @@ export function updateUnitAI({
             if (ability.GetCaster().IsRooted() && hasBehavior(ability.GetBehavior(), AbilityBehavior.ROOT_DISABLES)) return false;
 
             return true;
-        }
-
-        function isInCastRange(unit: CDOTA_BaseNPC, ability: CDOTABaseAbility, target: Vector) {
-            // Spells with no defined cast range should be treated as if they have an infinite cast range.
-            const castRange = ability.GetEffectiveCastRange(Vector(0, 0, 0), unit);
-            return castRange == 0 || distanceBetweenPoints(target, unit.GetAbsOrigin()) <= castRange;
         }
 
         const playerId = unit.GetPlayerOwnerID();
@@ -354,7 +367,15 @@ export function updateUnitAI({
         setEntityDirection(entity, 0, 0);
     }
 
-    const isCasting = abilities.some(ability => ability.IsInAbilityPhase()) || isChanneling(unit) || ModifierCasting.findOne(unit);
+    function canUnitCast() {
+        return (
+            !abilities.some(ability => ability.IsInAbilityPhase()) &&
+            !isChanneling(unit) &&
+            !ModifierCasting.findOne(unit) &&
+            !unit.IsSilenced() &&
+            !unit.IsCommandRestricted()
+        );
+    }
 
     if (isInDeveloperMode()) {
         DebugDrawText((unit.GetAbsOrigin() + Vector(0, 128, 128)) as Vector, context.id, true, 0.03);
@@ -366,7 +387,7 @@ export function updateUnitAI({
         return { id: "idle" };
     }
 
-    if (!isCasting) {
+    if (canUnitCast()) {
         if (maybeCastSomeAbility(unit, allies, enemies, abilities)) {
             return {
                 id: "startedCasting"

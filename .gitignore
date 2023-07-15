@@ -85,3 +85,5 @@ game/scripts/vscripts/allianceDefinitions.lua
 game/scripts/vscripts/battle.lua
 game/scripts/vscripts/npc_definitions.lua
 game/scripts/vscripts/common.lua
+game/scripts/vscripts/animation.lua
+game/scripts/vscripts/ai.lua

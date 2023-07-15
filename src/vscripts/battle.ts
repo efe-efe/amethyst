@@ -1,4 +1,5 @@
 import { CustomModifier } from "./abilities/framework/custom_modifier";
+import { updateAnimations } from "./animation";
 import { updateEntityData, updateEntityMovement } from "./common";
 import { Entity, findEntityByHandle, trueHealEntity } from "./entities";
 import { FindStage, Game } from "./game";
@@ -311,6 +312,8 @@ function updateFight(game: BattleStage) {
             break;
         }
     }
+
+    updateAnimations();
 }
 
 export function updateBattleState(game: BattleStage) {

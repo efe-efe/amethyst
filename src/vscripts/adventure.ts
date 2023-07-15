@@ -1,6 +1,7 @@
 import { UnitAIContext, updateUnitAI } from "./ai";
+import { updateAnimations } from "./animation";
 import { updateEntityData, updateEntityMovement } from "./common";
-import { Entity, findEntityByHandle, setEntityDirection } from "./entities";
+import { Entity, findEntityByHandle } from "./entities";
 import { FindStage, Game } from "./game";
 import { ModifierMiniStun } from "./modifiers/modifier_mini_stun";
 import { ModifierShield } from "./modifiers/modifier_shield";
@@ -101,6 +102,23 @@ function defineWave(
     };
 }
 
+const rangedsWave = defineWave([
+    {
+        npc: {
+            id: NpcId.direRange,
+            shieldPct: 50
+        },
+        amount: 5
+    },
+    {
+        npc: {
+            id: NpcId.direRangeMega,
+            shieldPct: 0
+        },
+        amount: 5
+    }
+]);
+
 const mixedRangeFlying = defineWave([
     {
         npc: {
@@ -118,15 +136,18 @@ const mixedRangeFlying = defineWave([
     }
 ]);
 
-const onlyRangeWave = defineWave([
-    {
-        npc: {
-            id: NpcId.direRange,
-            shieldPct: 0
-        },
-        amount: 5
-    }
-]);
+const onlyRangeWave = defineWave(
+    [
+        {
+            npc: {
+                id: NpcId.direRange,
+                shieldPct: 0
+            },
+            amount: 5
+        }
+    ],
+    1
+);
 
 const onlyFlyingWave = defineWave(
     [
@@ -138,7 +159,7 @@ const onlyFlyingWave = defineWave(
             amount: 10
         }
     ],
-    5
+    1
 );
 
 const centaurWave = defineWave([{ npc: { id: NpcId.centaur, shieldPct: 0 }, amount: 1 }]);
@@ -146,7 +167,7 @@ const centaurWave = defineWave([{ npc: { id: NpcId.centaur, shieldPct: 0 }, amou
 const direWorldDefinition: WorldDefinition = {
     chamberDefinitions: [
         {
-            variations: [{ waves: [onlyFlyingWave, onlyRangeWave], chance: 100 }]
+            variations: [{ waves: [rangedsWave, onlyRangeWave], chance: 100 }]
         },
         {
             variations: [{ waves: [centaurWave], chance: 100 }]
@@ -334,4 +355,6 @@ export function updateAdventureStage(game: AdventureStage) {
 
             break;
     }
+
+    updateAnimations();
 }
