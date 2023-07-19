@@ -9,6 +9,7 @@ export type Player = {
     entity?: Entity;
     alliance?: Alliance;
     customNpc?: CustomPlayerHeroNPC;
+    upgrades: UpgradeId[];
 };
 
 export const players: Player[] = [];
@@ -20,7 +21,8 @@ export function createPlayer(id: PlayerID) {
         alliance: undefined,
         customNpc: undefined,
         team: DotaTeam.NOTEAM,
-        cursorPosition: Vector(0, 0, 0)
+        cursorPosition: Vector(0, 0, 0),
+        upgrades: []
     };
 
     players.push(player);

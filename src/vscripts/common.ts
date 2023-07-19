@@ -3,7 +3,7 @@ import { addAnimation, removeAnimation } from "./animation";
 import { Entity } from "./entities";
 import { findPlayerById } from "./game";
 import { getUnitShieldPoints } from "./modifiers/modifier_shield";
-import { canUnitWalk, fullyFaceTowards, getEnergy, getMaxEnergy } from "./util";
+import { canUnitWalk, fullyFaceTowards, getEnergy, getMaxEnergy, isInDeveloperMode } from "./util";
 
 export function updateEntityData(entity: Entity) {
     const unit = entity.handle;
@@ -59,10 +59,10 @@ export function updateEntityMovement(entity: Entity) {
         futureOrigin.z = GetGroundPosition(futureOrigin, unit).z;
         const normal = CustomEntitiesLegacy.GetNormal(unit, futureOrigin);
 
-        if (IsInToolsMode()) {
-            DebugDrawLine_vCol(futureOrigin, testOrigin, Vector(255, 0, 0), true, 1.0);
-            DebugDrawLine_vCol(futureOrigin, futureOrigin.__add(normal.__mul(200)), Vector(255, 255, 255), true, 1);
-            DebugDrawCircle(futureOrigin, Vector(255, 0, 0), 5, offset, false, 0.03);
+        if (isInDeveloperMode()) {
+            // DebugDrawLine_vCol(futureOrigin, testOrigin, Vector(255, 0, 0), true, 1.0);
+            // DebugDrawLine_vCol(futureOrigin, futureOrigin.__add(normal.__mul(200)), Vector(255, 255, 255), true, 1);
+            // DebugDrawCircle(futureOrigin, Vector(255, 0, 0), 5, offset, false, 0.03);
         }
 
         if (unit.HasModifier("modifier_spectre_special_attack_buff")) {
@@ -115,14 +115,14 @@ export function updateEntityMovement(entity: Entity) {
 
         if (player) {
             const mouse = player.cursorPosition;
-            DebugDrawLine_vCol(
-                unit.GetAbsOrigin(),
-                unit.GetAbsOrigin().__add(unit.GetForwardVector().__mul(500)),
-                Vector(0, 0, 255),
-                true,
-                0.03
-            );
-            DebugDrawLine_vCol(unit.GetAbsOrigin(), mouse, Vector(0, 255, 0), true, 0.03);
+            // DebugDrawLine_vCol(
+            //     unit.GetAbsOrigin(),
+            //     unit.GetAbsOrigin().__add(unit.GetForwardVector().__mul(500)),
+            //     Vector(0, 0, 255),
+            //     true,
+            //     0.03
+            // );
+            // DebugDrawLine_vCol(unit.GetAbsOrigin(), mouse, Vector(0, 255, 0), true, 0.03);
         }
     }
 

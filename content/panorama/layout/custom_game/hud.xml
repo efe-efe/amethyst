@@ -19,6 +19,7 @@
         <include src="file://{resources}/styles/custom_game/allianceBar.css" />
         <include src="file://{resources}/styles/custom_game/refunder.css" />
         <include src="file://{resources}/styles/custom_game/customHotkeys.css" />
+        <include src="file://{resources}/styles/custom_game/upgradesHud.css" />
     </styles>
 	<scripts>
         <include src="file://{resources}/scripts/custom_game/bundle.js" />

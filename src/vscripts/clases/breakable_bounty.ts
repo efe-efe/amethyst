@@ -17,7 +17,7 @@ export default class BreakableBounty extends UnitEntity {
         super({
             properties: {
                 origin,
-                name: "breakable_bounty",
+                name: "npc_dota_breakable_bounty",
                 team: DotaTeam.CUSTOM_8
             }
         });

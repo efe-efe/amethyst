@@ -1,7 +1,3 @@
-function Interpolate(value, min, max)
-	return value * (max - min) + min
-end
-
 function Clamp(iNumber, iMax, iMin)
 	if iMax and (iNumber > iMax) then
 		return iMax

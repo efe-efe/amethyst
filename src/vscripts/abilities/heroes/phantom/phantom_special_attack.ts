@@ -1,8 +1,8 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { ModifierUpgradePhantomExtraDaggers, ModifierUpgradePhantomFastDaggers } from "../../../modifiers/upgrades/modifier_favors";
 import { precache, resource } from "../../../precache";
+import { hasUpgrade } from "../../../reward_definitions";
 import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomBleed, ModifierPhantomStacks, PhantomBasicAttack, PhantomExBasicAttack } from "./phantom_basic_attack";
@@ -35,7 +35,7 @@ class PhantomSpecialAttack extends CustomAbility {
     }
 
     GetCooldown(level: number) {
-        if (IsServer() && ModifierUpgradePhantomFastDaggers.findOne(this.caster)) {
+        if (IsServer() && hasUpgrade(this.caster, UpgradeId.phantomFastDaggers)) {
             const attacksPerSecond = this.caster.GetAttacksPerSecond();
             const attackSpeed = 1 / attacksPerSecond;
             return attackSpeed * 2;
@@ -49,7 +49,7 @@ class PhantomSpecialAttack extends CustomAbility {
         const straightDirection = direction2D(origin, point);
         const directions = [straightDirection];
 
-        if (ModifierUpgradePhantomExtraDaggers.findOne(this.caster)) {
+        if (hasUpgrade(this.caster, UpgradeId.phantomExtraDaggers)) {
             directions.push(RotatePoint(Vector(0, 0, 0), straightDirection, -30).Normalized());
             directions.push(RotatePoint(Vector(0, 0, 0), straightDirection, 30).Normalized());
         }
@@ -104,7 +104,7 @@ class PhantomSpecialAttack extends CustomAbility {
                     }
                 }
 
-                if (!ModifierUpgradePhantomFastDaggers.findOne(projectile.getSource())) {
+                if (!hasUpgrade(projectile.getSource(), UpgradeId.phantomFastDaggers)) {
                     ModifierFadingSlow.apply(unit, projectile.getSource(), undefined, {
                         duration: fadingSlowDuration,
                         maxSlowPct: fadingSlowPct
@@ -140,7 +140,7 @@ class PhantomSpecialAttack extends CustomAbility {
 @registerModifier("modifier_phantom_special_attack_charges")
 class ModifierPhantomSpecialAttackCharges extends ModifierCharges {
     GetMaxCharges() {
-        return ModifierUpgradePhantomFastDaggers.findOne(this.caster) ? 1 : this.Value("max_charges");
+        return hasUpgrade(this.caster, UpgradeId.phantomFastDaggers) ? 1 : this.Value("max_charges");
     }
 
     GetReplenishTime() {

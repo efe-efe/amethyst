@@ -14,6 +14,7 @@ import { CustomGameState } from "./types";
 import { ReadyBar } from "./readyBar";
 
 import "./hud/overheadHud";
+import "./hud/upgradesHud";
 
 const customEntities = CustomEntities.GetInstance();
 const layout = LayoutController.GetInstance();
@@ -161,38 +162,6 @@ subscribeToNetTableKey("main", "maxScore", true, function (data) {
     for (const allianceName in allianceBars) {
         const allianceBar = allianceBars[allianceName];
         allianceBar.UpdateMaxScore(maxScore);
-    }
-});
-
-subscribeToNetTableKey("main", "pve", true, function (data) {
-    if (Game.IsInToolsMode()) {
-        if (data.nextReward) {
-            nextRewardPanel.text = "Next reward: " + data.nextReward;
-        }
-        if (data.roomPhases) {
-            let phasesAsText = "";
-            for (const key in data.roomPhases) {
-                const phase = data.roomPhases[key];
-                phasesAsText = `${phasesAsText} \n\t${phase}`;
-                if (parseInt(key, 10) === (data.roomPhaseIndex ?? 0) + 1) {
-                    phasesAsText = phasesAsText + " <==";
-                }
-            }
-            roomPhasePanel.text = "Room phases: " + phasesAsText;
-        }
-        if (data.roomType) {
-            roomTypePanel.text = "Room type: " + data.roomType;
-        }
-    }
-
-    if (data.currentStage) {
-        currentStagePanel.text = "Stage: " + data.currentStage;
-    }
-    if (data.currentRoom) {
-        currentLevelPanel.text = "Room: " + data.currentRoom;
-    }
-    if (data.remainingEnemies && data.maxEnemies) {
-        enemiesCountPanel.text = "Killed enemies: " + data.remainingEnemies + "/" + data.maxEnemies;
     }
 });
 

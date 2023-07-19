@@ -77,6 +77,11 @@ interface CustomNetTableDeclarations {
             gameState: number;
         };
     };
+    pve: {
+        [key: string]: {
+            upgrades: Json<UpgradeId[]>;
+        };
+    };
     custom_npc_rewards: {
         [key: string]: {
             playerId: number;
@@ -126,6 +131,8 @@ interface CustomGameEventDeclarations {
         y: number;
         z: number;
     };
+
+    pickUpgrade: UpgradeId;
 
     countdown: {
         timer_minute_10: number;

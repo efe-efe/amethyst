@@ -722,3 +722,17 @@ export function findElementWithSmallestValue<T>(elements: readonly T[], valueFun
 export function valueOrSpecial(ability: CDOTABaseAbility, valueOrName: number | string): number {
     return typeof valueOrName == "number" ? valueOrName : ability.GetSpecialValueFor(valueOrName);
 }
+
+export function encodeToJson<T>(value: T): Json<T> {
+    return json.encode(value) as unknown as Json<T>;
+}
+
+export function decodeFromJson<T>(value: Json<T>) {
+    const jsonString = value as unknown as string;
+    const [result] = json.decode(jsonString);
+    if (result != undefined) {
+        return result as T;
+    } else {
+        throw `Failed to decode json: ${jsonString}`;
+    }
+}

@@ -17,9 +17,6 @@ import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from "./clases
 import { CustomItems } from "./util/custom_items";
 import Pickup, { PickupTypes } from "./clases/pickup";
 import settings from "./settings";
-import PreRun from "./clases/pve/pre_run";
-import { NPCNames } from "./clases/pve/custom_ai";
-import Run from "./clases/pve/run";
 import { RewardsManager } from "./rewards/rewards";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { updateProjectiles } from "./projectiles";
@@ -151,10 +148,7 @@ function onEntityKilled(event: EntityKilledEvent): void {
         }
         if (!isPlayerHero(killed)) {
             // this.SetRespawnTime(killed.GetTeam(), killed as CDOTA_BaseNPC_Hero, 999);
-            // this.RemoveUnit(killed);
         }
-    } else {
-        // this.RemoveUnit(killed);
     }
 
     const entity = findEntityByHandle(killed);
@@ -178,7 +172,7 @@ function initUnit(unit: CDOTA_BaseNPC) {
 }
 
 function setupPanoramaEventHooks() {
-    CustomGameEventManager.RegisterListener("updateMousePosition", (eventSourceIndex, args) => {
+    CustomGameEventManager.RegisterListener("updateMousePosition", (_, args) => {
         const position = Vector(args.x, args.y, args.z);
         const playerId = args.playerId as PlayerID;
         const player = findPlayerById(playerId);
@@ -187,7 +181,7 @@ function setupPanoramaEventHooks() {
         }
     });
 
-    CustomGameEventManager.RegisterListener("customAction", (eventSourceIndex, event) => {
+    CustomGameEventManager.RegisterListener("customAction", (_, event) => {
         const playerId = event.playerIndex as PlayerID;
         const entity = findPlayerById(playerId)?.entity;
 
@@ -197,10 +191,10 @@ function setupPanoramaEventHooks() {
             const mode = event.payload.mode;
 
             if (type == Custom_ActionTypes.MOVEMENT) {
-                const movingTo = event.payload.direction;
-                const vector =
-                    mode == Custom_ActionModes.STOP ? Vector(movingTo["0"] * -1, movingTo["1"] * -1) : Vector(movingTo["0"], movingTo["1"]);
-                entity.direction = entity.direction.__add(vector.Normalized());
+                const incoming = event.payload.direction;
+                const vector = Vector(incoming["0"], incoming["1"]);
+                const direction = mode == Custom_ActionModes.STOP ? vector.__mul(-1) : vector;
+                entity.direction = entity.direction.__add(direction);
             }
 
             // if (type == Custom_ActionTypes.ABILITY) {
@@ -214,7 +208,7 @@ function setupPanoramaEventHooks() {
         }
     });
 
-    CustomGameEventManager.RegisterListener("refundPoints", (eventSourceIndex, event) => {
+    CustomGameEventManager.RegisterListener("refundPoints", (_, event) => {
         const playerId = event.playerIndex as PlayerID;
         const player = findPlayerById(playerId);
 
@@ -593,9 +587,7 @@ export class GameMode {
 
     public warmup: Warmup | undefined;
     public preRound: PreRound | undefined;
-    public preRun: PreRun | undefined;
     public round: Round | undefined;
-    public run: Run | undefined;
     public currentRoom = -1;
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -633,9 +625,6 @@ export class GameMode {
         if (getMode() == MapNames.pvp) {
             this.StartPVPMap();
         }
-        if (getMode() == MapNames.pve) {
-            this.StartPVEMap();
-        }
     }
 
     StartPVPMap(): void {
@@ -654,20 +643,6 @@ export class GameMode {
         //     }
         //     if (this.state == CustomGameState.ROUND_IN_PROGRESS && this.round) {
         //         this.round.Update();
-        //     }
-        // });
-    }
-
-    StartPVEMap(): void {
-        this.SetState(CustomGameState.PRE_RUN);
-        this.preRun = new PreRun(alliances, -1);
-
-        // this.RegisterThinker(0.01, () => {
-        //     if (this.state == CustomGameState.RUN_IN_PROGRESS && this.run) {
-        //         this.run.Update();
-        //     }
-        //     if (this.state == CustomGameState.PRE_RUN && this.preRun) {
-        //         this.preRun.Update();
         //     }
         // });
     }
@@ -692,31 +667,6 @@ export class GameMode {
         } else if (state === CustomGameState.PRE_ROUND) {
             this.preRound = undefined;
             this.round = new Round(alliances, settings.RoundDuration);
-        } else if (state === CustomGameState.PRE_RUN) {
-            this.preRun = undefined;
-            this.run = new Run(alliances, [
-                {
-                    possibleNPCs: [
-                        NPCNames.DIRE_ZOMBIE_RANGE,
-                        NPCNames.DIRE_ZOMBIE_MEELE_MEGA,
-                        NPCNames.DIRE_ZOMBIE_RANGE_MEGA,
-                        NPCNames.FLYING_SKULL,
-                        NPCNames.DIRE_TOWER,
-                        NPCNames.QUEEN
-                    ]
-                },
-                {
-                    possibleNPCs: [
-                        NPCNames.RADIANT_ZOMBIE_RANGE_MEGA,
-                        NPCNames.RADIANT_ZOMBIE_MEELE_MEGA,
-                        NPCNames.FLYING_SKULL,
-                        NPCNames.QUEEN
-                    ]
-                }
-            ]);
-        } else if (state === CustomGameState.RUN_IN_PROGRESS) {
-            this.run = undefined;
-            this.EndGame(DotaTeam.GOODGUYS);
         }
     }
 
@@ -860,7 +810,7 @@ function update() {
     GameRules.Addon.UpdateProjectiles();
 }
 
-function onNativeStateChange(state: GameState) {
+async function onNativeStateChange(state: GameState) {
     print(`Native state changed to ${state}`);
 
     if (state == GameState.CUSTOM_GAME_SETUP) {
@@ -887,7 +837,8 @@ function onNativeStateChange(state: GameState) {
         }
 
         if (getMode() == MapNames.pve) {
-            setStage(initAdventureStage(game.config));
+            const stage = await initAdventureStage(game.config);
+            setStage(stage);
         }
 
         GameRules.Addon.OnGameInProgress();

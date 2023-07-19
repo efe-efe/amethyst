@@ -38,42 +38,6 @@ MODIFIER_EVENTS = {
 	ON_BASIC_ATTACK_ENDED = 3,
 }
 
-function CustomEntitiesLegacy:Initialize(hEntity, bIsPVENPC)
-	hEntity.threshold = 				    0
-	hEntity.energy = 					    0
-	hEntity.max_energy = 				    100
-	hEntity.energy_per_cell = 				100
-	hEntity.initialized = 					nil
-	hEntity.modifiers = 					{}
-	hEntity.parent =						nil
-	hEntity.been_hurt =						NOT_HURT
-
-	for key,value in pairs(MODIFIER_TYPES) do
-		hEntity.modifiers[MODIFIER_OBJECT_NAMES[MODIFIER_TYPES[key]]] = {}
-	end
-
-	hEntity.stackbars_modifiers =			nil
-	hEntity.charges_modifiers =				nil
-	hEntity.cooldown_modifiers =			nil
-
-    CustomEntitiesLegacy:SetThreshold(hEntity, GameRules.Addon.max_treshold)
-    
-
-	if hEntity:IsRealHero() or bIsPVENPC then
-		hEntity.direction = {}
-		hEntity.collision_direction = -1
-	
-		CustomEntitiesLegacy:SetDirection(hEntity, 0, 0)
-		ConstructHero(hEntity)
-	end
-
-	if hEntity:IsRealHero() then
-		hEntity.recast_modifiers = {}
-	end
-
-	CustomEntitiesLegacy:SetInitialized(hEntity, true)
-end
-
 function CustomEntitiesLegacy:SetParent(hEntity, cParent)
 	hEntity.parent = cParent
 end
@@ -569,12 +533,4 @@ function CustomEntitiesLegacy:GetMeeleExtraRadius(hEntity)
 	end
 	
 	return 0
-end
-
-function CustomEntitiesLegacy:HideHealthBar(hEntity)
-	hEntity:AddNewModifier(hEntity, nil, "modifier_hide_bar", {})
-end
-
-function CustomEntitiesLegacy:UnhideHealthBar(hEntity)
-	hEntity:RemoveModifierByName("modifier_hide_bar")
 end

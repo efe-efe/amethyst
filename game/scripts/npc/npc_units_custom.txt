@@ -88,7 +88,7 @@
 		"HasInventory"				"0"
 	}
 	
-	"breakable_bounty"	
+	"npc_dota_breakable_bounty"	
 	{
 		"Model"						"models/development/invisiblebox.vmdl"
 		"BaseClass"					"npc_dota_creature"

@@ -6,7 +6,6 @@ declare interface CustomEntitiesLegacy {
     TrueHeal(hEntity: CDOTA_BaseNPC, nHealAmount: number): void;
     RefreshCooldowns(hEntity: CDOTA_BaseNPC): void;
     GetShield(hEntity: CDOTA_BaseNPC): number;
-    Initialize(hEntity: CDOTA_BaseNPC, bIsPVENPC?: boolean): void;
     IsInitialized(hEntity: CDOTA_BaseNPC): boolean;
     SendDataToClient(hEntity: CDOTA_BaseNPC): boolean;
     GetRawDirection(hEntity: CDOTA_BaseNPC): Vector;

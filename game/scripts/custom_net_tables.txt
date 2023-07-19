@@ -4,6 +4,7 @@
 	[
 		"units",
 		"main",
+		"pve",
 		"alliances",
 		"custom_npc_favors",
 		"custom_npc_rewards"

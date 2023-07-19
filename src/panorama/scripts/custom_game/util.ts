@@ -97,10 +97,20 @@ export const panels = {
     }
 };
 
+export function encodeToJson<T>(value: T): Json<T> {
+    return JSON.stringify(value) as unknown as Json<T>;
+}
+
+export function decodeFromJson<T>(value: Json<T>) {
+    const jsonString = value as unknown as string;
+    return JSON.parse(jsonString) as T;
+}
+
 export function subscribeToNetTableAndLoadNow<TName extends keyof CustomNetTableDeclarations, T extends CustomNetTableDeclarations[TName]>(
     tableName: TName,
     callback: (tableName: TName, key: keyof T, value: NetworkedData<T[keyof T]>) => void
 ) {
+    $.Msg(`Subscribing to ${tableName}`);
     CustomNetTables.SubscribeNetTableListener(tableName, callback);
     const table = CustomNetTables.GetAllTableValues(tableName);
 

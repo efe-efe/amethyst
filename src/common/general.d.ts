@@ -7,6 +7,11 @@ declare const enum Stage {
     adventure = "adventure"
 }
 
+declare const enum UpgradeId {
+    "phantomExtraDaggers" = "phantomExtraDaggers",
+    "phantomFastDaggers" = "phantomFastDaggers"
+}
+
 declare enum Custom_ActionTypes {
     MOVEMENT = 0,
     ABILITY = 1
@@ -22,7 +27,8 @@ declare const enum Constants {
     maxEnergy = 100,
     warmupDuration = 20,
     adrenalineDuration = 25,
-    pickupsSpawnRate = 5
+    pickupsSpawnRate = 5,
+    bountyHealth = 30
 }
 
 declare const enum AllianceId {
@@ -34,3 +40,8 @@ declare const enum AllianceId {
 }
 
 declare function unreachable(x: never): never;
+
+// Json is an opaque type which you can only use in encode/decode
+type Json<T> = {
+    jsonBrand: unknown & T;
+};
