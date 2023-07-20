@@ -13,6 +13,7 @@ import { RewardDefinition, RewardId, favorDefinitions, findRewardById } from "./
 import {
     SimpleTrigger,
     allAbilities,
+    createTimedRadiusMarker,
     encodeToJson,
     fullyFaceTowards,
     simpleTrigger,
@@ -36,10 +37,24 @@ const resources = precache({
 
 type AdventureStage = FindStage<Game, Stage.adventure>;
 
-type StageParticipant = {
+type RewardParticipant = {
     player: Player;
     selected: boolean;
     options: UpgradeId[];
+};
+
+//TODO: Add the preselect into select thing
+type ExitParticipant = {
+    player: Player;
+    // preSelected?: {};
+};
+
+type Exit = {
+    origin: Vector;
+    instance?: {
+        chamberDefinition: ChamberDefinition;
+        rewardId: RewardId;
+    };
 };
 
 declare global {
@@ -54,12 +69,21 @@ declare global {
                       wave: Wave;
                       waveDefinitions: WaveDefinition[];
                       mapHandle: SpawnGroupHandle;
+                      exits: Exit[];
                   }
                 | {
                       id: "reward";
                       mapHandle: SpawnGroupHandle;
-                      participants: StageParticipant[];
+                      participants: RewardParticipant[];
                       reward: Reward;
+                      exits: Exit[];
+                  }
+                | {
+                      id: "exit";
+                      mapHandle: SpawnGroupHandle;
+                      //   participants: ExitParticipant[];
+                      exits: Exit[];
+                      selected?: Exit;
                   };
         };
     }
@@ -70,11 +94,13 @@ type WorldDefinition = {
 };
 
 type ChamberDefinition = {
-    variations: {
-        waveDefinitions: WaveDefinition[];
-        map: string;
-        chance: number;
-    }[];
+    variations: ChamberVariation[];
+};
+
+type ChamberVariation = {
+    waveDefinitions: WaveDefinition[];
+    map: string;
+    chance: number;
 };
 
 type WaveDefinition = {
@@ -196,7 +222,7 @@ const onlyFlyingWave = defineWave(
             amount: 10
         }
     ],
-    1
+    7
 );
 
 const centaurWave = defineWave([{ npc: { id: NpcId.centaur, shieldPct: 0 }, amount: 1 }]);
@@ -204,13 +230,16 @@ const centaurWave = defineWave([{ npc: { id: NpcId.centaur, shieldPct: 0 }, amou
 const direWorldDefinition: WorldDefinition = {
     chamberDefinitions: [
         {
-            variations: [{ waveDefinitions: [], chance: 100, map: "dire_2" }]
+            variations: [{ waveDefinitions: [], chance: 100, map: "dire_0" }]
         },
         {
             variations: [{ waveDefinitions: [rangedsWave], chance: 100, map: "dire_1" }]
         },
         {
-            variations: [{ waveDefinitions: [rangedsWave], chance: 100, map: "dire_2" }]
+            variations: [{ waveDefinitions: [onlyFlyingWave], chance: 100, map: "dire_2" }]
+        },
+        {
+            variations: [{ waveDefinitions: [centaurWave], chance: 100, map: "dire_2" }]
         }
     ]
 };
@@ -240,7 +269,7 @@ function serializeWave(waveDefinition: WaveDefinition): Wave {
     };
 }
 
-function serializeParticipants(config: GameConfig): StageParticipant[] {
+function serializeParticipants(config: GameConfig): RewardParticipant[] {
     return config.players.map(player => ({
         player: player,
         selected: false,
@@ -290,24 +319,54 @@ function spawnMap(map: string, origin: Vector): Promise<SpawnGroupHandle> {
     });
 }
 
-export async function initAdventureStage(config: GameConfig): Promise<AdventureStage> {
-    const chamberDefinition = direWorldDefinition.chamberDefinitions.splice(0, 1)[0];
-
-    if (!chamberDefinition) {
-        throw "Unable to find chamber definition";
-    }
-
-    const chamber = takeRandomFromArrayWeightedUnsafe(chamberDefinition.variations, variation => variation.chance);
-
-    const mapHandle = await spawnMap(chamber.map, Vector(0, 0, 0));
-
-    const rewardDefinition = findRewardById(RewardId.favor);
+function tryCreatingRewardById(RewardId: RewardId, origin: Vector) {
+    const rewardDefinition = findRewardById(RewardId);
 
     if (!rewardDefinition) {
         throw "ERROR, REWARD NOT FOUND";
     }
 
-    const reward = createReward(rewardDefinition, GetGroundPosition(Vector(0, 0, 0), undefined));
+    return createReward(rewardDefinition, GetGroundPosition(origin, undefined));
+}
+
+function tryGettingChamberDefinition(worldDefinition: WorldDefinition) {
+    const chamberDefinition = worldDefinition.chamberDefinitions.splice(0, 1)[0];
+    if (!chamberDefinition) {
+        throw "Unable to find chamber definition";
+    }
+
+    return chamberDefinition;
+}
+
+function tryGeneratingExits(): Exit[] {
+    const exits = Entities.FindAllByName("exit")?.map(entity => ({
+        origin: entity.GetAbsOrigin()
+    }));
+
+    if (!exits) {
+        throw "ERROR, NOT EXIT FOUND";
+    }
+
+    return exits;
+}
+
+function getPlayersEntities(config: GameConfig) {
+    return config.players.map(player => player.entity).filter((entity): entity is Entity => entity != undefined);
+}
+
+function repositionHeroes(config: GameConfig) {
+    const spawnOrigin = Entities.FindByName(undefined, "spawn")?.GetAbsOrigin() ?? Vector(0, 0, 0);
+    for (const entity of getPlayersEntities(config)) {
+        FindClearSpaceForUnit(entity.handle, spawnOrigin, true);
+    }
+}
+
+export async function initAdventureStage(config: GameConfig): Promise<AdventureStage> {
+    const chamberDefinition = tryGettingChamberDefinition(direWorldDefinition);
+    const chamberVariation = takeRandomFromArrayWeightedUnsafe(chamberDefinition.variations, variation => variation.chance);
+    const mapHandle = await spawnMap(chamberVariation.map, Vector(0, 0, 0));
+
+    repositionHeroes(config);
 
     return {
         stage: Stage.adventure,
@@ -319,7 +378,8 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
             id: "reward",
             mapHandle: mapHandle,
             participants: serializeParticipants(config),
-            reward: reward
+            reward: tryCreatingRewardById(RewardId.favor, GetGroundPosition(Vector(0, 0, 0), undefined)),
+            exits: tryGeneratingExits()
         },
         players: () => config.players
     };
@@ -407,47 +467,95 @@ export async function updateAdventureStage(game: AdventureStage) {
                 break;
             }
 
-            const chamberDefinition = direWorldDefinition.chamberDefinitions.splice(0, 1)[0];
-            if (!chamberDefinition) {
+            const chamberDefinition = tryGettingChamberDefinition(game.worldDefinition);
+
+            for (const exit of game.state.exits) {
+                createTimedRadiusMarker(
+                    getPlayersEntities(game.config).map(entity => entity.handle)[0],
+                    exit.origin,
+                    250,
+                    0,
+                    999,
+                    "public"
+                );
+            }
+
+            game.state = {
+                id: "exit",
+                mapHandle: game.state.mapHandle,
+                exits: game.state.exits.map(exit => ({
+                    origin: exit.origin,
+                    instance: {
+                        chamberDefinition: chamberDefinition,
+                        rewardId: RewardId.favor
+                    }
+                }))
+            };
+
+            break;
+
+        case "exit":
+            const selectedExit = game.state.selected;
+            const heroes = getPlayersEntities(game.config).map(entity => entity.handle);
+
+            if (!selectedExit || !selectedExit.instance) {
+                for (const exit of game.state.exits) {
+                    const units = FindUnitsInRadius(
+                        DotaTeam.NOTEAM,
+                        exit.origin,
+                        undefined,
+                        250,
+                        UnitTargetTeam.BOTH,
+                        UnitTargetType.HERO,
+                        UnitTargetFlags.NONE,
+                        FindOrder.ANY,
+                        false
+                    ).filter(unit => heroes.includes(unit));
+
+                    if (units.length > 0) {
+                        game.state.selected = exit;
+                    }
+                }
                 break;
             }
 
-            const chamber = takeRandomFromArrayWeightedUnsafe(chamberDefinition.variations, variation => variation.chance);
-            const wave = serializeWave(chamber.waveDefinitions.splice(0, 1)[0]);
+            const chamberVariation = takeRandomFromArrayWeightedUnsafe(
+                selectedExit.instance.chamberDefinition.variations,
+                variation => variation.chance
+            );
 
             UnloadSpawnGroupByHandle(game.state.mapHandle);
 
             game.loading = true;
 
-            const mapHandle = await spawnMap(chamber.map, Vector(0, 0, 0));
+            const mapHandle = await spawnMap(chamberVariation.map, Vector(0, 0, 0));
+            const exits = tryGeneratingExits();
+            const wave = serializeWave(chamberVariation.waveDefinitions.splice(0, 1)[0]);
+
+            repositionHeroes(game.config);
 
             game.state = {
                 id: "fight",
-                waveDefinitions: chamber.waveDefinitions,
+                exits: exits,
+                mapHandle: mapHandle,
                 wave: wave,
-                mapHandle: mapHandle
+                waveDefinitions: chamberVariation.waveDefinitions
             };
 
             game.loading = false;
 
             break;
-
         case "fight":
             if (game.state.wave.npcs.every(npc => npc.instance.id == "removed")) {
                 const waveDefinition = game.state.waveDefinitions.splice(0, 1)[0];
 
                 if (!waveDefinition) {
-                    const rewardDefinition = findRewardById(RewardId.favor);
-
-                    if (!rewardDefinition) {
-                        throw "NO REWARD?";
-                    }
-
                     game.state = {
                         id: "reward",
                         mapHandle: game.state.mapHandle,
                         participants: serializeParticipants(game.config),
-                        reward: createReward(rewardDefinition, GetGroundPosition(Vector(0, 0, 0), undefined))
+                        reward: tryCreatingRewardById(RewardId.favor, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        exits: game.state.exits
                     };
                     break;
                 }

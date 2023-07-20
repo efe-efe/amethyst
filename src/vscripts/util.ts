@@ -340,7 +340,7 @@ export function unhideHealthBar(unit: CDOTA_BaseNPC) {
 }
 
 export function createTimedRadiusMarker(
-    caster: CDOTA_BaseNPC | undefined,
+    caster: CDOTA_BaseNPC,
     origin: Vector,
     radius: number,
     delay: number,

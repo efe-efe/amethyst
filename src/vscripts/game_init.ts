@@ -36,7 +36,7 @@ import {
 } from "./util";
 import { getPrecacheListAndLock } from "./precache";
 import { alliances, findAllianceByTeam, findFirstAliveAlliancePlayer } from "./alliances";
-import { MapNames, findPlayerById, getGame, getMode, initStartingStage, setStage } from "./game";
+import { Game, MapNames, findPlayerById, getGame, getMode, initStartingStage, setStage } from "./game";
 import { Player, players } from "./players";
 import { createEntity, entities, findEntityByHandle, removeEntity } from "./entities";
 import { initBattleStage, updateBattleState } from "./battle";
@@ -810,6 +810,18 @@ function update() {
     GameRules.Addon.UpdateProjectiles();
 }
 
+function waitUntilAllHeroesLoad(game: Game) {
+    return new Promise<void>(resolve => {
+        Timers.CreateTimer(0, () => {
+            if (game.config.players.some(player => player.entity == undefined)) {
+                return 0.1;
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 async function onNativeStateChange(state: GameState) {
     print(`Native state changed to ${state}`);
 
@@ -837,6 +849,7 @@ async function onNativeStateChange(state: GameState) {
         }
 
         if (getMode() == MapNames.pve) {
+            await waitUntilAllHeroesLoad(game);
             const stage = await initAdventureStage(game.config);
             setStage(stage);
         }
