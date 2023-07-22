@@ -1,0 +1,112 @@
+.upgradesHUD {
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out 0s;
+
+    //TODO: Move this to a "Shadow" invokeable HUD
+    // background-color: gradient(radial, 50% 50%, 0 0, 45% 45%, from(rgba(17, 6, 65, 0.5)), to(rgba(17, 6, 65, 0.9)));
+
+    &--favor {
+        background-color: gradient(linear, 0% 100%, 0% 0%, from(rgba(73, 28, 169, 0.75)), to(rgba(0, 0, 0, 0.75)));
+    }
+
+    &--visible {
+        opacity: 1;
+
+        .upgradesHUD {
+            &__hero {
+                transform: translateY(0);
+            }
+        }
+    }
+
+    &__hero {
+        transition: transform 0.2s ease-in-out 0s;
+        vertical-align: bottom;
+        transform: translateY(100%);
+        ui-scale: 92.5%;
+    }
+
+    &__title {
+        font-family: Reaver, Goudy Trajan Medium, FZKai-Z03, TH Sarabun New, YDYGO 540;
+        font-size: 55;
+        text-transform: uppercase;
+        horizontal-align: center;
+        margin-top: 160px;
+        color: gradient(linear, 0% 100%, 0% 0%, from(#a5d1ff), to(#f5f5f5));
+        font-weight: bold;
+        text-shadow: black 0px 1px 4px 2;
+    }
+}
+
+.upgrades {
+    align: center center;
+    width: 1000px;
+    background-color: gradient(linear, 0% 100%, 0% 0%, from(#4677dd), to(#25146f));
+    flow-children: down;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 15px 1px;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.upgrade {
+    border-radius: 12px;
+    padding: 12px 24px 12px 0;
+    min-height: 150px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 10px 0;
+    margin-bottom: 12px;
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 100%;
+    background-image: none;
+    background-size: 100%;
+
+    &:hover {
+        background-image: url("file://{images}/custom_game/upgrade_border.png");
+    }
+
+    &__rarity {
+        font-size: 20;
+        color: gradient(linear, 0% 100%, 0% 0%, from(#fff065), to(#ff7a00));
+
+        text-transform: uppercase;
+        align: right top;
+        font-family: Reaver, Goudy Trajan Medium, FZKai-Z03, TH Sarabun New, YDYGO 540;
+        text-shadow: black 0px 1px 4px 2;
+    }
+
+    &__icon-container {
+        padding: 0 36px;
+        vertical-align: center;
+    }
+
+    &__icon {
+        height: 64px;
+        width: 64px;
+        border-radius: 12px;
+        box-shadow: rgba(0, 0, 0, 0.6) 0px 1px 10px 0;
+        vertical-align: center;
+    }
+
+    &__container {
+        flow-children: right;
+        vertical-align: center;
+    }
+
+    &__text {
+        flow-children: down;
+    }
+
+    &__title {
+        text-transform: uppercase;
+        font-family: Reaver, Goudy Trajan Medium, FZKai-Z03, TH Sarabun New, YDYGO 540;
+        font-size: 16;
+        color: gradient(linear, 0% 100%, 0% 0%, from(#c1d1ff), to(#ffffff));
+    }
+
+    &__description {
+        font-family: Reaver, Goudy Trajan Medium, FZKai-Z03, TH Sarabun New, YDYGO 540;
+        font-size: 15;
+        color: #ffffff;
+    }
+}

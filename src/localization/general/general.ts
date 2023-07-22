@@ -1,4 +1,4 @@
-import { localizeModifier } from "../localization";
+import { localize, localizeModifier } from "../localization";
 
 localizeModifier("modifier_casting", {
     title: "Ultimate"
@@ -34,3 +34,5 @@ localizeModifier("modifier_generic_root", {
     title: "Rooted",
     description: "Unable to move"
 });
+
+localize("Upgrade_favor", "Favors");

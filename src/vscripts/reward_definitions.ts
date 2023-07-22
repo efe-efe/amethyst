@@ -4,13 +4,6 @@ const resources = precache({
     favorModel: resource.model("models/props_gameplay/stout_shield.vmdl")
 });
 
-export const enum RewardId {
-    "favor" = "favor",
-    "shard" = "shard",
-    "item" = "item",
-    "vitality" = "vitality"
-}
-
 export type RewardDefinition = {
     id: RewardId;
     model: string;
@@ -85,6 +78,12 @@ defineFavor({
 
 defineFavor({
     id: UpgradeId.phantomFastDaggers,
+    hero: "npc_dota_hero_phantom_assassin",
+    icon: "a"
+});
+
+defineFavor({
+    id: UpgradeId.phantomInstantCounter,
     hero: "npc_dota_hero_phantom_assassin",
     icon: "a"
 });

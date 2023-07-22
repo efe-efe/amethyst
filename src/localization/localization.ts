@@ -68,3 +68,16 @@ export function localize(key: string, value: string) {
     allTokens.push([key, value]);
     logLocalization(key);
 }
+
+export function localizeUpgrade(
+    upgradeId: UpgradeId,
+    options: {
+        title: string;
+        description: string;
+    }
+) {
+    localize(`Upgrade_${upgradeId}`, options.title);
+    localize(`Upgrade_${upgradeId}_Description`, options.description);
+
+    logLocalization(upgradeId, "upgrade");
+}

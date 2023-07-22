@@ -2,32 +2,84 @@ import { toplevelRoot } from "../components/topLevelRoot";
 import { std } from "../std";
 import { decodeFromJson, subscribeToNetTableAndLoadNow } from "../util";
 
+function upgradesComponent(parent: Panel) {
+    const root = std.panel(parent, { class: "upgrades" });
+    let upgrades: ReturnType<typeof upgradeComponent>[] = [];
+
+    function cleanUpgrades() {
+        for (const upgrade of upgrades) {
+            upgrade.destroy();
+        }
+
+        upgrades = [];
+    }
+
+    function setUpgrades(updated: UpgradeId[]) {
+        for (const upgrade of updated) {
+            const component = upgradeComponent(root, upgrade);
+
+            upgrades.push(component);
+        }
+    }
+
+    return {
+        root,
+        cleanUpgrades,
+        setUpgrades
+    };
+}
+
+function upgradeComponent(parent: Panel, id: UpgradeId) {
+    const root = std.panel(parent, { class: "upgrade" });
+    const container = std.panel(root, { class: "upgrade__container" });
+    const rarity = std.label(root, { class: "upgrade__rarity", text: "Legendary" });
+    const iconContainer = std.panel(container, { class: "upgrade__icon-container" });
+    const textContainer = std.panel(container, { class: "upgrade__text" });
+    const title = std.label(textContainer, { class: "upgrade__title", text: $.Localize(`#Upgrade_${id}`) });
+    const description = std.label(textContainer, {
+        class: "upgrade__description",
+        text: $.Localize(`#Upgrade_${id}_Description`)
+    });
+    const icon = std.image(iconContainer, {
+        class: "upgrade__icon",
+        src: "file://{images}/spellicons/phantom_assassin_stifling_dagger.png"
+    });
+
+    root.SetPanelEvent("onactivate", () => {
+        GameEvents.SendCustomGameEventToServer("pickUpgrade", id);
+    });
+
+    function destroy() {
+        root.DeleteAsync(0);
+    }
+
+    return {
+        root: root,
+        destroy
+    };
+}
+
 const root = toplevelRoot("upgradesHUD");
-let options: Panel[] = [];
+root.SetHasClass("upgradesHUD--favor", true);
+root.SetHasClass("upgradesHUD--visible", false);
+
+const tile = std.label(root, { class: "upgradesHUD__title", text: $.Localize("#Upgrade_favor") });
+
+const upgradesPanel = upgradesComponent(root);
+std.image(root, { src: "file://{images}/custom_game/phantom_assassin_art.png", class: "upgradesHUD__hero" });
 
 subscribeToNetTableAndLoadNow("pve", (table, key, value) => {
     if ((key as PlayerID) == Game.GetLocalPlayerID()) {
-        const upgrades = decodeFromJson(value.upgrades);
+        upgradesPanel.cleanUpgrades();
 
-        for (const option of options) {
-            option.DeleteAsync(0);
-        }
-
-        options = [];
-
-        if (upgrades.length == 0) {
+        if (!value.selection) {
+            root.SetHasClass("upgradesHUD--visible", false);
             return;
         }
 
-        for (const upgrade of upgrades) {
-            const option = std.button(root, { class: "upgrade" });
-            std.label(option, { text: upgrade });
+        root.SetHasClass("upgradesHUD--visible", true);
+        const upgrades = decodeFromJson(value.selection.upgrades);
 
-            option.SetPanelEvent("onactivate", () => {
-                GameEvents.SendCustomGameEventToServer("pickUpgrade", upgrade);
-            });
-
-            options.push(option);
-        }
+        upgradesPanel.setUpgrades(upgrades);
     }
 });

@@ -79,7 +79,10 @@ interface CustomNetTableDeclarations {
     };
     pve: {
         [key: string]: {
-            upgrades: Json<UpgradeId[]>;
+            selection?: {
+                upgrades: Json<UpgradeId[]>;
+                type: RewardId;
+            };
         };
     };
     custom_npc_rewards: {

@@ -1,25 +1,7 @@
 <root>
     <styles>
-        <include src="file://{resources}/styles/custom_game/components/health.css" />
-        <include src="file://{resources}/styles/custom_game/components/resource.css" />
-        <include src="file://{resources}/styles/custom_game/components/castpoint.css" />
-        <include src="file://{resources}/styles/custom_game/components/delayedProgressBar.css" />
-        <include src="file://{resources}/styles/custom_game/components/cells.css" />
-        <include src="file://{resources}/styles/custom_game/main.css" />
-        <include src="file://{resources}/styles/custom_game/progressBar.css" />
-        <include src="file://{resources}/styles/custom_game/unitOverhead/unitOverhead.css" />
-        <include src="file://{resources}/styles/custom_game/unitOverhead/charges.css" />
-        <include src="file://{resources}/styles/custom_game/unitOverhead/player.css" />
-        <include src="file://{resources}/styles/custom_game/unitOverhead/status.css" />
-        <include src="file://{resources}/styles/custom_game/unitOverhead/cooldown.css" />
-        <include src="file://{resources}/styles/custom_game/unitOverhead/stacks.css" />
-        <include src="file://{resources}/styles/custom_game/allianceStatus.css" />
-        <include src="file://{resources}/styles/custom_game/heroInfoCard.css" />
-        <include src="file://{resources}/styles/custom_game/topBar.css" />
-        <include src="file://{resources}/styles/custom_game/allianceBar.css" />
-        <include src="file://{resources}/styles/custom_game/refunder.css" />
-        <include src="file://{resources}/styles/custom_game/customHotkeys.css" />
-        <include src="file://{resources}/styles/custom_game/upgradesHud.css" />
+        <include src="file://{resources}/styles/custom_game/precache.css"/>
+        <include src="file://{resources}/styles/custom_game/main.css"/>
     </styles>
 	<scripts>
         <include src="file://{resources}/scripts/custom_game/bundle.js" />
@@ -60,9 +42,6 @@
             <Label id="room-type" text="Room type: " />
         </Panel>
         
-        <Panel class="upgrades pve">
-        </Panel>
-
         <Panel class="rewards pve">
             <Label class="rewards__title" text="Chose your next reward" />
             <Label class="rewards__sub-title" text="Chose the reward that you will gain once the next room is cleared." />

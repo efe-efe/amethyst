@@ -9,7 +9,7 @@ import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
 import { Player } from "./players";
 import { precache, resource } from "./precache";
-import { RewardDefinition, RewardId, favorDefinitions, findRewardById } from "./reward_definitions";
+import { RewardDefinition, favorDefinitions, findRewardById } from "./reward_definitions";
 import {
     SimpleTrigger,
     allAbilities,
@@ -457,7 +457,10 @@ export async function updateAdventureStage(game: AdventureStage) {
 
                     for (const participant of game.state.participants) {
                         CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
-                            upgrades: encodeToJson(participant.options)
+                            selection: {
+                                upgrades: encodeToJson(participant.options),
+                                type: game.state.reward.definition.id
+                            }
                         });
                     }
                 }
@@ -658,7 +661,7 @@ CustomGameEventManager.RegisterListener("pickUpgrade", (_, event) => {
             participant.options = [];
 
             CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
-                upgrades: encodeToJson(participant.options)
+                selection: undefined
             });
         }
     }

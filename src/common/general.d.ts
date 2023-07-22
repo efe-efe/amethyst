@@ -1,6 +1,13 @@
 type ParticlePath = `particles/${string}.vpcf`;
 type HeroName = string & { heroNameBrand: unknown };
 
+declare const enum RewardId {
+    "favor" = "favor",
+    "shard" = "shard",
+    "item" = "item",
+    "vitality" = "vitality"
+}
+
 declare const enum Stage {
     none = "none",
     battle = "battle",
@@ -9,7 +16,8 @@ declare const enum Stage {
 
 declare const enum UpgradeId {
     "phantomExtraDaggers" = "phantomExtraDaggers",
-    "phantomFastDaggers" = "phantomFastDaggers"
+    "phantomFastDaggers" = "phantomFastDaggers",
+    "phantomInstantCounter" = "phantomInstantCounter"
 }
 
 declare enum Custom_ActionTypes {

@@ -2,7 +2,7 @@
 node_modules
 
 /content/panorama/scripts/custom_game/**/*.js
-/content/panorama/styles/custom_game/**/*.css
+*.css
 /src/localization/build/**/*.js
 
 !/content/panorama/styles/custom_game/heroSelection.css
@@ -24,15 +24,7 @@ node_modules
 *.vagrp_c
 *.vsnd_c
 *.vseq_c
-
-# Panorama debugger
 *.cfg
-
-# Commit panorama compiled textures
-!game/panorama/images/*.vtex_c
-!game/panorama/images/custom_game/*.vtex_c
-
-# Map files
 *.vpk
 
 settings.kv

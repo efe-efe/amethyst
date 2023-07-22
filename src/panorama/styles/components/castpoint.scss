@@ -1,0 +1,33 @@
+.castpoint {
+    border: 1px solid rgb(24, 24, 24);
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+
+    &--visible {
+        opacity: 1;
+    }
+
+    &__progress {
+        width: 100%;
+        height: 100%;
+
+        .ProgressBarLeft {
+            background-color: #fafafa;
+        }
+    }
+
+    &--success {
+        .ProgressBarLeft {
+            background-color: rgb(51, 162, 40);
+        }
+    }
+
+    &--error {
+        .ProgressBarLeft {
+            background-color: rgb(238, 53, 0);
+        }
+    }
+}

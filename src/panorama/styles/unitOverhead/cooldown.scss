@@ -1,0 +1,29 @@
+.cooldown {
+    height: 20px;
+    width: 30px;
+
+    padding: 0 7px 0 0;
+
+    &__background {
+        width: 100%;
+        height: 100%;
+
+        border: 1px solid black;
+        border-radius: 50%;
+
+        box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+        background-color: rgba(36, 42, 53, 0.5);
+    }
+
+    &__foreground {
+        width: 100%;
+        height: 100%;
+
+        border-radius: 50%;
+
+        border: 1px solid rgba(0, 0, 0, 1);
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        background-color: gradient(linear, 0% 0%, 0% 100%, from(rgba(201, 81, 253, 1)), to(rgb(255, 144, 251)));
+        clip: radial(50% 50%, 0deg, 90deg);
+    }
+}

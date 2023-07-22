@@ -1,5 +1,5 @@
 import { castpointValue, keywords, manaValue } from "../common";
-import { localizeAbility, localizeModifier } from "../localization";
+import { localizeAbility, localizeModifier, localizeUpgrade } from "../localization";
 import { abilityWithIcon, createKeyword, heal, secondaryAbility, upgrade } from "../util";
 
 const swift = abilityWithIcon("Swift", "phantom_mobility");
@@ -144,6 +144,22 @@ localizeModifier("modifier_phantom_extra_recast", {
 
 localizeModifier("modifier_phantom_counter_shield", {
     title: "Shield"
+});
+
+localizeUpgrade(UpgradeId.phantomExtraDaggers, {
+    title: "Extra Daggers",
+    description: "Your Stiffling Daggers throws 3 daggers"
+});
+
+localizeUpgrade(UpgradeId.phantomFastDaggers, {
+    title: "Fast Daggers",
+    description: "Your Stiffling Daggers cooldown is two times your attack speed, but no longer apply slow"
+});
+
+localizeUpgrade(UpgradeId.phantomInstantCounter, {
+    title: "Instant Counter",
+    description:
+        "Your Phantom Strike is activated instantly without the need to be activated by an attack, but no longer heals and the banish duration is reduced."
 });
 
 //     const Shards: Upgrade[] = [
