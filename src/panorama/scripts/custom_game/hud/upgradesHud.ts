@@ -60,10 +60,10 @@ function upgradeComponent(parent: Panel, id: UpgradeId) {
 }
 
 const root = toplevelRoot("upgradesHUD");
-root.SetHasClass("upgradesHUD--favor", true);
+root.SetHasClass("upgradesHUD--blessing", true);
 root.SetHasClass("upgradesHUD--visible", false);
 
-const tile = std.label(root, { class: "upgradesHUD__title", text: $.Localize("#Upgrade_favor") });
+const tile = std.label(root, { class: "upgradesHUD__title", text: $.Localize("#Upgrade_blessing") });
 
 const upgradesPanel = upgradesComponent(root);
 std.image(root, { src: "file://{images}/custom_game/phantom_assassin_art.png", class: "upgradesHUD__hero" });

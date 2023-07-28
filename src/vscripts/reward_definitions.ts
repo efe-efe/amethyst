@@ -1,7 +1,7 @@
 import { precache, resource } from "./precache";
 
 const resources = precache({
-    favorModel: resource.model("models/props_gameplay/stout_shield.vmdl")
+    blessingModel: resource.model("models/props_gameplay/stout_shield.vmdl")
 });
 
 export type RewardDefinition = {
@@ -17,7 +17,7 @@ type RewardOptions = {
 };
 
 const rewardDefinitions: RewardDefinition[] = [];
-export const favorDefinitions: FavorDefinition[] = [];
+export const blessingDefinitions: BlessingDefinition[] = [];
 
 function defineReward(options: RewardOptions) {
     rewardDefinitions.push({
@@ -28,22 +28,22 @@ function defineReward(options: RewardOptions) {
 }
 
 defineReward({
-    id: RewardId.favor,
-    model: resources.favorModel.path
+    id: RewardId.blessing,
+    model: resources.blessingModel.path
 });
 
 export function findRewardById(id: RewardId) {
     return rewardDefinitions.find(reward => reward.id == id);
 }
 
-export type FavorDefinition = {
+export type BlessingDefinition = {
     id: UpgradeId;
     icon: string;
     hero: HeroName;
     values: Record<string, number | number[]>;
 };
 
-type FavorOptions = {
+type BlessingOptions = {
     id: UpgradeId;
     icon: string;
     hero: string;
@@ -61,8 +61,8 @@ type ShardOptions = {
     maxStacks: number;
 };
 
-function defineFavor(options: FavorOptions) {
-    favorDefinitions.push({
+function defineBlessing(options: BlessingOptions) {
+    blessingDefinitions.push({
         id: options.id,
         icon: options.icon,
         hero: options.hero as HeroName,
@@ -70,19 +70,19 @@ function defineFavor(options: FavorOptions) {
     });
 }
 
-defineFavor({
+defineBlessing({
     id: UpgradeId.phantomExtraDaggers,
     hero: "npc_dota_hero_phantom_assassin",
     icon: "a"
 });
 
-defineFavor({
+defineBlessing({
     id: UpgradeId.phantomFastDaggers,
     hero: "npc_dota_hero_phantom_assassin",
     icon: "a"
 });
 
-defineFavor({
+defineBlessing({
     id: UpgradeId.phantomInstantCounter,
     hero: "npc_dota_hero_phantom_assassin",
     icon: "a"

@@ -2,10 +2,11 @@ type ParticlePath = `particles/${string}.vpcf`;
 type HeroName = string & { heroNameBrand: unknown };
 
 declare const enum RewardId {
-    "favor" = "favor",
-    "shard" = "shard",
-    "item" = "item",
-    "vitality" = "vitality"
+    "stance" = "stance", // Changes to the spells (Selected at the begining of the game)
+    "blessing" = "blessing", // Changes to the spells
+    "shard" = "shard", // Changes to the spell category (i.e: basic attack, counter, etc)
+    "item" = "item", // Improvements on the hero body
+    "vitality" = "vitality" // More HP
 }
 
 declare const enum Stage {

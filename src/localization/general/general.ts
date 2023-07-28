@@ -35,4 +35,4 @@ localizeModifier("modifier_generic_root", {
     description: "Unable to move"
 });
 
-localize("Upgrade_favor", "Favors");
+localize("Upgrade_blessing", "Blessings");

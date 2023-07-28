@@ -9,7 +9,7 @@ import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
 import { Player } from "./players";
 import { precache, resource } from "./precache";
-import { RewardDefinition, favorDefinitions, findRewardById } from "./reward_definitions";
+import { RewardDefinition, blessingDefinitions, findRewardById } from "./reward_definitions";
 import {
     SimpleTrigger,
     allAbilities,
@@ -378,7 +378,7 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
             id: "reward",
             mapHandle: mapHandle,
             participants: serializeParticipants(config),
-            reward: tryCreatingRewardById(RewardId.favor, GetGroundPosition(Vector(0, 0, 0), undefined)),
+            reward: tryCreatingRewardById(RewardId.blessing, GetGroundPosition(Vector(0, 0, 0), undefined)),
             exits: tryGeneratingExits()
         },
         players: () => config.players
@@ -386,10 +386,13 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
 }
 
 export async function updateAdventureStage(game: AdventureStage) {
-    function generateFavorsForPlayer(player: Player) {
-        const elegible = favorDefinitions
-            .filter(favor => !player.upgrades.some(upgradeId => upgradeId == favor.id) && favor.hero == player.entity?.handle.GetUnitName())
-            .map(favor => favor.id);
+    function generateBlessingsForPlayer(player: Player) {
+        const elegible = blessingDefinitions
+            .filter(
+                blessing =>
+                    !player.upgrades.some(upgradeId => upgradeId == blessing.id) && blessing.hero == player.entity?.handle.GetUnitName()
+            )
+            .map(blessing => blessing.id);
 
         return elegible;
     }
@@ -452,7 +455,7 @@ export async function updateAdventureStage(game: AdventureStage) {
 
                     game.state.participants = game.state.participants.map(participant => ({
                         ...participant,
-                        options: generateFavorsForPlayer(participant.player)
+                        options: generateBlessingsForPlayer(participant.player)
                     }));
 
                     for (const participant of game.state.participants) {
@@ -490,7 +493,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                     origin: exit.origin,
                     instance: {
                         chamberDefinition: chamberDefinition,
-                        rewardId: RewardId.favor
+                        rewardId: RewardId.blessing
                     }
                 }))
             };
@@ -557,7 +560,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                         id: "reward",
                         mapHandle: game.state.mapHandle,
                         participants: serializeParticipants(game.config),
-                        reward: tryCreatingRewardById(RewardId.favor, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        reward: tryCreatingRewardById(RewardId.blessing, GetGroundPosition(Vector(0, 0, 0), undefined)),
                         exits: game.state.exits
                     };
                     break;
