@@ -135,7 +135,9 @@ interface CustomGameEventDeclarations {
         z: number;
     };
 
-    pickUpgrade: UpgradeId;
+    pickUpgrade: {
+        upgradeId: UpgradeId;
+    };
 
     countdown: {
         timer_minute_10: number;

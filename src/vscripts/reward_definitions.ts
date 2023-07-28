@@ -1,3 +1,4 @@
+import { findPlayerById } from "./game";
 import { precache, resource } from "./precache";
 
 const resources = precache({
@@ -89,5 +90,8 @@ defineBlessing({
 });
 
 export function hasUpgrade(unit: CDOTA_BaseNPC, id: UpgradeId) {
-    return false;
+    const playerId = unit.GetPlayerOwnerID();
+    const player = findPlayerById(playerId);
+
+    return player?.upgrades.find(upgrade => upgrade == id);
 }

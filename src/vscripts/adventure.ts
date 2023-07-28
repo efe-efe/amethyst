@@ -662,6 +662,7 @@ CustomGameEventManager.RegisterListener("pickUpgrade", (_, event) => {
         if (participant) {
             participant.selected = true;
             participant.options = [];
+            participant.player.upgrades.push(event.upgradeId);
 
             CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
                 selection: undefined

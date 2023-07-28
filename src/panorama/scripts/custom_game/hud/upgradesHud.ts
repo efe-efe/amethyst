@@ -46,7 +46,9 @@ function upgradeComponent(parent: Panel, id: UpgradeId) {
     });
 
     root.SetPanelEvent("onactivate", () => {
-        GameEvents.SendCustomGameEventToServer("pickUpgrade", id);
+        GameEvents.SendCustomGameEventToServer("pickUpgrade", {
+            upgradeId: id
+        });
     });
 
     function destroy() {
