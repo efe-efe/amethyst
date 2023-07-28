@@ -286,22 +286,22 @@ function projectile(options: ProjectileOptions) {
         return distanceTraveled > distance;
     }
 
-    function findEntities(position: Vector, radius: number) {
+    function findEntities(position: Vector, radius: number): CDOTA_BaseNPC[] {
         if (zCheck) {
-            return Entities.FindAllInSphere(position, radius);
-        } else {
-            return FindUnitsInRadius(
-                DotaTeam.NOTEAM,
-                position,
-                undefined,
-                radius,
-                UnitTargetTeam.BOTH,
-                UnitTargetType.ALL,
-                flagFilter,
-                FindOrder.ANY,
-                false
-            );
+            return Entities.FindAllInSphere(position, radius).filter(unit => unit.IsBaseNPC()) as CDOTA_BaseNPC[];
         }
+
+        return FindUnitsInRadius(
+            DotaTeam.NOTEAM,
+            position,
+            undefined,
+            radius,
+            UnitTargetTeam.BOTH,
+            UnitTargetType.ALL,
+            flagFilter,
+            FindOrder.ANY,
+            false
+        );
     }
 
     function destroy(immediate: boolean) {
@@ -346,32 +346,30 @@ function projectile(options: ProjectileOptions) {
         const frameHalf = currentPosition.__add(something); //--frameHalf (idk what this is)
 
         const frameRadius = frameHalf.__sub(currentPosition).Length() + currentRadius; //--framerad(idk what this is)
-        const entities = findEntities(frameHalf, frameRadius) as CDOTA_BaseNPC[]; // Find a better way to do this instead of casting
+        const entities = findEntities(frameHalf, frameRadius);
 
+        let pseudoFramePreviousPosition: Vector | undefined = undefined;
         let pseudoFramePosition = currentPosition;
-        let groundPosition = GetGroundPosition(pseudoFramePosition, source).__add(Vector(0, 0, groundOffset));
-        let groundConnect = groundPosition.z > previousPosition.z; //-- self.groundPosition
 
         //Im not sure on the <=, maybe it is <
         for (let index = 1; index <= pseudoFrames; index++) {
             if (!processEntities(entities, pseudoFramePosition)) {
                 return;
             }
-            if (!processTrees(pseudoFramePosition, groundPosition)) {
+            if (!processTrees(pseudoFramePosition)) {
                 return;
             }
 
-            if (!processWalls(pseudoFramePosition, groundPosition, groundConnect)) {
+            if (!processWalls(pseudoFramePosition, pseudoFramePreviousPosition)) {
                 return;
             }
 
-            if (!processGround(pseudoFramePosition, groundConnect)) {
+            if (!processGround(pseudoFramePosition)) {
                 return;
             }
 
+            pseudoFramePreviousPosition = pseudoFramePosition;
             pseudoFramePosition = currentPosition.__add(currentVelocity.__mul(framesDivisor * index));
-            groundPosition = GetGroundPosition(pseudoFramePosition, source).__add(Vector(0, 0, groundOffset));
-            groundConnect = groundPosition.z > previousPosition.z; //-- self.groundPosition
 
             if (distanceTraveled + pseudoFramePosition.__sub(currentPosition).Length() > distance) {
                 destroy(false);
@@ -456,34 +454,12 @@ function projectile(options: ProjectileOptions) {
         return true;
     }
 
-    function processTrees(position: Vector, groundPosition: Vector) {
+    function processTrees(position: Vector) {
         const navConnect = !GridNav.IsTraversable(position) || GridNav.IsBlocked(position); // GNV connect
         if (navConnect) {
             if (cutTrees || treeBehavior != ProjectileBehavior.NOTHING) {
                 const trees = GridNav.GetAllTreesAroundPoint(position, currentRadius, treeFullCollision);
                 for (const tree of trees) {
-                    if (
-                        !zCheck ||
-                        (currentPosition.z < groundPosition.z + 280 + currentRadius - groundOffset &&
-                            currentPosition.z + currentRadius + groundOffset > groundPosition.z)
-                    ) {
-                        //                 if self.cutTrees then
-                        //                     tree:CutDown(self.Source:GetTeamNumber())
-                        //                     navConnect = not GridNav:IsTraversable(self.position) or GridNav:IsBlocked(self.position)
-                        //                 end
-                        //                 if self.cutTrees or self.treeBehavior ~= ProjectileBehavior.NOTHING then
-                        //                     local status, action = pcall(self.OnTreeHit, self, tree)
-                        //                     if not status then
-                        //                         print('[PROJECTILES] Projectile OnTreeHit Failure!: ' .. action)
-                        //                     end
-                        //                 end
-                        //                 if self.treeBehavior == ProjectileBehavior.DESTROY then
-                        //                     self:destroy(false)
-                        //                     return false
-                        //                 elseif self.treeBehavior == ProjectileBehavior.BOUNCE and self.remainingChanges > 0 and self.currentTime >= self.changeTime then
-                        //                 -- bounce calculation
-                        //                 end
-                    }
                 }
             }
         }
@@ -491,29 +467,21 @@ function projectile(options: ProjectileOptions) {
         return true;
     }
 
-    function processWalls(position: Vector, groundPosition: Vector, groundConnect: boolean) {
-        if (wallBehavior != ProjectileBehavior.NOTHING && groundConnect) {
-            //--groundPosition.z > self.previousPosition.z) {
-            let normal = getNormal(groundPosition, source, 32);
-            //         --DebugDrawLine_vCol(position, position + normal * 200, Vector(255,255,255), true, 1)
-            if (normal.z < 0.8) {
-                const vec = Vector(
-                    GridNav.GridPosToWorldCenterX(GridNav.WorldToGridPosX(position.x)),
-                    GridNav.GridPosToWorldCenterY(GridNav.WorldToGridPosY(position.y)),
-                    groundPosition.z
-                );
-
-                // onWallHit(this, vec);
-
+    function processWalls(position: Vector, previousPosition?: Vector) {
+        if (previousPosition && wallBehavior != ProjectileBehavior.NOTHING) {
+            //TODO: This causes projectiles to collide with trees
+            if (GridNav.FindPathLength(position, previousPosition) == -1) {
                 if (wallBehavior == ProjectileBehavior.DESTROY) {
                     destroy(false);
                     return false;
-                } else if (wallBehavior == ProjectileBehavior.BOUNCE && remainingChanges > 0 && currentTime >= changeTime) {
+                }
+
+                if (wallBehavior == ProjectileBehavior.BOUNCE && remainingChanges > 0 && currentTime >= changeTime) {
                     // DebugDrawLine_vCol(position, position + normal * 200, Vector(255,255,255), true, 1)
-                    normal.z = 0;
-                    normal = normal.Normalized();
+                    // normal.z = 0;
+                    // normal = normal.Normalized();
                     // DebugDrawLine_vCol(position, position + normal * 200, Vector(0,255,0), true, 1)
-                    const newVelocity = (-2 * currentVelocity.Dot(normal) * normal + currentVelocity) * PROJECTILES_VISUAL_OFFSET;
+                    // const newVelocity = (-2 * currentVelocity.Dot(normal) * normal + currentVelocity) * PROJECTILES_VISUAL_OFFSET;
                     // setVelocity(newVelocity, position);
 
                     //Check this, maybe I should check the changes before returning true
@@ -524,8 +492,8 @@ function projectile(options: ProjectileOptions) {
         return true;
     }
 
-    function processGround(position: Vector, groundConnect: boolean) {
-        if (groundBehavior != ProjectileBehavior.NOTHING && groundConnect) {
+    function processGround(position: Vector) {
+        if (groundBehavior != ProjectileBehavior.NOTHING) {
             if (groundBehavior == ProjectileBehavior.DESTROY) {
                 //             local status, action = pcall(self.OnGroundHit, self, self.groundPosition)
                 //             if not status then

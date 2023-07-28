@@ -1,5 +1,5 @@
 import { CustomAbility, CustomItem } from "../abilities/framework/custom_ability";
-import { CustomModifierMotionBoth } from "../abilities/framework/custom_modifier";
+import { CustomModifier, CustomModifierMotionBoth } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 import { findUnitsInRadius } from "../util";
 
@@ -21,6 +21,35 @@ export type DisplacementParams = {
 };
 
 @registerModifier()
+class ModifierDisplacementHelper extends CustomModifier<undefined> {
+    x!: number;
+    y!: number;
+    z!: number;
+
+    IsHidden() {
+        return true;
+    }
+
+    IsPermanent() {
+        return true;
+    }
+
+    OnCreated(params: { x: number; y: number; z: number }) {
+        if (IsServer()) {
+            this.x = params.x;
+            this.y = params.y;
+            this.z = params.z;
+            this.StartIntervalThink(0.03);
+        }
+    }
+
+    OnIntervalThink() {
+        FindClearSpaceForUnit(this.parent, Vector(this.x, this.y, this.z), true);
+        this.Destroy();
+    }
+}
+
+@registerModifier()
 export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = CustomAbility | CustomItem> extends CustomModifierMotionBoth<A> {
     distance!: number;
     speed!: number;
@@ -36,11 +65,14 @@ export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = Custo
     flagFilter!: UnitTargetFlags;
     horizontalSpeed!: number;
     verticalSpeed!: number;
-
+    lastValidOrigin!: Vector;
     previousOrigin?: Vector;
 
     elapsedTime = 0;
-    motionTick: number[] = [0, 0, 0];
+
+    frame = 0;
+    horizontalFrame = 0;
+    verticalFrame = 0;
 
     IsHidden() {
         return false;
@@ -57,6 +89,7 @@ export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = Custo
             this.peak = params.peak ?? 0;
             this.direction = Vector(params.x, params.y, 0).Normalized();
             this.origin = this.parent.GetAbsOrigin();
+            this.lastValidOrigin = this.origin;
             this.previousOrigin = undefined;
             this.duration = this.distance / this.speed;
             this.gravity = -this.peak / (this.duration * this.duration * 0.125);
@@ -81,40 +114,42 @@ export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = Custo
     OnDestroy() {
         if (IsServer()) {
             this.parent.InterruptMotionControllers(true);
-            if (this.GetFindClearSpace()) {
-                FindClearSpaceForUnit(this.parent, this.parent.GetAbsOrigin(), true);
-            }
+            this.origin = this.lastValidOrigin;
+
+            ModifierDisplacementHelper.apply(this.parent, this.parent, undefined, {
+                x: this.origin.x,
+                y: this.origin.y,
+                z: this.origin.z
+            });
         }
     }
 
-    SyncTime(tickIndex: number, dt: number) {
-        // Check if already synced
-        if (this.motionTick[1] == this.motionTick[2]) {
-            this.motionTick[0] = this.motionTick[0] + 1;
+    Synchronize(direction: "horizontal" | "vertical", dt: number) {
+        if (this.horizontalFrame == this.verticalFrame) {
+            this.frame++;
             this.elapsedTime = this.elapsedTime + dt;
         }
 
-        // Sync time
-        this.motionTick[tickIndex] = this.motionTick[0];
+        if (direction == "horizontal") {
+            this.horizontalFrame = this.frame;
+        }
 
-        // End motion
-        if (this.elapsedTime > this.duration && this.motionTick[1] == this.motionTick[2]) {
+        if (direction == "vertical") {
+            this.verticalFrame = this.frame;
+        }
+
+        if (this.elapsedTime > this.duration && this.horizontalFrame == this.verticalFrame) {
             this.Destroy();
         }
 
         const origin = Vector(this.direction.x, this.direction.y, 0).__mul(this.offset).__add(this.parent.GetAbsOrigin());
         const trees = GridNav.GetAllTreesAroundPoint(origin, this.radius / 2, true);
         const units = findUnitsInRadius(this.parent, origin, this.radius, this.teamFilter, this.targetType, this.flagFilter, FindOrder.ANY);
+        const isValidOrigin = GridNav.FindPathLength(this.previousOrigin ?? origin, origin) != -1;
 
-        const zLeft = GetGroundPosition(origin.__add(Vector(-1, 0, 0)), this.parent).z;
-        const zRight = GetGroundPosition(origin.__add(Vector(1, 0, 0)), this.parent).z;
-        const zUp = GetGroundPosition(origin.__add(Vector(0, 1, 0)), this.parent).z;
-        const zDown = GetGroundPosition(origin.__add(Vector(0, -1, 0)), this.parent).z;
-        const normal = Vector(zLeft - zRight, zDown - zUp, 2).Normalized();
-        const ground = GetGroundPosition(origin, this.parent);
-        const groundConnect = this.previousOrigin ? ground.z > this.previousOrigin.z : true;
-
-        if (normal.z < 0.8 && groundConnect) {
+        if (isValidOrigin) {
+            this.lastValidOrigin = origin;
+        } else {
             this.OnCollide({
                 collision: "wall"
             });
@@ -134,13 +169,10 @@ export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = Custo
         }
 
         this.previousOrigin = this.parent.GetAbsOrigin();
-        // if self.GetOnThinkCallback then
-        //     self:GetOnThinkCallback()
-        // end
     }
 
     UpdateHorizontalMotion(me: CDOTA_BaseNPC, dt: number) {
-        this.SyncTime(1, dt);
+        this.Synchronize("horizontal", dt);
         const target = this.direction.__mul(this.horizontalSpeed).__mul(this.elapsedTime);
         this.parent.SetAbsOrigin(this.origin.__add(target));
     }
@@ -152,7 +184,7 @@ export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = Custo
     }
 
     UpdateVerticalMotion(me: CDOTA_BaseNPC, dt: number) {
-        this.SyncTime(2, dt);
+        this.Synchronize("vertical", dt);
         const target = this.verticalSpeed * this.elapsedTime + 0.5 * this.gravity * this.elapsedTime * this.elapsedTime;
         this.parent.SetAbsOrigin(Vector(this.parent.GetAbsOrigin().x, this.parent.GetAbsOrigin().y, this.origin.z + target));
     }
@@ -171,10 +203,6 @@ export class ModifierDisplacement<A extends CDOTABaseAbility | undefined = Custo
     OnCollide(params: OnCollisionEvent) {}
 
     GetIsCommandRestricted() {
-        return true;
-    }
-
-    GetFindClearSpace() {
         return true;
     }
 }

@@ -70,7 +70,8 @@ export function updateEntityMovement(entity: Entity) {
             return "success";
         }
 
-        if (normal.z <= 0.9) {
+        if (GridNav.FindPathLength(origin, futureOrigin) == -1) {
+            // if (normal.z <= 0.9) {
             return "wall";
         }
 
