@@ -32,12 +32,6 @@ const roomPhasePanel = $("#room-phase") as LabelPanel;
 const roomTypePanel = $("#room-type") as LabelPanel;
 const refunderButton = $("#refunder__button") as Button;
 const refunderPanel = $("#refunder");
-const customHotkeysPanel = $("#custom-hotkeys");
-const hideShowButton = $("#custom-hotkeys__hide-show-button") as Button;
-const swapButton = $("#custom-hotkeys__swap-button") as Button;
-const customHotkeysAllRowsPanel = $("#custom-hotkeys__hotkeys");
-const customHotkeysTextPanel = hideShowButton.FindChildrenWithClassTraverse("custom-hotkeys__button-text")[0] as LabelPanel;
-
 const heroInfoCards: any = {};
 const allianceBars: any = {};
 
@@ -188,40 +182,6 @@ refunderButton.SetPanelEvent("onactivate", () => {
 
     refunderPanel.style.visibility = "collapse";
 });
-
-customHotkeysPanel.SetPanelEvent("onmouseover", () => {
-    customHotkeysPanel.style.opacity = "1.0";
-});
-customHotkeysPanel.SetPanelEvent("onmouseout", () => {
-    customHotkeysPanel.style.opacity = "0.5";
-});
-
-hideShowButton.SetPanelEvent("onactivate", () => {
-    if (customHotkeysShowing) {
-        customHotkeysPanel.style.width = "140px";
-        customHotkeysAllRowsPanel.style.height = "0px";
-        customHotkeysTextPanel.text = "SHOW HOTKEYS";
-        swapButton.style.visibility = "collapse";
-        customHotkeysShowing = false;
-    } else {
-        customHotkeysPanel.style.width = "340px";
-        customHotkeysAllRowsPanel.style.height = "410px";
-        customHotkeysTextPanel.text = "HIDE HOTKEYS";
-        swapButton.style.visibility = "visible";
-        customHotkeysShowing = true;
-    }
-});
-
-swapButton.SetPanelEvent("onactivate", () => {
-    SwapRF();
-});
-
-function SwapRF() {
-    const playerId = util.getCurrentPlayer();
-    GameEvents.SendCustomGameEventToServer("swapRF", {
-        playerIndex: playerId
-    });
-}
 
 if (Game.GetMapInfo().map_display_name === "pvp") {
     pvePanels.forEach(panel => {

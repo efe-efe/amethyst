@@ -234,24 +234,6 @@ function setupPanoramaEventHooks() {
         //     this.warmup.SetDuration(this.warmup.GetDuration() + 10.0);
         // }
     });
-
-    CustomGameEventManager.RegisterListener("swapRF", (eventSourceIndex, event) => {
-        const playerId = event.playerIndex as PlayerID;
-        const player = findPlayerById(playerId);
-
-        if (player) {
-            const hero = player.entity?.handle;
-
-            if (hero) {
-                const abilityNameOne = hero.GetAbilityByIndex(5)?.GetName();
-                const abilityNameTwo = hero.GetAbilityByIndex(6)?.GetName();
-
-                if (abilityNameOne && abilityNameTwo) {
-                    hero.SwapAbilities(abilityNameOne, abilityNameTwo, true, true);
-                }
-            }
-        }
-    });
 }
 
 function setupRules() {
