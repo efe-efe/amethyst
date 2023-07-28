@@ -75,6 +75,7 @@ class ModifierPhantomMobilityCharges extends ModifierCharges {
 @registerModifier("modifier_phantom_mobility_displacement")
 class ModifierPhantomMobilityDisplacement extends ModifierDisplacement {
     OnDestroy() {
+        super.OnDestroy();
         if (IsServer()) {
             const particleId = ParticleManager.CreateParticle(resources.trail.path, ParticleAttachment.ABSORIGIN, this.parent);
             ParticleManager.SetParticleControl(particleId, 0, this.origin);
@@ -86,20 +87,16 @@ class ModifierPhantomMobilityDisplacement extends ModifierDisplacement {
     }
 
     OnCollide(event: OnCollisionEvent) {
-        if (IsServer()) {
-            if (event.collision == "unit") {
-                for (const unit of event.units) {
-                    if (!ModifierPhantomMobility.findOne(unit)) {
-                        ModifierPhantomMobility.apply(unit, this.parent, this.ability, { duration: 5 });
+        if (IsServer() && event.collision == "unit") {
+            for (const unit of event.units.filter(unit => !ModifierPhantomMobility.findOne(unit))) {
+                ModifierPhantomMobility.apply(unit, this.parent, this.ability, { duration: 5 });
 
-                        const shieldModifier = ModifierUpgradePhantomDashShield.findOne(this.parent);
-                        if (shieldModifier) {
-                            ModifierPhantomMobilityShield.apply(this.parent, this.parent, undefined, {
-                                duration: 5.0,
-                                damageBlock: shieldModifier.GetDamageBlock()
-                            });
-                        }
-                    }
+                const shieldModifier = ModifierUpgradePhantomDashShield.findOne(this.parent);
+                if (shieldModifier) {
+                    ModifierPhantomMobilityShield.apply(this.parent, this.parent, undefined, {
+                        duration: 5.0,
+                        damageBlock: shieldModifier.GetDamageBlock()
+                    });
                 }
             }
         }

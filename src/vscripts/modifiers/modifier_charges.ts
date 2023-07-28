@@ -45,44 +45,36 @@ export class ModifierCharges extends CustomModifier<CDOTABaseAbility> {
     }
 
     CalculateCharge() {
+        this.ability.EndCooldown();
+
+        if (this.GetStackCount() >= this.GetMaxCharges()) {
+            // Stop charging
+            this.SetDuration(-1, false);
+            this.StartIntervalThink(-1);
+
+            return;
+        }
+
         if (this.GetReplenishType() == "async") {
-            this.ability.EndCooldown();
-            if (this.GetStackCount() >= this.GetMaxCharges()) {
-                // Stop charging
-                this.SetStackCount(this.GetMaxCharges());
-                this.SetDuration(-1, true);
-                this.StartIntervalThink(-1);
-            } else {
-                // If not charging
-                if (this.GetRemainingTime() <= 0.05) {
-                    // Start charging
-                    const chargeTime = this.ability.GetCooldown(-1);
-                    this.StartIntervalThink(chargeTime);
-                    this.SetDuration(chargeTime, true);
-                }
-                // Set on cooldown if(no charges
-                if (this.GetStackCount() == 0) {
-                    this.ability.StartCooldown(this.GetRemainingTime());
-                }
+            // If not charging
+            if (this.GetRemainingTime() <= 0.05) {
+                // Start charging
+                const chargeTime = this.ability.GetCooldown(-1);
+                this.StartIntervalThink(chargeTime);
+                this.SetDuration(chargeTime, true);
             }
         }
 
         if (this.GetReplenishType() == "sync") {
-            if (this.GetStackCount() == this.GetMaxCharges()) {
-                // Stop charging
-                this.SetDuration(-1, false);
-                this.StartIntervalThink(-1);
+            // If not charging
+            if (this.GetRemainingTime() <= 0.05) {
+                this.ResetCooldown();
             }
-            if (this.GetStackCount() < this.GetMaxCharges()) {
-                // If not charging
-                if (this.GetRemainingTime() <= 0.05) {
-                    this.ResetCooldown();
-                }
-                // Set on cooldown if(no charges
-                if (this.GetStackCount() == 0) {
-                    this.ability.StartCooldown(this.GetRemainingTime());
-                }
-            }
+        }
+
+        // Set on cooldown if no charges
+        if (this.GetStackCount() == 0) {
+            this.ability.StartCooldown(this.GetRemainingTime());
         }
     }
 
@@ -97,6 +89,7 @@ export class ModifierCharges extends CustomModifier<CDOTABaseAbility> {
             this.StartIntervalThink(-1);
             this.CalculateCharge();
         }
+
         if (this.GetReplenishType() == "sync") {
             this.SetStackCount(this.GetMaxCharges());
             this.StartIntervalThink(-1);
@@ -117,23 +110,18 @@ export class ModifierCharges extends CustomModifier<CDOTABaseAbility> {
     }
 
     OnAbilityFullyCast(event: ModifierAbilityEvent) {
-        if (IsServer()) {
-            if (event.unit != this.parent) {
-                return;
+        if (IsServer() && event.unit == this.parent && event.ability == this.ability) {
+            if (!GameRules.Addon.IsInWTFMode()) {
+                this.DecrementStackCount();
             }
-            if (event.ability == this.ability) {
-                if (!GameRules.Addon.IsInWTFMode()) {
-                    this.DecrementStackCount();
-                    this.CalculateCharge();
-                }
-            }
+
+            this.CalculateCharge();
         }
     }
 
     RefreshCharges() {
         this.SetStackCount(this.GetMaxCharges());
         this.CalculateCharge();
-        this.ability.EndCooldown();
     }
 
     GetReplenishTime() {
@@ -148,4 +136,3 @@ export class ModifierCharges extends CustomModifier<CDOTABaseAbility> {
         return 1;
     }
 }
-//     Modifiers.StartTracking(modifier, MODIFIER_TYPES.CHARGES)
