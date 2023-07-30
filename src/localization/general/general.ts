@@ -35,4 +35,6 @@ localizeModifier("modifier_generic_root", {
     description: "Unable to move"
 });
 
-localize("Upgrade_blessing", "Blessings");
+localize(`Upgrade_${RewardId.blessing}`, "Blessings");
+localize(`Upgrade_${RewardId.shard}`, "Shards");
+localize(`Upgrade_${RewardId.stance}`, "Stance");

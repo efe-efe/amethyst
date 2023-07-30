@@ -3,8 +3,8 @@ type HeroName = string & { heroNameBrand: unknown };
 
 declare const enum RewardId {
     "stance" = "stance", // Changes to the spells (Selected at the begining of the game)
-    "blessing" = "blessing", // Changes to the spells
-    "shard" = "shard", // Changes to the spell category (i.e: basic attack, counter, etc)
+    "blessing" = "blessing", // Changes to the spell category (i.e: basic attack, counter, etc)
+    "shard" = "shard", // Changes to the spells
     "item" = "item", // Improvements on the hero body
     "vitality" = "vitality" // More HP
 }
@@ -18,7 +18,9 @@ declare const enum Stage {
 declare const enum UpgradeId {
     "phantomExtraDaggers" = "phantomExtraDaggers",
     "phantomFastDaggers" = "phantomFastDaggers",
-    "phantomInstantCounter" = "phantomInstantCounter"
+    "phantomInstantCounter" = "phantomInstantCounter",
+    "phantomDashDaggers" = "phantomDashDaggers",
+    "phantomSecondRecast" = "phantomSecondRecast"
 }
 
 declare enum Custom_ActionTypes {

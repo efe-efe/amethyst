@@ -162,6 +162,16 @@ localizeUpgrade(UpgradeId.phantomInstantCounter, {
         "Your Phantom Strike is activated instantly without the need to be activated by an attack, but no longer heals and the banish duration is reduced."
 });
 
+localizeUpgrade(UpgradeId.phantomDashDaggers, {
+    title: "Swift Knives",
+    description: "Your Swift leaves a fan of knives on its original position."
+});
+
+localizeUpgrade(UpgradeId.phantomSecondRecast, {
+    title: "Critical Recast",
+    description: "Your Critical Strike can be recasted if hit an enemy."
+});
+
 //     const Shards: Upgrade[] = [
 //       {
 //         id: "phantom_dash_damage",

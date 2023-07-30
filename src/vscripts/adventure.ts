@@ -9,7 +9,7 @@ import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
 import { Player } from "./players";
 import { precache, resource } from "./precache";
-import { RewardDefinition, blessingDefinitions, findRewardById } from "./reward_definitions";
+import { RewardDefinition, findRewardById, shardDefinitions, stanceDefinitions } from "./reward_definitions";
 import {
     SimpleTrigger,
     allAbilities,
@@ -104,13 +104,7 @@ type ChamberVariation = {
 };
 
 type WaveDefinition = {
-    npcs: {
-        npc: {
-            id: NpcId;
-            shieldPct: number;
-        };
-        amount: number;
-    }[];
+    npcs: WaveNpcDefinition[];
     maxNpcs?: number;
 };
 
@@ -124,6 +118,8 @@ type Wave = {
     npcs: WaveNpc[];
     maxNpcs?: number;
 };
+
+type WaveNpcDefinition = { id: NpcId; shieldPct: number; amount: number };
 
 type WaveNpc = {
     definition: NpcDefinition;
@@ -152,13 +148,7 @@ type WaveNpc = {
           };
 };
 
-function defineWave(
-    npcs: {
-        npc: { id: NpcId; shieldPct: number };
-        amount: number;
-    }[],
-    maxNpcs?: number
-): WaveDefinition {
+function defineWave(npcs: WaveNpcDefinition[], maxNpcs?: number): WaveDefinition {
     return {
         npcs: npcs,
         maxNpcs: maxNpcs
@@ -166,35 +156,19 @@ function defineWave(
 }
 
 const rangedsWave = defineWave([
+    { id: NpcId.direRange, shieldPct: 0, amount: 5 },
     {
-        npc: {
-            id: NpcId.direRange,
-            shieldPct: 50
-        },
-        amount: 1
-    },
-    {
-        npc: {
-            id: NpcId.direRangeMega,
-            shieldPct: 0
-        },
+        id: NpcId.direRangeMega,
+        shieldPct: 100,
         amount: 1
     }
 ]);
 
 const mixedRangeFlying = defineWave([
+    { id: NpcId.direRange, shieldPct: 0, amount: 2 },
     {
-        npc: {
-            id: NpcId.direRange,
-            shieldPct: 0
-        },
-        amount: 2
-    },
-    {
-        npc: {
-            id: NpcId.flyingSkull,
-            shieldPct: 0
-        },
+        id: NpcId.flyingSkull,
+        shieldPct: 0,
         amount: 4
     }
 ]);
@@ -202,10 +176,8 @@ const mixedRangeFlying = defineWave([
 const onlyRangeWave = defineWave(
     [
         {
-            npc: {
-                id: NpcId.direRange,
-                shieldPct: 0
-            },
+            id: NpcId.direRange,
+            shieldPct: 0,
             amount: 5
         }
     ],
@@ -215,17 +187,15 @@ const onlyRangeWave = defineWave(
 const onlyFlyingWave = defineWave(
     [
         {
-            npc: {
-                id: NpcId.flyingSkull,
-                shieldPct: 50
-            },
+            id: NpcId.flyingSkull,
+            shieldPct: 50,
             amount: 10
         }
     ],
     7
 );
 
-const centaurWave = defineWave([{ npc: { id: NpcId.centaur, shieldPct: 0 }, amount: 1 }]);
+const centaurWave = defineWave([{ id: NpcId.centaur, shieldPct: 0, amount: 1 }]);
 
 const direWorldDefinition: WorldDefinition = {
     chamberDefinitions: [
@@ -239,6 +209,9 @@ const direWorldDefinition: WorldDefinition = {
             variations: [{ waveDefinitions: [onlyFlyingWave], chance: 100, map: "dire_2" }]
         },
         {
+            variations: [{ waveDefinitions: [mixedRangeFlying, mixedRangeFlying], chance: 100, map: "dire_1" }]
+        },
+        {
             variations: [{ waveDefinitions: [centaurWave], chance: 100, map: "dire_2" }]
         }
     ]
@@ -248,12 +221,12 @@ function serializeWave(waveDefinition: WaveDefinition): Wave {
     const waveNpcs: WaveNpc[] = [];
 
     for (const npcs of waveDefinition.npcs) {
-        const definition = findNpcDefinitionById(npcs.npc.id);
+        const definition = findNpcDefinitionById(npcs.id);
 
         if (definition) {
             for (let i = 0; i < npcs.amount; i++) {
                 waveNpcs.push({
-                    shieldPct: npcs.npc.shieldPct,
+                    shieldPct: npcs.shieldPct,
                     definition: definition,
                     instance: {
                         id: "standby"
@@ -378,7 +351,7 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
             id: "reward",
             mapHandle: mapHandle,
             participants: serializeParticipants(config),
-            reward: tryCreatingRewardById(RewardId.blessing, GetGroundPosition(Vector(0, 0, 0), undefined)),
+            reward: tryCreatingRewardById(RewardId.stance, GetGroundPosition(Vector(0, 0, 0), undefined)),
             exits: tryGeneratingExits()
         },
         players: () => config.players
@@ -386,15 +359,14 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
 }
 
 export async function updateAdventureStage(game: AdventureStage) {
-    function generateBlessingsForPlayer(player: Player) {
-        const elegible = blessingDefinitions
+    function generateUpgradeForPlayer(player: Player, rewardId: RewardId) {
+        const set = rewardId == RewardId.shard ? shardDefinitions : rewardId == RewardId.stance ? stanceDefinitions : [];
+        return set
             .filter(
-                blessing =>
-                    !player.upgrades.some(upgradeId => upgradeId == blessing.id) && blessing.hero == player.entity?.handle.GetUnitName()
+                upgrade =>
+                    !player.upgrades.some(upgradeId => upgradeId == upgrade.id) && upgrade.hero == player.entity?.handle.GetUnitName()
             )
-            .map(blessing => blessing.id);
-
-        return elegible;
+            .map(upgrade => upgrade.id);
     }
 
     function canCreateUnit(wave: Wave) {
@@ -453,12 +425,9 @@ export async function updateAdventureStage(game: AdventureStage) {
 
                     game.state.reward.handle = undefined;
 
-                    game.state.participants = game.state.participants.map(participant => ({
-                        ...participant,
-                        options: generateBlessingsForPlayer(participant.player)
-                    }));
-
                     for (const participant of game.state.participants) {
+                        participant.options = generateUpgradeForPlayer(participant.player, game.state.reward.definition.id);
+
                         CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
                             selection: {
                                 upgrades: encodeToJson(participant.options),
@@ -493,7 +462,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                     origin: exit.origin,
                     instance: {
                         chamberDefinition: chamberDefinition,
-                        rewardId: RewardId.blessing
+                        rewardId: RewardId.shard
                     }
                 }))
             };
@@ -560,7 +529,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                         id: "reward",
                         mapHandle: game.state.mapHandle,
                         participants: serializeParticipants(game.config),
-                        reward: tryCreatingRewardById(RewardId.blessing, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        reward: tryCreatingRewardById(RewardId.shard, GetGroundPosition(Vector(0, 0, 0), undefined)),
                         exits: game.state.exits
                     };
                     break;

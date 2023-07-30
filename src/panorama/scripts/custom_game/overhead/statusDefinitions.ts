@@ -180,6 +180,7 @@ defineRecastStatus("modifier_juggernaut_ex_counter_recast", "juggernaut_ex_count
 defineRecastStatus("modifier_phantom_counter_recast", "phantom_counter_recast", "Q");
 defineRecastStatus("modifier_phantom_ex_counter_recast", "phantom_ex_counter_recast", "2");
 defineRecastStatus("modifier_phantom_extra_recast", "phantom_extra", "F");
+defineRecastStatus("modifier_phantom_second_attack_recast", "phantom_second_attack_recast", "M2");
 
 defineRecastStatus("modifier_spectre_counter_recast", "spectre_counter_recast", "Q");
 

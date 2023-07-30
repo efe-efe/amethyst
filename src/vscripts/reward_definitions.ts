@@ -2,7 +2,8 @@ import { findPlayerById } from "./game";
 import { precache, resource } from "./precache";
 
 const resources = precache({
-    blessingModel: resource.model("models/props_gameplay/stout_shield.vmdl")
+    stanceModel: resource.model("models/props_gameplay/stout_shield.vmdl"),
+    shardModel: resource.model("models/props_gameplay/aghanim_scepter.vmdl")
 });
 
 export type RewardDefinition = {
@@ -19,6 +20,8 @@ type RewardOptions = {
 
 const rewardDefinitions: RewardDefinition[] = [];
 export const blessingDefinitions: BlessingDefinition[] = [];
+export const stanceDefinitions: StanceDefinition[] = [];
+export const shardDefinitions: ShardDefinition[] = [];
 
 function defineReward(options: RewardOptions) {
     rewardDefinitions.push({
@@ -29,13 +32,25 @@ function defineReward(options: RewardOptions) {
 }
 
 defineReward({
-    id: RewardId.blessing,
-    model: resources.blessingModel.path
+    id: RewardId.stance,
+    model: resources.stanceModel.path
+});
+
+defineReward({
+    id: RewardId.shard,
+    model: resources.shardModel.path
 });
 
 export function findRewardById(id: RewardId) {
     return rewardDefinitions.find(reward => reward.id == id);
 }
+
+export type StanceDefinition = {
+    id: UpgradeId;
+    icon: string;
+    hero: HeroName;
+    values: Record<string, number | number[]>;
+};
 
 export type BlessingDefinition = {
     id: UpgradeId;
@@ -44,16 +59,28 @@ export type BlessingDefinition = {
     values: Record<string, number | number[]>;
 };
 
-type BlessingOptions = {
+export type ShardDefinition = {
+    id: UpgradeId;
+    icon: string;
+    hero: HeroName;
+    values: Record<string, number | number[]>;
+};
+
+type ShardOptions = {
     id: UpgradeId;
     icon: string;
     hero: string;
     values?: Record<string, number | number[]>;
 };
 
-const enum ShardId {}
+type StanceOptions = {
+    id: UpgradeId;
+    icon: string;
+    hero: string;
+    values?: Record<string, number | number[]>;
+};
 
-type ShardOptions = {
+type BlessingOptions = {
     id: UpgradeId;
     icon: string;
     hero: HeroName;
@@ -71,22 +98,52 @@ function defineBlessing(options: BlessingOptions) {
     });
 }
 
-defineBlessing({
-    id: UpgradeId.phantomExtraDaggers,
-    hero: "npc_dota_hero_phantom_assassin",
-    icon: "a"
-});
+function defineStance(options: StanceOptions) {
+    stanceDefinitions.push({
+        id: options.id,
+        icon: options.icon,
+        hero: options.hero as HeroName,
+        values: options.values ?? {}
+    });
+}
 
-defineBlessing({
+function defineShard(options: ShardOptions) {
+    shardDefinitions.push({
+        id: options.id,
+        icon: options.icon,
+        hero: options.hero as HeroName,
+        values: options.values ?? {}
+    });
+}
+
+defineStance({
     id: UpgradeId.phantomFastDaggers,
     hero: "npc_dota_hero_phantom_assassin",
-    icon: "a"
+    icon: "file://{images}/spellicons/phantom_assassin_stifling_dagger.png"
 });
 
-defineBlessing({
+defineStance({
     id: UpgradeId.phantomInstantCounter,
     hero: "npc_dota_hero_phantom_assassin",
-    icon: "a"
+    icon: "file://{images}/spellicons/phantom_assassin_blur.png"
+});
+
+defineStance({
+    id: UpgradeId.phantomSecondRecast,
+    hero: "npc_dota_hero_phantom_assassin",
+    icon: "file://{images}/spellicons/phantom_second_attack.png"
+});
+
+defineShard({
+    id: UpgradeId.phantomDashDaggers,
+    hero: "npc_dota_hero_phantom_assassin",
+    icon: "file://{images}/spellicons/phantom_assassin_stifling_dagger.png"
+});
+
+defineShard({
+    id: UpgradeId.phantomExtraDaggers,
+    hero: "npc_dota_hero_phantom_assassin",
+    icon: "file://{images}/spellicons/phantom_assassin_stifling_dagger.png"
 });
 
 export function hasUpgrade(unit: CDOTA_BaseNPC, id: UpgradeId) {

@@ -65,7 +65,7 @@ const root = toplevelRoot("upgradesHUD");
 root.SetHasClass("upgradesHUD--blessing", true);
 root.SetHasClass("upgradesHUD--visible", false);
 
-const tile = std.label(root, { class: "upgradesHUD__title", text: $.Localize("#Upgrade_blessing") });
+const title = std.label(root, { class: "upgradesHUD__title" });
 
 const upgradesPanel = upgradesComponent(root);
 std.image(root, { src: "file://{images}/custom_game/phantom_assassin_art.png", class: "upgradesHUD__hero" });
@@ -81,6 +81,8 @@ subscribeToNetTableAndLoadNow("pve", (table, key, value) => {
 
         root.SetHasClass("upgradesHUD--visible", true);
         const upgrades = decodeFromJson(value.selection.upgrades);
+
+        title.text = $.Localize(`#Upgrade_${value.selection.type}`);
 
         upgradesPanel.setUpgrades(upgrades);
     }

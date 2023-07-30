@@ -3,17 +3,18 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modifier_displacement";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
-import { ModifierUpgradePhantomDashDamage } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_damage";
 import { ModifierUpgradePhantomDashShield } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_shield";
 import { precache, resource } from "../../../precache";
-import { direction2D, getCursorPosition } from "../../../util";
+import { hasUpgrade } from "../../../reward_definitions";
+import { direction2D, findUnitsInRadius, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
-import { PhantomBasicAttack } from "./phantom_basic_attack";
 
 const resources = precache({
     blinkStart: resource.fx("particles/blink_purple.vpcf"),
-    trail: resource.fx("particles/phantom/mobility_trail.vpcf")
+    trail: resource.fx("particles/phantom/mobility_trail.vpcf"),
+    daggerAoe: resource.fx("particles/phantom/phantom_aoe_daggers_small.vpcf"),
+    attackImpact: resource.fx("particles/phantom/phantom_basic_attack.vpcf")
 });
 
 @registerAbility("phantom_mobility")
@@ -25,7 +26,6 @@ class PhantomMobility extends CustomAbility {
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const point = getCursorPosition(this.caster);
-        const phantomBasicAttack = PhantomBasicAttack.findOne(this.caster);
         const distance = this.GetCastRange(Vector(0, 0, 0), this.caster) + this.caster.GetCastRangeBonus();
         const casterDirection = findEntityByHandle(this.caster)?.direction ?? Vector(0, 0, 0);
         const direction = casterDirection.x != 0 || casterDirection.y != 0 ? casterDirection : direction2D(origin, point);
@@ -39,10 +39,38 @@ class PhantomMobility extends CustomAbility {
             teamFilter: UnitTargetTeam.ENEMY
         });
 
-        if (phantomBasicAttack) {
-            phantomBasicAttack.TryThrowKnives(ModifierUpgradePhantomDashDamage.name);
+        if (hasUpgrade(this.caster, UpgradeId.phantomDashDaggers)) {
+            this.ThrowKnives();
         }
         this.PlayEffectsOnCast();
+    }
+
+    ThrowKnives() {
+        const origin = this.caster.GetAbsOrigin();
+        const radius = 300;
+
+        EFX(resources.daggerAoe.path, ParticleAttachment.ABSORIGIN, this.caster, {
+            release: true
+        });
+        const enemies = findUnitsInRadius(
+            this.caster,
+            origin,
+            radius,
+            UnitTargetTeam.ENEMY,
+            UnitTargetType.HERO + UnitTargetType.BASIC,
+            UnitTargetFlags.NONE,
+            FindOrder.ANY
+        );
+
+        for (const enemy of enemies) {
+            ApplyDamage({
+                victim: enemy,
+                attacker: this.caster,
+                damage: this.caster.GetAverageTrueAttackDamage(this.caster),
+                damage_type: DamageTypes.PHYSICAL
+            });
+            this.PlayEffectsOnImpact(enemy);
+        }
     }
 
     PlayEffectsOnCast() {
@@ -53,6 +81,13 @@ class PhantomMobility extends CustomAbility {
             this.GetCaster()
         );
         ParticleManager.ReleaseParticleIndex(effect_cast);
+    }
+
+    PlayEffectsOnImpact(target: CDOTA_BaseNPC) {
+        EFX(resources.attackImpact.path, ParticleAttachment.ABSORIGIN, target, {
+            release: true
+        });
+        EmitSoundOn("Hero_PhantomAssassin.Attack", target);
     }
 }
 

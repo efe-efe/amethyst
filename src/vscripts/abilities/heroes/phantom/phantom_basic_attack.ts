@@ -1,4 +1,4 @@
-import { areUnitsAllied, createRadiusMarker, findUnitsInRadius } from "../../../util";
+import { areUnitsAllied } from "../../../util";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import {
@@ -19,7 +19,6 @@ import { precache, resource } from "../../../precache";
 const resources = precache({
     dagger: resource.fx("particles/phantom/phantom_special_attack.vpcf"),
     daggerImpact: resource.fx("particles/phantom/phantom_special_attack_explosion.vpcf"),
-    daggerAoe: resource.fx("particles/phantom/phantom_aoe_daggers_small.vpcf"),
     attackImpact: resource.fx("particles/phantom/phantom_basic_attack.vpcf"),
     charged: resource.fx("particles/econ/items/antimage/antimage_weapon_godeater/antimage_godeater_bracer_ambient.vpcf"),
     invisPoof: resource.fx("particles/econ/events/ti5/blink_dagger_end_sparkles_end_lvl2_ti5.vpcf"),
@@ -61,39 +60,6 @@ export class PhantomBasicAttack extends CustomAbility {
 
     GetFadeGestureOnCast() {
         return false;
-    }
-
-    TryThrowKnives(modifierName: string) {
-        const origin = this.caster.GetAbsOrigin();
-        const radius = 300;
-        const modifier = this.caster.FindModifierByName(modifierName);
-
-        if (modifier) {
-            const stacks = modifier.GetStackCount();
-            EFX(resources.daggerAoe.path, ParticleAttachment.ABSORIGIN, this.caster, {
-                release: true
-            });
-            const enemies = findUnitsInRadius(
-                this.caster,
-                origin,
-                radius,
-                UnitTargetTeam.ENEMY,
-                UnitTargetType.HERO + UnitTargetType.BASIC,
-                UnitTargetFlags.NONE,
-                FindOrder.ANY
-            );
-
-            for (const enemy of enemies) {
-                ApplyDamage({
-                    victim: enemy,
-                    attacker: this.caster,
-                    damage: this.caster.GetAverageTrueAttackDamage(this.caster) * (0.5 * stacks),
-                    damage_type: DamageTypes.PHYSICAL
-                });
-                this.PlayEffectsOnImpact(enemy);
-            }
-            createRadiusMarker(this.caster, origin, radius, "public", 0.1);
-        }
     }
 
     OnSpellStart() {

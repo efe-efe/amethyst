@@ -431,7 +431,7 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
             }
 
             if (phantomBasicAttack) {
-                phantomBasicAttack.TryThrowKnives(ModifierUpgradePhantomStrikeKnives.name);
+                // phantomBasicAttack.TryThrowKnives(ModifierUpgradePhantomStrikeKnives.name);
             }
 
             if (this.ability.GetLevel() >= 2) {

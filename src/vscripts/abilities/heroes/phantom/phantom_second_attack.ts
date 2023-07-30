@@ -1,7 +1,17 @@
-import { registerAbility } from "../../../lib/dota_ts_adapter";
-import { ModifierUpgradePhantomCritRecast } from "../../../modifiers/upgrades/modifier_favors";
+import { addAnimation } from "../../../animation";
+import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
+import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { precache, resource } from "../../../precache";
-import { clampPosition, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { hasUpgrade } from "../../../reward_definitions";
+import {
+    clampPosition,
+    direction2D,
+    findUnitsInRadius,
+    getCursorPosition,
+    giveManaAndEnergyPercent,
+    isGem,
+    isObstacle
+} from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomStacks } from "./phantom_basic_attack";
 
@@ -10,11 +20,38 @@ const resources = precache({
     swoopExtra: resource.fx(
         "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/phantom_assassin_crit_arcana_swoop_r.vpcf"
     ),
-    impact: resource.fx("particles/juggernaut/juggernaut_second_attack_parent.vpcf")
+    impact: resource.fx("particles/juggernaut/juggernaut_second_attack_parent.vpcf"),
+    blinkStart: resource.fx(
+        "particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf"
+    ),
+    blinkEnd: resource.fx("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf")
 });
 
+class PhantomSecondAttackCommon extends CustomAbility {
+    PlayEffectsOnImpact(target: CDOTA_BaseNPC, stacks: number) {
+        EmitSoundOn("Hero_PhantomAssassin.Arcana_Layer", target);
+        const offset = 100;
+        const origin = this.caster.GetAbsOrigin();
+        const direction = direction2D(origin, target.GetAbsOrigin());
+        const finalPosition = origin.__add(Vector(direction.x * offset, direction.y * offset, 0));
+
+        if (stacks == 3) {
+            EmitSoundOn("Hero_PhantomAssassin.Spatter", target);
+        }
+
+        const particleId = ParticleManager.CreateParticle(
+            stacks == 3 ? resources.swoop.path : resources.swoopExtra.path,
+            ParticleAttachment.POINT,
+            this.caster
+        );
+        ParticleManager.SetParticleControl(particleId, 1, finalPosition);
+        ParticleManager.SetParticleControlForward(particleId, 1, direction2D(finalPosition, origin));
+        ParticleManager.ReleaseParticleIndex(particleId);
+    }
+}
+
 @registerAbility("phantom_second_attack")
-class PhantomSecondAttack extends CustomAbility {
+class PhantomSecondAttack extends PhantomSecondAttackCommon {
     GetAnimation() {
         return GameActivity.DOTA_ATTACK_EVENT;
     }
@@ -78,31 +115,13 @@ class PhantomSecondAttack extends CustomAbility {
         this.caster.RemoveModifierByName(ModifierPhantomStacks.name);
         EmitSoundOn("Hero_PhantomAssassin.Attack", this.caster);
 
-        if (units.length > 0) {
-            if (ModifierUpgradePhantomCritRecast.findOne(this.caster)) {
-                // this.caster.AddNewModifier(this.caster, self, "modifier_phantom_second_attack_recast", { duration = 3.0 })
-            }
+        if (units.length > 0 && hasUpgrade(this.caster, UpgradeId.phantomSecondRecast)) {
+            ModifierPhantomSecondAttackRecast.apply(this.caster, this.caster, undefined, {
+                abilityLeft: PhantomSecondAttack.name,
+                abilityRight: PhantomSecondAttackRecast.name,
+                duration: 3.0
+            });
         }
-    }
-
-    PlayEffectsOnImpact(target: CDOTA_BaseNPC, stacks: number) {
-        EmitSoundOn("Hero_PhantomAssassin.Arcana_Layer", target);
-        const offset = 100;
-        const origin = this.caster.GetAbsOrigin();
-        const direction = direction2D(origin, target.GetAbsOrigin());
-        const finalPosition = origin.__add(Vector(direction.x * offset, direction.y * offset, 0));
-        let particle_cast = "";
-
-        if (stacks == 3) {
-            particle_cast = resources.swoop.path;
-            EmitSoundOn("Hero_PhantomAssassin.Spatter", target);
-        } else {
-            particle_cast = resources.swoopExtra.path;
-        }
-        const particleId = ParticleManager.CreateParticle(particle_cast, ParticleAttachment.POINT, this.caster);
-        ParticleManager.SetParticleControl(particleId, 1, finalPosition);
-        ParticleManager.SetParticleControlForward(particleId, 1, direction2D(finalPosition, origin));
-        ParticleManager.ReleaseParticleIndex(particleId);
     }
 
     PlayEffectsOnFinish(direction: Vector, radius: number) {
@@ -123,66 +142,57 @@ class PhantomSecondAttack extends CustomAbility {
 }
 
 @registerAbility("phantom_second_attack_recast")
-class PhantomSecondAttackRecast extends CustomAbility {
-    // function phantom_second_attack_recast:OnUpgrade()
-    // 	CustomAbilitiesLegacy:LinkUpgrades(self, "phantom_second_attack")
-    // }
-    // function phantom_second_attack_recast:OnSpellStart()
-    // 	const origin = this.caster.GetAbsOrigin()
-    // 	const radius = this.GetSpecialValueFor("radius") + CustomEntitiesLegacy:GetMeeleExtraRadius(this.caster)
-    // 	const point = ClampPosition(origin, CustomAbilitiesLegacy:GetCursorPosition(self), this.GetCastRange(Vector(0,0,0), undefined), undefined)
-    // 	const extra_damage = this.GetSpecialValueFor("extra_damage")
-    //     EmitSoundOn("Hero_PhantomAssassin.Blur", this.caster)
-    // 	EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_start.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
-    //         cp0 = origin,
-    //         cp3 = origin,
-    //         release = true,
-    //     })
-    //     FindClearSpaceForUnit(this.caster, point, true)
-    //     EmitSoundOn("Hero_PhantomAssassin.Blur.Break", this.caster)
-    //     EFX("particles/econ/items/phantom_assassin/phantom_assassin_arcana_elder_smith/pa_arcana_phantom_strike_end.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, self.parent, {
-    //         cp3 = this.caster.GetAbsOrigin(),
-    //         release = true,
-    //     })
-    // 	const damage_table = {
-    // 		attacker = this.caster,
-    // 		damage = this.caster.GetAverageTrueAttackDamage(this.caster) + extra_damage,
-    // 		damage_type = DAMAGE_TYPE_PHYSICAL,
-    // 	}
-    // 	ApplyCallbackForUnitsInArea(this.caster, this.caster.GetAbsOrigin(), radius, DOTA_UNIT_TARGET_TEAM_ENEMY, function(unit)
-    // 		damage_table.victim = unit
-    // 		ApplyDamage(damage_table)
-    // 		this.PlayEffectsOnImpact(unit)
-    // 		EmitSoundOn("Hero_PhantomAssassin.Spatter", unit)
-    // 		EmitSoundOn("Hero_PhantomAssassin.Attack", this.caster)
-    // 	})
-    // 	CreateRadiusMarker(this.caster, point, radius, RADIUS_SCOPE_PUBLIC, 0.1)
-    // 	this.caster.StartGestureWithPlaybackRate(ACT_DOTA_ATTACK_EVENT, 1.5)
-    // }
+class PhantomSecondAttackRecast extends PhantomSecondAttackCommon {
+    OnSpellStart() {
+        const origin = this.caster.GetAbsOrigin();
+        //TODO: @Refactor Handle the extra radius
+        const meeleExtraRadius = 0; //CustomEntitiesLegacy:GetMeeleExtraRadius(this.caster)
+        const radius = this.GetSpecialValueFor("radius") + meeleExtraRadius;
+        const cursor = getCursorPosition(this.caster);
+        const point = clampPosition(origin, cursor, {
+            maxRange: this.GetCastRange(Vector(0, 0, 0), undefined)
+        });
+        const extraDamage = this.GetSpecialValueFor("extra_damage");
+
+        EmitSoundOn("Hero_PhantomAssassin.Blur", this.caster);
+        EFX(resources.blinkStart.path, ParticleAttachment.WORLDORIGIN, undefined, {
+            cp0: origin,
+            cp3: origin,
+            release: true
+        });
+        FindClearSpaceForUnit(this.caster, point, true);
+        EmitSoundOn("Hero_PhantomAssassin.Blur.Break", this.caster);
+
+        EFX(resources.blinkEnd.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {
+            cp3: this.caster.GetAbsOrigin(),
+            release: true
+        });
+
+        const enemies = findUnitsInRadius(
+            this.caster,
+            this.caster.GetAbsOrigin(),
+            radius,
+            UnitTargetTeam.ENEMY,
+            UnitTargetType.HERO + UnitTargetType.BASIC,
+            UnitTargetFlags.NONE,
+            FindOrder.ANY
+        );
+
+        for (const enemy of enemies) {
+            ApplyDamage({
+                attacker: this.caster,
+                damage: this.caster.GetAverageTrueAttackDamage(this.caster) + extraDamage,
+                damage_type: DamageTypes.PHYSICAL,
+                victim: enemy
+            });
+            this.PlayEffectsOnImpact(enemy, 0);
+            EmitSoundOn("Hero_PhantomAssassin.Spatter", enemy);
+        }
+
+        EmitSoundOn("Hero_PhantomAssassin.Attack", this.caster);
+        addAnimation(this.caster, GameActivity.DOTA_ATTACK_EVENT, { duration: 0.5, rate: 1.5 });
+    }
 }
 
-// phantom_second_attack_recast.PlayEffectsOnImpact = phantom_second_attack.PlayEffectsOnImpact
-
-// if IsClient() then require("wrappers/abilities") }
-// modifier_phantom_second_attack_recast = class({})
-
-// function modifier_phantom_second_attack_recast:IsHidden()
-//     return true
-// }
-
-// function modifier_phantom_second_attack_recast:GetRecastAbility()
-//     if IsServer() then
-//         return this.GetParent():FindAbilityByName("phantom_second_attack_recast")
-//     }
-// }
-
-// function modifier_phantom_second_attack_recast:GetRecastCharges()
-// 	return 1
-// }
-
-// function modifier_phantom_second_attack_recast:GetRecastKey()
-// 	return "M2"
-// }
-
-// if IsClient() then require("wrappers/modifiers") }
-// Modifiers.Recast(modifier_phantom_second_attack_recast)
+@registerModifier("modifier_phantom_second_attack_recast")
+class ModifierPhantomSecondAttackRecast extends ModifierRecast<undefined> {}

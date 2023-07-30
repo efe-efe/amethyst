@@ -26,15 +26,6 @@ export class ModifierUpgradePhantomCounterStacks extends ModifierUpgrade {}
 export class ModifierUpgradePhantomFastCoup extends ModifierUpgrade {}
 
 @registerModifier()
-export class ModifierUpgradePhantomCritRecast extends ModifierUpgrade {}
-
-@registerModifier()
-export class ModifierUpgradePhantomExtraDaggers extends ModifierUpgrade {}
-
-@registerModifier()
-export class ModifierUpgradePhantomFastDaggers extends ModifierUpgrade {}
-
-@registerModifier()
 export class ModifierUpgradePhantomQuickRecast extends ModifierUpgrade {}
 
 @registerModifier()
