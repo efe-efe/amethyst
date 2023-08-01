@@ -1,7 +1,7 @@
 type ParticlePath = `particles/${string}.vpcf`;
 type HeroName = string & { heroNameBrand: unknown };
 
-declare const enum RewardId {
+declare const enum UpgradeType {
     "stance" = "stance", // Changes to the spells (Selected at the begining of the game)
     "blessing" = "blessing", // Changes to the spell category (i.e: basic attack, counter, etc)
     "shard" = "shard", // Changes to the spells
@@ -55,4 +55,10 @@ declare function unreachable(x: never): never;
 // Json is an opaque type which you can only use in encode/decode
 type Json<T> = {
     jsonBrand: unknown & T;
+};
+
+type QUpgradeDefinition = {
+    type: UpgradeType;
+    id: UpgradeId;
+    icon: string;
 };

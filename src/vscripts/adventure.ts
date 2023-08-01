@@ -9,7 +9,7 @@ import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
 import { Player } from "./players";
 import { precache, resource } from "./precache";
-import { RewardDefinition, findRewardById, shardDefinitions, stanceDefinitions } from "./reward_definitions";
+import { RewardDefinition, UpgradeDefinition, findRewardByType, upgradeDefinitions } from "./reward_definitions";
 import {
     SimpleTrigger,
     allAbilities,
@@ -40,7 +40,7 @@ type AdventureStage = FindStage<Game, Stage.adventure>;
 type RewardParticipant = {
     player: Player;
     selected: boolean;
-    options: UpgradeId[];
+    options: UpgradeDefinition[];
 };
 
 //TODO: Add the preselect into select thing
@@ -53,7 +53,7 @@ type Exit = {
     origin: Vector;
     instance?: {
         chamberDefinition: ChamberDefinition;
-        rewardId: RewardId;
+        UpgradeType: UpgradeType;
     };
 };
 
@@ -292,8 +292,8 @@ function spawnMap(map: string, origin: Vector): Promise<SpawnGroupHandle> {
     });
 }
 
-function tryCreatingRewardById(RewardId: RewardId, origin: Vector) {
-    const rewardDefinition = findRewardById(RewardId);
+function tryCreatingRewardByType(upgradeType: UpgradeType, origin: Vector) {
+    const rewardDefinition = findRewardByType(upgradeType);
 
     if (!rewardDefinition) {
         throw "ERROR, REWARD NOT FOUND";
@@ -351,7 +351,7 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
             id: "reward",
             mapHandle: mapHandle,
             participants: serializeParticipants(config),
-            reward: tryCreatingRewardById(RewardId.stance, GetGroundPosition(Vector(0, 0, 0), undefined)),
+            reward: tryCreatingRewardByType(UpgradeType.stance, GetGroundPosition(Vector(0, 0, 0), undefined)),
             exits: tryGeneratingExits()
         },
         players: () => config.players
@@ -359,14 +359,13 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
 }
 
 export async function updateAdventureStage(game: AdventureStage) {
-    function generateUpgradeForPlayer(player: Player, rewardId: RewardId) {
-        const set = rewardId == RewardId.shard ? shardDefinitions : rewardId == RewardId.stance ? stanceDefinitions : [];
-        return set
-            .filter(
-                upgrade =>
-                    !player.upgrades.some(upgradeId => upgradeId == upgrade.id) && upgrade.hero == player.entity?.handle.GetUnitName()
-            )
-            .map(upgrade => upgrade.id);
+    function generateUpgradeForPlayer(player: Player, upgradeType: UpgradeType) {
+        return upgradeDefinitions.filter(
+            upgrade =>
+                upgrade.type == upgradeType &&
+                !player.upgrades.some(playerUpgrade => playerUpgrade.id == upgrade.id) &&
+                upgrade.hero == player.entity?.handle.GetUnitName()
+        );
     }
 
     function canCreateUnit(wave: Wave) {
@@ -426,12 +425,17 @@ export async function updateAdventureStage(game: AdventureStage) {
                     game.state.reward.handle = undefined;
 
                     for (const participant of game.state.participants) {
-                        participant.options = generateUpgradeForPlayer(participant.player, game.state.reward.definition.id);
+                        participant.options = generateUpgradeForPlayer(participant.player, game.state.reward.definition.upgradeType);
 
                         CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
                             selection: {
-                                upgrades: encodeToJson(participant.options),
-                                type: game.state.reward.definition.id
+                                upgrades: encodeToJson(
+                                    participant.options.map(option => ({
+                                        id: option.id,
+                                        type: option.type,
+                                        icon: option.icon
+                                    }))
+                                )
                             }
                         });
                     }
@@ -462,7 +466,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                     origin: exit.origin,
                     instance: {
                         chamberDefinition: chamberDefinition,
-                        rewardId: RewardId.shard
+                        UpgradeType: UpgradeType.shard
                     }
                 }))
             };
@@ -529,7 +533,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                         id: "reward",
                         mapHandle: game.state.mapHandle,
                         participants: serializeParticipants(game.config),
-                        reward: tryCreatingRewardById(RewardId.shard, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        reward: tryCreatingRewardByType(UpgradeType.shard, GetGroundPosition(Vector(0, 0, 0), undefined)),
                         exits: game.state.exits
                     };
                     break;
@@ -631,7 +635,12 @@ CustomGameEventManager.RegisterListener("pickUpgrade", (_, event) => {
         if (participant) {
             participant.selected = true;
             participant.options = [];
-            participant.player.upgrades.push(event.upgradeId);
+
+            const upgrade = upgradeDefinitions.find(upgrade => upgrade.id == event.upgradeId);
+
+            if (upgrade) {
+                participant.player.upgrades.push(upgrade);
+            }
 
             CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
                 selection: undefined

@@ -14,7 +14,7 @@ function upgradesComponent(parent: Panel) {
         upgrades = [];
     }
 
-    function setUpgrades(updated: UpgradeId[]) {
+    function setUpgrades(updated: QUpgradeDefinition[]) {
         for (const upgrade of updated) {
             const component = upgradeComponent(root, upgrade);
 
@@ -29,25 +29,25 @@ function upgradesComponent(parent: Panel) {
     };
 }
 
-function upgradeComponent(parent: Panel, id: UpgradeId) {
+function upgradeComponent(parent: Panel, upgradeDefinition: QUpgradeDefinition) {
     const root = std.panel(parent, { class: "upgrade" });
     const container = std.panel(root, { class: "upgrade__container" });
     const rarity = std.label(root, { class: "upgrade__rarity", text: "Legendary" });
     const iconContainer = std.panel(container, { class: "upgrade__icon-container" });
     const textContainer = std.panel(container, { class: "upgrade__text" });
-    const title = std.label(textContainer, { class: "upgrade__title", text: $.Localize(`#Upgrade_${id}`) });
+    const title = std.label(textContainer, { class: "upgrade__title", text: $.Localize(`#Upgrade_${upgradeDefinition.id}`) });
     const description = std.label(textContainer, {
         class: "upgrade__description",
-        text: $.Localize(`#Upgrade_${id}_Description`)
+        text: $.Localize(`#Upgrade_${upgradeDefinition.id}_Description`)
     });
     const icon = std.image(iconContainer, {
         class: "upgrade__icon",
-        src: "file://{images}/spellicons/phantom_assassin_stifling_dagger.png"
+        src: upgradeDefinition.icon
     });
 
     root.SetPanelEvent("onactivate", () => {
         GameEvents.SendCustomGameEventToServer("pickUpgrade", {
-            upgradeId: id
+            upgradeId: upgradeDefinition.id
         });
     });
 
@@ -82,8 +82,8 @@ subscribeToNetTableAndLoadNow("pve", (table, key, value) => {
         root.SetHasClass("upgradesHUD--visible", true);
         const upgrades = decodeFromJson(value.selection.upgrades);
 
-        title.text = $.Localize(`#Upgrade_${value.selection.type}`);
-
+        const type = upgrades[0].type;
+        title.text = $.Localize(`#Upgrade_${type}`);
         upgradesPanel.setUpgrades(upgrades);
     }
 });

@@ -80,8 +80,7 @@ interface CustomNetTableDeclarations {
     pve: {
         [key: string]: {
             selection?: {
-                upgrades: Json<UpgradeId[]>;
-                type: RewardId;
+                upgrades: Json<QUpgradeDefinition[]>;
             };
         };
     };
