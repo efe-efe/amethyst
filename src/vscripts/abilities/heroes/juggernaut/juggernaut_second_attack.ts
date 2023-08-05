@@ -15,6 +15,8 @@ import {
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { JuggernautBasicAttack, ModifierJuggernautStacks } from "./juggernaut_basic_attack";
+import { defineAbility } from "../../framework/ability_definition";
+import { addAnimation, removeAnimation } from "../../../animation";
 
 @registerAbility("juggernaut_second_attack")
 class JuggernautSecondAttack extends CustomAbility {
@@ -204,6 +206,8 @@ export class ModifierJuggernautSpin extends CustomModifier<undefined> {
             );
             ParticleManager.SetParticleControl(this.particleId, 5, Vector(200, 1, 1));
             ParticleManager.SetParticleControl(this.particleId, 2, this.parent.GetOrigin());
+
+            addAnimation(this.caster, GameActivity.DOTA_OVERRIDE_ABILITY_1, { rate: 1.5 });
         }
     }
 
@@ -213,19 +217,9 @@ export class ModifierJuggernautSpin extends CustomModifier<undefined> {
             EmitSoundOn("Hero_Juggernaut.BladeFuryStop", this.parent);
             ParticleManager.DestroyParticle(this.particleId, false);
             ParticleManager.ReleaseParticleIndex(this.particleId);
+
+            removeAnimation(this.caster, GameActivity.DOTA_OVERRIDE_ABILITY_1);
         }
-    }
-
-    DeclareFunctions() {
-        return [ModifierFunction.OVERRIDE_ANIMATION, ModifierFunction.OVERRIDE_ANIMATION_RATE];
-    }
-
-    GetOverrideAnimation() {
-        return GameActivity.DOTA_OVERRIDE_ABILITY_1;
-    }
-
-    GetOverrideAnimationRate() {
-        return 1.5;
     }
 }
 
@@ -430,3 +424,19 @@ class JuggernautExSecondAttack extends CustomAbility {
 // 	   release = true
 // 	})
 //  }
+
+defineAbility(JuggernautSecondAttack, {
+    category: "secondary",
+    linkedAbility: {
+        name: JuggernautExSecondAttack.name,
+        shareCooldown: true
+    }
+});
+
+defineAbility(JuggernautExSecondAttack, {
+    category: "secondary",
+    linkedAbility: {
+        name: JuggernautSecondAttack.name,
+        shareCooldown: true
+    }
+});

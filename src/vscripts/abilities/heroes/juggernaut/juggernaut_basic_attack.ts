@@ -11,6 +11,7 @@ import {
     meeleEFX,
     replenishEFX
 } from "../../../util";
+import { defineAbility } from "../../framework/ability_definition";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -191,3 +192,7 @@ export class ModifierJuggernautStacks extends CustomModifier<JuggernautBasicAtta
         return "juggernaut_blade_dance";
     }
 }
+
+defineAbility(JuggernautBasicAttack, {
+    category: "basic"
+});

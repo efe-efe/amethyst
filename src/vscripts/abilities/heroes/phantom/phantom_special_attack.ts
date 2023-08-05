@@ -4,6 +4,7 @@ import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { precache, resource } from "../../../precache";
 import { hasUpgrade } from "../../../upgrade_definitions";
 import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
+import { defineAbility } from "../../framework/ability_definition";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomBleed, ModifierPhantomStacks, PhantomBasicAttack, PhantomExBasicAttack } from "./phantom_basic_attack";
 
@@ -151,3 +152,7 @@ class ModifierPhantomSpecialAttackCharges extends ModifierCharges {
         return 0;
     }
 }
+
+defineAbility(PhantomSpecialAttack, {
+    category: "special"
+});

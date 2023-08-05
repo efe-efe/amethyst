@@ -14,8 +14,8 @@ import { areUnitsAllied, clampPosition, direction2D, getCursorPosition, isObstac
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPhantomStacks, PhantomBasicAttack } from "./phantom_basic_attack";
-import { ModifierUpgradePhantomStrikeKnives } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_strike_knives";
 import { precache, resource } from "../../../precache";
+import { defineAbility } from "../../framework/ability_definition";
 
 const resources = precache({
     sparksStart: resource.fx(
@@ -470,3 +470,23 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
         };
     }
 }
+
+defineAbility(PhantomCounter, {
+    category: "counter",
+    linkedAbility: {
+        name: PhantomExCounter.name,
+        shareCooldown: true
+    }
+});
+
+defineAbility(PhantomCounterRecast, {
+    category: "counter"
+});
+
+defineAbility(PhantomExCounter, {
+    category: "counter",
+    linkedAbility: {
+        name: PhantomCounter.name,
+        shareCooldown: true
+    }
+});

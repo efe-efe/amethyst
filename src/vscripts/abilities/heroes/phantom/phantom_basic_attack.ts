@@ -15,6 +15,7 @@ import {
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { precache, resource } from "../../../precache";
+import { defineAbility } from "../../framework/ability_definition";
 
 const resources = precache({
     dagger: resource.fx("particles/phantom/phantom_special_attack.vpcf"),
@@ -473,3 +474,23 @@ export class ModifierPhantomBleed extends CustomModifier<PhantomExBasicAttack> {
         EmitSoundOn("Hero_PhantomAssassin.Spatter", this.parent);
     }
 }
+
+defineAbility(PhantomBasicAttack, {
+    category: "basic",
+    linkedAbility: {
+        name: PhantomExBasicAttack.name,
+        shareCooldown: false
+    }
+});
+
+defineAbility(PhantomExBasicAttack, {
+    category: "basic",
+    linkedAbility: {
+        name: PhantomBasicAttack.name,
+        shareCooldown: false
+    }
+});
+
+defineAbility(PhantomBasicAttackRelated, {
+    category: "basic"
+});

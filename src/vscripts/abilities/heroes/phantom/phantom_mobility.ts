@@ -7,6 +7,7 @@ import { ModifierUpgradePhantomDashShield } from "../../../modifiers/upgrades/sh
 import { precache, resource } from "../../../precache";
 import { hasUpgrade } from "../../../upgrade_definitions";
 import { direction2D, findUnitsInRadius, getCursorPosition } from "../../../util";
+import { defineAbility } from "../../framework/ability_definition";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 
@@ -170,3 +171,7 @@ class ModifierPhantomMobilityShield extends ModifierShield {
     // function modifier_phantom_mobility_shield:GetStatusPriority() return 3 }
     // function modifier_phantom_mobility_shield:GetStatusStyle() return "Shield" }
 }
+
+defineAbility(PhantomMobility, {
+    category: "mobility"
+});

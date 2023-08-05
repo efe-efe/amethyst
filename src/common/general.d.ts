@@ -26,7 +26,10 @@ declare const enum UpgradeId {
     "phantomInstantCounter" = "phantomInstantCounter",
     "phantomDashDaggers" = "phantomDashDaggers",
     "phantomSecondRecast" = "phantomSecondRecast",
-    "timberMobilityChakram" = "timberMobilityChakram"
+    "juggernautReflectSpin" = "juggernautReflectSpin",
+    "juggernautDagggerRefresh" = "juggernautDagggerRefresh",
+    "timberMobilityChakram" = "timberMobilityChakram",
+    "timberSpecialChakram" = "timberSpecialChakram"
 }
 
 declare enum Custom_ActionTypes {

@@ -24,6 +24,7 @@ export class ModifierEnergy extends CustomModifier<undefined> {
     }
 
     DeclareFunctions(): ModifierFunction[] {
+        //@Refactor what is this? TODO
         return [ModifierFunction.ON_ABILITY_FULLY_CAST];
     }
 }

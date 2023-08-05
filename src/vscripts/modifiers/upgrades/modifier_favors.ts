@@ -8,12 +8,6 @@ export class ModifierUpgradeJuggernautBladeDanceReacast extends ModifierUpgrade 
 export class ModifierUpgradeJuggernautFuryAttack extends ModifierUpgrade {}
 
 @registerModifier()
-export class ModifierUpgradeJuggernautFuryReflects extends ModifierUpgrade {}
-
-@registerModifier()
-export class ModifierUpgradeJuggernautRefreshDagger extends ModifierUpgrade {}
-
-@registerModifier()
 export class ModifierUpgradeJuggernautSpinningWard extends ModifierUpgrade {}
 
 @registerModifier()

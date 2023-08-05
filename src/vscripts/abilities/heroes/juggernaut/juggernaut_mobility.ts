@@ -1,9 +1,17 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCombatEvents, OnHitEvent } from "../../../modifiers/modifier_combat_events";
-import { ModifierUpgradeJuggernautFuryAttack, ModifierUpgradeJuggernautFuryReflects } from "../../../modifiers/upgrades/modifier_favors";
-import { ModifierHeroMovement } from "../../../modifiers/modifier_hero_movement";
+import { ModifierUpgradeJuggernautFuryAttack } from "../../../modifiers/upgrades/modifier_favors";
 import { findUnitsInRadius, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
+import { defineAbility } from "../../framework/ability_definition";
+import { addAnimation, removeAnimation } from "../../../animation";
+import { hasUpgrade } from "../../../upgrade_definitions";
+import { precache, resource } from "../../../precache";
+
+const resources = precache({
+    explosion: resource.fx("particles/econ/items/axe/axe_ti9_immortal/axe_ti9_beserkers_call_owner_aoe_dome.vpcf"),
+    trail: resource.fx("particles/econ/events/ti9/phase_boots_ti9.vpcf")
+});
 
 @registerAbility("juggernaut_mobility")
 class JuggernautMobility extends CustomAbility {
@@ -11,7 +19,7 @@ class JuggernautMobility extends CustomAbility {
         const duration = this.GetSpecialValueFor("duration");
 
         strongPurge(this.caster);
-        this.caster.RemoveModifierByName(ModifierHeroMovement.name);
+
         ModifierJuggernautMobility.apply(this.caster, this.caster, this, { duration: duration });
 
         const random = RandomInt(1, 9);
@@ -45,6 +53,7 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
         if (IsServer()) {
             this.StartIntervalThink(this.Value("think_interval"));
             this.PlayEffects();
+            addAnimation(this.caster, GameActivity.DOTA_OVERRIDE_ABILITY_1);
         }
     }
 
@@ -90,17 +99,12 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
         if (IsServer()) {
             this.StopEffects();
             EmitSoundOn("Hero_Juggernaut.BladeFuryStop", this.parent);
+            removeAnimation(this.caster, GameActivity.DOTA_OVERRIDE_ABILITY_1);
         }
     }
 
     DeclareFunctions() {
-        return [
-            ModifierFunction.MOVESPEED_BONUS_PERCENTAGE,
-            ModifierFunction.ON_ORDER,
-            ModifierFunction.OVERRIDE_ANIMATION,
-            ModifierFunction.OVERRIDE_ANIMATION_RATE,
-            ModifierFunction.OVERRIDE_ANIMATION_WEIGHT
-        ];
+        return [ModifierFunction.MOVESPEED_BONUS_PERCENTAGE, ModifierFunction.ON_ORDER];
     }
 
     OnOrder(event: ModifierUnitEvent) {
@@ -113,18 +117,6 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
 
     GetModifierMoveSpeedBonus_Percentage() {
         return this.Value("speed_buff_pct");
-    }
-
-    GetOverrideAnimation() {
-        return GameActivity.DOTA_OVERRIDE_ABILITY_1;
-    }
-
-    GetOverrideAnimationRate() {
-        return 1.0;
-    }
-
-    GetOverrideAnimationWeight() {
-        return 2.0;
     }
 
     CheckState() {
@@ -157,7 +149,7 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
     }
 
     ShouldReflect() {
-        return this.ability.GetLevel() >= 2 || ModifierUpgradeJuggernautFuryReflects.findOne(this.caster);
+        return this.ability.GetLevel() >= 2 || hasUpgrade(this.parent, UpgradeId.juggernautReflectSpin);
     }
 
     StopEffects() {
@@ -166,16 +158,13 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
         ParticleManager.DestroyParticle(this.particleId, false);
         ParticleManager.ReleaseParticleIndex(this.particleId);
 
-        const effect_cast = ParticleManager.CreateParticle(
-            "particles/econ/items/axe/axe_ti9_immortal/axe_ti9_beserkers_call_owner_aoe_dome.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.GetCaster()
+        ParticleManager.ReleaseParticleIndex(
+            ParticleManager.CreateParticle(resources.explosion.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.GetCaster())
         );
-        ParticleManager.ReleaseParticleIndex(effect_cast);
     }
 
     GetEffectName() {
-        return "particles/econ/events/ti9/phase_boots_ti9.vpcf";
+        return resources.trail.path;
     }
 
     GetEffectAttachType() {
@@ -183,26 +172,27 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
     }
 
     OnHit(event: OnHitEvent) {
-        if (IsServer()) {
-            if (event.attackCategory == "projectile") {
-                if (!this.ShouldReflect()) {
-                    return true;
-                }
-
-                if (event.projectile.getIsReflectable() == true) {
-                    event.projectile.setVelocity(event.projectile.getVelocity().__mul(-1.2), event.projectile.getPosition());
-                    event.projectile.setSource(this.parent);
-                    // event.projectile.SetVisionTeam(this.parent:GetTeam())
-                    event.projectile.resetDistanceTraveled();
-                    // event.projectile.ResetRehit()
-                    EmitSoundOn("Hero_Juggernaut.Attack", this.parent);
-                }
-
-                return false;
+        if (IsServer() && event.attackCategory == "projectile") {
+            if (!this.ShouldReflect()) {
+                return true;
             }
-            return true;
+
+            if (event.projectile.getIsReflectable() == true) {
+                event.projectile.setVelocity(event.projectile.getVelocity().__mul(-1.2), event.projectile.getPosition());
+                event.projectile.setSource(this.parent);
+                // event.projectile.SetVisionTeam(this.parent:GetTeam())
+                event.projectile.resetDistanceTraveled();
+                // event.projectile.ResetRehit()
+                EmitSoundOn("Hero_Juggernaut.Attack", this.parent);
+            }
+
+            return false;
         }
 
         return true;
     }
 }
+
+defineAbility(JuggernautMobility, {
+    category: "mobility"
+});

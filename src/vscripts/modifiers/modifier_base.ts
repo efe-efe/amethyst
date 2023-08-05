@@ -1,3 +1,4 @@
+import { findAbilityDefinitionByName } from "../abilities/framework/ability_definition";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 import { ModifierShield } from "./modifier_shield";
@@ -13,7 +14,7 @@ export class ModifierBase extends CustomModifier<undefined> {
     }
 
     DeclareFunctions() {
-        return [ModifierFunction.INCOMING_DAMAGE_PERCENTAGE];
+        return [ModifierFunction.INCOMING_DAMAGE_PERCENTAGE, ModifierFunction.ON_ABILITY_FULLY_CAST];
     }
 
     GetModifierIncomingDamage_Percentage(event: ModifierAttackEvent) {
@@ -34,5 +35,18 @@ export class ModifierBase extends CustomModifier<undefined> {
         }
 
         return -(100 - (100 * remainingDamage) / remainingDamage);
+    }
+
+    OnAbilityFullyCast(event: ModifierAbilityEvent) {
+        if (IsServer() && event.unit == this.parent) {
+            const definition = findAbilityDefinitionByName(event.ability.GetName());
+
+            if (definition) {
+                if (definition.linkedAbility?.shareCooldown) {
+                    const linked = this.parent.FindAbilityByName(definition.linkedAbility.name);
+                    linked?.StartCooldown(linked.GetCooldown(0));
+                }
+            }
+        }
     }
 }

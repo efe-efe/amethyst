@@ -649,6 +649,14 @@ CustomGameEventManager.RegisterListener("pickUpgrade", (_, event) => {
                 participant.player.upgrades.push(upgrade);
             }
 
+            for (const upgrade of participant.player.upgrades) {
+                const handle = participant.player.entity?.handle;
+                if (handle && upgrade.modifier) {
+                    handle.RemoveModifierByName(upgrade.modifier.name);
+                    upgrade.modifier.apply(handle, handle, undefined, upgrade.values);
+                }
+            }
+
             CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
                 selection: undefined
             });

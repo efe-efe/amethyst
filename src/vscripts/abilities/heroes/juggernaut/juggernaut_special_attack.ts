@@ -1,11 +1,12 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
-import { ModifierUpgradeJuggernautRefreshDagger } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
+import { defineAbility } from "../../framework/ability_definition";
+import { hasUpgrade } from "../../../upgrade_definitions";
 
 @registerAbility("juggernaut_special_attack")
 class JuggernautSpecialAttack extends CustomAbility {
@@ -75,7 +76,7 @@ class JuggernautSpecialAttack extends CustomAbility {
             },
             onFinish: projectile => {
                 this.PlayEffectsOnFinish(projectile.getPosition());
-                if (projectile.getSource() == this.caster && ModifierUpgradeJuggernautRefreshDagger.findOne(this.caster)) {
+                if (projectile.getSource() == this.caster && hasUpgrade(this.caster, UpgradeId.juggernautDagggerRefresh)) {
                     if (projectile.hitLog.size == 0) {
                         this.StartCooldown(this.GetCooldown(this.GetLevel()) * 1.5);
                     } else {
@@ -152,3 +153,11 @@ class ModifierJuggernautSpecialAttackRecast extends ModifierRecast<undefined> {}
 
 @registerModifier("modifier_juggernaut_special_attack_mark")
 class ModifierJuggernautSpecialAttackMark extends CustomModifier {}
+
+defineAbility(JuggernautSpecialAttack, {
+    category: "special"
+});
+
+defineAbility(JuggernautSpecialAttackRecast, {
+    category: "special"
+});

@@ -87,6 +87,13 @@ class ModifierCastAbility3 extends ModifierAnimation {
     }
 }
 
+@registerModifier()
+class ModifierOverrideAbility1 extends ModifierAnimation {
+    GetOverrideAnimation() {
+        return GameActivity.DOTA_OVERRIDE_ABILITY_1;
+    }
+}
+
 type AnimationPriority = "low" | "medium" | "high";
 
 type AnimationDefinition = {
@@ -119,6 +126,7 @@ defineAnimation(GameActivity.DOTA_ATTACK_EVENT, ModifierAttackEvent, "medium");
 defineAnimation(GameActivity.DOTA_TELEPORT_END, ModifierTeleportEnd, "medium");
 defineAnimation(GameActivity.DOTA_CAST_ABILITY_2, ModifierCastAbility2, "medium");
 defineAnimation(GameActivity.DOTA_CAST_ABILITY_3, ModifierCastAbility3, "medium");
+defineAnimation(GameActivity.DOTA_OVERRIDE_ABILITY_1, ModifierOverrideAbility1, "high");
 
 export function removeAnimation(unit: CDOTA_BaseNPC, gameActivity: GameActivity) {
     const animationDefinition = animationDefinitions.get(gameActivity);
