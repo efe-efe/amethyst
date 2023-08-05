@@ -9,7 +9,13 @@ import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
 import { Player } from "./players";
 import { precache, resource } from "./precache";
-import { RewardDefinition, UpgradeDefinition, findRewardByType, upgradeDefinitions } from "./reward_definitions";
+import { RewardDefinition, findRewardByType } from "./reward_definitions";
+import {
+    UpgradeDefinition,
+    generateLegendUpgradesForPlayer,
+    generateUpgradesOfTypeForPlayer,
+    upgradeDefinitions
+} from "./upgrade_definitions";
 import {
     SimpleTrigger,
     allAbilities,
@@ -359,13 +365,13 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
 }
 
 export async function updateAdventureStage(game: AdventureStage) {
-    function generateUpgradeForPlayer(player: Player, upgradeType: UpgradeType) {
-        return upgradeDefinitions.filter(
-            upgrade =>
-                upgrade.type == upgradeType &&
-                !player.upgrades.some(playerUpgrade => playerUpgrade.id == upgrade.id) &&
-                upgrade.hero == player.entity?.handle.GetUnitName()
-        );
+    function generateUpgradesForPlayer(player: Player, upgradeType: UpgradeType) {
+        switch (upgradeType) {
+            case UpgradeType.legend:
+                return generateLegendUpgradesForPlayer(player);
+            default:
+                return generateUpgradesOfTypeForPlayer(player, upgradeType);
+        }
     }
 
     function canCreateUnit(wave: Wave) {
@@ -396,13 +402,14 @@ export async function updateAdventureStage(game: AdventureStage) {
     switch (game.state.id) {
         case "reward":
             const rewardHandle = game.state.reward.handle;
+            const rewardDefinition = game.state.reward.definition;
 
             if (rewardHandle) {
                 if (rewardHandle.IsAlive()) {
                     const currentAngle = (GameRules.GetGameTime() % (Math.PI * 2)) * 2.0;
                     fullyFaceTowards(rewardHandle, Vector(Math.cos(currentAngle), Math.sin(currentAngle)));
-                    rewardHandle.SetModel(game.state.reward.definition.model);
-                    rewardHandle.SetModelScale(game.state.reward.definition.scale);
+                    rewardHandle.SetModel(rewardDefinition.model);
+                    rewardHandle.SetModelScale(rewardDefinition.scale);
                 } else {
                     for (const particleId of game.state.reward.particles) {
                         ParticleManager.DestroyParticle(particleId, false);
@@ -425,7 +432,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                     game.state.reward.handle = undefined;
 
                     for (const participant of game.state.participants) {
-                        participant.options = generateUpgradeForPlayer(participant.player, game.state.reward.definition.upgradeType);
+                        participant.options = generateUpgradesForPlayer(participant.player, rewardDefinition.upgradeType);
 
                         CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
                             selection: {
@@ -466,7 +473,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                     origin: exit.origin,
                     instance: {
                         chamberDefinition: chamberDefinition,
-                        UpgradeType: UpgradeType.shard
+                        UpgradeType: UpgradeType.legend
                     }
                 }))
             };
@@ -533,7 +540,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                         id: "reward",
                         mapHandle: game.state.mapHandle,
                         participants: serializeParticipants(game.config),
-                        reward: tryCreatingRewardByType(UpgradeType.shard, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        reward: tryCreatingRewardByType(UpgradeType.legend, GetGroundPosition(Vector(0, 0, 0), undefined)),
                         exits: game.state.exits
                     };
                     break;

@@ -5,7 +5,7 @@ import { ModifierDisplacement, OnCollisionEvent } from "../../../modifiers/modif
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierUpgradePhantomDashShield } from "../../../modifiers/upgrades/shards/modifier_upgrade_phantom_dash_shield";
 import { precache, resource } from "../../../precache";
-import { hasUpgrade } from "../../../reward_definitions";
+import { hasUpgrade } from "../../../upgrade_definitions";
 import { direction2D, findUnitsInRadius, getCursorPosition } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";

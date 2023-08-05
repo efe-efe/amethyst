@@ -73,11 +73,7 @@ export class ModifierRecast<A extends CDOTABaseAbility | undefined = CustomAbili
     }
 
     OnAbilityFullyCast(event: ModifierAbilityEvent) {
-        if (IsServer()) {
-            if (event.unit != this.parent) {
-                return;
-            }
-
+        if (IsServer() && event.unit == this.parent) {
             if (!this.abilityRight && event.ability == this.abilityLeft) {
                 this.DecrementStackCount();
             }

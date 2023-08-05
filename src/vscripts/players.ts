@@ -1,7 +1,7 @@
 import { Alliance } from "./alliances";
 import { CustomPlayerHeroNPC } from "./clases/pve/custom_npc";
 import { Entity } from "./entities";
-import { UpgradeDefinition } from "./reward_definitions";
+import { UpgradeDefinition } from "./upgrade_definitions";
 
 export type Player = {
     id: PlayerID;
