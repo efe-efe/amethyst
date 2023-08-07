@@ -89,7 +89,7 @@ export class PhantomBasicAttack extends CustomAbility {
             maxTargets: 1,
             attackType: "basic",
             effect: (target: CDOTA_BaseNPC) => {
-                attackWithBaseDamage({ source: this.caster, target: target });
+                attackWithBaseDamage({ source: this.caster, target: target, ability: this });
 
                 if (!isObstacle(target)) {
                     if (!isGem(target)) {
@@ -460,7 +460,8 @@ export class ModifierPhantomBleed extends CustomModifier<PhantomExBasicAttack> {
             damage: this.bleedDamagePerStack * this.GetStackCount(),
             victim: this.parent,
             attacker: this.caster,
-            damage_type: DamageTypes.PURE
+            damage_type: DamageTypes.PURE,
+            ability: this.ability
         });
         EFX(resources.bleedRibbon.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
             release: true

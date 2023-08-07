@@ -4,7 +4,7 @@ import { findPlayerById } from "./game";
 import { registerModifier } from "./lib/dota_ts_adapter";
 import { Player } from "./players";
 import { precache, resource } from "./precache";
-import { createProjectile } from "./projectiles";
+import { ProjectileBehavior, createProjectile } from "./projectiles";
 import { areUnitsAllied, direction2D, getCursorPosition, randomInArray } from "./util";
 
 type LegendDefinition = {
@@ -44,11 +44,18 @@ export const upgradeDefinitions: UpgradeDefinition[] = [];
 
 const resources = precache({
     chakram: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram.vpcf"),
-    chakramStay: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram_stay.vpcf")
+    chakramStay: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram_stay.vpcf"),
+    chillStatusFx: resource.fx("particles/status_fx/status_effect_iceblast.vpcf"),
+    ancientDash: resource.fx("particles/econ/items/ancient_apparition/ancient_apparation_ti8/ancient_ice_vortex_ti8_start.vpcf"),
+    ancientExplosion: resource.fx("particles/creatures/aghanim/aghanim_crystal_attack_impact.vpcf")
 });
 
 @registerModifier()
 class ModifierTimberMobilityChakram extends CustomModifier<undefined> {
+    IsPermanent() {
+        return true;
+    }
+
     wheelDuration!: number;
     damage!: number;
     radius!: number;
@@ -137,6 +144,10 @@ class ModifierTimberChakramThinker extends CustomModifier<undefined> {
 
 @registerModifier()
 class ModifierTimberSpecialChakram extends CustomModifier<undefined> {
+    IsPermanent() {
+        return true;
+    }
+
     wheelDuration!: number;
     damage!: number;
     radius!: number;
@@ -185,6 +196,7 @@ class ModifierTimberSpecialChakram extends CustomModifier<undefined> {
                     groundOffset: 0,
                     startRadius: this.radius,
                     distance: this.distance,
+                    unitBehavior: ProjectileBehavior.NOTHING,
                     unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
                     onUnitHit: unit => {
                         ApplyDamage({
@@ -208,6 +220,125 @@ class ModifierTimberSpecialChakram extends CustomModifier<undefined> {
     }
 }
 
+@registerModifier()
+class ModifierApparitionBasicAttack extends CustomModifier<undefined> {
+    IsPermanent() {
+        return true;
+    }
+
+    DeclareFunctions() {
+        return [ModifierFunction.ON_TAKEDAMAGE];
+    }
+
+    OnTakeDamage(event: ModifierInstanceEvent) {
+        if (IsServer() && event.inflictor && event.attacker == this.parent) {
+            const definition = findAbilityDefinitionByName(event.inflictor.GetName());
+
+            if (definition?.category == "basic") {
+                ModifierApparitionChill.apply(event.unit, this.parent, undefined, { duration: 5 });
+            }
+        }
+    }
+}
+
+@registerModifier()
+class ModifierApparitionSpecialAttack extends CustomModifier<undefined> {
+    IsPermanent() {
+        return true;
+    }
+
+    DeclareFunctions() {
+        return [ModifierFunction.ON_TAKEDAMAGE];
+    }
+
+    OnTakeDamage(event: ModifierInstanceEvent) {
+        if (IsServer() && event.inflictor && event.attacker == this.parent) {
+            const definition = findAbilityDefinitionByName(event.inflictor.GetName());
+
+            if (definition?.category == "special") {
+                ModifierApparitionChill.apply(event.unit, this.parent, undefined, { duration: 5 });
+            }
+        }
+    }
+}
+
+@registerModifier()
+class ModifierApparitionMobility extends CustomModifier<undefined> {
+    IsPermanent() {
+        return true;
+    }
+
+    DeclareFunctions() {
+        return [ModifierFunction.ON_ABILITY_FULLY_CAST];
+    }
+
+    OnAbilityFullyCast(event: ModifierAbilityEvent) {
+        if (IsServer() && event.unit == this.parent) {
+            const definition = findAbilityDefinitionByName(event.ability.GetName());
+
+            if (definition?.category == "mobility") {
+                const particleId = ParticleManager.CreateParticle(resources.ancientDash.path, ParticleAttachment.WORLDORIGIN, this.parent);
+                ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin());
+                ParticleManager.ReleaseParticleIndex(particleId);
+
+                const enemies = FindUnitsInRadius(
+                    this.caster.GetTeam(),
+                    this.parent.GetAbsOrigin(),
+                    undefined,
+                    250,
+                    UnitTargetTeam.ENEMY,
+                    UnitTargetType.HERO + UnitTargetType.CREEP,
+                    UnitTargetFlags.NONE,
+                    FindOrder.ANY,
+                    false
+                );
+
+                for (const enemy of enemies) {
+                    ModifierApparitionChill.apply(enemy, this.parent, undefined, { duration: 5 });
+                }
+            }
+        }
+    }
+}
+
+//TODO: This is a state. Should have it's own tooltips and values
+@registerModifier()
+class ModifierApparitionChill extends CustomModifier<undefined> {
+    OnCreated() {
+        if (IsServer()) {
+            this.SetStackCount(1);
+        }
+    }
+
+    OnRefresh() {
+        const maxStacks = 10;
+
+        if (IsServer() && this.GetStackCount() < maxStacks) {
+            this.IncrementStackCount();
+
+            if (this.GetStackCount() == maxStacks) {
+                ParticleManager.ReleaseParticleIndex(
+                    ParticleManager.CreateParticle(resources.ancientExplosion.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent)
+                );
+
+                this.Destroy();
+            }
+        }
+    }
+
+    GetStatusEffectName() {
+        return resources.chillStatusFx.path;
+    }
+
+    DeclareFunctions() {
+        return [ModifierFunction.MOVESPEED_BONUS_PERCENTAGE];
+    }
+
+    GetModifierMoveSpeedBonus_Percentage() {
+        return -20 * this.GetStackCount();
+    }
+}
+
 function defineUpgrade(options: UpgradeOptions) {
     upgradeDefinitions.push({
         id: options.id,
@@ -226,8 +357,12 @@ function defineLegend(options: LegendOptions) {
     });
 }
 
+// defineLegend({
+//     id: LegendId.timbersaw
+// });
+
 defineLegend({
-    id: LegendId.timbersaw
+    id: LegendId.apparition
 });
 
 defineUpgrade({
@@ -262,6 +397,30 @@ defineUpgrade({
 });
 
 defineUpgrade({
+    type: UpgradeType.blessing,
+    legendId: LegendId.apparition,
+    icon: "file://{images}/spellicons/ancient_apparition_ice_vortex.png",
+    id: UpgradeId.apparitionBasicAttack,
+    modifier: ModifierApparitionBasicAttack
+});
+
+defineUpgrade({
+    type: UpgradeType.blessing,
+    legendId: LegendId.apparition,
+    icon: "file://{images}/spellicons/ancient_apparition_ice_vortex.png",
+    id: UpgradeId.apparitionSpecialAttack,
+    modifier: ModifierApparitionSpecialAttack
+});
+
+defineUpgrade({
+    type: UpgradeType.blessing,
+    legendId: LegendId.apparition,
+    icon: "file://{images}/spellicons/ancient_apparition_ice_vortex.png",
+    id: UpgradeId.apparitionMobility,
+    modifier: ModifierApparitionMobility
+});
+
+defineUpgrade({
     type: UpgradeType.stance,
     id: UpgradeId.phantomFastDaggers,
     validHeroes: ["npc_dota_hero_phantom_assassin"],
@@ -279,7 +438,7 @@ defineUpgrade({
     type: UpgradeType.stance,
     id: UpgradeId.phantomSecondRecast,
     validHeroes: ["npc_dota_hero_phantom_assassin"],
-    icon: "file://{images}/spellicons/phantom_second_attack.png"
+    icon: "raw://resource/flash3/images/spellicons/phantom_second_attack.png"
 });
 
 defineUpgrade({
@@ -307,7 +466,7 @@ defineUpgrade({
     type: UpgradeType.stance,
     id: UpgradeId.juggernautDagggerRefresh,
     validHeroes: ["npc_dota_hero_juggernaut"],
-    icon: "file://{images}/spellicons/juggernaut_blade_fury.png"
+    icon: "raw://resource/flash3/images/spellicons/juggernaut_special_attack.png"
 });
 
 export function hasUpgrade(unit: CDOTA_BaseNPC, id: UpgradeId) {

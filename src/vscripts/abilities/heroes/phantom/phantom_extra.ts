@@ -137,7 +137,8 @@ class ModifierPhantomExtraDisplacement extends ModifierDisplacement {
                         victim: target,
                         attacker: this.parent,
                         damage: this.Value("ability_damage"),
-                        damage_type: DamageTypes.PHYSICAL
+                        damage_type: DamageTypes.PHYSICAL,
+                        ability: this.ability
                     });
                     this.PlayEffectsOnImpact(target);
                 }

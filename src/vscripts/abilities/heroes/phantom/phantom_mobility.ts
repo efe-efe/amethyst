@@ -68,7 +68,8 @@ class PhantomMobility extends CustomAbility {
                 victim: enemy,
                 attacker: this.caster,
                 damage: this.caster.GetAverageTrueAttackDamage(this.caster),
-                damage_type: DamageTypes.PHYSICAL
+                damage_type: DamageTypes.PHYSICAL,
+                ability: this
             });
             this.PlayEffectsOnImpact(enemy);
         }

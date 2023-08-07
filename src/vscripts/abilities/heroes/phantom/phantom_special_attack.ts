@@ -90,7 +90,8 @@ class PhantomSpecialAttack extends CustomAbility {
                     victim: unit,
                     attacker: this.caster,
                     damage: finalDamage,
-                    damage_type: DamageTypes.PHYSICAL
+                    damage_type: DamageTypes.PHYSICAL,
+                    ability: this
                 });
 
                 if (projectile.getSource() == this.caster) {

@@ -17,7 +17,8 @@ declare const enum Stage {
 }
 
 declare const enum LegendId {
-    "timbersaw" = "timbersaw"
+    "timbersaw" = "timbersaw",
+    "apparition" = "apparition"
 }
 
 declare const enum UpgradeId {
@@ -29,7 +30,10 @@ declare const enum UpgradeId {
     "juggernautReflectSpin" = "juggernautReflectSpin",
     "juggernautDagggerRefresh" = "juggernautDagggerRefresh",
     "timberMobilityChakram" = "timberMobilityChakram",
-    "timberSpecialChakram" = "timberSpecialChakram"
+    "timberSpecialChakram" = "timberSpecialChakram",
+    "apparitionBasicAttack" = "apparitionBasicAttack",
+    "apparitionSpecialAttack" = "apparitionSpecialAttack",
+    "apparitionMobility" = "apparitionMobility"
 }
 
 declare enum Custom_ActionTypes {

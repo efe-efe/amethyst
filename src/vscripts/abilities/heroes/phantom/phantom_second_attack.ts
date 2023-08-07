@@ -90,7 +90,8 @@ class PhantomSecondAttack extends PhantomSecondAttackCommon {
                     victim: target,
                     attacker: this.caster,
                     damage: finalDamage,
-                    damage_type: DamageTypes.PHYSICAL
+                    damage_type: DamageTypes.PHYSICAL,
+                    ability: this
                 });
                 if (stacks == 3) {
                     // const modifier = this.caster.FindModifierByName("modifier_phantom_mobility_charges")
@@ -183,7 +184,8 @@ class PhantomSecondAttackRecast extends PhantomSecondAttackCommon {
                 attacker: this.caster,
                 damage: this.caster.GetAverageTrueAttackDamage(this.caster) + extraDamage,
                 damage_type: DamageTypes.PHYSICAL,
-                victim: enemy
+                victim: enemy,
+                ability: this
             });
             this.PlayEffectsOnImpact(enemy, 0);
             EmitSoundOn("Hero_PhantomAssassin.Spatter", enemy);

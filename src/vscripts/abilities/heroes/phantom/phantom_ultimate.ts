@@ -80,7 +80,8 @@ class PhantomUltimate extends CustomAbility {
                     victim: unit,
                     attacker: projectile.getSource(),
                     damage: finalDamage,
-                    damage_type: DamageTypes.PHYSICAL
+                    damage_type: DamageTypes.PHYSICAL,
+                    ability: this
                 });
 
                 this.PlayEffectsOnCast();
