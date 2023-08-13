@@ -2,11 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierBanish } from "../../../modifiers/modifier_banish";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
-import {
-    ModifierUpgradePhantomActCounter,
-    ModifierUpgradePhantomCounterStacks,
-    ModifierUpgradeSniperStrikeInstant
-} from "../../../modifiers/upgrades/modifier_favors";
+import { ModifierUpgradePhantomActCounter, ModifierUpgradePhantomCounterStacks } from "../../../modifiers/upgrades/modifier_favors";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { ModifierShield } from "../../../modifiers/modifier_shield";
 import { ModifierSleep } from "../../../modifiers/modifier_sleep";
@@ -16,6 +12,7 @@ import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPhantomStacks, PhantomBasicAttack } from "./phantom_basic_attack";
 import { precache, resource } from "../../../precache";
 import { defineAbility } from "../../framework/ability_definition";
+import { hasUpgrade } from "../../../upgrade_definitions";
 
 const resources = precache({
     sparksStart: resource.fx(
@@ -33,25 +30,16 @@ const resources = precache({
 @registerAbility("phantom_counter")
 class PhantomCounter extends CustomAbility {
     OnSpellStart() {
-        let duration = this.GetSpecialValueFor("counter_duration");
-        if (ModifierUpgradeSniperStrikeInstant.findOne(this.caster)) {
-            duration = duration / 2;
-        }
+        const duration = this.GetSpecialValueFor("counter_duration");
 
         const modifier = ModifierPhantomCounter.apply(this.caster, this.caster, this, { duration: duration });
-        if (modifier && ModifierUpgradeSniperStrikeInstant.findOne(this.caster)) {
+        if (modifier && hasUpgrade(this.caster, UpgradeId.phantomInstantCounter)) {
             modifier.OnHit({
                 triggerCounters: true,
                 attackCategory: "single",
                 source: this.caster
             });
         }
-        // 	LinkAbilityCooldowns(this.caster, 'phantom_ex_counter', {
-        // 		["0"] = {
-        // 			ability = 'phantom_ex_counter',
-        // 			level = 2,
-        // 		}
-        // 	})
     }
     // OnUpgrade(){
     // 	CustomAbilitiesLegacy:LinkUpgrades(this, "phantom_counter_recast")
@@ -99,12 +87,6 @@ class PhantomExCounter extends CustomAbility {
             duration: duration
         });
         this.PlayEffectsOnCast();
-        // LinkAbilityCooldowns(this.caster, 'phantom_counter', {
-        // 	["0"] = {
-        // 		ability = this,
-        // 		level = 2,
-        // 	}
-        // })
     }
     PlayEffectsOnCast() {
         const origin = this.caster.GetAbsOrigin();
@@ -313,7 +295,7 @@ class ModifierPhantomCounterRecast extends ModifierRecast {
 @registerModifier("modifier_phantom_counter_countering")
 class ModifierPhantomCounter extends ModifierCounter {
     GetBanishDuration() {
-        return ModifierUpgradeSniperStrikeInstant.findOne(this.parent) ? this.Value("banish_duration") / 2 : this.Value("banish_duration");
+        return hasUpgrade(this.parent, UpgradeId.phantomInstantCounter) ? this.Value("banish_duration") / 2 : this.Value("banish_duration");
     }
 
     OnDestroy() {
@@ -427,7 +409,7 @@ class ModifierPhantomCounterBanish extends ModifierBanish {
             const phantomBasicAttack = PhantomBasicAttack.findOne(this.parent);
 
             FindClearSpaceForUnit(this.parent, point, true);
-            if (!ModifierUpgradeSniperStrikeInstant.findOne(this.parent)) {
+            if (!hasUpgrade(this.parent, UpgradeId.phantomInstantCounter)) {
                 this.parent.Heal(this.Value("heal"), this.ability);
             }
 

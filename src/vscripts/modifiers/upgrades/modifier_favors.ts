@@ -20,9 +20,6 @@ export class ModifierUpgradePhantomFastCoup extends ModifierUpgrade {}
 export class ModifierUpgradePhantomQuickRecast extends ModifierUpgrade {}
 
 @registerModifier()
-export class ModifierUpgradeSniperStrikeInstant extends ModifierUpgrade {}
-
-@registerModifier()
 export class ModifierUpgradeSniperJumpKnockback extends ModifierUpgrade {}
 
 @registerModifier()
