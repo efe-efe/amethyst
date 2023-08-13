@@ -190,6 +190,37 @@ const onlyRangeWave = defineWave(
     1
 );
 
+const towersAndRange = defineWave([
+    {
+        id: NpcId.direRange,
+        shieldPct: 0,
+        amount: 5
+    },
+    {
+        id: NpcId.direTower,
+        shieldPct: 0,
+        amount: 2
+    }
+]);
+
+const towersRangeMeele = defineWave([
+    {
+        id: NpcId.direRange,
+        shieldPct: 0,
+        amount: 3
+    },
+    {
+        id: NpcId.direMeeleMega,
+        shieldPct: 0,
+        amount: 2
+    },
+    {
+        id: NpcId.direTower,
+        shieldPct: 0,
+        amount: 2
+    }
+]);
+
 const onlyFlyingWave = defineWave(
     [
         {
@@ -212,10 +243,19 @@ const direWorldDefinition: WorldDefinition = {
             variations: [{ waveDefinitions: [rangedsWave], chance: 100, map: "dire_1" }]
         },
         {
-            variations: [{ waveDefinitions: [onlyFlyingWave], chance: 100, map: "dire_2" }]
+            variations: [
+                { waveDefinitions: [onlyFlyingWave], chance: 50, map: "dire_2" },
+                { waveDefinitions: [onlyRangeWave], chance: 50, map: "dire_2" }
+            ]
         },
         {
-            variations: [{ waveDefinitions: [mixedRangeFlying, mixedRangeFlying], chance: 100, map: "dire_1" }]
+            variations: [{ waveDefinitions: [towersAndRange], chance: 100, map: "dire_2" }]
+        },
+        {
+            variations: [{ waveDefinitions: [towersAndRange], chance: 100, map: "dire_2" }]
+        },
+        {
+            variations: [{ waveDefinitions: [towersAndRange, towersRangeMeele], chance: 100, map: "dire_1" }]
         },
         {
             variations: [{ waveDefinitions: [centaurWave], chance: 100, map: "dire_2" }]

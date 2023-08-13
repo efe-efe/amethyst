@@ -58,6 +58,12 @@ class ModifierAttack extends ModifierAnimation {
         return GameActivity.DOTA_ATTACK;
     }
 }
+@registerModifier()
+class ModifierAttackTowerDire extends ModifierAnimation {
+    GetOverrideAnimation() {
+        return GameActivity.DOTA_CUSTOM_TOWER_ATTACK;
+    }
+}
 
 @registerModifier()
 class ModifierAttackEvent extends ModifierAnimation {
@@ -127,6 +133,7 @@ defineAnimation(GameActivity.DOTA_TELEPORT_END, ModifierTeleportEnd, "medium");
 defineAnimation(GameActivity.DOTA_CAST_ABILITY_2, ModifierCastAbility2, "medium");
 defineAnimation(GameActivity.DOTA_CAST_ABILITY_3, ModifierCastAbility3, "medium");
 defineAnimation(GameActivity.DOTA_OVERRIDE_ABILITY_1, ModifierOverrideAbility1, "high");
+defineAnimation(GameActivity.DOTA_CUSTOM_TOWER_ATTACK, ModifierAttackTowerDire, "medium");
 
 export function removeAnimation(unit: CDOTA_BaseNPC, gameActivity: GameActivity) {
     const animationDefinition = animationDefinitions.get(gameActivity);
