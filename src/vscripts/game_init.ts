@@ -10,7 +10,6 @@ import "./util/util";
 import "./settings";
 import "./constructors";
 import "./libraries/timers";
-import "./overrides/abilities";
 import PreRound from "./clases/pvp/pre_round";
 import Round from "./clases/pvp/round";
 import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from "./clases/pve/custom_npc";
