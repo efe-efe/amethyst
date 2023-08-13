@@ -2,7 +2,6 @@ import "./controllers/cameraController";
 import "./controllers/mousePositionController";
 
 import LayoutController from "./layout/layoutController";
-import HeroOverhead from "./overhead/heroOverhead";
 import HeroInfoCard from "./heroInfoCard";
 import AllianceBar from "./allianceBar";
 import util, { subscribeToNetTableAndLoadNow, subscribeToNetTableKey } from "./util";
@@ -15,6 +14,7 @@ import { ReadyBar } from "./readyBar";
 
 import "./hud/overheadHud";
 import "./hud/upgradesHud";
+import "./hud/loadingHud";
 
 const customEntities = CustomEntities.GetInstance();
 const layout = LayoutController.GetInstance();

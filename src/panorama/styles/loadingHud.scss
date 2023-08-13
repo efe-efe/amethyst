@@ -1,0 +1,18 @@
+.loadingHUD {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out 0s;
+
+    &--visible {
+        opacity: 1;
+    }
+}
+
+.loadingText {
+    align: center center;
+    font-family: Radiance, FZLanTingHei-R-GBK, TH Sarabun New, Gulim, MingLiU;
+    color: gradient(linear, 0% 100%, 0% 0%, from(#c1d1ff), to(#ffffff));
+    font-size: 50;
+}

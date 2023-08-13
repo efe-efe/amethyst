@@ -292,9 +292,22 @@ function spawnMap(map: string, origin: Vector): Promise<SpawnGroupHandle> {
             origin,
             true,
             maps => ManuallyTriggerSpawnGroupCompletion(maps),
-            maps => resolve(maps),
+            maps => {
+                Timers.CreateTimer(3.0, () => {
+                    resolve(maps);
+                });
+            },
             undefined
         );
+    });
+}
+
+function unloadMap(map: SpawnGroupHandle): Promise<void> {
+    return new Promise(resolve => {
+        UnloadSpawnGroupByHandle(map);
+        Timers.CreateTimer(3.0, () => {
+            resolve();
+        });
     });
 }
 
@@ -340,10 +353,20 @@ function repositionHeroes(config: GameConfig) {
     }
 }
 
+function setLoading(loading: boolean, game?: AdventureStage) {
+    if (game) {
+        game.loading = loading;
+    }
+    CustomNetTables.SetTableValue("main", "loading", { loading: loading });
+}
+
 export async function initAdventureStage(config: GameConfig): Promise<AdventureStage> {
     const chamberDefinition = tryGettingChamberDefinition(direWorldDefinition);
     const chamberVariation = takeRandomFromArrayWeightedUnsafe(chamberDefinition.variations, variation => variation.chance);
+
+    setLoading(true);
     const mapHandle = await spawnMap(chamberVariation.map, Vector(0, 0, 0));
+    setLoading(false);
 
     repositionHeroes(config);
 
@@ -510,9 +533,8 @@ export async function updateAdventureStage(game: AdventureStage) {
                 variation => variation.chance
             );
 
-            UnloadSpawnGroupByHandle(game.state.mapHandle);
-
-            game.loading = true;
+            setLoading(true, game);
+            await unloadMap(game.state.mapHandle);
 
             const mapHandle = await spawnMap(chamberVariation.map, Vector(0, 0, 0));
             const exits = tryGeneratingExits();
@@ -528,7 +550,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                 waveDefinitions: chamberVariation.waveDefinitions
             };
 
-            game.loading = false;
+            setLoading(false, game);
 
             break;
         case "fight":

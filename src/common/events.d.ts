@@ -59,6 +59,9 @@ interface CustomNetTableDeclarations {
         [key: string]: UnitData;
     };
     main: {
+        loading: {
+            loading: boolean;
+        };
         maxScore: {
             max_score: number;
         };
