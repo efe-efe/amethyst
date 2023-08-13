@@ -16,6 +16,18 @@ import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierJuggernautStacks } from "./juggernaut_basic_attack";
 import { ModifierJuggernautSpin } from "./juggernaut_second_attack";
+import { precache, resource } from "../../../precache";
+import { defineAbility } from "../../framework/ability_definition";
+
+const resources = precache({
+    cast: resource.fx("particles/juggernaut/juggernaut_ultimate_cast.vpcf"),
+    castExtra: resource.fx("particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_omni_end.vpcf"),
+    statusFx: resource.fx("particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf"),
+    glitch: resource.fx("particles/juggernaut/juggernaut_ultimate_glitch.vpcf"),
+    impact: resource.fx("particles/juggernaut/juggernaut_basic_attack_impact.vpcf"),
+    slash: resource.fx("particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_tgt.vpcf"),
+    trail: resource.fx("particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_trail.vpcf")
+});
 
 @registerAbility("juggernaut_ultimate")
 class JuggernautUltimate extends CustomAbility {
@@ -75,17 +87,9 @@ class JuggernautUltimate extends CustomAbility {
         EmitGlobalSound("Hero_Juggernaut.PreAttack");
 
         ParticleManager.ReleaseParticleIndex(
-            ParticleManager.CreateParticle(
-                "particles/juggernaut/juggernaut_ultimate_cast.vpcf",
-                ParticleAttachment.ABSORIGIN_FOLLOW,
-                this.caster
-            )
+            ParticleManager.CreateParticle(resources.cast.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster)
         );
-        const particleId = ParticleManager.CreateParticle(
-            "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_omni_end.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.caster
-        );
+        const particleId = ParticleManager.CreateParticle(resources.castExtra.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster);
         ParticleManager.SetParticleControl(particleId, 2, this.caster.GetAbsOrigin());
         ParticleManager.SetParticleControl(particleId, 3, this.caster.GetAbsOrigin());
         ParticleManager.ReleaseParticleIndex(particleId);
@@ -147,7 +151,7 @@ class ModifierJuggernautUltimateDisplacement extends ModifierDisplacement<Jugger
     }
 
     GetEffectName() {
-        return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
+        return resources.statusFx.path;
     }
 }
 
@@ -238,7 +242,7 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
                 .GetAbsOrigin()
                 .__add(RandomVector(RandomInt(this.Value("find_radius") / 2, this.Value("find_radius"))));
             EmitSoundOn("Hero_Juggernaut.ArcanaHaste.Anim", this.parent);
-            EFX("particles/juggernaut/juggernaut_ultimate_glitch.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+            EFX(resources.glitch.path, ParticleAttachment.WORLDORIGIN, undefined, {
                 cp0: effectOrigin,
                 cp1: effectOrigin,
                 release: true
@@ -274,31 +278,23 @@ class ModifierJuggernautUltimateSlashing extends CustomModifier<JuggernautUltima
     }
 
     PlayEffectsTarget(target: CDOTA_BaseNPC) {
-        EFX("particles/juggernaut/juggernaut_basic_attack_impact.vpcf", ParticleAttachment.ABSORIGIN, target, {
+        EFX(resources.impact.path, ParticleAttachment.ABSORIGIN, target, {
             release: true
         });
-        const particleId = ParticleManager.CreateParticle(
-            "particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_tgt.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            target
-        );
+        const particleId = ParticleManager.CreateParticle(resources.slash.path, ParticleAttachment.ABSORIGIN_FOLLOW, target);
         ParticleManager.ReleaseParticleIndex(particleId);
         EmitSoundOn("Hero_Juggernaut.OmniSlash.Damage", target);
     }
 
     PlayEffectsTrail(previousPosition: Vector, currentPosition: Vector) {
-        const particleId = ParticleManager.CreateParticle(
-            "particles/units/heroes/hero_juggernaut/juggernaut_omni_slash_trail.vpcf",
-            ParticleAttachment.ABSORIGIN,
-            this.parent
-        );
+        const particleId = ParticleManager.CreateParticle(resources.trail.path, ParticleAttachment.ABSORIGIN, this.parent);
         ParticleManager.SetParticleControl(particleId, 0, previousPosition);
         ParticleManager.SetParticleControl(particleId, 1, currentPosition);
         ParticleManager.ReleaseParticleIndex(particleId);
     }
 
     GetEffectName() {
-        return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
+        return resources.statusFx.path;
     }
 }
 
@@ -311,3 +307,7 @@ class ModifierJuggernautBanish extends ModifierBanish<undefined> {
         };
     }
 }
+
+defineAbility(JuggernautUltimate, {
+    category: "ultimate"
+});

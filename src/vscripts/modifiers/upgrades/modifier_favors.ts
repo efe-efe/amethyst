@@ -5,9 +5,6 @@ import { ModifierUpgrade } from "./modifier_upgrade";
 export class ModifierUpgradeJuggernautBladeDanceReacast extends ModifierUpgrade {}
 
 @registerModifier()
-export class ModifierUpgradeJuggernautFuryAttack extends ModifierUpgrade {}
-
-@registerModifier()
 export class ModifierUpgradeJuggernautSpinningWard extends ModifierUpgrade {}
 
 @registerModifier()

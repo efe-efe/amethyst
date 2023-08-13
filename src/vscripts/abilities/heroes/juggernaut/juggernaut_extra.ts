@@ -6,6 +6,18 @@ import { areUnitsAllied, clampPosition, findUnitsInRadius, getCursorPosition } f
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierJuggernautMobility } from "./juggernaut_mobility";
+import { defineAbility } from "../../framework/ability_definition";
+import { precache, resource } from "../../../precache";
+
+const resources = precache({
+    totem: resource.unit("npc_dota_creature_juggernaut_healing_totem"),
+    cast: resource.fx("particles/econ/items/undying/fall20_undying_head/fall20_undying_soul_rip_heal.vpcf"),
+    click: resource.fx("particles/ui_mouseactions/clicked_basemove.vpcf"),
+    totemDeath: resource.fx("particles/econ/items/juggernaut/jugg_fall20_immortal/jugg_fall20_immortal_healing_ward_death.vpcf"),
+    totemSpawn: resource.fx("particles/econ/items/juggernaut/bladekeeper_healing_ward/juggernaut_healing_ward_eruption_dc.vpcf"),
+    totemAura: resource.fx("particles/econ/items/juggernaut/jugg_fall20_immortal/jugg_fall20_immortal_healing_ward.vpcf"),
+    circleProgress: resource.fx("particles/progress_circle/generic_progress_circle_small.vpcf")
+});
 
 @registerAbility("juggernaut_extra")
 class JuggernautExtra extends CustomAbility {
@@ -29,14 +41,7 @@ class JuggernautExtra extends CustomAbility {
         const cursor = getCursorPosition(this.caster);
         const point = clampPosition(this.caster.GetAbsOrigin(), cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined) });
 
-        const healingWard = CreateUnitByName(
-            "npc_dota_creature_juggernaut_healing_totem",
-            point,
-            true,
-            this.caster,
-            this.caster,
-            this.caster.GetTeam()
-        );
+        const healingWard = CreateUnitByName(resources.totem.path, point, true, this.caster, this.caster, this.caster.GetTeam());
 
         healingWard.SetControllableByPlayer(this.caster.GetPlayerOwnerID(), true);
 
@@ -59,7 +64,7 @@ class JuggernautExtra extends CustomAbility {
             }
         }
 
-        // 	Prevent nearby units from getting stuck
+        // Prevent nearby units from getting stuck
         ResolveNPCPositions(healingWard.GetAbsOrigin(), healingWard.GetHullRadius() + healingWard.GetCollisionPadding());
         ModifierJuggernautExtraWard.apply(healingWard, this.caster, this, { duration });
 
@@ -81,12 +86,7 @@ class JuggernautExtra extends CustomAbility {
 
     PlayEffects(target: CDOTA_BaseNPC) {
         EmitSoundOn("Hero_Juggernaut.HealingWard.Cast", this.caster);
-        const particleId = EFX(
-            "particles/econ/items/undying/fall20_undying_head/fall20_undying_soul_rip_heal.vpcf",
-            ParticleAttachment.CUSTOMORIGIN,
-            target,
-            {}
-        );
+        const particleId = EFX(resources.cast.path, ParticleAttachment.CUSTOMORIGIN, target, {});
         ParticleManager.SetParticleControlEnt(
             particleId,
             0,
@@ -131,11 +131,7 @@ class JuggernautExtraRecast extends CustomAbility {
     }
 
     PlayEffects(point: Vector) {
-        const particleId = ParticleManager.CreateParticle(
-            "particles/ui_mouseactions/clicked_basemove.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            undefined
-        );
+        const particleId = ParticleManager.CreateParticle(resources.click.path, ParticleAttachment.WORLDORIGIN, undefined);
         ParticleManager.SetParticleControl(particleId, 0, point);
         ParticleManager.SetParticleControl(particleId, 1, Vector(0, 255, 0));
         ParticleManager.ReleaseParticleIndex(particleId);
@@ -210,14 +206,9 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
                 ParticleManager.DestroyParticle(particleId, false);
                 ParticleManager.ReleaseParticleIndex(particleId);
             }
-            EFX(
-                "particles/econ/items/juggernaut/jugg_fall20_immortal/jugg_fall20_immortal_healing_ward_death.vpcf",
-                ParticleAttachment.ABSORIGIN_FOLLOW,
-                this.parent,
-                {
-                    release: true
-                }
-            );
+            EFX(resources.totemDeath.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent, {
+                release: true
+            });
             this.parent.Kill(undefined, this.parent);
 
             this.ability.StartCooldown(this.ability.GetCooldown(0));
@@ -238,19 +229,11 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
     }
 
     PlayEffectsOnCreated() {
-        let particleId = ParticleManager.CreateParticle(
-            "particles/econ/items/juggernaut/bladekeeper_healing_ward/juggernaut_healing_ward_eruption_dc.vpcf",
-            ParticleAttachment.CUSTOMORIGIN,
-            this.parent
-        );
+        let particleId = ParticleManager.CreateParticle(resources.totemSpawn.path, ParticleAttachment.CUSTOMORIGIN, this.parent);
         ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin());
         ParticleManager.ReleaseParticleIndex(particleId);
 
-        particleId = ParticleManager.CreateParticle(
-            "particles/econ/items/juggernaut/jugg_fall20_immortal/jugg_fall20_immortal_healing_ward.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.parent
-        );
+        particleId = ParticleManager.CreateParticle(resources.totemAura.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent);
         ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 100)));
         ParticleManager.SetParticleControl(particleId, 1, Vector(this.Value("radius"), 1, 1));
         ParticleManager.SetParticleControlEnt(
@@ -264,11 +247,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
         );
         this.particleIds.push(particleId);
 
-        particleId = ParticleManager.CreateParticle(
-            "particles/progress_circle/generic_progress_circle_small.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            this.parent
-        );
+        particleId = ParticleManager.CreateParticle(resources.circleProgress.path, ParticleAttachment.WORLDORIGIN, this.parent);
         ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin().__add(Vector(0, 0, 16)));
         ParticleManager.SetParticleControlForward(particleId, 0, Vector(0, -1, 0));
         ParticleManager.SetParticleControl(particleId, 1, Vector(this.Value("radius"), 0, 1));
@@ -282,10 +261,7 @@ class ModifierJuggernautExtraWard extends CustomModifier<JuggernautExtra> {
     }
 
     OnDeath(event: ModifierInstanceEvent) {
-        if (IsServer()) {
-            if (event.unit != this.parent) {
-                return;
-            }
+        if (IsServer() && event.unit == this.parent) {
             this.Destroy();
         }
     }
@@ -325,3 +301,7 @@ class ModifierJuggernautExtra extends CustomModifier<JuggernautExtra> {
         return this.Value("heal_per_second");
     }
 }
+
+defineAbility(JuggernautExtra, {
+    category: "extra"
+});

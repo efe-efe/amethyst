@@ -17,6 +17,15 @@ import { CustomModifier } from "../../framework/custom_modifier";
 import { JuggernautBasicAttack, ModifierJuggernautStacks } from "./juggernaut_basic_attack";
 import { defineAbility } from "../../framework/ability_definition";
 import { addAnimation, removeAnimation } from "../../../animation";
+import { precache, resource } from "../../../precache";
+
+const resources = precache({
+    charging: resource.fx("particles/econ/items/windrunner/windranger_arcana/windranger_arcana_javelin_tgt_v2.vpcf"),
+    damage: resource.fx("particles/units/heroes/hero_bounty_hunter/bounty_hunter_jinda_slow.vpcf"),
+    finishAttack: resource.fx("particles/juggernaut/juggernaut_second_attack_parent.vpcf"),
+    aoe: resource.fx("particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf"),
+    spin: resource.fx("particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf")
+});
 
 @registerAbility("juggernaut_second_attack")
 class JuggernautSecondAttack extends CustomAbility {
@@ -24,12 +33,7 @@ class JuggernautSecondAttack extends CustomAbility {
 
     OnAbilityPhaseStart() {
         super.OnAbilityPhaseStart();
-        this.particleId = EFX(
-            "particles/econ/items/windrunner/windranger_arcana/windranger_arcana_javelin_tgt_v2.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.caster,
-            {}
-        );
+        this.particleId = EFX(resources.charging.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster, {});
         return true;
     }
 
@@ -60,7 +64,8 @@ class JuggernautSecondAttack extends CustomAbility {
             victim: target,
             attacker: this.caster,
             damage: damage,
-            damage_type: DamageTypes.PHYSICAL
+            damage_type: DamageTypes.PHYSICAL,
+            ability: this
         });
 
         this.PlayEffectsOnImpact(target);
@@ -148,11 +153,10 @@ class JuggernautSecondAttack extends CustomAbility {
         }
 
         this.caster.RemoveModifierByName(ModifierJuggernautStacks.name);
-        //     LinkAbilityCooldowns(this.caster, 'juggernaut_ex_second_attack')
     }
 
     PlayEffectsOnImpact(target: CDOTA_BaseNPC) {
-        EFX("particles/units/heroes/hero_bounty_hunter/bounty_hunter_jinda_slow.vpcf", ParticleAttachment.ABSORIGIN, target, {
+        EFX(resources.damage.path, ParticleAttachment.ABSORIGIN, target, {
             release: true
         });
 
@@ -166,7 +170,7 @@ class JuggernautSecondAttack extends CustomAbility {
         const origin = this.caster.GetOrigin();
 
         EmitSoundOnLocationWithCaster(origin, "Hero_Juggernaut.BladeDance", caster);
-        EFX("particles/juggernaut/juggernaut_second_attack_parent.vpcf", ParticleAttachment.WORLDORIGIN, undefined, {
+        EFX(resources.finishAttack.path, ParticleAttachment.WORLDORIGIN, undefined, {
             cp0: origin,
             cp0f: direction,
             cp3: Vector(radius, 0, 0),
@@ -177,11 +181,7 @@ class JuggernautSecondAttack extends CustomAbility {
     PlayEffectsAoe(radius: number) {
         EmitSoundOn("juggernaut_jugsc_arc_ability_bladefury_12", this.caster);
 
-        const particleId = ParticleManager.CreateParticle(
-            "particles/econ/items/axe/axe_helm_shoutmask/axe_beserkers_call_owner_shoutmask.vpcf",
-            ParticleAttachment.ABSORIGIN_FOLLOW,
-            this.caster
-        );
+        const particleId = ParticleManager.CreateParticle(resources.aoe.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster);
         ParticleManager.SetParticleControl(particleId, 2, Vector(radius, 1, 1));
         ParticleManager.ReleaseParticleIndex(particleId);
     }
@@ -199,11 +199,7 @@ export class ModifierJuggernautSpin extends CustomModifier<undefined> {
         if (IsServer()) {
             EmitSoundOn("Hero_Juggernaut.BladeFuryStart", this.parent);
 
-            this.particleId = ParticleManager.CreateParticle(
-                "particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf",
-                ParticleAttachment.ABSORIGIN_FOLLOW,
-                this.parent
-            );
+            this.particleId = ParticleManager.CreateParticle(resources.spin.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent);
             ParticleManager.SetParticleControl(this.particleId, 5, Vector(200, 1, 1));
             ParticleManager.SetParticleControl(this.particleId, 2, this.parent.GetOrigin());
 
@@ -294,7 +290,8 @@ class JuggernautExSecondAttack extends CustomAbility {
                     victim: target,
                     attacker: this.caster,
                     damage: abilityDamage,
-                    damage_type: DamageTypes.PHYSICAL
+                    damage_type: DamageTypes.PHYSICAL,
+                    ability: this
                 });
 
                 ModifierSleep.apply(target, this.caster, undefined, { duration: finalDebuffDuration });
@@ -322,7 +319,6 @@ class JuggernautExSecondAttack extends CustomAbility {
         }
 
         this.PlayEffectsOnFinish(point, radius);
-        // LinkAbilityCooldowns(this.caster, "juggernaut_second_attack");
     }
 
     PlayEffectsOnImpact(target: CDOTA_BaseNPC) {

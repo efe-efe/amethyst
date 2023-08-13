@@ -3,16 +3,26 @@ import { Translate } from "../../../modifiers/modifier_casting";
 import { OnHitEvent } from "../../../modifiers/modifier_combat_events";
 import { ModifierCounter } from "../../../modifiers/modifier_counter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
+import { precache, resource } from "../../../precache";
 import { clamp, clampPosition, findUnitsInLine, getCursorPosition, isCountering, isObstacle, strongPurge } from "../../../util";
+import { defineAbility } from "../../framework/ability_definition";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
+
+const resources = precache({
+    counterExpire: resource.fx("particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_omni_slash_tgt_bonus.vpcf"),
+    counterTrigger: resource.fx("particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger_sphere.vpcf"),
+    counterStatusFx: resource.fx("particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf"),
+    swiftnessStatusFx: resource.fx("particles/items2_fx/butterfly_buff.vpcf"),
+    slashRed: resource.fx("particles/juggernaut/juggernaut_counter_recast.vpcf"),
+    slashGreen: resource.fx("particles/juggernaut/juggernaut_ex_counter.vpcf")
+});
 
 @registerAbility("juggernaut_counter")
 class JuggernautCounter extends CustomAbility {
     OnSpellStart() {
         const duration = this.GetSpecialValueFor("counter_duration");
         ModifierJuggernautCounter.apply(this.caster, this.caster, undefined, { duration: duration });
-        //   LinkAbilityCooldowns(caster, "juggernaut_ex_counter");
     }
 
     // function juggernaut_counter:OnUpgrade()
@@ -28,11 +38,7 @@ class ModifierJuggernautCounter extends ModifierCounter<undefined> {
         if (IsServer()) {
             EmitSoundOn("Hero_Juggernaut.Attack", this.caster);
             ParticleManager.ReleaseParticleIndex(
-                ParticleManager.CreateParticle(
-                    "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_omni_slash_tgt_bonus.vpcf",
-                    ParticleAttachment.ABSORIGIN_FOLLOW,
-                    this.parent
-                )
+                ParticleManager.CreateParticle(resources.counterExpire.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent)
             );
         }
     }
@@ -84,11 +90,7 @@ class ModifierJuggernautCounter extends ModifierCounter<undefined> {
         EmitSoundOn("juggernaut_jug_ability_bladefury_05", this.parent);
 
         ParticleManager.ReleaseParticleIndex(
-            ParticleManager.CreateParticle(
-                "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger_sphere.vpcf",
-                ParticleAttachment.ABSORIGIN_FOLLOW,
-                this.parent
-            )
+            ParticleManager.CreateParticle(resources.counterTrigger.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent)
         );
     }
 
@@ -108,7 +110,7 @@ class ModifierJuggernautCounter extends ModifierCounter<undefined> {
 @registerModifier("modifier_juggernaut_counter_recast")
 class ModifierJuggernautCounterRecast extends ModifierRecast<undefined> {
     GetEffectName() {
-        return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
+        return resources.counterStatusFx.path;
     }
 
     GetEffectAttachType() {
@@ -140,7 +142,8 @@ abstract class JuggernautSlash extends CustomAbility {
                         victim: target,
                         attacker: this.caster,
                         damage: damage,
-                        damage_type: DamageTypes.PHYSICAL
+                        damage_type: DamageTypes.PHYSICAL,
+                        ability: this
                     });
                     this.PlayEffectsOnTarget(target);
                 }
@@ -173,10 +176,6 @@ abstract class JuggernautSlash extends CustomAbility {
 
 @registerAbility("juggernaut_counter_recast")
 class JuggernautCounterRecast extends JuggernautSlash {
-    // function juggernaut_counter_recast:GetRecastTime() return
-    //    self:GetCaster():FindAbilityByName("juggernaut_counter"):GetSpecialValueFor("recast_time")
-    // end
-
     OnSpellStart() {
         const origin = this.caster.GetAbsOrigin();
         const minRange = this.GetSpecialValueFor("min_range");
@@ -184,12 +183,7 @@ class JuggernautCounterRecast extends JuggernautSlash {
         const point = clampPosition(origin, cursor, { maxRange: this.GetCastRange(Vector(0, 0, 0), undefined), minRange });
         const juggernautCounter = JuggernautCounter.findOne(this.caster);
         const damage = juggernautCounter?.GetSpecialValueFor("ability_damage") ?? 0;
-        //  const juggernaut_ex_counter = caster:FindAbilityByName("juggernaut_ex_counter")
-        this.Slash(point, damage, "particles/juggernaut/juggernaut_counter_recast.vpcf");
-        //  self:GetRecastAbility():StartCooldown(self:GetRecastAbility():GetCooldown(0))
-        //  if juggernaut_ex_counter then
-        //     juggernaut_ex_counter:StartCooldown(juggernaut_ex_counter:GetCooldown(0))
-        //  end
+        this.Slash(point, damage, resources.slashRed.path);
     }
 
     OnSlashEnded(targets: CDOTA_BaseNPC[]): void {
@@ -242,8 +236,7 @@ class JuggernautExCounter extends JuggernautSlash {
                 duration: this.GetSpecialValueFor("recast_time")
             });
         }
-        this.Slash(point, damage, "particles/juggernaut/juggernaut_ex_counter.vpcf");
-        // LinkAbilityCooldowns(caster, 'juggernaut_counter')
+        this.Slash(point, damage, resources.slashGreen.path);
     }
 
     GetManaCost(level: number) {
@@ -277,7 +270,7 @@ class JuggernautExCounter extends JuggernautSlash {
 @registerModifier("modifier_juggernaut_ex_counter_recast")
 class ModifierJuggernautExCounterRecast extends ModifierRecast<undefined> {
     GetEffectName() {
-        return "particles/econ/items/juggernaut/jugg_arcana/juggernaut_arcana_v2_trigger.vpcf";
+        return resources.counterStatusFx.path;
     }
 
     GetEffectAttachType() {
@@ -324,10 +317,30 @@ class ModifierJuggernautSwiftness extends CustomModifier<undefined> {
     }
 
     GetEffectName() {
-        return "particles/items2_fx/butterfly_buff.vpcf";
+        return resources.swiftnessStatusFx.path;
     }
 
     GetTexture() {
         return "modifier_swiftness";
     }
 }
+
+defineAbility(JuggernautCounter, {
+    category: "counter",
+    linkedAbility: {
+        name: JuggernautExCounter.name,
+        shareCooldown: true
+    }
+});
+
+defineAbility(JuggernautExCounter, {
+    category: "counter",
+    linkedAbility: {
+        name: JuggernautCounter.name,
+        shareCooldown: true
+    }
+});
+
+defineAbility(JuggernautCounterRecast, {
+    category: "counter"
+});

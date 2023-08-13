@@ -1,6 +1,5 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierCombatEvents, OnHitEvent } from "../../../modifiers/modifier_combat_events";
-import { ModifierUpgradeJuggernautFuryAttack } from "../../../modifiers/upgrades/modifier_favors";
 import { findUnitsInRadius, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { defineAbility } from "../../framework/ability_definition";
@@ -10,7 +9,10 @@ import { precache, resource } from "../../../precache";
 
 const resources = precache({
     explosion: resource.fx("particles/econ/items/axe/axe_ti9_immortal/axe_ti9_beserkers_call_owner_aoe_dome.vpcf"),
-    trail: resource.fx("particles/econ/events/ti9/phase_boots_ti9.vpcf")
+    trail: resource.fx("particles/econ/events/ti9/phase_boots_ti9.vpcf"),
+    spin: resource.fx("particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf"),
+    spinReflect: resource.fx("particles/econ/items/juggernaut/jugg_sword_jade/juggernaut_blade_fury_jade.vpcf"),
+    damage: resource.fx("particles/juggernaut/juggernaut_mobility_impact.vpcf")
 });
 
 @registerAbility("juggernaut_mobility")
@@ -69,7 +71,7 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
         );
 
         for (const enemy of enemies) {
-            if (ModifierUpgradeJuggernautFuryAttack.findOne(this.parent)) {
+            if (hasUpgrade(this.parent, UpgradeId.juggernautAttackSpin)) {
                 this.ability.SingleAttack({
                     attackType: "basic",
                     target: enemy,
@@ -78,7 +80,8 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
                             victim: target,
                             attacker: this.caster,
                             damage: this.Value("damage_per_second"),
-                            damage_type: DamageTypes.PURE
+                            damage_type: DamageTypes.PURE,
+                            ability: this.ability
                         });
                         this.PlayEffectsOnImpact(target);
                     }
@@ -88,7 +91,8 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
                     victim: enemy,
                     attacker: this.caster,
                     damage: this.Value("damage_per_second"),
-                    damage_type: DamageTypes.PURE
+                    damage_type: DamageTypes.PURE,
+                    ability: this.ability
                 });
                 this.PlayEffectsOnImpact(enemy);
             }
@@ -108,10 +112,8 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
     }
 
     OnOrder(event: ModifierUnitEvent) {
-        if (event.unit == this.parent) {
-            if (event.order_type == UnitOrder.STOP || event.order_type == UnitOrder.HOLD_POSITION) {
-                this.Destroy();
-            }
+        if (event.unit == this.parent && (event.order_type == UnitOrder.STOP || event.order_type == UnitOrder.HOLD_POSITION)) {
+            this.Destroy();
         }
     }
 
@@ -129,7 +131,7 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
     PlayEffectsOnImpact(target: CDOTA_BaseNPC) {
         EmitSoundOn("Hero_Juggernaut.Attack", target);
         EmitSoundOn("Hero_Juggernaut.BladeFury.Impact", target);
-        EFX("particles/juggernaut/juggernaut_mobility_impact.vpcf", ParticleAttachment.ABSORIGIN, target, {
+        EFX(resources.damage.path, ParticleAttachment.ABSORIGIN, target, {
             release: true
         });
     }
@@ -137,12 +139,7 @@ export class ModifierJuggernautMobility extends ModifierCombatEvents {
     PlayEffects() {
         EmitSoundOn("Hero_Juggernaut.BladeFuryStart", this.parent);
 
-        let path = "particles/units/heroes/hero_juggernaut/juggernaut_blade_fury.vpcf";
-
-        if (this.ShouldReflect()) {
-            path = "particles/econ/items/juggernaut/jugg_sword_jade/juggernaut_blade_fury_jade.vpcf";
-        }
-
+        const path = this.ShouldReflect() ? resources.spinReflect.path : resources.spin.path;
         this.particleId = ParticleManager.CreateParticle(path, ParticleAttachment.ABSORIGIN_FOLLOW, this.parent);
         ParticleManager.SetParticleControl(this.particleId, 5, Vector(this.Value("radius"), 1, 1));
         ParticleManager.SetParticleControl(this.particleId, 2, this.parent.GetAbsOrigin());

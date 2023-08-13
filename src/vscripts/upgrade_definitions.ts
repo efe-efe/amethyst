@@ -469,6 +469,13 @@ defineUpgrade({
     icon: "raw://resource/flash3/images/spellicons/juggernaut_special_attack.png"
 });
 
+defineUpgrade({
+    type: UpgradeType.shard,
+    id: UpgradeId.juggernautAttackSpin,
+    validHeroes: ["npc_dota_hero_juggernaut"],
+    icon: "file://{images}/spellicons/juggernaut_blade_fury.png"
+});
+
 export function hasUpgrade(unit: CDOTA_BaseNPC, id: UpgradeId) {
     const playerId = unit.GetPlayerOwnerID();
     const player = findPlayerById(playerId);

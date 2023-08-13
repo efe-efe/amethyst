@@ -29,6 +29,7 @@ declare const enum UpgradeId {
     "phantomSecondRecast" = "phantomSecondRecast",
     "juggernautReflectSpin" = "juggernautReflectSpin",
     "juggernautDagggerRefresh" = "juggernautDagggerRefresh",
+    "juggernautAttackSpin" = "juggernautAttackSpin",
     "timberMobilityChakram" = "timberMobilityChakram",
     "timberSpecialChakram" = "timberSpecialChakram",
     "apparitionBasicAttack" = "apparitionBasicAttack",

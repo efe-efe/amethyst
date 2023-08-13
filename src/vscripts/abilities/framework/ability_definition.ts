@@ -1,6 +1,6 @@
 import { CustomAbility } from "./custom_ability";
 
-type AbilityCategory = "basic" | "secondary" | "mobility" | "counter" | "special" | "extra";
+type AbilityCategory = "basic" | "secondary" | "mobility" | "counter" | "special" | "extra" | "ultimate";
 
 type AbilityDefinition = {
     name: string;

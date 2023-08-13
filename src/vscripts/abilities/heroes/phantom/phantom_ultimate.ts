@@ -3,6 +3,7 @@ import { ModifierUpgradePhantomFastCoup } from "../../../modifiers/upgrades/modi
 import { precache, resource } from "../../../precache";
 import { ProjectileBehavior } from "../../../projectiles";
 import { areUnitsAllied, direction2D, getCursorPosition } from "../../../util";
+import { defineAbility } from "../../framework/ability_definition";
 import { CustomAbility } from "../../framework/custom_ability";
 import { ModifierPhantomStacks } from "./phantom_basic_attack";
 
@@ -146,3 +147,7 @@ class PhantomUltimate extends CustomAbility {
         }
     }
 }
+
+defineAbility(PhantomUltimate, {
+    category: "ultimate"
+});

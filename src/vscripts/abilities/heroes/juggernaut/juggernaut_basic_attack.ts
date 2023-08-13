@@ -1,5 +1,6 @@
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { Translate } from "../../../modifiers/modifier_casting";
+import { precache, resource } from "../../../precache";
 import {
     attackWithBaseDamage,
     clampPosition,
@@ -14,6 +15,11 @@ import {
 import { defineAbility } from "../../framework/ability_definition";
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
+
+const resources = precache({
+    baseAttackImpact: resource.fx("particles/juggernaut/juggernaut_basic_attack_impact.vpcf"),
+    charged: resource.fx("particles/units/heroes/hero_invoker_kid/invoker_kid_forge_spirit_ambient_fire.vpcf")
+});
 
 @registerAbility("juggernaut_basic_attack")
 export class JuggernautBasicAttack extends CustomAbility {
@@ -74,7 +80,7 @@ export class JuggernautBasicAttack extends CustomAbility {
             maxTargets: 1,
             attackType: "basic",
             effect: (target: CDOTA_BaseNPC) => {
-                attackWithBaseDamage({ source: this.caster, target: target });
+                attackWithBaseDamage({ source: this.caster, target: target, ability: this });
 
                 if (!isObstacle(target)) {
                     if (!isGem(target)) {
@@ -115,7 +121,7 @@ export class JuggernautBasicAttack extends CustomAbility {
     }
 
     PlayEffectsOnImpact(target: CDOTA_BaseNPC) {
-        EFX("particles/juggernaut/juggernaut_basic_attack_impact.vpcf", ParticleAttachment.ABSORIGIN, target, {
+        EFX(resources.baseAttackImpact.path, ParticleAttachment.ABSORIGIN, target, {
             release: true
         });
 
@@ -171,13 +177,7 @@ export class ModifierJuggernautStacks extends CustomModifier<JuggernautBasicAtta
         replenishEFX(this.GetParent());
 
         for (let i = 0; i < 5; i++) {
-            this.particleIds.push(
-                ParticleManager.CreateParticle(
-                    "particles/units/heroes/hero_invoker_kid/invoker_kid_forge_spirit_ambient_fire.vpcf",
-                    ParticleAttachment.ABSORIGIN_FOLLOW,
-                    this.caster
-                )
-            );
+            this.particleIds.push(ParticleManager.CreateParticle(resources.charged.path, ParticleAttachment.ABSORIGIN_FOLLOW, this.caster));
         }
     }
 

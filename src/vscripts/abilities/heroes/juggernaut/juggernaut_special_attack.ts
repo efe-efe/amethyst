@@ -7,6 +7,14 @@ import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { defineAbility } from "../../framework/ability_definition";
 import { hasUpgrade } from "../../../upgrade_definitions";
+import { precache, resource } from "../../../precache";
+import { addAnimation } from "../../../animation";
+
+const resources = precache({
+    projectile: resource.fx("particles/juggernaut/juggernaut_special_attack.vpcf"),
+    impact: resource.fx("particles/econ/items/arc_warden/arc_warden_ti9_immortal/arc_warden_ti9_wraith_impact_start.vpcf"),
+    jumpTrail: resource.fx("particles/juggernaut/special_attack_recast.vpcf")
+});
 
 @registerAbility("juggernaut_special_attack")
 class JuggernautSpecialAttack extends CustomAbility {
@@ -41,7 +49,7 @@ class JuggernautSpecialAttack extends CustomAbility {
             source: this.caster,
             velocity: projectileDirection.__mul(projectileSpeed),
             spawnOrigin: origin.__add(Vector(projectileDirection.x * 45, projectileDirection.y * 45, 96)),
-            effectName: "particles/juggernaut/juggernaut_special_attack.vpcf",
+            effectName: resources.projectile.path,
             groundOffset: 0,
             unitTest: (unit, projectile) => !areUnitsAllied(projectile.getSource(), unit),
             onUnitHit: (unit, projectile) => {
@@ -49,7 +57,8 @@ class JuggernautSpecialAttack extends CustomAbility {
                     victim: unit,
                     attacker: projectile.getSource(),
                     damage: damage,
-                    damage_type: DamageTypes.MAGICAL
+                    damage_type: DamageTypes.MAGICAL,
+                    ability: this
                 });
 
                 ModifierFadingSlow.apply(unit, this.caster, undefined, {
@@ -93,11 +102,7 @@ class JuggernautSpecialAttack extends CustomAbility {
 
     PlayEffectsOnFinish(position: Vector) {
         EmitSoundOnLocationWithCaster(position, "Hero_Juggernaut.Attack", this.caster);
-        const particleId = ParticleManager.CreateParticle(
-            "particles/econ/items/arc_warden/arc_warden_ti9_immortal/arc_warden_ti9_wraith_impact_start.vpcf",
-            ParticleAttachment.WORLDORIGIN,
-            undefined
-        );
+        const particleId = ParticleManager.CreateParticle(resources.impact.path, ParticleAttachment.WORLDORIGIN, undefined);
         ParticleManager.SetParticleControl(particleId, 0, position);
         ParticleManager.ReleaseParticleIndex(particleId);
     }
@@ -126,22 +131,14 @@ class JuggernautSpecialAttackRecast extends CustomAbility {
             }
 
             FindClearSpaceForUnit(this.caster, target.GetAbsOrigin().__add(target.GetForwardVector().__mul(Vector(-80, -80, -80))), true);
-            const particleId = ParticleManager.CreateParticle(
-                "particles/juggernaut/special_attack_recast.vpcf",
-                ParticleAttachment.WORLDORIGIN,
-                undefined
-            );
+            const particleId = ParticleManager.CreateParticle(resources.jumpTrail.path, ParticleAttachment.WORLDORIGIN, undefined);
             ParticleManager.SetParticleControl(particleId, 0, origin);
             ParticleManager.SetParticleControl(particleId, 1, origin);
             ParticleManager.SetParticleControl(particleId, 3, origin);
             ParticleManager.ReleaseParticleIndex(particleId);
-            this.caster.StartGestureWithPlaybackRate(GameActivity.DOTA_SPAWN, 2.0);
+            addAnimation(this.caster, GameActivity.DOTA_SPAWN, { duration: 1.0, rate: 2.0 });
         }
     }
-
-    // function juggernaut_special_attack_recast:SetTargetIndex(target_index)
-    //     self.target_index = target_index
-    // }
 
     // function juggernaut_special_attack_recast:OnUpgrade()
     // 	CustomAbilitiesLegacy:LinkUpgrades(self, "juggernaut_special_attack")
