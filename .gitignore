@@ -83,3 +83,5 @@ game/scripts/vscripts/abilities.lua
 game/scripts/vscripts/reward_definitions.lua
 game/scripts/vscripts/upgrade_definitions.lua
 game/scripts/vscripts/alliances.lua
+game/scripts/vscripts/legends/apparition.lua
+game/scripts/vscripts/legends/timbersaw.lua
