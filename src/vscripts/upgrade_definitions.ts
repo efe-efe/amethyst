@@ -5,7 +5,7 @@ import { registerModifier } from "./lib/dota_ts_adapter";
 import { Player } from "./players";
 import { precache, resource } from "./precache";
 import { ProjectileBehavior, createProjectile } from "./projectiles";
-import { areUnitsAllied, direction2D, getCursorPosition, randomInArray } from "./util";
+import { areUnitsAllied, direction2D, getCursorPosition } from "./util";
 
 type LegendDefinition = {
     id: LegendId;
@@ -357,9 +357,9 @@ function defineLegend(options: LegendOptions) {
     });
 }
 
-// defineLegend({
-//     id: LegendId.timbersaw
-// });
+defineLegend({
+    id: LegendId.timbersaw
+});
 
 defineLegend({
     id: LegendId.apparition
@@ -483,9 +483,8 @@ export function hasUpgrade(unit: CDOTA_BaseNPC, id: UpgradeId) {
     return player?.upgrades.find(upgrade => upgrade.id == id);
 }
 
-export function generateLegendUpgradesForPlayer(player: Player) {
-    const legend = randomInArray(legendDefinitions);
-    return upgradeDefinitions.filter(upgrade => upgrade.legendId == legend.id);
+export function generateLegendUpgradesForPlayer(player: Player, legendId: LegendId) {
+    return upgradeDefinitions.filter(upgrade => upgrade.legendId == legendId);
 }
 
 export function generateUpgradesOfTypeForPlayer(player: Player, upgradeType: UpgradeType) {

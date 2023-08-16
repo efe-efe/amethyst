@@ -9,11 +9,12 @@ import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
 import { Player } from "./players";
 import { precache, resource } from "./precache";
-import { RewardDefinition, findRewardByType } from "./reward_definitions";
+import { RewardDefinition, findRewardByType, rewardDefinitions } from "./reward_definitions";
 import {
     UpgradeDefinition,
     generateLegendUpgradesForPlayer,
     generateUpgradesOfTypeForPlayer,
+    legendDefinitions,
     upgradeDefinitions
 } from "./upgrade_definitions";
 import {
@@ -22,6 +23,7 @@ import {
     createTimedRadiusMarker,
     encodeToJson,
     fullyFaceTowards,
+    randomInArray,
     simpleTrigger,
     takeRandomFromArrayWeightedUnsafe,
     triggerNow
@@ -55,11 +57,20 @@ type ExitParticipant = {
     // preSelected?: {};
 };
 
+type UpgradeInstance =
+    | {
+          type: UpgradeType.blessing | UpgradeType.item | UpgradeType.shard | UpgradeType.stance | UpgradeType.vitality;
+      }
+    | {
+          type: UpgradeType.legend;
+          legendId: LegendId;
+      };
+
 type Exit = {
     origin: Vector;
     instance?: {
         chamberDefinition: ChamberDefinition;
-        UpgradeType: UpgradeType;
+        upgradeInstance: UpgradeInstance;
     };
 };
 
@@ -75,6 +86,7 @@ declare global {
                       wave: Wave;
                       waveDefinitions: WaveDefinition[];
                       mapHandle: SpawnGroupHandle;
+                      upgradeInstance: UpgradeInstance;
                       exits: Exit[];
                   }
                 | {
@@ -82,6 +94,7 @@ declare global {
                       mapHandle: SpawnGroupHandle;
                       participants: RewardParticipant[];
                       reward: Reward;
+                      upgradeInstance: UpgradeInstance;
                       exits: Exit[];
                   }
                 | {
@@ -240,7 +253,10 @@ const direWorldDefinition: WorldDefinition = {
             variations: [{ waveDefinitions: [], chance: 100, map: "dire_0" }]
         },
         {
-            variations: [{ waveDefinitions: [rangedsWave], chance: 100, map: "dire_1" }]
+            variations: [
+                { waveDefinitions: [rangedsWave], chance: 50, map: "dire_1" },
+                { waveDefinitions: [mixedRangeFlying], chance: 50, map: "dire_1" }
+            ]
         },
         {
             variations: [
@@ -421,6 +437,7 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
             mapHandle: mapHandle,
             participants: serializeParticipants(config),
             reward: tryCreatingRewardByType(UpgradeType.stance, GetGroundPosition(Vector(0, 0, 0), undefined)),
+            upgradeInstance: { type: UpgradeType.stance },
             exits: tryGeneratingExits()
         },
         players: () => config.players
@@ -428,12 +445,42 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
 }
 
 export async function updateAdventureStage(game: AdventureStage) {
-    function generateUpgradesForPlayer(player: Player, upgradeType: UpgradeType) {
-        switch (upgradeType) {
+    function generateUpgradeType(game: AdventureStage): UpgradeInstance {
+        const selected = game.state.exits
+            .map(exit => exit.instance?.upgradeInstance)
+            .filter((instance): instance is UpgradeInstance => instance != undefined);
+
+        const selectedLegends = selected.filter(instance => instance.type == UpgradeType.legend) as {
+            type: UpgradeType;
+            legendId: LegendId;
+        }[];
+
+        const validLegends = legendDefinitions.filter(legend => !selectedLegends.some(selected => selected.legendId == legend.id));
+
+        const validUpgrades = rewardDefinitions
+            .map(reward => reward.upgradeType)
+            .filter(type => type != UpgradeType.stance)
+            .filter(type => type == UpgradeType.legend || !selected.some(selected => selected.type == type))
+            .filter(type => type != UpgradeType.legend || validLegends.length > 0);
+
+        const taken = takeRandomFromArrayWeightedUnsafe(validUpgrades, () => 1 / validUpgrades.length);
+
+        if (taken == UpgradeType.legend) {
+            return {
+                type: UpgradeType.legend,
+                legendId: randomInArray(validLegends).id
+            };
+        }
+
+        return { type: taken };
+    }
+
+    function generateUpgradesForPlayer(player: Player, upgrade: UpgradeInstance) {
+        switch (upgrade.type) {
             case UpgradeType.legend:
-                return generateLegendUpgradesForPlayer(player);
+                return generateLegendUpgradesForPlayer(player, upgrade.legendId);
             default:
-                return generateUpgradesOfTypeForPlayer(player, upgradeType);
+                return generateUpgradesOfTypeForPlayer(player, upgrade.type);
         }
     }
 
@@ -448,6 +495,10 @@ export async function updateAdventureStage(game: AdventureStage) {
         return npcs.length < maxNpcs;
     }
 
+    if (game.loading) {
+        return;
+    }
+
     const entities = game
         .players()
         .map(player => player.entity)
@@ -456,10 +507,6 @@ export async function updateAdventureStage(game: AdventureStage) {
     for (const entity of entities) {
         updateEntityMovement(entity);
         updateEntityData(entity);
-    }
-
-    if (game.loading) {
-        return;
     }
 
     switch (game.state.id) {
@@ -495,7 +542,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                     game.state.reward.handle = undefined;
 
                     for (const participant of game.state.participants) {
-                        participant.options = generateUpgradesForPlayer(participant.player, rewardDefinition.upgradeType);
+                        participant.options = generateUpgradesForPlayer(participant.player, game.state.upgradeInstance);
 
                         CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
                             selection: {
@@ -536,7 +583,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                     origin: exit.origin,
                     instance: {
                         chamberDefinition: chamberDefinition,
-                        UpgradeType: UpgradeType.legend
+                        upgradeInstance: generateUpgradeType(game)
                     }
                 }))
             };
@@ -549,6 +596,14 @@ export async function updateAdventureStage(game: AdventureStage) {
 
             if (!selectedExit || !selectedExit.instance) {
                 for (const exit of game.state.exits) {
+                    if (exit.instance) {
+                        const text =
+                            exit.instance.upgradeInstance.type == UpgradeType.legend
+                                ? exit.instance.upgradeInstance.type + exit.instance.upgradeInstance.legendId
+                                : exit.instance.upgradeInstance.type;
+                        DebugDrawText(exit.origin, text, true, 1);
+                    }
+
                     const units = FindUnitsInRadius(
                         DotaTeam.NOTEAM,
                         exit.origin,
@@ -587,6 +642,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                 exits: exits,
                 mapHandle: mapHandle,
                 wave: wave,
+                upgradeInstance: selectedExit.instance.upgradeInstance,
                 waveDefinitions: chamberVariation.waveDefinitions
             };
 
@@ -602,7 +658,8 @@ export async function updateAdventureStage(game: AdventureStage) {
                         id: "reward",
                         mapHandle: game.state.mapHandle,
                         participants: serializeParticipants(game.config),
-                        reward: tryCreatingRewardByType(UpgradeType.legend, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        reward: tryCreatingRewardByType(game.state.upgradeInstance.type, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        upgradeInstance: game.state.upgradeInstance,
                         exits: game.state.exits
                     };
                     break;

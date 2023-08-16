@@ -18,7 +18,7 @@ type RewardOptions = {
     scale?: number;
 };
 
-const rewardDefinitions: RewardDefinition[] = [];
+export const rewardDefinitions: RewardDefinition[] = [];
 
 function defineReward(options: RewardOptions) {
     rewardDefinitions.push({
