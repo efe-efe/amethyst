@@ -6,6 +6,7 @@ declare const enum UpgradeType {
     "legend" = "legend", // Hero that offers other upgrades
     "blessing" = "blessing", // Changes to the spell category (i.e: basic attack, counter, etc) or a general upgrade
     "shard" = "shard", // Changes to the spells
+    "knowledge" = "knowledge", // Improves a blessing
     "item" = "item", // Improvements on the hero body
     "vitality" = "vitality" // More HP
 }

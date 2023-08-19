@@ -12,8 +12,10 @@ import { precache, resource } from "./precache";
 import { RewardDefinition, findRewardByType, rewardDefinitions } from "./reward_definitions";
 import {
     UpgradeDefinition,
+    generateKnowledgeUpgradesForPlayer,
     generateLegendUpgradesForPlayer,
     generateUpgradesOfTypeForPlayer,
+    getCurrentUpgradeValues,
     legendDefinitions,
     upgradeDefinitions
 } from "./upgrade_definitions";
@@ -57,9 +59,15 @@ type ExitParticipant = {
     // preSelected?: {};
 };
 
-type UpgradeInstance =
+type UpgradeSpecificType =
     | {
-          type: UpgradeType.blessing | UpgradeType.item | UpgradeType.shard | UpgradeType.stance | UpgradeType.vitality;
+          type:
+              | UpgradeType.blessing
+              | UpgradeType.item
+              | UpgradeType.shard
+              | UpgradeType.stance
+              | UpgradeType.vitality
+              | UpgradeType.knowledge;
       }
     | {
           type: UpgradeType.legend;
@@ -70,7 +78,7 @@ type Exit = {
     origin: Vector;
     instance?: {
         chamberDefinition: ChamberDefinition;
-        upgradeInstance: UpgradeInstance;
+        upgradeSpecificType: UpgradeSpecificType;
     };
 };
 
@@ -86,7 +94,7 @@ declare global {
                       wave: Wave;
                       waveDefinitions: WaveDefinition[];
                       mapHandle: SpawnGroupHandle;
-                      upgradeInstance: UpgradeInstance;
+                      upgradeSpecificType: UpgradeSpecificType;
                       exits: Exit[];
                   }
                 | {
@@ -94,7 +102,7 @@ declare global {
                       mapHandle: SpawnGroupHandle;
                       participants: RewardParticipant[];
                       reward: Reward;
-                      upgradeInstance: UpgradeInstance;
+                      upgradeSpecificType: UpgradeSpecificType;
                       exits: Exit[];
                   }
                 | {
@@ -437,7 +445,7 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
             mapHandle: mapHandle,
             participants: serializeParticipants(config),
             reward: tryCreatingRewardByType(UpgradeType.stance, GetGroundPosition(Vector(0, 0, 0), undefined)),
-            upgradeInstance: { type: UpgradeType.stance },
+            upgradeSpecificType: { type: UpgradeType.stance },
             exits: tryGeneratingExits()
         },
         players: () => config.players
@@ -445,10 +453,10 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
 }
 
 export async function updateAdventureStage(game: AdventureStage) {
-    function generateUpgradeType(game: AdventureStage): UpgradeInstance {
+    function generateUpgradeType(game: AdventureStage): UpgradeSpecificType {
         const selected = game.state.exits
-            .map(exit => exit.instance?.upgradeInstance)
-            .filter((instance): instance is UpgradeInstance => instance != undefined);
+            .map(exit => exit.instance?.upgradeSpecificType)
+            .filter((instance): instance is UpgradeSpecificType => instance != undefined);
 
         const selectedLegends = selected.filter(instance => instance.type == UpgradeType.legend) as {
             type: UpgradeType;
@@ -475,10 +483,12 @@ export async function updateAdventureStage(game: AdventureStage) {
         return { type: taken };
     }
 
-    function generateUpgradesForPlayer(player: Player, upgrade: UpgradeInstance) {
+    function generateUpgradesForPlayer(player: Player, upgrade: UpgradeSpecificType) {
         switch (upgrade.type) {
             case UpgradeType.legend:
                 return generateLegendUpgradesForPlayer(player, upgrade.legendId);
+            case UpgradeType.knowledge:
+                return generateKnowledgeUpgradesForPlayer(player);
             default:
                 return generateUpgradesOfTypeForPlayer(player, upgrade.type);
         }
@@ -542,8 +552,9 @@ export async function updateAdventureStage(game: AdventureStage) {
                     game.state.reward.handle = undefined;
 
                     for (const participant of game.state.participants) {
-                        participant.options = generateUpgradesForPlayer(participant.player, game.state.upgradeInstance);
+                        participant.options = generateUpgradesForPlayer(participant.player, game.state.upgradeSpecificType);
 
+                        //TODO: Fix the case for when options is empty array
                         CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
                             selection: {
                                 upgrades: encodeToJson(
@@ -583,7 +594,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                     origin: exit.origin,
                     instance: {
                         chamberDefinition: chamberDefinition,
-                        upgradeInstance: generateUpgradeType(game)
+                        upgradeSpecificType: generateUpgradeType(game)
                     }
                 }))
             };
@@ -598,9 +609,9 @@ export async function updateAdventureStage(game: AdventureStage) {
                 for (const exit of game.state.exits) {
                     if (exit.instance) {
                         const text =
-                            exit.instance.upgradeInstance.type == UpgradeType.legend
-                                ? exit.instance.upgradeInstance.type + exit.instance.upgradeInstance.legendId
-                                : exit.instance.upgradeInstance.type;
+                            exit.instance.upgradeSpecificType.type == UpgradeType.legend
+                                ? exit.instance.upgradeSpecificType.type + exit.instance.upgradeSpecificType.legendId
+                                : exit.instance.upgradeSpecificType.type;
                         DebugDrawText(exit.origin, text, true, 1);
                     }
 
@@ -642,7 +653,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                 exits: exits,
                 mapHandle: mapHandle,
                 wave: wave,
-                upgradeInstance: selectedExit.instance.upgradeInstance,
+                upgradeSpecificType: selectedExit.instance.upgradeSpecificType,
                 waveDefinitions: chamberVariation.waveDefinitions
             };
 
@@ -658,8 +669,8 @@ export async function updateAdventureStage(game: AdventureStage) {
                         id: "reward",
                         mapHandle: game.state.mapHandle,
                         participants: serializeParticipants(game.config),
-                        reward: tryCreatingRewardByType(game.state.upgradeInstance.type, GetGroundPosition(Vector(0, 0, 0), undefined)),
-                        upgradeInstance: game.state.upgradeInstance,
+                        reward: tryCreatingRewardByType(game.state.upgradeSpecificType.type, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        upgradeSpecificType: game.state.upgradeSpecificType,
                         exits: game.state.exits
                     };
                     break;
@@ -765,14 +776,28 @@ CustomGameEventManager.RegisterListener("pickUpgrade", (_, event) => {
             const upgrade = upgradeDefinitions.find(upgrade => upgrade.id == event.upgradeId);
 
             if (upgrade) {
-                participant.player.upgrades.push(upgrade);
+                if (game.state.upgradeSpecificType.type == UpgradeType.knowledge) {
+                    participant.player.upgrades = participant.player.upgrades.map(playerUpgrade =>
+                        playerUpgrade.definition.id == upgrade?.id ? { ...playerUpgrade, level: playerUpgrade.level + 1 } : playerUpgrade
+                    );
+                } else {
+                    participant.player.upgrades.push({
+                        definition: upgrade,
+                        level: 1
+                    });
+                }
             }
 
             for (const upgrade of participant.player.upgrades) {
                 const handle = participant.player.entity?.handle;
-                if (handle && upgrade.modifier) {
-                    handle.RemoveModifierByName(upgrade.modifier.name);
-                    upgrade.modifier.apply(handle, handle, undefined, upgrade.values);
+                if (handle && upgrade.definition.modifier) {
+                    handle.RemoveModifierByName(upgrade.definition.modifier.name);
+                    upgrade.definition.modifier.apply(
+                        handle,
+                        handle,
+                        undefined,
+                        getCurrentUpgradeValues(upgrade.level, upgrade.definition.values)
+                    );
                 }
             }
 

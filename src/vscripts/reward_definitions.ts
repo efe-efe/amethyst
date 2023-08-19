@@ -2,8 +2,9 @@ import { precache, resource } from "./precache";
 
 const resources = precache({
     stanceModel: resource.model("models/props_gameplay/stout_shield.vmdl"),
-    shardModel: resource.model("models/props_gameplay/aghanim_scepter.vmdl"),
-    blessingModel: resource.model("models/props_gameplay/aghanim_scepter.vmdl")
+    shardModel: resource.model("models/props_gameplay/aghanim_gem.vmdl"),
+    legendModel: resource.model("models/props_gameplay/aghanim_scepter.vmdl"),
+    knowledgeModel: resource.model("models/props_items/necronomicon.vmdl")
 });
 
 export type RewardDefinition = {
@@ -44,5 +45,10 @@ defineReward({
 
 defineReward({
     upgradeType: UpgradeType.legend,
-    model: resources.blessingModel.path
+    model: resources.legendModel.path
+});
+
+defineReward({
+    upgradeType: UpgradeType.knowledge,
+    model: resources.knowledgeModel.path
 });

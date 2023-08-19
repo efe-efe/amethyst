@@ -192,7 +192,21 @@ defineUpgrade({
     id: UpgradeId.timberMobilityChakram,
     modifier: ModifierTimberMobilityChakram,
     values: {
-        wheelDuration: 3,
+        wheelDuration: {
+            initial: 3,
+            perk: 2,
+            formula: (perk, level) => {
+                if (level == 1) {
+                    return 0;
+                }
+
+                if (level == 2) {
+                    return perk;
+                }
+
+                return 1;
+            }
+        },
         damage: 2,
         radius: 250,
         interval: 0.5
@@ -210,7 +224,21 @@ defineUpgrade({
         speed: 1500,
         wheelDuration: 3,
         impactDamage: 5,
-        damage: 2,
+        damage: {
+            initial: 2,
+            perk: 6,
+            formula: (perk, level) => {
+                if (level == 1) {
+                    return 0;
+                }
+
+                if (level == 2) {
+                    return perk;
+                }
+
+                return Math.max(1, perk - level);
+            }
+        },
         radius: 250,
         interval: 0.5
     }

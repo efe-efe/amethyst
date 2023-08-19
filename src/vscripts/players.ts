@@ -1,7 +1,7 @@
 import { Alliance } from "./alliances";
 import { CustomPlayerHeroNPC } from "./clases/pve/custom_npc";
 import { Entity } from "./entities";
-import { UpgradeDefinition } from "./upgrade_definitions";
+import { UpgradeInstance } from "./upgrade_definitions";
 
 export type Player = {
     id: PlayerID;
@@ -10,7 +10,7 @@ export type Player = {
     entity?: Entity;
     alliance?: Alliance;
     customNpc?: CustomPlayerHeroNPC;
-    upgrades: UpgradeDefinition[];
+    upgrades: UpgradeInstance[];
 };
 
 export const players: Player[] = [];

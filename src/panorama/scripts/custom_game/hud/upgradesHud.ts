@@ -82,6 +82,7 @@ subscribeToNetTableAndLoadNow("pve", (table, key, value) => {
         root.SetHasClass("upgradesHUD--visible", true);
         const upgrades = decodeFromJson(value.selection.upgrades);
 
+        //TODO: Fix the case for when you are presented 0 upgrades
         const type = upgrades[0].type;
         title.text = $.Localize(`#Upgrade_${type}`);
         upgradesPanel.setUpgrades(upgrades);

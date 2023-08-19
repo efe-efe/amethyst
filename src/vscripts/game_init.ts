@@ -41,6 +41,7 @@ import { createEntity, entities, findEntityByHandle, removeEntity } from "./enti
 import { initBattleStage, updateBattleState } from "./battle";
 import { initAdventureStage, updateAdventureStage } from "./adventure";
 import "./abilities";
+import "./legends";
 
 declare global {
     interface CDOTAGameRules {
