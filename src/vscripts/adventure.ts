@@ -807,3 +807,72 @@ CustomGameEventManager.RegisterListener("pickUpgrade", (_, event) => {
         }
     }
 });
+
+//TODO: Apply effects
+
+// @registerModifier()
+// class ModifierCombineUtilVFX extends CustomModifier<undefined> {
+//     particleId?: ParticleID;
+
+//     OnCreated() {
+//         if (IsServer()) {
+//             this.particleId = EFX("particles/items5_fx/repair_kit_overhead.vpcf", ParticleAttachment.OVERHEAD_FOLLOW, this.parent, {
+//                 cp2: {
+//                     ent: this.parent,
+//                     attach: ParticleAttachment.OVERHEAD_FOLLOW
+//                 },
+//                 release: false
+//             });
+//         }
+//     }
+
+//     OnDestroy() {
+//         if (IsServer() && this.particleId) {
+//             ParticleManager.DestroyParticle(this.particleId, false);
+//             ParticleManager.ReleaseParticleIndex(this.particleId);
+//         }
+//     }
+// }
+
+// ApplyItem(upgrade: Upgrade): void {
+//     if (upgrade.ingredients) {
+//         upgrade.ingredients.forEach(ingredientId => {
+//             const ingredientUpgrade = this.heroUpgrades.find(heroUpgrade => heroUpgrade.id === ingredientId);
+
+//             if (ingredientUpgrade) {
+//                 this.unit.RemoveModifierByName(ingredientUpgrade.modifier!.name);
+//             }
+//         });
+
+//         EFX("particles/items_fx/item_sheepstick.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+//             release: true
+//         });
+
+//         ModifierCombineUtilVFX.apply(this.unit, this.unit, undefined, {
+//             duration: 1.5
+//         });
+
+//         EmitSoundOn("DOTA_Item.RepairKit.Target", this.unit);
+//     }
+
+//     EFX("particles/econ/events/ti10/mekanism_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+//         release: true
+//     });
+//     EmitSoundOn("DOTA_Item.Overwhelming_Blink.NailedIt", this.unit);
+// }
+
+// ApplyFavor(upgrade: Upgrade): void {
+//     EmitSoundOn("DOTA_Item.Mekansm.Target", this.unit);
+
+//     EFX("particles/econ/events/ti10/hero_levelup_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+//         release: true
+//     });
+// }
+
+// ApplyShard(upgrade: Upgrade): void {
+//     EmitSoundOn("Item.MoonShard.Consume", this.unit);
+
+//     EFX("particles/econ/events/ti10/hero_levelup_ti10.vpcf", ParticleAttachment.ABSORIGIN_FOLLOW, this.unit, {
+//         release: true
+//     });
+// }

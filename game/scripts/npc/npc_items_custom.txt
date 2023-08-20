@@ -1,6 +1,3 @@
-#base "items\health_orb.txt"
-#base "items\mana_orb.txt"
-#base "items\shield_orb.txt"
 #base "items\death_orb.txt"
 
 "DOTAAbilities"

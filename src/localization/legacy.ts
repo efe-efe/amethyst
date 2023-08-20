@@ -736,20 +736,8 @@
 //     });
 
 //     Abilities.push({
-//       ability_classname: "item_health_orb",
-//       name: "+6 Health",
-//     });
-//     Abilities.push({
-//       ability_classname: "item_mana_orb",
-//       name: "+8 Mana",
-//     });
-//     Abilities.push({
 //       ability_classname: "item_death_orb",
 //       name: "Death orb",
-//     });
-//     Abilities.push({
-//       ability_classname: "item_shield_orb",
-//       name: "Shield orb",
 //     });
 //     Abilities.push({
 //       ability_classname: "storm_ex_special_attack_AbilityCastPoint",

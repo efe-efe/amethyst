@@ -52,12 +52,7 @@ export class ModifierAdrenaline extends CustomModifier<undefined> {
             if (event.unit != this.parent) {
                 return;
             }
-            if (
-                event.ability.GetName() == "item_death_orb" ||
-                event.ability.GetName() == "item_mana_orb" ||
-                event.ability.GetName() == "item_health_orb" ||
-                event.ability.GetName() == "item_shield_orb"
-            ) {
+            if (event.ability.GetName() == "item_death_orb") {
                 return;
             }
             this.Destroy();

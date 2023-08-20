@@ -53,7 +53,7 @@ declare global {
                       healthOrbs: Pickup[];
                       manaOrbs: Pickup[];
                       shieldOrbs: Pickup[];
-                      //   deathOrbs: Pickup[];
+                      deathOrbs: Pickup[];
                   };
         };
     }
@@ -65,6 +65,7 @@ const resources = precache({
     clarity: resource.model("models/props_gameplay/clarity.vmdl"),
     salve: resource.model("models/props_gameplay/salve.vmdl"),
     shield: resource.model("models/props_gameplay/stout_shield.vmdl"),
+    death: resource.model("models/props_items/bloodstone.vmdl"),
     healthParticle: resource.fx("particles/generic_gameplay/rune_regeneration.vpcf"),
     manaParticle: resource.fx("particles/generic_gameplay/rune_doubledamage.vpcf"),
     shieldParticle: resource.fx("particles/generic_gameplay/rune_bounty.vpcf"),
@@ -256,7 +257,8 @@ function updateFight(game: BattleStage) {
                     id: "fight",
                     healthOrbs: healthOrbs,
                     manaOrbs: manaOrbs,
-                    shieldOrbs: shieldOrbs
+                    shieldOrbs: shieldOrbs,
+                    deathOrbs: []
                 };
             }
 
@@ -273,7 +275,7 @@ function updateFight(game: BattleStage) {
                 updateEntityMovement(entity);
             }
 
-            for (const pickup of [...game.state.healthOrbs, ...game.state.manaOrbs, ...game.state.shieldOrbs]) {
+            for (const pickup of [...game.state.healthOrbs, ...game.state.manaOrbs, ...game.state.shieldOrbs, ...game.state.deathOrbs]) {
                 if (triggerNow(pickup.trigger)) {
                     pickup.handle = CreateUnitByName(resources.pickup.path, pickup.origin, false, undefined, undefined, DotaTeam.NOTEAM);
                     pickup.handle.SetModel(pickup.model);
@@ -319,3 +321,20 @@ function updateFight(game: BattleStage) {
 export function updateBattleState(game: BattleStage) {
     updateFight(game);
 }
+
+// CreateDeathOrb(hero: CDOTA_BaseNPC): void {
+//     const current_mana = hero.GetMana();
+//     const origin = hero.GetAbsOrigin();
+//     const mana_given = NearestValue([25, 50, 75, 100], current_mana);
+//     const entity = new Pickup(PickupTypes.DEATH, hero.GetOrigin(), mana_given / 100 + 0.25);
+
+//     this.round?.pickupWrappers.push({
+//         origin,
+//         type: PickupTypes.DEATH,
+//         timer: -1,
+//         entity: entity
+//     });
+
+//     entity.GetItem()?.SetCurrentCharges(mana_given);
+//     entity.GetItem()?.SetPurchaser(hero);
+// }

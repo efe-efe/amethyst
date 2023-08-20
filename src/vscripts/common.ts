@@ -174,3 +174,165 @@ export function updateEntityMovement(entity: Entity) {
     }
     // unit.RemoveModifierByName(ModifierHeroMovement.name);
 }
+
+// AlternativeDirectionsWalls(direction: Vector): Vector[] {
+//     const directions: Vector[] = [];
+//     const collisionDirection = CustomEntitiesLegacy.GetCollisionDirection(this.unit);
+//     const angle = VectorToAngles(direction).y;
+
+//     if (Math.IsNorthEast(angle)) {
+//         if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+//             return directions;
+//         }
+//         directions.push(Math.NORTH);
+//         directions.push(Math.EAST);
+//     }
+//     if (Math.IsNorthWest(angle)) {
+//         if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+//             return directions;
+//         }
+//         if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+//             directions.push(Math.NORTH);
+//             directions.push(Math.WEST);
+//             return directions;
+//         }
+//         if (collisionDirection === Orientations.VERTICAL) {
+//             directions.push(Math.NORTH);
+//             directions.push(Math.WEST);
+//             return directions;
+//         }
+//         directions.push(Math.NORTH);
+//         directions.push(Math.WEST);
+//     }
+//     if (Math.IsSouthEast(angle)) {
+//         if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+//             return directions;
+//         }
+//         if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+//             directions.push(Math.SOUTH);
+//             directions.push(Math.EAST);
+//         }
+//         if (collisionDirection === Orientations.HORIZONTAL) {
+//             directions.push(Math.EAST);
+//             directions.push(Math.SOUTH);
+//         }
+//         if (collisionDirection === Orientations.VERTICAL) {
+//             directions.push(Math.SOUTH);
+//             directions.push(Math.EAST);
+//         }
+//     }
+//     if (Math.IsSouthWest(angle)) {
+//         if (collisionDirection === Orientations.HORIZONTAL) {
+//             directions.push(Math.WEST);
+//             directions.push(Math.SOUTH);
+//         }
+//         if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+//             directions.push(Math.SOUTH_WEST);
+//             directions.push(Math.WEST);
+//             directions.push(Math.SOUTH);
+//         }
+//         if (collisionDirection === Orientations.VERTICAL) {
+//             directions.push(Math.SOUTH);
+//             directions.push(Math.WEST);
+//         }
+//     }
+//     if (Math.IsEast(angle)) {
+//         if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+//             directions.push(Math.NORTH_EAST);
+//             directions.push(Math.NORTH);
+//         }
+//         if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+//             directions.push(Math.SOUTH_EAST);
+//             directions.push(Math.SOUTH);
+//         }
+//     }
+//     if (Math.IsWest(angle)) {
+//         if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+//             directions.push(Math.SOUTH_EAST);
+//             directions.push(Math.SOUTH);
+//         }
+//         if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+//             directions.push(Math.NORTH_WEST);
+//             directions.push(Math.NORTH);
+//         }
+//         if (collisionDirection === Orientations.HORIZONTAL) {
+//             directions.push(Math.SOUTH);
+//             directions.push(Math.NORTH);
+//         }
+//     }
+//     if (Math.IsNorth(angle)) {
+//         if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+//             directions.push(Math.NORTH_EAST);
+//             directions.push(Math.EAST);
+//         }
+//         if (collisionDirection === Orientations.HORIZONTAL) {
+//             return directions;
+//         }
+//         if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+//             directions.push(Math.WEST);
+//         }
+//         if (collisionDirection === Orientations.VERTICAL) {
+//             directions.push(Math.NORTH_WEST);
+//             directions.push(Math.WEST);
+//         }
+//     }
+//     if (Math.IsSouth(angle)) {
+//         if (collisionDirection === Orientations.HORIZONTAL) {
+//             return directions;
+//         }
+//         if (collisionDirection === Orientations.DIAGONAL_RIGHT) {
+//             directions.push(Math.SOUTH_WEST);
+//             directions.push(Math.WEST);
+//         }
+//         if (collisionDirection === Orientations.DIAGONAL_LEFT) {
+//             directions.push(Math.SOUTH_EAST);
+//             directions.push(Math.EAST);
+//         }
+//         if (collisionDirection === Orientations.VERTICAL) {
+//             directions.push(Math.EAST);
+//         }
+//     }
+
+//     return directions;
+// }
+// AlternativeDirections(direction: Vector): Vector[] {
+//     const directions = [];
+//     const angle = VectorToAngles(direction).y;
+
+//     if (Math.IsNorthEast(angle)) {
+//         directions.push(Math.NORTH);
+//         directions.push(Math.EAST);
+//     }
+//     if (Math.IsNorthWest(angle)) {
+//         directions.push(Math.NORTH);
+//         directions.push(Math.WEST);
+//     }
+//     if (Math.IsSouthEast(angle)) {
+//         directions.push(Math.SOUTH);
+//         directions.push(Math.EAST);
+//     }
+//     if (Math.IsSouthWest(angle)) {
+//         directions.push(Math.SOUTH);
+//         directions.push(Math.WEST);
+//     }
+//     if (Math.IsEast(angle) || Math.IsWest(angle)) {
+//         if (this.unit.GetAbsOrigin().y < 0) {
+//             directions.push(Math.SOUTH);
+//             directions.push(Math.NORTH);
+//         }
+
+//         if (this.unit.GetAbsOrigin().y > 0) {
+//             directions.push(Math.NORTH);
+//             directions.push(Math.SOUTH);
+//         }
+//     }
+//     if (Math.IsNorth(angle) || Math.IsSouth(angle)) {
+//         if (this.unit.GetAbsOrigin().x < 0) {
+//             directions.push(Math.WEST);
+//         }
+//         if (this.unit.GetAbsOrigin().x > 0) {
+//             directions.push(Math.EAST);
+//         }
+//     }
+//     return directions;
+// }

@@ -1,17 +1,9 @@
 import GameState, { CustomGameState } from "../game_state";
 import GemWrapper, { GemTypes } from "../gem";
-import Pickup, { PickupTypes } from "../pickup";
 import settings from "../../settings";
 import { ModifierDeathZone } from "../../modifiers/modifier_death_zone";
 import { ModifierProvidesVision } from "../../modifiers/modifier_provides_vision";
 import { Alliance } from "../../alliances";
-
-interface PickupWrapper {
-    origin: Vector;
-    type: PickupTypes;
-    timer: number;
-    entity: Pickup | undefined;
-}
 
 interface Gem {
     index: number;
@@ -22,7 +14,6 @@ interface Gem {
 
 export default class Round extends GameState {
     death_zone: CBaseEntity | undefined;
-    pickupWrappers: PickupWrapper[] = [];
     arrows: ParticleID[] = [];
     ended = false;
     timeOver = false;
@@ -48,10 +39,6 @@ export default class Round extends GameState {
         this.radiantWarmupSpawn = Entities.FindByName(undefined, "radiant_warmup_spawn")!;
         this.direWarmupSpawn = Entities.FindByName(undefined, "dire_warmup_spawn")!;
 
-        this.AddPickups(this.healthEntities, PickupTypes.HEALTH);
-        this.AddPickups(this.manaEntities, PickupTypes.MANA);
-        this.AddPickups(this.shieldEntities, PickupTypes.SHIELD);
-
         this.gem = {
             index: RandomInt(0, 2),
             type: RandomInt(GemTypes.AMETHYST, GemTypes.EMERALD),
@@ -64,17 +51,6 @@ export default class Round extends GameState {
         } else {
             GameRules.SetTimeOfDay(0.5);
         }
-    }
-
-    AddPickups(spawnEntities: CBaseEntity[], type: PickupTypes): void {
-        spawnEntities.forEach(entity => {
-            this.pickupWrappers.push({
-                origin: entity.GetAbsOrigin(),
-                type: type,
-                timer: settings.PickupsCreationTime * 30,
-                entity: undefined
-            });
-        });
     }
 
     SpawnArrows(): void {
@@ -117,23 +93,6 @@ export default class Round extends GameState {
                     this.gem.entity.Update();
                 }
             }
-
-            this.pickupWrappers.forEach(pickup => {
-                if (pickup.timer !== -1) {
-                    if (!pickup.entity) {
-                        if (pickup.timer === 0) {
-                            pickup.entity = new Pickup(pickup.type, pickup.origin, undefined);
-                        } else {
-                            pickup.timer = pickup.timer - 1;
-                        }
-                    } else {
-                        if (!pickup.entity.Alive()) {
-                            pickup.timer = settings.PickupsCreationTime * 30;
-                            pickup.entity = undefined;
-                        }
-                    }
-                }
-            });
         } else {
             return;
         }
@@ -191,7 +150,6 @@ export default class Round extends GameState {
     EndRound(): void {
         this.ended = true;
 
-        this.DestroyAllPickups();
         this.DestroyDeathZone();
         this.DestroyGem();
         this.CleanArrows();
@@ -218,8 +176,6 @@ export default class Round extends GameState {
         let max_score = settings.RoundsDifferenceToWin;
         let allinaces_with_one_point = 0;
         let allinaces_with_two_points = 0;
-
-        this.DestroyAllPickups(); //Remove death orbs
 
         if (this.winner) {
             const new_score = this.winner.wins + 1;
@@ -321,14 +277,5 @@ export default class Round extends GameState {
                 this.death_zone.Destroy();
             }
         }
-    }
-
-    DestroyAllPickups(): void {
-        this.pickupWrappers.forEach(pickup => {
-            if (pickup.entity) {
-                pickup.entity.Destroy();
-            }
-        });
-        this.pickupWrappers = [];
     }
 }

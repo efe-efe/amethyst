@@ -53,7 +53,6 @@ export default class UnitEntity {
         this.destroyed = true;
 
         if (remove) {
-            GameRules.Addon.RemoveUnit(this.unit);
             UTIL_Remove(this.unit);
         }
     }

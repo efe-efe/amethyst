@@ -87,18 +87,6 @@ interface CustomNetTableDeclarations {
             };
         };
     };
-    custom_npc_rewards: {
-        [key: string]: {
-            playerId: number;
-            rewards?: any[];
-        };
-    };
-    custom_npc_favors: {
-        [key: string]: {
-            playerId: number;
-            upgrades?: any[];
-        };
-    };
 }
 /**
  * Client server request defines a remote procedure call from client to server

@@ -12,11 +12,8 @@ import "./constructors";
 import "./libraries/timers";
 import PreRound from "./clases/pvp/pre_round";
 import Round from "./clases/pvp/round";
-import CustomNPC, { CustomNonPlayerHeroNPC, CustomPlayerHeroNPC } from "./clases/pve/custom_npc";
 import { CustomItems } from "./util/custom_items";
-import Pickup, { PickupTypes } from "./clases/pickup";
 import settings from "./settings";
-import { RewardsManager } from "./rewards/rewards";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { updateProjectiles } from "./projectiles";
 import { ModifierDamageVFX } from "./modifiers/modifier_damage_vfx";
@@ -186,7 +183,6 @@ function setupPanoramaEventHooks() {
         const entity = findPlayerById(playerId)?.entity;
 
         if (entity) {
-            // const customNpc = player.customNpc;
             const type = event.payload.type;
             const mode = event.payload.mode;
 
@@ -196,15 +192,6 @@ function setupPanoramaEventHooks() {
                 const direction = mode == Custom_ActionModes.STOP ? vector.__mul(-1) : vector;
                 entity.direction = entity.direction.__add(direction);
             }
-
-            // if (type == Custom_ActionTypes.ABILITY) {
-            //     if (mode == Custom_ActionModes.STOP) {
-            //         const ability = EntIndexToHScript(event.payload.abilityEntityIndex as EntityIndex);
-            //         if (customNpc && ability) {
-            //             customNpc.ReleaseAbility(ability.GetName());
-            //         }
-            //     }
-            // }
         }
     });
 
@@ -476,45 +463,6 @@ function onPlayerChat(event: PlayerChatEvent) {
         // this.wtf = false;
     }
 
-    if (getMode() == MapNames.pve) {
-        if (!player) {
-            return;
-        }
-
-        const customNpc = player.customNpc;
-
-        if (!customNpc) {
-            return;
-        }
-
-        if (event.text == "-favor") {
-            RewardsManager.OfferFavorsForHero(customNpc);
-        }
-
-        if (event.text == "-shard") {
-            RewardsManager.ClaimShards(customNpc);
-        }
-
-        if (event.text == "-tome") {
-            RewardsManager.ClaimKnowledge(customNpc);
-        }
-
-        if (event.text == "-item") {
-            RewardsManager.ClaimItems(customNpc);
-        }
-
-        if (event.text == "-reward") {
-            const rewards = RewardsManager.GenerateRewards(customNpc, {
-                amount: 3
-            });
-            RewardsManager.OfferRewardsForHero(customNpc, rewards);
-        }
-
-        if (event.text == "-vitality") {
-            RewardsManager.ClaimVitality(customNpc);
-        }
-    }
-
     if (event.text == "-skip") {
         if (getMode() == MapNames.pve) {
             // if (this.run && this.run.stage && this.run.stage.room) {
@@ -563,7 +511,6 @@ function onEntityHurt(event: EntityHurtEvent): void {
 @reloadable
 export class GameMode {
     private players: Player[] = [];
-    private units: (CustomPlayerHeroNPC | CustomNonPlayerHeroNPC | CustomNPC)[] = [];
     private state = CustomGameState.NONE;
     private wtf = false;
 
@@ -686,30 +633,9 @@ export class GameMode {
         this.currentRoom = this.currentRoom + 1;
     }
 
-    RegisterUnit(unit: CDOTA_BaseNPC): CustomPlayerHeroNPC | CustomNonPlayerHeroNPC | CustomNPC {
-        let customNpc = undefined;
-
-        if (unit.IsRealHero()) {
-            if (isPlayerHero(unit)) {
-                customNpc = new CustomPlayerHeroNPC(unit);
-            } else {
-                customNpc = new CustomNonPlayerHeroNPC(unit);
-            }
-        } else {
-            customNpc = new CustomNPC(unit);
-        }
-        this.units.push(customNpc);
-        return customNpc;
-    }
-
-    RemoveUnit(unit: CDOTA_BaseNPC): void {
-        this.units = this.units.filter(unitEntity => unitEntity.GetUnit() !== unit);
-    }
-
-    OnHeroKilledPVP(killed: CDOTA_BaseNPC): void {
+    OnHeroKilledPVP(): void {
         if (this.round) {
             this.round.heroDied = true;
-            this.CreateDeathOrb(killed);
             this.UpdateCameras();
         }
     }
@@ -746,23 +672,6 @@ export class GameMode {
         const player = findPlayerById(playerId);
 
         return player ? player.cursorPosition : Vector(0, 0);
-    }
-
-    CreateDeathOrb(hero: CDOTA_BaseNPC): void {
-        const current_mana = hero.GetMana();
-        const origin = hero.GetAbsOrigin();
-        const mana_given = NearestValue([25, 50, 75, 100], current_mana);
-        const entity = new Pickup(PickupTypes.DEATH, hero.GetOrigin(), mana_given / 100 + 0.25);
-
-        this.round?.pickupWrappers.push({
-            origin,
-            type: PickupTypes.DEATH,
-            timer: -1,
-            entity: entity
-        });
-
-        entity.GetItem()?.SetCurrentCharges(mana_given);
-        entity.GetItem()?.SetPurchaser(hero);
     }
 
     EndGame(victoryTeam: DotaTeam): void {
