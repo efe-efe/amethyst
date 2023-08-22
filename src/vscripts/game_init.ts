@@ -3,17 +3,14 @@ import "./alliances";
 import { CustomGameState } from "./clases/game_state";
 import Warmup from "./clases/pvp/warmup";
 import { reloadable } from "./lib/tstl-utils";
-import "./wrappers/modifiers";
 import "./util/custom_entities_legacy";
 import "./util/math_legacy";
 import "./util/util";
-import "./settings";
 import "./constructors";
 import "./libraries/timers";
 import PreRound from "./clases/pvp/pre_round";
 import Round from "./clases/pvp/round";
 import { CustomItems } from "./util/custom_items";
-import settings from "./settings";
 import { ModifierObstacle } from "./modifiers/modifier_obstacle";
 import { updateProjectiles } from "./projectiles";
 import { ModifierDamageVFX } from "./modifiers/modifier_damage_vfx";
@@ -212,7 +209,7 @@ function setupPanoramaEventHooks() {
                     }
                 }
 
-                hero.SetAbilityPoints(settings.AbilityPoints);
+                hero.SetAbilityPoints(Constants.upgradePoints);
                 CustomEntitiesLegacy.SendDataToClient(hero);
             }
         }
@@ -561,7 +558,7 @@ export class GameMode {
         this.SetState(CustomGameState.WARMUP_IN_PROGRESS);
         // this.warmup = new Warmup(alliances, settings.FirstWarmupDuration);
 
-        CustomNetTables.SetTableValue("main", "maxScore", { max_score: settings.RoundsDifferenceToWin });
+        CustomNetTables.SetTableValue("main", "maxScore", { max_score: Constants.roundsDifferenceToWin });
 
         // this.RegisterThinker(0.01, () => {
         //     if (this.state == CustomGameState.WARMUP_IN_PROGRESS && this.warmup) {
@@ -589,13 +586,13 @@ export class GameMode {
     OnStateEnd(state: CustomGameState): void {
         if (state === CustomGameState.ROUND_IN_PROGRESS) {
             this.round = undefined;
-            this.warmup = new Warmup(alliances, settings.WarmupDuration);
+            this.warmup = new Warmup(alliances, Constants.warmupDuration);
         } else if (state === CustomGameState.WARMUP_IN_PROGRESS) {
             this.warmup = undefined;
             this.preRound = new PreRound(alliances, 1);
         } else if (state === CustomGameState.PRE_ROUND) {
             this.preRound = undefined;
-            this.round = new Round(alliances, settings.RoundDuration);
+            this.round = new Round(alliances, Constants.roundDuration);
         }
     }
 

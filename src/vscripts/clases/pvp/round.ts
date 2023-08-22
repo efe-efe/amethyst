@@ -1,5 +1,4 @@
 import GameState, { CustomGameState } from "../game_state";
-import settings from "../../settings";
 // import { ModifierDeathZone } from "../../modifiers/modifier_death_zone";
 import { ModifierProvidesVision } from "../../modifiers/modifier_provides_vision";
 import { Alliance } from "../../alliances";
@@ -12,7 +11,7 @@ export default class Round extends GameState {
     heroDied = false;
     isTryingToEnd = false;
     winner: Alliance | undefined = undefined;
-    timeRemianingUntilEnd = settings.DrawTime;
+    timeRemianingUntilEnd = Constants.drawTime;
     gemSpawnPoints: Vector[];
     healthEntities: CBaseEntity[];
     manaEntities: CBaseEntity[];
@@ -90,7 +89,7 @@ export default class Round extends GameState {
             }
         });
 
-        let max_score = settings.RoundsDifferenceToWin;
+        let max_score = Constants.roundsDifferenceToWin;
         let allinaces_with_one_point = 0;
         let allinaces_with_two_points = 0;
 
@@ -98,7 +97,10 @@ export default class Round extends GameState {
             const new_score = this.winner.wins + 1;
             this.winner.wins = new_score;
 
-            if (this.winner.wins >= settings.RoundsToWin || this.GetHighestWinsDifference(this.winner) >= settings.RoundsDifferenceToWin) {
+            if (
+                this.winner.wins >= Constants.roundsToWin ||
+                this.GetHighestWinsDifference(this.winner) >= Constants.roundsDifferenceToWin
+            ) {
                 GameRules.Addon.EndGame(this.winner.teams[1]);
                 return;
             }
