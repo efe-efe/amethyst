@@ -4,10 +4,12 @@ import { Player } from "./players";
 
 type LegendDefinition = {
     id: LegendId;
+    model: string;
 };
 
 type LegendOptions = {
     id: LegendId;
+    model: string;
 };
 
 type LevelableValue = {
@@ -75,7 +77,8 @@ export function defineUpgrade(options: UpgradeOptions) {
 
 export function defineLegend(options: LegendOptions) {
     legendDefinitions.push({
-        id: options.id
+        id: options.id,
+        model: options.model
     });
 }
 

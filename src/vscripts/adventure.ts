@@ -375,11 +375,18 @@ function unloadMap(map: SpawnGroupHandle): Promise<void> {
     });
 }
 
-function tryCreatingRewardByType(upgradeType: UpgradeType, origin: Vector) {
-    const rewardDefinition = findRewardByType(upgradeType);
+function tryCreatingReward(upgradeSpecificType: UpgradeSpecificType, origin: Vector) {
+    const rewardDefinition = findRewardByType(upgradeSpecificType.type);
 
     if (!rewardDefinition) {
         throw "ERROR, REWARD NOT FOUND";
+    }
+
+    if (upgradeSpecificType.type == UpgradeType.legend) {
+        const legendDefinition = legendDefinitions.find(legend => legend.id == upgradeSpecificType.legendId);
+        if (legendDefinition) {
+            rewardDefinition.model = legendDefinition.model;
+        }
     }
 
     return createReward(rewardDefinition, GetGroundPosition(origin, undefined));
@@ -444,7 +451,7 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
             id: "reward",
             mapHandle: mapHandle,
             participants: serializeParticipants(config),
-            reward: tryCreatingRewardByType(UpgradeType.stance, GetGroundPosition(Vector(0, 0, 0), undefined)),
+            reward: tryCreatingReward({ type: UpgradeType.stance }, GetGroundPosition(Vector(0, 0, 0), undefined)),
             upgradeSpecificType: { type: UpgradeType.stance },
             exits: tryGeneratingExits()
         },
@@ -669,7 +676,7 @@ export async function updateAdventureStage(game: AdventureStage) {
                         id: "reward",
                         mapHandle: game.state.mapHandle,
                         participants: serializeParticipants(game.config),
-                        reward: tryCreatingRewardByType(game.state.upgradeSpecificType.type, GetGroundPosition(Vector(0, 0, 0), undefined)),
+                        reward: tryCreatingReward(game.state.upgradeSpecificType, GetGroundPosition(Vector(0, 0, 0), undefined)),
                         upgradeSpecificType: game.state.upgradeSpecificType,
                         exits: game.state.exits
                     };

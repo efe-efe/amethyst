@@ -8,7 +8,8 @@ import { areUnitsAllied, direction2D, getCursorPosition } from "../util";
 
 const resources = precache({
     chakram: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram.vpcf"),
-    chakramStay: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram_stay.vpcf")
+    chakramStay: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram_stay.vpcf"),
+    model: resource.model("models/items/shredder/timbersaw_ti9_immortal_offhand/timbersaw_ti9_immortal_offhand_blade.vmdl")
 });
 
 @registerModifier()
@@ -182,7 +183,8 @@ class ModifierTimberSpecialChakram extends CustomModifier<undefined> {
 }
 
 defineLegend({
-    id: LegendId.timbersaw
+    id: LegendId.timbersaw,
+    model: resources.model.path
 });
 
 defineUpgrade({

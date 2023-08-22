@@ -7,7 +7,8 @@ import { defineLegend, defineUpgrade } from "../upgrade_definitions";
 const resources = precache({
     chillStatusFx: resource.fx("particles/status_fx/status_effect_iceblast.vpcf"),
     ancientDash: resource.fx("particles/econ/items/ancient_apparition/ancient_apparation_ti8/ancient_ice_vortex_ti8_start.vpcf"),
-    ancientExplosion: resource.fx("particles/creatures/aghanim/aghanim_crystal_attack_impact.vpcf")
+    ancientExplosion: resource.fx("particles/creatures/aghanim/aghanim_crystal_attack_impact.vpcf"),
+    model: resource.model("models/items/ancient_apparition/aa_frozenberserker_head/aa_frozenberserker_head.vmdl")
 });
 
 @registerModifier()
@@ -130,7 +131,8 @@ class ModifierApparitionChill extends CustomModifier<undefined> {
 }
 
 defineLegend({
-    id: LegendId.apparition
+    id: LegendId.apparition,
+    model: resources.model.path
 });
 
 defineUpgrade({
