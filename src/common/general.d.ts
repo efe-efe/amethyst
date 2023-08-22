@@ -51,10 +51,12 @@ declare enum Custom_ActionModes {
 declare const enum Constants {
     maxThreshold = 30,
     maxEnergy = 100,
-    warmupDuration = 20,
+    warmupDuration = 3,
     adrenalineDuration = 25,
     pickupsSpawnRate = 5,
-    bountyHealth = 30
+    bountyHealth = 30,
+    gemSpawnTime = 10,
+    gemRespawnTime = 15
 }
 
 declare const enum AllianceId {
