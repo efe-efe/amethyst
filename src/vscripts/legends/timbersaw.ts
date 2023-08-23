@@ -1,15 +1,18 @@
 import { findAbilityDefinitionByName } from "../abilities/framework/ability_definition";
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
+import { ModifierCombatEvents } from "../modifiers/modifier_combat_events";
 import { precache, resource } from "../precache";
 import { ProjectileBehavior, createProjectile } from "../projectiles";
 import { defineLegend, defineUpgrade } from "../upgrade_definitions";
 import { areUnitsAllied, direction2D, getCursorPosition } from "../util";
 
 const resources = precache({
+    sounds: resource.soundFile("soundevents/game_sounds_heroes/game_sounds_shredder.vsndevts"),
     chakram: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram.vpcf"),
     chakramStay: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram_stay.vpcf"),
-    model: resource.model("models/items/shredder/timbersaw_ti9_immortal_offhand/timbersaw_ti9_immortal_offhand_blade.vmdl")
+    model: resource.model("models/items/shredder/timbersaw_ti9_immortal_offhand/timbersaw_ti9_immortal_offhand_blade.vmdl"),
+    whirlingDeath: resource.fx("particles/units/heroes/hero_shredder/shredder_whirling_death.vpcf")
 });
 
 @registerModifier()
@@ -182,6 +185,56 @@ class ModifierTimberSpecialChakram extends CustomModifier<undefined> {
     }
 }
 
+@registerModifier()
+class ModifierTimberAttackWhirling extends ModifierCombatEvents<undefined> {
+    OnCreated() {
+        this.SetStackCount(1);
+    }
+
+    OnBasicAttackLanded() {
+        this.IncrementStackCount();
+    }
+
+    OnStackCountChanged() {
+        if (IsServer()) {
+            if (this.GetStackCount() >= 5) {
+                this.SetStackCount(0);
+
+                const enemies = FindUnitsInRadius(
+                    this.parent.GetTeam(),
+                    this.parent.GetAbsOrigin(),
+                    undefined,
+                    250,
+                    UnitTargetTeam.ENEMY,
+                    UnitTargetType.HERO + UnitTargetType.CREEP,
+                    UnitTargetFlags.NONE,
+                    FindOrder.ANY,
+                    false
+                );
+
+                for (const enemy of enemies) {
+                    ApplyDamage({
+                        attacker: this.parent,
+                        damage: 10,
+                        damage_type: DamageTypes.MAGICAL,
+                        victim: enemy
+                    });
+                }
+
+                EmitSoundOn("Hero_Shredder.WhirlingDeath.Cast", this.parent);
+
+                const particleId = ParticleManager.CreateParticle(
+                    resources.whirlingDeath.path,
+                    ParticleAttachment.ABSORIGIN_FOLLOW,
+                    this.parent
+                );
+                ParticleManager.SetParticleControl(particleId, 0, this.parent.GetAbsOrigin());
+                ParticleManager.ReleaseParticleIndex(particleId);
+            }
+        }
+    }
+}
+
 defineLegend({
     id: LegendId.timbersaw,
     model: resources.model.path
@@ -244,4 +297,13 @@ defineUpgrade({
         radius: 250,
         interval: 0.5
     }
+});
+
+defineUpgrade({
+    type: UpgradeType.blessing,
+    legendId: LegendId.timbersaw,
+    icon: "file://{images}/spellicons/shredder_whirling_death.png",
+    id: UpgradeId.timberAttackWhirling,
+    modifier: ModifierTimberAttackWhirling,
+    values: {}
 });

@@ -3,7 +3,7 @@ import { UnitAIContext, updateUnitAI } from "./ai";
 import { updateAnimations } from "./animation";
 import { updateEntityData, updateEntityMovement } from "./common";
 import { Entity, findEntityByHandle } from "./entities";
-import { FindStage, Game, getGame } from "./game";
+import { FindStage, Game, findPlayerById, getGame } from "./game";
 import { ModifierMiniStun } from "./modifiers/modifier_mini_stun";
 import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
@@ -457,6 +457,20 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
     };
 }
 
+export function offerUpgrades(playerId: PlayerID, options: UpgradeDefinition[]) {
+    CustomNetTables.SetTableValue("pve", playerId.toString(), {
+        selection: {
+            upgrades: encodeToJson(
+                options.map(option => ({
+                    id: option.id,
+                    type: option.type,
+                    icon: option.icon
+                }))
+            )
+        }
+    });
+}
+
 export async function updateAdventureStage(game: AdventureStage) {
     function generateUpgradeType(game: AdventureStage): UpgradeSpecificType {
         const selected = game.state.exits
@@ -558,19 +572,11 @@ export async function updateAdventureStage(game: AdventureStage) {
 
                     for (const participant of game.state.participants) {
                         participant.options = generateUpgradesForPlayer(participant.player, game.state.upgradeSpecificType);
+                        offerUpgrades(participant.player.id, participant.options);
 
-                        //TODO: Fix the case for when options is empty array
-                        CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
-                            selection: {
-                                upgrades: encodeToJson(
-                                    participant.options.map(option => ({
-                                        id: option.id,
-                                        type: option.type,
-                                        icon: option.icon
-                                    }))
-                                )
-                            }
-                        });
+                        if (participant.options.length == 0) {
+                            participant.selected = true;
+                        }
                     }
                 }
             }
@@ -770,46 +776,50 @@ export async function updateAdventureStage(game: AdventureStage) {
 CustomGameEventManager.RegisterListener("pickUpgrade", (_, event) => {
     const game = getGame();
     const playerId = event.PlayerID;
+    const player = findPlayerById(playerId);
 
-    if (game.stage == Stage.adventure && game.state.id == "reward") {
-        const participant = game.state.participants.find(participant => participant.player.id == playerId);
+    if (game.stage == Stage.adventure && player) {
+        if (game.state.id == "reward") {
+            const participant = game.state.participants.find(participant => participant.player.id == playerId);
 
-        if (participant) {
-            participant.selected = true;
-            participant.options = [];
-
-            const upgrade = upgradeDefinitions.find(upgrade => upgrade.id == event.upgradeId);
-
-            if (upgrade) {
-                if (game.state.upgradeSpecificType.type == UpgradeType.knowledge) {
-                    participant.player.upgrades = participant.player.upgrades.map(playerUpgrade =>
-                        playerUpgrade.definition.id == upgrade?.id ? { ...playerUpgrade, level: playerUpgrade.level + 1 } : playerUpgrade
-                    );
-                } else {
-                    participant.player.upgrades.push({
-                        definition: upgrade,
-                        level: 1
-                    });
-                }
+            if (participant && participant.options.length > 0) {
+                participant.selected = true;
+                participant.options = [];
             }
-
-            for (const upgrade of participant.player.upgrades) {
-                const handle = participant.player.entity?.handle;
-                if (handle && upgrade.definition.modifier) {
-                    handle.RemoveModifierByName(upgrade.definition.modifier.name);
-                    upgrade.definition.modifier.apply(
-                        handle,
-                        handle,
-                        undefined,
-                        getCurrentUpgradeValues(upgrade.level, upgrade.definition.values)
-                    );
-                }
-            }
-
-            CustomNetTables.SetTableValue("pve", participant.player.id.toString(), {
-                selection: undefined
-            });
         }
+
+        const upgrade = upgradeDefinitions.find(upgrade => upgrade.id == event.upgradeId);
+        const existing = player.upgrades.find(playerUpgrade => playerUpgrade.definition.id == upgrade?.id);
+
+        if (upgrade) {
+            if (existing) {
+                player.upgrades = player.upgrades.map(playerUpgrade =>
+                    playerUpgrade.definition.id == upgrade.id ? { ...playerUpgrade, level: playerUpgrade.level++ } : playerUpgrade
+                );
+            } else {
+                player.upgrades.push({
+                    definition: upgrade,
+                    level: 1
+                });
+            }
+        }
+
+        for (const upgrade of player.upgrades) {
+            const handle = player.entity?.handle;
+            if (handle && upgrade.definition.modifier) {
+                handle.RemoveModifierByName(upgrade.definition.modifier.name);
+                upgrade.definition.modifier.apply(
+                    handle,
+                    handle,
+                    undefined,
+                    getCurrentUpgradeValues(upgrade.level, upgrade.definition.values)
+                );
+            }
+        }
+
+        CustomNetTables.SetTableValue("pve", playerId.toString(), {
+            selection: undefined
+        });
     }
 });
 

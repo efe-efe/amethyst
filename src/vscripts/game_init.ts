@@ -33,9 +33,10 @@ import { Game, MapNames, findPlayerById, getGame, getMode, initStartingStage, se
 import { Player, players } from "./players";
 import { createEntity, entities, findEntityByHandle, removeEntity } from "./entities";
 import { initBattleStage, updateBattleState } from "./battle";
-import { initAdventureStage, updateAdventureStage } from "./adventure";
+import { initAdventureStage, offerUpgrades, updateAdventureStage } from "./adventure";
 import "./abilities";
 import "./legends";
+import { legendDefinitions, upgradeDefinitions } from "./upgrade_definitions";
 
 declare global {
     interface CDOTAGameRules {
@@ -468,12 +469,23 @@ function onPlayerChat(event: PlayerChatEvent) {
         }
     }
 
-    if (event.text.split(" ")[0] == "-room") {
-        if (!event.text.split(" ")[1]) {
+    const [command, option] = event.text.split(" ");
+
+    if (command == "-upgrade") {
+        const definition = legendDefinitions.find(definition => definition.id == option);
+
+        if (definition) {
+            const options = upgradeDefinitions.filter(upgradeDefinition => upgradeDefinition.legendId == definition.id);
+            offerUpgrades(playerId, options);
+        }
+    }
+
+    if (command == "-room") {
+        if (!option) {
             return;
         }
         if (getMode() == MapNames.pve) {
-            let room = parseInt(event.text.split(" ")[1], 10);
+            let room = parseInt(option, 10);
             if (isNaN(room)) {
                 return;
             }
