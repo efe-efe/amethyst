@@ -505,11 +505,11 @@ export async function updateAdventureStage(game: AdventureStage) {
     function generateUpgradesForPlayer(player: Player, upgrade: UpgradeSpecificType) {
         switch (upgrade.type) {
             case UpgradeType.legend:
-                return generateLegendUpgradesForPlayer(player, upgrade.legendId);
+                return generateLegendUpgradesForPlayer(player, upgrade.legendId, 3);
             case UpgradeType.knowledge:
-                return generateKnowledgeUpgradesForPlayer(player);
+                return generateKnowledgeUpgradesForPlayer(player, 3);
             default:
-                return generateUpgradesOfTypeForPlayer(player, upgrade.type);
+                return generateUpgradesOfTypeForPlayer(player, upgrade.type, 3);
         }
     }
 

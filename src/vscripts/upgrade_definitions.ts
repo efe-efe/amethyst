@@ -1,6 +1,7 @@
 import { CustomModifier } from "./abilities/framework/custom_modifier";
 import { findPlayerById } from "./game";
 import { Player } from "./players";
+import { takeNRandomFromArrayWeighted } from "./util";
 
 type LegendDefinition = {
     id: LegendId;
@@ -149,18 +150,24 @@ export function hasUpgrade(unit: CDOTA_BaseNPC, id: UpgradeId) {
     return player?.upgrades.find(upgrade => upgrade.definition.id == id);
 }
 
-export function generateLegendUpgradesForPlayer(player: Player, legendId: LegendId) {
-    return upgradeDefinitions.filter(upgrade => upgrade.legendId == legendId);
+export function generateLegendUpgradesForPlayer(player: Player, legendId: LegendId, amount: number) {
+    function canPlayerHaveUpgrade(player: Player, upgrade: UpgradeDefinition) {
+        return !player.upgrades.some(playerUpgrade => playerUpgrade.definition.id == upgrade.id);
+    }
+
+    const upgrades = upgradeDefinitions.filter(upgrade => upgrade.legendId == legendId && canPlayerHaveUpgrade(player, upgrade));
+
+    return takeNRandomFromArrayWeighted(upgrades, amount, () => 1);
 }
 
-export function generateKnowledgeUpgradesForPlayer(player: Player): UpgradeDefinition[] {
+export function generateKnowledgeUpgradesForPlayer(player: Player, amount: number): UpgradeDefinition[] {
     const upgradeable = player.upgrades
         .filter(upgrade => Object.values(upgrade.definition.values).some(value => typeof value != "number"))
         .map(upgrade => upgrade.definition);
-    return upgradeable;
+    return takeNRandomFromArrayWeighted(upgradeable, amount, () => 1);
 }
 
-export function generateUpgradesOfTypeForPlayer(player: Player, upgradeType: UpgradeType) {
+export function generateUpgradesOfTypeForPlayer(player: Player, upgradeType: UpgradeType, amount: number) {
     function canHeroHaveUpgrade(upgrade: UpgradeDefinition, hero: string | undefined) {
         if (!hero) {
             return false;
@@ -173,10 +180,12 @@ export function generateUpgradesOfTypeForPlayer(player: Player, upgradeType: Upg
         return !player.upgrades.some(playerUpgrade => playerUpgrade.definition.id == upgrade.id);
     }
 
-    return upgradeDefinitions.filter(
+    const upgrades = upgradeDefinitions.filter(
         upgrade =>
             upgrade.type == upgradeType &&
             canPlayerHaveUpgrade(player, upgrade) &&
             canHeroHaveUpgrade(upgrade, player.entity?.handle.GetUnitName())
     );
+
+    return takeNRandomFromArrayWeighted(upgrades, amount, () => 1);
 }
