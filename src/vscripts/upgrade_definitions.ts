@@ -48,6 +48,10 @@ export type UpgradeOptions = {
 export const legendDefinitions: LegendDefinition[] = [];
 export const upgradeDefinitions: UpgradeDefinition[] = [];
 
+export function findLegendById(id: LegendId) {
+    return legendDefinitions.find(definition => definition.id == id);
+}
+
 export function getCurrentUpgradeValues(level: number, upgradeValues: Record<string, number | LevelableValue>) {
     const result: Record<string, number> = {};
 

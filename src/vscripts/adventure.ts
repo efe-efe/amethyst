@@ -12,6 +12,7 @@ import { precache, resource } from "./precache";
 import { RewardDefinition, findRewardByType, rewardDefinitions } from "./reward_definitions";
 import {
     UpgradeDefinition,
+    findLegendById,
     generateKnowledgeUpgradesForPlayer,
     generateLegendUpgradesForPlayer,
     generateUpgradesOfTypeForPlayer,
@@ -375,18 +376,15 @@ function unloadMap(map: SpawnGroupHandle): Promise<void> {
     });
 }
 
-function tryCreatingReward(upgradeSpecificType: UpgradeSpecificType, origin: Vector) {
-    const rewardDefinition = findRewardByType(upgradeSpecificType.type);
+function tryCreatingReward(upgrade: UpgradeSpecificType, origin: Vector) {
+    const rewardDefinition = findRewardByType(upgrade.type);
 
     if (!rewardDefinition) {
         throw "ERROR, REWARD NOT FOUND";
     }
 
-    if (upgradeSpecificType.type == UpgradeType.legend) {
-        const legendDefinition = legendDefinitions.find(legend => legend.id == upgradeSpecificType.legendId);
-        if (legendDefinition) {
-            rewardDefinition.model = legendDefinition.model;
-        }
+    if (upgrade.type == UpgradeType.legend) {
+        rewardDefinition.model = findLegendById(upgrade.legendId)?.model ?? rewardDefinition.model;
     }
 
     return createReward(rewardDefinition, GetGroundPosition(origin, undefined));
