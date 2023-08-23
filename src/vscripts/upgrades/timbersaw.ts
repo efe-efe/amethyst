@@ -115,10 +115,8 @@ class ModifierTimberChakramThinker extends CustomModifier<undefined> {
 
     OnDestroy(): void {
         if (IsServer()) {
-            if (this.particleId) {
-                ParticleManager.DestroyParticle(this.particleId, true);
-                ParticleManager.ReleaseParticleIndex(this.particleId);
-            }
+            ParticleManager.DestroyParticle(this.particleId, true);
+            ParticleManager.ReleaseParticleIndex(this.particleId);
             StopSoundOn("Hero_Shredder.Chakram", this.caster);
         }
     }
