@@ -2,7 +2,7 @@ import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter"
 import { ModifierCharges } from "../../../modifiers/modifier_charges";
 import { ModifierFadingSlow } from "../../../modifiers/modifier_fading_slow";
 import { precache, resource } from "../../../precache";
-import { hasUpgrade } from "../../../upgrade_definitions";
+import { hasUpgrade } from "../../../upgrades/framework/upgrade_definitions";
 import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercent, isGem, isObstacle } from "../../../util";
 import { defineAbility } from "../../framework/ability_definition";
 import { CustomAbility } from "../../framework/custom_ability";

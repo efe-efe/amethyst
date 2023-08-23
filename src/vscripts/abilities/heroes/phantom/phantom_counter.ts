@@ -12,7 +12,7 @@ import { CustomModifier } from "../../framework/custom_modifier";
 import { ModifierPhantomStacks, PhantomBasicAttack } from "./phantom_basic_attack";
 import { precache, resource } from "../../../precache";
 import { defineAbility } from "../../framework/ability_definition";
-import { hasUpgrade } from "../../../upgrade_definitions";
+import { hasUpgrade } from "../../../upgrades/framework/upgrade_definitions";
 
 const resources = precache({
     sparksStart: resource.fx(

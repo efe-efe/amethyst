@@ -2,13 +2,12 @@ import { findAbilityDefinitionByName } from "../abilities/framework/ability_defi
 import { CustomModifier } from "../abilities/framework/custom_modifier";
 import { registerModifier } from "../lib/dota_ts_adapter";
 import { precache, resource } from "../precache";
-import { defineLegend, defineUpgrade } from "../upgrade_definitions";
+import { defineUpgrade } from "./framework/upgrade_definitions";
 
 const resources = precache({
     chillStatusFx: resource.fx("particles/status_fx/status_effect_iceblast.vpcf"),
     ancientDash: resource.fx("particles/econ/items/ancient_apparition/ancient_apparation_ti8/ancient_ice_vortex_ti8_start.vpcf"),
-    ancientExplosion: resource.fx("particles/creatures/aghanim/aghanim_crystal_attack_impact.vpcf"),
-    model: resource.model("models/items/ancient_apparition/aa_frozenberserker_head/aa_frozenberserker_head.vmdl")
+    ancientExplosion: resource.fx("particles/creatures/aghanim/aghanim_crystal_attack_impact.vpcf")
 });
 
 @registerModifier()
@@ -129,11 +128,6 @@ class ModifierApparitionChill extends CustomModifier<undefined> {
         return -20 * this.GetStackCount();
     }
 }
-
-defineLegend({
-    id: LegendId.apparition,
-    model: resources.model.path
-});
 
 defineUpgrade({
     type: UpgradeType.blessing,

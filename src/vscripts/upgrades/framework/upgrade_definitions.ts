@@ -1,17 +1,7 @@
-import { CustomModifier } from "./abilities/framework/custom_modifier";
-import { findPlayerById } from "./game";
-import { Player } from "./players";
-import { takeNRandomFromArrayWeighted } from "./util";
-
-type LegendDefinition = {
-    id: LegendId;
-    model: string;
-};
-
-type LegendOptions = {
-    id: LegendId;
-    model: string;
-};
+import { CustomModifier } from "../../abilities/framework/custom_modifier";
+import { findPlayerById } from "../../game";
+import { Player } from "../../players";
+import { takeNRandomFromArrayWeighted } from "../../util";
 
 type LevelableValue = {
     initial: number;
@@ -32,6 +22,7 @@ export type UpgradeDefinition = {
     values: Record<string, number | LevelableValue>;
     legendId?: LegendId;
     modifier?: typeof CustomModifier<undefined>;
+    requirementSets: UpgradeId[][];
     // tier: "common" | "rare" | "veryRare" | "legendary";
 };
 
@@ -43,15 +34,13 @@ export type UpgradeOptions = {
     values?: Record<string, number | LevelableValue>;
     legendId?: LegendId;
     modifier?: typeof CustomModifier<undefined>;
+    requirementSets?: UpgradeId[][];
     // tier: "common" | "rare" | "veryRare" | "legendary";
 };
 
-export const legendDefinitions: LegendDefinition[] = [];
-export const upgradeDefinitions: UpgradeDefinition[] = [];
+let listLocked = false;
 
-export function findLegendById(id: LegendId) {
-    return legendDefinitions.find(definition => definition.id == id);
-}
+export const upgradeDefinitions: UpgradeDefinition[] = [];
 
 export function getCurrentUpgradeValues(level: number, upgradeValues: Record<string, number | LevelableValue>) {
     const result: Record<string, number> = {};
@@ -69,6 +58,9 @@ export function getCurrentUpgradeValues(level: number, upgradeValues: Record<str
 }
 
 export function defineUpgrade(options: UpgradeOptions) {
+    // Top-level constructs are called every time an upgrade is spawned, so we need to prevent re-registration of upgrades
+    if (listLocked || IsClient()) return;
+
     upgradeDefinitions.push({
         id: options.id,
         icon: options.icon,
@@ -76,72 +68,12 @@ export function defineUpgrade(options: UpgradeOptions) {
         values: options.values ?? {},
         type: options.type,
         legendId: options.legendId,
-        modifier: options.modifier
+        modifier: options.modifier,
+        requirementSets: options.requirementSets ?? []
     });
+
+    print(`Defined upgrade: ${options.id}`);
 }
-
-export function defineLegend(options: LegendOptions) {
-    legendDefinitions.push({
-        id: options.id,
-        model: options.model
-    });
-}
-
-defineUpgrade({
-    type: UpgradeType.stance,
-    id: UpgradeId.phantomFastDaggers,
-    validHeroes: ["npc_dota_hero_phantom_assassin"],
-    icon: "file://{images}/spellicons/phantom_assassin_stifling_dagger.png"
-});
-
-defineUpgrade({
-    type: UpgradeType.stance,
-    id: UpgradeId.phantomInstantCounter,
-    validHeroes: ["npc_dota_hero_phantom_assassin"],
-    icon: "file://{images}/spellicons/phantom_assassin_blur.png"
-});
-
-defineUpgrade({
-    type: UpgradeType.stance,
-    id: UpgradeId.phantomSecondRecast,
-    validHeroes: ["npc_dota_hero_phantom_assassin"],
-    icon: "raw://resource/flash3/images/spellicons/phantom_second_attack.png"
-});
-
-defineUpgrade({
-    type: UpgradeType.shard,
-    id: UpgradeId.phantomDashDaggers,
-    validHeroes: ["npc_dota_hero_phantom_assassin"],
-    icon: "file://{images}/spellicons/phantom_mobility.png"
-});
-
-defineUpgrade({
-    type: UpgradeType.shard,
-    id: UpgradeId.phantomExtraDaggers,
-    validHeroes: ["npc_dota_hero_phantom_assassin"],
-    icon: "file://{images}/spellicons/phantom_assassin_stifling_dagger.png"
-});
-
-defineUpgrade({
-    type: UpgradeType.stance,
-    id: UpgradeId.juggernautReflectSpin,
-    validHeroes: ["npc_dota_hero_juggernaut"],
-    icon: "file://{images}/spellicons/juggernaut_blade_fury.png"
-});
-
-defineUpgrade({
-    type: UpgradeType.stance,
-    id: UpgradeId.juggernautDagggerRefresh,
-    validHeroes: ["npc_dota_hero_juggernaut"],
-    icon: "raw://resource/flash3/images/spellicons/juggernaut_special_attack.png"
-});
-
-defineUpgrade({
-    type: UpgradeType.shard,
-    id: UpgradeId.juggernautAttackSpin,
-    validHeroes: ["npc_dota_hero_juggernaut"],
-    icon: "file://{images}/spellicons/juggernaut_blade_fury.png"
-});
 
 export function hasUpgrade(unit: CDOTA_BaseNPC, id: UpgradeId) {
     const playerId = unit.GetPlayerOwnerID();
@@ -155,7 +87,23 @@ export function generateLegendUpgradesForPlayer(player: Player, legendId: Legend
         return !player.upgrades.some(playerUpgrade => playerUpgrade.definition.id == upgrade.id);
     }
 
-    const upgrades = upgradeDefinitions.filter(upgrade => upgrade.legendId == legendId && canPlayerHaveUpgrade(player, upgrade));
+    function playerHasUpgrade(player: Player, upgradeId: UpgradeId) {
+        return player.upgrades.some(upgrade => upgrade.definition.id == upgradeId);
+    }
+
+    function hasRequirements(player: Player, upgrade: UpgradeDefinition) {
+        for (const requirements of upgrade.requirementSets) {
+            if (!requirements.some(requirement => playerHasUpgrade(player, requirement))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    const upgrades = findAllUpgradesForLegendId(legendId).filter(
+        upgrade => canPlayerHaveUpgrade(player, upgrade) && hasRequirements(player, upgrade)
+    );
 
     return takeNRandomFromArrayWeighted(upgrades, amount, () => 1);
 }
@@ -188,4 +136,16 @@ export function generateUpgradesOfTypeForPlayer(player: Player, upgradeType: Upg
     );
 
     return takeNRandomFromArrayWeighted(upgrades, amount, () => 1);
+}
+
+export function findUpgradeById(upgradeId: UpgradeId) {
+    return upgradeDefinitions.find(definition => definition.id == upgradeId);
+}
+
+export function findAllUpgradesForLegendId(legendId: LegendId) {
+    return upgradeDefinitions.filter(definition => definition.legendId == legendId);
+}
+
+export function lockUpgradeList() {
+    listLocked = true;
 }

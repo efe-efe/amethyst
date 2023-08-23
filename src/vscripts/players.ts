@@ -1,6 +1,6 @@
 import { Alliance } from "./alliances";
 import { Entity } from "./entities";
-import { UpgradeInstance } from "./upgrade_definitions";
+import { UpgradeInstance } from "./upgrades/framework/upgrade_definitions";
 
 export type Player = {
     id: PlayerID;

@@ -4,16 +4,30 @@ import { registerModifier } from "../lib/dota_ts_adapter";
 import { ModifierCombatEvents } from "../modifiers/modifier_combat_events";
 import { precache, resource } from "../precache";
 import { ProjectileBehavior, createProjectile } from "../projectiles";
-import { defineLegend, defineUpgrade } from "../upgrade_definitions";
 import { areUnitsAllied, direction2D, getCursorPosition } from "../util";
+import { defineUpgrade } from "./framework/upgrade_definitions";
 
 const resources = precache({
     sounds: resource.soundFile("soundevents/game_sounds_heroes/game_sounds_shredder.vsndevts"),
     chakram: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram.vpcf"),
     chakramStay: resource.fx("particles/units/heroes/hero_shredder/shredder_chakram_stay.vpcf"),
-    model: resource.model("models/items/shredder/timbersaw_ti9_immortal_offhand/timbersaw_ti9_immortal_offhand_blade.vmdl"),
     whirlingDeath: resource.fx("particles/units/heroes/hero_shredder/shredder_whirling_death.vpcf")
 });
+
+function getChakramExtraRadius(unit: CDOTA_BaseNPC) {
+    return ModifierTimberChakramRadius.findOne(unit)?.GetStackCount() ?? 0;
+}
+
+@registerModifier()
+class ModifierTimberChakramRadius extends CustomModifier<undefined> {
+    IsPermanent() {
+        return true;
+    }
+
+    OnCreated(): void {
+        this.SetStackCount(50);
+    }
+}
 
 @registerModifier()
 class ModifierTimberMobilityChakram extends CustomModifier<undefined> {
@@ -63,9 +77,9 @@ class ModifierTimberChakramThinker extends CustomModifier<undefined> {
 
     OnCreated(params: { radius: number; damage: number; interval: number }) {
         if (IsServer()) {
-            this.caster.EmitSound("Hero_Shredder.Chakram");
+            EmitSoundOn("Hero_Shredder.Chakram", this.caster);
 
-            this.radius = params.radius;
+            this.radius = params.radius + getChakramExtraRadius(this.parent);
             this.damage = params.damage;
 
             this.particleId = ParticleManager.CreateParticle(resources.chakramStay.path, ParticleAttachment.WORLDORIGIN, undefined);
@@ -100,9 +114,12 @@ class ModifierTimberChakramThinker extends CustomModifier<undefined> {
     }
 
     OnDestroy(): void {
-        if (IsServer() && this.particleId) {
-            ParticleManager.DestroyParticle(this.particleId, true);
-            ParticleManager.ReleaseParticleIndex(this.particleId);
+        if (IsServer()) {
+            if (this.particleId) {
+                ParticleManager.DestroyParticle(this.particleId, true);
+                ParticleManager.ReleaseParticleIndex(this.particleId);
+            }
+            StopSoundOn("Hero_Shredder.Chakram", this.caster);
         }
     }
 }
@@ -235,11 +252,6 @@ class ModifierTimberAttackWhirling extends ModifierCombatEvents<undefined> {
     }
 }
 
-defineLegend({
-    id: LegendId.timbersaw,
-    model: resources.model.path
-});
-
 defineUpgrade({
     type: UpgradeType.blessing,
     legendId: LegendId.timbersaw,
@@ -304,6 +316,14 @@ defineUpgrade({
     legendId: LegendId.timbersaw,
     icon: "file://{images}/spellicons/shredder_whirling_death.png",
     id: UpgradeId.timberAttackWhirling,
-    modifier: ModifierTimberAttackWhirling,
-    values: {}
+    modifier: ModifierTimberAttackWhirling
+});
+
+defineUpgrade({
+    type: UpgradeType.blessing,
+    legendId: LegendId.timbersaw,
+    icon: "file://{images}/spellicons/shredder_whirling_death.png",
+    id: UpgradeId.timberChakramRadius,
+    modifier: ModifierTimberChakramRadius,
+    requirementSets: [[UpgradeId.timberSpecialChakram, UpgradeId.timberMobilityChakram]]
 });

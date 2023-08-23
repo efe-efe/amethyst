@@ -4,6 +4,7 @@ import { updateAnimations } from "./animation";
 import { updateEntityData, updateEntityMovement } from "./common";
 import { Entity, findEntityByHandle } from "./entities";
 import { FindStage, Game, findPlayerById, getGame } from "./game";
+import { findLegendById, legendDefinitions } from "./legend_definitions";
 import { ModifierMiniStun } from "./modifiers/modifier_mini_stun";
 import { ModifierShield } from "./modifiers/modifier_shield";
 import { NpcDefinition, NpcId, findNpcDefinitionById } from "./npc_definitions";
@@ -12,14 +13,12 @@ import { precache, resource } from "./precache";
 import { RewardDefinition, findRewardByType, rewardDefinitions } from "./reward_definitions";
 import {
     UpgradeDefinition,
-    findLegendById,
     generateKnowledgeUpgradesForPlayer,
     generateLegendUpgradesForPlayer,
     generateUpgradesOfTypeForPlayer,
     getCurrentUpgradeValues,
-    legendDefinitions,
     upgradeDefinitions
-} from "./upgrade_definitions";
+} from "./upgrades/framework/upgrade_definitions";
 import {
     SimpleTrigger,
     allAbilities,
@@ -458,16 +457,18 @@ export async function initAdventureStage(config: GameConfig): Promise<AdventureS
 }
 
 export function offerUpgrades(playerId: PlayerID, options: UpgradeDefinition[]) {
+    const selection = {
+        upgrades: encodeToJson(
+            options.map(option => ({
+                id: option.id,
+                type: option.type,
+                icon: option.icon
+            }))
+        )
+    };
+
     CustomNetTables.SetTableValue("pve", playerId.toString(), {
-        selection: {
-            upgrades: encodeToJson(
-                options.map(option => ({
-                    id: option.id,
-                    type: option.type,
-                    icon: option.icon
-                }))
-            )
-        }
+        selection: selection
     });
 }
 

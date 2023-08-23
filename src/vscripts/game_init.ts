@@ -34,9 +34,11 @@ import { Player, players } from "./players";
 import { createEntity, entities, findEntityByHandle, removeEntity } from "./entities";
 import { initBattleStage, updateBattleState } from "./battle";
 import { initAdventureStage, offerUpgrades, updateAdventureStage } from "./adventure";
+import { findLegendById } from "./legend_definitions";
+import { generateLegendUpgradesForPlayer } from "./upgrades/framework/upgrade_definitions";
 import "./abilities";
-import "./legends";
-import { legendDefinitions, upgradeDefinitions } from "./upgrade_definitions";
+import "./upgrades";
+import "./legend_definitions";
 
 declare global {
     interface CDOTAGameRules {
@@ -472,12 +474,25 @@ function onPlayerChat(event: PlayerChatEvent) {
     const [command, option] = event.text.split(" ");
 
     if (command == "-upgrade") {
-        const definition = legendDefinitions.find(definition => definition.id == option);
-
-        if (definition) {
-            const options = upgradeDefinitions.filter(upgradeDefinition => upgradeDefinition.legendId == definition.id);
-            offerUpgrades(playerId, options);
+        if (!player) {
+            print(`Can't generate upgrades without player: ${playerId}`);
+            return;
         }
+
+        const definition = findLegendById(option as LegendId);
+
+        if (!definition) {
+            print(`Upgrade definition not found: ${option}`);
+            return;
+        }
+
+        const options = generateLegendUpgradesForPlayer(player, definition.id, 3);
+        if (!options) {
+            print(`Legend Upgrade definition not found: ${option}`);
+            return;
+        }
+
+        offerUpgrades(playerId, options);
     }
 
     if (command == "-room") {

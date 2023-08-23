@@ -2,7 +2,7 @@ import { addAnimation } from "../../../animation";
 import { registerAbility, registerModifier } from "../../../lib/dota_ts_adapter";
 import { ModifierRecast } from "../../../modifiers/modifier_recast";
 import { precache, resource } from "../../../precache";
-import { hasUpgrade } from "../../../upgrade_definitions";
+import { hasUpgrade } from "../../../upgrades/framework/upgrade_definitions";
 import {
     clampPosition,
     direction2D,

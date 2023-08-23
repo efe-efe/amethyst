@@ -34,6 +34,7 @@ declare const enum UpgradeId {
     "timberMobilityChakram" = "timberMobilityChakram",
     "timberSpecialChakram" = "timberSpecialChakram",
     "timberAttackWhirling" = "timberAttackWhirling",
+    "timberChakramRadius" = "timberChakramRadius",
     "apparitionBasicAttack" = "apparitionBasicAttack",
     "apparitionSpecialAttack" = "apparitionSpecialAttack",
     "apparitionMobility" = "apparitionMobility"

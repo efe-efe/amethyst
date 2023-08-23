@@ -6,9 +6,9 @@ import { areUnitsAllied, direction2D, getCursorPosition, giveManaAndEnergyPercen
 import { CustomAbility } from "../../framework/custom_ability";
 import { CustomModifier } from "../../framework/custom_modifier";
 import { defineAbility } from "../../framework/ability_definition";
-import { hasUpgrade } from "../../../upgrade_definitions";
 import { precache, resource } from "../../../precache";
 import { addAnimation } from "../../../animation";
+import { hasUpgrade } from "../../../upgrades/framework/upgrade_definitions";
 
 const resources = precache({
     projectile: resource.fx("particles/juggernaut/juggernaut_special_attack.vpcf"),

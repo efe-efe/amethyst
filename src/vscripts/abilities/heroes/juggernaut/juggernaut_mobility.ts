@@ -4,8 +4,8 @@ import { findUnitsInRadius, strongPurge } from "../../../util";
 import { CustomAbility } from "../../framework/custom_ability";
 import { defineAbility } from "../../framework/ability_definition";
 import { addAnimation, removeAnimation } from "../../../animation";
-import { hasUpgrade } from "../../../upgrade_definitions";
 import { precache, resource } from "../../../precache";
+import { hasUpgrade } from "../../../upgrades/framework/upgrade_definitions";
 
 const resources = precache({
     explosion: resource.fx("particles/econ/items/axe/axe_ti9_immortal/axe_ti9_beserkers_call_owner_aoe_dome.vpcf"),

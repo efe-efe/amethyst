@@ -44,6 +44,7 @@ content/panorama/scripts/custom_game/bundle.js.map
 game/scripts/vscripts/abilities/*
 game/scripts/vscripts/clases/*
 game/scripts/vscripts/upgrades/*
+game/scripts/vscripts/upgradesLegacy/*
 game/scripts/vscripts/modifiers/*
 game/scripts/vscripts/pve/*
 game/scripts/vscripts/items/*
@@ -87,3 +88,5 @@ game/scripts/vscripts/legends/apparition.lua
 game/scripts/vscripts/legends/timbersaw.lua
 game/scripts/vscripts/legends.lua
 game/scripts/vscripts/gem_definitions.lua
+game/scripts/vscripts/legend_definitions.lua
+game/scripts/vscripts/upgrades.lua

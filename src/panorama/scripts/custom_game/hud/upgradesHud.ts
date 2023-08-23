@@ -74,16 +74,16 @@ subscribeToNetTableAndLoadNow("pve", (table, key, value) => {
     if ((key as PlayerID) == Game.GetLocalPlayerID()) {
         upgradesPanel.cleanUpgrades();
 
-        if (!value.selection) {
+        const upgrades = value.selection ? decodeFromJson(value.selection.upgrades) : [];
+
+        if (!value.selection || upgrades.length == 0) {
             root.SetHasClass("upgradesHUD--visible", false);
             return;
         }
 
+        upgradesPanel.setUpgrades(upgrades);
         root.SetHasClass("upgradesHUD--visible", true);
-        const upgrades = decodeFromJson(value.selection.upgrades);
-
         const type = upgrades[0].type;
         title.text = $.Localize(`#Upgrade_${type}`);
-        upgradesPanel.setUpgrades(upgrades);
     }
 });
