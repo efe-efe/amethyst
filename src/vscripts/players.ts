@@ -1,6 +1,6 @@
 import { Alliance } from "./alliances";
 import { Entity } from "./entities";
-import { UpgradeInstance } from "./upgrades/framework/upgrade_definitions";
+import { Upgrade } from "./upgrades/framework/upgrade_definitions";
 
 export type Player = {
     id: PlayerID;
@@ -8,7 +8,7 @@ export type Player = {
     cursorPosition: Vector;
     entity?: Entity;
     alliance?: Alliance;
-    upgrades: UpgradeInstance[];
+    upgrades: Upgrade[];
 };
 
 export const players: Player[] = [];

@@ -9,7 +9,7 @@ type LevelableValue = {
     formula: (perk: number, level: number) => number;
 };
 
-export type UpgradeInstance = {
+export type Upgrade = {
     definition: UpgradeDefinition;
     level: number;
 };

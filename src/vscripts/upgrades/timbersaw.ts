@@ -25,7 +25,7 @@ class ModifierTimberChakramRadius extends CustomModifier<undefined> {
     }
 
     OnCreated(): void {
-        this.SetStackCount(50);
+        this.SetStackCount(100);
     }
 }
 
