@@ -3,6 +3,7 @@
 	maps = 
 	[
 		"pvp",
+		"pve"
 	]
 	IsPlayable = 1
 	Default_Keys = 
